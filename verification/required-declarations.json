@@ -4,6 +4,11 @@
       "name": "ClassFieldTower.Sawin.sawin_totally_real_tower",
       "originModule": "SawinTotallyRealTowers.SawinTotallyRealTower",
       "kind": "theorem"
+    },
+    {
+      "name": "ClassFieldTower.Sawin.exists_totallyReal_discr_le",
+      "originModule": "SawinTotallyRealTowers.MartinetCorollary",
+      "kind": "theorem"
     }
   ]
 }

@@ -13,7 +13,8 @@ import subprocess
 import sys
 import time
 
-from check_source_closure import audit, digest, require, ENTRY, MAIN, OWNERS, MATHLIB
+from check_source_closure import (audit, digest, require, ENTRY, ROOTS,
+                                  REQUIRED_DECLARATIONS, OWNERS, MATHLIB)
 
 HERE = Path(__file__).resolve().parent
 ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
@@ -126,7 +127,7 @@ class Runner:
         self.env.pop('LEAN_PATH', None); self.env.pop('LEAN_SYSROOT', None)
         self.lake = shutil.which('lake')
         self.receipt = {'passed': False, 'startedUtc': utc(), 'stages': [],
-            'entryModule': ENTRY, 'nanoDaRun': False, 'independentKernelCheckPerformed': False}
+            'entryModule': ENTRY, 'entryModules': ROOTS, 'nanoDaRun': False, 'independentKernelCheckPerformed': False}
         self.started = time.monotonic()
 
     def checkpoint(self): save(self.output / 'receipt.json', self.receipt)
@@ -217,8 +218,8 @@ class Runner:
             baseline = json.loads((self.root/'verification/historical-partial-baseline.json').read_text())
             required = json.loads((self.root/'verification/required-declarations.json').read_text())
             require(len(baseline['allowedPartialDeclarations']) == 7, 'Expected seven historical partials')
-            require(required['declarations'] == [{'name': MAIN, 'originModule': ENTRY, 'kind': 'theorem'}],
-                    'Main endpoint contract changed')
+            require(required['declarations'] == REQUIRED_DECLARATIONS,
+                    'Required endpoint contract changed')
             for name, expected in WRAPPERS.items():
                 require(digest(HERE/name) == expected, 'Official wrapper modified: ' + name)
             self.receipt['sourceAudit'] = audit(self.root, manifest)
@@ -227,6 +228,8 @@ class Runner:
                                        '-p','test_*.py','-v'])
             self.stage('build', [self.lake,'--wfail','build'])
             self.stage('statement', [self.lake,'env','lean','-j1','--error=warning','tests/Statement.lean'])
+            self.stage('martinet-statement', [self.lake,'env','lean','-j1','--error=warning',
+                                              'tests/MartinetStatement.lean'])
             require(self.snapshots(self.project_paths()) == project, 'Input changed during build')
             version = self.stage('lean-version', [self.lake,'env','lean','--version'], True)
             require('version 4.33.0' in version and LEAN_REV in version, 'Lean identity mismatch')

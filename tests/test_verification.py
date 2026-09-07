@@ -97,6 +97,51 @@ class InventoryTests(unittest.TestCase):
         return verify.validate_inventory_data(self.summary, rows or [self.row], self.modules,
                                               self.manifest,self.baseline,self.required)
 
+    def two_root_inventory(self):
+        mod = source.MARTINET_ENTRY
+        self.manifest['roots'].append(mod)
+        self.manifest['moduleRows'][mod] = {
+            'owner': 'SawinTotallyRealTowers', 'path': 'Lean4/'+mod.replace('.', '/')+'.lean',
+            'sha256': 'b'*64}
+        self.summary.update(importRoots=list(self.manifest['roots']),
+                            primaryModuleCount=2, loadedPrimaryModuleCount=2)
+        self.summary['owners']['SawinTotallyRealTowers'].update(requestedModules=2, loadedModules=2)
+        self.summary['allSelected']['declarations'] = 2
+        self.modules.append({'module': mod, 'path': self.manifest['moduleRows'][mod]['path'],
+                             'primaryOwner': 'SawinTotallyRealTowers', 'isLoaded': True})
+        self.required = {'declarations': copy.deepcopy(source.REQUIRED_DECLARATIONS)}
+        martinet = copy.deepcopy(self.row)
+        martinet.update(name=source.MARTINET_MAIN, originModule=mod,
+                        nameParts=[{'str': part} for part in source.MARTINET_MAIN.split('.')])
+        return [self.row, martinet]
+
+    def test_two_root_closure_requires_both_modules_loaded(self):
+        rows = self.two_root_inventory()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            sources = {
+                source.ENTRY: 'theorem one : True := True.intro\n',
+                source.MARTINET_ENTRY: 'import '+source.ENTRY+'\ntheorem two : True := one\n',
+            }
+            for module, text in sources.items():
+                row = self.manifest['moduleRows'][module]
+                path = root/row['path']; path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(text)
+                row.update(sha256=source.digest(path), imports=source.source_imports(text))
+            closure = source.audit_rows(root, self.manifest)
+            self.assertTrue(closure['exactClosure'])
+            self.assertEqual(closure['moduleCount'], 2)
+            self.assertEqual(self.check(rows)['safeDeclarations'], 2)
+            self.modules[1]['isLoaded'] = False
+            with self.assertRaisesRegex(ValueError, 'Module identity mismatch'):
+                self.check(rows)
+
+    def test_main_present_does_not_replace_required_martinet(self):
+        self.two_root_inventory()
+        self.summary['allSelected']['declarations'] = 1
+        with self.assertRaisesRegex(ValueError, 'Required mathematical theorem absent/unsafe'):
+            self.check([self.row])
+
     def test_valid_inventory(self): self.assertEqual(self.check()['safeDeclarations'],1)
     def test_unsafe_rejected(self):
         self.row['isUnsafe']=True; self.row['isSafeKernelRoot']=False

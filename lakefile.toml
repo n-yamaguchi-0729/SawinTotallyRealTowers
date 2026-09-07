@@ -1,6 +1,6 @@
 name = "SawinTotallyRealTowers"
 version = "1.0.0"
-defaultTargets = ["SawinTotallyRealTowers.SawinTotallyRealTower"]
+defaultTargets = ["SawinTotallyRealTowers.SawinTotallyRealTower", "SawinTotallyRealTowers.MartinetCorollary"]
 enableArtifactCache = false
 restoreAllArtifacts = false
 

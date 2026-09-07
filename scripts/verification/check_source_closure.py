@@ -10,8 +10,15 @@ import tomllib
 
 ENTRY = 'SawinTotallyRealTowers.SawinTotallyRealTower'
 MAIN = 'ClassFieldTower.Sawin.sawin_totally_real_tower'
+MARTINET_ENTRY = 'SawinTotallyRealTowers.MartinetCorollary'
+MARTINET_MAIN = 'ClassFieldTower.Sawin.exists_totallyReal_discr_le'
+ROOTS = [ENTRY, MARTINET_ENTRY]
+REQUIRED_DECLARATIONS = [
+    {'name': MAIN, 'originModule': ENTRY, 'kind': 'theorem'},
+    {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
+]
 OWNERS = {'ClassFieldTheory': 653, 'GaloisCohomology': 143, 'ProCGroups': 318,
-          'SawinTotallyRealTowers': 182, 'ValuedFieldTheory': 304}
+          'SawinTotallyRealTowers': 183, 'ValuedFieldTheory': 304}
 MATHLIB = '6f1ef4e5dd604a435bddba4747b13970cd65d2a1'
 TOOLCHAIN = 'leanprover/lean4:v4.33.0'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
@@ -105,15 +112,18 @@ def audit_rows(root, manifest):
 
 def audit(root, manifest):
     root = Path(root).resolve()
-    require(manifest['roots'] == [ENTRY] and manifest['entryDeclaration'] == MAIN,
+    require(manifest['roots'] == ROOTS and manifest['entryModule'] == ENTRY and
+            manifest['entryDeclaration'] == MAIN and
+            manifest['requiredDeclarations'] == [r['name'] for r in REQUIRED_DECLARATIONS],
             'Entrypoint policy changed')
-    require(manifest['ownerCounts'] == OWNERS and len(manifest['moduleRows']) == 1600,
+    require(manifest['ownerCounts'] == OWNERS and
+            manifest['moduleCount'] == len(manifest['moduleRows']) == sum(OWNERS.values()),
             'Frozen bundle owner/count policy changed')
     physical = {str(p.relative_to(root)) for p in (root / 'Lean4').rglob('*.lean')}
     expected = {r['path'] for r in manifest['moduleRows'].values()}
     require(physical == expected, 'Physical source set differs from the manifest')
     config = tomllib.loads((root / 'lakefile.toml').read_text())
-    require(config['name'] == 'SawinTotallyRealTowers' and config['defaultTargets'] == [ENTRY],
+    require(config['name'] == 'SawinTotallyRealTowers' and config['defaultTargets'] == ROOTS,
             'Lake package/default target changed')
     libs = {x['name']: x for x in config['lean_lib']}
     require(len(config['lean_lib']) == 5 and set(libs) == set(OWNERS), 'Library owners changed')

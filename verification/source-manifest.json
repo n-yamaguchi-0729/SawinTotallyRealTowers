@@ -5,16 +5,17 @@
   "sourceCommit": "c3f48a4c7510bac9248df07784c3628426581739",
   "leanToolchain": "leanprover/lean4:v4.33.0",
   "mathlibRevision": "6f1ef4e5dd604a435bddba4747b13970cd65d2a1",
-  "moduleCount": 1600,
+  "moduleCount": 1601,
   "ownerCounts": {
     "ClassFieldTheory": 653,
     "GaloisCohomology": 143,
     "ProCGroups": 318,
-    "SawinTotallyRealTowers": 182,
+    "SawinTotallyRealTowers": 183,
     "ValuedFieldTheory": 304
   },
   "roots": [
-    "SawinTotallyRealTowers.SawinTotallyRealTower"
+    "SawinTotallyRealTowers.SawinTotallyRealTower",
+    "SawinTotallyRealTowers.MartinetCorollary"
   ],
   "moduleRows": {
     "ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields": {
@@ -12037,6 +12038,15 @@
         "Mathlib.Tactic.Linarith"
       ]
     },
+    "SawinTotallyRealTowers.MartinetCorollary": {
+      "owner": "SawinTotallyRealTowers",
+      "path": "Lean4/SawinTotallyRealTowers/MartinetCorollary.lean",
+      "sha256": "a612d70d6ce0a65d697bf04fa7279debcc8ff522ad44579487ed7335cc65fae2",
+      "imports": [
+        "SawinTotallyRealTowers.SawinTotallyRealTower",
+        "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      ]
+    },
     "SawinTotallyRealTowers.MaximalRealProPGroup": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/MaximalRealProPGroup.lean",
@@ -17348,6 +17358,17 @@
   },
   "repairedModules": [],
   "requiredDeclarations": [
-    "ClassFieldTower.Sawin.sawin_totally_real_tower"
-  ]
+    "ClassFieldTower.Sawin.sawin_totally_real_tower",
+    "ClassFieldTower.Sawin.exists_totallyReal_discr_le"
+  ],
+  "sourceCommitScope": "The original 1,600 extracted modules; later additions are recorded separately in additionalModuleProvenance.",
+  "additionalModuleProvenance": {
+    "SawinTotallyRealTowers.MartinetCorollary": {
+      "kind": "new-corollary",
+      "notPresentInSourceCommit": true,
+      "derivedFromPublicCommit": "3a455e1aa9140dbbe7b7d68f508392a69c86d0f4",
+      "derivedFromModule": "SawinTotallyRealTowers.SawinTotallyRealTower",
+      "derivedFromDeclaration": "ClassFieldTower.Sawin.sawin_totally_real_tower"
+    }
+  }
 }
