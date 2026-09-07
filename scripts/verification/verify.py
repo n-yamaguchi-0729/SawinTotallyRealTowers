@@ -178,12 +178,14 @@ class Runner:
         paths = {Path(ident['prefix'])/'bin/lean',
                  Path(ident['prefix'])/'src/lean/Lean/Replay.lean'}
         directories = {Path(ident['prefix'])/'lib'}
+        toolchain_lean = (Path(ident['prefix'])/'lib'/'lean').resolve()
         for item in ident['searchPath'].split(os.pathsep):
             if item:
                 path = Path(item)
                 if not path.is_absolute(): path = self.root/path
                 path = path.resolve()
-                require(path.is_relative_to(self.root/'.lake'), 'Unexpected external LEAN_PATH')
+                require(path.is_relative_to(self.root/'.lake') or path == toolchain_lean,
+                        'Unexpected external LEAN_PATH')
                 directories.add(path)
         for directory in directories:
             if directory.is_dir():
