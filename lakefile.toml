@@ -1,0 +1,46 @@
+name = "SawinTotallyRealTowers"
+version = "1.0.0"
+defaultTargets = ["SawinTotallyRealTowers.SawinTotallyRealTower"]
+enableArtifactCache = false
+restoreAllArtifacts = false
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "6f1ef4e5dd604a435bddba4747b13970cd65d2a1"
+
+[[lean_lib]]
+name = "SawinTotallyRealTowers"
+srcDir = "Lean4"
+roots = []
+globs = ["SawinTotallyRealTowers.+"]
+
+[[lean_lib]]
+name = "ClassFieldTheory"
+srcDir = "Lean4"
+roots = []
+globs = ["ClassFieldTheory.+"]
+leanOptions = {linter.missingDocs = true}
+
+[[lean_lib]]
+name = "ProCGroups"
+srcDir = "Lean4"
+roots = []
+globs = ["ProCGroups.+"]
+leanOptions = {linter.missingDocs = true}
+
+[[lean_lib]]
+name = "GaloisCohomology"
+srcDir = "Lean4"
+roots = []
+globs = ["GaloisCohomology.+"]
+
+[[lean_lib]]
+name = "ValuedFieldTheory"
+srcDir = "Lean4"
+roots = []
+globs = ["ValuedFieldTheory.+"]

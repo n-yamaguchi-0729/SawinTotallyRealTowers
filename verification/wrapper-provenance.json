@@ -1,0 +1,9 @@
+{
+  "sourceRepository": "https://github.com/n-yamaguchi-0729/ClassFieldTheory",
+  "sourcePath": "scripts/verification",
+  "byteUnchanged": true,
+  "sha256": {
+    "Inventory.lean": "d6714ed33fa2acdffeaf71c74a3f7f43b8aa1eb1148d2a48c19aa84f91a51b10",
+    "ReplaySix.lean": "f3a80238936e070af86c4559623cddfac04c7d4acc8dd09d294776eec4a49ee4"
+  }
+}

@@ -1,0 +1,444 @@
+{
+  "purpose": "Expected exact historical partial declarations whose origin modules lie in the standalone closure. Derivation only; final compiled inventory must confirm exact equality.",
+  "baselineSHA256": "54169222df454c7cf9c63de7fb782c79851bd6f9f62f813e35ce5c4d41ed7c3e",
+  "fullBaselineCount": 18,
+  "selectedCount": 7,
+  "allowedPartialDeclarations": [
+    {
+      "name": "AlgebraicNumberTheory.Valuations.henselFactorization_henselIterate._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicNumberTheory"
+        },
+        {
+          "str": "Valuations"
+        },
+        {
+          "str": "henselFactorization_henselIterate"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration",
+      "primaryOwner": "ValuedFieldTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
+      "sourceSHA256": "64da6f6976fa7183d9a47ba927558ff037c1d0ce771e678fd34823ec1377b696",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicNumberTheory.Valuations.henselFactorization_henselIterate._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicNumberTheory"
+          },
+          {
+            "str": "Valuations"
+          },
+          {
+            "str": "henselFactorization_henselIterate"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration",
+        "primaryOwner": "ValuedFieldTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    },
+    {
+      "name": "AlgebraicNumberTheory.Valuations.henselFactorization_prefixStateSeq_of_mem_span._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicNumberTheory"
+        },
+        {
+          "str": "Valuations"
+        },
+        {
+          "str": "henselFactorization_prefixStateSeq_of_mem_span"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation",
+      "primaryOwner": "ValuedFieldTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
+      "sourceSHA256": "92423448de17438d64cc613f609dba8571cb48aeade45933521636eb61a8d25c",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicNumberTheory.Valuations.henselFactorization_prefixStateSeq_of_mem_span._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicNumberTheory"
+          },
+          {
+            "str": "Valuations"
+          },
+          {
+            "str": "henselFactorization_prefixStateSeq_of_mem_span"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation",
+        "primaryOwner": "ValuedFieldTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    },
+    {
+      "name": "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "LocalClassFieldTheory"
+        },
+        {
+          "str": "chosenNormalBasisPrincipalUnitCorrectionProduct"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct",
+      "primaryOwner": "ClassFieldTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
+      "sourceSHA256": "0c69a323a7671fa0759a596f282cb4732c671ed945d8f2622474ca940d6f7699",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "LocalClassFieldTheory"
+          },
+          {
+            "str": "chosenNormalBasisPrincipalUnitCorrectionProduct"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct",
+        "primaryOwner": "ClassFieldTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    },
+    {
+      "name": "LocalClassFieldTheory.filteredCorrectionProduct._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "LocalClassFieldTheory"
+        },
+        {
+          "str": "filteredCorrectionProduct"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence",
+      "primaryOwner": "ClassFieldTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
+      "sourceSHA256": "dd2274244f543d52fb9e71f5992034d9f9c8248f100c8d572a1817c320846f10",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "LocalClassFieldTheory.filteredCorrectionProduct._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "LocalClassFieldTheory"
+          },
+          {
+            "str": "filteredCorrectionProduct"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence",
+        "primaryOwner": "ClassFieldTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    },
+    {
+      "name": "LocalFieldTheory.principalUnitsCorrectionProduct._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "LocalFieldTheory"
+        },
+        {
+          "str": "principalUnitsCorrectionProduct"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients",
+      "primaryOwner": "ValuedFieldTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
+      "sourceSHA256": "4e7b06ad825da3f8b21349488e4f1683a78c454bb04364d791eaa097e184dddf",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "LocalFieldTheory.principalUnitsCorrectionProduct._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "LocalFieldTheory"
+          },
+          {
+            "str": "principalUnitsCorrectionProduct"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients",
+        "primaryOwner": "ValuedFieldTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    },
+    {
+      "name": "ProCGroups.Generation.wordProducts._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ProCGroups"
+        },
+        {
+          "str": "Generation"
+        },
+        {
+          "str": "wordProducts"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ProCGroups.Generation.Basic",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ProCGroups/Generation/Basic.lean",
+      "sourceSHA256": "19459344e33f669eac133c243a6393450e8fc6804e9f88ec98aaa468a06074f9",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ProCGroups.Generation.wordProducts._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ProCGroups"
+          },
+          {
+            "str": "Generation"
+          },
+          {
+            "str": "wordProducts"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.Generation.Basic",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    },
+    {
+      "name": "_private.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint.0.IsAdicComplete.contractingApproximation._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "_private"
+        },
+        {
+          "str": "ValuedFieldTheory"
+        },
+        {
+          "str": "Valuation"
+        },
+        {
+          "str": "Topology"
+        },
+        {
+          "str": "AdicContractingFixedPoint"
+        },
+        {
+          "num": 0
+        },
+        {
+          "str": "IsAdicComplete"
+        },
+        {
+          "str": "contractingApproximation"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint",
+      "primaryOwner": "ValuedFieldTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
+      "sourceSHA256": "d9738b1470ae7d228699a7ac90748002328c64dd546814f85ba85196952c5153",
+      "sourceMatchesHistoricalCommit": true,
+      "historicalFinding": {
+        "axioms": [],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": true,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "_private.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint.0.IsAdicComplete.contractingApproximation._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "_private"
+          },
+          {
+            "str": "ValuedFieldTheory"
+          },
+          {
+            "str": "Valuation"
+          },
+          {
+            "str": "Topology"
+          },
+          {
+            "str": "AdicContractingFixedPoint"
+          },
+          {
+            "num": 0
+          },
+          {
+            "str": "IsAdicComplete"
+          },
+          {
+            "str": "contractingApproximation"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint",
+        "primaryOwner": "ValuedFieldTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      }
+    }
+  ]
+}

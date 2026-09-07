@@ -1,0 +1,60 @@
+name: Verify Sawin theorem
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sawin-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      LEAN_NUM_THREADS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+      - name: Check the exact bundled source closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/verification"
+          python3 -B scripts/verification/check_source_closure.py \
+            --output "$RUNNER_TEMP/verification/source-audit.json" \
+            2>&1 | tee "$RUNNER_TEMP/verification/source-audit.log"
+      - name: Install pinned Lean and obtain only the pinned Mathlib cache
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        with:
+          auto-config: "false"
+          build: "false"
+          test: "false"
+          lint: "false"
+          use-mathlib-cache: "true"
+          use-github-cache: "false"
+      - name: Fresh build, exact target, declaration audit and official kernel replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B scripts/verification/verify.py \
+            --output "$RUNNER_TEMP/verification/checks" \
+            2>&1 | tee "$RUNNER_TEMP/verification/checks.log"
+      - name: Check whitespace
+        run: git diff-tree --check --root -r HEAD
+      - name: Preserve logs, complete inventories and receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sawin-verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/verification/
+          if-no-files-found: error
+          retention-days: 30
