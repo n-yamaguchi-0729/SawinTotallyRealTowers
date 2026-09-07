@@ -50,7 +50,7 @@ jobs:
             2>&1 | tee "$RUNNER_TEMP/verification/checks.log"
       - name: Check packaging whitespace
         # Original proof bytes are preserved and checked by source SHA256 above.
-        run: git diff-tree --check --root -r HEAD -- .github .gitignore LICENSE README.md lakefile.toml lake-manifest.json lean-toolchain scripts tests verification
+        run: git diff-tree --check --root -r HEAD -- .gitattributes .github .gitignore LICENSE README.md lakefile.toml lake-manifest.json lean-toolchain scripts tests verification
       - name: Preserve logs, complete inventories and receipts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
