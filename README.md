@@ -33,9 +33,9 @@ This repository bundles the **1,600 original local modules** needed for Sawin, p
 
 ## Verification
 
-The published [FC proof](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/blob/3a455e1aa9140dbbe7b7d68f508392a69c86d0f4/Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean#L31) remains pinned to the original commit. The new Martinet corollary has received static review only; its build and proof checks are pending.
+The published [FC proof](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/blob/3a455e1aa9140dbbe7b7d68f508392a69c86d0f4/Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean#L31) remains pinned to the original commit. The new Martinet corollary and its exact Lean Eval type passed focused Lean checks. On 2026-09-08, a submission copy with rewritten import paths passed a fresh build of all 1,602 solver files, the official Comparator and NanoDa checks, and official Lean 4.33 kernel replay. These are local verification results; Lean Eval submission is pending.
 
-[CI](.github/workflows/lean.yml) builds from source, checks both exact statements, audits every bundled declaration—including private and generated declarations—against `propext`, `Classical.choice`, and `Quot.sound`, and replays the imported closure through the official Lean kernel. Logs and receipts are preserved on success and failure. Seven unchanged historical generated partial declarations are inventoried explicitly; official replay skips partial/unsafe constants. Both entry theorems must be safe. No separate NanoDa check is run.
+[CI](.github/workflows/lean.yml) builds from source, checks both exact statements, audits every bundled declaration—including private and generated declarations—against `propext`, `Classical.choice`, and `Quot.sound`, and replays the imported closure through the official Lean kernel. Logs and receipts are preserved on success and failure. Seven unchanged historical generated partial declarations are inventoried explicitly; official replay skips partial/unsafe constants. Both entry theorems must be safe. This repository’s CI does not run NanoDa separately.
 
 Run the same checks from a clean committed checkout after obtaining the Mathlib cache:
 
