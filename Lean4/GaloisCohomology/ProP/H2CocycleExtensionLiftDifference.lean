@@ -114,4 +114,3 @@ theorem liftDifference_restrict_eq_one_iff (N : Subgroup H)
 end
 
 end ClassFieldTower.ProP.H2CocycleExtension
-

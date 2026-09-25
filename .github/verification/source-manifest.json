@@ -9061,7 +9061,7 @@
     "GaloisCohomology.ProP.H1NormalSubgroupDescent": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H1NormalSubgroupDescent.lean",
-      "sha256": "78ffcfa6d0fdf7eb39567dddf128396b35ff2d186accd6fe47b7b76c757ca785",
+      "sha256": "755581ea12bf2bf136b5b57308f3bac09a7f3689ab0131197ebcdee6c413cc86",
       "imports": [
         "Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree",
         "Mathlib.RepresentationTheory.Invariants",
@@ -9096,7 +9096,7 @@
     "GaloisCohomology.ProP.H2CocycleExtensionLiftDifference": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H2CocycleExtensionLiftDifference.lean",
-      "sha256": "1478823247eae4ad8914cc6e173f507f0fae0b71b6041766b2ab82110c6406d5",
+      "sha256": "dfb9babaf8b122b1e6cbec5ba64be0e9705695333059c205b4766dd87cc832df",
       "imports": [
         "GaloisCohomology.ProP.H2CocycleExtension",
         "GaloisCohomology.ProP.QuotientRestriction"

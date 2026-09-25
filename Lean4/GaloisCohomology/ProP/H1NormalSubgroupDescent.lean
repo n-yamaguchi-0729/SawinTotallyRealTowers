@@ -114,4 +114,3 @@ theorem h1_subsingleton_of_normalSubgroup
 end
 
 end ClassFieldTower.Cohomology
-
