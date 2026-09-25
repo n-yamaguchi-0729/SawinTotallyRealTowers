@@ -32,6 +32,11 @@ Run the same checks from a clean committed checkout after obtaining the Mathlib 
 python3 -B scripts/verification/verify.py --output /tmp/sawin-verification
 ```
 
-References: [Sawin](https://arxiv.org/abs/2605.20579) and the [Remarks paper](https://arxiv.org/abs/2605.20695). Author: Naganori Yamaguchi. Developed with assistance from OpenAI Codex as part of the [Yamaguchi Lean 4 Library](https://n-yamaguchi-0729.github.io/YamaLean4Lib_pages/).
+References: [Sawin](https://arxiv.org/abs/2605.20579) and the [Remarks paper](https://arxiv.org/abs/2605.20695). 
+
+## Authorship and AI assistance
+
+Astra GPT-6 Codex assisted with Lean development, statement review, and preparation of this repository.
+Naganori Yamaguchi is the human author and responsible maintainer.
 
 Apache License 2.0. See [LICENSE](LICENSE).
