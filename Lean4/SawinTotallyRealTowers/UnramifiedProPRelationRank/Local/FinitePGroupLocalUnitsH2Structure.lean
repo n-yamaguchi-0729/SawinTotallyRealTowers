@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import GaloisCohomology.Kummer.UnitsCohomologyCongr
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2Cyclic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedCommonExtension
@@ -28,7 +34,7 @@ Galois p-extension.
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
-open ClassFieldTower.Cohomology LocalClassFieldTheory LocalFieldTheory
+open CategoryTheory ClassFieldTower.Cohomology LocalClassFieldTheory LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 open scoped ValuativeRel
 
@@ -43,6 +49,21 @@ private theorem standardUnramified_isCyclic (d : ℕ) (hd : 0 < d) :
   have : Module.Finite 𝒪[K] 𝒪[M] := localCompleteDVF_integerRing_moduleFinite K M
   exact isCyclic_galoisGroup_of_unramifiedValuation K M
 
+private theorem cyclic_generator_order
+    (M : IntermediateField K (SeparableClosure K))
+    [FiniteDimensional K M] [IsGalois K M] [IsCyclic Gal(M/K)] :
+    ∃ c : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2,
+      addOrderOf c = Module.finrank K M := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := Gal(M/K))
+  let e : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2 ≃+ Additive Gal(M/K) :=
+    finiteCyclicLocalUnitsH2AddEquivGalois K M g hg
+  let c : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2 := e.symm (Additive.ofMul g)
+  refine ⟨c, ?_⟩
+  exact (e.symm.addOrderOf_eq (Additive.ofMul g)).trans
+    ((addOrderOf_ofMul_eq_orderOf g).trans
+      ((orderOf_eq_card_of_forall_mem_zpowers hg).trans
+        (IsGalois.card_aut_eq_finrank K M)))
+set_option maxHeartbeats 1600000 in
 private theorem intermediateFieldUnitsH2_isAddCyclic
     (F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K F] [IsGalois K F]
@@ -53,6 +74,13 @@ private theorem intermediateFieldUnitsH2_isAddCyclic
   have : IsNonarchimedeanLocalField F := finiteExtensionSpectralIsNonarchimedeanLocalField K F
   have : Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation F) :=
     finiteExtensionSpectralValuation_hasExtension K F
+  obtain ⟨hFinite, hcard⟩ := finitePGroupLocalUnitsH2_finite_natCard_le_finrank K p F hP
+  have : Finite (groupCohomology (Rep.ofAlgebraAutOnUnits K F) 2) := hFinite
+  let M : IntermediateField K (SeparableClosure K) :=
+    localFiniteUnramifiedField K (Module.finrank K F) Module.finrank_pos
+  have : IsCyclic Gal(M/K) :=
+    standardUnramified_isCyclic K (Module.finrank K F) Module.finrank_pos
+  obtain ⟨c, hcOrder⟩ := cyclic_generator_order K M
   obtain ⟨he, hsup⟩ := relativeUnramifiedFixedField_ramification_eq_sup_sameDegree K F
   let m : ℕ := (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K]
   let H := finiteAbstractFieldOfGaloisIntermediateField K F
@@ -73,20 +101,35 @@ private theorem intermediateFieldUnitsH2_isAddCyclic
   have : Module.Finite 𝒪[F] 𝒪[N] := localCompleteDVF_integerRing_moduleFinite F N
   have : IsUnramifiedValuedExtension F N :=
     relativeUnramifiedFixedField_actual_isUnramifiedValuedExtension K F m he
-  let M : IntermediateField K (SeparableClosure K) :=
-    localFiniteUnramifiedField K (Module.finrank K F) Module.finrank_pos
   have hMN : M ≤ N := by
     change M ≤ relativeUnramifiedFixedField K H m he
     rw [hsup]
     exact le_sup_right
   let : Algebra M N := (IntermediateField.inclusion hMN).toRingHom.toAlgebra
   have : IsScalarTower K M N := IsScalarTower.of_algebraMap_eq (fun _ ↦ rfl)
-  have : IsCyclic Gal(M/K) := standardUnramified_isCyclic K (Module.finrank K F) Module.finrank_pos
   have hd : Module.finrank F N ∣ (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K] := by
     rw [relativeUnramifiedFixedField_actual_finrank K F m he]
   have hdegree : Module.finrank K F ≤ Module.finrank K M :=
     (localFiniteUnramifiedField_finrank K (Module.finrank K F) Module.finrank_pos).symm.le
-  exact finitePGroupLocalUnitsH2_isAddCyclic_of_unramified_tower K F M N p hP hd hdegree
+  have hcZero : (finiteGaloisTowerUnitsH2Restriction K F N).hom
+      ((finiteGaloisTowerUnitsH2Inflation K M N).hom c) = 0 :=
+    congrArg (fun f : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2 ⟶
+      groupCohomology (Rep.ofAlgebraAutOnUnits F N) 2 ↦ f.hom c)
+      (finiteCyclicTowerUnitsH2_inflation_restriction_eq_zero K F M N hd)
+  obtain ⟨b, hb⟩ := finiteGaloisTowerUnitsH2Restriction_ker_le_inflation_range K F N hcZero
+  have hbOrder : addOrderOf b = addOrderOf c := by
+    calc
+      addOrderOf b = addOrderOf ((finiteGaloisTowerUnitsH2Inflation K F N).hom b) :=
+        (addOrderOf_injective (finiteGaloisTowerUnitsH2Inflation K F N).hom.toAddMonoidHom
+          (finiteGaloisTowerUnitsH2Inflation_injective K F N) b).symm
+      _ = addOrderOf ((finiteGaloisTowerUnitsH2Inflation K M N).hom c) :=
+        congrArg addOrderOf hb
+      _ = addOrderOf c :=
+        addOrderOf_injective (finiteGaloisTowerUnitsH2Inflation K M N).hom.toAddMonoidHom
+          (finiteGaloisTowerUnitsH2Inflation_injective K M N) c
+  apply isAddCyclic_of_card_le_addOrderOf b
+  rw [hbOrder, hcOrder]
+  exact hcard.trans hdegree
 
 /-- Unit-coefficient H² of every finite local Galois p-extension is cyclic. -/
 theorem finitePGroupLocalUnitsH2_isAddCyclic

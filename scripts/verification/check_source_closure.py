@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check the exact byte-preserved local import closure; this is not a proof checker."""
+"""Check the SHA-pinned local import closure; this is not a proof checker."""
 import argparse
 from collections import Counter
 import hashlib
@@ -11,16 +11,17 @@ import tomllib
 ENTRY = 'SawinTotallyRealTowers.SawinTotallyRealTower'
 MAIN = 'ClassFieldTower.Sawin.sawin_totally_real_tower'
 MARTINET_ENTRY = 'SawinTotallyRealTowers.MartinetCorollary'
+ALL_ENTRY = 'SawinTotallyRealTowers.All'
 MARTINET_MAIN = 'ClassFieldTower.Sawin.exists_totallyReal_discr_le'
-ROOTS = [ENTRY, MARTINET_ENTRY]
+ROOTS = [ALL_ENTRY, MARTINET_ENTRY]
 REQUIRED_DECLARATIONS = [
     {'name': MAIN, 'originModule': ENTRY, 'kind': 'theorem'},
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
 ]
-OWNERS = {'ClassFieldTheory': 653, 'GaloisCohomology': 143, 'ProCGroups': 318,
-          'SawinTotallyRealTowers': 183, 'ValuedFieldTheory': 304}
-MATHLIB = '6f1ef4e5dd604a435bddba4747b13970cd65d2a1'
-TOOLCHAIN = 'leanprover/lean4:v4.33.0'
+OWNERS = {'ClassFieldTheory': 690, 'GaloisCohomology': 154, 'ProCGroups': 321,
+          'SawinTotallyRealTowers': 269, 'ValuedFieldTheory': 306}
+MATHLIB = '5ed2965256430c3649e86755f9576b54eca72435'
+TOOLCHAIN = 'leanprover/lean4:v4.34.0'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
 
 def require(ok, message):
@@ -84,7 +85,6 @@ def audit_rows(root, manifest):
         require(path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(root),
                 'Missing/unsafe source path: ' + expected)
         require(digest(path) == row['sha256'], 'Source SHA changed: ' + expected)
-        require(not module.endswith('.All') and module != 'All', 'Aggregate forbidden: ' + module)
         text = path.read_text(); cleaned = mask_comments_strings(text)
         require(not re.search(r'\b(?:sorry|admit|native_decide)\b', cleaned),
                 'Forbidden placeholder/compiler trust tactic: ' + module)
@@ -119,7 +119,7 @@ def audit(root, manifest):
     require(manifest['ownerCounts'] == OWNERS and
             manifest['moduleCount'] == len(manifest['moduleRows']) == sum(OWNERS.values()),
             'Frozen bundle owner/count policy changed')
-    physical = {str(p.relative_to(root)) for p in (root / 'Lean4').rglob('*.lean')}
+    physical = {p.relative_to(root).as_posix() for p in (root / 'Lean4').rglob('*.lean')}
     expected = {r['path'] for r in manifest['moduleRows'].values()}
     require(physical == expected, 'Physical source set differs from the manifest')
     config = tomllib.loads((root / 'lakefile.toml').read_text())

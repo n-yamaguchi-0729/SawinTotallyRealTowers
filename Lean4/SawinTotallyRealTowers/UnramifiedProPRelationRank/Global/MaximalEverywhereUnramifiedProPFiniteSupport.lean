@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 
@@ -39,8 +45,7 @@ theorem finiteDimensional_le_iSup_exists_finset
     (f : I → IntermediateField F E)
     (hL : L ≤ ⨆ i, f i) :
     ∃ s : Finset I, L ≤ ⨆ i ∈ s, f i := by
-  exact CompleteLattice.IsCompactElement.exists_finset_of_le_iSup
-    (IntermediateField F E)
+  exact IsCompactElement.exists_finset_of_le_iSup
     (finiteDimensional_intermediateField_isCompactElement L) f hL
 
 /-- A finite-dimensional intermediate field below the maximal compositum is

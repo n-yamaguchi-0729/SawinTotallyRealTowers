@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.FoxDifferential.Common.FoxBoundary
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
 import Mathlib.Tactic.NoncommRing
@@ -99,7 +105,7 @@ theorem foxAlgebraicStageDerivative_fundamental_formula
             (foxAlgebraicStageTargetQuotient (X := X) N)
             (QuotientGroup.mk' N (FreeGroup.of i)) - 1) := by
   induction w using FreeGroup.induction_on with
-  | C1 =>
+  | one =>
       simp only [QuotientGroup.mk'_apply, MonoidAlgebra.of_apply, MonoidAlgebra.one_def,
   sub_self, foxAlgebraicStageDerivative, foxAlgebraicStageDerivativeVector, map_one,
       FoxAlgebraicStageSemidirect.one_left,

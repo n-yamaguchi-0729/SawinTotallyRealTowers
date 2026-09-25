@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.RingTheory.DedekindDomain.Different
 import Mathlib.RingTheory.DedekindDomain.Factorization
 
@@ -32,7 +38,7 @@ def heightOnePrimeBelow (w : IsDedekindDomain.HeightOneSpectrum B) :
   isPrime := inferInstance
   ne_bot := by
     have : Algebra.IsIntegral A B := Algebra.IsIntegral.of_finite A B
-    exact mt Ideal.eq_bot_of_comap_eq_bot w.ne_bot
+    exact mt Ideal.eq_bot_of_under_eq_bot w.ne_bot
 
 variable (A B)
 

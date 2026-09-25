@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.GroupTheory.Schreier
 import ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Generators
 import ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.NielsenSchreierCompat
@@ -96,13 +102,14 @@ noncomputable def schreierPrefixTree {X : Type u} [DecidableEq X]
       FreeGroupBasis.actionGroupoidIsFree (FreeGroup.inverseBasis X)
     WideSubquiver
       (Quiver.Symmetrify <| IsFreeGroupoid.Generators (ActionCategory (FreeGroup X) T)) := by
+  letI := schreierTransversalRightCosetAction (X := X) hT
   exact fun a b =>
     { e |
-        ∃ hw : FreeGroup.toWord (Subtype.val (show T from Sigma.snd b)) ≠ [],
-          let tb : T := Sigma.snd b
+        ∃ hw : FreeGroup.toWord ((b.back : T) : FreeGroup X) ≠ [],
+          let tb : T := b.back
           let pb : T := ⟨FreeGroup.prefixParent (tb : FreeGroup X),
             prefixParent_mem_of_mem (X := X) hT tb.property⟩
-          (Sigma.snd a : T) = pb ∧
+          a.back = pb ∧
             match e with
             | Sum.inl g => (FreeGroup.toWord (tb : FreeGroup X)).getLast hw = (g.1, true)
             | Sum.inr g => (FreeGroup.toWord (tb : FreeGroup X)).getLast hw = (g.1, false) }
@@ -124,12 +131,11 @@ theorem mem_schreierPrefixTree_inl_iff {X : Type u} [DecidableEq X]
             (Quiver.Symmetrify (IsFreeGroupoid.Generators (ActionCategory (FreeGroup X) T)))
             inferInstance a b) ∈
           schreierPrefixTree (X := X) hT a b ↔
-        ∃ hw : FreeGroup.toWord ((((show ActionCategory (FreeGroup X) T from b).back : T)) :
-            FreeGroup X) ≠ [],
-          let tb : T := (show ActionCategory (FreeGroup X) T from b).back
+        ∃ hw : FreeGroup.toWord ((b.back : T) : FreeGroup X) ≠ [],
+          let tb : T := b.back
           let pb : T := ⟨FreeGroup.prefixParent (tb : FreeGroup X),
             prefixParent_mem_of_mem (X := X) hT tb.property⟩
-          (show ActionCategory (FreeGroup X) T from a).back = pb ∧
+          a.back = pb ∧
             (FreeGroup.toWord (tb : FreeGroup X)).getLast hw = (g.1, true) := by
   intro a b g
   rfl
@@ -151,12 +157,11 @@ theorem mem_schreierPrefixTree_inr_iff {X : Type u} [DecidableEq X]
             (Quiver.Symmetrify (IsFreeGroupoid.Generators (ActionCategory (FreeGroup X) T)))
             inferInstance a b) ∈
           schreierPrefixTree (X := X) hT a b ↔
-        ∃ hw : FreeGroup.toWord ((((show ActionCategory (FreeGroup X) T from b).back : T)) :
-            FreeGroup X) ≠ [],
-          let tb : T := (show ActionCategory (FreeGroup X) T from b).back
+        ∃ hw : FreeGroup.toWord ((b.back : T) : FreeGroup X) ≠ [],
+          let tb : T := b.back
           let pb : T := ⟨FreeGroup.prefixParent (tb : FreeGroup X),
             prefixParent_mem_of_mem (X := X) hT tb.property⟩
-          (show ActionCategory (FreeGroup X) T from a).back = pb ∧
+          a.back = pb ∧
             (FreeGroup.toWord (tb : FreeGroup X)).getLast hw = (g.1, false) := by
   intro a b g
   rfl
@@ -278,23 +283,17 @@ lemma schreierPrefixTree_root_or_arrow {X : Type u} [DecidableEq X]
       b = ((((⟨(1 : FreeGroup X), hT.2.1⟩ : T) : ActionCategory (FreeGroup X) T) :
         schreierPrefixTree (X := X) hT)) ∨
       ∃ a, Nonempty (a ⟶ b) := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro b
-  let tb : T := Sigma.snd b
+  let tb : T := b.back
   by_cases hb1 : (tb : FreeGroup X) = 1
   · left
-    cases b with
-    | mk fst snd =>
-        cases fst
-        cases snd with
-        | mk val hval =>
-            have hb1' : val = 1 := by
-              simpa [tb] using hb1
-            cases hb1'
-            rfl
+    apply actionCategory_eq_of_back_eq
+    exact Subtype.ext hb1
   · right
     let pb : T := ⟨FreeGroup.prefixParent (tb : FreeGroup X),
       prefixParent_mem_of_mem (X := X) hT tb.property⟩
-    refine ⟨⟨(), pb⟩, ?_⟩
+    refine ⟨((pb : T) : ActionCategory (FreeGroup X) T), ?_⟩
     rcases schreierPrefixTree_parent_edge_of_ne_one (X := X) hT tb hb1 with ⟨e, he⟩
     exact ⟨⟨e, he⟩⟩
 
@@ -306,6 +305,7 @@ lemma schreierPrefixTree_unique_arrow {X : Type u} [DecidableEq X]
     letI : IsFreeGroupoid (ActionCategory (FreeGroup X) T) :=
       FreeGroupBasis.actionGroupoidIsFree (FreeGroup.inverseBasis X)
     ∀ ⦃a b c : schreierPrefixTree (X := X) hT⦄ (e : a ⟶ c) (f : b ⟶ c), a = b ∧ e ≍ f := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro a b c e f
   rcases e with ⟨e0, hme⟩
   rcases f with ⟨f0, hmf⟩
@@ -313,16 +313,15 @@ lemma schreierPrefixTree_unique_arrow {X : Type u} [DecidableEq X]
   have hmf0 := hmf
   rcases hme with ⟨hwe, hsrca, hlast_e⟩
   rcases hmf with ⟨hwf, hsrcb, hlast_f⟩
-  let tc : T := Sigma.snd c
+  let tc : T := c.back
   let pc : T := ⟨FreeGroup.prefixParent (tc : FreeGroup X),
     prefixParent_mem_of_mem (X := X) hT tc.property⟩
-  have ha_back : (Sigma.snd a : T) = pc := by
+  have ha_back : a.back = pc := by
     simpa [tc, pc] using hsrca
-  have hb_back : (Sigma.snd b : T) = pc := by
+  have hb_back : b.back = pc := by
     simpa [tc, pc] using hsrcb
   have hab : a = b :=
-    Sigma.ext (Unit.ext (Sigma.fst a) (Sigma.fst b))
-      (heq_of_eq (ha_back.trans hb_back.symm))
+    actionCategory_eq_of_back_eq (ha_back.trans hb_back.symm)
   refine ⟨hab, ?_⟩
   subst hab
   have hUnder : e0 = f0 := by
@@ -385,19 +384,18 @@ lemma schreierPrefixTree_height_lt {X : Type u} [DecidableEq X]
     letI : IsFreeGroupoid (ActionCategory (FreeGroup X) T) :=
       FreeGroupBasis.actionGroupoidIsFree (FreeGroup.inverseBasis X)
     ∀ ⦃a b : schreierPrefixTree (X := X) hT⦄ (_ : a ⟶ b),
-      (FreeGroup.toWord (((show ActionCategory (FreeGroup X) T from a).back : T) :
-        FreeGroup X)).length <
-      (FreeGroup.toWord (((show ActionCategory (FreeGroup X) T from b).back : T) :
-        FreeGroup X)).length := by
+      (FreeGroup.toWord ((a.back : T) : FreeGroup X)).length <
+      (FreeGroup.toWord ((b.back : T) : FreeGroup X)).length := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro a b e
   rcases e with ⟨_, hmem⟩
   rcases hmem with ⟨hw, hsrc, _⟩
-  let tb : T := Sigma.snd b
+  let tb : T := b.back
   have htb1 : (tb : FreeGroup X) ≠ 1 := by
     exact mt (FreeGroup.toWord_eq_nil_iff.mpr) hw
   have hlt :=
     Internal.FreeGroupWord.FreeGroup.toWord_length_prefixParent_lt (t := (tb : FreeGroup X)) htb1
-  have hsrc' : (Sigma.snd a : T) =
+  have hsrc' : a.back =
       ⟨FreeGroup.prefixParent (tb : FreeGroup X),
         prefixParent_mem_of_mem (X := X) hT tb.property⟩ := by
     simpa [tb] using hsrc
@@ -411,10 +409,11 @@ noncomputable instance schreierPrefixTree_arborescence {X : Type u} [DecidableEq
     letI : IsFreeGroupoid (ActionCategory (FreeGroup X) T) :=
       FreeGroupBasis.actionGroupoidIsFree (FreeGroup.inverseBasis X)
     Quiver.Arborescence (schreierPrefixTree (X := X) hT) := by
+  letI := schreierTransversalRightCosetAction (X := X) hT
   refine Quiver.arborescenceMk (V := schreierPrefixTree (X := X) hT)
-    ⟨(), ⟨(1 : FreeGroup X), hT.2.1⟩⟩
+    ((⟨(1 : FreeGroup X), hT.2.1⟩ : T) : ActionCategory (FreeGroup X) T)
     (fun a =>
-      (FreeGroup.toWord (Subtype.val (show T from Sigma.snd a))).length)
+      (FreeGroup.toWord ((a.back : T) : FreeGroup X)).length)
     ?_ ?_ ?_
   · intro a b e
     exact schreierPrefixTree_height_lt (X := X) hT e
@@ -516,42 +515,39 @@ noncomputable def schreierLabelFunctor {X : Type u} [DecidableEq X]
     (hT : IsRightSchreierTransversal (X := X) L T) :
     letI := schreierTransversalRightCosetAction (X := X) hT
     ActionCategory (FreeGroup X) T ⥤ CategoryTheory.SingleObj L := by
+  letI := schreierTransversalRightCosetAction (X := X) hT
   refine
     { obj := fun _ => ()
       map := fun {a b} p => ?_
       map_id := ?_
       map_comp := ?_ }
   · let g : FreeGroup X := p.1
-    refine ⟨Subtype.val (show T from Sigma.snd b) * g *
-      (Subtype.val (show T from Sigma.snd a))⁻¹, ?_⟩
+    refine ⟨Subtype.val b.back * g * (Subtype.val a.back)⁻¹, ?_⟩
     have hp : schreierRepresentative (X := X) hT
-        ((Subtype.val (show T from Sigma.snd a)) * g⁻¹) = (Sigma.snd b : T) := by
+        (Subtype.val a.back * g⁻¹) = b.back := by
       simpa only [CategoryTheory.ActionCategory.back] using
         (schreierTransversalRightCosetAction_smul (X := X) hT g
-          (Sigma.snd a : T)).symm.trans p.2
-    have hmem : (Subtype.val (show T from Sigma.snd a)) * g⁻¹ *
-        (Subtype.val (show T from Sigma.snd b))⁻¹ ∈ L := by
-      have hmem0 : (Subtype.val (show T from Sigma.snd a)) * g⁻¹ *
+          a.back).symm.trans p.2
+    have hmem : Subtype.val a.back * g⁻¹ * (Subtype.val b.back)⁻¹ ∈ L := by
+      have hmem0 : Subtype.val a.back * g⁻¹ *
           (((schreierRepresentative (X := X) hT
-            ((Subtype.val (show T from Sigma.snd a)) * g⁻¹) : T) : FreeGroup X))⁻¹ ∈ L := by
+            (Subtype.val a.back * g⁻¹) : T) : FreeGroup X))⁻¹ ∈ L := by
         simpa [schreierRepresentative] using
-          hT.1.mul_inv_toRightFun_mem ((Subtype.val (show T from Sigma.snd a)) * g⁻¹)
+          hT.1.mul_inv_toRightFun_mem (Subtype.val a.back * g⁻¹)
       rw [hp] at hmem0
       exact hmem0
     simpa [mul_assoc] using L.inv_mem hmem
   · intro a
     apply Subtype.ext
-    change ((Subtype.val (show T from Sigma.snd a)) * (1 : FreeGroup X) *
-        (Subtype.val (show T from Sigma.snd a))⁻¹) = 1
+    change (Subtype.val a.back * (1 : FreeGroup X) * (Subtype.val a.back)⁻¹) = 1
     simp only [mul_one, mul_inv_cancel]
   · intro a b c p q
     let gp : FreeGroup X := p.1
     let gq : FreeGroup X := q.1
     apply Subtype.ext
-    change ((Subtype.val (show T from Sigma.snd c)) * (gq * gp) *
-        (Subtype.val (show T from Sigma.snd a))⁻¹) =
-        (((Subtype.val (show T from Sigma.snd c)) * gq * (Subtype.val (show T from Sigma.snd b))⁻¹) *
-          ((Subtype.val (show T from Sigma.snd b)) * gp * (Subtype.val (show T from Sigma.snd a))⁻¹))
+    change (Subtype.val c.back * (gq * gp) * (Subtype.val a.back)⁻¹) =
+        ((Subtype.val c.back * gq * (Subtype.val b.back)⁻¹) *
+          (Subtype.val b.back * gp * (Subtype.val a.back)⁻¹))
     simp only [mul_assoc, inv_mul_cancel_left]
 
 /-- The Schreier label functor respects the corresponding map of generators. -/
@@ -564,17 +560,17 @@ noncomputable def schreierLabelFunctor {X : Type u} [DecidableEq X]
     ∀ {a b : ActionCategory (FreeGroup X) T}
       (e : ((show IsFreeGroupoid.Generators (ActionCategory (FreeGroup X) T) from a) ⟶ b)),
       ((schreierLabelFunctor (X := X) hT).map (IsFreeGroupoid.of e) : L) =
-        (schreierGenerator (X := X) hT (((a.back : T) : FreeGroup X)) e.1)⁻¹ := by
+        (schreierGenerator (X := X) hT ((a.back : T) : FreeGroup X) e.1)⁻¹ := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro a b e
   have hb : schreierRepresentative (X := X) hT
-      ((Subtype.val (show T from Sigma.snd a)) * FreeGroup.of e.1) = (Sigma.snd b : T) := by
+      (Subtype.val a.back * FreeGroup.of e.1) = b.back := by
     simpa only [FreeGroup.inverseBasis_apply, inv_inv, CategoryTheory.ActionCategory.back] using
       (schreierTransversalRightCosetAction_smul (X := X) hT
-        (FreeGroup.inverseBasis X e.1) (Sigma.snd a : T)).symm.trans e.property
+        (FreeGroup.inverseBasis X e.1) a.back).symm.trans e.property
   apply Subtype.ext
-  change ((Subtype.val (show T from Sigma.snd b)) * (FreeGroup.of e.1)⁻¹ *
-      (Subtype.val (show T from Sigma.snd a))⁻¹) =
-      ((((schreierGenerator (X := X) hT (Subtype.val (show T from Sigma.snd a)) e.1 : L) :
+  change (Subtype.val b.back * (FreeGroup.of e.1)⁻¹ * (Subtype.val a.back)⁻¹) =
+      ((((schreierGenerator (X := X) hT (Subtype.val a.back) e.1 : L) :
         FreeGroup X))⁻¹)
   simp only [mul_assoc, schreierGenerator, hb, mul_inv_rev, inv_inv]
 
@@ -589,12 +585,13 @@ lemma schreierLabelFunctor_map_of_eq_one_of_mem_tree {X : Type u} [DecidableEq X
       (e : ((show IsFreeGroupoid.Generators (ActionCategory (FreeGroup X) T) from a) ⟶ b)),
       e ∈ Quiver.wideSubquiverSymmetrify (schreierPrefixTree (X := X) hT) a b →
         (schreierLabelFunctor (X := X) hT).map (IsFreeGroupoid.of e) = (1 : L) := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro a b e he
   refine (schreierLabelFunctor_map_of (X := X) hT e).trans ?_
   rcases he with htree | htree
   · rcases htree with ⟨hw, hsrc, hlast⟩
-    let tb : T := Sigma.snd b
-    have hsrc' : (Sigma.snd a : T) = ⟨FreeGroup.prefixParent (tb : FreeGroup X),
+    let tb : T := b.back
+    have hsrc' : a.back = ⟨FreeGroup.prefixParent (tb : FreeGroup X),
         prefixParent_mem_of_mem (X := X) hT tb.property⟩ := by
       simpa [tb] using hsrc
     have hgen :
@@ -603,11 +600,11 @@ lemma schreierLabelFunctor_map_of_eq_one_of_mem_tree {X : Type u} [DecidableEq X
       exact schreierGenerator_eq_one_of_prefixParent_last_pos (X := X) hT
         (t := (tb : FreeGroup X)) tb.property hw hlast
     have hgen' :
-        schreierGenerator (X := X) hT (Subtype.val (show T from Sigma.snd a)) e.1 = (1 : L) := by
+        schreierGenerator (X := X) hT (Subtype.val a.back) e.1 = (1 : L) := by
       simpa [hsrc'] using hgen
     exact inv_eq_one.mpr hgen'
   · rcases htree with ⟨hw, hsrc, hlast⟩
-    let ta : T := Sigma.snd a
+    let ta : T := a.back
     have hgen : schreierGenerator (X := X) hT (ta : FreeGroup X) e.1 = (1 : L) := by
       exact schreierGenerator_eq_one_of_cancels (X := X) hT
         (t := (ta : FreeGroup X)) ta.property hw hlast
@@ -626,14 +623,15 @@ lemma schreierGenerator_eq_one_implies_mem_prefixTree {X : Type u} [DecidableEq 
           a) ⟶ b),
       schreierGenerator (X := X) hT (a.back : FreeGroup X) e.1 = 1 →
         e ∈ Quiver.wideSubquiverSymmetrify (schreierPrefixTree (X := X) hT) a b := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro a b e hgen
-  let ta : T := Sigma.snd a
+  let ta : T := a.back
   have hrep : schreierRepresentative (X := X) hT
-      ((((ta : T) : FreeGroup X)) * FreeGroup.of e.1) = (Sigma.snd b : T) := by
+      ((((ta : T) : FreeGroup X)) * FreeGroup.of e.1) = b.back := by
     simpa only [FreeGroup.inverseBasis_apply, inv_inv, ta,
       CategoryTheory.ActionCategory.back] using
       (schreierTransversalRightCosetAction_smul (X := X) hT
-        (FreeGroup.inverseBasis X e.1) (Sigma.snd a : T)).symm.trans e.property
+        (FreeGroup.inverseBasis X e.1) a.back).symm.trans e.property
   have hraw :
       (((schreierRepresentative (X := X) hT
           ((((ta : T) : FreeGroup X)) * FreeGroup.of e.1) : T) : FreeGroup X)) =
@@ -643,10 +641,10 @@ lemma schreierGenerator_eq_one_implies_mem_prefixTree {X : Type u} [DecidableEq 
   by_cases hcancel : ∃ hw : FreeGroup.toWord ((ta : T) : FreeGroup X) ≠ [],
       (FreeGroup.toWord ((ta : T) : FreeGroup X)).getLast hw = (e.1, false)
   · rcases hcancel with ⟨hw, hlast⟩
-    have hb : Subtype.val (show T from Sigma.snd b) =
+    have hb : Subtype.val b.back =
         FreeGroup.prefixParent ((ta : T) : FreeGroup X) := by
       calc
-        (Subtype.val (show T from Sigma.snd b))
+        Subtype.val b.back
             = (((schreierRepresentative (X := X) hT
                 ((((ta : T) : FreeGroup X)) * FreeGroup.of e.1) : T) : FreeGroup X)) := by
                   exact congrArg Subtype.val hrep.symm
@@ -664,21 +662,21 @@ lemma schreierGenerator_eq_one_implies_mem_prefixTree {X : Type u} [DecidableEq 
         FreeGroup.toWord ((ta : T) : FreeGroup X) ++ [(e.1, true)] :=
       Internal.FreeGroupWord.FreeGroup.toWord_mul_of_of_not_cancels
         ((ta : T) : FreeGroup X) e.1 hcancel
-    have hb : (Subtype.val (show T from Sigma.snd b)) = ((ta : T) : FreeGroup X) * FreeGroup.of e.1 := by
+    have hb : Subtype.val b.back = ((ta : T) : FreeGroup X) * FreeGroup.of e.1 := by
       calc
-        (Subtype.val (show T from Sigma.snd b))
+        Subtype.val b.back
             = (((schreierRepresentative (X := X) hT
                 ((((ta : T) : FreeGroup X)) * FreeGroup.of e.1) : T) : FreeGroup X)) := by
                   exact congrArg Subtype.val hrep.symm
         _ = ((ta : T) : FreeGroup X) * FreeGroup.of e.1 := hraw
-    have hbw : FreeGroup.toWord (Subtype.val (show T from Sigma.snd b)) =
+    have hbw : FreeGroup.toWord (Subtype.val b.back) =
         FreeGroup.toWord ((ta : T) : FreeGroup X) ++ [(e.1, true)] := by
       simpa [hb] using hword
-    have hbw_ne : FreeGroup.toWord (Subtype.val (show T from Sigma.snd b)) ≠ [] := by
+    have hbw_ne : FreeGroup.toWord (Subtype.val b.back) ≠ [] := by
       rw [hbw]
       simp only [ne_eq, List.append_eq_nil_iff, FreeGroup.toWord_eq_nil_iff,
   List.cons_ne_self, and_false, not_false_eq_true]
-    have hprefix : FreeGroup.prefixParent (Subtype.val (show T from Sigma.snd b)) =
+    have hprefix : FreeGroup.prefixParent (Subtype.val b.back) =
         ((ta : T) : FreeGroup X) := by
       apply FreeGroup.toWord_injective
       rw [Internal.FreeGroupWord.FreeGroup.toWord_prefixParent, hbw]
@@ -709,6 +707,7 @@ theorem schreierGenerator_eq_one_iff_mem_prefixTree {X : Type u} [DecidableEq X]
           a) ⟶ b},
       schreierGenerator (X := X) hT (a.back : FreeGroup X) e.1 = 1 ↔
         e ∈ Quiver.wideSubquiverSymmetrify (schreierPrefixTree (X := X) hT) a b := by
+  let _ := schreierTransversalRightCosetAction (X := X) hT
   intro a b e
   constructor
   · exact schreierGenerator_eq_one_implies_mem_prefixTree (X := X) hT e

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 import Mathlib.Topology.Algebra.IsUniformGroup.Basic
@@ -218,6 +224,6 @@ theorem principalSubgroup_isClosed :
     IsClosed
       ((principalSubgroup K :
         Subgroup (IdeleGroup K)) : Set (IdeleGroup K)) :=
-  Subgroup.isClosed_of_discrete
+  Subgroup.isClosed_of_discreteTopology
 
 end IdeleGroup

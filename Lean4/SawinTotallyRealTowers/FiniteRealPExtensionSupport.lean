@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.FiniteRealPExtension
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPFiniteSupport
 
@@ -34,8 +40,7 @@ private theorem compact_le_iSup_realPExtension_exists_extension
   have hLe : L ≤ sSup (Set.range f) := by
     simpa only [sSup_range] using hL
   obtain ⟨M, hM, hLM⟩ :=
-    (CompleteLattice.isCompactElement_iff_le_of_directed_sSup_le
-      (IntermediateField ℚ (AlgebraicClosure ℚ)) L).mp hCompact
+    (isCompactElement_iff_le_of_directed_sSup_le L).mp hCompact
         (Set.range f) hNonempty hDirected hLe
   rcases hM with ⟨C, rfl⟩
   exact ⟨C, hLM⟩

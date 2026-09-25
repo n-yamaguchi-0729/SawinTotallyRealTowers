@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ClassFormationPGroupH1
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationSubextension
@@ -40,8 +46,7 @@ private theorem adeleCongr_refl_apply
   let e := relativeAdeleBaseChangeRingEquiv (K := ℚ) (L := K)
   have hc (z : RelativeAdeleRing ℚ K) :
       relativeAdeleCongr (K := ℚ) (AlgEquiv.refl : K ≃ₐ[ℚ] K) z = z := by
-    induction z using TensorProduct.induction_on with
-    | zero => simp
+    induction z using TensorProduct.inductionOn with
     | add x y hx hy => simpa only [map_add] using congrArg₂ (· + ·) hx hy
     | tmul a x => rw [relativeAdeleCongr_tmul]; rfl
   change e (relativeAdeleCongr (K := ℚ) (AlgEquiv.refl : K ≃ₐ[ℚ] K) (e.symm a)) = a
@@ -74,8 +79,7 @@ private theorem relativeClassCongr_refl_base_eq_smul
   change relativeAdeleCongrOfAlgEquiv
     (AlgEquiv.refl : K ≃ₐ[ℚ] K) tau h a =
       RelativeIdeleGroup.conjugation K L sigma a
-  induction (a : RelativeAdeleRing K L) using TensorProduct.induction_on with
-  | zero => simp
+  induction (a : RelativeAdeleRing K L) using TensorProduct.inductionOn with
   | add x y hx hy => simpa only [map_add] using congrArg₂ (· + ·) hx hy
   | tmul b x =>
       rw [relativeAdeleCongrOfAlgEquiv_tmul
@@ -124,7 +128,7 @@ private theorem towerQuotientGalois_mk_apply
   let e := numberFieldTowerSeparableClosureEquiv K L
   let _ := numberFieldTowerExtensionSubgroup_normal K L
   convert ambientEmbeddedExtensionQuotientEquivGaloisGroup_mk_apply
-    ℚ K L j e sigma x using 1 <;> rfl
+    ℚ K L j e sigma x using 1; rfl
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 private theorem ideleClassCongr_conjugate

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
@@ -102,7 +108,8 @@ theorem absoluteValueExtension_isNonarchimedean
     w.1 (n : E) =
         w.1 (algebraMap F E (n : F)) := by simp
     _ = vF (n : F) := w.2 (n : F)
-    _ ≤ 1 := hvF.apply_natCast_le_one
+    _ ≤ 1 :=
+      hvF.apply_natCast_le_one (map_zero_le vF 1) (map_one vF)
 
 /-- An element integral over `ℤ` lies in the valuation subring of
 every nonarchimedean real absolute value. -/

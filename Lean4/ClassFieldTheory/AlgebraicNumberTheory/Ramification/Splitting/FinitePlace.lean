@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 import GaloisCohomology.GroupTheory.Finite
 
@@ -51,6 +57,7 @@ def FinitePlaceSplitsCompletely
   finitePlaceDecompositionGroup
     (K := K) (L := L) v = ⊥
 
+omit [FiniteDimensional K L] in
 /-- Membership in the finite-place decomposition group is exactly
 stabilization of the chosen extension of the absolute value. -/
 @[simp]
@@ -134,6 +141,7 @@ theorem finitePlaceDecompositionGroup_card_eq_localDegree
     _ = finitePlaceLocalDegree
         (K := K) (L := L) v := rfl
 
+omit [FiniteDimensional K L] in
 /-- A finite place splits completely exactly when its decomposition
 group has one element. -/
 theorem finitePlaceSplitsCompletely_iff_card_eq_one
@@ -158,6 +166,7 @@ theorem finitePlaceSplitsCompletely_iff_localDegree_eq_one
   rw [finitePlaceSplitsCompletely_iff_card_eq_one,
     finitePlaceDecompositionGroup_card_eq_localDegree]
 
+omit [FiniteDimensional K L] in
 /-- A finite place fails to split completely exactly when its
 decomposition group contains a nonidentity automorphism. -/
 theorem finitePlace_not_splitsCompletely_iff_exists_nontrivial_stabilizer
@@ -290,6 +299,7 @@ noncomputable def finitePlaceDecompositionGroupInQuotient
     (K := K) (L := L) v).map
       (QuotientGroup.mk' P)
 
+omit [FiniteDimensional K L] in
 /-- The quotient decomposition group is trivial exactly when the
 original decomposition group is contained in the quotient kernel. -/
 theorem finitePlaceDecompositionGroupInQuotient_eq_bot_iff

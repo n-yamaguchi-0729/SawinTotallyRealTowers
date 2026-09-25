@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitAbstractFixedField
 
 set_option autoImplicit false
@@ -628,11 +634,29 @@ theorem
     rationalIdeleClassEquivBaseFixed_coe
       (rationalNormalClosure F)
       (_root_.ideleClassNorm ℚ F (Additive.toMul c))
-  rw [← hordinary] at hcoe
+  have hcoe' := hcoe.trans
+    (congrArg
+      (fun x : IdeleClassGroup ℚ =>
+        Additive.ofMul
+          (rationalRelativeIdeleClassToDirectLimit
+            (rationalNormalClosure F)
+            (RelativeIdeleGroup.classInclusion ℚ
+              (rationalNormalClosure F) x)))
+      hordinary.symm)
   apply rationalIdeleClassEquivBaseFixed.injective
-  rw [rationalIdeleClassEquivBaseFixed.apply_symm_apply]
-  apply Subtype.ext
-  exact hcoe.trans hbase.symm
+  calc
+    rationalIdeleClassEquivBaseFixed
+        (rationalIdeleClassEquivBaseFixed.symm
+          (normToBase rationalIdeleClassRepresentation H.field
+            (rationalAbstractFixedFieldIdeleClassEquivFixed H.field c))) =
+      normToBase rationalIdeleClassRepresentation H.field
+        (rationalAbstractFixedFieldIdeleClassEquivFixed H.field c) :=
+      rationalIdeleClassEquivBaseFixed.apply_symm_apply _
+    _ = rationalIdeleClassEquivBaseFixed
+        (Additive.ofMul
+          (_root_.ideleClassNorm ℚ F (Additive.toMul c))) := by
+      apply Subtype.ext
+      exact hcoe'.trans hbase.symm
 
 end AbstractFixedFieldOrdinaryNorm
 

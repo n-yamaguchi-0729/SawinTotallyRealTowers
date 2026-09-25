@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 import Mathlib.RingTheory.Norm.Basic
@@ -192,9 +198,7 @@ theorem RelativeIdeleGroup.classEmbedding_relativeIdeleClassCongr
         (f.comp e.toAlgHom)
         (a : RelativeAdeleRing K L)
   induction (a : RelativeAdeleRing K L) using
-      TensorProduct.induction_on with
-  | zero =>
-      simp
+      TensorProduct.inductionOn with
   | tmul x y =>
       simp only [relativeAdeleCongr_tmul,
         RelativeIdeleGroup.adeleEmbedding,
@@ -461,9 +465,7 @@ theorem adeleCongr_finiteComponent
       (relativeAdeleBaseChangeRingEquiv_relativeAdeleCongr
         e z)
   rw [← htransport]
-  induction z using TensorProduct.induction_on with
-  | zero =>
-      simp only [map_zero]
+  induction z using TensorProduct.inductionOn with
   | add x y hx hy =>
       simpa only [map_add] using congrArg₂ (· + ·) hx hy
   | tmul b x =>
@@ -1202,9 +1204,7 @@ noncomputable def relativeAdeleCongrOfAlgEquiv
       invFun := g
       left_inv := by
         intro z
-        induction z using TensorProduct.induction_on with
-        | zero =>
-            simp
+        induction z using TensorProduct.inductionOn with
         | add x y hx hy =>
             calc
               g (f (x + y)) =
@@ -1228,9 +1228,7 @@ noncomputable def relativeAdeleCongrOfAlgEquiv
               _ = a ⊗ₜ[K] x := by simp
       right_inv := by
         intro z
-        induction z using TensorProduct.induction_on with
-        | zero =>
-            simp
+        induction z using TensorProduct.inductionOn with
         | add x y hx hy =>
             calc
               f (g (x + y)) =

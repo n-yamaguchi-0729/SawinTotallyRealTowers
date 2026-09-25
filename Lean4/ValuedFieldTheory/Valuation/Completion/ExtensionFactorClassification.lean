@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 import ValuedFieldTheory.Valuation.Completion.PolynomialFactors
 import ValuedFieldTheory.Valuation.Completion.FiniteLocalization
@@ -83,7 +89,7 @@ noncomputable def completionExtensionFactor_minpolyFactorsEquivCompletionFactors
     DistinctNormalizedFactors
         ((minpoly K α).map (algebraMap K vK.Completion)) ≃
       CompletionExtensionFactorCompletionFactors vK f :=
-  Equiv.setCongr (by
+  Set.equivOfEq (by
     ext g
     exact Finset.ext_iff.mp
       (completionExtensionFactor_completionFactors_eq_minpolyFactors

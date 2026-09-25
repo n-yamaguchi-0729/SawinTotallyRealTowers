@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 set_option autoImplicit false
@@ -105,7 +111,8 @@ theorem normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
       exact
         IsLocalRing.maximalIdeal.isMaximal
           V.valuation.valuationSubring
-    exact Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hcomapMax
+    exact Ideal.isMaximal_of_isIntegral_of_isMaximal_comap i
+      (fun x => Algebra.IsIntegral.isIntegral x) P hcomapMax
   have hP :
       ValuationSubring.idealOfLE B wL.valuationSubring hBW =
         IsLocalRing.maximalIdeal B :=

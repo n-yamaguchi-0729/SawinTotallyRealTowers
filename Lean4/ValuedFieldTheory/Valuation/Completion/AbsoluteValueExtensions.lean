@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
@@ -472,8 +478,11 @@ noncomputable def absoluteValueExtension_embeddingCompletionMap
     (htau : w.1 = absoluteValueExtension_pullback vK hvK tau) :
     w.1.Completion →+*
       (absoluteValueExtension_algebraicClosureAbsoluteValue vK hvK).Completion :=
-  (absoluteValueExtension_embeddingToAlgebraicClosureCompletion_isometry
-    vK hvK w tau htau).extensionHom
+  UniformSpace.Completion.extensionHom
+    (absoluteValueExtension_embeddingToAlgebraicClosureCompletionRingHom
+      vK hvK w tau)
+    (absoluteValueExtension_embeddingToAlgebraicClosureCompletion_isometry
+      vK hvK w tau htau).continuous
 
 @[simp]
 theorem absoluteValueExtension_embeddingCompletionMap_coe
@@ -487,8 +496,11 @@ theorem absoluteValueExtension_embeddingCompletionMap_coe
         (x : w.1.Completion) =
       absoluteValueExtension_embeddingToAlgebraicClosureCompletionRingHom
         vK hvK w tau x :=
-  (absoluteValueExtension_embeddingToAlgebraicClosureCompletion_isometry
-    vK hvK w tau htau).extensionHom_coe x
+  UniformSpace.Completion.extensionHom_coe
+    (absoluteValueExtension_embeddingToAlgebraicClosureCompletionRingHom
+      vK hvK w tau)
+    (absoluteValueExtension_embeddingToAlgebraicClosureCompletion_isometry
+      vK hvK w tau htau).continuous x
 
 /-- The extended completion map is still an isometry. -/
 theorem absoluteValueExtension_embeddingCompletionMap_isometry

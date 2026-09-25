@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
 import ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
@@ -215,7 +221,7 @@ theorem sum_truncate_intrinsicRamificationNumberOfUniqueExtension_eq_sum_inertia
       intro sigma _
       by_cases hsigma : sigma ∈ H
       · simp [hsigma]
-      · rw [if_neg hsigma]
+      · rw [ite_eq_right hsigma]
         exact truncate_intrinsicRamificationNumberOfUniqueExtension_eq_zero_of_not_mem_inertia
           (base := base) (target := target) huniq hs hsigma
     _ = ∑ sigma : H, q (sigma : Gal(L/K)) := by

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.LocalField.Unramified.BaseChangeCore
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
@@ -1368,7 +1374,7 @@ theorem padicCyclotomicUnramified_valuationSubring_adjoin_eq_top
     exact (ne_of_gt hs) hs0
   let : IsNoetherianRing W := inferInstance
   let : IsDiscreteValuationRing W :=
-    ((IsDiscreteValuationRing.TFAE W hWnotField).out 2 0).mp
+    ((IsDiscreteValuationRing.TFAE W hWnotField).out 3 1).mp
       (show IsDedekindDomain W from inferInstance)
   let k := IsLocalRing.ResidueField V
   let ell := IsLocalRing.ResidueField W

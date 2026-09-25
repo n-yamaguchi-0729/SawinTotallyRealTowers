@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.NumberTheory.RamificationInertia.Unramified
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
@@ -63,10 +69,10 @@ theorem dedekindTower_decompositionFieldPrime_product_eq_base_product
     (P : Ideal (𝓞 L)) [P.IsPrime] [P.IsMaximal]
     [Finite G] [IsGaloisGroup G K L] :
     Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) P *
-        Ideal.inertiaDeg'
-          (decompositionFieldPrime (K := K) (L := L) G P) P =
+        P.inertiaDeg
+          (𝓞 (decompositionField (K := K) (L := L) G P)) =
       Ideal.ramificationIdx' (basePrime (K := K) P) P *
-        Ideal.inertiaDeg' (basePrime (K := K) P) P := by
+        P.inertiaDeg (𝓞 K) := by
   let :
       IsGaloisGroup (decompositionGroup P G)
         (decompositionField (K := K) (L := L) G P) L :=
@@ -86,14 +92,12 @@ theorem dedekindTower_decompositionFieldPrime_product_eq_base_product
     ringOfIntegers_moduleFinite (K := K) (L := L)
   have htop :
       Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) P *
-          Ideal.inertiaDeg'
-            (decompositionFieldPrime (K := K) (L := L) G P) P =
+          P.inertiaDeg
+            (𝓞 (decompositionField (K := K) (L := L) G P)) =
         Nat.card (decompositionGroup P G) := by
     rw [Ideal.ramificationIdx'_eq_ramificationIdx
       (decompositionFieldPrime (K := K) (L := L) G P) P
-      (decompositionFieldPrime_ne_bot (K := K) (L := L) G P),
-      Ideal.inertiaDeg'_eq_inertiaDeg
-        (decompositionFieldPrime (K := K) (L := L) G P) P]
+      (decompositionFieldPrime_ne_bot (K := K) (L := L) G P)]
     exact
       dedekindTower_ramificationIdx_mul_inertiaDeg_eq_card_of_nonsplit
         (A := 𝓞 (decompositionField (K := K) (L := L) G P))
@@ -107,10 +111,9 @@ theorem dedekindTower_decompositionFieldPrime_product_eq_base_product
   have hbase :
       Nat.card (decompositionGroup P G) =
         Ideal.ramificationIdx' (basePrime (K := K) P) P *
-          Ideal.inertiaDeg' (basePrime (K := K) P) P := by
+          P.inertiaDeg (𝓞 K) := by
     rw [Ideal.ramificationIdx'_eq_ramificationIdx
-      (basePrime (K := K) P) P (basePrime_ne_bot (K := K) P),
-      Ideal.inertiaDeg'_eq_inertiaDeg (basePrime (K := K) P) P]
+      (basePrime (K := K) P) P (basePrime_ne_bot (K := K) P)]
     exact
       dedekindTower_decomposition_card_eq_ramificationIdx_mul_inertiaDeg
         (A := 𝓞 K) (B := 𝓞 L)
@@ -125,14 +128,12 @@ theorem dedekindTower_decompositionFieldPrime_tower_invariants
     (P : Ideal (𝓞 L)) [P.IsPrime] [P.IsMaximal]
     [Finite G] [IsGaloisGroup G K L] :
     Ideal.ramificationIdx' (basePrime (K := K) P) (decompositionFieldPrime (K := K) (L := L) G P) = 1 ∧
-      Ideal.inertiaDeg'
-          (basePrime (K := K) P)
-          (decompositionFieldPrime (K := K) (L := L) G P) = 1 ∧
+      (decompositionFieldPrime (K := K) (L := L) G P).inertiaDeg
+          (𝓞 K) = 1 ∧
       Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) P =
         Ideal.ramificationIdx' (basePrime (K := K) P) P ∧
-      Ideal.inertiaDeg'
-          (decompositionFieldPrime (K := K) (L := L) G P) P =
-        Ideal.inertiaDeg' (basePrime (K := K) P) P := by
+      P.inertiaDeg (𝓞 (decompositionField (K := K) (L := L) G P)) =
+        P.inertiaDeg (𝓞 K) := by
   have :
       Module.Finite
         (𝓞 (decompositionField (K := K) (L := L) G P)) (𝓞 L) :=
@@ -205,8 +206,8 @@ theorem dedekindRamification_inertiaFieldPrime_product_eq_base_ramificationIdx
     [Finite G] [IsGaloisGroup G K L]
     [Algebra.IsSeparable ((𝓞 K) ⧸ basePrime (K := K) P) ((𝓞 L) ⧸ P)] :
     Ideal.ramificationIdx' (inertiaFieldPrime (K := K) (L := L) G P) P *
-        Ideal.inertiaDeg'
-          (inertiaFieldPrime (K := K) (L := L) G P) P =
+        P.inertiaDeg
+          (𝓞 (inertiaField (K := K) (L := L) G P)) =
       Ideal.ramificationIdx' (basePrime (K := K) P) P := by
   let :
       IsGaloisGroup (inertiaGroup P G)
@@ -227,14 +228,12 @@ theorem dedekindRamification_inertiaFieldPrime_product_eq_base_ramificationIdx
     ringOfIntegers_moduleFinite (K := K) (L := L)
   have htop :
       Ideal.ramificationIdx' (inertiaFieldPrime (K := K) (L := L) G P) P *
-          Ideal.inertiaDeg'
-            (inertiaFieldPrime (K := K) (L := L) G P) P =
+          P.inertiaDeg
+            (𝓞 (inertiaField (K := K) (L := L) G P)) =
         Nat.card (inertiaGroup P G) := by
     rw [Ideal.ramificationIdx'_eq_ramificationIdx
       (inertiaFieldPrime (K := K) (L := L) G P) P
-      (inertiaFieldPrime_ne_bot (K := K) (L := L) G P),
-      Ideal.inertiaDeg'_eq_inertiaDeg
-        (inertiaFieldPrime (K := K) (L := L) G P) P]
+      (inertiaFieldPrime_ne_bot (K := K) (L := L) G P)]
     exact
       dedekindTower_ramificationIdx_mul_inertiaDeg_eq_card_of_nonsplit
         (A := 𝓞 (inertiaField (K := K) (L := L) G P))
@@ -313,7 +312,7 @@ theorem dedekindRamification_inertiaFieldPrime_inertiaDeg_eq_one
     (P : Ideal (𝓞 L)) [P.IsPrime] [P.IsMaximal]
     [Finite G] [IsGaloisGroup G K L]
     [Algebra.IsSeparable ((𝓞 K) ⧸ basePrime (K := K) P) ((𝓞 L) ⧸ P)] :
-    Ideal.inertiaDeg' (inertiaFieldPrime (K := K) (L := L) G P) P = 1 := by
+    P.inertiaDeg (𝓞 (inertiaField (K := K) (L := L) G P)) = 1 := by
   let :
       IsGaloisGroup (inertiaGroup P G)
         (inertiaField (K := K) (L := L) G P) L :=
@@ -340,9 +339,7 @@ theorem dedekindRamification_inertiaFieldPrime_inertiaDeg_eq_one
           (decompositionGroup P (inertiaGroup P G) ⧸
             (inertiaGroup P (inertiaGroup P G)).subgroupOf
               (decompositionGroup P (inertiaGroup P G))) =
-        Ideal.inertiaDeg' (inertiaFieldPrime (K := K) (L := L) G P) P := by
-    rw [Ideal.inertiaDeg'_eq_inertiaDeg
-      (inertiaFieldPrime (K := K) (L := L) G P) P]
+        P.inertiaDeg (𝓞 (inertiaField (K := K) (L := L) G P)) := by
     exact
       dedekindRamification_decompositionQuotientInertia_card_eq_inertiaDeg
         (A := 𝓞 (inertiaField (K := K) (L := L) G P)) (B := 𝓞 L)
@@ -373,11 +370,9 @@ theorem dedekindRamification_inertiaFieldPrime_top_invariants
     [Algebra.IsSeparable ((𝓞 K) ⧸ basePrime (K := K) P) ((𝓞 L) ⧸ P)] :
     Ideal.ramificationIdx' (inertiaFieldPrime (K := K) (L := L) G P) P =
         Ideal.ramificationIdx' (basePrime (K := K) P) P ∧
-      Ideal.inertiaDeg'
-          (inertiaFieldPrime (K := K) (L := L) G P) P = 1 := by
+      P.inertiaDeg (𝓞 (inertiaField (K := K) (L := L) G P)) = 1 := by
   have hf :
-      Ideal.inertiaDeg'
-          (inertiaFieldPrime (K := K) (L := L) G P) P = 1 :=
+      P.inertiaDeg (𝓞 (inertiaField (K := K) (L := L) G P)) = 1 :=
     dedekindRamification_inertiaFieldPrime_inertiaDeg_eq_one (K := K) (L := L) G P
   refine ⟨?_, hf⟩
   have hprod :=
@@ -393,10 +388,9 @@ theorem dedekindRamification_inertiaFieldPrime_middle_invariants
     [Finite G] [IsGaloisGroup G K L]
     [Algebra.IsSeparable ((𝓞 K) ⧸ basePrime (K := K) P) ((𝓞 L) ⧸ P)] :
     Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K := K) (L := L) G P) = 1 ∧
-      Ideal.inertiaDeg'
-          (decompositionFieldPrime (K := K) (L := L) G P)
-          (inertiaFieldPrime (K := K) (L := L) G P) =
-        Ideal.inertiaDeg' (basePrime (K := K) P) P := by
+      (inertiaFieldPrime (K := K) (L := L) G P).inertiaDeg
+          (𝓞 (decompositionField (K := K) (L := L) G P)) =
+        P.inertiaDeg (𝓞 K) := by
   have :
       Module.Finite
         (𝓞 (inertiaField (K := K) (L := L) G P)) (𝓞 L) :=
@@ -434,11 +428,10 @@ theorem dedekindRamification_inertiaFieldPrime_middle_invariants
     htop.1.trans hdecomposition.2.2.1.symm
   have hmiddle :
       Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K := K) (L := L) G P) = 1 ∧
-        Ideal.inertiaDeg'
-            (decompositionFieldPrime (K := K) (L := L) G P)
-            (inertiaFieldPrime (K := K) (L := L) G P) =
-          Ideal.inertiaDeg'
-            (decompositionFieldPrime (K := K) (L := L) G P) P :=
+        (inertiaFieldPrime (K := K) (L := L) G P).inertiaDeg
+            (𝓞 (decompositionField (K := K) (L := L) G P)) =
+          P.inertiaDeg
+            (𝓞 (decompositionField (K := K) (L := L) G P)) :=
     dedekindRamification_ideal_tower_middle_invariants_of_top_invariants
       (A := 𝓞 (decompositionField (K := K) (L := L) G P))
       (B := 𝓞 (inertiaField (K := K) (L := L) G P))
@@ -533,13 +526,11 @@ theorem dedekindRamification_inertiaFieldPrime_tower_invariants
     [Algebra.IsSeparable ((𝓞 K) ⧸ basePrime (K := K) P) ((𝓞 L) ⧸ P)] :
     Ideal.ramificationIdx' (inertiaFieldPrime (K := K) (L := L) G P) P =
         Ideal.ramificationIdx' (basePrime (K := K) P) P ∧
-      Ideal.inertiaDeg'
-          (inertiaFieldPrime (K := K) (L := L) G P) P = 1 ∧
+      P.inertiaDeg (𝓞 (inertiaField (K := K) (L := L) G P)) = 1 ∧
       Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K := K) (L := L) G P) = 1 ∧
-      Ideal.inertiaDeg'
-          (decompositionFieldPrime (K := K) (L := L) G P)
-          (inertiaFieldPrime (K := K) (L := L) G P) =
-        Ideal.inertiaDeg' (basePrime (K := K) P) P := by
+      (inertiaFieldPrime (K := K) (L := L) G P).inertiaDeg
+          (𝓞 (decompositionField (K := K) (L := L) G P)) =
+        P.inertiaDeg (𝓞 K) := by
   have htop :=
     dedekindRamification_inertiaFieldPrime_top_invariants (K := K) (L := L) G P
   have hmiddle :=

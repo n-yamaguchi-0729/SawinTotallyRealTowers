@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
 import ValuedFieldTheory.Valuation.Henselian.MonicFactorization
 import Mathlib.GroupTheory.OrderOfElement
@@ -257,10 +263,8 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit
     have hpow : t ^ roots.card ≤ 1 := pow_le_one₀ (bot_le : 0 ≤ t) htle
     have hlt :
         W.valuation (algebraMap K L (Q.leadingCoeff : K)) *
-            t ^ roots.card < 1 :=
-      mul_lt_one_of_nonneg_of_lt_one_left
-        (bot_le : 0 ≤ W.valuation
-          (algebraMap K L (Q.leadingCoeff : K))) hleadTarget hpow
+            t ^ roots.card < 1 := by
+      exact mul_lt_one_of_lt_of_le hleadTarget hpow
     rw [← hconstFactor, hconstTarget] at hlt
     exact lt_irrefl 1 hlt
   have hleadTargetPos :
@@ -295,7 +299,7 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit
   | zero => simp
   | succ j =>
       rw [Polynomial.coeff_map]
-      simp only [Polynomial.coeff_C, Nat.succ_ne_zero, if_false]
+      simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ite_false]
       exact (IsLocalRing.residue_eq_zero_iff (Q.coeff (j + 1))).2
         ((V.valuation_lt_one_iff (Q.coeff (j + 1))).mpr
           (hpositiveCoeff (j + 1) (Nat.succ_pos j)))

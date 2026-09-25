@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.HenselLemma
 import ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
 import ValuedFieldTheory.Ramification.HilbertRamification.Polynomial
@@ -84,8 +90,8 @@ theorem residueField_finiteDimensional_of_moduleFinite_dvf
   change 0 < Module.finrank
     (base.valuationSubring ⧸ base.maximalIdeal)
     (target.valuationSubring ⧸ target.maximalIdeal)
-  have h := Ideal.inertiaDeg'_pos base.maximalIdeal target.maximalIdeal
-  rw [Ideal.inertiaDeg'_algebraMap] at h
+  have h := target.maximalIdeal.inertiaDeg_pos base.valuationSubring
+  rw [Ideal.inertiaDeg_eq_of_isMaximal base.maximalIdeal target.maximalIdeal] at h
   exact h
 
 omit [FiniteDimensional K L] [IsGalois K L] in

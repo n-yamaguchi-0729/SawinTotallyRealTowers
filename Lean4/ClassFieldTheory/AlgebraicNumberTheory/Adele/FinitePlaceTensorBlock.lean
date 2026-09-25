@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
@@ -49,8 +55,7 @@ theorem finitePlaceLocalTensorAlgEquiv_conjugation
         (A := v.adicCompletion K) σ
         (finitePlaceLocalTensorAlgEquiv
           (K := K) (L := L) v z) := by
-  induction z using TensorProduct.induction_on with
-  | zero => simp
+  induction z using TensorProduct.inductionOn with
   | tmul a x => rfl
   | add x y hx hy => simp [hx, hy]
 

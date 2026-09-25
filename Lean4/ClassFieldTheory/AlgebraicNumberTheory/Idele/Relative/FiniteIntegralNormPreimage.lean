@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
@@ -432,7 +438,7 @@ theorem prod_norm_finitePlaceLocalTensorDecompositionUnitsComponent_single_eq
             (fun h => h ▸ y)
             (fun _ => 1) =
           y
-      rw [dif_pos rfl]
+      rw [dite_eq_left rfl]
     rw [hSelf]
     exact hNorm
   · intro u _ hu
@@ -447,7 +453,7 @@ theorem prod_norm_finitePlaceLocalTensorDecompositionUnitsComponent_single_eq
             (fun h => h ▸ y)
             (fun _ => 1) =
           1
-      rw [dif_neg hwu]
+      rw [dite_eq_right hwu]
     rw [hAway]
     simp
   · intro hw

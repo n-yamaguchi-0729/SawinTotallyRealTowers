@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
@@ -140,8 +146,11 @@ theorem localFiniteUnramifiedField_residue_finrank
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
-    Module.finrank 𝓀[K]
-      𝓀[localFiniteUnramifiedField K d hd] = d := by
+    @Module.finrank 𝓀[K]
+      𝓀[localFiniteUnramifiedField K d hd] _ _
+        (IsLocalRing.ResidueField.instModule
+          (R := 𝒪[K])
+          (S := 𝒪[localFiniteUnramifiedField K d hd])) = d := by
   let G := intrinsicAbsoluteGalois K
   let D := localResidueDatum K
   let B : FiniteAbstractField G :=
@@ -173,8 +182,11 @@ theorem localFiniteUnramifiedField_residue_finrank
     localResidueDatum_residueDegree_eq_residueFinrank K H
   change
     (H.residueDegree D : ℕ) =
-      Module.finrank 𝓀[K]
-        𝓀[localFiniteUnramifiedField K d hd] at hcomparison
+      @Module.finrank 𝓀[K]
+        𝓀[localFiniteUnramifiedField K d hd] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[localFiniteUnramifiedField K d hd])) at hcomparison
   exact hcomparison.symm.trans habsolute
 
 /-- The standard fixed field is unramified for the actual local valuations. -/

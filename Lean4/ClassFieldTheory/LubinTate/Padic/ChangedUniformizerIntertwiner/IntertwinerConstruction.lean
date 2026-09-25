@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.DefectCorrection
 
 set_option autoImplicit false
@@ -81,7 +87,7 @@ private theorem
       PowerSeries.coeff q
         (padicChangedUniformizerApproximation p u n).series := by
   rw [padicChangedUniformizerApproximation_succ, map_add,
-    PowerSeries.coeff_monomial, if_neg (Nat.ne_of_lt hq)]
+    PowerSeries.coeff_monomial, ite_eq_right (Nat.ne_of_lt hq)]
   exact add_zero _
 
 private theorem padicChangedUniformizerApproximation_coeff_eq_of_le
@@ -307,9 +313,9 @@ private theorem padicChangedUniformizerDefect_coeff_one
     have hpOneMul : 1 ≠ p * 1 := by
       simpa only [mul_one] using hpOne
     rw [show P = PowerSeries.monomial 1 ε from rfl,
-      PowerSeries.coeff_monomial, if_pos rfl,
+      PowerSeries.coeff_monomial, ite_eq_left rfl,
       PowerSeries.monomial_pow, PowerSeries.coeff_monomial,
-      if_neg hpOneMul]
+      ite_eq_right hpOneMul]
     ring
   rw [hcongr, padicChangedUniformizerDefect, map_sub,
     hright, hleft]
@@ -453,7 +459,7 @@ theorem padicChangedUniformizerIntertwiner_unique
             PowerSeries.constantCoeff (PowerSeries.monomial m c) = 0
         rw [hH'constant,
           ← PowerSeries.coeff_zero_eq_constantCoeff,
-          PowerSeries.coeff_monomial, if_neg (Ne.symm hm0),
+          PowerSeries.coeff_monomial, ite_eq_right (Ne.symm hm0),
           zero_add]
       have hcoeff :
           ∀ q : ℕ, q ≤ m →
@@ -464,14 +470,14 @@ theorem padicChangedUniformizerIntertwiner_unique
           change PowerSeries.coeff m H =
             PowerSeries.coeff m H' +
               PowerSeries.coeff m (PowerSeries.monomial m c)
-          rw [PowerSeries.coeff_monomial, if_pos rfl]
+          rw [PowerSeries.coeff_monomial, ite_eq_left rfl]
           dsimp only [c]
           ring
         · have hqLt : q < m := lt_of_le_of_ne hqm hq
           change PowerSeries.coeff q H =
             PowerSeries.coeff q H' +
               PowerSeries.coeff q (PowerSeries.monomial m c)
-          rw [PowerSeries.coeff_monomial, if_neg hq]
+          rw [PowerSeries.coeff_monomial, ite_eq_right hq]
           simp only [add_zero]
           exact ih q hqLt
       have hdefectA :

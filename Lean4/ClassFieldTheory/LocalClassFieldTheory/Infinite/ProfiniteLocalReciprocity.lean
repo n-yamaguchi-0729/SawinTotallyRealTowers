@@ -1,6 +1,13 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.FiniteAbelianQuotientKernels
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.LocalMultiplicativeCompletion
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
+import ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteGaloisAbelianization
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.TopologicalAbelianizationCongr
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
@@ -59,7 +66,15 @@ noncomputable instance standardLocalAbsoluteAbelianization_compactSpace :
 /-- The standard absolute abelianization is Hausdorff via the separable-model equivalence. -/
 noncomputable instance standardLocalAbsoluteAbelianization_t2Space :
     T2Space (_root_.Field.absoluteGaloisGroupAbelianization K) :=
-  (separableToStandardAbsoluteAbelianizationEquiv K).toHomeomorph.t2Space
+  by
+    have htarget : T2Space Gal(localMaximalAbelianExtension K / K) :=
+      krullTopology_t2
+    have hsource : T2Space
+        (TopologicalAbelianization (intrinsicAbsoluteGalois K)) :=
+      @Homeomorph.t2Space _ _ _ _ htarget
+        (localAbsoluteAbelianizationEquiv K).symm.toHomeomorph
+    exact @Homeomorph.t2Space _ _ _ _ hsource
+      (separableToStandardAbsoluteAbelianizationEquiv K).toHomeomorph
 
 /-- The usual absolute Galois topological abelianization, packaged as a stable
 profinite group. -/

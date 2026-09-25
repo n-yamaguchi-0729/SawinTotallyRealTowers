@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 import ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
 
@@ -241,17 +247,14 @@ theorem finite_iInter_subgroup_subset_openSubgroup [CompactSpace G] {ι : Type v
     · intro hx
       simp only [mem_empty_iff_false] at hx
   rcases hKcompact.elim_finite_subfamily_closed
-      (fun i => (((H i : Subgroup G) : Set G))) hclosed havoid with ⟨s, hs⟩
+      (fun i => (((H i : Subgroup G) : Set G))) hclosed
+      (disjoint_iff_inter_eq_empty.mpr havoid) with ⟨s, hs⟩
   refine ⟨s, ?_⟩
   intro x hx
   by_contra hxU
   have hxK : x ∈ K := by
     simpa [K] using hxU
-  have hmem : x ∈ K ∩ ⋂ i ∈ s, (((H i : Subgroup G) : Set G)) := by
-    exact ⟨hxK, hx⟩
-  have : x ∈ (∅ : Set G) := by
-    simp only [hs, mem_empty_iff_false] at hmem
-  simp only [mem_empty_iff_false] at this
+  exact (Set.disjoint_left.mp hs) hxK hx
 
 /-- If a family of open subgroups of a profinite group has trivial total
 intersection, then finite intersections of members of the family form a neighborhood basis of `1`.

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.LocalField.Unramified.HenselianAlgebraicExtension
 
 set_option autoImplicit false
@@ -40,7 +46,7 @@ def absoluteValueExponentialValuation
     · subst y
       simp
     have hxy : x * y ≠ 0 := mul_ne_zero hx hy
-    simp only [hx, hy, hxy, if_false, map_mul]
+    simp only [hx, hy, hxy, ite_false, map_mul]
     rw [Real.log_mul (abv.ne_zero hx) (abv.ne_zero hy)]
     simp only [neg_add, WithTop.coe_add]
   · intro x y
@@ -52,7 +58,7 @@ def absoluteValueExponentialValuation
       simp
     by_cases hxy : x + y = 0
     · simp [hxy]
-    simp only [hx, hy, hxy, if_false]
+    simp only [hx, hy, hxy, ite_false]
     apply WithTop.coe_le_coe.mpr
     by_cases hle : abv x ≤ abv y
     · have hlogxy : Real.log (abv x) ≤ Real.log (abv y) :=

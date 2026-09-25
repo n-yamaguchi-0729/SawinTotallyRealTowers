@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
 
@@ -73,7 +79,7 @@ private theorem equalCharacteristicDirectBracketScalarSeries_eq
           have := natCard_pow_injective k (h.trans (pow_zero _).symm)
           omega
         rw [equalCharacteristicDirectBracketScalarCoefficient]
-        rw [PowerSeries.coeff_X, if_neg hpow]
+        rw [PowerSeries.coeff_X, ite_eq_right hpow]
         simp
   · have hne : n ≠ 1 := by
       intro h
@@ -81,7 +87,7 @@ private theorem equalCharacteristicDirectBracketScalarSeries_eq
       exact hn ⟨0, by simp⟩
     rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k _ n hn,
       PowerSeries.coeff_C_mul]
-    rw [PowerSeries.coeff_X, if_neg hne]
+    rw [PowerSeries.coeff_X, ite_eq_right hne]
     simp
 
 /-- The recursive candidate is the sum of its scalar term and the genuine

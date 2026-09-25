@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
@@ -27,8 +33,11 @@ noncomputable section
 
 open LocalClassFieldTheory
 
+universe u v
 
-variable {K : Type} [Field K] [NumberField K]
+section ArchimedeanNorm
+
+variable {K : Type u} [Field K] [NumberField K]
 
 omit [NumberField K] in
 /-- Every element of the archimedean positive subgroup has an `n`-th
@@ -83,7 +92,7 @@ theorem exists_infinitePositiveSubgroup_nthRoot
     apply Units.ext
     exact hz
 
-variable {L : Type} [Field L] [Algebra K L]
+variable {L : Type v} [Field L] [Algebra K L]
     [FiniteDimensional K L]
 
 /-- Determinant norm on the actual tensor factor used by the infinite
@@ -127,6 +136,12 @@ theorem infinitePositiveSubgroup_le_infiniteTensorNormSubgroup
   rw [Algebra.norm_algebraMap,
     Module.finrank_baseChange]
   exact congrArg Units.val hy
+
+end ArchimedeanNorm
+
+variable {K : Type} [Field K] [NumberField K]
+variable {L : Type} [Field L] [Algebra K L]
+    [FiniteDimensional K L]
 
 /-- Complete splitting at a finite place makes the chosen local norm
 subgroup the whole multiplicative group. -/

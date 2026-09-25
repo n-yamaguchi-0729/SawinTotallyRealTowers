@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
 import GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
 
@@ -337,9 +343,7 @@ theorem exists_finset_fullSUnitKummerExtensionRoots_adjoin_eq_top
       (fun _ _ _ _ ihx ihy => by
         simpa using R.add_mem ihx ihy)
       (fun _ _ ihx => by
-        convert R.inv_mem ihx using 1
-        apply Subtype.ext
-        rfl)
+        convert R.inv_mem ihx using 1)
       (fun _ _ _ _ ihx ihy => by
         simpa using R.mul_mem ihx ihy)
       hx

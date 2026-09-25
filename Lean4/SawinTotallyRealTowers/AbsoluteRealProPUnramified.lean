@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.AbsoluteRealProPRestriction
 import SawinTotallyRealTowers.AbsoluteRealKernelField
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
@@ -85,7 +91,7 @@ private theorem infiniteArtin_fixes_totallyReal
   · have hc : c = 1 := by
       change (infinitePlaceArtinMonoidHomOfPlace (K := F) (L := AlgebraicClosure F)
         v w (chosenInfinitePlaceAbove_comap (L := AlgebraicClosure F) v)) (-1) = 1
-      simp only [infinitePlaceArtinMonoidHomOfPlace, dif_pos hw, MonoidHom.one_apply]
+      simp only [infinitePlaceArtinMonoidHomOfPlace, dite_eq_left hw, MonoidHom.one_apply]
     rw [hc]
     rfl
   · have hConj : ComplexEmbedding.IsConj w.embedding c :=

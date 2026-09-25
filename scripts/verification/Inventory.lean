@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Lean
 import Lean.Util.CollectAxioms
 import Lean.Util.Sorry
@@ -265,7 +271,7 @@ private def audit (inputs : Inputs) (outputDir : System.FilePath) : CoreM AuditR
   let mut result : AuditResult := {}
   let mut processed : Nat := 0
   for (name, info, origin) in selected do
-    -- Lean 4.33's public API consults imported precomputed axiom dependencies before recursing.
+    -- Lean 4.34's public API consults imported precomputed axiom dependencies before recursing.
     -- Reuse this single result for the primary, owner, and repaired-subset counters.
     let axioms ← Lean.collectAxioms name
     let value := info.value? (allowOpaque := true)
@@ -369,7 +375,7 @@ private def writeResults (inputs : Inputs) (env : Environment)
     result.allSelected.transitiveSorryCount == 0 && result.allSelected.nonstandardCount == 0
   let summary := Json.mkObj [
     ("schemaVersion", Lean.toJson (1 : Nat)),
-    ("tool", Json.str "Lean 4.33 portable public-API declaration inventory"),
+    ("tool", Json.str "Lean 4.34 portable public-API declaration inventory"),
     ("auditPassed", Json.bool passed),
     ("kernelRecheckPerformed", Json.bool false),
     ("independentKernelCheckPerformed", Json.bool false),
@@ -397,7 +403,7 @@ private def writeResults (inputs : Inputs) (env : Environment)
     ("selectorDirectory", Json.str "selectors"),
     ("nameRoundTripMethod", Json.str "Syntax.decodeNameLit (backtick ++ Name.toString) must equal the original Name; raw str/num components are also included per declaration"),
     ("selectorSemantics", Json.str "all includes private/generated/unsafe/partial; safe excludes unsafe and partial; neither selector grants permission to nonstandard axioms"),
-    ("axiomCollectionMethod", Json.str "Lean.collectAxioms once per selected declaration; Lean 4.33 imported precomputed dependencies avoid repeated closure walks; private roots may use its fallback traversal"),
+    ("axiomCollectionMethod", Json.str "Lean.collectAxioms once per selected declaration; Lean 4.34 imported precomputed dependencies avoid repeated closure walks; private roots may use its fallback traversal"),
     ("sorryMethod", Json.str "Expr.hasSorry plus synthetic/non-synthetic checks on types and all available definition/theorem/opaque bodies, and transitive sorryAx via collectAxioms"),
     ("safetyNote", Json.str "unsafe and partial are separately inventoried; no axiom beyond the three-item allowlist is silently accepted")]
   IO.FS.writeFile (outDir / "summary.json") summary.pretty

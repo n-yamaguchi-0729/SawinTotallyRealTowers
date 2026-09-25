@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaIteration
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ThetaLocalInverse
@@ -199,10 +205,9 @@ private theorem equalCharacteristicDirectTheta_sourceIterate_norm_lt_one_aux
       · rw [norm_pow]
         exact pow_lt_one₀ (norm_nonneg x) hx Nat.card_pos.ne'
       · rw [norm_mul]
-        exact mul_lt_one_of_nonneg_of_lt_one_left
-          (norm_nonneg _)
-          (equalCharacteristicCompletedLevelUniformizer_norm_lt_one F n)
-          hx.le
+        exact
+          (mul_le_of_le_one_right (norm_nonneg _) hx.le).trans_lt
+            (equalCharacteristicCompletedLevelUniformizer_norm_lt_one F n)
 
 /-- Every direct theta source iterate has norm strictly below one. -/
 theorem equalCharacteristicDirectThetaSourceIterate_norm_lt_one

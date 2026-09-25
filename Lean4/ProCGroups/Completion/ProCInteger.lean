@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.Topology.Instances.ZMod
 import ProCGroups.ProC.InverseLimits.Limits
 import ProCGroups.ProC.InverseLimits.Predicates
@@ -769,7 +775,7 @@ instance instIsTopologicalGroupProCIntegerMultiplicativeSystemStage
     IsTopologicalGroup ((proCIntegerMultiplicativeSystem C).X i) := by
   have : DiscreteTopology ((proCIntegerMultiplicativeSystem C).X i) :=
     inferInstanceAs (DiscreteTopology (Multiplicative (ZMod i.modulus)))
-  exact topologicalGroup_of_discreteTopology
+  exact isTopologicalGroup_of_discreteTopology
 
 /-- The pro-\(C\) integer multiplicative system carries the induced group-system structure. -/
 instance instIsGroupSystemProCIntegerMultiplicativeSystem

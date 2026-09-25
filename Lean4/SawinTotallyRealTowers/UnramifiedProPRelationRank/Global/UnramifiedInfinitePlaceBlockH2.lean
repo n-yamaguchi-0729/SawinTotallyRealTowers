@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import GaloisCohomology.ProP.MultiplicativeInducedShapiro
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 
@@ -47,7 +53,7 @@ theorem unramifiedInfinitePlaceBlockH2_subsingleton
   have hcard : Nat.card (absoluteValueDecompositionGroup K u.1) = 1 := by
     change Nat.card (absoluteValueDecompositionGroup K w.1) = 1
     rw [absoluteValueDecompositionGroup_eq_infinitePlaceStabilizer w,
-      InfinitePlace.card_stabilizer, if_pos hunram]
+      InfinitePlace.card_stabilizer, ite_eq_left hunram]
   let _ : Subsingleton (absoluteValueDecompositionGroup K u.1) :=
     (Nat.card_eq_one_iff_unique.mp hcard).1
   let _ : Subsingleton (groupCohomology (Rep.ofMulDistribMulAction

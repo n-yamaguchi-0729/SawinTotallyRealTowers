@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.FiniteKummerContinuousKernel
 import SawinTotallyRealTowers.RealProPOpenNormalStage
 import SawinTotallyRealTowers.RealProPStageRestriction
@@ -117,11 +123,15 @@ theorem finiteKummerContinuousH2Map_ker_le_realProPStageInflation_ker
       (continuousCohomologyZModPMapLifted 2
         (realProPOpenNormalStageRestriction 2 T U) 2).hom.toLinearMap.toAddMonoidHom.ker := by
   intro x hx
+  change (continuousCohomologyZModPMapLifted 2
+    (realProPOpenNormalStageRestriction 2 T U) 2).hom x = 0
+  have hAbs : (continuousCohomologyZModPMapLifted 2
+      (absoluteFiniteGaloisRestriction ℚ (realProPOpenNormalStage 2 T U).val) 2).hom x = 0 :=
+    finiteKummerContinuousH2Map_ker_le_absoluteInflation_ker ℚ (2 : ℕ+)
+      (realProPOpenNormalStage 2 T U).val hmu hx
   apply maximalRealProTwo_H2_eq_zero_of_absolute_inflation_eq_zero T hThree
     (realProPOpenNormalStage 2 T U).property.1
     (realProPOpenNormalStageRestriction 2 T U) x
-  rw [realProPOpenNormalStageRestriction_comp_absolute]
-  exact finiteKummerContinuousH2Map_ker_le_absoluteInflation_ker ℚ (2 : ℕ+)
-    (realProPOpenNormalStage 2 T U).val hmu hx
+  exact (realProPOpenNormalStageRestriction_comp_absolute 2 T U).symm ▸ hAbs
 
 end ClassFieldTower.Sawin

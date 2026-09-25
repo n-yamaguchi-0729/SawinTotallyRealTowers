@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.FoxDifferential.Completed.FreeProC.StageProjection
 
 set_option autoImplicit false
@@ -135,7 +141,7 @@ theorem finiteStageRight_comp_lift_eq_quotientMk
     (w : FreeGroup X) :
     stageRight (FreeGroup.lift φ w) = QuotientGroup.mk' N w := by
   induction w using FreeGroup.induction_on with
-  | C1 =>
+  | one =>
       simp only [map_one]
   | of x =>
       simpa using hright_generators x

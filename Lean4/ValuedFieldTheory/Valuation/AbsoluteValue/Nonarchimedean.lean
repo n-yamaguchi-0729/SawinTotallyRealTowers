@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.Analysis.AbsoluteValue.Equivalence
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Algebra.Order.Ring.IsNonarchimedean
@@ -226,7 +232,7 @@ theorem isNonarchimedean_iff_bounded_nat
       ∃ C : ℝ, ∀ n : ℕ, v (n : K) ≤ C := by
   constructor
   · intro h
-    exact ⟨1, fun n => h.apply_natCast_le_one⟩
+    exact ⟨1, fun n => h.apply_natCast_le_one (by simp) (by simp)⟩
   · exact isNonarchimedean_of_bounded_nat v
 
 

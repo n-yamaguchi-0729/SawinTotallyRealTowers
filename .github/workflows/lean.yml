@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - name: Check the exact bundled source closure
+      - name: Check the SHA-pinned bundled source closure
         shell: bash
         run: |
           set -euo pipefail
@@ -49,7 +49,7 @@ jobs:
             --output "$RUNNER_TEMP/verification/checks" \
             2>&1 | tee "$RUNNER_TEMP/verification/checks.log"
       - name: Check packaging whitespace
-        # Original proof bytes are preserved and checked by source SHA256 above.
+        # The current bundled sources are SHA-pinned by the source audit above.
         run: git diff-tree --check --root -r HEAD -- .gitattributes .github .gitignore LICENSE README.md lakefile.toml lake-manifest.json lean-toolchain scripts tests verification
       - name: Preserve logs, complete inventories and receipts
         if: always()

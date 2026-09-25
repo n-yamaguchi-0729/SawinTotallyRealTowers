@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -67,7 +73,7 @@ private noncomputable def positiveArchimedeanLocalComponentContinuous
             NNReal.toRealHom.toMonoidHom)).congr
       intro r
       simp only [positiveArchimedeanLocalComponent,
-        dif_pos hv]
+        dite_eq_left hv]
       congr 2
     · have hvc : v.IsComplex :=
         InfinitePlace.not_isReal_iff_isComplex.mp hv
@@ -88,7 +94,7 @@ private noncomputable def positiveArchimedeanLocalComponentContinuous
               NNReal.toRealHom.toMonoidHom))).congr
       intro r
       simp only [positiveArchimedeanLocalComponent,
-        dif_neg hv]
+        dite_eq_right hv]
       congr 2
 
 omit [NumberField K] in
@@ -113,7 +119,7 @@ private theorem positiveArchimedeanLocalComponent_nnnorm
             (positiveArchimedeanLocalComponent v r) =
           Units.map NNReal.toRealHom.toMonoidHom r := by
       simp only [positiveArchimedeanLocalComponent,
-        dif_pos hv, MonoidHom.comp_apply]
+        dite_eq_left hv, MonoidHom.comp_apply]
       change
         Units.mapEquiv e.toMulEquiv
             (Units.mapEquiv e.symm.toMulEquiv
@@ -152,7 +158,7 @@ private theorem positiveArchimedeanLocalComponent_nnnorm
           Units.map Complex.ofRealHom.toMonoidHom
             (Units.map NNReal.toRealHom.toMonoidHom r) := by
       simp only [positiveArchimedeanLocalComponent,
-        dif_neg hv, MonoidHom.comp_apply]
+        dite_eq_right hv, MonoidHom.comp_apply]
       change
         Units.mapEquiv e.toMulEquiv
             (Units.mapEquiv e.symm.toMulEquiv
@@ -200,7 +206,7 @@ private theorem positiveArchimedeanLocalComponent_mem_positive
           (positiveArchimedeanLocalComponent v r) =
         Units.map NNReal.toRealHom.toMonoidHom r := by
     simp only [positiveArchimedeanLocalComponent,
-      dif_pos hv, MonoidHom.comp_apply]
+      dite_eq_left hv, MonoidHom.comp_apply]
     change
       Units.mapEquiv e.toMulEquiv
           (Units.mapEquiv e.symm.toMulEquiv

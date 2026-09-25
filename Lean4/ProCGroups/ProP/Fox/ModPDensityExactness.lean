@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.ProP.Fox.ModPDisplayedSpan
 import ProCGroups.ProP.Fox.ModPStageProjection
 
@@ -50,7 +56,7 @@ theorem presentationModPFiniteStageRightMap_presentationWord
         (P.quotient (FreeGroup.lift (presentationChosenGenerator P) w)) =
       QuotientGroup.mk' (presentationModPFiniteStageKernel P U hU) w := by
   induction w using FreeGroup.induction_on with
-  | C1 => simp only [map_one]
+  | one => simp only [map_one]
   | of i =>
       rw [FreeGroup.lift_apply_of]
       exact presentationModPFiniteStageRightMap_generator P U hU i

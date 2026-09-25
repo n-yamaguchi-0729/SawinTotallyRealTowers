@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.InverseSystems.ProfiniteSpace
 
 set_option autoImplicit false
@@ -281,7 +287,7 @@ instance finiteSubsetProductSystem_instIsTopologicalGroup {α : Type u} (X : α 
   intro s
   classical
   dsimp [finiteSubsetProductSystem]
-  exact Pi.topologicalGroup
+  exact Pi.isTopologicalGroup
 
 /-- The finite-subset product system is a group-valued inverse system. -/
 instance finiteSubsetProductSystem_instIsGroupSystem {α : Type u} (X : α → Type v)

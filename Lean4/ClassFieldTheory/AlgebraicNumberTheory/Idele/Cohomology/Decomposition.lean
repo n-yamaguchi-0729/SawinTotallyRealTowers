@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.Instances
@@ -83,7 +89,7 @@ noncomputable def finiteIdeleOfSPlaceFactors
         (v.adicCompletion F)ˣ)
   refine ⟨f, S.eventually_cofinite_notMem.mono ?_⟩
   intro v hv
-  simp only [f, dif_neg hv]
+  simp only [f, dite_eq_right hv]
   exact (x.2 ⟨v, hv⟩).2
 
 @[simp]

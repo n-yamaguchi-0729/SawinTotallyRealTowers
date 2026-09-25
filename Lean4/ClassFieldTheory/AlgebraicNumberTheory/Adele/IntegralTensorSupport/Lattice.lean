@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
 
 set_option autoImplicit false
@@ -25,6 +31,7 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L]
 
+omit [NumberField K] in
 /-- One common nonzero integer scales every vector of the chosen
 `K`-basis into the ring of integers of `L`. -/
 theorem exists_integral_relativeBasis_scale :
@@ -57,6 +64,7 @@ noncomputable def chosenRelativeBasisIntegralScale : ℤ :=
     (exists_integral_relativeBasis_scale
       (K := K) (L := L))
 
+omit [NumberField K] in
 /-- The chosen integral scale is nonzero. -/
 theorem chosenRelativeBasisIntegralScale_ne_zero :
     chosenRelativeBasisIntegralScale (K := K) (L := L) ≠ 0 :=
@@ -64,6 +72,7 @@ theorem chosenRelativeBasisIntegralScale_ne_zero :
     (exists_integral_relativeBasis_scale
       (K := K) (L := L))).1
 
+omit [NumberField K] in
 /-- The chosen integral scale is integral in the base field. -/
 theorem chosenRelativeBasisIntegralScale_isIntegral
     (i : RelativeAdeleBasisIndex (K := K) (L := L)) :

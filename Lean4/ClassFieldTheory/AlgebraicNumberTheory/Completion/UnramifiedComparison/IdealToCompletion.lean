@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.IntegerRingComparison
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 import ValuedFieldTheory.Valuation.LocalRingEquiv
@@ -389,6 +395,7 @@ theorem chosenFinitePlace_maximalIdeal_ramificationIdx'_eq_one_of_centre_ramific
     chosenFinitePlace_maximalIdeal_map_not_le_sq_of_centre_ramificationIdx_eq_one
       (K := K) (L := L) v hglobal
 
+omit [FiniteDimensional K L] in
 /-- Ideal-theoretic unramifiedness gives ramification index one at the actual
 centre of the chosen finite-place extension. -/
 theorem finitePlaceExtensionCentre_ramificationIdx_eq_one_of_isUnramifiedAt

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.GroupTheory.FreeGroup.Reduce
 
 set_option autoImplicit false
@@ -227,12 +233,12 @@ theorem FreeGroup.toWord_mul_singleton {X : Type u} [DecidableEq X]
       else
         FreeGroup.toWord t ++ [y] := by
   by_cases hlast? : FreeGroup.lastLetter? t = some y.inv
-  · rw [if_pos hlast?]
+  · rw [ite_eq_left hlast?]
     rcases (FreeGroup.lastLetter?_eq_some_iff (g := t) (y := y.inv)).1 hlast? with
       ⟨hw, hlast⟩
     simpa [Internal.SignedLetter.inv] using
       FreeGroup.toWord_mul_mk_singleton_of_cancels t y hw hlast
-  · rw [if_neg hlast?]
+  · rw [ite_eq_right hlast?]
     have hcancel :
         ¬ ∃ hw : FreeGroup.toWord t ≠ [],
             (FreeGroup.toWord t).getLast hw = (y.1, !y.2) := by
@@ -278,9 +284,9 @@ theorem FreeGroup.mul_mk_singleton_eq_ite_prefixParent {X : Type u} [DecidableEq
   by_cases h : ∃ hw : FreeGroup.toWord t ≠ [],
       (FreeGroup.toWord t).getLast hw = (y.1, !y.2)
   · rcases h with ⟨hw, hlast⟩
-    rw [dif_pos ⟨hw, hlast⟩]
+    rw [dite_eq_left ⟨hw, hlast⟩]
     exact FreeGroup.mul_mk_singleton_eq_mk_dropLast_of_cancels t y hw hlast
-  · rw [dif_neg h]
+  · rw [dite_eq_right h]
     calc
       t * FreeGroup.mk [y] =
           FreeGroup.mk (FreeGroup.toWord (t * FreeGroup.mk [y])) := by

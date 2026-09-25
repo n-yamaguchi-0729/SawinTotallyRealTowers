@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
 import SawinTotallyRealTowers.NegativeThreeLocalRadical
 import SawinTotallyRealTowers.RationalIdealSquareRadical
@@ -203,14 +209,14 @@ theorem exists_localFamily_radical_annihilator_adjusted_at_three
     dsimp only [fχ]
     rw [localRadicalValue_sub]
     by_cases hv : v = v₃
-    · rw [if_pos hv, if_pos hv, localRadicalValue_smul]
-    · rw [if_neg hv, if_neg hv, localRadicalValue_zero]
+    · rw [ite_eq_left hv, ite_eq_left hv, localRadicalValue_smul]
+    · rw [ite_eq_right hv, ite_eq_right hv, localRadicalValue_zero]
   have hCorrection : (∑ v ∈ U,
       if v = v₃ then a * localRadicalValue ℚ v (nχ v) else 0) = a * d := by
     rw [Finset.sum_eq_single v₃]
-    · rw [if_pos rfl]
+    · rw [ite_eq_left rfl]
     · intro v hv hne
-      exact if_neg hne
+      exact ite_eq_right hne
     · intro h
       exact (h (Finset.mem_insert_self v₃ S)).elim
   have hSum : (∑ v ∈ U, localRadicalValue ℚ v (fχ v)) = 0 := by
@@ -237,9 +243,9 @@ theorem exists_localFamily_radical_annihilator_adjusted_at_three
     intro σ
     change Multiplicative.ofAdd ((fχ v.1) (Additive.ofMul σ)) = χ v σ
     dsimp only [fχ]
-    rw [if_neg hv, sub_zero]
+    rw [ite_eq_right hv, sub_zero]
     dsimp only [bχ]
-    rw [dif_pos v.property]
+    rw [dite_eq_left v.property]
     rfl
 
 /-- Prescribe an arbitrary finite inertia family and the real value over ℚ.

@@ -49,10 +49,10 @@ class SourceClosureTests(unittest.TestCase):
         self.put('Proof.Base', 'import Proof.Entry\n')
         with self.assertRaisesRegex(ValueError, 'cycle'): source.audit_rows(self.root, self.manifest)
 
-    def test_aggregate_rejected(self):
+    def test_aggregate_in_import_closure_accepted(self):
         self.put('Proof.All', 'import Proof.Base\n')
         self.put('Proof.Entry', 'import Proof.All\n')
-        with self.assertRaisesRegex(ValueError, 'Aggregate'): source.audit_rows(self.root, self.manifest)
+        self.assertEqual(source.audit_rows(self.root, self.manifest)['moduleCount'], 3)
 
     def test_forged_path_rejected(self):
         self.rows['Proof.Base']['path'] = '../Base.lean'
@@ -180,7 +180,7 @@ class ReplayTests(unittest.TestCase):
     def test_valid_completed_replay(self):
         inv={'phase':'inventory','roots':[source.ENTRY],'loaded_modules':[source.ENTRY,'Init'],
              'constant_count':12,'unsafe_skipped_count':1,'partial_skipped_count':2}
-        done={'phase':'replay','result':'PASS','kernel':'official Lean 4.33.0'}
+        done={'phase':'replay','result':'PASS','kernel':'official Lean 4.34.0'}
         with tempfile.TemporaryDirectory() as directory:
             p=Path(directory)/'replay.log';p.write_text(json.dumps(inv)+'\n'+json.dumps(done)+'\n')
             result=verify.validate_replay(p,{'roots':[source.ENTRY],'moduleRows':{source.ENTRY:{}}})

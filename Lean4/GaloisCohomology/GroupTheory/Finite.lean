@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.GroupTheory.DoubleCoset
 import Mathlib.GroupTheory.Sylow
 
@@ -228,7 +234,7 @@ theorem doubleCosetRightProjection_surjective
   refine
     ⟨DoubleCoset.mk H (⊥ : Subgroup G) q.out, ?_⟩
   rw [doubleCosetRightProjection_mk]
-  exact DoubleCoset.out_eq' H D q
+  exact DoubleCoset.out_eq' q
 
 /-- If the left-coset to double-coset projection is injective, then
 the right subgroup lies in the normal core of the left subgroup. -/
@@ -290,8 +296,7 @@ theorem rightSubgroup_le_normalCore_of_doubleCoset_card_eq
         intro q
         exact
           ⟨q.out,
-            DoubleCoset.out_eq'
-              H (⊥ : Subgroup G) q⟩)
+            DoubleCoset.out_eq' q⟩)
   have hbij :
       Function.Bijective
         (doubleCosetRightProjection H D) :=

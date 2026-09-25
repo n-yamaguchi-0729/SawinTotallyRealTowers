@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
@@ -43,7 +49,6 @@ noncomputable def infinitePlaceBaseUnitExtension
         (v := _root_.infinitePlaceBelow (K := K) W)
         (w := W)).toMonoidHom
 
-omit [NumberField K] [NumberField L] in
 /-- The actual completion map carries negative one to negative one. -/
 @[simp]
 theorem infinitePlaceBaseUnitExtension_neg_one
@@ -288,10 +293,12 @@ theorem ideleClassNorm_infinitePlaceIdeleClass_neg_one_of_isReal
         (_root_.infinitePlaceBelow (K := K) W)
         (-1 :
           ((_root_.infinitePlaceBelow (K := K) W).Completion)ˣ) := by
-  simpa using
-    (ideleClassNorm_infinitePlaceIdeleClass_infinitePlaceBaseUnitExtension_of_isReal
+  rw [← infinitePlaceBaseUnitExtension_neg_one
+    (K := K) (L := L) W]
+  exact
+    ideleClassNorm_infinitePlaceIdeleClass_infinitePlaceBaseUnitExtension_of_isReal
       (K := K) (L := L) W hWReal
       (-1 :
-        ((_root_.infinitePlaceBelow (K := K) W).Completion)ˣ))
+        ((_root_.infinitePlaceBelow (K := K) W).Completion)ˣ)
 
 end IdeleGroup

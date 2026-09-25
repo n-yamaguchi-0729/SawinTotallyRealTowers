@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.InverseSystems.CompatibilityAndSurjectivity
 
 set_option autoImplicit false
@@ -72,7 +78,7 @@ theorem exists_projection_preimage_subset [Nonempty I]
               S.map (hj i hi) ⁻¹' Us i := by
           ext z
           by_cases h : i ∈ s
-          · rw [dif_pos h]
+          · rw [dite_eq_left h]
           · exact (h.elim hi)
         rw [hif] at hyji
         simpa [Set.mem_preimage] using hyji

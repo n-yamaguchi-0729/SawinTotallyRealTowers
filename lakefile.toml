@@ -1,6 +1,6 @@
 name = "SawinTotallyRealTowers"
 version = "1.0.0"
-defaultTargets = ["SawinTotallyRealTowers.SawinTotallyRealTower", "SawinTotallyRealTowers.MartinetCorollary"]
+defaultTargets = ["SawinTotallyRealTowers.All", "SawinTotallyRealTowers.MartinetCorollary"]
 enableArtifactCache = false
 restoreAllArtifacts = false
 
@@ -11,7 +11,7 @@ relaxedAutoImplicit = false
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "6f1ef4e5dd604a435bddba4747b13970cd65d2a1"
+rev = "5ed2965256430c3649e86755f9576b54eca72435"
 
 [[lean_lib]]
 name = "SawinTotallyRealTowers"

@@ -18,7 +18,7 @@ from check_source_closure import (audit, digest, require, ENTRY, ROOTS,
 
 HERE = Path(__file__).resolve().parent
 ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
-LEAN_REV = 'd8b18978322de05a8f3dba51ef03cf5461676c17'
+LEAN_REV = '293d5d0c0c3f3dded4688b3ccd6a33939ac5102b'
 WRAPPERS = {
     'Inventory.lean': 'd6714ed33fa2acdffeaf71c74a3f7f43b8aa1eb1148d2a48c19aa84f91a51b10',
     'ReplaySix.lean': 'f3a80238936e070af86c4559623cddfac04c7d4acc8dd09d294776eec4a49ee4',
@@ -104,7 +104,7 @@ def validate_replay(path, manifest):
     results = [r for r in records if r.get('phase') == 'replay']
     require(len(inventories) == len(results) == 1, 'Missing/duplicate replay records')
     inv = inventories[0]; result = results[0]
-    require(result['result'] == 'PASS' and result['kernel'] == 'official Lean 4.33.0',
+    require(result['result'] == 'PASS' and result['kernel'] == 'official Lean 4.34.0',
             'Official replay did not pass')
     require(inv['roots'] == manifest['roots'], 'Replay root mismatch')
     loaded = inv['loaded_modules']
@@ -232,7 +232,7 @@ class Runner:
                                               'tests/MartinetStatement.lean'])
             require(self.snapshots(self.project_paths()) == project, 'Input changed during build')
             version = self.stage('lean-version', [self.lake,'env','lean','--version'], True)
-            require('version 4.33.0' in version and LEAN_REV in version, 'Lean identity mismatch')
+            require('version 4.34.0' in version and LEAN_REV in version, 'Lean identity mismatch')
             prefix = self.stage('lean-prefix', [self.lake,'env','lean','--print-prefix'], True)
             search = self.stage('lean-search-path', [self.lake,'env','printenv','LEAN_PATH'], True)
             ident = {'version': version, 'prefix': prefix, 'searchPath': search,

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
@@ -190,10 +196,13 @@ theorem conjugateExtensionCompletionRingEquiv_norm_eq
     ‖conjugateExtensionCompletionRingEquiv vK wL σ x‖ =
       ‖x‖ := by
   change ‖conjugateCompletionRingEquiv wL.1 σ x‖ = ‖x‖
+  let f := (conjugateWithAbsRingEquiv wL.1 σ).toRingHom
   let h := conjugateWithAbsRingEquiv_isometry wL.1 σ
-  change ‖h.mapRingHom x‖ = ‖x‖
-  exact h.isometry_mapRingHom.norm_map_of_map_zero
-    (map_zero h.mapRingHom) x
+  change
+    ‖UniformSpace.Completion.mapRingHom f h.continuous x‖ = ‖x‖
+  exact
+    (UniformSpace.Completion.isometry_mapRingHom h).norm_map_of_map_zero
+      (map_zero (UniformSpace.Completion.mapRingHom f h.continuous)) x
 
 omit [NumberField K] [NumberField L]
     [FiniteDimensional K L] in
@@ -252,10 +261,7 @@ theorem finitePlaceLocalTensorDecompositionComponent_scalarTensorConjugation
       Algebra vK.Completion u.1.Completion :=
     fun u =>
       AbsoluteValue.completionAlgebra vK u.1 u.2
-  induction x using TensorProduct.induction_on with
-  | zero =>
-      rw [map_zero, finitePlaceLocalTensorDecompositionComponent_zero,
-        finitePlaceLocalTensorDecompositionComponent_zero, map_zero]
+  induction x using TensorProduct.inductionOn with
   | add x y hx hy =>
       rw [map_add, finitePlaceLocalTensorDecompositionComponent_add,
         finitePlaceLocalTensorDecompositionComponent_add, map_add, hx, hy]

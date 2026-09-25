@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceSeparableEmbedding
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalFiniteInertiaUnramified
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
@@ -77,6 +83,8 @@ theorem chosenFinitePlaceIsUnramified_of_absoluteInertiaFixes
       ∀ x : M, (tau.1.1 : Gal(AlgebraicClosure F/F)) (x : AlgebraicClosure F) = x) :
     ChosenFinitePlaceIsUnramified (K := F) (L := M) v := by
   let _ : CharZero Kv := charZero_of_injective_algebraMap (algebraMap F Kv).injective
+  let : Algebra F (SeparableClosure Kv) := finitePlaceSeparableEmbeddingBaseAlgebra F v
+  let : IsScalarTower F Kv (SeparableClosure Kv) := finitePlaceSeparableEmbeddingBaseTower F v
   let f : Loc →ₐ[Kv] SeparableClosure Kv := finiteFieldSeparableEmbedding Kv Loc
   let fM : M →ₐ[F] SeparableClosure Kv :=
     { toRingHom := f.toRingHom.comp

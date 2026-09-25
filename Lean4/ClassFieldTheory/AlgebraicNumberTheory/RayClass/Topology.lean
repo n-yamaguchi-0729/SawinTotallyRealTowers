@@ -1,7 +1,13 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
 import Mathlib.Analysis.Complex.Convex
-import Mathlib.Data.Sign.Basic
+import Mathlib.Basic.Sign.Basic
 import Mathlib.Topology.Algebra.Ring.Compact
 import Mathlib.Topology.Connected.Clopen
 import Mathlib.Topology.Instances.Sign

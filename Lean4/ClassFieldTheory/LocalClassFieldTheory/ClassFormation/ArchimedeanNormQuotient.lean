@@ -1,6 +1,12 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanHilbert90
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
-import Mathlib.Data.Real.Sign
+import Mathlib.Basic.Real.Sign
 import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Mathlib.RingTheory.Complex
 
@@ -536,7 +542,8 @@ theorem realComplexNormQuotient_card_eq_two :
   rw [Nat.card_congr realComplexNormQuotientEquivSign.toEquiv,
     Nat.card_eq_fintype_card, Fintype.card_units_int]
 
-omit [NumberField K] [NumberField L] in
+omit [NumberField L] in
+omit [NumberField L] in
 /-- The degree-zero local Herbrand group at an infinite place has
 cardinality equal to the archimedean local degree: one at an
 unramified place and two at a ramified real-to-complex place. -/
@@ -595,11 +602,11 @@ theorem infinitePlaceLocalHerbrandH0_card_eq_localDegree
     decompositionGroupLocalUnitsAction
       v.1 v.isNontrivial u
   by_cases hUnramified : w.IsUnramified K
-  · rw [if_pos hUnramified]
+  · rw [ite_eq_left hUnramified]
     apply herbrandH0_card_eq_one_of_group_card_eq_one
     rw [absoluteValueDecompositionGroup_eq_infinitePlaceStabilizer w,
-      InfinitePlace.card_stabilizer, if_pos hUnramified]
-  · rw [if_neg hUnramified]
+      InfinitePlace.card_stabilizer, ite_eq_left hUnramified]
+  · rw [ite_eq_right hUnramified]
     have hRamified : w.IsRamified K := hUnramified
     have hvReal : v.IsReal := by
       rw [← hw]
@@ -626,7 +633,7 @@ theorem infinitePlaceLocalHerbrandH0_card_eq_localDegree
             (eCompletion.trans eRealComplex)).toEquiv
       _ = 2 := realComplexNormQuotient_card_eq_two
 
-omit [NumberField K] [NumberField L] in
+omit [NumberField L] in
 /-- Complete archimedean local class-field axiom, in the exact form
 used in the relative-idele Herbrand quotient: Hilbert 90 gives
 `#H⁻¹ = 1`, while the norm quotient gives the local degree in `H⁰`. -/
@@ -700,7 +707,7 @@ theorem infinitePlaceLocalClassAxiom_cards
       infinitePlaceLocalHerbrandH0_card_eq_localDegree
         v w hw⟩
 
-omit [NumberField K] [NumberField L] in
+omit [NumberField L] in
 /-- Finiteness of the archimedean degree-zero local Herbrand group,
 deduced from its explicit nonzero cardinality. -/
 theorem infinitePlaceLocalHerbrandH0Finite
@@ -751,7 +758,7 @@ theorem infinitePlaceLocalHerbrandH0Finite
   · have hGroup :
         Nat.card (absoluteValueDecompositionGroup K w.1) = 1 := by
       rw [absoluteValueDecompositionGroup_eq_infinitePlaceStabilizer w,
-        InfinitePlace.card_stabilizer, if_pos hUnramified]
+        InfinitePlace.card_stabilizer, ite_eq_left hUnramified]
     let : Subsingleton (absoluteValueDecompositionGroup K w.1) :=
       (Nat.card_eq_one_iff_unique.mp hGroup).1
     let :

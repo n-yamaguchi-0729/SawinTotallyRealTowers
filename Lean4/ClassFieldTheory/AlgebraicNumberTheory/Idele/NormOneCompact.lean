@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
@@ -623,7 +629,7 @@ private theorem idealClass_normOneIdealClassRepresentative
     (h : ∃ a : IdeleGroup K,
       a ∈ normOneSubgroup (K := K) ∧ idealClass a = c) :
     idealClass (normOneIdealClassRepresentative (K := K) c) = c := by
-  rw [normOneIdealClassRepresentative, dif_pos h]
+  rw [normOneIdealClassRepresentative, dite_eq_left h]
   exact (Classical.choose_spec h).2
 
 /-- The finite set of chosen norm-one representatives of ordinary ideal

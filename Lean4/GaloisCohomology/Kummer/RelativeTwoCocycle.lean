@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.RepresentationTheory.Rep.Res
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
@@ -40,7 +46,7 @@ theorem exists_relativeTwoCocycle
   let B : G → A := fun g => if hg : g ∈ S then b ⟨g, hg⟩ else 0
   have hB (n : S) : B n = b n := by
     dsimp only [B]
-    rw [dif_pos n.property]
+    rw [dite_eq_left n.property]
   let dz : cocycles₂ A := ⟨d₁₂ A B, d₁₂_apply_mem_cocycles₂ B⟩
   refine ⟨z - dz, ?_, ?_⟩
   · apply (H2π_eq_iff (z - dz) z).mpr

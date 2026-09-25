@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 import ProCGroups.ProC.Quotients.DescendingClosedSubgroupQuotients
 
@@ -85,7 +91,7 @@ noncomputable def closedSubgroupOfOpenSubgroup
   toSubgroup := (N : Subgroup T).map ((T : Subgroup G).subtype)
   isClosed' := by
     have : IsTopologicalGroup ↥(T : Subgroup G) :=
-      Topology.IsInducing.subtypeVal.topologicalGroup (T : Subgroup G).subtype
+      Topology.IsInducing.subtypeVal.isTopologicalGroup (T : Subgroup G).subtype
     have hNclosed : IsClosed ((N : Subgroup T) : Set T) :=
       Subgroup.isClosed_of_isOpen (N : Subgroup T) N.isOpen'
     have hNcompact : IsCompact ((N : Subgroup T) : Set T) := hNclosed.isCompact

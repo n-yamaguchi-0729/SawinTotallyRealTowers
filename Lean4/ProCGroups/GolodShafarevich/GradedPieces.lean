@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.ProP.Zassenhaus.AugmentationFiltration
 
 set_option autoImplicit false
@@ -89,7 +95,7 @@ theorem shiftedTruncatedAugmentationDimension_eq_star (N shift : ℕ) :
     shiftedTruncatedAugmentationDimension (p := p) (G := G) N shift =
       truncatedAugmentationDimensionStar (p := p) (G := G) N shift := by
   by_cases hs : shift ≤ N
-  · rw [truncatedAugmentationDimensionStar, if_pos hs]
+  · rw [truncatedAugmentationDimensionStar, ite_eq_left hs]
     have hsub :
         shiftedClosedAugmentationSubmodule (p := p) (G := G) N shift =
           shiftedClosedAugmentationSubmodule (p := p) (G := G) (N - shift) 0 := by
@@ -99,7 +105,7 @@ theorem shiftedTruncatedAugmentationDimension_eq_star (N shift : ℕ) :
         (by omega)
     unfold shiftedTruncatedAugmentationDimension truncatedAugmentationDimension
     exact (Submodule.quotEquivOfEq _ _ hsub).finrank_eq
-  · rw [truncatedAugmentationDimensionStar, if_neg hs]
+  · rw [truncatedAugmentationDimensionStar, ite_eq_right hs]
     have hexp : N + 1 - shift = 0 := by omega
     have hsub :
         shiftedClosedAugmentationSubmodule (p := p) (G := G) N shift = ⊤ := by

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosure
 
 set_option autoImplicit false
@@ -190,6 +196,7 @@ variable {L : Type}
     [FiniteDimensional K L] [IsGalois K L]
     [IsGalois M L]
 
+omit [NumberField L] [FiniteDimensional K L] in
 /-- Complete splitting ascends from a base finite place to every
 finite place of an intermediate field lying above it.
 

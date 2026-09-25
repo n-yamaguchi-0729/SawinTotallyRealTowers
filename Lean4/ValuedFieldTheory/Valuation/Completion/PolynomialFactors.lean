@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 import Mathlib.FieldTheory.Minpoly.IsConjRoot
 import Mathlib.Algebra.Polynomial.FieldDivision
@@ -137,7 +143,7 @@ noncomputable def rootClassesEquivDistinctNormalizedFactors
     Quotient (rootMinpolySetoid (E := E) p) ≃
       DistinctNormalizedFactors p :=
   (Setoid.quotientKerEquivRange (rootMinpoly p)).trans
-    (Equiv.setCongr (range_rootMinpoly_eq_distinctNormalizedFactors hp))
+    (Set.equivOfEq (range_rootMinpoly_eq_distinctNormalizedFactors hp))
 
 /-- Two roots are equivalent precisely when they are conjugate roots. -/
 theorem rootMinpolySetoid_rel_iff_isConjRoot

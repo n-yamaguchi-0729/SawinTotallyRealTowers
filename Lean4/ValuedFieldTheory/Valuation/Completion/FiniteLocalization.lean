@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 import ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
 import Mathlib.Analysis.Normed.Module.FiniteDimension
@@ -143,8 +149,7 @@ theorem absoluteValueExtension_finiteLocalization_eq_top
   intro y _
   obtain ⟨z, rfl⟩ :=
     absoluteValueExtension_localizationTensorHom_surjective vK hvK w y
-  induction z using TensorProduct.induction_on with
-  | zero => exact E.zero_mem
+  induction z using TensorProduct.inductionOn with
   | tmul b x =>
       rw [absoluteValueExtension_localizationTensorHom_tmul]
       exact E.mul_mem (E.algebraMap_mem b)

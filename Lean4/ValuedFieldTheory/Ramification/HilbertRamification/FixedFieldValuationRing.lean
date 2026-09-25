@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
 import Mathlib.RingTheory.DiscreteValuationRing.TFAE
 
@@ -258,7 +264,7 @@ theorem fixedFieldValuationSubringDVF_isDiscreteValuationRing
     intro hB
     exact IsDiscreteValuationRing.not_isField base.valuationSubring
       (isField_of_isIntegral_of_isField hinj hB)
-  exact ((IsDiscreteValuationRing.TFAE B hnotField).out 1 0).mp
+  exact ((IsDiscreteValuationRing.TFAE B hnotField).out 2 1).mp
     (inferInstance : ValuationRing B)
 
 /-- The quotient automorphism on the fixed field commutes with inclusion into

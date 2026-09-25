@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalProduct
@@ -118,7 +124,7 @@ theorem powerSeries_log_coeff_mul_pow_eq_signedLogSeriesTermField
   have hsign : (-1 : ℚ) ^ (n + 1 + 1) = (-1 : ℚ) ^ n := by
     rw [show n + 1 + 1 = n + 2 by omega, pow_add]
     norm_num
-  rw [PowerSeries.coeff_log, if_neg (Nat.succ_ne_zero n), hsign, hcoeff]
+  rw [PowerSeries.coeff_log, ite_eq_right (Nat.succ_ne_zero n), hsign, hcoeff]
   simp [signedLogSeriesTermField, logSeriesTermField, div_eq_mul_inv,
     mul_assoc, mul_left_comm, mul_comm]
 

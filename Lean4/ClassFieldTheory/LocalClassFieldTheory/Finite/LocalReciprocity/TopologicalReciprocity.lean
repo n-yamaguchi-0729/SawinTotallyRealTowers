@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
@@ -5,6 +11,7 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnitTopology
 import Mathlib.FieldTheory.KrullTopology
 import Mathlib.Topology.Algebra.Group.Quotient
 import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
+import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Algebra.OpenSubgroup
 
 set_option autoImplicit false
@@ -87,13 +94,21 @@ private theorem integerUnitNormSubgroup_eq_localNormSubgroup_inf_baseUnits
       exact v_integerUnitsToFieldUnits K a
     have hnorm := v_normUnits_eq_residue_finrank_mul_of_isSeparable K L y
     change v K (Additive.ofMul (LocalFieldTheory.normUnits K L y)) =
-      (Module.finrank 𝓀[K] 𝓀[L] : Int) * v L (Additive.ofMul y) at hnorm
+      (@Module.finrank 𝓀[K] 𝓀[L] _ _
+        (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[L])) : Int) *
+        v L (Additive.ofMul y) at hnorm
     have hproduct :
-        (Module.finrank 𝓀[K] 𝓀[L] : Int) * v L (Additive.ofMul y) = 0 := by
+        (@Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[L])) : Int) *
+          v L (Additive.ofMul y) = 0 := by
       rw [← hnorm, hy]
       exact hxv
-    have hfinrank : (Module.finrank 𝓀[K] 𝓀[L] : Int) ≠ 0 := by
-      have hnat : Module.finrank 𝓀[K] 𝓀[L] ≠ 0 :=
+    have hfinrank :
+        (@Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[L])) : Int) ≠ 0 := by
+      have hnat :
+          @Module.finrank 𝓀[K] 𝓀[L] _ _
+            (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[L])) ≠ 0 :=
         Nat.ne_of_gt Module.finrank_pos
       exact_mod_cast hnat
     have hyv : v L (Additive.ofMul y) = 0 :=

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Ramification.ClosedSubgroups
 import ValuedFieldTheory.Ramification.ProfiniteInvariant
 
@@ -189,6 +195,8 @@ private theorem decompositionFixedMaximalIdeal_isMaximal
     Algebra.IsInvariant.isIntegral_of_profinite
       (G := decompositionGroup K A)
   exact Ideal.isMaximal_comap_of_isIntegral_of_isMaximal
+    (decompositionFixedSubring K A).subtype
+    (fun x => Algebra.IsIntegral.isIntegral x)
     (IsLocalRing.maximalIdeal A)
 
 /-- Provides the instance `instIsMaximal`. -/

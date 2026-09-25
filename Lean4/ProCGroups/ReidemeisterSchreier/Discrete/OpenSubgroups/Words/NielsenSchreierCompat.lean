@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.ReidemeisterSchreier.Groupoid
 
 set_option autoImplicit false
@@ -33,7 +39,7 @@ generator labels.
     intro X _ f
     let f' : ι → (A → X) ⋊[mulAutArrow] G := fun i =>
       ⟨fun a =>
-          @f ⟨(), (b i)⁻¹ • a⟩ ⟨(), a⟩
+          @f (Functor.elementsMk _ () ((b i)⁻¹ • a)) (Functor.elementsMk _ () a)
             ⟨i, smul_inv_smul (b i) a⟩,
         b i⟩
     let F' : G →* (A → X) ⋊[mulAutArrow] G := b.lift f'
@@ -46,7 +52,12 @@ generator labels.
       intro i
       rw [MonoidHom.comp_apply, hF' i]
       rfl
-    · rintro ⟨⟨⟩, a : A⟩ ⟨⟨⟩, b'⟩ ⟨i, h : b i • a = b'⟩
+    · intro a b' e
+      induction a with | mk a
+      induction b' with | mk b'
+      induction e with | mk i h
+      change A at a b'
+      change b i • a = b' at h
       change (F' (b i)).left _ = _
       rw [hF' i]
       cases inv_smul_eq_iff.mpr h.symm
@@ -58,7 +69,8 @@ generator labels.
         rw [hF' i]
         apply SemidirectProduct.ext
         · funext a
-          exact hE ⟨(), (b i)⁻¹ • a⟩ ⟨(), a⟩ ⟨i, smul_inv_smul (b i) a⟩
+          exact hE (Functor.elementsMk _ () ((b i)⁻¹ • a)) (Functor.elementsMk _ () a)
+            ⟨i, smul_inv_smul (b i) a⟩
         · rfl
       apply Functor.hext
       · intro

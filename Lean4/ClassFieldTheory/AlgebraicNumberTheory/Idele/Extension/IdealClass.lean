@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
@@ -373,6 +379,8 @@ theorem extension_infiniteComponent
     (a : IdeleGroup K)
     (W : InfinitePlace L) :
     infiniteComponent W (extension K L a) =
+      letI : Algebra.IsIntegral K L :=
+        Algebra.IsIntegral.of_finite K L
       let v :=
         _root_.infinitePlaceBelow (K := K) W
       letI : W.1.LiesOver v.1 := ⟨rfl⟩
@@ -380,6 +388,10 @@ theorem extension_infiniteComponent
         (NumberField.LiesOver.completionMap
           (v := v) (w := W))
         (infiniteComponent v a) := by
+  let : Algebra.IsIntegral K L :=
+    Algebra.IsIntegral.of_finite K L
+  let : Algebra.IsSeparable K L :=
+    Algebra.IsSeparable.of_integral K L
   let v :=
     _root_.infinitePlaceBelow (K := K) W
   let : W.1.LiesOver v.1 := ⟨rfl⟩
@@ -681,7 +693,6 @@ theorem extension_self :
         rfl
         (_root_.finitePlaceBelow_self (K := K) W)
 
-omit [IsGalois K L] in
 /-- Extension of ideles is functorial in a tower of finite Galois
 extensions. -/
 theorem extension_comp
@@ -845,7 +856,6 @@ theorem ideleClassExtension_self :
     IdeleGroup.extension_self]
   rfl
 
-omit [IsGalois K L] in
 /-- Extension of idele classes is functorial in a tower of finite
 Galois extensions. -/
 theorem ideleClassExtension_comp

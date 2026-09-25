@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.RelativeUnramifiedFixedField
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFixedFieldCompositum
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
@@ -151,7 +157,9 @@ variable (F : IntermediateField K (SeparableClosure K))
 original actual intermediate field. -/
 theorem finiteAbstractFieldOfGaloisIntermediateField_residueDegree :
     ((finiteAbstractFieldOfGaloisIntermediateField K F).residueDegree
-      (localResidueDatum K) : ℕ) = Module.finrank 𝓀[K] 𝓀[F] := by
+      (localResidueDatum K) : ℕ) =
+        @Module.finrank 𝓀[K] 𝓀[F] _ _
+          (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F])) := by
   let H := finiteAbstractFieldOfGaloisIntermediateField K F
   let E := abstractFixedField K (SeparableClosure K) H.field
   have hE : E = F := fixedField_finiteAbstractFieldOfGaloisIntermediateField K F
@@ -159,7 +167,9 @@ theorem finiteAbstractFieldOfGaloisIntermediateField_residueDegree :
       ∀ [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
         [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
         [FiniteDimensional K L],
-        (H.residueDegree (localResidueDatum K) : ℕ) = Module.finrank 𝓀[K] 𝓀[L] := by
+        (H.residueDegree (localResidueDatum K) : ℕ) =
+          @Module.finrank 𝓀[K] 𝓀[L] _ _
+            (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[L])) := by
     intro L hL
     subst L
     intro vE tE localE extKE finiteKE
@@ -186,7 +196,8 @@ theorem relativeUnramifiedFixedField_ramification_eq_sup_sameDegree :
   rw [Ideal.ramificationIdx'_eq_ramificationIdx _ _ hp] at hfund
   have he : 0 < (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K] := by
     have hprod : 0 < (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K] *
-        Module.finrank 𝓀[K] 𝓀[F] := by
+        @Module.finrank 𝓀[K] 𝓀[F] _ _
+          (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F])) := by
       rw [hfund]
       exact Module.finrank_pos
     exact Nat.pos_of_mul_pos_right hprod

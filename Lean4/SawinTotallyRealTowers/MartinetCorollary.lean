@@ -1,3 +1,12 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+Statement adapted from Lean Eval:
+https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/martinet_totally_real_towers/Challenge.lean
+Lean Eval repository: Copyright 2026 Lean FRO, LLC; Apache 2.0.
+-/
+
 import SawinTotallyRealTowers.SawinTotallyRealTower
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 

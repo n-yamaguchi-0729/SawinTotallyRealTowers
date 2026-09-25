@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import GaloisCohomology.Kummer.Concrete.SimpleExtension
 import ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
@@ -445,6 +451,7 @@ theorem
   rw [← IntermediateField.fixingSubgroup_fixedField D,
     htop, IntermediateField.fixingSubgroup_top]
 
+omit [NumberField K] in
 /-- At an infinite place where the radicand is already an `n`-th
 power, the determinant norm from the simple Kummer tensor algebra is
 surjective.  The proof identifies the decomposition group with the

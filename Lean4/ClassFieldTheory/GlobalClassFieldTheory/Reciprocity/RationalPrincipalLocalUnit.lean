@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrimeFactorization
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
@@ -58,7 +64,7 @@ theorem rationalPrimeUnit_heightOneValuation_eq_one
       else WithZero.exp
         (-padicValRat p.1 (rationalPrimeUnit x p : ℚ))) =
       1
-  rw [if_neg (Units.ne_zero _), padicValRat_rationalPrimeUnit]
+  rw [ite_eq_right (Units.ne_zero _), padicValRat_rationalPrimeUnit]
   rfl
 
 /-- The rational `p`-unit, expressed as a unit of the valuation subring of

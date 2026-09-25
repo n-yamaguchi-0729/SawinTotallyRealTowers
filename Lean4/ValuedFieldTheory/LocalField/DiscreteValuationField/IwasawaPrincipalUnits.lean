@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaIndexing
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitInverseLimitSurjectivity
@@ -2145,8 +2151,8 @@ theorem continuous_adicIwasawaDegreeTerm
     apply hcont.congr
     intro a
     simp only [Function.comp_apply, adicIwasawaDegreeTerm,
-      iwasawaDegreeTerm, dif_pos hn, adicIwasawaGn, ofMul_toMul]
-  · simpa only [adicIwasawaDegreeTerm, iwasawaDegreeTerm, dif_neg hn,
+      iwasawaDegreeTerm, dite_eq_left hn, adicIwasawaGn, ofMul_toMul]
+  · simpa only [adicIwasawaDegreeTerm, iwasawaDegreeTerm, dite_eq_right hn,
       ofMul_one] using
       (continuous_const : Continuous fun _ : iwasawaDomain F =>
         AdicPrincipalUnits.of F.toCompleteDVF 0)

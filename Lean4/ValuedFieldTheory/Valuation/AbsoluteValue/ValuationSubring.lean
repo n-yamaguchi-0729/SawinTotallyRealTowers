@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
 import Mathlib.Algebra.Polynomial.Lifts
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
@@ -39,7 +45,7 @@ def absoluteValueUnitBallSubring
     intro x y hx hy
     change v (x * y) ≤ 1
     rw [v.map_mul]
-    exact mul_le_one₀ hx (v.nonneg y) hy
+    exact (mul_le_of_le_one_left (v.nonneg y) hx).trans hy
 
 /-- Membership in the absolute-value valuation subring is the closed-unit-ball
 condition. -/

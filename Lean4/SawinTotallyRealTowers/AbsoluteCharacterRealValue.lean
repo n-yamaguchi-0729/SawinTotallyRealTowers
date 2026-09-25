@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.NegativeThreeCharacter
 import SawinTotallyRealTowers.AbsoluteRealKernelField
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
@@ -69,9 +75,9 @@ theorem absoluteCharacterWithRealValue_infinite
     absoluteCharacterWithRealValue γ ε (absoluteInfinitePlaceArtinNegOne ℚ v) = ε := by
   rw [Subsingleton.elim v Rat.infinitePlace]
   by_cases h : γ (absoluteInfinitePlaceArtinNegOne ℚ Rat.infinitePlace) = ε
-  · rw [absoluteCharacterWithRealValue, if_pos h]
+  · rw [absoluteCharacterWithRealValue, ite_eq_left h]
     exact h
-  · rw [absoluteCharacterWithRealValue, if_neg h, ContinuousMonoidHom.mul_apply]
+  · rw [absoluteCharacterWithRealValue, ite_eq_right h, ContinuousMonoidHom.mul_apply]
     exact quadratic_mul_eq_of_ne
       (γ (absoluteInfinitePlaceArtinNegOne ℚ Rat.infinitePlace)) ε
       (negativeThreeCharacter (absoluteInfinitePlaceArtinNegOne ℚ Rat.infinitePlace)) h
@@ -91,8 +97,8 @@ theorem absoluteCharacterWithRealValue_inertia
       γ (finitePlaceAbsoluteDecompositionInclusion ℚ v
         (finitePlaceAbsoluteInertiaInclusion ℚ v σ)) := by
   by_cases h : γ (absoluteInfinitePlaceArtinNegOne ℚ Rat.infinitePlace) = ε
-  · rw [absoluteCharacterWithRealValue, if_pos h]
-  · rw [absoluteCharacterWithRealValue, if_neg h, ContinuousMonoidHom.mul_apply,
+  · rw [absoluteCharacterWithRealValue, ite_eq_left h]
+  · rw [absoluteCharacterWithRealValue, ite_eq_right h, ContinuousMonoidHom.mul_apply,
       negativeThreeCharacter_inertia v hv σ, mul_one]
 
 end ClassFieldTower.Sawin

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -146,9 +152,9 @@ theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace
       else 1 := by
   classical
   by_cases hv : v ∈ S
-  · rw [dif_pos hv]
+  · rw [dite_eq_left hv]
     exact finiteSupportLocalReciprocityIdeleCharacter_finitePlace_mem F p S chi ⟨v, hv⟩ a
-  · rw [dif_neg hv]
+  · rw [dite_eq_right hv]
     exact finiteSupportLocalReciprocityIdeleCharacter_finitePlace_notMem F p S chi v hv a
 
 /-- Every archimedean-place embedding is killed by a family supported at

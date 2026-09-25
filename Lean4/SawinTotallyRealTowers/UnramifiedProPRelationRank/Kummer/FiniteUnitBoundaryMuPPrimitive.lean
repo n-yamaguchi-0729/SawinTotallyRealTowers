@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
 import GaloisCohomology.Kummer.Concrete.GaloisCohomology
 
@@ -67,7 +73,7 @@ omit [CharZero K] in
 private theorem finiteUnitInclusion_restriction_smul
     (sigma : Gal(AlgebraicClosure K/K)) (u : Eˣ) :
     Units.map E.val.toMonoidHom
-        (AlgEquiv.restrictNormalHom E.toIntermediateField sigma • u) =
+        (Units.map (AlgEquiv.restrictNormalHom E.toIntermediateField sigma) u) =
       sigma • Units.map E.val.toMonoidHom u := by
   apply Units.ext
   exact AlgEquiv.restrictNormal_commutes sigma E.toIntermediateField (u : E)
@@ -120,7 +126,8 @@ theorem exists_absoluteMuP_primitive_of_finiteUnit_boundary
   have hq (s : Gal(AlgebraicClosure K/K)) : q s ^ p = 1 := by
     dsimp only [q, rootQuotient]
     rw [div_pow, div_pow, ← map_pow, ← smul_pow', hv,
-      ← finiteUnitInclusion_restriction_smul K E, ← map_div, hu]
+      ← finiteUnitInclusion_restriction_smul K E, ← map_div,
+      ← AlgEquiv.smul_units_def, hu]
     exact div_self' _
   let a : Field.absoluteGaloisGroup K → AbsoluteMuP K p := fun s =>
     Additive.ofMul ⟨q (absoluteGaloisGroupContinuousMulEquiv K s),
@@ -147,7 +154,6 @@ theorem exists_absoluteMuP_primitive_of_finiteUnit_boundary
   change s' • q t' * q s' / q (s' * t') = i (c (r s') (r t')).1
   dsimp only [q]
   rw [smul_div', ← finiteUnitInclusion_restriction_smul K E, map_mul r,
-    rootQuotient_mul, divCochain_mulDiv, ← map_mul i, ← map_div i,
-    AlgEquiv.smul_units_def, hb]
+    rootQuotient_mul, divCochain_mulDiv, ← map_mul i, ← map_div i, hb]
 
 end ClassFieldTower.Martinet.Shafarevich

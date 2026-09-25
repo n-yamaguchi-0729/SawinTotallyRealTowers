@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
@@ -7,6 +13,7 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResid
 import Mathlib.Algebra.Algebra.Basic
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.LinearAlgebra.Dimension.Free
+import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.RingTheory.Valuation.Extension
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
@@ -34,6 +41,35 @@ private theorem valuationInteger_scalarTower
   apply IsScalarTower.of_algebraMap_eq'
   ext x
   exact IsScalarTower.algebraMap_apply A B C (x : A)
+
+private theorem valuationResidue_scalarTower
+    (A B C : Type*) [CommRing A] [CommRing B] [CommRing C]
+    [IsLocalRing A] [IsLocalRing B] [IsLocalRing C]
+    [Algebra A B] [Algebra B C] [Algebra A C] [IsScalarTower A B C]
+    [IsLocalHom (algebraMap A B)] [IsLocalHom (algebraMap B C)]
+    [IsLocalHom (algebraMap A C)] :
+    IsScalarTower (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B)
+      (IsLocalRing.ResidueField C) := inferInstance
+
+private theorem valuationResidue_finrank_mul
+    (A B C : Type*) [CommRing A] [CommRing B] [CommRing C]
+    [IsLocalRing A] [IsLocalRing B] [IsLocalRing C]
+    [Algebra A B] [Algebra B C] [Algebra A C] [IsScalarTower A B C]
+    [IsLocalHom (algebraMap A B)] [IsLocalHom (algebraMap B C)]
+    [IsLocalHom (algebraMap A C)] :
+    (@Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) _ _
+      (IsLocalRing.ResidueField.instModule (R := A) (S := B))) *
+    (@Module.finrank (IsLocalRing.ResidueField B) (IsLocalRing.ResidueField C) _ _
+      (IsLocalRing.ResidueField.instModule (R := B) (S := C))) =
+    (@Module.finrank (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField C) _ _
+      (IsLocalRing.ResidueField.instModule (R := A) (S := C))) :=
+  @Module.finrank_mul_finrank
+    (IsLocalRing.ResidueField A) (IsLocalRing.ResidueField B) (IsLocalRing.ResidueField C)
+    _ _ _
+    (IsLocalRing.ResidueField.instModule (R := A) (S := B))
+    (IsLocalRing.ResidueField.instModule (R := B) (S := C))
+    (IsLocalRing.ResidueField.instModule (R := A) (S := C))
+    (valuationResidue_scalarTower A B C) _ _ _ _
 
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
@@ -215,11 +251,20 @@ attribute [local instance] relativeUnramifiedFixedField_faithfulSMul
 /-- The residue field of the actual relative degree-kernel extension also has
 exactly the prescribed degree, for its compatible local valuations. -/
 theorem relativeUnramifiedFixedField_residue_finrank :
-    Module.finrank 𝓀[abstractFixedField K (SeparableClosure K) H.field]
-      𝓀[relativeUnramifiedFixedField K H m hm] = m := by
+    @Module.finrank 𝓀[abstractFixedField K (SeparableClosure K) H.field]
+      𝓀[relativeUnramifiedFixedField K H m hm] _ _
+        (IsLocalRing.ResidueField.instModule
+          (R := 𝒪[abstractFixedField K (SeparableClosure K) H.field])
+          (S := 𝒪[relativeUnramifiedFixedField K H m hm])) = m := by
   let F := abstractFixedField K (SeparableClosure K) H.field
   let N := relativeUnramifiedFixedField K H m hm
   let E := relativeUnramifiedFiniteExtension K H m hm
+  let : Algebra 𝓀[K] 𝓀[F] :=
+    IsLocalRing.ResidueField.instAlgebra (R := 𝒪[K]) (S := 𝒪[F])
+  let : Algebra 𝓀[K] 𝓀[N] :=
+    IsLocalRing.ResidueField.instAlgebra (R := 𝒪[K]) (S := 𝒪[N])
+  let : Algebra 𝓀[F] 𝓀[N] :=
+    IsLocalRing.ResidueField.instAlgebra (R := 𝒪[F]) (S := 𝒪[N])
   have : FiniteDimensional K F :=
     abstractFixedField_finiteDimensional K (SeparableClosure K) H.field H.finite
   have : FiniteDimensional F N :=
@@ -227,10 +272,12 @@ theorem relativeUnramifiedFixedField_residue_finrank :
   have : FiniteDimensional K N :=
     relativeUnramifiedFixedField_absoluteFiniteDimensional K H m hm
   have hbase : (H.residueDegree (localResidueDatum K) : ℕ) =
-      Module.finrank 𝓀[K] 𝓀[F] :=
+      @Module.finrank 𝓀[K] 𝓀[F] _ _
+        (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F])) :=
     localResidueDatum_residueDegree_eq_residueFinrank K H
   have htop : (E.field.residueDegree (localResidueDatum K) : ℕ) =
-      Module.finrank 𝓀[K] 𝓀[N] :=
+      @Module.finrank 𝓀[K] 𝓀[N] _ _
+        (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[N])) :=
     localResidueDatum_residueDegree_eq_residueFinrank K E.field
   have hrelative : (E.residueDegree (localResidueDatum K) : ℕ) = m :=
     (localResidueDatum K).finiteUnramifiedExtension_residueDegree
@@ -243,14 +290,17 @@ theorem relativeUnramifiedFixedField_residue_finrank :
         (E.field.residueDegree (localResidueDatum K) : ℕ) at habstract
   rw [hrelative, hbase, htop] at habstract
   have : IsScalarTower 𝒪[K] 𝒪[F] 𝒪[N] := valuationInteger_scalarTower K F N
-  have hactual : Module.finrank 𝓀[K] 𝓀[F] * Module.finrank 𝓀[F] 𝓀[N] =
-      Module.finrank 𝓀[K] 𝓀[N] :=
-    Module.finrank_mul_finrank 𝓀[K] 𝓀[F] 𝓀[N]
-  have hbasePos : 0 < Module.finrank 𝓀[K] 𝓀[F] := by
+  have : IsScalarTower 𝓀[K] 𝓀[F] 𝓀[N] :=
+    valuationResidue_scalarTower 𝒪[K] 𝒪[F] 𝒪[N]
+  have hactual := valuationResidue_finrank_mul 𝒪[K] 𝒪[F] 𝒪[N]
+  have hbasePos : 0 < @Module.finrank 𝓀[K] 𝓀[F] _ _
+      (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F])) := by
     rw [← hbase]
     exact (H.residueDegree (localResidueDatum K)).property
   apply Nat.eq_of_mul_eq_mul_left hbasePos
-  exact hactual.trans ((Nat.mul_comm (Module.finrank 𝓀[K] 𝓀[F]) m).trans habstract).symm
+  exact hactual.trans ((Nat.mul_comm
+    (@Module.finrank 𝓀[K] 𝓀[F] _ _
+      (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F]))) m).trans habstract).symm
 
 
 /-- The relative degree-kernel fixed field is unramified for the compatible
@@ -262,15 +312,19 @@ theorem relativeUnramifiedFixedField_isUnramifiedValuedExtension
       (relativeUnramifiedFixedField K H m hm) := by
   let F := abstractFixedField K (SeparableClosure K) H.field
   let N := relativeUnramifiedFixedField K H m hm
-  have : IsGalois F N := relativeUnramifiedFixedField_isGalois K H m hm
-  have : IsIntegralClosure 𝒪[N] 𝒪[F] N :=
-    localCompleteDVF_integerRing_isIntegralClosure F N
   have hfund :=
-    maximalIdeal_ramificationIdx_mul_residue_finrank_eq_finrank_of_isIntegralClosure F N
+    maximalIdeal_ramificationIdx_mul_residue_finrank_eq_finrank F N
   have hp : (𝓂[F] : Ideal 𝒪[F]) ≠ ⊥ :=
     Ring.ne_bot_of_isMaximal_of_not_isField
       (IsLocalRing.maximalIdeal.isMaximal 𝒪[F])
       (IsDiscreteValuationRing.not_isField 𝒪[F])
+  have : Module.IsTorsionFree F N :=
+    Module.IsTorsionFree.of_smul_eq_zero fun r x h => by
+      rw [Algebra.smul_def] at h
+      rcases mul_eq_zero.mp h with hr | hx
+      · exact Or.inl ((algebraMap F N).injective (by simpa using hr))
+      · exact Or.inr hx
+  have : Module.IsTorsionFree 𝒪[F] 𝒪[N] := inferInstance
   rw [Ideal.ramificationIdx'_eq_ramificationIdx _ _ hp,
     relativeUnramifiedFixedField_residue_finrank K H m hm,
     relativeUnramifiedFixedField_finrank K H m hm] at hfund

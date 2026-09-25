@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.Cohomology.InvariantCharacterFiniteStage
 
 set_option autoImplicit false
@@ -114,4 +120,3 @@ theorem exists_finiteStage_invariant_character_family
 end
 
 end ClassFieldTower.ProP
-

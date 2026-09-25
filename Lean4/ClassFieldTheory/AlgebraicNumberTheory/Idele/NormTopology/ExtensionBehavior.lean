@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
 
 set_option autoImplicit false
@@ -26,7 +32,7 @@ variable
     [Field L] [NumberField L]
     [Algebra K L] [FiniteDimensional K L]
 
-omit [NumberField K] [NumberField L] [FiniteDimensional K L] in
+omit [NumberField L] in
 private theorem infinitePlaceCompletionMap_isometry
     (v₀ : InfinitePlace K)
     (W : InfinitePlace L)
@@ -37,10 +43,11 @@ private theorem infinitePlaceCompletionMap_isometry
   unfold NumberField.LiesOver.completionMap
   exact
     (InfinitePlace.Completion.isometryEquivCompletion W).symm.isometry.comp
-      ((InfinitePlace.LiesOver.isometry_algebraMap W v₀).isometry_mapRingHom.comp
+      ((UniformSpace.Completion.isometry_mapRingHom
+          (InfinitePlace.LiesOver.isometry_algebraMap W v₀)).comp
         (InfinitePlace.Completion.isometryEquivCompletion v₀).isometry)
 
-omit [NumberField K] [NumberField L] [FiniteDimensional K L] in
+omit [NumberField L] in
 /-- Mapping a unit along an infinite-place completion map preserves its
 positive norm. -/
 private theorem nnnormUnitHom_infinitePlaceCompletionMap

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
 import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Fundamental
 
@@ -166,7 +172,7 @@ theorem zcCompletedFoxSemidirectLift_right
     (ψ : FreeGroup X →* H) (w : FreeGroup X) :
     (zcCompletedFoxSemidirectLift C ψ w).right = ψ w := by
   induction w using FreeGroup.induction_on with
-  | C1 =>
+  | one =>
       simp only [zcCompletedFoxSemidirectLift, map_one, ZCCompletedFoxSemidirect.one_right]
   | of x =>
       simp only [zcCompletedFoxSemidirectLift, FreeGroup.lift_apply_of]

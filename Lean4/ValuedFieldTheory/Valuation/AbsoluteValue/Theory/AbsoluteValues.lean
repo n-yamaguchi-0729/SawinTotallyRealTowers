@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.Analysis.AbsoluteValue.Equivalence
 import Mathlib.Algebra.Order.Ring.IsNonarchimedean
 import Mathlib.NumberTheory.Ostrowski
@@ -328,9 +334,9 @@ theorem absoluteValueApproximation_from_weighted_bump_family
     intro j _
     by_cases hji : j = i
     · subst j
-      rw [if_pos rfl, (v i).map_mul]
+      rw [ite_eq_left rfl, (v i).map_mul]
       exact le_of_lt (hdiag i)
-    · rw [if_neg hji, (v i).map_mul]
+    · rw [ite_eq_right hji, (v i).map_mul]
       exact le_of_lt (hoff i j hji)
   have hsum_bound :
       (∑ j, v i (if j = i then a j * (e j - 1) else a j * e j)) < ε := by
@@ -481,9 +487,8 @@ theorem nat_le_one_of_strong_triangle
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     (hstrong : StrongTriangle v) (n : ℕ) :
     v (n : K) ≤ 1 := by
-  exact
-    IsNonarchimedean.apply_natCast_le_one
-      ((strong_triangle_iff_isNonarchimedean v).mp hstrong)
+  exact ((strong_triangle_iff_isNonarchimedean v).mp hstrong).apply_natCast_le_one
+    (by simp) (by simp)
 
 /-- The easy direction of the boundedness characterization of nonarchimedean absolute values: a valuation satisfying the strong
 triangle inequality is nonarchimedean in the boundedness-on-integers sense. -/

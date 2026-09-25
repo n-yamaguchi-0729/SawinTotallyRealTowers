@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
 import GaloisCohomology.ProP.H2CocycleExtension
 import GaloisCohomology.ProP.QuotientRestriction
@@ -149,7 +155,7 @@ theorem exists_character_corrected_absolute_cocycle_lift
     · by_cases hS : v ∈ S
       · have hc := hγInside ⟨v, hS⟩ hv σ
         dsimp only [χ] at hc
-        rw [dif_pos hv] at hc
+        rw [dite_eq_left hv] at hc
         change Multiplicative.ofAdd
           ((s (finitePlaceAbsoluteDecompositionInclusion ℚ v σ.1)).left.down -
             (t v hv σ.1).left.down) = _ at hc

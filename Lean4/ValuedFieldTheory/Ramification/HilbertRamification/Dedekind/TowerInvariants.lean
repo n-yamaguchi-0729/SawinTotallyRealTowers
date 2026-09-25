@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 set_option autoImplicit false
@@ -39,9 +45,9 @@ theorem dedekindTower_inertiaDeg_tower
     (p : Ideal A) [p.IsMaximal]
     (P : Ideal B) [P.IsMaximal] [P.LiesOver p]
     (Q : Ideal C) [Q.LiesOver P] :
-    Ideal.inertiaDeg' p Q =
-      Ideal.inertiaDeg' p P * Ideal.inertiaDeg' P Q := by
-  exact Ideal.inertiaDeg'_algebra_tower p P Q
+    Q.inertiaDeg A =
+      P.inertiaDeg A * Q.inertiaDeg B := by
+  exact Ideal.inertiaDeg_tower (R := A) P Q
 
 /-- The prime-decomposition tower arithmetic identity:
 if the top layer of a tower already accounts for the full product `e * f`,
@@ -87,20 +93,20 @@ theorem dedekindTower_ideal_tower_invariants_of_top_product
     (hp : Ideal.map (algebraMap A C) p ≠ ⊥)
     (hPQ : Ideal.map (algebraMap B C) P ≤ Q)
     (hprod :
-      Ideal.ramificationIdx' P Q * Ideal.inertiaDeg' P Q =
-        Ideal.ramificationIdx' p Q * Ideal.inertiaDeg' p Q) :
+      Ideal.ramificationIdx' P Q * Q.inertiaDeg B =
+        Ideal.ramificationIdx' p Q * Q.inertiaDeg A) :
     Ideal.ramificationIdx' p P = 1 ∧
-      Ideal.inertiaDeg' p P = 1 ∧
+      P.inertiaDeg A = 1 ∧
       Ideal.ramificationIdx' P Q =
         Ideal.ramificationIdx' p Q ∧
-      Ideal.inertiaDeg' P Q = Ideal.inertiaDeg' p Q := by
+      Q.inertiaDeg B = Q.inertiaDeg A := by
   have heTop :
       Ideal.ramificationIdx' P Q ≠ 0 :=
     Ideal.IsDedekindDomain.ramificationIdx'_ne_zero
       (p := P) (P := Q) hP inferInstance hPQ
   exact
     dedekindTower_tower_invariants_of_top_product
-      heTop (Ideal.inertiaDeg'_ne_zero P Q)
+      heTop (Q.inertiaDeg_pos B).ne'
       (ramificationIdx_tower
         (A := A) (B := B) (C := C) hP hp hPQ)
       (dedekindTower_inertiaDeg_tower
@@ -145,9 +151,9 @@ theorem dedekindRamification_ideal_tower_middle_invariants_of_top_invariants
     (heTop :
       Ideal.ramificationIdx' P Q =
         Ideal.ramificationIdx' p Q)
-    (hfTop : Ideal.inertiaDeg' P Q = 1) :
+    (hfTop : Q.inertiaDeg B = 1) :
     Ideal.ramificationIdx' p P = 1 ∧
-      Ideal.inertiaDeg' p P = Ideal.inertiaDeg' p Q := by
+      P.inertiaDeg A = Q.inertiaDeg A := by
   have heTop_ne :
       Ideal.ramificationIdx' P Q ≠ 0 :=
     Ideal.IsDedekindDomain.ramificationIdx'_ne_zero

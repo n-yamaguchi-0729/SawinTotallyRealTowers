@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 
 set_option autoImplicit false
@@ -92,7 +98,7 @@ theorem valuationSubringMapOfIsEquivComap_isLocalHom
     IsLocalHom
       (valuationSubringMapOfIsEquivComap vL vM ι hEquiv) := by
   let f := valuationSubringMapOfIsEquivComap vL vM ι hEquiv
-  apply ((IsLocalRing.local_hom_TFAE f).out 1 0).mp
+  apply ((IsLocalRing.local_hom_TFAE f).out 2 1).mp
   rintro _ ⟨a, ha, rfl⟩
   have haVal : vL (a : L) < 1 :=
     (_root_.Valuation.mem_maximalIdeal_iff (v := vL)).1 ha

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import GaloisCohomology.Kummer.Concrete.InfiniteCharacterEquiv
 import GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
 import ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
@@ -113,7 +119,9 @@ local instance discreteMultiplicativeZModDiscreteTopology (n : ℕ) :
     DiscreteTopology (Multiplicative (ZMod n)) :=
   discreteTopology_bot _
 
-private noncomputable def discreteNthRootsContinuousMulEquivMultiplicativeZMod
+/-- Choosing a primitive root in `K` identifies discrete roots of unity in its
+algebraic closure with the discrete multiplicative group underlying `ZMod n`. -/
+noncomputable def discreteNthRootsContinuousMulEquivMultiplicativeZMod
     (n : ℕ+) (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     DiscreteNthRootsSubgroup (AlgebraicClosure K) (n : ℕ) ≃ₜ*
       Multiplicative (ZMod (n : ℕ)) where

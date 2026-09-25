@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.NegativeThreeCharacter
 import SawinTotallyRealTowers.InfiniteArtinCompatibility
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
@@ -63,8 +69,8 @@ theorem negativeThreeCharacter_three_neg_one_ne_one :
       if v ∈ S then ψ (IdeleGroup.finitePlaceIdele v a) else 1 from
         finiteSupportIdeleRestrictionCharacter_finitePlace ℚ (2 : ℕ+) S ψ v a]
     by_cases hv : v ∈ S
-    · rw [if_pos hv, div_self']
-    · rw [if_neg hv, div_one]
+    · rw [ite_eq_left hv, div_self']
+    · rw [ite_eq_right hv, div_one]
       apply globalReciprocityIdeleCharacter_integral_eq_one_of_inertia
         ℚ (2 : ℕ+) negativeThreeCharacter v _ a ha
       intro σ

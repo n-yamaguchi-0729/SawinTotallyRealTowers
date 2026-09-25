@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaUniqueness
 
@@ -437,7 +443,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_qAdditiveSeries
         · have hzero :=
             equalCharacteristicQAdditiveSeries_pow_card_pow_coeff
               (k := k) a i r
-          rw [if_neg hir] at hzero
+          rw [ite_eq_right hir] at hzero
           simp [F, A, hzero] at hd
       · have hzero :=
           equalCharacteristicQAdditiveSeries_coeff_eq_zero k b d hde

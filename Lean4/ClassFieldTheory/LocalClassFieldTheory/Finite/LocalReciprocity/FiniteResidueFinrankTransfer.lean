@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteSubgroupResidueDegree
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueValuationComparison
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
@@ -134,8 +140,11 @@ theorem localResidueDatum_residueDegree_eq_residueFinrank
       (ValuativeRel.valuation
         (abstractFixedField K (SeparableClosure K) H.field))] :
     (H.residueDegree (localResidueDatum K) : ℕ) =
-      Module.finrank 𝓀[K]
-        𝓀[abstractFixedField K (SeparableClosure K) H.field] := by
+      @Module.finrank 𝓀[K]
+        𝓀[abstractFixedField K (SeparableClosure K) H.field] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[abstractFixedField K (SeparableClosure K) H.field])) := by
   let E := abstractFixedField K (SeparableClosure K) H.field
   let A := localSeparableValuationSubring K
   let C := (ValuativeRel.valuation E).valuationSubring
@@ -149,7 +158,10 @@ theorem localResidueDatum_residueDegree_eq_residueFinrank
   let F := localAbstractFixedResidueIntermediateField K H.field
   let : Algebra kK kE := by
     change Algebra 𝓀[K] 𝓀[E]
-    infer_instance
+    exact IsLocalRing.ResidueField.instAlgebra
+  let : Module kK kE := by
+    change Module 𝓀[K] 𝓀[E]
+    exact IsLocalRing.ResidueField.instModule
   change (H.residueDegree (localResidueDatum K) : ℕ) =
     Module.finrank kK kE
 

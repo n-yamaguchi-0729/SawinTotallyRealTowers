@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
 import Mathlib.NumberTheory.Cyclotomic.CyclotomicCharacter
@@ -69,7 +75,7 @@ theorem rationalCyclotomicCharacterPrimeProduct_apply
 
 section PrimePowerCharacter
 
--- Expose the exact prime-power index to Lean 4.33 instance matching. Both
+-- Expose the exact prime-power index to instance synthesis. Both
 -- proposition-valued instances are supplied by the existing canonical factories.
 local instance primePowerLevelNumberField (p : Nat.Primes) (k : ℕ) :
     NumberField (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=

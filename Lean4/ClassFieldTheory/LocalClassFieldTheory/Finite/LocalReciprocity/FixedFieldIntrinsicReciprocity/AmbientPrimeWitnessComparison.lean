@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeSymbolSetup
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityPrimeNorm
@@ -309,8 +315,7 @@ theorem
     exact (abelianizationCongr_of qF q).symm
   have hxWitness :
       ambientEmbeddedPrimeWitness K F E j e z = xPrime := by
-    exact
-      ambientEmbeddedPrimeWitness_formula K F E j e z
+    rfl
   rw [hxWitness]
   exact
     (DFunLike.congr_fun

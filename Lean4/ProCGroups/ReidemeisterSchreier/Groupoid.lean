@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
 
 set_option autoImplicit false
@@ -215,7 +221,7 @@ noncomputable def endBasis
         simp only [f', he, ↓reduceDIte])
     rintro ⟨⟨a, b, e⟩, h⟩
     simp only [Functor.mapEnd, DFunLike.coe, hloop, hF']
-    exact dif_neg h
+    exact dite_eq_right h
   · intro E hE
     ext x
     change E x = (F'.map x : X)
@@ -227,8 +233,8 @@ noncomputable def endBasis
     have hEval : E (rootLoopOfHom T (generatorHom e)) = f' e := by
       by_cases h : e ∈ Quiver.wideSubquiverSymmetrify T a b
       · rw [rootLoopOfHom_eq_id T e h, ← End.one_def, E.map_one]
-        simp only [f', dif_pos h]
-      · simpa only [f', dif_neg h] using hE ⟨⟨a, b, e⟩, h⟩
+        simp only [f', dite_eq_left h]
+      · simpa only [f', dite_eq_right h] using hE ⟨⟨a, b, e⟩, h⟩
     exact (rootFunctorOfMonoidHom_map T E (generatorHom e)).trans hEval
 
 /-- The explicit spanning-tree basis evaluates to the corresponding explicit-root loop. -/

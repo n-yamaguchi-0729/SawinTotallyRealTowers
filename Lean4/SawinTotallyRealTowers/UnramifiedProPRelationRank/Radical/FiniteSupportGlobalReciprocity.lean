@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
 
 set_option autoImplicit false
@@ -78,7 +84,7 @@ theorem finiteSupportIdeleRestrictionCharacter_finitePlace
     finiteSupportIdeleRestrictionCharacter F n S psi (IdeleGroup.finitePlaceIdele v a) =
       if v ∈ S then psi (IdeleGroup.finitePlaceIdele v a) else 1 := by
   by_cases hv : v ∈ S
-  · rw [if_pos hv]
+  · rw [ite_eq_left hv]
     change (∏ w : ↥S, psi (IdeleGroup.finitePlaceIdele w.1
       (IdeleGroup.finiteComponent w.1 (IdeleGroup.finitePlaceIdele v a)))) = _
     rw [Finset.prod_eq_single (⟨v, hv⟩ : ↥S)]
@@ -88,7 +94,7 @@ theorem finiteSupportIdeleRestrictionCharacter_finitePlace
         (fun h => hw (Subtype.ext h)), map_one, map_one]
     · intro h
       exact (h (Finset.mem_univ _)).elim
-  · rw [if_neg hv]
+  · rw [ite_eq_right hv]
     apply Finset.prod_eq_one
     intro w _
     rw [IdeleGroup.finitePlaceIdele_finiteComponent_of_ne v w.1 a
@@ -114,8 +120,8 @@ theorem finiteSupportIdeleRestrictionCharacter_principal_radical
       finiteSupportIdeleRestrictionCharacter F n S psi (IdeleGroup.finitePlaceIdele v u) = 1
     rw [finiteSupportIdeleRestrictionCharacter_finitePlace]
     by_cases hv : v ∈ S
-    · rw [if_pos hv, div_self']
-    · rw [if_neg hv, houtside v hv u hu, div_one]
+    · rw [ite_eq_left hv, div_self']
+    · rw [ite_eq_right hv, houtside v hv u hu, div_one]
   have h := ideleCharacter_principal_radical_eq_one_of_integral_local F n hpOdd d hd a
   change psi (IdeleGroup.principalIdele F a.1) /
     finiteSupportIdeleRestrictionCharacter F n S psi (IdeleGroup.principalIdele F a.1) = 1 at h

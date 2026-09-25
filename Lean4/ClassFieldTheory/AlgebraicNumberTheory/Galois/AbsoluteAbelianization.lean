@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.FieldTheory.Galois.Abelian
 import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.FieldTheory.IsSepClosed
@@ -85,12 +91,18 @@ Galois group's abelianization with the maximal abelian Galois group. -/
 noncomputable def absoluteTopologicalAbelianizationEquivMaximalAbelianGalois :
     TopologicalAbelianization Gal(SeparableClosure K / K) ≃ₜ*
       Gal(maximalAbelianExtension K / K) := by
-  let h := Continuous.homeoOfEquivCompactToT2
-    (absoluteAbelianizationMulEquivMaximalAbelianGalois_continuous K)
+  letI : T2Space Gal(maximalAbelianExtension K / K) :=
+    krullTopology_t2
+  let h :
+      TopologicalAbelianization Gal(SeparableClosure K / K) ≃ₜ
+        Gal(maximalAbelianExtension K / K) :=
+    Continuous.homeoOfEquivCompactToT2
+      (f := (absoluteAbelianizationMulEquivMaximalAbelianGalois K).toEquiv)
+      (absoluteAbelianizationMulEquivMaximalAbelianGalois_continuous K)
   exact
-    { toMulEquiv := absoluteAbelianizationMulEquivMaximalAbelianGalois K
-      continuous_toFun := h.continuous
-      continuous_invFun := h.symm.continuous }
+    { h with
+      map_mul' :=
+        (absoluteAbelianizationMulEquivMaximalAbelianGalois K).map_mul }
 
 /-- The absolute topological abelianization is totally disconnected. -/
 instance absoluteTopologicalAbelianization_totallyDisconnectedSpace :

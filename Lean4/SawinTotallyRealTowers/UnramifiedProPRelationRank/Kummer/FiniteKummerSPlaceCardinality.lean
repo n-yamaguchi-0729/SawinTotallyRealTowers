@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerSPlaceLocalization
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceFieldUnitsH2
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
@@ -62,7 +68,7 @@ private theorem range_finite_card_le_of_nsmul
     rw [Nat.card_pi]
     calc
       (∏ i, Nat.card {x : B i // n • x = 0}) ≤ ∏ _i : ι, n :=
-        Finset.prod_le_prod (fun _ _ => Nat.zero_le _) (fun i _ => hCard i)
+        Finset.prod_le_prod (fun i _ => hCard i)
       _ = n ^ Fintype.card ι := by rw [Finset.prod_const, Finset.card_univ]
   exact ⟨Finite.of_injective q hq, (Nat.card_le_card_of_injective q hq).trans hprod⟩
 

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 
@@ -48,9 +54,7 @@ theorem relativeAdeleCongr_trans
     relativeAdeleCongr (K := ℚ) f
         (relativeAdeleCongr (K := ℚ) e z) =
       relativeAdeleCongr (K := ℚ) (e.trans f) z := by
-  induction z using TensorProduct.induction_on with
-  | zero =>
-      simp
+  induction z using TensorProduct.inductionOn with
   | add x y hx hy =>
       simpa only [map_add] using congrArg₂ (· + ·) hx hy
   | tmul a x =>
@@ -162,9 +166,7 @@ theorem ideleClassCongr_refl
   have hcongr :
       relativeAdeleCongr (K := ℚ)
           (AlgEquiv.refl : K ≃ₐ[ℚ] K) z = z := by
-    induction z using TensorProduct.induction_on with
-    | zero =>
-        simp
+    induction z using TensorProduct.inductionOn with
     | add x y hx hy =>
         simpa only [map_add] using congrArg₂ (· + ·) hx hy
     | tmul b x =>
@@ -209,15 +211,11 @@ theorem relativeAdeleCongrOfAlgEquiv_towerActual
         (towerRelativeAdeleUnflatten ℚ K' L'
           (relativeAdeleCongr (K := ℚ) eL
             (towerRelativeAdeleFlatten ℚ K L z))) := by
-  induction z using TensorProduct.induction_on with
-  | zero =>
-      simp
+  induction z using TensorProduct.inductionOn with
   | add z₁ z₂ hz₁ hz₂ =>
       simpa only [map_add] using congrArg₂ (· + ·) hz₁ hz₂
   | tmul b x =>
-      induction b using TensorProduct.induction_on with
-      | zero =>
-          simp
+      induction b using TensorProduct.inductionOn with
       | add b₁ b₂ hb₁ hb₂ =>
           simpa only [TensorProduct.add_tmul, map_add] using
             congrArg₂ (· + ·) hb₁ hb₂

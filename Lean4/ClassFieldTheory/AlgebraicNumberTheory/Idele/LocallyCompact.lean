@@ -1,4 +1,11 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
+import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.Topology.Algebra.Valued.LocallyCompact
 
 set_option autoImplicit false
@@ -240,7 +247,7 @@ theorem finite_adicCompletion_residueField
     (v : HeightOneSpectrum (𝓞 K)) :
     Finite (Valued.ResidueField (v.adicCompletion K)) := by
   let : Finite (𝓞 K ⧸ v.asIdeal) :=
-    v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot
+    Ideal.finiteQuotientOfFreeOfNeBot v.asIdeal v.ne_bot
   exact Finite.of_equiv (𝓞 K ⧸ v.asIdeal)
     (GlobalClassFieldTheory.ClassFieldAxiom.ringOfIntegersQuotientEquivAdicResidueField
       (K := K) v).toEquiv

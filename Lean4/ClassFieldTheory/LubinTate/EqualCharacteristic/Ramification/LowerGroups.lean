@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Ramification.DisplacementValuation
 import ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 import ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
@@ -420,20 +426,20 @@ private theorem equalCharacteristicLubinTateUnitParameter_coeff_zero_iff_vanishe
           (a.constantUnit : F.residueField) = 1 := by
         simpa only [
           equalCharacteristicLubinTateUnitParameterSeries_coeff_zero,
-          PowerSeries.coeff_one, if_pos] using sub_eq_zero.mp hzero
+          PowerSeries.coeff_one, ite_eq_left] using sub_eq_zero.mp hzero
       exact hconstant
     · intro i hi
       have hcoeffi := hcoeff (i.val + 1) hi
       rw [map_sub,
         equalCharacteristicLubinTateUnitParameterSeries_coeff_succ,
-        PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero i.val)] at hcoeffi
+        PowerSeries.coeff_one, ite_eq_right (Nat.succ_ne_zero i.val)] at hcoeffi
       simpa using hcoeffi
   · rintro ⟨hconstant, hhigher⟩ j hj
     cases j with
     | zero =>
         rw [map_sub,
           equalCharacteristicLubinTateUnitParameterSeries_coeff_zero,
-          PowerSeries.coeff_one, if_pos rfl, hconstant]
+          PowerSeries.coeff_one, ite_eq_left rfl, hconstant]
         simp
     | succ j =>
         have hjn : j < n := by omega
@@ -446,7 +452,7 @@ private theorem equalCharacteristicLubinTateUnitParameter_coeff_zero_iff_vanishe
               (equalCharacteristicLubinTateUnitParameterSeries F n a) -
             PowerSeries.coeff (i.val + 1) 1 = 0
         rw [equalCharacteristicLubinTateUnitParameterSeries_coeff_succ,
-          PowerSeries.coeff_one, if_neg (Nat.succ_ne_zero j)]
+          PowerSeries.coeff_one, ite_eq_right (Nat.succ_ne_zero j)]
         simpa [i] using hz
 
 private def equalCharacteristicLubinTateTailIndex
@@ -520,7 +526,7 @@ private def equalCharacteristicLubinTateUnitParameterVanishesBeforeEquiv
                     n k hk hkn i h))
             else 0) =
             a.1.higherCoeff i
-        rw [dif_pos hi,
+        rw [dite_eq_left hi,
           equalCharacteristicLubinTateTailIndex_offset
             n k hk hkn i]
       · change
@@ -531,7 +537,7 @@ private def equalCharacteristicLubinTateUnitParameterVanishesBeforeEquiv
                     n k hk hkn i h))
             else 0) =
             a.1.higherCoeff i
-        rw [dif_neg hi]
+        rw [dite_eq_right hi]
         exact (a.2.2 i (Nat.lt_of_not_ge hi)).symm
   right_inv g := by
     funext j
@@ -550,7 +556,7 @@ private def equalCharacteristicLubinTateUnitParameterVanishesBeforeEquiv
             n k hk hkn j).val + 1 := by
       simp [equalCharacteristicLubinTateTailIndex]
       omega
-    rw [dif_pos hi,
+    rw [dite_eq_left hi,
       equalCharacteristicLubinTateTailOffset_index n k hk hkn j]
 
 private theorem equalCharacteristicLubinTateUnitParameterVanishesBefore_natCard

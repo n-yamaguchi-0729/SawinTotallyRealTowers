@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 import GaloisCohomology.Kummer.Concrete.RootCharacters
 import Mathlib.Algebra.Group.Hom.Basic
@@ -161,6 +167,7 @@ theorem
       vK hvK w] at hcomap
   simpa [C, E, toE] using hcomap
 
+omit [FiniteDimensional K L] in
 /-- A Kummer radicand is an `n`-th power in the finite-place completion
 exactly when its chosen root belongs to the decomposition field at the
 chosen extension of that place. -/

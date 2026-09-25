@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.NumberTheory.Multiplicity
 
@@ -39,17 +45,17 @@ theorem four_dvd_sq_sub_mul_sq_iff
       · exact Or.inl ⟨ha, hb⟩
       · rw [Int.sub_emod, Int.mul_emod,
           sq_mod_four_eq_zero_of_even ha,
-          Int.sq_mod_four_eq_one_of_odd hb, mul_one] at hMod
+          Int.sq_emod_four_eq_one_of_odd hb, mul_one] at hMod
         have hdMod : d % 4 = 0 := by omega
         exact False.elim (hdFour (Int.dvd_iff_emod_eq_zero.mpr hdMod))
     · rcases Int.even_or_odd b with hb | hb
       · rw [Int.sub_emod, Int.mul_emod,
-          Int.sq_mod_four_eq_one_of_odd ha,
+          Int.sq_emod_four_eq_one_of_odd ha,
           sq_mod_four_eq_zero_of_even hb, mul_zero] at hMod
         omega
       · rw [Int.sub_emod, Int.mul_emod,
-          Int.sq_mod_four_eq_one_of_odd ha,
-          Int.sq_mod_four_eq_one_of_odd hb, mul_one] at hMod
+          Int.sq_emod_four_eq_one_of_odd ha,
+          Int.sq_emod_four_eq_one_of_odd hb, mul_one] at hMod
         exact Or.inr ⟨ha, hb, by omega⟩
   · intro hParity
     apply Int.dvd_iff_emod_eq_zero.mpr
@@ -58,8 +64,8 @@ theorem four_dvd_sq_sub_mul_sq_iff
         sq_mod_four_eq_zero_of_even ha,
         sq_mod_four_eq_zero_of_even hb, mul_zero, Int.zero_emod, sub_zero]
     · simp only [Int.sub_emod, Int.mul_emod,
-        Int.sq_mod_four_eq_one_of_odd ha,
-        Int.sq_mod_four_eq_one_of_odd hb, hdMod, mul_one,
+        Int.sq_emod_four_eq_one_of_odd ha,
+        Int.sq_emod_four_eq_one_of_odd hb, hdMod, mul_one,
         show (1 : ℤ) % 4 = 1 by decide, sub_self, Int.zero_emod]
 
 end ClassFieldTower.Sawin

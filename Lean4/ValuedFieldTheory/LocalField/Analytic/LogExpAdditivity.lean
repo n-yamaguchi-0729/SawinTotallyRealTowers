@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.Homomorphisms
 
@@ -453,7 +459,7 @@ theorem summable_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_of
         intro hd
         apply hnotE
         exact Finset.mem_sigma.mpr ⟨Finset.mem_range.mpr hqsmall, hd⟩
-      have hpoly : MvPolynomial.coeff qd.2 (P ^ qd.1) = 0 := by
+      have hpoly : (P ^ qd.1).coeff qd.2 = 0 := by
         by_contra hp
         exact hdnot (MvPolynomial.mem_support_iff.mpr hp)
       have hcoeff :

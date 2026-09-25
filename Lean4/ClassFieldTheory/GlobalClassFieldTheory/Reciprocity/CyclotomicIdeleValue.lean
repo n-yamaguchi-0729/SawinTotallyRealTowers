@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 
@@ -260,7 +266,7 @@ multiple of the rational cyclotomic value group. -/
 theorem
     nsmulImage_rationalCyclotomicZHatIdeleValue_range_le_normComposite_range :
     nsmulImage
-        ((AddEquiv.toAdditive_toMultiplicative (G := ZHat)).toAddMonoidHom.comp
+        ((AddEquiv.additiveMultiplicative ZHat).toAddMonoidHom.comp
           (MonoidHom.toAdditive
             rationalCyclotomicZHatIdeleValue.toMonoidHom)).range
         (Module.finrank ℚ K) ≤
@@ -579,8 +585,12 @@ theorem
       (k := ℚ) (K := rationalCyclotomicZHatField) V
   obtain ⟨E, hEV⟩ :=
     hkrull.mp hVnhds
-  let : NumberField E :=
+  let hENumberField : NumberField E :=
     NumberField.of_module_finite ℚ E
+  let : NumberField E := hENumberField
+  let hEAbelian : IsAbelianGalois ℚ E :=
+    IsAbelianGalois.of_algHom E.toIntermediateField.val
+  let : IsAbelianGalois ℚ E := hEAbelian
   have hσfix :
       ∀ x : rationalCyclotomicZHatField,
         x ∈ F →
@@ -657,9 +667,8 @@ theorem
         globalArtinMonoidHom
           (K := ℚ) (L := E) (IdeleGroup.norm ℚ K a)
     exact
-      restrictNormalHom_infiniteGlobalArtinMonoidHom
-        ℚ rationalCyclotomicZHatField
-        (IdeleGroup.norm ℚ K a) E
+      restrictNormalHom_rationalCyclotomicZHatGlobalArtin_of_structures
+        (IdeleGroup.norm ℚ K a) E hENumberField hEAbelian
   have hrestrictEq :
       AlgEquiv.restrictNormalHom E τ.1 =
         AlgEquiv.restrictNormalHom E σ.1 :=

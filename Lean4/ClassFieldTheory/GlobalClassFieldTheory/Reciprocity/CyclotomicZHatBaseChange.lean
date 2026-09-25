@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicTorsionFixedField
 import GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 import ClassFieldTheory.AlgebraicNumberTheory.Galois.InfiniteBaseChange
@@ -94,7 +100,7 @@ noncomputable def rationalCyclotomicZHatFieldGalEquivZHat :
     (rationalCyclotomicZHatField ≃ₐ[ℚ]
       rationalCyclotomicZHatField) ≃ₜ*
         Multiplicative ZHat := by
-  letI : T2Space
+  let _ : T2Space
       (rationalCyclotomicZHatField ≃ₐ[ℚ]
         rationalCyclotomicZHatField) :=
     krullTopology_t2
@@ -140,6 +146,10 @@ theorem rationalCyclotomicZHatFieldGalEquivZHat_fullRestriction
       (KummerTheory.zHatUnitsDecomposition
         (KummerTheory.rationalCyclotomicCharacterContinuousMulEquiv
           σ)).1 := by
+  let _ : T2Space
+      (rationalCyclotomicZHatField ≃ₐ[ℚ]
+        rationalCyclotomicZHatField) :=
+    krullTopology_t2
   let e :=
     IntermediateField.liftAlgEquiv
       KummerTheory.rationalCyclotomicTorsionFixedField
@@ -335,13 +345,17 @@ theorem
         rationalAbsoluteGaloisRestrictionToCyclotomicZHat.toMonoidHom =
       (((LocalClassFieldTheory.abstractFixedField
             ℚ (SeparableClosure ℚ) H) ⊓
-          rationalCyclotomicZHatField).restrict
+        rationalCyclotomicZHatField).restrict
         (show
           LocalClassFieldTheory.abstractFixedField
                 ℚ (SeparableClosure ℚ) H ⊓
               rationalCyclotomicZHatField ≤
             rationalCyclotomicZHatField from
           inf_le_right)).fixingSubgroup := by
+  let _ : T2Space
+      (rationalCyclotomicZHatField ≃ₐ[ℚ]
+        rationalCyclotomicZHatField) :=
+    krullTopology_t2
   let r := rationalAbsoluteGaloisRestrictionToCyclotomicZHat
   let R : ClosedSubgroup
       (rationalCyclotomicZHatField ≃ₐ[ℚ]

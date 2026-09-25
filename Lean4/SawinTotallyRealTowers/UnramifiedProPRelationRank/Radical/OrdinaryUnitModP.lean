@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
 import GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
 
@@ -226,7 +232,7 @@ theorem card_ordinaryUnitNthPowerQuotient
       obtain ⟨ζ, hζ⟩ := hroots
       exact ⟨ζ, (mem_primitiveRoots hp.pos).mp hζ⟩
     rw [card_ordinaryUnitNthPowerQuotient_of_primitiveRoot K p hp hμ]
-    simp only [if_pos hroots]
+    simp only [ite_eq_left hroots]
     congr 1
     have hplaces :
         0 < NumberField.InfinitePlace.nrRealPlaces K +

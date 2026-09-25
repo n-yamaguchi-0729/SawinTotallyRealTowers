@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionEquiv
 
 set_option autoImplicit false
@@ -97,8 +103,7 @@ theorem abstractReciprocityTotallyRamifiedFrobeniusInM_restriction
   change L.extensionQuotientMulEquiv.symm
       (abstractReciprocityRestriction K.field L.field M.field hML L.below
         (r σ.1)) = q
-  apply L.extensionQuotientMulEquiv.injective
-  rw [MulEquiv.apply_symm_apply]
+  refine L.extensionQuotientMulEquiv.symm_apply_eq.mpr ?_
   have hcompat : ∀ z : K.field.toSubgroup ⧸
       D.extensionInertiaWithin K.field L.field L.below,
       abstractReciprocityRestriction K.field L.field M.field hML L.below (r z) =

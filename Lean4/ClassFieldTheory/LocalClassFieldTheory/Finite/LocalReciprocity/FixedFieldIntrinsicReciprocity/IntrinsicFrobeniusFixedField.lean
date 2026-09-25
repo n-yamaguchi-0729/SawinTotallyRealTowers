@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.IntrinsicFrobeniusClosure
 
@@ -610,14 +616,14 @@ theorem ambientFixedField_le_map_intrinsicFrobeniusFixedField
     have hτSF : τRF.1 ∈ SF.toSubgroup := by
       simpa only [τRF, τ,
         intrinsicAbstractBaseEquivAbsolute_symm_apply_val] using hτ₀
-    rcases
-        ((localResidueDatum F).mem_frobeniusFixedField_iff
-          RF EI.field EI.below σ τRF.1).1 hτSF with
-      ⟨k, hk, hkτ⟩
-    have hkeq : k = τRF := by
-      apply Subtype.ext
-      exact hkτ
-    simpa only [hkeq] using hk
+    have hτsub :
+        τRF ∈ extensionSubgroup RF.field
+          ((localResidueDatum F).frobeniusFixedField
+            RF EI.field EI.below σ)
+          ((localResidueDatum F).frobeniusFixedField_le
+            RF EI.field EI.below σ) := hτSF
+    simpa only [(localResidueDatum F).extensionSubgroup_frobeniusFixedField
+      RF EI.field EI.below σ] using hτsub
   let ρRH : RH.field.toSubgroup :=
     ⟨(ψ τ).1, by
       simpa only [RH,

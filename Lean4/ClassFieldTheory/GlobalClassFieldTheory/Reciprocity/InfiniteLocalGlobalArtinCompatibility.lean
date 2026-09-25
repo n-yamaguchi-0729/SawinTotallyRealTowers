@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtin
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
@@ -175,7 +181,7 @@ theorem globalNormResidueMonoidHom_comp_infinitePlaceIdeleClass_of_unramified
           (K := K) (L := L) v x = 1 := by
     unfold chosenInfinitePlaceArtinMonoidHom
     unfold infinitePlaceArtinMonoidHomOfPlace
-    rw [dif_pos hUnramified]
+    rw [dite_eq_left hUnramified]
     rfl
   have hglobal :
       globalNormResidueMonoidHom K L

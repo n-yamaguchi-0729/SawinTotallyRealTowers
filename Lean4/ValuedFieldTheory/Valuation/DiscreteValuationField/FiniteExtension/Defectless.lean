@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 import Mathlib.LinearAlgebra.Dimension.Localization
 import Mathlib.RingTheory.RamificationInertia.Basic
@@ -47,10 +53,9 @@ theorem isDefectless_of_moduleFinite
   rw [Fintype.sum_subsingleton _ ⟨target.maximalIdeal, hq⟩] at hsum
   change Module.finrank K L =
     Ideal.ramificationIdx' base.maximalIdeal target.maximalIdeal *
-      base.maximalIdeal.inertiaDeg' target.maximalIdeal
+      target.maximalIdeal.inertiaDeg base.valuationSubring
   rw [Ideal.ramificationIdx'_eq_ramificationIdx
       base.maximalIdeal target.maximalIdeal base.maximalIdeal_ne_bot,
-    Ideal.inertiaDeg'_eq_inertiaDeg base.maximalIdeal target.maximalIdeal,
     IsFractionRing.finrank_eq base.valuationSubring K target.valuationSubring L]
   exact hsum.symm
 

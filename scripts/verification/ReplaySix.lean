@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Lean
 import Lean.Replay
 import Lean.Util.FoldConsts
@@ -37,7 +43,7 @@ private def reportInventory (env : Environment) (roots : Array String) : IO Unit
 
 /--
 Read existing oleans once at private level, then use the unchanged official
-Lean 4.33 kernel replay in a fresh trust-level-zero environment.
+Lean 4.34 kernel replay in a fresh trust-level-zero environment.
 No imported initializers or environment extensions are executed.
 -/
 unsafe def main (args : List String) : IO UInt32 := do
@@ -60,7 +66,7 @@ unsafe def main (args : List String) : IO UInt32 := do
     IO.println <| Json.compress <| Json.mkObj [
       ("phase", toJson "replay"),
       ("result", toJson "PASS"),
-      ("kernel", toJson "official Lean 4.33.0"),
+      ("kernel", toJson "official Lean 4.34.0"),
       ("axiom_policy_enforced", toJson false)
     ]
     return 0

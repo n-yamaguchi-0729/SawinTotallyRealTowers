@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SupportedIdelePowerLocalUnitQuotient
@@ -170,7 +176,7 @@ theorem prod_infinitePlace_nthPowerIndex
       else 1 := by
   classical
   by_cases hn : Even (n : ℕ)
-  · rw [if_pos hn]
+  · rw [ite_eq_left hn]
     rw [InfinitePlace.prod_eq_prod_mul_prod]
     simp only [hn, and_true]
     have hr :
@@ -179,14 +185,14 @@ theorem prod_infinitePlace_nthPowerIndex
           ∏ _w : {w : InfinitePlace K // w.IsReal}, 2 := by
       apply Finset.prod_congr rfl
       intro w _
-      rw [if_pos w.2]
+      rw [ite_eq_left w.2]
     have hc :
         (∏ w : {w : InfinitePlace K // w.IsComplex},
             if w.1.IsReal then 2 else 1) =
           ∏ _w : {w : InfinitePlace K // w.IsComplex}, 1 := by
       apply Finset.prod_congr rfl
       intro w _
-      rw [if_neg
+      rw [ite_eq_right
         (InfinitePlace.not_isReal_iff_isComplex.mpr w.2)]
     rw [hr, hc]
     simp [InfinitePlace.nrRealPlaces]
@@ -239,7 +245,7 @@ theorem prod_infinitePlace_nthPowerIndex_mul_natDegree
     · have hn : n = (2 : ℕ+) := Subtype.ext htwo
       subst n
       rw [harch]
-      rw [if_pos (by decide :
+      rw [ite_eq_left (by decide :
         Even (((2 : ℕ+) : ℕ)))]
       change
         2 ^ InfinitePlace.nrRealPlaces K *

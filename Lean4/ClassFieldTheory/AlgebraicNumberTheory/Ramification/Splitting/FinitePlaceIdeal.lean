@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 import ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
 
@@ -81,6 +87,7 @@ theorem absoluteValueDecompositionGroup_eq_finitePlaceStabilizer
         rw [← finitePlaceEquiv_mul]
         simp
 
+omit [FiniteDimensional K L] in
 /-- Complete splitting can be tested at the centre of any exact extension
 of the normalized absolute value. -/
 theorem finitePlaceSplitsCompletely_iff_centre_stabilizer_eq_bot

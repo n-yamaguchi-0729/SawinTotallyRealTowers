@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.FieldTheory.Galois.Abelian
 import Mathlib.GroupTheory.Abelianization.Defs
@@ -54,7 +60,12 @@ noncomputable def
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (hU : LocalFieldTheory.fieldPrincipalUnits K 0 ≤ localNormSubgroup K L) :
     NormQuotient K L ≃*
-      Multiplicative (ZMod (Module.finrank 𝓀[K] 𝓀[L])) := by
+      Multiplicative
+        (ZMod
+          (@Module.finrank 𝓀[K] 𝓀[L] _ _
+            (IsLocalRing.ResidueField.instModule
+              (R := 𝒪[K])
+              (S := 𝒪[L])))) := by
   let vK := multiplicativeIntegerValuation K
   let vL := multiplicativeIntegerValuation L
   let ϖK := Classical.choose (multiplicativeIntegerValuation_exists_uniformizer K)
@@ -64,7 +75,10 @@ noncomputable def
   have hformula :
       ∀ x : Lˣ,
         vK.val (LocalFieldTheory.normUnits K L x) =
-          (Module.finrank 𝓀[K] 𝓀[L] : ℤ) * vL.val x := by
+          (@Module.finrank 𝓀[K] 𝓀[L] _ _
+            (IsLocalRing.ResidueField.instModule
+              (R := 𝒪[K])
+              (S := 𝒪[L])) : ℤ) * vL.val x := by
     intro x
     simpa [vK, vL, multiplicativeIntegerValuation] using
       (v_normUnits_eq_residue_finrank_mul_of_isGalois K L x)
@@ -89,7 +103,12 @@ noncomputable def
   exact (normQuotientEquivOfSubgroupEq K L
       (LocalFieldTheory.DiscreteValuationField.fieldNormSubgroup K L) hsub).trans
     (LocalFieldTheory.DiscreteValuationField.fieldNormQuotientEquivZMod
-      K L vK vL (Module.finrank 𝓀[K] 𝓀[L]) hformula hϖK hϖL hzero)
+      K L vK vL
+        (@Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[L])))
+        hformula hϖK hϖL hzero)
 
 /-- Finite local reciprocity gives the order of the norm quotient in a finite
 abelian extension: it is the field degree. -/
@@ -197,14 +216,26 @@ theorem isFiniteUnramifiedValuationExtension_of_localConductorIdeal_eq_one
   let : Finite (NormQuotient K L) :=
     normQuotientFiniteOfIsAbelianGalois K L
   have hcardResidue :
-      Nat.card (NormQuotient K L) = Module.finrank 𝓀[K] 𝓀[L] := by
+      Nat.card (NormQuotient K L) =
+        @Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[L])) := by
     rw [Nat.card_congr hequiv.toEquiv]
-    exact Nat.card_zmod (Module.finrank 𝓀[K] 𝓀[L])
+    exact Nat.card_zmod
+      (@Module.finrank 𝓀[K] 𝓀[L] _ _
+        (IsLocalRing.ResidueField.instModule
+          (R := 𝒪[K])
+          (S := 𝒪[L])))
   have hcardDegree :
       Nat.card (NormQuotient K L) = Module.finrank K L :=
     card_normQuotient_eq_finrank_of_isAbelianGalois K L
   have hDegreeEqResidue :
-      Module.finrank K L = Module.finrank 𝓀[K] 𝓀[L] :=
+      Module.finrank K L =
+        @Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[L])) :=
     hcardDegree.symm.trans hcardResidue
   have hdegree :=
     maximalIdeal_ramificationIdx_mul_residue_finrank_eq_finrank_of_isIntegralClosure
@@ -215,19 +246,39 @@ theorem isFiniteUnramifiedValuationExtension_of_localConductorIdeal_eq_one
       (IsDiscreteValuationRing.not_isField 𝒪[K])
   have hdegreeNew :
       (𝓂[L] : Ideal 𝒪[L]).ramificationIdx 𝒪[K] *
-          Module.finrank 𝓀[K] 𝓀[L] =
+          @Module.finrank 𝓀[K] 𝓀[L] _ _
+            (IsLocalRing.ResidueField.instModule
+              (R := 𝒪[K])
+              (S := 𝒪[L])) =
         Module.finrank K L := by
     rw [← Ideal.ramificationIdx'_eq_ramificationIdx _ _ hp]
     exact hdegree
-  have hfpos : 0 < Module.finrank 𝓀[K] 𝓀[L] := Module.finrank_pos
+  have hfpos :
+      0 < @Module.finrank 𝓀[K] 𝓀[L] _ _
+        (IsLocalRing.ResidueField.instModule
+          (R := 𝒪[K])
+          (S := 𝒪[L])) :=
+    Module.finrank_pos
   have hcancel :
       (𝓂[L] : Ideal 𝒪[L]).ramificationIdx 𝒪[K] *
-        Module.finrank 𝓀[K] 𝓀[L] =
-          1 * Module.finrank 𝓀[K] 𝓀[L] := by
+        @Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[L])) =
+          1 * @Module.finrank 𝓀[K] 𝓀[L] _ _
+            (IsLocalRing.ResidueField.instModule
+              (R := 𝒪[K])
+              (S := 𝒪[L])) := by
     calc
       _ = Module.finrank K L := hdegreeNew
-      _ = Module.finrank 𝓀[K] 𝓀[L] := hDegreeEqResidue
-      _ = 1 * Module.finrank 𝓀[K] 𝓀[L] := (one_mul _).symm
+      _ = @Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[L])) := hDegreeEqResidue
+      _ = 1 * @Module.finrank 𝓀[K] 𝓀[L] _ _
+          (IsLocalRing.ResidueField.instModule
+            (R := 𝒪[K])
+            (S := 𝒪[L])) := (one_mul _).symm
   exact ⟨Nat.eq_of_mul_eq_mul_right hfpos hcancel⟩
 
 /-- A finite abelian extension is unramified if and only if its conductor

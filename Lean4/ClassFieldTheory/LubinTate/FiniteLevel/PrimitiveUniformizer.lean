@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveTorsion
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
@@ -639,7 +645,7 @@ private theorem
         Polynomial.X ^ d).coeff 0 = π
     rw [Polynomial.coeff_sub,
       standardLubinTatePrimitivePolynomial_coeff_zero]
-    simp only [Polynomial.coeff_X_pow, if_neg hdne.symm, sub_zero]
+    simp only [Polynomial.coeff_X_pow, ite_eq_right hdne.symm, sub_zero]
   have hpiIrreducible : Irreducible π := by
     exact
       (IsDiscreteValuationRing.irreducible_iff_uniformizer π).2

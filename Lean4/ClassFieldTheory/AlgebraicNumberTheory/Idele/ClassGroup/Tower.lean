@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 import Mathlib.LinearAlgebra.TensorProduct.Basis
 import Mathlib.RingTheory.TensorProduct.Maps
@@ -157,8 +163,7 @@ theorem towerRelativeAdeleFlatten_tmul
     towerRelativeAdeleFlatten K M L (b ⊗ₜ[M] x) =
       intermediateAdeleInclusion K M L b *
         topFieldToOneStep K M L x := by
-  induction b using TensorProduct.induction_on with
-  | zero => simp
+  induction b using TensorProduct.inductionOn with
   | add b₁ b₂ hb₁ hb₂ =>
       simp only [TensorProduct.add_tmul, map_add,
         add_mul, hb₁, hb₂]
@@ -375,7 +380,7 @@ def norm :
       RelativeIdeleGroup K M :=
   Units.map (Algebra.norm (RelativeAdeleRing K M))
 
-omit [NumberField L] in
+omit [NumberField M] [NumberField L] in
 /-- Transitivity of determinant norms, after flattening the tower
 presentation to the one-step presentation. -/
 theorem norm_transitive_flatten
@@ -402,7 +407,7 @@ theorem norm_transitive_flatten
         (towerRelativeAdeleAlgEquiv K M L)
         (a : TowerRelativeAdeleRing K M L)).symm
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L]
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L]
     [FiniteDimensional K M] in
 /-- Base change of the field norm from `M` to the relative adele
 algebra `𝔸_K ⊗[K] M`. -/
@@ -425,7 +430,7 @@ theorem norm_fieldInclusion
     Algebra.leftMulMatrix_eq_repr_mul,
     Algebra.TensorProduct.tmul_mul_tmul]
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L]
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L]
     [FiniteDimensional K M] in
 /-- The tower idele norm carries a principal idele to the principal
 idele of the field norm. -/
@@ -452,7 +457,7 @@ def classNorm :
         ⟨Units.map (Algebra.norm M) x,
           (norm_principalIdele K M L x).symm⟩)
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L]
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L]
     [FiniteDimensional K M] in
 @[simp]
 theorem classNorm_mk
@@ -482,6 +487,7 @@ def towerCompositeClassNorm :
   (RelativeIdeleGroup.classNorm K M).comp
     (TowerRelativeIdeleGroup.classNorm K M L)
 
+omit [NumberField M] in
 /-- After identifying the tower presentation with the one-step
 presentation, the composite tower norm is the ordinary class norm from
 `L` to `K`. -/
@@ -498,6 +504,7 @@ theorem towerCompositeClassNorm_eq_ideleClassNorm
       (IdeleGroup.principalSubgroup K))
     (TowerRelativeIdeleGroup.norm_transitive_flatten K M L a)
 
+omit [NumberField M] in
 /-- The tower composite norm and the ordinary one-step norm have the
 same subgroup of norms in `C_K`. -/
 theorem towerCompositeClassNorm_range_eq :
@@ -567,7 +574,7 @@ def compositeToBaseNormQuotient :
       exact
         ⟨TowerRelativeIdeleGroup.classNorm K M L c, rfl⟩)
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L] in
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L] in
 @[simp]
 theorem intermediateToCompositeNormQuotient_mk
     (c : RelativeIdeleGroup.ClassGroup K M) :
@@ -579,7 +586,7 @@ theorem intermediateToCompositeNormQuotient_mk
         (RelativeIdeleGroup.classNorm K M c) :=
   rfl
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L] in
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L] in
 @[simp]
 theorem compositeToBaseNormQuotient_mk
     (c : IdeleClassGroup K) :
@@ -590,7 +597,7 @@ theorem compositeToBaseNormQuotient_mk
         (RelativeIdeleGroup.classNorm K M).range c :=
   rfl
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L] in
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L] in
 /-- Exactness of the concrete tower norm-quotient sequence. -/
 theorem intermediateToCompositeNormQuotient_range_eq_ker :
     MonoidHom.range
@@ -626,7 +633,7 @@ theorem intermediateToCompositeNormQuotient_range_eq_ker :
         ?_⟩
     rfl
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L] in
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L] in
 /-- The last map in the tower norm-quotient sequence is onto. -/
 theorem compositeToBaseNormQuotient_surjective :
     Function.Surjective
@@ -639,7 +646,7 @@ theorem compositeToBaseNormQuotient_surjective :
         (towerCompositeClassNorm K M L).range c,
       rfl⟩
 
-omit [NumberField L] [Algebra K L] [IsScalarTower K M L] in
+omit [NumberField M] [NumberField L] [Algebra K L] [IsScalarTower K M L] in
 /-- Cardinal bound supplied by the actual right-exact tower sequence:
 
 `#(C_K / N_{L/K}C_L) ≤
@@ -693,6 +700,7 @@ theorem towerCompositeClassNormQuotient_card_le_mul
       Nat.mul_le_mul_left (Nat.card C) hrange
     _ = Nat.card A * Nat.card C := Nat.mul_comm _ _
 
+omit [NumberField M] in
 /-- The tower cardinal bound in the standard one-step presentation:
 
 `#(C_K / N_{L/K}C_L) ≤

@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ProCGroups.FiniteGroups.StandardClasses
 
 set_option autoImplicit false
@@ -18,7 +24,7 @@ theorem isCoatom_normal_of_isPGroup
     {p : ℕ} {G : Type u} [Group G] [Finite G] [Fact (Nat.Prime p)]
     (hG : IsPGroup p G) {M : Subgroup G} (hM : IsCoatom M) :
     M.Normal := by
-  exact ((Group.isNilpotent_of_finite_tfae (G := G)).out 0 2 rfl rfl).mp
+  exact ((Group.isNilpotent_of_finite_tfae (G := G)).out 1 3 rfl rfl).mp
     hG.isNilpotent M hM
 
 /-- A quotient by a maximal normal subgroup has no nontrivial proper subgroups. -/

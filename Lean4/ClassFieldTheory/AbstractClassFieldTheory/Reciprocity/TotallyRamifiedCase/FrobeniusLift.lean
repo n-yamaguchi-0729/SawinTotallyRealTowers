@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 
 set_option autoImplicit false
@@ -82,8 +88,7 @@ theorem exists_degreeOneFrobeniusLiftOfTotallyRamified
       _ = (Multiplicative.ofAdd (1 : ZHat) : ZHatMul) ^ (1 : ℕ) :=
         htDegree
   refine ⟨σ, hσExponent, ?_⟩
-  apply L.extensionQuotientMulEquiv.injective
-  rw [MulEquiv.apply_symm_apply]
+  refine L.extensionQuotientMulEquiv.symm_apply_eq.mpr ?_
   change D.extensionRestriction K.field L.field L.below
       (QuotientGroup.mk i * φ.1) = qRaw
   rw [map_mul, D.extensionRestriction_mk]
@@ -199,8 +204,7 @@ theorem frobeniusRestriction_chosenDegreeOneFrobeniusLiftOfFiniteTotallyRamified
         (D.frobeniusRestriction K L.field L.below
           (D.chosenDegreeOneFrobeniusLiftOfFiniteTotallyRamified
             K L hTot q)) = q := by
-  apply L.extensionQuotientMulEquiv.injective
-  rw [L.extensionQuotientMulEquiv.apply_symm_apply]
+  refine L.extensionQuotientMulEquiv.symm_apply_eq.mpr ?_
   have h :=
     D.frobeniusRestriction_chosenDegreeOneFrobeniusLiftOfTotallyRamified_underlying
       K L.toGaloisSubextension

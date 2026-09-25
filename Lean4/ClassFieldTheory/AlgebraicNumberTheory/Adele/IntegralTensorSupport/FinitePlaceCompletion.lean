@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
 
 set_option autoImplicit false
@@ -70,7 +76,9 @@ noncomputable def relativeFinitePlaceCompletionRingHom
     (w : HeightOneSpectrum (𝓞 K)) :
     (NumberField.HeightOneSpectrum.adicAbv K w).Completion →+*
       w.adicCompletion K :=
-  (relativeFinitePlaceCompletionBaseMap_isometry w).extensionHom
+  UniformSpace.Completion.extensionHom
+    (relativeFinitePlaceCompletionBaseMap w)
+    (relativeFinitePlaceCompletionBaseMap_isometry w).continuous
 
 /-- Coercion, isometry, and surjectivity facts for the canonical ring homomorphism. -/
 
@@ -83,7 +91,9 @@ theorem relativeFinitePlaceCompletionRingHom_coe
         (x :
           (NumberField.HeightOneSpectrum.adicAbv K w).Completion) =
       relativeFinitePlaceCompletionBaseMap w x :=
-  (relativeFinitePlaceCompletionBaseMap_isometry w).extensionHom_coe x
+  UniformSpace.Completion.extensionHom_coe
+    (relativeFinitePlaceCompletionBaseMap w)
+    (relativeFinitePlaceCompletionBaseMap_isometry w).continuous x
 
 /-- The canonical finite-place ring homomorphism is an isometry. -/
 theorem relativeFinitePlaceCompletionRingHom_isometry

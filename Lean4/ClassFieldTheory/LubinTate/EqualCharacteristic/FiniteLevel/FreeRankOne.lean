@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.AmbientDivisionTorsion
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
@@ -424,7 +430,7 @@ theorem equalCharacteristicLubinTateTruncationIdeal_le_ker
   apply Finset.sum_eq_zero
   intro i hi
   rw [PowerSeries.coeff_X_pow,
-    if_neg (ne_of_lt (Finset.mem_range.mp hi)), map_zero, zero_mul]
+    ite_eq_right (ne_of_lt (Finset.mem_range.mp hi)), map_zero, zero_mul]
 
 /-- The resulting action of the actual quotient
 `κ⟦T⟧/(T^(n+1))`. -/
