@@ -1,9 +1,9 @@
-# Sawin's totally real towers in Lean 4
+# Sawin's totally real towers (Lean 4.34.0)
 
 [![Lean](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml/badge.svg)](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-A Lean 4 library centered on Sawin's totally real tower theorem. One infinite
+A Lean 4.34.0 library centered on Sawin's totally real tower theorem. One infinite
 set of primes congruent to 1 modulo 4 splits completely in totally real
 number fields of arbitrarily large degree, with root discriminant at most
 **255255**. The library also contains Martinet's totally real tower corollary
