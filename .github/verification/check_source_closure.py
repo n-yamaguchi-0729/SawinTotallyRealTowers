@@ -13,10 +13,13 @@ MAIN = 'ClassFieldTower.Sawin.sawin_totally_real_tower'
 MARTINET_ENTRY = 'SawinTotallyRealTowers.MartinetCorollary'
 ALL_ENTRY = 'SawinTotallyRealTowers.All'
 MARTINET_MAIN = 'ClassFieldTower.Sawin.exists_totallyReal_discr_le'
+SHAFAREVICH_ENTRY = 'SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound'
+SHAFAREVICH_MAIN = 'ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound'
 ROOTS = [ALL_ENTRY, MARTINET_ENTRY]
 REQUIRED_DECLARATIONS = [
     {'name': MAIN, 'originModule': ENTRY, 'kind': 'theorem'},
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
+    {'name': SHAFAREVICH_MAIN, 'originModule': SHAFAREVICH_ENTRY, 'kind': 'theorem'},
 ]
 OWNERS = {'ClassFieldTheory': 690, 'GaloisCohomology': 154, 'ProCGroups': 321,
           'SawinTotallyRealTowers': 269, 'ValuedFieldTheory': 306}
@@ -148,11 +151,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--generated-manifest', type=Path)
     args = parser.parse_args()
     report = {'passed': False, 'proofCheckPerformed': False}
     try:
-        manifest = json.loads((args.root / 'verification/source-manifest.json').read_text())
+        manifest = json.loads((args.root / '.github/verification/source-manifest.json').read_text())
         report.update(audit(args.root, manifest), passed=True)
+        if args.generated_manifest:
+            generated = json.loads(args.generated_manifest.read_text())
+            expected = {'roots': manifest['roots'], 'moduleRows': {
+                name: {'owner': row['owner'], 'path': row['path']}
+                for name, row in manifest['moduleRows'].items()}}
+            require(generated == expected,
+                    'Generated physical source manifest differs from SHA-pinned closure')
+            report['generatedManifestConsistent'] = True
     except Exception as error: report['error'] = str(error)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

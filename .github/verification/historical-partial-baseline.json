@@ -25,7 +25,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
-      "sourceSHA256": "64da6f6976fa7183d9a47ba927558ff037c1d0ce771e678fd34823ec1377b696",
+      "historicalBodySHA256": "64da6f6976fa7183d9a47ba927558ff037c1d0ce771e678fd34823ec1377b696",
+      "currentSourceSHA256": "703c0e8fbcf251b0ba7dc1e761280b56ea6b36d50d2a49f795ac6083adc207ff",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [
@@ -87,7 +88,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
-      "sourceSHA256": "92423448de17438d64cc613f609dba8571cb48aeade45933521636eb61a8d25c",
+      "historicalBodySHA256": "92423448de17438d64cc613f609dba8571cb48aeade45933521636eb61a8d25c",
+      "currentSourceSHA256": "59c4a292d3449c7ba6dc0754b4a75502ffc5a1a2231177916ad1ade3a0711fcf",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [
@@ -146,7 +148,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
-      "sourceSHA256": "0c69a323a7671fa0759a596f282cb4732c671ed945d8f2622474ca940d6f7699",
+      "historicalBodySHA256": "0c69a323a7671fa0759a596f282cb4732c671ed945d8f2622474ca940d6f7699",
+      "currentSourceSHA256": "062b87de1eee72041e2108b510a82ef705e93d13bfea8041552da5f9d1d09160",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [
@@ -202,7 +205,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
-      "sourceSHA256": "dd2274244f543d52fb9e71f5992034d9f9c8248f100c8d572a1817c320846f10",
+      "historicalBodySHA256": "dd2274244f543d52fb9e71f5992034d9f9c8248f100c8d572a1817c320846f10",
+      "currentSourceSHA256": "0b18130e36f017fa2e76f602e4c5cd47275728564580d0f24cdf5ee84d6f929f",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [],
@@ -254,7 +258,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
-      "sourceSHA256": "4e7b06ad825da3f8b21349488e4f1683a78c454bb04364d791eaa097e184dddf",
+      "historicalBodySHA256": "4e7b06ad825da3f8b21349488e4f1683a78c454bb04364d791eaa097e184dddf",
+      "currentSourceSHA256": "f7258c7d6a37c0a2fafa52b891e7cf0db674faafb6807a37e24d23c246a81e38",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [
@@ -313,7 +318,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ProCGroups/Generation/Basic.lean",
-      "sourceSHA256": "19459344e33f669eac133c243a6393450e8fc6804e9f88ec98aaa468a06074f9",
+      "historicalBodySHA256": "19459344e33f669eac133c243a6393450e8fc6804e9f88ec98aaa468a06074f9",
+      "currentSourceSHA256": "50d4778f06ed4c6a3b22ab39a42a44343897e60c76f4073a85c78b57be712113",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [
@@ -388,7 +394,8 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
-      "sourceSHA256": "d9738b1470ae7d228699a7ac90748002328c64dd546814f85ba85196952c5153",
+      "historicalBodySHA256": "d9738b1470ae7d228699a7ac90748002328c64dd546814f85ba85196952c5153",
+      "currentSourceSHA256": "4a4cd9501abacf9dfb664f99ef6c571def4483b6981e2271077e4ea0a9107d38",
       "sourceMatchesHistoricalCommit": true,
       "historicalFinding": {
         "axioms": [],

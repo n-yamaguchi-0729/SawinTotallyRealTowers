@@ -19071,7 +19071,8 @@
   "repairedModules": [],
   "requiredDeclarations": [
     "ClassFieldTower.Sawin.sawin_totally_real_tower",
-    "ClassFieldTower.Sawin.exists_totallyReal_discr_le"
+    "ClassFieldTower.Sawin.exists_totallyReal_discr_le",
+    "ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound"
   ],
   "sourceCommitScope": "sourceCommit identifies the initial 1,600-module extraction. synchronizedFromCommit identifies the later maintained workspace snapshot for every current module except the standalone Martinet corollary, which is recorded in additionalModuleProvenance. moduleRows contains SHA-256 hashes of the exact files in this repository.",
   "additionalModuleProvenance": {

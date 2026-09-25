@@ -1,4 +1,5 @@
 import copy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -6,7 +7,7 @@ import sys
 import tempfile
 import unittest
 
-SCRIPTS = Path(__file__).resolve().parents[1] / 'scripts/verification'
+SCRIPTS = Path(__file__).resolve().parents[1] / '.github/verification'
 sys.path.insert(0, str(SCRIPTS))
 import check_source_closure as source
 import verify
@@ -76,7 +77,6 @@ class InventoryTests(unittest.TestCase):
         self.manifest = {'roots': [mod], 'moduleRows': {mod: {
             'owner': 'SawinTotallyRealTowers', 'path': 'Lean4/'+mod.replace('.', '/')+'.lean',
             'sha256': 'a'*64}}}
-        self.required = {'declarations': [{'name': source.MAIN, 'kind':'theorem', 'originModule':mod}]}
         self.baseline = {'allowedPartialDeclarations': []}
         self.summary = {'auditPassed':True,'moduleCoverageExact':True,'importRoots':[mod],
             'importLevel':'private','importTrustLevel':0,'primaryModuleCount':1,
@@ -93,9 +93,9 @@ class InventoryTests(unittest.TestCase):
             'isUnsafe':False,'isPartial':False,'isSafeKernelRoot':True,
             'nameParts':[{'str':'example'}]}
 
-    def check(self, rows=None):
+    def check(self, rows=None, source_root=Path('.')):
         return verify.validate_inventory_data(self.summary, rows or [self.row], self.modules,
-                                              self.manifest,self.baseline,self.required)
+                                              self.manifest,self.baseline,source_root)
 
     def two_root_inventory(self):
         mod = source.MARTINET_ENTRY
@@ -109,7 +109,6 @@ class InventoryTests(unittest.TestCase):
         self.summary['allSelected']['declarations'] = 2
         self.modules.append({'module': mod, 'path': self.manifest['moduleRows'][mod]['path'],
                              'primaryOwner': 'SawinTotallyRealTowers', 'isLoaded': True})
-        self.required = {'declarations': copy.deepcopy(source.REQUIRED_DECLARATIONS)}
         martinet = copy.deepcopy(self.row)
         martinet.update(name=source.MARTINET_MAIN, originModule=mod,
                         nameParts=[{'str': part} for part in source.MARTINET_MAIN.split('.')])
@@ -136,12 +135,6 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Module identity mismatch'):
                 self.check(rows)
 
-    def test_main_present_does_not_replace_required_martinet(self):
-        self.two_root_inventory()
-        self.summary['allSelected']['declarations'] = 1
-        with self.assertRaisesRegex(ValueError, 'Required mathematical theorem absent/unsafe'):
-            self.check([self.row])
-
     def test_valid_inventory(self): self.assertEqual(self.check()['safeDeclarations'],1)
     def test_unsafe_rejected(self):
         self.row['isUnsafe']=True; self.row['isSafeKernelRoot']=False
@@ -155,9 +148,6 @@ class InventoryTests(unittest.TestCase):
     def test_wrong_origin_rejected(self):
         self.row['originModule']='Other.Module'
         with self.assertRaisesRegex(ValueError,'origin'): self.check()
-    def test_missing_main_rejected(self):
-        self.row['name']='Other.theorem'
-        with self.assertRaisesRegex(ValueError,'Required'): self.check()
     def test_wrong_owner_count_rejected(self):
         self.summary['owners']['SawinTotallyRealTowers']['loadedModules']=0
         with self.assertRaisesRegex(ValueError,'Owner coverage'): self.check()
@@ -167,10 +157,37 @@ class InventoryTests(unittest.TestCase):
         partial=copy.deepcopy(self.row); partial.update(name='old._unsafe_rec',kind='definition',
                           isPartial=True,isSafeKernelRoot=False)
         old={k:partial[k] for k in ['name','nameParts','originModule','primaryOwner','isPartial','isUnsafe']}
-        old.update(sourcePath=self.modules[0]['path'],sourceSHA256='b'*64)
+        old.update(sourcePath=self.modules[0]['path'],currentSourceSHA256='b'*64,
+                   historicalBodySHA256='c'*64)
         self.baseline['allowedPartialDeclarations']=[old]
         self.summary['allSelected']['declarations']=2
         with self.assertRaisesRegex(ValueError,'source changed'): self.check([self.row,partial])
+
+    def test_all_seven_historical_partial_sources_match_body_and_current_hashes(self):
+        root = Path(__file__).resolve().parents[1]
+        baseline = json.loads((root/'.github/verification/historical-partial-baseline.json').read_text())
+        manifest = json.loads((root/'.github/verification/source-manifest.json').read_text())
+        self.assertEqual(len(baseline['allowedPartialDeclarations']), 7)
+        for old in baseline['allowedPartialDeclarations']:
+            with self.subTest(old=old['name']):
+                path = old['sourcePath']
+                self.assertEqual(manifest['moduleRows'][old['originModule']]['sha256'],
+                                 old['currentSourceSHA256'])
+                self.assertEqual(source.digest(root/path), old['currentSourceSHA256'])
+                self.assertEqual(verify.historical_body_sha(root, path),
+                                 old['historicalBodySHA256'])
+
+    def test_historical_partial_header_must_be_exactly_recognized(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root/'Lean4/Proof.lean'; path.parent.mkdir()
+            body = b'theorem old : True := True.intro\n'
+            path.write_bytes(verify.COPYRIGHT_HEADER + body)
+            self.assertEqual(verify.historical_body_sha(root, 'Lean4/Proof.lean'),
+                             hashlib.sha256(body).hexdigest())
+            path.write_bytes(b'/- other header -/\n\n' + body)
+            with self.assertRaisesRegex(ValueError, 'recognized copyright header'):
+                verify.historical_body_sha(root, 'Lean4/Proof.lean')
 
 class ReplayTests(unittest.TestCase):
     def test_missing_completion_rejected(self):
@@ -186,5 +203,13 @@ class ReplayTests(unittest.TestCase):
             result=verify.validate_replay(p,{'roots':[source.ENTRY],'moduleRows':{source.ENTRY:{}}})
             self.assertFalse(result['independentKernelCheckPerformed'])
             self.assertEqual(result['partialSkippedInImportedClosure'],2)
+
+class WrapperPinTests(unittest.TestCase):
+    def test_bundled_wrappers_match_pins_and_provenance(self):
+        provenance = json.loads((SCRIPTS / 'wrapper-provenance.json').read_text())
+        self.assertEqual(provenance['bundledPath'], '.github/verification')
+        for name, expected in verify.WRAPPERS.items():
+            self.assertEqual(source.digest(SCRIPTS / name), expected)
+            self.assertEqual(provenance['bundledSHA256'][name], expected)
 
 if __name__ == '__main__': unittest.main()

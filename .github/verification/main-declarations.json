@@ -1,0 +1,20 @@
+{
+  "primaryOwner": "SawinTotallyRealTowers",
+  "declarations": [
+    {
+      "name": "ClassFieldTower.Sawin.sawin_totally_real_tower",
+      "kind": "theorem",
+      "module": "SawinTotallyRealTowers.SawinTotallyRealTower"
+    },
+    {
+      "name": "ClassFieldTower.Sawin.exists_totallyReal_discr_le",
+      "kind": "theorem",
+      "module": "SawinTotallyRealTowers.MartinetCorollary"
+    },
+    {
+      "name": "ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound",
+      "kind": "theorem",
+      "module": "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound"
+    }
+  ]
+}

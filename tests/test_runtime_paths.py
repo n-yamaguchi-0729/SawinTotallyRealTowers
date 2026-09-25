@@ -3,7 +3,7 @@ from pathlib import Path
 import tempfile
 import sys
 import unittest
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts/verification'))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / '.github/verification'))
 from verify import Runner
 
 class RuntimePathsRegression(unittest.TestCase):

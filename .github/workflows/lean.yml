@@ -21,19 +21,25 @@ jobs:
       LEAN_NUM_THREADS: "1"
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Check the SHA-pinned bundled source closure
+      - name: Audit the full physical source manifest and SHA-pinned closure
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/verification"
-          python3 -B scripts/verification/check_source_closure.py \
-            --output "$RUNNER_TEMP/verification/source-audit.json" \
+          python3 -B .github/verification/generate_manifest.py \
+            --root . --config .github/verification/manifest-config.json \
+            --manifest "$RUNNER_TEMP/verification/modules.json" \
+            --report "$RUNNER_TEMP/verification/source-audit.json" \
             2>&1 | tee "$RUNNER_TEMP/verification/source-audit.log"
+          python3 -B .github/verification/check_source_closure.py \
+            --generated-manifest "$RUNNER_TEMP/verification/modules.json" \
+            --output "$RUNNER_TEMP/verification/pinned-closure-audit.json" \
+            2>&1 | tee "$RUNNER_TEMP/verification/pinned-closure-audit.log"
       - name: Install pinned Lean and obtain only the pinned Mathlib cache
-        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
         with:
           auto-config: "false"
           build: "false"
@@ -41,21 +47,40 @@ jobs:
           lint: "false"
           use-mathlib-cache: "true"
           use-github-cache: "false"
-      - name: Fresh build, exact target, declaration audit and official kernel replay
+      - name: Build exact independent checker revisions
         shell: bash
         run: |
           set -euo pipefail
-          python3 -B scripts/verification/verify.py \
+          python3 -B .github/verification/setup_tools.py \
+            --checkouts "$RUNNER_TEMP/verification-tools" \
+            --output "$RUNNER_TEMP/verification/setup"
+      - name: Fresh build, exact targets, declaration audit, NanoDa and official kernel replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/verify.py \
             --output "$RUNNER_TEMP/verification/checks" \
+            --exporter-checkout "$RUNNER_TEMP/verification-tools/lean4export" \
+            --nanoda-checkout "$RUNNER_TEMP/verification-tools/nanoda_lib" \
+            --nanoda-binary "$RUNNER_TEMP/verification-tools/nanoda_lib/target/release/nanoda_bin" \
             2>&1 | tee "$RUNNER_TEMP/verification/checks.log"
-      - name: Check packaging whitespace
-        # The current bundled sources are SHA-pinned by the source audit above.
-        run: git diff-tree --check --root -r HEAD -- .gitattributes .github .gitignore LICENSE README.md lakefile.toml lake-manifest.json lean-toolchain scripts tests verification
+      - name: Check designated main declarations in the audited inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/check_main_declarations.py \
+            --contract .github/verification/main-declarations.json \
+            --verification "$RUNNER_TEMP/verification/checks" \
+            --output "$RUNNER_TEMP/verification/main-declarations.json"
+      - name: Check whitespace
+        run: git diff-tree --check --root -r HEAD
       - name: Preserve logs, complete inventories and receipts
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: sawin-verification-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/verification/
+          name: verification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/verification/
+            !${{ runner.temp }}/verification/checks/selected.ndjson
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 14

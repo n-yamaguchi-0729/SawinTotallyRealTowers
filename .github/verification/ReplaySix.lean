@@ -59,7 +59,7 @@ unsafe def main (args : List String) : IO UInt32 := do
     (loadExts := false) (level := .private)
   try
     reportInventory env args.toArray
-    IO.println "REPLAY_START official_Lean_4_33_Environment_replay trustLevel=0"
+    IO.println "REPLAY_START official_Lean_4_34_Environment_replay trustLevel=0"
     (← IO.getStdout).flush
     discard <| Lean.Environment.replay env.constants.map₁
       (← mkEmptyEnvironment (trustLevel := 0))

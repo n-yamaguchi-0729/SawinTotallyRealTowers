@@ -1,0 +1,45 @@
+{
+  "owners": {
+    "SawinTotallyRealTowers": [
+      "SawinTotallyRealTowers"
+    ],
+    "ClassFieldTheory": [
+      "ClassFieldTheory"
+    ],
+    "ValuedFieldTheory": [
+      "ValuedFieldTheory"
+    ],
+    "GaloisCohomology": [
+      "GaloisCohomology"
+    ],
+    "ProCGroups": [
+      "ProCGroups"
+    ]
+  },
+  "roots": [
+    "SawinTotallyRealTowers.All",
+    "SawinTotallyRealTowers.MartinetCorollary"
+  ],
+  "leanToolchain": "leanprover/lean4:v4.34.0",
+  "mathlibRevision": "5ed2965256430c3649e86755f9576b54eca72435",
+  "mathlibRepository": "https://github.com/leanprover-community/mathlib4",
+  "externalModuleRoots": [
+    "Mathlib",
+    "Lean",
+    "Init",
+    "Std",
+    "Batteries",
+    "Qq",
+    "Aesop",
+    "Plausible"
+  ],
+  "excludedDirectories": [
+    ".git",
+    ".lake"
+  ],
+  "excludedPaths": [
+    ".github/verification",
+    "tests"
+  ],
+  "enforceSourcePolicy": false
+}
