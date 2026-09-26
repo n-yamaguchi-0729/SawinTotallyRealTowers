@@ -68,9 +68,17 @@ private theorem standardLubinTateRealLowerRamificationGroup_zero_eq_top
     standardLubinTateUnitParameterToGal_surjective F hπ n σ
   rw [show (0 : ℝ) = ((0 : ℕ) : ℝ) by norm_num]
   rw [mem_standardLubinTateRealLowerRamificationGroup_nat_iff_primitivePoint]
-  simpa [standardLubinTateUnitParameterSubgroup_zero_eq_top] using
+  have hmem : a ∈ standardLubinTateUnitParameterSubgroup F n 0 := by
+    rw [standardLubinTateUnitParameterSubgroup_zero_eq_top]
+    exact Subgroup.mem_top a
+  have hge :=
     (standardLubinTateUnitParameterToGal_displacement_addVal_ge_iff_mem_parameterSubgroup
-      F hπ n a 0 (Nat.zero_le (n + 1)))
+      F hπ n a 0 (Nat.zero_le (n + 1))).2 hmem
+  constructor
+  · intro _
+    exact Subgroup.mem_top _
+  · intro _
+    simpa only [pow_zero, zero_add] using hge
 
 private theorem standardLubinTateRealLowerRamificationGroup_zero_natCard
     (F : LocalField.{u, v} K) {π : F.valuationSubring}

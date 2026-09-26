@@ -46,7 +46,7 @@ theorem fieldNormUnits_eq_prod_conjugates
   simp only [Units.coe_map, Units.coe_prod]
   convert
     (_root_.Algebra.norm_eq_prod_automorphisms K (x : L))
-    using 1 <;> rfl
+    using 1; rfl
 
 omit [NumberField L] in
 /-- On the diagonal copy of `Lˣ`, after extending the norm

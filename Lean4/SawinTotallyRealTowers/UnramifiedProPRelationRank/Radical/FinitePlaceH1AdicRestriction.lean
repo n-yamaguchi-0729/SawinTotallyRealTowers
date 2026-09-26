@@ -26,6 +26,9 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
+local instance finitePlaceH1AdicCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
+
 local instance finitePlaceH1AdicCharacterTopology :
     TopologicalSpace (Multiplicative (ZMod p)) := ⊥
 

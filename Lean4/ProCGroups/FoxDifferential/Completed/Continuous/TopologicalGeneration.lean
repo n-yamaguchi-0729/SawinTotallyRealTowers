@@ -169,7 +169,7 @@ def zcCrossedDifferentialKernelHom
     rw [Submonoid.coe_mul, ScalarCrossedHom.map_mul D n.1 m.1]
     have hn : ψ n.1 = 1 := n.2
     simp only [ContinuousMonoidHom.coe_toMonoidHom, zcCompletedGroupAlgebraScalar_apply,
-        MonoidHom.coe_coe, hn,
+        MonoidHom.coe_ofClass, hn,
   map_one, one_smul]
 
 omit [IsTopologicalGroup G] [IsTopologicalAddGroup A] [T1Space A] in

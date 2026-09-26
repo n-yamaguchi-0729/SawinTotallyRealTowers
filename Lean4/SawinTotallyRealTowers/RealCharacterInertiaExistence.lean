@@ -24,6 +24,7 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
 import ProCGroups.ProP.ContinuousH1
+import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.LinearAlgebra.Dual.Defs
 import Mathlib.NumberTheory.NumberField.Basic
@@ -50,6 +51,10 @@ open scoped NumberField BigOperators Classical
 noncomputable section
 namespace ClassFieldTower.Sawin
 open ClassFieldTower.Martinet.Shafarevich ClassFieldTower.ProP
+
+private local instance realCharacterExistenceCanonicalZModAddCommGroup :
+    AddCommGroup (ZMod 2) :=
+  (ZMod.instField 2).toDivisionRing.toAddCommGroup
 
 private local instance radicalExistenceValuative
     (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :

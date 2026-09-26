@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
 import GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 set_option autoImplicit false
 /-!
@@ -27,6 +29,9 @@ open ClassFieldTower.Cohomology FreeProPH2Cocycle
 universe u v w
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance linearLiftDifferenceCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {Q : Type u} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
 variable {H : Type v} [Group H] [TopologicalSpace H]
 

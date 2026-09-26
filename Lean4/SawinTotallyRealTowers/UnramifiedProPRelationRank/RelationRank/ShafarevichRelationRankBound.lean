@@ -41,14 +41,18 @@ theorem maxEverywhereUnramified_h2_finite_and_finrank_le_radicalDual :
     Module.finrank (ZMod p)
       (continuousCohomologyZModPLifted p (MaxEverywhereUnramifiedProPGaloisGroup F p) 2) ≤
         Module.finrank (ZMod p) (Module.Dual (ZMod p) (idealPowerRadicalModP F p)) := by
+  let _ : AddCommGroup (ZMod p) :=
+    (ZMod.instField p).toDivisionRing.toAddCommGroup
+  let _ : Module (ZMod p) (ZMod p) := Semiring.toModule
+  let n : ℕ+ := ⟨p, (Fact.out : p.Prime).pos⟩
+  have : Fact ((n : ℕ).Prime) := ⟨by change p.Prime; exact Fact.out⟩
   let : FiniteDimensional (ZMod p) (Module.Dual (ZMod p) (idealPowerRadicalModP F p)) :=
     idealPowerRadicalModPDual_finiteDimensional F p
   exact finiteDimensional_and_finrank_degree_two_le_of_inflationRange_embeddings
     (p := p) (G := MaxEverywhereUnramifiedProPGaloisGroup F p)
     (W := Module.Dual (ZMod p) (idealPowerRadicalModP F p))
     (maxEverywhereUnramifiedProPGaloisGroup_hasPGroupOpenNormalBasis F p hpOdd)
-    (@arithmeticStageH2InflationRange_exists_radicalDual_embedding
-      F _ _ (p.toPNat (Fact.out : p.Prime).pos) (inferInstance : Fact p.Prime) hpOdd)
+    (arithmeticStageH2InflationRange_exists_radicalDual_embedding F n hpOdd)
 
 /-- Shafarevich's bound in the universe-lifted continuous-cohomology model. -/
 theorem shafarevich_relation_rank_bound_lifted :

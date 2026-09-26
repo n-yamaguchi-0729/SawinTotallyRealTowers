@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
 import ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairingNondegeneracy
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Defs
+import Mathlib.Algebra.Module.ZMod
 
 set_option autoImplicit false
 /-! # The local Hilbert pairing as a linear dual embedding -/
@@ -19,6 +22,9 @@ open KummerTheory LocalClassFieldTheory LocalClassFieldTheory.Kummer
 variable (L : Type) [Field L] [CharZero L]
 variable [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
+
+local instance localHilbertDualCanonicalZModAddCommGroup : AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
 
 /-- A primitive root identifies the `n`-th roots of unity with additive `ZMod n`. -/
 noncomputable def localNthRootsEquivMultiplicativeZMod

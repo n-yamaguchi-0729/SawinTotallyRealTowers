@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedArtinKummerLocalization
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
+import Mathlib.Algebra.Field.ZMod
 
 set_option autoImplicit false
 /-!
@@ -33,6 +34,10 @@ open KummerTheory
 
 variable (K : Type) [Field K] [NumberField K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
+
+local instance emptySupportArtinKummerCanonicalZModAddCommGroup :
+    AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
 
 /-- The kernel of actual unramified Artin--Kummer localization agrees
 with the kernel of arithmetic finite-valuation localization. -/
@@ -84,8 +89,9 @@ theorem finitePlaceUnramifiedArtinKummerLocalizationFamilyDual_range
   rw [finitePlaceUnramifiedArtinKummerLocalizationFamilyDual,
     finiteValuationLocalizationDual,
     LinearMap.range_dualMap_eq_dualAnnihilator_ker,
-    LinearMap.range_dualMap_eq_dualAnnihilator_ker,
     finitePlaceUnramifiedArtinKummerLocalizationFamily_ker_eq_valuation]
+  exact (LinearMap.range_dualMap_eq_dualAnnihilator_ker
+    (absolutePowerClassFiniteValuationLocalization K (n : ℕ))).symm
 
 /-- The empty-support cokernel obtained by dualizing localization against
 actual unramified local `H¹`, with global `H¹(μ_n)` in its Kummer model. -/

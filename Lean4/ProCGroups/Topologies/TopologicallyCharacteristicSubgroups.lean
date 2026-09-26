@@ -51,7 +51,7 @@ lemma map_symm_toMonoidHom_eq_comap
   · intro hx
     have hx' : e x ∈ K := by
       simpa [Subgroup.mem_comap] using hx
-    exact ⟨e x, hx', by simp only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_coe,
+    exact ⟨e x, hx', by simp only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_ofClass,
         MulEquiv.symm_apply_apply]⟩
 
 end TopologicalGroup

@@ -7,7 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1CharacterLocalization
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 import GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Pi
 import Mathlib.LinearAlgebra.Pi
+import Mathlib.Topology.Algebra.Group.Basic
+import Mathlib.Topology.Algebra.ContinuousMonoidHom
+import Mathlib.Topology.Instances.ZMod
 
 set_option autoImplicit false
 /-!
@@ -28,6 +33,9 @@ open ClassFieldTower.ProP KummerTheory
 
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
+
+local instance finitePlaceH1RamificationCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 
 local instance finitePlaceH1RamificationCharacterTopology :
     TopologicalSpace (Multiplicative (ZMod p)) := ⊥

@@ -19,6 +19,7 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummerLinear
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.RealSignedIdeleCharacter
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Group.Hom.Defs
 import Mathlib.Data.PNat.Basic
@@ -46,6 +47,9 @@ namespace ClassFieldTower.Martinet.Shafarevich
 open ClassFieldTower.ProP KummerTheory
 
 variable (F : Type) [Field F] [NumberField F]
+
+local instance realAbsoluteCanonicalZModAddCommGroup : AddCommGroup (ZMod 2) :=
+  (ZMod.instField 2).toDivisionRing.toAddCommGroup
 
 private theorem two_finite_restriction_principal_radical
     (S : Finset (HeightOneSpectrum (𝓞 F)))

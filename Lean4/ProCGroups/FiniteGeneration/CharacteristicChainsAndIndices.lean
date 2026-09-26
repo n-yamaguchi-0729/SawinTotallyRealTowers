@@ -513,7 +513,7 @@ theorem injective_of_ker_le_every_openNormal
     Function.Injective φ := by
   intro x y hxy
   have hmem : x * y⁻¹ ∈ φ.ker := by
-    simp only [ContinuousMonoidHom.coe_toMonoidHom, MonoidHom.mem_ker, MonoidHom.coe_coe,
+    simp only [ContinuousMonoidHom.coe_toMonoidHom, MonoidHom.mem_ker, MonoidHom.coe_ofClass,
         map_mul, hxy, map_inv,
   mul_inv_cancel]
   have hone : x * y⁻¹ = 1 := by

@@ -162,8 +162,8 @@ theorem topologicallyGenerates_singleton_proCIntegerOne_pGroup
     ProCGroups.Generation.TopologicallyGenerates
       (G := Multiplicative
         (ProCIntegerLimitCarrier (FiniteGroupClass.pGroup p : FiniteGroupClass.{0})))
-      ({proCIntegerOne
-        (C := (FiniteGroupClass.pGroup p : FiniteGroupClass.{0}))} : Set _) := by
+      ({(proCIntegerOne
+        (C := (FiniteGroupClass.pGroup p : FiniteGroupClass.{0})))} : Set _) := by
   let C : FiniteGroupClass.{0} := FiniteGroupClass.pGroup p
   simpa [C, proCIntegerOne] using
     (ProCGroups.Generation.topologicallyGenerates_singleton_of_denseRange_mint

@@ -5,6 +5,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import GaloisCohomology.ProP.H2InflationRangeBound
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Algebra.Module.Defs
 import Mathlib.FieldTheory.Finiteness
 
 set_option autoImplicit false
@@ -26,6 +29,9 @@ noncomputable section
 universe u
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance h2InflationRangeCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 

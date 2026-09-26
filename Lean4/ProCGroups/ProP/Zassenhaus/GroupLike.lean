@@ -39,7 +39,11 @@ def groupLikeDifference (g : G) : ModPCompletedGroupAlgebra p G :=
 theorem groupLikeDifference_mem_augmentationIdeal (g : G) :
     groupLikeDifference p G g ∈ modPAugmentationIdeal p G := by
   rw [CompletedGroupAlgebra.mem_completedGroupAlgebraCanonicalAugmentationIdealInClass_iff]
-  simp [groupLikeDifference]
+  change completedGroupAlgebraCanonicalAugmentationInClass
+    (R := ZMod p) (G := G) (ProCGroups.FiniteGroupClass.pGroup p)
+    (completedGroupAlgebraOfInClass (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G g - 1) = 0
+  rw [map_sub, completedGroupAlgebraCanonicalAugmentationInClass_of, map_one]
+  exact sub_self 1
 
 @[simp] theorem groupLikeDifference_one : groupLikeDifference p G 1 = 0 := by
   simp [groupLikeDifference]

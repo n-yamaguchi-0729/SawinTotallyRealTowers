@@ -166,7 +166,7 @@ theorem ideleCharacter_principal_radical_eq_one_of_integral_local
     rw [← IdeleGroup.fractionalIdeal_ker, MonoidHom.mem_ker, map_div, map_pow,
       IdeleGroup.fractionalIdeal_principalIdele, hb, idealNthRoot_pow, div_self']
   have h := ideleCharacter_integral_eq_one F n hpOdd chi hchi _ hint
-  rw [map_div, map_pow, multiplicativeZMod_pow_eq_one, div_one] at h
-  exact h
+  rw [map_div, map_pow, multiplicativeZMod_pow_eq_one] at h
+  exact (div_one _).symm.trans h
 
 end ClassFieldTower.Martinet.Shafarevich

@@ -29,6 +29,10 @@ open ClassFieldTower.ProP GlobalClassFieldTheory.Reciprocity LocalClassFieldTheo
 variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime]
 
+local instance finiteSupportInertiaCorrectionZModAddCommGroup :
+    AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+
 local instance finiteSupportInertiaCorrectionTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
 local instance finiteSupportInertiaCorrectionDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
   discreteTopology_bot _

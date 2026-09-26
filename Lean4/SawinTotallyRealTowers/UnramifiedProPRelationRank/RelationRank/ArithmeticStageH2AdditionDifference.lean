@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
 import GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
+import Mathlib.Algebra.Field.ZMod
 
 set_option autoImplicit false
 /-!
@@ -27,6 +28,10 @@ open ClassFieldTower.Cohomology ClassFieldTower.ProP ClassFieldTower.Martinet Pr
 variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 variable (U : OpenNormalSubgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))
+
+local instance arithmeticStageH2AdditionCanonicalZModAddCommGroup :
+    AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
 
 local notation "StageQuotient" => MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ) ⧸
   (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))

@@ -64,7 +64,7 @@ private theorem isValuativeTopology_of_valued_ofValuation'
     apply hδ
     exact
       (ValuativeRel.valuation_lt_symm_orderMonoidIso
-        vL (δ : MonoidWithZeroHom.ValueGroup₀ (.ofClass vL)) z).1
+        vL δ.1 z).1
         (by simpa using hz)
   · rintro ⟨γ, hγ⟩
     refine
@@ -93,9 +93,10 @@ theorem continuous_laurentSeries_ofPowerSeries
   rw [(Valued.hasBasis_nhds_zero k⸨X⸩ ℤᵐ⁰).tendsto_right_iff]
   intro γ _
   let γ' : (ℤᵐ⁰)ˣ :=
-    Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-      (f := (.ofClass (Valued.v :
-        Valuation k⸨X⸩ ℤᵐ⁰)))) γ
+    Units.map
+      (MonoidWithZeroHom.ValueGroup₀.embedding
+        (f := ((Valued.v : Valuation k⸨X⸩ ℤᵐ⁰) :
+          k⸨X⸩ →*₀ ℤᵐ⁰))).toMonoidHom γ
   obtain ⟨N, hN⟩ := WithZero.exists_exp_neg_natCast_lt γ'.ne_zero
   let U : Set k⟦X⟧ :=
     ⋂ n ∈ Finset.range N, {f | PowerSeries.coeff n f = 0}

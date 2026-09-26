@@ -44,6 +44,9 @@ noncomputable section
 namespace ClassFieldTower.Sawin
 open ClassFieldTower.Martinet.Shafarevich
 
+local instance negativeThreeLocalRadicalZModAddCommGroup : AddCommGroup (ZMod 2) :=
+  (ZMod.commRing 2).toAddCommGroup
+
 /-- The character of the actual field ℚ(√−3), evaluated through global
 reciprocity on the three-adic unit −1, is nontrivial. -/
 theorem negativeThreeCharacter_three_neg_one_ne_one :

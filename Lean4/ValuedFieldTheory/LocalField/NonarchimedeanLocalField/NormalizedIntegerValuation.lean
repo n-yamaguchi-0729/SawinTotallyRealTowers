@@ -36,8 +36,7 @@ variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
 noncomputable def localIntegerValuation :
     _root_.Valuation K (WithZero (Multiplicative ℤ)) :=
   _root_.Valuation.map
-    (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).toMulEquiv.toMonoidWithZeroHom
-    (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).toOrderIso.monotone
+    (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
     (ValuativeRel.valuation K)
 
 /-- The integer-valued valuation applies the canonical value-group isomorphism. -/

@@ -195,20 +195,14 @@ theorem ramificationNumberOfUniqueExtension_conj
     (base := base) (target := target) huniq tau⁻¹ a
   have hb : Algebra.adjoin base.valuationSubring
       ({b} : Set target.valuationSubring) = ⊤ := by
-    change Algebra.adjoin base.valuationSubring
-      ({valuationSubringAutOfUniqueExtension
-        (base := base) (target := target) huniq tau⁻¹ a} :
-        Set target.valuationSubring) = ⊤
     let e := (valuationSubringAlgEquivOfUniqueExtension
       (base := base) (target := target) huniq tau⁻¹).toAlgHom
     have hmap :
         (Algebra.adjoin base.valuationSubring
           ({a} : Set target.valuationSubring)).map e =
         Algebra.adjoin base.valuationSubring
-          ({valuationSubringAutOfUniqueExtension
-            (base := base) (target := target) huniq tau⁻¹ a} :
-            Set target.valuationSubring) := by
-      simp [e, valuationSubringAlgEquivOfUniqueExtension]
+          ({b} : Set target.valuationSubring) := by
+      simp [b, e, valuationSubringAlgEquivOfUniqueExtension]
     rw [← hmap, ha, Algebra.map_top]
     change e.range = ⊤
     apply (AlgHom.range_eq_top e).2

@@ -115,7 +115,7 @@ theorem continuous_principalUnitLogSeriesHomOfWithZeroValuationScaled
   intro γ _
   let γ' : (WithZero (Multiplicative ℤ))ˣ :=
     Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-      (f := (.ofClass v))) γ
+      (f := (v : K →*₀ WithZero (Multiplicative ℤ)))) γ
   obtain ⟨N₀, hN₀γ⟩ :=
     WithZero.exists_exp_neg_natCast_lt γ'.ne_zero
   obtain ⟨N₁, hN₁⟩ : ∃ N₁ : ℕ,

@@ -93,9 +93,7 @@ theorem standardLubinTateLevelCoefficientHom_apply
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ) (a : F.valuationSubring) :
-    ((standardLubinTateLevelCoefficientHom hπ n a :
-        (standardLubinTateLevelCompleteDVF hπ n).valuationSubring) :
-      standardLubinTateLevelField hπ n) =
+    (standardLubinTateLevelCoefficientHom hπ n a).1 =
         algebraMap K (standardLubinTateLevelField hπ n) (a : K) := by
   exact integerMap_apply F.toCompleteDVF.toDVF
     (standardLubinTateLevelCompleteDVF hπ n).toDVF a

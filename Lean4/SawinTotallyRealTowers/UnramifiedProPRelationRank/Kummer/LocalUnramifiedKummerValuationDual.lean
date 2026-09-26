@@ -30,6 +30,9 @@ section Valuation
 
 variable (p : ℕ) [Fact p.Prime]
 
+local instance : AddCommGroup (ZMod p) := (ZMod.commRing p).toAddCommGroup
+local instance : Module (ZMod p) (ZMod p) := Semiring.toModule
+
 /-- Reduced normalized valuation on local power classes. -/
 noncomputable def localPowerClassValuationMonoidHom :
     (Kˣ ⧸ (powMonoidHom p : Kˣ →* Kˣ).range) →* Multiplicative (ZMod p) :=
@@ -44,6 +47,7 @@ noncomputable def localPowerClassValuationMonoidHom :
 /-- The reduced local valuation as a linear functional. -/
 noncomputable def localPowerClassValuation :
     absolutePowerClassModP K p →ₗ[ZMod p] ZMod p := by
+  letI : Module (ZMod p) (ZMod p) := Semiring.toModule
   letI : Module (ZMod p)
       (Additive (Kˣ ⧸ (powMonoidHom p : Kˣ →* Kˣ).range)) :=
     additiveZModModuleOfPowEqOne p (absolutePowerClassQuotient_pow_eq_one K p)
@@ -53,7 +57,10 @@ noncomputable def localPowerClassValuation :
 theorem localPowerClassValuation_mk (a : Kˣ) :
     localPowerClassValuation K p
         (Additive.ofMul (QuotientGroup.mk' (powMonoidHom p : Kˣ →* Kˣ).range a)) =
-      (valuationMap K (Additive.ofMul a) : ZMod p) := rfl
+      (valuationMap K (Additive.ofMul a) : ZMod p) := by
+  change (localPowerClassValuationMonoidHom K p
+    (QuotientGroup.mk' (powMonoidHom p : Kˣ →* Kˣ).range a)).toAdd = _
+  simp [localPowerClassValuationMonoidHom]
 
 /-- Local valuation on power classes is onto. -/
 theorem localPowerClassValuation_surjective :
@@ -62,7 +69,8 @@ theorem localPowerClassValuation_surjective :
   obtain ⟨x, hx⟩ := valuationModDegree_surjective K p a
   refine ⟨Additive.ofMul
     (QuotientGroup.mk' (powMonoidHom p : Kˣ →* Kˣ).range x.toMul), ?_⟩
-  exact hx
+  simpa only [localPowerClassValuation_mk, valuationModDegree_apply,
+    ofMul_toMul] using hx
 
 /-- The one-dimensional valuation line in the dual of local power classes. -/
 noncomputable def localPowerClassValuationDualEmbedding :
@@ -87,6 +95,9 @@ end Valuation
 
 variable [CharZero K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
+
+local instance : AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.commRing (n : ℕ)).toAddCommGroup
 
 /-- The scalar of an unramified Kummer Hilbert character in the normalized
 valuation coordinate. -/
@@ -128,8 +139,7 @@ theorem localHilbertDualEmbedding_mk_unramified
   rw [localHilbertPairing_apply, localHilbertSymbol_eq_unramifiedFrobenius_zpow
     K n (Nat.cast_ne_zero.mpr n.ne_zero) hmu a b ha, map_zpow,
     toAdd_zpow]
-  simp only [unramifiedChosenSimpleKummerFrobeniusScalar, zsmul_eq_mul,
-    Int.cast_neg, neg_mul, mul_neg, mul_comm]
+  simp [unramifiedChosenSimpleKummerFrobeniusScalar, mul_comm]
 
 /-- A nonzero unramified Kummer class has a nonzero Frobenius scalar. -/
 theorem unramifiedChosenSimpleKummerFrobeniusScalar_ne_zero

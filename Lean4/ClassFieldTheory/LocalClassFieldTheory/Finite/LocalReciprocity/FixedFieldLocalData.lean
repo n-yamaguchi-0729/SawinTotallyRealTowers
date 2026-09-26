@@ -968,12 +968,12 @@ private theorem residueAbsoluteDegreeIn_eq_normalizedDegree_abstractFixedFieldEq
           K (SeparableClosure K) H.field).symm
             (AlgEquiv.autCongr e sigma)) := by
   let F := finiteFixedField K H
-  let : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
   let A := localSeparableValuationSubring K
   let k₀ := decompositionResidueField K A
   let kA := decompositionResidueField F A
   let Omega := selectedResidueField A
+  let : Algebra.IsAlgebraic kA Omega :=
+    (decompositionResidueExtension_normal (K := F) A).toIsAlgebraic
   let R := localAbstractFixedResidueIntermediateField K H.field
   let eOmega : Omega ≃+* Omega := RingEquiv.refl Omega
   have heOmega (x : kA) :
@@ -1011,17 +1011,24 @@ private theorem residueAbsoluteDegreeIn_eq_normalizedDegree_abstractFixedFieldEq
     rw [localAbstractFixedResidueAction_apply K H.field sigmaH]
     rw [hsigmaH]
   let : Algebra k₀ R := R.algebra
+  let : Module k₀ R := Algebra.toModule
   let : FiniteDimensional k₀ R :=
     localAbstractFixedResidueIntermediateField_finiteDimensional K H.field
   let : Finite R := Module.finite_of_finite k₀
   let : Fintype R := Fintype.ofFinite R
-  rw [localResidueDatum_normalizedDegree_eq_residueAbsoluteDegreeIn]
   change residueAbsoluteDegreeIn kA Omega rhoA =
-    residueAbsoluteDegreeIn R Omega rhoH
-  rw [← hconjugate]
-  exact
-    (residueAbsoluteDegreeIn_semilinear_conjugation
-      kA Omega tau eOmega heOmega rhoA).symm
+    (localResidueDatum K).normalizedDegree
+      (H.toFiniteResidueAbstractField (localResidueDatum K)) sigmaH
+  calc
+    residueAbsoluteDegreeIn kA Omega rhoA =
+        residueAbsoluteDegreeIn R Omega rhoH := by
+      exact Eq.trans
+        (residueAbsoluteDegreeIn_semilinear_conjugation
+          kA Omega tau eOmega heOmega rhoA).symm
+        (congrArg (residueAbsoluteDegreeIn R Omega) hconjugate)
+    _ = _ :=
+      (localResidueDatum_normalizedDegree_eq_residueAbsoluteDegreeIn
+        K H sigmaH).symm
 
 /-- Changing from the canonical separable closure of a finite fixed field to
 the original ambient separable closure identifies its intrinsic local

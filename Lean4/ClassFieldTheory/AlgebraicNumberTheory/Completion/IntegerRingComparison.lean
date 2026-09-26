@@ -89,8 +89,8 @@ noncomputable def finitePlaceIdealResidueEquivLocalization
     (v : HeightOneSpectrum (𝓞 K)) :
     (𝓞 K ⧸ v.asIdeal) ≃+*
       IsLocalRing.ResidueField (v.valuationSubringAtPrime K) :=
-  IsLocalization.AtPrime.equivQuotMaximalIdeal
-    v.asIdeal (v.valuationSubringAtPrime K)
+  (IsLocalization.AtPrime.equivQuotMaximalIdeal
+    v.asIdeal (v.valuationSubringAtPrime K)).toRingEquiv
 
 /-- The residue field at a finite prime is canonically the residue field of
 its normalized absolute-value completion. -/

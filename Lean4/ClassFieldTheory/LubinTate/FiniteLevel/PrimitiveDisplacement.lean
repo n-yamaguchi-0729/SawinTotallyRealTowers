@@ -812,8 +812,7 @@ theorem standardLubinTateUnitParameterToGal_apply_primitivePointInteger
     standardLubinTateUnitParameterToGal F hπ n a
         (standardLubinTateLevelGenerator hπ n) =
       (standardLubinTatePrimitivePointIntegerAction hπ n
-          (standardLubinTateUnitParameterChosenRepresentative F n a) :
-        standardLubinTateLevelField hπ n)
+          (standardLubinTateUnitParameterChosenRepresentative F n a)).val
   change
     standardLubinTateUnitParameterAlgEquiv F hπ n a
         (standardLubinTateLevelPowerBasis hπ n).gen =

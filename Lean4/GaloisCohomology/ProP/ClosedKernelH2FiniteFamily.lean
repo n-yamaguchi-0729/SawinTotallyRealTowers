@@ -16,9 +16,12 @@ import ProCGroups.ProP.ContinuousH1
 import ProCGroups.ProP.FrattiniPowers
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.Module.ZMod
+import Mathlib.Algebra.Module.Defs
+import Mathlib.Algebra.Module.Pi
 import Mathlib.LinearAlgebra.Dimension.Finite
 import Mathlib.LinearAlgebra.LinearIndependent.Defs
 import Mathlib.Topology.Algebra.Group.Basic
+import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Mathlib.Topology.Instances.ZMod
 
@@ -43,6 +46,9 @@ noncomputable section
 universe u v
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance closedKernelFamilyCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
 
 local instance kernelFamilyH1Module

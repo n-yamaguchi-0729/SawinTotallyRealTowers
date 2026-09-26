@@ -420,8 +420,8 @@ private theorem maximalIdeal_eq_span_discretePrimeElement
       v x = ((((m : ℝ) * s : ℝ)) : WithTop ℝ))
     {pi : K} (hpival : v pi = (s : WithTop ℝ)) :
     IsLocalRing.maximalIdeal (LubinTate.Valuations.exponentialValuationSubring v) =
-      Ideal.span ({LubinTate.Valuations.discretePrimeElementInValuationSubring
-        v hs.le hpival} : Set (LubinTate.Valuations.exponentialValuationSubring v)) := by
+      Ideal.span (Set.singleton (LubinTate.Valuations.discretePrimeElementInValuationSubring
+        v hs.le hpival) : Set (LubinTate.Valuations.exponentialValuationSubring v)) := by
   let piV := LubinTate.Valuations.discretePrimeElementInValuationSubring v hs.le hpival
   apply le_antisymm
   · intro x hx
@@ -448,10 +448,13 @@ private theorem maximalIdeal_eq_span_discretePrimeElement
       have hxpow : x ∈ LubinTate.Valuations.uniformizerPowerIdeal piV 1 :=
         (LubinTate.Valuations.discrete_uniformizerPowerIdeal_mem_iff_value_ge
           v hs hpival 1 x).2 (by simpa using hsle)
-      simpa [piV, LubinTate.Valuations.uniformizerPowerIdeal] using hxpow
+      change x ∈ Ideal.span ({piV} : Set _)
+      simpa only [LubinTate.Valuations.uniformizerPowerIdeal, pow_one] using hxpow
   · rw [Ideal.span_le]
     intro x hx
-    have hxpi : x = piV := by simpa [piV] using hx
+    have hxpi : x = piV := by
+      change x = piV at hx
+      exact hx
     subst x
     rw [← LubinTate.Valuations.exponentialMaxIdeal_eq_maximalIdeal v]
     change (0 : WithTop ℝ) < v pi

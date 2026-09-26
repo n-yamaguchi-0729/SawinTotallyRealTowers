@@ -507,8 +507,8 @@ theorem span_cosetGeneratorDisplacementProduct_eq_map_fixedFieldDisplacementIdea
     (sigma : Gal(L/K)) {z : target.valuationSubring}
     (hz : Algebra.adjoin base.valuationSubring
       ({z} : Set target.valuationSubring) = ⊤) :
-    Ideal.span ({cosetGeneratorDisplacementProductDVF
-        (base := base) (target := target) huniq H sigma z} :
+    Ideal.span (Set.singleton (cosetGeneratorDisplacementProductDVF
+        (base := base) (target := target) huniq H sigma z) :
       Set target.valuationSubring) =
       Ideal.map (fixedFieldValuationSubringDVFToTarget
         (K := K) (target := target) H)
@@ -518,7 +518,8 @@ theorem span_cosetGeneratorDisplacementProduct_eq_map_fixedFieldDisplacementIdea
   apply le_antisymm
   · rw [Ideal.span_le]
     rintro d hd
-    rw [Set.mem_singleton_iff] at hd
+    change d = cosetGeneratorDisplacementProductDVF
+      (base := base) (target := target) huniq H sigma z at hd
     subst d
     exact cosetGeneratorDisplacementProductDVF_mem_map_fixedFieldDisplacementIdeal
       (base := base) (target := target) huniq H sigma z
@@ -536,8 +537,8 @@ theorem span_cosetGeneratorDisplacementProduct_eq_map_fixedFieldDisplacementIdea
         (fixedFieldValuationSubringAutDVF
           (base := base) (target := target) huniq H
           (IsGalois.normalAutEquivQuotient H sigma) a - a) ∈
-      Ideal.span ({cosetGeneratorDisplacementProductDVF
-        (base := base) (target := target) huniq H sigma z} :
+      Ideal.span (Set.singleton (cosetGeneratorDisplacementProductDVF
+        (base := base) (target := target) huniq H sigma z) :
           Set target.valuationSubring)
     rw [map_sub, fixedFieldToTarget_quotientAut_apply_dvf]
     apply Ideal.mem_span_singleton.mpr

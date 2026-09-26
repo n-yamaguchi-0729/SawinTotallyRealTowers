@@ -392,8 +392,7 @@ underlying field element. -/
 theorem standardLubinTatePrimitivePointInteger_coe
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    (standardLubinTatePrimitivePointInteger hπ n :
-      standardLubinTateLevelField hπ n) =
+    (standardLubinTatePrimitivePointInteger hπ n).val =
         standardLubinTateLevelGenerator hπ n :=
   rfl
 
@@ -451,9 +450,9 @@ private theorem
   intro a b hab
   change
     (standardLubinTateLevelField hπ n).val
-        (a : standardLubinTateLevelField hπ n) =
+        a.val =
       (standardLubinTateLevelField hπ n).val
-        (b : standardLubinTateLevelField hπ n) at hab
+        b.val at hab
   apply Subtype.ext
   exact (standardLubinTateLevelField hπ n).val.injective hab
 
@@ -470,10 +469,9 @@ private theorem
   intro a
   change
     ((standardLubinTateLevelField hπ n).val
-      (((integerMap F.toCompleteDVF.toDVF
+      ((integerMap F.toCompleteDVF.toDVF
         (standardLubinTateLevelCompleteDVF hπ n).toDVF) a :
-          (standardLubinTateLevelCompleteDVF hπ n).valuationSubring) :
-        standardLubinTateLevelField hπ n)) =
+          (standardLubinTateLevelCompleteDVF hπ n).valuationSubring).val) =
       algebraMap K (SeparableClosure K)
         (algebraMap F.valuationSubring K a)
   rw [integerMap_apply]
@@ -852,8 +850,7 @@ theorem standardLubinTatePrimitivePoint_isUniformizer
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
     (standardLubinTateLevelCompleteDVF hπ n).valuation.IsUniformizer
-      (standardLubinTatePrimitivePointInteger hπ n :
-        standardLubinTateLevelField hπ n) := by
+      (standardLubinTatePrimitivePointInteger hπ n).val := by
   exact Valuation.isUniformizer_of_maximalIdeal_eq_span
     (v := (standardLubinTateLevelCompleteDVF hπ n).valuation)
     (standardLubinTatePrimitivePointInteger_irreducible hπ n).maximalIdeal_eq

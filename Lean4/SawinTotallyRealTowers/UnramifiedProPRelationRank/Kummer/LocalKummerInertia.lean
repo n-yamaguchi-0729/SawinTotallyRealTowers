@@ -31,6 +31,8 @@ variable (p : ℕ) [Fact p.Prime]
 local instance localKummerInertiaTopology : TopologicalSpace (ZMod p) := ⊥
 local instance localKummerInertiaDiscreteTopology : DiscreteTopology (ZMod p) :=
   discreteTopology_bot _
+local instance localKummerInertiaZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.commRing p).toAddCommGroup
 local instance localKummerInertiaH1Module
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=

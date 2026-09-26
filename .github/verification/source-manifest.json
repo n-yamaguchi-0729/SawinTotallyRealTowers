@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "entryModule": "SawinTotallyRealTowers.SawinTotallyRealTower",
   "entryDeclaration": "ClassFieldTower.Sawin.sawin_totally_real_tower",
-  "sourceCommit": "c3f48a4c7510bac9248df07784c3628426581739",
-  "synchronizedFromCommit": "5447ae5c704779c0a5aada8854277709d87d1178",
-  "leanToolchain": "leanprover/lean4:v4.34.0",
-  "mathlibRevision": "5ed2965256430c3649e86755f9576b54eca72435",
+  "sourceCommit": "6b3d98d9d0cde2c61ba3e34394a6ad6fe4c9c28d",
+  "synchronizedFromCommit": "179654389c43680b0ee5cc338be0b21e9ffbc269",
+  "leanToolchain": "leanprover/lean4:v4.35.0-rc2",
+  "mathlibRevision": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
   "moduleCount": 1740,
   "ownerCounts": {
     "ClassFieldTheory": 690,
@@ -849,7 +849,7 @@
     "ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/AlgebraicNumberTheory/Adele/IntegralTensorSupport/Lattice.lean",
-      "sha256": "5e9dd8db3200a88ea804f58e58af14460adeaf4654f5473c6dc08d1d872d3153",
+      "sha256": "68bf8a63d83b52d2bbdf276eedeed40f18979bd04d7f0ad2030cd567049b44b8",
       "imports": [
         "ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue"
       ]
@@ -865,7 +865,7 @@
     "ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/AlgebraicNumberTheory/Adele/IntegralTensorSupport/LocalTensorDecomposition.lean",
-      "sha256": "4a513f067beb22e054abf07978809d3125f2d4be11f4ac50f6a045e8127f5614",
+      "sha256": "88b14b6283b423d5b3390008013311f71f41e47fa1942e9cb6cd84b496d620eb",
       "imports": [
         "ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion"
       ]
@@ -964,7 +964,7 @@
     "ClassFieldTheory.AlgebraicNumberTheory.Completion.IntegerRingComparison": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/AlgebraicNumberTheory/Completion/IntegerRingComparison.lean",
-      "sha256": "aa2ea4a447e355199263cbacc67a69b12542866713f83fb4af2943fc0357f3fe",
+      "sha256": "e61f7cfd9def326ba3c8b27cfed796891be6acd9f7403dfe1d379ca0c06d3447",
       "imports": [
         "ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison",
         "ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization",
@@ -1570,7 +1570,7 @@
     "ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormProperties": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/AlgebraicNumberTheory/Idele/Extension/NormProperties.lean",
-      "sha256": "2f242216e9f954ccc592bd974d193dc94d29d292c2cb5fa418b557678a2f7106",
+      "sha256": "910b931a341b5cb9f52774c4fec915214544e9f77cdfccebead34461545850b4",
       "imports": [
         "ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange",
         "Mathlib.RingTheory.Norm.Transitivity"
@@ -3878,7 +3878,7 @@
     "ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicFinitePlaceArtin": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/GlobalClassFieldTheory/Reciprocity/RationalCyclotomicFinitePlaceArtin.lean",
-      "sha256": "600d472fd89ac1afdcb7879e97866058c534dad7775bde19ce46a619695b22f5",
+      "sha256": "dd3b4c610955c15235187e1892513ef7e333265428c511fbfec50cd017ea434c",
       "imports": [
         "ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal",
         "ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion",
@@ -4012,7 +4012,7 @@
     "ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/KummerTheory/Concrete/SimpleExtensionLocalBehavior.lean",
-      "sha256": "4acda4607610eea6b31b5e94644b7e80992ffa0a3dd0f1b03c6d1cdd57b502d9",
+      "sha256": "70b888e0eeda256f65b03ceadc70fe859e6570890492411b912910c97259db8e",
       "imports": [
         "GaloisCohomology.Kummer.Concrete.SimpleExtension",
         "ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition",
@@ -4049,7 +4049,7 @@
     "ClassFieldTheory.KummerTheory.Concrete.SUnitKummerUnramified": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/KummerTheory/Concrete/SUnitKummerUnramified.lean",
-      "sha256": "dc2604d2657a9eec807d6e044d8d8c1651ebb0f7f05d572d6c5e539d0ea32136",
+      "sha256": "83d0f22a31268284bc449852153bdf2629a656cbfe069b4efcfd203ce3e4f4a6",
       "imports": [
         "ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.Core",
         "ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior",
@@ -5383,7 +5383,7 @@
     "ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldLocalData": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LocalClassFieldTheory/Finite/LocalReciprocity/FixedFieldLocalData.lean",
-      "sha256": "3c88706670da29fe1dd821b6d879b11081447ad34ee8dab1364b80e3f5e6f482",
+      "sha256": "406c4b00cf550bb4a8ea194d14cf6101534c6a03163c257cda0d4adb3a13b2a5",
       "imports": [
         "ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHenselianValuation",
         "ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison",
@@ -5489,7 +5489,7 @@
     "ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LocalClassFieldTheory/Finite/LocalReciprocity/LocalResidueDatum.lean",
-      "sha256": "43e6d1f9554c2642027d97c12cd758a61aed11a282da14ffc1284a10cdcce2db",
+      "sha256": "73dcc6d3e1bd50ee7c9f2bf216c58e429cc8f88c40ca211ec17e0515a4105735",
       "imports": [
         "ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueActionIndex",
         "ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure",
@@ -6058,7 +6058,7 @@
     "ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.LubinTateTransport": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LocalClassFieldTheory/LubinTateApplication/LubinTateTransport.lean",
-      "sha256": "07cb4a5ab8d6863168538271cd44e6845cfb6ccc13a04c6cfc5f799e54160007",
+      "sha256": "6f545f4ac2fa2627edd17a2fd8b38d1a10c35c65497cf3ec1ac7e8ecf995228d",
       "imports": [
         "Mathlib.Algebra.CharP.Subring",
         "Mathlib.SetTheory.Cardinal.Finite",
@@ -6458,7 +6458,7 @@
     "ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/EqualCharacteristic/Existence/LaurentLocalField.lean",
-      "sha256": "a567e789439abe079b24667eb6877483ad2217a4b46cc107cfcc42c8af6390f8",
+      "sha256": "0e55d8c8da844c96aec497c0fcdf104ad8a1ccd6ad325feb66ec42801e1f3b41",
       "imports": [
         "ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentModel",
         "Mathlib.RingTheory.PowerSeries.PiTopology"
@@ -6732,7 +6732,7 @@
     "ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CompletedUnramifiedField": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/EqualCharacteristic/Frobenius/CompletedUnramifiedField.lean",
-      "sha256": "ded8a46b62ea119fd888d32b18095d501d08bacd7d040ae6f7373090ff79f7aa",
+      "sha256": "fef192fb83c227c49d41034fb1f1c6b27490cad66b1b37f35ee8ca58805a6315",
       "imports": [
         "Mathlib.SetTheory.Cardinal.Finite",
         "ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobenius",
@@ -6902,7 +6902,7 @@
     "ClassFieldTheory.LubinTate.EqualCharacteristic.Ramification.DisplacementValuation": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/EqualCharacteristic/Ramification/DisplacementValuation.lean",
-      "sha256": "2a94b7e0f2a648338edf0b07af7c4f47669ac4cb0e50ceeccea7a04b6f752bac",
+      "sha256": "3bd8c301eca94313d06a031ed755ffd44442cca178b169af904de789f79a18cd",
       "imports": [
         "ClassFieldTheory.LubinTate.EqualCharacteristic.Ramification.PrimitivePoint",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.PolynomialRootProximity",
@@ -6932,7 +6932,7 @@
     "ClassFieldTheory.LubinTate.EqualCharacteristic.Ramification.PrimitivePoint": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/EqualCharacteristic/Ramification/PrimitivePoint.lean",
-      "sha256": "e7acd7063a2195469e22971878162cd8743c45463311c9e1dca4e85bf8c7f7fc",
+      "sha256": "ae6e6f351540c6f33ba38f4569d7ef4bb5500db1697b1aac85734587751452cf",
       "imports": [
         "ClassFieldTheory.LubinTate.EqualCharacteristic.Ramification.GaloisAction",
         "ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer",
@@ -7012,7 +7012,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.ChangedLevelCompositum": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/ChangedLevelCompositum.lean",
-      "sha256": "185701f794f71a4fad7babc4b3bf9fc0db7b81d18f4cbae51b01a325356bfb58",
+      "sha256": "6f2fc9d9f6a95d717206c95995dc94f7a7bc30eb372ba2e6ee83c1958e50c5d3",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer",
         "ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation",
@@ -7037,7 +7037,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/ChangedUniformizer.lean",
-      "sha256": "ecaf72f1be6139327a83b2d6868c167ef7425ae66a4b57a44b6b0a0bcbc0a3f3",
+      "sha256": "3bd1a70797c3be947cfb282bae32eba7a9fa80849130362648397b62a5c95a86",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.NormSubgroup",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction",
@@ -7056,7 +7056,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/CompletedEvaluation.lean",
-      "sha256": "e6952d90d3cf2fa4390bd6eb01616a3b4dfdba7085eb1d857230acb6e01baf29",
+      "sha256": "b42dfd1fb325df54cf5354a4f6cc3d0593d9be42e43abce313b415420b847d5b",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer",
         "ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup",
@@ -7112,7 +7112,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.HerbrandFormula": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/HerbrandFormula.lean",
-      "sha256": "8b91850b18c0f726c311d88679e4b32f8b51edf98a2974a6a34c7abcc29a432d",
+      "sha256": "50360db445a09f875189a2e21508e67976e7a417a1ad8ac68f7ecac347e8e42f",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.LowerRamificationFormula",
         "ClassFieldTheory.LubinTate.FiniteLevel.UpperRamification"
@@ -7121,7 +7121,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.HigherUnitLevelEquiv": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/HigherUnitLevelEquiv.lean",
-      "sha256": "89efaf80ca5ede4e6521aed82832f08106413520d28d47a4e15f192b783dc045",
+      "sha256": "001f25e6e14b2f4cca3da17e3b10fdae01a9e2b58d54525de2c022487b309112",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.ChangedPrimitiveEvaluation",
         "ClassFieldTheory.LubinTate.FiniteLevel.ChangedLevelCompositum",
@@ -7145,7 +7145,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/LevelAutomorphisms.lean",
-      "sha256": "1583c21bf79bbbdc3053df5eb099cb970a2a40164142873426737a69f38427f8",
+      "sha256": "9e7e6121e3c0ad993c73e5032bee491abcf4ab24f6a7c45613661011be74b016",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters",
         "Mathlib.FieldTheory.Galois.Basic",
@@ -7235,7 +7235,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/PrimitiveAction.lean",
-      "sha256": "957b2e3b6014995d3e9a8896a84c2cc0e31f2bd7a24a2ac78c2818ce680e0bae",
+      "sha256": "b4624101c1e2e59ba714a9c6ea1259b2f186cd593f85d8b6343b886a1a89cd29",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation",
         "ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup",
@@ -7246,7 +7246,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveDisplacement": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/PrimitiveDisplacement.lean",
-      "sha256": "ed22bacc10b8e0bef4f3e2a727d9e7191165ec0a4c278b04668330fe1125dc40",
+      "sha256": "28b6e7930d6fef408c7bbc04187ceb7e3c2e2ce38e4b0a1c3ed0860138eef426",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.CompletedIterates",
         "ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction",
@@ -7286,7 +7286,7 @@
     "ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/FiniteLevel/PrimitiveUniformizer.lean",
-      "sha256": "badfdcc4b277cfa246ec3f58786199386fbad6394875dc006b5e2296d1d5f526",
+      "sha256": "0538d5d762cea73817d1dafeb0853d20200161e3f2fbb6618ee449c53640638e",
       "imports": [
         "ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveTorsion",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal",
@@ -7638,7 +7638,7 @@
     "ClassFieldTheory.LubinTate.Padic.CompletedStandardLevelTransport": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/Padic/CompletedStandardLevelTransport.lean",
-      "sha256": "b4f74ef7b42c45a9fa2ee57dfbd0dfc6f952585e0b007a33d0bcf9556c1e14f9",
+      "sha256": "f7a74f65e3b4359ed2fec4f15f9f8f5d4c2c7024125a6b91d915511902bc1c15",
       "imports": [
         "ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift",
         "Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology"
@@ -7726,7 +7726,7 @@
     "ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelPrimitiveRoot": {
       "owner": "ClassFieldTheory",
       "path": "Lean4/ClassFieldTheory/LubinTate/Padic/MultiplicativeEvaluation/FiniteLevelPrimitiveRoot.lean",
-      "sha256": "434f364300aba130f6ef861fefcf10842fd8e60e5b2e9f5420d0bed2ad65b251",
+      "sha256": "18df298391f3b892b70752abeb3837462f37dc01b2efe2c99b3920f8bd081ebd",
       "imports": [
         "ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelEvaluation",
         "ClassFieldTheory.LubinTate.FiniteLevel.LevelAbelian",
@@ -8050,7 +8050,7 @@
     "GaloisCohomology.Kummer.Abstract.KummerDelta": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/Kummer/Abstract/KummerDelta.lean",
-      "sha256": "ddc00a5ac46f6c50c10897378ced4fb3125ada0ae572430089fe12a892a86824",
+      "sha256": "741868222f5e639cf177e00f12a0b0de78a1ef264c5c41ef16bd28f1b2824551",
       "imports": [
         "GaloisCohomology.Kummer.Abstract.KummerAbelianAssembly",
         "GaloisCohomology.Cyclic.IntegralRepUniverse",
@@ -8723,7 +8723,7 @@
     "GaloisCohomology.ProP.CentralExtensionFrattiniKernel": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/CentralExtensionFrattiniKernel.lean",
-      "sha256": "dfc02191ce70f1d3e90129964486d78174a599f22d53b2f176d68c2c16d24737",
+      "sha256": "4f5fd2af1a559e8d01b92266198c5f119ec253148b31ce331e605732559bc400",
       "imports": [
         "GaloisCohomology.ProP.H2CentralExtensionClass",
         "Mathlib.GroupTheory.Frattini",
@@ -8752,7 +8752,7 @@
     "GaloisCohomology.ProP.ClosedKernelH2FiniteFamily": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/ClosedKernelH2FiniteFamily.lean",
-      "sha256": "1ea66bfbd6cb4370a9a2a4fd188115be008aff33f8b6fecafdad057b9f0ac1da",
+      "sha256": "27175dbad31669e3f5024dbaddde99a253a80a56ce1996450b1c630239fa165e",
       "imports": [
         "GaloisCohomology.ProP.FiniteStageTransgression",
         "GaloisCohomology.ProP.FiniteStageTransgressionKernel",
@@ -8766,9 +8766,12 @@
         "ProCGroups.ProP.FrattiniPowers",
         "Mathlib.Algebra.Field.ZMod",
         "Mathlib.Algebra.Module.ZMod",
+        "Mathlib.Algebra.Module.Defs",
+        "Mathlib.Algebra.Module.Pi",
         "Mathlib.LinearAlgebra.Dimension.Finite",
         "Mathlib.LinearAlgebra.LinearIndependent.Defs",
         "Mathlib.Topology.Algebra.Group.Basic",
+        "Mathlib.Topology.Algebra.ContinuousMonoidHom",
         "Mathlib.Topology.Algebra.Group.ClosedSubgroup",
         "Mathlib.Topology.Instances.ZMod"
       ]
@@ -9088,7 +9091,7 @@
     "GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H2CocycleExtensionKernelCharacter.lean",
-      "sha256": "fda8fe6e968806f394bf8e49b325ba797a3ebf65ed1c9fab358b3abd1d24d4cf",
+      "sha256": "23bbe587991fbaf9358ff3543db4d0ff35a417744ea78446408923e264c43a79",
       "imports": [
         "GaloisCohomology.ProP.H2CocycleExtensionSplitting"
       ]
@@ -9096,7 +9099,7 @@
     "GaloisCohomology.ProP.H2CocycleExtensionLiftDifference": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H2CocycleExtensionLiftDifference.lean",
-      "sha256": "dfb9babaf8b122b1e6cbec5ba64be0e9705695333059c205b4766dd87cc832df",
+      "sha256": "0c0fa492c272d88fc6ac98159aa17e0fecf25f5a3891fd4bea652dc0e93e5b5c",
       "imports": [
         "GaloisCohomology.ProP.H2CocycleExtension",
         "GaloisCohomology.ProP.QuotientRestriction"
@@ -9105,10 +9108,12 @@
     "GaloisCohomology.ProP.H2CocycleExtensionLinearLiftDifference": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H2CocycleExtensionLinearLiftDifference.lean",
-      "sha256": "754378d1533a47e86408311627e6f3b293b7f529b4d0ea04e80fd8fa57309e2e",
+      "sha256": "564bec8ee936e057c4d6c73489b4bd8aebe0eabda7549060bed658f1261196e6",
       "imports": [
         "GaloisCohomology.ProP.H2CocycleExtensionLinearLifts",
-        "GaloisCohomology.ProP.H2CocycleExtensionLiftDifference"
+        "GaloisCohomology.ProP.H2CocycleExtensionLiftDifference",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Topology.Algebra.ContinuousMonoidHom"
       ]
     },
     "GaloisCohomology.ProP.H2CocycleExtensionLinearLifts": {
@@ -9185,32 +9190,41 @@
     "GaloisCohomology.ProP.H2InflationRangeCardinality": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H2InflationRangeCardinality.lean",
-      "sha256": "ab5ef2c85077b002ea0471cd6bc7b170a30ffb0224c9e7edc86235f7edcf4baa",
+      "sha256": "88832d74f2539b4681bf40d2fb5251854b010235a52942a4f78a716c8ceb5438",
       "imports": [
         "GaloisCohomology.ProP.H2InflationRangeBound",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Algebra.Module.Pi",
+        "Mathlib.Algebra.Module.Defs",
         "Mathlib.FieldTheory.Finiteness"
       ]
     },
     "GaloisCohomology.ProP.H2PrimeToIndexRestriction": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/H2PrimeToIndexRestriction.lean",
-      "sha256": "a25fde56056823da81097f90a778e6b5792e178df2312775b0cdcf09538e7088",
+      "sha256": "f14b0f41ee6b056bac296e38a379f4ce15b352765c1b25b417a584fa15ded406",
       "imports": [
         "GaloisCohomology.ProP.FiniteIndexTransfer",
         "GaloisCohomology.ProP.H2CocycleExtensionPullback",
         "GaloisCohomology.ProP.H2CocycleExtensionLiftDifference",
-        "GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter"
+        "GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "GaloisCohomology.ProP.InvariantKernelH1": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/InvariantKernelH1.lean",
-      "sha256": "b2dc478440bed04fe446a32e64eaa7a605157eb79cec7c0c7f5423090af105cf",
+      "sha256": "5f8666b6d59913b2de24545ecc6f72e2e4d3b192485c07ae8af445f5f9ca9297",
       "imports": [
         "GaloisCohomology.ProP.TrivialZModP",
         "ProCGroups.ProP.ContinuousH1",
         "ProCGroups.ProP.Presentation.Minimal",
-        "Mathlib.Algebra.Field.ZMod"
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Algebra.Module.Defs",
+        "Mathlib.Algebra.Module.Pi",
+        "Mathlib.Topology.Algebra.Group.Basic",
+        "Mathlib.Topology.Algebra.ContinuousMonoidHom",
+        "Mathlib.Topology.Instances.ZMod"
       ]
     },
     "GaloisCohomology.ProP.MultiplicativeBinaryProductH2Evaluation": {
@@ -9263,22 +9277,26 @@
     "GaloisCohomology.ProP.PresentationH2KernelCharacter": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/PresentationH2KernelCharacter.lean",
-      "sha256": "277e1eebaf87ca3e255e9459db1dc04b4a2823e7a0b0907167c6a6e34d2fdf70",
+      "sha256": "da1d2a7f21c932d75fefb2153311caad7752bfd6187bc6237397b59643d47d84",
       "imports": [
         "GaloisCohomology.ProP.InvariantKernelH1",
-        "GaloisCohomology.ProP.PresentationH2Primitive"
+        "GaloisCohomology.ProP.PresentationH2Primitive",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Topology.Algebra.ContinuousMonoidHom"
       ]
     },
     "GaloisCohomology.ProP.PresentationH2LowerBound": {
       "owner": "GaloisCohomology",
       "path": "Lean4/GaloisCohomology/ProP/PresentationH2LowerBound.lean",
-      "sha256": "8b163613a6bab55a335ecd147f69b84d19db92ae70c4a985c10c03ec102e11ce",
+      "sha256": "6a78227d69cf685cec6d0baaac56ac55a94c93051b77ca64f42a49e6383a1cca",
       "imports": [
         "GaloisCohomology.ProP.FiniteStageTransgressionKernel",
         "GaloisCohomology.ProP.FiniteStageTransgressionLinear",
         "ProCGroups.Cohomology.InvariantCharacterFiniteFamily",
         "GaloisCohomology.ProP.PresentationQuotientEquiv",
         "GaloisCohomology.ProP.RelationRankH1",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Algebra.Module.ZMod",
         "Mathlib.LinearAlgebra.Dimension.Finite"
       ]
     },
@@ -9368,7 +9386,7 @@
     "ProCGroups.Abelian.TopologicalAbelianization": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Abelian/TopologicalAbelianization.lean",
-      "sha256": "e0fbb6ec5fd8935590f650ee2d8880fa70d86ef15b481e89ae7e10128e0fdfee",
+      "sha256": "50f0ad1b95a4884ddd56ac6d5ca0e5b65c434dcd441e59dcdaaba86306d5e6f4",
       "imports": [
         "Mathlib.Topology.Algebra.Group.TopologicalAbelianization",
         "ProCGroups.Topologies.TopologicallyCharacteristicSubgroups"
@@ -9416,9 +9434,10 @@
     "ProCGroups.Cohomology.FiniteInvariantCharacter": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Cohomology/FiniteInvariantCharacter.lean",
-      "sha256": "fc0ecb7b64363218ae12eacac6db1c177bc163254c465c77d405903f704a33e9",
+      "sha256": "688b690fc64bff374274d1ac3c19050e0f09d09921a1838d6538bf4ca21b7d3c",
       "imports": [
         "ProCGroups.ProP.FinitePGroupMaximal",
+        "Mathlib.Algebra.Group.Hom.Instances",
         "Mathlib.GroupTheory.GroupAction.DomAct.Basic"
       ]
     },
@@ -9451,7 +9470,7 @@
     "ProCGroups.Cohomology.RelativeNakayama": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Cohomology/RelativeNakayama.lean",
-      "sha256": "eb7e20a763634402daa00e2ada7c261623b54d7acbae009ccfa41fbd7abb1dda",
+      "sha256": "1f294aab71e358452521203a8c561b827f902d87f0e19b3bd715cc79da939664",
       "imports": [
         "ProCGroups.Cohomology.FiniteInvariantCharacter",
         "ProCGroups.ProC.InverseLimits.Predicates",
@@ -9907,7 +9926,7 @@
     "ProCGroups.CompletedGroupAlgebra.UniversalProperty.ProfiniteModule": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/CompletedGroupAlgebra/UniversalProperty/ProfiniteModule.lean",
-      "sha256": "60ff04d2dac2fc0a552f952910d7acc6f9fe5b667d758245bb516d74d4018d4b",
+      "sha256": "fab213778142a371351aaf21bf53a41dfbc1a644ec919420b35bd0bd6aa682cf",
       "imports": [
         "ProCGroups.CompletedGroupAlgebra.UniversalProperty.OpenSubmoduleQuotient"
       ]
@@ -9942,7 +9961,7 @@
     "ProCGroups.Completion.ProCInteger": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Completion/ProCInteger.lean",
-      "sha256": "3e4287c3e4663e031767dba8c8d9f9d0178abbc754f5e6ee208f262a30cfb4e2",
+      "sha256": "2c2dd27e04936b53ec4397a89a457be5d561b9ea6660136ab9869d9b330043e2",
       "imports": [
         "Mathlib.Topology.Instances.ZMod",
         "ProCGroups.ProC.InverseLimits.Limits",
@@ -9952,7 +9971,7 @@
     "ProCGroups.Completion.ProCIntegerPrimePower": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Completion/ProCIntegerPrimePower.lean",
-      "sha256": "d73d0c857ef482c2779a1018a33034bbf6c410ce30f6b8d675010213c392408d",
+      "sha256": "8a140997a0a59e12f764048994c9e67077c06174f9c9b5c9638fde2b84cfd02b",
       "imports": [
         "ProCGroups.Completion.ProCInteger"
       ]
@@ -9977,7 +9996,7 @@
     "ProCGroups.FiniteGeneration.CharacteristicChainsAndIndices": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/FiniteGeneration/CharacteristicChainsAndIndices.lean",
-      "sha256": "8977de05f0bee713ed6f1e2e34bb6aa75f87e625bfbe437829cf11aa46954eb2",
+      "sha256": "a6152f6c622daedbaff31e8049fe6bb71e6e27108f74424ab1269c8a72e017b1",
       "imports": [
         "ProCGroups.FiniteGeneration.Basic",
         "ProCGroups.Topologies.ContinuousMonoidHom"
@@ -10137,7 +10156,7 @@
     "ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebra": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/FoxDifferential/Completed/CoefficientRings/CompletedGroupAlgebra.lean",
-      "sha256": "14330a88cda6aad800269430ceb8fc61d4e5e76cc4dbd45d1a7d629ff7785949",
+      "sha256": "8f5cbc3d6a55cf7e1ca4f908eec785cd0d4dca668e7c177d165d57a689e972fd",
       "imports": [
         "Mathlib.Algebra.MonoidAlgebra.MapDomain",
         "ProCGroups.ProC.OpenNormalSubgroups.ProCGroup"
@@ -10423,7 +10442,7 @@
     "ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/FoxDifferential/Completed/Continuous/TopologicalGeneration.lean",
-      "sha256": "f260c94291a3b871be26d09cc9139f5024c3e355960a29899e38627a96a56ac7",
+      "sha256": "fd4291a1ad505e41ab6cbffe7afb279ec1844419018eda419e6fe942735cd67e",
       "imports": [
         "ProCGroups.FoxDifferential.Completed.Continuous.Topology",
         "ProCGroups.ProC.Kernels"
@@ -10451,7 +10470,7 @@
     "ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStage": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/FoxDifferential/Completed/Continuous/Universal/FiniteStage.lean",
-      "sha256": "1a392042a9537f2da4d595af67e7c7e4b3d2189eb5e08e8537d529120070b827",
+      "sha256": "a94af50b793eb8ca3527456a0930ce04b8ded3a491ee1062a2ea373fab071fb3",
       "imports": [
         "ProCGroups.FoxDifferential.Completed.Continuous.Universal.Basic",
         "ProCGroups.InverseSystems.Utilities"
@@ -11024,7 +11043,7 @@
     "ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Naturality": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/FoxDifferential/Completed/ProCIntegerCoefficients/Naturality.lean",
-      "sha256": "e6de935cdd9ffd5c292c20120a1dd6f488d0271df23eca11d355c5bf628dab96",
+      "sha256": "405c3245b74d0ad7e2794a4e2130edaa3e24e639b172de7ec8237382ea906c84",
       "imports": [
         "ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation",
         "ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core",
@@ -11217,7 +11236,7 @@
     "ProCGroups.GolodShafarevich.FiniteDimensions": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/GolodShafarevich/FiniteDimensions.lean",
-      "sha256": "4e761265e82a92e4e20728dca4570a4069f418b660108bce7b7c2afe85423791",
+      "sha256": "0ceb201fb1c3b58043ae52e5bd9d4284f95ce58870c68666aed566ee54bcc32e",
       "imports": [
         "ProCGroups.GolodShafarevich.GradedPieces",
         "Mathlib.LinearAlgebra.Dimension.RankNullity"
@@ -11247,10 +11266,11 @@
     "ProCGroups.GolodShafarevich.TruncatedFoxMaps": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/GolodShafarevich/TruncatedFoxMaps.lean",
-      "sha256": "37756995fc58f1eccef61c9b32f706fb84703a65a16744c4af31709a7235c212",
+      "sha256": "e91d0c00dd3b2ec43b1057fc630ea4a1f151b245bc2cc8416b4e682059a40914",
       "imports": [
         "ProCGroups.ProP.Fox.ModPFilteredLifting",
         "ProCGroups.GolodShafarevich.GradedPieces",
+        "Mathlib.Algebra.Field.ZMod",
         "Mathlib.LinearAlgebra.Quotient.Pi"
       ]
     },
@@ -11265,7 +11285,7 @@
     "ProCGroups.GolodShafarevich.TruncatedInequality": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/GolodShafarevich/TruncatedInequality.lean",
-      "sha256": "24c0056069ecfc9a61dabd3ae2cb6790dc291289a205cedd8c75fbd4adeabf6f",
+      "sha256": "266851b3d4816a52e2e17c5955825095f3769cd12d4c13d1bdd06c2c7c229279",
       "imports": [
         "ProCGroups.GolodShafarevich.GradedPieces",
         "ProCGroups.GolodShafarevich.TruncatedFoxSequence",
@@ -11869,7 +11889,7 @@
     "ProCGroups.ProP.Fox.ModPStageProjection": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/ProP/Fox/ModPStageProjection.lean",
-      "sha256": "d5a69e98a2949b234a7624921272e6af31eef63fb48a0943ce0977ef02f3be36",
+      "sha256": "a3669c75b6e7bfc840410e69b5e373b87fe019f57422014fe70b52538b434ca5",
       "imports": [
         "ProCGroups.ProP.Fox.ModPFiniteStage",
         "ProCGroups.ProP.Fox.ModPDisplayedSpan"
@@ -11878,7 +11898,7 @@
     "ProCGroups.ProP.Fox.ModPTailExactness": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/ProP/Fox/ModPTailExactness.lean",
-      "sha256": "de01addd002dc196783280fe0c55972eadde3f3189d07eb0fc808603f193ce1e",
+      "sha256": "ad5143ab009c88e8c398efb7560d3ee39986f0c14adbe9445b9f787403ac52fd",
       "imports": [
         "ProCGroups.ProP.Fox.ModPBoundary",
         "ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps"
@@ -12095,7 +12115,7 @@
     "ProCGroups.ProP.Zassenhaus.GroupLike": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/ProP/Zassenhaus/GroupLike.lean",
-      "sha256": "d833f671a8a5b7a403f2892d299fe9540363b3b3c3b2fbf0361a43ce592e6afe",
+      "sha256": "d94be78bbe3bc398d78c597182d09ec0e29a98f47bc8a751c6f639b27a5bb752",
       "imports": [
         "ProCGroups.ProP.Zassenhaus.AugmentationFiltration",
         "Mathlib.Tactic.Abel"
@@ -12252,7 +12272,7 @@
     "ProCGroups.Topologies.ContinuousMonoidHom": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Topologies/ContinuousMonoidHom.lean",
-      "sha256": "4ba3feb7fb69a4e96f018c136ab3ccb5a3d258e6686c591533b0a3e158035211",
+      "sha256": "54af0f551b4af56fd6119e9a27a929d99561b6655ca9372bec6d2a43d6f42a48",
       "imports": [
         "Mathlib.Topology.Algebra.ContinuousMonoidHom",
         "Mathlib.Topology.Algebra.Group.Quotient"
@@ -12280,7 +12300,7 @@
     "ProCGroups.Topologies.TopologicallyCharacteristicSubgroups": {
       "owner": "ProCGroups",
       "path": "Lean4/ProCGroups/Topologies/TopologicallyCharacteristicSubgroups.lean",
-      "sha256": "324a6badb6887a0ba9156dbe63e8f6479055adc06bce93f8f6461e5dfbaf49e2",
+      "sha256": "acd89acad7980210a9ec3f4dac96c05b8226f18670a95021281abe281a1902b0",
       "imports": [
         "Mathlib.Topology.Algebra.ContinuousMonoidHom",
         "Mathlib.Topology.Algebra.Group.Quotient",
@@ -12393,7 +12413,7 @@
     "SawinTotallyRealTowers.All": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/All.lean",
-      "sha256": "b644f05155af076d322ec8c7bd5fef2c74b63cc763a825afca968bd2bfa34ee1",
+      "sha256": "ba008aed242419a5ef9417926419506f1df4c776ff80e409c21d9d4568b500f0",
       "imports": [
         "SawinTotallyRealTowers.FinitePlaceDecompositionSplit",
         "SawinTotallyRealTowers.FinitePlaceFrobenius",
@@ -12477,7 +12497,8 @@
         "SawinTotallyRealTowers.RealProPFrobeniusFixedField",
         "SawinTotallyRealTowers.RealProPFrobeniusFixedFieldSplitting",
         "SawinTotallyRealTowers.SawinDiscriminantBound",
-        "SawinTotallyRealTowers.SawinTotallyRealTower"
+        "SawinTotallyRealTowers.SawinTotallyRealTower",
+        "SawinTotallyRealTowers.MartinetCorollary"
       ]
     },
     "SawinTotallyRealTowers.FiniteKummerAbsoluteKernel": {
@@ -12751,7 +12772,7 @@
     "SawinTotallyRealTowers.NegativeThreeLocalRadical": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/NegativeThreeLocalRadical.lean",
-      "sha256": "80010567dbda238fd8f5983f125ae3168aa121c663d6edd6b395e166b205b437",
+      "sha256": "1d0f01ce0c016679d71c17ddea66ee9af2cf4439ffc4ce46c120aee558a3a2c8",
       "imports": [
         "SawinTotallyRealTowers.NegativeThreeCharacter",
         "SawinTotallyRealTowers.InfiniteArtinCompatibility",
@@ -13100,7 +13121,7 @@
     "SawinTotallyRealTowers.RealCentralLiftCorrection": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/RealCentralLiftCorrection.lean",
-      "sha256": "dfd805e7288865279c73604f9ab64e7e975a7f6d4a9d1b1db47614439cdd368c",
+      "sha256": "a2f37f622d271cc50e69257105694a9c260d843bc5f2a40adcf27d04150a6178",
       "imports": [
         "ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField",
         "GaloisCohomology.ProP.H2CocycleExtension",
@@ -13115,7 +13136,8 @@
         "SawinTotallyRealTowers.RealCharacterInertiaExistence",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing",
-        "ProCGroups.Topologies.QuotientMaps"
+        "ProCGroups.Topologies.QuotientMaps",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "SawinTotallyRealTowers.RealCharacterInertiaCorrection": {
@@ -13145,7 +13167,7 @@
     "SawinTotallyRealTowers.RealCharacterInertiaExistence": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/RealCharacterInertiaExistence.lean",
-      "sha256": "b9cb7c21e51e1dbfa9a726f57f5f577352a088a1923e169425ec08a79f2aec13",
+      "sha256": "2ced62ee79f4f8ffd6e408af0e438e23c58633ff193b13532c8f28b1a1a085b2",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule",
         "SawinTotallyRealTowers.NegativeThreeLocalRadical",
@@ -13167,6 +13189,7 @@
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing",
         "ProCGroups.ProP.ContinuousH1",
+        "Mathlib.Algebra.Field.ZMod",
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.LinearAlgebra.Dual.Defs",
         "Mathlib.NumberTheory.NumberField.Basic",
@@ -14126,7 +14149,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/FiniteKummerAbsoluteLift.lean",
-      "sha256": "a55878be3cf1b6a14c4b817ffaba905eca73a3f00994f9dc8eecc2e2162ce34b",
+      "sha256": "2342ff1aa6bd88e0b92ea5e94c63c7beb43378fc67ca9312eb08bcb7262d4ca8",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteUnitBoundaryMuPPrimitive",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerMuPCoefficients",
@@ -14222,12 +14245,17 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/FinitePlaceH1RamificationLocalization.lean",
-      "sha256": "103be07fe0bc6cd288d826e84dc373f7464b11bac3f99660ba9ad141ad2db1d3",
+      "sha256": "8fd8849985c21b568ee4ce64b16bf0cf98493edc99872c0a792def4e8ee65cba",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1CharacterLocalization",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1",
         "GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates",
-        "Mathlib.LinearAlgebra.Pi"
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Algebra.Module.Pi",
+        "Mathlib.LinearAlgebra.Pi",
+        "Mathlib.Topology.Algebra.Group.Basic",
+        "Mathlib.Topology.Algebra.ContinuousMonoidHom",
+        "Mathlib.Topology.Instances.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization": {
@@ -14280,16 +14308,19 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/LocalHilbertKummerDual.lean",
-      "sha256": "c5bb8023017a3217f48cc5b355c713393e1a2c4efdf6f4f2e543fd171d9a7955",
+      "sha256": "1310c2e41905a45071fda07c0ee5f6bdb2313b26fef2fd03289037df4b501a78",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear",
-        "ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairingNondegeneracy"
+        "ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairingNondegeneracy",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Algebra.Module.Defs",
+        "Mathlib.Algebra.Module.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/LocalKummerInertia.lean",
-      "sha256": "6ea52f285e6b297286b02889faa2c0d57aa63c6786880f003b7435684de08df1",
+      "sha256": "a22c034b49f2751803fb79b18af24b2b2380321e2b4b40f1f47c3ac15f97ecd3",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line",
@@ -14310,18 +14341,23 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/LocalReciprocityCharacterPairing.lean",
-      "sha256": "3771043ccbca548940d05944cefe0dd34fad7ac9e46530592107ba01e923499b",
+      "sha256": "3093d87028c9cc37c92490479feff899d00d17beabe0d0cde2a7ae73b3ef9974",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear",
         "ProCGroups.ProP.ContinuousH1",
         "ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity",
-        "ProCGroups.Topologies.QuotientMaps"
+        "ProCGroups.Topologies.QuotientMaps",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Algebra.Module.Defs",
+        "Mathlib.Algebra.Module.ZMod",
+        "Mathlib.Topology.Algebra.Group.Basic",
+        "Mathlib.Topology.Instances.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedUnits": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/LocalReciprocityUnramifiedUnits.lean",
-      "sha256": "4f8185bd417f03cce9ee8f7bd7eb2f3875c5f1a0a89fcf097ba2fdcdb1ba4437",
+      "sha256": "131acf13ce0edbf900bae522b47416bcbe20aa5d33ed47327222bd2a4e549cb7",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation"
       ]
@@ -14329,7 +14365,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/LocalReciprocityUnramifiedValuation.lean",
-      "sha256": "2ad1040f56994ee267474ee677981e832c2e7eb9d4a62c3c0c7654bcef73a2b1",
+      "sha256": "82b270b83614e7a24706ce307614de98a5ffa14c9cf5f38c1886e11ceee24825",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterFixedField",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange"
@@ -14368,7 +14404,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerValuationDual": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Kummer/LocalUnramifiedKummerValuationDual.lean",
-      "sha256": "294917fefcca3d5505aeb6d81d1a5ab985436e7774d31e4cc57a1308fcc0558a",
+      "sha256": "fb075c2c3487a3364faf95e1439889d44474393a08212d4cdeaeaef023f4cb18",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerHilbertValuation",
         "ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup"
@@ -14707,7 +14743,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1Transport": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Local/FinitePlaceUnramifiedH1Transport.lean",
-      "sha256": "d4242db9ba8c0e2a5b60fbff4332949558bbd0b0ed68a543dfffe4532156b21c",
+      "sha256": "690fd62f7e0cdb51ff63612dc3dd2f2145fa789d37907b77ba2af268a1ca2d77",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport"
@@ -14743,7 +14779,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Local/LocalIntrinsicUnramifiedH1Line.lean",
-      "sha256": "238a420620446ea19863f826e8e8ca19dd04a3520dc5ef731a6165a984dec41b",
+      "sha256": "f1107d6503edf470e28f11b47fb9a492f3e42ba43a09b108d9d84af7901e78cb",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerFree",
@@ -14755,7 +14791,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Local/LocalUnramifiedH2Vanishing.lean",
-      "sha256": "e509200c1a62e08e35e069494b2a58f893c6241d3b2aba26dd431712fbad857a",
+      "sha256": "86da3a039bfd60f262664cf5307d2a0fa4497a79f118c1ac21a25472c293f9d3",
       "imports": [
         "GaloisCohomology.ProP.PresentationQuotientEquiv",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerH2",
@@ -14982,7 +15018,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1Cokernel": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/EmptySupportCohomologicalH1Cokernel.lean",
-      "sha256": "717b723e97b8f464aecbd522fe4c4d3b08df032012df3e6c63a7c7e8423cfded",
+      "sha256": "adcd61a1a0ffcf6f05d7883fd29ce47d027956b515d9b6b2254a387c52f2e73b",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceRamifiedCharacterQuotient",
@@ -14992,7 +15028,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1KernelDual": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/EmptySupportCohomologicalH1KernelDual.lean",
-      "sha256": "a4a2d00de88cfcf462cdf90c1127a0cdc335d760ac6556e63cd6c27cc5c3e2ea",
+      "sha256": "b7f2f82063787f06ace6c050adb2d995b903a2aa79575a719674a943543220cb",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1Cokernel",
         "Mathlib.LinearAlgebra.Dual.Lemmas"
@@ -15010,10 +15046,11 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportUnramifiedArtinKummerCokernel": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/EmptySupportUnramifiedArtinKummerCokernel.lean",
-      "sha256": "20a26708da8a43dce7b3bdb67f869b174700d1424e1f1154dcbca0f8988b62dc",
+      "sha256": "093f65ffc1e2b17d3d6fba6a527fd75cfb6a8063cacad13253e723d04c02a666",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedArtinKummerLocalization",
-        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal"
+        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAbsoluteArtinCompatibility": {
@@ -15086,13 +15123,17 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/FinitePlaceCyclotomicMuPKummerComparison.lean",
-      "sha256": "b2e50dd265388847a4f0aebf361584e87965e8697321e1d9644445e25732302c",
+      "sha256": "388a6a25dd90b3a73bd8d03dc3bc24245dd2fad4ea3f0bb1de69896da8505e1d",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization",
-        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual"
+        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual",
+        "Mathlib.Algebra.Field.ZMod",
+        "Mathlib.Topology.Algebra.Group.Basic",
+        "Mathlib.Topology.Algebra.ContinuousMonoidHom",
+        "Mathlib.Topology.Instances.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceDecompositionAdicEquiv": {
@@ -15107,7 +15148,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/FinitePlaceH1AdicRestriction.lean",
-      "sha256": "f86eb90755543d8c9f8383d262997e356b3fa5d8dd08400c135ba815eabd81c9",
+      "sha256": "8cec8aced7883ed728663fefb4051b78857a5820b20a3b5b809c460feab8a07a",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceDecompositionAdicEquiv",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization"
@@ -15134,7 +15175,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedRadicalPairing": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/FinitePlaceUnramifiedRadicalPairing.lean",
-      "sha256": "5168d848e357224243de889250e3790b913e73d4409bbc49d674406fcc622a8c",
+      "sha256": "4fe4039b87a4c283d96fbd890f6546333c6dc1e401f09b928beeec2cd467e290",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal",
@@ -15166,7 +15207,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportGlobalReciprocity": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/FiniteSupportGlobalReciprocity.lean",
-      "sha256": "527e06fc502207578b4674bc6028e583b8337f4cb0aa6c4dcf1e549796fd8bd9",
+      "sha256": "efef19a5aac5c000fa98e19cbe6f538fa93b0b02aca809ac7d488e6a5da69b6f",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical"
       ]
@@ -15174,7 +15215,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportIdeleCorrection": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/FiniteSupportIdeleCorrection.lean",
-      "sha256": "5ff1b5e9d5f9ebe95215e42ffe0a1878576ca836d3f9b572a96fa328611ec05e",
+      "sha256": "761ae40b3cc54895ed4550dc7452efbd247eb47703e752433a5fe37bf02131f6",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleFiniteValuationCharacters",
@@ -15184,7 +15225,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportInertiaCorrection": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/FiniteSupportInertiaCorrection.lean",
-      "sha256": "793a637bee6c4fb7bd248acc34c63908d8152938d489d4d2e80e5086c61bd6c5",
+      "sha256": "bc9f0c62f834423a698cd31f0d705c6d72e74d6df016d7d966d0f00fdf5e0f47",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportIdeleCorrection",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAbsoluteArtinCompatibility",
@@ -15308,7 +15349,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalGoverningFieldLinearDuality": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/IdealRadicalGoverningFieldLinearDuality.lean",
-      "sha256": "fa937c8ccf99ac7d69d393f32c517f66d415f75a8884434996c75e6acf1a4b6d",
+      "sha256": "30cb1ee5538c500b71a1ad856bdf771c0ea312044c3bd1f3fe8cfb4a4028e45a",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalGoverningField",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicModule",
@@ -15328,7 +15369,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/IdeleIntegralCharacterRadical.lean",
-      "sha256": "df936a997799b6cc8a9ed03bdb1a8e5e675f7741d5fc26f4770571a3bd1e10dc",
+      "sha256": "1ad4337d3737420844bec21b8183c4e7ec4a7214817929b8f53427e62a00e631",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical",
         "ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact",
@@ -15370,7 +15411,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.RealAbsoluteCharacterRadicalReciprocity": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/RealAbsoluteCharacterRadicalReciprocity.lean",
-      "sha256": "ef6efe32adf8d3ab98cd543253e759d85124c7221ad999a33c13a609df7c7858",
+      "sha256": "a0bec0f0468011430b7797005e0abe78067f115d0e70a1a420caea37312b3aa1",
       "imports": [
         "SawinTotallyRealTowers.InfiniteArtinCompatibility",
         "SawinTotallyRealTowers.AbsoluteRealKernelField",
@@ -15387,6 +15428,7 @@
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummerLinear",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.RealSignedIdeleCharacter",
         "ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace",
+        "Mathlib.Algebra.Field.ZMod",
         "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
         "Mathlib.Algebra.Group.Hom.Defs",
         "Mathlib.Data.PNat.Basic",
@@ -15399,7 +15441,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.RealSignedIdeleCharacter": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/Radical/RealSignedIdeleCharacter.lean",
-      "sha256": "360953d3f061272fb6d286856ad82f18bc1728266022a20deb0cd432afaaf772",
+      "sha256": "c874eed85c74f354f7b69e3f22f171681ce4302e2eee7292e3c34fe4e6ef97c5",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical",
@@ -15562,10 +15604,11 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2AdditionDifference": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ArithmeticStageH2AdditionDifference.lean",
-      "sha256": "4359e6e89f421e36e5038332a9dfe47957ffe2db5f2b800fce8eb0598c44eb07",
+      "sha256": "be3c3444b8e8cc0b8c1277ce52d7d70247342e6d09a1f2a909e479926a438ce9",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional",
-        "GaloisCohomology.ProP.H2CocycleExtensionLinearLifts"
+        "GaloisCohomology.ProP.H2CocycleExtensionLinearLifts",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem": {
@@ -15619,21 +15662,23 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2LocalRamificationCharacter": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ArithmeticStageH2LocalRamificationCharacter.lean",
-      "sha256": "3bc3ac15e402c6265231476c2f8fee00cd6e9913d74b6368d21798319e09972d",
+      "sha256": "35135f14f8caeb2476ecb426bd86c8b6f2e27c66f0ae20f7f0a5bd0ffd1692af",
       "imports": [
         "GaloisCohomology.ProP.H2CocycleExtensionLiftDifference",
-        "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift"
+        "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalEmbedding": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ArithmeticStageH2RadicalEmbedding.lean",
-      "sha256": "068687c03de080c9ddba99000553cf9ee5af68ca07a07115cc4fa13ecbee8739",
+      "sha256": "688e2982a45312657e9752ce786da8ccbb47a9b35502ffd5b7c9a1743a7d8e52",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalKernel",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalLinearMap",
         "GaloisCohomology.ProP.H2InflationRangeBound",
-        "Mathlib.LinearAlgebra.Dimension.LinearMap"
+        "Mathlib.LinearAlgebra.Dimension.LinearMap",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional": {
@@ -15662,12 +15707,13 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalLinearMap": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ArithmeticStageH2RadicalLinearMap.lean",
-      "sha256": "958ee669975405fe81a53cbdd0d45789f60fee07c49fdd7986b0606017b27564",
+      "sha256": "437b9ec085f13220bd4f026b7de59bd0ddfc651bb86a743873487a638d630114",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2AdditionDifference",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportDecompositionRadicalPairing",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedRadicalPairing",
-        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity"
+        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity",
+        "Mathlib.Algebra.Field.ZMod"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift": {
@@ -15812,11 +15858,12 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.IdealPowerRadicalH2Bound": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/IdealPowerRadicalH2Bound.lean",
-      "sha256": "7a4df516bbe872edc892989b6d4d89eca4f1947261914e4993f745abce97967b",
+      "sha256": "b5581c8c1ff4d9ac990909ce94ac8e24317a75216b09072349e65a2a5cb3265d",
       "imports": [
         "GaloisCohomology.ProP.TrivialZModP",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FrattiniClassField",
-        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalRank"
+        "SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalRank",
+        "Mathlib.LinearAlgebra.Dual.Lemmas"
       ]
     },
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.LeanEvalAdapter": {
@@ -15840,7 +15887,7 @@
     "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound": {
       "owner": "SawinTotallyRealTowers",
       "path": "Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean",
-      "sha256": "fdf0f02ce9ce699eee15eacb0a48dfaeb2bcf07311746b462655ed6122472e6f",
+      "sha256": "bf16c246ea8eeed1b73eaa15d949c632889424823484e046b63d1ca0ebeac3ab",
       "imports": [
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalEmbedding",
         "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.IdealPowerRadicalH2Bound",
@@ -15865,7 +15912,7 @@
     "ValuedFieldTheory.LocalField.Analytic.ContinuousFieldUnitLog": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/Analytic/ContinuousFieldUnitLog.lean",
-      "sha256": "db7814f87552ed7b5ddfcc72d6e762e3f15d205401420858d2789c1d01bd2768",
+      "sha256": "34988ae916413132c72b4f138eccc69bf694b23d5cf1041bb23ccfe44af27c04",
       "imports": [
         "ValuedFieldTheory.LocalField.Analytic.DenominatorValuation",
         "ValuedFieldTheory.LocalField.Analytic.FieldUnitLogUniqueness",
@@ -15928,7 +15975,7 @@
     "ValuedFieldTheory.LocalField.Analytic.LogExpSeries.ExpConvergence": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/Analytic/LogExpSeries/ExpConvergence.lean",
-      "sha256": "4185ac4866033356abc67829fb6482462680ac15ad950f58892ffaae5ce73220",
+      "sha256": "3eef6c7a04c1399b8d78221c5facd0b00b3c1813c8fd8e37778e0578cd517bb5",
       "imports": [
         "Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean",
         "ValuedFieldTheory.LocalField.Analytic.LogExpSeries.SeriesTerms"
@@ -16051,7 +16098,7 @@
     "ValuedFieldTheory.LocalField.Analytic.LogExpSeries.SeriesTerms": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/Analytic/LogExpSeries/SeriesTerms.lean",
-      "sha256": "ac1b3b2a86b5e1282eac38fc441a7974b54d6202640ed93c85f190369d7f5418",
+      "sha256": "9b7540b65623b7acf718d28b9877c75ff8a168dbe3fa4129932253d567eff193",
       "imports": [
         "Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean",
         "Mathlib.Topology.Algebra.Valued.WithZeroMulInt",
@@ -16235,7 +16282,7 @@
     "ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicQp": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/DiscreteValuationField/MixedCharacteristicQp.lean",
-      "sha256": "68e93a42120ce1df2e41714c13aaab9fec2f114035b6c56ea1a4187f1d82bb5f",
+      "sha256": "61ddf5ef612c5943ba07ff447cbc5d5e5a5a2be4f66e3e2fedc09e6ac050db26",
       "imports": [
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup",
@@ -16303,7 +16350,7 @@
     "ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/DiscreteValuationField/Norm/Quotients.lean",
-      "sha256": "d7512ebb6fcf820b09d9337293a3507dfbd5942af040b8724226ec5ff2c0996c",
+      "sha256": "84fc5b59d6615830f2bf1a8280fb0997408b577538487bfd69a5dd6cf36ebb96",
       "imports": [
         "Mathlib.SetTheory.Cardinal.Finite",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic"
@@ -16622,7 +16669,7 @@
     "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/DiscreteValuationField/ValuationSubringUnits/CompleteRangeRestriction.lean",
-      "sha256": "3cb248be360b6191a2141bd1dee8d4f66f13f5a3b9eb50de00d765ecd00a4c0e",
+      "sha256": "0ed809e48c866251fb9c47938cb3efcd76c156579a80f95253e00ffa9ad915fb",
       "imports": [
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup",
@@ -16633,7 +16680,7 @@
     "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/DiscreteValuationField/ValuationSubringUnits/CyclicValueGroup.lean",
-      "sha256": "ba3a8cd1a2122577bf16e1e39dd83aec6b064ab861e29a6f2ea0f9dfee22014e",
+      "sha256": "5e6788cd35e7c8b92400fbf23075896275af427a0401e7f364acd2134c78e8a8",
       "imports": [
         "ValuedFieldTheory.LocalField.DiscreteValuationField.Basic",
         "Mathlib.Algebra.Order.Group.Cyclic",
@@ -16674,7 +16721,7 @@
     "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/DiscreteValuationField/ValuationSubringUnits/RangeRestrictedTopology.lean",
-      "sha256": "d02a2652b4881c0744e2d96f46eb506777f37cd293ccb5de8fdf5f5c31a09fed",
+      "sha256": "2c993167499fb2e5364f4689306a6ac2b4d1f9dd3bfd6be8d0b0e2cfdeca1da6",
       "imports": [
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction",
         "ValuedFieldTheory.Valuation.ValuedAdicComplete",
@@ -16703,7 +16750,7 @@
     "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.UniformizerIntegerValuation": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/DiscreteValuationField/ValuationSubringUnits/UniformizerIntegerValuation.lean",
-      "sha256": "da10d56691bd360293029ff4ec6b0354492e9c349a19b316d2fa3c2572ab2617",
+      "sha256": "07ce0454cd57ff9f821253acf4abc38390964a0b128401cc086fde42c99301fd",
       "imports": [
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction",
         "ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup"
@@ -16896,7 +16943,7 @@
     "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/NormalizedIntegerValuation.lean",
-      "sha256": "5424a6d4af4ad5f6f89bff7b1379f4e4bdd10039ceed3da6553e2200034226b0",
+      "sha256": "d055fc56fe31616f739d8df49827e013f632913eaa8f321aa95b7d83ade27e55",
       "imports": [
         "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF",
         "ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower"
@@ -17026,7 +17073,7 @@
     "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/SeparableNormValuation.lean",
-      "sha256": "4f3a0c1a64afd56a08cab99ac8c7a19e48ddeef9d030f003a3b13d3ebd347f91",
+      "sha256": "499bb2cb132f7104c9c451be18d2ad4361963a2f215aef396488fd3b02afcf64",
       "imports": [
         "Mathlib.FieldTheory.SeparableClosure",
         "Mathlib.RingTheory.Ideal.Norm.RelNorm",
@@ -17106,7 +17153,7 @@
     "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/ValuedTopology.lean",
-      "sha256": "a4a34f4068237b373f6b6e1266d89bc75d1f1aa3efe681a81f8d4a8cd72d64a9",
+      "sha256": "74d38d0190b3caa11f7c2c2ba2d40d7d48661c83ac2dcf71d53e2205c698be50",
       "imports": [
         "Mathlib.Topology.Algebra.Valued.ValuativeRel"
       ]
@@ -17892,7 +17939,7 @@
     "ValuedFieldTheory.Ramification.HilbertRamification.OrbitPolynomialIdeal": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Ramification/HilbertRamification/OrbitPolynomialIdeal.lean",
-      "sha256": "eaeec561e0c043d9c2538b53755a874f0076e5bbf50e957fa61f2363812cf31e",
+      "sha256": "71e5e41b11de29f410b7dd70d588958eff502064e0506f74210aef3acfb41c3a",
       "imports": [
         "Mathlib.SetTheory.Cardinal.Finite",
         "ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamification",
@@ -17913,7 +17960,7 @@
     "ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Ramification/HilbertRamification/RamificationDepth.lean",
-      "sha256": "92ac939472aa372124e9c06acbd239ea4fcadc268357470b1998e31f110d2c8b",
+      "sha256": "2eca6b68b34010a5653744d66502f60888ac6515a5e3cff444879499dad37d9c",
       "imports": [
         "ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber",
         "ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom",
@@ -17952,7 +17999,7 @@
     "ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumberRestriction": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Ramification/HilbertRamification/RamificationNumberRestriction.lean",
-      "sha256": "0e2a0796f97b8bf534400f7f4185fe644a07d4a202b378943c453214fee7395a",
+      "sha256": "32156dc92252a656e8ab58ab823d2e4f37d8912b155286ba95fe738575a6dfbe",
       "imports": [
         "ValuedFieldTheory.Ramification.HilbertRamification.OrbitPolynomialIdeal",
         "ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamificationIndex"
@@ -18149,7 +18196,7 @@
     "ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Valuation/AbsoluteValue/AlgebraicExtension/RamificationInvariants.lean",
-      "sha256": "ed01c9ea7fc7fcba7aa96ff343ff52f016a704197584679ebc748355c40ec1ff",
+      "sha256": "7bb60c71b9452f7a9c26b59f2bafb96e793eec06f7a25e3eb796e722297933f9",
       "imports": [
         "ValuedFieldTheory.Valuation.Henselian.UniqueAlgebraicExtensions",
         "Mathlib.LinearAlgebra.Dimension.Finrank",
@@ -18659,7 +18706,7 @@
     "ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianFinite": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Valuation/DiscreteValuationField/HenselianFinite.lean",
-      "sha256": "4a9b5f86acb3d9da71e538f3eab3da1a904e589d6d26b179cdcd40f9595dbfbc",
+      "sha256": "b4a189057fd937236b90b251011c8f6708c29518c9eb7a000377364122f6cd64",
       "imports": [
         "ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian",
         "ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower",
@@ -18714,7 +18761,7 @@
     "ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Valuation/DiscreteValuationField/ValuationTransport.lean",
-      "sha256": "db19f9fd21944663973afd605624eb301ea75176384b8311f6e0dfaf600a33dd",
+      "sha256": "636d0e4d80a88a1c21cfcc4d614cc7ee29a17fafcf6f2e90186c1ac794e795ca",
       "imports": [
         "ValuedFieldTheory.Valuation.DiscreteValuationField.Basic"
       ]
@@ -19060,7 +19107,7 @@
     "ValuedFieldTheory.Valuation.ValuedAdicComplete": {
       "owner": "ValuedFieldTheory",
       "path": "Lean4/ValuedFieldTheory/Valuation/ValuedAdicComplete.lean",
-      "sha256": "cd046dd34dcedf63364d4dac5eed200345a69c52ff08cac0cd850c45d70d0b6b",
+      "sha256": "eb56d8b4d1f8f581657064adff61a6daa52657c1935d5795086b429dfdfd6f20",
       "imports": [
         "ValuedFieldTheory.Valuation.DiscreteValuationField.Complete",
         "Mathlib.RingTheory.AdicCompletion.Topology",

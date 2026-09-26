@@ -415,8 +415,7 @@ theorem integralTensorControlElement_ne_zero :
 noncomputable def integralTensorControlIdeal :
     Ideal (𝓞 K) :=
   Ideal.span
-    ({integralTensorControlElement
-      (K := K) (L := L)} : Set (𝓞 K))
+    ({(integralTensorControlElement (K := K) (L := L))} : Set (𝓞 K))
 
 /-- The tensor control ideal is nontrivial. -/
 theorem integralTensorControlIdeal_ne_bot :

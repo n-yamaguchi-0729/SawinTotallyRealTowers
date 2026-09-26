@@ -34,6 +34,9 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
+local instance emptySupportCohomologicalH1ZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
+
 local instance emptySupportCohomologicalH1Module
     {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
     Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=

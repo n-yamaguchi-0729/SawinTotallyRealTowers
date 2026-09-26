@@ -316,7 +316,7 @@ theorem completedGroupAlgebraComapIndexInClass_id
   ext x
   simp only [completedGroupAlgebraComapIndexInClass, ContinuousMonoidHom.coe_toMonoidHom,
   OrderDual.ofDual_toDual, OpenNormalSubgroup.toSubgroup_comap, Subsemigroup.mem_carrier,
-  Submonoid.mem_toSubsemigroup, Subgroup.mem_toSubmonoid, Subgroup.mem_comap, MonoidHom.coe_coe,
+  Submonoid.mem_toSubsemigroup, Subgroup.mem_toSubmonoid, Subgroup.mem_comap, MonoidHom.coe_ofClass,
   ContinuousMonoidHom.id_toFun, OpenSubgroup.mem_toSubgroup]
 
 omit [IsTopologicalGroup G] in
@@ -336,7 +336,7 @@ theorem completedGroupAlgebraComapIndexInClass_comp
   ext x
   simp only [completedGroupAlgebraComapIndexInClass, ContinuousMonoidHom.coe_toMonoidHom,
   OrderDual.ofDual_toDual, OpenNormalSubgroup.toSubgroup_comap, Subsemigroup.mem_carrier,
-  Submonoid.mem_toSubsemigroup, Subgroup.mem_toSubmonoid, Subgroup.mem_comap, MonoidHom.coe_coe,
+  Submonoid.mem_toSubsemigroup, Subgroup.mem_toSubmonoid, Subgroup.mem_comap, MonoidHom.coe_ofClass,
   ContinuousMonoidHom.comp_toFun, OpenSubgroup.mem_toSubgroup]
 
 omit [IsTopologicalGroup G] in
@@ -353,7 +353,7 @@ theorem completedGroupAlgebraComapIndexInClass_top
   ext x
   simp only [completedGroupAlgebraComapIndexInClass, ContinuousMonoidHom.coe_toMonoidHom,
   OrderDual.ofDual_toDual, OpenNormalSubgroup.toSubgroup_comap, Subsemigroup.mem_carrier,
-  Submonoid.mem_toSubsemigroup, Subgroup.mem_toSubmonoid, Subgroup.mem_comap, MonoidHom.coe_coe,
+  Submonoid.mem_toSubsemigroup, Subgroup.mem_toSubmonoid, Subgroup.mem_comap, MonoidHom.coe_ofClass,
   OpenSubgroup.mem_toSubgroup]
   constructor <;> intro _ <;> trivial
 

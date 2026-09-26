@@ -68,8 +68,7 @@ private theorem equalCharacteristicLubinTateCoefficientInteger_coe
     (F : LocalField.{0, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) (c : F.residueField) :
-    (equalCharacteristicLubinTateCoefficientInteger F n c :
-      equalCharacteristicLubinTateLevelField F n) =
+    (equalCharacteristicLubinTateCoefficientInteger F n c).val =
         algebraMap F.residueField⸨X⸩
           (equalCharacteristicLubinTateLevelField F n)
           (algebraMap F.residueField F.residueField⸨X⸩ c) := by
@@ -95,13 +94,12 @@ private theorem equalCharacteristicLubinTatePiEndInteger_coe
     (n : ℕ)
     (x :
       (equalCharacteristicLubinTateLevelCompleteDVF F n).valuationSubring) :
-    (equalCharacteristicLubinTatePiEndInteger F n x :
-      equalCharacteristicLubinTateLevelField F n) =
+    (equalCharacteristicLubinTatePiEndInteger F n x).val =
       equalCharacteristicLubinTateAmbientPiEnd F
         (algebraMap F.residueField⸨X⸩
           (equalCharacteristicLubinTateLevelField F n)
           (equalCharacteristicLaurentUniformizer F))
-        (x : equalCharacteristicLubinTateLevelField F n) := by
+        x.val := by
   simp [equalCharacteristicLubinTatePiEndInteger,
     equalCharacteristicLubinTateAmbientPiEnd_apply,
     integerMap_apply,
@@ -157,8 +155,7 @@ private theorem equalCharacteristicLubinTatePiIterateInteger_coe
     (F : LocalField.{0, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n i : ℕ) :
-    (equalCharacteristicLubinTatePiIterateInteger F n i :
-      equalCharacteristicLubinTateLevelField F n) =
+    (equalCharacteristicLubinTatePiIterateInteger F n i).val =
       equalCharacteristicLubinTateAmbientPiIterate F
         (algebraMap F.residueField⸨X⸩
           (equalCharacteristicLubinTateLevelField F n)
@@ -291,8 +288,7 @@ private theorem equalCharacteristicLubinTateBracketInteger_coe
     (F : LocalField.{0, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) (u : F.residueField⟦X⟧) :
-    (equalCharacteristicLubinTateBracketInteger F n u :
-      equalCharacteristicLubinTateLevelField F n) =
+    (equalCharacteristicLubinTateBracketInteger F n u).val =
       equalCharacteristicLubinTateAmbientBracket F
         ((algebraMap F.residueField⸨X⸩
           (equalCharacteristicLubinTateLevelField F n)).comp
@@ -303,23 +299,32 @@ private theorem equalCharacteristicLubinTateBracketInteger_coe
         (n + 1) u (equalCharacteristicLubinTateLevelPowerBasis F n).gen := by
   rw [equalCharacteristicLubinTateBracketInteger,
     equalCharacteristicLubinTateAmbientBracket_apply]
-  change
+  let j :
+      (equalCharacteristicLubinTateLevelCompleteDVF F n).valuation.valuationSubring →+*
+        equalCharacteristicLubinTateLevelField F n :=
     (equalCharacteristicLubinTateLevelCompleteDVF F n).valuation.valuationSubring.subtype
-        (∑ i ∈ Finset.range (n + 1),
-          equalCharacteristicLubinTateCoefficientInteger F n
-              (PowerSeries.coeff i u) *
-            equalCharacteristicLubinTatePiIterateInteger F n i) =
+  let term : ℕ →
+      (equalCharacteristicLubinTateLevelCompleteDVF F n).valuation.valuationSubring :=
+    fun i => equalCharacteristicLubinTateCoefficientInteger F n (PowerSeries.coeff i u) *
+      equalCharacteristicLubinTatePiIterateInteger F n i
+  change
+    j (∑ i ∈ Finset.range (n + 1), term i) =
       _
-  rw [map_sum]
+  have hsum (s : Finset ℕ) :
+      j (∑ i ∈ s, term i) = ∑ i ∈ s, j (term i) := by
+    induction s using Finset.induction_on with
+    | empty => simp only [Finset.sum_empty, j.map_zero]
+    | @insert i s hi ih =>
+      simp only [Finset.sum_insert hi]
+      rw [RingHom.map_add j (term i) (∑ k ∈ s, term k), ih]
+  rw [hsum (Finset.range (n + 1))]
   apply Finset.sum_congr rfl
   intro i hi
-  rw [map_mul]
+  rw [j.map_mul]
   change
     (equalCharacteristicLubinTateCoefficientInteger F n
-        (PowerSeries.coeff i u) :
-      equalCharacteristicLubinTateLevelField F n) *
-        (equalCharacteristicLubinTatePiIterateInteger F n i :
-          equalCharacteristicLubinTateLevelField F n) =
+        (PowerSeries.coeff i u)).val *
+        (equalCharacteristicLubinTatePiIterateInteger F n i).val =
       _
   rw [equalCharacteristicLubinTateCoefficientInteger_coe,
     equalCharacteristicLubinTatePiIterateInteger_coe]
@@ -458,8 +463,7 @@ private theorem equalCharacteristicLubinTateBracketInteger_coe_eq_aeval
     (F : LocalField.{0, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) (u : F.residueField⟦X⟧) :
-    (equalCharacteristicLubinTateBracketInteger F n u :
-      equalCharacteristicLubinTateLevelField F n) =
+    (equalCharacteristicLubinTateBracketInteger F n u).val =
       Polynomial.aeval (equalCharacteristicLubinTateLevelPowerBasis F n).gen
         (equalCharacteristicLubinTateBracketPolynomial F (n + 1) u) := by
   rw [equalCharacteristicLubinTateBracketInteger_coe]

@@ -766,7 +766,7 @@ theorem tendsto_zero_log_term_ofWithZeroValuation_of_pos
   rcases hs with ⟨γ, hγs⟩
   let γ' : (WithZero (Multiplicative ℤ))ˣ :=
     Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-      (f := (.ofClass v))) γ
+      (f := (v : K →*₀ WithZero (Multiplicative ℤ)))) γ
   rcases WithZero.exists_exp_neg_natCast_lt γ'.ne_zero with ⟨N, hNγ⟩
   have hterm :=
     eventually_le_ofWithZeroValuation_val_log_term_of_pos
@@ -811,7 +811,7 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_of_pos
   rcases hs with ⟨γ, hγs⟩
   let γ' : (WithZero (Multiplicative ℤ))ˣ :=
     Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-      (f := (.ofClass v))) γ
+      (f := (v : K →*₀ WithZero (Multiplicative ℤ)))) γ
   rcases WithZero.exists_exp_neg_natCast_lt γ'.ne_zero with ⟨N, hNγ⟩
   have hterm :=
     eventually_le_ofWithZeroValuation_val_log_term_of_pos
@@ -1051,7 +1051,7 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_scaled_of_pos
   rcases hs with ⟨γ, hγs⟩
   let γ' : (WithZero (Multiplicative ℤ))ˣ :=
     Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-      (f := (.ofClass v))) γ
+      (f := (v : K →*₀ WithZero (Multiplicative ℤ)))) γ
   rcases WithZero.exists_exp_neg_natCast_lt γ'.ne_zero with ⟨N, hNγ⟩
   have hterm :=
     eventually_le_ofWithZeroValuation_val_log_term_scaled_of_pos

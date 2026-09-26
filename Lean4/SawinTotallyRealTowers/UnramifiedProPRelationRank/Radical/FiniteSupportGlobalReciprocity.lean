@@ -61,6 +61,9 @@ theorem finitePlaceIdele_continuous (v : HeightOneSpectrum (𝓞 F)) :
 
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 
+local instance finiteRestrictionZModAddCommGroup : AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+
 local instance finiteRestrictionTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
 local instance finiteRestrictionDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
   discreteTopology_bot _

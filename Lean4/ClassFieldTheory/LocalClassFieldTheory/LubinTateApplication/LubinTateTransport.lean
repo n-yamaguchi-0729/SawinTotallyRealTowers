@@ -732,6 +732,7 @@ private theorem equalCharacteristicTransported_normUnits
   let : CharP K F.residueCharacteristic :=
     equalCharacteristicTargetResidueCharacteristicCharP K p
   let E := equalCharacteristicLubinTateLevelField F m
+  change Eˣ at x
   let : Algebra B E := equalCharacteristicLubinTateLevelAlgebra F m
   let : CharP K p := hKp
   let : Algebra K E :=
@@ -742,12 +743,12 @@ private theorem equalCharacteristicTransported_normUnits
       (RingEquiv.refl E)
       (equalCharacteristicTransportedLubinTateLevelAlgebra_comp
         K p ϖ hϖ m)
-      (x : E)
+      x.val
   apply Units.ext
   change
     equalCharacteristicTargetLaurentRingEquiv K p ϖ hϖ
-        (Algebra.norm B (x : E)) =
-      Algebra.norm K (x : E)
+        (Algebra.norm B x.val) =
+      Algebra.norm K x.val
   rw [hnorm,
     (equalCharacteristicTargetLaurentRingEquiv K p ϖ hϖ).apply_symm_apply]
   rfl

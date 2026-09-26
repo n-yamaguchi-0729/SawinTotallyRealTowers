@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.InvariantKernelH1
 import GaloisCohomology.ProP.PresentationH2Primitive
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 set_option autoImplicit false
 /-!
@@ -27,6 +29,9 @@ noncomputable section
 universe u
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance presentationH2KernelCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 variable {d r : ℕ}

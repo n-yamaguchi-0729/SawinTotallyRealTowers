@@ -67,8 +67,8 @@ private theorem completedGroupAlgebraLiftFiberSet_isClosed
     change Continuous (Submodule.Quotient.mk (p := W.1))
     exact continuous_quotient_mk'
   change IsClosed ((Submodule.mkQ W.1 : N → N ⧸ W.1) ⁻¹'
-    ({completedGroupAlgebraLiftToOpenSubmoduleQuotient
-      (R := R) (G := G) N f hf W.1 W.2 x} : Set (N ⧸ W.1)))
+    ({(completedGroupAlgebraLiftToOpenSubmoduleQuotient
+      (R := R) (G := G) N f hf W.1 W.2 x)} : Set (N ⧸ W.1)))
   exact (isClosed_discrete _).preimage hqcont
 
 /-- Finite intersection property for the fibers used to assemble the profinite-target lift. -/

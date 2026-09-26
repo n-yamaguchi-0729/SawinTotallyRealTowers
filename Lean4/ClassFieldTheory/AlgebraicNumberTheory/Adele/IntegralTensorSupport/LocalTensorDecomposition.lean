@@ -117,8 +117,7 @@ theorem scaledRelativeBasisDiscriminantInteger_ne_zero :
 noncomputable def scaledRelativeBasisDiscriminantIdeal :
     Ideal (𝓞 K) :=
   Ideal.span
-    ({scaledRelativeBasisDiscriminantInteger
-      (K := K) (L := L)} : Set (𝓞 K))
+    ({(scaledRelativeBasisDiscriminantInteger (K := K) (L := L))} : Set (𝓞 K))
 
 /-- The discriminant control ideal is nontrivial. -/
 theorem scaledRelativeBasisDiscriminantIdeal_ne_bot :

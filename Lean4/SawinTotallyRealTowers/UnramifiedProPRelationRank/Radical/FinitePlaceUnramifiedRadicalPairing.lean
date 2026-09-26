@@ -29,6 +29,10 @@ variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime]
 variable (v : HeightOneSpectrum (𝓞 F))
 
+local instance finitePlaceUnramifiedRadicalCanonicalZModAddCommGroup :
+    AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+
 local instance finitePlaceUnramifiedRadicalValuativeRel : ValuativeRel (v.adicCompletion F) :=
   finitePlaceAdicCompletionValuativeRel F v
 local instance finitePlaceUnramifiedRadicalLocalField :

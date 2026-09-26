@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Fox.ModPFilteredLifting
 import ProCGroups.GolodShafarevich.GradedPieces
+import Mathlib.Algebra.Field.ZMod
 import Mathlib.LinearAlgebra.Quotient.Pi
 
 set_option autoImplicit false
@@ -209,6 +210,13 @@ def presentationModPTruncatedFoxBoundary
   simp only [LinearMap.comp_apply]
   rw [ht]
   rfl
+
+-- Keep the field's canonical additive structure in this linear-map scope.
+-- The generic nilpotent-group instance can otherwise be chosen first.
+local instance : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
+
+local instance : Module (ZMod p) (ZMod p) := Semiring.toModule
 
 private def presentationModPAugmentationLinearMap :
     ModPCompletedGroupAlgebra p G →ₗ[ZMod p] ZMod p where

@@ -160,8 +160,8 @@ theorem ramificationIndex_nsmul_fixedFieldRamificationNumber_eq_cosetSum
       Ideal.span ({j g} : Set target.valuationSubring) := by
     rw [← hspanJ, Ideal.map_span, Set.image_singleton]
   have hideal :
-      Ideal.span ({cosetGeneratorDisplacementProductDVF
-          (base := base) (target := target) huniq H sigma z} :
+      Ideal.span (Set.singleton (cosetGeneratorDisplacementProductDVF
+          (base := base) (target := target) huniq H sigma z) :
         Set target.valuationSubring) =
         Ideal.span ({j g} : Set target.valuationSubring) := by
     rw [span_cosetGeneratorDisplacementProduct_eq_map_fixedFieldDisplacementIdeal

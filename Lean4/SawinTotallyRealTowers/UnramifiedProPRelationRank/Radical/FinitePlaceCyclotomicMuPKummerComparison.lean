@@ -9,6 +9,10 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebr
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Topology.Algebra.Group.Basic
+import Mathlib.Topology.Algebra.ContinuousMonoidHom
+import Mathlib.Topology.Instances.ZMod
 
 set_option autoImplicit false
 /-!
@@ -94,6 +98,9 @@ end PowerClassLocalization
 
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
+
+local instance finitePlaceCyclotomicComparisonCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 
 local instance finitePlaceCyclotomicComparisonFiniteDimensional :
     FiniteDimensional F (FinitePlaceCyclotomicBase F p) :=

@@ -28,6 +28,9 @@ noncomputable section
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
+local instance idealRadicalGoverningFieldZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
+
 local instance : IsAbelianGalois
     (IdealRadicalCyclotomicBase F p Fact.out)
     (IdealRadicalGoverningField F p Fact.out) :=

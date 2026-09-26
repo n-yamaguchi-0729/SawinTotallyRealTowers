@@ -33,6 +33,8 @@ variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 local instance localReciprocityUnramifiedTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
 local instance localReciprocityUnramifiedDiscreteTopology : DiscreteTopology (ZMod (n : ℕ)) :=
   discreteTopology_bot _
+local instance localReciprocityUnramifiedZModAddCommGroup : AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.commRing (n : ℕ)).toAddCommGroup
 local instance localReciprocityUnramifiedH1Module
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=

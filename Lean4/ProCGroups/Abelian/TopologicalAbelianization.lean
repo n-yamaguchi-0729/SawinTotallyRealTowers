@@ -268,7 +268,7 @@ noncomputable def congr
           mk G a
       rw [map_apply_mk, map_apply_mk]
       simp only [ContinuousMonoidHom.coe_toMonoidHom, ContinuousMonoidHom.coe_coe,
-  ContinuousMulEquiv.symm_apply_apply, MonoidHom.coe_coe])
+  ContinuousMulEquiv.symm_apply_apply, MonoidHom.coe_ofClass])
     (by
       intro y
       refine Quotient.inductionOn' y ?_
@@ -280,7 +280,7 @@ noncomputable def congr
           mk H b
       rw [map_apply_mk, map_apply_mk]
       simp only [ContinuousMonoidHom.coe_toMonoidHom, ContinuousMonoidHom.coe_coe,
-  ContinuousMulEquiv.apply_symm_apply, MonoidHom.coe_coe])
+  ContinuousMulEquiv.apply_symm_apply, MonoidHom.coe_ofClass])
 
 /--
 The abelianization congruence induced by a continuous equivalence sends representatives to

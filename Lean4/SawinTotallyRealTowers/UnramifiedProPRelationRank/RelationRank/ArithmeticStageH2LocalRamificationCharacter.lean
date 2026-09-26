@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift
+import Mathlib.Algebra.Field.ZMod
 
 set_option autoImplicit false
 /-!
@@ -38,6 +39,10 @@ variable (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
 variable (s : finitePlaceAbsoluteDecompositionGroup F v →ₜ* DegreeTwoCentralExtension xU)
 variable (hs : (H2CocycleExtension.projection (degreeTwoCocycleRepresentative xU)).comp s =
   arithmeticStageFinitePlaceAbsoluteQuotientMap F p U v)
+
+local instance arithmeticStageH2LocalRamificationCanonicalZModAddCommGroup :
+    AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 
 /-- The ramification character of a local solution, obtained by subtracting
 the constructed unramified solution and restricting to absolute inertia. -/

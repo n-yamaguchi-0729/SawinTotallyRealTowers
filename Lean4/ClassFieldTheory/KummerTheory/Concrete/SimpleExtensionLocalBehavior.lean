@@ -647,8 +647,9 @@ theorem
     rw [hLocalTensorTop]
     trivial
   obtain ⟨z, hz⟩ := hx
-  refine ⟨eU.symm z, ?_⟩
-  apply eC.injective
-  rw [hnorm, eU.apply_symm_apply, hz]
+  refine ⟨eU.symm z, eC.injective ?_⟩
+  exact (hnorm (eU.symm z)).trans
+    ((congrArg (localTensorDetNorm (K := K) (L := E) vK)
+      (eU.apply_symm_apply z)).trans hz)
 
 end KummerTheory

@@ -278,7 +278,8 @@ instance localSelectedResidueIsAlgClosed :
       (F := SeparableClosure K) A
   let : PerfectField (decompositionResidueField K B) := inferInstance
   let : Algebra.IsAlgebraic (decompositionResidueField K B)
-      (selectedResidueField B) := inferInstance
+      (selectedResidueField B) :=
+    (decompositionResidueExtension_normal (K := K) B).toIsAlgebraic
   let : PerfectField (selectedResidueField B) :=
     Algebra.IsAlgebraic.perfectField
       (K := decompositionResidueField K B)

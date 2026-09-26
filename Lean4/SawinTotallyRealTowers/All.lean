@@ -87,5 +87,6 @@ import SawinTotallyRealTowers.RealProPFrobeniusFixedField
 import SawinTotallyRealTowers.RealProPFrobeniusFixedFieldSplitting
 import SawinTotallyRealTowers.SawinDiscriminantBound
 import SawinTotallyRealTowers.SawinTotallyRealTower
+import SawinTotallyRealTowers.MartinetCorollary
 
 set_option autoImplicit false

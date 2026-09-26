@@ -8,6 +8,11 @@ import GaloisCohomology.ProP.TrivialZModP
 import ProCGroups.ProP.ContinuousH1
 import ProCGroups.ProP.Presentation.Minimal
 import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Defs
+import Mathlib.Algebra.Module.Pi
+import Mathlib.Topology.Algebra.Group.Basic
+import Mathlib.Topology.Algebra.ContinuousMonoidHom
+import Mathlib.Topology.Instances.ZMod
 
 set_option autoImplicit false
 /-!
@@ -30,6 +35,9 @@ noncomputable section
 universe u
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance invariantKernelCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 

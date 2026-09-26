@@ -44,21 +44,22 @@ theorem valuedInteger_hasBasis_ltIdeal
     [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] :
     (𝓝 (0 : Valued.integer K)).HasBasis
       (fun _ : (MonoidWithZeroHom.ValueGroup₀
-        (.ofClass (Valued.v : Valuation K Γ)))ˣ ↦ True)
+        ((Valued.v : Valuation K Γ) : K →*₀ Γ))ˣ ↦ True)
       (fun γ ↦ (Valuation.ltIdeal (Valued.v : Valuation K Γ)
         (Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-          (f := (.ofClass (Valued.v : Valuation K Γ)))) γ) :
+          (f := ((Valued.v : Valuation K Γ) : K →*₀ Γ))) γ) :
         Set (Valued.integer K))) := by
   rw [nhds_subtype]
   refine ((Valued.hasBasis_nhds_zero K Γ).comap
     ((↑) : Valued.integer K → K)).congr (fun _ ↦ Iff.rfl) ?_
   intro γ _
   ext x
-  change (Valued.v : Valuation K Γ).restrict x < (γ :
-      MonoidWithZeroHom.ValueGroup₀ (.ofClass (Valued.v : Valuation K Γ))) ↔
+  change (Valued.v : Valuation K Γ).restrict x < (γ.1 :
+      MonoidWithZeroHom.ValueGroup₀
+        ((Valued.v : Valuation K Γ) : K →*₀ Γ)) ↔
     (Valued.v : Valuation K Γ) (x : K) <
       ((Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
-        (f := (.ofClass (Valued.v : Valuation K Γ)))) γ : Γˣ) : Γ)
+        (f := ((Valued.v : Valuation K Γ) : K →*₀ Γ))) γ : Γˣ) : Γ)
   rw [Valuation.restrict_lt_iff_lt_embedding]
   simp
 

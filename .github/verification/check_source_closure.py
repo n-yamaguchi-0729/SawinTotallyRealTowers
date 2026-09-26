@@ -23,8 +23,8 @@ REQUIRED_DECLARATIONS = [
 ]
 OWNERS = {'ClassFieldTheory': 690, 'GaloisCohomology': 154, 'ProCGroups': 321,
           'SawinTotallyRealTowers': 269, 'ValuedFieldTheory': 306}
-MATHLIB = '5ed2965256430c3649e86755f9576b54eca72435'
-TOOLCHAIN = 'leanprover/lean4:v4.34.0'
+MATHLIB = '065356127b1dc0016f66b7283ce0ce2c4055aa55'
+TOOLCHAIN = 'leanprover/lean4:v4.35.0-rc2'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
 
 def require(ok, message):

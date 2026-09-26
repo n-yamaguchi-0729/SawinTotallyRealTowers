@@ -364,9 +364,7 @@ theorem presentationFoxDerivative_word
     { toFun := fun w ↦ D (FreeGroup.lift ι w)
       map_mul' := by
         intro a b
-        simpa [ρ, D] using
-          (presentationFoxDerivative P).map_mul
-            (FreeGroup.lift ι a) (FreeGroup.lift ι b) }
+        simp [ρ, D] }
   have hbasis : ∀ i : ULift.{u} (Fin d),
       δ (FreeGroup.of i) =
         Pi.single i (1 : PresentationFoxCoefficientRing (p := p) (G := G)) := by

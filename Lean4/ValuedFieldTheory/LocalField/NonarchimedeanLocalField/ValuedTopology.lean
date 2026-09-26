@@ -50,7 +50,7 @@ theorem isValuativeTopology_of_valued_ofValuation
     apply hδ
     exact
       (ValuativeRel.valuation_lt_symm_orderMonoidIso
-        v (δ : MonoidWithZeroHom.ValueGroup₀ (.ofClass v)) z).1
+        v δ.1 z).1
         (by simpa using hz)
   · rintro ⟨γ, hγ⟩
     refine
@@ -61,10 +61,10 @@ theorem isValuativeTopology_of_valued_ofValuation
     have hz' :
         v.restrict z <
           (ValuativeRel.ValueGroupWithZero.orderMonoidIso v)
-            (γ : ValuativeRel.ValueGroupWithZero F) := by
+            γ.1 := by
       exact hz
     exact
       (ValuativeRel.restrict_lt_orderMonoidIso
-        v (γ : ValuativeRel.ValueGroupWithZero F) z).1 hz'
+        v γ.1 z).1 hz'
 
 end LocalFieldTheory

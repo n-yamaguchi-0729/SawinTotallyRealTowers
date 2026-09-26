@@ -72,7 +72,7 @@ theorem H2CocycleExtension.π_eq_zero_of_kernelCharacter
         · apply ULift.ext
           change -(χ 1).toAdd = (0 : ZMod p)
           rw [map_one]
-          simp
+          exact neg_zero
         · rfl
       map_mul' := fun g h => H2CocycleExtension.ext z (hb g h) rfl
       continuous_toFun := by

@@ -273,7 +273,7 @@ theorem
             (standardLubinTateChangedLevelField hπ u n) y := by
         apply Units.ext
         exact Algebra.norm_eq_of_algEquiv e
-          (y : standardLubinTateChangedLevelField hπ u n)
+          y.val
       _ = standardLubinTateChangedUniformizerUnit hπ u := hy
   exact
     (standardLubinTateChangedUniformizerUnit_mem_standardNormSubgroup_iff

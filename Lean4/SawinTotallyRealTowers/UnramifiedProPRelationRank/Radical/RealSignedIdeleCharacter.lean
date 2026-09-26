@@ -137,7 +137,7 @@ theorem ideleCharacter_two_principal_radical_eq_one_of_integral_local
     exact div_eq_one.mpr hroot.symm
   have h := ideleCharacter_two_integral_eq_one F chi hsign hfinite _ hint
   have hpow : chi b ^ (2 : ℕ) = 1 := multiplicativeZMod_pow_eq_one (2 : ℕ+) (chi b)
-  rw [map_div, map_pow, hpow, div_one] at h
-  exact h
+  rw [map_div, map_pow, hpow] at h
+  exact (div_one _).symm.trans h
 
 end ClassFieldTower.Martinet.Shafarevich

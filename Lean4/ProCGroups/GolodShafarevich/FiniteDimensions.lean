@@ -105,8 +105,15 @@ one over `ZMod p`. -/
         Module.finrank (ZMod p)
           (ModPCompletedGroupAlgebra p G ⧸ ε.ker) :=
       (Submodule.quotEquivOfEq _ _ hker).finrank_eq
-    _ = Module.finrank (ZMod p) (ZMod p) :=
-      (ε.quotKerEquivOfSurjective hsurj).finrank_eq
+    _ = Module.finrank (ZMod p) (ZMod p) := by
+      let e := @LinearMap.quotKerEquivOfSurjective
+        (ZMod p) (ModPCompletedGroupAlgebra p G) (ZMod p)
+        inferInstance inferInstance inferInstance inferInstance Semiring.toModule
+        ε hsurj
+      exact @LinearEquiv.finrank_eq (ZMod p)
+        (ModPCompletedGroupAlgebra p G ⧸ ε.ker) (ZMod p)
+        inferInstance inferInstance inferInstance inferInstance Semiring.toModule
+        e
     _ = 1 := Module.finrank_self (ZMod p)
 
 omit [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in

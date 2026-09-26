@@ -1325,28 +1325,28 @@ private theorem rationalCyclotomicArtin_padic_algebraMap
 private theorem rationalCyclotomicArtin_algebraAdjoin_restrictScalars
     (m : ℕ+) (p : Nat.Primes) :
     (Algebra.adjoin (rationalCyclotomicArtinBaseAbv p).Completion
-      ({rationalCyclotomicLocalizedPrimitiveRoot m
-        (rationalCyclotomicArtinPlace p)} :
+      (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot m
+        (rationalCyclotomicArtinPlace p)) :
         Set (rationalCyclotomicArtinLocalizedField m p))).restrictScalars ℚ =
       (Algebra.adjoin ℚ_[p.1]
-        ({rationalCyclotomicLocalizedPrimitiveRoot m
-          (rationalCyclotomicArtinPlace p)} :
+        (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot m
+          (rationalCyclotomicArtinPlace p)) :
           Set (rationalCyclotomicArtinLocalizedField m p))).restrictScalars ℚ := by
   exact
     Algebra.restrictScalars_adjoin_of_algEquiv
       (E := rationalCyclotomicArtinLocalizedField m p)
       (rationalFinitePlaceCompletionAlgEquivPadic p)
       (rationalCyclotomicArtin_padic_algebraMap m p)
-      ({rationalCyclotomicLocalizedPrimitiveRoot m
-        (rationalCyclotomicArtinPlace p)} :
+      (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot m
+        (rationalCyclotomicArtinPlace p)) :
         Set (rationalCyclotomicArtinLocalizedField m p))
 
 private theorem
     rationalCyclotomicArtin_baseAlgebraAdjoin_restrict_eq_top
     (m : ℕ+) (p : Nat.Primes) :
     (Algebra.adjoin (rationalCyclotomicArtinBaseAbv p).Completion
-      ({rationalCyclotomicLocalizedPrimitiveRoot m
-        (rationalCyclotomicArtinPlace p)} :
+      (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot m
+        (rationalCyclotomicArtinPlace p)) :
         Set (rationalCyclotomicArtinLocalizedField m p))).restrictScalars ℚ =
       (⊤ : Subalgebra (rationalCyclotomicArtinBaseAbv p).Completion
       (rationalCyclotomicArtinLocalizedField m p)).restrictScalars ℚ := by
@@ -1359,8 +1359,8 @@ private theorem
       m (rationalCyclotomicArtinPlace p)
   have hTop :
       Algebra.adjoin (rationalCyclotomicArtinBaseAbv p).Completion
-        ({rationalCyclotomicLocalizedPrimitiveRoot m
-          (rationalCyclotomicArtinPlace p)} :
+        (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot m
+          (rationalCyclotomicArtinPlace p)) :
           Set (rationalCyclotomicArtinLocalizedField m p)) = ⊤ :=
     IsCyclotomicExtension.adjoin_primitive_root_eq_top
       (A := (rationalCyclotomicArtinBaseAbv p).Completion)
@@ -1383,8 +1383,8 @@ private theorem
     rationalCyclotomicArtin_padicAlgebraAdjoin_restrict_eq_top
     (m : ℕ+) (p : Nat.Primes) :
     (Algebra.adjoin ℚ_[p.1]
-      ({rationalCyclotomicLocalizedPrimitiveRoot m
-        (rationalCyclotomicArtinPlace p)} :
+      (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot m
+        (rationalCyclotomicArtinPlace p)) :
         Set (rationalCyclotomicArtinLocalizedField m p))).restrictScalars ℚ =
       (⊤ : Subalgebra ℚ_[p.1]
         (rationalCyclotomicArtinLocalizedField m p)).restrictScalars ℚ := by
@@ -1513,9 +1513,9 @@ private theorem
     rationalCyclotomicPrincipalPrimeLocalizedPrimitiveRoot_adjoin_eq_top
     (p : Nat.Primes) (n : ℕ) :
     Algebra.adjoin ℚ_[p.1]
-        ({rationalCyclotomicLocalizedPrimitiveRoot
+        (Set.singleton (rationalCyclotomicLocalizedPrimitiveRoot
           (rationalCyclotomicPrincipalPrimeModulus p n)
-          (rationalCyclotomicArtinPlace p)} :
+          (rationalCyclotomicArtinPlace p)) :
           Set (rationalCyclotomicArtinLocalizedField
             (rationalCyclotomicPrincipalPrimeModulus p n) p)) =
       ⊤ := by

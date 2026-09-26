@@ -163,6 +163,7 @@ theorem mrangeRestrict_units_isCyclic
           (MonoidWithZeroHom.ofClass F.valuation) :=
       MonoidWithZeroHom.mem_valueGroup
         (MonoidWithZeroHom.ofClass F.valuation) ⟨x, hx⟩
+    rw [_root_.Valuation.ofClass_eq_toMonoidWithZeroHom] at hηΓ_mem
     rw [← _root_.Valuation.IsRankOneDiscrete.generator_zpowers_eq_valueGroup
       F.valuation, Subgroup.mem_zpowers_iff] at hηΓ_mem
     rcases hηΓ_mem with ⟨z, hz⟩

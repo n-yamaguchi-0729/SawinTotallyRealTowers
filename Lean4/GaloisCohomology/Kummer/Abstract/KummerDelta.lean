@@ -58,7 +58,7 @@ def kummerDeltaAddSubgroup
     (A : Rep ℤ G) (wp : A ⟶ A) (K L : ClosedSubgroup G) :
     AddSubgroup A.V :=
   (ambientFixedAddSubgroup A L).map
-      (AddMonoidHomClass.toAddMonoidHom wp.hom) ⊓
+      (AddMonoidHom.ofClass wp.hom) ⊓
     ambientFixedAddSubgroup A K
 
 /-- The radical set `wp⁻¹(Delta)` in the additive abstract model. -/
@@ -66,7 +66,7 @@ def kummerRadicalAddSubgroup
     (A : Rep ℤ G) (wp : A ⟶ A) (K L : ClosedSubgroup G) :
     AddSubgroup A.V :=
   (kummerDeltaAddSubgroup A wp K L).comap
-    (AddMonoidHomClass.toAddMonoidHom wp.hom)
+    (AddMonoidHom.ofClass wp.hom)
 
 /-- The Kummer radical consists of fixed elements annihilated by the Kummer exponent. -/
 @[simp]
@@ -84,7 +84,7 @@ theorem kummerRadical_fixed_of_ker_le_zmultiples
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (xi : A.V)
     (hxi_fixed : ∀ k : K.toSubgroup, A.ρ k.1 xi = xi)
-    (hker : AddMonoidHom.ker (AddMonoidHomClass.toAddMonoidHom wp.hom) ≤
+    (hker : AddMonoidHom.ker (AddMonoidHom.ofClass wp.hom) ≤
       AddSubgroup.zmultiples xi)
     {a : A.V} (ha : a ∈ kummerRadicalAddSubgroup A wp K L)
     (l : L.toSubgroup) :
@@ -92,12 +92,12 @@ theorem kummerRadical_fixed_of_ker_le_zmultiples
   have haDelta : wp.hom a ∈ kummerDeltaAddSubgroup A wp K L := ha
   have haImage : wp.hom a ∈
       (ambientFixedAddSubgroup A L).map
-        (AddMonoidHomClass.toAddMonoidHom wp.hom) :=
+        (AddMonoidHom.ofClass wp.hom) :=
     haDelta.1
   obtain ⟨b, hb_fixed, hba⟩ := haImage
   have hba' : wp.hom b = wp.hom a := hba
   have hd_ker : a - b ∈
-      AddMonoidHom.ker (AddMonoidHomClass.toAddMonoidHom wp.hom) := by
+      AddMonoidHom.ker (AddMonoidHom.ofClass wp.hom) := by
     rw [AddMonoidHom.mem_ker]
     change wp.hom (a - b) = 0
     rw [map_sub, ← hba', sub_self]
@@ -132,7 +132,7 @@ theorem finiteAbelian_kummerRadical_fixingSubgroup_eq
     (hxi_order : addOrderOf xi = (n : ℕ))
     (hxi_kernel : wp.hom xi = 0)
     (hxi_fixed : ∀ k : K.toSubgroup, A.ρ k.1 xi = xi)
-    (hker : AddMonoidHom.ker (AddMonoidHomClass.toAddMonoidHom wp.hom) ≤
+    (hker : AddMonoidHom.ker (AddMonoidHom.ofClass wp.hom) ≤
       AddSubgroup.zmultiples xi)
     (hexponent :
       ∀ q : K.toSubgroup ⧸ extensionSubgroup (G := G) K L hLK,

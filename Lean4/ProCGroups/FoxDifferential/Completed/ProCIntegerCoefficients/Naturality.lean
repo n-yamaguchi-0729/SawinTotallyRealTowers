@@ -682,7 +682,7 @@ theorem zcCompletedGroupAlgebraMap_scalar
     zcCompletedGroupAlgebraMap C hC φ (zcCompletedGroupAlgebraScalar C ψ g) =
       zcCompletedGroupAlgebraScalar C (φ.toMonoidHom.comp ψ) g := by
   simp only [zcCompletedGroupAlgebraScalar, MonoidHom.coe_comp, Function.comp_apply,
-  zcCompletedGroupAlgebraMap_groupLike, ContinuousMonoidHom.coe_toMonoidHom, MonoidHom.coe_coe]
+  zcCompletedGroupAlgebraMap_groupLike, ContinuousMonoidHom.coe_toMonoidHom, MonoidHom.coe_ofClass]
 
 /-- The completed target map is compatible with the corresponding boundary map. -/
 @[simp]
@@ -1032,7 +1032,7 @@ theorem zcFreeGroupFoxDerivativeVector_mapTarget
           zcCompletedGroupAlgebraScalar_apply, Pi.add_apply, Pi.smul_apply,
           smul_eq_mul, map_add, map_mul, zcCompletedGroupAlgebraMap_groupLike,
           ContinuousMonoidHom.coe_toMonoidHom, MonoidHom.coe_comp,
-          MonoidHom.coe_coe, Function.comp_apply] }
+          MonoidHom.coe_ofClass, Function.comp_apply] }
   have hbasis :
       ∀ x : X, delta (FreeGroup.of x) = Pi.single x (1 : ZCCompletedGroupAlgebra C K) := by
     intro x
@@ -1087,7 +1087,7 @@ theorem zcFreeGroupFoxBoundary_mapTarget
   simp only [zcFreeGroupFoxBoundary_apply, map_sum, map_mul, map_sub,
       zcCompletedGroupAlgebraMap_groupLike,
   map_one, ContinuousMonoidHom.coe_toMonoidHom, zcFreeFoxCoordinatesMap, MonoidHom.coe_comp,
-      MonoidHom.coe_coe,
+      MonoidHom.coe_ofClass,
   Function.comp_apply]
 
 /--

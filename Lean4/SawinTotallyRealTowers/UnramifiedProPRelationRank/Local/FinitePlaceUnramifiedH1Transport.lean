@@ -27,6 +27,9 @@ local instance finitePlaceUnramifiedH1TransportTopology :
 local instance finitePlaceUnramifiedH1TransportDiscreteTopology :
     DiscreteTopology (ZMod p) := discreteTopology_bot _
 
+local instance finitePlaceUnramifiedH1TransportZModAddCommGroup :
+    AddCommGroup (ZMod p) := (ZMod.commRing p).toAddCommGroup
+
 local instance finitePlaceUnramifiedH1TransportModule
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=

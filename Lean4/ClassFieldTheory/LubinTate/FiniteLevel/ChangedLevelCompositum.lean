@@ -657,7 +657,7 @@ theorem
           hπ u n).valuationSubring)) :
       standardLubinTateChangedLevelCompositumField hπ u n) =
         standardLubinTateLevelToChangedLevelCompositum
-          hπ u n (a :
+          hπ u n (a.val :
             standardLubinTateLevelField hπ n) := by
   let L := standardLubinTateLevelField hπ n
   let M := standardLubinTateChangedLevelCompositumField hπ u n
@@ -672,7 +672,7 @@ theorem
   change
     (((integerMap level.toDVF target.toDVF a :
       target.valuationSubring)) : M) =
-        standardLubinTateLevelToChangedLevelCompositum hπ u n (a : L)
+        standardLubinTateLevelToChangedLevelCompositum hπ u n (a.val : L)
   rw [integerMap_apply]
   rfl
 
@@ -693,7 +693,7 @@ theorem
           hπ u n).valuationSubring)) :
       standardLubinTateChangedLevelCompositumField hπ u n) =
         standardLubinTateChangedLevelToCompositum
-          hπ u n (a :
+          hπ u n (a.val :
             standardLubinTateChangedLevelField hπ u n) := by
   let hπ' :=
     standardLubinTateChangedUniformizer_isUniformizer hπ u
@@ -709,7 +709,7 @@ theorem
   change
     (((integerMap level.toDVF target.toDVF a :
       target.valuationSubring)) : M) =
-        standardLubinTateChangedLevelToCompositum hπ u n (a : L')
+        standardLubinTateChangedLevelToCompositum hπ u n (a.val : L')
   rw [integerMap_apply]
   rfl
 
@@ -861,9 +861,9 @@ theorem
       standardLubinTateChangedLevelToCompositumIntegerMap_apply_coe]
     change
       algebraMap L M
-          (standardLubinTateLevelCoefficientHom hπ n π : L) =
+          ((standardLubinTateLevelCoefficientHom hπ n π).val : L) =
         algebraMap L' M
-          (standardLubinTateLevelCoefficientHom hπ' n π : L')
+          ((standardLubinTateLevelCoefficientHom hπ' n π).val : L')
     rw [
       standardLubinTateLevelCoefficientHom_apply,
       standardLubinTateLevelCoefficientHom_apply]

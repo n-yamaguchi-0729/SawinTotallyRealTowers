@@ -68,7 +68,7 @@ theorem ideal_map_le_jacobson_bot_of_le_jacobson_bot_of_moduleFinite
   rw [Ideal.jacobson, le_sInf_iff]
   rintro Q ⟨-, hQmax⟩
   by_contra hle
-  rw [SetLike.le_def] at hle
+  rw [IsConcreteLE.le_iff] at hle
   push Not at hle
   rcases hle with ⟨x, hxI, hxQ⟩
   let : Q.IsMaximal := hQmax

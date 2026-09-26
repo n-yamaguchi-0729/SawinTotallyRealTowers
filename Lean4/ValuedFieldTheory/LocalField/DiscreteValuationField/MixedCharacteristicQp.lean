@@ -417,14 +417,12 @@ theorem ratCastWithValToK_isUniformInducing
     obtain ⟨q, hq⟩ :=
       Rat.surjective_padicValuation F.residueCharacteristic
         (MonoidWithZeroHom.ValueGroup₀.embedding
-          (delta :
-            MonoidWithZeroHom.ValueGroup₀ (.ofClass vWith)))
+          (f := vWith.toMonoidWithZeroHom) delta.1)
     have hq_ne : q ≠ 0 := by
       intro hzero
       have hdelta_zero :
           MonoidWithZeroHom.ValueGroup₀.embedding
-              (delta :
-                MonoidWithZeroHom.ValueGroup₀ (.ofClass vWith)) = 0 := by
+              (f := vWith.toMonoidWithZeroHom) delta.1 = 0 := by
         simpa [hzero] using hq.symm
       exact
         (MonoidWithZeroHom.ValueGroup₀.embedding_unit_ne_zero delta)
@@ -467,8 +465,7 @@ theorem ratCastWithValToK_isUniformInducing
     change
       vq (yq - xq) <
         MonoidWithZeroHom.ValueGroup₀.embedding
-          (delta :
-            MonoidWithZeroHom.ValueGroup₀ (.ofClass vWith))
+          (f := vWith.toMonoidWithZeroHom) delta.1
     simpa [hq] using hpadic
 
 /-- The rational embedding from p-adically valued `ℚ` to the closed `Qp`

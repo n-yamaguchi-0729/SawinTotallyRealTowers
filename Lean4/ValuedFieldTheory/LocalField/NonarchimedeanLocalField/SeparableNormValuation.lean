@@ -40,7 +40,8 @@ variable (R : Type u) (S : Type v)
   [IsIntegrallyClosed R] [IsIntegrallyClosed S]
   [Algebra R S] [Module.Finite R S] [Module.IsTorsionFree R S]
 
-attribute [local instance] FractionRing.liftAlgebra
+local instance : Algebra (FractionRing R) (FractionRing S) :=
+  FractionRing.liftAlgebra R (FractionRing S)
 
 /-- A normal closure inside a separable ambient field is separable over the
 base whenever the extension being closed is separable.  Keeping this
@@ -200,7 +201,8 @@ variable (R : Type u) (S : Type v)
   [CommRing R] [IsDomain R] [CommRing S] [IsDedekindDomain S]
   [Algebra R S] [Module.Finite R S] [Module.IsTorsionFree R S]
 
-attribute [local instance] FractionRing.liftAlgebra
+local instance : Algebra (FractionRing R) (FractionRing S) :=
+  FractionRing.liftAlgebra R (FractionRing S)
 
 /-- The same separable normal-closure construction is Dedekind when the
 original rings are Dedekind. -/
@@ -241,7 +243,8 @@ variable (R : Type u) (S : Type v)
   [CommRing R] [IsDomain R] [CommRing S] [IsDomain S]
   [Algebra R S] [Module.Finite R S] [Module.IsTorsionFree R S]
 
-attribute [local instance] FractionRing.liftAlgebra
+local instance : Algebra (FractionRing R) (FractionRing S) :=
+  FractionRing.liftAlgebra R (FractionRing S)
 
 /-- The normal closure of a finite separable extension of fraction fields is
 Galois without assuming that the base fraction field is perfect.  Mathlib's
@@ -427,13 +430,13 @@ theorem v_normUnits_integerRingUniformizerFieldUnit_of_isSeparable
   let f : Nat := Module.finrank 𝓀[K] 𝓀[L]
   have hspan :
       Ideal.span
-          ({Algebra.intNorm 𝒪[K] 𝒪[L]
-            (chosenIntegerRingUniformizer L)} : Set 𝒪[K]) =
-        Ideal.span ({chosenIntegerRingUniformizer K ^ f} : Set 𝒪[K]) := by
+          (Set.singleton (Algebra.intNorm 𝒪[K] 𝒪[L]
+            (chosenIntegerRingUniformizer L))) =
+        Ideal.span (Set.singleton (chosenIntegerRingUniformizer K ^ f)) := by
     calc
       Ideal.span
-          ({Algebra.intNorm 𝒪[K] 𝒪[L]
-            (chosenIntegerRingUniformizer L)} : Set 𝒪[K]) =
+          (Set.singleton (Algebra.intNorm 𝒪[K] 𝒪[L]
+            (chosenIntegerRingUniformizer L))) =
           Ideal.relNorm 𝒪[K]
             (Ideal.span ({chosenIntegerRingUniformizer L} : Set 𝒪[L])) := by
         exact (Ideal.spanNorm_singleton (R := 𝒪[K])
@@ -442,7 +445,7 @@ theorem v_normUnits_integerRingUniformizerFieldUnit_of_isSeparable
         rw [chosenIntegerRingUniformizer_maximalIdeal_eq L]
       _ = (𝓂[K] : Ideal 𝒪[K]) ^ f := by
         simpa [f] using relNorm_maximalIdeal_eq_pow_residue_finrank K L
-      _ = Ideal.span ({chosenIntegerRingUniformizer K ^ f} : Set 𝒪[K]) :=
+      _ = Ideal.span (Set.singleton (chosenIntegerRingUniformizer K ^ f)) :=
         maximalIdeal_pow_eq_span_uniformizer_pow K f
   obtain ⟨u, hu⟩ := Ideal.span_singleton_eq_span_singleton.mp hspan
   have hfieldUnits :
@@ -552,13 +555,13 @@ theorem v_mapBaseUnitsToExtensionUnits_integerRingUniformizerFieldUnit
   let e := (𝓂[L] : Ideal 𝒪[L]).ramificationIdx 𝒪[K]
   have hspan :
       Ideal.span
-          ({integerRingMapOfValuationExtension K L
-            (chosenIntegerRingUniformizer K)} : Set 𝒪[L]) =
-        Ideal.span ({chosenIntegerRingUniformizer L ^ e} : Set 𝒪[L]) := by
+          (Set.singleton (integerRingMapOfValuationExtension K L
+            (chosenIntegerRingUniformizer K))) =
+        Ideal.span (Set.singleton (chosenIntegerRingUniformizer L ^ e)) := by
     calc
       Ideal.span
-          ({integerRingMapOfValuationExtension K L
-            (chosenIntegerRingUniformizer K)} : Set 𝒪[L]) =
+          (Set.singleton (integerRingMapOfValuationExtension K L
+            (chosenIntegerRingUniformizer K))) =
           Ideal.map (algebraMap 𝒪[K] 𝒪[L])
             (𝓂[K] : Ideal 𝒪[K]) := by
         rw [chosenIntegerRingUniformizer_maximalIdeal_eq K,
@@ -566,7 +569,7 @@ theorem v_mapBaseUnitsToExtensionUnits_integerRingUniformizerFieldUnit
         rfl
       _ = (𝓂[L] : Ideal 𝒪[L]) ^ e := by
         exact maximalIdeal_map_eq_maximalIdeal_pow_ramificationIdx K L
-      _ = Ideal.span ({chosenIntegerRingUniformizer L ^ e} : Set 𝒪[L]) :=
+      _ = Ideal.span (Set.singleton (chosenIntegerRingUniformizer L ^ e)) :=
         maximalIdeal_pow_eq_span_uniformizer_pow L e
   obtain ⟨u, hu⟩ := Ideal.span_singleton_eq_span_singleton.mp hspan
   have hfieldUnits :

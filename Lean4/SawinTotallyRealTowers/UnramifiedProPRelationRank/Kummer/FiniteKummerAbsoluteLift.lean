@@ -123,7 +123,8 @@ theorem exists_absoluteLift_of_finiteKummerUnit_boundary
           rw [map_one (absoluteFiniteGaloisRestriction K E),
             normalizedCocycle_one_left, one_mul] at h
           have hz : a 1 = 0 := by simpa only [add_sub_cancel_right] using h
-          rw [hz, neg_zero]
+          rw [hz]
+          exact neg_zero
         · exact r.map_one
       map_mul' g h := by
         apply H2CocycleExtension.ext

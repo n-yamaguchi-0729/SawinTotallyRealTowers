@@ -8,6 +8,11 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1
 import ProCGroups.ProP.ContinuousH1
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity
 import ProCGroups.Topologies.QuotientMaps
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.Defs
+import Mathlib.Algebra.Module.ZMod
+import Mathlib.Topology.Algebra.Group.Basic
+import Mathlib.Topology.Instances.ZMod
 
 set_option autoImplicit false
 /-!
@@ -30,6 +35,9 @@ open ClassFieldTower.ProP LocalClassFieldTheory
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 variable (p : ℕ) [Fact p.Prime]
+
+local instance localReciprocityPairingCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 
 local instance localReciprocityCharacterTopology : TopologicalSpace (ZMod p) := ⊥
 local instance localReciprocityCharacterDiscreteTopology : DiscreteTopology (ZMod p) :=

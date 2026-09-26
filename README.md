@@ -1,9 +1,9 @@
-# Sawin's totally real towers (Lean 4.34.0)
+# Sawin's totally real towers (Lean 4.35.0-rc2)
 
 [![Lean](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml/badge.svg)](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-A Lean 4.34.0 library centered on Sawin's totally real tower theorem. One infinite
+A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem. One infinite
 set of primes congruent to 1 modulo 4 splits completely in totally real
 number fields of arbitrarily large degree, with root discriminant at most
 **255255**. The library also contains Martinet's totally real tower corollary
@@ -192,8 +192,8 @@ and the [Remarks paper](https://arxiv.org/abs/2605.20695).
 
 ## Build
 
-This repository pins Lean **4.34.0** and Mathlib
-**5ed2965256430c3649e86755f9576b54eca72435**. Mathlib is the only direct
+This repository pins Lean **4.35.0-rc2** and Mathlib
+**065356127b1dc0016f66b7283ce0ce2c4055aa55**. Mathlib is the only direct
 external Git dependency; its dependencies are pinned in
 [`lake-manifest.json`](lake-manifest.json).
 
@@ -231,7 +231,7 @@ with pinned NanoDa, replays the closure with the official Lean kernel, and
 checks the three named public theorems against the compiled inventory. The
 accepted Shafarevich benchmark uses submission-specific helpers; this CI
 checks its public theorem, not that exact benchmark submission. The expanded
-Lean 4.34 bundle has not yet completed this full CI pipeline.
+The current Lean 4.35.0-rc2 bundle is checked by this full CI pipeline.
 
 The physical inventory and SHA-pinned closure can be checked without a build:
 

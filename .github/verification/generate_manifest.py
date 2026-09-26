@@ -141,8 +141,8 @@ def analyze(root, config):
     lock = load_json(lock_path)
     expected_lean, expected_mathlib = config["leanToolchain"], config["mathlibRevision"]
     expected_url = config.get("mathlibRepository", "https://github.com/leanprover-community/mathlib4")
-    if not re.fullmatch(r"leanprover/lean4:v\d+\.\d+\.\d+", expected_lean):
-        raise ValueError("leanToolchain must be an exact release, not stable/nightly.")
+    if not re.fullmatch(r"leanprover/lean4:v\d+\.\d+\.\d+(?:-rc\d+)?", expected_lean):
+        raise ValueError("leanToolchain must be an exact release or release candidate, not stable/nightly.")
     if not isinstance(expected_mathlib, str) or not SHA.fullmatch(expected_mathlib):
         raise ValueError("mathlibRevision must be a lowercase 40-hex commit.")
     actual_lean = (root / "lean-toolchain").read_text(encoding="utf-8").strip()

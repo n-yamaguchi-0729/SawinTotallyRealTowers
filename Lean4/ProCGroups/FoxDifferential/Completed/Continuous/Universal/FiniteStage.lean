@@ -1300,7 +1300,7 @@ theorem zcCompletedDifferentialModulePreStageTransition_single
       Finsupp.single (zcCompletedDifferentialModuleStageSourceTransition C ψ hij q)
         (zcCompletedGroupAlgebraTransition C H hij.2 a) := by
   simp only [zcCompletedDifferentialModulePreStageTransition, Finsupp.mapRange.addMonoidHom,
-  RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_coe, AddMonoidHom.coe_comp,
+  RingHom.toAddMonoidHom_eq_coe, AddMonoidHom.coe_ofClass, AddMonoidHom.coe_comp,
       LinearMap.toAddMonoidHom_coe,
   AddMonoidHom.coe_mk, ZeroHom.coe_mk, Function.comp_apply, Finsupp.mapRange_single,
       Finsupp.lmapDomain_apply,
@@ -1319,7 +1319,7 @@ theorem zcCompletedDifferentialModulePreStageTransition_preStageMap
   zcCompletedDifferentialModulePreStageMap, LinearMap.coe_comp, Function.comp_apply,
       Finsupp.mapRange.linearMap_apply,
   Finsupp.mapRange_zero, Finsupp.lmapDomain_apply, Finsupp.mapDomain_zero, AddMonoidHom.coe_comp,
-  LinearMap.toAddMonoidHom_coe, Finsupp.mapRange.addMonoidHom_apply, AddMonoidHom.coe_coe]
+  LinearMap.toAddMonoidHom_coe, Finsupp.mapRange.addMonoidHom_apply, AddMonoidHom.coe_ofClass]
   · intro x y hx hy
     simp only [map_add, hx, hy]
   · intro g a
@@ -1536,7 +1536,7 @@ theorem zcCompletedDifferentialModulePreStageTransition_id
   refine Finsupp.induction_linear x ?zero ?add ?single
   · simp only [zcCompletedDifferentialModulePreStageTransition,
       zcCompletedGroupAlgebraTransition_id,
-  RingHom.toAddMonoidHom_eq_coe, RingHom.coe_addMonoidHom_id, Finsupp.mapRange.addMonoidHom_id,
+  RingHom.toAddMonoidHom_eq_coe, RingHom.toAddMonoidHom_id, Finsupp.mapRange.addMonoidHom_id,
       AddMonoidHom.comp_id,
   LinearMap.toAddMonoidHom_coe, Finsupp.lmapDomain_apply, Finsupp.mapDomain_zero,
       AddMonoidHom.id_apply]
@@ -1568,7 +1568,7 @@ theorem zcCompletedDifferentialModulePreStageTransition_comp
   · simp only [zcCompletedDifferentialModulePreStageTransition, RingHom.toAddMonoidHom_eq_coe,
   AddMonoidHom.coe_comp, LinearMap.toAddMonoidHom_coe, Function.comp_apply,
       Finsupp.mapRange.addMonoidHom_apply,
-  AddMonoidHom.coe_coe, Finsupp.mapRange_zero, Finsupp.lmapDomain_apply, Finsupp.mapDomain_zero]
+  AddMonoidHom.coe_ofClass, Finsupp.mapRange_zero, Finsupp.lmapDomain_apply, Finsupp.mapDomain_zero]
   · intro x y hx hy
     simp only [map_add, hx, hy]
   · intro q a

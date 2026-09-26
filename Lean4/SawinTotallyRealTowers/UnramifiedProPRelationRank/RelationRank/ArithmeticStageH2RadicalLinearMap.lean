@@ -8,6 +8,7 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.Arithmetic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportDecompositionRadicalPairing
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedRadicalPairing
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
+import Mathlib.Algebra.Field.ZMod
 
 set_option autoImplicit false
 /-!
@@ -30,6 +31,10 @@ open ClassFieldTower.Cohomology ClassFieldTower.ProP ClassFieldTower.Martinet Pr
 variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 variable (U : OpenNormalSubgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))
+
+local instance stageRadicalLinearCanonicalZModAddCommGroup :
+    AddCommGroup (ZMod (n : ℕ)) :=
+  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
 
 local notation "StageQuotient" => MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ) ⧸
   (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))

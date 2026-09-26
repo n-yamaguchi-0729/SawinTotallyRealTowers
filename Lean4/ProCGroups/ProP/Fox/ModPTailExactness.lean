@@ -147,8 +147,9 @@ theorem presentationModPFoxBoundary_range_eq_augmentationIdeal
           a - algebraMap (ZMod p) (MonoidAlgebra (ZMod p) G)
               (groupAlgebraAugmentation (ZMod p) G a) ∈
             groupAlgebraAugmentationIdeal (ZMod p) G := by
-        rw [mem_groupAlgebraAugmentationIdeal_iff]
-        simp
+        rw [mem_groupAlgebraAugmentationIdeal_iff, map_sub,
+          groupAlgebraAugmentation_algebraMap]
+        exact sub_self _
       have hrange :=
         toCompletedGroupAlgebraInClass_mem_presentationModPFoxBoundary_range P _ ha0
       change adjust (denseMap a) ∈ _

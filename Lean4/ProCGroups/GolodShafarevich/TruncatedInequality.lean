@@ -54,6 +54,12 @@ variable {p : ℕ} [Fact p.Prime]
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
+-- Keep the self-module on `ZMod p` canonical when nilpotent-group instances are in scope.
+local instance truncatedInequalityCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
+local instance truncatedInequalityCanonicalZModModule : Module (ZMod p) (ZMod p) :=
+  Semiring.toModule
+
 omit [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 /-- Rank--nullity on shifted augmentation truncations, before inserting the
 concrete filtered Fox maps. -/

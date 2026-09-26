@@ -125,7 +125,7 @@ theorem isOpenMap_of_surjective_compact_t2
         ⟨⟨u⁻¹ * z, ?_⟩, ⟨u, huU, by simp only [mul_inv_cancel_left]⟩⟩
       change f.toMonoidHom (u⁻¹ * z) = 1
       simp only [_root_.ContinuousMonoidHom.coe_toMonoidHom, map_mul, map_inv,
-          MonoidHom.coe_coe, huf, inv_mul_cancel]
+          MonoidHom.coe_ofClass, huf, inv_mul_cancel]
     · intro hz
       rcases Set.mem_iUnion.1 hz with ⟨k, hk⟩
       rcases hk with ⟨u, huU, rfl⟩

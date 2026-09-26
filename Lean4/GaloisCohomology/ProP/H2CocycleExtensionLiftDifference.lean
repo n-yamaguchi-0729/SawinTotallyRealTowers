@@ -75,7 +75,7 @@ theorem liftDifference_apply_eq_one_iff (h : H) :
   rw [sub_eq_zero]
   constructor
   · intro hleft
-    exact H2CocycleExtension.ext z (ULift.ext _ _ hleft) (DFunLike.congr_fun hst h)
+    exact H2CocycleExtension.ext z (ULift.ext hleft) (DFunLike.congr_fun hst h)
   · intro hst'
     exact congrArg (fun e : H2CocycleExtension z => e.left.down) hst'
 

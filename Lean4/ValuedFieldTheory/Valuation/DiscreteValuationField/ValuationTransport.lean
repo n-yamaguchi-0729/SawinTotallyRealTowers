@@ -91,7 +91,10 @@ instance isRankOneDiscrete_comap_ringEquiv
     rcases _root_.Valuation.IsRankOneDiscrete.exists_generator_lt_one v with
       ⟨γ, hγ, hlt⟩
     refine ⟨γ, ?_, hlt⟩
-    simpa [valueGroup_comap_ringEquiv (v := v) e] using hγ
+    change Subgroup.zpowers γ =
+      MonoidWithZeroHom.valueGroup (.ofClass (v.comap (e : L →+* K)))
+    rw [valueGroup_comap_ringEquiv (v := v) e]
+    exact hγ
 
 /-- The valuation ring of a comapped valuation is the source valuation ring,
 transported through the field equivalence. -/

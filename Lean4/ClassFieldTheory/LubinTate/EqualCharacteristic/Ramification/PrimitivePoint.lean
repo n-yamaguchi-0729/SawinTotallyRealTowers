@@ -507,8 +507,7 @@ theorem equalCharacteristicLubinTatePrimitivePointInteger_coe
     (F : LocalField.{0, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) :
-    (equalCharacteristicLubinTatePrimitivePointInteger F n :
-      equalCharacteristicLubinTateLevelField F n) =
+    (equalCharacteristicLubinTatePrimitivePointInteger F n).val =
         (equalCharacteristicLubinTateLevelPowerBasis F n).gen :=
   rfl
 
@@ -920,8 +919,7 @@ theorem equalCharacteristicLubinTatePrimitivePoint_isUniformizer
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) :
     (equalCharacteristicLubinTateLevelCompleteDVF F n).valuation.IsUniformizer
-      (equalCharacteristicLubinTatePrimitivePointInteger F n :
-        equalCharacteristicLubinTateLevelField F n) := by
+      (equalCharacteristicLubinTatePrimitivePointInteger F n).val := by
   exact Valuation.isUniformizer_of_maximalIdeal_eq_span
     (v := (equalCharacteristicLubinTateLevelCompleteDVF F n).valuation)
     (equalCharacteristicLubinTatePrimitivePointInteger_irreducible F n).maximalIdeal_eq
@@ -945,13 +943,12 @@ theorem
         equalCharacteristicLubinTateLevelBracket F n (n + 1)
           (equalCharacteristicLubinTateUnitParameterSeries F n a)
           (equalCharacteristicLubinTateLevelPowerBasis F n).gen) :
-    ((RamificationTheory.HilbertRamification.Higher.valuationSubringAutOfUniqueExtension
+    (RamificationTheory.HilbertRamification.Higher.valuationSubringAutOfUniqueExtension
             (equalCharacteristicLubinTateLevelCompleteDVF_hasUniqueDVFValuationExtension
               F n)
             σ (equalCharacteristicLubinTatePrimitivePointInteger F n) -
         equalCharacteristicLubinTatePrimitivePointInteger F n :
-      (equalCharacteristicLubinTateLevelCompleteDVF F n).valuationSubring) :
-      equalCharacteristicLubinTateLevelField F n) =
+      (equalCharacteristicLubinTateLevelCompleteDVF F n).valuationSubring).val =
         Polynomial.aeval
           (equalCharacteristicLubinTateLevelPowerBasis F n).gen
           (equalCharacteristicLubinTateBracketPolynomial F (n + 1)

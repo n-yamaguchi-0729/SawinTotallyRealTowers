@@ -30,6 +30,14 @@ local instance localUnramifiedH1LineTopology : TopologicalSpace (ZMod p) := ⊥
 local instance localUnramifiedH1LineDiscreteTopology : DiscreteTopology (ZMod p) :=
   discreteTopology_bot _
 
+local instance localUnramifiedH1LineZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.commRing p).toAddCommGroup
+
+local instance localUnramifiedH1LineAddCommGroup
+    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
+    AddCommGroup (ContinuousH1ZMod (p := p) (G := G)) :=
+  ContinuousAddMonoidHom.instAddCommGroup (Additive G) (ZMod p)
+
 local instance localUnramifiedH1LineModule
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
@@ -172,6 +180,7 @@ theorem localIntrinsicUnramifiedH1_eq_smul
     change chi (Additive.ofMul sigma) = 0
     rw [LinearMap.mem_ker] at hchi
     have hv := DFunLike.congr_fun hchi (Additive.ofMul ⟨sigma, hsigma⟩)
+    change chi (Additive.ofMul sigma) = 0 at hv
     exact hv
   let fbar : (Gal(SeparableClosure K / K) ⧸ J) →ₜ* Multiplicative (ZMod p) :=
     ProCGroups.QuotientGroup.liftₜ J f hJ

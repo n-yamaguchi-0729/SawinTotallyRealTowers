@@ -69,7 +69,9 @@ theorem localReciprocityH1PowerClassPairing_eq_valuation_of_integerUnits
       calc
         f a = f (integerUnitsToFieldUnits K u * π ^ valuationMap K (Additive.ofMul a)) :=
           congrArg f hu.symm
-        _ = _ := by rw [map_mul, hchi, one_mul, map_zpow]
+        _ = _ := by
+          rw [map_mul, hchi, one_mul, map_zpow]
+          rfl
     calc
       _ = (f a).toAdd := localReciprocityH1PowerClassPairing_mk K (n : ℕ) chi a
       _ = _ := by rw [hf, toAdd_zpow, zsmul_eq_mul, hc, mul_comm]

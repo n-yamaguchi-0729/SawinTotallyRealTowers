@@ -1053,8 +1053,8 @@ target uniformizer. -/
 theorem zeroQuotientModuloResidueDegreeClass_closure_uniformizerClass_eq_top
     {ϖG : G} (hϖG : vG.IsUniformizer ϖG) :
     Subgroup.closure
-        ({QuotientGroup.mk' N.residueDegreeClassSubgroup
-          (QuotientGroup.mk' vG.zeroSubgroup ϖG)} :
+        (Set.singleton (QuotientGroup.mk' N.residueDegreeClassSubgroup
+          (QuotientGroup.mk' vG.zeroSubgroup ϖG)) :
           Set ((G ⧸ vG.zeroSubgroup) ⧸ N.residueDegreeClassSubgroup)) =
       ⊤ := by
   apply le_antisymm
@@ -1065,10 +1065,10 @@ theorem zeroQuotientModuloResidueDegreeClass_closure_uniformizerClass_eq_top
     rw [hqpow]
     exact Subgroup.zpow_mem
       (Subgroup.closure
-        ({QuotientGroup.mk' N.residueDegreeClassSubgroup
-          (QuotientGroup.mk' vG.zeroSubgroup ϖG)} :
+        (Set.singleton (QuotientGroup.mk' N.residueDegreeClassSubgroup
+          (QuotientGroup.mk' vG.zeroSubgroup ϖG)) :
           Set ((G ⧸ vG.zeroSubgroup) ⧸ N.residueDegreeClassSubgroup)))
-      (Subgroup.subset_closure (by simp)) n
+      (Subgroup.subset_closure (by rfl)) n
 
 /--
 `zeroQuotientModuloResidueDegreeClassEquivValueModResidueDegree_uniformizerClass` satisfies the

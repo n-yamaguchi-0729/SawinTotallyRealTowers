@@ -38,6 +38,11 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
 theorem localResidueDegree_ker_eq_residueAction_ker :
     MonoidHom.ker (localResidueDegree K).toMonoidHom =
       MonoidHom.ker (localSeparableResidueAlgAction K).toMonoidHom := by
+  let : Algebra.IsAlgebraic
+      (decompositionResidueField K (localSeparableValuationSubring K))
+      (selectedResidueField (localSeparableValuationSubring K)) :=
+    (decompositionResidueExtension_normal (K := K)
+      (localSeparableValuationSubring K)).toIsAlgebraic
   ext sigma
   rw [MonoidHom.mem_ker, MonoidHom.mem_ker]
   constructor

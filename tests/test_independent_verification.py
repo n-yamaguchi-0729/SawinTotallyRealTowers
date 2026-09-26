@@ -16,7 +16,7 @@ class ExportAndNanoDaChecks(unittest.TestCase):
             rows = [
                 {'in': 1, 'str': {'pre': 0, 'str': 'Public'}},
                 {'thm': {'name': 1}},
-                {'meta': {'lean': {'version': '4.34.0', 'githash': verify.LEAN_REV}}},
+                {'meta': {'lean': {'version': '4.35.0-rc2', 'githash': verify.LEAN_REV}}},
             ]
             output.write_text(''.join(json.dumps(row) + '\n' for row in rows))
             inventory = {'Public': {'nameParts': [{'str': 'Public'}]}}

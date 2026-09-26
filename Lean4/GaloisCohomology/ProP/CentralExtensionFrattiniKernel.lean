@@ -39,7 +39,7 @@ theorem ker_le_frattini_of_no_section_of_prime_card
     (hno : ¬ ∃ s : Q →* E, f.comp s = MonoidHom.id Q) :
     f.ker ≤ frattini E := by
   by_contra hle
-  obtain ⟨k, hkker, hkfr⟩ := SetLike.not_le_iff_exists.mp hle
+  obtain ⟨k, hkker, hkfr⟩ := IsConcreteLE.not_le_iff_exists.mp hle
   have hkcoatom : ∃ M : Subgroup E, IsCoatom M ∧ k ∉ M := by
     have h := hkfr
     simp only [frattini, Order.radical, Subgroup.mem_iInf,

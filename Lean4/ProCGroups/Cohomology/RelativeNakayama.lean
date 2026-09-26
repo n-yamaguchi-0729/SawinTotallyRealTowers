@@ -42,7 +42,7 @@ theorem relativeNakayama_character
         (∀ k : K, χ ⟨k, hKR.le k.2⟩ = 1) ∧
         ∀ (f : F) (r : R), χ (MulAut.conjNormal f r) = χ r := by
   classical
-  obtain ⟨x, hxR, hxK⟩ := SetLike.exists_of_lt hKR
+  obtain ⟨x, hxR, hxK⟩ := IsConcreteLE.exists_of_lt hKR
   obtain ⟨W, _hWtop, hxKW⟩ :=
     exists_openNormalSubgroup_le_not_mem_sup_closedSubgroup K hxK
       (⊤ : OpenNormalSubgroup F)

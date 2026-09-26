@@ -172,11 +172,11 @@ theorem mem_subfield_of_mrangeRestrict_isClosed_of_forall_valuationSubring_smodE
     change
       F.valuation ((z : K) - (b : K)) <
         ((MonoidWithZeroHom.ValueGroup₀.embedding
-            (f := MonoidWithZeroHom.ofClass
-              (Valued.v :
+            (f := ((Valued.v :
                 _root_.Valuation K
                   (MonoidHom.mrange
-                    F.valuation.toMonoidWithZeroHom)))
+                    F.valuation.toMonoidWithZeroHom)) :
+                K →*₀ MonoidHom.mrange F.valuation.toMonoidWithZeroHom))
             (↑gamma) :
           MonoidHom.mrange F.valuation.toMonoidWithZeroHom) : F.ValueGroup)
     simpa [gamma'] using hlt

@@ -18,6 +18,7 @@ import SawinTotallyRealTowers.RealCharacterInertiaExistence
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
 import ProCGroups.Topologies.QuotientMaps
+import Mathlib.Algebra.Field.ZMod
 
 set_option autoImplicit false
 
@@ -40,6 +41,9 @@ namespace ClassFieldTower.Sawin
 
 open ClassFieldTower.Cohomology ClassFieldTower.ProP
 open ClassFieldTower.Martinet.Shafarevich ProCGroups
+
+local instance realCentralLiftCanonicalZModAddCommGroup : AddCommGroup (ZMod 2) :=
+  (ZMod.instField 2).toDivisionRing.toAddCommGroup
 
 /-- The actual unramified local quotient supplies an inertia-trivial solution
 of every cocycle embedding problem whose base map kills inertia. -/

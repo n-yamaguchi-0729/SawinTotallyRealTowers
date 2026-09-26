@@ -125,11 +125,12 @@ noncomputable def rankOneOfUnitsIsCyclic
     units_isCyclic_mulArchimedean Gamma
   haveI :
       MulArchimedean
-        (MonoidWithZeroHom.ValueGroup₀
-          (MonoidWithZeroHom.ofClass v)) :=
+        v.ValueGroup₀ :=
     MulArchimedean.comap
-      MonoidWithZeroHom.ValueGroup₀.embedding.toMonoidHom
-      MonoidWithZeroHom.ValueGroup₀.embedding_strictMono
+      (MonoidWithZeroHom.ValueGroup₀.embedding
+        (f := (v : R →*₀ Gamma))).toMonoidHom
+      (MonoidWithZeroHom.ValueGroup₀.embedding_strictMono
+        (f := (v : R →*₀ Gamma)))
   exact
     Classical.choice
       ((_root_.Valuation.nonempty_rankOne_iff_mulArchimedean

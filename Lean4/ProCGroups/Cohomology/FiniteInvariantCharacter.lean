@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ProCGroups.ProP.FinitePGroupMaximal
+import Mathlib.Algebra.Group.Hom.Instances
 import Mathlib.GroupTheory.GroupAction.DomAct.Basic
 
 set_option autoImplicit false
@@ -72,6 +73,7 @@ theorem exists_nontrivial_conjugationInvariant_character_finite
   let _ : MulDistribMulAction P N :=
     MulDistribMulAction.compHom N (MulAut.conjNormal (G := P) (H := N))
   let Char := N →* Multiplicative (ZMod p)
+  let _ : CommGroup Char := MonoidHom.instCommGroup
   have hPD : IsPGroup p (DomMulAct P) := by
     intro g
     obtain ⟨k, hk⟩ := hP (DomMulAct.mk.symm g)
@@ -94,7 +96,7 @@ theorem exists_nontrivial_conjugationInvariant_character_finite
     change (χ n) ^ (p ^ 1) = 1
     rw [pow_one]
     change p • (χ n).toAdd = 0
-    exact ZModModule.char_nsmul_eq_zero p (χ n).toAdd
+    simp only [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
   obtain ⟨k, hkpos, hkcard⟩ :=
     hCharP.nontrivial_iff_card.mp (inferInstance : Nontrivial Char)
   have hpCard : p ∣ Nat.card Char := by

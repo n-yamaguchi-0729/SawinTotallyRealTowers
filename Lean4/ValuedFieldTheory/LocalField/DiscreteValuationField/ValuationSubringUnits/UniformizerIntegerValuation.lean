@@ -75,10 +75,10 @@ theorem exists_uniformizerValueUnit_zpow_eq_fieldUnitValueUnit
   have hxmem :
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.fieldUnitValueUnit F) x ∈
         MonoidWithZeroHom.valueGroup
-          (MonoidWithZeroHom.ofClass F.valuation) := by
+          (F.valuation : K →*₀ F.ValueGroup) := by
     exact
       MonoidWithZeroHom.mem_valueGroup
-        (MonoidWithZeroHom.ofClass F.valuation)
+        (F.valuation : K →*₀ F.ValueGroup)
         (show (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.fieldUnitValueUnit F) x : F.ValueGroup)) ∈
             Set.range F.valuation from
           ⟨(x : K), by simp [fieldUnitValueUnit]⟩)

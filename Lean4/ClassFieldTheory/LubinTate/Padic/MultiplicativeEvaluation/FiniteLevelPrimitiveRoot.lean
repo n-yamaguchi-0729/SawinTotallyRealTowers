@@ -489,9 +489,7 @@ noncomputable def padicMultiplicativePrimitiveRoot
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     standardLubinTateLevelField
       (padicMultiplicativeLubinTateSeries_isUniformizer p) n :=
-  1 + (padicMultiplicativePrimitivePoint p n :
-    standardLubinTateLevelField
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) n)
+  1 + (padicMultiplicativePrimitivePoint p n).val
 
 /-- The finite Lubin--Tate unit action becomes the usual power action on
 the actual primitive `p ^ (n + 1)`-st root.  The exponent is the canonical
@@ -507,9 +505,7 @@ private theorem padicMultiplicativePrimitiveRoot_unitAction
             (padicMultiplicativeLubinTateSeries_isUniformizer p) n u)
           (standardLubinTatePrimitivePointIntegerAction_hasEval
             (padicMultiplicativeLubinTateSeries_isUniformizer p) n u)
-          (padicStandardToMultiplicativeIntertwiner p) :
-          standardLubinTateLevelField
-            (padicMultiplicativeLubinTateSeries_isUniformizer p) n) =
+          (padicStandardToMultiplicativeIntertwiner p)).val =
       padicMultiplicativePrimitiveRoot p n ^
         (PadicInt.toZModPow (p := p) (n + 1)
           ((padicIntEquivValuationSubring p).symm
@@ -613,7 +609,7 @@ private theorem padicMultiplicativePrimitiveRoot_unitAction
     congrArg
       (fun x :
         (standardLubinTateLevelCompleteDVF hπ n).valuationSubring =>
-          (x : standardLubinTateLevelField hπ n))
+          x.val)
       hrootInteger
   simpa [padicMultiplicativePrimitiveRoot, hπ, H, m,
     lambdaU, hlambdaU, zetaMinusOne] using hrootField
@@ -695,13 +691,8 @@ private theorem
       (padicMultiplicativeLubinTateSeries_isUniformizer p) n) / ℚ_[p]))
     (x : (standardLubinTateLevelCompleteDVF
       (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring) :
-    ((padicMultiplicativeLevelAutomorphismIntegerRingEquiv p n σ x :
-        (standardLubinTateLevelCompleteDVF
-          (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring) :
-      standardLubinTateLevelField
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n) =
-      σ (x : standardLubinTateLevelField
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n) :=
+    (padicMultiplicativeLevelAutomorphismIntegerRingEquiv p n σ x).val =
+      σ x.val :=
   rfl
 
 private theorem
@@ -891,8 +882,7 @@ theorem padicMultiplicativePrimitiveRoot_galoisAction
       σ (1 + x) = σ 1 + σ x := σ.map_add 1 x
       _ = 1 + σ x := congrArg (fun y : L => y + σ x) σ.map_one
   have hrApply (x : target.valuationSubring) :
-      ((r x : target.valuationSubring) : L) =
-        σ (x : L) :=
+      (r x).val = σ x.val :=
     padicMultiplicativeLevelAutomorphismIntegerRingEquiv_apply p n σ x
   have hrEval :
       r zetaMinusOne =
@@ -910,16 +900,16 @@ theorem padicMultiplicativePrimitiveRoot_galoisAction
               (padicLocalField p).valuationSubring))).val
   calc
     σ (padicMultiplicativePrimitiveRoot p n) =
-        σ (1 + (zetaMinusOne : L)) := by
+        σ (1 + zetaMinusOne.val) := by
       rfl
-    _ = 1 + σ (zetaMinusOne : L) :=
-      hσOneAdd (zetaMinusOne : L)
-    _ = 1 + (r zetaMinusOne : L) := by
+    _ = 1 + σ zetaMinusOne.val :=
+      hσOneAdd zetaMinusOne.val
+    _ = 1 + (r zetaMinusOne).val := by
       rw [hrApply]
     _ =
         1 +
           (standardLubinTateLevelPowerSeriesEval hπ n
-            lambdaInv hlambdaInv H : L) := by
+            lambdaInv hlambdaInv H).val := by
       rw [hrEval]
     _ =
         padicMultiplicativePrimitiveRoot p n ^
@@ -1010,7 +1000,7 @@ theorem padicMultiplicativePrimitiveRoot_isPrimitiveRoot
       congrArg
         (fun z :
           (standardLubinTateLevelCompleteDVF hπ n).valuationSubring =>
-            (z : standardLubinTateLevelField hπ n))
+            z.val)
         hfinalInteger
   have hprevious :
       ¬padicMultiplicativePrimitiveRoot p n ^ (p ^ n) = 1 := by

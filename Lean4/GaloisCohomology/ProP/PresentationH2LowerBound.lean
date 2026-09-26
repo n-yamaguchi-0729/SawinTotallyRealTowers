@@ -9,6 +9,8 @@ import GaloisCohomology.ProP.FiniteStageTransgressionLinear
 import ProCGroups.Cohomology.InvariantCharacterFiniteFamily
 import GaloisCohomology.ProP.PresentationQuotientEquiv
 import GaloisCohomology.ProP.RelationRankH1
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Module.ZMod
 import Mathlib.LinearAlgebra.Dimension.Finite
 
 set_option autoImplicit false
@@ -34,6 +36,9 @@ noncomputable section
 universe u
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance presentationH2LowerCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 

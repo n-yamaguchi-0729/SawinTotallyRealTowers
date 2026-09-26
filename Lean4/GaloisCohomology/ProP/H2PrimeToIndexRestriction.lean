@@ -8,6 +8,7 @@ import GaloisCohomology.ProP.FiniteIndexTransfer
 import GaloisCohomology.ProP.H2CocycleExtensionPullback
 import GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 import GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter
+import Mathlib.Algebra.Field.ZMod
 
 set_option autoImplicit false
 /-!
@@ -34,6 +35,9 @@ noncomputable section
 universe u
 
 variable {p : ℕ} [Fact p.Prime]
+
+local instance h2PrimeIndexCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
+  (ZMod.instField p).toDivisionRing.toAddCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [LocallyCompactSpace G]
 
