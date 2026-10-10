@@ -23,8 +23,6 @@ Constructs the maps induced on valuation rings, residue fields, and residue
 units by a valued extension, with degree, trace, norm, and Frobenius results.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section
@@ -60,7 +58,8 @@ theorem integerRingMapOfValuationExtension_apply (K L : Type u)
 
 /-- The residue-field map induced by a valuation extension.  This is the
 canonical `algebraMap 𝓀[K] 𝓀[L]`, named so later
-local class field theory files can use it without unfolding mathlib's valuation-extension instances. -/
+local class field theory files can use it without unfolding mathlib's valuation-extension instances.
+-/
 def residueFieldMapOfValuationExtension (K L : Type u) [Field K] [ValuativeRel K]
     [Field L] [ValuativeRel L] [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)] :

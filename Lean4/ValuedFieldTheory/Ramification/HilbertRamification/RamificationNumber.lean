@@ -8,8 +8,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.Monogeneity
 import ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # Ramification numbers for a general discretely valued field
 
@@ -19,6 +17,8 @@ separable-residue hypotheses, the monogenic integral-generator theorem supplies
 an integral generator.  We choose that generator internally, so downstream
 statements do not carry a generator hypothesis.
 -/
+
+
 
 noncomputable section
 

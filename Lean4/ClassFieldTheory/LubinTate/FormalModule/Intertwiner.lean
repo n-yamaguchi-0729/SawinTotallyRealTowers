@@ -8,14 +8,14 @@ import ClassFieldTheory.LubinTate.FormalModule.Series
 import ClassFieldTheory.LubinTate.FormalModule.LinearTerm
 import Mathlib.RingTheory.MvPowerSeries.Substitution
 
-set_option autoImplicit false
-
 /-!
 # Intertwining equations for Lubin--Tate series
 
 For two Lubin--Tate series with the same prescribed linear coefficient, this
 module defines the multivariable intertwining equation and its additive defect.
 -/
+
+
 
 noncomputable section
 

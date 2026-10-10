@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.Instances
 
-set_option autoImplicit false
-
 /-!
 # Degree-zero cohomology of finite local-block families
 -/
+
+
 
 noncomputable section
 

@@ -6,10 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Analysis.AbsoluteValue.Equivalence
 import Mathlib.Algebra.Order.Ring.IsNonarchimedean
+import Mathlib.Data.Fintype.EquivFin
 import Mathlib.NumberTheory.Ostrowski
 import Mathlib.Topology.UniformSpace.AbsoluteValue
-
-set_option autoImplicit false
 
 /-!
 # Absolute values and exponential valuations
@@ -65,8 +64,8 @@ theorem absoluteValueDist_triangle
       absoluteValueDist v x y + absoluteValueDist v y z := by
   simpa [absoluteValueDist] using v.sub_le x y z
 
-/-- The uniformity induced by the absolute-value construction distance is mathlib's uniformity attached
-to the same absolute value. -/
+/-- The uniformity induced by the absolute-value construction distance is mathlib's uniformity
+attached to the same absolute value. -/
 theorem absoluteValueUniformity_basis
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) :
     (@uniformity K v.uniformSpace).HasBasis ((0 : ℝ) < ·)
@@ -124,8 +123,8 @@ theorem absoluteValue_finset_sum_le
         simpa [add_comm, add_left_comm, add_assoc] using
           add_le_add_left ih (v (f i)))
 
-/-- The equivalence relation on absolute values: two absolute values are equivalent if they induce the
-same topology. -/
+/-- The equivalence relation on absolute values: two absolute values are equivalent if they induce
+the same topology. -/
 def EquivalentAbsoluteValues {K : Type*} [Field K]
     (v w : AbsoluteValue K ℝ) : Prop :=
   IsHomeomorph (WithAbs.congr v w (.refl K))
@@ -175,8 +174,8 @@ theorem equivalentAbsoluteValues_trans
     ((isEquiv_of_equivalentAbsoluteValues h₁₂).trans
       (isEquiv_of_equivalentAbsoluteValues h₂₃))
 
-/-- The power characterization of equivalent absolute values: two real absolute values are equivalent exactly when
-one is a positive real power of the other. -/
+/-- The power characterization of equivalent absolute values: two real absolute values are
+equivalent exactly when one is a positive real power of the other. -/
 theorem equivalentAbsoluteValues_iff_exists_rpow_eq
     {K : Type*} [Field K] (v w : AbsoluteValue K ℝ) :
     EquivalentAbsoluteValues v w ↔ ∃ s : ℝ, 0 < s ∧ (v · ^ s) = w := by
@@ -184,8 +183,8 @@ theorem equivalentAbsoluteValues_iff_exists_rpow_eq
     (equivalentAbsoluteValues_iff_isEquiv v w).trans
       (AbsoluteValue.isEquiv_iff_exists_rpow_eq (v := v) (w := w))
 
-/-- The criterion used in the proof of the power characterization of equivalent absolute values: equivalence is the
-same as preserving the strict unit ball. -/
+/-- The criterion used in the proof of the power characterization of equivalent absolute values:
+equivalence is the same as preserving the strict unit ball. -/
 theorem equivalentAbsoluteValues_iff_lt_one
     {K : Type*} [Field K] (v w : AbsoluteValue K ℝ) :
     EquivalentAbsoluteValues v w ↔ ∀ x : K, v x < 1 ↔ w x < 1 := by
@@ -210,8 +209,9 @@ theorem absoluteValueApproximation_exists_separating_element
       (hinequiv hij)
         ((equivalentAbsoluteValues_iff_isEquiv (v i) (v j)).mpr hIsEquiv)
 
-/-- The bump-function construction in the proof of the weak approximation theorem: from an element large at `i` and small at the other valuations, produce
-an element close to `1` at `i` and close to `0` at the others. -/
+/-- The bump-function construction in the proof of the weak approximation theorem: from an element
+large at `i` and small at the other valuations, produce an element close to `1` at `i` and close
+to `0` at the others. -/
 theorem absoluteValueApproximation_exists_bump_element
     {K : Type*} [Field K] {ι : Type*} [Finite ι]
     (v : ι → AbsoluteValue K ℝ) {i : ι} {z : K}
@@ -357,10 +357,11 @@ theorem absoluteValueApproximation_from_weighted_bump_family
 /-- A single positive precision small enough after multiplication by all finitely
 many coefficients appearing in the weak approximation theorem. -/
 theorem absoluteValueApproximation_exists_coefficient_precision
-    {K : Type*} [Field K] {ι : Type*} [Fintype ι]
+    {K : Type*} [Field K] {ι : Type*} [Finite ι]
     (v : ι → AbsoluteValue K ℝ) (a : ι → K) {δ : ℝ} (hδ : 0 < δ) :
     ∃ η : ℝ, 0 < η ∧ ∀ i j, v i (a j) * η < δ := by
   classical
+  let : Fintype ι := Fintype.ofFinite ι
   let C : ℝ := ∑ i : ι, ∑ j : ι, v i (a j)
   have hC_nonneg : 0 ≤ C := by
     dsimp [C]
@@ -403,13 +404,14 @@ theorem absoluteValueApproximation_exists_coefficient_precision
 /-- The weak approximation theorem, Approximation Theorem for a finite family of pairwise
 inequivalent nontrivial absolute values. -/
 theorem absoluteValueApproximation
-    {K : Type*} [Field K] {ι : Type*} [Fintype ι]
+    {K : Type*} [Field K] {ι : Type*} [Finite ι]
     (v : ι → AbsoluteValue K ℝ)
     (hnontrivial : ∀ i, ¬ TrivialAbsoluteValue (v i))
     (hinequiv : Pairwise fun i j => ¬ EquivalentAbsoluteValues (v i) (v j))
     (a : ι → K) {ε : ℝ} (hε : 0 < ε) :
     ∃ x : K, ∀ i, v i (x - a i) < ε := by
   classical
+  let : Fintype ι := Fintype.ofFinite ι
   let δ : ℝ := ε / ((Fintype.card ι : ℝ) + 1)
   have hcard_add_pos : 0 < (Fintype.card ι : ℝ) + 1 := by positivity
   have hδ_pos : 0 < δ := by
@@ -458,7 +460,8 @@ def ArchimedeanAbsoluteValue {K : Type*} [Field K]
     (v : AbsoluteValue K ℝ) : Prop :=
   ¬ NonarchimedeanAbsoluteValue v
 
-/-- The strong triangle inequality appearing in the boundedness characterization of nonarchimedean absolute values. -/
+/-- The strong triangle inequality appearing in the boundedness characterization of nonarchimedean
+absolute values. -/
 def StrongTriangle {K : Type*} [Field K] (v : AbsoluteValue K ℝ) : Prop :=
   ∀ x y : K, v (x + y) ≤ max (v x) (v y)
 
@@ -474,15 +477,15 @@ theorem archimedean_iff_not_nonarchimedean
     ArchimedeanAbsoluteValue v ↔ ¬ NonarchimedeanAbsoluteValue v :=
   Iff.rfl
 
-/-- The boundedness characterization of nonarchimedean absolute values, strong triangle inequality as mathlib's
-`IsNonarchimedean` predicate. -/
+/-- The boundedness characterization of nonarchimedean absolute values, strong triangle inequality
+as mathlib's `IsNonarchimedean` predicate. -/
 theorem strong_triangle_iff_isNonarchimedean
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) :
     StrongTriangle v ↔ IsNonarchimedean (v : K → ℝ) :=
   Iff.rfl
 
-/-- The easy direction of the boundedness characterization of nonarchimedean absolute values: the strong triangle inequality
-bounds the values of the natural numbers by `1`. -/
+/-- The easy direction of the boundedness characterization of nonarchimedean absolute values: the
+strong triangle inequality bounds the values of the natural numbers by `1`. -/
 theorem nat_le_one_of_strong_triangle
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     (hstrong : StrongTriangle v) (n : ℕ) :
@@ -490,25 +493,26 @@ theorem nat_le_one_of_strong_triangle
   exact ((strong_triangle_iff_isNonarchimedean v).mp hstrong).apply_natCast_le_one
     (by simp) (by simp)
 
-/-- The easy direction of the boundedness characterization of nonarchimedean absolute values: a valuation satisfying the strong
-triangle inequality is nonarchimedean in the boundedness-on-integers sense. -/
+/-- The easy direction of the boundedness characterization of nonarchimedean absolute values: a
+valuation satisfying the strong triangle inequality is nonarchimedean in the
+boundedness-on-integers sense. -/
 theorem nonarchimedean_of_strong_triangle
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     (hstrong : StrongTriangle v) :
     NonarchimedeanAbsoluteValue v :=
   ⟨1, nat_le_one_of_strong_triangle v hstrong⟩
 
-/-- In the boundedness characterization of nonarchimedean absolute values, any bound for the values of the natural numbers is at
-least `1`. -/
+/-- In the boundedness characterization of nonarchimedean absolute values, any bound for the
+values of the natural numbers is at least `1`. -/
 theorem nat_bound_ge_one
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
     (hC : ∀ n : ℕ, v (n : K) ≤ C) :
     1 ≤ C := by
   simpa using hC 1
 
-/-- The binomial-estimate step in the proof of the boundedness characterization of nonarchimedean absolute values: boundedness
-of the values of natural numbers gives a polynomial factor in the estimate for
-`(x + y)^n`. -/
+/-- The binomial-estimate step in the proof of the boundedness characterization of nonarchimedean
+absolute values: boundedness of the values of natural numbers gives a polynomial factor in the
+estimate for `(x + y)^n`. -/
 theorem add_pow_le_of_bounded_nat
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
     (hC : ∀ n : ℕ, v (n : K) ≤ C) (x y : K) (n : ℕ) :
@@ -567,8 +571,8 @@ theorem add_pow_le_of_bounded_nat
     _ = ((n + 1 : ℕ) : ℝ) * C * M ^ n := by
           simp [Finset.sum_const, nsmul_eq_mul, mul_assoc]
 
-/-- The real-variable limit used at the end of the boundedness characterization of nonarchimedean absolute values: after taking
-`n`-th roots, the polynomial factor `(n+1)C` disappears. -/
+/-- The real-variable limit used at the end of the boundedness characterization of nonarchimedean
+absolute values: after taking `n`-th roots, the polynomial factor `(n+1)C` disappears. -/
 theorem tendsto_linear_bound_rpow_inv
     {C : ℝ} (hC : 0 < C) :
     Tendsto
@@ -606,7 +610,8 @@ theorem tendsto_linear_bound_rpow_inv
       simpa [mul_comm, mul_left_comm, mul_assoc] using hmul
   simpa using htarget
 
-/-- The root form of the binomial estimate in the boundedness characterization of nonarchimedean absolute values. -/
+/-- The root form of the binomial estimate in the boundedness characterization of nonarchimedean
+absolute values. -/
 theorem add_le_root_bound_of_bounded_nat
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
     (hC : ∀ n : ℕ, v (n : K) ≤ C) (x y : K)
@@ -655,8 +660,8 @@ theorem add_le_root_bound_of_bounded_nat
             max (v x) (v y) := by
             rfl
 
-/-- The converse direction of the boundedness characterization of nonarchimedean absolute values: a bounded-on-integers
-valuation satisfies the strong triangle inequality. -/
+/-- The converse direction of the boundedness characterization of nonarchimedean absolute values:
+a bounded-on-integers valuation satisfies the strong triangle inequality. -/
 theorem strong_triangle_of_nonarchimedean
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     (hnonarch : NonarchimedeanAbsoluteValue v) :
@@ -687,15 +692,16 @@ theorem strong_triangle_of_nonarchimedean
     le_of_tendsto_of_tendsto tendsto_const_nhds hlim heventually
   simpa [M, StrongTriangle] using hle
 
-/-- The boundedness characterization of nonarchimedean absolute values: the boundedness definition of nonarchimedean is
-equivalent to the strong triangle inequality. -/
+/-- The boundedness characterization of nonarchimedean absolute values: the boundedness definition
+of nonarchimedean is equivalent to the strong triangle inequality. -/
 theorem nonarchimedean_iff_strong_triangle
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) :
     NonarchimedeanAbsoluteValue v ↔ StrongTriangle v :=
   ⟨strong_triangle_of_nonarchimedean v,
     nonarchimedean_of_strong_triangle v⟩
 
-/-- A consequence of the boundedness characterization: unequal values force equality in the strong triangle inequality. -/
+/-- A consequence of the boundedness characterization: unequal values force equality in the strong
+triangle inequality. -/
 theorem strong_triangle_eq_max_of_ne
     {K : Type*} [Field K] {v : AbsoluteValue K ℝ}
     (hstrong : StrongTriangle v)

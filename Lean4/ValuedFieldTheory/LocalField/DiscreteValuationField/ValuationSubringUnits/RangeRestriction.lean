@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
 
-set_option autoImplicit false
-
 /-!
 # Restricting a valuation to its multiplicative range
 
 The restricted valuation has the same valuation ring, maximal ideal, and
 residue field as the original valuation.
 -/
+
+
 
 noncomputable section
 

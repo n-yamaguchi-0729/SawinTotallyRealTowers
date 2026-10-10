@@ -6,8 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.DiscreteH2CochainComparison
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+import Mathlib.RepresentationTheory.Continuous.Basic
+import Mathlib.RepresentationTheory.Continuous.TopRep
+import Mathlib.Topology.ContinuousMap.Algebra
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.ContinuousMap.Defs
 
-set_option autoImplicit false
 /-!
 # The degree-two short complex for a discrete group
 
@@ -54,8 +59,10 @@ theorem dehomogenizeOne_d
   have hdeval := congrArg
     (fun t ↦ t 1 g (g * h)) hd
   rw [hdeval]
-  simp [d_succ, d_zero, hom_sub, ContIntertwiningMap.sub_apply,
-    coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, hom_d_succ, d_zero, hom_ofHom,
+    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun,
+    ContinuousMap.sub_apply, ContinuousMap.const_apply, ContinuousMap.comp_apply,
+    ContinuousMap.coe_mk]
   have hc := congrArg (fun t ↦ t g (g * h)) (c.2 g)
   change c.1 (g⁻¹ * g) (g⁻¹ * (g * h)) = c.1 g (g * h) at hc
   have hc' : c.1 1 h = c.1 g (g * h) := by simpa using hc
@@ -85,8 +92,10 @@ theorem dehomogenizeTwo_d
   have hdeval := congrArg
     (fun t ↦ t 1 g (g * h) (g * h * k)) hd
   rw [hdeval]
-  simp [d_succ, d_zero, hom_sub, ContIntertwiningMap.sub_apply,
-    coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, hom_d_succ, d_zero, hom_ofHom,
+    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun,
+    ContinuousMap.sub_apply, ContinuousMap.const_apply, ContinuousMap.comp_apply,
+    ContinuousMap.coe_mk]
   have hc := congrArg (fun t ↦ t g (g * h) (g * h * k)) (c.2 g)
   change c.1 (g⁻¹ * g) (g⁻¹ * (g * h))
       (g⁻¹ * (g * h * k)) = c.1 g (g * h) (g * h * k) at hc

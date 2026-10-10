@@ -13,8 +13,6 @@ import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Mathlib.RingTheory.Trace.Defs
 import Mathlib.RingTheory.Trace.Basic
 
-set_option autoImplicit false
-
 /-!
 # A trace witness bounds a primary factor of the different
 
@@ -80,7 +78,7 @@ theorem not_dvd_differentIdeal_of_coprime_norm_exponent
   obtain ⟨x, hx⟩ := Ideal.Quotient.mk_surjective (e.symm (1, 0))
   refine not_dvd_differentIdeal_of_intTrace_not_mem ℤ R Q hMul x ?_ ?_
   · have h := congr((e $hx).2)
-    simp at h
+    rw [e.apply_symm_apply] at h
     change Ideal.Quotient.mk Q x = 0 at h
     exact Ideal.Quotient.eq_zero_iff_mem.mp h
   · rw [← Ideal.Quotient.eq_zero_iff_mem,

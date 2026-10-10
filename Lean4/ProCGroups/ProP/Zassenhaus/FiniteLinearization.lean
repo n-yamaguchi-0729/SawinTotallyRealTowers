@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Algebra.TrivSqZeroExt.Basic
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Abstract
 
-set_option autoImplicit false
 /-!
 # First-order characters of an ordinary group algebra
 

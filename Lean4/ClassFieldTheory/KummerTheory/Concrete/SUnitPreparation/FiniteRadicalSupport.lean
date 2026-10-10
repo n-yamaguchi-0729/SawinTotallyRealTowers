@@ -6,15 +6,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitLocalPowerKernel
 
-set_option autoImplicit false
-
 /-!
 # Finite support for Kummer radicals
 
-A chosen finite enlargement of places containing representatives of every class in a finite Kummer radical.
+A chosen finite enlargement of places containing representatives of every class in a finite Kummer
+radical.
 -/
 
-open scoped NumberField Classical IsMulCommutative NNReal ValuativeRel
+
+
+open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 
@@ -197,6 +198,7 @@ noncomputable def finiteKummerRadicalSupport
     (n : ℕ+)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     Finset (HeightOneSpectrum (𝓞 K)) := by
+  classical
   let D :=
     KummerTheory.chosenFiniteKummerRadicalDatum
       (K := K) (L := L) n
@@ -211,6 +213,7 @@ noncomputable def finiteKummerRadicalSupport
         (chosenFiniteKummerRadicalRepresentative
           (K := K) (L := L) n q).1
 
+open scoped Classical in
 /-- Enlarge any prescribed finite set by the finite supports needed to
 represent all actual Kummer radical classes by `S`-units. -/
 noncomputable def enlargeByFiniteKummerRadicalSupport
@@ -231,8 +234,9 @@ theorem subset_enlargeByFiniteKummerRadicalSupport
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
     S ⊆ enlargeByFiniteKummerRadicalSupport
-      (K := K) (L := L) n hmu S :=
-  Finset.subset_union_left
+      (K := K) (L := L) n hmu S := by
+  classical
+  exact Finset.subset_union_left
 
 /-- Each chosen radical representative is an `S`-unit after the chosen
 finite enlargement. -/
@@ -250,6 +254,7 @@ theorem chosenFiniteKummerRadicalRepresentative_mem_enlargedSUnitGroup
       SUnitGroup (K := K)
         (enlargeByFiniteKummerRadicalSupport
           (K := K) (L := L) n hmu S) := by
+  classical
   apply sUnitGroup_mono
     (K := K)
     (S := chosenUnitFiniteSupport (K := K)

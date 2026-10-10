@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
 
-set_option autoImplicit false
-
 /-!
 # Simple Kummer extensions
 
@@ -16,6 +14,8 @@ Kummer theory.  For `b : Kˣ`, it chooses an embedded field
 `K(ⁿ√b)` inside the separable closure and proves that, when `K` contains
 the `n`-th roots of unity, this is a finite cyclic Galois extension.
 -/
+
+
 
 noncomputable section
 

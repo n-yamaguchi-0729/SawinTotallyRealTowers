@@ -8,15 +8,16 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
 import Mathlib.NumberTheory.NumberField.ProductFormula
 
-set_option autoImplicit false
-
 /-!
 # The absolute norm of an idele
 
-This file constructs the homomorphism `𝓝 : I_K → ℝ₊ˣ`. At a finite place a uniformizer contributes the norm
+This file constructs the homomorphism `𝓝 : I_K → ℝ₊ˣ`. At a finite place a uniformizer contributes
+the norm
 of its prime ideal; at infinity we divide by the normalized archimedean
 norm.  This is the convention for which principal ideles have norm one.
 -/
+
+
 
 open scoped NumberField RestrictedProduct NNReal
 open NumberField IsDedekindDomain

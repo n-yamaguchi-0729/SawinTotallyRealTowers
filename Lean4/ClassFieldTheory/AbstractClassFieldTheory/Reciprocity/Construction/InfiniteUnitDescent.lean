@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FixedTowerUnitDescent
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteFieldUnitMaps
 
-set_option autoImplicit false
+/-!
+# Infinite-level unit descent
+
+This module bundles finite intermediate fields over a finite base, defines
+the infinite unit subgroup, proves its action and norm stability, and
+descends maximal-unramified norm equations from finite support.
+-/
 
 universe u v
 
@@ -16,13 +22,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Infinite-level unit descent
 
-This module bundles finite intermediate fields over a finite base, defines
-the infinite unit subgroup, proves its action and norm stability, and
-descends maximal-unramified norm equations from finite support.
--/
 
 noncomputable section
 

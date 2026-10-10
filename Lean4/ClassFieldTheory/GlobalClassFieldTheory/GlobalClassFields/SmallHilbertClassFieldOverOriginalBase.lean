@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
 
-set_option autoImplicit false
-
 /-!
 # The small Hilbert class field over the original number field
 
@@ -22,7 +20,9 @@ This is the scalar structure used by the final extension-of-ideals map
 in the principal ideal theorem.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

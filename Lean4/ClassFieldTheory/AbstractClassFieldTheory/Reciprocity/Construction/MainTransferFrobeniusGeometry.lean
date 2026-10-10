@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainNaturality
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.DoubleCosetOrbitGeometry
 
-set_option autoImplicit false
-
 /-!
 # Transfer--norm Frobenius geometry
 
@@ -17,6 +15,8 @@ Frobenius-side subgroup and orbit equivalences used in transfer--norm
 naturality.  The reusable orbit and double-coset constructions are isolated in
 `DoubleCosetOrbitGeometry`.
 -/
+
+
 
 universe u
 

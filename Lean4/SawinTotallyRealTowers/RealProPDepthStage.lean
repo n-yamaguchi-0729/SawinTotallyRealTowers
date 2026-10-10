@@ -11,8 +11,6 @@ import Mathlib.FieldTheory.Galois.Profinite
 import ProCGroups.ProP.Zassenhaus.OpenNormal
 import Mathlib.GroupTheory.QuotientGroup.Defs
 
-set_option autoImplicit false
-
 /-!
 # Finite arithmetic stages detecting source depth
 

@@ -8,14 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Finite
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # Cyclic norm quotients as degree-zero Tate cohomology
 
@@ -25,6 +17,14 @@ object used in the class-field axiom.  This is the source comparison needed befo
 cardinality assertion of the class field axiom can be applied to the
 reciprocity map.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the explicit norm-subgroup computation: higher units fix the primitive point
 
@@ -16,6 +14,8 @@ If `a` is congruent to one modulo `T^(n+1)`, the completed the completed theta-i
 Frobenius attached to `a` acts trivially on the standard primitive
 `(n+1)`-division point.
 -/
+
+
 
 noncomputable section
 
@@ -35,7 +35,8 @@ noncomputable local instance equalCharacteristicHigherUnitFixedBaseAlgebra
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra F
 
-/-- States the theorem `equalCharacteristicCompletedFrobeniusAlgEquiv_primitiveRoot_fixed_of_mem_higherUnit`. -/
+/-- States the theorem
+`equalCharacteristicCompletedFrobeniusAlgEquiv_primitiveRoot_fixed_of_mem_higherUnit`. -/
 theorem
     equalCharacteristicCompletedFrobeniusAlgEquiv_primitiveRoot_fixed_of_mem_higherUnit
     (F : LocalField K)

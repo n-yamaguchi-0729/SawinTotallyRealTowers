@@ -8,8 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubext
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
 import Mathlib.FieldTheory.Galois.Abelian
 
-set_option autoImplicit false
-
 /-!
 # Concrete realization of finite abelian subextensions
 
@@ -19,6 +17,8 @@ upper relative fixed field is an actual finite extension of the lower fixed
 field.  The quotient-to-Galois-group equivalence transports the commutativity
 carried by the abstract package, so this actual extension is abelian Galois.
 -/
+
+
 
 noncomputable section
 
@@ -91,16 +91,16 @@ theorem IsAbelianGalois.of_base_equiv
 variable
     {k Ω : Type}
     [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
-    {K : ClosedSubgroup (Gal(Ω / k))}
+    {K : ClosedSubgroup (Gal(Ω/k))}
 
 /-- The relative fixed field represented by a finite abelian subextension is
 finite-dimensional over the fixed field represented by its base subgroup. -/
 noncomputable instance
     finiteAbelianSubextensionAbstractRelativeFixedFieldFiniteDimensional
     [hKfinite : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
         extensionSubgroup
-          (baseField Gal(Ω / k)) K (le_baseField K))]
+          (baseField Gal(Ω/k)) K (le_baseField K))]
     (L : FiniteAbelianSubextension K) :
     FiniteDimensional
       (abstractFixedField k Ω K)

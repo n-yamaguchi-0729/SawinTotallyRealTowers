@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.FiniteStageTransgression
 import GaloisCohomology.ProP.FiniteTransgressionLinear
 import Mathlib.LinearAlgebra.LinearIndependent.Basic
 
-set_option autoImplicit false
 /-!
 # Linear finite-stage transgression
 
@@ -137,8 +136,9 @@ theorem linearIndependent_inflatedFiniteTransgressionClass_of_injective
       (ClassFieldTower.Cohomology.InvariantFiniteCharacter.isInvariant
         (finiteStageImage R U) (v i))) := by
   have hbase :=
-    ClassFieldTower.Cohomology.linearIndependent_finiteTransgressionLinearMap_of_no_extendableCombination
-      (finiteStageImage R U) v hno
+    (open _root_.ClassFieldTower.Cohomology in
+      linearIndependent_finiteTransgressionLinearMap_of_no_extendableCombination
+        (finiteStageImage R U) v hno)
   have himage := hbase.map' (finiteStageInflationLinearMap R U)
     (LinearMap.ker_eq_bot.mpr hinfl)
   change LinearIndependent (ZMod p)

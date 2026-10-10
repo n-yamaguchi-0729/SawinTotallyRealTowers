@@ -9,14 +9,14 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
 import GaloisCohomology.Topology.TotallyDisconnectedQuotients
 
-set_option autoImplicit false
-
 /-!
 # The identity component of the idele class group
 
 This module packages the connected component of the identity in the idele
 class group as a closed normal subgroup and names the corresponding quotient.
 -/
+
+
 
 open scoped NNReal NumberField Topology
 

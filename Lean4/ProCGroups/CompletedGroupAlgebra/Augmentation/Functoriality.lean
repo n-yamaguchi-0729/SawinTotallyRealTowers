@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Augmentation.AugmentationIdeal
 
-set_option autoImplicit false
-
 /-!
 # Functoriality of augmentation
 

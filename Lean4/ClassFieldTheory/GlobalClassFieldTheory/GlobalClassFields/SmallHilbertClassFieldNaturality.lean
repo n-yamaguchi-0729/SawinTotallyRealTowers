@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldComparison
 
-set_option autoImplicit false
-
 /-!
 # Naturality of the small Hilbert class field
 
@@ -18,6 +16,8 @@ canonical equivalence of the corresponding reciprocity quotients.  Transport
 of ordinary ideal classes is obtained from this quotient equivalence and is
 therefore compatible with the canonical quotient--class-group equivalences.
 -/
+
+
 
 open scoped NumberField
 

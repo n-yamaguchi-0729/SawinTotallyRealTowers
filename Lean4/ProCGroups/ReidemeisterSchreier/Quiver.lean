@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Combinatorics.Quiver.Arborescence
 import Mathlib.Combinatorics.Quiver.ConnectedComponent
 
-set_option autoImplicit false
-
 /-!
 # Reidemeister Schreier / Quiver
 

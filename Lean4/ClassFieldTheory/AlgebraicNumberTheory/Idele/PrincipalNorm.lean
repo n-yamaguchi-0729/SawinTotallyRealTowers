@@ -8,14 +8,14 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 import Mathlib.RingTheory.FractionalIdeal.Norm
 
-set_option autoImplicit false
-
 /-!
 # The product formula for principal ideles
 
 This file proves that the absolute idele norm is trivial on the diagonal
 copy of `Kˣ`, and hence descends to the idele class group.
 -/
+
+
 
 open scoped NumberField RestrictedProduct NNReal WithZero
 open NumberField IsDedekindDomain

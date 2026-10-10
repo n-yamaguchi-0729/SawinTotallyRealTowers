@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.AmbientBracketAction
 
-set_option autoImplicit false
-
 /-!
 # Ambient Lubin--Tate division groups
 
@@ -16,6 +14,8 @@ stable under all truncated brackets.  Units of `κ⟦T⟧` therefore act on it b
 actual additive automorphisms.  This is the version needed in the separable
 closure, where the nonzero division points live.
 -/
+
+
 
 noncomputable section
 

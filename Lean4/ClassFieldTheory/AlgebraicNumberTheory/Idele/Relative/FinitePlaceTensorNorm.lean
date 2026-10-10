@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorN
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
-set_option autoImplicit false
-
 /-!
 # Tensor norm images at actual finite places
 
@@ -26,6 +24,8 @@ the chosen open local norm subgroup from `LocalNormApproximation`.
 The finite component of every global relative-idele norm therefore lies
 in that subgroup, and its corresponding local quotient class is one.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

@@ -10,7 +10,6 @@ import ProCGroups.ProP.Zassenhaus.Functoriality
 import ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.InClassComparison
 import ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.InClassNaturality
 
-set_option autoImplicit false
 /-!
 # Fox--Leibniz compatibility for the completed mod-p operator
 

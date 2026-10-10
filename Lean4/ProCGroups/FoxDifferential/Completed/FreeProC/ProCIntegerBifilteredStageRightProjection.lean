@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageProjection
 import ProCGroups.FoxDifferential.Completed.FreeProC.QuotientKernelBasis
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — free pro-\(C\) — pro c integer bifiltered stage right projection
 

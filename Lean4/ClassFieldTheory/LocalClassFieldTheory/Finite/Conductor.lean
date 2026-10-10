@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Topologica
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 import Mathlib.FieldTheory.Galois.Abelian
 
-set_option autoImplicit false
-
 /-!
 # Conductors of finite abelian local extensions
 
@@ -22,6 +20,8 @@ The existence of this least exponent is not an extra hypothesis here.  It
 follows from openness of the norm subgroup of the actual finite extension and
 the principal-unit neighbourhood basis.
 -/
+
+
 
 noncomputable section
 

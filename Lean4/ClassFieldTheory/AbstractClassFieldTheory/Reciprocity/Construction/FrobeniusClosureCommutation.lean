@@ -6,7 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
 
-set_option autoImplicit false
+/-!
+# Frobenius-closure commutation
+
+This module promotes commutation with a Frobenius generator to its closed
+procyclic subgroup and derives the conjugation identities for the associated
+fixed field.
+-/
 
 universe u
 
@@ -15,13 +21,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Frobenius-closure commutation
 
-This module promotes commutation with a Frobenius generator to its closed
-procyclic subgroup and derives the conjugation identities for the associated
-fixed field.
--/
 
 noncomputable section
 

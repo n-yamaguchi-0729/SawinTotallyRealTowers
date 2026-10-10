@@ -7,15 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.CrossLocalRestriction
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.NormRestriction
 
-set_option autoImplicit false
-
 /-!
 # Norm--restriction for finite-place Artin homomorphisms
 
-This module proves norm--restriction naturality for finite-place Artin maps in an actual square of number fields and their chosen completed local extensions.
+This module proves norm--restriction naturality for finite-place Artin maps in an actual square of
+number fields and their chosen completed local extensions.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField
+
+
+open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

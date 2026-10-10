@@ -8,8 +8,6 @@ import ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Map
 import ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Maps
 import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / All Finite Functoriality / Within a Class Naturality
 

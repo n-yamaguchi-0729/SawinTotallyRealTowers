@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RingTheory.AdjoinRoot
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 
-set_option autoImplicit false
-
 /-!
 # Polynomial Chinese remainder equivalence
 

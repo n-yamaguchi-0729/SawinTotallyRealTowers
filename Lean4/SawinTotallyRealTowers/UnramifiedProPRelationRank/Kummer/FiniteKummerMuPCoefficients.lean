@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.FiniteKummerCoefficientH2
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTrivialization
 
-set_option autoImplicit false
 /-!
 # Coherence of finite Kummer and absolute roots-of-unity coefficients
 

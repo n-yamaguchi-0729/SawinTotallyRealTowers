@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
-set_option autoImplicit false
-
 /-!
 # Finite quotient objects for pro-\(C\) inverse limits
 

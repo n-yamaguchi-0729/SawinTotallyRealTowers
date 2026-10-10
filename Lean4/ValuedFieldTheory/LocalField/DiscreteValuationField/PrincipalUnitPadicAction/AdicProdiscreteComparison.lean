@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitTopology
 
-set_option autoImplicit false
-
 /-!
 # Adic and prodiscrete principal-unit models
 
 The adic topology on first principal units agrees with the prodiscrete topology carried
 by the inverse limit of finite quotient coordinates.
 -/
+
+
 
 noncomputable section
 

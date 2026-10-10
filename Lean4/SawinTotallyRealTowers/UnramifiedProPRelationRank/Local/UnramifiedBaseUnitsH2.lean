@@ -14,8 +14,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 
-set_option autoImplicit false
-
 /-!
 # Vanishing of base-unit H² in an unramified local tower
 

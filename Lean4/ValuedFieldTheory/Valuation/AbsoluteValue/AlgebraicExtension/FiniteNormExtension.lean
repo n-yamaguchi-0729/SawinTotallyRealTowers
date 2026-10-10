@@ -11,8 +11,6 @@ import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
 import Mathlib.RingTheory.Norm.Transitivity
 import Mathlib.RingTheory.Complex
 
-set_option autoImplicit false
-
 /-!
 # Finite-extension norm formula for complete valuations
 
@@ -234,7 +232,8 @@ private theorem finiteComplexAlgEquivComplexUniqueRpowExtension
       finiteStandardComplexAbsoluteValue finiteStandardComplexAbsoluteValue
       (fun z => rfl) (e x)).symm
 
-/-- the finite-degree norm construction, archimedean standard branch over `ℝ | ℝ`: the construction's
+/-- the finite-degree norm construction, archimedean standard branch over `ℝ | ℝ`: the
+construction's
 finite norm formula in degree one is the usual real absolute value. -/
 private theorem finiteNormExtension_real_self_normFormulaValue_eq_standard
     (x : ℝ) :
@@ -244,7 +243,8 @@ private theorem finiteNormExtension_real_self_normFormulaValue_eq_standard
   rw [finiteExtensionNormFormulaValue, Module.finrank_self ℝ]
   simp
 
-/-- the finite-degree norm construction, archimedean standard branch over `ℂ | ℂ`: the construction's
+/-- the finite-degree norm construction, archimedean standard branch over `ℂ | ℂ`: the
+construction's
 finite norm formula in degree one is the usual complex absolute value. -/
 private theorem finiteNormExtension_complex_self_normFormulaValue_eq_standard
     (z : ℂ) :
@@ -254,7 +254,8 @@ private theorem finiteNormExtension_complex_self_normFormulaValue_eq_standard
   rw [finiteExtensionNormFormulaValue, Module.finrank_self ℂ]
   simp
 
-/-- the finite-degree norm construction, archimedean standard branch over `ℂ | ℝ`: the construction's
+/-- the finite-degree norm construction, archimedean standard branch over `ℂ | ℝ`: the
+construction's
 finite norm formula `|N_{ℂ/ℝ}(z)|^(1/2)` is the usual complex absolute value. -/
 private theorem finiteNormExtension_real_complex_normFormulaValue_eq_standard
     (z : ℂ) :
@@ -336,7 +337,8 @@ private theorem finiteNormExtension_real_complex_normFormulaValue_eq_rpow
   rw [finiteNormExtension_finite_normFormulaValue_rpow]
   rw [finiteNormExtension_real_complex_normFormulaValue_eq_standard]
 
-/-- The nontrivial-valuation convention excludes the trivial valuation in the nontrivial-valuation convention; for the
+/-- The nontrivial-valuation convention excludes the trivial valuation in the nontrivial-valuation
+convention; for the
 nonarchimedean spectral branch this supplies the corresponding mathlib
 `NontriviallyNormedField` instance on `WithAbs v`. -/
 @[reducible] private def finiteWithAbsNontriviallyNormedField

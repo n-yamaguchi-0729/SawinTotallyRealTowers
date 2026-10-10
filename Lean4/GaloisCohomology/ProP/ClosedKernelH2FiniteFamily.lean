@@ -25,8 +25,6 @@ import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Independent characters of a closed kernel and degree-two cohomology
 

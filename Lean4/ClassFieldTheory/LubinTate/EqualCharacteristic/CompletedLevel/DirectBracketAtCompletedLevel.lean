@@ -8,20 +8,22 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubin
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaAtCompletedLevel
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
 
-set_option autoImplicit false
-
 /-!
-# The completed theta-intertwining theorem: the formal standard bracket at a completed division point
+# The completed theta-intertwining theorem: the formal standard bracket at a completed division
+point
 
 The first theta identity uses the independently constructed formal bracket,
 whereas the completed Frobenius lift acts through the finite bracket from
-the finite Lubin–Tate bracket construction.  This file proves that the two actions agree on the chosen primitive
+the finite Lubin–Tate bracket construction.  This file proves that the two actions agree on the
+chosen primitive
 division point.  The proof analytically evaluates the recursive identity
 
 `[a](x) = a₀x + [tail(a)](e_T(x))`
 
 and follows the source torsion orbit until the finite bracket terminates.
 -/
+
+
 
 noncomputable section
 

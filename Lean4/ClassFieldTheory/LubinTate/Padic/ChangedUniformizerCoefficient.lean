@@ -10,8 +10,6 @@ import Mathlib.RingTheory.WittVector.Complete
 import Mathlib.RingTheory.WittVector.FrobeniusFractionField
 import ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint
 
-set_option autoImplicit false
-
 /-!
 # The coefficient source for the p-adic changed-uniformizer intertwiner
 
@@ -29,6 +27,8 @@ No second p-adic integer ring or Frobenius is introduced here: the base map
 uses mathlib's equivalence `W(ZMod p) ≃+* ℤ_[p]`, and `φ` is
 `WittVector.frobenius`.
 -/
+
+
 
 noncomputable section
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicUnitsH2PeriodicEvaluation
 
-set_option autoImplicit false
 /-!
 # Base-unit carry classes in finite cyclic unit cohomology
 
@@ -29,7 +28,7 @@ noncomputable section
 fixed point for an arbitrary Galois automorphism. -/
 noncomputable def finiteCyclicBaseUnitFixed
     (K L : Type) [Field K] [Field L] [Algebra K L]
-    (g : Gal(L / K)) (a : Kˣ) :
+    (g : Gal(L/K)) (a : Kˣ) :
     LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id) := by
   refine ⟨Additive.ofMul
@@ -48,7 +47,7 @@ is the identity. -/
 theorem finiteCyclicGeneratorFixedBaseUnit_baseUnitFixed
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g)
     (a : Kˣ) :
     finiteCyclicGeneratorFixedBaseUnit K L g hg
@@ -68,7 +67,7 @@ norm class of that base unit. -/
 theorem finiteCyclicUnitsH2IsoNormQuotient_carry_baseUnit
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g)
     (a : Kˣ) :
     letI := AlgEquiv.fintype K L

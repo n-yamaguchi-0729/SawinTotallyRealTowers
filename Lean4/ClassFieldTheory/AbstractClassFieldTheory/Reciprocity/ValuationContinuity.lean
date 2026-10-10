@@ -8,15 +8,16 @@ import ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
 
-set_option autoImplicit false
-
 /-!
 # Continuity of the normalized valuation
 
 The proof uses the neighbourhoods `f ℤ̂`.  We construct the
 required unramified extension of degree `f` as the fixed field of the kernel
-of reduction modulo `f` after the normalized degree map `d_K`.  The norm--valuation formula then sends its norm subgroup into the prescribed neighbourhood.
+of reduction modulo `f` after the normalized degree map `d_K`.  The norm--valuation formula then
+sends its norm subgroup into the prescribed neighbourhood.
 -/
+
+
 
 noncomputable section
 
@@ -265,7 +266,8 @@ theorem finiteUnramifiedExtension_degree (D : DegreeData G)
   let : NeZero f := ⟨hf.ne'⟩
   let : Fintype (ZMod f) := ZMod.fintype f
   let q := (unramifiedDegreeHom D K f hf).toMonoidHom
-  rw [← (finiteUnramifiedExtension D K f hf).toFiniteAbstractExtension.extensionSubgroup_index_eq_degree]
+  rw [← (finiteUnramifiedExtension D K f
+    hf).toFiniteAbstractExtension.extensionSubgroup_index_eq_degree]
   change (extensionSubgroup K.field
       (D.finiteUnramifiedExtension K f hf).field
       (D.finiteUnramifiedExtension K f hf).below).index = f

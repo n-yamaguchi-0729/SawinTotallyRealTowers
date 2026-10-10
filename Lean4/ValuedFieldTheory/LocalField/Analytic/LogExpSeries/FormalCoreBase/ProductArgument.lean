@@ -8,14 +8,14 @@ import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.PowerSe
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Finset.Finsupp
 
-set_option autoImplicit false
-
 /-!
 # The two-variable formal logarithm product argument
 
 This module defines `X + Y + XY`, its logarithmic substitution, and the
 support description needed for the formal product formula.
 -/
+
+
 
 noncomputable section
 

@@ -16,8 +16,6 @@ import ProCGroups.Topologies.QuotientMaps
 import ProCGroups.Profinite.OpenSubgroups
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # Absolute restriction and finite arithmetic stages
 
@@ -36,7 +34,8 @@ namespace ClassFieldTower.Sawin
 open ClassFieldTower.Martinet.Shafarevich ClassFieldTower.Cohomology ProCGroups
 
 private def quotientToDiscreteMap
-    {G H : Type} [Group G] [TopologicalSpace G] [SeparatelyContinuousMul G] [Group H] [TopologicalSpace H]
+    {G H : Type} [Group G] [TopologicalSpace G] [SeparatelyContinuousMul G]
+    [Group H] [TopologicalSpace H]
     (U : OpenNormalSubgroup G) (f : (G ⧸ (U : Subgroup G)) →* H) : G →ₜ* H := by
   let : DiscreteTopology (G ⧸ (U : Subgroup G)) :=
     QuotientGroup.discreteTopology U.toOpenSubgroup.isOpen

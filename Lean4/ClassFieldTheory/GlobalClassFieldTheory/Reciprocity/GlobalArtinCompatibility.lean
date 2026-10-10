@@ -12,8 +12,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompa
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteLocalGlobalArtinCompatibility
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.TopologicalGlobalNormResidue
 
-set_option autoImplicit false
-
 /-!
 # Compatibility of the global Artin map with global reciprocity
 
@@ -34,7 +32,9 @@ it is the canonical surjective reciprocity homomorphism and has the
 genuine idele-class norm range as its kernel.
 -/
 
-open scoped NumberField Classical BigOperators IsMulCommutative
+
+
+open scoped NumberField BigOperators IsMulCommutative
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 

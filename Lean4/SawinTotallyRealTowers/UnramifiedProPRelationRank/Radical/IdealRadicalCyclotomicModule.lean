@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
 
-set_option autoImplicit false
 /-!
 # The cyclotomic ideal radical as a `ZMod p`-module
 

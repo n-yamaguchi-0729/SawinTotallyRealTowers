@@ -8,8 +8,6 @@ import GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.GroupTheory.Torsion
 
-set_option autoImplicit false
-
 /-!
 # The torsion fixed field in the rational cyclotomic extension
 
@@ -18,6 +16,8 @@ of the torsion subgroup in `Gal(ℚ(μ∞)/ℚ)`.  This file defines that actual
 and fixed field.  No copy of the Galois group is replaced definitionally by
 `ℤ̂ˣ`; the comparison with profinite units is a later theorem.
 -/
+
+
 
 noncomputable section
 

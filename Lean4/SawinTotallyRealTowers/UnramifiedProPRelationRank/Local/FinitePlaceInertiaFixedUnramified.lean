@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalFiniteInerti
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
 
-set_option autoImplicit false
 /-!
 # Finite Galois fields fixed by absolute inertia are unramified
 

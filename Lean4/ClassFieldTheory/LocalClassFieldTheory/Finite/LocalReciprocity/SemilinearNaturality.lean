@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.NormRestriction
 
-set_option autoImplicit false
-
 /-!
 # Semilinear naturality of finite local reciprocity
 
@@ -16,6 +14,8 @@ and the finite abelian extension are replaced by compatible field
 equivalences.  The proof realizes the base equivalence as a degree-one
 vertical extension and applies the genuine norm--restriction theorem.
 -/
+
+
 
 noncomputable section
 
@@ -130,7 +130,7 @@ theorem SemilinearBaseCompatible.conjugation_apply
     [Algebra K L] [Algebra K' L']
     {eK : K ≃+* K'} {eL : L ≃+* L'}
     (h : SemilinearBaseCompatible K K' L L' eK eL)
-    (sigma : Gal(L / K)) (x : L) :
+    (sigma : Gal(L/K)) (x : L) :
     semilinearGaloisGroupCongr
         K K' L L' eK eL h.commutes sigma (eL x) =
       eL (sigma x) :=

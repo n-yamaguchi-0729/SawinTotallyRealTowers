@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywher
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.BinaryUnramifiedCompositum
 import Mathlib.FieldTheory.Galois.GaloisClosure
 
-set_option autoImplicit false
 /-!
 # Finite everywhere-unramified pro-p composita
 

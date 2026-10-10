@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywher
 import ProCGroups.ProP.GeneratorRank
 import ProCGroups.ProP.PowerCommutatorUniversal
 
-set_option autoImplicit false
 /-!
 # The Frattini quotient and the elementary Hilbert class field
 
@@ -100,12 +99,11 @@ local instance : IsAbelianGalois F (powerCommutatorFixedField F p) where
 
 -- The local group instance must be reducible so that quotient operations agree
 -- definitionally with those used by `normalAutEquivQuotient`.
-set_option linter.style.haveILetI false in
 private theorem powerCommutatorFixedField_galois_pow_eq_one
-    (σ : Gal((powerCommutatorFixedField F p) / F)) : σ ^ p = 1 := by
+    (σ : Gal((powerCommutatorFixedField F p)/F)) : σ ^ p = 1 := by
   let e := InfiniteGalois.normalAutEquivQuotient
     (powerCommutatorClosed F p)
-  letI : CommGroup (powerCommutatorQuotient p Gal((M F p) / F)) :=
+  let : CommGroup (powerCommutatorQuotient p Gal((M F p) / F)) :=
     { (inferInstance : Group (powerCommutatorQuotient p Gal((M F p) / F))) with
       mul_comm := powerCommutatorQuotient_mul_comm p Gal((M F p) / F) }
   apply e.symm.injective
@@ -125,7 +123,7 @@ local instance : IsAbelianGalois F (liftedPowerCommutatorFixedField F p) :=
       (powerCommutatorFixedField F p)).symm.toAlgHom
 
 private theorem liftedPowerCommutatorFixedField_galois_pow_eq_one
-    (σ : Gal((liftedPowerCommutatorFixedField F p) / F)) : σ ^ p = 1 := by
+    (σ : Gal((liftedPowerCommutatorFixedField F p)/F)) : σ ^ p = 1 := by
   let e : Gal((powerCommutatorFixedField F p) / F) ≃*
       Gal((liftedPowerCommutatorFixedField F p) / F) :=
     AlgEquiv.autCongr

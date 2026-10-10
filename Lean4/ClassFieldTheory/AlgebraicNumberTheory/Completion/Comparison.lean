@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 
-set_option autoImplicit false
-
 /-!
 # Comparing finite-place completion models
 
@@ -23,7 +21,9 @@ absolute-value completion and mathlib's concrete adic completion gives the
 local factor comparison used in the adelic restricted-product bridge.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

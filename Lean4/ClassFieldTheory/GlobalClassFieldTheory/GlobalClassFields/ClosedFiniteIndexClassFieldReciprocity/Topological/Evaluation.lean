@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationCore
 
-set_option autoImplicit false
-
 /-!
 # Evaluation of continuous closed finite-index reciprocity
 
@@ -15,7 +13,9 @@ The public theorem uses the named reducible value provider and specializes
 the generic transported-reciprocity calculation.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 
@@ -33,7 +33,7 @@ theorem
     (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
     [H.FiniteIndex]
     (σ : Gal((closedFiniteIndexClassField
-      (K := K) H hclosed) / K)) :
+      (K := K) H hclosed)/K)) :
     closedFiniteIndexClassFieldGaloisContinuousEquivNormQuotient
         (K := K) H hclosed σ =
       closedFiniteIndexClassFieldReciprocityValue

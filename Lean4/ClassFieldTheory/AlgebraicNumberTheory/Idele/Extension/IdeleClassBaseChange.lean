@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 import ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
 
-set_option autoImplicit false
-
 /-!
 # Relative and ordinary idele classes
 
@@ -19,6 +17,8 @@ presentation.  This file descends that equivalence through principal
 ideles and identifies relative class inclusion with the concrete
 extension map on ordinary idele classes.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

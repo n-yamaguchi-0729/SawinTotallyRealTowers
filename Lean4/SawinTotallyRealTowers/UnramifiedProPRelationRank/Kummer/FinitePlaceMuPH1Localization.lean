@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKumme
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
 
-set_option autoImplicit false
 /-!
 # Finite-place restriction of natural `mu_p` Kummer classes
 

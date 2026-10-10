@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.AddCommGroup
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — system — completion map
 

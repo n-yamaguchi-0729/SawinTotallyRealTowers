@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Infinite
 import GaloisCohomology.Kummer.Concrete.RootCharacters
 
-set_option autoImplicit false
-
 /-!
 # Ambient radical quotients
 
@@ -21,6 +19,8 @@ The denominator is the subgroup of elements of `D.carrier` which are `n`-th
 powers in the ambient group `Kˣ`, in the ambient group, rather than the generally
 smaller subgroup of `n`-th powers of elements of `D.carrier`.
 -/
+
+
 
 namespace KummerTheory
 

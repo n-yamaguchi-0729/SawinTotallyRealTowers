@@ -13,8 +13,6 @@ import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
 
-set_option autoImplicit false
-
 /-!
 # Discriminants of squarefree quadratic number fields
 

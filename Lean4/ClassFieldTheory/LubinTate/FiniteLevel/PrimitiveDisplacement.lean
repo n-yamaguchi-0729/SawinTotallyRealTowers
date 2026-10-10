@@ -10,8 +10,6 @@ import ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
 import Mathlib.RingTheory.MvPowerSeries.Inverse
 import Mathlib.RingTheory.PowerSeries.Inverse
 
-set_option autoImplicit false
-
 /-!
 # Displacements of primitive Lubin--Tate points
 
@@ -25,6 +23,8 @@ endomorphism is `X` times an invertible power series.  Likewise
 two-variable power series.  Consequently neither operation changes the
 valuation of the topologically nilpotent input that it multiplies.
 -/
+
+
 
 noncomputable section
 
@@ -877,7 +877,7 @@ theorem
 /-- The power-interval form of the finite-parameter displacement criterion,
 stated using its chosen representative. -/
 theorem
-    standardLubinTateUnitParameterToGal_displacement_addVal_ge_iff_chosenRepresentative_mem_of_pow_interval
+    standardLubinTateUnitParameterToGal_displacement_addVal_ge_iff_representative_mem_pow_interval
     (F : LocalField.{u, v} K) {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ) (a : standardLubinTateUnitParameter F n) (k r : ℕ)
@@ -912,7 +912,7 @@ displacement formula is `q^k`. -/
 theorem standardLubinTateGal_displacement_addVal_le_of_ne
     (F : LocalField.{u, v} K) {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
-    (n : ℕ) (σ : Gal(standardLubinTateLevelField hπ n / K))
+    (n : ℕ) (σ : Gal(standardLubinTateLevelField hπ n/K))
     (hne :
       valuationSubringAutOfUniqueExtension
           (standardLubinTateLevelCompleteDVF_hasUniqueDVFValuationExtension

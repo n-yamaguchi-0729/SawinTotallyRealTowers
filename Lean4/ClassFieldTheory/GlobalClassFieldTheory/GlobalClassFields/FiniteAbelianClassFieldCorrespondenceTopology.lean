@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianCl
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 
-set_option autoImplicit false
-
 /-!
 # Ordinary topology in the finite abelian class-field correspondence
 
@@ -25,7 +23,9 @@ subgroup, together with its norm-range and degree-index theorems, is provided
 by `ClosedFiniteIndexClassField`.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

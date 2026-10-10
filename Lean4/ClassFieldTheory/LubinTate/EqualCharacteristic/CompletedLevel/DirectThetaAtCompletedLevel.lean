@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaIteration
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ThetaLocalInverse
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: direct theta at the standard completed level
 
@@ -22,6 +20,8 @@ direct theta series at `lambda`, iterates
 and proves that `theta(lambda)` is primitive target `uT`-torsion at the
 same division level.
 -/
+
+
 
 noncomputable section
 
@@ -142,7 +142,7 @@ theorem equalCharacteristicDirectThetaSourceUniformizerInteger_coe
       Valued.integer (equalCharacteristicCompletedLevelField F n)) :
         equalCharacteristicCompletedLevelField F n) =
       equalCharacteristicCompletedLevelUniformizer F n := by
-  simp [equalCharacteristicCompletedLevelUniformizerInteger,
+  simp only [equalCharacteristicCompletedLevelUniformizerInteger,
     equalCharacteristicCompletedLevelCoefficientHom,
     equalCharacteristicCompletedBaseIntegerToLevel,
     equalCharacteristicCompletedLevelUniformizer,

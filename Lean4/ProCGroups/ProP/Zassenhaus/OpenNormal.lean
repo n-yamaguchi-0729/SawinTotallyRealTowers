@@ -13,8 +13,6 @@ import ProCGroups.Topologies.ContinuousMonoidHom
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Constructions
 
-set_option autoImplicit false
-
 /-!
 # Deep finite open quotients and lifts
 

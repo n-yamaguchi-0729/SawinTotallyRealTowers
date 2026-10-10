@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentModel
 import Mathlib.Algebra.CharP.Algebra
 import Mathlib.Algebra.CharP.Frobenius
 
-set_option autoImplicit false
-
 /-!
 # The equal-characteristic Lubin–Tate action: the equal-characteristic Lubin--Tate endomorphism
 
@@ -27,6 +25,8 @@ the finite bracket
 Thus the unit action used below is the genuine Lubin--Tate action, not
 ordinary scalar multiplication in the ambient field.
 -/
+
+
 
 noncomputable section
 
@@ -85,6 +85,9 @@ noncomputable def equalCharacteristicLubinTatePiEnd
       mul_add]
     abel
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
+) in
 /-- The Lubin–Tate `π`-endomorphism is Frobenius plus uniformizer multiplication. -/
 @[simp]
 theorem equalCharacteristicLubinTatePiEnd_apply
@@ -99,7 +102,7 @@ theorem equalCharacteristicLubinTatePiEnd_apply
         (CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F) x +
       equalCharacteristicLaurentUniformizer F * x = _
   rw [iterateFrobenius_def]
-  rw [CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F]
+  rw [residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F]
 
 /-- Multiplication by a residue-field coefficient, regarded as an additive
 endomorphism of the Laurent-series field. -/

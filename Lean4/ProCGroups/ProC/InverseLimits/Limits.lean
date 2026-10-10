@@ -9,8 +9,6 @@ import ProCGroups.ProC.InverseLimits.FiniteQuotients
 import ProCGroups.ProC.OpenNormalSubgroups.FilteredFamilies
 import ProCGroups.Topologies.ContinuousMulEquiv
 
-set_option autoImplicit false
-
 /-!
 # Inverse limits and closed-normal quotients
 

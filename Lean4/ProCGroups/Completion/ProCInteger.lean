@@ -8,8 +8,6 @@ import Mathlib.Topology.Instances.ZMod
 import ProCGroups.ProC.InverseLimits.Limits
 import ProCGroups.ProC.InverseLimits.Predicates
 
-set_option autoImplicit false
-
 /-!
 # `ProCGroups.Completion.ProCInteger`
 

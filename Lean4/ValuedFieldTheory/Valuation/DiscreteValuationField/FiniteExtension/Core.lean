@@ -7,8 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `ValuationTheory.DiscreteValuationField.FiniteExtension` Lean module. -/
+/-!
+# Uniqueness criteria for extensions of Henselian discrete valuations
+
+The integral closure of the base valuation ring supplies the valuation subring
+used to compare extensions. Local maximal-ideal centers and subsingleton fibers
+lead to uniqueness criteria, including criteria obtained from Henselian quotient
+maps, adic completeness, and finite-separable extensions.
+-/
 
 namespace ValuationTheory
 
@@ -38,7 +44,7 @@ def integralClosureValuationSubringIntegerMapOfMemOrInv
         (L := L) base.toDVF.valuation hval where
   toFun a :=
     ⟨algebraMap K L (a : K),
-      (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_pullback
+      (Valuation.integralClosureValuationSubringOfMemOrInv_pullback
         (L := L) base.toDVF.valuation hval (a : K)).2 a.2⟩
   map_zero' := by ext; simp
   map_one' := by ext; simp
@@ -97,7 +103,7 @@ theorem idealOfLE_comap_integralClosureValuationSubringIntegerMap_eq_maximalIdea
       ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
         (L := L) base.toDVF.valuation hval
     let hvL_le : B ≤ vL.valuationSubring :=
-      ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+      Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
         (L := L) base.toDVF.valuation vL hval
     (ValuationSubring.idealOfLE B vL.valuationSubring hvL_le).comap
         (integralClosureValuationSubringIntegerMapOfMemOrInv
@@ -107,7 +113,7 @@ theorem idealOfLE_comap_integralClosureValuationSubringIntegerMap_eq_maximalIdea
     ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
       (L := L) base.toDVF.valuation hval
   let hvL_le : B ≤ vL.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+    Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
       (L := L) base.toDVF.valuation vL hval
   let i : base.valuationSubring →+* B :=
     integralClosureValuationSubringIntegerMapOfMemOrInv
@@ -159,7 +165,7 @@ theorem prime_eq_maximalIdeal_of_comap_integralClosureValuationSubringIntegerMap
     integralClosureValuationSubringIntegerMapOfMemOrInv
       (K := K) (L := L) base hval
   let : base.toDVF.valuation.HasExtension B.valuation :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_hasExtension
+    Valuation.integralClosureValuationSubringOfMemOrInv_hasExtension
       (L := L) base.toDVF.valuation hval
   let : IsFractionRing base.valuationSubring K :=
     base.toDVF.valuationSubring_isFractionRing
@@ -172,7 +178,7 @@ theorem prime_eq_maximalIdeal_of_comap_integralClosureValuationSubringIntegerMap
       intro a
       rfl)
   let : IsIntegralClosure B base.valuationSubring L :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_isIntegralClosure
+    Valuation.integralClosureValuationSubringOfMemOrInv_isIntegralClosure
       (L := L) base.toDVF.valuation hval
   let : IsDedekindDomain B :=
     IsIntegralClosure.isDedekindDomain base.valuationSubring K L B
@@ -201,7 +207,6 @@ omit [FiniteDimensional K L] in
 /-- Center-equality form of Henselian-DVF valuation uniqueness after the actual
 integral closure has been turned into a valuation subring. -/
 theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_forall_center_eq_maximalIdeal
-
     (hval :
       ∀ z : L,
         z ∈ (integralClosure base.valuationSubring L).toSubring ∨
@@ -211,41 +216,41 @@ theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_forall_cent
         (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
           (L := L) base.toDVF.valuation hval)
         target.toDVF.valuation.valuationSubring
-        (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+        (Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
           (L := L) base.toDVF.valuation target.toDVF.valuation hval) =
         IsLocalRing.maximalIdeal
-          (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
+          (Valuation.integralClosureValuationSubringOfMemOrInv
             (L := L) base.toDVF.valuation hval))
     (hcenter :
       ∀ {Gamma' : Type y} [LinearOrderedCommGroupWithZero Gamma']
         (v' : _root_.Valuation L Gamma') [base.toDVF.valuation.HasExtension v'],
           ValuationSubring.idealOfLE
-            (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
+            (Valuation.integralClosureValuationSubringOfMemOrInv
               (L := L) base.toDVF.valuation hval)
             v'.valuationSubring
-            (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+            (Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
               (L := L) base.toDVF.valuation v' hval) =
             IsLocalRing.maximalIdeal
-              (ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
+              (Valuation.integralClosureValuationSubringOfMemOrInv
                 (L := L) base.toDVF.valuation hval)) :
     HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target := by
   let B :=
     ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
       (L := L) base.toDVF.valuation hval
   have htarget_le : B ≤ target.toDVF.valuation.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+    Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
       (L := L) base.toDVF.valuation target.toDVF.valuation hval
   have htarget_eq : target.toDVF.valuation.valuationSubring = B :=
-    ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_eq_of_le_of_idealOfLE_eq_maximalIdeal
+    Valuation.valuationSubring_eq_of_le_of_idealOfLE_eq_maximalIdeal
       B target.toDVF.valuation.valuationSubring htarget_le
       (by simpa [B, htarget_le] using htargetCenter)
   intro Gamma' _ v' hExt
   let : base.toDVF.valuation.HasExtension v' := hExt
   have hv_le : B ≤ v'.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+    Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
       (L := L) base.toDVF.valuation v' hval
   have hv_eq : v'.valuationSubring = B :=
-    ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_eq_of_le_of_idealOfLE_eq_maximalIdeal
+    Valuation.valuationSubring_eq_of_le_of_idealOfLE_eq_maximalIdeal
       B v'.valuationSubring hv_le
       (by simpa [B, hv_le] using (@hcenter Gamma' inferInstance v' hExt))
   have hSubring : target.toDVF.valuation.valuationSubring = v'.valuationSubring :=
@@ -255,7 +260,6 @@ theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_forall_cent
 omit [FiniteDimensional K L] in
 /-- Prime-uniqueness form of Henselian-DVF valuation uniqueness. -/
 theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_unique_primes_over_base_maximal
-
     (hval :
       ∀ z : L,
         z ∈ (integralClosure base.valuationSubring L).toSubring ∨
@@ -281,7 +285,7 @@ theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_unique_prim
       (K := K) (L := L) (base := base) (target := target)  hval ?_ ?_ :
         HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target)
   · let htarget_le : B ≤ target.toDVF.valuation.valuationSubring :=
-      ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+      Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
         (L := L) base.toDVF.valuation target.toDVF.valuation hval
     exact hunique
       (ValuationSubring.idealOfLE B target.toDVF.valuation.valuationSubring htarget_le)
@@ -293,7 +297,7 @@ theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_unique_prim
   · intro Gamma' _ v' hExt
     let : base.toDVF.valuation.HasExtension v' := hExt
     let hv_le : B ≤ v'.valuationSubring :=
-      ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
+      Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
         (L := L) base.toDVF.valuation v' hval
     exact hunique
       (ValuationSubring.idealOfLE B v'.valuationSubring hv_le)
@@ -306,14 +310,14 @@ theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_unique_prim
 /-- Finite-separable Henselian-DVF uniqueness once the actual integral closure
 has the valuative dichotomy. -/
 theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv
-
     [Algebra.IsSeparable K L]
     (hval :
       ∀ z : L,
         z ∈ (integralClosure base.valuationSubring L).toSubring ∨
           z⁻¹ ∈ (integralClosure base.valuationSubring L).toSubring) :
     HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target :=
-  (hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_unique_primes_over_base_maximal base target)
+  (hasUniqueValuationExtension_of_integralClosure_mem_or_inv_of_unique_primes_over_base_maximal base
+    target)
     hval
     (by
       let B :=
@@ -332,7 +336,6 @@ theorem hasUniqueValuationExtension_of_integralClosure_mem_or_inv
 /-- Finite-separable Henselian-DVF uniqueness once the actual integral closure
 is local. -/
 theorem hasUniqueValuationExtension_of_integralClosure_isLocalRing
-
     [Algebra.IsSeparable K L]
     [IsLocalRing (integralClosureIntegers base target)] :
     HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target :=
@@ -342,7 +345,6 @@ theorem hasUniqueValuationExtension_of_integralClosure_isLocalRing
 /-- Finite-separable Henselian-DVF uniqueness once the residue fiber over the
 base maximal ideal has at most one prime. -/
 theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_subsingleton
-
     [Algebra.IsSeparable K L]
     [Subsingleton
       (PrimeSpectrum (base.maximalIdeal.Fiber (integralClosureIntegers base target)))] :
@@ -357,7 +359,6 @@ theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_subsin
 /-- Finite-separable Henselian-DVF uniqueness from idempotent lifting in the
 residue fiber over the base maximal ideal. -/
 theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_idempotents_lift
-
     [Algebra.IsSeparable K L]
     (hlift :
       ∀ e : base.maximalIdeal.Fiber (integralClosureIntegers base target),
@@ -377,7 +378,6 @@ theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_idempo
 /-- Finite-separable Henselian-DVF uniqueness from the Henselian-kernel
 idempotent-lifting criterion for the residue-fiber `includeRight` map. -/
 theorem IntegralClosureFiber.unique_of_includeRight_surjective_henselianRing_ker
-
     [Algebra.IsSeparable K L]
     (hsurj :
       Function.Surjective
@@ -394,7 +394,8 @@ theorem IntegralClosureFiber.unique_of_includeRight_surjective_henselianRing_ker
     HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target := by
   let : Subsingleton
       (PrimeSpectrum (base.maximalIdeal.Fiber (integralClosureIntegers base target))) :=
-    (integralClosure_base_maximal_fiber_subsingleton_of_includeRight_surjective_henselianRing_ker base target)
+    (integralClosure_base_maximal_fiber_subsingleton_of_includeRight_surjective_henselianRing_ker
+      base target)
       hsurj
   exact
     (hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_subsingleton
@@ -404,8 +405,8 @@ theorem IntegralClosureFiber.unique_of_includeRight_surjective_henselianRing_ker
 /-- Finite-separable Henselian-DVF uniqueness from the Henselian-kernel
 criterion for the residue-fiber `includeRight` map.  Surjectivity of
 `includeRight` is supplied by the local base valuation ring. -/
-theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_includeRight_henselianRing_ker
-
+theorem
+  hasUniqueValuationExtension_of_integralClosure_base_maximal_fiber_includeRight_henselianRing_ker
     [Algebra.IsSeparable K L]
     [HenselianRing (integralClosureIntegers base target)
       (RingHom.ker
@@ -428,7 +429,6 @@ omit [base.toDVF.valuation.HasExtension target.toDVF.valuation] in
 maximal-ideal topology, then the actual integral closure is Henselian along the
 ideal generated by the base maximal ideal. -/
 theorem integralClosure_base_maximal_map_henselianRing_of_isAdicComplete
-
     [Algebra.IsSeparable K L]
     [IsAdicComplete base.maximalIdeal base.valuationSubring] :
     HenselianRing (integralClosureIntegers base target)
@@ -439,7 +439,7 @@ theorem integralClosure_base_maximal_map_henselianRing_of_isAdicComplete
   let : Module.Finite base.valuationSubring (integralClosureIntegers base target) :=
     (moduleFinite_integralClosureIntegers base target)
   exact
-    ValuationTheory.DiscreteValuationField.henselianRing_map_algebraMap_of_moduleFinite_of_isAdicComplete
+    DiscreteValuationField.henselianRing_map_algebraMap_of_moduleFinite_of_isAdicComplete
       (R := base.valuationSubring) (S := (integralClosureIntegers base target))
       (I := base.maximalIdeal)
 
@@ -452,7 +452,6 @@ The separatedness needed upstairs is derived from the Henselian Jacobson
 condition and finite generation, so this does not assume base adic
 completeness. -/
 theorem integralClosure_base_maximal_map_henselianRing_of_base_isPrecomplete
-
     [Algebra.IsSeparable K L]
     [IsPrecomplete base.maximalIdeal base.valuationSubring] :
     HenselianRing (integralClosureIntegers base target)
@@ -472,7 +471,7 @@ theorem integralClosure_base_maximal_map_henselianRing_of_base_isPrecomplete
       toIsPrecomplete := inferInstance }
   let : IsAdicComplete base.maximalIdeal base.valuationSubring := hCompleteR
   exact
-    ValuationTheory.DiscreteValuationField.henselianRing_map_algebraMap_of_moduleFinite_of_isAdicComplete
+    DiscreteValuationField.henselianRing_map_algebraMap_of_moduleFinite_of_isAdicComplete
       (R := base.valuationSubring) (S := (integralClosureIntegers base target))
       (I := base.maximalIdeal)
 
@@ -486,7 +485,6 @@ ring in a finite separable extension, so the monogenic `AdjoinRoot` transfer
 route constructed in `Henselian.lean` gives the natural Henselian pair upstairs.
 -/
 theorem integralClosure_base_maximal_map_henselianRing_of_finiteTransfer
-
     [Algebra.IsSeparable K L]
     (hTransfer :
       ∀ {T : Type w} [CommRing T] [Algebra base.valuationSubring T]
@@ -507,7 +505,6 @@ theorem integralClosure_base_maximal_map_henselianRing_of_finiteTransfer
 /-- Finite-separable Henselian-DVF uniqueness from the natural Henselian-pair
 ideal in the actual integral closure. -/
 theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_map_henselianRing
-
     [Algebra.IsSeparable K L]
     [HenselianRing (integralClosureIntegers base target)
       (base.maximalIdeal.map
@@ -527,7 +524,6 @@ theorem hasUniqueValuationExtension_of_integralClosure_base_maximal_map_henselia
 the maximal-ideal topology.  This is the actual-integral-closure specialization
 of finite-algebra transfer in the complete-base case. -/
 theorem hasUniqueValuationExtension_of_finite_separable_of_base_isAdicComplete
-
     [Algebra.IsSeparable K L]
     [IsAdicComplete base.maximalIdeal base.valuationSubring] :
     HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target := by
@@ -545,7 +541,6 @@ precomplete for the maximal-ideal topology.  This is the CFT-facing
 specialization of finite-algebra transfer with separatedness derived from the
 Henselian Jacobson condition. -/
 theorem hasUniqueValuationExtension_of_finite_separable_of_base_isPrecomplete
-
     [Algebra.IsSeparable K L]
     [IsPrecomplete base.maximalIdeal base.valuationSubring] :
     HenselianDVF.HasUniqueValuationExtension.{u, v, w, x, y} base target := by
@@ -566,7 +561,6 @@ frontier: finite transfer gives the Henselian pair on the actual integral
 closure, and the existing residue-fiber/localness argument then gives
 uniqueness of the extended valuation. -/
 theorem hasUniqueValuationExtension_of_finite_separable_of_finiteTransfer
-
     [Algebra.IsSeparable K L]
     (hTransfer :
       ∀ {T : Type w} [CommRing T] [Algebra base.valuationSubring T]
@@ -621,17 +615,17 @@ theorem valuationSubring_eq_of_finite_separable_of_forall_isIntegral
     constructor
     · intro hz
       have hz_int : z ∈ integralClosure base.valuation.valuationSubring L :=
-        ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_mem_integralClosure_of_isIntegral
+        Valuation.valuationSubring_mem_integralClosure_of_isIntegral
           (L := L) base.valuation B.valuation ⟨z, hz⟩
       exact
-        ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
+        Valuation.integralClosure_mem_valuationSubring_of_hasExtension
           (L := L) base.valuation C.valuation ⟨z, hz_int⟩
     · intro hz
       have hz_int : z ∈ integralClosure base.valuation.valuationSubring L :=
-        ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_mem_integralClosure_of_isIntegral
+        Valuation.valuationSubring_mem_integralClosure_of_isIntegral
           (L := L) base.valuation C.valuation ⟨z, hz⟩
       exact
-        ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
+        Valuation.integralClosure_mem_valuationSubring_of_hasExtension
           (L := L) base.valuation B.valuation ⟨z, hz_int⟩
   simpa [ValuationSubring.valuationSubring_valuation] using hsub
 
@@ -692,7 +686,7 @@ theorem valuationSubring_eq_integralClosureValuationSubring_of_finite_separable
     ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
       (L := L) base.valuation hval
   let : _root_.Valuation.HasExtension base.valuation C.valuation :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_hasExtension
+    Valuation.integralClosureValuationSubringOfMemOrInv_hasExtension
       (L := L) base.valuation hval
   exact
     valuationSubring_eq_of_finite_separable_of_forall_isIntegral

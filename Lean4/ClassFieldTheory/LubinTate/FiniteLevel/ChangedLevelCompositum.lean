@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
 import ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
 
-set_option autoImplicit false
-
 /-!
 # A common valued field for original and changed Lubin--Tate levels
 
@@ -26,6 +24,8 @@ maximal-ideal membership.  Their normalized additive valuations scale by the
 corresponding ramification index; no equality between the two levels and no
 higher-unit hypothesis is used.
 -/
+
+
 
 noncomputable section
 
@@ -216,7 +216,8 @@ theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (u : F.valuationSubringˣ) (n : ℕ) :
-    ValuationTheory.DiscreteValuationField.ValuedExtension.HasUniqueValuationExtension.{u, v, u, 0, 0}
+    ValuationTheory.DiscreteValuationField.ValuedExtension.HasUniqueValuationExtension.{u, v, u,
+      0, 0}
       (base := F.toCompleteDVF)
       (target :=
         standardLubinTateChangedLevelCompositumCompleteDVF hπ u n) := by

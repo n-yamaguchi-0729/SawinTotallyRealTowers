@@ -9,8 +9,6 @@ import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
 import Mathlib.NumberTheory.Cyclotomic.CyclotomicCharacter
 import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 
-set_option autoImplicit false
-
 /-!
 # The cyclotomic character of the rational cyclotomic field
 
@@ -23,6 +21,8 @@ topological Chinese-remainder equivalence identifies that product with
 No abstract copy of either the Galois group or its expected target is
 introduced here.
 -/
+
+
 
 noncomputable section
 

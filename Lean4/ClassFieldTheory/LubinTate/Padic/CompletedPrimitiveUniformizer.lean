@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # The completed p-adic primitive point is a uniformizer
 
@@ -19,6 +17,8 @@ Eisenstein equation and the fundamental ramification identity to prove that
 the chosen completed primitive point has normalized additive valuation one.
 Consequently it is a genuine uniformizer of the completed level.
 -/
+
+
 
 noncomputable section
 

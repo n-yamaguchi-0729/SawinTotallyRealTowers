@@ -9,8 +9,6 @@ import GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PowerClassFiniteness
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 
-set_option autoImplicit false
-
 /-!
 # Norm group of the maximal Kummer extension
 
@@ -18,6 +16,8 @@ When the base field contains the `n`-th roots of unity, Kummer duality and
 finite local reciprocity identify the norm subgroup of the maximal
 exponent-`n` Kummer extension with the subgroup of `n`-th powers.
 -/
+
+
 
 noncomputable section
 

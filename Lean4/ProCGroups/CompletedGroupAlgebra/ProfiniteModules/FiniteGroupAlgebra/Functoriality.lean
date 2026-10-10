@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Data.ZMod.Basic
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Topology
 
-set_option autoImplicit false
-
 /-!
 # Functoriality of finite group algebras
 

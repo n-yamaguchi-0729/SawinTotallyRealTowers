@@ -5,8 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import GaloisCohomology.ProP.FiniteCyclicCarryCocycle
+import Mathlib.GroupTheory.OrderOfElement
 
-set_option autoImplicit false
 /-!
 # The cyclic carry identity for the bar--periodic comparison
 
@@ -92,10 +92,11 @@ theorem finiteCyclicPrefixNat_add (g : G) (i j : ℕ) :
         _ = finiteCyclicPrefixNat (R := R) g (i + (j + 1)) := by
             rw [Nat.add_assoc]
 
+omit [Fintype G] in
 theorem generator_pow_natCard (g : G) : g ^ Nat.card G = 1 := by
-  rw [Nat.card_eq_fintype_card]
-  exact pow_card_eq_one
+  exact pow_card_eq_one'
 
+omit [Fintype G] in
 theorem finiteCyclicPrefixNat_card_add (g : G) (m : ℕ) :
     finiteCyclicPrefixNat (R := R) g (Nat.card G + m) =
       finiteCyclicPrefixNat (R := R) g (Nat.card G) +

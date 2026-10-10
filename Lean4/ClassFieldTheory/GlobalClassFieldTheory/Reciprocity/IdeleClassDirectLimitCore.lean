@@ -9,14 +9,14 @@ import GaloisCohomology.Cyclic.NormKernelVanishing
 import Mathlib.Algebra.Colimit.DirectLimit
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # The rational absolute idele-class direct limit
 
 Finite Galois relative idele class groups over `ℚ`, their scalar-extension
 maps, and the induced absolute Galois representation.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

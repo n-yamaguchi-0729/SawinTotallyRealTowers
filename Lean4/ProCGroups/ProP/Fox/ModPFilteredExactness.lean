@@ -8,7 +8,6 @@ import ProCGroups.ProP.Fox.CompletedFiltration
 import ProCGroups.ProP.Fox.ModPDensityExactness
 import ProCGroups.ProP.Fox.ModPTailExactness
 
-set_option autoImplicit false
 /-!
 # Filtered packaging for the mod-p Fox complex
 

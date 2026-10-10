@@ -7,7 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.Order.GaloisConnection.Basic
 
-set_option autoImplicit false
+/-!
+# Fixed fields of intersections of closed Galois subgroups
+
+The fixed field of an intersection of closed subgroups is the compositum of their fixed
+fields. The comparison uses the infinite Galois correspondence.
+-/
 
 universe u v w
 namespace ClassFieldTower.Sawin

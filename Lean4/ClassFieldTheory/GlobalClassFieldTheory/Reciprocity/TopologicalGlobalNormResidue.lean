@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 import Mathlib.FieldTheory.KrullTopology
 import Mathlib.Topology.Algebra.Group.Quotient
 
-set_option autoImplicit false
-
 /-!
 # Topological global norm-residue reciprocity
 
@@ -24,6 +22,8 @@ This file also bundles the quotient map and the global norm-residue map
 as continuous homomorphisms, and proves that forgetting their topology
 recovers the previously constructed actual global norm-residue symbol.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 open NumberField
@@ -122,7 +122,7 @@ actual norm-residue equivalence, with no additional choice of an
 abstract group isomorphism. -/
 @[simp]
 theorem globalReciprocityContinuousMulEquiv_apply
-    (σ : Gal(L / K)) :
+    (σ : Gal(L/K)) :
     globalReciprocityContinuousMulEquiv K L σ =
       Additive.toMul
         ((globalNormResidueEquiv K L).symm

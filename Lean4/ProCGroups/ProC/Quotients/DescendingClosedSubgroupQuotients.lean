@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProC.Quotients.OpenSubgroupSections
 
-set_option autoImplicit false
-
 /-!
 # Quotients along descending closed-subgroup systems
 

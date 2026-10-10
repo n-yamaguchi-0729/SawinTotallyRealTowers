@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.TrivialZModP
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # Comparison of small and lifted trivial coefficients
 

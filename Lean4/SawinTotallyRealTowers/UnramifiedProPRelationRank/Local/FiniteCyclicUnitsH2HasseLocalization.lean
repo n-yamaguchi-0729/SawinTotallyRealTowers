@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicBaseUnitCarry
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.HasseNormPrinciple
 
-set_option autoImplicit false
 /-!
 # Hasse localization of finite-cyclic unit H²
 
@@ -61,7 +60,7 @@ theorem finiteCyclicNormQuotientEquivGlobalNormQuotient_normClass
 /-- Degree-two cyclic unit cohomology localized at all places through the
 concrete Hasse norm diagonal. -/
 noncomputable def finiteCyclicUnitsH2HasseLocalization
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 →+
       Additive
@@ -76,7 +75,7 @@ noncomputable def finiteCyclicUnitsH2HasseLocalization
 localization is represented by the corresponding principal idele. -/
 @[simp]
 theorem finiteCyclicUnitsH2HasseLocalization_carry_baseUnit
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g)
     (a : Kˣ) :
     letI := AlgEquiv.fintype K L
@@ -120,7 +119,7 @@ theorem finiteCyclicUnitsH2HasseLocalization_carry_baseUnit
 /-- Hasse's norm theorem makes the cyclic unit-H² localization map
 injective. -/
 theorem finiteCyclicUnitsH2HasseLocalization_injective
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     Function.Injective
       (finiteCyclicUnitsH2HasseLocalization K L g hg) := by

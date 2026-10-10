@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
 
-set_option autoImplicit false
 /-!
 # The selected separable valuation under a semilinear equivalence
 
@@ -37,7 +36,8 @@ theorem localSeparableValuationSubring_comap_semilinear
   let _ : (ValuativeRel.valuation K).HasExtension (ValuativeRel.valuation K') := hc
   let B := (localSeparableValuationSubring K').comap e.toRingHom
   let _ : (localCompleteDVF K).valuation.HasExtension B.valuation := by
-    apply ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+    apply (open _root_.ValuationTheory.DiscreteValuationField in
+      Valuation.hasExtension_valuation_of_valuationSubring_pullback)
     intro x
     change e (algebraMap K (SeparableClosure K) x) ∈ localSeparableValuationSubring K' ↔
       x ∈ (localCompleteDVF K).valuation.valuationSubring

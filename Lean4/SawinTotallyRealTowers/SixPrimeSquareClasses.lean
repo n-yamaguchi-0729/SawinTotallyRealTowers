@@ -11,8 +11,6 @@ import Mathlib.Data.Int.Basic
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Tactic.NormNum
 
-set_option autoImplicit false
-
 /-!
 # Five generators for the permitted rational square classes
 

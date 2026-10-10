@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleClassBaseChan
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.EmbeddingNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 
-set_option autoImplicit false
-
 /-!
 # Relative and ordinary idele-class norms
 
@@ -20,6 +18,8 @@ the same map after the canonical scalar-extension equivalence
 proved in relative coordinates be stated with the usual norm
 `N_{L/K} : C_L → C_K`.
 -/
+
+
 
 open scoped NumberField
 open NumberField

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.OpenIdeals
 import Mathlib.GroupTheory.FiniteAbelian.Basic
 
-set_option autoImplicit false
-
 /-!
 # Topology and universal maps for finite group algebras
 

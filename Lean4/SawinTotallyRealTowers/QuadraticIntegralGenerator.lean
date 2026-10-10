@@ -10,8 +10,6 @@ import Mathlib.Algebra.Polynomial.Monic
 import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 import Mathlib.Tactic.LinearCombination
 
-set_option autoImplicit false
-
 /-!
 # Integral elements expressed using a rational square root
 

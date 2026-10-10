@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationCore
 
-set_option autoImplicit false
-
 /-!
 # The finite Galois subextension attached to a number-field tower
 
@@ -16,6 +14,8 @@ This module realizes `L / K` as a finite Galois subextension inside the common
 rational separable closure.  It packages the relevant fixing subgroups,
 normality, and finite-index data for abstract reciprocity.
 -/
+
+
 
 open scoped NumberField
 open NumberField

@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlac
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1RamificationLocalization
 import ClassFieldTheory.KummerTheory.Concrete.SUnitKummerUnramified
 
-set_option autoImplicit false
 /-!
 # Tame unramifiedness of finite-place natural `mu_p` Kummer classes
 

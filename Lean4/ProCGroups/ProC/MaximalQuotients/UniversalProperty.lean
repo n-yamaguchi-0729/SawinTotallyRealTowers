@@ -10,8 +10,6 @@ import ProCGroups.ProC.Quotients.ClosedNormal
 import ProCGroups.ProC.Subgroups.Closed
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
-
 /-!
 # The pro-\(C\) residual quotient
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentModel
 import Mathlib.RingTheory.PowerSeries.PiTopology
 
-set_option autoImplicit false
-
 /-!
 # The local-field structure on a finite-coefficient Laurent field
 
@@ -20,6 +18,8 @@ ring, and obtains local compactness of `k((T))`.  This supplies the genuine
 `IsNonarchimedeanLocalField` input needed by the equal-characteristic
 Lubin--Tate construction.
 -/
+
+
 
 noncomputable section
 
@@ -201,7 +201,7 @@ noncomputable def laurentValuativeIntegerEquiv
     { toFun := fun x => ⟨x, by
         have hxrel : (x : L) ≤ᵥ (1 : L) :=
           wL.vle_iff_le.mpr x.property
-        show vL (x : L) ≤ 1
+        change vL (x : L) ≤ 1
         simpa only [map_one] using vL.vle_iff_le.mp hxrel⟩
       invFun := fun x => ⟨x, by
         have hxv : vL (x : L) ≤ 1 := x.property

@@ -10,7 +10,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnra
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # Linearity of the actual arithmetic-stage radical obstruction
 

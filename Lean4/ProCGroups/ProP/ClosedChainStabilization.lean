@@ -15,8 +15,6 @@ import Mathlib.Algebra.Group.Subgroup.Lattice
 import Mathlib.Data.Finset.Lattice.Fold
 import Mathlib.Topology.Algebra.Group.Basic
 
-set_option autoImplicit false
-
 /-!
 # Closed increasing subgroup chains in a finitely generated pro-p group
 

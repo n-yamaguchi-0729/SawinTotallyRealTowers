@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 import Mathlib.RingTheory.IsTensorProduct
 
-set_option autoImplicit false
-
 /-!
 # Base change of idele-class norms along a pushout square
 
@@ -27,6 +25,8 @@ that occur after adjoining roots of unity.
 Keeping the bottom adele ring fixed makes the norm square an actual
 determinant-norm base-change identity.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

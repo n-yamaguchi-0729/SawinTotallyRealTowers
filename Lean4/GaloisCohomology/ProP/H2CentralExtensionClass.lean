@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.H2CocycleExtension
 import GaloisCohomology.ProP.PresentationH2Primitive
 
-set_option autoImplicit false
 /-!
 # Degree-two classes as nonsplit central extensions
 

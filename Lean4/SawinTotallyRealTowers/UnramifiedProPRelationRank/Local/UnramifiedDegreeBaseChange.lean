@@ -12,8 +12,6 @@ import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
 import Mathlib.Algebra.Group.Subgroup.Defs
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
-set_option autoImplicit false
-
 /-!
 # Base change of standard unramified degree kernels
 

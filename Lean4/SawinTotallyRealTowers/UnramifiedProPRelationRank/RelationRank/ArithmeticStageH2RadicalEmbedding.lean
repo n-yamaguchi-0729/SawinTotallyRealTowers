@@ -10,7 +10,6 @@ import GaloisCohomology.ProP.H2InflationRangeBound
 import Mathlib.LinearAlgebra.Dimension.LinearMap
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # Embedding actual finite-stage inflation ranges in the radical dual
 

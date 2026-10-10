@@ -8,8 +8,6 @@ import SawinTotallyRealTowers.RamificationSupportTransport
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
 import Mathlib.FieldTheory.Galois.GaloisClosure
 
-set_option autoImplicit false
-
 /-!
 # Composita with prescribed finite ramification support
 

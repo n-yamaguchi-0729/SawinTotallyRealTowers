@@ -9,16 +9,14 @@ import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 import Mathlib.RingTheory.Valuation.Discrete.Basic
 import Mathlib.RingTheory.Valuation.LocalSubring
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Discretely valued fields
 
 This is the basic one-dimensional API for fields equipped with a chosen
 rank-one discrete valuation.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

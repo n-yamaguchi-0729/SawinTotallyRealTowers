@@ -13,8 +13,6 @@ import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.IndexNormal
 import Mathlib.Topology.Algebra.OpenSubgroup
 
-set_option autoImplicit false
-
 /-!
 # Index-two fixed fields of the real pro-two extension
 

@@ -12,8 +12,6 @@ import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarComp
 import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeIntertwiner
 
-set_option autoImplicit false
-
 /-!
 # Completed standard and multiplicative scalar endomorphisms
 
@@ -21,6 +19,8 @@ This module extends the standard-to-multiplicative comparison and scalar
 endomorphisms to the completed unramified Witt ring.  It proves the genuine
 composition, torsion, and injectivity identities for their analytic actions.
 -/
+
+
 
 noncomputable section
 

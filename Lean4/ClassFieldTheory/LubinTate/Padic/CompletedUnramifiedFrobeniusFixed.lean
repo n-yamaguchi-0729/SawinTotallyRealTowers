@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Finite.Basic
 import ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
 
-set_option autoImplicit false
-
 /-!
 # Fixed points of p-adic completed-unramified Frobenius
 
@@ -21,6 +19,8 @@ The fraction-field argument is integral: after writing a denominator as a
 power of `p` times a unit, multiplication by that power of `p` puts a fixed
 fraction back in the Witt ring.
 -/
+
+
 
 noncomputable section
 

@@ -8,12 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFi
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ClassFormation LocalFieldTheory
-
 /-!
 # Finite local reciprocity: the normalized local valuation is Henselian
 
@@ -24,9 +18,18 @@ field, including a non-normal one, the image after the abstract norm is the
 ordinary residue-degree multiple of that value group.
 -/
 
+namespace LocalClassFieldTheory
+
+open ClassFormation LocalFieldTheory
+
+
+
 noncomputable section
 
 open scoped NNReal ValuativeRel
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  valuationSubring_isIntegralClosure_of_isIntegral
+) in
 /-- **Finite local reciprocity.**  The normalized valuation of a nonarchimedean local
 field, on the actual fixed coefficient group in its separable closure, is a
 Henselian valuation relative to the residue Frobenius degree datum. -/
@@ -47,7 +50,6 @@ noncomputable def localHenselianValuation
   let E := abstractFixedField K (SeparableClosure K) H
   let : FiniteDimensional K E :=
     abstractFixedField_finiteDimensional K (SeparableClosure K) H F.finite
-
   let : UniformSpace K := IsTopologicalAddGroup.rightUniformSpace K
   let : IsUniformAddGroup K := isUniformAddGroup_of_addCommGroup
   let : (Valued.v : Valuation K
@@ -59,7 +61,6 @@ noncomputable def localHenselianValuation
   let : NontriviallyNormedField K :=
     Valued.toNontriviallyNormedField
       (L := K) (Γ₀ := ValuativeRel.ValueGroupWithZero K)
-
   let : NontriviallyNormedField E :=
     spectralNorm.nontriviallyNormedField K E
   let : NormedSpace K E := spectralNorm.normedSpace K E
@@ -86,7 +87,6 @@ noncomputable def localHenselianValuation
     { toIsValuativeTopology := inferInstance
       toLocallyCompactSpace := inferInstance
       toIsNontrivial := inferInstance }
-
   let : (ValuativeRel.valuation K).HasExtension
       (ValuativeRel.valuation E) := by
     apply Valuation.HasExtension.ofComapInteger
@@ -98,7 +98,6 @@ noncomputable def localHenselianValuation
       ValuativeRel.valuation K x ≤ 1
     rw [spectralNorm_extends]
     exact Valued.toNormedField.norm_le_one_iff
-
   let : Algebra.IsIntegral 𝒪[K] 𝒪[E] := ⟨by
     intro y
     have hyv : vE (y : E) ≤ 1 := by
@@ -143,7 +142,6 @@ noncomputable def localHenselianValuation
       rw [Polynomial.hom_eval₂]
       change Polynomial.aeval (y : E) p = 0
       rwa [Polynomial.aeval_map_algebraMap K (y : E) p] at hmaproot⟩
-
   let : Algebra.IsIntegral
       (ValuativeRel.valuation K).valuationSubring
       (ValuativeRel.valuation E).valuationSubring := by
@@ -152,14 +150,13 @@ noncomputable def localHenselianValuation
   let hIntegralClosure : IsIntegralClosure
       (ValuativeRel.valuation E).valuationSubring
       (ValuativeRel.valuation K).valuationSubring E :=
-    ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_isIntegralClosure_of_isIntegral
+    valuationSubring_isIntegralClosure_of_isIntegral
       (ValuativeRel.valuation K) (ValuativeRel.valuation E)
   let : IsIntegralClosure 𝒪[E] 𝒪[K] E := by
     change IsIntegralClosure
       (ValuativeRel.valuation E).valuationSubring
       (ValuativeRel.valuation K).valuationSubring E
     exact hIntegralClosure
-
   rw [localResidueDatum_residueDegree_eq_residueFinrank K F]
   exact localBaseValuation_comp_normToBase_range_eq_residueFinrank K H
 

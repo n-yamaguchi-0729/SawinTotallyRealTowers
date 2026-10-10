@@ -6,14 +6,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldSurjective
 
-set_option autoImplicit false
-
 /-!
-# LubinTate the explicit norm-subgroup computation: the standard level is the higher-unit fixed field
+# LubinTate the explicit norm-subgroup computation: the standard level is the higher-unit fixed
+field
 
 The standard-level embedding is an equivalence because its source and target
 have the same degree `(q - 1) q^n`.
 -/
+
+
 
 noncomputable section
 

@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Local
 
-set_option autoImplicit false
-
 /-!
 # Compiled finite/free collection stage of the profinite-unit decomposition
 -/
+
+
 
 open scoped Topology
 

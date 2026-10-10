@@ -12,8 +12,6 @@ import Mathlib.FieldTheory.KummerPolynomial
 import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.LinearAlgebra.Dimension.StrongRankCondition
 
-set_option autoImplicit false
-
 /-!
 # Adjoining a square root of a nonsquare
 

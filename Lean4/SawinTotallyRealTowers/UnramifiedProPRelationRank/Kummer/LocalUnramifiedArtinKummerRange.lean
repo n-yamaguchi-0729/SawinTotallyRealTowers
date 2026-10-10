@@ -9,7 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.I
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerValuationDual
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalArtinKummerH1Duality
 
-set_option autoImplicit false
 /-!
 # Unramified Artin--Kummer duality and the valuation line
 
@@ -65,7 +64,8 @@ theorem isUnramifiedChosenSimpleKummer_of_kummerH1_mem
 /-- The local valuation, transported through absolute Kummer theory. -/
 noncomputable def localStandardH1Valuation
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
-    ContinuousH1ZMod (p := (n : ℕ)) (G := Field.absoluteGaloisGroup K) →ₗ[ZMod (n : ℕ)] ZMod (n : ℕ) :=
+    ContinuousH1ZMod (p := (n : ℕ)) (G := Field.absoluteGaloisGroup K) →ₗ[ZMod (n : ℕ)]
+      ZMod (n : ℕ) :=
   (localPowerClassValuation K (n : ℕ)).comp
     (absoluteKummerContinuousH1LinearEquiv K (n : ℕ) hmu).symm.toLinearMap
 

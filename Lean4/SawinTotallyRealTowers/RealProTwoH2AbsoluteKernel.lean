@@ -25,8 +25,6 @@ import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # Descending absolute degree-two vanishing to the actual real pro-two group
 

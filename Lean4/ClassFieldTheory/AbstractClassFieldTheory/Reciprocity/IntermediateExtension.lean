@@ -7,18 +7,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
 import Mathlib.Topology.Algebra.Group.Basic
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # Intermediate extensions from actual quotient subgroups
 
-For the three reductions in the proof of the abstract reciprocity theorem, this file supplies the finite Galois correspondence in the
+For the three reductions in the proof of the abstract reciprocity theorem, this file supplies
+the finite Galois correspondence in the
 direction used by the construction.  If `L / K` is a packaged finite Galois extension
 and `S ≤ G(L/K)`, its inverse image in `G_K` is realized as an actual closed
 intermediate field `M`.
@@ -29,6 +22,14 @@ identifications are then obtained from the actual restriction map and the
 first and third isomorphism theorems; no correspondence certificate is
 assumed.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -202,8 +203,9 @@ theorem extensionSubgroup_intermediateField_eq
         (L.intermediateField_le_base S) =
       L.intermediateSubgroup S := by
   ext x
-  simp [extensionSubgroup, intermediateField]
-  rw [Subgroup.mem_subgroupOf]
+  change (x : G) ∈ (L.intermediateSubgroup S).map K.toSubgroup.subtype ↔
+    x ∈ L.intermediateSubgroup S
+  rw [Subgroup.mem_map]
   constructor
   · rintro ⟨y, hy, hxy⟩
     have hyx : y = x := Subtype.ext hxy

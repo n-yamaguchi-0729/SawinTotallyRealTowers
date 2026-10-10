@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
 
-set_option autoImplicit false
-
 /-!
 # The prime-degree subextension of a cyclic prime-power extension
 
@@ -24,7 +22,9 @@ splitting descends to the prime-degree subextension, and nonsplitting
 there ascends to `L`.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 
 noncomputable section

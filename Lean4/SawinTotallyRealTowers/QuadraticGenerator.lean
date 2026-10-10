@@ -8,8 +8,6 @@ import Mathlib.Algebra.Group.Even
 import Mathlib.FieldTheory.KummerExtension
 import Mathlib.FieldTheory.KummerPolynomial
 
-set_option autoImplicit false
-
 /-!
 # A nonsquare rational generator for a quadratic extension
 

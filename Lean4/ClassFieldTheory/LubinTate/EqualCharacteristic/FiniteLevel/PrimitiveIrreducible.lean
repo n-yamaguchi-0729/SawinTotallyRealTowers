@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.DivisionPolyno
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 import Mathlib.RingTheory.PowerSeries.Ideal
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: irreducibility of the equal-characteristic primitive polynomial
 
@@ -19,6 +17,8 @@ Modulo `T` this lift is the single monomial `Y ^ ((q - 1) * q ^ n)`, while
 its constant coefficient is exactly `T`.  It is therefore Eisenstein at
 `(T)`, and Gauss's lemma gives irreducibility over `κ((T))`.
 -/
+
+
 
 noncomputable section
 
@@ -319,7 +319,8 @@ theorem equalCharacteristicLubinTatePrimitivePolynomial_irreducible
       Irreducible
         ((equalCharacteristicLubinTateIntegralPrimitivePolynomial F n).map
           (algebraMap F.residueField⟦X⟧ F.residueField⸨X⸩)) :=
-    (equalCharacteristicLubinTateIntegralPrimitivePolynomial_monic F n).irreducible_iff_irreducible_map_fraction_map.mp
+    (equalCharacteristicLubinTateIntegralPrimitivePolynomial_monic F n
+      ).irreducible_iff_irreducible_map_fraction_map.mp
       (equalCharacteristicLubinTateIntegralPrimitivePolynomial_irreducible F n)
   simpa [equalCharacteristicLubinTateIntegralPrimitivePolynomial_map] using hmap
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Local
 
-set_option autoImplicit false
-
 /-!
 # Finite unrestricted local-block families
 
@@ -15,7 +13,9 @@ This leaf assembles the local Herbrand calculations over the finite family of
 unrestricted places.
 -/
 
-open scoped NumberField BigOperators ValuativeRel Classical NNReal
+
+
+open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section

@@ -12,8 +12,6 @@ Transports valuation-ring automorphisms to maximal-ideal powers, principal
 units, and their successive quotients, together with the resulting actions.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

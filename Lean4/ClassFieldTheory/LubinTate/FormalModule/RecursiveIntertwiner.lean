@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FormalModule.DegreeStabilization
 import ClassFieldTheory.LubinTate.FormalModule.RecursiveCorrection
 
-set_option autoImplicit false
-
 /-!
 # Finite-degree approximations to Lubin--Tate intertwiners
 
@@ -23,6 +21,8 @@ coefficients unchanged.  The stabilized coefficient series and its
 intertwining equation are established below after the finite-degree
 construction.
 -/
+
+
 
 noncomputable section
 

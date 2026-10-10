@@ -11,7 +11,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFiniteP
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 
-set_option autoImplicit false
 /-!
 # Degree-two localization of supported idele factors
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Generators
 
-set_option autoImplicit false
-
 /-!
 # Open ideals in profinite rings
 

@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 import Mathlib.LinearAlgebra.TensorProduct.Basis
 import Mathlib.RingTheory.TensorProduct.Maps
 
-set_option autoImplicit false
-
 /-!
 # Idele-class norms in a field tower
 
@@ -22,6 +20,8 @@ This gives an actual norm `C_L → C_M` whose composite with
 `C_M → C_K` is the tower norm.  The resulting three concrete norm
 quotients form a natural right-exact sequence.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

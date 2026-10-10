@@ -10,8 +10,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipa
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the explicit norm-subgroup computation: cardinality of the standard Lubin--Tate quotient
 
@@ -25,6 +23,8 @@ The power-series/integer-ring equivalence, the light quotient equivalence
 from the unramified norm-index formula, and the normalized Laurent uniformizer then give
 the same cardinality for `K^x / (<T^-1> U^(n+1))`.
 -/
+
+
 
 noncomputable section
 

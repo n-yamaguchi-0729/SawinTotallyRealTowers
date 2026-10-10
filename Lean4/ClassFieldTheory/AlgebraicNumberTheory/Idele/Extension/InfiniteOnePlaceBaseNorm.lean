@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponent
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
 
-set_option autoImplicit false
-
 /-!
 # Norms of base units supported at one infinite place
 
@@ -19,6 +17,8 @@ as a one-place idele.  Its ordinary idele norm remains supported at the
 place below `W`; the surviving component is the corresponding local
 degree power.
 -/
+
+
 
 open scoped BigOperators NumberField
 open NumberField IsDedekindDomain

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Fox.ModPBoundary
 import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
 
-set_option autoImplicit false
 /-!
 # Tail exactness of the mod-p Fox boundary
 

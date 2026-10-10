@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 
-set_option autoImplicit false
-
 /-!
 # The unit subgroup of a nonarchimedean local field
 
@@ -15,6 +13,8 @@ This module identifies the image of valuation-ring units in the field unit
 group with the valuation-one sphere and records that this subgroup is open in
 the native topology of a nonarchimedean local field.
 -/
+
+
 
 noncomputable section
 

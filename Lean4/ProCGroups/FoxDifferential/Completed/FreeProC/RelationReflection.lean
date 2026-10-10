@@ -9,8 +9,6 @@ import ProCGroups.FoxDifferential.Completed.FreeProC.FiniteQuotientStages
 import ProCGroups.FoxDifferential.Completed.Continuous.Universal.NaturalTopology
 import ProCGroups.FreeProC.FiniteBasis
 
-set_option autoImplicit false
-
 /-!
 # Relation reflection for free pro-\(C\) presentations
 

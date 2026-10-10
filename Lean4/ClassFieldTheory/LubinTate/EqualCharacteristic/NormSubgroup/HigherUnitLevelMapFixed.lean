@@ -8,11 +8,12 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFro
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAutomorphisms
 
-set_option autoImplicit false
-
 /-!
-# LubinTate the explicit norm-subgroup computation: higher-unit Frobenius fixes the standard level map
+# LubinTate the explicit norm-subgroup computation: higher-unit Frobenius fixes the standard
+level map
 -/
+
+
 
 noncomputable section
 
@@ -160,7 +161,8 @@ private theorem higherUnitLevelMap_fixed_core
         F a n ha
   · exact higherUnitFrobeniusRingHom_levelMap_algebraMap F a n
 
-/-- States the theorem `equalCharacteristicCompletedFrobeniusAlgEquiv_comp_levelFieldToCompleted_of_mem_higherUnit`. -/
+/-- States the theorem
+`equalCharacteristicCompletedFrobeniusAlgEquiv_comp_levelFieldToCompleted_of_mem_higherUnit`. -/
 theorem
     equalCharacteristicCompletedFrobeniusAlgEquiv_comp_levelFieldToCompleted_of_mem_higherUnit
     (F : LocalField K)

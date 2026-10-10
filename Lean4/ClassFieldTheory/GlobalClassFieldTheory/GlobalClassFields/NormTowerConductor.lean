@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
 
-set_option autoImplicit false
-
 /-!
 # Norm quotients and narrow finite conductors in a field tower
 
@@ -28,6 +26,8 @@ contained in that of the top extension.  This is the finite part in the
 all-real-positive convention, not a claim about the full archimedean
 conductor.
 -/
+
+
 
 open scoped NumberField
 

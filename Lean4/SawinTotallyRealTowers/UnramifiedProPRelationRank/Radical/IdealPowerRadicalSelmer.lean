@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
 import Mathlib.RingTheory.DedekindDomain.SelmerGroup
 
-set_option autoImplicit false
 /-!
 # The empty-support Selmer interpretation of the ideal-power radical
 

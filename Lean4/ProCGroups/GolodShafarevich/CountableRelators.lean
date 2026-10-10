@@ -10,8 +10,6 @@ import ProCGroups.ProP.Presentation.FiniteGeneration
 import ProCGroups.ProC.InverseLimits.Limits
 import Mathlib.Algebra.BigOperators.Fin
 
-set_option autoImplicit false
-
 /-!
 # Countable deep relations preserve a strict Golod--Shafarevich budget
 

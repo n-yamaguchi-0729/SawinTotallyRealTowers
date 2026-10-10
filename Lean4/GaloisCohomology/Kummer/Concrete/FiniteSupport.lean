@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.FiniteAbelian.Basic
 import GaloisCohomology.Kummer.Concrete.RadicalExtension
 
-set_option autoImplicit false
-
 /-!
 # finite radical support
 
@@ -21,6 +19,8 @@ its `n`-th power in that finitely generated subgroup.
 These are the concrete finite-support data needed for the later reduction to
 finite Kummer theory; no finite Kummer endpoint is assumed here.
 -/
+
+
 
 noncomputable section
 

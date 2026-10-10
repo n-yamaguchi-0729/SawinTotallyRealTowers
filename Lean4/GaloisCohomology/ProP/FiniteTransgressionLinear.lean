@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.FiniteTransgressionKernel
 import Mathlib.Algebra.Module.ZMod
 import Mathlib.LinearAlgebra.LinearIndependent.Defs
 
-set_option autoImplicit false
 /-!
 # Linearity of finite transgression
 

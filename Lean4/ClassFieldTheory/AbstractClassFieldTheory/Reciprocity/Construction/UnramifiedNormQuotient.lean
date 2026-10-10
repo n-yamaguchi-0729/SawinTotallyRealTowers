@@ -7,7 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityIndependence
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction, the unramified norm-quotient equivalence: the
+unramified norm quotient
+
+For a finite unramified Galois extension `L / K`, normalized valuation
+identifies the actual norm quotient `A_K / N_{L/K} A_L` with
+`ℤ / [L : K]ℤ`.  The only non-formal part of injectivity is the unit
+correction: the unit-cohomology axiom (`H⁰ = 0`) makes every unit of `K` the norm
+of a unit of `L`.
+-/
 
 universe u
 
@@ -17,15 +26,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction, the unramified norm-quotient equivalence: the unramified norm quotient
 
-For a finite unramified Galois extension `L / K`, normalized valuation
-identifies the actual norm quotient `A_K / N_{L/K} A_L` with
-`ℤ / [L : K]ℤ`.  The only non-formal part of injectivity is the unit
-correction: the unit-cohomology axiom (`H⁰ = 0`) makes every unit of `K` the norm
-of a unit of `L`.
--/
 
 noncomputable section
 

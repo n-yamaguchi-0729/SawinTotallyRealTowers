@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FreeRankOne
 import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
-set_option autoImplicit false
-
 /-!
 # The endomorphism-ring equivalence: endomorphisms and automorphisms of division modules
 
@@ -20,6 +18,8 @@ the `m`-th higher unit subgroup.  The division-tower sources use a primitive
 polynomial indexed by `n` for division level `m = n + 1`; every statement below
 keeps this shift explicit.
 -/
+
+
 
 noncomputable section
 

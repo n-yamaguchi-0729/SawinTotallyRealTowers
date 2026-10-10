@@ -10,8 +10,6 @@ import Mathlib.Basic.Real.Sign
 import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Mathlib.RingTheory.Complex
 
-set_option autoImplicit false
-
 /-!
 # The real/complex norm quotient
 
@@ -19,6 +17,8 @@ At a ramified infinite place the local extension is `ℂ/ℝ`.  Its norm
 subgroup consists exactly of the positive real units, so the sign map
 identifies the norm quotient with `ℤˣ`, a group of order two.
 -/
+
+
 
 open LocalFieldTheory
 open CyclicCohomology.ProfiniteCohomology.Herbrand
@@ -33,7 +33,7 @@ universe u v w z
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
 open NumberField
-open scoped Classical NumberField.LiesOver
+open scoped NumberField.LiesOver
 
 variable
     {K L : Type}
@@ -544,6 +544,7 @@ theorem realComplexNormQuotient_card_eq_two :
 
 omit [NumberField L] in
 omit [NumberField L] in
+open scoped Classical in
 /-- The degree-zero local Herbrand group at an infinite place has
 cardinality equal to the archimedean local degree: one at an
 unramified place and two at a ramified real-to-complex place. -/
@@ -634,6 +635,7 @@ theorem infinitePlaceLocalHerbrandH0_card_eq_localDegree
       _ = 2 := realComplexNormQuotient_card_eq_two
 
 omit [NumberField L] in
+open scoped Classical in
 /-- Complete archimedean local class-field axiom, in the exact form
 used in the relative-idele Herbrand quotient: Hilbert 90 gives
 `#H⁻¹ = 1`, while the norm quotient gives the local degree in `H⁰`. -/

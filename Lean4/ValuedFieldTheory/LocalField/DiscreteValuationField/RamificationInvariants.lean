@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
 
-set_option autoImplicit false
-
 /-!
 # Canonical ramification invariants
 
@@ -16,6 +14,8 @@ the chosen valuation rings.  Every theorem below is stated directly in the
 ambient valued-extension context; there are no compatibility aliases or
 extension-marker arguments.
 -/
+
+
 
 noncomputable section
 
@@ -42,8 +42,9 @@ theorem degree_eq_ramificationIndex_mul_residueDegree
           base.toDVF target.toDVF *
         ValuationTheory.DiscreteValuationField.ValuedExtension.residueDegree
           base.toDVF target.toDVF :=
-  (ValuationTheory.DiscreteValuationField.ValuedExtension.ramificationIndex_mul_residueDegree_eq_degree
-    base target).symm
+  (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+    (ramificationIndex_mul_residueDegree_eq_degree
+      base target).symm)
 
 /--
 Establishes the inequality
@@ -243,8 +244,9 @@ theorem degree_eq_ramificationIndex_mul_residueDegree_of_finite_separable
           base.toDVF target.toDVF *
         ValuationTheory.DiscreteValuationField.ValuedExtension.residueDegree
           base.toDVF target.toDVF :=
-  (ValuationTheory.DiscreteValuationField.ValuedExtension.ramificationIndex_mul_residueDegree_eq_degree_of_finite_separable
-      base target).symm
+  (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+    (ramificationIndex_mul_residueDegree_eq_degree_of_finite_separable
+      base target).symm)
 
 /-- A finite separable extension of the discrete valued fields is defectless. -/
 theorem isDefectless_of_finite_separable
@@ -267,8 +269,8 @@ theorem ramificationIndex_le_degree_of_finite_separable
       ValuationTheory.DiscreteValuationField.ValuedExtension.degree
         base.toDVF target.toDVF := by
   let : Module.Finite base.valuationSubring target.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleFinite_target_valuationSubring_of_finite_separable
-      base target
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      moduleFinite_target_valuationSubring_of_finite_separable base target)
   exact ramificationIndex_le_degree base target
 
 /--
@@ -284,11 +286,11 @@ theorem residueDegree_le_degree_of_finite_separable
       ValuationTheory.DiscreteValuationField.ValuedExtension.degree
         base.toDVF target.toDVF := by
   let : Module.Finite base.valuationSubring target.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleFinite_target_valuationSubring_of_finite_separable
-      base target
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      moduleFinite_target_valuationSubring_of_finite_separable base target)
   let : Module.IsTorsionFree base.valuationSubring target.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleIsTorsionFree_target_valuationSubring_of_finite_separable
-      base target
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      moduleIsTorsionFree_target_valuationSubring_of_finite_separable base target)
   exact residueDegree_le_degree base target
 
 /--
@@ -307,8 +309,8 @@ theorem ramificationIndex_eq_one_iff_residueDegree_eq_degree_of_finite_separable
         ValuationTheory.DiscreteValuationField.ValuedExtension.degree
           base.toDVF target.toDVF := by
   let : Module.Finite base.valuationSubring target.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleFinite_target_valuationSubring_of_finite_separable
-      base target
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      moduleFinite_target_valuationSubring_of_finite_separable base target)
   constructor
   · exact residueDegree_eq_degree_of_ramificationIndex_eq_one base target
   · intro hf
@@ -335,11 +337,11 @@ theorem residueDegree_eq_one_iff_ramificationIndex_eq_degree_of_finite_separable
         ValuationTheory.DiscreteValuationField.ValuedExtension.degree
           base.toDVF target.toDVF := by
   let : Module.Finite base.valuationSubring target.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleFinite_target_valuationSubring_of_finite_separable
-      base target
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      moduleFinite_target_valuationSubring_of_finite_separable base target)
   let : Module.IsTorsionFree base.valuationSubring target.valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleIsTorsionFree_target_valuationSubring_of_finite_separable
-      base target
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      moduleIsTorsionFree_target_valuationSubring_of_finite_separable base target)
   constructor
   · exact ramificationIndex_eq_degree_of_residueDegree_eq_one base target
   · intro he

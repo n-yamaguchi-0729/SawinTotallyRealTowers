@@ -14,8 +14,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.IdealClassFieldTheory.PrincipalId
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Conjugation of the small Hilbert class-field tower
 
@@ -27,6 +25,8 @@ corresponding automorphism of its actual fixed field.  Finite abelian
 classification therefore identifies every conjugate of the second small
 Hilbert class field with the original field.
 -/
+
+
 
 open scoped NumberField
 

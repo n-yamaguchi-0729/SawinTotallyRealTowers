@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalFiel
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
-set_option autoImplicit false
-
 /-!
 # normalization of the equal-characteristic parameter
 
@@ -17,6 +15,8 @@ The Laurent-series valuation sends `T` to `exp (-1)`.  The power-series
 description of its integer ring makes `T` a genuine prime element, so the
 canonical normalized additive valuation sends `T⁻¹` to `1`.
 -/
+
+
 
 noncomputable section
 

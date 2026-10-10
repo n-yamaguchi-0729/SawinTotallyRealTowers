@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
 
-set_option autoImplicit false
-
 /-!
 # Restriction naturality in an arbitrary finite abelian tower
 
@@ -21,6 +19,8 @@ and then restricting that embedding to `E`.  Abstract norm--residue
 naturality then becomes the actual restriction homomorphism
 `Gal(L/K) → Gal(E/K)`.
 -/
+
+
 
 noncomputable section
 

@@ -11,7 +11,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFie
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldMaximalSubextension
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
 /-!
 # The elementary Hilbert class-field layer
 
@@ -86,7 +85,7 @@ noncomputable def hilbertElementaryGaloisEquivPClassGroup (p : ℕ) :
 /-- Every automorphism of the elementary Hilbert layer has exponent dividing
 `p`. -/
 theorem hilbertElementaryGalois_pow_eq_one (p : ℕ)
-    (x : Gal((hilbertElementaryLayer K p) / K)) : x ^ p = 1 := by
+    (x : Gal((hilbertElementaryLayer K p)/K)) : x ^ p = 1 := by
   let e := hilbertElementaryGaloisEquivPClassGroup K p
   apply e.injective
   calc

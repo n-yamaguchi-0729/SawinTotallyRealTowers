@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.Continuous.Universal.System
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — continuous — universal — natural topology
 

@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
 
-set_option autoImplicit false
-
 /-!
 # Equivariance of the integral tensor block
 
 This file proves equivariance of the finite-place tensor-unit block under the
 restricted global Galois action.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

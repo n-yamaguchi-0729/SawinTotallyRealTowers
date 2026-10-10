@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
 /-!
 # Hilbert ramification theory: ramification subgroup source lemmas
 
@@ -18,6 +14,10 @@ subgroup `R_w`.  The key point for the later character map
 `I_w -> Hom(Delta/Gamma, lambda*)` is that `R_w` is a normal subgroup of
 `I_w`, not merely a subgroup.
 -/
+
+namespace RamificationTheory
+
+
 
 noncomputable section
 

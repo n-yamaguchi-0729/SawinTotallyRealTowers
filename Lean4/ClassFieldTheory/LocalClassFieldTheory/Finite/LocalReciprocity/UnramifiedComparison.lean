@@ -10,8 +10,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteRe
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
-set_option autoImplicit false
-
 /-!
 # Abstract and concrete unramified Frobenius
 
@@ -19,6 +17,8 @@ This module compares the residue-degree construction on a fixed separable
 closure with the ordinary unramified valuation extension and its arithmetic
 Frobenius.
 -/
+
+
 
 noncomputable section
 
@@ -101,7 +101,7 @@ private theorem abstractBaseFrobeniusLift_degree :
 /-- A degree-one element of the local absolute Galois group acts by the
 arithmetic Frobenius on the selected residue algebraic closure. -/
 private theorem localSeparableResidueAlgAction_eq_frobenius_of_degree_one
-    (sigma : Gal((SeparableClosure K) / K))
+    (sigma : Gal((SeparableClosure K)/K))
     (hsigma : localResidueDegree K sigma =
       Multiplicative.ofAdd (1 : ZHat)) :
     localSeparableResidueAlgAction K sigma =
@@ -153,6 +153,11 @@ variable (i : L →ₐ[K] SeparableClosure K)
 
 omit [TopologicalSpace L] [IsNonarchimedeanLocalField L] [IsGalois K L]
   [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L] in
+open _root_.ValuationTheory.DiscreteValuationField.Valuation
+  (hasExtension_valuation_of_valuationSubring_pullback) in
+open _root_.ValuationTheory.DiscreteValuationField.ValuedExtension
+  (exists_integralClosure_standard_fundamental_identity
+   target_valuationSubring_eq_of_finite_separable) in
 /-- Pulling the selected extension valuation on `Kˢᵉᵖ` back along a finite
 separable embedding gives the given local valuation on the source field. -/
 theorem localSeparableValuationSubring_comap_embedding
@@ -164,7 +169,7 @@ theorem localSeparableValuationSubring_comap_embedding
   let C := (ValuativeRel.valuation L).valuationSubring
   have hBext : (localCompleteDVF K).valuation.HasExtension B.valuation := by
     apply
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+      hasExtension_valuation_of_valuationSubring_pullback
     intro x
     change i (algebraMap K L x) ∈ A ↔
       x ∈ (localCompleteDVF K).valuation.valuationSubring
@@ -172,7 +177,7 @@ theorem localSeparableValuationSubring_comap_embedding
     exact localSeparableValuationSubring_pullback K x
   have hCext : (localCompleteDVF K).valuation.HasExtension C.valuation := by
     apply
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+      hasExtension_valuation_of_valuationSubring_pullback
     intro x
     change ValuativeRel.valuation L (algebraMap K L x) ≤ 1 ↔
       (localCompleteDVF K).valuation x ≤ 1
@@ -180,17 +185,17 @@ theorem localSeparableValuationSubring_comap_embedding
       (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     rfl
   obtain ⟨target, htarget, _hintegral, _hFundamental⟩ :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.exists_integralClosure_standard_fundamental_identity
+    exists_integralClosure_standard_fundamental_identity
       (K := K) (L := L) (localCompleteDVF K)
   let : IsScalarTower (localCompleteDVF K).valuationSubring
       target.valuationSubring L :=
     ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_isScalarTower_of_hasExtension
       (localCompleteDVF K).valuation target.valuation
   have hB : target.valuation.valuationSubring = B :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.target_valuationSubring_eq_of_finite_separable
+    target_valuationSubring_eq_of_finite_separable
       (localCompleteDVF K) target B
   have hC : target.valuation.valuationSubring = C :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.target_valuationSubring_eq_of_finite_separable
+    target_valuationSubring_eq_of_finite_separable
       (localCompleteDVF K) target C
   exact hB.symm.trans hC
 

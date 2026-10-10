@@ -9,8 +9,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
-
 /-!
 # Relative representatives of degree-two cohomology classes
 

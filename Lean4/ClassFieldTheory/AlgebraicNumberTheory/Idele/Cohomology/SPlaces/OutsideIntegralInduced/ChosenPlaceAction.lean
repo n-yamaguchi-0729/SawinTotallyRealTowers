@@ -11,8 +11,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIn
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
 
-set_option autoImplicit false
-
 /-!
 # The action at a chosen finite place
 
@@ -21,6 +19,8 @@ cohomology endpoint used by the integral induced-block construction. Keeping
 this localization boundary in a lower leaf prevents downstream transport
 proofs from elaborating it together with the tensor-block API.
 -/
+
+
 
 open scoped NumberField ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -191,9 +191,9 @@ unramified. All valued-local-field and integer-ring structures here are the
 canonical instances exported by `ChosenLocalization`. -/
 theorem chosenFinitePlaceLocalizedIntegerUnits_unramifiedHerbrand_subsingleton
     (w₀ : HeightOneSpectrum (𝓞 K))
-    (g : Gal(
-      ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀ /
-      ChosenFinitePlaceBaseCompletion (K := K) w₀))
+    (g : ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀
+      ≃ₐ[ChosenFinitePlaceBaseCompletion (K := K) w₀]
+      ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀)
     (hg : ∀ τ : Gal(
       ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀ /
       ChosenFinitePlaceBaseCompletion (K := K) w₀),

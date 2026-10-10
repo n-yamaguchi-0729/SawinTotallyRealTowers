@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportIn
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteInertiaUnramifiedFactor
 import GaloisCohomology.ProP.H2CocycleExtensionLinearLiftDifference
 
-set_option autoImplicit false
 /-!
 # The actual radical functional detects stage inflation
 

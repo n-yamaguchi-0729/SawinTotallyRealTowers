@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ExplicitChoiceCounts
 
-set_option autoImplicit false
-
 /-!
 # Realizing formal-product choices by position sets
 
 This module constructs a basic-factor choice from its mixed and left position
 sets and proves the resulting position-count formulas.
 -/
+
+
 
 noncomputable section
 

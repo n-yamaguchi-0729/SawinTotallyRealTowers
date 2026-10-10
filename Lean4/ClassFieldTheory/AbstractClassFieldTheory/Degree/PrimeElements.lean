@@ -6,7 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.ValuationLaws
 
-set_option autoImplicit false
+/-!
+# normalized degree and Frobenius theory: prime elements and units
+
+This file formalizes the prime-element definition and its two immediate consequences for
+unramified and totally ramified extensions.
+-/
 
 namespace ClassFormation
 
@@ -14,12 +19,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# normalized degree and Frobenius theory: prime elements and units
 
-This file formalizes the prime-element definition and its two immediate consequences for
-unramified and totally ramified extensions.
--/
 
 noncomputable section
 

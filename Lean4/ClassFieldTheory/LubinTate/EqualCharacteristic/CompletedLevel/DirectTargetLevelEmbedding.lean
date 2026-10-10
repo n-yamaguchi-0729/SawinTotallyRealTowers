@@ -8,16 +8,17 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedPoly
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaAtCompletedLevel
 
-set_option autoImplicit false
-
 /-!
-# The completed theta-intertwining theorem: the direct target level inside the completed source level
+# The completed theta-intertwining theorem: the direct target level inside the completed source
+level
 
 The analytic value `theta(lambda)` is primitive torsion for the target
 parameter `uT`.  We identify `uT` with the changed Laurent uniformizer,
 deduce the actual primitive-polynomial equation, and obtain the canonical
 embedding of the finite target Lubin--Tate level into the completed field.
 -/
+
+
 
 noncomputable section
 

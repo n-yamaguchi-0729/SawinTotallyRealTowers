@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Units
 import ValuedFieldTheory.LocalField.GroupTheory.IntegerMultipleSubgroup
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
 /-!
 # Integer-valued norm data
 
@@ -18,6 +14,8 @@ This file contains the norm-subgroup lemmas used in local CFT from an abstract
 integer-valued multiplicative valuation and a norm homomorphism satisfying the
 standard valuation formula.
 -/
+
+namespace LocalFieldTheory
 
 noncomputable section
 

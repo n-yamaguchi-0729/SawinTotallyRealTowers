@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerCyclicCarryInflation
 
-set_option autoImplicit false
 /-!
 # Finite Kummer cup descent to a cyclic carry class
 
@@ -35,8 +34,8 @@ theorem finiteKummerCup_H2pi_eq_map_finiteCyclicCarry
     {G : Type} [CommGroup G] [Fintype G]
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
     (chi psi : ContinuousH1ZMod
-      (p := (p : ℕ)) (G := Gal(M / K)))
-    (q : Gal(M / K) →* G)
+      (p := (p : ℕ)) (G := Gal(M/K)))
+    (q : Gal(M/K) →* G)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (hcard : Nat.card G = (p : ℕ))
     (hcoord : ∀ sigma : Gal(M / K),

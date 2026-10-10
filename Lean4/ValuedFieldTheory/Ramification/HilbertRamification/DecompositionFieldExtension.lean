@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
 
-set_option autoImplicit false
-
 /-!
 # Decomposition-field extension comparison
 
@@ -15,6 +13,8 @@ This file starts with clause (i): the restriction of `w` to its decomposition
 field has a unique extension back to `L`.  The proof works for finite or
 infinite Galois extensions and for archimedean or nonarchimedean valuations.
 -/
+
+
 
 noncomputable section
 

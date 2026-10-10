@@ -9,7 +9,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnr
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.PGroup
 
-set_option autoImplicit false
 /-!
 # Unramified composita over a changed base
 
@@ -61,7 +60,7 @@ theorem compositumBaseChange_restriction_injective (hsup : RA ⊔ RB = ⊤) :
 
 /-- A p-group Galois extension remains a p-group extension under base change. -/
 theorem compositumBaseChange_isPGroup {p : ℕ}
-    (hsup : RA ⊔ RB = ⊤) (hP : IsPGroup p Gal(A / K)) :
+    (hsup : RA ⊔ RB = ⊤) (hP : IsPGroup p Gal(A/K)) :
     IsPGroup p Gal(M / B) :=
   hP.of_injective (IntermediateField.restrictRestrictAlgEquivMapHom K A B M)
     (compositumBaseChange_restriction_injective K A B M hsup)
@@ -111,7 +110,7 @@ theorem compositumBaseChange_finitePlaceUnramifiedness
 unramified, including at infinity. -/
 theorem compositumBaseChange_everywhereUnramified
     {p : ℕ} [Fact p.Prime] (hpOdd : Odd p)
-    (hsup : RA ⊔ RB = ⊤) (hP : IsPGroup p Gal(A / K))
+    (hsup : RA ⊔ RB = ⊤) (hP : IsPGroup p Gal(A/K))
     (hA : IsUnramifiedAtFinitePlaces K A) : IsEverywhereUnramified B M := by
   refine ⟨compositumBaseChange_finitePlaceUnramifiedness K A B M hsup hA, ?_⟩
   have hPB := compositumBaseChange_isPGroup K A B M hsup hP

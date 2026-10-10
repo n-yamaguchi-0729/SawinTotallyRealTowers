@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaPrincipalUnits
 
-set_option autoImplicit false
-
 /-!
 # Equal-characteristic Laurent-series model
 
@@ -18,6 +16,8 @@ series evaluation is onto.  Here we package that concrete evaluation as the
 actual field equivalence needed by the Lubin--Tate construction; no existence
 or norm-subgroup statement is assumed.
 -/
+
+
 
 noncomputable section
 
@@ -39,6 +39,9 @@ noncomputable def equalCharacteristicLaurentUniformizer
   algebraMap F.residueField⟦X⟧ F.residueField⸨X⸩
     (PowerSeries.X : F.residueField⟦X⟧)
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
+) in
 /-- In equal characteristic, Laurent-series evaluation at a chosen
 uniformizer is a field equivalence onto the local field. -/
 noncomputable def equalCharacteristicLaurentRingEquiv
@@ -55,7 +58,7 @@ noncomputable def equalCharacteristicLaurentRingEquiv
       (F := F.toCompleteDVF) F.residueCharacteristic (n := n)
       (by
         simpa [f, n] using
-          CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
+          residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
       pi hpi
   exact RingEquiv.ofBijective eval
     ⟨RingHom.injective eval,
@@ -63,9 +66,12 @@ noncomputable def equalCharacteristicLaurentRingEquiv
         (F := F.toCompleteDVF) F.residueCharacteristic (n := n)
         (by
           simpa [f, n] using
-            CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
+            residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
         pi hpi⟩
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
+) in
 /-- States the theorem `equalCharacteristicLaurentRingEquiv_apply`. -/
 @[simp]
 theorem equalCharacteristicLaurentRingEquiv_apply
@@ -82,10 +88,13 @@ theorem equalCharacteristicLaurentRingEquiv_apply
             Module.finrank_pos⟩)
         (by
           simpa using
-            CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
+            residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
         pi hpi x := by
   rfl
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
+) in
 /-- States the theorem `equalCharacteristicLaurentRingEquiv_algebraMap_C`. -/
 @[simp]
 theorem equalCharacteristicLaurentRingEquiv_algebraMap_C
@@ -104,7 +113,7 @@ theorem equalCharacteristicLaurentRingEquiv_algebraMap_C
             Module.finrank_pos⟩)
         (by
           simpa using
-            CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
+            residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
         a := by
   rw [equalCharacteristicLaurentRingEquiv_apply]
   exact
@@ -115,9 +124,12 @@ theorem equalCharacteristicLaurentRingEquiv_algebraMap_C
           Module.finrank_pos⟩)
       (by
         simpa using
-          CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
+          residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
       pi hpi a
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
+) in
 /-- States the theorem `equalCharacteristicLaurentRingEquiv_algebraMap_X`. -/
 @[simp]
 theorem equalCharacteristicLaurentRingEquiv_algebraMap_X
@@ -138,7 +150,7 @@ theorem equalCharacteristicLaurentRingEquiv_algebraMap_X
           Module.finrank_pos⟩)
       (by
         simpa using
-          CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
+          residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F)
       pi hpi
 
 end EqualCharacteristic

@@ -27,8 +27,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
 import ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
 import ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
 
-set_option autoImplicit false
-
 /-!
 # Valuation conjugacy
 

@@ -15,10 +15,6 @@ import Mathlib.RingTheory.TensorProduct.Quotient
 import Mathlib.RingTheory.Valuation.Integral
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Integral closures of valuation rings
 
@@ -26,6 +22,8 @@ This module uses the actual mathlib integral closure
 `integralClosure base.toDVF.valuationSubring L`.  It does not introduce a replacement
 structure.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

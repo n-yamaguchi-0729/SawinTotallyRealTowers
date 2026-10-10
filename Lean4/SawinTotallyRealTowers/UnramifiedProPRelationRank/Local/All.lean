@@ -43,4 +43,9 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedLocalIn
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitsH2
 
-set_option autoImplicit false
+/-!
+# Local cohomology for unramified pro-p relation ranks
+
+This aggregate collects unramified fixed fields and common extensions, local units
+cohomology, cyclic restriction maps, and finite-place localization comparisons.
+-/

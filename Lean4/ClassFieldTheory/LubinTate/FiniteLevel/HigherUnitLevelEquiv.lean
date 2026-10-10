@@ -13,8 +13,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.ValuationKrasner
 import ValuedFieldTheory.Ramification.HilbertRamification.ValuationRestriction
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # Stability of a standard Lubin--Tate level under a deep unit change
 
@@ -40,6 +38,8 @@ comparison: the evaluation estimate controls the changed polynomial at the
 old primitive point, and the derivative exponent controls the product of the
 other changed-root displacements.
 -/
+
+
 
 noncomputable section
 
@@ -244,7 +244,7 @@ private theorem standardLubinTate_iterate_derivative_factor_addVal
       IsUnit
         (1 + standardLubinTateLevelCoefficientHom hπ n c *
           y ^ (q - 1)) :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.isUnit_one_add_of_mem_maximalIdeal_pow
+    higherPrincipalUnitGroup.isUnit_one_add_of_mem_maximalIdeal_pow
         target (n := 1) le_rfl
         (standardLubinTateLevelCoefficientHom hπ n c *
           y ^ (q - 1)) (by
@@ -999,7 +999,7 @@ private theorem
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (u : F.valuationSubringˣ) (n : ℕ)
     (σ :
-      Gal(standardLubinTateChangedLevelCompositumField hπ u n / K))
+      Gal(standardLubinTateChangedLevelCompositumField hπ u n/K))
     (hne :
       valuationSubringAutOfUniqueExtension
           (standardLubinTateChangedLevelCompositumCompleteDVF_hasUniqueDVFValuationExtension
@@ -1193,7 +1193,7 @@ private theorem
               hπ u n -
             beta))
     (σ :
-      Gal(standardLubinTateChangedLevelCompositumField hπ u n / K))
+      Gal(standardLubinTateChangedLevelCompositumField hπ u n/K))
     (hfix :
       σ (beta :
         standardLubinTateChangedLevelCompositumField hπ u n) =

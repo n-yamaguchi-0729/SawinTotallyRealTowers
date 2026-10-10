@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 import Mathlib.LinearAlgebra.Dimension.Localization
 import Mathlib.RingTheory.RamificationInertia.Basic
 
-set_option autoImplicit false
-
 /-!
 # Defectlessness from a finite extension of valuation rings
 

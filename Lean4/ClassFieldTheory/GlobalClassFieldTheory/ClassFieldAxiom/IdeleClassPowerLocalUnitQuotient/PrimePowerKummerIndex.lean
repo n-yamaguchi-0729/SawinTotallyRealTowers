@@ -13,8 +13,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupp
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
 import Mathlib.FieldTheory.IsSepClosed
 
-set_option autoImplicit false
-
 /-!
 # Prime-power Kummer norm index
 
@@ -22,7 +20,9 @@ This file combines the supported local index, principal-ideles exact sequence,
 and norm containment to prove the prime-power Kummer norm-index theorem.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel TensorProduct
+
+
+open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open KummerTheory
@@ -35,6 +35,7 @@ namespace GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type} [Field K] [NumberField K]
 
+open scoped Classical in
 /-- The actual exact-sequence product after evaluating the middle local
 power quotient as `n^(2s)`. -/
 theorem card_sUnitPrincipalQuotient_mul_card_ideleClassQuotient_eq_power_two_totalPlaceCard
@@ -68,6 +69,7 @@ theorem card_sUnitPrincipalQuotient_mul_card_ideleClassQuotient_eq_power_two_tot
     card_supportedIdeleQuotient_eq_power_two_totalPlaceCard
       (K := K) n hmu S T hS]
 
+open scoped Classical in
 /-- The class-quotient calculation for the Kummer-selected prime set.
 The localization equality identifies the left term of the exact sequence
 with the canonical `n`-th-power quotient of the `(S' ∪ T)`-unit group;
@@ -314,6 +316,9 @@ theorem
     _ = Module.finrank K E :=
       IsGalois.card_aut_eq_finrank K E
 
+open _root_.GlobalClassFieldTheory.Cohomology (
+  chosenFinitePlaceIsUnramified_of_notMem_ideleClassHerbrandSupport
+) in
 /-- Separable-closure realization of the norm-index calculation for a
 prime-power Kummer extension presented as an intermediate field.  This
 form is useful when the extension is already constructed inside a fixed
@@ -389,7 +394,7 @@ theorem
           (K := K) (L := E) w := by
     intro w hwAway
     apply
-      _root_.GlobalClassFieldTheory.Cohomology.chosenFinitePlaceIsUnramified_of_notMem_ideleClassHerbrandSupport
+      chosenFinitePlaceIsUnramified_of_notMem_ideleClassHerbrandSupport
     intro hwSupport
     have hwS : w ∈ S := by
       simpa only [S] using hwSupport

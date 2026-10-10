@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
-set_option autoImplicit false
+/-! ### Residue and maximal-ideal successive quotients -/
 
 namespace LocalFieldTheory
 
@@ -17,7 +17,7 @@ universe u
 
 open scoped ValuativeRel
 
-/-! ### Residue and maximal-ideal successive quotients -/
+
 
 /-- Additive identification of the residue field with `𝒪[K]/𝓂[K]`.
 

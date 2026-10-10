@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.TensorProduct
 import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
 
-set_option autoImplicit false
-
 /-!
 # Prime cyclotomic base change
 
@@ -21,6 +19,8 @@ The two degrees are therefore coprime, and
 
 is an actual field, Galois of degree `p` over `K(μ_p)`.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

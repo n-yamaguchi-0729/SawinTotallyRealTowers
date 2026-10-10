@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.StageAugmentation
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / All Finite Augmentation / Canonical Augmentation
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateAction
 
-set_option autoImplicit false
-
 /-!
 # The finite Lubin–Tate bracket construction: Lubin--Tate brackets in an ambient extension field
 
@@ -19,6 +17,8 @@ field `A` of the same characteristic, from a chosen coefficient embedding
 construction will be specialized to a separable closure when forming the
 Lubin--Tate level fields.
 -/
+
+
 
 noncomputable section
 
@@ -79,6 +79,8 @@ noncomputable def equalCharacteristicLubinTateAmbientPiEnd
       mul_add]
     abel
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank) in
 /-- The ambient `π`-endomorphism is Frobenius plus multiplication by `t`. -/
 @[simp]
 theorem equalCharacteristicLubinTateAmbientPiEnd_apply
@@ -92,7 +94,8 @@ theorem equalCharacteristicLubinTateAmbientPiEnd_apply
         (CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F) x +
       t * x = _
   rw [iterateFrobenius_def]
-  rw [CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F]
+  rw
+    [residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F]
 
 /-- Multiplication by an embedded residue-field coefficient. -/
 noncomputable def equalCharacteristicLubinTateAmbientCoefficientEnd

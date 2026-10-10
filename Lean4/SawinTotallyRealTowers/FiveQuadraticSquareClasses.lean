@@ -12,8 +12,6 @@ import Mathlib.Data.Fintype.Powerset
 import Mathlib.Data.Nat.Cast.Basic
 import Mathlib.Data.Rat.Lemmas
 
-set_option autoImplicit false
-
 /-!
 # Five independent rational square classes
 

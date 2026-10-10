@@ -8,8 +8,6 @@ import ProCGroups.FoxDifferential.Common.CrossedDifferentialModule
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.StageCoeffMap
 import ProCGroups.Completion.ProCInteger
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — core
 

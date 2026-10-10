@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the canonical base algebra on the fixed field
 
@@ -15,6 +13,8 @@ This light leaf names the base algebra already determined by the completed
 Frobenius action.  Naming it prevents repeated fallback searches through
 generic scalar-action instances in later norm calculations.
 -/
+
+
 
 noncomputable section
 
@@ -57,7 +57,8 @@ noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldSubring
     Subring (equalCharacteristicCompletedLevelField F n) :=
   (equalCharacteristicCompletedFrobeniusFixedField F a n).toSubring
 
-/-- The canonical `k((T))`-algebra structure on the completed theta-intertwining theorem fixed field. -/
+/-- The canonical `k((T))`-algebra structure on the completed theta-intertwining theorem fixed
+field. -/
 @[reducible]
 noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldAlgebra
     (F : LocalField K)

@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.StandardSubgr
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UnitQuotientCard
 import ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormIndex
 
-set_option autoImplicit false
-
 /-!
 # Lubin--Tate application: the exact norm subgroup
 
@@ -18,6 +16,8 @@ The reusable Lubin--Tate layer proves containment of the standard subgroup and
 computes its quotient.  Finite local reciprocity computes the norm-subgroup
 index here, in the application layer, so the containment becomes an equality.
 -/
+
+
 
 noncomputable section
 

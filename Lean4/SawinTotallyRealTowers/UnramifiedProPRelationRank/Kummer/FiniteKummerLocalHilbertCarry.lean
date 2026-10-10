@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicBaseUnitCarry
 import ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
 
-set_option autoImplicit false
 /-!
 # Finite Kummer carry classes and the local Hilbert symbol
 
@@ -33,7 +32,7 @@ theorem localHilbertSymbolFromNormQuotient_carry_baseUnit
     [IsNonarchimedeanLocalField K]
     (p : ℕ+) (hpK : ((p : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) (a b : Kˣ)
-    (g : Gal((KummerTheory.chosenSimpleKummerExtension K p hpK b) / K))
+    (g : Gal((KummerTheory.chosenSimpleKummerExtension K p hpK b)/K))
     (hg : ∀ sigma :
       Gal((KummerTheory.chosenSimpleKummerExtension K p hpK b) / K),
       sigma ∈ Subgroup.zpowers g) :

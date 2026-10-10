@@ -5,9 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
-import Mathlib.LinearAlgebra.Dual.Lemmas
 
-set_option autoImplicit false
 /-!
 # The ideal-power radical as a finite `ZMod p`-module
 

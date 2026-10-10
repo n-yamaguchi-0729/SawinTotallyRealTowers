@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Presentation.GeneratorRank
 import ProCGroups.FiniteGeneration.Basic
 
-set_option autoImplicit false
-
 /-!
 # Finite generation of a displayed presentation source
 

@@ -8,7 +8,6 @@ import ProCGroups.ProP.Fox.ModPBoundary
 import ProCGroups.ProP.Fox.ClosedSpan
 import ProCGroups.ProP.Fox.CoefficientReductionCompatibility
 
-set_option autoImplicit false
 /-!
 # Mod-p images of the displayed Fox-row span
 

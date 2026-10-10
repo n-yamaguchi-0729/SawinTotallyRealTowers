@@ -14,8 +14,6 @@ import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
 import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 
-set_option autoImplicit false
-
 /-!
 # Ramification killed by the maximal real pro-p restriction
 

@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
 
-set_option autoImplicit false
-
 /-!
 # A generator of a localized finite Galois group
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

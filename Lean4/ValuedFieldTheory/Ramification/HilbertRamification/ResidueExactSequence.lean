@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Ramification.ClosedSubgroups
 import ValuedFieldTheory.Ramification.ProfiniteInvariant
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
 /-!
 # The residue-action exact sequence
 
@@ -26,6 +22,10 @@ ideal.  This fixed subring is exactly the valuation ring on the decomposition
 field.  The profinite surjectivity proof is the compact inverse-limit argument
 used in this construction, supplied by `Ideal.Quotient.stabilizerHom_surjective_of_profinite`.
 -/
+
+namespace RamificationTheory
+
+
 
 noncomputable section
 

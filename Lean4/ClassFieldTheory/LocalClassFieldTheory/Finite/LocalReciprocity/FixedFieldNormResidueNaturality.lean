@@ -10,8 +10,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHense
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
 import Mathlib.FieldTheory.Galois.Notation
 
-set_option autoImplicit false
-
 /-!
 # Naturality of fixed-field norm-residue symbols
 
@@ -19,6 +17,8 @@ This file transports norm-restriction and transfer-inclusion naturality
 from the closed-subgroup class formation to actual fixed fields in a single
 Galois ambient field.
 -/
+
+
 
 noncomputable section
 
@@ -32,7 +32,7 @@ variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
 /-- Inclusion of the units of the lower concrete fixed field in the units
 of the larger concrete fixed field. -/
 def abstractFixedFieldUnitsInclusion
-    (K K' : ClosedSubgroup (Gal(Ω / k)))
+    (K K' : ClosedSubgroup (Gal(Ω/k)))
     (hK'K : K'.toSubgroup ≤ K.toSubgroup) :
     Additive (abstractFixedField k Ω K)ˣ →+
       Additive (abstractFixedField k Ω K')ˣ :=
@@ -45,7 +45,7 @@ omit [IsGalois k Ω] in
 /-- The concrete fixed-field unit equivalences identify actual unit
 inclusion with inclusion of fixed coefficients. -/
 theorem abstractFixedFieldUnitsEquiv_inclusion
-    (K K' : ClosedSubgroup (Gal(Ω / k)))
+    (K K' : ClosedSubgroup (Gal(Ω/k)))
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     (x : Additive (abstractFixedField k Ω K)ˣ) :
     abstractFixedFieldUnitsEquivGaloisFixed k Ω K'
@@ -62,18 +62,18 @@ theorem abstractFixedFieldUnitsEquiv_inclusion
 obtained from the abstract class-formation symbol through the canonical
 fixed-unit and relative-Galois identifications. -/
 noncomputable def abstractFixedFieldNormResidueSymbol
-    (D : DegreeData (Gal(Ω / k)))
+    (D : DegreeData (Gal(Ω/k)))
     (v : ValuationData D (galoisAmbientUnitsRep k Ω))
     (hcf : SatisfiesClassFieldAxiom
       (galoisAmbientUnitsRep k Ω))
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup K L hLK).Normal]
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField (Gal(Ω / k))).toSubgroup ⧸
-        extensionSubgroup (baseField (Gal(Ω / k))) K
+      ((baseField (Gal(Ω/k))).toSubgroup ⧸
+        extensionSubgroup (baseField (Gal(Ω/k))) K
           (le_baseField K))] :
     Additive (abstractFixedField k Ω K)ˣ →+
       Additive (Abelianization
@@ -96,7 +96,7 @@ noncomputable def abstractFixedFieldNormResidueSymbol
 
 /-- The ordinary field norm on units between two concrete fixed fields. -/
 def abstractFixedFieldNormUnits
-    (K K' : ClosedSubgroup (Gal(Ω / k)))
+    (K K' : ClosedSubgroup (Gal(Ω/k)))
     (hK'K : K'.toSubgroup ≤ K.toSubgroup) :
     Additive (abstractRelativeFixedField k Ω hK'K)ˣ →+
       Additive (abstractFixedField k Ω K)ˣ :=
@@ -108,7 +108,7 @@ def abstractFixedFieldNormUnits
 fixed-field square, transported through the canonical quotient/Galois
 equivalences. -/
 noncomputable def abstractFixedFieldAbelianizedRestriction
-    (K K' L L' : ClosedSubgroup (Gal(Ω / k)))
+    (K K' L L' : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -133,7 +133,7 @@ noncomputable def abstractFixedFieldAbelianizedRestriction
 /-- On an ambient representative, the transported actual restriction is
 restriction of that same automorphism to the smaller upper fixed field. -/
 theorem abstractFixedFieldAbelianizedRestriction_on_representative
-    (K K' L L' : ClosedSubgroup (Gal(Ω / k)))
+    (K K' L L' : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -175,11 +175,11 @@ the unit-level norm-residue symbols.  No normality of the intermediate
 extension `K'/K` is assumed. -/
 theorem abstractFixedFieldNormResidueSymbol_norm_restriction
     [IsSepClosed Ω]
-    (D : DegreeData (Gal(Ω / k)))
+    (D : DegreeData (Gal(Ω/k)))
     (v : ValuationData D (galoisAmbientUnitsRep k Ω))
     (hcf : SatisfiesClassFieldAxiom
       (galoisAmbientUnitsRep k Ω))
-    (K K' L L' : ClosedSubgroup (Gal(Ω / k)))
+    (K K' L L' : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -193,8 +193,8 @@ theorem abstractFixedFieldNormResidueSymbol_norm_restriction
     [hK'Kfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K K' hK'K)]
     [hKabsolute : Finite
-      ((baseField (Gal(Ω / k))).toSubgroup ⧸
-        extensionSubgroup (baseField (Gal(Ω / k))) K
+      ((baseField (Gal(Ω/k))).toSubgroup ⧸
+        extensionSubgroup (baseField (Gal(Ω/k))) K
           (le_baseField K))] :
     letI : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
         extensionSubgroup (baseField (Gal(Ω / k))) K'
@@ -288,7 +288,7 @@ theorem abstractFixedFieldNormResidueSymbol_norm_restriction
 fixed-field tower, transported through the two canonical quotient/Galois
 equivalences. -/
 noncomputable def abstractFixedFieldAbelianizedTransfer
-    (K K' L : ClosedSubgroup (Gal(Ω / k)))
+    (K K' L : ClosedSubgroup (Gal(Ω/k)))
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal :
@@ -327,11 +327,11 @@ Transfer of the actual relative Galois abelianizations is compatible with
 inclusion of actual fixed-field units and the unit-level norm-residue
 symbols. -/
 theorem abstractFixedFieldNormResidueSymbol_transfer_inclusion
-    (D : DegreeData (Gal(Ω / k)))
+    (D : DegreeData (Gal(Ω/k)))
     (v : ValuationData D (galoisAmbientUnitsRep k Ω))
     (hcf : SatisfiesClassFieldAxiom
       (galoisAmbientUnitsRep k Ω))
-    (K K' L : ClosedSubgroup (Gal(Ω / k)))
+    (K K' L : ClosedSubgroup (Gal(Ω/k)))
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal :
@@ -340,8 +340,8 @@ theorem abstractFixedFieldNormResidueSymbol_transfer_inclusion
       (K.toSubgroup ⧸
         extensionSubgroup K L (hLK'.trans hK'K))]
     [hKabsolute : Finite
-      ((baseField (Gal(Ω / k))).toSubgroup ⧸
-        extensionSubgroup (baseField (Gal(Ω / k))) K
+      ((baseField (Gal(Ω/k))).toSubgroup ⧸
+        extensionSubgroup (baseField (Gal(Ω/k))) K
           (le_baseField K))] :
     letI : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K

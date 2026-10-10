@@ -9,8 +9,6 @@ import ValuedFieldTheory.Valuation.Completion.PolynomialFactors
 import ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
 
-set_option autoImplicit false
-
 /-!
 # Classification of extensions of a completed absolute value
 

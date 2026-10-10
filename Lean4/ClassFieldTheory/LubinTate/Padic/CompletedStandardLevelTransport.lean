@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
-set_option autoImplicit false
-
 /-!
 # Transporting a finite p-adic Lubin--Tate level to the completed level
 
@@ -21,6 +19,8 @@ the image of the finite action with the *same* unit-parameter class.
 This fixes the parameter orientation before the completed Frobenius is
 used in the changed-uniformizer norm argument.
 -/
+
+
 
 noncomputable section
 
@@ -203,8 +203,7 @@ theorem padicStandardLevelIntegerEmbedding_coe
     (p : ℕ) [Fact p.Prime] (n : ℕ)
     (x :
       (standardLubinTateLevelCompleteDVF
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-      ).valuationSubring) :
+        (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring) :
     ((padicStandardLevelIntegerEmbedding p n x :
         (padicCompletedLevelCompleteDVF p n).valuationSubring) :
       padicCompletedLevelField p n) =
@@ -315,8 +314,7 @@ theorem padicStandardLevelIntegerEmbedding_powerSeriesEval
     (p : ℕ) [Fact p.Prime] (n : ℕ)
     (x :
       (standardLubinTateLevelCompleteDVF
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-      ).valuationSubring)
+        (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring)
     (hx : PowerSeries.HasEval x)
     (f : PowerSeries (padicLocalField p).valuationSubring) :
     padicStandardLevelIntegerEmbedding p n

@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.TrivialZModP
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
 import GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
 
-set_option autoImplicit false
 /-!
 # Trivializing natural `mu_p` coefficients over a cyclotomic base
 

@@ -25,16 +25,14 @@ import ValuedFieldTheory.Valuation.Henselian.Factorization.WeakLimits
 import ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialLifting
 import ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Henselian discretely valued fields
 
 The Henselian factorization condition and the residual linear-factor lemmas used in the
 residual linear-factor criterion.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

@@ -9,8 +9,6 @@ import Mathlib.Algebra.Module.Equiv.Defs
 import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Unit cohomology under surjective scalar restriction
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.H2FiniteEmbeddingProblem
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
 
-set_option autoImplicit false
 /-!
 # Finite degree-two embedding problems at arithmetic stages
 

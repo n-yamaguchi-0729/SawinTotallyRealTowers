@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
 import Mathlib.RingTheory.Norm.Basic
 
-set_option autoImplicit false
-
 /-!
 # Norm of a primitive standard Lubin--Tate point
 
@@ -17,6 +15,8 @@ standard Eisenstein polynomial, whose constant coefficient is the base
 uniformizer.  The power-basis norm formula therefore gives
 `N(-lambda) = pi`.
 -/
+
+
 
 noncomputable section
 

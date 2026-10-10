@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.DivisionModul
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the explicit norm-subgroup computation: higher units in the Laurent-series model
 
@@ -19,6 +17,8 @@ in the Lubin--Tate construction to the canonical principal-unit filtration.
 The construction uses index `n`, while the corresponding division-level
 unit group is `U^(n+1)`.
 -/
+
+
 
 noncomputable section
 
@@ -158,7 +158,8 @@ theorem equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_fieldPrincipalUnit
   rw [equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_principalUnits]
   rfl
 
-private theorem equalCharacteristicLubinTateAmbientBracket_primitiveRoot_eq_iff_mem_higherUnitSubgroup
+private theorem
+  equalCharacteristicLubinTateAmbientBracket_primitiveRoot_eq_iff_mem_higherUnitSubgroup
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) (u : F.residueField⟦X⟧ˣ) :
@@ -224,9 +225,11 @@ private theorem equalCharacteristicLubinTateAmbientBracket_primitiveRoot_eq_iff_
         (chosenEqualCharacteristicLubinTatePrimitiveRoot F n)
         (chosenEqualCharacteristicLubinTatePrimitiveRoot_torsion F n))
 
-/-- The `[u⁻¹]` action occurring in the completed theta-intertwining theorem fixes the standard primitive
+/-- The `[u⁻¹]` action occurring in the completed theta-intertwining theorem fixes the standard
+primitive
 division-level `n + 1` division point exactly when `u` is an `(n + 1)`-st higher
-unit.  This is the faithful-action kernel needed in the proof of the explicit norm-subgroup computation. -/
+unit.  This is the faithful-action kernel needed in the proof of the explicit norm-subgroup
+computation. -/
 theorem equalCharacteristicLubinTateAmbientBracket_inv_primitiveRoot_eq_iff_mem_higherUnitSubgroup
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]

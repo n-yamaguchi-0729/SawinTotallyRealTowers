@@ -10,8 +10,6 @@ Lean Eval repository: Copyright 2026 Lean FRO, LLC; Apache 2.0.
 import SawinTotallyRealTowers.SawinTotallyRealTower
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
-set_option autoImplicit false
-
 /-!
 # Martinet's totally real towers as a corollary of Sawin's theorem
 

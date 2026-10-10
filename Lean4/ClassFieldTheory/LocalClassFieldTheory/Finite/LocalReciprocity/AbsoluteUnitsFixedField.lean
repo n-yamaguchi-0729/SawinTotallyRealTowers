@@ -8,12 +8,6 @@ import ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 import GaloisCohomology.Kummer.Abstract.KummerDelta
 import Mathlib.RepresentationTheory.Rep.Basic
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open RamificationTheory KummerTheory CyclicCohomology
-
 /-!
 # Finite local reciprocity: Galois units and fixed fields
 
@@ -27,6 +21,12 @@ local-field, or finite-dimensional hypothesis is needed.  Using the separable
 closure is essential in positive characteristic: the fixed field of
 `Aut(K^alg/K)` inside `K^alg` need not be `K` when `K` is imperfect.
 -/
+
+namespace LocalClassFieldTheory
+
+open RamificationTheory KummerTheory CyclicCohomology
+
+
 
 noncomputable section
 

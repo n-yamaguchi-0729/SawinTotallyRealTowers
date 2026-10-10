@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.AbstractFixedFieldGlobalNormResidue
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicAbstractFixedFieldArtin
 
-set_option autoImplicit false
-
 /-!
 # Finite restriction of cyclotomic fixed-field reciprocity
 
@@ -18,6 +16,8 @@ cyclotomic maximal-unramified Galois group to the finite Galois group.
 It then identifies the restriction of the chosen-local-factor
 cyclotomic Artin map with the actual global norm-residue map.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 
@@ -149,11 +149,9 @@ theorem abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom_apply
     (hUnramified :
       L.toFiniteGaloisExtension.IsUnramified
         rationalCyclotomicDegreeData)
-    (σ : Gal(
-      LocalClassFieldTheory.abstractRelativeFixedField
+    (σ : Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field)) :
     abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom H L hUnramified σ =
       (L.toFiniteGaloisExtension.extensionQuotientMulEquiv.trans
@@ -270,6 +268,9 @@ theorem
       congrArg (fun q ↦ qFinite (finiteRestriction q))
         (abstractFixedFieldCyclotomicIdeleClassArtin_fixed_coordinate H a)
 
+open _root_.ClassFormation.ValuationData (
+  normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
+) in
 /-- The actual fixed-field global norm-residue value on a fixed-part
 class is the finite restriction of the maximal-unramified cyclotomic
 symbol. -/
@@ -335,7 +336,7 @@ theorem
           Additive.toMul
             (abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup
               H L z))
-        (ClassFormation.ValuationData.normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
+        (normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
           rationalCyclotomicIdeleClassValuationData
           rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
           H L.toFiniteGaloisExtension hUnramified a)

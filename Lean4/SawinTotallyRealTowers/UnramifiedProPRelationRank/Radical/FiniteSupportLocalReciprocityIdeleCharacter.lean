@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCycl
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
-set_option autoImplicit false
 /-!
 # Idele characters from finitely many local reciprocity characters
 
@@ -19,7 +18,7 @@ principal idele is the sum of the localized power-class pairings.
 -/
 
 open NumberField IsDedekindDomain
-open scoped NumberField Topology BigOperators Classical
+open scoped NumberField Topology BigOperators
 
 noncomputable section
 
@@ -134,7 +133,8 @@ theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace_mem
 /-- Outside the finite support, every finite-place idele has value one. -/
 theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace_notMem
     (v : HeightOneSpectrum (𝓞 F)) (hv : v ∉ S) (a : (v.adicCompletion F)ˣ) :
-    finiteSupportLocalReciprocityIdeleCharacter F p S chi (IdeleGroup.finitePlaceIdele v a) = 1 := by
+    finiteSupportLocalReciprocityIdeleCharacter F p S chi (IdeleGroup.finitePlaceIdele v a) =
+      1 := by
   rw [finiteSupportLocalReciprocityIdeleCharacter_apply]
   apply Finset.prod_eq_one
   intro w _
@@ -143,6 +143,7 @@ theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace_notMem
     exact hv (h ▸ w.property)
   rw [IdeleGroup.finitePlaceIdele_finiteComponent_of_ne v w.1 a hw, map_one]
 
+open scoped Classical in
 /-- Evaluation at an arbitrary finite-place embedding, with its actual
 support test. -/
 theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace
@@ -161,7 +162,8 @@ theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace
 finite places. -/
 theorem finiteSupportLocalReciprocityIdeleCharacter_infinitePlace
     (v : InfinitePlace F) (a : v.Completionˣ) :
-    finiteSupportLocalReciprocityIdeleCharacter F p S chi (IdeleGroup.infinitePlaceIdele v a) = 1 := by
+    finiteSupportLocalReciprocityIdeleCharacter F p S chi (IdeleGroup.infinitePlaceIdele v a) =
+      1 := by
   rw [finiteSupportLocalReciprocityIdeleCharacter_apply]
   apply Finset.prod_eq_one
   intro w _

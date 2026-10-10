@@ -39,4 +39,9 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedK
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerValuationDual
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
 
-set_option autoImplicit false
+/-!
+# Kummer comparisons for unramified pro-p relation ranks
+
+This aggregate collects absolute and finite Kummer comparisons, local Artin and Hilbert
+pairings, localization at finite places, and cyclic degree-two norm quotients.
+-/

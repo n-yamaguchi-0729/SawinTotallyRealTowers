@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.Homomorphisms
 
-set_option autoImplicit false
-
 /-!
 # Extending the logarithm to the field-unit group
 
@@ -16,6 +14,8 @@ uniformizer.  Its uniformizer value must instead be chosen so that the
 distinguished rational prime has logarithm zero.  This file isolates that
 algebraic construction.
 -/
+
+
 
 noncomputable section
 
@@ -30,12 +30,13 @@ namespace MultiplicativeIntegerValuation
 variable {K : Type u} [Field K]
 
 /-- Extend a homomorphism on first principal units to the three factors in
-the uniformizer–residue–principal-unit decomposition, killing the residue-root factor and assigning the additive
+the uniformizer–residue–principal-unit decomposition, killing the residue-root factor and
+assigning the additive
 value `c` to one power of the chosen uniformizer. -/
 noncomputable def fieldUnitDecompositionLogHomWithUniformizerValue
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A) :
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A) :
     CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F →*
       Multiplicative A where
   toFun z :=
@@ -60,7 +61,7 @@ The defining evaluation formula for `fieldUnitDecompositionLogHomWithUniformizer
 @[simp] theorem fieldUnitDecompositionLogHomWithUniformizerValue_apply
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (z : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F) :
     fieldUnitDecompositionLogHomWithUniformizerValue F φ c z =
       φ z.1.2 * Multiplicative.ofAdd (Multiplicative.toAdd z.2 • c) :=
@@ -73,7 +74,7 @@ Multiplicative ℤ)) = 1`.
 @[simp] theorem fieldUnitDecompositionLogHomWithUniformizerValue_root
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (ζ : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
     fieldUnitDecompositionLogHomWithUniformizerValue F φ c
         ((ζ, 1), (1 : Multiplicative ℤ)) = 1 := by
@@ -87,7 +88,7 @@ u`.
 @[simp] theorem fieldUnitDecompositionLogHomWithUniformizerValue_principal
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) :
     fieldUnitDecompositionLogHomWithUniformizerValue F φ c
         (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F), u),
@@ -103,21 +104,22 @@ c)`.
 @[simp] theorem fieldUnitDecompositionLogHomWithUniformizerValue_uniformizer
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (m : ℤ) :
     fieldUnitDecompositionLogHomWithUniformizerValue F φ c
         (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F),
-            (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1)),
+            (1 : (CompleteDVF.higherPrincipalUnitGroup F) 1)),
           Multiplicative.ofAdd m) = Multiplicative.ofAdd (m • c) := by
   simp
 
-/-- Transport the corrected factor logarithm across a chosen the uniformizer–residue–principal-unit decomposition
+/-- Transport the corrected factor logarithm across a chosen the
+uniformizer–residue–principal-unit decomposition
 decomposition of the field-unit group. -/
 noncomputable def fieldUnitLogHomWithUniformizerValue
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A) :
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A) :
     Kˣ →* Multiplicative A :=
   (fieldUnitDecompositionLogHomWithUniformizerValue F φ c).comp
     d.symm.toMonoidHom
@@ -131,7 +133,7 @@ The defining evaluation formula for `fieldUnitLogHomWithUniformizerValue` is
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A) (x : Kˣ) :
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A) (x : Kˣ) :
     fieldUnitLogHomWithUniformizerValue F d φ c x =
       φ (d.symm x).1.2 *
         Multiplicative.ofAdd (Multiplicative.toAdd (d.symm x).2 • c) :=
@@ -145,7 +147,7 @@ theorem fieldUnitLogHomWithUniformizerValue_apply_of_decomposition_eq
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (z : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F)
     {x : Kˣ} (hx : d z = x) :
     fieldUnitLogHomWithUniformizerValue F d φ c x =
@@ -158,8 +160,8 @@ theorem fieldUnitLogHomWithUniformizerValue_eq_of_principal_decomposition
     (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) {x : Kˣ}
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (u : (CompleteDVF.higherPrincipalUnitGroup F) 1) {x : Kˣ}
     (hx :
       d (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F), u),
           (1 : Multiplicative ℤ)) = x) :
@@ -170,6 +172,9 @@ theorem fieldUnitLogHomWithUniformizerValue_eq_of_principal_decomposition
       (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F), u),
         (1 : Multiplicative ℤ)) hx
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
+   fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF_apply) in
 /-- On first principal units, the corrected field logarithm agrees with the
 given principal-unit logarithm, for the decomposition supplied by a chosen
 uniformizer. -/
@@ -177,20 +182,21 @@ theorem fieldUnitLogHomWithUniformizerValue_eq_of_completeDVF_principal
     (F : CompleteDVF K) [Finite F.residueField]
     {π : F.valuationSubring} (hπ : F.valuation.IsUniformizer (π : K))
     {A : Type*} [AddCommGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) :
     fieldUnitLogHomWithUniformizerValue F
-        (CompleteDVF.higherPrincipalUnitGroup.fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
+        (fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
           F hπ) φ c
         (CompleteDVF.higherPrincipalUnitGroup.valuationSubringUnitFieldUnitHom F
           (u : F.valuationSubringˣ)) = φ u := by
   apply fieldUnitLogHomWithUniformizerValue_eq_of_principal_decomposition
     (F := F)
     (d :=
-      CompleteDVF.higherPrincipalUnitGroup.fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
+      fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
         F hπ)
     (φ := φ) (c := c) (u := u)
-  simp [CompleteDVF.higherPrincipalUnitGroup.fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF_apply]
+  simp
+    [fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF_apply]
 
 /-- Continuity of the corrected logarithm on the three decomposition factors.
 The uniformizer coordinate is discrete, while continuity on the principal-unit
@@ -199,7 +205,7 @@ theorem continuous_fieldUnitDecompositionLogHomWithUniformizerValue
     [TopologicalSpace K] (F : CompleteDVF K) [Finite F.residueField]
     {A : Type*} [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A]
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (hφ : Continuous φ) :
     Continuous (fieldUnitDecompositionLogHomWithUniformizerValue F φ c) := by
   have hprincipal :
@@ -228,7 +234,7 @@ theorem continuous_fieldUnitLogHomWithUniformizerValue
     {A : Type*} [AddCommGroup A] [TopologicalSpace A]
     [IsTopologicalAddGroup A]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃ₜ* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A) (c : A)
     (hφ : Continuous φ) :
     Continuous (fieldUnitLogHomWithUniformizerValue F d.toMulEquiv φ c) := by
   exact
@@ -241,7 +247,7 @@ that conclusion is stated separately. -/
 noncomputable def uniformizerLogValueKilling
     (F : CompleteDVF K) [Finite F.residueField] [CharZero K]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative K) (a : Kˣ) : K :=
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative K) (a : Kˣ) : K :=
   -(((Multiplicative.toAdd (d.symm a).2 : ℤ) : K)⁻¹ *
       Multiplicative.toAdd (φ (d.symm a).1.2))
 
@@ -251,7 +257,7 @@ exponent is nonzero. -/
 theorem fieldUnitLogHomWithUniformizerValue_uniformizerLogValueKilling
     (F : CompleteDVF K) [Finite F.residueField] [CharZero K]
     (d : CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F ≃* Kˣ)
-    (φ : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative K) (a : Kˣ)
+    (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative K) (a : Kˣ)
     (ha : Multiplicative.toAdd (d.symm a).2 ≠ 0) :
     fieldUnitLogHomWithUniformizerValue F d φ
         (uniformizerLogValueKilling F d φ a) a = 1 := by

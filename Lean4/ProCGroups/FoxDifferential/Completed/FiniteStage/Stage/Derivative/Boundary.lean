@@ -8,8 +8,6 @@ import ProCGroups.FoxDifferential.Common.FoxBoundary
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
 import Mathlib.Tactic.NoncommRing
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: finite stage — stage — derivative — boundary
 

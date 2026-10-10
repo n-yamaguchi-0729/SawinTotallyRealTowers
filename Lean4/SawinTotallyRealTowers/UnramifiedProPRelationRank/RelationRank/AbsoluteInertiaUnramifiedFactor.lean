@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInerti
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
 /-!
 # Inertia-trivial discrete p-representations factor through the maximal tower
 

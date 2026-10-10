@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnramifiedNormQuotient
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity construction: the canonical unramified valuation quotient
 
@@ -24,6 +16,14 @@ isomorphism with `ℤ / nℤ`.  This file constructs that canonical map and
 proves directly that it induces the unramified norm-quotient isomorphism
 used in the unramified norm-quotient equivalence.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

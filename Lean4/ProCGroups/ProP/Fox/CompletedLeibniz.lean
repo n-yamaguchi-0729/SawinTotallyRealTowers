@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.Algebra
 import ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
 
-set_option autoImplicit false
 /-!
 # Extending the Fox--Leibniz rule to completed group algebras
 

@@ -10,8 +10,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicA
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
 
-set_option autoImplicit false
-
 /-!
 # The standard finite unramified local extension
 

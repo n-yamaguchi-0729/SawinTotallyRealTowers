@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ReidemeisterSchreier.FreeGroup.PrefixParent
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Words / Basic
 
@@ -17,6 +13,8 @@ This module defines the initial reduced-word segments of a free-group element
 and proves the membership and prefix-parent facts used by discrete Schreier
 transversals.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier.Discrete.OpenSubgroups
 

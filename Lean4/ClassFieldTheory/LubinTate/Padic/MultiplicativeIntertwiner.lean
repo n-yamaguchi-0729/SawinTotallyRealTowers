@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
 
-set_option autoImplicit false
-
 /-!
 # Comparing the standard and multiplicative Lubin--Tate series over `ℚ_p`
 
@@ -21,6 +19,8 @@ Consequently, evaluation of `H` carries standard Lubin--Tate division points
 to multiplicative division points.  This file constructs that series directly;
 it does not identify the two actions from equality of their kernels.
 -/
+
+
 
 noncomputable section
 

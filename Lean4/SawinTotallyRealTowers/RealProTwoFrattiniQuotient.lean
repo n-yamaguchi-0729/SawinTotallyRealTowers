@@ -21,8 +21,6 @@ import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
-set_option autoImplicit false
-
 /-!
 # The actual finite Frattini quotient of the initial real tower
 

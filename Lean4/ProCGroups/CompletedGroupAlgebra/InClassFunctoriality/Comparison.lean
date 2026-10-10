@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.GroupLike
 import ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
 
-set_option autoImplicit false
-
 /-!
 # Comparison maps for in-class completions
 

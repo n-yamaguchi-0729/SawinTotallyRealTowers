@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.QuotientGroup.Finite
 import ProCGroups.FiniteGroups.Classes
 
-set_option autoImplicit false
-
 /-!
 # The class of all finite groups
 

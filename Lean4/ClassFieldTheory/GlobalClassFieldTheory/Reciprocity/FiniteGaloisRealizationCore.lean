@@ -15,8 +15,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedField
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.IntrinsicBaseEquivalence
 import ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
 
-set_option autoImplicit false
-
 /-!
 # Finite Galois number-field extensions in the rational separable closure
 
@@ -30,6 +28,8 @@ mathlib and LCFT constructions.
 No second model of a number field, an idele class group, or a norm
 quotient is introduced here.
 -/
+
+
 
 open scoped NumberField
 open NumberField

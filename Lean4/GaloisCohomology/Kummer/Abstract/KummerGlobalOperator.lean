@@ -6,14 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Abstract.KummerCyclicOperator
 
-set_option autoImplicit false
-
-namespace KummerTheory
-
-open CyclicCohomology
-
 /-!
-# finite abelian Kummer theory, the finite abelian Kummer decomposition: descending the global operator
+# finite abelian Kummer theory, the finite abelian Kummer decomposition: descending the global
+operator
 
 This file constructs, rather than assumes, the endomorphism of `A_L` induced
 by a global equivariant endomorphism `wp : A ⟶ A`.  It also embeds a
@@ -23,6 +18,12 @@ and supplies these constructions to the finite cyclic single-radical theorem.
 The result remains only the finite cyclic step of the finite abelian Kummer decomposition, not the
 full abelian Kummer correspondence.
 -/
+
+namespace KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

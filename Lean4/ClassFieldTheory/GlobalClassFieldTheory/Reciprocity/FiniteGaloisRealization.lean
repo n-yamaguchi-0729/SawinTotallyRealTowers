@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizati
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationNormQuotient
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
 
-set_option autoImplicit false
-
 /-!
 # Reciprocity for a realized finite Galois number-field tower
 
@@ -17,6 +15,8 @@ This module equips the compatible fixed-field realization of `L / K` with the
 finite-dimensional and number-field instances needed by global class formation,
 then transports abstract reciprocity back to the original tower.
 -/
+
+
 
 open scoped NumberField
 open NumberField

@@ -12,7 +12,12 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.Algebra.Group.Subgroup.Ker
 import Mathlib.Algebra.Group.TypeTags.Basic
 
-set_option autoImplicit false
+/-!
+# Coordinate evaluation of multiplicative H²
+
+Constructs the two coordinate maps for a product of multiplicative
+representations and proves their combined degree-two evaluation is injective.
+-/
 
 namespace ClassFieldTower.Cohomology
 open CategoryTheory groupCohomology

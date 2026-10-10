@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.InverseEstimates
 
-set_option autoImplicit false
 /-!
 Restricts the exponential series to deep additive ideals and shows that its values lie in the
 corresponding principal-unit subgroups.
 -/
+
 
 open Filter
 open Polynomial
@@ -43,7 +43,7 @@ noncomputable def principalUnitExpSeriesOfWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1 := by
+    (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1 := by
   let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
   have hlt :
       v (expSeriesFieldOfWithZeroValuation v x hnK - 1) <
@@ -64,7 +64,7 @@ noncomputable def principalUnitExpSeriesOfWithZeroValuation
       exact hlt
     simpa [pow_one] using ha0
   exact
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup
+    CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup
       F (n := 1) le_rfl a ha
 
 /-- Sharp ramified endpoint form of the exponential: if `a ∈ m^n` and
@@ -88,7 +88,7 @@ noncomputable def principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScal
     (a :
       ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
         Ideal (completeDVFOfWithZeroValuation v).valuationSubring)) :
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n := by
+    (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n := by
   let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
   let x : K := ((a : F.valuationSubring) : K)
   have hxthreshold :
@@ -158,7 +158,7 @@ noncomputable def principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScal
       rw [hvaleq]
       exact hge
   exact
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup
+    CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup
       F hn b hbmem
 
 /--
@@ -187,7 +187,7 @@ field exponential series.
     let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
     ((((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
-        hnK hnval hcomplete a : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) n) :
+        hnK hnval hcomplete a : (CompleteDVF.higherPrincipalUnitGroup F) n) :
         F.valuationSubringˣ) : F.valuationSubring) : K) =
       expSeriesFieldOfWithZeroValuation v
         (((a : F.valuationSubring) : K)) hnK := by
@@ -269,7 +269,7 @@ theorem principalUnitExpSeries_maximalIdealPow_add_eq_mul_ofWithZeroValuationSca
 noncomputable def principalUnitSubOneOfWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) : K :=
+    (u : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) : K :=
   (((u : (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
       (completeDVFOfWithZeroValuation v).valuationSubring) : K) - 1
 
@@ -427,7 +427,7 @@ series.
     let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
     ((((principalUnitExpSeriesOfWithZeroValuation
         (v := v) (p := p) x hnK hnval hvx hcomplete :
-          (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
+          (CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
           F.valuationSubring) : K) =
       expSeriesFieldOfWithZeroValuation v x hnK := by
   simp [principalUnitExpSeriesOfWithZeroValuation]
@@ -449,7 +449,7 @@ theorem principalUnitExpSeries_val_valuation_eq_one_ofWithZeroValuation
     let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
     v ((((principalUnitExpSeriesOfWithZeroValuation
         (v := v) (p := p) x hnK hnval hvx hcomplete :
-          (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
+          (CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
           F.valuationSubring) : K) =
       (1 : WithZero (Multiplicative ℤ)) := by
   have hval :=
@@ -476,7 +476,7 @@ theorem principalUnitExpSeries_val_valuation_eq_one_ofWithZeroValuation
     principalUnitExpSeriesOfWithZeroValuation
       (v := v) (p := p) (0 : K) hnK hnval
       (valuation_zero_lt_exp_neg_one (K := K) v) hcomplete =
-      (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
+      (1 : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
   apply Subtype.ext
   apply Units.ext
   apply Subtype.ext
@@ -498,7 +498,7 @@ theorem principalUnitExpSeries_eq_one_iff_ofWithZeroValuation
       CompleteSpace K) :
     principalUnitExpSeriesOfWithZeroValuation
         (v := v) (p := p) x hnK hnval hvx hcomplete =
-        (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) ↔
+        (1 : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) ↔
       x = 0 := by
   constructor
   · intro h
@@ -541,7 +541,7 @@ of their field exponential series.
           (v := v) (p := p) x hnK hnval hvx hcomplete) *
         (principalUnitExpSeriesOfWithZeroValuation
           (v := v) (p := p) y hnK hnval hvy hcomplete) :
-          (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
+          (CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
           F.valuationSubring) : K) =
       expSeriesFieldOfWithZeroValuation v x hnK *
         expSeriesFieldOfWithZeroValuation v y hnK := by
@@ -599,7 +599,7 @@ theorem principalUnitExpSeries_neg_mul_self_eq_one_ofWithZeroValuation
         (by simpa using hvx) hcomplete) *
       (principalUnitExpSeriesOfWithZeroValuation
         (v := v) (p := p) x hnK hnval hvx hcomplete) =
-        (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
+        (1 : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
   have hmul :=
     principalUnitExpSeries_add_eq_mul_ofWithZeroValuation
       (v := v) (p := p) (-x) x hnK hnval (by simpa using hvx) hvx
@@ -626,7 +626,7 @@ theorem principalUnitExpSeries_mul_neg_self_eq_one_ofWithZeroValuation
       (principalUnitExpSeriesOfWithZeroValuation
         (v := v) (p := p) (-x) hnK hnval
         (by simpa using hvx) hcomplete) =
-        (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
+        (1 : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
   have hmul :=
     principalUnitExpSeries_add_eq_mul_ofWithZeroValuation
       (v := v) (p := p) x (-x) hnK hnval hvx (by simpa using hvx)
@@ -698,7 +698,7 @@ noncomputable def principalUnitExpSeriesHomOfWithZeroValuation
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
     Multiplicative (expConvergenceAddSubgroupOfWithZeroValuation v) →*
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1 where
+      (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1 where
   toFun x :=
     principalUnitExpSeriesOfWithZeroValuation
       (v := v) (p := p) (x.toAdd : K) hnK hnval x.toAdd.property
@@ -863,7 +863,7 @@ v)) 1) = principalUnitExpSeriesHomOfWithZeroValuation (v := v) (p := p) hnK hnva
         (v := v) (p := p) hnK hnval hcomplete x :
       (principalUnitExpSeriesHomOfWithZeroValuation
         (v := v) (p := p) hnK hnval hcomplete).range) :
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
+      (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
       principalUnitExpSeriesHomOfWithZeroValuation
         (v := v) (p := p) hnK hnval hcomplete x :=
   MonoidHom.ofInjective_apply
@@ -895,7 +895,7 @@ p) (x : K) hnK hnval x.property hcomplete`.
         (Multiplicative.ofAdd x) :
       (principalUnitExpSeriesHomOfWithZeroValuation
         (v := v) (p := p) hnK hnval hcomplete).range) :
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
+      (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
       principalUnitExpSeriesOfWithZeroValuation
         (v := v) (p := p) (x : K) hnK hnval x.property hcomplete := by
   simp
@@ -935,7 +935,7 @@ one, which is the convergence hypothesis for the logarithm series. -/
 theorem principalUnitSubOne_val_lt_one_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
+    (u : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
     v (principalUnitSubOneOfWithZeroValuation v u) <
       (1 : WithZero (Multiplicative ℤ)) := by
   let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
@@ -962,7 +962,7 @@ topologically nilpotent in the valued-field topology. -/
 theorem principalUnitSubOne_isTopologicallyNilpotent_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
+    (u : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
     letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     IsTopologicallyNilpotent
       (principalUnitSubOneOfWithZeroValuation v u) := by
@@ -976,7 +976,7 @@ a valid two-variable power-series evaluation point. -/
 theorem principalUnitSubOne_pair_hasEval_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u w : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
+    (u w : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
     letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     MvPowerSeries.HasEval
       (fun i : Fin 2 =>
@@ -996,7 +996,7 @@ Establishes the identity `principalUnitSubOneOfWithZeroValuation v (1 :
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v] :
     principalUnitSubOneOfWithZeroValuation v
-        (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
+        (1 : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
       0 := by
   simp [principalUnitSubOneOfWithZeroValuation]
 
@@ -1005,9 +1005,9 @@ exactly at the identity. -/
 theorem principalUnitSubOne_eq_zero_iff_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
+    (u : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
     principalUnitSubOneOfWithZeroValuation v u = 0 ↔
-      u = (1 : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
+      u = (1 : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) := by
   let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
   constructor
   · intro h
@@ -1026,7 +1026,7 @@ formal identity `log((1 + x)(1 + y)) = log(1 + x) + log(1 + y)`. -/
 theorem principalUnitSubOne_mul_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u w : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
+    (u w : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
     principalUnitSubOneOfWithZeroValuation v (u * w) =
       principalUnitSubOneOfWithZeroValuation v u +
         principalUnitSubOneOfWithZeroValuation v w +

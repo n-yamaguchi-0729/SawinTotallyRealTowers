@@ -7,8 +7,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `RamificationTheory.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence` Lean module. -/
+/-! Provides the public declarations in the
+`RamificationTheory.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence` Lean module.
+-/
+
 
 namespace RamificationTheory
 
@@ -548,7 +550,7 @@ def ofFiniteExtension (i : L →ₐ[K] AlgebraicClosure K) :
 @[simp]
 theorem ofFiniteExtension_apply
     (i : L →ₐ[K] AlgebraicClosure K)
-    (σ : Gal(AlgebraicClosure K / AlgHom.fieldRange i)) :
+    (σ : Gal(AlgebraicClosure K/AlgHom.fieldRange i)) :
     ofFiniteExtension K i σ = σ.restrictScalars K :=
   rfl
 
@@ -676,7 +678,7 @@ def quotientEquivGalFieldRangeOfNormalFiniteExtension [FiniteDimensional K L]
 @[simp]
 theorem quotientEquivGalFieldRangeOfNormalFiniteExtension_mk'
     [FiniteDimensional K L] (i : L →ₐ[K] AlgebraicClosure K)
-    [Normal K (AlgHom.fieldRange i)] (σ : Gal(AlgebraicClosure K / K)) :
+    [Normal K (AlgHom.fieldRange i)] (σ : Gal(AlgebraicClosure K/K)) :
     quotientEquivGalFieldRangeOfNormalFiniteExtension K i
         (QuotientGroup.mk' (AlgHom.fieldRange i).fixingSubgroup σ) =
       AlgEquiv.restrictNormalHom (AlgHom.fieldRange i) σ :=
@@ -695,7 +697,7 @@ def quotientEquivGalOfNormalFiniteExtension [FiniteDimensional K L]
 @[simp]
 theorem quotientEquivGalOfNormalFiniteExtension_mk'
     [FiniteDimensional K L] (i : L →ₐ[K] AlgebraicClosure K)
-    [Normal K (AlgHom.fieldRange i)] (σ : Gal(AlgebraicClosure K / K)) :
+    [Normal K (AlgHom.fieldRange i)] (σ : Gal(AlgebraicClosure K/K)) :
     quotientEquivGalOfNormalFiniteExtension K i
         (QuotientGroup.mk' (AlgHom.fieldRange i).fixingSubgroup σ) =
       (AlgEquiv.autCongr (AlgEquiv.ofInjectiveField i)).symm
@@ -1636,15 +1638,18 @@ theorem mem_absoluteValuationSubring_iff_apply_mem_of_finite_separable_intermedi
     (E : IntermediateField K (AlgebraicClosure K))
     [FiniteDimensional K E] [Algebra.IsSeparable K E]
     (target : ValuationTheory.DiscreteValuationField.HenselianDVF.{u, w} E)
-    (hA : target.valuation.valuationSubring = (RamificationTheory.ValuationSubring.restrictIntermediateField A E))
+    (hA : target.valuation.valuationSubring =
+      (RamificationTheory.ValuationSubring.restrictIntermediateField A E))
     (huniq :
-      ValuationTheory.DiscreteValuationField.HenselianDVF.HasUniqueValuationExtension.{u, v, u, w, u}
+      ValuationTheory.DiscreteValuationField.HenselianDVF.HasUniqueValuationExtension.{u, v, u,
+        w, u}
         F target)
     (sigma : Field.absoluteGaloisGroup K) (x : E) :
     ((x : AlgebraicClosure K) ∈ A) ↔
       (show Gal(AlgebraicClosure K / K) from sigma) (x : AlgebraicClosure K) ∈ A :=
-  RamificationTheory.Field.absoluteGaloisGroup.valuationSubring_mem_preserved_on_finite_separable_intermediate
-    (K := K) F A E target hA huniq sigma x
+  (open RamificationTheory.Field.absoluteGaloisGroup in
+    valuationSubring_mem_preserved_on_finite_separable_intermediate
+      (K := K) F A E target hA huniq sigma x)
 
 end HenselianDVF
 end DiscreteValuationField

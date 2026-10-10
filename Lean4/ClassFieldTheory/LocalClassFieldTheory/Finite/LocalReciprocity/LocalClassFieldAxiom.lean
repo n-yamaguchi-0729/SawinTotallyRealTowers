@@ -9,13 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFi
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
 import GaloisCohomology.Cyclic.TateComparison
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open CyclicCohomology ClassFormation
-
-open LocalFieldTheory
-
 /-!
 # The local multiplicative group satisfies the class-field axiom
 
@@ -27,6 +20,13 @@ applies.  The fixed unit representation and cyclic Tate-complex comparisons
 then transport its two cardinality statements back to the abstract
 class-field-axiom predicate.
 -/
+
+namespace LocalClassFieldTheory
+open CyclicCohomology ClassFormation
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -64,7 +64,6 @@ private theorem galoisAmbientUnits_satisfiesClassFieldAxiom
   have hg' : ∀ σ : Gal(E / F), σ ∈ Subgroup.zpowers g' :=
     map_cyclicGenerator eQ g hg
   have hUnitsTateCard := finiteTowerUnits_tate_card_of_generator k F E g' hg'
-
   let : IsCyclic Q := CyclicCohomology.isCyclic_of_generator g hg
   let : CommGroup Q := IsCyclic.commGroup
   let : IsCyclic (Gal(E / F)) :=

@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 import Mathlib.GroupTheory.Nilpotent
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity theorem: the Sylow step in the first reduction
 
@@ -34,6 +26,14 @@ subgroups are finite.  This avoids using the desired reciprocity
 surjectivity to prove finiteness.  No reciprocity surjectivity or
 the finite reciprocity equivalence comparison is assumed here.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

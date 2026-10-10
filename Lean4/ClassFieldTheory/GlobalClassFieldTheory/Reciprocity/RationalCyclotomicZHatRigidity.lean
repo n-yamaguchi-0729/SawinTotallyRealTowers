@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicPrincipalIdele
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicCharacterRigidity
 
-set_option autoImplicit false
-
 /-!
 # Prime-power detection for the rational cyclotomic `ZHat`-Artin map
 
@@ -18,7 +16,9 @@ through actual finite cyclotomic levels then detects every finite
 coordinate of the rational cyclotomic `ZHat`-extension.
 -/
 
-open scoped Classical NumberField IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField ClassFormation
 
 noncomputable section

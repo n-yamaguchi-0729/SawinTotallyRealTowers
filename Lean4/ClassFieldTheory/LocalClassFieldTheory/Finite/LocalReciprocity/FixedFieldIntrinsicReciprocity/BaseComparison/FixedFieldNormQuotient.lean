@@ -9,13 +9,14 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedField
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldNormResidueNaturality
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Fixed-field norm quotients
 
-This module compares cohomological finite norm quotients with ordinary field-norm quotients and records their compatibility with fixed-field norm-residue symbols.
+This module compares cohomological finite norm quotients with ordinary field-norm quotients and
+records their compatibility with fixed-field norm-residue symbols.
 -/
+
+
 
 noncomputable section
 
@@ -30,13 +31,13 @@ subgroup to the additive form of the ordinary field-norm subgroup. -/
 theorem map_fixedFieldFiniteNormSubgroup_eq_additiveNormSubgroup
     (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     [IsGalois k Ω] [IsSepClosed Ω]
-    (K L : ClosedSubgroup Gal(Ω / k))
+    (K L : ClosedSubgroup Gal(Ω/k))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
-        extensionSubgroup (baseField Gal(Ω / k)) K
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
+        extensionSubgroup (baseField Gal(Ω/k)) K
           (le_baseField K))] :
     (finiteNormSubgroup (galoisAmbientUnitsRep k Ω) K L hLK).map
         (abstractFixedFieldUnitsEquivGaloisFixed
@@ -97,13 +98,13 @@ additively equivalent to the ordinary norm quotient of their fixed fields. -/
 noncomputable def fixedFieldFiniteNormQuotientEquivNormQuotient
     (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     [IsGalois k Ω] [IsSepClosed Ω]
-    (K L : ClosedSubgroup Gal(Ω / k))
+    (K L : ClosedSubgroup Gal(Ω/k))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
-        extensionSubgroup (baseField Gal(Ω / k)) K
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
+        extensionSubgroup (baseField Gal(Ω/k)) K
           (le_baseField K))] :
     FiniteNormQuotient (galoisAmbientUnitsRep k Ω) K L hLK ≃+
       Additive
@@ -189,13 +190,13 @@ class to the ordinary norm class of the corresponding fixed-field unit. -/
 theorem fixedFieldFiniteNormQuotientEquivNormQuotient_finiteNormClass
     (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     [IsGalois k Ω] [IsSepClosed Ω]
-    (K L : ClosedSubgroup Gal(Ω / k))
+    (K L : ClosedSubgroup Gal(Ω/k))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
-        extensionSubgroup (baseField Gal(Ω / k)) K
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
+        extensionSubgroup (baseField Gal(Ω/k)) K
           (le_baseField K))]
     (a : ambientFixedAddSubgroup (galoisAmbientUnitsRep k Ω) K) :
     fixedFieldFiniteNormQuotientEquivNormQuotient
@@ -245,30 +246,30 @@ prime element is the prescribed Frobenius quotient class. -/
 theorem abstractFixedFieldNormResidueSymbol_apply_primeNorm
     (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     [IsGalois k Ω] [IsSepClosed Ω]
-    (D : DegreeData Gal(Ω / k))
+    (D : DegreeData Gal(Ω/k))
     (v : ValuationData D (galoisAmbientUnitsRep k Ω))
     (hcf : SatisfiesClassFieldAxiom
       (galoisAmbientUnitsRep k Ω))
-    (K L : ClosedSubgroup Gal(Ω / k))
+    (K L : ClosedSubgroup Gal(Ω/k))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup K L hLK).Normal]
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
-        extensionSubgroup (baseField Gal(Ω / k)) K
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
+        extensionSubgroup (baseField Gal(Ω/k)) K
           (le_baseField K))]
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (σ : D.FrobeniusElements
       ((⟨K, hKabsolute⟩ : FiniteAbstractField
-        Gal(Ω / k)).toFiniteResidueAbstractField D) L hLK)
+        Gal(Ω/k)).toFiniteResidueAbstractField D) L hLK)
     (hσ : D.frobeniusRestriction
       ((⟨K, hKabsolute⟩ : FiniteAbstractField
-        Gal(Ω / k)).toFiniteResidueAbstractField D) L hLK σ = q)
+        Gal(Ω/k)).toFiniteResidueAbstractField D) L hLK σ = q)
     (π : ambientFixedAddSubgroup (galoisAmbientUnitsRep k Ω)
       (D.frobeniusFixedField
         ((⟨K, hKabsolute⟩ : FiniteAbstractField
-          Gal(Ω / k)).toFiniteResidueAbstractField D)
+          Gal(Ω/k)).toFiniteResidueAbstractField D)
         L hLK σ))
     (hπ :
       let KF : FiniteAbstractField Gal(Ω / k) :=
@@ -357,18 +358,18 @@ class of the input unit. -/
 theorem abstractFixedFieldNormResidueSymbol_eq_of_normClass_eq
     (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     [IsGalois k Ω] [IsSepClosed Ω]
-    (D : DegreeData Gal(Ω / k))
+    (D : DegreeData Gal(Ω/k))
     (v : ValuationData D (galoisAmbientUnitsRep k Ω))
     (hcf : SatisfiesClassFieldAxiom
       (galoisAmbientUnitsRep k Ω))
-    (K L : ClosedSubgroup Gal(Ω / k))
+    (K L : ClosedSubgroup Gal(Ω/k))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup K L hLK).Normal]
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
-        extensionSubgroup (baseField Gal(Ω / k)) K
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
+        extensionSubgroup (baseField Gal(Ω/k)) K
           (le_baseField K))]
     (x y : (abstractFixedField k Ω K)ˣ)
     (hxy :
@@ -430,8 +431,8 @@ equivalence. -/
 theorem fixedFieldQuotientEquiv_mk_compatibility
     (K : Type) [Field K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
-    (J : ClosedSubgroup Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
+    (J : ClosedSubgroup Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal : (extensionSubgroup H.field J hJH).Normal]
     [hJfinite : Finite

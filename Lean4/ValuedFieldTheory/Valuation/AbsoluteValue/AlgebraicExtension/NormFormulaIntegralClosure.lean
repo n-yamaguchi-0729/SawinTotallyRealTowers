@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
 
-set_option autoImplicit false
-
 /-!
 # the actual integral closure is a valuation ring
 
@@ -27,7 +25,8 @@ namespace Valuations
 open scoped Polynomial
 
 /-- A closed unit for the finite norm-formula value is integral over the base
-valuation ring, using only the primitive factorization definition's primitive factorization property. -/
+valuation ring, using only the primitive factorization definition's primitive factorization
+property. -/
 theorem normFormula_finiteExtensionNormFormulaValue_isIntegral_of_le_one_of_henselFactorization
     {K L : Type*} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]

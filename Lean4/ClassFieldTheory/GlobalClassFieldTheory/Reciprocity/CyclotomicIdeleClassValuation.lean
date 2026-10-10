@@ -12,8 +12,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.IdeleClassNorm
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
 
-set_option autoImplicit false
-
 /-!
 # The cyclotomic valuation on idele classes
 
@@ -33,6 +31,8 @@ to a finite abstract field, the already constructed cyclotomic
 base-change theorem identifies `f_K` with the residue degree.  This
 supplies the norm-range field of the concrete henselian valuation data.
 -/
+
+
 
 open scoped NumberField
 

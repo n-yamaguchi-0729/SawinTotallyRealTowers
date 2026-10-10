@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RepresentationTheory.Homological.FiniteCyclic
 import Mathlib.RepresentationTheory.Homological.TateCohomology.Basic
 
-set_option autoImplicit false
-
 /-!
 # Boundary-degree Tate cohomology for finite cyclic groups
 

@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
 
-set_option autoImplicit false
-
 /-!
 # Inclusion of the chosen integral induced block
 
 This file embeds the chosen induced module of local integer units into the
 ordinary local multiplicative block and proves injectivity.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

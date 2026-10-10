@@ -9,8 +9,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLoca
 import ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
 
-set_option autoImplicit false
-
 /-!
 # Valuation rings of algebraic localizations
 
@@ -18,6 +16,8 @@ This file equips nonarchimedean absolute-value completions and their algebraic
 localizations with the norm-induced valuation structures. It identifies the
 localized valuation ring with the integral closure of the base valuation ring.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

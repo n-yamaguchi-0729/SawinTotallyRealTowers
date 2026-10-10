@@ -10,8 +10,6 @@ import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Finset.Lattice.Fold
 
-set_option autoImplicit false
-
 /-!
 # Degree of the initial multiquadratic layer
 
@@ -57,7 +55,8 @@ theorem sawinQuadraticCompositum_finrank :
   rw [sawinQuadraticCompositum_eq_adjoin_roots]
   have h : Module.finrank ℚ (IntermediateField.adjoin ℚ
       ((fun i : Fin 5 ↦ quadraticClosureRoot (sawinQuadraticRadicand i : ℚ)) ''
-        ((Finset.univ : Finset (Fin 5)) : Set (Fin 5)))) = 2 ^ (Finset.univ : Finset (Fin 5)).card :=
+        ((Finset.univ : Finset (Fin 5)) : Set (Fin 5)))) =
+          2 ^ (Finset.univ : Finset (Fin 5)).card :=
     (finrank_and_squareClasses_adjoin_independent_squareRoots
     ℚ (AlgebraicClosure ℚ)
     (fun i : Fin 5 ↦ (sawinQuadraticRadicand i : ℚ))

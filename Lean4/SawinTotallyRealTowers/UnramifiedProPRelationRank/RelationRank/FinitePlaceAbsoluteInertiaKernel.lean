@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnrami
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
 
-set_option autoImplicit false
 /-!
 # Absolute finite-place inertia and the unramified kernel
 

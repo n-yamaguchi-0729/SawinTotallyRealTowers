@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldPrimitive
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the fixed primitive completed power basis
 
 The direct theta value supplies the power basis used to descend coefficients
 of elements fixed by the prescribed completed Frobenius.
 -/
+
+
 
 noncomputable section
 

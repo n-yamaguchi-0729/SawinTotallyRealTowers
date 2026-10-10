@@ -12,8 +12,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.Lo
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
 
-set_option autoImplicit false
-
 /-!
 # Support of the narrow finite conductor
 
@@ -30,6 +28,8 @@ reciprocity identity `N(C_L) ∩ K_vˣ = N(L_vˣ)` identifies the two
 exponents for a global extension, yielding the global conductor-support
 corollary.
 -/
+
+
 
 open scoped NumberField
 

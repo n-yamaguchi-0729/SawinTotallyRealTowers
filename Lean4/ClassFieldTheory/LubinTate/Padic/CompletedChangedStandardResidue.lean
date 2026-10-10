@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
 
-set_option autoImplicit false
-
 /-!
 # Residue embedding for the completed standard/changed compositum
 
@@ -22,6 +20,8 @@ the residue field of the ambient completed level.
 This injection is the faithful comparison map used to identify the finite
 relative Artin candidate with inverse arithmetic Frobenius.
 -/
+
+
 
 noncomputable section
 

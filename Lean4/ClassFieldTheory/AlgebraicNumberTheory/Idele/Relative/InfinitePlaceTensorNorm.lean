@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuot
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
-set_option autoImplicit false
-
 /-!
 # The norm image of an archimedean tensor factor
 
@@ -18,6 +16,8 @@ For a finite Galois extension `L / K`, the determinant-norm image on
 the infinite place `v`.  This is the archimedean counterpart of the
 finite-place tensor-norm comparison.
 -/
+
+
 
 open scoped NumberField TensorProduct NumberField.LiesOver
 open NumberField

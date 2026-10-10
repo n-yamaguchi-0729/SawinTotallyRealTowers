@@ -6,7 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransferFrobeniusGeometry
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction, transfer--norm naturality: Frobenius fibers
+
+This module continues the geometric transfer construction with the chosen
+norm-orbit representatives, fiber calculations, fixed-field arithmetic, and
+the final Frobenius transfer formula.
+-/
 
 universe u
 
@@ -18,13 +24,7 @@ open CyclicCohomology
 
 open CategoryTheory
 
-/-!
-# The abstract reciprocity construction, transfer--norm naturality: Frobenius fibers
 
-This module continues the geometric transfer construction with the chosen
-norm-orbit representatives, fiber calculations, fixed-field arithmetic, and
-the final Frobenius transfer formula.
--/
 
 noncomputable section
 

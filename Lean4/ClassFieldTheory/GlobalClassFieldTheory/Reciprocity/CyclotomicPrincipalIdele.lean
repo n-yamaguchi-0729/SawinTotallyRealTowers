@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
 
-set_option autoImplicit false
-
 /-!
 # Principal ideles and the rational cyclotomic value
 
@@ -26,7 +24,9 @@ compatibility theorem between the chosen finite-place Artin map and
 the explicit cyclotomic action; no such compatibility is assumed here.
 -/
 
-open scoped BigOperators Classical NumberField IsMulCommutative
+
+
+open scoped BigOperators NumberField IsMulCommutative
 open NumberField IsDedekindDomain ClassFormation
 
 noncomputable section

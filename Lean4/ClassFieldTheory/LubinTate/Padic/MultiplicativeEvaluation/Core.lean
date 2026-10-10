@@ -15,8 +15,6 @@ import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.Intertwine
 import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarCompatibility
 import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
 
-set_option autoImplicit false
-
 /-!
 # Changed-uniformizer evaluation on completed p-adic levels
 
@@ -25,6 +23,8 @@ completed multiplicative primitive point.  It proves the exact scalar,
 Frobenius, root, and level-embedding identities used by the completed
 Lubin--Tate tower.
 -/
+
+
 
 noncomputable section
 

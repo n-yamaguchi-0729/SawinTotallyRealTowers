@@ -6,7 +6,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainFiniteReciprocity
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction, norm--conjugation naturality: naturality of reciprocity
+
+The two vertical maps are constructed here on the actual finite
+Galois quotients and the actual finite norm quotients.  Their defining
+commutativities are proved from norm transitivity and conjugation, so the
+eventual the finite reciprocity equivalence reciprocity homomorphisms can be connected without
+any additional comparison datum.
+-/
 
 universe u
 
@@ -19,15 +27,7 @@ open CyclicCohomology
 open CategoryTheory
 
 
-/-!
-# The abstract reciprocity construction, norm--conjugation naturality: naturality of reciprocity
 
-The two vertical maps are constructed here on the actual finite
-Galois quotients and the actual finite norm quotients.  Their defining
-commutativities are proved from norm transitivity and conjugation, so the
-eventual the finite reciprocity equivalence reciprocity homomorphisms can be connected without
-any additional comparison datum.
--/
 
 noncomputable section
 
@@ -312,7 +312,8 @@ theorem finiteReciprocityNaturalityFrobeniusFixedField_le
     E.base.field E.field.field L L' hLK hL'K' E.below hL'L
   change f (QuotientGroup.mk k') ∈
     (closedSubgroupGenerated ({f σ.1} : Set _) : Subgroup _) at hmap
-  simp [DegreeData.frobeniusClosure]
+  rw [DegreeData.frobeniusClosure, Set.range_const,
+    D.finiteReciprocityNaturalityFrobeniusTowerLift_coe]
   change f (QuotientGroup.mk k') ∈
     (closedSubgroupGenerated ({f σ.1} : Set _) : Subgroup _)
   exact hmap

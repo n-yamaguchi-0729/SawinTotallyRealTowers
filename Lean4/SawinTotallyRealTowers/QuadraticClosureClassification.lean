@@ -10,8 +10,6 @@ import SawinTotallyRealTowers.FiniteRealPExtension
 import Mathlib.Algebra.Ring.Commute
 import Mathlib.Algebra.Algebra.Rat
 
-set_option autoImplicit false
-
 /-!
 # Identifying quadratic subfields from their generators
 

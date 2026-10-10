@@ -8,7 +8,13 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Froben
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusClosureCommutation
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldAction
 
-set_option autoImplicit false
+/-!
+# Finite-field unit maps
+
+This module proves valuation invariance on Frobenius fixed fields and
+constructs the induced actions, inclusions, and relative norms on the
+corresponding finite unit groups.
+-/
 
 universe u v
 
@@ -17,13 +23,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Finite-field unit maps
 
-This module proves valuation invariance on Frobenius fixed fields and
-constructs the induced actions, inclusions, and relative norms on the
-corresponding finite unit groups.
--/
 
 noncomputable section
 

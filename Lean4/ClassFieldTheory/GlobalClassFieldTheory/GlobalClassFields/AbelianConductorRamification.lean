@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianNormConductor
 
-set_option autoImplicit false
-
 /-!
 # Ramification support of abelian narrow finite norm conductors
 
@@ -18,7 +16,9 @@ ramification locus, while the minimal narrow finite conductor has support
 contained in that locus.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 

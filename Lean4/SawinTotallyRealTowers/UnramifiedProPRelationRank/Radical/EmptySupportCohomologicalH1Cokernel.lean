@@ -6,9 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceRamifiedCharacterQuotient
-import Mathlib.LinearAlgebra.Dual.Lemmas
 
-set_option autoImplicit false
 /-!
 # Self-dual empty-support cohomological H¹ cokernel
 

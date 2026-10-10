@@ -9,10 +9,6 @@ import Mathlib.RingTheory.DedekindDomain.IntegralClosure
 import Mathlib.RingTheory.Valuation.LocalSubring
 import Mathlib.RingTheory.Valuation.Integral
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Chevalley's valuation extension theorem
 
@@ -21,6 +17,8 @@ subring/residue-field API.  This file proves the field-extension form of
 Chevalley's valuation extension theorem from mathlib's maximal local subring
 construction: a local subring of a field is dominated by a valuation subring.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

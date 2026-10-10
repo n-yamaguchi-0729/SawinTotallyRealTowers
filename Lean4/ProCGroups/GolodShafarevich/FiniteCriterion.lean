@@ -10,7 +10,6 @@ import ProCGroups.GolodShafarevich.TruncatedInequality
 import ProCGroups.ProP.Presentation.RelationCardinal
 import ProCGroups.ProP.Presentation.RelatorDepth
 
-set_option autoImplicit false
 /-!
 # Finite Golod--Shafarevich bound
 

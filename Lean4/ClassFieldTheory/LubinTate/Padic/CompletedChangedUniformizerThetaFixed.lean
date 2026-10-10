@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
 
-set_option autoImplicit false
-
 /-!
 # Fixedness of completed p-adic changed-uniformizer theta values
 
@@ -18,6 +16,8 @@ the first changed-uniformizer identity changes the evaluation point by the
 unit itself.  The unit and inverse-unit actions cancel, so the actual
 convergent theta value is fixed.
 -/
+
+
 
 noncomputable section
 

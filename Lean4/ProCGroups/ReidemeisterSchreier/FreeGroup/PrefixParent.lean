@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.GroupTheory.FreeGroup.Reduce
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Free Group / Prefix Parent
 
@@ -17,6 +13,8 @@ This module develops the signed-letter view of reduced free-group words,
 including cancellation at the last letter and the prefix-parent operation
 used to build Schreier prefix trees.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier
 
@@ -125,7 +123,8 @@ theorem FreeGroup.mul_of_of_eq_mk_dropLast_of_cancels {X : Type u} [DecidableEq 
           ((FreeGroup.toWord t).dropLast ++ (x, false) :: (x, true) :: [])
           ((FreeGroup.toWord t).dropLast ++ []) from by constructor))
 
-/-- In the cancelling case, the reduced word of the product is the original word without its last letter. -/
+/-- In the cancelling case, the reduced word of the product is the original word without its
+last letter. -/
 theorem FreeGroup.toWord_mul_of_of_cancels {X : Type u} [DecidableEq X]
     (t : FreeGroup X) (x : X) (hw : FreeGroup.toWord t ≠ [])
     (hlast : (FreeGroup.toWord t).getLast hw = (x, false)) :
@@ -319,7 +318,8 @@ theorem FreeGroup.length_prefixParent_eq_pred {X : Type u} [DecidableEq X]
       (FreeGroup.toWord t).length - 1 := by
   rw [FreeGroup.toWord_prefixParent, List.length_dropLast]
 
-/-- A word ending in a positive generator is reconstructed from its prefix parent by that generator. -/
+/-- A word ending in a positive generator is reconstructed from its prefix parent by that
+generator. -/
 theorem FreeGroup.prefixParent_mul_of_of_last_pos {X : Type u} [DecidableEq X]
     (t : FreeGroup X) (x : X) (hw : FreeGroup.toWord t ≠ [])
     (hlast : (FreeGroup.toWord t).getLast hw = (x, true)) :
@@ -362,7 +362,8 @@ theorem FreeGroup.prefixParent_mul_mk_singleton_of_last {X : Type u} [DecidableE
     exact FreeGroup.isReduced_toWord (x := t)
   exact hred.reduce_eq.trans hword
 
-/-- A last-letter option supplies the signed letter that reconstructs the word from its prefix parent. -/
+/-- A last-letter option supplies the signed letter that reconstructs the word from its prefix
+parent. -/
 theorem FreeGroup.prefixParent_mul_lastLetter {X : Type u} [DecidableEq X]
     {t : FreeGroup X} {y : Internal.SignedLetter X}
     (h : FreeGroup.lastLetter? t = some y) :
@@ -426,7 +427,8 @@ theorem FreeGroup.exists_prefixParent_mul_lastLetter_of_ne_one
   · exact Internal.FreeGroupWord.FreeGroup.prefixParent_mul_mk_singleton_of_last t
       ((FreeGroup.toWord t).getLast hw) hw rfl
 
-/-- The last letter of a nontrivial word is either positive or negative, with the corresponding parent formula. -/
+/-- The last letter of a nontrivial word is either positive or negative, with the
+corresponding parent formula. -/
 theorem FreeGroup.lastLetter_cases_of_ne_one {X : Type u} [DecidableEq X]
     {t : FreeGroup X} (ht : t ≠ 1) :
     ∃ x : X,

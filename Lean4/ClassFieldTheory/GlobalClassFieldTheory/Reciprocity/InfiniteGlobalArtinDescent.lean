@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtinCompatibility
 
-set_option autoImplicit false
-
 /-!
 # Descent of the infinite global Artin homomorphism
 
@@ -18,7 +16,9 @@ This file descends that homomorphism to the idele class group and retains its
 ordinary quotient topology.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

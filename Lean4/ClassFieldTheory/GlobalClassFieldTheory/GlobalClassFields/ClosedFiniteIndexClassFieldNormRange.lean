@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldConstruction
 
-set_option autoImplicit false
-
 /-!
 # Norm range over the canonical fixed-field base
 
@@ -15,7 +13,9 @@ This leaf compares the selected abstract norm subgroup with the actual
 idèle-class norm range over the canonical fixed-field base.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

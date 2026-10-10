@@ -8,10 +8,6 @@ import Mathlib.GroupTheory.Schreier
 import ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.Basic
 import ProCGroups.ReidemeisterSchreier.RightQuotient
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Transversals
 
@@ -19,6 +15,8 @@ This module defines full and partial right Schreier transversals in free
 groups, proves their complement and prefix-closure properties, and supplies
 the existence and extension results used later.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier.Discrete.OpenSubgroups
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 
-set_option autoImplicit false
-
 /-!
 # Valuations of natural-number denominators
 
@@ -17,6 +15,8 @@ and finite residue field, this file constructs the ramification index
 `e = v_K(p)` from the valuation itself.  In mixed characteristic it then proves
 the natural-number valuation formula used in the logarithm and exponential theorems.
 -/
+
+
 
 noncomputable section
 

@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueDatum
 import ValuedFieldTheory.Ramification.HilbertRamification.ResidueExactSequence
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open RamificationTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: residue-action image indices
 
@@ -26,6 +18,14 @@ surjective.  If a finite-index subgroup has residue-action image equal to the
 fixing group of a finite residue subextension, its degree image has the
 ordinary residue-field index.
 -/
+
+namespace LocalClassFieldTheory
+
+open RamificationTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 

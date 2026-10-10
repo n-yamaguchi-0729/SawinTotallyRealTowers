@@ -12,8 +12,6 @@ import Mathlib.Algebra.BigOperators.Finprod
 import Mathlib.NumberTheory.NumberField.Completion.Ramification
 import Mathlib.RingTheory.Ideal.Norm.RelNorm
 
-set_option autoImplicit false
-
 /-!
 # Finite-place arithmetic of idele norms
 
@@ -21,6 +19,8 @@ This file relates the finite components of the ordinary idele norm to local
 orders and positive prime norms. It also proves the degree formula for the
 finite positive norm under scalar extension.
 -/
+
+
 
 open scoped BigOperators NNReal NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain

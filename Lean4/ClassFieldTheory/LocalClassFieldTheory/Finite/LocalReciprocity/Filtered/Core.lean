@@ -9,8 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.Conductor
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
 import ValuedFieldTheory.Ramification.Filtration
 
-set_option autoImplicit false
-
 /-!
 # Filtered local reciprocity
 
@@ -142,8 +140,8 @@ theorem filteredLocalReciprocity_descends
     (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
     [FiniteDimensional K E] [FiniteDimensional K F]
     [IsAbelianGalois K E] [IsAbelianGalois K F]
-    (upperE : ℝ → Subgroup (Gal(E / K)))
-    (upperF : ℝ → Subgroup (Gal(F / K)))
+    (upperE : ℝ → Subgroup (Gal(E/K)))
+    (upperF : ℝ → Subgroup (Gal(F/K)))
     (hupper : ∀ t,
       Subgroup.map
           (intermediateFieldRestrictNormalHom E F hEF)

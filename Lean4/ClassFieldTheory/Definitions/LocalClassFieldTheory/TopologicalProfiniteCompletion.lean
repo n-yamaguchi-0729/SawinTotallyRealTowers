@@ -8,8 +8,6 @@ import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
 import Mathlib.Topology.Algebra.Group.Quotient
 import Mathlib.Topology.Algebra.OpenSubgroup
 
-set_option autoImplicit false
-
 /-!
 # Topological profinite completion
 
@@ -18,6 +16,8 @@ open finite-index normal subgroups. The construction records the topology on
 the source group, unlike the abstract profinite completion by all finite
 quotients.
 -/
+
+
 
 noncomputable section
 
@@ -66,7 +66,8 @@ instance : PartialOrder (OpenFiniteIndexNormalSubgroup G) :=
 instance : SmallCategory (OpenFiniteIndexNormalSubgroup G) :=
   Preorder.smallCategory _
 
-/-- A morphism of open finite-index normal subgroups induces inclusion of the underlying subgroups. -/
+/-- A morphism of open finite-index normal subgroups induces inclusion of the
+underlying subgroups. -/
 theorem le_of_hom {H K : OpenFiniteIndexNormalSubgroup G} (f : H ⟶ K) :
     H.toOpenNormalSubgroup.toSubgroup ≤ K.toOpenNormalSubgroup.toSubgroup := by
   have h : H ≤ K := CategoryTheory.leOfHom f

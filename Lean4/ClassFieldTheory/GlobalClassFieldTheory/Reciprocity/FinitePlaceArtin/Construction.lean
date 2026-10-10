@@ -18,15 +18,16 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletion
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
 
-set_option autoImplicit false
-
 /-!
 # Construction of finite-place Artin homomorphisms
 
-This module constructs the local Artin map for a chosen extension of a finite place and transports it through the actual decomposition group into the global Galois group.
+This module constructs the local Artin map for a chosen extension of a finite place and transports
+it through the actual decomposition group into the global Galois group.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField
+
+
+open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -77,7 +78,8 @@ noncomputable def finitePlaceArtinCompletionValuativeRel
   exact ValuativeRel.ofValuation
     (Valued.v : Valuation vF.Completion ℝ≥0)
 
-/-- The canonical valued structure makes a locally compact finite-place completion a nonarchimedean local field. -/
+/-- The canonical valued structure makes a locally compact finite-place completion a nonarchimedean
+local field. -/
 theorem
     finitePlaceArtinCompletionIsNonarchimedeanLocalField
     {F : Type} [Field F]
@@ -570,7 +572,8 @@ theorem finitePlaceLocalArtinIsAbelianGalois
     LocalClassFieldTheory.localizedCompletion_isAbelianGalois
       vK hvK w
 
-/-- The local Artin homomorphism on the algebraic localization attached to a chosen extension of a finite place. -/
+/-- The local Artin homomorphism on the algebraic localization attached to a chosen extension of a
+finite place. -/
 noncomputable def finitePlaceLocalArtinMonoidHom
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
@@ -597,7 +600,8 @@ noncomputable def finitePlaceLocalArtinMonoidHom
       vK.Completion E).comp
         (finitePlaceLocalArtinInputMonoidHom v)
 
-/-- Evaluation of the localized finite-place Artin homomorphism through the canonical completion equivalence. -/
+/-- Evaluation of the localized finite-place Artin homomorphism through the canonical completion
+equivalence. -/
 theorem finitePlaceLocalArtinMonoidHom_apply
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
@@ -709,7 +713,8 @@ theorem finitePlaceLocalArtinMonoidHom_apply_normalized_at
       (finitePlaceLocalArtinMonoidHom_apply_normalized
         (K := K) (L := L) v w x)
 
-/-- The decomposition-group inclusion transporting localized automorphisms to the global Galois group. -/
+/-- The decomposition-group inclusion transporting localized automorphisms to the global Galois
+group. -/
 noncomputable def finitePlaceLocalToGlobalMonoidHom
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
@@ -734,7 +739,8 @@ noncomputable def finitePlaceLocalToGlobalMonoidHom
     (absoluteValueDecompositionGroup K w.1).subtype.comp
       eD.symm.toMonoidHom
 
-/-- The finite-place Artin map factors through the localized Artin map and the decomposition-group inclusion. -/
+/-- The finite-place Artin map factors through the localized Artin map and the decomposition-group
+inclusion. -/
 theorem finitePlaceArtinMonoidHomOfExtension_factor
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
-set_option autoImplicit false
-
 /-!
 # Narrow ideal classes
 
@@ -15,7 +13,9 @@ This file proves the exact sequence from
 global unit signs through the narrow and ordinary class groups.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

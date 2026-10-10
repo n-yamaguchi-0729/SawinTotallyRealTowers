@@ -15,8 +15,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 import Mathlib.NumberTheory.NumberField.ClassNumber
 
-set_option autoImplicit false
-
 /-!
 # A sufficiently large finite set of places
 
@@ -27,6 +25,8 @@ union of the (finite) supports of those representatives is a finite set
 
 `I_K = I_K^S Kˣ`.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

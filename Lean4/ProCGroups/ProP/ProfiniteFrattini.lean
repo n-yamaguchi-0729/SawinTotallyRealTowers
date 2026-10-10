@@ -8,7 +8,6 @@ import ProCGroups.ProP.FiniteFrattini
 import ProCGroups.ProC.InverseLimits.Predicates
 import ProCGroups.ProC.OpenNormalSubgroups.Separation
 
-set_option autoImplicit false
 /-!
 # The Frattini subgroup of a pro-p group
 

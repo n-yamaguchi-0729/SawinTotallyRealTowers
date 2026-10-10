@@ -20,8 +20,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlac
 import ProCGroups.Topologies.QuotientMaps
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Removing unwanted inertia and real conjugation from cocycle lifts
 

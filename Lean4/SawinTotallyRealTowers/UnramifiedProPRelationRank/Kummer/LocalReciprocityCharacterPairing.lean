@@ -14,7 +14,6 @@ import Mathlib.Algebra.Module.ZMod
 import Mathlib.Topology.Algebra.Group.Basic
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # Local reciprocity pairing without coefficient roots of unity
 

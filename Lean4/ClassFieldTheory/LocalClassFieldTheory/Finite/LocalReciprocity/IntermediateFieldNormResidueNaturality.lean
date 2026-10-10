@@ -8,8 +8,7 @@ import Mathlib.GroupTheory.Abelianization.Defs
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 import ValuedFieldTheory.Ramification.GaloisValuation.IntermediateFieldRestriction
-
-set_option autoImplicit false
+import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Restriction naturality for the concrete local norm-residue symbol
@@ -23,6 +22,8 @@ The intermediate-field restriction is packaged here so callers do not have
 to install the auxiliary `Algebra E F` and scalar-tower instances attached
 to an inclusion `E ≤ F`.
 -/
+
+
 
 noncomputable section
 
@@ -374,7 +375,8 @@ theorem concreteNormResidueAutomorphism_restrict
   have hrawa := DFunLike.congr_fun hraw xF
   change _ =
     D.normResidueSymbol (absoluteUnits K) v hcf BF EE
-      (finiteReciprocityNaturalityNormMap (absoluteUnits K) B B EE.field EF.field EE.below EF.below le_rfl hFE xF) at hrawa
+      (finiteReciprocityNaturalityNormMap (absoluteUnits K) B B EE.field EF.field EE.below
+        EF.below le_rfl hFE xF) at hrawa
   rw [hnorm] at hrawa
   let zF := D.normResidueSymbol (absoluteUnits K) v hcf BF EF xF
   let zE := D.normResidueSymbol (absoluteUnits K) v hcf BF EE xE

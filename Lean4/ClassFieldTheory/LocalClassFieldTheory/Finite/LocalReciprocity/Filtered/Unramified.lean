@@ -5,10 +5,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Core
-import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Core
-import ValuedFieldTheory.Ramification.LocalField.Unramified
-
-set_option autoImplicit false
+import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
+import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # Artin filtrations of unramified local extensions
@@ -23,9 +24,7 @@ namespace LocalClassFieldTheory
 
 open LocalClassFieldTheory
 open LocalFieldTheory
-open RamificationTheory.LocalField
 open RamificationTheory.HilbertRamification
-open RamificationTheory.HilbertRamification.Higher
 open ValuationTheory.DiscreteValuationField
 open ValuationTheory.DiscreteValuationField.ValuedExtension
 open scoped ValuativeRel

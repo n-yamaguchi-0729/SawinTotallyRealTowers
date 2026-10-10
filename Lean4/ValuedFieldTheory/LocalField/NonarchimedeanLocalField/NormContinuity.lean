@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.Topology.Instances.Matrix
 
-set_option autoImplicit false
-
 /-!
 # Continuity of finite field norms
 
@@ -19,6 +17,8 @@ reciprocity law: on a finite-dimensional normed algebra, the field norm is a
 determinant and is therefore continuous.  It also bundles the corresponding
 statements for field units and valuation-ring units.
 -/
+
+
 
 noncomputable section
 

@@ -14,8 +14,6 @@ import Mathlib.NumberTheory.NumberField.ClassNumber
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Data.Fintype.Card
 
-set_option autoImplicit false
-
 /-!
 # The ideal-square radical over the rationals
 

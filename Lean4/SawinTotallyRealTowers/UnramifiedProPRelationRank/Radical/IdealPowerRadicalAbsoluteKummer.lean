@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalSelmer
 
-set_option autoImplicit false
 /-!
 # Ideal-power radical classes as absolute Kummer characters
 

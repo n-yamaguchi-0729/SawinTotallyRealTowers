@@ -43,19 +43,19 @@ import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Maps.Basic
 import Mathlib.Topology.Sets.Opens
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.HenselianDVF
-
 /-!
 # Finite-level valuation restriction for absolute Galois arguments
 
 This file isolates the valuation-restriction and separable-power lemmas
 used to pass from absolute Galois questions to finite intermediate fields.
 -/
+
+namespace RamificationTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.HenselianDVF
+
+
 
 noncomputable section
 
@@ -177,7 +177,8 @@ theorem smul_hasExtension
     _root_.Valuation.HasExtension v (σ • A).valuation := by
   apply _root_.Valuation.HasExtension.ofComapInteger
   ext x
-  simp [ValuationSubring.integer_valuation, Valuation.mem_integer_iff]
+  simp only [Subring.mem_comap, ValuationSubring.integer_valuation,
+    Valuation.mem_integer_iff, ValuationSubring.pointwise_smul_toSubring]
   rw [Subring.mem_pointwise_smul_iff_inv_smul_mem]
   have hcomm : (σ⁻¹) (algebraMap K Ω x) = algebraMap K Ω x :=
     (σ⁻¹).commutes x

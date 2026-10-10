@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 import ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveAction
 
-set_option autoImplicit false
-
 /-!
 # Primitive changed-uniformizer points in the completed p-adic level
 
@@ -19,6 +17,8 @@ value constructed in the standard completed level has the changed
 primitive polynomial as its minimal polynomial and generates the whole
 completed level over the completed-unramified coefficient field.
 -/
+
+
 
 noncomputable section
 

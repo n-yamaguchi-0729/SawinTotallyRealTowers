@@ -9,8 +9,6 @@ import ProCGroups.Profinite.Basic
 import ProCGroups.Topologies.ContinuousMulEquiv
 import ProCGroups.TopologicalGroups
 
-set_option autoImplicit false
-
 /-!
 # Continuous pullbacks of topological groups
 

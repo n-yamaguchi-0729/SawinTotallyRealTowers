@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FiniteStage.RelationAction
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Source
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — finite stage — relation ideal
 

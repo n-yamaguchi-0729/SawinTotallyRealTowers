@@ -9,8 +9,6 @@ import Mathlib.Topology.DiscreteQuotient
 import Mathlib.Topology.Separation.Profinite
 import ProCGroups.InverseSystems.CofinalityAndDensity
 
-set_option autoImplicit false
-
 /-!
 # Profinite spaces as limits of finite discrete quotients
 

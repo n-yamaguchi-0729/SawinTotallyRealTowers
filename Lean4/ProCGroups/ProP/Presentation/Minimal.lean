@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.FrattiniQuotient
 import ProCGroups.ProP.Presentation.Basic
 
-set_option autoImplicit false
 /-!
 # Minimal pro-p presentations
 

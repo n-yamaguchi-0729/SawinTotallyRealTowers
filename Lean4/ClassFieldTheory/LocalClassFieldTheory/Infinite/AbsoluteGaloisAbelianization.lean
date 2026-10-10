@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
-set_option autoImplicit false
-
 /-!
 # Compatibility names for the absolute abelianization
 
@@ -16,6 +14,8 @@ The field-generic construction is owned by
 `AlgebraicNumberTheory.Galois.AbsoluteAbelianization`.  This module preserves
 the established local names as definitional wrappers for downstream users.
 -/
+
+
 
 noncomputable section
 

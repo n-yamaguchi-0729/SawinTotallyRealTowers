@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Henselian.Factorization.Step
 
-set_option autoImplicit false
-
 /-!
 # recursive Hensel iterates
 

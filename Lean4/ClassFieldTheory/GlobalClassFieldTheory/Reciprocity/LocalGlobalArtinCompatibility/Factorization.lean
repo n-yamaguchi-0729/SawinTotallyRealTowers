@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.FinitePadicAuxiliaryField
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
 
-set_option autoImplicit false
-
 /-!
 # Factorization of the global Artin map through local Artin maps
 
@@ -16,6 +14,8 @@ This module completes the auxiliary-field argument, factors the global
 norm-residue map through each local Artin quotient, and proves the
 finite-place local-global compatibility theorem.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 open NumberField
@@ -44,13 +44,13 @@ variable
 the relative Galois group. -/
 private theorem numberFieldTowerFiniteQuotientCoordinate_mem_primary
     (p : Nat.Primes) (τ : (numberFieldTowerBaseSubgroup K L).toSubgroup)
-    (σ' : Gal(L / K))
+    (σ' : Gal(L/K))
     (hτσ :
       numberFieldTowerExtensionQuotientEquivGaloisGroup K L
           (numberFieldTowerFiniteQuotientCoordinate
             (K := K) (L := L) τ) = σ')
     (hprimary :
-      σ' ∈ CommGroup.primaryComponent (Gal(L / K)) p.1) :
+      σ' ∈ CommGroup.primaryComponent (Gal(L/K)) p.1) :
     numberFieldTowerFiniteQuotientCoordinate
         (K := K) (L := L) τ ∈
       CommGroup.primaryComponent
@@ -86,12 +86,12 @@ private theorem exists_finitePlacePrimary_localGlobalRepresentative
         (chosenFinitePlaceExtension (L := L) v).1)
     (hgenerate :
       Subgroup.closure
-          ({σ.1} : Set (Gal(L / K))) =
+          ({σ.1} : Set (Gal(L/K))) =
         ⊤)
     (hprimary :
       σ.1 ∈
         CommGroup.primaryComponent
-          (Gal(L / K)) p.1) :
+          (Gal(L/K)) p.1) :
     ∃ z : (v.adicCompletion K)ˣ,
       chosenFinitePlaceArtinMonoidHom
           (K := K) (L := L) v z = σ.1 ∧
@@ -233,9 +233,9 @@ theorem
       absoluteValueDecompositionGroup K
         (chosenFinitePlaceExtension (L := L) v).1)
     (hgenerate :
-      Subgroup.closure ({σ.1} : Set (Gal(L / K))) = ⊤)
+      Subgroup.closure ({σ.1} : Set (Gal(L/K))) = ⊤)
     (hprimary :
-      σ.1 ∈ CommGroup.primaryComponent (Gal(L / K)) p.1)
+      σ.1 ∈ CommGroup.primaryComponent (Gal(L/K)) p.1)
     (x : (v.adicCompletion K)ˣ)
     (hx :
       chosenFinitePlaceArtinMonoidHom
@@ -352,7 +352,7 @@ private opaque exists_finitePlaceNormDescent_localGlobalRepresentative
     (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     (W : IsDedekindDomain.HeightOneSpectrum (𝓞 M))
     (hWbelow : finitePlaceBelow (K := K) W = v)
-    (σM : Gal(L / M)) (σG : Gal(L / K))
+    (σM : Gal(L/M)) (σG : Gal(L/K))
     (hrestrict :
       ((AlgEquiv.restrictNormalHom L).comp
           (AlgEquiv.restrictScalarsHom K)) σM = σG)
@@ -484,10 +484,10 @@ private opaque exists_finitePlacePrimaryNormDescent_localGlobalRepresentative
       absoluteValueDecompositionGroup M
         (chosenFinitePlaceExtension (L := L) W).1)
     (hgenerate :
-      Subgroup.closure ({δM.1} : Set (Gal(L / M))) = ⊤)
+      Subgroup.closure ({δM.1} : Set (Gal(L/M))) = ⊤)
     (hprimary :
-      δM.1 ∈ CommGroup.primaryComponent (Gal(L / M)) p.1)
-    (σG : Gal(L / K))
+      δM.1 ∈ CommGroup.primaryComponent (Gal(L/M)) p.1)
+    (σG : Gal(L/K))
     (hrestrict :
       ((AlgEquiv.restrictNormalHom L).comp
           (AlgEquiv.restrictScalarsHom K)) δM.1 = σG) :
@@ -514,7 +514,7 @@ private opaque exists_finitePlacePrimary_cyclicFixedFieldRepresentative
       absoluteValueDecompositionGroup K
         (chosenFinitePlaceExtension (L := L) v).1)
     (hprimary :
-      δ.1 ∈ CommGroup.primaryComponent (Gal(L / K)) p.1) :
+      δ.1 ∈ CommGroup.primaryComponent (Gal(L/K)) p.1) :
     ∃ z : (v.adicCompletion K)ˣ,
       chosenFinitePlaceArtinMonoidHom
           (K := K) (L := L) v z = δ.1 ∧

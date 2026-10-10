@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.Monogeneity
 
-set_option autoImplicit false
-
 /-!
 # First ramification-quotient homomorphism over general DVFs
 
@@ -17,6 +15,8 @@ injectivity statement includes the necessary separability hypothesis on the
 residue extension; the unconditional printed assertion is false for fiercely
 ramified extensions.
 -/
+
+
 
 noncomputable section
 
@@ -422,7 +422,7 @@ theorem dvfValuationSubringUnitAut_div_mem_succ
               (base := base) (target := target) huniq sigma
               (a : target.valuationSubring) -
             (a : target.valuationSubring)) := by
-    simp [div_eq_mul_inv]
+    rw [div_eq_mul_inv, Units.val_mul, dvfValuationSubringUnitAut_apply]
     have hinv :
         ((a⁻¹ : target.valuationSubringˣ) : target.valuationSubring) *
           (a : target.valuationSubring) = 1 := by

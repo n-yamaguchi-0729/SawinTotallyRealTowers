@@ -10,13 +10,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValuationHerbrand
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open CyclicCohomology
-
-open LocalFieldTheory
-
 /-!
 # The field-unit calculation in the local class-field-axiom theorem
 
@@ -25,6 +18,13 @@ class-field axiom. Its only input beyond the local-field hypotheses is the
 preceding normal-basis calculation `h(G, O_Lˣ) = 1` for the actual action on
 integer units.
 -/
+
+namespace LocalClassFieldTheory
+open CyclicCohomology
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -45,7 +45,7 @@ omit [IsGalois K L] in
 quotients in the valuation exact sequence and transported across the genuine
 comparison equivalence. -/
 theorem unitsTateH0FiniteOfIntegerUnitsHerbrand
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (hU :
       letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
@@ -66,7 +66,7 @@ valuation sequence, the normal-basis result `h(G,O_Lˣ)=1`, the value-group
 calculation, and Hilbert 90 imply the two asserted cardinalities for the
 actual Tate cohomology of `Lˣ`. -/
 theorem fieldUnits_tate_card_of_integerUnits_herbrand_eq_one
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (hU :
       letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L

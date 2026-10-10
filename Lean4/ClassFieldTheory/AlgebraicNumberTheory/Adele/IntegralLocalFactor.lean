@@ -15,8 +15,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import Mathlib.Algebra.Group.Pi.Units
 import Mathlib.Algebra.Group.Submonoid.Units
 
-set_option autoImplicit false
-
 /-!
 # Integral finite local factors of the relative idele group
 
@@ -28,6 +26,8 @@ in every completion factor.  Thus the integrality predicate used for the
 restricted product is closed under all group operations for structural,
 rather than coordinate-dependent, reasons.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

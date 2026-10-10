@@ -9,14 +9,14 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 import ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 import Mathlib.GroupTheory.QuotientGroup.Defs
 
-set_option autoImplicit false
-
 /-!
 # Finite levels of the rational idele-class direct limit
 
 Normal closures, finite-level scalar extension, tower base change, and the
 canonical embeddings into the rational idele-class direct limit.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField
@@ -101,7 +101,8 @@ noncomputable def rationalIntermediateIdeleClassToNormalClosure
     [FiniteDimensional ℚ K] :
     IdeleClassGroup K →*
       RelativeIdeleGroup.ClassGroup ℚ (rationalNormalClosure K) :=
-  (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion (IntermediateField.le_normalClosure K))).comp
+  (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion
+    (IntermediateField.le_normalClosure K))).comp
     (_root_.relativeIdeleClassBaseChangeMulEquiv
       (K := ℚ) (L := K)).symm.toMonoidHom
 
@@ -128,20 +129,23 @@ theorem
           (K := ℚ) (L := K) c) =
       rationalRelativeIdeleClassToDirectLimit
         (rationalNormalClosure K)
-        (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion (IntermediateField.le_normalClosure K)) c) := by
+        (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion
+          (IntermediateField.le_normalClosure K)) c) := by
   simp only [rationalIntermediateIdeleClassToDirectLimit,
     rationalIntermediateIdeleClassToNormalClosure]
   change
     rationalRelativeIdeleClassToDirectLimit
         (rationalNormalClosure K)
-        (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion (IntermediateField.le_normalClosure K))
+        (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion
+          (IntermediateField.le_normalClosure K))
           ((_root_.relativeIdeleClassBaseChangeMulEquiv
             (K := ℚ) (L := K)).symm
             (_root_.relativeIdeleClassBaseChangeMulEquiv
               (K := ℚ) (L := K) c))) =
       rationalRelativeIdeleClassToDirectLimit
         (rationalNormalClosure K)
-        (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion (IntermediateField.le_normalClosure K)) c)
+        (RelativeIdeleGroup.classEmbedding (IntermediateField.inclusion
+          (IntermediateField.le_normalClosure K)) c)
   rw [(_root_.relativeIdeleClassBaseChangeMulEquiv
     (K := ℚ) (L := K)).symm_apply_apply]
 

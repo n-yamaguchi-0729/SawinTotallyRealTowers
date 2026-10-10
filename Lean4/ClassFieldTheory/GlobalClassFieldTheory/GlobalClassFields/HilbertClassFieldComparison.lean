@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
 
-set_option autoImplicit false
-
 /-!
 # Comparison of the big and small Hilbert class fields
 
@@ -17,6 +15,8 @@ canonical map from the narrow class group to the ordinary class group.
 It then transports the archimedean sign exact sequence to a precise
 description of the kernel of that transition.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 

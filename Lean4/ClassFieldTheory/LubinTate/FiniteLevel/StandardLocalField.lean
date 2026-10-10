@@ -11,8 +11,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionComp
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
-set_option autoImplicit false
-
 /-!
 # The canonical local-field package for Lubin--Tate applications
 
@@ -22,6 +20,8 @@ used by finite local reciprocity.  This file packages that valuation as a
 with the pre-existing `𝒪[K]`, `principalUnits`, and `LocalFieldTheory.fieldPrincipalUnits`
 interfaces.
 -/
+
+
 
 noncomputable section
 

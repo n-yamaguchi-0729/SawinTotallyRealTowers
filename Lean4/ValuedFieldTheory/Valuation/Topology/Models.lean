@@ -5,10 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Mathlib.Topology.Homeomorph.Defs
-import Mathlib.Topology.Order
 import Mathlib.Topology.WithTopology
-
-set_option autoImplicit false
 
 /-!
 # Topological API for `WithTopology`
@@ -18,6 +15,8 @@ underlying type, topology, and basic API come directly from Mathlib. Algebraic
 structures needed on a particular topology-indexed copy are installed at that
 copy's owner rather than globally in the root `WithTopology` namespace.
 -/
+
+
 
 universe u v
 

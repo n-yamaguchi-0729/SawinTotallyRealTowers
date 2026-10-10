@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.FiniteKummerCupCoefficientSquare
 import GaloisCohomology.ProP.FiniteCyclicCarryCocycle
 
-set_option autoImplicit false
+/-!
+# Cyclic factor sets for finite Kummer cup products
+
+Constructs carry cocycles from the negative Kummer character and compares them
+with cup-product classes and factor sets inflated from cyclic quotients.
+-/
+
 open CategoryTheory
 open ClassFieldTower.ProP
 
@@ -23,9 +29,9 @@ variable (p : ℕ+)
 /-- The positive carry cocycle associated to the standard representatives of
 the negative of a Kummer character. -/
 noncomputable def negativeCharacterCarryTwoCocycle
-    (psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M / K)))
+    (psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M/K)))
     (a : Rep.ofAlgebraAutOnUnits K M)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a) :
     groupCohomology.cocycles₂ (Rep.ofAlgebraAutOnUnits K M) := by
   let : NeZero (p : ℕ) := ⟨p.ne_zero⟩
@@ -64,11 +70,11 @@ noncomputable def negativeCharacterCarryTwoCocycle
 
 @[simp]
 theorem negativeCharacterCarryTwoCocycle_apply
-    (psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M / K)))
+    (psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M/K)))
     (a : Rep.ofAlgebraAutOnUnits K M)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a)
-    (sigma tau : Gal(M / K)) :
+    (sigma tau : Gal(M/K)) :
     negativeCharacterCarryTwoCocycle K M p psi a ha (sigma, tau) =
       Cohomology.zmodCarry
         (-psi (Additive.ofMul sigma))
@@ -80,10 +86,10 @@ theorem negativeCharacterCarryTwoCocycle_apply
 /-- The positive cyclic carry cocycle pulled back along a finite quotient. -/
 noncomputable def inflatedFiniteCyclicCarryTwoCocycle
     {G : Type} [CommGroup G] [Fintype G]
-    (q : Gal(M / K) →* G)
+    (q : Gal(M/K) →* G)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (a : Rep.ofAlgebraAutOnUnits K M)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a) :
     groupCohomology.cocycles₂ (Rep.ofAlgebraAutOnUnits K M) := by
   refine ⟨fun xy ↦ Cohomology.finiteCyclicCarry g hg (q xy.1) (q xy.2) • a, ?_⟩
@@ -102,12 +108,12 @@ noncomputable def inflatedFiniteCyclicCarryTwoCocycle
 @[simp]
 theorem inflatedFiniteCyclicCarryTwoCocycle_apply
     {G : Type} [CommGroup G] [Fintype G]
-    (q : Gal(M / K) →* G)
+    (q : Gal(M/K) →* G)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (a : Rep.ofAlgebraAutOnUnits K M)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a)
-    (sigma tau : Gal(M / K)) :
+    (sigma tau : Gal(M/K)) :
     inflatedFiniteCyclicCarryTwoCocycle K M q g hg a ha (sigma, tau) =
       Cohomology.finiteCyclicCarry g hg (q sigma) (q tau) • a := by
   simp only [inflatedFiniteCyclicCarryTwoCocycle]
@@ -118,15 +124,15 @@ has the same pulled-back carry cocycle.  The value-coordinate formulation
 avoids any transport between definitionally different `ZMod` moduli. -/
 theorem negativeCharacterCarryTwoCocycle_eq_inflated
     {G : Type} [CommGroup G] [Fintype G]
-    (psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M / K)))
-    (q : Gal(M / K) →* G)
+    (psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M/K)))
+    (q : Gal(M/K) →* G)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (hcard : Nat.card G = (p : ℕ))
-    (hcoord : ∀ sigma : Gal(M / K),
+    (hcoord : ∀ sigma : Gal(M/K),
       (Cohomology.finiteCyclicGeneratorCoordinate g hg (q sigma)).val =
         (-psi (Additive.ofMul sigma)).val)
     (a : Rep.ofAlgebraAutOnUnits K M)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a) :
     negativeCharacterCarryTwoCocycle K M p psi a ha =
       inflatedFiniteCyclicCarryTwoCocycle K M q g hg a ha := by
@@ -185,14 +191,14 @@ The action hypothesis is the Kummer equation
 hypothesis is `alpha^p = a`. -/
 theorem finiteKummerCup_H2pi_eq_negativeCharacterCarry
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M / K)))
+    (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M/K)))
     (alpha a : Rep.ofAlgebraAutOnUnits K M)
-    (halpha : ∀ sigma : Gal(M / K),
+    (halpha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma alpha =
         (finiteKummerCoefficientRepHom K M p hmu).hom
           (ULift.up (chi (Additive.ofMul sigma))) + alpha)
     (hpow : (p : ℕ) • alpha = a)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a) :
     groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K M)
         (finiteKummerCupCoefficientTwoCocycle K M p hmu chi psi) =
@@ -262,20 +268,20 @@ with the negative Kummer character. -/
 theorem finiteKummerCup_H2pi_eq_inflatedFiniteCyclicCarry
     {G : Type} [CommGroup G] [Fintype G]
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M / K)))
-    (q : Gal(M / K) →* G)
+    (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(M/K)))
+    (q : Gal(M/K) →* G)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (hcard : Nat.card G = (p : ℕ))
-    (hcoord : ∀ sigma : Gal(M / K),
+    (hcoord : ∀ sigma : Gal(M/K),
       (Cohomology.finiteCyclicGeneratorCoordinate g hg (q sigma)).val =
         (-psi (Additive.ofMul sigma)).val)
     (alpha a : Rep.ofAlgebraAutOnUnits K M)
-    (halpha : ∀ sigma : Gal(M / K),
+    (halpha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma alpha =
         (finiteKummerCoefficientRepHom K M p hmu).hom
           (ULift.up (chi (Additive.ofMul sigma))) + alpha)
     (hpow : (p : ℕ) • alpha = a)
-    (ha : ∀ sigma : Gal(M / K),
+    (ha : ∀ sigma : Gal(M/K),
       (Rep.ofAlgebraAutOnUnits K M).ρ sigma a = a) :
     groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K M)
         (finiteKummerCupCoefficientTwoCocycle K M p hmu chi psi) =

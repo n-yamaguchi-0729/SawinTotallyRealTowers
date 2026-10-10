@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
 import Mathlib.Order.Filter.AtTopBot.Tendsto
 
-set_option autoImplicit false
-
 /-!
 # Valuation estimates for logarithm and exponential series
 
 This file proves lower bounds and divergence-to-infinity statements for the
 integer valuations of the logarithm and exponential series terms.
 -/
+
+
 
 noncomputable section
 

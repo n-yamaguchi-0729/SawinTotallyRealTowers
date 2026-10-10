@@ -9,8 +9,6 @@ import GaloisCohomology.Kummer.Concrete.RootCharacters
 import Mathlib.Algebra.Group.Hom.Basic
 import Mathlib.Algebra.Group.Subgroup.Ker
 
-set_option autoImplicit false
-
 /-!
 # Kummer radicals and finite-place decomposition fields
 
@@ -24,7 +22,9 @@ the decomposition field.  The only Kummer input is the usual fact that
 two roots with the same `n`-th power differ by an `n`-th root of unity.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

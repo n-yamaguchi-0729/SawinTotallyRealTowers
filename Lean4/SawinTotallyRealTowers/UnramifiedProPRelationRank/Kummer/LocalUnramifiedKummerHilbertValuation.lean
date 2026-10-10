@@ -9,7 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Unramified
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
 
-set_option autoImplicit false
 /-!
 # Unramified Kummer Hilbert characters and valuation
 

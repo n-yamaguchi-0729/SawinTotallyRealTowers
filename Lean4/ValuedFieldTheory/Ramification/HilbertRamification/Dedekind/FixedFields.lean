@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: decomposition and inertia fields
 
@@ -16,6 +14,8 @@ Dedekind-domain file defines the decomposition and inertia groups attached to
 a prime ideal; here we view those groups as subgroups of a finite Galois group
 acting on the fraction field and use mathlib's Galois correspondence.
 -/
+
+
 
 noncomputable section
 
@@ -238,7 +238,8 @@ theorem decompositionField_le_inertiaField
     decompositionField (K := K) (L := L) G P ≤
       inertiaField (K := K) (L := L) G P :=
   by
-    simpa [decompositionField, inertiaField, fixedFieldOfSubgroup, inertiaGroup, decompositionGroup] using
+    simpa [decompositionField, inertiaField, fixedFieldOfSubgroup, inertiaGroup, decompositionGroup]
+      using
       (IsGaloisGroup.fixedPoints_le_of_le
         (G := G) (K := K) (L := L)
         (H := inertiaGroup P G) (H' := decompositionGroup P G)

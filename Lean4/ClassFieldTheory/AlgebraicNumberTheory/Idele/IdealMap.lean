@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 import Mathlib.RingTheory.DedekindDomain.Factorization
 import Mathlib.RingTheory.ClassGroup.Basic
 
-set_option autoImplicit false
-
 /-!
 # The ideal attached to an idele
 
@@ -19,6 +17,8 @@ vector, and unique factorization of fractional ideals identifies that vector
 with a nonzero fractional ideal.  We prove both stages surjective and identify
 the kernel with the ideles integral at every finite place.
 -/
+
+
 
 open scoped NumberField RestrictedProduct WithZero
 open NumberField IsDedekindDomain

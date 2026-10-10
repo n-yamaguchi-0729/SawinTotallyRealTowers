@@ -8,8 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
 
-set_option autoImplicit false
-
 /-!
 # The norm topology and the ordinary idele-class topology
 
@@ -19,6 +17,8 @@ with the range of the corresponding ordinary idele-class norm.  Since the
 latter is open, every abstract norm-open subgroup becomes open in the
 ordinary idele-class topology after transport to the actual fixed field.
 -/
+
+
 
 open scoped NumberField
 

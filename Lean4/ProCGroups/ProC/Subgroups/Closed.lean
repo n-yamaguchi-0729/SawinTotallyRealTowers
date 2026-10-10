@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProC.InverseLimits.Limits
 
-set_option autoImplicit false
-
 /-!
 # Closed subgroups, ranges, and extensions of pro-\(C\) groups
 

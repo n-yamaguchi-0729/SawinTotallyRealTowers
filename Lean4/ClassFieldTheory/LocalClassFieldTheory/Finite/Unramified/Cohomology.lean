@@ -13,8 +13,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomolo
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
 
-set_option autoImplicit false
-
 /-!
 # Tate cohomology of units in unramified extensions
 
@@ -22,6 +20,8 @@ For an unramified extension of local fields the actual low-degree Tate
 cohomology of the integer units and of every principal-unit group is trivial.
 The norm statements are the corresponding actual norm surjections.
 -/
+
+
 
 noncomputable section
 
@@ -71,7 +71,7 @@ theorem galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure_smul
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] (n : Nat)
-    (sigma : Gal(L / K)) (a : principalUnits L n) :
+    (sigma : Gal(L/K)) (a : principalUnits L n) :
     letI := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     sigma • a = galoisGroupPrincipalUnitsMapEquivOfIsIntegralClosure K L n sigma a :=
   rfl
@@ -196,7 +196,7 @@ private theorem integerUnits_herbrandQuotient_eq_one
     [IsNonarchimedeanLocalField L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
-    (g : Gal(L / K)) (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
+    (g : Gal(L/K)) (hg : ∀ sigma : Gal(L/K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ hU : HerbrandQuotientDefined Gal(L / K) 𝒪[L]ˣ g,
       @herbrandQuotient Gal(L / K) 𝒪[L]ˣ _ _ _
@@ -251,7 +251,7 @@ private theorem unramified_integerUnits_herbrand_subsingleton
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
     [IsUnramifiedValuedExtension K L]
-    (g : Gal(L / K)) (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
+    (g : Gal(L/K)) (hg : ∀ sigma : Gal(L/K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     Subsingleton (HerbrandH0 Gal(L / K) 𝒪[L]ˣ) ∧
       Subsingleton (HerbrandHMinusOne Gal(L / K) 𝒪[L]ˣ g) := by
@@ -295,7 +295,7 @@ private theorem unramified_principalUnits_herbrand_subsingleton
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
     [IsUnramifiedValuedExtension K L]
-    (n : Nat) (hn : 1 ≤ n) (g : Gal(L / K))
+    (n : Nat) (hn : 1 ≤ n) (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     Subsingleton (HerbrandH0 Gal(L / K) (principalUnits L n)) ∧
@@ -396,7 +396,7 @@ theorem unramified_units_tateCohomology_and_norm_surjective_for_generator
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
     [IsUnramifiedValuedExtension K L]
-    (g : Gal(L / K)) (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
+    (g : Gal(L/K)) (hg : ∀ sigma : Gal(L/K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     (Subsingleton (HerbrandH0 Gal(L / K) 𝒪[L]ˣ) ∧
       Subsingleton (HerbrandHMinusOne Gal(L / K) 𝒪[L]ˣ g)) ∧

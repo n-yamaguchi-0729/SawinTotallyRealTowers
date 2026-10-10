@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
 
-set_option autoImplicit false
-
 /-!
 # Uniqueness of logarithms on local-field units
 
@@ -15,6 +13,8 @@ This module isolates the torsion and unit-decomposition argument used to prove
 that an extension of the principal-unit logarithm is determined by its value
 on a uniformizer.
 -/
+
+
 
 noncomputable section
 

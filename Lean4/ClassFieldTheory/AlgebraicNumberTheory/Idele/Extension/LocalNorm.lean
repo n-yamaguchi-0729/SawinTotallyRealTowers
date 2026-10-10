@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 import ValuedFieldTheory.Valuation.Completion.DegreeNormTrace
 import ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
 
-set_option autoImplicit false
-
 /-!
 # Local components of the idele norm
 
@@ -18,6 +16,8 @@ completions above it. This file proves that the determinant norm on a finite
 product is the product of the norms of its factors. The last theorem applies
 this calculation to the canonical completion decomposition.
 -/
+
+
 
 open scoped BigOperators TensorProduct
 

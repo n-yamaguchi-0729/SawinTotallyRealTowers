@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.ProperAction.Basic
 import ProCGroups.ProC.Quotients.ClosedSubgroupNeighborhoods
 
-set_option autoImplicit false
-
 /-!
 # Sections for quotients by open subgroups
 

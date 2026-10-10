@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
 
-set_option autoImplicit false
-
 /-!
 # A valuation-theoretic finite Galois form of Krasner's argument
 
@@ -21,6 +19,8 @@ finite Galois overfield avoids introducing a second normed-field topology:
 invariance of the normalized additive valuation and its ultrametric
 inequality are sufficient.
 -/
+
+
 
 noncomputable section
 

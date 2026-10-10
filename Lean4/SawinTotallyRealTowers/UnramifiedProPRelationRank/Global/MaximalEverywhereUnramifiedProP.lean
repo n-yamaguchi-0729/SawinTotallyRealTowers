@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
 import Mathlib.GroupTheory.PGroup
 
-set_option autoImplicit false
 /-!
 # The maximal everywhere-unramified pro-p subextension
 

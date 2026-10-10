@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 
-set_option autoImplicit false
-
 /-!
 # The norm on ordinary ideles
 
@@ -17,6 +15,8 @@ scalar-extension equivalence with the ordinary ideles of the extension
 field transports that existing norm to the usual map
 `N_{L/K} : I_L → I_K`.
 -/
+
+
 
 open scoped NumberField
 open NumberField

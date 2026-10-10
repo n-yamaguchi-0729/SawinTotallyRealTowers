@@ -7,14 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.FiniteAbelian.Basic
 import GaloisCohomology.Kummer.Abstract.KummerGlobalOperator
 
-set_option autoImplicit false
-
-namespace KummerTheory
-
-open CyclicCohomology
-
 /-!
-# finite abelian Kummer theory, the finite abelian Kummer decomposition: cyclic factors of a finite abelian extension
+# finite abelian Kummer theory, the finite abelian Kummer decomposition: cyclic factors of a finite
+abelian extension
 
 The proof of the finite abelian Kummer decomposition reduces a finite abelian extension to cyclic
 subextensions.  This file supplies the group-theoretic source for that step.
@@ -26,6 +21,12 @@ original normal subgroup.
 
 No radical generators or field-lattice endpoint are asserted here.
 -/
+
+namespace KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -223,7 +224,7 @@ theorem extensionSubgroup_closedCyclicFactorSubgroup_eq
         (closedCyclicFactorSubgroup_le_base K L hLK f) =
       cyclicFactorSubgroup (extensionSubgroup (G := G) K L hLK) f := by
   ext x
-  simp [extensionSubgroup, closedCyclicFactorSubgroup]
+  dsimp only [extensionSubgroup, closedCyclicFactorSubgroup]
   rw [Subgroup.mem_subgroupOf]
   constructor
   · rintro ⟨y, hy, hxy⟩

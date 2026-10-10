@@ -8,7 +8,6 @@ import ProCGroups.ProP.ProfiniteFrattini
 import ProCGroups.Generation.QuotientCriteria
 import ProCGroups.ProC.Quotients.LeftQuotientMaps
 
-set_option autoImplicit false
 /-!
 # The pro-p Burnside basis criterion
 

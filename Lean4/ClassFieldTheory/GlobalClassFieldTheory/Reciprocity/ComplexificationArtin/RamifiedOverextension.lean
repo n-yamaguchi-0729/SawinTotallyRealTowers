@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.InfinitePlaceOverfield
 
-set_option autoImplicit false
-
 /-!
 # The quadratic overextension at a ramified real place
 
@@ -15,7 +13,9 @@ This module constructs the real fixed field of complex conjugation, the
 quadratic overextension above it, and the faithful cyclotomic restriction.
 -/
 
-open scoped Classical IsMulCommutative
+
+
+open scoped IsMulCommutative
 open NumberField
 
 noncomputable section
@@ -389,12 +389,9 @@ theorem ramifiedInfinitePlaceOverextension_eq_one_or_conjugation
     (v : InfinitePlace K)
     (hRamified :
       (chosenInfinitePlaceAbove (L := L) v).IsRamified K)
-    (σ :
-      Gal(
-        (infinitePlaceComplexificationOverfield
-          (K := K) (L := L) v) /
-        (ramifiedInfinitePlaceRealFixedField
-          (K := K) (L := L) v hRamified))) :
+    (σ : Gal((infinitePlaceComplexificationOverfield
+      (K := K) (L := L) v)/(ramifiedInfinitePlaceRealFixedField
+      (K := K) (L := L) v hRamified))) :
     σ = 1 ∨
       σ =
         ramifiedInfinitePlaceOverextensionConjugation

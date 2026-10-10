@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalPrimeFactor
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicZHatRigidity
 
-set_option autoImplicit false
-
 /-!
 # The rational cyclotomic principal-idele product formula
 
@@ -20,7 +18,9 @@ torsion-free rational `ZHat`-extension removes this final sign ambiguity
 and proves that every rational principal idele has trivial value.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

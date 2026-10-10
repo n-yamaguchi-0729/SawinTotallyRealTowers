@@ -8,8 +8,8 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.Ramification.GaloisValuation.Ramification
 import Mathlib.Algebra.Order.Floor.Ring
 import Mathlib.Topology.Order.MonotoneContinuity
-
-set_option autoImplicit false
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 
 /-!
 # The Herbrand function
@@ -23,6 +23,8 @@ shifted definition here.
 The definition is made on all of `ℝ`.  Below zero it is the identity, so
 its restriction to `[-1,∞)` is exactly the normalized function on this range.
 -/
+
+
 
 noncomputable section
 

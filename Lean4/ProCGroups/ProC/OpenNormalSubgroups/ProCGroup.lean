@@ -9,8 +9,6 @@ import ProCGroups.InverseSystems.Basic
 import ProCGroups.ProC.OpenNormalSubgroups.Basic
 import ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 
-set_option autoImplicit false
-
 /-!
 # Open-normal quotient bases in a finite-group class
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedGeometricRestriction
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
 
-set_option autoImplicit false
-
 /-!
 # Cyclotomic unramified local--global compatibility
 
@@ -16,6 +14,8 @@ For an unramified finite abelian subextension of an abstract rational
 fixed field, the actual global norm-residue homomorphism agrees on every
 finite one-place idele class with the chosen local Artin homomorphism.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 

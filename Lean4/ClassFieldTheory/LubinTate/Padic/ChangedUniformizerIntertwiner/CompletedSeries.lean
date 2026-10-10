@@ -9,13 +9,14 @@ import ClassFieldTheory.LubinTate.FormalModule.StandardSeries
 import ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
 
-set_option autoImplicit false
-
 /-!
 # Completed p-adic Lubin--Tate series
 
-This module extends the multiplicative and changed-standard Lubin--Tate series to the completed unramified Witt ring and records their coefficients and residue reductions.
+This module extends the multiplicative and changed-standard Lubin--Tate series to the completed
+unramified Witt ring and records their coefficients and residue reductions.
 -/
+
+
 
 noncomputable section
 

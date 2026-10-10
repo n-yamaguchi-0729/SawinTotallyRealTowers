@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.H2CocycleExtensionPullback
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
 
-set_option autoImplicit false
 /-!
 # Unramified local solutions of arithmetic-stage central embedding problems
 

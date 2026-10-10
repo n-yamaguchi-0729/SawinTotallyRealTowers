@@ -9,8 +9,9 @@ import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 import Mathlib.GroupTheory.GroupAction.Quotient
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction` Lean module. -/
+
 
 namespace LocalClassFieldTheory
 
@@ -95,7 +96,7 @@ variable (K L : Type u) [Field K] [Field L] [Algebra K L]
 /-- Every dilate `π_K^n M` of the normal-basis lattice is stable under the
 actual action of `Gal(L / K)`. -/
 theorem galoisGroup_apply_mem_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice
-    (n : Nat) (sigma : Gal(L / K)) {x : L}
+    (n : Nat) (sigma : Gal(L/K)) {x : L}
     (hx : x ∈ chosenBaseUniformizerPowSubmodule K L n
       (chosenNormalBasisIntegerLattice K L)) :
     sigma x ∈ chosenBaseUniformizerPowSubmodule K L n
@@ -123,7 +124,7 @@ variable [ValuativeRel L]
 /-- The actual integer-unit Galois action preserves each normal-basis
 principal-unit set `V^n = 1 + π_K^n M`. -/
 theorem galoisGroup_smul_mem_chosenNormalBasisPrincipalUnitSet
-    (n : Nat) (sigma : Gal(L / K)) {a : 𝒪[L]ˣ}
+    (n : Nat) (sigma : Gal(L/K)) {a : 𝒪[L]ˣ}
     (ha : a ∈ chosenNormalBasisPrincipalUnitSet K L n) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     sigma • a ∈ chosenNormalBasisPrincipalUnitSet K L n := by
@@ -156,7 +157,7 @@ def chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction
 theorem chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction_smul
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
-    (sigma : Gal(L / K)) (a : V) :
+    (sigma : Gal(L/K)) (a : V) :
     letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
     ((sigma • a : V) : 𝒪[L]ˣ) =
       letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
@@ -188,7 +189,7 @@ theorem chosenNormalBasisPrincipalUnitSubgroup_tateNorm_coe
 theorem chosenNormalBasisPrincipalUnitSubgroup_sigmaMinusOne_coe
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
-    (sigma : Gal(L / K)) (a : V) :
+    (sigma : Gal(L/K)) (a : V) :
     letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ((sigmaMinusOne (Gal(L / K)) V sigma a : V) : 𝒪[L]ˣ) =
@@ -244,7 +245,7 @@ theorem chosenNormalBasisIntegerUnitsQuotientMap_apply
 theorem chosenNormalBasisPrincipalUnitSubgroupInclusion_equivariant
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
-    (sigma : Gal(L / K)) (a : V) :
+    (sigma : Gal(L/K)) (a : V) :
     letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     chosenNormalBasisPrincipalUnitSubgroupInclusion (L := L) V (sigma • a) =
@@ -255,7 +256,7 @@ theorem chosenNormalBasisPrincipalUnitSubgroupInclusion_equivariant
 theorem chosenNormalBasisIntegerUnitsQuotientMap_equivariant
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
-    (sigma : Gal(L / K)) (a : 𝒪[L]ˣ) :
+    (sigma : Gal(L/K)) (a : 𝒪[L]ˣ) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     letI := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
     chosenNormalBasisIntegerUnitsQuotientMap (L := L) V (sigma • a) =

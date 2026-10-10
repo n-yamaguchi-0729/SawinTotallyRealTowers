@@ -10,19 +10,19 @@ import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.RingTheory.RootsOfUnity.Basic
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.ResidueField
-
 /-!
 # Residue roots of unity
 
 Hensel lifting identifies the finite residue-field unit group with the lifted roots of
 unity in the valuation ring.
 -/
+
+namespace LocalFieldTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.ResidueField
+
+
 
 noncomputable section
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.FiniteQuotients
 import ProCGroups.Generation.QuotientGeneratorConvergingPairs
 
-set_option autoImplicit false
-
 /-!
 # Generating sets converging to zero
 

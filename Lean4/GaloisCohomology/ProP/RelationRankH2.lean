@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.PresentationH2LowerBound
 import GaloisCohomology.ProP.PresentationH2UpperBound
 
-set_option autoImplicit false
 /-!
 # Minimal relation rank and degree-two continuous cohomology
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLocalComparison
 
-set_option autoImplicit false
-
 /-!
 # Removing one real place from a defining modulus
 
@@ -17,7 +15,9 @@ property exactly when the whole one-place idèle-class image is already
 contained in the target subgroup.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 
@@ -31,8 +31,9 @@ variable {K : Type*} [Field K] [NumberField K]
 /-- Erasing a selected real place can only decrease a full modulus. -/
 theorem eraseRealPlace_le
     (m : RayClass.Modulus K) (v : RayClass.RealPlace K) :
-    m.eraseRealPlace v ≤ m :=
-  ⟨le_rfl, Finset.erase_subset v m.infinitePart⟩
+    m.eraseRealPlace v ≤ m := by
+  classical
+  exact ⟨le_rfl, Finset.erase_subset v m.infinitePart⟩
 
 /-- If a real place is not selected by a modulus, its whole one-place
 idèle-class image lies in the corresponding ray congruence subgroup. -/
@@ -79,8 +80,9 @@ private theorem eraseRealPlace_isDefiningModulus_of_range_le
     (v : RayClass.RealPlace K)
     (hvH : (IdeleGroup.infinitePlaceIdeleClass v.1).range ≤ H) :
     IsDefiningModulus H (m.eraseRealPlace v) := by
+  classical
   let m' : RayClass.Modulus K := m.eraseRealPlace v
-  show IsDefiningModulus H m'
+  change IsDefiningModulus H m'
   let q : IdeleGroup K →* IdeleClassGroup K :=
     QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
   rw [IsDefiningModulus, RayClass.Modulus.congruenceSubgroup,
@@ -215,6 +217,7 @@ theorem eraseRealPlaces_isDefiningModulus_of_ranges_le
 
 namespace ConductorialSubgroup
 
+open scoped Classical in
 /-- The real places whose one-place idèle-class image is not contained in
 the target subgroup. -/
 noncomputable def fullConductorInfinitePart
@@ -255,6 +258,7 @@ noncomputable def fullConductor
 theorem fullConductor_isDefiningModulus
     (H : ConductorialSubgroup K) :
     IsDefiningModulus H.1 H.fullConductor := by
+  classical
   obtain ⟨m, hm, hfinite⟩ :=
     H.exists_definingModulus_finitePart_eq_narrowFiniteConductor
   let s : Finset (RayClass.RealPlace K) :=

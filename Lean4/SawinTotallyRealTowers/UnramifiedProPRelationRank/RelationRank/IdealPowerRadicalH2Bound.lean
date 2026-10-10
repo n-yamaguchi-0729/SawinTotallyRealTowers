@@ -7,9 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.TrivialZModP
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FrattiniClassField
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalRank
-import Mathlib.LinearAlgebra.Dual.Lemmas
 
-set_option autoImplicit false
 /-!
 # Numerical H² bounds from the ideal-power radical
 

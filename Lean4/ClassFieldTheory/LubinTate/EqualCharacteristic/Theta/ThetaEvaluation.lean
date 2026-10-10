@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CompletedUnramifiedField
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaSeries
 
-set_option autoImplicit false
-
 /-!
 # Analytic evaluation for theta
 
@@ -20,6 +18,8 @@ Laurent field.  The value is accompanied by its convergent coefficient sum,
 and the formal intertwining identity is transported through this genuine
 analytic evaluation map.
 -/
+
+
 
 noncomputable section
 

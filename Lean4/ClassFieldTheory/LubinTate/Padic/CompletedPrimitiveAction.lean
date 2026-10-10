@@ -8,8 +8,7 @@ import ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
 import ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveIrreducible
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.Core
 import Mathlib.SetTheory.Cardinal.Finite
-
-set_option autoImplicit false
+import Mathlib.RingTheory.Adjoin.PowerBasis
 
 /-!
 # Primitive unit action on a completed p-adic Lubin--Tate level
@@ -26,6 +25,8 @@ unit-parameter automorphisms then give every completed root.  Comparing
 cardinalities proves that these are all the roots, and hence that each one
 generates the completed splitting field.
 -/
+
+
 
 noncomputable section
 

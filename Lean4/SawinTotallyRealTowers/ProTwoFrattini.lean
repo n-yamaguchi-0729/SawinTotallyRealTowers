@@ -14,8 +14,6 @@ import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 import Mathlib.Order.Atoms
 
-set_option autoImplicit false
-
 /-!
 # Detecting the pro-two Frattini subgroup by quadratic quotients
 

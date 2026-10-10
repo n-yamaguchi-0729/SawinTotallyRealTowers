@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
 import Mathlib.RingTheory.DedekindDomain.SInteger
 
-set_option autoImplicit false
-
 /-!
 # Ideles and units with finite support
 
@@ -17,6 +15,8 @@ This file formalizes finite-support objects for ideles and units. Since every
 archimedean place is always included, a finite set
 `S` below records only its finite places.
 -/
+
+
 
 open scoped NumberField RestrictedProduct
 open NumberField IsDedekindDomain

@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
 
-set_option autoImplicit false
-
 /-!
 # Valuation-subring units inside field units
 
 This file defines the canonical homomorphism from units of a complete-DVF
 valuation ring to units of its fraction field.
 -/
+
+
 
 noncomputable section
 
@@ -39,7 +39,8 @@ The defining evaluation formula for `coe_valuationSubringUnitsToFieldUnits` is
 -/
 @[simp] theorem coe_valuationSubringUnitsToFieldUnits_apply
     (F : CompleteDVF.{u, v} K) (a : F.valuationSubringˣ) :
-    (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.valuationSubringUnitsToFieldUnits F) a : Kˣ) : K) =
+    (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.valuationSubringUnitsToFieldUnits F)
+      a : Kˣ) : K) =
       (a : F.valuationSubring) := by
   change
     ((F.valuation.valuationSubring.unitGroupMulEquiv.symm a : Kˣ) : K) =

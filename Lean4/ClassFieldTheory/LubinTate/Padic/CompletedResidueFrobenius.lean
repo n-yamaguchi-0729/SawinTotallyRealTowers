@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveUniformizer
 import ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
 
-set_option autoImplicit false
-
 /-!
 # Residue Frobenius on completed p-adic Lubin--Tate levels
 
@@ -18,6 +16,8 @@ an isomorphism.  Under this identification, every unit-indexed completed
 Frobenius lift induces the arithmetic Frobenius `x ↦ x ^ p` on the residue
 field.
 -/
+
+
 
 noncomputable section
 

@@ -10,8 +10,6 @@ import ClassFieldTheory.LubinTate.FormalModule.Intertwiner
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.RingTheory.MvPowerSeries.Expand
 
-set_option autoImplicit false
-
 /-!
 # Reduction of a Lubin--Tate intertwining defect
 
@@ -19,6 +17,8 @@ After reduction to the finite residue field, both series become the Frobenius
 power series. The two sides of the intertwining equation then agree, so every
 coefficient of the defect is divisible by the chosen uniformizer.
 -/
+
+
 
 noncomputable section
 
@@ -91,9 +91,10 @@ theorem map_subst_lubinTateSeries
     e.map_residue_eq_frobenius, PowerSeries.subst_pow hmap,
     PowerSeries.subst_X hmap]
 
+omit [Fintype σ] in
 /-- The reduced right side `H(ebar(X_i))` is the expansion
 `Hbar(X_i ^ q)`. -/
-theorem map_subst_inVariables
+theorem map_subst_inVariables [Finite σ]
     (ebar : LubinTateSeries F π)
     (H : MvPowerSeries σ F.valuationSubring) :
     MvPowerSeries.map F.residueMap

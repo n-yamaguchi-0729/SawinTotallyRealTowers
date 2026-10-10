@@ -8,8 +8,7 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-
-set_option autoImplicit false
+import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Finite abelian subextensions and native norm subgroups
@@ -20,6 +19,8 @@ that the resulting assignment is an order embedding into the opposite poset
 of native open finite-index subgroups. Surjectivity is the remaining local
 existence-theorem input.
 -/
+
+
 
 noncomputable section
 

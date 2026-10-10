@@ -9,7 +9,6 @@ import Mathlib.Algebra.Homology.ShortComplex.ConcreteCategory
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.Group
 
-set_option autoImplicit false
 /-!
 # Finite transgression factor sets
 
@@ -140,8 +139,7 @@ theorem transgressionHomogeneousCochain_mem_cycles
       (transgressionHomogeneousCochain N χ)
   have hdabcd := congrArg (fun τ ↦ τ a b c d) hd
   rw [hdabcd]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   dsimp only [transgressionHomogeneousCochain]
   let e : ULift.{u} (ZMod p) ≃ₗ[ZMod p] ZMod p := ULift.moduleEquiv
   let C := transgressionFactor N χ (b⁻¹ * c) (c⁻¹ * d)

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FormalModule.StandardSeries
 import Mathlib.Algebra.Polynomial.Monic
 
-set_option autoImplicit false
-
 /-!
 # Standard Lubin--Tate division polynomials
 
@@ -33,6 +31,8 @@ The factorization
 is purely polynomial.  No assertion about roots, irreducibility, or finite
 Lubin--Tate extensions is made here.
 -/
+
+
 
 noncomputable section
 

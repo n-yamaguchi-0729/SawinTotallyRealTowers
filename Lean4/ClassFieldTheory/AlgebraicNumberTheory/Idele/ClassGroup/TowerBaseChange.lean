@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 
-set_option autoImplicit false
-
 /-!
 # The fixed-bottom tower model and the actual intermediate-field model
 
@@ -17,6 +15,8 @@ as units of `(𝔸_K ⊗[K] M) ⊗[M] L`.  Here we compare that presentation
 with the actual relative idele group `𝔸_M ⊗[M] L`, by passing through
 the ordinary ideles of `L`.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

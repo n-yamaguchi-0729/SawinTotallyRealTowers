@@ -10,8 +10,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 import ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
 import Mathlib.Algebra.Group.Pi.Units
 
-set_option autoImplicit false
-
 /-!
 # The tensor-product realization of a local induced block
 
@@ -796,7 +794,8 @@ theorem rightCosetCompletionUnitsEquiv_apply_coe
           (rightCosetExtensionEquiv vK hvK w q).1.Completion) :=
   rfl
 
-/-- The product supplied by the completion tensor-product decomposition, rewritten as one copy of the
+/-- The product supplied by the completion tensor-product decomposition, rewritten as one copy
+of the
 chosen local multiplicative group for every right coset. -/
 noncomputable def completionProductUnitsEquivRightCosets :
     letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1

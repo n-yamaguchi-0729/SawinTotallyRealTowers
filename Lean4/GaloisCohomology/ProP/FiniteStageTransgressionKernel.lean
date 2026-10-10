@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.FiniteStageTransgressionPrimitive
 
-set_option autoImplicit false
 /-!
 # Kernel exactness for inflated finite-stage transgression
 

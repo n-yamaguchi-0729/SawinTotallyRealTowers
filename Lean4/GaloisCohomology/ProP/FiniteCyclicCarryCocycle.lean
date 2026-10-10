@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 
-set_option autoImplicit false
 /-!
 # Generator coordinates and the cyclic carry cocycle
 

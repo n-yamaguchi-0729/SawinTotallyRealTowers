@@ -6,9 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.FrattiniPowers
 import Mathlib.Algebra.Module.ZMod
+import Mathlib.Topology.Instances.ZMod
 import ProCGroups.Topologies.ContinuousMonoidHom
 
-set_option autoImplicit false
 /-!
 # Continuous degree-one `ZMod p` classes
 
@@ -27,9 +27,6 @@ universe u
 
 variable {p : ℕ} {G : Type u}
 variable [TopologicalSpace G] [Group G] [IsTopologicalGroup G]
-
-local instance : TopologicalSpace (ZMod p) := ⊥
-local instance : DiscreteTopology (ZMod p) := discreteTopology_bot _
 
 /-- Continuous degree-one classes for the trivial `ZMod p` action. -/
 abbrev ContinuousH1ZMod :=

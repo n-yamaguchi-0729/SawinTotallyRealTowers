@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 
-set_option autoImplicit false
 /-!
 # Power--commutator core of the pro-p Frattini subgroup
 

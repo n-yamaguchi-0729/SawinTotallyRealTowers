@@ -11,13 +11,6 @@ import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.BasicFa
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ChoiceCountSystem
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ExplicitChoiceCounts
 
-set_option autoImplicit false
-
-open Filter
-open Polynomial
-open scoped Topology
-open scoped PowerSeries.WithPiTopology
-
 /-!
 # Choice-count combinatorics for the formal logarithm product
 
@@ -26,6 +19,13 @@ choices with pairs of finite position sets and evaluating their cardinality.
 The formal-series identities and the underlying position calculus live in
 `FormalCoreBase`.
 -/
+
+open Filter
+open Polynomial
+open scoped Topology
+open scoped PowerSeries.WithPiTopology
+
+
 
 noncomputable section
 

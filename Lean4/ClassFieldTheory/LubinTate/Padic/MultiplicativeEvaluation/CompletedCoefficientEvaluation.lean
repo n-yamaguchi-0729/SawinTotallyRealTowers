@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.CompletedLevel
 import Mathlib.RingTheory.AdicCompletion.Topology
 
-set_option autoImplicit false
-
 /-!
 # Coefficient maps and analytic evaluation on completed p-adic levels
 
@@ -17,6 +15,8 @@ coefficient maps used by polynomial and power-series evaluation.  It also
 establishes the exact completed primitive-point torsion relations and the
 general injectivity criterion for evaluation with unit linear coefficient.
 -/
+
+
 
 noncomputable section
 

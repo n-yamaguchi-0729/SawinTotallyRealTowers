@@ -12,8 +12,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.Algebra.Group.Subgroup.Ker
 import Mathlib.Algebra.Group.TypeTags.Basic
 
-set_option autoImplicit false
-
 /-!
 # Degree-two cohomology detected by product coordinates
 

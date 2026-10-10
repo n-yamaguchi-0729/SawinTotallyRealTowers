@@ -8,8 +8,6 @@ import GaloisCohomology.Cyclic.Herbrand.Induced
 import GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Low-degree Tate cohomology under equivariant equivalences
 
@@ -22,6 +20,8 @@ These transport results let calculations made on field units or local
 coordinates be applied to their actual images inside idele groups without
 introducing comparison assumptions.
 -/
+
+
 
 noncomputable section
 

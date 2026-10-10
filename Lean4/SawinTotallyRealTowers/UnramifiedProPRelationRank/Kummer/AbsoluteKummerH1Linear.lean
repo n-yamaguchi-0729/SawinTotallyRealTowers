@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
 import GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
 
-set_option autoImplicit false
 /-!
 # Linear absolute Kummer characters
 
@@ -41,6 +40,7 @@ theorem absolutePowerClassQuotient_pow_eq_one
   rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
   exact ⟨a, by simp⟩
 
+omit [Fact p.Prime] in
 /-- Every continuous absolute mod-`p` character has exponent dividing `p`. -/
 theorem absoluteContinuousZModCharacter_pow_eq_one
     (x : Field.absoluteGaloisGroup K →ₜ* Multiplicative (ZMod p)) :

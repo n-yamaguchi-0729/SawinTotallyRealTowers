@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
 
-set_option autoImplicit false
-
 /-!
 # Local norms at an unramified chosen finite place
 
@@ -16,7 +14,9 @@ This file proves that the concrete adic integer units lie in the actual local
 norm subgroup of the chosen localized completion.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section

@@ -12,8 +12,6 @@ import Mathlib.LinearAlgebra.TensorProduct.Basis
 import Mathlib.RingTheory.Norm.Basic
 import Mathlib.RingTheory.TensorProduct.Maps
 
-set_option autoImplicit false
-
 /-!
 # Ideles in finite extensions: the tensor-product model
 

@@ -8,7 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 import ProCGroups.Completion.FiniteQuotientLifts
 import ProCGroups.FreeProC.Basic
 
-set_option autoImplicit false
 /-!
 # The profinite integers as a rank-one free profinite group
 

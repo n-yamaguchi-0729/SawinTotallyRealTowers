@@ -10,8 +10,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 
-set_option autoImplicit false
-
 /-!
 # Norm quotients for unramified local extensions
 
@@ -21,6 +19,8 @@ extension degree. The inclusion is the normalized norm formula; the reverse
 inclusion follows from finite local reciprocity because the norm quotient and
 the valuation quotient have the same finite cardinality.
 -/
+
+
 
 noncomputable section
 
@@ -103,7 +103,7 @@ noncomputable def galoisGroupEquivAbelianizationOfUnramifiedValuation :
 /-- The cyclic Galois-group equivalence is the canonical map to the abelianization. -/
 @[simp]
 theorem galoisGroupEquivAbelianizationOfUnramifiedValuation_apply
-    (σ : Gal(L / K)) :
+    (σ : Gal(L/K)) :
     galoisGroupEquivAbelianizationOfUnramifiedValuation K L σ =
       Abelianization.of σ :=
   rfl

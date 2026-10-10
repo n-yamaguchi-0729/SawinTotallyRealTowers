@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.FormalModule.Series
 
-set_option autoImplicit false
-
 /-!
 # Coefficient equations for a fixed uniformizer
 
@@ -15,6 +13,8 @@ For a positive degree, the scalar factor 1 - π ^ r is a unit whenever π
 is a uniformizer. Consequently the corresponding scalar coefficient equation
 has a unique solution in the valuation ring.
 -/
+
+
 
 noncomputable section
 

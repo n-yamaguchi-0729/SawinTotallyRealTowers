@@ -7,10 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import GaloisCohomology.Cyclic.GaloisCohomology
 
-set_option autoImplicit false
 /-!
-Provides the public declarations in the
-`LocalClassFieldTheory.ClassFormation.Hilbert90` Lean module.
+# Hilbert 90 and negative Tate cohomology of field units
+
+For a finite field extension with a chosen generator of its automorphism group,
+the cyclic comparison between first group cohomology and negative Tate cohomology
+transports Hilbert 90 to the statement that the latter group has cardinality one.
 -/
 
 namespace LocalClassFieldTheory
@@ -24,7 +26,7 @@ representation.  This is Hilbert 90 transported through the cyclic
 `H¹ ≃ H⁻¹` comparison. -/
 theorem unitsTateHminusOne_card_eq_one
     (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
-    (g : Gal(L / K)) (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g) :
+    (g : Gal(L/K)) (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g) :
     Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) = 1 := by
   calc
     Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) =

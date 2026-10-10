@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummer
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
 
-set_option autoImplicit false
 /-!
 # Linear ideal-power radical Kummer characters
 

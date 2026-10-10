@@ -14,14 +14,15 @@ import Mathlib.RingTheory.LaurentSeries
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.RingTheory.RingHom.Finite
 
-set_option autoImplicit false
-
 /-!
 # Coefficient-field descent for Laurent series
 
-This file starts the remaining equal-characteristic descent in the local-field structure classification: a finite coefficient field `k` of characteristic `p` gives a canonical
+This file starts the remaining equal-characteristic descent in the local-field structure
+classification: a finite coefficient field `k` of characteristic `p` gives a canonical
 coefficientwise map from `F_p((X))` to `k((X))`.
 -/
+
+
 
 noncomputable section
 

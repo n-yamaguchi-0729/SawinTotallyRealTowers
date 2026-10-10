@@ -7,12 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Abstract.KummerAbelianCyclicFactors
 import GaloisCohomology.Kummer.Abstract.KummerFixedField
 
-set_option autoImplicit false
-
-namespace KummerTheory
-
-open CyclicCohomology
-
 /-!
 # finite abelian Kummer theory, the finite abelian Kummer decomposition: assembling cyclic radicals
 
@@ -22,6 +16,12 @@ ambient representation `A`.  A cyclic radical with trivial stabilizer in
 a family of such radicals whose subgroups intersect in `G_L` generates the
 abstract field `L` over `K`.
 -/
+
+namespace KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

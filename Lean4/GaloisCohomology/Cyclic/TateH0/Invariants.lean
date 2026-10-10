@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RepresentationTheory.Invariants
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # Invariant units
 

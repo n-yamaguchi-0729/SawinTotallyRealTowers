@@ -8,8 +8,6 @@ import Mathlib.GroupTheory.Nilpotent
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import ProCGroups.FiniteGroups.AllFinite
 
-set_option autoImplicit false
-
 /-!
 # Standard classes of finite groups
 

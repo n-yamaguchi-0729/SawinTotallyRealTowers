@@ -6,8 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.GroupTheory.Abelianization.Defs
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-
-set_option autoImplicit false
+import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # The actual abelian local Artin map
@@ -17,6 +16,8 @@ in the actual Galois group, not merely its abelianization.  This module
 provides both the algebraic homomorphism and its continuous refinement for
 the native topologies.
 -/
+
+
 
 noncomputable section
 

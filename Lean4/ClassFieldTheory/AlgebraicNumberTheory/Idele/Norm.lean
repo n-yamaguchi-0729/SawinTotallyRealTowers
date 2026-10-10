@@ -10,14 +10,14 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNo
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FiniteIntegralNormPreimage
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
 
-set_option autoImplicit false
-
 /-!
 # Absolute and relative norms of ideles
 
 This module exposes the absolute norm on the idele group and assembles
 compatible local determinant-norm preimages into a global relative idele.
 -/
+
+
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain

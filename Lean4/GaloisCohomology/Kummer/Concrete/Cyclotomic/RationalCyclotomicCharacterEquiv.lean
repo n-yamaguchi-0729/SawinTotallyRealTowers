@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacter
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # The rational cyclotomic character equivalence
 
@@ -17,6 +15,8 @@ using mathlib's Chinese-remainder equivalence for `ZMod`.  Surjectivity
 is obtained from the finite-intersection property for the closed fibers
 of the restriction maps to those levels.
 -/
+
+
 
 noncomputable section
 

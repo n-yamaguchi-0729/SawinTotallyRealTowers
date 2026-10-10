@@ -14,8 +14,6 @@ import Mathlib.RingTheory.Adjoin.PowerBasis
 import Mathlib.RingTheory.PowerBasis
 import Mathlib.Tactic.LinearCombination
 
-set_option autoImplicit false
-
 /-!
 # Square classes that become squares in a quadratic extension
 

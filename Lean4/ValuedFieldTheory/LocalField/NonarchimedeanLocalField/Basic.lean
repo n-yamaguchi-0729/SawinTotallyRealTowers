@@ -12,8 +12,6 @@ Compactness facts and the normalized integer-valued valuation attached to a
 nonarchimedean local field.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

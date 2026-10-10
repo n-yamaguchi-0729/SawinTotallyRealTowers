@@ -7,13 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.IntrinsicBaseEquivalence
 
-set_option autoImplicit false
-
 /-!
 # Embedded extension quotients
 
-This module identifies extension subgroups transported through an embedded finite Galois extension and constructs the resulting ambient quotient equivalence with the actual Galois group.
+This module identifies extension subgroups transported through an embedded finite Galois
+extension and constructs the resulting ambient quotient equivalence with the actual Galois
+group.
 -/
+
+
 
 noncomputable section
 

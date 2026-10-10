@@ -11,8 +11,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
 import ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior
 
-set_option autoImplicit false
-
 /-!
 # Local norm containment for Kummer extensions
 
@@ -20,7 +18,9 @@ This module proves that local powers, and then the concrete simple-Kummer
 power subgroup, lie in the norm subgroup at a chosen finite place.
 -/
 
-open scoped NumberField Classical NNReal IsMulCommutative
+
+
+open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

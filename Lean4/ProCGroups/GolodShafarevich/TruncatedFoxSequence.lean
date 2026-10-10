@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.GolodShafarevich.TruncatedFoxMaps
 
-set_option autoImplicit false
 /-!
 # Right exactness of the truncated mod-p Fox sequence
 

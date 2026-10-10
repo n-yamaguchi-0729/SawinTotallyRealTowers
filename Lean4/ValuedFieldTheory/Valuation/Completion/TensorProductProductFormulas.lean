@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.Completion.BaseChangeNormTrace
 import ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
 
-set_option autoImplicit false
-
 /-!
 # Degree, norm, and trace through a tensor-product decomposition
 
@@ -18,6 +16,8 @@ algebra equivalence.  A tensor-product decomposition identifies those components
 with the canonical images in `L_w`; no compatibility theorem is assumed
 here.
 -/
+
+
 
 noncomputable section
 

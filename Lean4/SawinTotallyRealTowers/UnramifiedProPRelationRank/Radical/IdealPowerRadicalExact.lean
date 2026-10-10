@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.OrdinaryUnitMod
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
 import Mathlib.RingTheory.DedekindDomain.SelmerGroup
 
-set_option autoImplicit false
 /-!
 # The exact unit--radical--class sequence
 

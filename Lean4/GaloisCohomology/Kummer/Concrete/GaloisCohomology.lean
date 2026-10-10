@@ -6,13 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 
-set_option autoImplicit false
-
 /-!
 # Galois cohomology for Kummer theory
 
 Hilbert 90 and multiplicative cocycle statements used by the concrete Kummer correspondence.
 -/
+
+
 
 namespace KummerTheory
 

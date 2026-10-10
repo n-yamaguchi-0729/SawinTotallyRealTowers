@@ -14,8 +14,6 @@ import Mathlib.NumberTheory.LocalField.Basic
 import Mathlib.NumberTheory.Padics.PadicNumbers
 import Mathlib.RingTheory.Algebraic.Integral
 
-set_option autoImplicit false
-
 /-!
 # Local fields
 
@@ -23,6 +21,8 @@ A local-field package here is a chosen complete discretely valued field with
 finite residue field.  The topology-first mathlib class remains available
 through imports; this file only adds the chosen-valuation API needed downstream.
 -/
+
+
 
 universe u v w x
 

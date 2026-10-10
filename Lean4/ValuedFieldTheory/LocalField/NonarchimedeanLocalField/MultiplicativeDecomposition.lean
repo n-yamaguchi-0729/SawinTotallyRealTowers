@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ProfiniteUnits
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 import Mathlib.Topology.LocallyConstant.Basic
 
-set_option autoImplicit false
-
 /-!
 # Topological decomposition of a local multiplicative group
 
@@ -19,6 +17,8 @@ decomposition of `Kˣ` as continuous homomorphisms. After fixing a
 noncanonical uniformizer internally, the resulting parameter-free map lets
 downstream separation arguments avoid carrying a uniformizer parameter.
 -/
+
+
 
 noncomputable section
 

@@ -12,8 +12,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContract
 import ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
 import Mathlib.RingTheory.Ideal.GoingUp
 
-set_option autoImplicit false
-
 /-!
 # Finite places in a number-field extension
 
@@ -28,7 +26,9 @@ For a finite place `W` of `L`, `finitePlaceBelow W` is its contraction to
 closure shows that the centres are precisely the finite places above `v`.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

@@ -9,8 +9,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
 import ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
 import Mathlib.RingTheory.Norm.Transitivity
 
-set_option autoImplicit false
-
 /-!
 # the finite norm-formula theorem
 

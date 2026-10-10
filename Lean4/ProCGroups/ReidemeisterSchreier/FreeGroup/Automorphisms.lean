@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Free Group / Automorphisms
 
@@ -17,6 +13,8 @@ This module constructs the free-group automorphism that inverts every
 generator, transports free bases along it, and proves the resulting
 automorphism is involutive.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier
 

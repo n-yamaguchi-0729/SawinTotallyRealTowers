@@ -17,8 +17,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClass
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 
-set_option autoImplicit false
-
 /-!
 # Actual realizations of the Hilbert class fields
 
@@ -33,7 +31,9 @@ quotients: the narrow class number for the big Hilbert class field and
 the ordinary class number for the small Hilbert class field.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

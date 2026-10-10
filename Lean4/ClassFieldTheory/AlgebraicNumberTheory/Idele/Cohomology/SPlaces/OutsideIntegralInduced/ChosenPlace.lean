@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIn
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
 
-set_option autoImplicit false
-
 /-!
 # Integral induced blocks at the chosen finite place
 
@@ -17,6 +15,8 @@ This file specializes the integral induced-block construction to the actual
 chosen localization above a finite place and proves its unramified Tate
 cohomology consequences.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

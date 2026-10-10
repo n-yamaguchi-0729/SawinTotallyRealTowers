@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 
-set_option autoImplicit false
 /-!
 # Finite support in the maximal everywhere-unramified pro-p compositum
 

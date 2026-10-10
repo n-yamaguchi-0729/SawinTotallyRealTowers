@@ -7,11 +7,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.ExpConvergence
 
-set_option autoImplicit false
 /-!
 Establishes convergence and summability of the logarithm series on the nonarchimedean open unit
 ball.
 -/
+
 
 open Filter
 open Polynomial

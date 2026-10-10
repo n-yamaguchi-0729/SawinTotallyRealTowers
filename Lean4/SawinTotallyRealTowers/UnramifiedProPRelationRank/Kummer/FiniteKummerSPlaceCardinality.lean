@@ -13,8 +13,6 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
-set_option autoImplicit false
-
 /-!
 # Cardinal bounds for finite-support Kummer images
 
@@ -103,7 +101,7 @@ n-torsion groups, so it is finite with at most `n ^ S.card` elements. -/
 theorem finiteKummerSPlaceH2Localization_range_finite_natCard_le
     (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ+) [Fact (n : ℕ).Prime]
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
-    (hP : IsPGroup (n : ℕ) Gal(L / K)) :
+    (hP : IsPGroup (n : ℕ) Gal(L/K)) :
     Finite (finiteKummerSPlaceH2Localization K L S n hmu).range ∧
       Nat.card (finiteKummerSPlaceH2Localization K L S n hmu).range ≤
         (n : ℕ) ^ S.card := by
@@ -125,7 +123,7 @@ under the proved kernel containment, and obeys the same finite bound. -/
 theorem finiteKummerCoefficientH2Map_range_finite_natCard_le_of_unramified_outside
     (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ+) [Fact (n : ℕ).Prime]
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
-    (hP : IsPGroup (n : ℕ) Gal(L / K))
+    (hP : IsPGroup (n : ℕ) Gal(L/K))
     (hfin : ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S →
       ChosenFinitePlaceIsUnramified (K := K) (L := L) v)
     (hinf : ∀ v : InfinitePlace K, (chosenInfinitePlaceAbove (L := L) v).IsUnramified K) :

@@ -13,10 +13,6 @@ import Mathlib.NumberTheory.RamificationInertia.Ramification
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Algebra.Group.Units.Hom
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Finite extensions of discretely valued fields
 
@@ -26,6 +22,8 @@ proof-irrelevant marker object.  All invariants and maps are defined once for
 `DVF` values and can therefore be used unchanged for Henselian and complete
 discretely valued fields through their canonical `toDVF` projections.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
 
-set_option autoImplicit false
-
 /-!
 # Triviality of localized degree-minus-one Herbrand cohomology
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

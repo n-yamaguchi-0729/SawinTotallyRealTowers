@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaSeries
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaFirstIdentity
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: iterating the direct second theta identity
 
@@ -16,6 +14,8 @@ For the direct orientation `T → uT`, this file applies coefficient
 Frobenius repeatedly to the formal identity
 `theta^φ ∘ e_T = e_(uT) ∘ theta`.
 -/
+
+
 
 noncomputable section
 

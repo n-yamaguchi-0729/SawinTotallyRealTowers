@@ -17,8 +17,6 @@ import Mathlib.Order.Hom.Lattice
 import Mathlib.NumberTheory.LocalField.Basic
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
-set_option autoImplicit false
-
 /-!
 # The standard unramified extension as a compositum
 

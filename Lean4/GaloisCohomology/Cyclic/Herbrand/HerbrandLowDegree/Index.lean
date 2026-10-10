@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
 
-set_option autoImplicit false
-
 /-!
 # Cardinal consequences of a Herbrand quotient
 
@@ -17,6 +15,8 @@ quotient equal to a natural number `n`, then its degree-zero cardinality is
 `n` times its negative-first cardinality.  In particular the degree-zero
 cardinality is at least `n`.
 -/
+
+
 
 noncomputable section
 

@@ -10,7 +10,6 @@ import Mathlib.Algebra.Module.Pi
 import Mathlib.Algebra.Module.Defs
 import Mathlib.FieldTheory.Finiteness
 
-set_option autoImplicit false
 /-!
 # Cardinality bounds on finite-stage degree-two inflation
 

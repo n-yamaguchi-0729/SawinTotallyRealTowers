@@ -9,7 +9,6 @@ import Mathlib.Algebra.Exact.Basic
 import Mathlib.FieldTheory.AbsoluteGaloisGroup
 import Mathlib.Topology.Algebra.Group.Quotient
 
-set_option autoImplicit false
 /-!
 # The absolute-to-unramified Galois sequence
 

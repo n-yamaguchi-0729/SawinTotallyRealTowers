@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationK
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
 
-set_option autoImplicit false
 /-!
 # Valuation compatibility of the two finite-place completion models
 

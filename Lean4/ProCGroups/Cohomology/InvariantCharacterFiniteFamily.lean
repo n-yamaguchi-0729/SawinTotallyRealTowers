@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.Cohomology.InvariantCharacterFiniteStage
 
-set_option autoImplicit false
 /-!
 # Common finite-stage descent for finite families of invariant characters
 

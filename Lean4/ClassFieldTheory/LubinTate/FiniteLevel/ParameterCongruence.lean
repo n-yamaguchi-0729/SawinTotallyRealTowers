@@ -5,9 +5,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ClassFieldTheory.LubinTate.FiniteLevel.DivisionPolynomial
-import Mathlib.RingTheory.Ideal.Quotient.Operations
-
-set_option autoImplicit false
 
 /-!
 # Parameter congruences for standard Lubin--Tate polynomials
@@ -26,6 +23,8 @@ levels attached to two sufficiently close uniformizers; it is independent
 of the characteristic and does not assume an equivalence between the two
 levels.
 -/
+
+
 
 noncomputable section
 

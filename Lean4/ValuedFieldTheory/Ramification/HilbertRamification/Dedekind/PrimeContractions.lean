@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFieldTower
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: number-field prime contractions
 
 This file specializes the fixed fields `Z_P` and `T_P` to rings of integers
 of number fields and defines the contracted primes `p`, `P_Z`, and `P_T`.
 -/
+
+
 
 noncomputable section
 

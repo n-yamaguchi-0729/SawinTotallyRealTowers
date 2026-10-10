@@ -5,8 +5,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import GaloisCohomology.ProP.FiniteTransgression
+import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+import Mathlib.RepresentationTheory.Continuous.Basic
+import Mathlib.RepresentationTheory.Continuous.TopRep
+import Mathlib.Topology.ContinuousMap.Algebra
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.ContinuousMap.Defs
 
-set_option autoImplicit false
 /-!
 # Kernel exactness for finite transgression
 
@@ -199,8 +204,11 @@ theorem homogeneousOneCochainNormalizedValue_primitive
   have hdpoint := congrArg (fun τ ↦ τ 1 q (q * r)) hd
   have hcpoint := congrArg (fun τ ↦ τ.1 1 q (q * r)) hc
   rw [hdpoint] at hcpoint
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun] at hcpoint
+  simp only [Nat.reduceAdd, TopRep.hom_d_succ, TopRep.d_zero,
+    TopRep.hom_ofHom, ContIntertwiningMap.sub_apply,
+    ContRepresentation.coind₁ι_toFun, ContRepresentation.coind₁Map_toFun,
+    ContinuousMap.sub_apply, ContinuousMap.const_apply,
+    ContinuousMap.comp_apply, ContinuousMap.coe_mk] at hcpoint
   have hinv := homogeneousOneCochain_invariant N c q q (q * r)
   have hinv' : c.1 q (q * r) = c.1 1 r := by
     convert hinv.symm using 1

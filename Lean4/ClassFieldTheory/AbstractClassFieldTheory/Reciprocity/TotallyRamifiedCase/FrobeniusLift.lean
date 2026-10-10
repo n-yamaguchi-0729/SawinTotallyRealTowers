@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 
-set_option autoImplicit false
-
 /-!
 # Frobenius lifts for totally ramified extensions
 
 This file constructs degree-one Frobenius lifts and the finite auxiliary
 Galois extension used in the totally ramified reciprocity argument.
 -/
+
+
 
 noncomputable section
 

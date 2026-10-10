@@ -7,12 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ValuationTheory RamificationTheory
-
 /-!
 # Finite-separable comparison of restricted valuation rings
 
@@ -23,6 +17,12 @@ other extension valuation ring on the finite field.  This is the
 valuation-ring comparison used in the finite local reciprocity construction before comparing residue
 degrees.
 -/
+
+namespace LocalClassFieldTheory
+
+open ValuationTheory RamificationTheory
+
+
 
 noncomputable section
 

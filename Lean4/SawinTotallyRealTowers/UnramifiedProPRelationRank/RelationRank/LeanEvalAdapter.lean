@@ -11,7 +11,6 @@ import GaloisCohomology.ProP.SmallLiftedComparison
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FrattiniClassField
 import ProCGroups.ProP.FiniteGeneratorRankBridge
 
-set_option autoImplicit false
 /-!
 # Adapter infrastructure for the LeanEval Shafarevich statement
 

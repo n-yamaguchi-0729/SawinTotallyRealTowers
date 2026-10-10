@@ -8,8 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInerti
 import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
 import ProCGroups.Generation.Basic
 
-set_option autoImplicit false
-
 /-!
 # Arithmetic Frobenius in an absolute decomposition group
 

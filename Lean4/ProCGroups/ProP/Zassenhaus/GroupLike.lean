@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Zassenhaus.AugmentationFiltration
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
 /-!
 # Group-like differences in the mod-`p` completed group algebra
 

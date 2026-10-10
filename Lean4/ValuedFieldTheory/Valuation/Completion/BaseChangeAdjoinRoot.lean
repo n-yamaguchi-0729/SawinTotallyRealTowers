@@ -9,8 +9,6 @@ import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.RingTheory.AdjoinRoot
 import Mathlib.RingTheory.TensorProduct.Free
 
-set_option autoImplicit false
-
 /-!
 # A primitive extension after scalar extension
 
@@ -57,7 +55,7 @@ theorem minpoly_map_aeval_one_tmul
     Polynomial.aeval (1 ⊗ₜ[K] pb.gen : A ⊗[K] L)
       ((minpoly K pb.gen).map (algebraMap K A)) = 0 := by
   rw [Polynomial.aeval_map_algebraMap]
-  show Polynomial.aeval
+  change Polynomial.aeval
       ((Algebra.TensorProduct.includeRight : L →ₐ[K] A ⊗[K] L) pb.gen)
         (minpoly K pb.gen) = 0
   rw [Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]

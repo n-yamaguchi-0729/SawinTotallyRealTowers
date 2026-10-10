@@ -7,14 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 import GaloisCohomology.Cyclic.NormKernelVanishing
 
-set_option autoImplicit false
-
-namespace KummerTheory
-
-open CyclicCohomology
-
 /-!
-# finite abelian Kummer theory, the finite abelian Kummer decomposition: the cyclic abstract-operator step
+# finite abelian Kummer theory, the finite abelian Kummer decomposition: the cyclic
+abstract-operator step
 
 This file isolates the finite cyclic step in the proof of the finite abelian Kummer decomposition.
 It does not claim the full Kummer correspondence.  In additive notation, we
@@ -24,6 +19,12 @@ produces one element `a` such that `wp a` is fixed and `a` has trivial
 stabilizer.  This is the abstract analogue of the construction
 `a^σ⁻¹ = ζ` and hence the single-radical generation step.
 -/
+
+namespace KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -149,7 +150,8 @@ theorem cyclic_single_radical_of_tateHMinusOne_isZero
     subst q
     exact Subgroup.one_mem _
 
-/-- Finite-cyclic, single-radical frontier of finite abelian Kummer theory, the finite abelian Kummer decomposition,
+/-- Finite-cyclic, single-radical frontier of finite abelian Kummer theory, the finite abelian
+Kummer decomposition,
 now obtained from `SatisfiesCyclicNormKernelVanishing` itself.
 
 Here `B` is the actual coefficient representation `A_L` attached to the

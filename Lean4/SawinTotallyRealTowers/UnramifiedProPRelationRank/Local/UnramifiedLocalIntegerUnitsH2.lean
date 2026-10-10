@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.FiniteCyclicH2TateH0
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Cohomology
 
-set_option autoImplicit false
 /-!
 # Integer-unit H² in an actual unramified local extension
 

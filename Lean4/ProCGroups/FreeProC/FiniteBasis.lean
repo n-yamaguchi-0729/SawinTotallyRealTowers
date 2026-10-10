@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FreeProC.Basic
 
-set_option autoImplicit false
-
 /-!
 # Free pro-C finite-basis utilities
 

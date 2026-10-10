@@ -28,8 +28,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 import ValuedFieldTheory.LocalField.Padic.Cyclotomic.TotallyRamified.EisensteinPolynomial
 import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 
-set_option autoImplicit false
-
 /-!
 # Finite-place Artin symbols in rational cyclotomic levels
 
@@ -40,7 +38,9 @@ root in the localized cyclotomic level identifies the image of arithmetic
 Frobenius under the global cyclotomic character with the residue prime.
 -/
 
-open scoped Classical NNReal NumberField ValuativeRel
+
+
+open scoped NNReal NumberField ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -418,6 +418,8 @@ theorem rationalFinitePlaceCompletionIntegerRingEquivPadicInt_coe
     (IsFractionRing.ringEquivOfRingEquiv_algebraMap
       (rationalFinitePlaceCompletionIntegerRingEquivPadicInt q) a)
 
+open _root_.ValuationTheory.DiscreteValuationField.ValuedExtension
+  (valuation_hasExtension_of_valuationSubring_equiv) in
 /-- The canonical rational-completion equivalence preserves the canonical
 valuations. -/
 theorem
@@ -442,7 +444,7 @@ theorem
       (localCompleteDVF F).valuation.HasExtension
         (padicCompleteDVF p.1).valuation
     apply
-      ValuationTheory.DiscreteValuationField.ValuedExtension.valuation_hasExtension_of_valuationSubring_equiv
+      valuation_hasExtension_of_valuationSubring_equiv
         (localCompleteDVF F)
         (padicCompleteDVF p.1)
         eO
@@ -1566,9 +1568,8 @@ noncomputable def rationalCyclotomicLocalizedCompletionPadicAlgEquiv
 private theorem
     rationalCyclotomicPrincipalPrime_galEquivZMod_eq_of_action
     (p : Nat.Primes) (n : ℕ)
-    (sigma : Gal(
-      rationalCyclotomicPrincipalPrimeLevel
-        (rationalCyclotomicPrincipalPrimeModulus p n) / ℚ))
+    (sigma : Gal(rationalCyclotomicPrincipalPrimeLevel
+      (rationalCyclotomicPrincipalPrimeModulus p n)/ℚ))
     (a : (ZMod (p.1 ^ (n + 1)))ˣ)
     (haction :
       sigma (rationalCyclotomicLevelPrimitiveRoot

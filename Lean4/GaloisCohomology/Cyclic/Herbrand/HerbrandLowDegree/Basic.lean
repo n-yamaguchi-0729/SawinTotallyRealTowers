@@ -14,16 +14,14 @@ import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
-set_option autoImplicit false
-
-namespace CyclicCohomology
-
 /-!
 # Low-degree Herbrand quotients
 
 This reusable implementation supplies the low-degree cyclic cohomology used
 by the class-formation and local class field theory layers.
 -/
+
+namespace CyclicCohomology
 
 noncomputable section
 

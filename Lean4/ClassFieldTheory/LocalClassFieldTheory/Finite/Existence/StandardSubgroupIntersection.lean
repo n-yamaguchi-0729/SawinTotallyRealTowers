@@ -11,8 +11,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSub
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 
-set_option autoImplicit false
-
 /-!
 # Intersecting standard norm conditions
 
@@ -21,6 +19,8 @@ divisible by `d`.  The totally ramified Lubin--Tate factor forces an element
 to lie in `⟨ϖ⟩ U^n`.  Their intersection therefore lies in `⟨ϖ^d⟩ U^n`.
 This is the elementary subgroup calculation used in local existence proofs.
 -/
+
+
 
 noncomputable section
 

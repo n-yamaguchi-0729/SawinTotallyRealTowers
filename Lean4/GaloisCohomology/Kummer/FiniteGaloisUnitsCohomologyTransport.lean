@@ -22,7 +22,12 @@ import Mathlib.RepresentationTheory.Invariants
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 
-set_option autoImplicit false
+/-!
+# Transport of finite Galois field-unit cohomology
+
+Identifies the invariant and quotient representations associated to an
+intermediate field and transports the degree-two inflation and restriction maps.
+-/
 
 open CategoryTheory
 
@@ -103,7 +108,8 @@ private def unitsToKernelInvariantsEquiv :
 private theorem unitsInvariants_equivariant (g : Gal(E/K)) :
     (unitsToKernelInvariantsEquiv K L E).toLinearMap ∘ₗ
         (Rep.ofAlgebraAutOnUnits K E).ρ g =
-      ((Rep.ofAlgebraAutOnUnits K L).quotientToInvariants (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker).ρ
+      ((Rep.ofAlgebraAutOnUnits K L).quotientToInvariants
+        (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker).ρ
           ((restrictionQuotientEquiv K L E).symm g) ∘ₗ
         (unitsToKernelInvariantsEquiv K L E).toLinearMap := by
   obtain ⟨q, rfl⟩ := (restrictionQuotientEquiv K L E).surjective g
@@ -136,7 +142,8 @@ with fixed unit coefficients, using restriction and the fixed-field equality. -/
 def finiteGaloisUnitsQuotientCohomologyIso (n : ℕ) :
     groupCohomology (Rep.ofAlgebraAutOnUnits K E) n ≅
       groupCohomology
-        ((Rep.ofAlgebraAutOnUnits K L).quotientToInvariants (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker) n :=
+        ((Rep.ofAlgebraAutOnUnits K L).quotientToInvariants
+          (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker) n :=
   groupCohomology.mapIso (restrictionQuotientEquiv K L E).symm
     (unitsToKernelInvariantsEquiv K L E) (unitsInvariants_equivariant K L E) n
 
@@ -185,7 +192,8 @@ theorem finiteGaloisUnitsH2Restriction_ker_le_inflation_range :
   have hker : (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker = E.fixingSubgroup :=
     E.restrictNormalHom_ker
   have : Subsingleton (groupCohomology
-      (Rep.res (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker.subtype (Rep.ofAlgebraAutOnUnits K L)) 1) := by
+      (Rep.res (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker.subtype
+        (Rep.ofAlgebraAutOnUnits K L)) 1) := by
     rw [hker]
     exact finiteGaloisUnitsFixingSubgroupH1_subsingleton K L E
   intro x hx

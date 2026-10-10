@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationK
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
 import ProCGroups.ProP.ContinuousH1
 
-set_option autoImplicit false
 /-!
 # Local Kummer H¹ over the cyclotomic base
 

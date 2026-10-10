@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.Frattini
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
-set_option autoImplicit false
-
 /-!
 # Pro C Groups / Frattini
 

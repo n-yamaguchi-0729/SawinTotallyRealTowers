@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 
-set_option autoImplicit false
-
 /-!
 # Archimedean relative-idele factors as induced local blocks
 
@@ -19,6 +17,8 @@ library is canonically the completion of the underlying absolute value
 archimedean component of a relative idele to the local tensor block of
 the local tensor decomposition, equivariantly for the full Galois action.
 -/
+
+
 
 open scoped NumberField TensorProduct NumberField.LiesOver
 open NumberField

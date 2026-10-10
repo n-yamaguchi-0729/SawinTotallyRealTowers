@@ -12,8 +12,6 @@ import Mathlib.LinearAlgebra.Dimension.Free
 import Mathlib.LinearAlgebra.Dimension.Finite
 import Mathlib.LinearAlgebra.LinearIndependent.Defs
 
-set_option autoImplicit false
-
 /-!
 # Unbounded finite Galois degrees inside an infinite Galois extension
 

@@ -13,8 +13,6 @@ import ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 
-set_option autoImplicit false
-
 /-!
 # Archimedean norm approximation
 
@@ -24,6 +22,8 @@ an `n`-th root, while at a complex place every unit has one.  Consequently
 the standard positive subgroup is contained in the determinant-norm image
 of every scalar extension of positive degree.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

@@ -7,16 +7,17 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
 import Mathlib.Data.Int.ModEq
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
 /-!
 # Integer value-group images
 
-This file contains the integer value-group subgroup-image lemmas used by the norm and ramification-image arguments.  The results are purely about
+This file contains the integer value-group subgroup-image lemmas used by the norm and
+ramification-image arguments.  The results are purely about
 integer-valued multiplicative valuations and integer lcm divisibility.
 -/
+
+namespace LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -141,13 +142,15 @@ theorem subgroupValueSubgroup_le_integerMultipleSubgroup_iff
       exact ⟨x, hx, rfl⟩
     have hxmultiple := h hxvalue
     rw [mem_integerMultipleSubgroup_iff] at hxmultiple
-    simpa [_root_.LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation.valuationHom]
+    simpa [
+        _root_.LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation.valuationHom]
       using hxmultiple
   · intro h n hn
     rw [V.mem_subgroupValueSubgroup_iff S n] at hn
     rcases hn with ⟨x, hx, rfl⟩
     rw [mem_integerMultipleSubgroup_iff]
-    simpa [_root_.LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation.valuationHom]
+    simpa [
+        _root_.LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation.valuationHom]
       using h x hx
 
 /-- A lower value-step inclusion for a larger subgroup value image restricts to

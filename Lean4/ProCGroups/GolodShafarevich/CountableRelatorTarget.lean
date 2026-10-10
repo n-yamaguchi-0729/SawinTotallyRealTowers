@@ -8,8 +8,6 @@ import ProCGroups.GolodShafarevich.CountableRelators
 import ProCGroups.Topologies.ContinuousMonoidHom
 import Mathlib.Topology.Separation.Hausdorff
 
-set_option autoImplicit false
-
 /-!
 # The countable GS quotient of the presented group
 

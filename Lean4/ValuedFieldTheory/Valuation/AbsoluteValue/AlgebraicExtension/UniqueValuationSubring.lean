@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
-set_option autoImplicit false
-
 /-!
 # uniqueness from the integral-closure valuation ring
 

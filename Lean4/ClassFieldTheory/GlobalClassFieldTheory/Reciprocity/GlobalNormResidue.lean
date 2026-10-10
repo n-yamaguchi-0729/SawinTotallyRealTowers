@@ -10,8 +10,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormati
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedReciprocity
 
-set_option autoImplicit false
-
 /-!
 # The global norm-residue symbol
 
@@ -32,6 +30,8 @@ The homomorphism on `C_K` is obtained from the genuine quotient map.
 Consequently it is surjective and its kernel is exactly the range of
 the actual ordinary idele-class norm.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 open NumberField
@@ -240,7 +240,8 @@ theorem globalNormResidueEquiv_finiteReciprocityHom
           (rationalCyclotomicDegreeData.finiteReciprocityHom
             rationalIdeleClassRepresentation
             rationalCyclotomicIdeleClassValuationData
-            (rationalCyclotomicIdeleClassValuationData.classFieldAxiom_implies_unramifiedUnitCohomology
+            (
+          rationalCyclotomicIdeleClassValuationData.classFieldAxiom_implies_unramifiedUnitCohomology
                 rationalIdeleClassRepresentation_satisfiesClassFieldAxiom)
             (numberFieldTowerReciprocityFiniteAbstractField K L)
             (numberFieldTowerFiniteGaloisSubextension K L).field
@@ -415,7 +416,7 @@ theorem globalNormResidueMonoidHom_eq_maximalUnramifiedRestriction
           Additive.toMul
             (numberFieldTowerAbelianizedExtensionQuotientEquivGaloisGroup
               K L z))
-        (ClassFormation.ValuationData.normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
+        (ValuationData.normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
           rationalCyclotomicIdeleClassValuationData
           rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
           H E hUnramified a)

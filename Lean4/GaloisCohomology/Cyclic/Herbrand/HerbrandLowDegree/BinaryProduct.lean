@@ -8,8 +8,6 @@ import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
 import Mathlib.Algebra.GroupWithZero.Action.Prod
 
-set_option autoImplicit false
-
 /-!
 # Low-degree Tate cohomology of binary products
 
@@ -17,6 +15,8 @@ This specializes the dependent-product calculation to two possibly
 different coefficient groups.  It is used to join the unrestricted and
 integral parts of a supported idele group.
 -/
+
+
 
 noncomputable section
 

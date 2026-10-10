@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Loca
 import GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
 import Mathlib.LinearAlgebra.Pi
 
-set_option autoImplicit false
 /-!
 # Finite-place restriction of absolute mod-p characters
 

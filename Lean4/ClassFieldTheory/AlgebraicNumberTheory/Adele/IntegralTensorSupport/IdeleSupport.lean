@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
 
-set_option autoImplicit false
-
 /-!
 # Finite support for integral relative ideles
 
@@ -15,6 +13,8 @@ This module combines coefficient support with the exceptional places of the
 local tensor decomposition, producing one finite set that controls integrality
 of a relative idele and its inverse.
 -/
+
+
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain
@@ -44,7 +44,6 @@ noncomputable def relativeIdeleLocalTensorDecompositionSupport
         (K := K) (L := L)
 
 /-- The support is exposed through this membership characterization. -/
-
 @[simp]
 theorem mem_relativeIdeleLocalTensorDecompositionSupport_iff
     (z : RelativeIdeleGroup K L)

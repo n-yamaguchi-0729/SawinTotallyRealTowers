@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Topology.AdicCompletionInverseLimitRing
 
-set_option autoImplicit false
-
 /-!
 # Adic unit and higher-unit inverse limits
 
@@ -16,6 +14,8 @@ of unit groups of adically complete rings and complete discrete valuation
 rings.  The underlying adic ring inverse-limit theory lives in
 `AdicCompletionInverseLimitRing`.
 -/
+
+
 
 noncomputable section
 
@@ -71,14 +71,19 @@ theorem adicCompletion_units_coordinates_surjective
   refine ⟨(adicCompletionUnitsEquiv I).symm z, ?_, ?_⟩
   · simp
   · intro n
-    ext
-    simp [unitReduction]
+    apply Units.ext
+    change Ideal.Quotient.mk (I ^ n)
+        (((adicCompletionUnitsEquiv I).symm z : Rˣ) : R) =
+      AdicCompletion.evalₐ I n (z : AdicCompletion I R)
     have hval :
         (((adicCompletionUnitsEquiv I).symm z : Rˣ) : R) =
           (adicCompletionAlgEquiv I).symm
             (z : AdicCompletion I R) := rfl
     rw [hval]
-    simp [adicCompletionAlgEquiv]
+    exact (adicCompletion_eval_apply I n
+      ((adicCompletionAlgEquiv I).symm (z : AdicCompletion I R))).symm.trans
+      (congrArg (AdicCompletion.evalₐ I n)
+        ((adicCompletionAlgEquiv I).apply_symm_apply (z : AdicCompletion I R)))
 
 /-- The adic inverse-limit equivalence, finite unit quotient form: if reduction modulo `I` is a
 local quotient map, then `Rˣ / ker(Rˣ → (R/I)ˣ)` is `(R/I)ˣ`.  For valuation
@@ -1021,15 +1026,16 @@ theorem dvrUnitsEquivHigherUnitQuotientInverseLimit_apply
       ((higherUnitQuotientInverseLimitEquivPowerIdealUnitInverseLimit hπ)
         (dvrUnitsEquivHigherUnitQuotientInverseLimit hπ u)) =
     unitReduction (uniformizerPowerIdeal π (n + 1)) u
-  simp [dvrUnitsEquivHigherUnitQuotientInverseLimit,
-    adicPositiveUnitInverseLimitEquivDVRPowerIdealUnitInverseLimit,
-    unitReduction]
-  ext
-  change (Ideal.quotientEquivAlgOfEq O
-      (dvrPowerIdeal_one_pow π (n + 1)))
-        (Ideal.Quotient.mk ((uniformizerPowerIdeal π 1) ^ (n + 1)) (u : O)) =
-    Ideal.Quotient.mk (uniformizerPowerIdeal π (n + 1)) (u : O)
-  rw [Ideal.quotientEquivAlgOfEq_mk]
+  rw [dvrUnitsEquivHigherUnitQuotientInverseLimit, MulEquiv.trans_apply,
+    MulEquiv.apply_symm_apply]
+  change powerIdealStageEquiv π n
+      (adicPositiveUnitInverseLimit_eval (uniformizerPowerIdeal π 1) n
+        (unitsEquivPositiveUnitInverseLimit (uniformizerPowerIdeal π 1) u)) =
+    unitReduction (uniformizerPowerIdeal π (n + 1)) u
+  rw [unitsEquivPositiveUnitInverseLimit_apply]
+  apply Units.ext
+  rw [powerIdealStageEquiv_apply, unitReduction_apply, Ideal.quotientEquivAlgOfEq_mk]
+  exact (unitReduction_apply (uniformizerPowerIdeal π (n + 1)) u).symm
 
 /-- Equality in the finite higher-unit quotient is exactly congruence modulo
 `π^nO` on the underlying elements. -/
@@ -1357,7 +1363,8 @@ noncomputable def unitsEquivHigherUnitQuotientInverseLimitHomeomorph
   let target := dvrHigherUnitQuotientInverseLimitRepresentationHomeomorph π
   exact source.trans (algebraic.trans target.symm)
 
-/-- Complete-DVF specialization of the adic inverse-limit equivalence: the valuation ring is canonically
+/-- Complete-DVF specialization of the adic inverse-limit equivalence: the valuation ring is
+canonically
 isomorphic to its maximal-ideal adic completion. -/
 def completeDVF_valuationSubring_adicCompletionAlgEquiv
     {K : Type u} [Field K]
@@ -1366,7 +1373,8 @@ def completeDVF_valuationSubring_adicCompletionAlgEquiv
       AdicCompletion F.maximalIdeal F.valuationSubring :=
   adicCompletionAlgEquiv F.maximalIdeal
 
-/-- Complete-DVF specialization of the adic inverse-limit equivalence: the valuation ring is the explicit
+/-- Complete-DVF specialization of the adic inverse-limit equivalence: the valuation ring is the
+explicit
 projective limit of its finite quotients by powers of the maximal ideal. -/
 def completeDVF_valuationSubring_quotientInverseLimitEquiv
     {K : Type u} [Field K]
@@ -1386,7 +1394,8 @@ theorem completeDVF_valuationSubring_quotientInverseLimitEquiv_apply
       Ideal.Quotient.mk (F.maximalIdeal ^ n) x := by
   exact adicQuotientInverseLimitEquiv_apply F.maximalIdeal x n
 
-/-- Complete-DVF specialization of the adic inverse-limit equivalence, units of the valuation ring agree
+/-- Complete-DVF specialization of the adic inverse-limit equivalence, units of the valuation
+ring agree
 with units of its maximal-ideal adic completion. -/
 def completeDVF_units_adicCompletionUnitsEquiv
     {K : Type u} [Field K]
@@ -1407,7 +1416,8 @@ theorem completeDVF_units_adicCompletionUnitsEquiv_apply
         (u : F.valuationSubring) := by
   rfl
 
-/-- Complete-DVF specialization of the adic inverse-limit equivalence, unit-coordinate injectivity. -/
+/-- Complete-DVF specialization of the adic inverse-limit equivalence, unit-coordinate
+injectivity. -/
 theorem completeDVF_units_coordinates_injective
     {K : Type u} [Field K]
     (F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, v} K)
@@ -1420,7 +1430,8 @@ theorem completeDVF_units_coordinates_injective
   exact adicCompletion_units_coordinates_injective
     F.maximalIdeal h
 
-/-- Complete-DVF specialization of the adic inverse-limit equivalence, unit-coordinate surjectivity against
+/-- Complete-DVF specialization of the adic inverse-limit equivalence, unit-coordinate
+surjectivity against
 the adic completion. -/
 theorem completeDVF_units_coordinates_surjective
     {K : Type u} [Field K]
@@ -1433,7 +1444,8 @@ theorem completeDVF_units_coordinates_surjective
             Units.map (AdicCompletion.evalₐ F.maximalIdeal n).toMonoidHom z := by
   exact adicCompletion_units_coordinates_surjective F.maximalIdeal z
 
-/-- Complete-DVF specialization of the adic inverse-limit equivalence: units of the valuation ring are the
+/-- Complete-DVF specialization of the adic inverse-limit equivalence: units of the valuation
+ring are the
 projective limit of the units of the finite quotient rings. -/
 def completeDVF_unitsEquivUnitInverseLimit
     {K : Type u} [Field K]

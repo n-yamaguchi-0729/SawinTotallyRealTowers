@@ -12,8 +12,6 @@ import Mathlib.Analysis.Normed.Field.ProperSpace
 import Mathlib.NumberTheory.NumberField.ClassNumber
 import Mathlib.NumberTheory.NumberField.Units.DirichletTheorem
 
-set_option autoImplicit false
-
 /-!
 # Compactness of norm-one idele classes
 
@@ -22,7 +20,9 @@ principal-idele norm formula to prove compactness of the norm-one subgroup of
 the idele class group.
 -/
 
-open scoped Classical NumberField Pointwise RestrictedProduct NNReal
+
+
+open scoped NumberField Pointwise RestrictedProduct NNReal
 open NumberField IsDedekindDomain
 open NumberField.Units.dirichletUnitTheorem
 
@@ -240,6 +240,7 @@ theorem logNorm_principalRingUnit (u : (𝓞 K)ˣ) :
     norm_infiniteComponent_principalIdele]
   rfl
 
+open scoped Classical in
 theorem logNorm_component_le {r : ℝ} (a : InfiniteIdeleGroup K)
     (h : ‖logNorm a‖ ≤ r)
     (w : {w : InfinitePlace K //
@@ -248,6 +249,7 @@ theorem logNorm_component_le {r : ℝ} (a : InfiniteIdeleGroup K)
   simpa only [Real.norm_eq_abs] using
     (norm_le_pi_norm (logNorm a) w).trans h
 
+open scoped Classical in
 /-- If the total archimedean norm is one, the omitted logarithmic coordinate
 is the negative sum of all the other coordinates. -/
 theorem sum_logNorm_eq_neg_distinguished
@@ -308,6 +310,7 @@ theorem sum_logNorm_eq_neg_distinguished
       (eq_neg_of_add_eq_zero_right hsum)
   simpa only [logNorm] using hsum'
 
+open scoped Classical in
 /-- A norm bound in the logarithmic space bounds every local logarithm.
 The harmless factor `#S∞` also covers the omitted coordinate. -/
 theorem abs_log_norm_component_le
@@ -350,6 +353,7 @@ theorem abs_log_norm_component_le
         (Nat.one_le_cast.mpr Fintype.card_pos)
         le_rfl hr (Nat.cast_nonneg _)
 
+open scoped Classical in
 /-- Exponentiating the preceding logarithmic estimate gives a compact
 annulus containing the idele. -/
 theorem mem_annulus_of_logNorm_le
@@ -398,6 +402,7 @@ theorem mem_annulus_of_logNorm_le
         (Real.exp_log hnpos).symm
       _ ≤ Real.exp B := Real.exp_le_exp.mpr habs.2
 
+open scoped Classical in
 /-- A real basis obtained from the full unit lattice. -/
 private def unitLatticeRealBasis :
     Module.Basis
@@ -408,15 +413,18 @@ private def unitLatticeRealBasis :
     (NumberField.Units.unitLattice K)).ofZLatticeBasis
       ℝ (NumberField.Units.unitLattice K)
 
+open scoped Classical in
 /-- An explicit uniform logarithmic bound for representatives modulo the
 ordinary unit lattice. -/
 def logFundamentalBound : ℝ :=
   ∑ i, ‖unitLatticeRealBasis (K := K) i‖
 
+open scoped Classical in
 theorem logFundamentalBound_nonneg :
     0 ≤ logFundamentalBound (K := K) :=
   Finset.sum_nonneg fun _ _ ↦ norm_nonneg _
 
+open scoped Classical in
 /-- Every archimedean idele can be multiplied by an algebraic integer unit
 so that its logarithmic vector lies in a fixed bounded fundamental
 parallelepiped. -/
@@ -546,6 +554,7 @@ theorem mem_compactIntegralNormOneSet_iff (a : IdeleGroup K) :
       InfiniteIdeleGroup.archimedeanNorm a.1 = 1) ↔ _
   tauto
 
+open scoped Classical in
 /-- A norm-one idele integral at every finite place is principal-equivalent
 to an element of the fixed compact representative set. -/
 theorem exists_compactIntegralNormOneSet_representative
@@ -605,6 +614,7 @@ theorem exists_compactIntegralNormOneSet_representative
   exact mul_one
     (QuotientGroup.mk' (principalSubgroup K) a)
 
+open scoped Classical in
 /-- For every ordinary ideal class which occurs on a norm-one idele, choose
 one such representative; use `1` for the (irrelevant) remaining classes. -/
 private def normOneIdealClassRepresentative
@@ -615,6 +625,7 @@ private def normOneIdealClassRepresentative
   else
     1
 
+open scoped Classical in
 private theorem normOneIdealClassRepresentative_mem
     (c : ClassGroup (𝓞 K)) :
     normOneIdealClassRepresentative (K := K) c ∈
@@ -624,6 +635,7 @@ private theorem normOneIdealClassRepresentative_mem
   · exact (Classical.choose_spec h).1
   · exact (normOneSubgroup (K := K)).one_mem
 
+open scoped Classical in
 private theorem idealClass_normOneIdealClassRepresentative
     (c : ClassGroup (𝓞 K))
     (h : ∃ a : IdeleGroup K,

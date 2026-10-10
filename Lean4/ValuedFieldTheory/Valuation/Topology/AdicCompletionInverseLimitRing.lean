@@ -11,8 +11,6 @@ import ValuedFieldTheory.Valuation.Topology.Models
 import Mathlib.Algebra.Ring.TransferInstance
 import Mathlib.Topology.Homeomorph.TransferInstance
 
-set_option autoImplicit false
-
 /-!
 # Adic completion and inverse limits
 
@@ -20,6 +18,8 @@ This file contains the algebraic and topological projective-limit descriptions
 of adically complete rings, complete discrete valuation rings, and their unit
 groups.
 -/
+
+
 
 noncomputable section
 

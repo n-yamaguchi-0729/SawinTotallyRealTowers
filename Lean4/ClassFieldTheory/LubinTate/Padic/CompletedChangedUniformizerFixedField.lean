@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
 import ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerThetaFixed
 import ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedFrobeniusFixed
 
-set_option autoImplicit false
-
 /-!
 # The changed p-adic Lubin--Tate level as a completed Frobenius fixed field
 
@@ -25,6 +23,8 @@ the fixed-field theorem for Witt Frobenius puts that coefficient in
 `ℚ_[p]`.  The final norm formula is therefore transported from the actual
 finite changed level, with no comparison hypothesis.
 -/
+
+
 
 noncomputable section
 

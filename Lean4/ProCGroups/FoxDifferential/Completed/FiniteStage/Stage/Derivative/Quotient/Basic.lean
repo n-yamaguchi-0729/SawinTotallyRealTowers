@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Relators
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: stage — derivative — quotient — basic
 

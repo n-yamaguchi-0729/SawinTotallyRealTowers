@@ -12,7 +12,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportGl
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
 
-set_option autoImplicit false
 /-!
 # Reciprocity annihilates global-character ramification on the ideal radical
 
@@ -85,7 +84,8 @@ theorem absoluteCharacter_finiteSupport_radical_annihilator
         chi (finitePlaceAbsoluteDecompositionInclusion F v sigma.1) = 1) :
     absolutePowerClassDualRestriction F (n : ℕ)
       (finiteSupportLocalReciprocityPowerClassFunctional F (n : ℕ) S
-        (fun v => finitePlaceAbsoluteH1AdicRestriction F (n : ℕ) v.1 (Additive.ofMul chi))) = 0 := by
+        (fun v => finitePlaceAbsoluteH1AdicRestriction
+          F (n : ℕ) v.1 (Additive.ofMul chi))) = 0 := by
   ext x
   change finiteSupportLocalReciprocityPowerClassFunctional F (n : ℕ) S
     (fun v => finitePlaceAbsoluteH1AdicRestriction F (n : ℕ) v.1 (Additive.ofMul chi))

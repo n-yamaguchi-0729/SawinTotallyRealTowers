@@ -12,8 +12,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExte
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
 import Mathlib.FieldTheory.Galois.Infinite
 
-set_option autoImplicit false
-
 /-!
 # The local class-field axiom for decomposition-group blocks
 
@@ -31,6 +29,8 @@ class-field axiom then gives:
 * `H⁻¹` is trivial;
 * the cardinality and Herbrand quotient equal the local degree.
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

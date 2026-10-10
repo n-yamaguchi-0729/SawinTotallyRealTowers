@@ -11,15 +11,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteGalo
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory KummerTheory CyclicCohomology
-
-open LocalFieldTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: transport of abstract reciprocity to a field extension
 
@@ -32,6 +23,15 @@ through the actual field norm.
 The coefficient module remains `(SeparableClosure K)ˣ`; this is essential in
 imperfect positive characteristic.
 -/
+
+namespace LocalClassFieldTheory
+open RamificationTheory KummerTheory CyclicCohomology
+
+open LocalFieldTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 
@@ -78,7 +78,8 @@ def concreteReciprocityAddEquivOfEmbedding
     Additive (Abelianization Gal(L / K)) ≃+
       Additive (NormQuotient K L) :=
   (MulEquiv.toAdditive
-      ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i).abelianizationCongr.symm)).trans
+      ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L
+        i).abelianizationCongr.symm)).trans
     ((D.abstractReciprocityEquiv (A K) v hcf (intrinsicFiniteAbstractBase K)
       (finiteGaloisAbstractExtensionOfEmbedding K L i)).trans
         (finiteNormQuotientEquivEmbeddedNormQuotient

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.Core
 
-set_option autoImplicit false
-
 /-!
 # Restriction kernels of S-unit Kummer extensions
 
@@ -16,7 +14,9 @@ enlarged S-unit Kummer extension to coordinate generators, their required
 number, and their cyclic fixed fields.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 

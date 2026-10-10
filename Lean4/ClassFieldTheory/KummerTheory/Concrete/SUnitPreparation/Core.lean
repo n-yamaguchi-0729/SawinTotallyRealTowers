@@ -11,15 +11,16 @@ import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerEx
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitLocalPowerKernel
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
 
-set_option autoImplicit false
-
 /-!
 # Rank and kernel coordinates for S-unit preparation
 
-The endpoint of the S-unit preparation construction: the rank bound, the exact restriction-kernel cardinality, and prime-power coordinates.
+The endpoint of the S-unit preparation construction: the rank bound, the exact restriction-kernel
+cardinality, and prime-power coordinates.
 -/
 
-open scoped NumberField Classical IsMulCommutative NNReal ValuativeRel
+
+
+open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 

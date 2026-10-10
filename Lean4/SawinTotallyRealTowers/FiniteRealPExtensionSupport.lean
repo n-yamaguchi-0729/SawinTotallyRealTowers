@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.FiniteRealPExtension
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPFiniteSupport
 
-set_option autoImplicit false
-
 /-!
 # Finite support in the real pro-p tower
 

@@ -8,7 +8,6 @@ import Mathlib.Topology.Algebra.Ring.Ideal
 import ProCGroups.CompletedGroupAlgebra.Augmentation.Functoriality
 import ProCGroups.FiniteGroups.StandardClasses
 
-set_option autoImplicit false
 /-!
 # The closed augmentation filtration over `ZMod p`
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Fox.CoefficientReductionCompatibility
 import ProCGroups.ProP.Fox.Derivative
 
-set_option autoImplicit false
 /-!
 # Mod-p Fox derivatives on finite pro-p presentation groups
 

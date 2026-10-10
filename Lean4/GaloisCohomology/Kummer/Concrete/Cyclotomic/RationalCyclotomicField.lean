@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.NumberTheory.Cyclotomic.Basic
 
-set_option autoImplicit false
-
 /-!
 # The rational cyclotomic closure
 
@@ -20,6 +18,8 @@ The finite levels form the divisibility-directed system whose supremum is
 the whole cyclotomic field.  This supplies the field-theoretic source for
 the rational cyclotomic calculation.
 -/
+
+
 
 noncomputable section
 

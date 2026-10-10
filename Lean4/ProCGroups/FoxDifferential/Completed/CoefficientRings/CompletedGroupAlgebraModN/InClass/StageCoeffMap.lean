@@ -6,10 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
 
-set_option autoImplicit false
-
 /-!
-# Fox differential: coefficient rings — mod-\(n\) completed group algebra — in class — stage coeff map
+# Fox differential: coefficient rings — mod-\(n\) completed group algebra — in class — stage
+coeff map
 
 The principal declarations in this module are:
 

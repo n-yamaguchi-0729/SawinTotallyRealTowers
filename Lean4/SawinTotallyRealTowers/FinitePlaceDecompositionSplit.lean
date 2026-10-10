@@ -11,8 +11,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 import Mathlib.FieldTheory.Galois.GaloisClosure
 import Mathlib.FieldTheory.Normal.Defs
 
-set_option autoImplicit false
-
 /-!
 # Absolute decomposition at a completely split finite place
 

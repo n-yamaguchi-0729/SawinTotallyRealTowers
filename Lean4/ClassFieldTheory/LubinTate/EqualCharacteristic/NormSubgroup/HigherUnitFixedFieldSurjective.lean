@@ -7,14 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldEmbedding
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldDegree
 
-set_option autoImplicit false
-
 /-!
-# LubinTate the explicit norm-subgroup computation: surjectivity of the higher-unit fixed-field embedding
+# LubinTate the explicit norm-subgroup computation: surjectivity of the higher-unit fixed-field
+embedding
 
 The standard level and the fixed field have the same finite degree
 `(q - 1) q^n`; hence the canonical injective embedding is surjective.
 -/
+
+
 
 noncomputable section
 

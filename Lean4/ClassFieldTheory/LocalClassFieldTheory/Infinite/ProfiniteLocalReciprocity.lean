@@ -12,8 +12,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Infinite.TopologicalAbelianization
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 
-set_option autoImplicit false
-
 /-!
 # Profinite local reciprocity
 
@@ -24,6 +22,8 @@ topological profinite completion is then automatically onto.  Injectivity
 is supplied by the arithmetic cofinality consequence of the finite local
 existence theorem.
 -/
+
+
 
 noncomputable section
 
@@ -193,7 +193,8 @@ noncomputable def profiniteLocalReciprocityHom :
   topologicalProfiniteCompletionLift
     (standardLocalAbsoluteAbelianProfinite K) (absoluteLocalArtinMap K)
 
-/-- The standard reciprocity lift agrees with the absolute Artin map on canonical completion points. -/
+/-- The standard reciprocity lift agrees with the absolute Artin map on canonical completion
+points. -/
 @[simp]
 theorem profiniteLocalReciprocityHom_map (a : Kˣ) :
     profiniteLocalReciprocityHom K

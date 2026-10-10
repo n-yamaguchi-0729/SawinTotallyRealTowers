@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.Galois.Profinite
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
 import ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
 
-set_option autoImplicit false
-
 /-!
 # Chosen integral-closure ramification filtrations at finite Galois levels
 
@@ -21,6 +19,8 @@ then gives uniqueness of the extended valuation, so real lower groups and
 Herbrand upper groups can be formed without asking a caller to provide a
 filtration. Choice independence is proved in the companion module.
 -/
+
+
 
 noncomputable section
 

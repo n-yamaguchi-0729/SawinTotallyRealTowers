@@ -10,10 +10,6 @@ import Mathlib.Topology.Algebra.Ring.Basic
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
 import GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
 /-!
 # Profinite completion of the integers
 
@@ -22,6 +18,10 @@ inside the product of all positive cyclic quotients `ZMod n`.  This realizes
 the canonical reduction maps and the dense integer embedding directly in
 Mathlib.
 -/
+
+namespace ClassFormation
+
+
 
 open scoped Topology
 

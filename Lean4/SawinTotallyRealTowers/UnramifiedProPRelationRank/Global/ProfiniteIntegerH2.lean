@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteInteger
 import ProCGroups.ProC.InverseLimits.FiniteQuotients
 import ProCGroups.ProC.Subgroups.Closed
 
-set_option autoImplicit false
 /-!
 # Degree-two cohomology of the profinite integers
 

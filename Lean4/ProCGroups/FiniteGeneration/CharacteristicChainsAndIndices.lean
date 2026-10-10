@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FiniteGeneration.Basic
 import ProCGroups.Topologies.ContinuousMonoidHom
 
-set_option autoImplicit false
-
 /-!
 # Characteristic chains from bounded-index intersections
 

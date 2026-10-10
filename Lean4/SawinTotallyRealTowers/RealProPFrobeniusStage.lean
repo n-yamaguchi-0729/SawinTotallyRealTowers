@@ -14,8 +14,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbso
 import ProCGroups.ProP.Zassenhaus.Depth
 import ProCGroups.FiniteGeneration.Basic
 
-set_option autoImplicit false
-
 /-!
 # Split finite stages and deep arithmetic Frobenius lifts
 

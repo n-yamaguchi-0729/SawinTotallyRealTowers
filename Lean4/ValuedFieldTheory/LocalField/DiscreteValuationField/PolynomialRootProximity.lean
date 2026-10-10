@@ -8,8 +8,6 @@ import Mathlib.Algebra.Polynomial.Splits
 import Mathlib.Data.Finset.Max
 import Mathlib.RingTheory.DiscreteValuationRing.Basic
 
-set_option autoImplicit false
-
 /-!
 # A root-proximity estimate over a discrete valuation ring
 
@@ -22,6 +20,8 @@ ultrametric inequality.
 Repeated roots and zero derivative values are allowed; the statement is in
 `ℕ∞`, so the estimate also covers infinite additive valuations.
 -/
+
+
 
 noncomputable section
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 
-set_option autoImplicit false
-
 /-!
 # Herbrand quotients of finite products
 
@@ -15,6 +13,8 @@ This file extracts the cardinality consequence of the product
 decompositions of low-degree Tate cohomology, giving the corresponding
 product formula for Herbrand quotients.
 -/
+
+
 
 open scoped BigOperators
 

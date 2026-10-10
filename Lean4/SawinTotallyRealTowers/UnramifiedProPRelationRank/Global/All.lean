@@ -32,4 +32,9 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedCompos
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedExplicitBridge
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
 
-set_option autoImplicit false
+/-!
+# Global unramified pro-p class-field constructions
+
+This aggregate collects global reciprocity characters, idele cohomology, class groups,
+unramified composita, and maximal everywhere-unramified pro-p extensions.
+-/

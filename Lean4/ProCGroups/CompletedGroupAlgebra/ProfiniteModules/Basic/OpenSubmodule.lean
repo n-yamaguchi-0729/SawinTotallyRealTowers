@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.LinearTopology
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Definitions
 
-set_option autoImplicit false
-
 /-!
 # Open submodules of profinite modules
 

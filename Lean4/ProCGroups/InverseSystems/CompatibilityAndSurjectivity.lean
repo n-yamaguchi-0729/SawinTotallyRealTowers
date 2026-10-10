@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.InverseSystems.Basic
 import ProCGroups.InverseSystems.Utilities
 
-set_option autoImplicit false
-
 /-!
 # Morphisms of inverse systems and maps on their limits
 

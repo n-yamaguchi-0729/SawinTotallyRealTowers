@@ -8,8 +8,6 @@ import ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Semidirect
 import ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Boundary
 import ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — finite stage — coeff map — boundary cycles
 

@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFie
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldContainment
 import ClassFieldTheory.GlobalClassFieldTheory.IdealClassFieldTheory.SmallHilbertTowerConjugation
 
-set_option autoImplicit false
-
 /-!
 # The maximal everywhere-unramified abelian subextension
 
@@ -20,6 +18,8 @@ order-reversing finite abelian classification then places every actual
 finite abelian extension unramified at all finite and infinite places
 inside the selected field.
 -/
+
+
 
 open scoped NumberField
 

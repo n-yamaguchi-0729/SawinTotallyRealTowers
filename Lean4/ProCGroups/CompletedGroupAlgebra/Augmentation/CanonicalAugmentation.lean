@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Augmentation.StageAugmentation
 
-set_option autoImplicit false
-
 /-!
 # Canonical augmentation of the in-class completion
 

@@ -8,7 +8,6 @@ import ProCGroups.ProP.FrattiniQuotient
 import Mathlib.GroupTheory.Abelianization.Defs
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
 /-!
 # Universal property of the power--commutator quotient
 

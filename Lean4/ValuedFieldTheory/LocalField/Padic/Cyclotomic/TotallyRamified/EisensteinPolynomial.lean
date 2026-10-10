@@ -11,8 +11,6 @@ import Mathlib.NumberTheory.Cyclotomic.Discriminant
 import Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral
 import Mathlib.RingTheory.IsAdjoinRoot
 
-set_option autoImplicit false
-
 /-!
 # The Eisenstein polynomial of the `p`-power cyclotomic extension
 
@@ -27,6 +25,8 @@ The source is the translated cyclotomic Eisenstein polynomial
 to the actual p-adic integer ring; no irreducibility or ramification
 conclusion is assumed.
 -/
+
+
 
 noncomputable section
 

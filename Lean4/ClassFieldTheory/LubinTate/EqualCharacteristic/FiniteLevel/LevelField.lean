@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveIrreducible
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveTorsion
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: equal-characteristic Lubin--Tate level fields
 
@@ -18,6 +16,8 @@ division point.  Eisenstein irreducibility identifies its minimal polynomial
 with the primitive division polynomial and gives the exact degree
 `(q - 1) q^n`.
 -/
+
+
 
 noncomputable section
 

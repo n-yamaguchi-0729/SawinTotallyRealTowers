@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
 /-!
 # normalized degree and Frobenius theory: normalized degree maps and Frobenius
 
@@ -17,6 +13,10 @@ For a field of finite residue degree, this file constructs the map
 `d_K = (1 / f_K) d`; division is performed only after proving that
 `d(G_K) = f_K ℤ̂`.  The Frobenius is then the unique class mapping to `1`.
 -/
+
+namespace ClassFormation
+
+
 
 noncomputable section
 
@@ -116,7 +116,8 @@ theorem residueDegree_nsmul_normalizedDegree (D : DegreeData G)
   exact zHatMulNat_zHatDivide (K.residueDegree : ℕ) K.residueDegree.property
     (D.restrictedDegreeInMulNatRange K k)
 
-/-- The normalized map is surjective, exactly as asserted before the normalized Frobenius definition. -/
+/-- The normalized map is surjective, exactly as asserted before the normalized Frobenius
+definition. -/
 theorem normalizedDegree_surjective (D : DegreeData G)
     (K : FiniteResidueAbstractField D) :
     Function.Surjective (D.normalizedDegree K) := by

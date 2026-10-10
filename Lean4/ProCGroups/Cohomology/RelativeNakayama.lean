@@ -9,7 +9,6 @@ import ProCGroups.ProC.InverseLimits.Predicates
 import ProCGroups.ProC.OpenNormalSubgroups.Separation
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # Relative Nakayama characters for pro-p groups
 

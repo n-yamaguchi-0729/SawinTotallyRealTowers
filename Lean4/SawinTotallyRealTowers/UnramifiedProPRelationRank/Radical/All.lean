@@ -47,4 +47,9 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.KummerClassPara
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.OrdinaryUnitModP
 
-set_option autoImplicit false
+/-!
+# Radical and reciprocity comparisons for unramified pro-p extensions
+
+This aggregate collects ideal-power radicals, finite-support reciprocity characters,
+Kummer pairings, and localization comparisons at finite places.
+-/

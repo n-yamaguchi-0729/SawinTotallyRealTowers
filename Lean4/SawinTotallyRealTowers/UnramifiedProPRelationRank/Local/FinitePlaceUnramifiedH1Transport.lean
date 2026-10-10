@@ -7,7 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 
-set_option autoImplicit false
+/-!
+# Transport of unramified first-cohomology characters at a finite place
+
+The local--global Galois comparison gives a linear equivalence between characters
+of the global decomposition group and of the completion's separable-closure Galois
+group. This equivalence identifies inertia-trivial characters with the intrinsic
+unramified residue-degree line.
+-/
+
 open NumberField IsDedekindDomain
 open scoped NNReal NumberField ValuativeRel
 
@@ -66,8 +74,8 @@ noncomputable def finitePlaceDecompositionH1LinearEquivLocalSeparable
       ContinuousH1ZMod
         (p := p)
         (G := Gal(SeparableClosure
-          (NumberField.HeightOneSpectrum.adicAbv F v).Completion /
-          (NumberField.HeightOneSpectrum.adicAbv F v).Completion)) := by
+          (NumberField.HeightOneSpectrum.adicAbv F
+            v).Completion/(NumberField.HeightOneSpectrum.adicAbv F v).Completion)) := by
   let e :=
     finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup F v
   let f := (continuousH1PullbackAddHom (p := p) e.symm).toZModLinearMap p
@@ -95,8 +103,8 @@ theorem finitePlaceDecompositionH1LinearEquivLocalSeparable_apply
     (chi : ContinuousH1ZMod
       (p := p) (G := finitePlaceAbsoluteDecompositionGroup F v))
     (sigma : Gal(SeparableClosure
-      (NumberField.HeightOneSpectrum.adicAbv F v).Completion /
-      (NumberField.HeightOneSpectrum.adicAbv F v).Completion)) :
+      (NumberField.HeightOneSpectrum.adicAbv F
+        v).Completion/(NumberField.HeightOneSpectrum.adicAbv F v).Completion)) :
     finitePlaceDecompositionH1LinearEquivLocalSeparable F p v chi
         (Additive.ofMul sigma) =
       chi (Additive.ofMul

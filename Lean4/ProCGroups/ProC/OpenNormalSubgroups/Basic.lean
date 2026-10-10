@@ -9,8 +9,6 @@ import ProCGroups.Profinite.OpenSubgroups
 import ProCGroups.Topologies.QuotientMaps
 import ProCGroups.Topologies.ContinuousMulEquiv
 
-set_option autoImplicit false
-
 /-!
 # Basic operations on open normal subgroups
 

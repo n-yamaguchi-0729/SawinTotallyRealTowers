@@ -7,16 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
 /-!
 # normalized degree and Frobenius theory: topological generation
 
 This file contains the small amount of topological-generation theory used in
 the construction of Frobenius fixed fields, next to its sole application.
 -/
+
+namespace ClassFormation
+
+
 
 open Set
 open scoped Topology Pointwise

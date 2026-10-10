@@ -8,8 +8,6 @@ import Mathlib.GroupTheory.Abelianization.Defs
 import ProCGroups.Abelian.TopologicalAbelianization
 import ProCGroups.ProC.Subgroups.Closed
 
-set_option autoImplicit false
-
 /-!
 # Profinite kernels and their abelianizations
 

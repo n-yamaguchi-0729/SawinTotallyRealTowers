@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionEquiv
 
-set_option autoImplicit false
-
 /-!
 # Frobenius actions and relative norms in a totally ramified tower
 
 This file constructs the Frobenius element in the auxiliary extension and
 proves its restriction, commutation, action, and relative-norm identities.
 -/
+
+
 
 noncomputable section
 

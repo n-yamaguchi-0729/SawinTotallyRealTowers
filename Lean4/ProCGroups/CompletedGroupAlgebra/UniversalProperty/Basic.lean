@@ -8,8 +8,6 @@ import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteCom
 import ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.GroupLike
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Universal Property / Basic
 

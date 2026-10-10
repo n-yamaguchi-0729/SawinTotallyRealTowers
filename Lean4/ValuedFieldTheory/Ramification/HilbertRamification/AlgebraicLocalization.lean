@@ -18,8 +18,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtens
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 
-set_option autoImplicit false
-
 /-!
 # Localization and decomposition comparison for decomposition groups
 
@@ -433,7 +431,8 @@ def localizationToDecompositionGroup
     calc
       w.1 (σ x) = AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
           (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 (σ x)) :=
-        (AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2 (σ x)).symm
+        (AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2 (σ
+          x)).symm
       _ = AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
           (τ (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 x)) := by
         rw [localizationAlgEquivRestrict_toLocalization]
@@ -575,7 +574,8 @@ omit hvK
 
 include hvK
 
-/-- The localization and decomposition comparison (decomposition groups): for a possibly infinite Galois
+/-- The localization and decomposition comparison (decomposition groups): for a possibly
+infinite Galois
 extension, the decomposition group at `w` is canonically isomorphic to the
 Galois group of the algebraic localization over `K_v`. -/
 def decompositionGroupEquivAlgebraicLocalizationAut :

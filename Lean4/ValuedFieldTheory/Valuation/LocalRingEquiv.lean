@@ -8,8 +8,6 @@ import Mathlib.NumberTheory.RamificationInertia.Ramification
 import Mathlib.RingTheory.LocalRing.Basic
 import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 
-set_option autoImplicit false
-
 /-!
 # Local-ring equivalences and maximal ideals
 

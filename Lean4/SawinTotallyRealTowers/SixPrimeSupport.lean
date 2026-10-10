@@ -8,8 +8,6 @@ import Mathlib.Data.Finset.Insert
 import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 
-set_option autoImplicit false
-
 /-!
 # The six rational primes allowed in the initial tower
 

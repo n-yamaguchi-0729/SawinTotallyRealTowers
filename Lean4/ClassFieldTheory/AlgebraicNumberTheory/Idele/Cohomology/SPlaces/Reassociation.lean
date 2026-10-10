@@ -9,8 +9,6 @@ import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.BinaryProduct
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 import Mathlib.Algebra.GroupWithZero.Action.Prod
 
-set_option autoImplicit false
-
 /-!
 # Reassociation of supported relative-idele factors
 
@@ -19,6 +17,8 @@ finite family of unrestricted places and the product of integral factors
 outside the support.  The comparison respects the concrete Galois
 actions.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

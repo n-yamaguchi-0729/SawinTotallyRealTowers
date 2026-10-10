@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectKernelBasis
 import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — continuous — topology
 

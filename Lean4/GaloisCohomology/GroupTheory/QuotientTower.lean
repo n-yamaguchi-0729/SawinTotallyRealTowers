@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.GroupTheory.Index
 
-set_option autoImplicit false
-
 /-!
 # Quotients in subgroup towers
 
@@ -16,6 +14,8 @@ subgroup and the corresponding quotient after viewing that subgroup inside a
 larger group. They complement Mathlib's natural-number relative-index laws
 when cardinal-valued indices must also cover infinite towers.
 -/
+
+
 
 noncomputable section
 

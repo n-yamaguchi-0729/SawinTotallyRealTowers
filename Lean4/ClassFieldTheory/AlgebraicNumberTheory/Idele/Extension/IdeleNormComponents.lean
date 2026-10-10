@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalNorm
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 
-set_option autoImplicit false
-
 /-!
 # Local components of the ordinary idele norm
 
@@ -20,6 +18,8 @@ determinant with the product of the ordinary field norms on the completion
 factors above the place.  These are the concrete finite- and infinite-place
 forms of the local idele norm formula.
 -/
+
+
 
 open scoped BigOperators NumberField TensorProduct NumberField.LiesOver
 open NumberField IsDedekindDomain

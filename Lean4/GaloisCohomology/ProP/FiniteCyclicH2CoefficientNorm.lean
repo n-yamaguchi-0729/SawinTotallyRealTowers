@@ -16,8 +16,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.RepresentationTheory.Rep.Basic
 
-set_option autoImplicit false
-
 /-!
 # Norm preimages kill a cyclic H² coefficient map
 

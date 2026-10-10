@@ -6,10 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Module
 
-set_option autoImplicit false
-
 /-!
-# Fox differential: completed — coefficient rings — prime-power completed group algebra — augmentation
+# Fox differential: completed — coefficient rings — prime-power completed group algebra —
+augmentation
 
 The principal declarations in this module are:
 

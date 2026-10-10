@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.SeparableClosurePadicLift
 
-set_option autoImplicit false
-
 /-!
 # Finite p-adic cyclic data for local-global Artin compatibility
 
 This module packages the simultaneous finite-quotient and cyclotomic
 coordinates and the corresponding abstract auxiliary subextension.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 open NumberField

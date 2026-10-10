@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Decomposition
 
-set_option autoImplicit false
-
 /-!
 # Density of torsion in the finite profinite-unit factor
 -/
+
+
 
 open scoped Topology
 

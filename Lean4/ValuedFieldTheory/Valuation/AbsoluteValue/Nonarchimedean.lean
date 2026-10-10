@@ -8,8 +8,6 @@ import Mathlib.Analysis.AbsoluteValue.Equivalence
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Algebra.Order.Ring.IsNonarchimedean
 
-set_option autoImplicit false
-
 /-!
 # Nonarchimedean absolute values
 

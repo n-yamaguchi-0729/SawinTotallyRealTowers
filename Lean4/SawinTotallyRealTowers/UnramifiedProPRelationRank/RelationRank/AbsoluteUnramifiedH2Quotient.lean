@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.PresentationQuotientEquiv
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
 
-set_option autoImplicit false
 /-!
 # Degree-two cohomology of the absolute unramified quotient
 

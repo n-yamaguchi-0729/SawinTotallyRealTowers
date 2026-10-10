@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Presentation.GeneratorRank
 
-set_option autoImplicit false
 /-!
 # Minimal relation cardinal
 

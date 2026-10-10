@@ -9,8 +9,6 @@ import SawinTotallyRealTowers.QuadraticCompositum
 import SawinTotallyRealTowers.SixPrimeQuadraticCompositum
 import SawinTotallyRealTowers.SixPrimeSquareClasses
 
-set_option autoImplicit false
-
 /-!
 # Exhausting the quadratic layers of the six-prime real tower
 

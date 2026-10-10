@@ -9,7 +9,6 @@ import GaloisCohomology.ProP.H2PrimeToIndexRestriction
 import ClassFieldTheory.KummerTheory.Concrete.CyclotomicPrimeBaseChange
 import Mathlib.FieldTheory.AbsoluteGaloisGroup
 
-set_option autoImplicit false
 /-!
 # Detecting absolute H² after adjoining the p-th roots of unity
 
@@ -38,7 +37,8 @@ theorem idealRadicalCyclotomicBase_finrank_lt :
     Module.finrank F (IdealRadicalCyclotomicBase F p Fact.out) < p := by
   let C := IdealRadicalCyclotomicBase F p Fact.out
   let : IsCyclotomicExtension {p} F C :=
-    (idealRadicalPrimitiveRoot_isPrimitiveRoot F p Fact.out).intermediateField_adjoin_isCyclotomicExtension
+    (idealRadicalPrimitiveRoot_isPrimitiveRoot
+      F p Fact.out).intermediateField_adjoin_isCyclotomicExtension
       (K := F)
   let e : C ≃ₐ[F] CyclotomicField p F := IsCyclotomicExtension.algEquiv {p} F C _
   exact e.toLinearEquiv.finrank_eq ▸

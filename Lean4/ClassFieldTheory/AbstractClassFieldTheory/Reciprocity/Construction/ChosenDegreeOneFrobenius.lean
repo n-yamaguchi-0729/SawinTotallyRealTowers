@@ -6,14 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Universal
 
-set_option autoImplicit false
-
-universe u
-
-namespace ClassFormation
-
-open CyclicCohomology
-
 /-!
 # The chosen degree-one Frobenius element
 
@@ -21,6 +13,14 @@ Surjectivity of the normalized degree supplies a Frobenius-semigroup element
 of exponent one.  The chosen object and its specification are kept together
 here so the multiplicativity proof can consume a named choice boundary.
 -/
+
+universe u
+
+namespace ClassFormation
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

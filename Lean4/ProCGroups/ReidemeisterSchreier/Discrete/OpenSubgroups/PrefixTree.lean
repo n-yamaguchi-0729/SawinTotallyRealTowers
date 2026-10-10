@@ -9,10 +9,6 @@ import ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Generators
 import ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.NielsenSchreierCompat
 import ProCGroups.ReidemeisterSchreier.FreeGroup.Automorphisms
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Prefix Tree
 
@@ -21,12 +17,15 @@ proves its positive and negative edge criteria, and relates its complement
 edges to the nontrivial Schreier generators.
 -/
 
+universe u
+
 namespace ReidemeisterSchreier.Discrete.OpenSubgroups
 
 section SchreierPrefixTrees
 
 open scoped Pointwise
-open CategoryTheory CategoryTheory.ActionCategory CategoryTheory.SingleObj Quiver _root_.ReidemeisterSchreier.FreeGroup
+open CategoryTheory CategoryTheory.ActionCategory CategoryTheory.SingleObj
+  Quiver _root_.ReidemeisterSchreier.FreeGroup
 
 /--
 The parent vertex of a nontrivial prefix-parent edge of a Schreier transversal again lies in the
@@ -40,7 +39,8 @@ theorem prefixParentEdge_mem_transversal {X : Type u} [DecidableEq X]
   rw [FreeGroup.prefixParentEdgeOfNeOne_parent]
   exact prefixParent_mem_of_mem (X := X) hT t.property
 
-/-- Every nonidentity transversal representative is reached from its prefix parent by an inverse-basis edge. -/
+/-- Every nonidentity transversal representative is reached from its prefix parent by an
+inverse-basis edge. -/
 theorem exists_inverseBasis_edge_of_ne_one {X : Type u} [DecidableEq X]
     {L : Subgroup (FreeGroup X)} {T : Set (FreeGroup X)}
     (hT : IsRightSchreierTransversal (X := X) L T)
@@ -166,7 +166,8 @@ theorem mem_schreierPrefixTree_inr_iff {X : Type u} [DecidableEq X]
   intro a b g
   rfl
 
-/-- A positive final letter determines the forward edge from the prefix parent in the Schreier tree. -/
+/-- A positive final letter determines the forward edge from the prefix parent in the Schreier
+tree. -/
 theorem schreierPrefixTree_edge_of_last_pos {X : Type u} [DecidableEq X]
     {L : Subgroup (FreeGroup X)} {T : Set (FreeGroup X)}
     (hT : IsRightSchreierTransversal (X := X) L T)

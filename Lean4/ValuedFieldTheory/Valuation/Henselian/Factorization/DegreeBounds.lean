@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Henselian.Factorization.DivisionBounds
 
-set_option autoImplicit false
-
 /-!
 # degree bounds for the error factors
 

@@ -18,8 +18,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecompositio
 import ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
 
-set_option autoImplicit false
-
 /-!
 # The ramified local unit of a rational principal idele
 
@@ -30,7 +28,9 @@ reciprocity, in the standard field `ℚ_[p]`, and in the valuation subring
 used by the multiplicative Lubin--Tate construction.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -187,6 +187,11 @@ theorem rationalPadicFieldUnit_eq_unitFactor_mul_baseUniformizer_zpow
     ← map_mul,
     rationalPrimeUnit_mul_primeGenerator_zpow]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  multiplicativeIntegerValuationOfUniformizer_isUniformizer
+  multiplicativeIntegerValuationOfUniformizer_zeroSubgroup_eq_unitGroup
+  valuationSubringUnitsToFieldUnits_mem_unitGroup
+) in
 /-- The exponent selected by the complete-DVF uniformizer decomposition of a
 rational element is its ordinary `p`-adic valuation. -/
 theorem rationalPadicFieldUnit_uniformizerValueExponent
@@ -222,13 +227,13 @@ theorem rationalPadicFieldUnit_uniformizerValueExponent
         F.valuation.valuationSubring.unitGroup := by
     simpa only [
       LubinTate.standardLubinTateUnitFactorFieldUnit] using
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.valuationSubringUnitsToFieldUnits_mem_unitGroup
+      (valuationSubringUnitsToFieldUnits_mem_unitGroup
         F.toCompleteDVF u)
   have hzero :
       V.zeroSubgroup =
         F.valuation.valuationSubring.unitGroup := by
     simpa only [V] using
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.multiplicativeIntegerValuationOfUniformizer_zeroSubgroup_eq_unitGroup
+      (multiplicativeIntegerValuationOfUniformizer_zeroSubgroup_eq_unitGroup
         F.toCompleteDVF hπ)
   have huZero :
       V.val
@@ -257,7 +262,7 @@ theorem rationalPadicFieldUnit_uniformizerValueExponent
   have hϖ : V.IsUniformizer ϖ := by
     rw [hϖeq]
     simpa only [V] using
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.multiplicativeIntegerValuationOfUniformizer_isUniformizer
+      (multiplicativeIntegerValuationOfUniformizer_isUniformizer
         F.toCompleteDVF hπ)
   change V.val X = padicValRat p.1 (x : ℚ)
   rw [
@@ -267,12 +272,17 @@ theorem rationalPadicFieldUnit_uniformizerValueExponent
     huZero,
     zero_add]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  fieldUnitUniformizerUnitPart
+  valuationSubringUnitFieldUnitHom_fieldUnitUniformizerUnitPart
+  valuationSubringUnitFieldUnitHom_injective
+) in
 /-- The actual unit part chosen by the standard multiplicative Lubin--Tate
 uniformizer decomposition of a rational `p`-adic field unit is precisely
 `rationalPrimeUnitValuationSubringUnit`. -/
 theorem rationalPadicFieldUnit_uniformizerUnitPart
     (x : ℚˣ) (p : Nat.Primes) :
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.fieldUnitUniformizerUnitPart
+    fieldUnitUniformizerUnitPart
         (padicLocalField p.1).toCompleteDVF
         (LubinTate.padicMultiplicativeLubinTateSeries_isUniformizer
           p.1)
@@ -289,9 +299,9 @@ theorem rationalPadicFieldUnit_uniformizerUnitPart
   let ϖ : ℚ_[p.1]ˣ :=
     LubinTate.standardLubinTateBaseUniformizerUnit hπ
   apply
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.valuationSubringUnitFieldUnitHom_injective
+    valuationSubringUnitFieldUnitHom_injective
   refine
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.valuationSubringUnitFieldUnitHom_fieldUnitUniformizerUnitPart
+    (valuationSubringUnitFieldUnitHom_fieldUnitUniformizerUnitPart
       F.toCompleteDVF hπ X).trans ?_
   change
     X * ϖ ^
@@ -388,13 +398,16 @@ theorem padicCompletionEquiv_principalFiniteComponent_factorization
     padicCompletionEquiv_principalFiniteComponent,
     rationalPadicFieldUnit_eq_unitFactor_mul_baseUniformizer_zpow]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  fieldUnitUniformizerUnitPart
+) in
 /-- Applying the actual complete-DVF unit-part operation to a transported
 rational principal finite component returns the integral
 `rationalPrimeUnit` factor. -/
 theorem
     padicCompletionEquiv_principalFiniteComponent_uniformizerUnitPart
     (x : ℚˣ) (p : Nat.Primes) :
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.fieldUnitUniformizerUnitPart
+    fieldUnitUniformizerUnitPart
         (padicLocalField p.1).toCompleteDVF
         (LubinTate.padicMultiplicativeLubinTateSeries_isUniformizer
           p.1)

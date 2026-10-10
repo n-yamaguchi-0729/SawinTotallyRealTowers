@@ -33,8 +33,6 @@ import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Order
 
-set_option autoImplicit false
-
 /-!
 # A constructed minimal free source for the initial real pro-2 group
 

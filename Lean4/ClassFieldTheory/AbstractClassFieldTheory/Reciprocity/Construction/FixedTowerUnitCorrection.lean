@@ -6,7 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteFieldUnitMaps
 
-set_option autoImplicit false
+/-!
+# Fixed-tower unit correction
+
+This module constructs the unit-valued correction term on a Frobenius
+fixed-field tower and proves its coefficient and relative-norm identities.
+-/
 
 universe u v
 
@@ -15,12 +20,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Fixed-tower unit correction
 
-This module constructs the unit-valued correction term on a Frobenius
-fixed-field tower and proves its coefficient and relative-norm identities.
--/
 
 noncomputable section
 

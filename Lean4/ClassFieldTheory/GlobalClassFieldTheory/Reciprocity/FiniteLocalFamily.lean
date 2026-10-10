@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.NormQuotient
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 
-set_option autoImplicit false
-
 /-!
 # Finite local families of ideles
 
@@ -18,7 +16,9 @@ product identity.  The quotient map itself factors through idele classes
 and therefore kills principal ideles.
 -/
 
-open scoped NumberField Classical BigOperators
+
+
+open scoped NumberField BigOperators
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 
@@ -35,6 +35,7 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
     (a : ∀ v : ↥S, (v.1.adicCompletion K)ˣ) :
     (∏ v : ↥S, finitePlaceIdele v.1 (a v)) =
       IdeleGroup.ideleOfFiniteLocalFamily S a := by
+  classical
   apply Prod.ext
   · apply ContinuousMulEquiv.piUnits.injective
     funext w

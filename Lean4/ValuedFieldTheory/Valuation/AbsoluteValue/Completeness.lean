@@ -9,8 +9,6 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.RingTheory.Norm.Defs
 import Mathlib.Topology.UniformSpace.AbsoluteValue
 
-set_option autoImplicit false
-
 /-!
 # Minimal absolute-value norm API
 

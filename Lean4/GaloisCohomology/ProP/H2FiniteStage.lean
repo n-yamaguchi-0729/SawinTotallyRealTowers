@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.H2FiniteStageCochain
 
-set_option autoImplicit false
 /-!
 # Finite-stage realization of continuous degree-two classes
 

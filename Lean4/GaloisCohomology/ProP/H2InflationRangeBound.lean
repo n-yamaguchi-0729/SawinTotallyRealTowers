@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.H2FiniteStageFamily
 import Mathlib.LinearAlgebra.Dimension.Finite
 
-set_option autoImplicit false
 /-!
 # Bounding degree two from finite-stage inflation ranges
 

@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Zassenhaus.AugmentationFiltration
 
-set_option autoImplicit false
 /-!
 # Filtration drop for continuous Fox operators
 

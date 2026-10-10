@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Fox.ModPFiniteStage
 import ProCGroups.ProP.Fox.ModPDisplayedSpan
 
-set_option autoImplicit false
 /-!
 # Mod-p completed-to-finite Fox stage projection
 

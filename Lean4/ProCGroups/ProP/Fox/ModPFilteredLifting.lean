@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Fox.ModPFilteredExactness
 
-set_option autoImplicit false
 /-!
 # Strict filtered lifting for the mod-p Fox boundary
 

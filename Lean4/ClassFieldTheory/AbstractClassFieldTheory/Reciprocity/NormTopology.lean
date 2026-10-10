@@ -11,8 +11,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubexte
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 import ValuedFieldTheory.Valuation.Topology.Models
 
-set_option autoImplicit false
-
 /-!
 # Abstract reciprocity: the norm topology
 
@@ -20,6 +18,8 @@ The neighbourhood basis at zero consists literally of the norm subgroups
 `N_{L/K} A_L` as `L / K` ranges over finite Galois extensions.  Composita
 make this family downward directed.
 -/
+
+
 
 noncomputable section
 
@@ -294,7 +294,8 @@ theorem normTopology_hausdorff
 
 /-- General norm-topology lemma: once every defining norm quotient is
 finite, openness is equivalent to closedness together with finite index.
-the norm-subgroup basis characterization supplies the finiteness premise from the abstract reciprocity theorem. -/
+the norm-subgroup basis characterization supplies the finiteness premise from the abstract
+reciprocity theorem. -/
 theorem normTopology_open_iff_closed_finiteIndex_of_finite_normQuotients
     (A : Rep ℤ G) (K : ClosedSubgroup G)
     (hfinite : ∀ L : FiniteGaloisSubextension K,

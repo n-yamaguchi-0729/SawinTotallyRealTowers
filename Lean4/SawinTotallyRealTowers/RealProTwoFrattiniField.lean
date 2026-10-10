@@ -12,8 +12,6 @@ import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Mathlib.Order.CompleteLattice.Basic
 import Mathlib.Topology.Algebra.OpenSubgroup
 
-set_option autoImplicit false
-
 /-!
 # The Frattini fixed field of the initial real pro-two group
 

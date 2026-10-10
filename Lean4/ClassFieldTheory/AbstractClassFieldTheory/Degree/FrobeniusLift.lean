@@ -6,12 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open CyclicCohomology
-
 /-!
 # normalized degree and Frobenius theory: lifting finite Galois automorphisms
 
@@ -19,6 +13,12 @@ This file defines the Frobenius semigroup in `G(\widetilde L|K)` and proves
 the lifting statement of the finite degree-quotient decomposition.  Positivity is explicit, so the
 convention `0 ∉ ℕ` is not lost in Lean's natural numbers.
 -/
+
+namespace ClassFormation
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

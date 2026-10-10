@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.UniqueRing
 import Mathlib.RingTheory.Polynomial.GaussLemma
 
-set_option autoImplicit false
-
 /-!
 # reduction of irreducible factors
 
@@ -31,6 +29,8 @@ open ValuationTheory.Valuations
 universe u
 
 
+open ValuationTheory.DiscreteValuationField.Valuation
+  (integralClosure_mem_valuationSubring_of_hasExtension) in
 /-- A monic polynomial over the base valuation ring that splits in the
 extension field already splits over any extension valuation ring. -/
 theorem monic_splits_in_extension_valuationSubring
@@ -72,7 +72,7 @@ theorem monic_splits_in_extension_valuationSubring
       rw [ValuationSubring.valuationSubring_valuation]
       exact hαint
     have hz : α ∈ W.valuation.valuationSubring :=
-      ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
+      integralClosure_mem_valuationSubring_of_hasExtension
         (L := L) V.valuation W.valuation ⟨α, hαint'⟩
     simpa [ValuationSubring.valuationSubring_valuation] using hz
   exact ⟨⟨α, hαmem⟩, rfl⟩

@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 
-set_option autoImplicit false
-
 /-!
 # Everywhere-unramified towers of number fields
 
 This file combines finite-prime and infinite-place unramifiedness and
 records its tower and intermediate-field properties.
 -/
+
+
 
 open scoped NumberField
 

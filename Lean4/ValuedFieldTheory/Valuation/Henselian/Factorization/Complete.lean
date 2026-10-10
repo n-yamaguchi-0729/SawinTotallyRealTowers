@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
 import ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
 
-set_option autoImplicit false
-
 /-!
 # Hensel's lemma over a complete valued field
 

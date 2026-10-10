@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1Cokernel
 import Mathlib.LinearAlgebra.Dual.Lemmas
 
-set_option autoImplicit false
 /-!
 # The kernel-dual model of the self-dual cohomological cokernel
 

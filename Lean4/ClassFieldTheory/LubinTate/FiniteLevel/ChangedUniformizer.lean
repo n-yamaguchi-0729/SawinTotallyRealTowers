@@ -17,8 +17,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits
 import ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.LocalFieldRangeRestriction
 import ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuedExtensionUnitMap
 
-set_option autoImplicit false
-
 /-!
 # Unit changes of a standard Lubin--Tate uniformizer
 
@@ -37,6 +35,8 @@ The remaining comparison between the `π`-level and the `uπ`-level requires
 an actual finite-level intertwining equivalence; no such equivalence is
 assumed here.
 -/
+
+
 
 noncomputable section
 

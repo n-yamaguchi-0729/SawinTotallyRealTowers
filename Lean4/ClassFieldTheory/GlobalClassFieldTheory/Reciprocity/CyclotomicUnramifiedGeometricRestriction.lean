@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedRestriction
 
-set_option autoImplicit false
-
 /-!
 # Geometric restriction from the cyclotomic unramified field
 
@@ -21,6 +19,8 @@ The field-range form of the finite layer is also bundled in the finite
 Galois inverse system.  Consequently the geometric restriction of the
 infinite global Artin map is the ordinary finite global Artin map.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 
@@ -396,10 +396,9 @@ private theorem cyclotomicUnramifiedGeometricRestriction_apply
     (L : FiniteAbelianSubextension H.field)
     (hUnramified :
       L.toFiniteGaloisExtension.IsUnramified rationalCyclotomicDegreeData)
-    (σ : Gal(
-      abstractRelativeFixedField ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        abstractFixedField ℚ (SeparableClosure ℚ) H.field)) :
+    (σ : Gal(abstractRelativeFixedField ℚ (SeparableClosure ℚ)
+      (rationalCyclotomicFieldInertia_le H.field)/abstractFixedField
+        ℚ (SeparableClosure ℚ) H.field)) :
     abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom
         H L hUnramified σ =
       (L.toFiniteGaloisExtension.extensionQuotientMulEquiv.trans

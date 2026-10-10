@@ -17,8 +17,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
 import Mathlib.RepresentationTheory.Rep.Basic
 
-set_option autoImplicit false
-
 /-!
 # Finite Kummer zero classes vanish after absolute inflation
 

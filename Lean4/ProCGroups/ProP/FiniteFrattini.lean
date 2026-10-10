@@ -11,7 +11,6 @@ import Mathlib.Algebra.Module.ZMod
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import ProCGroups.Frattini
 
-set_option autoImplicit false
 /-!
 # The finite p-group Frattini inclusion
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.InertiaUnramifiedExtension
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramifiedEquiv
 
-set_option autoImplicit false
 /-!
 # Inertia-trivial finite embeddings give actual unramified local extensions
 

@@ -10,8 +10,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.GroupTheory.QuotientGroup.Defs
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
-
 /-!
 # Killing mixed subgroup entries of a two-cocycle
 

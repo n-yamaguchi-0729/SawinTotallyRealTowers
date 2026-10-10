@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaUniqueness
 
-set_option autoImplicit false
-
 /-!
 # The Lubin–Tate endomorphism commutation law: the first theta identity in equal characteristic
 
@@ -23,6 +21,8 @@ linear coefficient is `u`, and its higher additive coefficients are the
 unique contracting solutions forced by commutation with
 `Y^q + bar_pi Y`.
 -/
+
+
 
 noncomputable section
 
@@ -331,7 +331,8 @@ theorem equalCharacteristicCompletedSourceBracketCoefficient_succ_comparison
     map_sub, map_mul, map_pow,
     equalCharacteristicSourceUniformizer_map] using h
 
-/-- The Lubin–Tate endomorphism commutation law: the independently constructed `[u]` commutes with the
+/-- The Lubin–Tate endomorphism commutation law: the independently constructed `[u]` commutes
+with the
 source Lubin--Tate series `Y^q + (u⁻¹T)Y`. -/
 theorem equalCharacteristicCompletedSourceBracket_commutes
     (u : k⟦X⟧ˣ) :

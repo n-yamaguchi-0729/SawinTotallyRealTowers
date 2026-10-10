@@ -10,8 +10,6 @@ import Mathlib.Algebra.Group.Equiv.Basic
 import Mathlib.Basic.Sign.Basic
 import Mathlib.NumberTheory.NumberField.ProductFormula
 
-set_option autoImplicit false
-
 /-!
 # Archimedean power indices in idele class quotients
 
@@ -19,7 +17,9 @@ This file defines the concrete idele-class subgroup attached to local power
 conditions and computes its archimedean local indices.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel TensorProduct
+
+
+open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -268,6 +268,7 @@ theorem nthPowerSubgroup_eq_top_of_real_odd
     simp
 
 omit [NumberField K] in
+open scoped Classical in
 /-- The archimedean factor in the local power-index product: it is `2`
 exactly for an even exponent at a real place, and `1` otherwise. -/
 theorem card_infinitePlace_nthPowerQuotient

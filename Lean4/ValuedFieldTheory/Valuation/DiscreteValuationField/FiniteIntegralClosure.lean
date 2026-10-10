@@ -7,16 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
 import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Finite integral closures over complete DVFs
 
 This file provides record-free theorems for the integral closure
 of a complete-DVF valuation ring in a finite separable field extension.
 -/
+
+namespace ValuationTheory
+
+
 
 noncomputable section
 

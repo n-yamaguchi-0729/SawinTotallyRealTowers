@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 
-set_option autoImplicit false
-
 /-!
 # Positive archimedean section of the idele norm
 
@@ -19,7 +17,9 @@ norm is a prescribed inverse.  Its finite components are trivial and all of
 its infinite components lie in the standard positive subgroups.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField Topology
+
+
+open scoped IsMulCommutative NNReal NumberField Topology
 open NumberField IsDedekindDomain
 open NumberField.Units.dirichletUnitTheorem
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
 import ValuedFieldTheory.Valuation.Henselian.Factorization.DegreeBounds
 
-set_option autoImplicit false
-
 /-!
 # one Hensel iteration step
 

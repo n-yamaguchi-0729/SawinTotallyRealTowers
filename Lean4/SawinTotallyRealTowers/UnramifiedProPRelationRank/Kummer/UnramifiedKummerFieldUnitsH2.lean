@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.EverywhereUnramif
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
 
-set_option autoImplicit false
 /-!
 # Kummer H² dies in field units at an unramified p-extension
 
@@ -38,7 +37,8 @@ local instance kummerFieldUnitsH2SupportedAction : MulDistribMulAction Gal(L / K
     (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) ∅) :=
   relativeIdeleLocalTensorDecompositionSupportedSubgroupAction (K := K) (L := L) ∅
 
-local instance kummerFieldUnitsH2IdeleAction : MulDistribMulAction Gal(L / K) (RelativeIdeleGroup K L) :=
+local instance kummerFieldUnitsH2IdeleAction :
+    MulDistribMulAction Gal(L/K) (RelativeIdeleGroup K L) :=
   relativeIdeleMulDistribMulAction K L
 
 /-- Actual inclusion of everywhere-integral ideles into relative ideles,
@@ -66,7 +66,7 @@ theorem finiteKummerSupportedIdeleRepHom_factor
 an everywhere-unramified finite Galois p-extension. -/
 theorem unramifiedFiniteKummerCoefficientH2Map_eq_zero
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
-    (hP : IsPGroup (n : ℕ) Gal(L / K))
+    (hP : IsPGroup (n : ℕ) Gal(L/K))
     (hfin : ∀ v : HeightOneSpectrum (𝓞 K), ChosenFinitePlaceIsUnramified (K := K) (L := L) v)
     (hinf : ∀ v : InfinitePlace K, (chosenInfinitePlaceAbove (L := L) v).IsUnramified K)
     (x : groupCohomology (Rep.trivial ℤ Gal(L / K) (ULift (ZMod (n : ℕ)))) 2) :
@@ -122,7 +122,7 @@ theorem unramifiedFiniteKummerCoefficientH2Map_eq_zero
 in an everywhere-unramified finite Galois p-extension. -/
 theorem unramifiedFiniteKummerTwoCocycle_isFieldUnitsCoboundary
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
-    (hP : IsPGroup (n : ℕ) Gal(L / K))
+    (hP : IsPGroup (n : ℕ) Gal(L/K))
     (hfin : ∀ v : HeightOneSpectrum (𝓞 K), ChosenFinitePlaceIsUnramified (K := K) (L := L) v)
     (hinf : ∀ v : InfinitePlace K, (chosenInfinitePlaceAbove (L := L) v).IsUnramified K)
     (c : groupCohomology.cocycles₂ (Rep.trivial ℤ Gal(L / K) (ULift (ZMod (n : ℕ))))) :

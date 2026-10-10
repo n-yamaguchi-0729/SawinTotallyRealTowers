@@ -13,8 +13,6 @@ import ProCGroups.FiniteGeneration.CharacteristicChainsAndIndices
 import ProCGroups.ProC.Category.Basic
 import ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
 
-set_option autoImplicit false
-
 /-!
 # Pro C Groups / Free pro-C / Basic
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.OverextensionArtin
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
 
-set_option autoImplicit false
-
 /-!
 # Infinite-place local-global Artin compatibility
 
@@ -17,7 +15,9 @@ then transports the special overextension computation through global
 norm-residue naturality.
 -/
 
-open scoped Classical IsMulCommutative
+
+
+open scoped IsMulCommutative
 open NumberField
 open IdeleGroup
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageChosenUnramified
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.EverywhereUnramifiedSupportedIdeleH2
 
-set_option autoImplicit false
 /-!
 # Integral idele primitives at the actual arithmetic stage
 
@@ -49,7 +48,7 @@ theorem openNormalArithmeticStage_supportedIdeleH2_subsingleton :
 /-- Every two-cocycle in the arithmetic stage's everywhere-integral
 relative ideles admits an actual one-cochain primitive in that subgroup. -/
 theorem openNormalArithmeticStage_supportedIdeleTwoCocycle_isCoboundary
-    (f : Gal(StageField / F) × Gal(StageField / F) → J)
+    (f : Gal(StageField/F) × Gal(StageField/F) → J)
     (hf : groupCohomology.IsMulCocycle₂ f) : groupCohomology.IsMulCoboundary₂ f := by
   let _ := openNormalArithmeticStage_supportedIdeleH2_subsingleton F p hpOdd U
   exact isMulCoboundary₂_of_H2_subsingleton f hf

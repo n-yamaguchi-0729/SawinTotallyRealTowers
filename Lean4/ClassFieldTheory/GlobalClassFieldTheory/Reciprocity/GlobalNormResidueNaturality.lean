@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.AbstractFixedFieldGlobalNormResidue
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
 
-set_option autoImplicit false
-
 /-!
 # Naturality of the global norm-residue symbol
 
@@ -17,6 +15,8 @@ norm-residue naturality in the rational absolute class formation.  All
 closed subgroups remain in one fixed separable-closure ambient, so the
 statement is directly usable by fixed-field overextension arguments.
 -/
+
+
 
 open scoped IsMulCommutative
 

@@ -7,7 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Presentation.RelationCardinal
 import Mathlib.Logic.Equiv.Fin.Basic
 
-set_option autoImplicit false
+/-!
+# Irredundant relators in finite pro-p presentations
+
+A relator in the closed normal closure of the remaining relators can be
+omitted without changing the presented group or minimality. A presentation
+realizing the minimal relation rank therefore has an irredundant displayed
+family of relators.
+-/
+
 open scoped Topology
 
 namespace ClassFieldTower.ProP

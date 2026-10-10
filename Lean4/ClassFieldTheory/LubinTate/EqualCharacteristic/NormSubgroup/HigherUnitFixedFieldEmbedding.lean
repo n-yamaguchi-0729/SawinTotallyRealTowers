@@ -7,15 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldMembership
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldAlgebra
 
-set_option autoImplicit false
-
 /-!
-# LubinTate the explicit norm-subgroup computation: the standard level embedded in the higher-unit fixed field
+# LubinTate the explicit norm-subgroup computation: the standard level embedded in the
+higher-unit fixed field
 
 For a coefficient unit in `U^(n+1)`, the standard completed-level embedding
 lands in the completed theta-intertwining theorem fixed field.  This leaf packages its canonical
 codomain restriction for the finite-dimensional comparison.
 -/
+
+
 
 noncomputable section
 

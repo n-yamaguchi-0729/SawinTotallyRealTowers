@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ProductArgument
 
-set_option autoImplicit false
-
 /-!
 # Basic factors in the formal logarithm product argument
 
 This module packages the three possible nonzero monomial factors and their
 finite choice spaces.
 -/
+
+
 
 noncomputable section
 

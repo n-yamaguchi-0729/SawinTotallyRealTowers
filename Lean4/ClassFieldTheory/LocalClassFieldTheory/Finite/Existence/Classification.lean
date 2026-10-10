@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CharacteristicZer
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.EqualCharacteristic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
-set_option autoImplicit false
-
 /-!
 # Classification by open finite-index norm subgroups
 
@@ -18,6 +16,8 @@ unconditional order isomorphism between finite abelian subextensions of the
 fixed separable closure and open finite-index subgroups of the local
 multiplicative group.
 -/
+
+
 
 noncomputable section
 

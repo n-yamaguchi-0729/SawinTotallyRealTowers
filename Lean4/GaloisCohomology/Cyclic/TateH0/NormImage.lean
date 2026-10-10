@@ -10,8 +10,14 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 import GaloisCohomology.Cyclic.TateComparison
 import GaloisCohomology.Cyclic.TateH0.Invariants
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `CyclicCohomology.TateH0.NormImage` Lean module. -/
+/-!
+# Norm images in degree-zero Tate cohomology of units
+
+The representation norm on the units of a field extension lands in the invariant units.
+Its image defines the norm submodule, and the quotient of the invariant units by this
+submodule realizes degree-zero Tate cohomology. The norm map is also compared with
+the field norm on units.
+-/
 
 namespace CyclicCohomology
 

@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Valuation transport along field equivalences
 
@@ -18,6 +14,8 @@ a finite subextension to its image inside a common ambient field.  The
 transport is by comapping the valuation along a field equivalence; no
 valuation-comparison hypothesis is added.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

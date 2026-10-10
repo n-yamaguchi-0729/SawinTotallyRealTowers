@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.Ring.Basic
 import Mathlib.Algebra.Module.Pi
 
-set_option autoImplicit false
-
 /-!
 # Concrete inverse systems and their limits
 
@@ -17,6 +15,7 @@ inverse limit as the subtype of compatible families.  It proves the topological 
 property and equips limits of group, additive-group, module, and ring systems with their
 coordinatewise algebraic structures and canonical projection homomorphisms.
 -/
+
 
 open Set
 open scoped Topology

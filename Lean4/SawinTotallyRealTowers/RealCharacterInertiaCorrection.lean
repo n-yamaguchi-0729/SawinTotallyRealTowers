@@ -22,8 +22,6 @@ import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Real values and prescribed finite inertia over the rationals
 

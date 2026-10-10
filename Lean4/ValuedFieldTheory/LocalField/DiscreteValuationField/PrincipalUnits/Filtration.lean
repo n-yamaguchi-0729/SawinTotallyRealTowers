@@ -9,13 +9,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
 import Mathlib.Algebra.CharP.Lemmas
 import Mathlib.Algebra.Group.Units.Hom
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.ResidueField
-
 /-!
 # Principal-unit filtration from a valuation ring
 
@@ -27,6 +20,13 @@ of the valuation ring is
 This file turns that definition into the abstract `AntitoneSubgroupFiltration`
 used by ramification and norm arguments.
 -/
+
+namespace LocalFieldTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.ResidueField
+
+
 
 noncomputable section
 

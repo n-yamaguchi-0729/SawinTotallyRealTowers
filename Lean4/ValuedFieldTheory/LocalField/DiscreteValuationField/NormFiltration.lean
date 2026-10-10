@@ -6,16 +6,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
 /-!
 # Norm compatibility with unit filtrations
 
 A compatibility hypothesis for a norm and two unit filtrations immediately
 produces homomorphisms on every filtration level.
 -/
+
+namespace LocalFieldTheory
+
+
 
 noncomputable section
 

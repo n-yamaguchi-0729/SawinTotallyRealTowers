@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity
 
-set_option autoImplicit false
 /-!
 # Actual finite values of the absolute local Artin map
 

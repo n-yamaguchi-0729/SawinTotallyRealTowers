@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
 
-set_option autoImplicit false
-
 /-!
 # Localization of the relative integral lattice
 
@@ -15,6 +13,8 @@ Away from the finite exceptional set, this module compares the localized
 integer lattice with the integral closure and derives coordinatewise
 integrality after localization.
 -/
+
+
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain

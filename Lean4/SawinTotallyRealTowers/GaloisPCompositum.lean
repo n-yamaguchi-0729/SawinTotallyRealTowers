@@ -11,8 +11,6 @@ import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Mathlib.FieldTheory.Normal.Defs
 import Mathlib.GroupTheory.PGroup
 
-set_option autoImplicit false
-
 /-!
 # Galois p-groups in binary composita
 

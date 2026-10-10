@@ -10,8 +10,6 @@ import Mathlib.RingTheory.Norm.Basic
 import Mathlib.RingTheory.Trace.Basic
 import Mathlib.RingTheory.TensorProduct.Basic
 
-set_option autoImplicit false
-
 /-!
 # Norm and trace under scalar extension
 
@@ -19,6 +17,8 @@ Norm and trace formulas compare multiplication by an element of `L` before and a
 extending scalars from `K` to `K_v`.  These lemmas state that comparison
 directly for the canonical element `1 ⊗ₜ x`.
 -/
+
+
 
 noncomputable section
 

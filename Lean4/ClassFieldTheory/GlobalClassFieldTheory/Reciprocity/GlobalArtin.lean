@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
 import ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CofinitelySplitFiniteExtension
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
 
-set_option autoImplicit false
-
 /-!
 # The preliminary global Artin homomorphism
 
@@ -19,7 +17,9 @@ on ideles is the product of its archimedean and finite-place local
 Artin factors.
 -/
 
-open scoped BigOperators Classical IsMulCommutative NumberField
+
+
+open scoped BigOperators IsMulCommutative NumberField
   NumberField.LiesOver
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
 import GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
 
-set_option autoImplicit false
 /-!
 # The ideal-radical governing field
 
@@ -120,8 +119,8 @@ theorem idealRadicalGoverningField_isAbelianGalois :
 
 /-- Every automorphism of the governing extension has exponent dividing `p`. -/
 theorem idealRadicalGoverningField_galois_pow_eq_one
-    (sigma : Gal(IdealRadicalGoverningField F p hp/
-      IdealRadicalCyclotomicBase F p hp)) :
+    (sigma :
+      Gal(IdealRadicalGoverningField F p hp/IdealRadicalCyclotomicBase F p hp)) :
     sigma ^ p = 1 := by
   let _ : IsSepClosure (IdealRadicalCyclotomicBase F p hp)
       (AlgebraicClosure F) :=

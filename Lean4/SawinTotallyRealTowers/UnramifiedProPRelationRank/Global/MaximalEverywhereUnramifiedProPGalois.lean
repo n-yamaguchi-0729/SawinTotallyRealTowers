@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
 /-!
 # The Galois group of the maximal everywhere-unramified pro-p extension
 

@@ -7,8 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.ResidueNorm
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.Norm` Lean module. -/
+/-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.Norm` Lean
+module. -/
+
 
 noncomputable section
 
@@ -88,7 +89,8 @@ theorem v_normUnits_integerUnitsToFieldUnits
   have hval :
       LocalFieldTheory.IsNonarchimedeanLocalField.v K
         (Additive.ofMul (integerUnitsToFieldUnits K (normIntegerUnits K L u))) = 0 :=
-    LocalFieldTheory.IsNonarchimedeanLocalField.v_integerUnitsToFieldUnits K (normIntegerUnits K L u)
+    LocalFieldTheory.IsNonarchimedeanLocalField.v_integerUnitsToFieldUnits K (normIntegerUnits K
+      L u)
   simpa [LocalFieldTheory.normUnits,
     normIntegerUnits_to_fieldUnits K L u] using hval
 
@@ -116,7 +118,8 @@ theorem v_normUnits_mapBase_inverseIntegerRingUniformizerFieldUnit_zpow
       (K := K) (L := L) ((inverseIntegerRingUniformizerFieldUnit K) ^ m)
     simpa [LocalFieldTheory.normUnits] using hnorm
   rw [hbase]
-  rw [LocalFieldTheory.IsNonarchimedeanLocalField.v_pow, LocalFieldTheory.IsNonarchimedeanLocalField.v_zpow,
+  rw [LocalFieldTheory.IsNonarchimedeanLocalField.v_pow,
+    LocalFieldTheory.IsNonarchimedeanLocalField.v_zpow,
     v_inverseIntegerRingUniformizerFieldUnit]
   rw [mul_one]
 

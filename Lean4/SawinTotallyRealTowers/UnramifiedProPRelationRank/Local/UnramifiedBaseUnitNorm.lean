@@ -14,8 +14,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
-set_option autoImplicit false
-
 /-!
 # Base-field units are norms in a divisible unramified local tower
 

@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseCha
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtin
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # The infinite global Artin homomorphism
 
@@ -23,7 +21,9 @@ multiplying an idele by the section of its absolute
 norm produces a norm-one idele without changing its Artin symbol.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField Topology
+
+
+open scoped IsMulCommutative NNReal NumberField Topology
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -873,7 +873,7 @@ noncomputable def
         ℚ rationalCyclotomicZHatField)
     (hE : NumberField E)
     (hAbelian : IsAbelianGalois ℚ E)
-    (f : (E' ≃ₐ[K] E') →* Gal(E / ℚ))
+    (f : (E' ≃ₐ[K] E') →* Gal(E/ℚ))
     (hnat :
       letI : NumberField E' := hE'
       letI : NumberField E := hE

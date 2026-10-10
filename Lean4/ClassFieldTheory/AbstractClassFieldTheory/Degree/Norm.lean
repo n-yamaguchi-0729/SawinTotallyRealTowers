@@ -8,13 +8,6 @@ import Mathlib.GroupTheory.Index
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 import GaloisCohomology.Kummer.Abstract.KummerDelta
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-open CyclicCohomology
-
 /-!
 # normalized degree and Frobenius theory: norms on abstract fields
 
@@ -24,6 +17,13 @@ subgroup of the ambient profinite group.  The norm is the sum over left
 cosets (the additive form of the multiplicative product), so it does
 not require the extension to be Galois.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+open CyclicCohomology
+
+
 
 noncomputable section
 

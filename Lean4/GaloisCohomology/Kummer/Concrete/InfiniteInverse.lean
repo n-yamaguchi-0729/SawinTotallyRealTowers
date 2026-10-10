@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.FiniteSupport
 import GaloisCohomology.Kummer.Concrete.RestrictedFinite
 
-set_option autoImplicit false
-
 /-!
 # infinite inverse inclusion
 
@@ -18,6 +16,8 @@ adjoined roots.  The corresponding admissible finite-support subgroup
 theorem at that stage shows that the original radical already belongs to
 `Δ₀`, hence to `Δ`.
 -/
+
+
 
 noncomputable section
 

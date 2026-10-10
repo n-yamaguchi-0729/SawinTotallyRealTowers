@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 
-set_option autoImplicit false
-
 /-!
 # Finite restricted products under scalar extension
 
@@ -23,6 +21,8 @@ The main point is restrictedness: coefficientwise restrictedness in a fixed
 set, to the usual valuation-ring-unit condition at almost every finite place
 of `L`.
 -/
+
+
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain

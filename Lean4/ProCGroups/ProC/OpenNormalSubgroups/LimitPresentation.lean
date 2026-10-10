@@ -10,8 +10,6 @@ import ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 import ProCGroups.Topologies.ContinuousMulEquiv
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
 
-set_option autoImplicit false
-
 /-!
 # Presenting pro-\(C\) groups as inverse limits
 

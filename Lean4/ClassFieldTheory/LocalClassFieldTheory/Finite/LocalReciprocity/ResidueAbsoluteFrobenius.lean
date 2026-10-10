@@ -6,12 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFrobenius
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: Frobenius on an infinite residue extension
 
@@ -25,6 +19,12 @@ For an algebraic closure this is the Frobenius map compared with the degree
 map in finite local reciprocity. The construction itself does not require a
 bijectivity hypothesis.
 -/
+
+namespace LocalClassFieldTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 

@@ -9,7 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerVa
 import Mathlib.GroupTheory.ArchimedeanDensely
 import Mathlib.RingTheory.Valuation.Discrete.RankOne
 
-set_option autoImplicit false
 /-!
 # Compatibility of finite-place normalized valuations with the diagonal
 

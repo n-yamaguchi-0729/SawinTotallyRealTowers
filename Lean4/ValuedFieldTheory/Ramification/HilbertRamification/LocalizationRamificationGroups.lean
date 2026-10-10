@@ -8,12 +8,11 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 import ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 import ValuedFieldTheory.Ramification.HilbertRamification.LocalizationDensity
 
-set_option autoImplicit false
-
 /-!
 # Localization of inertia and ramification groups
 
-This file packages the decomposition-group equivalence of the localization and decomposition comparison
+This file packages the decomposition-group equivalence of the localization and decomposition
+comparison
 as equivalences of the valuation-subring decomposition, inertia, and
 ramification groups.  The difficult global-to-local implications use density
 of `L` in the algebraic localization, proved in
@@ -47,7 +46,8 @@ local instance irCompletionBaseSMul : SMul K w.1.Completion :=
 local instance irCompletionAlgebra : Algebra vK.Completion w.1.Completion :=
   AbsoluteValue.completionAlgebra vK w.1 w.2
 
-/-- The algebraic localization `L K_v` occurring in the localization and decomposition comparison. -/
+/-- The algebraic localization `L K_v` occurring in the localization and decomposition
+comparison. -/
 abbrev localizationRamificationGroups_localization :
     IntermediateField vK.Completion w.1.Completion :=
   AbsoluteValue.algebraicLocalization vK w.1 w.2
@@ -236,8 +236,9 @@ theorem localizationRamificationGroups_valuationDecompositionGroupEquiv_mem_iner
         AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
           (((localizationRamificationGroups_valuationDecompositionGroupEquiv
               vK (hvK := hvK) w hw sigma :
-                RamificationTheory.HilbertRamification.ValuationSubring.decompositionGroup vK.Completion
-                  (algebraicLocalizationValuationSubring vK w hw)) :
+                (open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+                  decompositionGroup vK.Completion
+                    (algebraicLocalizationValuationSubring vK w hw))) :
               localizationRamificationGroups_localization vK w ≃ₐ[vK.Completion]
                 localizationRamificationGroups_localization vK w)
             (xLocal : localizationRamificationGroups_localization vK w) -
@@ -254,8 +255,9 @@ theorem localizationRamificationGroups_valuationDecompositionGroupEquiv_mem_iner
       _ = AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
           (((localizationRamificationGroups_valuationDecompositionGroupEquiv
               vK (hvK := hvK) w hw sigma :
-                RamificationTheory.HilbertRamification.ValuationSubring.decompositionGroup vK.Completion
-                  (algebraicLocalizationValuationSubring vK w hw)) :
+                (open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+                  decompositionGroup vK.Completion
+                    (algebraicLocalizationValuationSubring vK w hw))) :
               localizationRamificationGroups_localization vK w ≃ₐ[vK.Completion]
                 localizationRamificationGroups_localization vK w)
             (xLocal : localizationRamificationGroups_localization vK w) -
@@ -287,8 +289,9 @@ def inertiaGroupEquivAlgebraicLocalization :
   invFun tau := by
     let sigma := (localizationRamificationGroups_valuationDecompositionGroupEquiv
       vK (hvK := hvK) w hw).symm
-        (tau : RamificationTheory.HilbertRamification.ValuationSubring.decompositionGroup vK.Completion
-          (algebraicLocalizationValuationSubring vK w hw))
+        (tau : (open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+          decompositionGroup vK.Completion
+            (algebraicLocalizationValuationSubring vK w hw)))
     refine ⟨sigma, ?_⟩
     apply (localizationRamificationGroups_valuationDecompositionGroupEquiv_mem_inertia_iff
       vK hvK w hw sigma).mp
@@ -350,31 +353,35 @@ theorem localizationRamificationGroups_inertiaGroupEquiv_mem_ramification_iff
     let xLocal : (localizationRamificationGroups_localization vK w)ˣ := Units.map j x
     let sigmaGlobal : RamificationTheory.HilbertRamification.ValuationSubring.decompositionGroup K
         (absoluteValueExtensionValuationSubring vK w hw) := sigma
-    let sigmaLocal : RamificationTheory.HilbertRamification.ValuationSubring.decompositionGroup vK.Completion
-        (algebraicLocalizationValuationSubring vK w hw) :=
+    let sigmaLocal : (open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+      decompositionGroup vK.Completion
+        (algebraicLocalizationValuationSubring vK w hw)) :=
       inertiaGroupEquivAlgebraicLocalization vK hvK w hw sigma
     have hquotient :
         Units.map j
             (RamificationTheory.HilbertRamification.ValuationSubring.automorphismUnitQuotient K
               (absoluteValueExtensionValuationSubring vK w hw)
               sigmaGlobal x) =
-          RamificationTheory.HilbertRamification.ValuationSubring.automorphismUnitQuotient vK.Completion
-            (algebraicLocalizationValuationSubring vK w hw)
-            sigmaLocal xLocal := by
-      ext
-      simp [RamificationTheory.HilbertRamification.ValuationSubring.automorphismUnitQuotient, sigmaGlobal,
-        sigmaLocal, xLocal, j,
-        localizationRamificationGroups_inertiaGroupEquiv_toLocalization]
+          (open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+            automorphismUnitQuotient vK.Completion
+              (algebraicLocalizationValuationSubring vK w hw)
+              sigmaLocal xLocal) :=
+      open _root_.RamificationTheory.HilbertRamification.ValuationSubring in by
+        ext
+        simp [automorphismUnitQuotient, sigmaGlobal, sigmaLocal, xLocal, j,
+          localizationRamificationGroups_inertiaGroupEquiv_toLocalization]
     have hlocalPrincipal :=
-      (RamificationTheory.HilbertRamification.ValuationSubring.mem_ramificationGroup_iff vK.Completion
-        (algebraicLocalizationValuationSubring vK w hw)
-        (inertiaGroupEquivAlgebraicLocalization vK hvK w hw sigma)).mp
+      ((open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+        mem_ramificationGroup_iff vK.Completion
+          (algebraicLocalizationValuationSubring vK w hw)
+          (inertiaGroupEquivAlgebraicLocalization vK hvK w hw sigma))).mp
           hsigma xLocal
     have hlocal :
         AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
-          (((RamificationTheory.HilbertRamification.ValuationSubring.automorphismUnitQuotient vK.Completion
+          ((((open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+            automorphismUnitQuotient vK.Completion
               (algebraicLocalizationValuationSubring vK w hw)
-              sigmaLocal xLocal :
+              sigmaLocal xLocal) :
                 (localizationRamificationGroups_localization vK w)ˣ) :
               localizationRamificationGroups_localization vK w) - 1) < 1 :=
       (algebraicLocalizationDensity_mem_principalUnitGroup_iff_abs_lt_one
@@ -391,9 +398,10 @@ theorem localizationRamificationGroups_inertiaGroupEquiv_mem_ramification_iff
             sigmaGlobal x : Lˣ) : L) - 1)) :=
         (AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2 _).symm
       _ = AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
-          (((RamificationTheory.HilbertRamification.ValuationSubring.automorphismUnitQuotient vK.Completion
+          ((((open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+            automorphismUnitQuotient vK.Completion
               (algebraicLocalizationValuationSubring vK w hw)
-              sigmaLocal xLocal :
+              sigmaLocal xLocal) :
                 (localizationRamificationGroups_localization vK w)ˣ) :
               localizationRamificationGroups_localization vK w) - 1) := by
         congr 1

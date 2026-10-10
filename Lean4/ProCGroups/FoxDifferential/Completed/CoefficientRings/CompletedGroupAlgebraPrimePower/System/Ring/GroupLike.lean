@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.System.Ring.Multiplicative
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: prime-power completed group algebra — system — ring — group like
 

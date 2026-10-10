@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.BaseChange
 
-set_option autoImplicit false
 /-!
 # Valuation inertia under algebra equivalences
 

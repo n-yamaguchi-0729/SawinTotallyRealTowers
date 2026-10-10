@@ -8,8 +8,6 @@ import Mathlib.GroupTheory.PGroup
 import ProCGroups.FreeProC.Basic
 import ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 
-set_option autoImplicit false
-
 /-!
 # Presentations of profinite and pro-`C` groups
 

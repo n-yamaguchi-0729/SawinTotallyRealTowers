@@ -9,7 +9,6 @@ import ProCGroups.ProP.ContinuousH1
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianKernel
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
 /-!
 # Lifting an idele character to an absolute Galois character
 

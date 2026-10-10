@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 
-set_option autoImplicit false
-
 /-!
 # Naturality of tower base change under number-field equivalences
 
@@ -23,6 +21,8 @@ fixed-bottom tower
 and therefore uses only tensor-product coherence; no new description of
 local components is introduced.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

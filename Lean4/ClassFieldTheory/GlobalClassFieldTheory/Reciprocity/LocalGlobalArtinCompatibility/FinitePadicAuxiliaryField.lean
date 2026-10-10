@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldReali
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedLocalGlobalCompatibility
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
 
-set_option autoImplicit false
-
 /-!
 # The finite p-adic auxiliary field
 
@@ -18,6 +16,8 @@ This module realizes the simultaneous finite/cyclotomic lift as an actual
 number field and proves the subgroup and intermediate-field identities
 needed by the auxiliary-field argument.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 open AlgebraicNumberTheory IsDedekindDomain NumberField
@@ -1346,13 +1346,13 @@ through the compatible finite quotient coordinate. -/
 theorem
     numberFieldTowerFiniteQuotientCoordinate_generates_of_galoisGenerator
     (τ : (numberFieldTowerBaseSubgroup K L).toSubgroup)
-    (σ : Gal(L / K))
+    (σ : Gal(L/K))
     (hτσ :
       numberFieldTowerExtensionQuotientEquivGaloisGroup K L
           (numberFieldTowerFiniteQuotientCoordinate
             (K := K) (L := L) τ) =
         σ)
-    (hσ : Subgroup.closure ({σ} : Set (Gal(L / K))) = ⊤) :
+    (hσ : Subgroup.closure ({σ} : Set (Gal(L/K))) = ⊤) :
     Subgroup.closure
         ({numberFieldTowerFiniteQuotientCoordinate
             (K := K) (L := L) τ} :
@@ -1728,7 +1728,7 @@ theorem exists_finitePlaceCyclotomicAuxiliaryFixedField
         (chosenFinitePlaceExtension (L := L) v).1)
     (hσ :
       Subgroup.closure
-          ({σ.1} : Set (Gal(L / K))) =
+          ({σ.1} : Set (Gal(L/K))) =
         ⊤) :
     letI _ : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
@@ -1803,12 +1803,12 @@ theorem exists_finitePlacePrimaryCyclotomicAuxiliaryFixedField
         (chosenFinitePlaceExtension (L := L) v).1)
     (hgenerate :
       Subgroup.closure
-          ({σ.1} : Set (Gal(L / K))) =
+          ({σ.1} : Set (Gal(L/K))) =
         ⊤)
     (hprimary :
       σ.1 ∈
         CommGroup.primaryComponent
-          (Gal(L / K)) p.1) :
+          (Gal(L/K)) p.1) :
     letI _ : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
     letI _ : Algebra L (SeparableClosure ℚ) :=

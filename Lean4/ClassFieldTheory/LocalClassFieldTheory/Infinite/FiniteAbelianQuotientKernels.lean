@@ -9,8 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletionCriter
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.Classification
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
-set_option autoImplicit false
-
 /-!
 # Kernels attached to finite abelian subextensions
 
@@ -21,6 +19,8 @@ norm subgroup.  The finite local existence theorem then shows that these
 pullbacks are cofinal among the open finite-index subgroups of the local
 multiplicative group.
 -/
+
+
 
 noncomputable section
 

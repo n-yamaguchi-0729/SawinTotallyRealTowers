@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAutomorphisms
 import Mathlib.FieldTheory.Galois.Abelian
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: abelian equal-characteristic Lubin--Tate level fields
 
@@ -21,6 +19,8 @@ truncated brackets on division points and commutativity of power-series
 multiplication then show that any two parameter automorphisms commute on the
 power-basis generator, hence everywhere.
 -/
+
+
 
 noncomputable section
 
@@ -69,8 +69,7 @@ theorem equalCharacteristicLubinTateLevelField_exists_unitParameter
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ)
-    (σ : Gal((equalCharacteristicLubinTateLevelField F n) /
-      F.residueField⸨X⸩)) :
+    (σ : Gal((equalCharacteristicLubinTateLevelField F n)/F.residueField⸨X⸩)) :
     ∃ a : equalCharacteristicLubinTateUnitParameter F n,
       σ = equalCharacteristicLubinTateUnitParameterAlgEquiv F n a := by
   obtain ⟨a, ha⟩ :=
@@ -329,8 +328,7 @@ theorem equalCharacteristicLubinTateLevelField_gal_comm
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ)
-    (σ τ : Gal((equalCharacteristicLubinTateLevelField F n) /
-      F.residueField⸨X⸩)) :
+    (σ τ : Gal((equalCharacteristicLubinTateLevelField F n)/F.residueField⸨X⸩)) :
     σ * τ = τ * σ := by
   obtain ⟨a, rfl⟩ := equalCharacteristicLubinTateLevelField_exists_unitParameter F n σ
   obtain ⟨b, rfl⟩ := equalCharacteristicLubinTateLevelField_exists_unitParameter F n τ

@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamification
 import ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom
 
-set_option autoImplicit false
-
 /-!
 # Quotient-depth identity over a general DVF
 
@@ -17,6 +15,8 @@ This file proves the orbit-polynomial ideal identity before normalization of
 the fixed-field valuation.  It uses the literal fixed field and its literal
 restricted valuation ring; no completeness or Henselian hypothesis occurs.
 -/
+
+
 
 noncomputable section
 

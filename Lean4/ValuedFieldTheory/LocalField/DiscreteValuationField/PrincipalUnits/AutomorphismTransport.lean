@@ -7,19 +7,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
 import Mathlib.Algebra.Group.Units.Equiv
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.ResidueField
-
 /-!
 # Automorphism transport for principal units
 
 A field automorphism preserving the chosen valuation ring acts on the valuation ring,
 its residue field, its units, and every principal-unit quotient.
 -/
+
+namespace LocalFieldTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.ResidueField
+
+
 
 noncomputable section
 

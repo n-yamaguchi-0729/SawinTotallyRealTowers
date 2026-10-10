@@ -10,8 +10,6 @@ import Mathlib.GroupTheory.GroupAction.Quotient
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Mathlib.Topology.Algebra.Group.SubmonoidClosure
 
-set_option autoImplicit false
-
 /-!
 # Orbit quotients and double-coset geometry
 
@@ -20,6 +18,8 @@ orbit quotients of coset spaces, inversion of double cosets, transport along
 surjective equivariant maps, and replacement of a cyclic subgroup by its
 topological closure.  It has no class-formation or field-theoretic input.
 -/
+
+
 
 universe u
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.FiniteGaloisLevel
 
-set_option autoImplicit false
-
 /-!
 # Choice independence at finite Galois levels
 
@@ -17,6 +15,8 @@ field, uniqueness of the extended valuation therefore identifies the
 filtration formed from the chosen integral-closure target with the filtration
 formed from any other complete-DVF target extending the base valuation.
 -/
+
+
 
 noncomputable section
 
@@ -48,8 +48,8 @@ private theorem lowerRamificationFiltration_ext
 /-- Real lower ramification groups are unchanged when the two target
 valuations have the same valuation ring. -/
 theorem lowerRamificationGroup_eq_of_valuationSubring_eq
-    (huniq : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
-    (huniq' : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
+    (huniq : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
+    (huniq' : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
     (hvaluationSubring :
       target.valuation.valuationSubring = target'.valuation.valuationSubring)
     (s : ℝ) :
@@ -149,8 +149,8 @@ theorem lowerRamificationGroup_eq_of_valuationSubring_eq
 /-- Integral lower ramification filtrations are unchanged when the two target
 valuations have the same valuation ring. -/
 theorem lowerRamificationFiltration_eq_of_valuationSubring_eq
-    (huniq : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
-    (huniq' : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
+    (huniq : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
+    (huniq' : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
     (hvaluationSubring :
       target.valuation.valuationSubring = target'.valuation.valuationSubring) :
     lowerRamificationFiltrationOfUniqueExtension
@@ -167,8 +167,8 @@ theorem lowerRamificationFiltration_eq_of_valuationSubring_eq
 same valuation ring. -/
 theorem herbrandFunction_eq_of_valuationSubring_eq
     [FiniteDimensional K L]
-    (huniq : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
-    (huniq' : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
+    (huniq : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
+    (huniq' : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
     (hvaluationSubring :
       target.valuation.valuationSubring = target'.valuation.valuationSubring) :
     herbrandFunctionOfUniqueExtension
@@ -187,8 +187,8 @@ theorem herbrandFunction_eq_of_valuationSubring_eq
 have the same valuation ring. -/
 theorem inverseHerbrandFunction_eq_of_valuationSubring_eq
     [FiniteDimensional K L]
-    (huniq : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
-    (huniq' : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
+    (huniq : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
+    (huniq' : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
     (hvaluationSubring :
       target.valuation.valuationSubring = target'.valuation.valuationSubring) :
     inverseHerbrandFunctionOfUniqueExtension
@@ -200,15 +200,15 @@ theorem inverseHerbrandFunction_eq_of_valuationSubring_eq
       huniq huniq' hvaluationSubring
   exact congrArg
     (fun F =>
-      RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.inverseHerbrandFunction F)
+      DiscreteValuationField.AntitoneNormalSubgroupFiltration.inverseHerbrandFunction F)
     hF
 
 /-- Upper ramification groups are unchanged when the two target valuations
 have the same valuation ring. -/
 theorem upperRamificationGroup_eq_of_valuationSubring_eq
     [FiniteDimensional K L]
-    (huniq : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
-    (huniq' : RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
+    (huniq : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x} base target)
+    (huniq' : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, y, y} base target')
     (hvaluationSubring :
       target.valuation.valuationSubring = target'.valuation.valuationSubring)
     (t : ℝ) :

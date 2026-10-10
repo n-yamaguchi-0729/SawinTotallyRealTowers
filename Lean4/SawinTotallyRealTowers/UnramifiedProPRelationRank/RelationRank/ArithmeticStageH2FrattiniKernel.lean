@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.CentralExtensionFrattiniKernel
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
 
-set_option autoImplicit false
 /-!
 # The Frattini kernel of the arithmetic degree-two embedding problem
 

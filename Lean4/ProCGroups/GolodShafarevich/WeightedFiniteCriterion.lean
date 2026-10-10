@@ -9,8 +9,6 @@ import ProCGroups.GolodShafarevich.NumericalCriterion
 import ProCGroups.GolodShafarevich.TruncatedInequality
 import ProCGroups.ProP.Presentation.RelatorDepth
 
-set_option autoImplicit false
-
 /-!
 # Weighted finite-presentation Golod--Shafarevich criterion
 

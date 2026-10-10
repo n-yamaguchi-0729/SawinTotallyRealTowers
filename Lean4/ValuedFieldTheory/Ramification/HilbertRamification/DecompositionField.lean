@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 import Mathlib.FieldTheory.Galois.Infinite
 
-set_option autoImplicit false
-
 /-!
 # Decomposition field
 
 The decomposition field is the fixed field of the decomposition group.  This
 formulation uses absolute values and therefore includes the archimedean case.
 -/
+
+
 
 noncomputable section
 

@@ -7,12 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 import GaloisCohomology.Cyclic.NormKernelVanishing
 
-set_option autoImplicit false
-
-namespace KummerTheory
-
-open CyclicCohomology
-
 /-!
 # finite abelian Kummer theory: the abstract field `K(S)`
 
@@ -22,6 +16,12 @@ member of `S`.  This file constructs that subgroup and proves that it is
 closed.  Closedness follows directly from continuity of each orbit map and
 the discrete topology on the coefficient module.
 -/
+
+namespace KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

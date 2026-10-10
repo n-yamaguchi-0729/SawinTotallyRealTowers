@@ -10,8 +10,6 @@ import Mathlib.Algebra.Module.Equiv.Basic
 import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Unit cohomology under a field isomorphism
 

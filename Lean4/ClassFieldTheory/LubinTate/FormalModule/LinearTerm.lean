@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RingTheory.MvPowerSeries.Order
 import Mathlib.RingTheory.PowerSeries.Substitution
 
-set_option autoImplicit false
-
 /-!
 # Prescribed linear terms for multivariable power series
 
 A multivariable power series has a prescribed linear term when its difference
 from the corresponding linear form has total order at least two.
 -/
+
+
 
 noncomputable section
 

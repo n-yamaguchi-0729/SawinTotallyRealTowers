@@ -48,3 +48,14 @@ for each local attempt and follow the commands in the workflow; a static source
 audit alone does not verify proofs. Full verification requires a clean committed
 checkout. The expanded bundle's full NanoDa pipeline has not yet been run.
 The workflow keeps its artifacts for 14 days.
+
+## Incremental build stages
+
+CI builds local modules in dependency-depth stages and saves completed project
+compiler outputs after each stage. The cache excludes downloaded dependencies,
+toolchains, and large generated `*.setup.json` inputs. It checks the available
+archive space before saving and validates cached file hashes on restoration;
+a missing or invalid cache falls back to a normal build. A separate verification
+job still runs the complete declaration, NanoDa, and Lean kernel checks on every
+run, including cache hits. Build stages stop after five hours to leave time for
+saving completed outputs and diagnostic receipts before the runner deadline.

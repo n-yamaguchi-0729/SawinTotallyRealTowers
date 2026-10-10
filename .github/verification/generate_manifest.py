@@ -83,11 +83,8 @@ def mask_noncode(text):
 
 def source_policy(clean):
     errors = []
-    if not re.search(r"^\s*set_option\s+autoImplicit\s+false\s*$", clean, re.MULTILINE):
-        errors.append("Each maintained source must set autoImplicit false globally.")
-    for option in re.finditer(r"(?<![\w.])set_option\s+([^\s]+)\s+([^\s]+)", clean):
-        if option.groups() != ("autoImplicit", "false"):
-            errors.append("Unpermitted source option: " + " ".join(option.groups()))
+    if re.search(r"(?<![\w'.])set_option(?![\w'])", clean):
+        errors.append("Source set_option is forbidden; use package-wide Lake options.")
     if re.search(r"(?<![\w'.])(?:unsafe|partial|nolint)(?![\w'])", clean):
         errors.append("Unsafe/partial declarations and nolint suppression are forbidden.")
     return errors
@@ -137,6 +134,17 @@ def analyze(root, config):
         raise ValueError("lakefile.lean is unsupported, including packages containing both Lake formats.")
     lake_path = root / "lakefile.toml"
     lake = tomllib.loads(lake_path.read_text(encoding="utf-8"))
+    options = lake.get("leanOptions", {})
+    expected_options = {
+        "autoImplicit": False,
+        "linter": {"unusedVariables": True, "missingDocs": True},
+        "weak": {"linter": {"mathlibStandardSet": True}},
+    }
+    for key, value in expected_options.items():
+        if options.get(key) != value:
+            error("lake-options", "Required centralized elaboration/linter options differ.", option=key)
+    if any(lib.get("leanOptions") for lib in lake.get("lean_lib", [])):
+        error("lake-options", "Library-local options must not override centralized checks.")
     lock_path = root / "lake-manifest.json"
     lock = load_json(lock_path)
     expected_lean, expected_mathlib = config["leanToolchain"], config["mathlibRevision"]
@@ -255,6 +263,8 @@ def analyze(root, config):
             error("lexical-unsupported", str(exc), path=path); continue
         for finding in FORBIDDEN.finditer(clean):
             error("forbidden-source-token", finding.group(), path=path, line=clean.count("\n", 0, finding.start()) + 1)
+        if re.search(r"(?<![\w'.])set_option(?![\w'])", clean):
+            error("source-option", "Source set_option is forbidden; options are centralized in Lake.", path=path)
         if config.get("enforceSourcePolicy", False):
             for message in source_policy(clean):
                 error("source-policy", message, path=path)

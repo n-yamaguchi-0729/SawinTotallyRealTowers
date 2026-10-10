@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 import ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
 
-set_option autoImplicit false
-
 /-!
 # Filtered families of open subgroups
 

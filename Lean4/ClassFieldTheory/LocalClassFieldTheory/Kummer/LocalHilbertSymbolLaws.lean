@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
 
-set_option autoImplicit false
-
 /-!
 # Kernel laws for the local Hilbert symbol
 
@@ -18,6 +16,8 @@ the base field.  Consequently its kernel is exactly the local norm subgroup.
 This also makes the induced character on the concrete norm quotient
 injective.
 -/
+
+
 
 noncomputable section
 

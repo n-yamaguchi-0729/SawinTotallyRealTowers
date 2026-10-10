@@ -9,8 +9,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldValuationRin
 import ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
 import Mathlib.NumberTheory.RamificationInertia.Galois
 
-set_option autoImplicit false
-
 /-!
 # The ramification index of an actual fixed field over a general DVF
 
@@ -18,6 +16,8 @@ For `M = L ^ H`, this file defines `e(L/M)` from the literal inclusion
 `O_M = O_L ∩ M → O_L`.  The definition and its comparison with the zeroth
 depth subgroup require no completeness or Henselian hypothesis.
 -/
+
+
 
 noncomputable section
 
@@ -278,6 +278,10 @@ private noncomputable def fixedFieldInertiaSubgroupDVF
 
 variable [Algebra.IsSeparable base.residueField target.residueField]
 
+open _root_.RamificationTheory.DiscreteValuationField.HerbrandGroupTheory.NonarchimedeanDepth (
+  depthLowerFiltration_lower
+  mem_depthLowerSubgroup_iff
+) in
 /-- The zeroth subgroup cut out by the canonical general-DVF depth is the
 inertia subgroup for the action of H on the top valuation ring. -/
 private theorem depthLowerFiltration_zero_eq_fixedFieldInertiaSubgroupDVF
@@ -298,8 +302,8 @@ private theorem depthLowerFiltration_zero_eq_fixedFieldInertiaSubgroupDVF
         (base := base) (target := target) huniq).depthLowerFiltration H).lower 0 =
       target.maximalIdeal.toAddSubgroup.inertia H
   ext tau
-  rw [RamificationTheory.DiscreteValuationField.HerbrandGroupTheory.NonarchimedeanDepth.depthLowerFiltration_lower,
-    RamificationTheory.DiscreteValuationField.HerbrandGroupTheory.NonarchimedeanDepth.mem_depthLowerSubgroup_iff]
+  rw [depthLowerFiltration_lower,
+    mem_depthLowerSubgroup_iff]
   change
     (1 : ℕ∞) ≤ intrinsicRamificationNumberOfUniqueExtension
         (base := base) (target := target) huniq (tau : Gal(L/K)) ↔

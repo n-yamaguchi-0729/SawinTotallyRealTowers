@@ -11,8 +11,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupp
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
 
-set_option autoImplicit false
-
 /-!
 # Norm containment for idele power-local-unit subgroups
 
@@ -21,7 +19,9 @@ global norm containment and principal-intersection identity used in the
 idele-class norm-index argument.
 -/
 
-open scoped NumberField Classical NNReal IsMulCommutative
+
+
+open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
@@ -90,6 +90,7 @@ theorem idelePowerLocalUnitSubgroup_le_finitePlaceLocalNormCondition
     ((mem_idelePowerLocalUnitSubgroup_iff
       (K := K) n S T a).mp ha).2.1 v.1 v.2
 
+open scoped Classical in
 /-- The finite components of `h(S,T)` at `S ∪ T` are actual local norms:
 at `S` this follows from the exponent-`n` Galois structure, while at `T`
 it follows from complete splitting. -/
@@ -137,6 +138,7 @@ def allFinitePlaceLocalNormCondition
       (K := K) (L := L) v).comap
         (IdeleGroup.finiteComponent v)
 
+open scoped Classical in
 /-- Under the concrete splitting and unramifiedness conditions, every finite
 component of `h(S,T)` is an actual local norm. -/
 theorem idelePowerLocalUnitSubgroup_le_allFinitePlaceLocalNormCondition
@@ -201,6 +203,7 @@ theorem relativeIdeleNorm_range_le_allFinitePlaceLocalNormCondition
     _root_.relativeIdeleNorm_finiteComponent_mem_chosenLocalNormSubgroup
       (K := K) (L := L) v b
 
+open scoped Classical in
 /-- Equality between the power/local-unit subgroup and the everywhere-local
 norm condition for the Kummer-selected prime set.  Starting from an arbitrary
 prescribed finite set `S`, the construction first adjoins a sufficiently large
@@ -356,7 +359,7 @@ theorem
         rfl
       rw [hprincipal] at hbLocal
       simpa only [M] using
-        KummerTheory.chosenSimpleKummerExtension_infiniteTensorNormSubgroup_eq_top_of_mem_nthPowerSubgroup
+        chosenSimpleKummerExtension_infiniteTensorNormSubgroup_eq_top_of_mem_nthPowerSubgroup
           (K := K) n hnK hmu b w hbLocal
     have hAway :
         ∀ w : HeightOneSpectrum (𝓞 K), w ∉ S' ∪ T →

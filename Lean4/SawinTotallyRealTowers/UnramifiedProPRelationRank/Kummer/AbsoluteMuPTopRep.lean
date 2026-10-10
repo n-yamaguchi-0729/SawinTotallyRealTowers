@@ -10,7 +10,6 @@ import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
 import Mathlib.Topology.LocallyConstant.Basic
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # The natural absolute-Galois representation on `mu_p`
 
@@ -92,6 +91,7 @@ def absoluteMuPActionContinuousLinearMap (sigma : Field.absoluteGaloisGroup K) :
   toLinearMap := (absoluteMuPActionAddHom K p sigma).toZModLinearMap p
   cont := continuous_of_discreteTopology
 
+omit [Fact p.Prime] in
 @[simp]
 theorem absoluteMuPActionContinuousLinearMap_apply
     (sigma : Field.absoluteGaloisGroup K) (x : AbsoluteMuP K p) :
@@ -301,8 +301,7 @@ theorem absoluteKummerMuPHomogeneousOneCochain_mem_cycles (a : Kˣ) :
       (absoluteKummerMuPHomogeneousOneCochain K p a)
   have hdh := congrArg (fun tau ↦ tau g h k) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   change (absoluteKummerMuPRootCocycle K p a k -
       absoluteKummerMuPRootCocycle K p a h) -
     ((absoluteKummerMuPRootCocycle K p a k -

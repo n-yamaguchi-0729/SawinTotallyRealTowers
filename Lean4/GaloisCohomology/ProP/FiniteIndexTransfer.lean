@@ -9,7 +9,6 @@ import Mathlib.Topology.Algebra.OpenSubgroup
 import Mathlib.Topology.Algebra.Group.Quotient
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
-set_option autoImplicit false
 /-!
 # Continuous transfer from an open finite-index subgroup
 

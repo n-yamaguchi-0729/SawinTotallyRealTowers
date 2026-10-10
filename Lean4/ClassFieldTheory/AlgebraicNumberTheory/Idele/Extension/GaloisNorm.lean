@@ -9,8 +9,6 @@ import Mathlib.Algebra.Module.LinearMap.Polynomial
 import Mathlib.LinearAlgebra.Charpoly.BaseChange
 import Mathlib.RingTheory.TensorProduct.MvPolynomial
 
-set_option autoImplicit false
-
 /-!
 # The Galois product formula for the relative idele norm
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
 
-set_option autoImplicit false
-
 /-!
 # The maximal local Kummer pairing
 
@@ -17,6 +15,8 @@ gives a multiplicative character in the radical variable.  This file packages
 that evaluation as a right-variable monoid homomorphism.  Its comparison with
 the simple-extension definition of the local Hilbert symbol remains separate.
 -/
+
+
 
 noncomputable section
 

@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Basic
 import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Norm
 
-set_option autoImplicit false
-
 /-!
 # From completed to ideal-theoretic unramifiedness
 
@@ -19,7 +17,9 @@ localized completion and propagates it to every place above the base place in
 a finite Galois extension.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section

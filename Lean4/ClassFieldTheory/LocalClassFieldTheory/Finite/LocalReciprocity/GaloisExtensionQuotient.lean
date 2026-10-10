@@ -7,13 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbsoluteUnitsFixedField
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory CyclicCohomology
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: abstract extension quotients and actual Galois groups
 
@@ -23,6 +16,13 @@ normal extension `E/K` by the closed subgroup fixing `E`.  This file proves
 that the resulting abstract class-formation quotient is canonically the actual group
 `Gal(E/K)`.
 -/
+
+namespace LocalClassFieldTheory
+open RamificationTheory CyclicCohomology
+
+open ClassFormation
+
+
 
 noncomputable section
 

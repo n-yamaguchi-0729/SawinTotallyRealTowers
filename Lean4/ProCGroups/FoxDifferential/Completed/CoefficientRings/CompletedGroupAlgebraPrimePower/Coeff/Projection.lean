@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.Ring
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: coefficient rings — prime-power completed group algebra — coeff — projection
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormProperties
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 
-set_option autoImplicit false
-
 /-!
 # Idele classes in finite extensions
 
@@ -21,6 +19,8 @@ an elementary linear-algebra statement.  A linear retraction of
 come from the same scalar in `K`.  We then descend the idele inclusion to
 quotients and prove it injective.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

@@ -7,15 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
 
-set_option autoImplicit false
-
 /-!
 # Restriction from an enlarged S-unit Kummer extension
 
-The concrete embedding and Galois restriction map, its fixing subgroup, and the cyclic fixed fields attached to kernel elements.
+The concrete embedding and Galois restriction map, its fixing subgroup, and the cyclic fixed fields
+attached to kernel elements.
 -/
 
-open scoped NumberField Classical IsMulCommutative NNReal ValuativeRel
+
+
+open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 

@@ -7,8 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Basic
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide` Lean module. -/
+
 
 noncomputable section
 
@@ -154,7 +155,8 @@ theorem principalUnitsNormExtensionSideOfIsIntegralClosure_eq_galoisGroup_prod
 
 /-- Actual integral-closure version of the first-order norm-product
 calculation before residue trace identification. -/
-theorem principalUnitsNormExtensionSideOfIsIntegralClosure_oneAdd_sub_one_sub_sum_mem_maximalIdeal_pow_succ
+theorem
+ principalUnitsNormExtensionSideOfIsIntegralClosure_oneAdd_sub_one_sub_sum_mem_maximalIdeal_pow_succ
     (K L : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L] [Algebra K L] [FiniteDimensional K L]

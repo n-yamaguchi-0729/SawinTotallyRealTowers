@@ -6,18 +6,18 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity construction: the Frobenius semigroup
 
 The set `Frob(\widetilde L | K)` from  is closed under multiplication:
 normalized degrees are positive natural numbers and add under products.
 -/
+
+namespace ClassFormation
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

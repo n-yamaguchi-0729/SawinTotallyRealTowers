@@ -13,8 +13,6 @@ import ValuedFieldTheory.Valuation.Completion.ExtensionInvariants
 import ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 
-set_option autoImplicit false
-
 /-!
 # Integer rings in the two finite-place completion models
 
@@ -23,7 +21,9 @@ adic completion models to their valuation rings.  It also identifies the
 residue field of a rational finite-place completion.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section

@@ -8,7 +8,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
 /-!
 # Topological decomposition--localization comparison
 
@@ -154,7 +153,7 @@ theorem decompositionGroupToAlgebraicLocalization_stabilizer_isOpen
     (z : localization vK w) :
     IsOpen (algebraicLocalizationStabilizerSubgroup vK hvK w z :
       Set (absoluteValueDecompositionGroup K w.1)) := by
-  apply Subgroup.isOpen_of_mem_nhds
+  apply Subgroup.isOpen_of_mem_nhds (g := 1)
   rcases algebraicLocalization_fixing_finite_support vK hvK w z with ⟨S, hS⟩
   exact Filter.mem_of_superset
     (absoluteValueDecompositionGroup_fixing_finset_mem_nhds vK w S) fun sigma hsigma ↦

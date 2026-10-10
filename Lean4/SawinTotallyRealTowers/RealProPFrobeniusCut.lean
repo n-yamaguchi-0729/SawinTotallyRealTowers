@@ -9,8 +9,6 @@ import SawinTotallyRealTowers.MaximalRealProPGroup
 import ProCGroups.Presentations.Profinite
 import ProCGroups.Topologies.ContinuousMonoidHom
 
-set_option autoImplicit false
-
 /-!
 # Killing a countable family of actual Frobenius elements
 

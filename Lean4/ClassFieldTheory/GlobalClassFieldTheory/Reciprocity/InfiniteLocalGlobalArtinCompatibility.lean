@@ -14,8 +14,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.OverextensionArtin
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.InfinitePlaceCompatibility
 
-set_option autoImplicit false
-
 /-!
 # Archimedean local-global compatibility of Artin homomorphisms
 
@@ -24,6 +22,8 @@ with the global norm-residue homomorphism on idele classes.  The
 one-place norm statements are proved from genuine relative ideles
 supported at the chosen archimedean place.
 -/
+
+
 
 open scoped NumberField
 open NumberField

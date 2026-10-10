@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.H2CentralExtensionClass
 import GaloisCohomology.ProP.H2FiniteStage
 
-set_option autoImplicit false
 /-!
 # Finite nonsplit embedding problems detected by degree two
 

@@ -13,8 +13,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAct
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.PadicReductionContinuous
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.QuotientTransition
 
-set_option autoImplicit false
-
 /-!
 # P-adic modules on finite principal-unit quotients
 
@@ -22,6 +20,8 @@ Finite principal-unit quotients have the expected residue-characteristic exponen
 Reduction of p-adic integers therefore supplies canonical module structures, compatible with
 the transition maps.
 -/
+
+
 
 noncomputable section
 
@@ -87,7 +87,8 @@ instance Internal.principalUnitQuotientCarrier_finite
     Finite (Internal.principalUnitQuotientCarrier F.toCompleteDVF n) := by
   have : Finite
       (F.valuationSubringˣ ⧸
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) (n + 1)) :=
+        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          F.toCompleteDVF) (n + 1)) :=
     higherPrincipalUnitGroup.finite_unitsModHigherPrincipalUnitGroup_of_finite_residue
       F.toCompleteDVF (n + 1)
   exact Finite.of_injective

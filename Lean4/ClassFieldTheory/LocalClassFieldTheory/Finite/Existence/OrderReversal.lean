@@ -11,8 +11,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableU
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityTransport
 
-set_option autoImplicit false
-
 /-!
 # Field-facing order reversal for finite abelian extensions
 
@@ -22,6 +20,8 @@ transports the abstract order reversal for norm subgroups back to ordinary
 field norms. The final lemmas record the standard open subgroups contained in
 the norm subgroup of a finite abelian extension.
 -/
+
+
 
 noncomputable section
 

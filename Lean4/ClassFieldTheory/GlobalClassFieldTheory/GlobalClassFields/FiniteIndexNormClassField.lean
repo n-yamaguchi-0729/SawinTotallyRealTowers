@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.PowerCongruenceCore
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.CyclotomicKummerNormDescent
 
-set_option autoImplicit false
-
 /-!
 # Class fields of closed finite-index idele-class subgroups
 
@@ -27,7 +25,9 @@ then realizes `H`, transported to the canonical embedded copy of the base
 field, as an exact determinant-norm subgroup.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 
@@ -39,6 +39,7 @@ open GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type} [Field K] [NumberField K]
 
+open scoped Classical in
 /-- The Kummer exponent attached to a closed finite-index idele-class
 subgroup.  A proper subgroup uses its exact index.  The top subgroup uses
 exponent two, so the same concrete finite Galois construction also covers
@@ -60,6 +61,7 @@ theorem closedFiniteIndexNormExponent_eq_index
     closedFiniteIndexNormExponent (K := K) H =
       ⟨H.index,
         Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero⟩ := by
+  classical
   change
     (if H = ⊤ then (2 : ℕ+) else
       H.index.toPNat (Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero)) =
@@ -74,6 +76,7 @@ theorem one_lt_closedFiniteIndexNormExponent
     1 < (closedFiniteIndexNormExponent (K := K) H : ℕ) := by
   by_cases hH : H = ⊤
   · have hexponent : closedFiniteIndexNormExponent (K := K) H = (2 : ℕ+) := by
+      classical
       change
         (if H = ⊤ then (2 : ℕ+) else
           H.index.toPNat (Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero)) =

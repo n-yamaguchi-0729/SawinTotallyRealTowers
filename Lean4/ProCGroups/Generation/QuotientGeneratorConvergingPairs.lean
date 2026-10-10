@@ -8,8 +8,6 @@ import ProCGroups.Generation.Convergence
 import ProCGroups.Generation.GeneratorConvergingPairs
 import ProCGroups.ProC.Quotients.ClosedNormal
 
-set_option autoImplicit false
-
 /-!
 # Converging generators constructed through quotient refinements
 

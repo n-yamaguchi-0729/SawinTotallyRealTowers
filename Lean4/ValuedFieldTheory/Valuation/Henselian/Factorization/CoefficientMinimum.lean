@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RingTheory.Valuation.ValuationRing
 import ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
 
-set_option autoImplicit false
-
 /-!
 # the finite minimum coefficient
 

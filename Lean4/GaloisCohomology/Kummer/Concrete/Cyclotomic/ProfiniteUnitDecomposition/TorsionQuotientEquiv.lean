@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.DenseTorsion
 
-set_option autoImplicit false
-
 /-!
 # Torsion quotients of a profinite-integer product decomposition
 -/
+
+
 
 open scoped Topology
 
@@ -20,6 +20,8 @@ namespace KummerTheory
 
 open ClassFormation
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (continuousMulEquivOfCompactToT2) in
 /-- A topological decomposition `G ≃ ℤ̂ × T` with dense torsion in `T`
 identifies the quotient of `G` by the closure of its torsion with `ℤ̂`. -/
 noncomputable def torsionQuotientEquivOfZHatMulDecomposition
@@ -100,7 +102,7 @@ noncomputable def torsionQuotientEquivOfZHatMulDecomposition
       (QuotientGroup.quotientKerEquivOfSurjective
         freePart hsurj)
   exact
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.continuousMulEquivOfCompactToT2
+    continuousMulEquivOfCompactToT2
         e
         (by
           rw [←

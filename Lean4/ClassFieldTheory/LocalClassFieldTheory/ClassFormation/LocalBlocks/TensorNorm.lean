@@ -17,8 +17,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletion
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalNorm
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
-set_option autoImplicit false
-
 /-!
 # The norm image of a local tensor factor
 
@@ -35,6 +33,8 @@ This is the concrete norm-subgroup form of the local calculation used in
 the local-block norm calculation, and it is also the bridge between the local cohomology
 calculation and multiplicative weak approximation.
 -/
+
+
 
 open scoped BigOperators TensorProduct
 

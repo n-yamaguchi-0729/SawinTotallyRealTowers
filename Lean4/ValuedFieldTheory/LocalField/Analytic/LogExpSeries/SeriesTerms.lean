@@ -9,11 +9,11 @@ import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalProduct
 import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
 
-set_option autoImplicit false
 /-!
 Defines the logarithm and exponential series terms and proves the valuation estimates used in
 their convergence arguments.
 -/
+
 
 open Filter
 open Polynomial
@@ -398,7 +398,7 @@ theorem logOnePlusSeriesField_eq_logOnePlusSeries_mk0
     logOnePlusSeriesFieldOfWithZeroValuation v x hnK =
       logOnePlusSeriesOfWithZeroValuation v (Units.mk0 x hx) hnK := by
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  simp [logOnePlusSeriesFieldOfWithZeroValuation,
+  simp only [logOnePlusSeriesFieldOfWithZeroValuation,
     logOnePlusSeriesOfWithZeroValuation]
   apply tsum_congr
   intro n
@@ -423,7 +423,7 @@ theorem expSeriesField_eq_expSeries_mk0
     expSeriesFieldOfWithZeroValuation v x hnK =
       expSeriesOfWithZeroValuation v (Units.mk0 x hx) hnK := by
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  simp [expSeriesFieldOfWithZeroValuation, expSeriesOfWithZeroValuation]
+  simp only [expSeriesFieldOfWithZeroValuation, expSeriesOfWithZeroValuation]
   apply tsum_congr
   intro n
   exact expSeriesTermField_eq_expSeriesTerm_mk0 hx hnK n
@@ -840,7 +840,8 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_of_pos
   exact lt_of_le_of_lt hvsigned (by simpa [γ'] using hNγ)
 
 /-- In a complete nonarchimedean valuation topology, the logarithm-series terms
-are summable.  This is the convergence step of the field-unit logarithm theorem after the valuation estimate has been proved. -/
+are summable.  This is the convergence step of the field-unit logarithm theorem after the
+valuation estimate has been proved. -/
 theorem summable_log_term_ofWithZeroValuation_of_pos
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     {p : ℕ} [Fact p.Prime] (x : Kˣ)

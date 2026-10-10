@@ -6,7 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteIntermediateFieldCompositum
 
-set_option autoImplicit false
+/-!
+# Frobenius power fixed fields
+
+This module constructs the fixed fields of powers of a Frobenius element and
+proves their inclusion, exponent, normality, unramifiedness, finiteness,
+degree, quotient-cardinality, and generator properties.
+-/
 
 universe u
 
@@ -15,13 +21,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Frobenius power fixed fields
 
-This module constructs the fixed fields of powers of a Frobenius element and
-proves their inclusion, exponent, normality, unramifiedness, finiteness,
-degree, quotient-cardinality, and generator properties.
--/
 
 noncomputable section
 

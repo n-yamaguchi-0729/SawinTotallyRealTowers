@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.TrivialZModP
 import ProCGroups.ProP.ContinuousH1
 
-set_option autoImplicit false
 /-!
 # Continuous degree-one cohomology bridge
 
@@ -117,8 +116,7 @@ theorem homogeneousOneCochainOfH1Lifted_mem_cycles
       (homogeneousOneCochainOfH1Lifted χ)
   have hdh := congrArg (fun τ => τ g h k) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   apply ULift.ext
   change χ (Additive.ofMul (h⁻¹ * k)) -
       (χ (Additive.ofMul (g⁻¹ * k)) - χ (Additive.ofMul (g⁻¹ * h))) = 0
@@ -370,8 +368,7 @@ theorem trivialZModPCochainsLifted_d_zero_one :
     (ClassFieldTower.Cohomology.trivialZModPLifted p G) 0 sigma
   have hdh := congrArg (fun tau => tau g h) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   change sigma.1 h - sigma.1 g = 0
   have hg := congrArg (fun tau => tau g) (sigma.2 g)
   have hh := congrArg (fun tau => tau h) (sigma.2 h)
@@ -510,8 +507,7 @@ theorem homogeneousOneCochainOfH1_mem_cycles
       (homogeneousOneCochainOfH1 χ)
   have hdh := congrArg (fun τ => τ g h k) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   change χ (Additive.ofMul (h⁻¹ * k)) -
       (χ (Additive.ofMul (g⁻¹ * k)) - χ (Additive.ofMul (g⁻¹ * h))) = 0
   have hχ := χ.map_add
@@ -733,7 +729,8 @@ def continuousH1ZModEquivCocycles :
   left_inv := h1OfCocycle_cocycleOfH1
   right_inv := cocycleOfH1_h1OfCocycle
 
-/-- For trivial small-universe coefficients, every homogeneous zero-cochain has zero differential. -/
+/-- For trivial small-universe coefficients, every homogeneous zero-cochain
+has zero differential. -/
 theorem trivialZModPCochains_d_zero_one :
     (ClassFieldTower.Cohomology.trivialZModPCochains p G₀).d 0 1 = 0 := by
   apply ConcreteCategory.ext
@@ -746,8 +743,7 @@ theorem trivialZModPCochains_d_zero_one :
     (ClassFieldTower.Cohomology.trivialZModP p G₀) 0 sigma
   have hdh := congrArg (fun tau => tau g h) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   change sigma.1 h - sigma.1 g = 0
   have hg := congrArg (fun tau => tau g) (sigma.2 g)
   have hh := congrArg (fun tau => tau h) (sigma.2 h)

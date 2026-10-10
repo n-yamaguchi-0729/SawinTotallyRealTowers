@@ -8,9 +8,9 @@ import Mathlib.FieldTheory.Galois.NormalBasis
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
 
-set_option autoImplicit false
-
 /-! Provides the public normal-basis lattice declarations used in Herbrand computations. -/
+
+
 
 namespace CyclicCohomology
 
@@ -26,14 +26,14 @@ open Filter
 variable (K L : Type u) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
 
-/-- The `Gal(L / K)` orbit of Mathlib's normal-basis generator spans `L` over `K`. -/
+/-- The `Gal(L/K)` orbit of Mathlib's normal-basis generator spans `L` over `K`. -/
 theorem normalBasisConjugates_span_eq_top :
     Submodule.span K
-        (Set.range (fun σ : Gal(L / K) =>
-          σ (IsGalois.normalBasis K L (1 : Gal(L / K))))) = ⊤ := by
+        (Set.range (fun σ : Gal(L/K) =>
+          σ (IsGalois.normalBasis K L (1 : Gal(L/K))))) = ⊤ := by
   have hset :
-      Set.range (fun σ : Gal(L / K) =>
-        σ (IsGalois.normalBasis K L (1 : Gal(L / K)))) =
+      Set.range (fun σ : Gal(L/K) =>
+        σ (IsGalois.normalBasis K L (1 : Gal(L/K)))) =
         Set.range (IsGalois.normalBasis K L) := by
     ext x
     constructor
@@ -51,29 +51,29 @@ normal-basis orbit.  Bounds comparing this lattice with `𝒪_L` are deliberatel
 made explicit in the lattice-comparison theorems below. -/
 def chosenNormalBasisIntegerLattice : Submodule 𝒪[K] L :=
   Submodule.span 𝒪[K]
-    (Set.range (fun σ : Gal(L / K) =>
-      σ (IsGalois.normalBasis K L (1 : Gal(L / K)))))
+    (Set.range (fun σ : Gal(L/K) =>
+      σ (IsGalois.normalBasis K L (1 : Gal(L/K)))))
 
 /-- Public characterization of the chosen normal-basis lattice as the span of
 the chosen generator's Galois orbit. -/
 theorem chosenNormalBasisIntegerLattice_eq_span :
     chosenNormalBasisIntegerLattice K L =
       Submodule.span 𝒪[K]
-        (Set.range (fun σ : Gal(L / K) =>
-          σ (IsGalois.normalBasis K L (1 : Gal(L / K))))) :=
+        (Set.range (fun σ : Gal(L/K) =>
+          σ (IsGalois.normalBasis K L (1 : Gal(L/K))))) :=
   rfl
 
 /-- Every normal-basis vector lies in the `𝒪_K`-span lattice `M`. -/
-theorem normalBasis_mem_integerLattice (σ : Gal(L / K)) :
+theorem normalBasis_mem_integerLattice (σ : Gal(L/K)) :
     IsGalois.normalBasis K L σ ∈ chosenNormalBasisIntegerLattice K L := by
   rw [IsGalois.normalBasis_apply]
   exact Submodule.subset_span (Set.mem_range_self σ)
 
 /-- Mathlib's normal-basis generator lies in the `𝒪_K`-span lattice `M`. -/
 theorem normalBasis_one_mem_integerLattice :
-    IsGalois.normalBasis K L (1 : Gal(L / K)) ∈
+    IsGalois.normalBasis K L (1 : Gal(L/K)) ∈
       chosenNormalBasisIntegerLattice K L :=
-  normalBasis_mem_integerLattice (K := K) (L := L) (1 : Gal(L / K))
+  normalBasis_mem_integerLattice (K := K) (L := L) (1 : Gal(L/K))
 
 /-- After extending scalars back to `K`, the normal-basis lattice spans all of
 `L`. -/
@@ -86,10 +86,10 @@ theorem chosenNormalBasisIntegerLattice_field_span_eq_top :
   intro x hx
   exact Submodule.subset_span hx
 
-/-- The normal-basis lattice `M` is stable under the actual `Gal(L / K)`
+/-- The normal-basis lattice `M` is stable under the actual `Gal(L/K)`
 action. -/
 theorem galoisGroup_apply_mem_chosenNormalBasisIntegerLattice
-    (τ : Gal(L / K)) {x : L}
+    (τ : Gal(L/K)) {x : L}
     (hx : x ∈ chosenNormalBasisIntegerLattice K L) :
     τ x ∈ chosenNormalBasisIntegerLattice K L := by
   refine Submodule.span_induction
@@ -98,7 +98,7 @@ theorem galoisGroup_apply_mem_chosenNormalBasisIntegerLattice
   · intro x hx
     rcases hx with ⟨σ, rfl⟩
     have hτ :
-        τ (σ (IsGalois.normalBasis K L (1 : Gal(L / K)))) =
+        τ (σ (IsGalois.normalBasis K L (1 : Gal(L/K)))) =
           IsGalois.normalBasis K L (τ * σ) := by
       rw [IsGalois.normalBasis_apply (K := K) (L := L) (τ * σ)]
       rfl
@@ -346,7 +346,8 @@ theorem exists_chosenBaseUniformizerPowSubmodule_le_of_fg_of_field_span_eq_top
   exact hN_mem y hyN
 
 omit [FiniteDimensional K L] [IsGalois K L] in
-/-- Product-denominator bound for multiplicative lattice control.  If `N` and `P` are finitely generated
+/-- Product-denominator bound for multiplicative lattice control.  If `N` and `P` are finitely
+generated
 `𝒪_K`-submodules and `M` spans `L` after inverting `𝒪_K`, then one power of the
 base prime element sends every product `xy`, `x ∈ N`, `y ∈ P`, back into `M`.
 
@@ -538,7 +539,8 @@ omit [FiniteDimensional K L] [IsGalois K L]
   [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /-- Powers of an element stay in a multiplicatively closed additive lattice.
 
-This is the finite algebraic input to the geometric-series inverse argument; completeness supplies the limit of these finite approximations. -/
+This is the finite algebraic input to the geometric-series inverse argument; completeness supplies
+the limit of these finite approximations. -/
 theorem submodule_pow_succ_mem_of_mul_closed
     {E : Submodule 𝒪[K] L}
     (hmul : ∀ x : L, x ∈ E → ∀ y : L, y ∈ E → x * y ∈ E)
@@ -693,7 +695,8 @@ omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Extension-field denominator clearing by powers of the base prime element.
 
 For any `x : L`, a sufficiently high power of the chosen prime element of
-`𝒪[K]`, mapped to `L`, sends `x` into `𝒪[L]`.  This is the denominator-clearing input used before comparing the normal-basis lattice with `𝒪_L`: it uses only the
+`𝒪[K]`, mapped to `L`, sends `x` into `𝒪[L]`.  This is the denominator-clearing input used before
+comparing the normal-basis lattice with `𝒪_L`: it uses only the
 DVR structure of `𝒪_L` and the fact that the image of the base prime lies in
 `𝓂_L`. -/
 theorem exists_chosenBaseUniformizerPow_mul_mem_integerRing_of_valuationExtension
@@ -988,7 +991,8 @@ theorem chosenBaseUniformizerPowSubmodule_add_le_chosenBaseUniformizerPowSubmodu
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- If `π_K^b N` is integral, then `π_K^(b+1) N` lands in the maximal ideal of
 `𝒪_L`. -/
-theorem chosenBaseUniformizerPowSubmodule_succ_le_maximalIdealFieldSubmodule_of_le_integerRingFieldSubmodule
+theorem
+chosenBaseUniformizerPowSubmodule_succ_le_maximalIdealFieldSubmodule_of_le_integerRingFieldSubmodule
     {N : Submodule 𝒪[K] L} {b : Nat}
     (hb : chosenBaseUniformizerPowSubmodule K L b N ≤ integerRingFieldSubmodule K L) :
     chosenBaseUniformizerPowSubmodule K L (b + 1) N ≤
@@ -1032,12 +1036,13 @@ theorem exists_chosenBaseUniformizerPowSubmodule_le_maximalIdealFieldSubmodule_o
   rcases exists_chosenBaseUniformizerPowSubmodule_le_integerRingFieldSubmodule_of_fg
       (K := K) (L := L) hN with
     ⟨b, hb⟩
-  exact ⟨b + 1,
-    chosenBaseUniformizerPowSubmodule_succ_le_maximalIdealFieldSubmodule_of_le_integerRingFieldSubmodule
-      (K := K) (L := L) hb⟩
+  exact ⟨b + 1, (
+chosenBaseUniformizerPowSubmodule_succ_le_maximalIdealFieldSubmodule_of_le_integerRingFieldSubmodule
+      (K := K) (L := L) hb)⟩
 
 /-- Some uniformizer-power normal-basis lattice lies inside the maximal-ideal field submodule. -/
-theorem exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
+theorem
+  exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] :
     ∃ n : Nat,
       chosenBaseUniformizerPowSubmodule K L n (chosenNormalBasisIntegerLattice K L) ≤
@@ -1047,7 +1052,8 @@ theorem exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maxim
 
 /-- A sufficiently deep normal-basis lattice lies in the maximal ideal and is
 multiplicatively closed. -/
-theorem exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
+theorem
+  exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] :
     ∃ c : Nat, ∀ n : Nat, c ≤ n →
       chosenBaseUniformizerPowSubmodule K L n (chosenNormalBasisIntegerLattice K L) ≤
@@ -1058,7 +1064,8 @@ theorem exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maxim
           y ∈ chosenBaseUniformizerPowSubmodule K L n (chosenNormalBasisIntegerLattice K L) →
             x * y ∈
               chosenBaseUniformizerPowSubmodule K L n (chosenNormalBasisIntegerLattice K L) := by
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
       (K := K) (L := L) with
     ⟨d, hd⟩
   rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_mul_mul_mem_self
@@ -1160,7 +1167,8 @@ theorem exists_chosenNormalBasisPrincipalUnitSet_mul_closed_le_principalUnits_on
           u * v ∈ chosenNormalBasisPrincipalUnitSet K L n) ∧
       ∀ u : 𝒪[L]ˣ, u ∈ chosenNormalBasisPrincipalUnitSet K L n →
         u ∈ principalUnits L 1 := by
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
       (K := K) (L := L) with
     ⟨c, hc⟩
   refine ⟨c, ?_⟩
@@ -1278,7 +1286,8 @@ theorem exists_chosenNormalBasisPrincipalUnitSet_neg_sub_one_pow_succ_tendsto_ze
         Tendsto
           (fun d : Nat => (-(((u : 𝒪[L]ˣ) : 𝒪[L]) - 1)) ^ (d + 1))
           atTop (nhds (0 : 𝒪[L])) := by
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
       (K := K) (L := L) with
     ⟨c, hc⟩
   refine ⟨c, ?_⟩
@@ -1392,7 +1401,8 @@ theorem exists_chosenNormalBasisPrincipalUnitSet_inverseCorrection_tendsto_inv_s
             inverseCorrectionPartialSum (L := L)
               ((((u : 𝒪[L]ˣ) : 𝒪[L]) - 1 : 𝒪[L]) : L) d)
           atTop (nhds (((((u⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) : L) - 1))) := by
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdealFieldSubmodule
       (K := K) (L := L) with
     ⟨c, hc⟩
   refine ⟨c, ?_⟩
@@ -1464,7 +1474,8 @@ theorem exists_chosenNormalBasisPrincipalUnitSet_inv_mem_of_closed
           (chosenNormalBasisIntegerLattice K L) : Set L)) →
       ∀ u : 𝒪[L]ˣ, u ∈ chosenNormalBasisPrincipalUnitSet K L n →
         u⁻¹ ∈ chosenNormalBasisPrincipalUnitSet K L n := by
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
       (K := K) (L := L) with
     ⟨c, hc⟩
   refine ⟨c, ?_⟩
@@ -1526,7 +1537,8 @@ theorem exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_mem_nhds
     ∃ c : Nat, ∀ n : Nat, c ≤ n →
       ((chosenBaseUniformizerPowSubmodule K L n
         (chosenNormalBasisIntegerLattice K L) : Set L)) ∈ nhds (0 : L) := by
-  rcases exists_chosenBaseUniformizerPow_integerRingFieldSubmodule_le_chosenNormalBasisIntegerLattice
+  rcases
+    exists_chosenBaseUniformizerPow_integerRingFieldSubmodule_le_chosenNormalBasisIntegerLattice
       (K := K) (L := L) with
     ⟨a, ha⟩
   refine ⟨a, ?_⟩

@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
 import Mathlib.Analysis.Normed.Algebra.GelfandMazur
 import Mathlib.NumberTheory.Ostrowski
 
-set_option autoImplicit false
-
 /-!
 # Ostrowski classification for complete valued fields
 

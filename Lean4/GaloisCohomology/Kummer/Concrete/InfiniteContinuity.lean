@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
 
-set_option autoImplicit false
-
 /-!
 # continuity of Kummer characters for infinite extensions
 
@@ -22,6 +20,8 @@ The final construction descends these continuous characters through the
 ambient-power quotient `Δ / (Δ ∩ Kˣⁿ)`.  No surjectivity or lattice correspondence is
 asserted here.
 -/
+
+
 
 noncomputable section
 

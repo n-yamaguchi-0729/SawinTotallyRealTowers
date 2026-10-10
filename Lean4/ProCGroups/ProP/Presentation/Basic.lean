@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FreeProC.FiniteBasis
 import ProCGroups.Presentations.Profinite
 
-set_option autoImplicit false
 /-!
 # Finite pro-p presentations
 

@@ -8,7 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia
 
-set_option autoImplicit false
 /-!
 # The finite local field cut out by a mod-`p` character
 
@@ -48,7 +47,7 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 @[simp]
 theorem localReciprocitySeparableAbelianCharacter_mk
     (chi : ContinuousH1ZMod (p := p) (G := Field.absoluteGaloisGroup K))
-    (sigma : Gal(SeparableClosure K / K)) :
+    (sigma : Gal(SeparableClosure K/K)) :
     localReciprocitySeparableAbelianCharacter K p chi (QuotientGroup.mk sigma) =
       Multiplicative.ofAdd
         (localStandardH1LinearEquivSeparable p K chi (Additive.ofMul sigma)) := rfl
@@ -118,7 +117,7 @@ private theorem absoluteFiniteQuotientField_fixingSubgroup
   InfiniteGalois.fixingSubgroup_fixedField (absoluteFiniteQuotientClosedPreimage K N)
 
 private theorem localIntrinsicUnramifiedH1_apply_inertia
-    (psi : ContinuousH1ZMod (p := p) (G := Gal(SeparableClosure K / K)))
+    (psi : ContinuousH1ZMod (p := p) (G := Gal(SeparableClosure K/K)))
     (hpsi : psi ∈ localIntrinsicUnramifiedH1 K p)
     (sigma : localIntrinsicInertiaSubgroup K) :
     psi (Additive.ofMul sigma.1) = 0 := by

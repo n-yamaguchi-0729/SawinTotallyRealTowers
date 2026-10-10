@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Fox.ModPDisplayedSpan
 import ProCGroups.ProP.Fox.ModPStageProjection
 
-set_option autoImplicit false
 /-!
 # Completed mod-p Fox density and relation exactness
 

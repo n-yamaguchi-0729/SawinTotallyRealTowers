@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 
-set_option autoImplicit false
 /-! # Restriction to the actual maximal abelian subextension -/
 
 noncomputable section

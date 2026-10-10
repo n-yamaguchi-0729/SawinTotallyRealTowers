@@ -8,7 +8,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.RepresentationTheory.Invariants
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
-set_option autoImplicit false
 /-!
 # Degree-one descent along a normal subgroup
 

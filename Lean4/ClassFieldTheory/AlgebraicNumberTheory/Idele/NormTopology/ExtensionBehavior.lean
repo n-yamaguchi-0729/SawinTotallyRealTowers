@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
 
-set_option autoImplicit false
-
 /-!
 # Scalar-extension behavior of idele norms
 
@@ -17,7 +15,9 @@ base-change realization is included as the endpoint used by cyclotomic
 reciprocity.
 -/
 
-open scoped BigOperators Classical NumberField NumberField.LiesOver
+
+
+open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -135,6 +135,7 @@ private theorem infinitePlace_mult_eq_base_mult_mul_inertiaDeg
       InfinitePlace.inertiaDeg_eq_one
         ⟨hW, hUnramified⟩]
 
+open scoped Classical in
 omit [FiniteDimensional K L] in
 /-- The inertia degrees in a restriction fiber sum to the global
 extension degree. -/
@@ -170,6 +171,7 @@ private theorem infinitePlaceFiber_inertiaDeg_sum
         InfinitePlace.sum_inertiaDeg_eq_finrank
           K L v₀
 
+open scoped Classical in
 omit [FiniteDimensional K L] in
 /-- The total archimedean multiplicity in a restriction fiber is the
 base multiplicity times the extension degree. -/

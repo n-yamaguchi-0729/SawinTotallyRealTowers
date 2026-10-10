@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
 import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
 import Mathlib.NumberTheory.NumberField.ProductFormula
 
-set_option autoImplicit false
-
 /-!
 # Finite-place power indices
 
@@ -18,7 +16,9 @@ This file supplies the completion instances and local cardinality formulas used
 to evaluate finite-place factors in idele power quotients.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel TensorProduct
+
+
+open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -27,6 +27,12 @@ namespace GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type} [Field K] [NumberField K]
 
+open _root_.LocalFieldTheory.DiscreteValuationField (
+  finite_fieldUnits_nthPowerQuotient_of_finite_principalUnits
+) in
+open _root_.LocalFieldTheory.DiscreteValuationField.LocalField (
+  chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
+) in
 /-- The finite-place local power index in the integral form used before
 applying the global product formula.  The two copies of `n` are
 respectively the uniformizer direction and the `n`-th roots of unity
@@ -83,7 +89,7 @@ theorem card_finitePlace_nthPowerQuotient
     Module.finrank ℚ_[F.residueCharacteristic]
       (v₀.adicCompletion K)
   obtain ⟨a, e⟩ :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
+    chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
       ν hν
   let U :=
     LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
@@ -118,7 +124,7 @@ theorem card_finitePlace_nthPowerQuotient
         (powMonoidHom (n : ℕ) :
           (v₀.adicCompletion K)ˣ →*
             (v₀.adicCompletion K)ˣ).range) :=
-    LocalFieldTheory.DiscreteValuationField.finite_fieldUnits_nthPowerQuotient_of_finite_principalUnits
+    finite_fieldUnits_nthPowerQuotient_of_finite_principalUnits
       F.toCompleteDVF hπ (n : ℕ)
   have hindex :=
     LocalFieldTheory.DiscreteValuationField.LocalField.mixed_fieldIndex
@@ -165,6 +171,9 @@ noncomputable def finitePlaceNthPowerDefect
   F.residueCharacteristic ^
     (d * padicValNat F.residueCharacteristic (n : ℕ))
 
+open _root_.LocalFieldTheory.DiscreteValuationField.LocalField (
+  valuation_natCast_eq_exp_neg_ramificationIndex_mul_padicValNat
+) in
 /-- The local defect is the norm of the exact prime-power factor of
 the principal ideal `(n)` at `v`. -/
 theorem finitePlaceNthPowerDefect_eq_absNorm_maxPowDividing
@@ -222,7 +231,7 @@ theorem finitePlaceNthPowerDefect_eq_absNorm_maxPowDividing
         WithZero.exp
           (-((e : ℤ) * (k : ℤ))) := by
     simpa [F, e, k] using
-      LocalFieldTheory.DiscreteValuationField.LocalField.valuation_natCast_eq_exp_neg_ramificationIndex_mul_padicValNat
+      valuation_natCast_eq_exp_neg_ramificationIndex_mul_padicValNat
         ν (n : ℕ) n.ne_zero
   have hval :
       v.intValuation x =

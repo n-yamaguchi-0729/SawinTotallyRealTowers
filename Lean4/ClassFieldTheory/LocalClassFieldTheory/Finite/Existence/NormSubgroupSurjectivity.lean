@@ -9,8 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrder
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 
-set_option autoImplicit false
-
 /-!
 # Surjectivity criteria for the local norm-subgroup map
 
@@ -19,6 +17,8 @@ It proves the compositum and intersection formulas, isolates the norm-topology
 criterion which makes the ordinary norm-subgroup order embedding surjective,
 and constructs norm-topology witnesses from concrete finite Galois extensions.
 -/
+
+
 
 noncomputable section
 
@@ -153,7 +153,8 @@ theorem exists_finiteAbelianNormSubgroup_eq_of_normOpen
       S.map (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).symm.toAddMonoidHom) habs
   change (L.normSubgroup (intrinsicAbsoluteUnits K)).map
       (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).symm.toAddMonoidHom =
-    Habs.map (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).symm.toAddMonoidHom at hmapped
+    Habs.map (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure
+      K)).symm.toAddMonoidHom at hmapped
   rw [map_finiteAbelianNormSubgroup_eq_additiveNormSubgroup] at hmapped
   have hcancel :
       Habs.map (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).symm.toAddMonoidHom =

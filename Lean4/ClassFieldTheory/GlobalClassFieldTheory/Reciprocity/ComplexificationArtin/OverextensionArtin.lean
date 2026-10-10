@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RamifiedOverextension
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 
-set_option autoImplicit false
-
 /-!
 # Artin reciprocity on the ramified infinite-place overextension
 
@@ -16,7 +14,9 @@ This module proves principal-idele triviality, descends the chosen Artin
 product to the norm quotient, and identifies it with global reciprocity.
 -/
 
-open scoped Classical IsMulCommutative
+
+
+open scoped IsMulCommutative
 open NumberField
 open IdeleGroup
 
@@ -430,12 +430,9 @@ theorem
     (v : InfinitePlace K)
     (hRamified :
       (chosenInfinitePlaceAbove (L := L) v).IsRamified K)
-    {σ τ :
-      Gal(
-        (infinitePlaceComplexificationOverfield
-          (K := K) (L := L) v) /
-        (ramifiedInfinitePlaceRealFixedField
-          (K := K) (L := L) v hRamified))}
+    {σ τ : Gal((infinitePlaceComplexificationOverfield
+      (K := K) (L := L) v)/(ramifiedInfinitePlaceRealFixedField
+      (K := K) (L := L) v hRamified))}
     (hσ : σ ≠ 1)
     (hτ : τ ≠ 1) :
     σ = τ := by

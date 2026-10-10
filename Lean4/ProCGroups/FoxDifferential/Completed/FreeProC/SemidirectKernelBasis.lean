@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageRightProjection
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — free pro-\(C\) — semidirect kernel basis
 

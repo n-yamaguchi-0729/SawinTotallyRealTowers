@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
 import Mathlib.FieldTheory.Finite.Basic
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: the unit action on primitive division points
 
@@ -18,6 +16,8 @@ sends a primitive level-`n+1` point to another root of the same Eisenstein
 polynomial.  This is the source of the finite-level Galois action; no
 automorphism or normality is assumed here.
 -/
+
+
 
 noncomputable section
 

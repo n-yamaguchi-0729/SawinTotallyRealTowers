@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 
-set_option autoImplicit false
-
 /-!
 # The normalized cyclotomic idele value
 
@@ -32,6 +30,8 @@ genuine cyclotomic principal-idele formula and is the next
 source-producing frontier; no quotient projection or abstract valuation
 hypothesis is substituted for it here.
 -/
+
+
 
 noncomputable section
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationValue
 
-set_option autoImplicit false
-
 /-!
 # Generic evaluation core for transported reciprocity
 
@@ -15,6 +13,8 @@ This theorem works for an arbitrary finite abelian extension and subgroup
 equality.  It proves the composition formula once without unfolding a
 domain-specific selected-field construction.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 
@@ -43,7 +43,7 @@ equality between the actual norm range and a target subgroup. -/
 theorem globalReciprocityContinuousMulEquiv_trans_quotientOfEq_apply
     (H : Subgroup (IdeleClassGroup K))
     (hNorm : (_root_.ideleClassNorm K L).range = H)
-    (σ : Gal(L / K)) :
+    (σ : Gal(L/K)) :
     ((globalReciprocityContinuousMulEquiv K L).trans
       (QuotientGroup.quotientContinuousMulEquivOfEq hNorm)) σ =
       QuotientGroup.quotientMulEquivOfEq hNorm

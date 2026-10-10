@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlac
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 import Mathlib.NumberTheory.NumberField.Completion.FinitePlace
 
-set_option autoImplicit false
-
 /-!
 # Localized rational cyclotomic levels
 
@@ -18,6 +16,8 @@ rational cyclotomic level with a cyclotomic extension of the completed
 base.  The primitive root is the image of a genuine primitive root in
 the global level under the canonical global-to-local map.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

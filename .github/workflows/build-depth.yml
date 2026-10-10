@@ -1,0 +1,104 @@
+name: Build one library depth
+
+on:
+  workflow_call:
+    inputs:
+      depth:
+        required: true
+        type: number
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      LEAN_NUM_THREADS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Audit the complete physical source manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/verification"
+          python3 -B .github/verification/generate_manifest.py \
+            --root . --config .github/verification/manifest-config.json \
+            --manifest "$RUNNER_TEMP/verification/modules.json" \
+            --report "$RUNNER_TEMP/verification/source-audit.json"
+          if [[ -f .github/verification/check_source_closure.py ]]; then
+            python3 -B .github/verification/check_source_closure.py \
+              --generated-manifest "$RUNNER_TEMP/verification/modules.json" \
+              --output "$RUNNER_TEMP/verification/pinned-closure-audit.json"
+          fi
+      - name: Install pinned Lean and obtain the pinned Mathlib cache
+        id: setup
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
+        with:
+          auto-config: "false"
+          build: "false"
+          test: "false"
+          lint: "false"
+          use-mathlib-cache: "true"
+          use-github-cache: "false"
+      - name: Restore only project compiler outputs
+        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: |
+            .lake/build/lib/lean
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            ${{ runner.temp }}/project-build-cache.json
+          key: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-depth${{ inputs.depth }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-
+            lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+      - name: Check cache integrity, falling back to an ordinary build on a miss
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/project_cache.py restore \
+            --metadata "$RUNNER_TEMP/project-build-cache.json" \
+            --report "$RUNNER_TEMP/verification/cache-restore.json"
+      - name: Build this depth with the configured diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/build_stage.py \
+            --depth '${{ inputs.depth }}' --output "$RUNNER_TEMP/verification/build"
+      - name: Seal completed outputs and check archive headroom
+        id: cache_seal
+        if: always() && !cancelled() && steps.setup.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/project_cache.py seal \
+            --metadata "$RUNNER_TEMP/project-build-cache.json" \
+            --report "$RUNNER_TEMP/verification/cache-save.json"
+      - name: Save this depth before starting the next job
+        if: always() && !cancelled() && steps.cache_seal.outputs.cacheable == 'true'
+        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: |
+            .lake/build/lib/lean
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            ${{ runner.temp }}/project-build-cache.json
+          key: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-depth${{ inputs.depth }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Preserve the build and cache receipts
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: build-depth${{ inputs.depth }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/verification/
+          if-no-files-found: warn
+          retention-days: 14

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveAction
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: finite parameters for the Lubin--Tate action
 
@@ -19,6 +17,8 @@ power-series units, and prove that their bracket images of a primitive point
 are pairwise distinct.  Its cardinality is `(q - 1) q^n`, exactly the degree
 of the primitive polynomial.
 -/
+
+
 
 noncomputable section
 

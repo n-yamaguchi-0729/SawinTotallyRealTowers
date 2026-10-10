@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Functoriality of finite-extension norm subgroups
 
@@ -15,6 +13,8 @@ The local existence proof repeatedly enlarges a finite extension and replaces
 finite extensions by isomorphic realizations.  This file records the resulting
 identities for unit norms and their images in the base field.
 -/
+
+
 
 noncomputable section
 

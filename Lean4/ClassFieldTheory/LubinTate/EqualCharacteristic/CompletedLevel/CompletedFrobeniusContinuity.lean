@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusLift
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: continuity of the standard completed Frobenius lift
 
@@ -18,6 +16,8 @@ base.  Spectral-norm uniqueness therefore makes the lift an isometry and in
 particular continuous.  We also name the `a = u⁻¹` specialization used
 directly in the completed theta-intertwining theorem.
 -/
+
+
 
 noncomputable section
 
@@ -196,7 +196,8 @@ theorem equalCharacteristicCompletedFrobeniusLift_isometry
     Isometry (equalCharacteristicCompletedFrobeniusLiftEquiv F n u⁻¹) :=
   equalCharacteristicCompletedFrobeniusLiftEquiv_isometry F n u⁻¹
 
-/-- The completed theta-intertwining theorem specialization is continuous for the standard completed-level
+/-- The completed theta-intertwining theorem specialization is continuous for the standard
+completed-level
 spectral-norm topology. -/
 theorem equalCharacteristicCompletedFrobeniusLift_continuous
     (F : LocalField.{u, v} K)

@@ -5,14 +5,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ValuedFieldTheory.LocalField.NormUnits
-import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.RingTheory.Norm.Basic
 
-set_option autoImplicit false
 /-!
 # Quotients by local norm subgroups
 

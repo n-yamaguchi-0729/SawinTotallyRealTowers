@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.Galois.GaloisClosure
 import Mathlib.FieldTheory.Normal.Basic
 import Mathlib.FieldTheory.SeparableClosure
 
-set_option autoImplicit false
-
 /-!
 # Infinite Galois base change from finite layers
 
@@ -18,6 +16,8 @@ their union after a change of base field.  It is stated entirely in terms of
 mathlib's actual intermediate fields and uses no abstract replacement for the
 compositum.
 -/
+
+
 
 noncomputable section
 

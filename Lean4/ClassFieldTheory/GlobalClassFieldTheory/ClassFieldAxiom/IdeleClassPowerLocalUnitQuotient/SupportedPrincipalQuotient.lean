@@ -10,8 +10,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
 import Mathlib.Algebra.Group.Equiv.Basic
 import Mathlib.Algebra.Group.Subgroup.Ker
 
-set_option autoImplicit false
-
 /-!
 # Supported principal ideles and the idele-class quotient
 
@@ -19,7 +17,9 @@ This file identifies supported principal ideles with the corresponding
 `S`-unit group and derives the exact-sequence cardinal identities.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel TensorProduct
+
+
+open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open KummerTheory
@@ -43,6 +43,7 @@ def supportedPrincipalIdeleSubgroup
     (IdeleGroup.supportedAt
       (K := K) (S ∪ T : Set (HeightOneSpectrum (𝓞 K)))).subtype
 
+open scoped Classical in
 /-- The diagonal map identifies the `(S ∪ T)`-units with the principal
 ideles lying in `I_K^{S ∪ T}`. -/
 noncomputable def sUnitEquivSupportedPrincipalIdeleSubgroup
@@ -108,6 +109,7 @@ noncomputable def sUnitEquivSupportedPrincipalIdeleSubgroup
     apply Subtype.ext
     exact hx
 
+open scoped Classical in
 /-- The supported-principal-idele equivalence has underlying idele equal
 to the principal idele of the original `S`-unit. -/
 @[simp]
@@ -124,6 +126,7 @@ theorem sUnitEquivSupportedPrincipalIdeleSubgroup_coe
         IdeleGroup.principalIdele K (x : Kˣ) :=
   rfl
 
+open scoped Classical in
 /-- Under the preceding diagonal equivalence, this is the subgroup of
 `(S ∪ T)`-units whose principal ideles belong to `h(S,T)`. -/
 def sUnitPrincipalIdelePowerSubgroup
@@ -151,7 +154,7 @@ theorem sUnitPrincipalIdelePowerSubgroup_map
       IdeleGroup.principalIdele K (y : Kˣ) ∈
         idelePowerLocalUnitSubgroup (K := K) n S T := by
       exact hy
-    show
+    change
       (((sUnitEquivSupportedPrincipalIdeleSubgroup
             (K := K) S T y :
           supportedPrincipalIdeleSubgroup (K := K) S T) :
@@ -189,6 +192,7 @@ theorem sUnitPrincipalIdelePowerSubgroup_map
     rw [sUnitEquivSupportedPrincipalIdeleSubgroup_coe] at hxIdele
     exact hxIdele
 
+open scoped Classical in
 /-- The left term in the supported exact sequence, expressed as the
 actual quotient of `(S ∪ T)`-units satisfying the principal
 `h(S,T)`-condition. -/
@@ -212,6 +216,7 @@ noncomputable def
     (sUnitPrincipalIdelePowerSubgroup_map
       (K := K) n S T)
 
+open scoped Classical in
 /-- Cardinal form of the diagonal identification of the left term in
 the supported exact sequence. -/
 theorem card_supportedPrincipalQuotient_eq_sUnitPrincipalQuotient
@@ -504,6 +509,7 @@ theorem card_supportedPrincipalQuotient_mul_card_ideleClassQuotient
     card_supportedPrincipalQuotient_mul_card_supportedClassQuotient
       (K := K) n S T
 
+open scoped Classical in
 /-- The exact-sequence identity in intrinsic `S`-unit notation. -/
 theorem card_sUnitPrincipalQuotient_mul_card_ideleClassQuotient
     (n : ℕ+)

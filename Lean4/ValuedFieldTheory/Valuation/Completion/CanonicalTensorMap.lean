@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 import ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 import Mathlib.Algebra.Algebra.Pi
 
-set_option autoImplicit false
-
 /-!
 # The canonical tensor map to all completions
 

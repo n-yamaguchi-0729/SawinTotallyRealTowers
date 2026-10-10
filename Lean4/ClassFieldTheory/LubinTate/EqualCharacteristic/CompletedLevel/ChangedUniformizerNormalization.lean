@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizer
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: normalization of a changed Laurent uniformizer
 
@@ -17,6 +15,8 @@ canonical Laurent integer ring.  Consequently its inverse has normalized
 additive value one.  This is the concrete prime certificate used in the
 changed-level norm argument.
 -/
+
+
 
 noncomputable section
 

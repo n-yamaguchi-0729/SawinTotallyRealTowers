@@ -10,8 +10,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveActio
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: automorphisms of equal-characteristic Lubin--Tate level fields
 
@@ -26,6 +24,8 @@ No commutativity of the automorphism group is asserted here: that requires
 the multiplicative composition law for the bracket action, not merely the
 root-counting argument below.
 -/
+
+
 
 noncomputable section
 

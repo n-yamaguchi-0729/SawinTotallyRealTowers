@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.Continuous.Free.SourceFormula
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — continuous — free — canonical formula
 

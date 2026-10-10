@@ -20,8 +20,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIn
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
 
-set_option autoImplicit false
-
 /-!
 # Integral finite-place preimages of local tensor norms
 
@@ -30,6 +28,8 @@ integer unit, its determinant-norm preimage can be chosen integral in
 every factor of the canonical local tensor decomposition.  This is the local restricted-product
 input needed to assemble pointwise local norm preimages globally.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

@@ -10,10 +10,6 @@ import Mathlib.Algebra.Group.Subgroup.Ker
 import Mathlib.GroupTheory.Index
 import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
 /-!
 # normalized degree and Frobenius theory: the profinite integers
 
@@ -22,6 +18,10 @@ surjection in the opening datum of abstract valuation theory.  In particular,
 multiplication by a positive integer identifies `ℤ̂` with the closed subgroup
 `n ℤ̂`, which is the kernel of reduction modulo `n`.
 -/
+
+namespace ClassFormation
+
+
 
 noncomputable section
 

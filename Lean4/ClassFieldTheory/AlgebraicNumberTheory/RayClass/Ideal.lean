@@ -12,8 +12,6 @@ import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Topology.Algebra.Ring.Compact
 
-set_option autoImplicit false
-
 /-!
 # Ideals prime to a ray-class modulus
 
@@ -22,7 +20,9 @@ connects it with the corresponding finite-idele higher-unit conditions, and
 develops the approximation maps used in ray-class ideal constructions.
 -/
 
-open scoped NumberField WithZero Classical
+
+
+open scoped NumberField WithZero
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -147,6 +147,7 @@ def primeToIdealMap (m : Modulus K) :
     apply Subtype.ext
     exact map_mul _ _ _
 
+open scoped Classical in
 /-- A finite idele with a prescribed valuation vector away from the
 support of a modulus and value one on its support. -/
 def valuationVectorSectionPrimeTo
@@ -164,6 +165,7 @@ def valuationVectorSectionPrimeTo
     rw [FiniteIdeleGroup.localOrder_chosenLocalOrderSection,
       Finsupp.notMem_support_iff.mp he]⟩
 
+open scoped Classical in
 theorem valuationVector_valuationVectorSectionPrimeTo
     (m : Modulus K)
     (e : HeightOneSpectrum (𝓞 K) →₀ ℤ)
@@ -190,6 +192,7 @@ theorem valuationVector_valuationVectorSectionPrimeTo
     rw [ite_eq_right hv,
       FiniteIdeleGroup.localOrder_chosenLocalOrderSection]
 
+open scoped Classical in
 theorem primeToIdealMap_surjective (m : Modulus K) :
     Function.Surjective (primeToIdealMap m) := by
   intro I
@@ -241,6 +244,7 @@ def congruenceSubgroupInPrimeTo (m : Modulus K) :
   m.ideleCongruenceSubgroup.subgroupOf
     (idelePrimeToModulusSubgroup m)
 
+open scoped Classical in
 theorem primeToIdealMap_ker (m : Modulus K) :
     (primeToIdealMap m).ker =
       congruenceSubgroupInPrimeTo m := by

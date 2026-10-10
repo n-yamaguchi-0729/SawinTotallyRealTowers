@@ -9,10 +9,9 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobe
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField
 import Mathlib.RingTheory.PowerSeries.Evaluation
 
-set_option autoImplicit false
-
 /-!
-# The equal-characteristic completed-unramified construction: the completed maximal-unramified field in equal characteristic
+# The equal-characteristic completed-unramified construction: the completed maximal-unramified
+field in equal characteristic
 
 For a finite field `k`, the equal-characteristic model of the completion of
 the maximal unramified extension of `k((T))` is
@@ -20,10 +19,13 @@ the maximal unramified extension of `k((T))` is
 coefficientwise arithmetic Frobenius over `k((T))`.
 
 This is the equal-characteristic specialization of the completed-unramified
-source in the equal-characteristic completed-unramified construction.  In particular, the Frobenius below is an actual algebra
+source in the equal-characteristic completed-unramified construction.  In particular, the
+Frobenius below is an actual algebra
 equivalence; it is not a theorem-shaped replacement for later theta
 evaluation or norm-subgroup arguments.
 -/
+
+
 
 noncomputable section
 

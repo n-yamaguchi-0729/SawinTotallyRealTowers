@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.Completion.ProCInteger
 
-set_option autoImplicit false
-
 /-!
 # Pro C Groups / Completion / Prime-Power pro-C Integer
 

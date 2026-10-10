@@ -9,8 +9,6 @@ import Mathlib.Algebra.Module.PID
 import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.NumberTheory.NumberField.ProductFormula
 
-set_option autoImplicit false
-
 /-!
 # The logarithmic lattice of `S`-units
 
@@ -26,10 +24,12 @@ and its coordinate-sum-zero hyperplane are constructed below from this
 lattice.
 -/
 
+
+
 noncomputable section
 
 open IsDedekindDomain Module
-open scoped Classical NumberField nonZeroDivisors
+open scoped NumberField nonZeroDivisors
 
 
 variable {K : Type*} [Field K] [NumberField K]
@@ -212,12 +212,10 @@ theorem reducedLog_eq_zero_iff
       exact hux.symm
     rw [hxadd]
     apply Prod.ext
-    ·
-      simpa using
+    · simpa using
         (NumberField.Units.dirichletUnitTheorem.logEmbedding_eq_zero_iff.mpr
           hu)
-    ·
-      exact reducedLog_snd_fromNumberFieldUnits
+    · exact reducedLog_snd_fromNumberFieldUnits
         (K := K) S u
 
 /-- The kernel of the reduced logarithmic map is the additive torsion
@@ -235,6 +233,7 @@ noncomputable def reducedLogLattice :
     Submodule ℤ (ReducedLogSpace (K := K) S) :=
   LinearMap.range (reducedLogLinearMap (K := K) S)
 
+open scoped Classical in
 /-- A reduced logarithmic vector in the lattice vanishes when all of its
 finite coordinates have norm less than one. -/
 theorem norm_reducedLog_finite_lt_one_implies_zero
@@ -430,6 +429,7 @@ theorem reducedLogLattice_span_eq_top :
           (ReducedLogSpace (K := K) S) :=
       (finrank_reducedLogSpace (K := K) S).symm
 
+open scoped Classical in
 /-- The reduced logarithmic image of the `S`-units is a complete
 `ℤ`-lattice. -/
 instance instIsZLattice_reducedLogLattice :
@@ -683,6 +683,7 @@ noncomputable def forgetDistinguishedLog :
               finiteLogWeight (K := K) S v)
       ring
 
+open scoped Classical in
 /-- Forgetting the distinguished logarithmic coordinate is injective on
 the product-formula hyperplane. -/
 theorem forgetDistinguishedLog_injective :
@@ -786,6 +787,7 @@ theorem forgetDistinguishedLog_injective :
         linarith
       · exact hinf ⟨w, hw⟩
 
+open scoped Classical in
 /-- Every reduced logarithmic vector has a lift to the product-formula
 hyperplane. -/
 theorem forgetDistinguishedLog_surjective :
@@ -925,6 +927,7 @@ noncomputable def logHyperplaneContinuousEquivReduced :
       ReducedLogSpace (K := K) S :=
   (logHyperplaneEquivReduced (K := K) S).toContinuousLinearEquiv
 
+open scoped Classical in
 /-- The complete lattice in the coordinate-sum-zero hyperplane. -/
 noncomputable def fullLogLattice :
     Submodule ℤ (LogHyperplane (K := K) S) :=
@@ -962,6 +965,7 @@ theorem fullLogLattice_eq_range :
     rw [logHyperplaneEquivReduced_fullLog]
     exact LinearMap.mem_range_self _ x
 
+open scoped Classical in
 instance instDiscreteTopology_fullLogLattice :
     DiscreteTopology (fullLogLattice (K := K) S) :=
   by
@@ -973,6 +977,7 @@ instance instDiscreteTopology_fullLogLattice :
             (K := K) S).toLinearMap)
     infer_instance
 
+open scoped Classical in
 /-- The image of the normalized all-place logarithmic embedding is a
 complete `ℤ`-lattice in the coordinate-sum-zero hyperplane. -/
 instance instIsZLattice_fullLogLattice :

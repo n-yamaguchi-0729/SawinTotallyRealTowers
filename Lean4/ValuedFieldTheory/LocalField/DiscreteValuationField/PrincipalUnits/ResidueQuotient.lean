@@ -6,19 +6,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.AutomorphismTransport
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.ResidueField
-
 /-!
 # The first principal-unit quotient
 
 Identifies valuation-ring units modulo first principal units with residue-field units and
 records compatibility with valuation-preserving automorphisms.
 -/
+
+namespace LocalFieldTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.ResidueField
+
+
 
 noncomputable section
 

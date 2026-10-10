@@ -10,8 +10,6 @@ import Mathlib.Algebra.Category.Grp.FiniteGrp
 import Mathlib.CategoryTheory.ObjectProperty.ClosedUnderIsomorphisms
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
-set_option autoImplicit false
-
 /-!
 # Finite-group classes and their closure properties
 

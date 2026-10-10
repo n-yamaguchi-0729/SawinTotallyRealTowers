@@ -8,8 +8,6 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Algebra.Nonarchimedean.Basic
 
-set_option autoImplicit false
-
 /-!
 # Topological generation and convergent generating sets
 

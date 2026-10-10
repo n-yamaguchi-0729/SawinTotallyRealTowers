@@ -7,13 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.FixedFieldNormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Intrinsic fixed-field specialization
 
-This module specializes the embedded subgroup and inertia comparisons to actual finite fixed fields and packages the intrinsic Frobenius quotient.
+This module specializes the embedded subgroup and inertia comparisons to actual finite fixed
+fields and packages the intrinsic Frobenius quotient.
 -/
+
+
 
 noncomputable section
 
@@ -37,8 +38,8 @@ membership in its ambient extension subgroup. -/
 theorem intrinsicExtensionSubgroup_iff_ambientFixedField
     (K : Type) [Field K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
-    (J : ClosedSubgroup Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
+    (J : ClosedSubgroup Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal : (extensionSubgroup H.field J hJH).Normal]
     [hJfinite : Finite
@@ -151,8 +152,8 @@ theorem intrinsicExtensionInertia_iff_ambientFixedField
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
-    (J : ClosedSubgroup Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
+    (J : ClosedSubgroup Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal : (extensionSubgroup H.field J hJH).Normal]
     [hJfinite : Finite
@@ -276,7 +277,7 @@ finite fixed field to the ambient separable closure. -/
 abbrev intrinsicFixedFieldSeparableClosureEquiv
     (K : Type) [Field K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K)) :=
+      Gal(SeparableClosure K/K)) :=
   let F := abstractFixedField K (SeparableClosure K) H.field
   @AlgEquiv F (SeparableClosure F) (SeparableClosure K)
     _ _ _
@@ -289,8 +290,8 @@ abbrev intrinsicFixedFieldFrobeniusQuotient
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
-    (J : ClosedSubgroup Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
+    (J : ClosedSubgroup Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal : (extensionSubgroup H.field J hJH).Normal]
     [hJfinite : Finite

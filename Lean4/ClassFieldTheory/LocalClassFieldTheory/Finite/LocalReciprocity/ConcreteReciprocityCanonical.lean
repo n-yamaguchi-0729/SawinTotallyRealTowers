@@ -7,15 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityTransport
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory CyclicCohomology KummerTheory
-
-open LocalFieldTheory
-
-open ClassFormation
+import Mathlib.GroupTheory.Abelianization.Defs
 
 /-!
 # Finite local reciprocity: canonicity of local reciprocity
@@ -26,6 +18,15 @@ isomorphism is independent of that realization.  Two embeddings are extended
 to an automorphism of the separable closure, and
 the abstract reciprocity naturality theorem supplies the required naturality.
 -/
+
+namespace LocalClassFieldTheory
+open RamificationTheory CyclicCohomology KummerTheory
+
+open LocalFieldTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 
@@ -328,9 +329,10 @@ private theorem normResidueSymbol_congr
   subst hFinite'
   have ha : hAbsolute = hAbsolute' := Subsingleton.elim _ _
   subst hAbsolute'
-  simp [extensionQuotientCongr, finiteNormQuotientCongr]
+  dsimp only [extensionQuotientCongr, finiteNormQuotientCongr]
   apply AddMonoidHom.ext
   intro x
+  rw [abelianizationCongr_refl]
   rfl
 
 section EmbeddingConjugation
@@ -835,7 +837,8 @@ theorem finiteGaloisAbstractQuotientEquivGaloisGroup_conjugation_additive
         (MulEquiv.toAdditive
           ((finiteGaloisConjugationOfEmbeddings K L i j).abelianizationCongr) z) =
       MulEquiv.toAdditive
-        ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i).abelianizationCongr) z := by
+        ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i).abelianizationCongr)
+          z := by
   apply Additive.toMul.injective
   exact finiteGaloisAbstractQuotientEquivGaloisGroup_conjugation
     K L i j z.toMul

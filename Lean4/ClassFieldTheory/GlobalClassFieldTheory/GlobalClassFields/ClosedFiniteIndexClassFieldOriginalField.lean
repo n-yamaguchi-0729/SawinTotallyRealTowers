@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldNormRange
 
-set_option autoImplicit false
-
 /-!
 # Transport to the original number field
 
@@ -15,7 +13,9 @@ This leaf installs the original-field algebra tower and transports the
 canonical norm-range computation back to the original idèle class group.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

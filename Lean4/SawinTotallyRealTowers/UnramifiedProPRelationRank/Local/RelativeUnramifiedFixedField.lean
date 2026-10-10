@@ -20,7 +20,13 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionComp
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
 
-set_option autoImplicit false
+/-!
+# Relative unramified extensions inside a fixed separable closure
+
+The relative unramified extension is realized as a named fixed field. Its inclusion and
+algebra structure are compared with the relative field, and its degree, residue degree,
+Galois property, and unramified valuation extension are recorded.
+-/
 
 namespace LocalClassFieldTheory
 
@@ -77,7 +83,7 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
 /-- The canonical unramified degree kernel over an absolutely finite field,
 with finiteness of its upper endpoint obtained from the actual quotient tower. -/
 abbrev relativeUnramifiedFiniteExtension
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     FiniteAbstractFieldExtension (Gal(SeparableClosure K / K)) := by
   let U := (localResidueDatum K).finiteUnramifiedExtension
@@ -88,14 +94,14 @@ abbrev relativeUnramifiedFiniteExtension
 
 /-- The actual fixed field, retained in the original K-separable closure. -/
 abbrev relativeUnramifiedFixedField
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) : IntermediateField K (SeparableClosure K) :=
   abstractFixedField K (SeparableClosure K)
     (relativeUnramifiedFiniteExtension K H m hm).field.field
 
 /-- The canonical inclusion of the lower fixed field in the unramified field. -/
 def relativeUnramifiedFixedField_inclusion
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     abstractFixedField K (SeparableClosure K) H.field →ₐ[K]
       relativeUnramifiedFixedField K H m hm :=
@@ -106,14 +112,14 @@ def relativeUnramifiedFixedField_inclusion
 /-- The lower-field scalar structure is exactly the actual field inclusion. -/
 @[reducible]
 def relativeUnramifiedFixedField_algebra
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     Algebra (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) :=
   (relativeUnramifiedFixedField_inclusion K H m hm).toRingHom.toAlgebra
 
 private def relativeUnramifiedFixedField_equivRelative
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     letI := relativeUnramifiedFixedField_algebra K H m hm
     relativeUnramifiedFixedField K H m hm ≃ₐ[
@@ -133,7 +139,7 @@ private def relativeUnramifiedFixedField_equivRelative
 attribute [local instance] relativeUnramifiedFixedField_algebra
 
 private theorem relativeUnramifiedFixedField_scalarTower
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     IsScalarTower K (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) :=
@@ -143,7 +149,7 @@ attribute [local instance] relativeUnramifiedFixedField_scalarTower
 
 /-- The fixed field is an actual finite extension of the original local field. -/
 theorem relativeUnramifiedFixedField_absoluteFiniteDimensional
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     FiniteDimensional K (relativeUnramifiedFixedField K H m hm) :=
   abstractFixedField_finiteDimensional K (SeparableClosure K)
@@ -152,7 +158,7 @@ theorem relativeUnramifiedFixedField_absoluteFiniteDimensional
 
 /-- The relative unramified fixed field is an actual finite extension. -/
 theorem relativeUnramifiedFixedField_finiteDimensional
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     FiniteDimensional (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) :=
@@ -163,7 +169,7 @@ theorem relativeUnramifiedFixedField_finiteDimensional
 
 /-- The actual relative fixed field has exactly the prescribed degree. -/
 theorem relativeUnramifiedFixedField_finrank
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     Module.finrank (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) = m := by
@@ -184,7 +190,7 @@ theorem relativeUnramifiedFixedField_finrank
 
 /-- Normality of the actual reduction kernel makes its relative fixed field Galois. -/
 theorem relativeUnramifiedFixedField_isGalois
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     IsGalois (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) := by
@@ -198,7 +204,7 @@ theorem relativeUnramifiedFixedField_isGalois
     (relativeUnramifiedFixedField_equivRelative K H m hm).symm
 
 private theorem relativeUnramifiedFixedField_integer_isLocalHom
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K))) (m : ℕ) (hm : 0 < m)
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K))) (m : ℕ) (hm : 0 < m)
     [ValuativeRel (abstractFixedField K (SeparableClosure K) H.field)]
     [ValuativeRel (relativeUnramifiedFixedField K H m hm)]
     [Valuation.HasExtension
@@ -219,7 +225,7 @@ attribute [local instance] relativeUnramifiedFixedField_integer_isLocalHom
 
 section Residue
 
-variable (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+variable (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
   (m : ℕ) (hm : 0 < m)
 
 variable [ValuativeRel (abstractFixedField K (SeparableClosure K) H.field)]
@@ -230,13 +236,14 @@ variable [ValuativeRel (abstractFixedField K (SeparableClosure K) H.field)]
   [IsNonarchimedeanLocalField (relativeUnramifiedFixedField K H m hm)]
   [Valuation.HasExtension (ValuativeRel.valuation K)
     (ValuativeRel.valuation (abstractFixedField K (SeparableClosure K) H.field))]
-  [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation (relativeUnramifiedFixedField K H m hm))]
+  [Valuation.HasExtension (ValuativeRel.valuation K)
+    (ValuativeRel.valuation (relativeUnramifiedFixedField K H m hm))]
   [Valuation.HasExtension
     (ValuativeRel.valuation (abstractFixedField K (SeparableClosure K) H.field))
     (ValuativeRel.valuation (relativeUnramifiedFixedField K H m hm))]
 
 private theorem relativeUnramifiedFixedField_faithfulSMul
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
     FaithfulSMul (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) :=
@@ -283,7 +290,8 @@ theorem relativeUnramifiedFixedField_residue_finrank :
     (localResidueDatum K).finiteUnramifiedExtension_residueDegree
       (H.toFiniteResidueAbstractField (localResidueDatum K)) m hm
   have habstract :=
-    (E.toFiniteResidueAbstractExtension (localResidueDatum K)).residueDegree_mul_absoluteResidueDegree
+    (E.toFiniteResidueAbstractExtension
+      (localResidueDatum K)).residueDegree_mul_absoluteResidueDegree
       (localResidueDatum K)
   change (E.residueDegree (localResidueDatum K) : ℕ) *
       (H.residueDegree (localResidueDatum K) : ℕ) =
@@ -306,8 +314,10 @@ theorem relativeUnramifiedFixedField_residue_finrank :
 /-- The relative degree-kernel fixed field is unramified for the compatible
 local valuations, as witnessed by its actual maximal-ideal ramification index. -/
 theorem relativeUnramifiedFixedField_isUnramifiedValuedExtension
-    [FiniteDimensional (abstractFixedField K (SeparableClosure K) H.field) (relativeUnramifiedFixedField K H m hm)]
-    [Module.Finite 𝒪[(abstractFixedField K (SeparableClosure K) H.field)] 𝒪[(relativeUnramifiedFixedField K H m hm)]] :
+    [FiniteDimensional (abstractFixedField K (SeparableClosure K) H.field)
+      (relativeUnramifiedFixedField K H m hm)]
+    [Module.Finite 𝒪[(abstractFixedField K (SeparableClosure K) H.field)]
+      𝒪[(relativeUnramifiedFixedField K H m hm)]] :
     IsUnramifiedValuedExtension (abstractFixedField K (SeparableClosure K) H.field)
       (relativeUnramifiedFixedField K H m hm) := by
   let F := abstractFixedField K (SeparableClosure K) H.field

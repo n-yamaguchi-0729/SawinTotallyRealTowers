@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
 import ValuedFieldTheory.Valuation.Henselian.MonicFactorization
 import Mathlib.GroupTheory.OrderOfElement
 
-set_option autoImplicit false
-
 /-!
 # primitive irreducible reductions
 
@@ -197,8 +195,9 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit
   have hconst : IsUnit (Q.coeff 0) := by
     by_contra hconst
     exact
-      (DiscreteValuationField.not_all_roots_same_valuation_of_primitive_irreducible_endpoints_nonunit
-        V W hQprim hQirr hsplit hlead hconst hα) hall
+      (open DiscreteValuationField in
+        not_all_roots_same_valuation_of_primitive_irreducible_endpoints_nonunit
+          V W hQprim hQirr hsplit hlead hconst hα) hall
   have hconstBase : V.valuation (Q.coeff 0 : K) = 1 :=
     (V.valuation_eq_one_iff (Q.coeff 0)).mp hconst
   have hconstTarget :

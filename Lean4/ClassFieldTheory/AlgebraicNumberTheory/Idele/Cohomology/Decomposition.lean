@@ -20,8 +20,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletion
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Cohomology
 
-set_option autoImplicit false
-
 /-!
 # Finite-support decompositions of actual ideles
 
@@ -38,6 +36,8 @@ unramified local class-field theorem is transported through Shapiro to
 show that every unramified induced integer-unit block has trivial
 `H⁰` and `H⁻¹`.
 -/
+
+
 
 open scoped NumberField RestrictedProduct ValuativeRel
 open NumberField IsDedekindDomain
@@ -360,7 +360,7 @@ theorem unramifiedLocalIntegerUnitsHerbrand_subsingleton
     [Module.Finite 𝒪[k] 𝒪[ell]]
     [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension
       k ell]
-    (g : Gal(ell / k))
+    (g : Gal(ell/k))
     (hg : ∀ σ : Gal(ell / k),
       σ ∈ Subgroup.zpowers g) :
     letI :=
@@ -419,8 +419,8 @@ noncomputable def unramifiedInducedIntegerUnitsHerbrandH0Equiv
     [Field k] [Field ell] [Algebra k ell]
     [FiniteDimensional k ell]
     [ValuativeRel ell]
-    [MulDistribMulAction (Gal(ell / k)) 𝒪[ell]ˣ]
-    (e : H ≃* Gal(ell / k))
+    [MulDistribMulAction (Gal(ell/k)) 𝒪[ell]ˣ]
+    (e : H ≃* Gal(ell/k))
     (σ : G)
     (hσ : ∀ τ : G, τ ∈ Subgroup.zpowers σ) :
     letI : MulDistribMulAction H 𝒪[ell]ˣ :=
@@ -443,8 +443,8 @@ noncomputable def unramifiedInducedIntegerUnitsHerbrandHMinusOneEquiv
     [Field k] [Field ell] [Algebra k ell]
     [FiniteDimensional k ell]
     [ValuativeRel ell]
-    [MulDistribMulAction (Gal(ell / k)) 𝒪[ell]ˣ]
-    (e : H ≃* Gal(ell / k))
+    [MulDistribMulAction (Gal(ell/k)) 𝒪[ell]ˣ]
+    (e : H ≃* Gal(ell/k))
     (σ : G)
     (hσ : ∀ τ : G, τ ∈ Subgroup.zpowers σ) :
     letI : MulDistribMulAction H 𝒪[ell]ˣ :=
@@ -482,7 +482,7 @@ theorem unramifiedInducedIntegerUnitsHerbrand_subsingleton
     [Module.Finite 𝒪[k] 𝒪[ell]]
     [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension
       k ell]
-    (e : H ≃* Gal(ell / k))
+    (e : H ≃* Gal(ell/k))
     (σ : G)
     (hσ : ∀ τ : G, τ ∈ Subgroup.zpowers σ) :
     letI : MulDistribMulAction (Gal(ell / k)) 𝒪[ell]ˣ :=

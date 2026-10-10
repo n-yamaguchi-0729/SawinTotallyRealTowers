@@ -12,8 +12,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
 import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
 import Mathlib.FieldTheory.SplittingField.Construction
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: a completed Lubin--Tate level field
 
@@ -24,6 +22,8 @@ spectral norm.  A chosen primitive root is proved to lie in the maximal ideal
 of the resulting complete valued field, hence is an actual analytic
 evaluation point for the theta series of the completed theta-intertwining theorem.
 -/
+
+
 
 noncomputable section
 

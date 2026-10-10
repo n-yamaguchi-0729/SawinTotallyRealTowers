@@ -12,10 +12,7 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicPrincipalId
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseChange
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalPrimeFactor
 import ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
-import Mathlib.GroupTheory.Nilpotent
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
-
-set_option autoImplicit false
 
 /-!
 # Decomposition-compatible cyclotomic Frobenius lifts
@@ -30,6 +27,8 @@ group upstairs onto the decomposition group of the restricted
 valuation.  The proof uses the actual valuation-conjugacy correction
 in `absoluteValueDecompositionGroup_map_restrictNormalHom`.
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open AlgebraicNumberTheory

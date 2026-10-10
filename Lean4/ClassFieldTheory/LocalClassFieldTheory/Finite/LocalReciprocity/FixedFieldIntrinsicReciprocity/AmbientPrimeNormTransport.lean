@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.EmbeddedFrobeniusTransport
 
-set_option autoImplicit false
-
 /-!
 # Valuation-one units and abstract prime norm-residue transport
 
@@ -16,6 +14,8 @@ This module transports valuation-one units and norm classes through
 compatible field equivalences, and evaluates abstract fixed-field
 norm-residue symbols on transported prime norms.
 -/
+
+
 
 noncomputable section
 
@@ -245,7 +245,7 @@ theorem
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K)) :
+      Gal(SeparableClosure K/K)) :
     let L :=
       abstractFixedField K (SeparableClosure K) H.field
     letI : FiniteDimensional K L :=
@@ -286,7 +286,7 @@ units. -/
 theorem
     relativeNorm_intrinsicAbstractBase_abstractFixedFieldUnit
     (F : Type) [Field F]
-    (S : ClosedSubgroup Gal(SeparableClosure F / F))
+    (S : ClosedSubgroup Gal(SeparableClosure F/F))
     (hSB : S.toSubgroup ≤ (intrinsicAbstractBase F).toSubgroup)
     [Finite
       ((intrinsicAbstractBase F).toSubgroup ⧸
@@ -354,15 +354,15 @@ unit equivalences sends its abstract relative norm to its ordinary field norm. -
 theorem
     relativeNorm_preimage_abstractRelativeFixedFieldUnit
     (K : Type) [Field K]
-    (H L : ClosedSubgroup Gal(SeparableClosure K / K))
+    (H L : ClosedSubgroup Gal(SeparableClosure K/K))
     (hLH : L.toSubgroup ≤ H.toSubgroup)
     [Finite
       (H.toSubgroup ⧸ extensionSubgroup H L hLH)]
     [Finite
       ((baseField
-        Gal(SeparableClosure K / K)).toSubgroup ⧸
+        Gal(SeparableClosure K/K)).toSubgroup ⧸
         extensionSubgroup
-          (baseField Gal(SeparableClosure K / K))
+          (baseField Gal(SeparableClosure K/K))
           H (le_baseField H))]
     (p : (abstractRelativeFixedField
       K (SeparableClosure K) hLH)ˣ)
@@ -417,9 +417,9 @@ theorem
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
     (J : ClosedSubgroup
-      Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal :
       (extensionSubgroup H.field J hJH).Normal]
@@ -560,9 +560,9 @@ theorem
     [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
     (J : ClosedSubgroup
-      Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal :
       (extensionSubgroup H.field J hJH).Normal]

@@ -8,14 +8,14 @@ import ValuedFieldTheory.Ramification.LocalField.Core
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
 
-set_option autoImplicit false
-
 /-!
 # Ramification groups of unramified local extensions
 
 This file connects the concrete unramified-valued-extension predicate with
 the actual upper ramification groups of a finite local extension.
 -/
+
+
 
 noncomputable section
 

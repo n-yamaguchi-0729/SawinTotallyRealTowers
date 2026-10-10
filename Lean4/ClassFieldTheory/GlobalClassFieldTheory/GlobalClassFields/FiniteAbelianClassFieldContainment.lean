@@ -16,8 +16,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteInd
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.EmbeddedAbelianSubextension
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormTowerConductor
 
-set_option autoImplicit false
-
 /-!
 # Containment of finite abelian class fields
 
@@ -34,7 +32,9 @@ extension yields the intrinsic containment criterion over the original
 number field.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

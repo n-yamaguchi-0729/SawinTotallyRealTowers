@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: ramification and inertia in towers
 
 This file records the tower identities for ramification indices and inertia
 degrees used in the prime-decomposition tower identity.
 -/
+
+
 
 noncomputable section
 

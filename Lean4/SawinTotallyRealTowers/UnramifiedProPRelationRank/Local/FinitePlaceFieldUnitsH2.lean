@@ -9,7 +9,6 @@ import GaloisCohomology.ProP.MultiplicativeInducedShapiro
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
 
-set_option autoImplicit false
 /-!
 # H² of finite-place field-unit blocks
 
@@ -128,7 +127,7 @@ noncomputable def finitePlaceFieldUnitsCohomologyIso
 omit [NumberField L] in
 /-- Finite-place tensor H² is finite and cyclic for any finite Galois p-extension. -/
 theorem finitePGroupFinitePlaceFieldUnitsH2_finite_isAddCyclic
-    (p : ℕ) [Fact p.Prime] (hP : IsPGroup p Gal(L / K))
+    (p : ℕ) [Fact p.Prime] (hP : IsPGroup p Gal(L/K))
     (v : HeightOneSpectrum (𝓞 K)) :
     Finite (groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
       (v.adicCompletion K ⊗[K] L)ˣ) 2) ∧
@@ -152,7 +151,7 @@ theorem finitePGroupFinitePlaceFieldUnitsH2_finite_isAddCyclic
 omit [NumberField L] in
 /-- Positive n-torsion in each actual finite-place tensor H² has at most n elements. -/
 theorem finitePGroupFinitePlaceFieldUnitsH2_torsion_natCard_le
-    (p : ℕ) [Fact p.Prime] (hP : IsPGroup p Gal(L / K))
+    (p : ℕ) [Fact p.Prime] (hP : IsPGroup p Gal(L/K))
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) (hn : 0 < n) :
     Nat.card {x : groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
       (v.adicCompletion K ⊗[K] L)ˣ) 2 // n • x = 0} ≤ n := by

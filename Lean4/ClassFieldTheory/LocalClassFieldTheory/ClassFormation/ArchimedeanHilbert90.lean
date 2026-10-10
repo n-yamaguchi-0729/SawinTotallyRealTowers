@@ -15,8 +15,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletion
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
 import GaloisCohomology.Cyclic.GaloisCohomology
 
-set_option autoImplicit false
-
 /-!
 # The Hilbert-90 half of the local class-field axiom at every place
 
@@ -25,6 +23,8 @@ the nonarchimedean local reciprocity theorem.  It follows directly from
 Hilbert 90 for the algebraic localization, and therefore applies also
 at archimedean places.
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

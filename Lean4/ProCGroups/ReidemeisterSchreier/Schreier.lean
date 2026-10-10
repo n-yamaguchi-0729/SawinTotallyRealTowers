@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Data.Nat.Basic
 
-set_option autoImplicit false
-
 /-!
 # Reidemeister Schreier / Schreier
 

@@ -7,15 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
 
-set_option autoImplicit false
-
 /-!
 # The local-power kernel of S-units
 
-The localization map on `S`-units, its kernel, its quotient by global powers, and the associated Kummer radical.
+The localization map on `S`-units, its kernel, its quotient by global powers, and the associated
+Kummer radical.
 -/
 
-open scoped NumberField Classical IsMulCommutative NNReal ValuativeRel
+
+
+open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 

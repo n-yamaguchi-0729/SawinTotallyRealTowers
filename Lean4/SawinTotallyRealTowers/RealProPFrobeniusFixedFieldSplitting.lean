@@ -17,8 +17,6 @@ import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.FieldTheory.Normal.Defs
 import Mathlib.GroupTheory.QuotientGroup.Defs
 
-set_option autoImplicit false
-
 /-!
 # Complete splitting in every finite layer of the actual cut field
 

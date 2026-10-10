@@ -18,8 +18,6 @@ import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Real-sign-trivial quadratic idele characters
 
@@ -29,8 +27,9 @@ idele. Finite integral-unit triviality then kills integral ideles and the
 principal ideles of the ideal-square radical, by the actual ideal map.
 -/
 
+
 open NumberField IsDedekindDomain
-open scoped NumberField BigOperators Classical
+open scoped NumberField BigOperators
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
@@ -52,6 +51,7 @@ theorem ideleCharacter_two_infinitePlace_eq_one
     (v : InfinitePlace F)
     (hsign : v.IsReal → chi (IdeleGroup.infinitePlaceIdele v (-1)) = 1)
     (a : v.Completionˣ) : chi (IdeleGroup.infinitePlaceIdele v a) = 1 := by
+  classical
   by_cases hv : v.IsReal
   · let e : v.Completion →+* ℝ :=
       InfinitePlace.Completion.extensionEmbeddingOfIsReal hv
@@ -83,6 +83,7 @@ theorem ideleCharacter_two_infinite_eq_one
     (hsign : ∀ v : InfinitePlace F, v.IsReal →
       chi (IdeleGroup.infinitePlaceIdele v (-1)) = 1)
     (a : InfiniteIdeleGroup F) : chi (a, 1) = 1 := by
+  classical
   let e : InfiniteIdeleGroup F ≃ₜ* (∀ v : InfinitePlace F, v.Completionˣ) :=
     ContinuousMulEquiv.piUnits
   let f : (∀ v : InfinitePlace F, v.Completionˣ) →* IdeleGroup F :=

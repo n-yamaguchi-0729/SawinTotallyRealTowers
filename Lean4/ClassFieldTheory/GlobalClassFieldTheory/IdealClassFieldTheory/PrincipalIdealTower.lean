@@ -9,8 +9,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 
-set_option autoImplicit false
-
 /-!
 # Galois structure on a conjugate-stable abelian tower
 
@@ -20,6 +18,8 @@ subgroup is stable under conjugation by the base subgroup.  This file packages
 that actual subgroup statement as a finite Galois subextension, so that the
 commutator-intermediate-field and transfer APIs can be applied to the tower.
 -/
+
+
 
 noncomputable section
 

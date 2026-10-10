@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Henselian.NonmonicReduction
 
-set_option autoImplicit false
-
 /-!
 # the factor-lifting criterion
 
 Artin's monic coprime-factor lifting criterion implies the exact primitive
 factorization form of Hensel's lemma from the primitive factorization definition.
 -/
+
+
 
 noncomputable section
 
@@ -168,8 +168,8 @@ theorem primitiveIrreducibleReductionProperty_of_monicResidualCoprimeFactorLifti
     exact ⟨Or.inr hbranch.1, hbranch.2⟩
   · let L : Type u := (Q.map V.subtype).SplittingField
     obtain ⟨B, _hB, _hlocal, _hpullback, hExt⟩ :=
-      ValuationTheory.DiscreteValuationField.Valuation.exists_extension_valuationSubring_with_hasExtension
-        (L := L) V.valuation
+      (open ValuationTheory.DiscreteValuationField.Valuation in
+        exists_extension_valuationSubring_with_hasExtension (L := L) V.valuation)
     let : V.valuation.HasExtension B.valuation := hExt
     let : Normal K L :=
       Normal.of_isSplittingField (Q.map V.subtype)
@@ -183,8 +183,9 @@ theorem primitiveIrreducibleReductionProperty_of_monicResidualCoprimeFactorLifti
       intro a b ha hb
       exact hlift.irreducible_roots_same_valuation B hQirr hsplit ha hb
     have hdegree : qbar.natDegree = 0 :=
-      AlgebraicNumberTheory.Valuations.primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit_of_roots_eq
-        V B Q hQprim hQirr hlead hrootsEq
+      (open AlgebraicNumberTheory.Valuations in
+        primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit_of_roots_eq
+          V B Q hQprim hQirr hlead hrootsEq)
     refine ⟨Or.inl hdegree, ?_⟩
     intro a b hfactor _hcoprime
     have hab : a * b ≠ 0 := by
@@ -198,7 +199,8 @@ theorem primitiveIrreducibleReductionProperty_of_monicResidualCoprimeFactorLifti
     exact Or.inl (Nat.eq_zero_of_add_eq_zero_right hsum)
 
 /-- the factor-lifting criterion: monic coprime-factor lifting is sufficient for
-Hensel's lemma in the exact primitive factorization form of the primitive factorization definition. -/
+Hensel's lemma in the exact primitive factorization form of the primitive factorization definition.
+-/
 theorem henselianValuationExtension
     {K : Type u} [Field K] (V : ValuationSubring K)
     (hlift : MonicResidualCoprimeFactorLifting V) :

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
 
-set_option autoImplicit false
-
 /-!
 # Power-local-unit subgroups of the idele group
 
@@ -17,7 +15,9 @@ places and integral units elsewhere, together with its intersection with
 principal ideles and the corresponding subgroup of S-unit powers.
 -/
 
-open scoped NumberField Classical NNReal IsMulCommutative
+
+
+open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -27,6 +27,7 @@ namespace GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type*} [Field K] [NumberField K]
 
+open scoped Classical in
 /-- Ideles that are local `n`-th powers at the prescribed places and
 integral units away from `S ∪ T`. -/
 def idelePowerLocalUnitSubgroup
@@ -48,6 +49,7 @@ def idelePowerLocalUnitSubgroup
         (v.adicCompletionIntegers K).units.comap
           (IdeleGroup.finiteComponent v))
 
+open scoped Classical in
 /-- Membership in `idelePowerLocalUnitSubgroup` expressed componentwise. -/
 theorem mem_idelePowerLocalUnitSubgroup_iff
     (n : ℕ+)
@@ -127,6 +129,7 @@ theorem mem_sUnitNthPowersInField_iff
           ⟨zU, by rw [powMonoidHom_apply]⟩
     · simp [zU]
 
+open scoped Classical in
 /-- An `n`-th power of an `(S ∪ T)`-unit satisfies all local
 power-unit conditions. -/
 theorem sUnitNthPowersInField_le_principalIdelePowerLocalUnitSubgroup
@@ -184,6 +187,7 @@ theorem sUnitNthPowersInField_le_principalIdelePowerLocalUnitSubgroup
       v.valuation K (((x : Kˣ) : K) ^ (n : ℕ)) = 1
     rw [map_pow, hxUnit, one_pow]
 
+open scoped Classical in
 /-- A principal idele satisfying the local power-unit conditions comes
 from an `(S ∪ T)`-unit. -/
 theorem principalIdelePowerLocalUnitSubgroup_le_sUnitGroup

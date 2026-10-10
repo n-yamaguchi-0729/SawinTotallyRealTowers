@@ -9,8 +9,6 @@ import ProCGroups.Generation.Basic
 import ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 import ProCGroups.Profinite.Basic
 
-set_option autoImplicit false
-
 /-!
 # Convergence of generating sets in profinite groups
 

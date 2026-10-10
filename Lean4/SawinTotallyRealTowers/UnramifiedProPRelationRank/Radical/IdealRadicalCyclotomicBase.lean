@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
 import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 
-set_option autoImplicit false
 /-!
 # The ideal radical over a cyclotomic base
 

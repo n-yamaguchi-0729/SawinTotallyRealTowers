@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.BaseChange
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 
-set_option autoImplicit false
-
 /-!
 # Scalar extension from relative to ordinary adeles
 
@@ -16,6 +14,8 @@ This file upgrades the relative-to-ordinary idele comparison to the
 underlying adele rings.  The additive structure is needed to transport
 determinant norms in a field tower.
 -/
+
+
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain

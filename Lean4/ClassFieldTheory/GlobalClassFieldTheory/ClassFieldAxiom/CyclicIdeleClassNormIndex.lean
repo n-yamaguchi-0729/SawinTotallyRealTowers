@@ -24,8 +24,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
 
-set_option autoImplicit false
-
 /-!
 # The global class-field axiom
 
@@ -39,6 +37,8 @@ is transported through the actual low-degree Tate comparison and then
 through the equivariant identification of `Lˣ` with the subgroup of
 principal relative ideles.
 -/
+
+
 
 noncomputable section
 
@@ -881,14 +881,14 @@ theorem ideleClass_lowDegree_card_eq_finrank_cyclic
   let : IsCyclic (L ≃ₐ[K] L) :=
     ⟨⟨sigma, hsigma⟩⟩
   obtain ⟨hC, hCvalue⟩ :=
-    _root_.GlobalClassFieldTheory.Cohomology.ideleClass_herbrandQuotient_eq_card_of_supported_local_calculation
+    Cohomology.ideleClass_herbrandQuotient_eq_card_of_supported_local_calculation
       (K := K) (L := L)
       (_root_.ideleClassHerbrandSupport
         (K := K) (L := L))
       sigma hsigma
       (_root_.relativeSupportedAboveHerbrandSupport_sup_principal_eq_top
         (K := K) (L := L))
-      (_root_.GlobalClassFieldTheory.Cohomology.chosenFinitePlaceIsUnramified_of_notMem_ideleClassHerbrandSupport
+      (Cohomology.chosenFinitePlaceIsUnramified_of_notMem_ideleClassHerbrandSupport
         (K := K) (L := L))
   let :
       Finite

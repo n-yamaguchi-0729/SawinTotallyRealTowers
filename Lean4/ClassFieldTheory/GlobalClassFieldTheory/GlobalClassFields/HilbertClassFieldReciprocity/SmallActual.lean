@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.Transport
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldNaturality
 
-set_option autoImplicit false
-
 /-!
 # Small Hilbert reciprocity over the realized base field
 
@@ -16,7 +14,9 @@ This leaf specializes the shared reciprocity transport to the actual base
 field of the selected small Hilbert class field.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

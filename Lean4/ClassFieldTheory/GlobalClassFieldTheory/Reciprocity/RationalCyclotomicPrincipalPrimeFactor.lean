@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalAwayProduct
 
-set_option autoImplicit false
-
 /-!
 # The ramified prime factor of a rational cyclotomic principal idele
 
@@ -16,7 +14,8 @@ character specification reduces the claim to the ramified chosen-Artin formula
 proved in `RationalCyclotomicFinitePlaceArtin`.
 -/
 
-open scoped Classical
+
+
 
 noncomputable section
 

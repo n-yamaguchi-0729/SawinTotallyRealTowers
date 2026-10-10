@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
 
-set_option autoImplicit false
-
 /-!
 # The normalized integer valuation of a local field
 
@@ -19,6 +17,8 @@ canonical valuation in an intrinsic value group.  This file transports that
 valuation to the integer model and proves that completeness and the finite
 residue field are preserved.
 -/
+
+
 
 noncomputable section
 
@@ -54,6 +54,8 @@ theorem localCompleteDVF_valuation_eq :
   unfold ValuationTheory.Valuations.completeDVFOfCompleteValuedField
   rfl
 
+open _root_.ValuationTheory.DiscreteValuationField.ValuedExtension
+  (moduleFinite_target_valuationSubring_of_finite_separable) in
 /-- A finite separable local extension is finite over the actual canonical
 valuation integer ring.  This transports the finite-module theorem for the
 complete-DVF packages along the equality of their valuations. -/
@@ -77,7 +79,7 @@ theorem integerRing_moduleFinite_of_finite_separable
   let :
       Module.Finite (localCompleteDVF K).valuationSubring
         (localCompleteDVF L).valuationSubring :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.moduleFinite_target_valuationSubring_of_finite_separable
+    moduleFinite_target_valuationSubring_of_finite_separable
       (localCompleteDVF K) (localCompleteDVF L)
   have hK :
       (ValuativeRel.valuation K).integer =

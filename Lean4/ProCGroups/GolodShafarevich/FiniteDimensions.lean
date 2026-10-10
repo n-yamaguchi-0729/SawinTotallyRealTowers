@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.GolodShafarevich.GradedPieces
 import Mathlib.LinearAlgebra.Dimension.RankNullity
 
-set_option autoImplicit false
 /-!
 # Finite augmentation-dimension sequences
 

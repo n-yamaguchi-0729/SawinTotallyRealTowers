@@ -9,8 +9,6 @@ import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Algebra.Group.Units
 
-set_option autoImplicit false
-
 /-!
 # Profinite valuation-ring units
 
@@ -19,6 +17,8 @@ valuation balls are clopen. This file records those structures as named results,
 registering additional global instances, and packages the valuation-ring unit group as a
 profinite group.
 -/
+
+
 
 noncomputable section
 

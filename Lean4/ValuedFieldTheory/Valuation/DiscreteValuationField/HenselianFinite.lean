@@ -11,16 +11,14 @@ import Mathlib.RingTheory.AdicCompletion.AsTensorProduct
 import Mathlib.RingTheory.AdicCompletion.Noetherian
 import Mathlib.RingTheory.Nakayama
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Finite algebra consequences of Henselian pairs
 
 This file keeps the Nakayama and finite-module completion consequences away
 from the lightweight `HenselianDVF` core.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 
@@ -240,10 +238,20 @@ theorem isAdicComplete_of_moduleFinite_sameUniverse
         (LinearEquiv.refl R M)).trans
         ((AdicCompletion.ofTensorProductEquivOfFiniteNoetherian I M).restrictScalars R))
   have heq : (e : M →ₗ[R] AdicCompletion I M) = AdicCompletion.of I M := by
-    ext x n
-    simp [e]
-    exact one_smul (R ⧸ (I ^ n • ⊤ : Ideal R))
-      (Submodule.Quotient.mk (p := (I ^ n • ⊤ : Submodule R M)) x)
+    apply LinearMap.ext
+    intro x
+    change (AdicCompletion.ofTensorProductEquivOfFiniteNoetherian I M)
+        ((AdicCompletion.ofLinearEquiv I R) 1 ⊗ₜ[R] x) =
+      AdicCompletion.of I M x
+    have hone : (AdicCompletion.ofLinearEquiv I R) 1 =
+        (1 : AdicCompletion I R) := by
+      change AdicCompletion.of I R 1 = (1 : AdicCompletion I R)
+      exact (AdicCompletion.algebraMap_apply (S := R) I (1 : R)).symm.trans
+        (map_one (algebraMap R (AdicCompletion I R)))
+    rw [hone]
+    apply (AdicCompletion.ofTensorProductEquivOfFiniteNoetherian I M).symm.injective
+    rw [LinearEquiv.symm_apply_apply]
+    exact (AdicCompletion.ofTensorProductEquivOfFiniteNoetherian_symm_of I M x).symm
   have hebij : Function.Bijective (e : M → AdicCompletion I M) := e.bijective
   rw [← heq]
   exact hebij

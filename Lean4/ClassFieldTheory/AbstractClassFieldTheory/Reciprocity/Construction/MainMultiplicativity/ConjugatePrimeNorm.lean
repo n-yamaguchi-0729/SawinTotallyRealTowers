@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.RelativeNormDoubleCoset
 
-set_option autoImplicit false
-
 /-!
 # Norms of primes in conjugate Frobenius fixed fields
 
 This file transports prime elements across Frobenius-action conjugation and
 proves equality of their relative norms in the base fixed field.
 -/
+
+
 
 universe u
 
@@ -38,7 +38,8 @@ variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
 namespace DegreeData
 
 /-- The prime used for the conjugate Frobenius fixed field may be chosen
-as the conjugate of a prime in the original fixed field.  Conjugation compatibility of normalized valuations preserves primality, while conjugation equivariance of the relative
+as the conjugate of a prime in the original fixed field.  Conjugation compatibility of
+normalized valuations preserves primality, while conjugation equivariance of the relative
 norm and the fact that the conjugating representative lies in `G_K` give
 equality of the two norms in `A_K`. -/
 theorem exists_primeElement_frobeniusActionConjugate_norm_eq

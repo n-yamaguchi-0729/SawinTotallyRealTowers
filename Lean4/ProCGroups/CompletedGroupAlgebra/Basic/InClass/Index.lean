@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.UnitRepresentation
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Basic / Within a Class / Index
 

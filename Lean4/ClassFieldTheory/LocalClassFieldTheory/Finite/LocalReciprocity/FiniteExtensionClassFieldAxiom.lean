@@ -11,16 +11,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Main
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open LocalFieldTheory
-
-open ValuationTheory
-
-open CyclicCohomology
-
 /-!
 # Finite local reciprocity
 
@@ -32,6 +22,16 @@ constructs that structure from the spectral norm.  In particular, the target
 valuation ring is proved integral over the base valuation ring; no local-field
 structure on the target is assumed.
 -/
+
+namespace LocalClassFieldTheory
+
+open LocalFieldTheory
+
+open ValuationTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -58,7 +58,7 @@ theorem finiteExtensionUnits_tate_card_of_generator
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     UnitsTateCardinalityData K L := by
   let : UniformSpace K := IsTopologicalAddGroup.rightUniformSpace K
@@ -71,7 +71,6 @@ theorem finiteExtensionUnits_tate_card_of_generator
   let : NontriviallyNormedField K :=
     Valued.toNontriviallyNormedField
       (L := K) (Γ₀ := ValuativeRel.ValueGroupWithZero K)
-
   let : NontriviallyNormedField L :=
     spectralNorm.nontriviallyNormedField K L
   let : NormedSpace K L := spectralNorm.normedSpace K L
@@ -98,7 +97,6 @@ theorem finiteExtensionUnits_tate_card_of_generator
     { toIsValuativeTopology := inferInstance
       toLocallyCompactSpace := inferInstance
       toIsNontrivial := inferInstance }
-
   let : (ValuativeRel.valuation K).HasExtension
       (ValuativeRel.valuation L) := by
     apply Valuation.HasExtension.ofComapInteger
@@ -110,7 +108,6 @@ theorem finiteExtensionUnits_tate_card_of_generator
       ValuativeRel.valuation K x ≤ 1
     rw [spectralNorm_extends]
     exact Valued.toNormedField.norm_le_one_iff
-
   let : Algebra.IsIntegral
       (ValuativeRel.valuation K).valuationSubring
       (ValuativeRel.valuation L).valuationSubring := by
@@ -169,7 +166,6 @@ theorem finiteExtensionUnits_tate_card_of_generator
     exact hIntegralClosure
   let : Module.Finite 𝒪[K] 𝒪[L] :=
     integerRing_moduleFinite_of_isIntegralClosure K L
-
   let : Finite (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) :=
     localFieldUnitsTateH0FiniteOfGenerator K L g hg
   have hcard := localFieldUnits_tate_card_of_generator K L g hg
@@ -186,7 +182,7 @@ theorem finiteTowerUnits_tate_card_of_generator
     [Algebra k K] [FiniteDimensional k K]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     UnitsTateCardinalityData K L := by
   let : UniformSpace k := IsTopologicalAddGroup.rightUniformSpace k
@@ -199,7 +195,6 @@ theorem finiteTowerUnits_tate_card_of_generator
   let : NontriviallyNormedField k :=
     Valued.toNontriviallyNormedField
       (L := k) (Γ₀ := ValuativeRel.ValueGroupWithZero k)
-
   let : NontriviallyNormedField K :=
     spectralNorm.nontriviallyNormedField k K
   let : NormedSpace k K := spectralNorm.normedSpace k K
@@ -226,7 +221,6 @@ theorem finiteTowerUnits_tate_card_of_generator
     { toIsValuativeTopology := inferInstance
       toLocallyCompactSpace := inferInstance
       toIsNontrivial := inferInstance }
-
   exact finiteExtensionUnits_tate_card_of_generator K L g hg
 
 end

@@ -30,8 +30,6 @@ import Mathlib.Analysis.Normed.Module.Completion
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 
-set_option autoImplicit false
-
 /-!
 # Extension of valuations to finite field extensions
 
@@ -52,7 +50,8 @@ namespace Valuations
 universe u v
 
 /-- Absolute values on `L` which extend `v` pointwise.  This is the common
-index type for the valuation-extension theorem and the factor correspondence in the extension-factor correspondence. -/
+index type for the valuation-extension theorem and the factor correspondence in the
+extension-factor correspondence. -/
 abbrev AbsoluteValueExtension
     {K : Type u} [Field K] (vK : AbsoluteValue K ℝ)
     (L : Type v) [Field L] [Algebra K L] :=
@@ -315,7 +314,8 @@ theorem absoluteValueExtension_extension_eq_pullback_embeddingOfExtension
           (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 x)
       exact h
 
-/-- Clause (i) of the valuation-extension theorem: every exact extension of `v` to an algebraic extension
+/-- Clause (i) of the valuation-extension theorem: every exact extension of `v` to an algebraic
+extension
 `L / K` is the pullback of `\bar v` along a `K`-embedding into `\bar K_v`. -/
 theorem absoluteValueExtension_extension_exists_embedding
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
@@ -760,7 +760,8 @@ theorem absoluteValueExtension_algHom_conjugate_in_algClosure
   rw [hphi] at hx
   exact hx
 
-/-- The difficult direction of clause (ii) of the valuation-extension theorem: equality of pullback absolute
+/-- The difficult direction of clause (ii) of the valuation-extension theorem: equality of
+pullback absolute
 values forces conjugacy over `K_v`. -/
 theorem absoluteValueExtension_conjugate_of_pullback_eq
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
@@ -794,7 +795,8 @@ theorem absoluteValueExtension_conjugate_of_pullback_eq
       vK hvK w tau' htau' x]
   exact (hsigma (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 x)).symm
 
-/-- Clause (ii) of the valuation-extension theorem: two embeddings induce the same extension exactly when
+/-- Clause (ii) of the valuation-extension theorem: two embeddings induce the same extension
+exactly when
 they are conjugate by an automorphism over the completion `K_v`. -/
 theorem absoluteValueExtension_pullback_eq_iff_conjugate
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]

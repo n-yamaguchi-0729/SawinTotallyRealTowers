@@ -10,10 +10,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianValuationExte
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Defectless
 import Mathlib.RingTheory.RamificationInertia.Basic
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Finite valued extension consequences
 
@@ -22,6 +18,8 @@ canonical local-Dedekind degree formulas, uniqueness criteria for extended
 valuations, and the algebra equivalence identifying an actual integral-closure
 valuation ring with mathlib's `integralClosure`.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

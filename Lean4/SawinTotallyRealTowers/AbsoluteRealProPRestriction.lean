@@ -14,8 +14,6 @@ import Mathlib.FieldTheory.Normal.Defs
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Topology.Algebra.Group.Quotient
 
-set_option autoImplicit false
-
 /-!
 # Absolute restriction to the maximal real pro-p compositum
 

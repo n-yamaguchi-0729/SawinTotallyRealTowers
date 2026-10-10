@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
 
-set_option autoImplicit false
-
 /-!
 # Coordinate assembly for relative adeles
 
@@ -17,6 +15,8 @@ constructs and controls the forward coefficients; this file supplies the
 inverse assembly map.  It is the global reconstruction half needed when
 local tensor components have first been chosen place by place.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

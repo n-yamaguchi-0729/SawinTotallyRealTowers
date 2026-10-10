@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ReidemeisterSchreier.Groupoid
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Words / Nielsen Schreier Compat
 
@@ -17,6 +13,8 @@ This module connects the local word conventions with Mathlib's
 Nielsen--Schreier action-groupoid basis and establishes the edge and back-edge
 identities needed to transport that basis.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier.Discrete.OpenSubgroups
 

@@ -7,19 +7,20 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusSemigroup
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusField
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction: descent from the Frobenius semigroup
+
+The two maps on `G(\widetilde L/K)`--restriction to `G(L/K)` and normalized
+degree--are jointly injective.  This is the group-theoretic fact used when two Frobenius lifts
+have the same
+restriction and degree.
+-/
 
 namespace ClassFormation
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction: descent from the Frobenius semigroup
 
-The two maps on `G(\widetilde L/K)`--restriction to `G(L/K)` and normalized
-degree--are jointly injective.  This is the group-theoretic fact used when two Frobenius lifts have the same
-restriction and degree.
--/
 
 noncomputable section
 

@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
 import GaloisCohomology.Cyclic.Herbrand.Permutation.Module
 import GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
 
-set_option autoImplicit false
-
 /-!
 # Herbrand cohomology of the relative idele class group
 
@@ -24,6 +22,8 @@ tensor-product model of relative adeles.  The class norm is descended from
 the determinant norm on relative ideles, and its relation with the Tate
 norm is proved from the Galois product formula.
 -/
+
+
 
 open scoped BigOperators NumberField
 open NumberField

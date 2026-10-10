@@ -11,7 +11,6 @@ import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.RingTheory.Finiteness.Cardinality
 import ProCGroups.FiniteGeneration.Basic
 
-set_option autoImplicit false
 /-!
 # Generator bounds for finite elementary abelian groups
 
@@ -52,17 +51,17 @@ theorem finrank_le_of_topologicallyGeneratedByAtMost_zmod
     let K : Subgroup Q :=
       { carrier := {q : Q | Additive.ofMul q ∈ V}
         one_mem' := by
-          show Additive.ofMul (1 : Q) ∈ V
+          change Additive.ofMul (1 : Q) ∈ V
           change (0 : Additive Q) ∈ V
           exact V.zero_mem
         mul_mem' := by
           intro a b ha hb
-          show Additive.ofMul (a * b) ∈ V
+          change Additive.ofMul (a * b) ∈ V
           change Additive.ofMul a + Additive.ofMul b ∈ V
           exact V.add_mem ha hb
         inv_mem' := by
           intro a ha
-          show Additive.ofMul a⁻¹ ∈ V
+          change Additive.ofMul a⁻¹ ∈ V
           change -Additive.ofMul a ∈ V
           exact V.neg_mem ha }
     have hs_le : Subgroup.closure (s : Set Q) ≤ K := by
@@ -122,7 +121,7 @@ theorem topologicallyGeneratedByAtMost_finrank_zmod
       apply Submodule.span_le.2
       intro x hx
       rcases hx with ⟨i, rfl⟩
-      show b i ∈ AddSubgroup.toZModSubmodule p A
+      change b i ∈ AddSubgroup.toZModSubmodule p A
       change b i ∈ A
       change Additive.toMul (b i) ∈ H
       exact Subgroup.subset_closure (by

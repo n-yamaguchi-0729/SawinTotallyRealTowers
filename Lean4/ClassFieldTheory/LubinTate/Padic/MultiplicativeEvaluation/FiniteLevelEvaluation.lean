@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveDisplacement
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeIntertwiner
 import Mathlib.RingTheory.AdicCompletion.Topology
 
-set_option autoImplicit false
-
 /-!
 # Finite-level evaluation of the p-adic multiplicative comparison
 
@@ -18,6 +16,8 @@ on topologically nilpotent integers in a standard finite level.  It proves
 the functional equation, compatibility with scalar endomorphisms, the inverse
 comparison identity, and injectivity of the evaluated comparison.
 -/
+
+
 
 noncomputable section
 

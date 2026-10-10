@@ -6,13 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.GaloisCohomology
 
-set_option autoImplicit false
-
 /-!
 # Root characters for Kummer theory
 
 Support API for root-quotient constructions in concrete Kummer extensions.
 -/
+
+
 
 namespace KummerTheory
 

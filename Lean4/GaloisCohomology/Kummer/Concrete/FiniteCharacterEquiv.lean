@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.RadicalQuotient
 
-set_option autoImplicit false
-
 /-!
 # finite Kummer character isomorphism
 
@@ -25,6 +23,8 @@ Noether's Hilbert theorem 90.  This is the finite actual-field character-
 isomorphism half of The finite Kummer character equivalence; it does not assert the full
 lattice correspondence between radical subgroups and abelian extensions.
 -/
+
+
 
 noncomputable section
 
@@ -154,7 +154,8 @@ def finiteKummerCharacterEquiv
   MulEquiv.ofBijective
     ((chosenFiniteKummerRadicalDatum (K := K) (L := L) n).quotientKummerCharacterWithoutSection
         (nthRootsOfUnity_fixed (K := K) (L := L) n hmu))
-    ⟨(chosenFiniteKummerRadicalDatum (K := K) (L := L) n).quotientKummerCharacterWithoutSection_injective
+    ⟨(chosenFiniteKummerRadicalDatum (K := K) (L := L)
+      n).quotientKummerCharacterWithoutSection_injective
           (nthRootsOfUnity_fixed (K := K) (L := L) n hmu),
       finiteKummerQuotientCharacter_surjective (K := K) (L := L) n hmu⟩
 

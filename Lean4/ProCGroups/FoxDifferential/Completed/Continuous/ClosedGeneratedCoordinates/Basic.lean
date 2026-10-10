@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.Continuous.PresentedCoordinates
 import ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — continuous — closed generated coordinates — basic
 

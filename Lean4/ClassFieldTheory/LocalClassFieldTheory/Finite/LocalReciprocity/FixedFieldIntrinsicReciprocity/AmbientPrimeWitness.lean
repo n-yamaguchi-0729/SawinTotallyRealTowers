@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientNormResidue
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeNormTransport
 
-set_option autoImplicit false
-
 /-!
 # Ambient prime witnesses
 
@@ -17,6 +15,8 @@ This module constructs the ambient norm-residue value, a valuation-one
 prime witness for each abelianized Galois element, and the corresponding
 ambient Frobenius target.
 -/
+
+
 
 noncomputable section
 
@@ -81,7 +81,7 @@ noncomputable def ambientEmbeddedPrimeWitness
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) : Fˣ := by
+    (z : Abelianization Gal(E/F)) : Fˣ := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
   letI : Algebra F (SeparableClosure K) :=
@@ -272,7 +272,7 @@ noncomputable def ambientEmbeddedPrimeTarget
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     Abelianization Gal(E / F) := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)

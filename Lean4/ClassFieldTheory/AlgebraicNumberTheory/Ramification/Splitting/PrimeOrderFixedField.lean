@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosure
 
-set_option autoImplicit false
-
 /-!
 # Prime-order fixed fields and complete splitting
 
@@ -19,12 +17,15 @@ automorphism `σ` of prime order `p` and form
 
 The extension `L / K'` is an actual cyclic Galois extension of prime
 degree.  We also prove the finite-place bridge used immediately before
-applying the cyclic prime-power splitting criterion: if a finite place of `K` splits completely in `L`
+applying the cyclic prime-power splitting criterion: if a finite place of `K` splits completely in
+`L`
 and a finite place of `K'` lies above it, then the latter splits
 completely in `L / K'`.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

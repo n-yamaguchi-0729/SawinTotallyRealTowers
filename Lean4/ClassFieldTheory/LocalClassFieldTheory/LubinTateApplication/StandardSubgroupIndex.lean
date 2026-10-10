@@ -11,8 +11,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipa
 import ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters
 import ClassFieldTheory.LubinTate.FiniteLevel.NormSubgroup
 
-set_option autoImplicit false
-
 /-!
 # The canonical standard subgroup index
 
@@ -26,6 +24,8 @@ The proof passes from field units to integer units, transports the latter
 through the canonical packaged local-field equivalence, and then uses the
 finite standard Lubin--Tate unit-parameter count.
 -/
+
+
 
 noncomputable section
 

@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
 import GaloisCohomology.GroupTheory.Finite
 import ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
 
-set_option autoImplicit false
-
 /-!
 # Full decomposition places in cyclic prime-power extensions
 
@@ -26,7 +24,9 @@ finite places outside a finite set split completely, then the idele
 class norm is surjective.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

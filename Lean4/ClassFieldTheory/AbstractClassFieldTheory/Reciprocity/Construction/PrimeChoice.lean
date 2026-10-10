@@ -6,14 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity construction: choosing prime elements
 
@@ -21,6 +13,14 @@ Surjectivity of the normalized valuation supplies a prime element in every
 finite abstract field.  Any two choices differ by a unit (additively, their
 difference has value zero).
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

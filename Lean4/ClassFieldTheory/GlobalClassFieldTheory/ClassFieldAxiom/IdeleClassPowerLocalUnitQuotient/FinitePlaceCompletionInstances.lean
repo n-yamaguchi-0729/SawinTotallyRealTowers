@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
 import ValuedFieldTheory.Valuation.ValuedAdicComplete
 import Mathlib.NumberTheory.NumberField.ProductFormula
 
-set_option autoImplicit false
-
 /-!
 # Canonical structures on finite completions
 

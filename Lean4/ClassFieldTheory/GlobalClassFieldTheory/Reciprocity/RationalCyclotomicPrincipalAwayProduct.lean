@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicFinitePlaceArtin
 import Mathlib.Algebra.BigOperators.Finprod
 
-set_option autoImplicit false
-
 /-!
 # Away-from-p factors of a rational cyclotomic principal idele
 
@@ -21,7 +19,9 @@ The final theorem separates the genuine `p`-factor from the explicit
 away-from-`p` finite product.  The construction also applies to `k = 0`.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

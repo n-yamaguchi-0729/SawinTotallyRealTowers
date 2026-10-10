@@ -12,8 +12,6 @@ import Mathlib.Algebra.Module.BigOperators
 import Mathlib.Algebra.Module.LinearMap.Basic
 import Mathlib.GroupTheory.SemidirectProduct
 
-set_option autoImplicit false
-
 /-!
 # Bundled crossed homomorphisms
 

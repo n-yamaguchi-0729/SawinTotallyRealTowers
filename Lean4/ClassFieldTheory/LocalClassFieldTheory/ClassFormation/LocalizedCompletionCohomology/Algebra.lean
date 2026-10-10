@@ -5,8 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
-
-set_option autoImplicit false
+import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Algebra for localized completion cohomology
@@ -14,6 +13,8 @@ set_option autoImplicit false
 This file provides named algebra, finite-dimensional, Galois, scalar-tower, and
 global-to-local embedding providers for localized completions.
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

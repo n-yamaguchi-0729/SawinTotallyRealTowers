@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Topology.Algebra.Valued.ValuativeRel
 
-set_option autoImplicit false
-
 /-!
 # Valued-field topology and the induced valuative relation
 

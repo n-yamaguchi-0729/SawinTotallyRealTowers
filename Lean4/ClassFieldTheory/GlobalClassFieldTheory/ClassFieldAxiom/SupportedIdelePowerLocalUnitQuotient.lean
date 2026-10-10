@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
 
-set_option autoImplicit false
-
 /-!
 # Supported idele power-local-unit quotient
 
@@ -17,7 +15,9 @@ the prescribed finite places and identifies the resulting quotient with the
 product of its archimedean and finite local power-class groups.
 -/
 
-open scoped NumberField Classical NNReal IsMulCommutative
+
+
+open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
 
-set_option autoImplicit false
-
 /-!
 # Lifts to finite and discrete quotients
 

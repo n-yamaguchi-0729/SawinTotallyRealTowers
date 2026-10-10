@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNo
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
 
-set_option autoImplicit false
-
 /-!
 # Finite-place tensor factors as induced local blocks
 
@@ -19,6 +17,8 @@ This file is the finite-place counterpart of
 completion used by the canonical local tensor decomposition, and records equivariance for
 conjugation on the second tensor factor.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

@@ -7,8 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace` Lean module. -/
+
 
 noncomputable section
 
@@ -115,7 +116,8 @@ end UnramifiedPrincipalUnits
 /-- Actual integral-closure version: for the base-uniformizer representative
 `1 + rϖ_L^n`, the norm on `U_L^n/U_L^(n+1)` is the residue-field trace class
 on `U_K^n/U_K^(n+1)`. -/
-theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_oneAdd_uniformizer_pow_eq_trace
+theorem
+  principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_oneAdd_uniformizer_pow_eq_trace
     (K L : Type u)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
@@ -200,8 +202,9 @@ theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_trace
   intro πK πL hπL eK eL
   obtain ⟨r, rfl⟩ := IsLocalRing.residue_surjective x
   have hrep :=
-    principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_oneAdd_uniformizer_pow_eq_trace
-      K L n hn r
+    (
+  principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_oneAdd_uniformizer_pow_eq_trace
+      K L n hn r)
   rw [principalUnitsSuccQuotAddEquivResidueOfIrreducible_symm_residue]
   change Additive.ofMul _ = _
   simpa only [eK, eL, πK, πL, hπL, toMul_ofMul] using hrep

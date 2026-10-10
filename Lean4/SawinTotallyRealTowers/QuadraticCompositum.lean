@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.IntermediateField.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 import Mathlib.Algebra.Ring.Commute
 
-set_option autoImplicit false
-
 /-!
 # Square-class products inside intermediate fields
 

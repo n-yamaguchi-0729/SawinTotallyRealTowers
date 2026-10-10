@@ -8,15 +8,16 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Cons
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
 
-set_option autoImplicit false
-
 /-!
 # Conjugation of finite-place Artin homomorphisms
 
-This module identifies localized completions associated with conjugate extensions and proves conjugation invariance of the resulting finite-place Artin map.
+This module identifies localized completions associated with conjugate extensions and proves
+conjugation invariance of the resulting finite-place Artin map.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField
+
+
+open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

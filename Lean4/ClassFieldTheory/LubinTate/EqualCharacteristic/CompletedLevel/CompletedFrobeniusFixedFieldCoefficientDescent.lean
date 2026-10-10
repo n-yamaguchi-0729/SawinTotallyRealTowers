@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldPowerBasis
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: coefficient descent in the completed fixed field
 
@@ -15,6 +13,8 @@ Expansion in the direct-theta power basis turns Frobenius fixedness into
 coefficientwise fixedness.  The coefficients therefore descend from the
 completed unramified field to the original Laurent base.
 -/
+
+
 
 noncomputable section
 

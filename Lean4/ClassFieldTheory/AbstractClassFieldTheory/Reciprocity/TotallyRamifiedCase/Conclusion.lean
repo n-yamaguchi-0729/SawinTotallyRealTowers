@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FixedSource
 
-set_option autoImplicit false
-
 /-!
 # Totally ramified reciprocity
 
 This file derives exponent vanishing, injectivity, and finally bijectivity of
 finite reciprocity from the constructed fixed source.
 -/
+
+
 
 noncomputable section
 

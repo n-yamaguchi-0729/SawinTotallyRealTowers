@@ -12,13 +12,14 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedField
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.IntrinsicBaseEquivalence
 import ValuedFieldTheory.LocalField.GroupTheory.ContinuousQuotientEquiv
 
-set_option autoImplicit false
-
 /-!
 # Embedded Frobenius transport
 
-This module transports inertia, Frobenius elements, and fixed fields across an explicit equivalence of separable closures.
+This module transports inertia, Frobenius elements, and fixed fields across an explicit
+equivalence of separable closures.
 -/
+
+
 
 noncomputable section
 
@@ -35,8 +36,8 @@ theorem map_intrinsicExtensionInertia_eq_ambientFixedField
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K))
-    (J : ClosedSubgroup Gal(SeparableClosure K / K))
+      Gal(SeparableClosure K/K))
+    (J : ClosedSubgroup Gal(SeparableClosure K/K))
     (hJH : J.toSubgroup ≤ H.field.toSubgroup)
     [hJnormal : (extensionSubgroup H.field J hJH).Normal]
     [hJfinite : Finite
@@ -123,7 +124,7 @@ separable-closure equivalence is continuous. -/
 theorem intrinsicBaseEquivAmbientFixedField_continuous
     (K : Type) [Field K]
     (H : FiniteAbstractField
-      Gal(SeparableClosure K / K)) :
+      Gal(SeparableClosure K/K)) :
     let F := abstractFixedField K (SeparableClosure K) H.field
     letI : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra

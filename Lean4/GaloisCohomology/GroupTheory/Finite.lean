@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.DoubleCoset
 import Mathlib.GroupTheory.Sylow
 
-set_option autoImplicit false
-
 /-!
 # Finite group theory for the splitting corollaries
 
@@ -27,6 +25,8 @@ surjective.  If it does not decrease cardinality, its right subgroup
 is contained in the normal core of `H`; therefore it is trivial when
 `H` is core-free.
 -/
+
+
 
 noncomputable section
 

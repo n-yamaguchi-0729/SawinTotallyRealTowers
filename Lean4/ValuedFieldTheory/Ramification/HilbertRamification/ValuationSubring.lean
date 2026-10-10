@@ -11,10 +11,6 @@ import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.RingTheory.Valuation.RamificationGroup
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
 /-!
 # Hilbert ramification theory: valuation-subring layer
 
@@ -23,6 +19,8 @@ sequence.  For an arbitrary valuation subring the residue action need not be
 onto the full residue automorphism group; the canonical theorem is the exact
 sequence with target equal to the range of the residue action.
 -/
+
+namespace RamificationTheory
 
 noncomputable section
 

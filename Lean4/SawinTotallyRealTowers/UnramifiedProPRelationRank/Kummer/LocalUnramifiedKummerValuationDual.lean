@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerHilbertValuation
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
 
-set_option autoImplicit false
 /-!
 # The valuation dual of an unramified Kummer class
 

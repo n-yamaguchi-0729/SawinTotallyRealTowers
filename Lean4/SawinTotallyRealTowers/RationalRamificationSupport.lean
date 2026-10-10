@@ -9,8 +9,6 @@ import Mathlib.NumberTheory.NumberField.Discriminant.Different
 import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.RingTheory.Unramified.Locus
 
-set_option autoImplicit false
-
 /-!
 # Rational primes in the finite ramification support
 

@@ -8,8 +8,6 @@ import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Algebra.Polynomial.Lifts
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 
-set_option autoImplicit false
-
 /-!
 # algebraic input for Hensel's lemma
 

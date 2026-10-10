@@ -7,13 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGradedLifting
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open CyclicCohomology
-
-open LocalFieldTheory
-
 /-!
 # Infinite lifting on the normal-basis principal-unit filtration
 
@@ -22,6 +15,13 @@ lifting is iterated, its correction factors are multiplied, and completeness
 of the local field turns the resulting formal recursion into an actual norm
 or coboundary in the initial subgroup.
 -/
+
+namespace LocalClassFieldTheory
+open CyclicCohomology
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -65,7 +65,8 @@ theorem exists_chosenNormalBasisPrincipalUnit_fixed_is_tateNorm :
       (K := K) (L := L) with ⟨cStep, hStep⟩
   rcases exists_tendsto_chosenNormalBasisPrincipalUnitCorrectionProduct
       (K := K) (L := L) with ⟨cProd, hProd⟩
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_integerRingFieldSubmodule
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_integerRingFieldSubmodule
       (K := K) (L := L) with ⟨b, hb⟩
   refine ⟨max cStep (max cProd (b + 1)), ?_⟩
   intro n hn a ha hfixed
@@ -149,7 +150,7 @@ theorem exists_chosenNormalBasisPrincipalUnit_fixed_is_tateNorm :
 every sufficiently deep norm-one unit is an actual coboundary from the same
 normal-basis level. -/
 theorem exists_chosenNormalBasisPrincipalUnit_normOne_is_sigmaMinusOne
-    (g : Gal(L / K)) (hgen : ∀ sigma : Gal(L / K),
+    (g : Gal(L/K)) (hgen : ∀ sigma : Gal(L / K),
       sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ c : Nat, ∀ n : Nat, c ≤ n → ∀ a : 𝒪[L]ˣ,
@@ -162,7 +163,8 @@ theorem exists_chosenNormalBasisPrincipalUnit_normOne_is_sigmaMinusOne
       (K := K) (L := L) g hgen with ⟨cStep, hStep⟩
   rcases exists_tendsto_chosenNormalBasisPrincipalUnitCorrectionProduct
       (K := K) (L := L) with ⟨cProd, hProd⟩
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_integerRingFieldSubmodule
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_integerRingFieldSubmodule
       (K := K) (L := L) with ⟨b, hb⟩
   refine ⟨max cStep (max cProd (b + 1)), ?_⟩
   intro n hn a ha hnorma

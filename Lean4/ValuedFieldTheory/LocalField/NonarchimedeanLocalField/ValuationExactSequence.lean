@@ -7,15 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Valuation
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 import Mathlib.Algebra.Group.Hom.Basic
-import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.RingTheory.Valuation.Discrete.Basic
 
-set_option autoImplicit false
 /-!
 # The valuation exact sequence
 
 Builds the normalized valuation map `Kˣ → ℤ` and proves exactness of the
 sequence from valuation-ring units through field units to `ℤ`.
 -/
+
 
 namespace LocalFieldTheory
 
@@ -183,14 +183,16 @@ theorem valuation_eq_one_of_valuationMap_eq_zero (K : Type u)
   dsimp [v] at hx
   have hunzero :
       WithZero.unzero
-        (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K) (ValuativeRel.valuation K (x : K)))
+        (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
+          (ValuativeRel.valuation K (x : K)))
         (by simp) = (1 : Multiplicative Int) := by
     have h := congrArg Multiplicative.ofAdd hx
     simpa using h
   apply (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).injective
   have hcoe :
       ((WithZero.unzero
-        (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K) (ValuativeRel.valuation K (x : K)))
+        (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
+          (ValuativeRel.valuation K (x : K)))
         (by simp) : Multiplicative Int) : WithZero (Multiplicative Int)) =
         (1 : WithZero (Multiplicative Int)) := by
     simpa using congrArg

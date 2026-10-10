@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
 
-set_option autoImplicit false
-
 /-!
 # Conjugation and base change
 
@@ -19,6 +17,8 @@ Galois group.  The decomposition statement for absolute values includes
 the archimedean case; the valuation-subring statements give the three
 nonarchimedean homomorphisms.
 -/
+
+
 
 noncomputable section
 
@@ -191,7 +191,8 @@ private theorem mem_inertiaGroup_iff_sub_mem_nonunits
     change sigma • (IsLocalRing.residue A x) =
       IsLocalRing.residue A x at happ
     rw [← IsLocalRing.ResidueField.residue_smul,
-      ValuationTheory.DiscreteValuationField.ResidueField.residue_eq_residue_iff_sub_mem_maximalIdeal]
+      (open ValuationTheory.DiscreteValuationField.ResidueField in
+        residue_eq_residue_iff_sub_mem_maximalIdeal)]
       at happ
     exact A.coe_mem_nonunits_iff.mpr happ
   · intro hsigma
@@ -201,7 +202,8 @@ private theorem mem_inertiaGroup_iff_sub_mem_nonunits
     change sigma • (IsLocalRing.residue A x) =
       IsLocalRing.residue A x
     rw [← IsLocalRing.ResidueField.residue_smul,
-      ValuationTheory.DiscreteValuationField.ResidueField.residue_eq_residue_iff_sub_mem_maximalIdeal]
+      (open ValuationTheory.DiscreteValuationField.ResidueField in
+        residue_eq_residue_iff_sub_mem_maximalIdeal)]
     exact A.coe_mem_nonunits_iff.mp (hsigma x)
 
 include hsquare in

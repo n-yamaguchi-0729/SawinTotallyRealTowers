@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
 
-set_option autoImplicit false
-
 /-!
 # Ray moduli with selected real places
 
@@ -16,7 +14,9 @@ which positivity is imposed.  This file defines the corresponding idèle and
 idèle-class congruence subgroups without fixing an archimedean convention.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -45,6 +45,7 @@ def ofFinite (m : FiniteModulus K) : Modulus K where
   finitePart := m
   infinitePart := ∅
 
+open scoped Classical in
 /-- The full modulus with a prescribed finite part and positivity at every
 real place. -/
 noncomputable def narrowOfFinite (m : FiniteModulus K) : Modulus K where
@@ -69,6 +70,7 @@ theorem finitePart_narrowOfFinite (m : FiniteModulus K) :
     (narrowOfFinite m).finitePart = m :=
   rfl
 
+open scoped Classical in
 @[simp]
 theorem infinitePart_narrowOfFinite (m : FiniteModulus K) :
     (narrowOfFinite m).infinitePart = Finset.univ :=
@@ -113,6 +115,7 @@ instance : PartialOrder (Modulus K) where
       apply Finset.ext
       intro x
       exact ⟨fun hx => hmn.2 hx, fun hx => hnm.2 hx⟩)
+open scoped Classical in
 noncomputable instance : SemilatticeInf (Modulus K) where
   inf m n :=
     { finitePart := m.finitePart ⊓ n.finitePart
@@ -125,6 +128,7 @@ noncomputable instance : SemilatticeInf (Modulus K) where
     ⟨le_inf hmn.1 hmp.1,
       fun _ hx => Finset.mem_inter.mpr ⟨hmn.2 hx, hmp.2 hx⟩⟩
 
+open scoped Classical in
 noncomputable instance : SemilatticeSup (Modulus K) where
   sup m n :=
     { finitePart := m.finitePart ⊔ n.finitePart
@@ -164,6 +168,7 @@ theorem infinitePart_replaceFinitePart
     (m.replaceFinitePart f).infinitePart = m.infinitePart :=
   rfl
 
+open scoped Classical in
 /-- Remove the positivity condition at one real place. -/
 noncomputable def eraseRealPlace
     (m : Modulus K) (v : RealPlace K) : Modulus K where
@@ -176,12 +181,14 @@ theorem finitePart_eraseRealPlace
     (m.eraseRealPlace v).finitePart = m.finitePart :=
   rfl
 
+open scoped Classical in
 @[simp]
 theorem infinitePart_eraseRealPlace
     (m : Modulus K) (v : RealPlace K) :
     (m.eraseRealPlace v).infinitePart = m.infinitePart.erase v :=
   rfl
 
+open scoped Classical in
 /-- Remove the positivity conditions at a finite set of real places. -/
 noncomputable def eraseRealPlaces
     (m : Modulus K) (s : Finset (RealPlace K)) : Modulus K where
@@ -194,12 +201,14 @@ theorem finitePart_eraseRealPlaces
     (m.eraseRealPlaces s).finitePart = m.finitePart :=
   rfl
 
+open scoped Classical in
 @[simp]
 theorem infinitePart_eraseRealPlaces
     (m : Modulus K) (s : Finset (RealPlace K)) :
     (m.eraseRealPlaces s).infinitePart = m.infinitePart \ s :=
   rfl
 
+open scoped Classical in
 @[simp]
 theorem eraseRealPlaces_empty (m : Modulus K) :
     m.eraseRealPlaces ∅ = m := by
@@ -207,6 +216,7 @@ theorem eraseRealPlaces_empty (m : Modulus K) :
   · rfl
   · exact Finset.sdiff_empty
 
+open scoped Classical in
 @[simp]
 theorem eraseRealPlaces_insert
     (m : Modulus K) (s : Finset (RealPlace K)) (v : RealPlace K) :
@@ -270,6 +280,7 @@ theorem mem_infiniteCongruenceSubgroup_iff_local
   rw [Subgroup.mem_pi]
   simp only [Set.mem_univ, true_implies]
 
+open scoped Classical in
 @[simp]
 theorem mem_infiniteCongruenceSubgroup_iff
     (m : Modulus K) (a : InfiniteIdeleGroup K) :
@@ -291,6 +302,7 @@ theorem mem_infiniteCongruenceSubgroup_iff
         · simp [localInfiniteCongruenceSubgroup, hw, hmem]
       · simp [localInfiniteCongruenceSubgroup, hw]
 
+open scoped Classical in
 /-- Selecting every real place recovers the narrow infinite congruence
 subgroup. -/
 theorem infiniteCongruenceSubgroup_narrowOfFinite (f : FiniteModulus K) :

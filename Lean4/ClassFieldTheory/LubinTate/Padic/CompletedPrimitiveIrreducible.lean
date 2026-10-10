@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.CompletedLevel
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 
-set_option autoImplicit false
-
 /-!
 # Irreducibility of the completed p-adic primitive polynomial
 
@@ -17,6 +15,8 @@ Eisenstein after extending its integer coefficients to the valuation ring of
 the completed maximal unramified field.  In particular it remains
 irreducible over the completed-unramified fraction field.
 -/
+
+
 
 noncomputable section
 

@@ -11,8 +11,6 @@ import Mathlib.Data.Int.WithZero
 import Mathlib.RingTheory.Valuation.Archimedean
 import Mathlib.RingTheory.Valuation.RankOne
 
-set_option autoImplicit false
-
 /-!
 # Cyclic value groups and normalized uniformizers
 
@@ -20,6 +18,8 @@ This file supplies the ordered-group and rank-one facts used for actual
 multiplicative valuation ranges, together with normalized uniformizer results
 for `ℤᵐ⁰`-valued valuations.
 -/
+
+
 
 noncomputable section
 

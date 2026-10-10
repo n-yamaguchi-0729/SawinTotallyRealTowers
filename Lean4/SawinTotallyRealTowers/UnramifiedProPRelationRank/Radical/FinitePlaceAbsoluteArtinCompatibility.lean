@@ -13,7 +13,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalAbelianFi
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
 
-set_option autoImplicit false
 /-!
 # Actual global--local Artin compatibility for finite-place characters
 
@@ -52,8 +51,9 @@ noncomputable def finitePlaceAlgebraicClosureToAbsoluteCompletion :
 
 /-- The same embedding intertwines the actual decomposition action. -/
 theorem finitePlaceAlgebraicClosureToAbsoluteCompletion_action
-    (sigma : Gal(AlgebraicClosure (HeightOneSpectrum.adicAbv F v).Completion /
-      (HeightOneSpectrum.adicAbv F v).Completion)) (x : AlgebraicClosure F) :
+    (sigma : Gal(AlgebraicClosure
+      (HeightOneSpectrum.adicAbv F v).Completion/(HeightOneSpectrum.adicAbv F v).Completion))
+    (x : AlgebraicClosure F) :
     sigma (finitePlaceAlgebraicClosureToAbsoluteCompletion F v x) =
       finitePlaceAlgebraicClosureToAbsoluteCompletion F v
         (((finitePlaceDecompositionGroupContinuousMulEquivAbsoluteGaloisGroup F v).symm
@@ -92,8 +92,8 @@ local instance finitePlaceAbsoluteCompatibilitySourceLocalField :
 abelian global Artin value. -/
 theorem finitePlaceAbsoluteArtin_lift_maximalAbelian
     (a : (v.adicCompletion F)ˣ)
-    (sigma : Gal(AlgebraicClosure (HeightOneSpectrum.adicAbv F v).Completion /
-      (HeightOneSpectrum.adicAbv F v).Completion))
+    (sigma : Gal(AlgebraicClosure
+      (HeightOneSpectrum.adicAbv F v).Completion/(HeightOneSpectrum.adicAbv F v).Completion))
     (hsigma : (QuotientGroup.mk
         (show Field.absoluteGaloisGroup (HeightOneSpectrum.adicAbv F v).Completion from sigma) :
         Field.absoluteGaloisGroupAbelianization (HeightOneSpectrum.adicAbv F v).Completion) =
@@ -120,7 +120,8 @@ theorem finitePlaceAbsoluteArtin_lift_maximalAbelian
       i (chosenFinitePlaceArtinMonoidHom (K := F) (L := E) v a z) :=
     (finitePlaceAlgebraicClosureToAbsoluteCompletion F v).injective
       (haction.symm.trans hfinite)
-  let s := RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv F delta.val
+  let s := RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv
+    F delta.val
   have hE := AlgEquiv.restrictNormal_commutes (globalMaximalAbelianRestriction F delta.val) E z
   have hM := AlgEquiv.restrictNormal_commutes s (_root_.maximalAbelianExtension F)
     (algebraMap E (_root_.maximalAbelianExtension F) z)
@@ -142,8 +143,8 @@ local instance finitePlaceAbsoluteCompatibilityTargetLocalField :
 for the concrete adic completion. -/
 theorem finitePlaceCompletionArtin_lift
     (a : (v.adicCompletion F)ˣ)
-    (sigma : Gal(AlgebraicClosure (HeightOneSpectrum.adicAbv F v).Completion /
-      (HeightOneSpectrum.adicAbv F v).Completion))
+    (sigma : Gal(AlgebraicClosure
+      (HeightOneSpectrum.adicAbv F v).Completion/(HeightOneSpectrum.adicAbv F v).Completion))
     (hsigma : (QuotientGroup.mk
         (show Field.absoluteGaloisGroup (HeightOneSpectrum.adicAbv F v).Completion from sigma) :
         Field.absoluteGaloisGroupAbelianization (HeightOneSpectrum.adicAbv F v).Completion) =
@@ -178,7 +179,7 @@ local instance finitePlaceAbsoluteCompatibilityCharacterDiscreteTopology :
 /-- Actual global--local Artin compatibility evaluated by a continuous mod-`p`
 character of the maximal abelian global extension. -/
 theorem localReciprocityUnitCharacter_globalMaximalAbelian
-    (psi : Gal(_root_.maximalAbelianExtension F / F) →ₜ* Multiplicative (ZMod p))
+    (psi : Gal(_root_.maximalAbelianExtension F/F) →ₜ* Multiplicative (ZMod p))
     (a : (v.adicCompletion F)ˣ) :
     localReciprocityUnitCharacter (v.adicCompletion F) p
         (finitePlaceAbsoluteH1AdicRestriction F p v

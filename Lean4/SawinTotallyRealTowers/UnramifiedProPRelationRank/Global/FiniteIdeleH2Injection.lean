@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleClassPGroup
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
 
-set_option autoImplicit false
 /-!
 # The principal-idele sequence in degree two
 

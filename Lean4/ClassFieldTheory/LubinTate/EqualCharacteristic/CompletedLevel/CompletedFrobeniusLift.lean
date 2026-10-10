@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: a prescribed Frobenius lift on the completed level
 
@@ -18,6 +16,8 @@ primitive point to be a chosen unit bracket.  The resulting semilinear field
 endomorphism is surjective because that bracket is again a primitive
 generator.
 -/
+
+
 
 noncomputable section
 

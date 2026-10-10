@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
 
-set_option autoImplicit false
-
 /-!
 # Degree-zero localized Herbrand cardinality
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

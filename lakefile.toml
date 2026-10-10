@@ -6,7 +6,10 @@ restoreAllArtifacts = false
 
 [leanOptions]
 pp.unicode.fun = true
-relaxedAutoImplicit = false
+autoImplicit = false
+linter.unusedVariables = true
+linter.missingDocs = true
+weak.linter.mathlibStandardSet = true
 
 [[require]]
 name = "mathlib"
@@ -14,25 +17,16 @@ scope = "leanprover-community"
 rev = "065356127b1dc0016f66b7283ce0ce2c4055aa55"
 
 [[lean_lib]]
-name = "SawinTotallyRealTowers"
-srcDir = "Lean4"
-roots = []
-globs = ["SawinTotallyRealTowers.+"]
-
-[[lean_lib]]
-name = "ClassFieldTheory"
-srcDir = "Lean4"
-roots = []
-globs = ["ClassFieldTheory.+"]
-leanOptions = {linter.missingDocs = true}
-
-[[lean_lib]]
 name = "ProCGroups"
 srcDir = "Lean4"
 roots = []
 globs = ["ProCGroups.+"]
-leanOptions = {linter.missingDocs = true}
 
+[[lean_lib]]
+name = "ValuedFieldTheory"
+srcDir = "Lean4"
+roots = []
+globs = ["ValuedFieldTheory.+"]
 [[lean_lib]]
 name = "GaloisCohomology"
 srcDir = "Lean4"
@@ -40,7 +34,13 @@ roots = []
 globs = ["GaloisCohomology.+"]
 
 [[lean_lib]]
-name = "ValuedFieldTheory"
+name = "ClassFieldTheory"
 srcDir = "Lean4"
 roots = []
-globs = ["ValuedFieldTheory.+"]
+globs = ["ClassFieldTheory.+"]
+
+[[lean_lib]]
+name = "SawinTotallyRealTowers"
+srcDir = "Lean4"
+roots = []
+globs = ["SawinTotallyRealTowers.+"]

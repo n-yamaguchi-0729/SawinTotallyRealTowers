@@ -9,14 +9,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ClassFormation
-
-open ValuationTheory RamificationTheory LocalFieldTheory
-
 /-!
 # Finite local reciprocity: the local residue degree datum
 
@@ -35,6 +27,14 @@ is algebraically closed because its extension to the residue of
 `AlgebraicClosure K` is purely inseparable and the selected residue field is
 perfect over the finite base residue field.
 -/
+
+namespace LocalClassFieldTheory
+
+open ClassFormation
+
+open ValuationTheory RamificationTheory LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -78,7 +78,8 @@ private theorem localAbsoluteValuationSubring_pullback (x : K) :
 private noncomputable instance localAbsoluteValuationHasExtension :
     (localCompleteDVF K).valuation.HasExtension
       (localAbsoluteValuationSubring K).valuation :=
-  ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+  (open ValuationTheory.DiscreteValuationField.Valuation in
+    hasExtension_valuation_of_valuationSubring_pullback)
     (localCompleteDVF K).valuation (localAbsoluteValuationSubring K)
       (localAbsoluteValuationSubring_pullback K)
 
@@ -106,7 +107,8 @@ theorem localSeparableValuationSubring_pullback (x : K) :
 noncomputable instance localSeparableValuationHasExtension :
     (localCompleteDVF K).valuation.HasExtension
       (localSeparableValuationSubring K).valuation :=
-  ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+  (open ValuationTheory.DiscreteValuationField.Valuation in
+    hasExtension_valuation_of_valuationSubring_pullback)
     (localCompleteDVF K).valuation (localSeparableValuationSubring K)
       (localSeparableValuationSubring_pullback K)
 
@@ -125,8 +127,9 @@ theorem localSeparableValuationSubring_eq_of_hasExtension
       (Algebra.IsIntegral.isIntegral z)
   let : Algebra.IsSeparable K E := inferInstance
   obtain ⟨target, hExt, _hIntegralClosure, _hFundamental⟩ :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.exists_integralClosure_standard_fundamental_identity
-      (K := K) (L := E) (localCompleteDVF K)
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      exists_integralClosure_standard_fundamental_identity
+        (K := K) (L := E) (localCompleteDVF K))
   let : (localCompleteDVF K).valuation.HasExtension target.valuation := hExt
   let : IsScalarTower (localCompleteDVF K).valuationSubring
       target.valuationSubring E :=
@@ -141,10 +144,12 @@ theorem localSeparableValuationSubring_eq_of_hasExtension
     RamificationTheory.ValuationSubring.restrictIntermediateField_hasExtension
       (localCompleteDVF K).valuation B E
   have hA : target.valuation.valuationSubring = Ares :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.target_valuationSubring_eq_of_finite_separable
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      target_valuationSubring_eq_of_finite_separable)
       (localCompleteDVF K) target Ares
   have hB : target.valuation.valuationSubring = Bres :=
-    ValuationTheory.DiscreteValuationField.ValuedExtension.target_valuationSubring_eq_of_finite_separable
+    (open ValuationTheory.DiscreteValuationField.ValuedExtension in
+      target_valuationSubring_eq_of_finite_separable)
       (localCompleteDVF K) target Bres
   have hAB : Ares = Bres := hA.symm.trans hB
   let zE : E :=

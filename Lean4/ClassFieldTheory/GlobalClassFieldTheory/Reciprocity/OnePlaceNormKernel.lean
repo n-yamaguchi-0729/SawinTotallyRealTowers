@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePl
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 
-set_option autoImplicit false
-
 /-!
 # The one-place norm kernel
 
@@ -20,6 +18,8 @@ is a norm from the corresponding local tensor algebra.  The determinant-norm
 comparison then identifies this image with the norm group of any chosen
 completion above the place.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

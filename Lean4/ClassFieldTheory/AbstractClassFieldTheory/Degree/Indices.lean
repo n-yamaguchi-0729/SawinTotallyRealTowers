@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.GroupTheory.QuotientTower
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
 /-!
 # Relative indices
 
@@ -17,6 +13,10 @@ This file isolates the group-theoretic index calculation used in abstract valuat
 For a homomorphism `d`, an inclusion `L ≤ K` splits its relative index into the index of
 the images under `d` and the relative index inside `ker d`.
 -/
+
+namespace ClassFormation
+
+
 
 open scoped Pointwise
 

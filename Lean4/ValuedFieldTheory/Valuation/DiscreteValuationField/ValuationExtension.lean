@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Valuation extensions
 
@@ -18,6 +14,8 @@ Mathlib's uniqueness criterion for valuations is expressed through
 when they have the same valuation subring.  The results here use the ambient
 valued-extension property directly; no marker object is introduced.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

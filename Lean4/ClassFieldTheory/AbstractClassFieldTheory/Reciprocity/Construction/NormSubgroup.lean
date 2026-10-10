@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction: norm subgroups for infinite extensions
+
+For an infinite abstract extension `E | K`, the abstract class-field construction defines
+`N_{E|K} A_E` as the intersection of the norm images from all finite
+intermediate fields.  This file records that definition literally.
+-/
 
 universe u
 
@@ -17,13 +23,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction: norm subgroups for infinite extensions
 
-For an infinite abstract extension `E | K`, the abstract class-field construction defines
-`N_{E|K} A_E` as the intersection of the norm images from all finite
-intermediate fields.  This file records that definition literally.
--/
 
 noncomputable section
 

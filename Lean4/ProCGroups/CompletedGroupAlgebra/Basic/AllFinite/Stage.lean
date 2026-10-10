@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
 import ProCGroups.Completion.ProCInteger
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Basic / All Finite / Stage
 

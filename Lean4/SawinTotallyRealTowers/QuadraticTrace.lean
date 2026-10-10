@@ -9,8 +9,6 @@ import Mathlib.RingTheory.Adjoin.PowerBasis
 import Mathlib.RingTheory.Norm.Basic
 import Mathlib.RingTheory.Trace.Basic
 
-set_option autoImplicit false
-
 /-!
 # Traces and norms in quadratic coordinates
 

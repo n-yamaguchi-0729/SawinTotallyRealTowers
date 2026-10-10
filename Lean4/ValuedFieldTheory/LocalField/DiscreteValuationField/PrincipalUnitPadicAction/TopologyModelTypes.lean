@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitCore
 import ValuedFieldTheory.Valuation.Topology.Models
 
-set_option autoImplicit false
-
 /-!
 # Type-level topology models for principal units
 
@@ -16,6 +14,8 @@ Adic principal units, discrete finite quotients, and the prodiscrete inverse lim
 represented by distinct wrapper types so that their topologies cannot be confused by instance
 selection.
 -/
+
+
 
 noncomputable section
 

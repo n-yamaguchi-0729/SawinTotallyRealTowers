@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.TateComparison
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 
-set_option autoImplicit false
 /-!
 # Degree-two cohomology and degree-zero Tate cohomology for a finite cyclic group
 

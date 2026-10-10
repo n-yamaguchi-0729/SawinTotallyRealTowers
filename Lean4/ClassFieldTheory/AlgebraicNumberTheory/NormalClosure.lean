@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.FieldTheory.Normal.Closure
 import Mathlib.NumberTheory.NumberField.Basic
 
-set_option autoImplicit false
-
 /-!
 # A finite normal closure of a number-field extension
 
@@ -18,6 +16,8 @@ global theory below the adelic and splitting developments that consume
 it.  The closure is formed inside mathlib's fixed algebraic closure, and
 the original field is embedded by the canonical chosen lift.
 -/
+
+
 
 noncomputable section
 

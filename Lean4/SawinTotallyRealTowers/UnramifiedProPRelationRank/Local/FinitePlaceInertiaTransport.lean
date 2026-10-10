@@ -10,7 +10,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2
 import ValuedFieldTheory.Ramification.HilbertRamification.ValuationInertiaAlgEquiv
 import ValuedFieldTheory.LocalField.GroupTheory.ContinuousQuotientEquiv
 
-set_option autoImplicit false
 /-!
 # Finite-place inertia under the local absolute-Galois comparison
 
@@ -101,8 +100,9 @@ theorem decompositionGroupEquivAlgebraicLocalizationAut_mem_inertia_iff
             AbsoluteValue.algebraicLocalization vK w.1 w.2) =
         decompositionGroupEquivAlgebraicLocalizationAut vK hvK w sigma := by
     rfl
-  rw [← HilbertRamification.localizationRamificationGroups_valuationDecompositionGroupEquiv_mem_inertia_iff
-    vK hvK w hw sigmaGlobal]
+  rw [← (open _root_.RamificationTheory.HilbertRamification in
+    localizationRamificationGroups_valuationDecompositionGroupEquiv_mem_inertia_iff
+      vK hvK w hw sigmaGlobal)]
   constructor
   · rintro ⟨tau, htau, htau_eq⟩
     have hlocal : sigmaLocal ∈
@@ -134,13 +134,14 @@ theorem localSeparableValuationSubring_eq_comap_algEquiv
   let B : ValuationSubring (SeparableClosure K) :=
     (ValuativeRel.valuation L).valuationSubring.comap e.symm.toRingHom
   let _ : (localCompleteDVF K).valuation.HasExtension B.valuation :=
-    ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
-      (localCompleteDVF K).valuation B fun x ↦ by
-        change (ValuativeRel.valuation L) (e.symm (algebraMap K (SeparableClosure K) x)) ≤ 1 ↔
-          (localCompleteDVF K).valuation x ≤ 1
-        rw [e.symm.commutes]
-        exact Valuation.HasExtension.val_map_le_one_iff
-          (ValuativeRel.valuation K) (ValuativeRel.valuation L) x
+    (open _root_.ValuationTheory.DiscreteValuationField.Valuation in
+      hasExtension_valuation_of_valuationSubring_pullback
+        (localCompleteDVF K).valuation B fun x ↦ by
+          change (ValuativeRel.valuation L) (e.symm (algebraMap K (SeparableClosure K) x)) ≤ 1 ↔
+            (localCompleteDVF K).valuation x ≤ 1
+          rw [e.symm.commutes]
+          exact Valuation.HasExtension.val_map_le_one_iff
+            (ValuativeRel.valuation K) (ValuativeRel.valuation L) x)
   exact localSeparableValuationSubring_eq_of_hasExtension K B
 
 /-- The absolute-value valuation subring on an algebraic localization is the
@@ -275,7 +276,8 @@ theorem localResidueDegree_ker_eq_valuationInertiaGroupInAut
     let tau := toDecompositionGroupOfEqTop K A hA sigma
     have htau : tau ∈
         RamificationTheory.HilbertRamification.ValuationSubring.inertiaGroup K A := by
-      rw [← RamificationTheory.HilbertRamification.ValuationSubring.decompositionGroupResidueAction_ker]
+      rw [← (open _root_.RamificationTheory.HilbertRamification.ValuationSubring in
+        decompositionGroupResidueAction_ker)]
       exact hsigma
     exact ⟨tau, htau, rfl⟩
   · rintro ⟨tau, htau, htau_sigma⟩

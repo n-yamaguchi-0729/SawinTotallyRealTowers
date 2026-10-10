@@ -7,7 +7,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
 import GaloisCohomology.GroupTheory.QuotientTower
 
-set_option autoImplicit false
+/-!
+# Laws for relative norms
+
+This file proves the structural laws for the coset-sum norm constructed in `Norm.lean`.
+-/
 
 namespace ClassFormation
 
@@ -15,11 +19,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# Laws for relative norms
 
-This file proves the structural laws for the coset-sum norm constructed in `Norm.lean`.
--/
 
 noncomputable section
 

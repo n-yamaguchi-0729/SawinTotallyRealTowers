@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtensionAction
 
-set_option autoImplicit false
-
 /-!
 # Norms on rational fixed-field idele classes
 
 Compatibility of fixed-field inclusion and relative norm with the actual
 idele-class extension attached to the abstract subgroup tower.
 -/
+
+
 
 noncomputable section
 

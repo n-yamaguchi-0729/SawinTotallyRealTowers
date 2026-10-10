@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.Arithmetic
 import GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # The actual global character measuring nonadditivity of chosen lifts
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FreeProC.BifilteredCoefficientStageProjection
 import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — free pro-\(C\) — pro c integer stage coeff projection
 

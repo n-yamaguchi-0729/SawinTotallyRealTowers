@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.H2CocycleExtensionSplitting
 
-set_option autoImplicit false
 /-!
 # Splitting a cocycle extension with a coefficient-kernel character
 

@@ -6,14 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # Finite Galois extensions above an abstract field
 
@@ -21,6 +13,14 @@ The norm topology is indexed by the actual finite Galois extensions
 of a fixed abstract field.  This file packages those extensions and their
 composita contravariantly as intersections of closed subgroups.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

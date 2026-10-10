@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.Generation.QuotientCriteria
 import ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
 
-set_option autoImplicit false
-
 /-!
 # Partial converging generators modulo a closed normal subgroup
 

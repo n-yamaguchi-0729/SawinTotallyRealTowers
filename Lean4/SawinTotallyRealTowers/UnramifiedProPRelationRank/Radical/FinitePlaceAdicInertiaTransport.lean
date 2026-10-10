@@ -11,7 +11,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedA
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ValuationSemilinear
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldLocalData
 
-set_option autoImplicit false
 /-!
 # Inertia in the actual adic completion model
 
@@ -84,7 +83,8 @@ theorem finitePlaceCompletionResidueDegree_conjugation
       (RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv C'
         (finitePlaceCompletionAbsoluteGaloisContinuousMulEquiv F v sigma)) =
     localResidueDegree C
-      (RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv C sigma) := by
+      (RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv
+        C sigma) := by
   rw [← finitePlaceCompletionSeparableGalois_conjugation]
   exact localResidueDegree_semilinear_conjugation C C'
     (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv

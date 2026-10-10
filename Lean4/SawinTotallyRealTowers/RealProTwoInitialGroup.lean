@@ -25,8 +25,6 @@ import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 
-set_option autoImplicit false
-
 /-!
 # The initial real pro-two group
 
@@ -42,7 +40,8 @@ namespace ClassFieldTower.Sawin
 
 private local instance initialPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
-private local instance initialMaximalIsGalois : IsGalois ℚ (maximalRealProPOutside 2 sawinRationalPrimeSupport) :=
+private local instance initialMaximalIsGalois :
+    IsGalois ℚ (maximalRealProPOutside 2 sawinRationalPrimeSupport) :=
   maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
 
 private theorem nontrivial_initial :

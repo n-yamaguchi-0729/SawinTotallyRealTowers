@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Basic.InClass.LimitAlgebra
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Basic / Within a Class / Projection
 

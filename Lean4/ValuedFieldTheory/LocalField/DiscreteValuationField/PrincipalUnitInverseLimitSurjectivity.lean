@@ -6,17 +6,18 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.Core
 
-set_option autoImplicit false
-
 /-!
 # Compact surjectivity criterion for the principal-unit inverse limit
 
-This is the compactness step in the local-field structure theory, the equal-characteristic field-unit structure theorem.
+This is the compactness step in the local-field structure theory, the equal-characteristic
+field-unit structure theorem.
 For a map from a compact space to the inverse limit
 `lim U^1 / U^(n+1)`, surjectivity on every finite coordinate implies
 surjectivity on the inverse limit.  Indeed, the fibers over the coordinates
 of a fixed target form a decreasing sequence of nonempty compact closed sets.
 -/
+
+
 
 noncomputable section
 
@@ -86,7 +87,8 @@ theorem Internal.surjective_principalUnitInverseLimitCarrier_of_surjective_coord
 
 /-- Additive-tag version of
 `surjective_principalUnitInverseLimitCarrier_of_surjective_coordinates`, in
-the form used by Iwasawa's additive homomorphism in the equal-characteristic field-unit structure theorem. -/
+the form used by Iwasawa's additive homomorphism in the equal-characteristic field-unit
+structure theorem. -/
 theorem Internal.surjective_additive_principalUnitInverseLimitCarrier_of_surjective_coordinates
     (F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, v} K)
     {A : Type w} [TopologicalSpace A] [CompactSpace A]

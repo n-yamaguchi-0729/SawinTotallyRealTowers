@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnra
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # The empty-support unramified Artin--Kummer cokernel
 

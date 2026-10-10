@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Degree
 
-set_option autoImplicit false
-
 /-!
 # Continuous transport between equal quotient groups
 
@@ -16,6 +14,8 @@ native quotient topology.  Eliminating the equality therefore gives the
 continuous multiplicative equivalence directly; no discrete-topology
 instances or domain-specific class-field tower are required.
 -/
+
+
 
 noncomputable section
 

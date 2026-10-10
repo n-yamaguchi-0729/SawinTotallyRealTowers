@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
 
-set_option autoImplicit false
-
 /-!
 # Finite abelian classification by norm subgroups
 
@@ -19,6 +17,8 @@ This is the group-theoretic source of the implication that a reciprocity
 class which restricts trivially to both subextensions is already trivial on
 their compositum.
 -/
+
+
 
 noncomputable section
 
@@ -774,7 +774,8 @@ private theorem reciprocityEquiv_bijective
     v.abstractReciprocity_finiteReciprocityHom_surjective
       hcf hAxiom K L.toFiniteGaloisExtension⟩
 
-/-- The first displayed formula in the finite abelian classification theorem: the norm subgroup of the compositum is
+/-- The first displayed formula in the finite abelian classification theorem: the norm subgroup of
+the compositum is
 the intersection of the two norm subgroups.  This is the first paragraph
 of the finite classification proof, with finite reciprocity supplying all three vertical
 isomorphisms. -/
@@ -796,7 +797,8 @@ theorem normSubgroup_compositum
       (reciprocityEquiv_bijective
         v hcf hAxiom K (L₁.compositum L₂))
 
-/-- The order-reversal assertion in the finite abelian classification theorem: field inclusion is exactly reverse inclusion of norm
+/-- The order-reversal assertion in the finite abelian classification theorem: field inclusion is
+exactly reverse inclusion of norm
 subgroups. -/
 theorem le_iff_normSubgroup_le
     (v : ValuationData D A) (hcf : SatisfiesClassFieldAxiom A)
@@ -902,7 +904,8 @@ theorem normSubgroupMap_bijective
   ⟨normSubgroupMap_injective v hcf K,
     normSubgroupMap_surjective v hcf K⟩
 
-/-- **the finite abelian classification theorem.** Finite abelian extensions of the base are order-isomorphic
+/-- **the finite abelian classification theorem.** Finite abelian extensions of the base are
+order-isomorphic
 to the opposite poset of norm-open subgroups. -/
 noncomputable def normSubgroupOrderIso
     (v : ValuationData D A) (hcf : SatisfiesClassFieldAxiom A)
@@ -932,7 +935,8 @@ theorem normSubgroupOrderIso_apply
       L.normSubgroup A :=
   rfl
 
-/-- The second displayed formula in the finite abelian classification theorem: the norm subgroup of the
+/-- The second displayed formula in the finite abelian classification theorem: the norm subgroup of
+the
 intersection field is the product of the two norm subgroups (their supremum
 in additive notation). -/
 theorem normSubgroup_intersection

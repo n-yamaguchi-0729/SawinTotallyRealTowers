@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UniversalNormDescent
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusClosureCommutation
 
-set_option autoImplicit false
+/-!
+# Actions on Frobenius fixed fields
+
+This module defines the action induced on a Frobenius fixed field and proves
+its compatibility with conjugate-stable actions, relative norms, inclusions,
+and Frobenius power sums.
+-/
 
 universe u
 
@@ -16,13 +22,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Actions on Frobenius fixed fields
 
-This module defines the action induced on a Frobenius fixed field and proves
-its compatibility with conjugate-stable actions, relative norms, inclusions,
-and Frobenius power sums.
--/
 
 noncomputable section
 

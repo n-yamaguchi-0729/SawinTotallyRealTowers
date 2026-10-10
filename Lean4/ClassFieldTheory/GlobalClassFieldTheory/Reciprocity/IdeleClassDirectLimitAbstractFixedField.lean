@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPoints
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldNorm
 
-set_option autoImplicit false
-
 /-!
 # Abstract fixed fields in the rational idele-class representation
 
 Fixed-point comparisons for finite-index closed subgroups and their actual
 abstract fixed fields.
 -/
+
+
 
 noncomputable section
 

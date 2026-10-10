@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.BasePlaceSelection
 
-set_option autoImplicit false
-
 /-!
 # The finite prime set for an S-unit Kummer extension
 
@@ -15,7 +13,9 @@ This file packages the chosen base places as a finite set and proves its
 cardinality and disjointness properties.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -28,6 +28,7 @@ section FinitePlaces
 variable {K : Type} [Field K]
     [NumberField K]
 
+open scoped Classical in
 /-- The finite set `T` of primes chosen for the coordinate cyclic extensions
 that detect the enlarged `S`-unit Kummer radical. -/
 noncomputable def sUnitKummerPrimeSet
@@ -73,6 +74,7 @@ theorem sUnitKummerPrimeSet_card
       p v hp hv hn r eG S).card =
         sUnitKummerPrimeCount
           (K := K) E n hmu r S := by
+  classical
   rw [sUnitKummerPrimeSet,
     Finset.card_image_of_injective Finset.univ
       (sUnitKummerChosenBasePlaces_injective
@@ -102,6 +104,7 @@ theorem sUnitKummerPrimeSet_disjoint_enlargeByFiniteKummerRadicalSupport
         p v hp hv hn r eG S)
       (enlargeByFiniteKummerRadicalSupport
         (K := K) (L := E) n hmu S) := by
+  classical
   rw [Finset.disjoint_left]
   intro w hwT hwS
   rw [sUnitKummerPrimeSet, Finset.mem_image] at hwT

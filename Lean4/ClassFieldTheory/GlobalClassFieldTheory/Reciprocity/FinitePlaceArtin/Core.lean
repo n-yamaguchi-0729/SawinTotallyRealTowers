@@ -11,15 +11,16 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Towe
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.CrossLocalRestriction
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.NormRestriction
 
-set_option autoImplicit false
-
 /-!
 # Image and kernel of finite-place Artin homomorphisms
 
-This module identifies the image with the chosen decomposition group and the kernel with the chosen local norm subgroup.
+This module identifies the image with the chosen decomposition group and the kernel with the chosen
+local norm subgroup.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField
+
+
+open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

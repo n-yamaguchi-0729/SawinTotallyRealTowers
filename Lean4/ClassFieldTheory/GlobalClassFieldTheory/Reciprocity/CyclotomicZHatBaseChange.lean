@@ -16,8 +16,6 @@ import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.FieldTheory.SeparableClosure
 import Mathlib.GroupTheory.Index
 
-set_option autoImplicit false
-
 /-!
 # Base change of the rational cyclotomic `ZHat`-extension
 
@@ -32,6 +30,8 @@ All fields in this file are the actual mathlib intermediate fields in
 `SeparableClosure ℚ`; no abstract copy of the compositum or of its
 Galois group is introduced.
 -/
+
+
 
 noncomputable section
 
@@ -94,6 +94,8 @@ noncomputable instance rationalCyclotomicZHatField_isNormal :
     Normal ℚ rationalCyclotomicZHatField :=
   rationalCyclotomicZHatField_isAbelianGalois.toIsGalois.to_normal
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (continuousMulEquivOfCompactToT2) in
 /-- The cyclotomic Galois-group equivalence, transported from the nested
 presentation to the copy of `ℚ̃` in `SeparableClosure ℚ`. -/
 noncomputable def rationalCyclotomicZHatFieldGalEquivZHat :
@@ -112,7 +114,7 @@ noncomputable def rationalCyclotomicZHatFieldGalEquivZHat :
           rationalCyclotomicTorsionFixedField) ≃ₜ*
         (rationalCyclotomicZHatField ≃ₐ[ℚ]
           rationalCyclotomicZHatField) :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.continuousMulEquivOfCompactToT2
+    continuousMulEquivOfCompactToT2
         (AlgEquiv.autCongr e)
         (continuous_algEquiv_autCongr e)
   exact c.symm.trans
@@ -134,6 +136,8 @@ noncomputable def rationalCyclotomicFullRestrictionToZHat :
       KummerTheory.rationalCyclotomicTorsionFixedField _ _ _ _
       KummerTheory.rationalCyclotomicTorsionFixedField_normal)
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (continuousMulEquivOfCompactToT2) in
 /-- The actual restriction to the lifted `ZHat`-field has coordinate
 equal to the torsion-free component of the full cyclotomic character. -/
 @[simp]
@@ -158,7 +162,7 @@ theorem rationalCyclotomicZHatFieldGalEquivZHat_fullRestriction
           KummerTheory.rationalCyclotomicTorsionFixedField) ≃ₜ*
         (rationalCyclotomicZHatField ≃ₐ[ℚ]
           rationalCyclotomicZHatField) :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.continuousMulEquivOfCompactToT2
+    continuousMulEquivOfCompactToT2
       (AlgEquiv.autCongr e)
       (continuous_algEquiv_autCongr e)
   change

@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open LocalFieldTheory
-
-open CyclicCohomology
-
 /-!
 # The valuation sequence and Herbrand quotients
 
@@ -24,6 +16,14 @@ valuation sequence from integer units through field units to the value group.
 All three actions are the concrete actions from `ValuationReal`: the Galois
 action on integer and field units, and the trivial action on the value group.
 -/
+
+namespace LocalClassFieldTheory
+
+open LocalFieldTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -74,7 +74,7 @@ omit [ValuativeRel K] [ValuativeRel L] [TopologicalSpace L]
 its degree-zero group is finite cyclic and its degree-minus-one group is
 trivial. -/
 theorem galoisGroupValueGroup_herbrandQuotientDefined
-    (g : Gal(L / K)) :
+    (g : Gal(L/K)) :
     letI := galoisGroupValueGroupMulDistribMulAction K L
     HerbrandQuotientDefined (Gal(L / K)) (Multiplicative Int) g := by
   exact ⟨galoisGroupValueGroupHerbrandH0Finite K L,
@@ -90,7 +90,7 @@ field-unit quotient is defined and
 The only non-derived finiteness input is `hU`, the two finite low-degree
 Herbrand quotients for the actual integer-unit action. -/
 theorem valuationHerbrand_multiplicativity_of_integerUnits_defined
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (hU :
       letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L

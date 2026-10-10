@@ -8,8 +8,6 @@ import ProCGroups.FoxDifferential.Completed.Continuous.Free.DiscreteGenerators
 import ProCGroups.FoxDifferential.Completed.Continuous.Free.Rules
 import ProCGroups.FoxDifferential.Completed.Continuous.Topology
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — continuous — universal — basic
 

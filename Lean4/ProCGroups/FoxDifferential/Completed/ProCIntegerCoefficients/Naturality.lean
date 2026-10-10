@@ -8,8 +8,6 @@ import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
 import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
 import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Fundamental
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — naturality
 

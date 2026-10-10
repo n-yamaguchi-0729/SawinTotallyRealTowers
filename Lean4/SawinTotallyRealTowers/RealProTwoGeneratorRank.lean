@@ -24,8 +24,6 @@ import Mathlib.Logic.Function.Basic
 import Mathlib.RingTheory.Finiteness.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Five generators for the initial real pro-two group
 

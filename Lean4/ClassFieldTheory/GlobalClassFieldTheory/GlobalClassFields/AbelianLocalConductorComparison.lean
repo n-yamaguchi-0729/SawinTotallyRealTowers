@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianNormConductor
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
 
-set_option autoImplicit false
-
 /-!
 # Comparison of global and local conductor exponents
 
@@ -20,7 +18,9 @@ the local exponent occurring in the idèle-class norm conductor with the
 conductor exponent of the chosen localized extension.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 
 noncomputable section
 
@@ -135,7 +135,7 @@ theorem finitePlaceCompletion_valuationMap_eq_zero_of_mem_localHigherUnitGroup
     letI : ValuativeRel vK.Completion :=
       _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
     letI : IsNonarchimedeanLocalField vK.Completion :=
-      _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+      Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
     IsNonarchimedeanLocalField.valuationMap vK.Completion
         (Additive.ofMul
           ((_root_.finitePlaceCompletionUnitsContinuousMulEquiv v).symm x)) =
@@ -144,7 +144,7 @@ theorem finitePlaceCompletion_valuationMap_eq_zero_of_mem_localHigherUnitGroup
   let : ValuativeRel vK.Completion :=
     _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
   let : IsNonarchimedeanLocalField vK.Completion :=
-    _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+    Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
   have hxMap :
       x ∈
         (LocalFieldTheory.fieldPrincipalUnits vK.Completion n).map
@@ -183,7 +183,7 @@ variable [IsGalois K L]
 in the transported local norm subgroup is equivalent to containment of the
 corresponding field principal-unit group in the local norm subgroup. -/
 theorem
-    localHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup_iff_fieldPrincipalUnits_le_localNormSubgroup
+    localHigherUnits_le_chosenNormSubgroup_iff_fieldPrincipalUnits_le_normSubgroup
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     let vK := HeightOneSpectrum.adicAbv K v
     let hvK : vK.IsNontrivial :=
@@ -401,7 +401,7 @@ theorem ideleClassNormLocalHigherUnitExponent_eq_localConductorExponent
           LocalFieldTheory.localNormSubgroup
             vK.Completion E := by
     simpa [vK, hvK, hvKna, w, E] using
-      (localHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup_iff_fieldPrincipalUnits_le_localNormSubgroup
+      (localHigherUnits_le_chosenNormSubgroup_iff_fieldPrincipalUnits_le_normSubgroup
         (K := K) (L := L) v n)
   apply le_antisymm
   · apply

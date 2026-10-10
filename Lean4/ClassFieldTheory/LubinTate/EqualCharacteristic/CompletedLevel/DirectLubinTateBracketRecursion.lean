@@ -7,13 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: recursion for the standard Lubin--Tate bracket
 
 The standard bracket constructed from its contracting coefficient equations
-agrees with the recursive `T`-adic bracket used in the finite Lubin–Tate bracket construction.  At the formal
+agrees with the recursive `T`-adic bracket used in the finite Lubin–Tate bracket construction.
+At the formal
 series level the required identity is
 
 `[a](Y) = a₀ Y + [tail(a)](e_T(Y))`.
@@ -22,6 +21,8 @@ This file proves the identity from uniqueness of the commuting `q`-additive
 series.  It is the bridge from the formal bracket used in the theta identity
 to the finite brackets acting on division points.
 -/
+
+
 
 noncomputable section
 

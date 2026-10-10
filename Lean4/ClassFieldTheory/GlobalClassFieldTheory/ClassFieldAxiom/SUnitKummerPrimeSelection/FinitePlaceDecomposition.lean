@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 import ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 
-set_option autoImplicit false
-
 /-!
 # Finite-place decomposition groups in Galois towers
 
@@ -19,13 +17,17 @@ proves cyclicity for the decomposition group at a chosen unramified place.
 The results are independent of the S-unit Kummer construction.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 
 noncomputable section
 
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
+open _root_.HilbertRamification
+  (decompositionGroupRestriction_mem_absoluteValueDecompositionGroup_restrictScalars_iff) in
 /-- Full relative decomposition above `q` puts every
 `M`-automorphism inside the global chosen decomposition group below
 `q`. -/
@@ -135,7 +137,7 @@ theorem
         HilbertRamification.absoluteValueDecompositionGroup
           F wM.1 := by
     exact
-      (HilbertRamification.decompositionGroupRestriction_mem_absoluteValueDecompositionGroup_restrictScalars_iff
+      (decompositionGroupRestriction_mem_absoluteValueDecompositionGroup_restrictScalars_iff
           (K := F) (M := M) wM.1 tau).mpr htauM
   change
     rho ∈

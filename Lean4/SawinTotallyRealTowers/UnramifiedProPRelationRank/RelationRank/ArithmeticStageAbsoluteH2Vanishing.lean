@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageKummerFieldUnitsH2
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
 
-set_option autoImplicit false
 /-!
 # Absolute degree-two vanishing at the unramified arithmetic stage
 

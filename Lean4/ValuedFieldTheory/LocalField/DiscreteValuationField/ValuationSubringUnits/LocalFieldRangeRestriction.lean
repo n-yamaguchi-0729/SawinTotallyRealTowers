@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
 
-set_option autoImplicit false
-
 /-!
 # Multiplicative-range restriction for local fields
 
 This file packages range restriction as a `LocalField` and exposes the
 properness and completeness of the resulting topology.
 -/
+
+
 
 noncomputable section
 
@@ -33,12 +33,12 @@ multiplicative range. -/
 def mrangeRestrict (F : LocalField.{u, v} K) :
     LocalField.{u, v} K := by
   let G : CompleteDVF.{u, v} K :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictCompleteDVF F.toCompleteDVF)
+    (CompleteDVF.mrangeRestrictCompleteDVF F.toCompleteDVF)
   haveI : Finite G.residueField := by
     simpa [G, CompleteDVF.mrangeRestrictCompleteDVF,
       CompleteDVF.residueField, CompleteDVF.valuationSubring,
       CompleteDVF.toDVF] using
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_residueField_finite F.toCompleteDVF)
+      (CompleteDVF.mrangeRestrict_residueField_finite F.toCompleteDVF)
   exact { toCompleteDVF := G }
 
 /-- The range-restricted topology attached to a local-field package is proper. -/
@@ -47,12 +47,12 @@ theorem mrangeRestrict_properSpace
     letI : Valued K
         (MonoidHom.mrange
           F.toCompleteDVF.valuation.toMonoidWithZeroHom) :=
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F.toCompleteDVF)
+      (CompleteDVF.mrangeRestrictValued F.toCompleteDVF)
     letI : NontriviallyNormedField K :=
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF)
+      (CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF)
     ProperSpace K := by
   exact
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_properSpace_of_residueField_finite F.toCompleteDVF)
+    (CompleteDVF.mrangeRestrict_properSpace_of_residueField_finite F.toCompleteDVF)
 
 /-- The range-restricted topology attached to a local-field package is complete. -/
 theorem mrangeRestrict_completeSpace
@@ -60,12 +60,12 @@ theorem mrangeRestrict_completeSpace
     letI : Valued K
         (MonoidHom.mrange
           F.toCompleteDVF.valuation.toMonoidWithZeroHom) :=
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F.toCompleteDVF)
+      (CompleteDVF.mrangeRestrictValued F.toCompleteDVF)
     letI : NontriviallyNormedField K :=
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF)
+      (CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF)
     CompleteSpace K := by
   exact
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_completeSpace_of_residueField_finite F.toCompleteDVF)
+    (CompleteDVF.mrangeRestrict_completeSpace_of_residueField_finite F.toCompleteDVF)
 
 
 end LocalField

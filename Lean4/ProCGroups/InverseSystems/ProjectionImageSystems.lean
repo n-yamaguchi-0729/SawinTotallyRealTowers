@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.InverseSystems.CofinalityAndDensity
 
-set_option autoImplicit false
-
 /-!
 # Inverse systems formed from projection images
 

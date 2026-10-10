@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.H2CentralExtensionClass
 import Mathlib.GroupTheory.Frattini
 import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 
-set_option autoImplicit false
 /-!
 # Prime central extensions and the Frattini subgroup
 

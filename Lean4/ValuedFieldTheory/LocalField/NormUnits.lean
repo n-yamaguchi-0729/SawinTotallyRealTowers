@@ -14,8 +14,6 @@ independent of any valuation or local-field structure, so valued-field and
 discrete-valuation APIs can share the same definition.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

@@ -11,8 +11,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldExte
 import ValuedFieldTheory.Valuation.Completion.ExtensionInvariants
 import Mathlib.FieldTheory.SeparableClosure
 
-set_option autoImplicit false
-
 /-!
 # Decomposition-field value and residue comparison
 
@@ -21,6 +19,8 @@ This file identifies the decomposition field with the literal intersection
 canonical residue-field isomorphism and equality of absolute-value ranges in
 the nonarchimedean case.
 -/
+
+
 
 noncomputable section
 
@@ -285,7 +285,8 @@ theorem decompositionField_completion_nonarchimedean
       ((AbsoluteValue.isNonarchimedean_iff_bounded_nat vK).2 hv))
 
 /-- Completion does not enlarge the range of a nonarchimedean absolute
-value.  This provides the value-group equality used in the decomposition-field extension comparison. -/
+value.  This provides the value-group equality used in the decomposition-field extension
+comparison. -/
 theorem decompositionField_completionAbsoluteValue_range_eq
     (hv : LubinTate.Valuations.NonarchimedeanAbsoluteValue vK) :
     Set.range (AbsoluteValue.completionAbsoluteValue vK) = Set.range vK :=
@@ -314,7 +315,8 @@ theorem decompositionField_decompositionField_valueRange_eq
     have hvalue : wZ z = AbsoluteValue.completionAbsoluteValue vK y := by
       calc
         wZ z = aE (toLocalization vK w (z : L)) :=
-          (AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2 (z : L)).symm
+          (AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2
+            (z : L)).symm
         _ = aE (algebraMap vK.Completion (localization vK w) y) := by
           rw [hy]
         _ = AbsoluteValue.completionAbsoluteValue vK y :=
@@ -467,7 +469,8 @@ theorem decompositionField_decompositionField_residueMap_surjective
   change IsLocalRing.ResidueField.map f (IsLocalRing.residue AK xA) =
     IsLocalRing.residue AZ z
   rw [IsLocalRing.ResidueField.map_residue]
-  rw [ValuationTheory.DiscreteValuationField.ResidueField.residue_eq_residue_iff_sub_mem_maximalIdeal]
+  rw [(open ValuationTheory.DiscreteValuationField.ResidueField in
+    residue_eq_residue_iff_sub_mem_maximalIdeal)]
   rw [absoluteValueValuationSubring_mem_maximalIdeal_iff_abs_lt_one]
   calc
     (AlgebraicNumberTheory.Valuations.absoluteValueRestrictIntermediateField w.1 Z)
@@ -490,7 +493,8 @@ theorem decompositionField_decompositionField_residueMap_surjective
       ring
     _ < 1 := hclose
 
-/-- The decomposition-field extension comparison, residue-field form: the canonical residue map is an
+/-- The decomposition-field extension comparison, residue-field form: the canonical residue map
+is an
 isomorphism of the actual residue fields. -/
 def decompositionField_decompositionField_residueFieldEquiv
     (hv : LubinTate.Valuations.NonarchimedeanAbsoluteValue vK) :

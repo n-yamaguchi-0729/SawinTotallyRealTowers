@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.FiniteGeneration
 
-set_option autoImplicit false
-
 /-!
 # finite Kummer dual separation
 
@@ -19,6 +17,8 @@ equivalence `R ≃ Hom(G, μₙ)` is injective.
 
 No lattice correspondence or infinite Kummer endpoint is asserted here.
 -/
+
+
 
 noncomputable section
 

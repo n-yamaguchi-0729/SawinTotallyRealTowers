@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
 
-set_option autoImplicit false
-
 /-!
 # Inclusion of integral local induced modules
 
 This leaf embeds the induced integer-unit module into the ordinary local
 multiplicative induced block and proves injectivity.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

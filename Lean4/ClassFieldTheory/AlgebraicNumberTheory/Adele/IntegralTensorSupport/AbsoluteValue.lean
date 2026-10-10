@@ -10,7 +10,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Ramification
 import ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
 import ValuedFieldTheory.Valuation.Henselian.Complete
 import ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
-import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.LinearAlgebra.Basis.SMul
 import Mathlib.RingTheory.Algebraic.Integral
 import Mathlib.RingTheory.DedekindDomain.Factorization
@@ -18,8 +17,6 @@ import Mathlib.RingTheory.Discriminant
 import Mathlib.RingTheory.Localization.Finiteness
 import Mathlib.RingTheory.Valuation.LocalSubring
 import Mathlib.RingTheory.Valuation.ValuationSubring
-
-set_option autoImplicit false
 
 /-!
 # Integral lattices for the relative tensor basis
@@ -42,6 +39,8 @@ the product of the completion valuation rings; applying the statement
 to a unit and its inverse gives the actual product of local integer
 unit groups needed in the finite-support decomposition.
 -/
+
+
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain
@@ -81,7 +80,6 @@ noncomputable def realAbsoluteValueValuation
     exact hvF x y
 
 /-- The following two lemmas expose the valuation-subring interface used by later modules. -/
-
 @[simp]
 theorem realAbsoluteValueValuation_apply
     {F : Type*} [Field F]

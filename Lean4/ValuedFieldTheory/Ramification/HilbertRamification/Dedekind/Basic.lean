@@ -9,8 +9,6 @@ import Mathlib.NumberTheory.RamificationInertia.Inertia
 import Mathlib.Algebra.Exact.Basic
 import Mathlib.RingTheory.DedekindDomain.Factorization
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: Dedekind-domain layer
 
@@ -22,6 +20,8 @@ are already the source proof, but the decomposition/inertia/residue-action
 interface is proved here: membership criteria, residue-action formula,
 normality of inertia in the decomposition group, exactness, and quotient form.
 -/
+
+
 
 noncomputable section
 

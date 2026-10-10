@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
 import Mathlib.RingTheory.Etale.Basic
 
-set_option autoImplicit false
 /-!
 # Finite-place unramifiedness bridges for number fields
 

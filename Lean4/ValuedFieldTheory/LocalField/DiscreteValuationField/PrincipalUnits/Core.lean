@@ -12,11 +12,11 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Residu
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerLift
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerDecomposition
 
-set_option autoImplicit false
 /-!
 Develops quotients of valuation-ring units by higher principal units and compares their first
 layer with residue-field units.
 -/
+
 
 namespace LocalFieldTheory
 

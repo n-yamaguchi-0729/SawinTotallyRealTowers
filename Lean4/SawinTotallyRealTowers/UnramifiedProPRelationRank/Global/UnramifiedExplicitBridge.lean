@@ -12,7 +12,6 @@ import Mathlib.RingTheory.Flat.TorsionFree
 import Mathlib.RingTheory.Smooth.Fiber
 import Mathlib.RingTheory.Unramified.Locus
 
-set_option autoImplicit false
 /-!
 # Explicit everywhere-unramified benchmark bridge
 

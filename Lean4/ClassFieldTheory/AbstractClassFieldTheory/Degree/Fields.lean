@@ -10,12 +10,6 @@ import GaloisCohomology.Cyclic.NormKernelVanishing
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Indices
 import GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open CyclicCohomology
-
 /-!
 # normalized degree and Frobenius theory: the initial datum and abstract fields
 
@@ -24,6 +18,12 @@ residue and ramification indices attached to inclusions of abstract fields.
 As in, a field is represented contravariantly by a closed subgroup of the
 ambient profinite group.
 -/
+
+namespace ClassFormation
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -681,7 +681,9 @@ private theorem relativeDegreeCardinals_lt_aleph0 (D : DegreeData G) :
     exact Cardinal.mk_ne_zero _
   apply (Cardinal.mul_lt_aleph0_iff_of_ne_zero
     hresidue hramification).mp
-  rw [← E.toAbstractExtension.degreeCardinal_eq_relativeResidueDegreeCardinal_mul_relativeRamificationIndexCardinal D]
+  rw [← (open ClassFormation.DegreeData.AbstractExtension in
+    degreeCardinal_eq_relativeResidueDegreeCardinal_mul_relativeRamificationIndexCardinal
+      E.toAbstractExtension D)]
   exact E.degreeCardinal_lt_aleph0
 
 private theorem relativeResidueDegreeCardinal_lt_aleph0

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
-set_option autoImplicit false
-
 /-!
 # Semilinear evaluation for completed p-adic Frobenius lifts
 
@@ -21,6 +19,8 @@ Applying this to the standard-to-multiplicative comparison identifies the
 image of the genuine completed multiplicative primitive point with its
 actual multiplicative unit translate.
 -/
+
+
 
 noncomputable section
 

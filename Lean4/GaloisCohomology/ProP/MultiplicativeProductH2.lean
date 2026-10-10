@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 
-set_option autoImplicit false
 /-!
 # Degree-two vanishing for products of multiplicative representations
 

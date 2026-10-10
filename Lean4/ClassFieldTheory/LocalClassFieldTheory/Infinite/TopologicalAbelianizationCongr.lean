@@ -8,8 +8,6 @@ import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Algebra.Group.Quotient
 import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
 
-set_option autoImplicit false
-
 /-!
 # Functoriality of topological abelianization under equivalence
 
@@ -17,6 +15,8 @@ A continuous multiplicative equivalence carries the closure of the
 commutator subgroup onto the corresponding closure.  It therefore descends
 to a continuous multiplicative equivalence of topological abelianizations.
 -/
+
+
 
 noncomputable section
 

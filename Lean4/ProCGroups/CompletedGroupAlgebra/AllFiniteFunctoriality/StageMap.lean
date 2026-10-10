@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Comap
 import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / All Finite Functoriality / Stage Map
 

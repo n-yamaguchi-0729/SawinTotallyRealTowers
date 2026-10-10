@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.PrimeUnitDifferences
 
-set_option autoImplicit false
-
 /-!
 # Finite-stage correction terms for reciprocity multiplicativity
 
 This file proves that the alternating Frobenius power sum and each coefficient
 of the three-term correction identity are genuine finite-stage units.
 -/
+
+
 
 universe u
 

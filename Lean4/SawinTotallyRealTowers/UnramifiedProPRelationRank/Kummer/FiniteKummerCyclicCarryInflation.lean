@@ -7,7 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.FiniteKummerCyclicFactorSet
 import GaloisCohomology.Kummer.Concrete.FiniteKummerNormalizedGenerator
 
-set_option autoImplicit false
+/-!
+# Inflation and naturality of finite cyclic carry cocycles
+
+Generator-fixed coefficients in a representation define positive cyclic carry
+cocycles after restriction along a group homomorphism.  Mapping coefficients
+commutes with inflation and the degree-two cohomology map; the unit
+representation and intermediate-field unit inclusion give the Kummer cases.
+-/
+
 open CategoryTheory
 open RamificationTheory
 
@@ -81,7 +89,7 @@ theorem mapCocycles₂_finiteCyclicCarryTwoCocycle
 /-- The image of a generator-fixed coefficient is fixed after restriction
 along the cyclic quotient. -/
 theorem finiteCyclicCarryCoefficient_map_fixed
-    {R G Q : Type u} [CommRing R] [CommGroup G] [Fintype G] [Group Q]
+    {R G Q : Type u} [CommRing R] [CommGroup G] [Group Q]
     (A : Rep R G) (B : Rep R Q) (q : Q →* G)
     (f : Rep.res q A ⟶ B)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
@@ -125,7 +133,7 @@ unit-representation carry cocycle used by the Kummer factor-set bridge. -/
 theorem inflatedFiniteCyclicCarryTwoCocycleOfRep_units_eq
     (K M : Type) [Field K] [Field M] [Algebra K M]
     {G : Type} [CommGroup G] [Fintype G]
-    (q : Gal(M / K) →* G)
+    (q : Gal(M/K) →* G)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (b : Rep.ofAlgebraAutOnUnits K M)
     (hb : ∀ x : Gal(M / K),
@@ -147,7 +155,7 @@ theorem inflatedFiniteCyclicCarryTwoCocycleOfRep_units_eq
 theorem map_H2pi_finiteCyclicCarryTwoCocycle_units
     (K M : Type) [Field K] [Field M] [Algebra K M]
     {G : Type} [CommGroup G] [Fintype G]
-    (A : Rep ℤ G) (q : Gal(M / K) →* G)
+    (A : Rep ℤ G) (q : Gal(M/K) →* G)
     (f : Rep.res q A ⟶ Rep.ofAlgebraAutOnUnits K M)
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (a : FiniteCyclicCarryCoefficient A g)

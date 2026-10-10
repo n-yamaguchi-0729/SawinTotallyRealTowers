@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.FiniteKummerCoefficientH2
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
 
-set_option autoImplicit false
 /-!
 # Root-of-unity coefficients are integral at every finite place
 

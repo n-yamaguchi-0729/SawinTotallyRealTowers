@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
 
-set_option autoImplicit false
-
 /-!
 # The big Hilbert class field over the original number field
 
@@ -18,7 +16,9 @@ the selected field is a finite abelian Galois extension of the original
 number field, with degree equal to the narrow class number.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

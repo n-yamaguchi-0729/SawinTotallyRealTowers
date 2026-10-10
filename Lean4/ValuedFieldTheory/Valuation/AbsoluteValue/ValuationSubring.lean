@@ -9,8 +9,6 @@ import Mathlib.Algebra.Polynomial.Lifts
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 import Mathlib.RingTheory.Valuation.LocalSubring
 
-set_option autoImplicit false
-
 /-!
 # Closed unit balls of nonarchimedean absolute values
 

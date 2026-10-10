@@ -7,19 +7,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueRoots
 import Mathlib.Algebra.CharP.Lemmas
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.ResidueField
-
 /-!
 # Teichmuller lifts
 
 Constructs multiplicative Teichmuller representatives, and in equal characteristic the
 coefficient-field section of the residue map.
 -/
+
+namespace LocalFieldTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.ResidueField
+
+
 
 noncomputable section
 

@@ -10,8 +10,6 @@ import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
 
-set_option autoImplicit false
-
 /-!
 # A countable Frobenius relation budget
 

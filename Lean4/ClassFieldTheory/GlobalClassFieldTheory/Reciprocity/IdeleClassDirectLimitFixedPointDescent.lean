@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPointDescentCore
 
-set_option autoImplicit false
-
 /-!
 # Finite-level and direct-limit fixed-point descent endpoints
 
@@ -15,6 +13,8 @@ This endpoint leaf turns the reusable fixed-point comparisons into actual
 descent witnesses first at one finite Galois level and then in the rational
 idèle-class direct limit.
 -/
+
+
 
 noncomputable section
 

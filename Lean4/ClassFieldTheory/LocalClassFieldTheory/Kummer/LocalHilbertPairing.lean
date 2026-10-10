@@ -9,8 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbolLaws
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
 import GaloisCohomology.Kummer.Concrete.SimpleExtensionNorm
 
-set_option autoImplicit false
-
 /-!
 # Comparison of maximal and simple local Kummer pairings
 
@@ -19,6 +17,8 @@ finite Kummer extension.  Restriction of the maximal local Artin automorphism
 to that simple extension, together with functoriality of root quotients,
 identifies the maximal pairing with the existing local Hilbert symbol.
 -/
+
+
 
 noncomputable section
 
@@ -35,7 +35,7 @@ variable {K : Type u} {Omega : Type v}
 fields in a common ambient extension. -/
 theorem rootQuotient_map_intermediateFieldInclusion
     (E F : IntermediateField K Omega) (hEF : E ≤ F)
-    [Normal K E] (beta : Eˣ) (sigma : Gal(F / K)) :
+    [Normal K E] (beta : Eˣ) (sigma : Gal(F/K)) :
     rootQuotient (K := K) (L := F)
         (Units.map (IntermediateField.inclusion hEF).toMonoidHom beta) sigma =
       Units.map (IntermediateField.inclusion hEF).toMonoidHom

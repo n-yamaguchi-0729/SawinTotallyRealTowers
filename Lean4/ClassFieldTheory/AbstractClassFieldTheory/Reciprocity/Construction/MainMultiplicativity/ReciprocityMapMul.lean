@@ -11,14 +11,14 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMu
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.CorrectionSum
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ChosenDegreeOneFrobenius
 
-set_option autoImplicit false
-
 /-!
 # Multiplicativity of the abstract reciprocity map
 
 This file assembles the Frobenius conjugation, finite-stage unit, correction
 sum, and universal norm-descent results into reciprocity-map multiplicativity.
 -/
+
+
 
 universe u
 

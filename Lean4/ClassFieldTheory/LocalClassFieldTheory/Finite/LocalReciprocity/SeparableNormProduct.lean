@@ -9,8 +9,6 @@ import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.RingTheory.Norm.Transitivity
 import Mathlib.RingTheory.AlgebraTower
 
-set_option autoImplicit false
-
 /-!
 # Separable field norms as products of embeddings
 
@@ -18,6 +16,8 @@ For a finite separable extension, the field norm becomes the product over all
 base-field embeddings after mapping into a separably closed ambient field.
 The ambient field need not be a normal extension of the base field.
 -/
+
+
 
 noncomputable section
 
@@ -51,8 +51,8 @@ theorem prod_embeddings_algebraMap_powerBasisGen_eq
   rw [Fintype.prod_equiv algHomEquivSigma
     (fun σ : E →ₐ[k] Ω => σ (algebraMap L E pb.gen))
     (fun σ => σ.1 pb.gen)]
-  rw [← Finset.univ_sigma_univ, Finset.prod_sigma, ← Finset.prod_pow]
-  · refine Finset.prod_congr rfl fun σ _ => ?_
+  · rw [← Finset.univ_sigma_univ, Finset.prod_sigma, ← Finset.prod_pow]
+    refine Finset.prod_congr rfl fun σ _ => ?_
     let : Algebra L Ω := σ.toRingHom.toAlgebra
     simp_rw [Finset.prod_const]
     congr

@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimit
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
 
-set_option autoImplicit false
-
 /-!
 # The rational idele-class formation
 
@@ -18,6 +16,8 @@ This module identifies the fixed-field idele-class representation with
 concrete relative idele class groups and transfers the cyclic low-degree Tate
 cohomology calculation to prove the abstract class-field axiom.
 -/
+
+
 
 namespace GlobalClassFieldTheory
 

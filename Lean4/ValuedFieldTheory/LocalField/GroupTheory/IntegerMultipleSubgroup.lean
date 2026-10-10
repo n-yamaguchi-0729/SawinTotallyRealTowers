@@ -6,7 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Algebra.Group.Int.TypeTags
 import Mathlib.Data.ZMod.QuotientGroup
-import Mathlib.Tactic
+import Lean.Elab.Tactic.Ext
+import Lean.Elab.Tactic.RCases
 
 /-!
 # Integer multiple subgroups
@@ -21,8 +22,6 @@ The declarations retain the established
 group is used by the valuation API; their implementation has no valued-field
 hypotheses.
 -/
-
-set_option autoImplicit false
 
 namespace LocalFieldTheory.DiscreteValuationField
 

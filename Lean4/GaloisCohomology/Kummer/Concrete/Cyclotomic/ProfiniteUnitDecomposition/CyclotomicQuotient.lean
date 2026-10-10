@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.TorsionQuotientMk
 
-set_option autoImplicit false
-
 /-!
 # The cyclotomic profinite-unit torsion quotient
 -/
+
+
 
 open scoped Topology
 

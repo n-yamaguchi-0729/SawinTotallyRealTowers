@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
 
-set_option autoImplicit false
-
 /-!
 # Finite-stage unit differences of Frobenius primes
 
 This file proves that differences of Frobenius fixed-field primes, including
 differences from quotient-action translates, come from finite-stage units.
 -/
+
+
 
 universe u
 

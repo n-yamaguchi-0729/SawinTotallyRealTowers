@@ -20,8 +20,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 
-set_option autoImplicit false
-
 /-!
 # Base-unit representatives for cyclic field-unit H²
 

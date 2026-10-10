@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Gather
 
-set_option autoImplicit false
-
 /-!
 # Compiled final swap stage of the profinite-unit decomposition
 -/
+
+
 
 open scoped Topology
 
@@ -20,11 +20,14 @@ namespace KummerTheory.ProfiniteUnitDecomposition.Internal
 
 open ClassFormation
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (
+  continuousMulEquivProdComm
+) in
 /-- Swap the collected free and finite coordinates. -/
 noncomputable def freeFiniteSwap :
     CyclotomicFinitePart × Multiplicative ZHat ≃ₜ*
       Multiplicative ZHat × CyclotomicFinitePart :=
-  LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.continuousMulEquivProdComm
+  continuousMulEquivProdComm
     CyclotomicFinitePart (Multiplicative ZHat)
 
 end KummerTheory.ProfiniteUnitDecomposition.Internal

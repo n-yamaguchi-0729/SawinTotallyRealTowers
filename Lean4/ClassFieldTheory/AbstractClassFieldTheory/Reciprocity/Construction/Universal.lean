@@ -10,11 +10,11 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Froben
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusPowerFixedField
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusQuotientDescent
 
-set_option autoImplicit false
 /-!
 Proves the universal norm-descent argument from maximal-unramified units to finite intermediate
 norm subgroups.
 -/
+
 
 namespace ClassFormation
 

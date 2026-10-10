@@ -9,7 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormati
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationSubextension
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
 
-set_option autoImplicit false
 /-!
 # Degree-one vanishing for actual finite p-extensions of number fields
 
@@ -144,7 +143,7 @@ private theorem ideleClassCongr_conjugate
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 private theorem rationalFixed_conjugate_action
-    (sigma : Gal(SeparableClosure ℚ / ℚ)) (tau : L ≃ₐ[K] L)
+    (sigma : Gal(SeparableClosure ℚ/ℚ)) (tau : L ≃ₐ[K] L)
     (h : ∀ y : L, numberFieldSeparableClosureEmbedding L (tau y) =
       sigma (numberFieldSeparableClosureEmbedding L y))
     (c : IdeleClassGroup L) :
@@ -174,7 +173,7 @@ private theorem rationalFixed_conjugate_action
 
 omit [IsGalois K L] in
 private theorem relativeIdeleClassEquivRationalFixed_action_core
-    (sigma : Gal(SeparableClosure ℚ / ℚ)) (tau : L ≃ₐ[K] L)
+    (sigma : Gal(SeparableClosure ℚ/ℚ)) (tau : L ≃ₐ[K] L)
     (h : ∀ y : L, numberFieldSeparableClosureEmbedding L (tau y) =
       sigma (numberFieldSeparableClosureEmbedding L y))
     (c : RelativeIdeleGroup.ClassGroup K L) :

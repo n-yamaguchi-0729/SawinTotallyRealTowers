@@ -89,4 +89,9 @@ import SawinTotallyRealTowers.SawinDiscriminantBound
 import SawinTotallyRealTowers.SawinTotallyRealTower
 import SawinTotallyRealTowers.MartinetCorollary
 
-set_option autoImplicit false
+/-!
+# Totally real towers and unramified pro-p groups
+
+This aggregate exposes the totally real tower constructions, Frobenius conditions,
+finite-support comparisons, and unramified pro-p relation-rank theory.
+-/

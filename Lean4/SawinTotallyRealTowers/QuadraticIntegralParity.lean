@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.NumberTheory.Multiplicity
 
-set_option autoImplicit false
-
 /-!
 # Parity of integral quadratic coordinates
 

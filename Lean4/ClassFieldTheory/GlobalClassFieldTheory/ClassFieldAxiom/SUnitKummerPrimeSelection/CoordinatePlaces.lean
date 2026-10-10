@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.BasePlaceSelection
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.FinitePlaceDecomposition
 
-set_option autoImplicit false
-
 /-!
 # Coordinate places in an S-unit Kummer extension
 
@@ -17,7 +15,9 @@ Kummer extension and proves the required decomposition and unramifiedness
 properties.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -311,6 +311,7 @@ theorem sUnitKummerChosenBasePlace_not_mem_ramified
         p v hp hv hn r eG S i ∉
       _root_.ramifiedBaseFinitePlaces
         (K := K) (L := N) := by
+  classical
   dsimp only
   intro hram
   apply

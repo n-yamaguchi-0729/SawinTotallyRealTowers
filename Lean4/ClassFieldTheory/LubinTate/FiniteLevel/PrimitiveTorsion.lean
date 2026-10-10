@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveRoot
 
-set_option autoImplicit false
-
 /-!
 # Primitive Lubin--Tate torsion points
 
@@ -21,6 +19,8 @@ next iterate shows that the level-`n + 1` iterate vanishes.  The primitive
 equation and nonvanishing of the uniformizer show that the level-`n` iterate
 does not vanish.  All arguments are characteristic-independent.
 -/
+
+
 
 noncomputable section
 

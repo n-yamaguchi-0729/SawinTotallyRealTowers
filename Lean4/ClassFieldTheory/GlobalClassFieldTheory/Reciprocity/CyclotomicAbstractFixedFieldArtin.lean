@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassV
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedReciprocity
 
-set_option autoImplicit false
-
 /-!
 # Cyclotomic Artin coordinates over abstract fixed fields
 
@@ -24,6 +22,8 @@ These constructions are the source side of the comparison between
 abstract finite reciprocity and the chosen local-factor product.  No
 reciprocity comparison is assumed in their definitions.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 
@@ -520,11 +520,9 @@ theorem
     (H : FiniteAbstractField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (τ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field)) :
     Multiplicative.toAdd
         (rationalCyclotomicZHatFieldGalEquivZHat
@@ -1146,11 +1144,9 @@ private theorem
         ℚ rationalCyclotomicZHatField)
     [Normal ℚ E]
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (z : E) :
     ((AlgEquiv.restrictNormalHom E
@@ -1169,11 +1165,9 @@ private theorem
     (H : FiniteAbstractField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (z : rationalCyclotomicZHatField) :
     rationalCyclotomicZHatFieldEmbeddingInAbstractFixedFieldCompositum H
@@ -1204,11 +1198,9 @@ private theorem
         ℚ (SeparableClosure ℚ) H.field)
       (abstractFixedFieldCyclotomicFiniteLayer H E)]
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (z : abstractFixedFieldCyclotomicFiniteLayer H E) :
     abstractFixedFieldCyclotomicFiniteLayerInclusion H E
@@ -1243,11 +1235,9 @@ private theorem
         ℚ (SeparableClosure ℚ) H.field)
       (abstractFixedFieldCyclotomicFiniteLayer H E)]
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (z : E) :
     abstractFixedFieldCyclotomicFiniteLayerEmbedding H E
@@ -1286,11 +1276,9 @@ private theorem
         ℚ rationalCyclotomicZHatField)
     [Normal ℚ E]
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (x : E) :
     abstractFixedFieldCyclotomicFiniteLayerInclusion H E
@@ -1338,11 +1326,9 @@ private theorem
         ℚ (SeparableClosure ℚ) H.field)
       (abstractFixedFieldCyclotomicFiniteLayer H E)]
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (x : E) :
     abstractFixedFieldCyclotomicFiniteLayerInclusion H E
@@ -1400,11 +1386,9 @@ private theorem
         ℚ (SeparableClosure ℚ) H.field)
       (abstractFixedFieldCyclotomicFiniteLayer H E)]
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field))
     (x : E) :
     AlgEquiv.restrictNormalHom E
@@ -1436,11 +1420,9 @@ theorem
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField)
     (σ :
-      Gal(
-        LocalClassFieldTheory.abstractRelativeFixedField
+      Gal(LocalClassFieldTheory.abstractRelativeFixedField
           ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field) /
-        LocalClassFieldTheory.abstractFixedField
+          (rationalCyclotomicFieldInertia_le H.field)/LocalClassFieldTheory.abstractFixedField
           ℚ (SeparableClosure ℚ) H.field)) :
     letI : Normal ℚ E := E.isGalois.to_normal
     AlgEquiv.restrictNormalHom E
@@ -1886,8 +1868,8 @@ private theorem cyclotomicAbstractFixedFieldArtinCoordinateMap_apply
     (E :
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField)
-    (σ : Gal(abstractFixedFieldCyclotomicFiniteGaloisLayer H E /
-      cyclotomicAbstractFixedFieldArtinCoordinateBase H)) :
+    (σ : Gal(abstractFixedFieldCyclotomicFiniteGaloisLayer
+      H E/cyclotomicAbstractFixedFieldArtinCoordinateBase H)) :
     cyclotomicAbstractFixedFieldArtinCoordinateMap H E σ =
       @IntermediateField.restrictRestrictAlgEquivMapHom
         ℚ E

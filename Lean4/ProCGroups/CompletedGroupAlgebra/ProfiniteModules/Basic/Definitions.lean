@@ -10,8 +10,6 @@ import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Basic
 import Mathlib.Topology.Category.Profinite.Basic
 import ProCGroups.InverseSystems.FiniteStageFactorization
 
-set_option autoImplicit false
-
 /-!
 # Bundled profinite rings and modules
 

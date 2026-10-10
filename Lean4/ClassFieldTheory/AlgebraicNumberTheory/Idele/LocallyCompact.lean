@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
 import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
 import Mathlib.Topology.Algebra.Valued.LocallyCompact
 
-set_option autoImplicit false
-
 /-!
 # Local compactness of the idele group
 
@@ -252,13 +250,14 @@ theorem finite_adicCompletion_residueField
     (GlobalClassFieldTheory.ClassFieldAxiom.ringOfIntegersQuotientEquivAdicResidueField
       (K := K) v).toEquiv
 
+open _root_.Valued.integer in
 /-- Every nonarchimedean completion of a number field is a proper metric
 space. -/
 instance adicCompletionProperSpace
     (v : HeightOneSpectrum (𝓞 K)) :
     ProperSpace (v.adicCompletion K) := by
   apply
-    Valued.integer.properSpace_iff_completeSpace_and_isDiscreteValuationRing_integer_and_finite_residueField.mpr
+    properSpace_iff_completeSpace_and_isDiscreteValuationRing_integer_and_finite_residueField.2
   refine ⟨inferInstance, ?_, finite_adicCompletion_residueField K v⟩
   change IsDiscreteValuationRing (v.adicCompletionIntegers K)
   infer_instance

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
-set_option autoImplicit false
-
 /-!
 # Local conductor subgroups in the idele class group
 
@@ -17,6 +15,8 @@ ray-class moduli with local conductors.  The constructions are
 idele- and ray-class data and do not depend on the existence of a
 global class field.
 -/
+
+
 
 open scoped NumberField
 

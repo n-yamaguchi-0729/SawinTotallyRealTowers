@@ -6,7 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UniversalNormDescent
 
-set_option autoImplicit false
+/-!
+# Frobenius quotient descent
+
+This module constructs the Frobenius quotient representation, identifies its
+Birkhoff sums with Frobenius power sums, and proves the finite-support
+descent from the maximal unramified field.
+-/
 
 universe u v
 
@@ -15,13 +21,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Frobenius quotient descent
 
-This module constructs the Frobenius quotient representation, identifies its
-Birkhoff sums with Frobenius power sums, and proves the finite-support
-descent from the maximal unramified field.
--/
 
 noncomputable section
 

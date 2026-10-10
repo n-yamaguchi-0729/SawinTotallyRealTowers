@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaSeries
 
-set_option autoImplicit false
-
 /-!
 # The Lubin–Tate endomorphism commutation law: uniqueness source for the first theta identity
 
@@ -16,6 +14,8 @@ This file proves the uniqueness lemma used for the first theta identity in
 the equal-characteristic specialization.  The identity
 `theta^phi = theta o [u]` itself is a separate required endpoint.
 -/
+
+
 
 noncomputable section
 

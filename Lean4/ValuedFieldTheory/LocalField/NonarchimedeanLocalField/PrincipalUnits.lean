@@ -12,8 +12,6 @@ Defines the filtration `U^n = 1 + 𝓂^n`, proves its basic order properties, an
 constructs the quotient of valuation-ring units by the first filtration step.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacterEquiv
 
-set_option autoImplicit false
-
 /-!
 # Rigidity of the rational cyclotomic character
 
@@ -17,7 +15,8 @@ prime-power reductions.  In particular, if every reduction of every
 automorphism of the full rational cyclotomic field has square one.
 -/
 
-open scoped Classical
+
+
 
 noncomputable section
 

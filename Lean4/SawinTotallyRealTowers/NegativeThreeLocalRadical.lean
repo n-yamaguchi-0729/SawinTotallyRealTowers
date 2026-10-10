@@ -25,8 +25,6 @@ import Mathlib.NumberTheory.NumberField.Basic
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # The local value at three of the negative-three character
 
@@ -37,7 +35,7 @@ character. No Hilbert-symbol or norm-pairing comparison is assumed.
 -/
 
 open NumberField IsDedekindDomain
-open scoped NumberField Classical
+open scoped NumberField
 
 noncomputable section
 
@@ -54,6 +52,7 @@ theorem negativeThreeCharacter_three_neg_one_ne_one :
       (IdeleGroup.finitePlaceIdele
         ((Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm
           (⟨3, Nat.prime_three⟩ : Nat.Primes)) (-1)) ≠ 1 := by
+  classical
   let v₃ : HeightOneSpectrum (𝓞 ℚ) :=
     (Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm
       (⟨3, Nat.prime_three⟩ : Nat.Primes)

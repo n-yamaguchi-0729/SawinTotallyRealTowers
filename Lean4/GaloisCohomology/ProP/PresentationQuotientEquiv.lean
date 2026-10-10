@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.TrivialZModP
 import ProCGroups.ProP.Presentation.Basic
 import ProCGroups.Topologies.ContinuousMulEquiv
 
-set_option autoImplicit false
 /-!
 # Cohomology across a presentation quotient
 

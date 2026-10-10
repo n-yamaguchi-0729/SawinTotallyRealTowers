@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.Residue.FreeGroup.Universal
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — residue — free group — coordinates
 

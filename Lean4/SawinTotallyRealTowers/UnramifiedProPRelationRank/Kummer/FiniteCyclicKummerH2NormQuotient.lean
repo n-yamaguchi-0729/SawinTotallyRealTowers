@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
 import GaloisCohomology.Kummer.FiniteKummerCoefficientH2
 
-set_option autoImplicit false
 /-!
 # Finite cyclic Kummer H² and the norm quotient
 
@@ -35,7 +34,7 @@ quotient through the primitive-root coefficient inclusion and the existing
 finite-cyclic units comparison. -/
 noncomputable def finiteCyclicKummerH2ToNormQuotient
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
     groupCohomology
         (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2 ⟶
@@ -47,7 +46,7 @@ noncomputable def finiteCyclicKummerH2ToNormQuotient
 the chosen-root coefficient homomorphism pointwise. -/
 theorem finiteCyclicKummerH2ToNormQuotient_quotient
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g)
     (z : groupCohomology.cocycles
       (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2) :

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotientTransitions
 
-set_option autoImplicit false
-
 /-!
 # The absolute local Artin map from compatible finite quotients
 
@@ -16,6 +14,8 @@ finite quotient of the absolute topological abelianization.  This module
 assembles those maps into the absolute Artin map and records its finite-stage
 compatibility.
 -/
+
+
 
 noncomputable section
 

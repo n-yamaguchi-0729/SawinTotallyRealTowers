@@ -8,14 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 import Mathlib.GroupTheory.GroupAction.Quotient
 
-set_option autoImplicit false
-
-universe u
-
-namespace ClassFormation
-
-open KummerTheory
-
 /-!
 # The abstract reciprocity construction: the double-coset decomposition of a relative norm
 
@@ -24,6 +16,14 @@ the left cosets for an extension by the orbits of an intermediate subgroup.
 This file constructs that partition from Mathlib's class-formula equivalence
 and reindexes the actual relative norm along it.
 -/
+
+universe u
+
+namespace ClassFormation
+
+open KummerTheory
+
+
 
 noncomputable section
 

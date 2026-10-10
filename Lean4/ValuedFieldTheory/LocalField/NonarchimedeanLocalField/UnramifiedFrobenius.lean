@@ -4,15 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.FieldTheory.Finite.Extension
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
 import ValuedFieldTheory.Valuation.HenselLemma
-
-set_option autoImplicit false
-
-namespace LocalFieldTheory
 
 /-!
 # Actual unramified Frobenius
@@ -21,6 +18,10 @@ The arithmetic Frobenius is first defined as finite-field Frobenius on the
 residue extension, then lifted to `Gal(L / K)` through the canonical
 residue-action isomorphism for a finite unramified extension.
 -/
+
+namespace LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -73,7 +74,8 @@ theorem residueExtensionArithmeticFrobeniusOfValuationExtension_preserves_base
   let : Algebra.IsAlgebraic 𝓀[K] 𝓀[L] := inferInstance
   simp [residueExtensionArithmeticFrobeniusOfValuationExtension]
 
-/-- The order of residue arithmetic Frobenius is the degree of the finite residue-field extension. -/
+/-- The order of residue arithmetic Frobenius is the degree of the finite residue-field
+extension. -/
 theorem orderOf_residueExtensionArithmeticFrobeniusOfValuationExtension
     (K L : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L]
@@ -341,7 +343,8 @@ theorem arithmeticFrobeniusOfUnramifiedValuation_apply_primitiveRoot
     _ = (a : L) ^ Nat.card 𝓀[K] := hval'
     _ = ζ ^ Nat.card 𝓀[K] := by rw [ha]
 
-/-- Arithmetic Frobenius in an unramified Galois extension has order equal to the extension degree. -/
+/-- Arithmetic Frobenius in an unramified Galois extension has order equal to the extension
+degree. -/
 theorem orderOf_arithmeticFrobeniusOfUnramifiedValuation
     (K L : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L]
@@ -521,7 +524,8 @@ private theorem zmodCyclicMulEquivOfGenerator_apply_one {G : Type*} [Group G]
 
 /-- The generator-normalized ZMod model of the actual unramified Galois group.
 Unlike `galoisGroupEquivZModOfUnramifiedValuation`, this quotient construction uses
-the specified arithmetic Frobenius as the generator, following the normalized Frobenius construction before the uniformizer/Frobenius calculation. -/
+the specified arithmetic Frobenius as the generator, following the normalized Frobenius
+construction before the uniformizer/Frobenius calculation. -/
 noncomputable def galoisGroupEquivZModOfUnramifiedValuationNormalized
     (K L : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L]

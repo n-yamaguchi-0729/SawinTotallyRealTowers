@@ -10,14 +10,14 @@ import Mathlib.NumberTheory.LocalField.Basic
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
 import ValuedFieldTheory.Valuation.ValuedAdicComplete
 
-set_option autoImplicit false
-
 /-!
 # Complete-DVF packages for local fields and their finite extensions
 
 The canonical complete discrete valuation on a nonarchimedean local field,
 and an integral-closure valuation chosen on each finite separable extension.
 -/
+
+
 
 noncomputable section
 

@@ -12,8 +12,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobe
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.RingTheory.PowerSeries.Basic
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the equal-characteristic theta construction: equal-characteristic theta coefficients
 
@@ -30,6 +28,8 @@ The first construction solves the exact semilinear equation
 for every unit `u in k[[T]]`.  This is the linear coefficient equation forced
 by `theta^phi o e_bar = e o theta` when `pi = u * bar_pi`.
 -/
+
+
 
 noncomputable section
 

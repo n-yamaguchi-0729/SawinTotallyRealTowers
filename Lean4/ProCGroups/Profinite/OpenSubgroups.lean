@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.OrderOfElement
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 
-set_option autoImplicit false
-
 /-!
 # Open subgroups of compact groups
 

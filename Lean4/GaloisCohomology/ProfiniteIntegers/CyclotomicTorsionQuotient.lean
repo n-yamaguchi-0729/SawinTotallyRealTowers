@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 import Mathlib.GroupTheory.Torsion
 
-set_option autoImplicit false
-
 /-!
 # The torsion quotient in the cyclotomic decomposition
 
@@ -17,6 +15,8 @@ The cyclotomic torsion calculation uses the decomposition
 second factor.  This file proves the topological-group calculation which
 turns that decomposition into a `ℤ̂`-extension.
 -/
+
+
 
 open scoped Topology
 
@@ -49,7 +49,8 @@ theorem topologicalClosure_torsion_zHatMul_prod
   ext x
   simp [Subgroup.mem_prod]
 
-/-- Algebraic quotient form of the cyclotomic torsion decomposition: after a cyclotomic decomposition
+/-- Algebraic quotient form of the cyclotomic torsion decomposition: after a cyclotomic
+decomposition
 with dense torsion factor, quotienting by the closure of torsion leaves
 the `ℤ̂` factor. -/
 noncomputable def torsionQuotientZHatMulProdEquiv

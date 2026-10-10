@@ -10,8 +10,6 @@ import Mathlib.GroupTheory.Abelianization.Defs
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Conductor
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormComparison
 
-set_option autoImplicit false
-
 /-!
 # Conductors and unramified extensions
 
@@ -23,6 +21,8 @@ Conversely, conductor one identifies the norm quotient order with the residue
 degree. Finite local reciprocity and the degree formula then force the
 ramification index to be one.
 -/
+
+
 
 noncomputable section
 

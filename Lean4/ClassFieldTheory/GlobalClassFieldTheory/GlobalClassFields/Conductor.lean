@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 
-set_option autoImplicit false
-
 /-!
 # Narrow finite conductors
 
@@ -26,7 +24,9 @@ single defining modulus bounds the support, so these pointwise minima
 assemble into a genuine finitely supported modulus.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 
@@ -93,6 +93,7 @@ theorem narrowFiniteConductorBoundingModulus_spec
         m.finitePart = H.narrowFiniteConductorBoundingModulus :=
   ⟨H.chosenDefiningModulus, H.chosenDefiningModulus_spec, rfl⟩
 
+open scoped Classical in
 /-- The least narrow finite conductor exponent at `v` among all defining
 moduli. -/
 noncomputable def narrowFiniteConductorExponent
@@ -100,6 +101,7 @@ noncomputable def narrowFiniteConductorExponent
     (v : HeightOneSpectrum (𝓞 K)) : ℕ :=
   Nat.find (exists_definingFiniteExponent H.1 H.2 v)
 
+open scoped Classical in
 /-- The least narrow finite conductor exponent is attained by an actual
 defining modulus. -/
 theorem narrowFiniteConductorExponent_spec
@@ -110,6 +112,7 @@ theorem narrowFiniteConductorExponent_spec
         m.finitePart v = H.narrowFiniteConductorExponent v :=
   Nat.find_spec (exists_definingFiniteExponent H.1 H.2 v)
 
+open scoped Classical in
 /-- The narrow finite conductor exponent is no larger than the exponent in
 any defining modulus. -/
 theorem narrowFiniteConductorExponent_le
@@ -122,6 +125,7 @@ theorem narrowFiniteConductorExponent_le
     (exists_definingFiniteExponent H.1 H.2 v)
     ⟨m, hm, rfl⟩
 
+open scoped Classical in
 /-- The finite part of the conductor in the all-real-positive (narrow)
 convention. -/
 noncomputable def narrowFiniteConductor

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Comparison
 
-set_option autoImplicit false
-
 /-!
 # Unit representations in the in-class completion
 

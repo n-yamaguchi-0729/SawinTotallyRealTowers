@@ -9,8 +9,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 import ValuedFieldTheory.Valuation.LocalRingEquiv
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # Canonical ramification numbers on an actual fixed field
 
@@ -20,6 +18,8 @@ For `M = L ^ H`, this file works with the literal restricted valuation ring
 integral displacements.  Thus the public definition is independent of a
 monogenic generator.
 -/
+
+
 
 noncomputable section
 

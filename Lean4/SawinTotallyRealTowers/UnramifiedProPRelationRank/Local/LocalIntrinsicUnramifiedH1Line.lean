@@ -10,7 +10,14 @@ import ProCGroups.ProP.ContinuousH1
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
+/-!
+# The intrinsic unramified local first-cohomology line
+
+Restriction to intrinsic inertia defines the unramified submodule of continuous
+first-cohomology characters. The residue-degree character modulo `p` spans this
+submodule, and its scalar parametrization is injective.
+-/
+
 open scoped Topology
 
 noncomputable section
@@ -93,7 +100,7 @@ noncomputable def localResidueDegreeModPH1 :
 
 @[simp]
 theorem localResidueDegreeModPH1_apply
-    (sigma : Gal(SeparableClosure K / K)) :
+    (sigma : Gal(SeparableClosure K/K)) :
     localResidueDegreeModPH1 K p (Additive.ofMul sigma) =
       zHatReduction p (Fact.out : p.Prime).pos
         (localResidueDegree K sigma).toAdd :=
@@ -167,7 +174,7 @@ private theorem continuousCharacter_zHat_eq_scaledReduction
 /-- Every intrinsic unramified local character is a scalar multiple of
 reduced residue degree. -/
 theorem localIntrinsicUnramifiedH1_eq_smul
-    (chi : ContinuousH1ZMod (p := p) (G := Gal(SeparableClosure K / K)))
+    (chi : ContinuousH1ZMod (p := p) (G := Gal(SeparableClosure K/K)))
     (hchi : chi ∈ localIntrinsicUnramifiedH1 K p) :
     ∃ a : ZMod p, chi = a • localResidueDegreeModPH1 K p := by
   let J := localIntrinsicInertiaSubgroup K

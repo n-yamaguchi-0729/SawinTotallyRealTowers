@@ -8,8 +8,6 @@ import Mathlib.Algebra.Group.Subgroup.Lattice
 import Mathlib.Algebra.Order.Floor.Ring
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 
-set_option autoImplicit false
-
 /-!
 # Natural-ceiling subgroup filtrations
 

@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
 
-set_option autoImplicit false
 /-!
 # Finite local products of global characters annihilate the radical
 
@@ -24,7 +23,7 @@ additivity of the obstruction functional.
 -/
 
 open NumberField IsDedekindDomain
-open scoped NumberField Topology BigOperators Classical RestrictedProduct
+open scoped NumberField Topology BigOperators RestrictedProduct
 noncomputable section
 namespace ClassFieldTower.Martinet.Shafarevich
 
@@ -34,6 +33,7 @@ variable (F : Type) [Field F] [NumberField F]
 product idele topology. -/
 theorem finitePlaceIdele_continuous (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (IdeleGroup.finitePlaceIdele v) := by
+  classical
   let S : Set (HeightOneSpectrum (𝓞 F)) := {v}ᶜ
   have hS : Filter.cofinite ≤ Filter.principal S := by
     rw [Filter.le_principal_iff, Filter.mem_cofinite]
@@ -81,6 +81,7 @@ def finiteSupportIdeleRestrictionCharacter :
     psi.continuous.comp ((finitePlaceIdele_continuous F v.1).comp
       (IdeleGroup.finiteComponentContinuous v.1).continuous)
 
+open scoped Classical in
 /-- A one-place restriction is retained exactly when its place is in the set. -/
 theorem finiteSupportIdeleRestrictionCharacter_finitePlace
     (v : HeightOneSpectrum (𝓞 F)) (a : (v.adicCompletion F)ˣ) :
@@ -115,6 +116,7 @@ theorem finiteSupportIdeleRestrictionCharacter_principal_radical
     (a : (idealNthPowerRadicalKummerSubgroup F n).1) :
     finiteSupportIdeleRestrictionCharacter F n S psi
       (IdeleGroup.principalIdele F a.1) = 1 := by
+  classical
   let d := psi / finiteSupportIdeleRestrictionCharacter F n S psi
   have hd : ∀ (v : HeightOneSpectrum (𝓞 F)) (u : (v.adicCompletion F)ˣ),
       u ∈ (v.adicCompletionIntegers F).units → d (IdeleGroup.finitePlaceIdele v u) = 1 := by

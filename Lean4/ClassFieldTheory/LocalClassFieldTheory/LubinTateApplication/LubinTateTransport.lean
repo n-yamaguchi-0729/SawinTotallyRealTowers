@@ -10,8 +10,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformiz
 import ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormSubgroup
 import ValuedFieldTheory.Valuation.LocalRingEquiv
 
-set_option autoImplicit false
-
 /-!
 # Lubin--Tate application: transport to an equal-characteristic local field
 
@@ -22,6 +20,8 @@ chosen field equivalence sends the inverse Laurent parameter to the prescribed
 positive uniformizer, controls the required principal-unit filtration, and
 transports both the finite Galois structure and the actual field-norm subgroup.
 -/
+
+
 
 noncomputable section
 
@@ -39,6 +39,8 @@ open LocalFieldTheory.IsNonarchimedeanLocalField
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank) in
 /-- The positive residue-field degree used by the equal-characteristic
 Laurent-series model. -/
 noncomputable def equalCharacteristicResidueRank
@@ -46,19 +48,21 @@ noncomputable def equalCharacteristicResidueRank
   ⟨CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F,
     Nat.pos_of_ne_zero fun hrank => by
       have hcard :=
-        CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
+        residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank
           F
       rw [hrank, pow_zero] at hcard
       exact
         (Finite.one_lt_card : 1 < Nat.card F.residueField).ne' hcard⟩
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank) in
 theorem equalCharacteristicResidueCard
     {L : Type} [Field L] (F : LocalField L) :
     Nat.card F.residueField =
       F.residueCharacteristic ^
         (equalCharacteristicResidueRank F : ℕ) := by
   simpa [equalCharacteristicResidueRank] using
-    CompleteDVF.higherPrincipalUnitGroup.residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F
+    residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F
 
 /-! ## The prescribed prime element in the target local field -/
 
@@ -326,7 +330,8 @@ theorem equalCharacteristicTargetLaurentUnitsEquiv_uniformizer_inv
 
 /-- A power-series higher unit remains a principal unit after evaluating the
 Laurent parameter at the prescribed target prime element.  This pointwise
-form is all that the equal-characteristic Laurent-series classification needs and avoids constructing a second, expensive
+form is all that the equal-characteristic Laurent-series classification needs and avoids
+constructing a second, expensive
 integer-ring equivalence. -/
 theorem equalCharacteristicTargetLaurentUnitsEquiv_mem_fieldPrincipalUnits_of_mem_higherUnit
     (p : ℕ) [Fact p.Prime] [CharP K p]
@@ -753,7 +758,8 @@ private theorem equalCharacteristicTransported_normUnits
     (equalCharacteristicTargetLaurentRingEquiv K p ϖ hϖ).apply_symm_apply]
   rfl
 
-/-- Mapping the explicit norm-subgroup computation norm subgroup along the base-field equivalence gives
+/-- Mapping the explicit norm-subgroup computation norm subgroup along the base-field
+equivalence gives
 the actual norm subgroup for the transported algebra. -/
 theorem equalCharacteristicLubinTateNormSubgroup_map_eq_transported
     (p : ℕ) [Fact p.Prime] [hKp : CharP K p]

@@ -10,13 +10,15 @@ import ClassFieldTheory.LubinTate.FormalModule.RecursiveIntertwiner
 import ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
 import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.IntertwinerConstruction
 
-set_option autoImplicit false
-
 /-!
 # Completed scalar endomorphisms
 
-This module constructs the completed multiplicative and changed-standard scalar endomorphisms and proves their linear terms, composition laws, Frobenius invariance, and substitution commutation.
+This module constructs the completed multiplicative and changed-standard scalar endomorphisms
+and proves their linear terms, composition laws, Frobenius invariance, and substitution
+commutation.
 -/
+
+
 
 noncomputable section
 

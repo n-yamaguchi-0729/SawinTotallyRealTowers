@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Presentation.Basic
 import ProCGroups.FoxDifferential.Completed.FreeProC.NaturalTopology
 
-set_option autoImplicit false
 /-!
 # Completed Fox derivatives of finite pro-p presentations
 

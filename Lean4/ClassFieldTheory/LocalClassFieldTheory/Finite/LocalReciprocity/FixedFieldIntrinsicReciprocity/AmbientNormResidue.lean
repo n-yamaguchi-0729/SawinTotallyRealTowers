@@ -5,9 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.EmbeddedFrobeniusTransport
+import Mathlib.FieldTheory.Galois.Abelian
 import Mathlib.GroupTheory.Abelianization.Defs
-
-set_option autoImplicit false
 
 /-!
 # Ambient embedded norm-residue values
@@ -17,6 +16,8 @@ to a unit of the intrinsically presented base field, both before and
 after identifying the abelianization of an abelian Galois group with
 the group itself.
 -/
+
+
 
 noncomputable section
 

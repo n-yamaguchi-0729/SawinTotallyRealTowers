@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.RingTheory.AdicCompletion.Basic
 
-set_option autoImplicit false
-
 /-!
 # Fixed points of adically contracting additive maps
 
@@ -20,6 +18,8 @@ solves the affine fixed-point equation
 uniquely.  The proof uses the successive approximations
 `x₀ = 0`, `xₙ₊₁ = b + T xₙ` and mathlib's `IsPrecomplete.prec`.
 -/
+
+
 
 namespace IsAdicComplete
 

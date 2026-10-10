@@ -6,11 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.Algebra.Group.Hom.Basic
-import Mathlib.Algebra.Group.Subgroup.Basic
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
 import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
-
-set_option autoImplicit false
 
 /-!
 # Power indices in local-field unit groups
@@ -19,6 +16,8 @@ The index formulas below use the actual principal-unit structures from
 the field-unit structure theorem.  Both the natural-cardinality form and the literal rational
 form involving the normalized local absolute value are recorded.
 -/
+
+
 
 noncomputable section
 
@@ -56,7 +55,8 @@ theorem fieldIndex_eq_mul_unitIndex
       ((MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v).valuationSubringˣ ⧸
         (powMonoidHom n :
           (MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v).valuationSubringˣ →*
-          (MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v).valuationSubringˣ).range)] :
+          (MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation
+            v).valuationSubringˣ).range)] :
     let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
       MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
     Nat.card (Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range) =

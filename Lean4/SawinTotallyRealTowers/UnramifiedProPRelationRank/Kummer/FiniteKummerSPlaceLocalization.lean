@@ -14,8 +14,6 @@ import GaloisCohomology.Kummer.FiniteKummerCoefficientH2
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Finite Kummer coefficients in an arbitrary finite idele support
 
@@ -119,7 +117,7 @@ This is a kernel containment, not injectivity of the Kummer coefficient map. -/
 theorem finiteKummerSPlaceH2Localization_ker_le
     (S : Finset (HeightOneSpectrum (𝓞 K))) (n : ℕ+) [Fact (n : ℕ).Prime]
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
-    (hP : IsPGroup (n : ℕ) Gal(L / K))
+    (hP : IsPGroup (n : ℕ) Gal(L/K))
     (hfin : ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S →
       ChosenFinitePlaceIsUnramified (K := K) (L := L) v)
     (hinf : ∀ v : InfinitePlace K, (chosenInfinitePlaceAbove (L := L) v).IsUnramified K) :

@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinDescent
 
-set_option autoImplicit false
-
 /-!
 # Surjectivity of the infinite global Artin homomorphism
 
@@ -20,7 +18,9 @@ it.  Multiplication by this section therefore replaces any idele by a
 norm-one idele without changing its Artin symbol.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField Topology
+
+
+open scoped IsMulCommutative NNReal NumberField Topology
 open NumberField IsDedekindDomain
 open NumberField.Units.dirichletUnitTheorem
 

@@ -8,7 +8,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
 import Mathlib.RingTheory.RamificationInertia.Ramification
 import Mathlib.RingTheory.LocalRing.RingHom.Basic
 
-set_option autoImplicit false
 /-!
 # Unramifiedness across an actual finite local-field equivalence
 

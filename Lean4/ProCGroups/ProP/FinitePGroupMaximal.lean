@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FiniteGroups.StandardClasses
 
-set_option autoImplicit false
 /-!
 # Maximal subgroups of finite p-groups
 

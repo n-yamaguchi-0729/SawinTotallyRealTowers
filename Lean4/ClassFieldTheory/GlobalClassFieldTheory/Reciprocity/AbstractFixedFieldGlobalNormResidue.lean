@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 
-set_option autoImplicit false
-
 /-!
 # Global norm residue on actual fixed fields
 
@@ -22,6 +20,8 @@ Keeping this construction in one ambient separable closure is essential
 for the norm--restriction diagrams: no independently chosen embedding of
 either field is introduced.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 open NumberField

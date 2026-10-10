@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Index
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
 
-set_option autoImplicit false
-
 /-!
 # The final cardinal step in the idele-class Herbrand calculation
 
@@ -22,6 +20,8 @@ that factor in the exact-sequence identity gives
 The degree-zero Tate group is the actual idele-class norm quotient, so
 its cardinality, and hence the norm index, is at least `|G| = [L : K]`.
 -/
+
+
 
 open scoped NumberField
 open NumberField

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 
-set_option autoImplicit false
-
 /-!
 # Compatibility of valuation-ring actions with Galois restriction
 
@@ -17,6 +15,8 @@ valuations, the valuation-ring action of an automorphism of `M / K` on an
 element coming from `L` is the image of the valuation-ring action of its
 restriction to `L / K`.
 -/
+
+
 
 noncomputable section
 
@@ -50,7 +50,7 @@ theorem
     (htarget :
       RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension
         base target)
-    (σ : Gal(M / K)) (a : middle.valuationSubring) :
+    (σ : Gal(M/K)) (a : middle.valuationSubring) :
     valuationSubringAutOfUniqueExtension
           (base := base) (target := target) htarget σ
           (integerMap middle target a) =

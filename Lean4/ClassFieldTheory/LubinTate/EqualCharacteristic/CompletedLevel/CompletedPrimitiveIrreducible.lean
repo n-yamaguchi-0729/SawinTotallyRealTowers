@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLe
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 import Mathlib.RingTheory.PowerSeries.Ideal
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: irreducibility after completed unramified base change
 
@@ -20,6 +18,8 @@ irreducible over `(AlgebraicClosure κ)((T))`.  This is the algebraic input
 needed to prescribe the image of a primitive point when arithmetic Frobenius
 is extended to the completed level field.
 -/
+
+
 
 noncomputable section
 
@@ -198,7 +198,8 @@ theorem equalCharacteristicCompletedPrimitivePolynomial_irreducible
         ((equalCharacteristicCompletedIntegralPrimitivePolynomial F n).map
           (algebraMap (AlgebraicClosure F.residueField)⟦X⟧
             (equalCharacteristicCompletedUnramifiedField F.residueField))) :=
-    (equalCharacteristicCompletedIntegralPrimitivePolynomial_monic F n).irreducible_iff_irreducible_map_fraction_map.mp
+    (equalCharacteristicCompletedIntegralPrimitivePolynomial_monic F n
+      ).irreducible_iff_irreducible_map_fraction_map.mp
       (equalCharacteristicCompletedIntegralPrimitivePolynomial_irreducible F n)
   rwa [equalCharacteristicCompletedIntegralPrimitivePolynomial_map] at hmap
 

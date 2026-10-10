@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.PresentationQuotientEquiv
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerH2
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
 
-set_option autoImplicit false
 /-!
 # Vanishing of local unramified degree-two cohomology
 

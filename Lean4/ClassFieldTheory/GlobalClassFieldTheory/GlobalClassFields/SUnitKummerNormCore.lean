@@ -13,8 +13,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLo
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
 
-set_option autoImplicit false
-
 /-!
 # The full S-unit Kummer norm core
 
@@ -29,7 +27,9 @@ These are the two concrete cardinal ingredients in the class-field existence
 argument.
 -/
 
-open scoped NumberField Classical BigOperators
+
+
+open scoped NumberField BigOperators
 
 noncomputable section
 
@@ -52,6 +52,7 @@ theorem even_or_no_realInfinitePlace_of_primitiveRoots
     (hn : 1 < (n : ℕ)) :
     Even (n : ℕ) ∨
       ∀ w : InfinitePlace K, ¬ w.IsReal := by
+  classical
   by_cases hnEven : Even (n : ℕ)
   · exact Or.inl hnEven
   · refine Or.inr ?_
@@ -76,6 +77,7 @@ theorem even_or_no_realInfinitePlace_of_primitiveRoots
       Fintype.card_pos_iff.mpr ⟨⟨w, hwReal⟩⟩
     omega
 
+open scoped Classical in
 /-- The chosen finite support used for the full `S`-unit Kummer
 construction: it contains the prescribed seed, a support large enough to
 represent every idele class, and the finite support of the exponent. -/
@@ -95,6 +97,7 @@ theorem subset_sUnitKummerNormSupport
     (n : ℕ+)
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
     S ⊆ sUnitKummerNormSupport (K := K) n S := by
+  classical
   intro v hv
   exact Finset.mem_union_left _
     (Finset.mem_union_left _ hv)
@@ -108,6 +111,7 @@ theorem valuation_natCast_eq_one_of_not_mem_sUnitKummerNormSupport
     {w : HeightOneSpectrum (𝓞 K)}
     (hw : w ∉ sUnitKummerNormSupport (K := K) n S) :
     w.valuation K ((n : ℕ) : K) = 1 := by
+  classical
   let hnK : ((n : ℕ) : K) ≠ 0 := by
     exact_mod_cast n.ne_zero
   let nUnit : Kˣ := Units.mk0 ((n : ℕ) : K) hnK
@@ -156,6 +160,7 @@ theorem supportedAt_sUnitKummerNormSupport_sup_principalSubgroup_eq_top
           (sUnitKummerNormSupport (K := K) n S : Set _) ⊔
         IdeleGroup.principalSubgroup K =
       ⊤ := by
+  classical
   apply top_unique
   rw [
     ← IdeleGroup.supportedAt_sup_principalSubgroup_eq_top
@@ -250,7 +255,7 @@ theorem
         rfl
       rw [hprincipal] at hbLocal
       simpa only [M] using
-        KummerTheory.chosenSimpleKummerExtension_infiniteTensorNormSubgroup_eq_top_of_mem_nthPowerSubgroup
+        chosenSimpleKummerExtension_infiniteTensorNormSubgroup_eq_top_of_mem_nthPowerSubgroup
           (K := K) n hnK hmu b w hbLocal
     have hAway :
         ∀ w : HeightOneSpectrum (𝓞 K), w ∉ S' →

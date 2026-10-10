@@ -8,7 +8,14 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Recipr
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteIntermediateCompositum
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.NormConjugation
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction, the Frobenius norm-identity lemma
+
+The operator `φ_n` is written additively as the sum of the first
+`n` powers of the actual quotient action.  This file compares that sum with
+the relative norm through the Frobenius fixed field `Σ` constructed in
+the Frobenius fixed-field theorem.
+-/
 
 universe u
 
@@ -18,14 +25,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction, the Frobenius norm-identity lemma
 
-The operator `φ_n` is written additively as the sum of the first
-`n` powers of the actual quotient action.  This file compares that sum with
-the relative norm through the Frobenius fixed field `Σ` constructed in
-the Frobenius fixed-field theorem.
--/
 
 noncomputable section
 
@@ -950,7 +950,7 @@ private theorem frobeniusQuotientAction_relativeNorm (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
     [hLnormal : (extensionSubgroup K.field L hLK).Normal]
-    [hInertiaFintype : Fintype
+    [hInertiaFinite : Finite
       ((D.maximalUnramifiedField K.field).toSubgroup ⧸
         extensionSubgroup (D.maximalUnramifiedField K.field)
           (D.maximalUnramifiedField L)

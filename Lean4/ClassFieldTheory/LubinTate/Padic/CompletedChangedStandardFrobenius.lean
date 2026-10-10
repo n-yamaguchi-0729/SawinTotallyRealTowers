@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.CompletedChangedStandardResidue
 import ClassFieldTheory.LubinTate.Padic.CompletedResidueFrobenius
 
-set_option autoImplicit false
-
 /-!
 # Frobenius orientation in the completed standard/changed compositum
 
@@ -21,6 +19,8 @@ coefficient Frobenius and relative residue arithmetic Frobenius are the same
 `p`-power map, so the explicit candidate is the inverse of the actual
 arithmetic Frobenius of the finite unramified extension.
 -/
+
+
 
 noncomputable section
 

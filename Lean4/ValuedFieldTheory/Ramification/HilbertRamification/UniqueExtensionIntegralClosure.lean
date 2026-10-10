@@ -8,8 +8,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 import Mathlib.Algebra.Polynomial.Lifts
 
-set_option autoImplicit false
-
 /-!
 # Integral closure for a unique discrete valuation extension
 
@@ -21,6 +19,8 @@ valuation ring is integral, hence finite, over the base valuation ring.
 
 No completeness or Henselian hypothesis is used.
 -/
+
+
 
 noncomputable section
 

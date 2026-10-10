@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FixedTowerUnitCorrection
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusQuotientDescent
 
-set_option autoImplicit false
+/-!
+# Unit descent on Frobenius fixed-field towers
+
+This module packages the fixed-tower action and power correction, applies
+the unit-cohomology axiom, and proves the corrected universal norm-descent
+equation on finite fixed-field towers.
+-/
 
 universe u v
 
@@ -16,13 +22,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Unit descent on Frobenius fixed-field towers
 
-This module packages the fixed-tower action and power correction, applies
-the unit-cohomology axiom, and proves the corrected universal norm-descent
-equation on finite fixed-field towers.
--/
 
 noncomputable section
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 import GaloisCohomology.Cyclic.TateComparison
 
-set_option autoImplicit false
-
 /-! Comparisons between arithmetic Herbrand quotient presentations and mathlib Tate cohomology. -/
 
 open CategoryTheory

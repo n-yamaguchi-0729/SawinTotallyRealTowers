@@ -17,8 +17,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletion
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
 import ValuedFieldTheory.Valuation.Completion.ExtensionFactorClassification
 
-set_option autoImplicit false
-
 /-!
 # Weak approximation for actual local norm quotients
 
@@ -35,7 +33,9 @@ All choices are made from the extension theorem for absolute values;
 none of the local conclusions is included as input data.
 -/
 
-open scoped NumberField Classical NNReal
+
+
+open scoped NumberField NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section

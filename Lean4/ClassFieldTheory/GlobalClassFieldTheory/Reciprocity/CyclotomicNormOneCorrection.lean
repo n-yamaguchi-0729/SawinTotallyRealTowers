@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ExtensionBehavi
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 
-set_option autoImplicit false
-
 /-!
 # Norm-one correction for the normalized cyclotomic idele value
 
@@ -19,6 +17,8 @@ cyclotomic norm-one reduction.  After taking a positive
 that section cancels the absolute norm.  Its rational cyclotomic Artin
 value is trivial, so the normalized value is unchanged.
 -/
+
+
 
 open scoped NNReal NumberField
 open NumberField

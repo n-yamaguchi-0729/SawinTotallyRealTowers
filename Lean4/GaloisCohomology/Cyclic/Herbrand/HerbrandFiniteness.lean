@@ -9,10 +9,6 @@ import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 import Mathlib.RepresentationTheory.Homological.GroupHomology.FiniteCyclic
 
-set_option autoImplicit false
-
-namespace CyclicCohomology
-
 /-!
 # Finiteness in the Herbrand exact hexagon
 
@@ -21,6 +17,8 @@ for a short exact sequence of modules over a finite cyclic group, if the Herbran
 quotients of any two terms are defined, then the quotient of the third term is
 defined as well.
 -/
+
+namespace CyclicCohomology
 
 noncomputable section
 

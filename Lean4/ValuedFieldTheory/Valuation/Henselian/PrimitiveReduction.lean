@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.Henselian.Core
 import Mathlib.RingTheory.Polynomial.GaussLemma
 import Mathlib.RingTheory.Polynomial.ContentIdeal
 
-set_option autoImplicit false
-
 /-!
 # Primitive polynomials detected by reduction
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
 
-set_option autoImplicit false
-
 /-!
 # Pulling back in-class quotient indices
 

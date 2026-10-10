@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Algebra.ZMod
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaIndexing
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitInverseLimitSurjectivity
@@ -11,8 +12,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.EqualCharacteristicLa
 import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 import Mathlib.NumberTheory.Padics.ProperSpace
-
-set_option autoImplicit false
 
 /-!
 # The convergent Iwasawa product for principal units
@@ -22,10 +21,13 @@ family in the principal-unit inverse limit, proves continuity and bijectivity,
 and packages the resulting topological additive equivalence.
 -/
 
+
+
 /-!
 # Finite-level Iwasawa generators for principal units
 
-This file develops an explicit topological product decomposition of principal units.  In equal characteristic, choose
+This file develops an explicit topological product decomposition of principal units.  In equal
+characteristic, choose
 a residue-field basis `omega_i` over `F_p`.  For a positive degree `n`, the
 prime-to-`p` Iwasawa map is
 
@@ -91,7 +93,7 @@ noncomputable def iwasawaSeedIdeal
     (n : ℕ) (i : Fin (iwasawaResidueRank F)) :
     ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u) :=
   DVF.maximalIdealPowMulUniformizerPowMap F.toDVF hpi n
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.residueTeichmullerLift F.toCompleteDVF
+    (residueTeichmullerLift F.toCompleteDVF
       (iwasawaResidueBasis F i))
 
 /--
@@ -105,7 +107,7 @@ i) * pi ^ n`.
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (i : Fin (iwasawaResidueRank F)) :
     (iwasawaSeedIdeal F hpi n i : F.valuationSubring) =
-      LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.residueTeichmullerLift F.toCompleteDVF
+      residueTeichmullerLift F.toCompleteDVF
           (iwasawaResidueBasis F i) * pi ^ n :=
   rfl
 
@@ -115,8 +117,8 @@ noncomputable def iwasawaSeedAtLevel
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (i : Fin (iwasawaResidueRank F)) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n :=
-  LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) n :=
+  principalUnitOneAddOfMemPowSubgroup
     F.toCompleteDVF hn (iwasawaSeedIdeal F hpi n i)
       (iwasawaSeedIdeal F hpi n i).property
 
@@ -132,13 +134,13 @@ F.toCompleteDVF (iwasawaResidueBasis F i) * pi ^ n`.
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (i : Fin (iwasawaResidueRank F)) :
     (((iwasawaSeedAtLevel F hpi n hn i :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
       F.valuationSubring) =
-      1 + LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.residueTeichmullerLift F.toCompleteDVF
+      1 + residueTeichmullerLift F.toCompleteDVF
           (iwasawaResidueBasis F i) * pi ^ n := by
   rw [iwasawaSeedAtLevel,
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup_val,
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPow_val]
+    principalUnitOneAddOfMemPowSubgroup_val,
+    principalUnitOneAddOfMemPow_val]
   rfl
 
 /-- The same generator regarded as a first principal unit, so that the
@@ -148,9 +150,9 @@ noncomputable def iwasawaSeed
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (i : Fin (iwasawaResidueRank F)) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
   ⟨(iwasawaSeedAtLevel F hpi n hn i : F.valuationSubringˣ),
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.antitone F.toCompleteDVF hn
+    antitone F.toCompleteDVF hn
       (iwasawaSeedAtLevel F hpi n hn i).property⟩
 
 /--
@@ -164,9 +166,9 @@ i) * pi ^ n`.
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (i : Fin (iwasawaResidueRank F)) :
-    (((iwasawaSeed F hpi n hn i : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) :
+    (((iwasawaSeed F hpi n hn i : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) :
         F.valuationSubringˣ) : F.valuationSubring) =
-      1 + LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.residueTeichmullerLift F.toCompleteDVF
+      1 + residueTeichmullerLift F.toCompleteDVF
           (iwasawaResidueBasis F i) * pi ^ n := by
   exact iwasawaSeedAtLevel_val F hpi n hn i
 
@@ -177,25 +179,25 @@ i) * pi ^ n`.
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (i : Fin (iwasawaResidueRank F)) :
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotAddEquivResidueOfUniformizer
+    principalUnitSuccQuotAddEquivResidueOfUniformizer
         F.toCompleteDVF hpi n hn
       (Additive.ofMul
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotMk F.toCompleteDVF n
+        (principalUnitSuccQuotMk F.toCompleteDVF n
           (iwasawaSeedAtLevel F hpi n hn i))) =
       iwasawaResidueBasis F i := by
   let r : F.valuationSubring :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.residueTeichmullerLift F.toCompleteDVF
+    residueTeichmullerLift F.toCompleteDVF
       (iwasawaResidueBasis F i)
   let e :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotAddEquivResidueOfUniformizer
+    principalUnitSuccQuotAddEquivResidueOfUniformizer
       F.toCompleteDVF hpi n hn
   have hs :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotAddEquivResidueOfUniformizer_symm_residue
+    principalUnitSuccQuotAddEquivResidueOfUniformizer_symm_residue
       F.toCompleteDVF hpi n hn r
   have he := congrArg e hs
   simpa [e, r, iwasawaSeedAtLevel, iwasawaSeedIdeal,
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_apply,
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.residueMap_residueTeichmullerLift] using he.symm
+    principalUnitSuccQuotOfIdealPow_apply,
+    residueMap_residueTeichmullerLift] using he.symm
 
 /-- The basis-coordinate form of the leading-layer calculation.  This is the
 linear algebra behind formula (1) at `s = 0`: the chosen `f` seed units give
@@ -206,10 +208,10 @@ noncomputable def iwasawaLeadingLayerAddEquiv
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) :
     (Fin (iwasawaResidueRank F) → ZMod F.residueCharacteristic) ≃+
-      Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuot
+      Additive (principalUnitSuccQuot
         F.toCompleteDVF n) :=
   (iwasawaResidueBasis F).equivFun.symm.toAddEquiv.trans
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotAddEquivResidueOfUniformizer
+    (principalUnitSuccQuotAddEquivResidueOfUniformizer
       F.toCompleteDVF hpi n hn).symm
 
 /--
@@ -224,13 +226,13 @@ Establishes the identity `iwasawaLeadingLayerAddEquiv F hpi n hn (Pi.single i 1)
     (n : ℕ) (hn : 1 ≤ n) (i : Fin (iwasawaResidueRank F)) :
     iwasawaLeadingLayerAddEquiv F hpi n hn (Pi.single i 1) =
       Additive.ofMul
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotMk F.toCompleteDVF n
+        (principalUnitSuccQuotMk F.toCompleteDVF n
           (iwasawaSeedAtLevel F hpi n hn i)) := by
   let e :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotAddEquivResidueOfUniformizer
+    principalUnitSuccQuotAddEquivResidueOfUniformizer
       F.toCompleteDVF hpi n hn
   let z := Additive.ofMul
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotMk F.toCompleteDVF n
+    (principalUnitSuccQuotMk F.toCompleteDVF n
       (iwasawaSeedAtLevel F hpi n hn i))
   calc
     iwasawaLeadingLayerAddEquiv F hpi n hn (Pi.single i 1) =
@@ -283,11 +285,11 @@ higher-unit level. -/
 noncomputable def principalUnitPadicSmulAtLevel
     (F : LocalField.{u, v} K) (r : ℕ) (hr : 1 ≤ r)
     (a : ℤ_[F.residueCharacteristic])
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1)
-    (hx : (x : F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) r) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) r :=
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1)
+    (hx : (x : F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) r) :
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) r :=
   ⟨(Additive.toMul (a • Additive.ofMul x) :
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1),
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) 1),
     principalUnitPadic_smul_mem_higher F hr a x hx⟩
 
 /-- On `U^r/U^(r+1)`, a p-adic exponent may be replaced by its first
@@ -296,8 +298,8 @@ integers `b_i ≡ a_i (mod p)` in the coefficient calculation. -/
 theorem principalUnitSuccQuotMk_padicSmulAtLevel_eq_toZMod_val
     (F : LocalField.{u, v} K) (r : ℕ) (hr : 1 ≤ r)
     (a : ℤ_[F.residueCharacteristic])
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1)
-    (hx : (x : F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) r) :
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1)
+    (hx : (x : F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) r) :
     principalUnitSuccQuotMk F.toCompleteDVF r
         (principalUnitPadicSmulAtLevel F r hr a x hx) =
       principalUnitSuccQuotMk F.toCompleteDVF r
@@ -308,8 +310,8 @@ theorem principalUnitSuccQuotMk_padicSmulAtLevel_eq_toZMod_val
     ((principalUnitPadicSmulAtLevel F r hr a x hx /
         principalUnitPadicSmulAtLevel F r hr
           ((PadicInt.toZMod a).val : ℤ_[F.residueCharacteristic]) x hx :
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) r) : F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) r) : F.valuationSubringˣ) ∈
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)
   obtain ⟨b, hb⟩ :=
     exists_padicInt_sub_toZMod_val_eq_residueCharacteristic_mul F a
   have hdeep :=
@@ -318,12 +320,12 @@ theorem principalUnitSuccQuotMk_padicSmulAtLevel_eq_toZMod_val
   rw [← hb] at hdeep
   change
     (((Additive.toMul (a • Additive.ofMul x) :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) /
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) /
         (Additive.toMul
           (((PadicInt.toZMod a).val : ℤ_[F.residueCharacteristic]) •
-            Additive.ofMul x) : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) :
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)
+            Additive.ofMul x) : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) :
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)
   have hsub := sub_smul a
     ((PadicInt.toZMod a).val : ℤ_[F.residueCharacteristic])
     (Additive.ofMul x)
@@ -336,7 +338,7 @@ noncomputable def principalUnitLeadingCoefficientAddHom
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (r : ℕ) (hr : 1 ≤ r) :
-    Additive (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) r) →+ F.residueField :=
+    Additive (((higherPrincipalUnitGroup F.toCompleteDVF)) r) →+ F.residueField :=
   (principalUnitSuccQuotAddEquivResidueOfUniformizer
       F.toCompleteDVF hpi r hr).toAddMonoidHom.comp
     { toFun := fun x => Additive.ofMul
@@ -366,10 +368,10 @@ theorem principalUnitLeadingCoefficientAddHom_eq_zero_iff_mem_succ
     (F : LocalField.{u, v} K)
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
-    (n : ℕ) (hn : 1 ≤ n) (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) :
+    (n : ℕ) (hn : 1 ≤ n) (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) :
     principalUnitLeadingCoefficientAddHom F hpi n hn (Additive.ofMul x) = 0 ↔
       ((x : F.valuationSubringˣ) : F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) := by
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) := by
   let e := principalUnitSuccQuotAddEquivResidueOfUniformizer
     F.toCompleteDVF hpi n hn
   let q := principalUnitSuccQuotMk F.toCompleteDVF n x
@@ -451,7 +453,7 @@ noncomputable def principalUnitOneAddUniformizerPowAtLevel
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (r : F.valuationSubring) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n :=
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) n :=
   principalUnitOneAddOfMemPowSubgroup F.toCompleteDVF hn
     (DVF.maximalIdealPowMulUniformizerPowMap F.toDVF hpi n r)
     (DVF.maximalIdealPowMulUniformizerPowMap F.toDVF hpi n r).property
@@ -467,7 +469,7 @@ F.valuationSubring) = 1 + r * pi ^ n`.
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (r : F.valuationSubring) :
     (((principalUnitOneAddUniformizerPowAtLevel F hpi n hn r :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
       F.valuationSubring) = 1 + r * pi ^ n := by
   rw [principalUnitOneAddUniformizerPowAtLevel,
     principalUnitOneAddOfMemPowSubgroup_val,
@@ -502,18 +504,18 @@ theorem pow_residueCharacteristic_pow_mem_higher_mul
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     {n : ℕ} (s : ℕ)
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1)
-    (hx : (x : F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) :
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1)
+    (hx : (x : F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) n) :
     (((x ^ (F.residueCharacteristic ^ s) :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
       F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+        ((higherPrincipalUnitGroup F.toCompleteDVF))
           (n * F.residueCharacteristic ^ s) := by
   rw [LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff]
   have ha :
       (((x : F.valuationSubringˣ) : F.valuationSubring) - 1) ∈
         F.maximalIdeal ^ n :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff F.toCompleteDVF n
+    (mem_iff F.toCompleteDVF n
       (x : F.valuationSubringˣ)).1 hx
   have hapow :
       ((((x : F.valuationSubringˣ) : F.valuationSubring) - 1) ^
@@ -523,7 +525,7 @@ theorem pow_residueCharacteristic_pow_mem_higher_mul
     simpa [pow_mul] using h
   have heq :
       ((((x ^ (F.residueCharacteristic ^ s) :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
         F.valuationSubring) - 1) =
         (((x : F.valuationSubringˣ) : F.valuationSubring) - 1) ^
           (F.residueCharacteristic ^ s) := by
@@ -544,10 +546,10 @@ theorem pow_residueCharacteristic_pow_mem_higher_mul
 /-- Inclusion `U^n -> U^1`. -/
 def higherUnitToFirst
     (F : LocalField.{u, v} K) (n : ℕ) (hn : 1 ≤ n)
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) :
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
   ⟨(x : F.valuationSubringˣ),
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.antitone F.toCompleteDVF hn x.property⟩
+    antitone F.toCompleteDVF hn x.property⟩
 
 /-- Proves the bound `1 ≤ n * F.residueCharacteristic ^ s`. -/
 theorem one_le_mul_residueCharacteristic_pow
@@ -563,10 +565,10 @@ noncomputable def principalUnitFrobeniusAtLevel
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) (hn : 1 ≤ n) (s : ℕ)
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (n * F.residueCharacteristic ^ s) :=
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) :
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) (n * F.residueCharacteristic ^ s) :=
   ⟨((higherUnitToFirst F n hn x) ^ (F.residueCharacteristic ^ s) :
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1),
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) 1),
     pow_residueCharacteristic_pow_mem_higher_mul F s
       (higherUnitToFirst F n hn x) x.property⟩
 
@@ -602,7 +604,7 @@ theorem principalUnitLeadingCoefficientAddHom_frobenius
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (s : ℕ)
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) :
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) :
     let m := n * F.residueCharacteristic ^ s
     let hm : 1 ≤ m := one_le_mul_residueCharacteristic_pow F hn s
     principalUnitLeadingCoefficientAddHom F hpi m hm
@@ -620,7 +622,7 @@ theorem principalUnitLeadingCoefficientAddHom_frobenius
     principalUnitLeadingCoefficientAddHom F hpi n hn (Additive.ofMul x)
   let r : F.valuationSubring :=
     residueTeichmullerLift F.toCompleteDVF lead
-  let y : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n :=
+  let y : ((higherPrincipalUnitGroup F.toCompleteDVF)) n :=
     principalUnitOneAddUniformizerPowAtLevel F hpi n hn r
   have hyLead :
       principalUnitLeadingCoefficientAddHom F hpi n hn
@@ -637,11 +639,11 @@ theorem principalUnitLeadingCoefficientAddHom_frobenius
         principalUnitLeadingCoefficientAddHom F hpi n hn (Additive.ofMul y)
     exact hyLead.symm
   have hxyDeep :
-      (((x / y : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
-        F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) :=
+      (((x / y : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
+        F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) :=
     (principalUnitSuccQuotMk_eq_iff_div_mem F.toCompleteDVF n x y).1 hxyQuot
-  let d : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) :=
-    ⟨((x / y : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ), hxyDeep⟩
+  let d : ((higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) :=
+    ⟨((x / y : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ), hxyDeep⟩
   have hdPow := pow_residueCharacteristic_pow_mem_higher_mul F s
     (higherUnitToFirst F (n + 1) (Nat.succ_le_succ (Nat.zero_le n)) d)
     d.property
@@ -652,9 +654,9 @@ theorem principalUnitLeadingCoefficientAddHom_frobenius
   have hdPow' :
       ((((higherUnitToFirst F (n + 1)
           (Nat.succ_le_succ (Nat.zero_le n)) d) ^ q :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
-        F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1) :=
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.antitone F.toCompleteDVF hlevel (by
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
+        F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1) :=
+    antitone F.toCompleteDVF hlevel (by
       simpa [q] using hdPow)
   have hpowQuot :
       principalUnitSuccQuotMk F.toCompleteDVF m
@@ -665,8 +667,8 @@ theorem principalUnitLeadingCoefficientAddHom_frobenius
     change
       (((principalUnitFrobeniusAtLevel F n hn s x /
           principalUnitFrobeniusAtLevel F n hn s y :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) m) : F.valuationSubringˣ) :
-        F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) m) : F.valuationSubringˣ) :
+        F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
     simpa [principalUnitFrobeniusAtLevel, higherUnitToFirst, d, q, m,
       div_pow] using hdPow'
   have hleadEq :
@@ -732,7 +734,7 @@ theorem principalUnitLeadingCoefficientAddHom_padicSmul_iwasawaSeed
   have hxk : xk = (iwasawaSeedAtLevel F hpi r hr i) ^ k := by
     apply Subtype.ext
     exact congrArg
-      (fun z : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 => (z : F.valuationSubringˣ))
+      (fun z : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 => (z : F.valuationSubringˣ))
       (principalUnitPadic_nsmul_eq_pow
         F k (iwasawaSeed F hpi r hr i))
   change
@@ -767,7 +769,7 @@ noncomputable def iwasawaGn
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) :
     (Fin (iwasawaResidueRank F) → ℤ_[F.residueCharacteristic]) →ₗ[ℤ_[F.residueCharacteristic]]
-      Additive (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) :=
+      Additive (((higherPrincipalUnitGroup F.toCompleteDVF)) 1) :=
   Fintype.linearCombination ℤ_[F.residueCharacteristic]
     (fun i => Additive.ofMul (iwasawaSeed F hpi n hn i))
 
@@ -796,8 +798,8 @@ theorem iwasawaGn_mem_higher
     (n : ℕ) (hn : 1 ≤ n)
     (a : Fin (iwasawaResidueRank F) → ℤ_[F.residueCharacteristic]) :
     ((Additive.toMul (iwasawaGn F hpi n hn a) :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n := by
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) n := by
   classical
   rw [iwasawaGn_apply]
   induction (Finset.univ : Finset (Fin (iwasawaResidueRank F)))
@@ -808,13 +810,13 @@ theorem iwasawaGn_mem_higher
       change
         ((Additive.toMul
             (a i • Additive.ofMul (iwasawaSeed F hpi n hn i)) :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) *
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) *
           ((Additive.toMul
             (∑ j ∈ s, a j • Additive.ofMul (iwasawaSeed F hpi n hn j)) :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n
-      apply (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n).mul_mem
-      · exact LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitPadic_smul_mem_higher
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) n
+      apply (((higherPrincipalUnitGroup F.toCompleteDVF)) n).mul_mem
+      · exact principalUnitPadic_smul_mem_higher
           F hn (a i) (iwasawaSeed F hpi n hn i)
           (iwasawaSeedAtLevel F hpi n hn i).property
       · exact ih
@@ -826,9 +828,9 @@ noncomputable def iwasawaGnAtLevel
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n)
     (a : Fin (iwasawaResidueRank F) → ℤ_[F.residueCharacteristic]) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n :=
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) n :=
   ⟨(Additive.toMul (iwasawaGn F hpi n hn a) :
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1),
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) 1),
     iwasawaGn_mem_higher F hpi n hn a⟩
 
 /--
@@ -851,24 +853,24 @@ theorem additive_iwasawaGnAtLevel_eq_sum
   apply Subtype.ext
   change
     ((Additive.toMul (iwasawaGn F hpi n hn a) :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
       ((Additive.toMul
           (∑ i, Additive.ofMul
             (principalUnitPadicSmulAtLevel F n hn (a i)
               (iwasawaSeed F hpi n hn i)
               (iwasawaSeedAtLevel F hpi n hn i).property)) :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ)
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ)
   rw [iwasawaGn_apply]
   have hsum : ∀ s : Finset (Fin (iwasawaResidueRank F)),
       ((Additive.toMul
           (∑ i ∈ s, a i • Additive.ofMul (iwasawaSeed F hpi n hn i)) :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
       ((Additive.toMul
           (∑ i ∈ s, Additive.ofMul
             (principalUnitPadicSmulAtLevel F n hn (a i)
               (iwasawaSeed F hpi n hn i)
               (iwasawaSeedAtLevel F hpi n hn i).property)) :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) := by
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) := by
     intro s
     induction s using Finset.induction_on with
     | empty => rfl
@@ -877,19 +879,19 @@ theorem additive_iwasawaGnAtLevel_eq_sum
         change
           ((Additive.toMul
               (a i • Additive.ofMul (iwasawaSeed F hpi n hn i)) :
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) * _ =
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) * _ =
           ((principalUnitPadicSmulAtLevel F n hn (a i)
               (iwasawaSeed F hpi n hn i)
               (iwasawaSeedAtLevel F hpi n hn i).property :
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) * _
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) * _
         have hfirst :
             ((Additive.toMul
                 (a i • Additive.ofMul (iwasawaSeed F hpi n hn i)) :
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
+              ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
               ((principalUnitPadicSmulAtLevel F n hn (a i)
                   (iwasawaSeed F hpi n hn i)
                   (iwasawaSeedAtLevel F hpi n hn i).property :
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) := rfl
+                ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) := rfl
         rw [hfirst, ih]
   simpa only [Finset.sum_filter, Finset.mem_univ, ↓reduceIte] using
     hsum (Finset.univ : Finset (Fin (iwasawaResidueRank F)))
@@ -956,7 +958,7 @@ noncomputable def iwasawaGnScaledAtLevel
       (iwasawaGn F hpi n hn
         ((F.residueCharacteristic ^ s :
             ℤ_[F.residueCharacteristic]) • a)) :
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1), by
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) 1), by
     rw [iwasawaGn_residueCharacteristic_pow_smul_eq_pow]
     exact pow_residueCharacteristic_pow_mem_higher_mul F s
       (Additive.toMul (iwasawaGn F hpi n hn a))
@@ -978,7 +980,7 @@ theorem iwasawaGnScaledAtLevel_eq_frobenius
         (iwasawaGnAtLevel F hpi n hn a) := by
   apply Subtype.ext
   exact congrArg
-    (fun z : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 => (z : F.valuationSubringˣ))
+    (fun z : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 => (z : F.valuationSubringˣ))
     (iwasawaGn_residueCharacteristic_pow_smul_eq_pow F hpi n hn s a)
 
 /-- The coefficient congruence:
@@ -1010,15 +1012,15 @@ theorem exists_iwasawaGnScaled_mul_mem_succ
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n) (s : ℕ)
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF))
       (n * F.residueCharacteristic ^ s)) :
     ∃ a : Fin (iwasawaResidueRank F) →
         ℤ_[F.residueCharacteristic],
       (((x / iwasawaGnScaledAtLevel F hpi n hn s a :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+          ((higherPrincipalUnitGroup F.toCompleteDVF))
             (n * F.residueCharacteristic ^ s)) : F.valuationSubringˣ) :
         F.valuationSubringˣ) ∈
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+          ((higherPrincipalUnitGroup F.toCompleteDVF))
             (n * F.residueCharacteristic ^ s + 1) := by
   let m : ℕ := n * F.residueCharacteristic ^ s
   have hm : 1 ≤ m := one_le_mul_residueCharacteristic_pow F hn s
@@ -1052,8 +1054,8 @@ theorem exists_iwasawaGnScaled_mul_mem_succ
     rw [principalUnitLeadingCoefficientAddHom_iwasawaGnScaledAtLevel,
       hcoord, hbeta]
   change (x / iwasawaGnScaledAtLevel F hpi n hn s a) ∈
-    (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).subgroupOf
-      (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) m)
+    (((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).subgroupOf
+      (((higherPrincipalUnitGroup F.toCompleteDVF)) m)
   apply (principalUnitSuccQuotMk_eq_one_iff F.toCompleteDVF m _).1
   rw [map_div]
   have hquot :
@@ -1082,10 +1084,10 @@ theorem iwasawaGnScaled_mem_succ_iff_exists_residueCharacteristic_smul
     (n : ℕ) (hn : 1 ≤ n) (s : ℕ)
     (a : Fin (iwasawaResidueRank F) → ℤ_[F.residueCharacteristic]) :
     (((iwasawaGnScaledAtLevel F hpi n hn s a :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+        ((higherPrincipalUnitGroup F.toCompleteDVF))
           (n * F.residueCharacteristic ^ s)) : F.valuationSubringˣ) :
       F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+        ((higherPrincipalUnitGroup F.toCompleteDVF))
           (n * F.residueCharacteristic ^ s + 1) ↔
       ∃ b : Fin (iwasawaResidueRank F) →
           ℤ_[F.residueCharacteristic],
@@ -1142,10 +1144,10 @@ theorem iwasawa_formula_two
           ℤ_[F.residueCharacteristic],
         a = (F.residueCharacteristic : ℤ_[F.residueCharacteristic]) • b) ↔
       ¬ (((iwasawaGnScaledAtLevel F hpi n hn s a :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+          ((higherPrincipalUnitGroup F.toCompleteDVF))
             (n * F.residueCharacteristic ^ s)) : F.valuationSubringˣ) :
         F.valuationSubringˣ) ∈
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+          ((higherPrincipalUnitGroup F.toCompleteDVF))
             (n * F.residueCharacteristic ^ s + 1) := by
   exact (not_congr
     (iwasawaGnScaled_mem_succ_iff_exists_residueCharacteristic_smul
@@ -1182,11 +1184,11 @@ theorem padicInt_eq_zero_of_forall_exists_eq_pow_mul
 theorem principalUnit_residueCharacteristic_smul_eq_zero
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
-    (x : Additive (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1))
+    (x : Additive (((higherPrincipalUnitGroup F.toCompleteDVF)) 1))
     (hx : (F.residueCharacteristic :
         ℤ_[F.residueCharacteristic]) • x = 0) :
     x = 0 := by
-  let u : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 := Additive.toMul x
+  let u : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 := Additive.toMul x
   have hpowAdd : Additive.ofMul (u ^ F.residueCharacteristic) = 0 := by
     change (F.residueCharacteristic :
       ℤ_[F.residueCharacteristic]) • Additive.ofMul u = 0 at hx
@@ -1197,7 +1199,7 @@ theorem principalUnit_residueCharacteristic_smul_eq_zero
   let z : K := (((u : F.valuationSubringˣ) : F.valuationSubring) : K)
   have hpowK : z ^ F.residueCharacteristic = 1 := by
     simpa [z] using congrArg
-      (fun w : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
+      (fun w : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
         ((((w : F.valuationSubringˣ) : F.valuationSubring) : K))) hpow
   have hdiffpow : (z - 1) ^ F.residueCharacteristic = 0 := by
     have hf := sub_pow_char_pow z 1 1
@@ -1238,10 +1240,10 @@ theorem forall_exists_iwasawaGn_eq_pow_smul_of_eq_zero
         obtain ⟨b, hab, hb⟩ := ih
         have hscaledMem :
             (((iwasawaGnScaledAtLevel F hpi n hn 0 b :
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+                ((higherPrincipalUnitGroup F.toCompleteDVF))
                   (n * F.residueCharacteristic ^ 0)) : F.valuationSubringˣ) :
               F.valuationSubringˣ) ∈
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+                ((higherPrincipalUnitGroup F.toCompleteDVF))
                   (n * F.residueCharacteristic ^ 0 + 1) := by
           simp [iwasawaGnScaledAtLevel, hb]
         obtain ⟨c, hbc⟩ :=
@@ -1378,12 +1380,12 @@ theorem exists_iwasawaGn_mul_mem_succ
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (n : ℕ) (hn : 1 ≤ n)
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) :
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) n) :
     ∃ a : Fin (iwasawaResidueRank F) →
         ℤ_[F.residueCharacteristic],
       (((x / iwasawaGnAtLevel F hpi n hn a :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
-        F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) := by
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) n) : F.valuationSubringˣ) :
+        F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1) := by
   let lead : F.residueField :=
     principalUnitLeadingCoefficientAddHom F hpi n hn (Additive.ofMul x)
   let c : Fin (iwasawaResidueRank F) → ZMod F.residueCharacteristic :=
@@ -1407,8 +1409,8 @@ theorem exists_iwasawaGn_mul_mem_succ
     simp_rw [hcmod]
     simp [c, lead]
   change (x / iwasawaGnAtLevel F hpi n hn a) ∈
-    (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1)).subgroupOf
-      (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n)
+    (((higherPrincipalUnitGroup F.toCompleteDVF)) (n + 1)).subgroupOf
+      (((higherPrincipalUnitGroup F.toCompleteDVF)) n)
   apply (principalUnitSuccQuotMk_eq_one_iff F.toCompleteDVF n _).1
   rw [map_div]
   have hquot :
@@ -1628,7 +1630,7 @@ noncomputable def iwasawaDegreeTerm
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (a : iwasawaDomain F) (n : ℕ) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
   if hn : 1 ≤ n ∧ Nat.Coprime n F.residueCharacteristic then
     Additive.toMul
       (iwasawaGn F hpi n hn.1
@@ -1649,9 +1651,9 @@ theorem iwasawaDegreeTerm_eq_iwasawaGnScaled
       (F.residueCharacteristic ^ s :
         ℤ_[F.residueCharacteristic]) • b) :
     ((iwasawaDegreeTerm F hpi a d.1 :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) =
       ((iwasawaGnScaledAtLevel F hpi d.1 d.property.1 s b :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+        ((higherPrincipalUnitGroup F.toCompleteDVF))
           (d.1 * F.residueCharacteristic ^ s)) : F.valuationSubringˣ) := by
   classical
   rw [iwasawaDegreeTerm]
@@ -1679,14 +1681,14 @@ theorem iwasawaDegreeTerm_mem_higher
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (a : iwasawaDomain F) (n : ℕ) :
-    ((iwasawaDegreeTerm F hpi a n : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) :
-      F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n := by
+    ((iwasawaDegreeTerm F hpi a n : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) :
+      F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) n := by
   classical
   unfold iwasawaDegreeTerm
   split_ifs with hn
   · exact iwasawaGn_mem_higher F hpi n hn.1
       (fun i => a (⟨n, hn⟩, i))
-  · exact (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) n).one_mem
+  · exact (((higherPrincipalUnitGroup F.toCompleteDVF)) n).one_mem
 
 /-- Establishes the identity `iwasawaDegreeTerm F hpi (0 : iwasawaDomain F) n = 1`. -/
 @[simp] theorem iwasawaDegreeTerm_zero
@@ -1734,7 +1736,7 @@ noncomputable def iwasawaPartialProduct
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
     (a : iwasawaDomain F) (r : ℕ) :
-    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
+    ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 :=
   ∏ n ∈ Finset.range (r + 1), iwasawaDegreeTerm F hpi a n
 
 /-- A single-block domain element contributes precisely its one `g_n`
@@ -1860,12 +1862,12 @@ theorem exists_iwasawaPartialProduct_div_mem_higher
     [CharP K F.residueCharacteristic]
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K))
-    (x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) (r : ℕ) :
+    (x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) (r : ℕ) :
     ∃ a : iwasawaDomain F,
       (∀ j, r < j.1.1 → a j = 0) ∧
       (((x / iwasawaPartialProduct F hpi a r :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
-        F.valuationSubringˣ) ∈ ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1) := by
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
+        F.valuationSubringˣ) ∈ ((higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1) := by
   classical
   induction r with
   | zero =>
@@ -1889,10 +1891,10 @@ theorem exists_iwasawaPartialProduct_div_mem_higher
         rw [← hdepth]
         exact Nat.le_mul_of_pos_right n
           (pow_pos F.residueCharacteristic_prime.pos s)
-      let z : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+      let z : ((higherPrincipalUnitGroup F.toCompleteDVF))
           (n * F.residueCharacteristic ^ s) :=
         ⟨((x / iwasawaPartialProduct F hpi a r :
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ), by
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ), by
           simpa [hdepth] using haDeep⟩
       obtain ⟨beta, hbeta⟩ :=
         exists_iwasawaGnScaled_mul_mem_succ F hpi n hn s z
@@ -1930,20 +1932,20 @@ theorem exists_iwasawaPartialProduct_div_mem_higher
         rw [hpartial]
         have hbeta' :
             (((z / iwasawaGnScaledAtLevel F hpi n hn s beta :
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+                ((higherPrincipalUnitGroup F.toCompleteDVF))
                   (n * F.residueCharacteristic ^ s)) :
               F.valuationSubringˣ) : F.valuationSubringˣ) ∈
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1 + 1) := by
+                ((higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1 + 1) := by
           rw [← hdepth]
           exact hbeta
         have hunitEq :
             (((x /
                 (iwasawaPartialProduct F hpi a r *
                   Additive.toMul (iwasawaGn F hpi n hn b)) :
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
+                ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) :
               F.valuationSubringˣ) =
             (((z / iwasawaGnScaledAtLevel F hpi n hn s beta :
-                ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+                ((higherPrincipalUnitGroup F.toCompleteDVF))
                   (n * F.residueCharacteristic ^ s)) :
               F.valuationSubringˣ) : F.valuationSubringˣ) := by
           change
@@ -1951,12 +1953,12 @@ theorem exists_iwasawaPartialProduct_div_mem_higher
                 ((iwasawaPartialProduct F hpi a r :
                     F.valuationSubringˣ) *
                   ((Additive.toMul (iwasawaGn F hpi n hn b) :
-                    ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ)) =
+                    ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ)) =
               (x : F.valuationSubringˣ) /
                   (iwasawaPartialProduct F hpi a r :
                     F.valuationSubringˣ) /
                 ((Additive.toMul (iwasawaGn F hpi n hn b) :
-                  ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ)
+                  ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ)
           exact div_mul_eq_div_div _ _ _
         rw [hunitEq]
         exact hbeta'
@@ -2000,9 +2002,9 @@ theorem Internal.principalUnitQuotientCarrier_mk_iwasawaPartialProduct_eq_of_le
           (N := N) (iwasawaDegreeTerm F hpi a (r + 1))).2
         change
           ((iwasawaDegreeTerm F hpi a (r + 1) :
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
-        exact LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.antitone F.toCompleteDVF
+              ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
+        exact antitone F.toCompleteDVF
           (Nat.succ_le_succ hmr)
           (iwasawaDegreeTerm_mem_higher F hpi a (r + 1))
       rw [hterm]
@@ -2055,8 +2057,8 @@ theorem Internal.surjective_iwasawaGlobalInverseLimitCarrier_coordinate
       (iwasawaGlobalInverseLimitCarrier F hpi a).1 r) := by
   intro q
   obtain ⟨x, rfl⟩ := QuotientGroup.mk'_surjective
-    ((((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)).subgroupOf
-      (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1)) q
+    ((((higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)).subgroupOf
+      (((higherPrincipalUnitGroup F.toCompleteDVF)) 1)) q
   obtain ⟨a, _haSupport, ha⟩ :=
     exists_iwasawaPartialProduct_div_mem_higher F hpi x r
   refine ⟨a, ?_⟩
@@ -2065,7 +2067,7 @@ theorem Internal.surjective_iwasawaGlobalInverseLimitCarrier_coordinate
         Internal.principalUnitQuotientCarrier F.toCompleteDVF r) =
       QuotientGroup.mk x
   symm
-  let U := LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF
+  let U := toPrincipalUnitFiltration F.toCompleteDVF
   exact (U.principalUnitSubquotient_mk_eq_iff_div_mem x
     (iwasawaPartialProduct F hpi a r)).2 ha
 
@@ -2225,14 +2227,14 @@ theorem Internal.continuous_iwasawaGlobalInverseLimitCarrier
   let E := Internal.principalUnitHomeomorphInverseLimitCarrier F.toCompleteDVF
   exact Continuous.subtype_mk
     (continuous_pi fun r => by
-      have hcoord : Continuous fun x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
+      have hcoord : Continuous fun x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
           (E x).1 r :=
         ((continuous_apply r).comp continuous_subtype_val).comp E.continuous
-      change Continuous fun x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
+      change Continuous fun x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
         Internal.principalUnitInverseLimitCarrierEval F.toCompleteDVF r
           (Internal.principalUnitMulEquivInverseLimitCarrier
             F.toCompleteDVF x) at hcoord
-      have hquot : Continuous fun x : ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
+      have hquot : Continuous fun x : ((higherPrincipalUnitGroup F.toCompleteDVF)) 1 =>
           (higherPrincipalUnitGroup.toPrincipalUnitFiltration
             F.toCompleteDVF).principalUnitSubquotientMk 1 (r + 1) x := by
         simpa only [principalUnitMulEquivInverseLimitCarrier_apply] using hcoord
@@ -2275,8 +2277,8 @@ noncomputable def Internal.iwasawaGlobalInverseLimitCarrierAddHom
     rw [iwasawaPartialProduct_add]
     exact map_mul
       (QuotientGroup.mk'
-        ((((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)).subgroupOf
-          (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1))) _ _
+        ((((higherPrincipalUnitGroup F.toCompleteDVF)) (r + 1)).subgroupOf
+          (((higherPrincipalUnitGroup F.toCompleteDVF)) 1))) _ _
 
 /-- The Iwasawa compatible family valued in its type-level prodiscrete model.
 For a local field all coordinate quotients are finite. -/
@@ -2352,7 +2354,7 @@ noncomputable def Internal.iwasawaGlobalAddHom
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K)) :
     iwasawaDomain F →+
-      Additive (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) :=
+      Additive (((higherPrincipalUnitGroup F.toCompleteDVF)) 1) :=
   (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).symm.toAddMonoidHom.comp
     (iwasawaGlobalInverseLimitCarrierAddHom F hpi)
 
@@ -2405,8 +2407,8 @@ theorem iwasawaDegreeTerm_mem_succ_of_ne_minimal
     (hk : 1 ≤ k ∧ Nat.Coprime k F.residueCharacteristic)
     (hkd : k ≠ d.1) :
     ((iwasawaDegreeTerm F hpi a k :
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1) := by
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+      ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1) := by
   classical
   let e : IwasawaDegree F.residueCharacteristic := ⟨k, hk⟩
   by_cases he0 : iwasawaBlock F a e = 0
@@ -2421,7 +2423,7 @@ theorem iwasawaDegreeTerm_mem_succ_of_ne_minimal
       rw [heq, he0]
       rfl
     rw [hterm]
-    exact (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).one_mem
+    exact (((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).one_mem
   · obtain ⟨t, c, hec, hc⟩ :=
       exists_pow_smul_iwasawaPrimitive_of_ne_zero F
         (iwasawaBlock F a e) he0
@@ -2440,18 +2442,18 @@ theorem iwasawaDegreeTerm_mem_succ_of_ne_minimal
       Nat.succ_le_of_lt (lt_of_le_of_ne hle hne)
     have hscaled :
         (((iwasawaGnScaledAtLevel F hpi e.1 e.property.1 t c :
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF))
+            ((higherPrincipalUnitGroup F.toCompleteDVF))
               (e.1 * F.residueCharacteristic ^ t)) :
           F.valuationSubringˣ) : F.valuationSubringˣ) ∈
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1) :=
-      LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.antitone F.toCompleteDVF hlevel
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1) :=
+      antitone F.toCompleteDVF hlevel
         (iwasawaGnScaledAtLevel F hpi e.1 e.property.1 t c).property
     have hterm :=
       iwasawaDegreeTerm_eq_iwasawaGnScaled F hpi a e t c hec
     change
       ((iwasawaDegreeTerm F hpi a e.1 :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
     rw [hterm]
     exact hscaled
 
@@ -2471,8 +2473,8 @@ theorem iwasawaDegreeTerm_not_mem_succ_of_primitive
     (hb : IwasawaPrimitive F b)
     (hm : m = d.1 * F.residueCharacteristic ^ s) :
     ¬ (((iwasawaDegreeTerm F hpi a d.1 :
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)) := by
+          ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+        ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)) := by
   have hnotScaled :=
     (iwasawa_formula_two F hpi d.1 d.property.1 s b).1 hb
   intro htermMem
@@ -2509,8 +2511,8 @@ theorem Internal.iwasawaGlobalInverseLimitCarrierAddHom_ne_zero_of_ne_zero
         QuotientGroup.mk (iwasawaDegreeTerm F hpi a d.1) := by
     change
       (QuotientGroup.mk'
-        ((((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).subgroupOf
-          (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1)))
+        ((((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).subgroupOf
+          (((higherPrincipalUnitGroup F.toCompleteDVF)) 1)))
           (∏ k ∈ Finset.range (m + 1),
             iwasawaDegreeTerm F hpi a k) =
         QuotientGroup.mk (iwasawaDegreeTerm F hpi a d.1)
@@ -2520,13 +2522,13 @@ theorem Internal.iwasawaGlobalInverseLimitCarrierAddHom_ne_zero_of_ne_zero
       by_cases hvalid :
           1 ≤ k ∧ Nat.Coprime k F.residueCharacteristic
       · apply (QuotientGroup.eq_one_iff
-          (N := (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).subgroupOf
-            (((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1))
+          (N := (((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)).subgroupOf
+            (((higherPrincipalUnitGroup F.toCompleteDVF)) 1))
           (iwasawaDegreeTerm F hpi a k)).2
         change
           ((iwasawaDegreeTerm F hpi a k :
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
-            ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
+              ((higherPrincipalUnitGroup F.toCompleteDVF)) 1) : F.valuationSubringˣ) ∈
+            ((higherPrincipalUnitGroup F.toCompleteDVF)) (m + 1)
         exact iwasawaDegreeTerm_mem_succ_of_ne_minimal
           F hpi a m d s hm hmin k hvalid hkd
       · have hterm : iwasawaDegreeTerm F hpi a k = 1 := by

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.IsSepClosed
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
 
-set_option autoImplicit false
-
 /-!
 # Intrinsic absolute Galois data
 
@@ -16,6 +14,8 @@ This module packages the absolute Galois group of a field, its integral unit
 representation, and its distinguished abstract base field using the chosen
 separable closure.
 -/
+
+
 
 noncomputable section
 
@@ -85,3 +85,7 @@ theorem intrinsicFiniteAbstractBase_eq_base
   change intrinsicAbstractBase F =
     baseField (intrinsicAbsoluteGalois F) at h
   exact FiniteAbstractField.eq_of_field_eq _ _ h
+
+end LocalClassFieldTheory
+
+end

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
-set_option autoImplicit false
-
 /-!
 # Multiplicative weak approximation for ideles
 
@@ -17,7 +15,9 @@ finite places one may prescribe an arbitrary open multiplicative coset and
 move a given idele into all of those cosets by a single principal idele.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -41,6 +41,7 @@ noncomputable def modulusOfFinset
         intro v hv
         simpa using hv))
 
+open scoped Classical in
 @[simp]
 theorem modulusOfFinset_apply
     (S : Finset (HeightOneSpectrum (𝓞 K)))
@@ -392,6 +393,7 @@ theorem exists_principal_quotient_mem_openAllLocalSubgroups_finset
   have hv : v.1 ∈ m.finitePart.support := hm.symm ▸ v.2
   exact hfinite ⟨v.1, hv⟩
 
+open scoped Classical in
 /-- A finite local family, extended by `1`, is a finite idele. -/
 def finiteIdeleOfFinset
     (S : Finset (HeightOneSpectrum (𝓞 K)))

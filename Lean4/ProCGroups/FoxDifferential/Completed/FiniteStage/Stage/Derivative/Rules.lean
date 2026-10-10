@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Lift
 import ProCGroups.FoxDifferential.Completed.Residue.FreeGroup.Coordinates
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: finite stage — stage — derivative — rules
 

@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.IntegerRingComparison
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 import ValuedFieldTheory.Valuation.LocalRingEquiv
 
-set_option autoImplicit false
-
 /-!
 # From ideal-theoretic to completed unramifiedness
 
@@ -18,7 +16,9 @@ actual chosen finite-place extension implies unramifiedness of its localized
 completion.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section

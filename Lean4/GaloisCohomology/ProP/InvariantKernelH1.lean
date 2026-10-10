@@ -14,7 +14,6 @@ import Mathlib.Topology.Algebra.Group.Basic
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # Invariant continuous characters of a presentation kernel
 

@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Transversals
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Generators
 
@@ -17,6 +13,8 @@ From a right Schreier transversal, this module constructs canonical
 representatives and Schreier generators, identifies the nontrivial
 representative-generator pairs, and proves their basic action identities.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier.Discrete.OpenSubgroups
 

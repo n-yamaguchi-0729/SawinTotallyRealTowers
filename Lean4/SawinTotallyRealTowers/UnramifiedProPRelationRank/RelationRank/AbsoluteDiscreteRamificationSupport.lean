@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRe
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
-set_option autoImplicit false
 /-!
 # Finite ramification support of a continuous discrete representation
 

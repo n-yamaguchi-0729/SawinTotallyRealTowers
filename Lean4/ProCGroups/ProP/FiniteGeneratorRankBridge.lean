@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.GeneratorRank
 
-set_option autoImplicit false
 /-!
 # Finite-set presentation of topological generator rank
 

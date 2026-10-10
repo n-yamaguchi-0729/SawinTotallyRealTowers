@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.TorsionQuotientEquiv
 
-set_option autoImplicit false
-
 /-!
 # Evaluation of the torsion-quotient equivalence
 -/
+
+
 
 open scoped Topology
 

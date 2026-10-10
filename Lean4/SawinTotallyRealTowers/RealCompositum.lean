@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 
-set_option autoImplicit false
-
 /-!
 # Real places in composita over the rationals
 

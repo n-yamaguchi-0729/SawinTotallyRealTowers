@@ -8,7 +8,17 @@ import Mathlib.FieldTheory.PrimitiveElement
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 
-set_option autoImplicit false
+/-!
+# Finite local reciprocity: norms from arbitrary finite separable fixed fields
+
+The henselian condition in the abstract class-formation framework quantifies over every finite
+abstract
+field, not only over normal ones.  For an intermediate finite separable field
+`E` in a separably closed Galois ambient field, the left cosets of
+`Gal(Ω / E)` are canonically the `K`-embeddings `E → Ω`.  This file uses that
+identification to compare the abstract class-formation coset norm with the ordinary field
+norm, without a normality assumption on `E / K`.
+-/
 
 namespace LocalClassFieldTheory
 open RamificationTheory KummerTheory
@@ -17,16 +27,7 @@ open LocalFieldTheory
 
 open ClassFormation CyclicCohomology
 
-/-!
-# Finite local reciprocity: norms from arbitrary finite separable fixed fields
 
-The henselian condition in the abstract class-formation framework quantifies over every finite abstract
-field, not only over normal ones.  For an intermediate finite separable field
-`E` in a separably closed Galois ambient field, the left cosets of
-`Gal(Ω / E)` are canonically the `K`-embeddings `E → Ω`.  This file uses that
-identification to compare the abstract class-formation coset norm with the ordinary field
-norm, without a normality assumption on `E / K`.
--/
 
 noncomputable section
 
@@ -175,7 +176,6 @@ variable (E : IntermediateField K Ω)
   [FiniteDimensional K E] [Algebra.IsSeparable K E]
 
 omit [IsSepClosed Ω] [FiniteDimensional K E] [Algebra.IsSeparable K E] in
-
 /-- The abstract coset action on an `E`-unit is evaluation under the
 corresponding actual `K`-embedding of `E`. -/
 theorem relativeCosetAction_intermediateFieldUnit_val_of_isSeparable
@@ -227,7 +227,6 @@ theorem relativeNorm_intermediateFieldUnit_val_of_isSeparable (x : Eˣ) :
         (closedFixingSubgroup K Ω E) (fixingSubgroupLeBase K Ω E)
         (intermediateFieldUnitsEquivGaloisFixed K Ω E
           (Additive.ofMul x)) q) : Ωˣ) : Ω) = _
-
   change (Units.coeHom Ω) (∏ q : Q,
     Additive.toMul
       (relativeCosetAction (galoisAmbientUnitsRep K Ω)

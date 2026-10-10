@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationSubextension
 
-set_option autoImplicit false
-
 /-!
 # Norm quotients in the compatible Galois realization
 
@@ -15,6 +13,8 @@ This module identifies the abstract fixed fields with the embedded copies of
 `K` and `L`, and transports the resulting idèle-class norm quotient and
 reciprocity data to the original finite Galois extension.
 -/
+
+
 
 open scoped NumberField
 open NumberField

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
 
-set_option autoImplicit false
-
 /-!
 # The big Hilbert class field
 
@@ -18,6 +16,8 @@ identifies its defining norm quotient with the narrow class group.  The
 maximal-unramified field statement follows from this input together with
 the narrow finite conductor/ramification criterion.
 -/
+
+
 
 open scoped NumberField
 

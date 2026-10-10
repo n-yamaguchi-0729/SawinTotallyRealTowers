@@ -5,8 +5,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import GaloisCohomology.ProP.PresentationH2KernelCharacter
+import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+import Mathlib.RepresentationTheory.Continuous.Basic
+import Mathlib.RepresentationTheory.Continuous.TopRep
+import Mathlib.Topology.ContinuousMap.Algebra
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.ContinuousMap.Defs
 
-set_option autoImplicit false
 /-!
 # The presentation upper bound for degree-two continuous cohomology
 
@@ -203,8 +208,11 @@ theorem presentationDescendedPrimitive_boundary
       (presentationDescendedPrimitive P x hx)
   have hdpoint := congrArg (fun τ ↦ τ (P.quotient f₀) (P.quotient f₁) (P.quotient f₂)) hd
   rw [hdpoint]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, TopRep.hom_d_succ, TopRep.d_zero,
+    TopRep.hom_ofHom, ContIntertwiningMap.sub_apply,
+    ContRepresentation.coind₁ι_toFun, ContRepresentation.coind₁Map_toFun,
+    ContinuousMap.sub_apply, ContinuousMap.const_apply,
+    ContinuousMap.comp_apply, ContinuousMap.coe_mk]
   rw [presentationDescendedPrimitive_pullback_apply P x hx,
     presentationDescendedPrimitive_pullback_apply P x hx,
     presentationDescendedPrimitive_pullback_apply P x hx]

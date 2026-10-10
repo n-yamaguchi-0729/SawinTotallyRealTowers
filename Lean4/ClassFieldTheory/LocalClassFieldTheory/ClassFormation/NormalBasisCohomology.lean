@@ -6,19 +6,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisRecursiveLifting
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open CyclicCohomology
-
-open LocalFieldTheory
-
 /-!
 # Low-degree cohomology of a deep normal-basis unit subgroup
 
 The recursive norm and coboundary constructions are converted here into the
 actual quotient statements `H⁰(G,V)=H⁻¹(G,V)=1` used in the local class-field-axiom theorem.
 -/
+
+namespace LocalClassFieldTheory
+open CyclicCohomology
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -39,7 +39,7 @@ variable (K L : Type u) [Field K] [Field L] [Algebra K L]
 /-- The local class-field-axiom theorem: for every sufficiently deep chosen normal-basis subgroup
 `V`, both low-degree Herbrand quotients are trivial. -/
 theorem exists_chosenNormalBasisPrincipalUnit_herbrand_subsingleton
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hgen : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     ∃ c : Nat, ∀ n : Nat, c ≤ n →
       ∀ (V : Subgroup 𝒪[L]ˣ)

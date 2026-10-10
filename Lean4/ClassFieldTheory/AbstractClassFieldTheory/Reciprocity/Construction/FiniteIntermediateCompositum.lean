@@ -6,18 +6,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityIndependence
 
-set_option autoImplicit false
+/-!
+# Finite intermediate fields: composita and absolute finiteness
+
+These are the finite-stage closure facts used in the proof of the universal norm-descent lemma.  The
+compositum of two finite intermediate fields is their
+intersection on the Galois-group side.
+-/
 
 namespace ClassFormation
 
 open CyclicCohomology
 
-/-!
-# Finite intermediate fields: composita and absolute finiteness
 
-These are the finite-stage closure facts used in the proof of the universal norm-descent lemma.  The compositum of two finite intermediate fields is their
-intersection on the Galois-group side.
--/
 
 noncomputable section
 

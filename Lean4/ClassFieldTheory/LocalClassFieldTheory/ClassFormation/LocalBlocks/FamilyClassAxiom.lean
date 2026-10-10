@@ -18,8 +18,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletion
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
 import GaloisCohomology.Cyclic.Herbrand.Product
 
-set_option autoImplicit false
-
 /-!
 # The local class-field axiom for finite families of local blocks
 
@@ -31,6 +29,8 @@ of the finite family of localized class-formation blocks:
 * degree-minus-one cohomology has cardinality one;
 * the Herbrand quotient is the product of the local degrees.
 -/
+
+
 
 open scoped BigOperators
 
@@ -208,8 +208,9 @@ noncomputable def localBlockFamilyHerbrandH0EquivNormQuotients
           (d i).base (d i).base_isNontrivial
           (d i).extension)
 
+omit [Fintype ι] in
 /-- The degree-zero cohomology of a finite family of local blocks is finite. -/
-theorem localBlockFamilyHerbrandH0Finite
+theorem localBlockFamilyHerbrandH0Finite [Finite ι]
     (d : ι → LocalPlaceDatum K L)
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
@@ -250,6 +251,7 @@ theorem localBlockFamilyHerbrandH0Finite
     Finite
       (HerbrandH0 (L ≃ₐ[K] L)
         (LocalBlockFamily d)) := by
+  let : Fintype ι := Fintype.ofFinite ι
   let extensionAlgebra : ∀ i,
       Algebra K (d i).extension.1.Completion :=
     fun i ↦ AbsoluteValue.extensionCompletionAlgebra
@@ -337,9 +339,10 @@ theorem localBlockFamilyHerbrandH0Finite
     (localBlockFamilyHerbrandH0Equiv
       d σ hgen).symm.toEquiv
 
+omit [Fintype ι] in
 /-- The degree-minus-one cohomology of a finite family of local blocks is
 finite. -/
-theorem localBlockFamilyHerbrandHMinusOneFinite
+theorem localBlockFamilyHerbrandHMinusOneFinite [Finite ι]
     (d : ι → LocalPlaceDatum K L)
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
@@ -380,6 +383,7 @@ theorem localBlockFamilyHerbrandHMinusOneFinite
     Finite
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (LocalBlockFamily d) σ) := by
+  let : Fintype ι := Fintype.ofFinite ι
   let extensionAlgebra : ∀ i,
       Algebra K (d i).extension.1.Completion :=
     fun i ↦ AbsoluteValue.extensionCompletionAlgebra
@@ -475,9 +479,10 @@ theorem localBlockFamilyHerbrandHMinusOneFinite
     (localBlockFamilyHerbrandHMinusOneEquiv
       d σ hgen).symm.toEquiv
 
+omit [Fintype ι] in
 /-- In degree minus one, a finite family of local blocks has
 degree-minus-one cohomology of cardinality one. -/
-theorem localBlockFamilyHerbrandHMinusOne_card_eq_one
+theorem localBlockFamilyHerbrandHMinusOne_card_eq_one [Finite ι]
     (d : ι → LocalPlaceDatum K L)
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
@@ -524,6 +529,7 @@ theorem localBlockFamilyHerbrandHMinusOne_card_eq_one
     Nat.card
         (HerbrandHMinusOne (L ≃ₐ[K] L)
           (LocalBlockFamily d) σ) = 1 := by
+  let : Fintype ι := Fintype.ofFinite ι
   let extensionAlgebra : ∀ i,
       Algebra K (d i).extension.1.Completion :=
     fun i ↦ AbsoluteValue.extensionCompletionAlgebra

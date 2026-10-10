@@ -10,7 +10,6 @@ import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.Module.Defs
 import Mathlib.Algebra.Module.ZMod
 
-set_option autoImplicit false
 /-! # The local Hilbert pairing as a linear dual embedding -/
 
 noncomputable section

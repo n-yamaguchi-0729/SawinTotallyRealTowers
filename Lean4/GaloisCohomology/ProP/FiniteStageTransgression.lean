@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.FiniteTransgressionKernel
 import ProCGroups.Cohomology.InvariantCharacterFiniteStage
 import GaloisCohomology.ProP.QuotientRestriction
 
-set_option autoImplicit false
 /-!
 # Inflation of finite-stage transgression classes
 

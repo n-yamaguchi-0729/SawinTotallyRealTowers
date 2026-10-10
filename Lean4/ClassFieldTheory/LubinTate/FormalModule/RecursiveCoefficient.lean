@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.FormalModule.Reduction
 
-set_option autoImplicit false
-
 /-!
 # Recursive coefficients for Lubin--Tate intertwiners
 
@@ -17,6 +15,8 @@ every coefficient of the current defect divisible by the uniformizer.  In
 total degree `m ≥ 2`, the remaining scalar equation has factor
 `1 - π ^ (m - 1)`, which is a unit.
 -/
+
+
 
 noncomputable section
 

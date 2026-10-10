@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
 
-set_option autoImplicit false
-
 /-!
 # The chosen integral tensor equivalence
 
 This file constructs the equivalence between the chosen integral tensor block
 and the induced module of chosen local integer units.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

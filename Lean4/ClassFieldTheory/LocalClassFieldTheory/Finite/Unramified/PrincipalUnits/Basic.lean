@@ -8,8 +8,9 @@ import Mathlib.FieldTheory.Galois.Basic
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic` Lean module. -/
+
 
 noncomputable section
 
@@ -122,8 +123,9 @@ theorem norm_oneAdd_sub_galoisSum_mem_next
   rw [principalUnitsMap_normOfUnramifiedValuationOfIsIntegralClosure_eq_normExtensionSide
     K L n (principalUnitOneAddOfMemPowSubgroup L hn (a : 𝒪[L]) a.2)]
   exact
-      principalUnitsNormExtensionSideOfIsIntegralClosure_oneAdd_sub_one_sub_sum_mem_maximalIdeal_pow_succ
-      K L n hn a
+      (
+ principalUnitsNormExtensionSideOfIsIntegralClosure_oneAdd_sub_one_sub_sum_mem_maximalIdeal_pow_succ
+      K L n hn a)
 
 end UnramifiedPrincipalUnits
 

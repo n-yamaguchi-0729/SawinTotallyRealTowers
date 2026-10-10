@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.DecompositionFields
 import ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition
 
-set_option autoImplicit false
-
 /-!
 # The conclusion of S-unit Kummer prime selection
 
@@ -17,7 +15,9 @@ the finite Kummer radical and records the support-enlargement consequence
 used by the global reciprocity argument.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -30,6 +30,9 @@ section FinitePlaces
 variable {K : Type} [Field K]
     [NumberField K]
 
+open _root_.KummerTheory (
+  finitePlaceKummerRadicand_mem_nthPowerSubgroup_iff_root_mem_decompositionFixedField
+) in
 /-- The chosen primes cut out exactly the Kummer radical of `E / K`: an
 enlarged `S`-unit is a local `n`-th power at every chosen
 prime if and only if it has an `n`-th root in `E`. -/
@@ -60,6 +63,7 @@ theorem
       (sUnitFiniteKummerRadical
         (K := K) (L := E) n S').comap
           (SUnitGroup (K := K) S').subtype := by
+  classical
   dsimp only
   let S' :=
     enlargeByFiniteKummerRadicalSupport
@@ -157,7 +161,7 @@ theorem
               (HilbertRamification.absoluteValueDecompositionGroup K
                 (_root_.chosenFinitePlaceExtension
                   (L := N) wi).1) :=
-        (KummerTheory.finitePlaceKummerRadicand_mem_nthPowerSubgroup_iff_root_mem_decompositionFixedField
+        (finitePlaceKummerRadicand_mem_nthPowerSubgroup_iff_root_mem_decompositionFixedField
             (K := K) (L := N) wi n hmu (x : Kˣ) beta hbeta).mp
           hlocal
       rw [
@@ -387,7 +391,7 @@ theorem
         exact hbetaCoordinate
       simpa only [_root_.finitePlaceDecompositionGroup] using hdecomp
     have hlocal :=
-      (KummerTheory.finitePlaceKummerRadicand_mem_nthPowerSubgroup_iff_root_mem_decompositionFixedField
+      (finitePlaceKummerRadicand_mem_nthPowerSubgroup_iff_root_mem_decompositionFixedField
           (K := K) (L := N)
           (sUnitKummerChosenBasePlaces
             (K := K) (Omega := Omega) E n hmu

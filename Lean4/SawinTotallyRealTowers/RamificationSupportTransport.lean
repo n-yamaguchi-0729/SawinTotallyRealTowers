@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.RamificationSupport
 
-set_option autoImplicit false
-
 /-!
 # Ramification support under an equivalence of top fields
 

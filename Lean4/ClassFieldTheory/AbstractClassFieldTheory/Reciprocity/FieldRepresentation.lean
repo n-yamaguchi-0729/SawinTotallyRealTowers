@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # Actual coefficient representation for an abstract extension
 
@@ -22,6 +14,14 @@ This file identifies the invariant carrier used by
 `extensionFixedRepresentation A K L` with the actual fixed group
 `A_L`, and compares the representation norm with `N_{L/K}`.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

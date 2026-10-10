@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Projections
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Basic / All Finite / Topology
 

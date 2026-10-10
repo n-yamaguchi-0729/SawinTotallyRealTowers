@@ -13,7 +13,6 @@ import Mathlib.Algebra.Field.ZMod
 import Mathlib.Algebra.Module.ZMod
 import Mathlib.LinearAlgebra.Dimension.Finite
 
-set_option autoImplicit false
 /-!
 # Relation rank as a lower bound for presentation target H²
 
@@ -55,7 +54,8 @@ local instance lowerBoundStageTargetDiscrete
     DiscreteTopology ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) :=
   discreteTopology_bot _
 
-/-- A nonempty relation family realizing the least relation count gives independent target H² classes. -/
+/-- A nonempty relation family realizing the least relation count gives independent target H²
+classes. -/
 theorem presentation_relationCard_succ_le_finrank_h2
     {d n : ℕ}
     {sourceData :

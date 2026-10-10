@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinEmbedding
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
 
-set_option autoImplicit false
 /-!
 # Absolute Artin action on a global finite abelian extension
 
@@ -68,8 +67,8 @@ theorem finitePlaceAbsoluteArtin_lift_action
       (NumberField.HeightOneSpectrum.adicAbv F v).Completion)
     (a : (v.adicCompletion F)ˣ)
     (sigma : Gal(AlgebraicClosure
-      (NumberField.HeightOneSpectrum.adicAbv F v).Completion /
-      (NumberField.HeightOneSpectrum.adicAbv F v).Completion))
+      (NumberField.HeightOneSpectrum.adicAbv F
+        v).Completion/(NumberField.HeightOneSpectrum.adicAbv F v).Completion))
     (hsigma : (QuotientGroup.mk
         (show Field.absoluteGaloisGroup
           (NumberField.HeightOneSpectrum.adicAbv F v).Completion from sigma) :

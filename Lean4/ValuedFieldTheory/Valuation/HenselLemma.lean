@@ -8,16 +8,14 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
 import Mathlib.Algebra.Polynomial.FieldDivision
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Factorization-shaped Hensel consequences
 
 Mathlib exposes the simple-root form of Hensel's lemma.  The statements below
 turn it into a linear-factor lifting API for a simple residual linear factor.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

@@ -8,13 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAlg
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 import ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: the residue datum and its finite indices
 
@@ -25,6 +18,13 @@ subextension, the image of its fixing subgroup is proved to be exactly
 degree.  This is the finite-coordinate comparison needed in the local-field
 specialization.
 -/
+
+namespace LocalClassFieldTheory
+open RamificationTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 

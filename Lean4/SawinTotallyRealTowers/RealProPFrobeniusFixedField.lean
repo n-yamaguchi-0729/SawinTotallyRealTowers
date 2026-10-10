@@ -14,8 +14,6 @@ import Mathlib.FieldTheory.IntermediateField.Algebraic
 import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
-set_option autoImplicit false
-
 /-!
 # The actual fixed field of a Frobenius cut
 

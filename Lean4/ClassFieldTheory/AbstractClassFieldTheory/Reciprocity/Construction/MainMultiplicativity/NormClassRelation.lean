@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CanonicalUnramifiedNormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Norm-class relations for reciprocity multiplicativity
 
 This file passes the alternating Frobenius power-sum norm relation to the
 maximal-unramified norm quotient and then to the reciprocity map.
 -/
+
+
 
 universe u
 

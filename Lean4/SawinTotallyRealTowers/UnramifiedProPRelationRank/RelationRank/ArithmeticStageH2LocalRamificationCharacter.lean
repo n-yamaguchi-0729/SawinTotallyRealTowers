@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # The inertia character of an arithmetic-stage local lift
 

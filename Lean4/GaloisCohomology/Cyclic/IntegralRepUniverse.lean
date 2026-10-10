@@ -14,7 +14,5 @@ restriction here makes a future universe-polymorphic migration searchable and
 prevents individual subtrees from inventing private aliases.
 -/
 
-set_option autoImplicit false
-
 /-- The universe-zero group boundary imposed by integral representations. -/
 abbrev IntegralRepGroupType := Type 0

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Zassenhaus.Basic
 import ProCGroups.CompletedGroupAlgebra.Augmentation.Functoriality
 
-set_option autoImplicit false
 /-!
 # Functoriality of the Zassenhaus filtration
 

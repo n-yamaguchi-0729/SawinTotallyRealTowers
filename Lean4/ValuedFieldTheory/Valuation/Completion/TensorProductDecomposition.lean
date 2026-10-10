@@ -12,8 +12,6 @@ import ValuedFieldTheory.Valuation.Completion.PolynomialCRT
 import ValuedFieldTheory.Valuation.Completion.CanonicalTensorMap
 import Mathlib.Algebra.Group.Pi.Units
 
-set_option autoImplicit false
-
 /-!
 # Tensor-product decomposition over a completion
 
@@ -257,7 +255,8 @@ theorem completionTensorDecomposition_leftCanonicalHom_bijective
     (K := K) (L := L) vK hvK).bijective
 
 /-- the completion tensor-product decomposition in the left tensor order, retained for the scalar
-extension calculations in the local degree, norm, and trace formulas.  Its underlying map is canonical. -/
+extension calculations in the local degree, norm, and trace formulas. Its underlying map is
+canonical. -/
 noncomputable def completionTensorDecomposition_left
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]

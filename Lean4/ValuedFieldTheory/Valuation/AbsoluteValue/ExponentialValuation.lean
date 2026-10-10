@@ -6,13 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Unramified.HenselianAlgebraicExtension
 
-set_option autoImplicit false
-
 /-!
 # Canonical exponential valuation attached to an absolute value
 
-The localization arguments of the ramification-localization construction are naturally multiplicative, whereas the
-unramified predicates of the unramified-extension construction use additive exponential valuations.  This file
+The localization arguments of the ramification-localization construction are naturally
+multiplicative, whereas the
+unramified predicates of the unramified-extension construction use additive exponential valuations.
+This file
 supplies the canonical conversion `v(x) = -log |x|`.
 -/
 

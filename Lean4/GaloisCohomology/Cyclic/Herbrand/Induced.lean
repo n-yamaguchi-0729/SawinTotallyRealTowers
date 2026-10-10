@@ -8,8 +8,6 @@ import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
 import ProCGroups.InducedFunctions
 import Mathlib.Logic.Equiv.Fin.Rotate
 
-set_option autoImplicit false
-
 /-!
 # Multiplicative induced modules
 
@@ -321,8 +319,9 @@ theorem cyclic_pow_index_mem (H : Subgroup G) (σ : G) :
     σ ^ H.index ∈ H :=
   H.pow_index_mem σ
 
+omit [Fintype G] in
 /-- In a cyclic group, `σ^[G:H]` generates `H`. -/
-theorem zpowers_pow_index_eq (H : Subgroup G) (σ : G)
+theorem zpowers_pow_index_eq [Finite G] (H : Subgroup G) (σ : G)
     (hgen : ∀ x : G, x ∈ Subgroup.zpowers σ) :
     Subgroup.zpowers (σ ^ H.index) = H := by
   have hn0 : H.index ≠ 0 := by
@@ -359,8 +358,9 @@ theorem subgroupGenerator_coe (H : Subgroup G) (σ : G) :
     (subgroupGenerator H σ : G) = σ ^ H.index :=
   rfl
 
+omit [Fintype G] in
 /-- The canonical element `σ^[G:H]` generates `H`. -/
-theorem subgroupGenerator_generates (H : Subgroup G) (σ : G)
+theorem subgroupGenerator_generates [Finite G] (H : Subgroup G) (σ : G)
     (hgen : ∀ x : G, x ∈ Subgroup.zpowers σ) :
     ∀ h : H, h ∈ Subgroup.zpowers (subgroupGenerator H σ) := by
   intro h
@@ -709,7 +709,8 @@ variable (H : Subgroup G) [MulDistribMulAction H B]
 
 local instance : Fintype H := Fintype.ofFinite H
 
-local instance : NeZero H.index := ⟨by
+omit [Fintype G] in
+local instance [Finite G] : NeZero H.index := ⟨by
   rw [H.index_eq_card]
   exact Nat.card_pos.ne'⟩
 
@@ -1129,8 +1130,9 @@ theorem subgroupGeneratorOfGenerator_coe (σ : G)
       σ ^ H.index :=
   rfl
 
+omit [Fintype G] in
 /-- The derived element `σ^[G:H]` generates `H`. -/
-theorem subgroupGeneratorOfGenerator_generates (σ : G)
+theorem subgroupGeneratorOfGenerator_generates [Finite G] (σ : G)
     (hgen : ∀ x : G, x ∈ Subgroup.zpowers σ) :
     ∀ h : H,
       h ∈ Subgroup.zpowers

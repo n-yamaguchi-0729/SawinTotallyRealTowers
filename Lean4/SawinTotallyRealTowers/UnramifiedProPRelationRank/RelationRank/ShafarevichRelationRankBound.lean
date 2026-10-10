@@ -11,7 +11,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.Arithmetic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.IdealPowerRadicalH2Bound
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.LeanEvalAdapter
 
-set_option autoImplicit false
 /-!
 # Shafarevich's relation-rank bound
 
@@ -62,7 +61,8 @@ theorem shafarevich_relation_rank_bound_lifted :
       Module.finrank (ZMod p)
         (continuousCohomologyZModPLifted p (MaxEverywhereUnramifiedProPGaloisGroup F p) 2) ≤
       topologicalGeneratorRank (MaxEverywhereUnramifiedProPGaloisGroup F p) +
-        (NumberField.InfinitePlace.nrRealPlaces F + NumberField.InfinitePlace.nrComplexPlaces F - 1) +
+        (NumberField.InfinitePlace.nrRealPlaces F +
+          NumberField.InfinitePlace.nrComplexPlaces F - 1) +
           (if ∃ ζ : F, IsPrimitiveRoot ζ p then 1 else 0)) := by
   obtain ⟨hfinite, hle⟩ := maxEverywhereUnramified_h2_finite_and_finrank_le_radicalDual F p hpOdd
   exact maxEverywhereUnramified_h2_numerical_bound_of_finrank_le_radicalDual F p hpOdd hfinite hle
@@ -75,7 +75,8 @@ theorem shafarevich_relation_rank_bound :
       Module.finrank (ZMod p)
         (continuousCohomologyZModP p (MaxEverywhereUnramifiedProPGaloisGroup F p) 2) ≤
       finiteTopologicalGeneratorRank (MaxEverywhereUnramifiedProPGaloisGroup F p) +
-        (NumberField.InfinitePlace.nrRealPlaces F + NumberField.InfinitePlace.nrComplexPlaces F - 1) +
+        (NumberField.InfinitePlace.nrRealPlaces F +
+          NumberField.InfinitePlace.nrComplexPlaces F - 1) +
           (if ∃ ζ : F, IsPrimitiveRoot ζ p then 1 else 0)) := by
   classical
   exact maxEverywhereUnramified_smallH2_and_finiteGeneratorRank_bound_of_lifted F p hpOdd

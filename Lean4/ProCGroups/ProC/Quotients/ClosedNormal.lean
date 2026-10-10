@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.Generation.Basic
 import ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
 
-set_option autoImplicit false
-
 /-!
 # Quotients by closed normal subgroups
 

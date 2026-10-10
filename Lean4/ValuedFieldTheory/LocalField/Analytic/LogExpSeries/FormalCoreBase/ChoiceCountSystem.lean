@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.BasicFactors
 
-set_option autoImplicit false
-
 /-!
 # Coordinate equations for basic-factor choices
 
 This module derives the three coordinate and total-count equations satisfied by
 a choice of the basic factors in `X + Y + XY`.
 -/
+
+
 
 noncomputable section
 

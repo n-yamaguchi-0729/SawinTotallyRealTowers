@@ -9,14 +9,14 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLe
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaFirstIdentity
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaEvaluation
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: theta at a completed Lubin--Tate level
 
 This file evaluates the theta series analytically at the chosen primitive
 division point in the completed level field.
 -/
+
+
 
 noncomputable section
 

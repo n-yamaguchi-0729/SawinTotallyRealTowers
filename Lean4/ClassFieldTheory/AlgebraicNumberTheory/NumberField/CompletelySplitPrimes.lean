@@ -12,7 +12,13 @@ import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.RingTheory.RamificationInertia.Ramification
 import Mathlib.Algebra.Group.Subgroup.Finite
 
-set_option autoImplicit false
+/-!
+# Completely split primes of number fields
+
+Unramified degree-one primes in a finite Galois number field give
+complete splitting above the canonical rational finite place. Such
+primes exist outside any specified finite set.
+-/
 
 open scoped NumberField Pointwise
 open NumberField IsDedekindDomain HilbertRamification.Dedekind

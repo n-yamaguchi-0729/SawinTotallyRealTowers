@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Construction
 
-set_option autoImplicit false
-
 /-!
 # Named value of closed finite-index reciprocity
 
@@ -17,7 +15,9 @@ selected class-field instance tower once while remaining definitionally
 equivalent to the historical formula.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 
@@ -43,7 +43,7 @@ noncomputable abbrev closedFiniteIndexClassFieldReciprocityValue
     (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
     [H.FiniteIndex]
     (σ : Gal((closedFiniteIndexClassField
-      (K := K) H hclosed) / K)) :
+      (K := K) H hclosed)/K)) :
     IdeleClassGroup K ⧸ H :=
   QuotientGroup.quotientMulEquivOfEq
       (closedFiniteIndexClassField_ideleClassNorm_range

@@ -9,7 +9,6 @@ import GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
-set_option autoImplicit false
 /-!
 # Difference calculations for linear and character-corrected lifts
 

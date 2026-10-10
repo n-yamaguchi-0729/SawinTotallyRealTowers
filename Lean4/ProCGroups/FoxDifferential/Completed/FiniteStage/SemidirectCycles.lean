@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryCycleHom
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — finite stage — semidirect cycles
 

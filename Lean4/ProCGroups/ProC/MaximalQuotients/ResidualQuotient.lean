@@ -8,8 +8,6 @@ import ProCGroups.ProC.MaximalQuotients.ResidualCore
 import ProCGroups.ProC.Quotients.ClosedNormal
 import ProCGroups.ProC.Subgroups.Products
 
-set_option autoImplicit false
-
 /-!
 # The quotient by the pro-C residual core
 

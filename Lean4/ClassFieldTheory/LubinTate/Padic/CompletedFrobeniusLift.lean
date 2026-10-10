@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveAction
 
-set_option autoImplicit false
-
 /-!
 # Frobenius lifts on completed p-adic Lubin--Tate levels
 
@@ -21,6 +19,8 @@ The construction is an actual field automorphism.  Surjectivity follows from
 the theorem that every completed unit-parameter root generates the completed
 level.
 -/
+
+
 
 noncomputable section
 

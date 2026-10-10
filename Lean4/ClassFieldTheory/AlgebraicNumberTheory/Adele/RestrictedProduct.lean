@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.LocalComponents
 import Mathlib.Algebra.Group.TransferInstance
 
-set_option autoImplicit false
-
 /-!
 # The restricted local product of a relative adele algebra
 
@@ -21,6 +19,8 @@ restricted-product model of the relative idele group.
 This construction is independent of the later identification of the
 chosen-basis lattice with the product of local integer rings.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

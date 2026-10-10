@@ -9,8 +9,6 @@ import SawinTotallyRealTowers.QuadraticBasis
 import SawinTotallyRealTowers.QuadraticTrace
 import Mathlib.Data.Int.Lemmas
 
-set_option autoImplicit false
-
 /-!
 # Uniqueness of squarefree quadratic radicands
 

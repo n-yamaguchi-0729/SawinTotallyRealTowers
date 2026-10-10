@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Algebra.MonoidAlgebra.MapDomain
 import ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — coefficient rings — completed group algebra
 

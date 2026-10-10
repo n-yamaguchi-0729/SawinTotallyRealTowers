@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.Permutation.Lattice
 import GaloisCohomology.Cyclic.Herbrand.Permutation.Module
 
-set_option autoImplicit false
-
 /-!
 # Herbrand quotients of complete permutation sublattices
 
 This file connects the complete permutation sublattice with its
 orbit-stabilizer Herbrand quotient calculation.
 -/
+
+
 
 open scoped BigOperators
 
@@ -64,10 +64,10 @@ section IntegralPermutationBasis
 variable [Fintype G] [Group G] [Fintype ι] [DecidableEq ι]
 variable {M : Type*} [AddCommGroup M] [Module ℤ M]
 
-omit [Fintype G] in
+omit [Fintype G] [Fintype ι] [DecidableEq ι] in
 /-- Coordinates in a basis permuted by `G` transform by the
 contragredient coordinate permutation. -/
-theorem basisEquivFun_symm_intCoordinatePermutation
+theorem basisEquivFun_symm_intCoordinatePermutation [Finite ι]
     (b : Basis ι ℤ M)
     (ρ : G →* Equiv.Perm ι)
     (α : G →* (M ≃ₗ[ℤ] M))
@@ -77,6 +77,8 @@ theorem basisEquivFun_symm_intCoordinatePermutation
     b.equivFun.symm
         (intCoordinatePermutation (ρ g) x) =
       α g (b.equivFun.symm x) := by
+  classical
+  let : Fintype ι := Fintype.ofFinite ι
   have hmaps :
       b.equivFun.symm.toLinearMap.comp
           (intCoordinatePermutation (ρ g)).toLinearMap =
@@ -840,7 +842,7 @@ orders. -/
 theorem
     completePermutationLattice_herbrandQuotient_eq_stabilizerProduct
     {G ι : Type}
-    [Fintype G] [Group G] [Fintype ι] [DecidableEq ι]
+    [Fintype G] [Group G] [Fintype ι]
     (ρ : G →* Equiv.Perm ι)
     (L : Submodule ℤ (ι → ℝ)) [DiscreteTopology L]
     [IsZLattice ℝ L]
@@ -875,6 +877,7 @@ theorem
         ∏ ω : MulAction.orbitRel.Quotient G ι,
           (Fintype.card
             (permutationOrbitStabilizer ω) : ℚ) := by
+  classical
   let indexAction : MulAction G ι :=
     permutationMulAction ρ
   let ambientAction :

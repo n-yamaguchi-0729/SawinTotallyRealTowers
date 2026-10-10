@@ -8,14 +8,14 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PowerClassFinitenes
 import GaloisCohomology.Kummer.Concrete.MaximalKummerSubgroup
 import GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
 
-set_option autoImplicit false
-
 /-!
 # Maximal finite Kummer extensions of local fields
 
 For a positive integer `n` that is nonzero in a nonarchimedean local field,
 the Kummer extension obtained by adjoining all `n`-th roots is finite.
 -/
+
+
 
 noncomputable section
 

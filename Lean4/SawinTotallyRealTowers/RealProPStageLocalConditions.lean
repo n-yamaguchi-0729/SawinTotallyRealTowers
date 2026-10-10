@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.FiniteRealPExtension
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 
-set_option autoImplicit false
 /-!
 # Local conditions of actual finite real p-layers
 

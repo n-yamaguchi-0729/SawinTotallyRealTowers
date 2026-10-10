@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
 
-set_option autoImplicit false
 /-!
 # Linear Kummer classes with natural `mu_p` coefficients
 
@@ -25,6 +24,7 @@ open CategoryTheory KummerTheory TopRep ContRepresentation
 variable (K : Type*) [Field K] [CharZero K]
 variable (p : ℕ) [Fact p.Prime]
 
+omit [Fact p.Prime] in
 /-- The orbit map of a `p`-th root of unity under the absolute Galois group is
 locally constant. -/
 theorem absoluteMuP_orbit_isLocallyConstant (x : AbsoluteMuP K p) :
@@ -81,6 +81,7 @@ def absoluteMuPHomogeneousZeroCochain (x : AbsoluteMuP K p) :
     congr 1
     simp⟩
 
+omit [Fact p.Prime] in
 @[simp]
 theorem absoluteMuPHomogeneousZeroCochain_boundary_apply
     (x : AbsoluteMuP K p)

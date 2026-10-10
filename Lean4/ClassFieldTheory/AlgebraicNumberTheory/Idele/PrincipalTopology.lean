@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 import Mathlib.Topology.Algebra.IsUniformGroup.Basic
 
-set_option autoImplicit false
-
 /-!
 # The topology of the principal ideles
 
@@ -21,6 +19,8 @@ The finite-place condition forces a principal idele into the ring of
 integers.  Its infinite component then lies in the Minkowski integer lattice,
 whose topology is discrete.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

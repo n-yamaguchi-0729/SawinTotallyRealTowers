@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Fox.Derivative
 
-set_option autoImplicit false
 /-!
 # Completed Fox rows of displayed relators
 

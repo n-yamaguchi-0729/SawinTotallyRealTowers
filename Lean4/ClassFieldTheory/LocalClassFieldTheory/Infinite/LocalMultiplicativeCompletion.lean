@@ -7,9 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.MultiplicativeDecomposition
 import Mathlib.Data.ZMod.Basic
-import Mathlib.Tactic
-
-set_option autoImplicit false
+import Batteries.Tactic.Init
+import Lean.Elab.Tactic.Omega
+import Lean.Elab.Tactic.RCases
 
 /-!
 # The profinite completion of a local multiplicative group
@@ -20,6 +20,8 @@ of valuation zero is detected by a finite quotient of the profinite unit
 group.  Consequently the canonical map from `Kˣ` to its completion by open
 finite quotients is injective.
 -/
+
+
 
 noncomputable section
 

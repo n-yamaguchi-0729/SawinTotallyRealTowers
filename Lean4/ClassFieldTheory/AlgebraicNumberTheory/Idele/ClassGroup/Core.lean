@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
 
-set_option autoImplicit false
-
 /-!
 # The ordinary ideal class group as an idele quotient
 
@@ -17,6 +15,8 @@ This file proves that quotienting the idele group by the
 ideles integral at every finite place and by the principal ideles gives the
 ordinary ideal class group.
 -/
+
+
 
 open scoped NumberField RestrictedProduct WithZero
 open NumberField IsDedekindDomain

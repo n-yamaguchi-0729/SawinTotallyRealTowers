@@ -8,8 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubexte
 import Mathlib.Algebra.Group.Subgroup.Pointwise
 import Mathlib.Topology.Algebra.Group.Pointwise
 
-set_option autoImplicit false
-
 /-!
 # Finite abelian extensions in abstract reciprocity
 
@@ -26,6 +24,8 @@ correspondence independently of the reciprocity isomorphism:
 The reverse inclusions in the two norm formulas, and hence the classification
 bijection itself, require the abstract reciprocity theorem and are deliberately not postulated.
 -/
+
+
 
 noncomputable section
 

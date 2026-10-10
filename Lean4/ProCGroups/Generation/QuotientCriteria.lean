@@ -10,8 +10,6 @@ import ProCGroups.ProC.OpenNormalSubgroups.Basic
 import ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
 import ProCGroups.Profinite.Basic
 
-set_option autoImplicit false
-
 /-!
 # Detecting topological generation in finite quotients
 

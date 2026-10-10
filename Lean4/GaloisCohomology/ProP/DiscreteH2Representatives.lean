@@ -14,8 +14,6 @@ import Mathlib.Algebra.Category.ModuleCat.EpiMono
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
 
-set_option autoImplicit false
-
 /-!
 # Discrete degree-two comparison on arbitrary representatives
 
@@ -109,7 +107,8 @@ theorem discreteContinuousH2AddEquiv_π
       (SO.moduleCatLeftHomologyData.π ordinaryCycle)
   congr 1
   let z : (((trivialZModPCochainsLifted p Q).sc 2).map
-      (continuousCochainsToAddCommGrp p)).cycles := (((trivialZModPCochainsLifted p Q).sc 2).mapCyclesIso
+      (continuousCochainsToAddCommGrp p)).cycles :=
+    (((trivialZModPCochainsLifted p Q).sc 2).mapCyclesIso
     (continuousCochainsToAddCommGrp p)).inv (z₀)
   have hz :
       (((trivialZModPCochainsLifted p Q).sc 2).mapHomologyIso

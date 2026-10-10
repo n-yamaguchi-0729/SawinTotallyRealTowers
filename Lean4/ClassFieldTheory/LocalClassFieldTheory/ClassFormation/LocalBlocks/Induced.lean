@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.Induced
 import ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 
-set_option autoImplicit false
-
 /-!
 # Local blocks of the idele group
 

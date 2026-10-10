@@ -10,8 +10,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
 import Mathlib.NumberTheory.Cyclotomic.Basic
 
-set_option autoImplicit false
-
 /-!
 # Cyclotomic descent for full S-unit Kummer norms
 
@@ -27,7 +25,9 @@ The final normal-closure step turns the resulting finite extension of `K`
 into a genuine finite Galois extension without enlarging its norm subgroup.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 open KummerTheory
 

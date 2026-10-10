@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 
-set_option autoImplicit false
-
 /-!
 # The idele topology
 

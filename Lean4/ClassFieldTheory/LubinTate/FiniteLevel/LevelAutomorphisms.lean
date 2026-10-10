@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Automorphisms of standard Lubin--Tate level fields
 
@@ -20,6 +18,8 @@ automorphisms.  Faithfulness of the finite action and the parameter-cardinality
 formula then show that the automorphism group has cardinality equal to the
 field degree, hence that every standard level is Galois.
 -/
+
+
 
 noncomputable section
 
@@ -228,7 +228,7 @@ private theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K))
+    (σ : Gal((standardLubinTateLevelField hπ n)/K))
     (x : standardLubinTateLevelField hπ n) :
     x ∈ (standardLubinTateLevelCompleteDVF hπ n).valuation.valuationSubring ↔
       σ x ∈
@@ -271,7 +271,7 @@ private noncomputable def
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K)) :
+    (σ : Gal((standardLubinTateLevelField hπ n)/K)) :
     (standardLubinTateLevelCompleteDVF hπ n).valuationSubring ≃+*
       (standardLubinTateLevelCompleteDVF hπ n).valuationSubring :=
   higherPrincipalUnitGroup.valuationSubringRingEquivOfPreserves
@@ -286,7 +286,7 @@ private theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K))
+    (σ : Gal((standardLubinTateLevelField hπ n)/K))
     (x :
       (standardLubinTateLevelCompleteDVF hπ n).valuationSubring) :
     (standardLubinTateLevelAutomorphismIntegerRingEquiv hπ n σ x).val =
@@ -298,7 +298,7 @@ private theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K)) :
+    (σ : Gal((standardLubinTateLevelField hπ n)/K)) :
     Continuous
       (standardLubinTateLevelAutomorphismIntegerRingEquiv hπ n σ) := by
   let target := standardLubinTateLevelCompleteDVF hπ n
@@ -324,7 +324,7 @@ private theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K)) :
+    (σ : Gal((standardLubinTateLevelField hπ n)/K)) :
     (standardLubinTateLevelAutomorphismIntegerRingEquiv hπ n σ :
         (standardLubinTateLevelCompleteDVF hπ n).valuationSubring →+*
           (standardLubinTateLevelCompleteDVF hπ n).valuationSubring).comp
@@ -341,7 +341,7 @@ private theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K)) :
+    (σ : Gal((standardLubinTateLevelField hπ n)/K)) :
     PowerSeries.HasEval
       (standardLubinTateLevelAutomorphismIntegerRingEquiv hπ n σ
         (standardLubinTatePrimitivePointInteger hπ n)) := by
@@ -369,7 +369,7 @@ private theorem
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     (n : ℕ)
-    (σ : Gal((standardLubinTateLevelField hπ n) / K))
+    (σ : Gal((standardLubinTateLevelField hπ n)/K))
     (a : F.valuationSubring) :
     standardLubinTateLevelAutomorphismIntegerRingEquiv hπ n σ
         (standardLubinTateEndomorphismValue hπ n a) =

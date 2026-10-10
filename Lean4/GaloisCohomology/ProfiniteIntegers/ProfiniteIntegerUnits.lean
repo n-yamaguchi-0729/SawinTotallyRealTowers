@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerPrimeProduct
 import Mathlib.Topology.Algebra.Group.Units
 
-set_option autoImplicit false
-
 /-!
 # Units of the profinite integers
 
 This file upgrades the prime-product Chinese-remainder equivalence for
 `ℤ̂` to topological additive, multiplicative, and unit-group equivalences.
 -/
+
+
 
 open scoped Topology
 

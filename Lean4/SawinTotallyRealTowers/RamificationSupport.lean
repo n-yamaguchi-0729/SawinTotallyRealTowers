@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
 import Mathlib.NumberTheory.RamificationInertia.Unramified
 
-set_option autoImplicit false
-
 /-!
 # Finite ramification support in number-field towers
 

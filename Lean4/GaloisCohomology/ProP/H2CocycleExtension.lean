@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.FreeProPH2Cocycle
 
-set_option autoImplicit false
 /-!
 # The central extension attached to a degree-two cocycle
 

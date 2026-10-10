@@ -8,8 +8,6 @@ import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgeb
 import Mathlib.Algebra.Algebra.ZMod
 import Mathlib.Algebra.MonoidAlgebra.Basic
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — coefficient rings — mod-\(n\) completed group algebra — coeff map
 

@@ -10,7 +10,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FiniteUnra
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FiniteExtensionAbsoluteH2Restriction
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Vanishing
 
-set_option autoImplicit false
 /-!
 # Absolute inflation vanishes over every number field
 
@@ -49,7 +48,8 @@ local instance cyclotomicVanishingBaseNumber : NumberField Cyclo :=
   NumberField.of_module_finite F Cyclo
 
 local notation "closureEquiv" => finiteIntermediateAbsoluteClosureEquiv F Cyclo
-local notation "MappedStage" => cyclotomicArithmeticStageMappedExtension F (n : ℕ) hpOdd U closureEquiv
+local notation "MappedStage" =>
+  cyclotomicArithmeticStageMappedExtension F (n : ℕ) hpOdd U closureEquiv
 
 /-- Actual finite restriction from the synchronized cyclotomic stage,
 viewed as a continuous homomorphism between finite Galois groups. -/

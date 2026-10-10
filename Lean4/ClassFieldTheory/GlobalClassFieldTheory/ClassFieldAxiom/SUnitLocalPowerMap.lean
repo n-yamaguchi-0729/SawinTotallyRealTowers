@@ -17,8 +17,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFo
 import Mathlib.Algebra.Group.Subgroup.Finite
 import Mathlib.GroupTheory.Index
 
-set_option autoImplicit false
-
 /-!
 # S-unit localization modulo local powers
 
@@ -27,7 +25,9 @@ finite product of local unit power classes and proves its kernel and
 surjectivity properties for the Kummer prime set.
 -/
 
-open scoped NumberField Classical NNReal IsMulCommutative
+
+
+open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

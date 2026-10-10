@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
 import GaloisCohomology.Cyclic.TateComparison
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity construction: the unit-cohomology axiom
 
@@ -22,6 +14,14 @@ The coefficient group in the unit-cohomology axiom is the actual unit subgroup `
 the action of the actual quotient `G_K / G_L`.  The two Tate groups are the
 homology objects of the finite-cyclic norm complexes.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

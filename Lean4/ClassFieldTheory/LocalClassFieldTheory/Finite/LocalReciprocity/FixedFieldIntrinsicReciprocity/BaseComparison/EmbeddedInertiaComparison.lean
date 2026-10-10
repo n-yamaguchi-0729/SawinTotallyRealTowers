@@ -7,13 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Basic
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedExtensionQuotient
 
-set_option autoImplicit false
-
 /-!
 # Embedded inertia comparison
 
-This module transports extension inertia between an intrinsic finite extension and its realization inside an ambient separable closure.
+This module transports extension inertia between an intrinsic finite extension and its
+realization inside an ambient separable closure.
 -/
+
+
 
 noncomputable section
 

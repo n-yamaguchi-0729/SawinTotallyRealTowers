@@ -7,8 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.Analytic.Arithmetic
 import ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
 import Mathlib.Data.Int.WithZero
-
-set_option autoImplicit false
+import Mathlib.RingTheory.Valuation.Basic
 
 /-!
 # Integer valuations induced by `ℤᵐ⁰`-valued valuations
@@ -16,6 +15,8 @@ set_option autoImplicit false
 This file constructs the sign-normalized integer valuation on field units and
 proves the elementary formulas for powers and natural-number denominators.
 -/
+
+
 
 noncomputable section
 

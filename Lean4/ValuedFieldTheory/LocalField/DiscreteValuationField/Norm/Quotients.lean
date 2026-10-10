@@ -17,8 +17,6 @@ Identifies norm-quotient classes with valuation classes modulo the residue degre
 the resulting cyclic equivalences.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

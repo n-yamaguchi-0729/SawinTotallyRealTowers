@@ -13,8 +13,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 import ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # Evaluating a changed primitive polynomial at the original primitive point
 
@@ -33,6 +31,8 @@ valuation at least `d(n+2)`.
 This is the quantitative algebraic input for the characteristic-independent
 Krasner comparison of the original and changed finite levels.
 -/
+
+
 
 noncomputable section
 

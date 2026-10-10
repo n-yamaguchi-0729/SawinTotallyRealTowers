@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuot
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
 
-set_option autoImplicit false
-
 /-!
 # The local blocks occurring in a relative `S`-idele
 
@@ -19,6 +17,8 @@ those two kinds of concrete tensor factors into one finite dependent
 family and identifies it equivariantly with the induced local blocks of
 the local tensor decomposition.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

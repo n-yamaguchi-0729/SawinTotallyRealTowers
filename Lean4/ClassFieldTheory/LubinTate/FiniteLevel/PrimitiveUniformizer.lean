@@ -12,8 +12,6 @@ import Mathlib.RingTheory.Finiteness.Cardinality
 import Mathlib.RingTheory.Discriminant
 import Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral
 
-set_option autoImplicit false
-
 /-!
 # Uniformizers in standard Lubin--Tate level fields
 
@@ -29,6 +27,8 @@ maximal-ideal filtration.  Comparing with the leading term and the
 fundamental identity forces the normalized additive valuation of `λₙ` to be
 one.
 -/
+
+
 
 noncomputable section
 

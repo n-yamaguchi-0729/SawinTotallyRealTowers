@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.Arithmetic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
 import GaloisCohomology.ProP.PresentationQuotientEquiv
 
-set_option autoImplicit false
 /-!
 # Vanishing of absolute inflation from unramified pro-p degree two
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Algebra.Exact.Basic
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: common — finite family linear map
 

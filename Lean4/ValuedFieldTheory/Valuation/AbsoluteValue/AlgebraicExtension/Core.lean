@@ -10,8 +10,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
 import Mathlib.RingTheory.Complex
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
 
-set_option autoImplicit false
-
 /-!
 # Unique extension to algebraic field extensions
 
@@ -260,7 +258,8 @@ private theorem algebraicExtension_complex_algEquiv_complex_unique_rpow_extensio
   rw [hx, hw]
   exact congrArg (fun t : ℝ => t ^ s)
     (compAlgEquiv_extends_apply e
-      algebraicExtension_standardComplexAbsoluteValue algebraicExtension_standardComplexAbsoluteValue
+      algebraicExtension_standardComplexAbsoluteValue
+        algebraicExtension_standardComplexAbsoluteValue
       (fun z => rfl) (e x)).symm
 
 /-- A chosen absolute-value extension together with its uniqueness property. -/

@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 import Mathlib.NumberTheory.NumberField.ClassNumber
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
 
-set_option autoImplicit false
-
 /-!
 # The small Hilbert class field
 
@@ -19,6 +17,8 @@ group of the ideles integral at every finite place.  Its reciprocity
 quotient is canonically the ordinary ideal class group; consequently its
 order is the class number.
 -/
+
+
 
 open scoped NumberField IsMulCommutative
 

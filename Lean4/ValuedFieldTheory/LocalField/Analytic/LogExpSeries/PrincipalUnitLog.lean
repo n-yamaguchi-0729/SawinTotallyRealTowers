@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.PrincipalUnitExp
 
-set_option autoImplicit false
 /-!
 Restricts the logarithm series to principal units and places its values in the corresponding
 additive ideal.
 -/
+
 
 open Filter
 open Polynomial
@@ -30,16 +30,22 @@ namespace MultiplicativeIntegerValuation
 
 variable {K : Type u} [Field K]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- The logarithm-series value of a first principal unit `u`, defined as the
 series for `log(1 + (u - 1))`. -/
 noncomputable def principalUnitLogSeriesOfWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1)
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1)
     (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) : K :=
   logOnePlusSeriesFieldOfWithZeroValuation v
     (principalUnitSubOneOfWithZeroValuation v u) hnK
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Sharp ramified endpoint form of the logarithm: if `u ∈ U^n` and
 `n > e/(p-1)`, then `Log(u)` lies in `m^n`. -/
 noncomputable def principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
@@ -58,7 +64,7 @@ noncomputable def principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValu
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
     ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
       Ideal (completeDVFOfWithZeroValuation v).valuationSubring) := by
   let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
@@ -67,7 +73,7 @@ noncomputable def principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValu
   let x : K := (aSub : K)
   have haMem : aSub ∈ F.maximalIdeal ^ n := by
     simpa [aSub] using
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff
+      (higherPrincipalUnitGroup.mem_iff
         (F := F) n (u : F.valuationSubringˣ)).1 u.property
   have hxthreshold :
       ∀ hx : x ≠ 0,
@@ -193,6 +199,9 @@ theorem principalUnitLogSeries_expSeries_maximalIdealPowSuccQuot_eq_self_ofWithZ
   simp [l, expu, principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled,
     principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled, F]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- On the successive principal-unit quotient `U^n/U^(n+1)`, the composite
 `Exp ∘ Log` induced by the ramified endpoint maps is the identity. -/
 theorem principalUnitExpSeries_logSeries_principalUnitSuccQuot_eq_self_ofWithZeroValuationScaled
@@ -215,8 +224,8 @@ theorem principalUnitExpSeries_logSeries_principalUnitSuccQuot_eq_self_ofWithZer
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotMk
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+    higherPrincipalUnitGroup.principalUnitSuccQuotMk
         (completeDVFOfWithZeroValuation v) n
         (principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
           (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
@@ -224,39 +233,39 @@ theorem principalUnitExpSeries_logSeries_principalUnitSuccQuot_eq_self_ofWithZer
           (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
             (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
             hnKlog hnvalLog hcomplete u)) =
-      LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotMk
+      higherPrincipalUnitGroup.principalUnitSuccQuotMk
         (completeDVFOfWithZeroValuation v) n u := by
   let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
   let loga : ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u) :=
     principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
       hnKlog hnvalLog hcomplete u
-  let expLogu : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) n :=
+  let expLogu : (higherPrincipalUnitGroup F) n :=
     principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
       hnKexp hnvalExp hcomplete loga
   have class_eq_subOne :
-      ∀ (w : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) n) (w0 : F.valuationSubring),
+      ∀ (w : (higherPrincipalUnitGroup F) n) (w0 : F.valuationSubring),
         w0 = ((w : F.valuationSubringˣ) : F.valuationSubring) - 1 →
         ∀ hw0 : w0 ∈ F.maximalIdeal ^ n,
-        LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotMk F n w =
-          LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow
+        higherPrincipalUnitGroup.principalUnitSuccQuotMk F n w =
+          higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow
             F n hn ⟨w0, hw0⟩ := by
     intro w w0 hw0eq hw0
     subst w0
-    rw [LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_apply]
+    rw [higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_apply]
     congr 1
     dsimp
     apply Subtype.ext
-    rw [LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup_val]
+    rw [higherPrincipalUnitGroup.principalUnitOneAddOfMemPowSubgroup_val]
     apply Units.ext
-    rw [LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitOneAddOfMemPow_val]
+    rw [higherPrincipalUnitGroup.principalUnitOneAddOfMemPow_val]
     ring
   let a0 : F.valuationSubring :=
     ((u : F.valuationSubringˣ) : F.valuationSubring) - 1
   have ha0 : a0 ∈ F.maximalIdeal ^ n := by
     dsimp [a0]
-    exact (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff
+    exact (higherPrincipalUnitGroup.mem_iff
       (F := F) n (u : F.valuationSubringˣ)).1 u.property
   let a : ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u) :=
     ⟨a0, ha0⟩
@@ -264,7 +273,7 @@ theorem principalUnitExpSeries_logSeries_principalUnitSuccQuot_eq_self_ofWithZer
     ((expLogu : F.valuationSubringˣ) : F.valuationSubring) - 1
   have hb0 : b0 ∈ F.maximalIdeal ^ n := by
     dsimp [b0]
-    exact (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff
+    exact (higherPrincipalUnitGroup.mem_iff
       (F := F) n (expLogu : F.valuationSubringˣ)).1 expLogu.property
   let b : ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u) :=
     ⟨b0, hb0⟩
@@ -281,13 +290,15 @@ theorem principalUnitExpSeries_logSeries_principalUnitSuccQuot_eq_self_ofWithZer
       principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled, F]
   rw [class_eq_subOne expLogu b0 rfl hb0, class_eq_subOne u a0 rfl ha0]
   exact
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_eq_of_sub_mem_succ
+    higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_eq_of_sub_mem_succ
       F n hn b a hdiff
 
-/-- The deep exponential–logarithm equivalence, additive finite-level defect: the evaluated composite
+/-- The deep exponential–logarithm equivalence, additive finite-level defect: the evaluated
+composite
 `Log ∘ Exp` differs from the identity by an element of `m^(n+1)`.  This is the
 first nontrivial finite quotient identity behind the separatedness endpoint. -/
-theorem principalUnitLogSeries_expSeries_sub_self_mem_maximalIdeal_pow_succ_ofWithZeroValuationScaled
+theorem
+  principalUnitLogSeries_expSeries_sub_self_mem_maximalIdeal_pow_succ_ofWithZeroValuationScaled
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     {p : ℕ} [Fact p.Prime] (e n : ℕ)
@@ -391,10 +402,14 @@ theorem principalUnitLogSeries_expSeries_idealQuotient_succ_eq_self_ofWithZeroVa
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
         hnKexp hnvalExp hnKlog hnvalLog hcomplete a)
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- The deep exponential–logarithm equivalence, multiplicative finite-level defect: the evaluated
 composite `Exp ∘ Log` differs from the identity by an element of `m^(n+1)` on
 underlying valuation-ring units. -/
-theorem principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWithZeroValuationScaled
+theorem
+  principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWithZeroValuationScaled
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     {p : ℕ} [Fact p.Prime] (e n : ℕ)
@@ -414,14 +429,14 @@ theorem principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWi
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
     (((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
           (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
           hnKexp hnvalExp hcomplete
           (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
             (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
             hnKlog hnvalLog hcomplete u) :
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+        (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
         (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
         (completeDVFOfWithZeroValuation v).valuationSubring) -
       (((u : (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
@@ -432,7 +447,7 @@ theorem principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWi
     principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
       hnKlog hnvalLog hcomplete u
-  let expLogu : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) n :=
+  let expLogu : (higherPrincipalUnitGroup F) n :=
     principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
       hnKexp hnvalExp hcomplete loga
@@ -440,7 +455,7 @@ theorem principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWi
     ((u : F.valuationSubringˣ) : F.valuationSubring) - 1
   have ha0 : a0 ∈ F.maximalIdeal ^ n := by
     dsimp [a0]
-    exact (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff
+    exact (higherPrincipalUnitGroup.mem_iff
       (F := F) n (u : F.valuationSubringˣ)).1 u.property
   let b0 : F.valuationSubring :=
     ((expLogu : F.valuationSubringˣ) : F.valuationSubring) - 1
@@ -460,7 +475,11 @@ theorem principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWi
     simp [a0, b0]
   simpa [F, expLogu] using hsub ▸ hdiff
 
-/-- The deep exponential–logarithm equivalence, multiplicative finite quotient identity at level `n+1`:
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- The deep exponential–logarithm equivalence, multiplicative finite quotient identity at level
+`n+1`:
 `Exp ∘ Log` is the identity in `O / m^(n+1)` after forgetting to
 valuation-ring units. -/
 theorem principalUnitExpSeries_logSeries_idealQuotient_succ_eq_self_ofWithZeroValuationScaled
@@ -483,7 +502,7 @@ theorem principalUnitExpSeries_logSeries_idealQuotient_succ_eq_self_ofWithZeroVa
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
     Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ (n + 1))
         ((((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
             (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
@@ -491,7 +510,7 @@ theorem principalUnitExpSeries_logSeries_idealQuotient_succ_eq_self_ofWithZeroVa
             (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
               (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
               hnKlog hnvalLog hcomplete u) :
-          (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+          (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
           (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
           (completeDVFOfWithZeroValuation v).valuationSubring)) =
       Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ (n + 1))
@@ -505,7 +524,7 @@ theorem principalUnitExpSeries_logSeries_idealQuotient_succ_eq_self_ofWithZeroVa
       (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
         hnKlog hnvalLog hcomplete u) :
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) n) : F.valuationSubringˣ) : F.valuationSubring)
+      (higherPrincipalUnitGroup F) n) : F.valuationSubringˣ) : F.valuationSubring)
   let rhs : F.valuationSubring :=
     ((u : F.valuationSubringˣ) : F.valuationSubring)
   change Ideal.Quotient.mk (F.maximalIdeal ^ (n + 1)) lhs =
@@ -515,9 +534,10 @@ theorem principalUnitExpSeries_logSeries_idealQuotient_succ_eq_self_ofWithZeroVa
       (I := F.maximalIdeal ^ (n + 1)) lhs rhs).2
       (by
         simpa [F, lhs, rhs] using
-          principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWithZeroValuationScaled
+          (
+  principalUnitExpSeries_logSeries_sub_self_mem_maximalIdeal_pow_succ_ofWithZeroValuationScaled
             (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
-            hnKlog hnvalLog hnKexp hnvalExp hcomplete u)
+            hnKlog hnvalLog hnKexp hnvalExp hcomplete u))
 
 /-- Separatedness endpoint for the additive side of the deep exponential–logarithm equivalence: two
 elements of a fixed maximal-ideal power are equal if all finite
@@ -571,7 +591,8 @@ theorem maximalIdealPowSubtype_eq_of_idealQuotient_eq_ge
     exact (F.maximalIdeal ^ r).sub_mem ha hb
 
 /-- Separatedness endpoint for the multiplicative principal-unit side of
-the deep exponential–logarithm equivalence: higher principal units are equal if their underlying units
+the deep exponential–logarithm equivalence: higher principal units are equal if their underlying
+units
 have the same image in every finite maximal-ideal quotient. -/
 theorem higherPrincipalUnitGroup_eq_of_idealQuotient_eq_all
     (F : CompleteDVF.{u, 0} K) {n : ℕ}
@@ -637,7 +658,8 @@ theorem higherPrincipalUnitGroup_eq_of_idealQuotient_eq_ge
     exact (F.maximalIdeal ^ r).sub_mem hu₁r hu₂r
 
 /-- Exact `Log ∘ Exp` endpoint reduced to finite quotient coordinates.  This
-is the separatedness step for the additive side of the deep exponential–logarithm equivalence after the
+is the separatedness step for the additive side of the deep exponential–logarithm equivalence
+after the
 analytic/formal proof supplies equality in every quotient `O/m^r` for
 `r ≥ n`. -/
 theorem principalUnitLogSeries_expSeries_eq_self_of_idealQuotient_eq_ge_ofWithZeroValuationScaled
@@ -686,6 +708,9 @@ theorem principalUnitLogSeries_expSeries_eq_self_of_idealQuotient_eq_ge_ofWithZe
     maximalIdealPowSubtype_eq_of_idealQuotient_eq_ge
       (completeDVFOfWithZeroValuation v) hquot
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Exact `Exp ∘ Log` endpoint reduced to finite quotient coordinates.  This
 is the separatedness step for the multiplicative side of the deep exponential–logarithm equivalence
 after the analytic/formal proof supplies equality in every quotient `O/m^r`
@@ -710,7 +735,7 @@ theorem principalUnitExpSeries_logSeries_eq_self_of_idealQuotient_eq_ge_ofWithZe
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n)
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n)
     (hquot :
       ∀ r : ℕ, n ≤ r →
         Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
@@ -720,7 +745,7 @@ theorem principalUnitExpSeries_logSeries_eq_self_of_idealQuotient_eq_ge_ofWithZe
                 (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                   (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                   hnKlog hnvalLog hcomplete u) :
-              (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+              (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
               (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
               (completeDVFOfWithZeroValuation v).valuationSubring) =
           Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
@@ -799,6 +824,9 @@ theorem principalUnitLogSeries_expSeries_eq_self_of_sub_mem_ge_ofWithZeroValuati
       (y := (a : (completeDVFOfWithZeroValuation v).valuationSubring))).2
       (hmem r hr)
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Exact `Exp ∘ Log` endpoint from direct membership of the multiplicative
 defect in every finite maximal-ideal power at levels `r ≥ n`. -/
 theorem principalUnitExpSeries_logSeries_eq_self_of_sub_mem_ge_ofWithZeroValuationScaled
@@ -821,7 +849,7 @@ theorem principalUnitExpSeries_logSeries_eq_self_of_sub_mem_ge_ofWithZeroValuati
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n)
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n)
     (hmem :
       ∀ r : ℕ, n ≤ r →
         (((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
@@ -830,7 +858,7 @@ theorem principalUnitExpSeries_logSeries_eq_self_of_sub_mem_ge_ofWithZeroValuati
               (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                 (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                 hnKlog hnvalLog hcomplete u) :
-            (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+            (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
             (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
             (completeDVFOfWithZeroValuation v).valuationSubring) -
           (((u : (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
@@ -858,7 +886,7 @@ theorem principalUnitExpSeries_logSeries_eq_self_of_sub_mem_ge_ofWithZeroValuati
               (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                 (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                 hnKlog hnvalLog hcomplete u) :
-            (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+            (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
             (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
             (completeDVFOfWithZeroValuation v).valuationSubring))
       (y :=
@@ -866,7 +894,11 @@ theorem principalUnitExpSeries_logSeries_eq_self_of_sub_mem_ge_ofWithZeroValuati
           (completeDVFOfWithZeroValuation v).valuationSubring)))).2
       (hmem r hr)
 
-/-- Endpoint package for the deep exponential–logarithm equivalence from the exact inverse equalities:
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- Endpoint package for the deep exponential–logarithm equivalence from the exact inverse
+equalities:
 once the two evaluated composites are proved to be identities on `m^n` and
 `U^n`, the exponential and logarithm maps give the underlying equivalence
 between the two source and target groups.  The group-homomorphism structure is supplied
@@ -903,7 +935,7 @@ noncomputable def principalUnitExpLogEquivOfExact_ofWithZeroValuationScaled
             hnKexp hnvalExp hcomplete a) =
         a)
     (hexp_log :
-      ∀ u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
+      ∀ u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
         principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
           (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
           hnKexp hnvalExp hcomplete
@@ -913,7 +945,7 @@ noncomputable def principalUnitExpLogEquivOfExact_ofWithZeroValuationScaled
         u) :
     ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
       Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n where
+      (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n where
   toFun a :=
     principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
@@ -925,6 +957,9 @@ noncomputable def principalUnitExpLogEquivOfExact_ofWithZeroValuationScaled
   left_inv a := hlog_exp a
   right_inv u := hexp_log u
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Endpoint package for the deep exponential–logarithm equivalence as the actual group isomorphism:
 if the evaluated composites are identities, then the source and target groups are
 multiplicatively isomorphic after wrapping the additive ideal by
@@ -963,7 +998,7 @@ noncomputable def principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled
             hnKexp hnvalExp hcomplete a) =
         a)
     (hexp_log :
-      ∀ u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
+      ∀ u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
         principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
           (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
           hnKexp hnvalExp hcomplete
@@ -974,7 +1009,7 @@ noncomputable def principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled
     Multiplicative
       ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
         Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃*
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n where
+      (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n where
   toFun a :=
     principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
@@ -995,7 +1030,11 @@ noncomputable def principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
         hnKexp hnvalExp hcomplete a.toAdd b.toAdd
 
-/-- Endpoint package for the deep exponential–logarithm equivalence from finite quotient identities: if the
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- Endpoint package for the deep exponential–logarithm equivalence from finite quotient
+identities: if the
 two evaluated composites agree with the identity in every quotient
 `O / m^r` for `r ≥ n`, then the underlying source and target groups `m^n` and `U^n` are
 equivalent. -/
@@ -1035,7 +1074,7 @@ noncomputable def principalUnitExpLogEquivOfIdealQuotient_ge_ofWithZeroValuation
             Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
               (a : (completeDVFOfWithZeroValuation v).valuationSubring))
     (hexp_log_quot :
-      ∀ u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
+      ∀ u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
         ∀ r : ℕ, n ≤ r →
           Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
               (((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
@@ -1044,7 +1083,7 @@ noncomputable def principalUnitExpLogEquivOfIdealQuotient_ge_ofWithZeroValuation
                   (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                     (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                     hnKlog hnvalLog hcomplete u) :
-                (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+                (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
                 (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
                 (completeDVFOfWithZeroValuation v).valuationSubring) =
             Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
@@ -1052,7 +1091,7 @@ noncomputable def principalUnitExpLogEquivOfIdealQuotient_ge_ofWithZeroValuation
                 (completeDVFOfWithZeroValuation v).valuationSubring))) :
     ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
       Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
+      (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
   principalUnitExpLogEquivOfExact_ofWithZeroValuationScaled
     (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
     hnKexp hnvalExp hnKlog hnvalLog hcomplete
@@ -1065,7 +1104,11 @@ noncomputable def principalUnitExpLogEquivOfIdealQuotient_ge_ofWithZeroValuation
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
         hnKlog hnvalLog hnKexp hnvalExp hcomplete u (hexp_log_quot u))
 
-/-- Endpoint package for the deep exponential–logarithm equivalence as a multiplicative equivalence, from
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- Endpoint package for the deep exponential–logarithm equivalence as a multiplicative
+equivalence, from
 finite quotient identities for both evaluated composites. -/
 noncomputable def principalUnitExpLogMulEquivOfIdealQuotient_ge_ofWithZeroValuationScaled
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
@@ -1104,7 +1147,7 @@ noncomputable def principalUnitExpLogMulEquivOfIdealQuotient_ge_ofWithZeroValuat
             Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
               (a : (completeDVFOfWithZeroValuation v).valuationSubring))
     (hexp_log_quot :
-      ∀ u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
+      ∀ u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
         ∀ r : ℕ, n ≤ r →
           Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
               (((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
@@ -1113,7 +1156,7 @@ noncomputable def principalUnitExpLogMulEquivOfIdealQuotient_ge_ofWithZeroValuat
                   (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                     (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                     hnKlog hnvalLog hcomplete u) :
-                (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+                (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
                 (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
                 (completeDVFOfWithZeroValuation v).valuationSubring) =
             Ideal.Quotient.mk ((completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
@@ -1122,7 +1165,7 @@ noncomputable def principalUnitExpLogMulEquivOfIdealQuotient_ge_ofWithZeroValuat
     Multiplicative
       ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
         Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃*
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
+      (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
   principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled
     (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
     hnKexp hnvalExp hnKlog hnvalLog hcomplete
@@ -1135,9 +1178,14 @@ noncomputable def principalUnitExpLogMulEquivOfIdealQuotient_ge_ofWithZeroValuat
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
         hnKlog hnvalLog hnKexp hnvalExp hcomplete u (hexp_log_quot u))
 
-/-- Endpoint package for the deep exponential–logarithm equivalence from direct all-level defect membership:
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- Endpoint package for the deep exponential–logarithm equivalence from direct all-level defect
+membership:
 if the two evaluated formal composites differ from the identity by elements of
-every finite maximal-ideal power `m^r` for `r ≥ n`, then the underlying source and target groups `m^n` and `U^n` are equivalent. -/
+every finite maximal-ideal power `m^r` for `r ≥ n`, then the underlying source and target groups
+`m^n` and `U^n` are equivalent. -/
 noncomputable def principalUnitExpLogEquivOfSubMem_ge_ofWithZeroValuationScaled
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
@@ -1173,7 +1221,7 @@ noncomputable def principalUnitExpLogEquivOfSubMem_ge_ofWithZeroValuationScaled
             (a : (completeDVFOfWithZeroValuation v).valuationSubring) ∈
               (completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
     (hexp_log_mem :
-      ∀ u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
+      ∀ u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
         ∀ r : ℕ, n ≤ r →
           (((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
                 (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
@@ -1181,7 +1229,7 @@ noncomputable def principalUnitExpLogEquivOfSubMem_ge_ofWithZeroValuationScaled
                 (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                   (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                   hnKlog hnvalLog hcomplete u) :
-              (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+              (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
               (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
               (completeDVFOfWithZeroValuation v).valuationSubring) -
             (((u : (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
@@ -1189,7 +1237,7 @@ noncomputable def principalUnitExpLogEquivOfSubMem_ge_ofWithZeroValuationScaled
               (completeDVFOfWithZeroValuation v).maximalIdeal ^ r) :
     ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
       Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
+      (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
   principalUnitExpLogEquivOfExact_ofWithZeroValuationScaled
     (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
     hnKexp hnvalExp hnKlog hnvalLog hcomplete
@@ -1202,7 +1250,11 @@ noncomputable def principalUnitExpLogEquivOfSubMem_ge_ofWithZeroValuationScaled
         (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
         hnKlog hnvalLog hnKexp hnvalExp hcomplete u (hexp_log_mem u))
 
-/-- Endpoint package for the deep exponential–logarithm equivalence as a multiplicative equivalence, from the
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- Endpoint package for the deep exponential–logarithm equivalence as a multiplicative
+equivalence, from the
 same all-level defect-membership hypotheses.  This is the final reusable shape
 for the principal-unit exponential/logarithm isomorphism once the remaining analytic
 defect estimates are available. -/
@@ -1242,7 +1294,7 @@ noncomputable def principalUnitExpLogMulEquivOfSubMem_ge_ofWithZeroValuationScal
             (a : (completeDVFOfWithZeroValuation v).valuationSubring) ∈
               (completeDVFOfWithZeroValuation v).maximalIdeal ^ r)
     (hexp_log_mem :
-      ∀ u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
+      ∀ u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n,
         ∀ r : ℕ, n ≤ r →
           (((principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
                 (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
@@ -1250,7 +1302,7 @@ noncomputable def principalUnitExpLogMulEquivOfSubMem_ge_ofWithZeroValuationScal
                 (principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
                   (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
                   hnKlog hnvalLog hcomplete u) :
-              (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+              (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
               (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
               (completeDVFOfWithZeroValuation v).valuationSubring) -
             (((u : (completeDVFOfWithZeroValuation v).valuationSubringˣ) :
@@ -1259,7 +1311,7 @@ noncomputable def principalUnitExpLogMulEquivOfSubMem_ge_ofWithZeroValuationScal
     Multiplicative
       ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
         Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃*
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
+      (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n :=
   principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled
     (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
     hnKexp hnvalExp hnKlog hnvalLog hcomplete

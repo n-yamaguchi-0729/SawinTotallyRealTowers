@@ -9,8 +9,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNo
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAbelian
 import ClassFieldTheory.LocalClassFieldTheory.Finite.UnramifiedConductor
 
-set_option autoImplicit false
-
 /-!
 # Lubin--Tate application: index of the explicit level norm subgroup
 
@@ -18,6 +16,8 @@ The equality between the norm-subgroup index and the extension degree uses
 finite local reciprocity.  It therefore belongs to the concrete local class
 field theory application layer, not to the reusable Lubin--Tate library.
 -/
+
+
 
 noncomputable section
 

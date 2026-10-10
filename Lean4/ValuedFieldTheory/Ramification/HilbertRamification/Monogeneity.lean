@@ -10,8 +10,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.Polynomial
 import Mathlib.NumberTheory.RamificationInertia.Inertia
 import Mathlib.NumberTheory.RamificationInertia.Ramification
 
-set_option autoImplicit false
-
 /-!
 # Monogeneity over a noncomplete discretely valued field
 
@@ -20,6 +18,8 @@ used in the monogenic integral-generator theorem.  The proof uses the finite int
 closure supplied by unique extension, a primitive residue element, the
 representative adjustment , and Nakayama's lemma.
 -/
+
+
 
 noncomputable section
 
@@ -491,7 +491,9 @@ theorem exists_primitive_residue_lift_polynomial_uniformizer_dvf
     exact hauniform
   · exact hderivA
 
-/-- The full noncomplete generator data used by the monogenic integral-generator theorem and the first ramification-quotient homomorphism: a primitive residue lift, a lifted polynomial whose value is a
+/-- The full noncomplete generator data used by the monogenic integral-generator theorem and the
+first ramification-quotient homomorphism: a primitive residue lift, a lifted polynomial whose
+value is a
 uniformizer, its unit derivative, and generation of the entire target
 valuation ring. -/
 theorem exists_valuationSubring_generator_data_of_uniqueExtension

@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Residue-field API for local maps
 
@@ -18,6 +14,8 @@ Henselian and unramified parts of the DVF library.  It keeps mathlib's
 `IsLocalRing.ResidueField.map` and `IsLocalRing.residue` as the primary
 objects.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

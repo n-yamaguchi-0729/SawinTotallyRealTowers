@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FormalModule.RecursiveCoefficient
 import Mathlib.RingTheory.MvPowerSeries.Trunc
 
-set_option autoImplicit false
-
 /-!
 # Finite-degree stabilization for Lubin--Tate intertwining defects
 
@@ -24,6 +22,8 @@ zero constant coefficient into the fixed Lubin--Tate series.  On the right
 side, truncation of multivariable substitution depends only on the same
 truncation of the outer series.
 -/
+
+
 
 noncomputable section
 
@@ -69,7 +69,8 @@ variable {K : Type u} [Field K]
 variable {F : LocalField.{u, v} K} {π : F.valuationSubring}
 variable {σ : Type w} [Fintype σ]
 
-private theorem truncTotal_powerSeries_subst_eq_of_truncTotal_eq
+omit [Fintype σ] in
+private theorem truncTotal_powerSeries_subst_eq_of_truncTotal_eq [Finite σ]
     (e : LubinTateSeries F π)
     {H H' : MvPowerSeries σ F.valuationSubring}
     (hH : MvPowerSeries.constantCoeff H = 0)
@@ -105,7 +106,8 @@ private theorem truncTotal_powerSeries_subst_eq_of_truncTotal_eq
           (x := fun _ : Unit ↦ k) hH'subst.const
           (fun _ ↦ le_rfl)).symm
 
-private theorem truncTotal_inVariables_subst_eq_of_truncTotal_eq
+omit [Fintype σ] in
+private theorem truncTotal_inVariables_subst_eq_of_truncTotal_eq [Finite σ]
     (ebar : LubinTateSeries F π)
     {H H' : MvPowerSeries σ F.valuationSubring}
     {k : ℕ} (htrunc : H.truncTotal k = H'.truncTotal k) :
@@ -130,6 +132,7 @@ private theorem truncTotal_inVariables_subst_eq_of_truncTotal_eq
         (MvPowerSeries.truncTotal_subst_eq_truncTotal_truncTotal_subst
           (f := H') (a := fun i : σ ↦ inVariable ebar i) hconstant).symm
 
+omit [Fintype σ] in
 /-- The degree-`d` coefficient of the same-uniformizer intertwining defect
 depends only on coefficients of the proposed intertwiner through total degree
 `d.degree`.
@@ -137,7 +140,7 @@ depends only on coefficients of the proposed intertwiner through total degree
 The slightly more general bound `m` is convenient for a recursive tower of
 finite approximations: agreement through degree `m` makes every defect
 coefficient of degree at most `m` stable. -/
-theorem coeff_defect_eq_of_coeff_eq_degree_le
+theorem coeff_defect_eq_of_coeff_eq_degree_le [Finite σ]
     (e ebar : LubinTateSeries F π)
     {H H' : MvPowerSeries σ F.valuationSubring}
     (hH : MvPowerSeries.constantCoeff H = 0)
@@ -403,7 +406,8 @@ private theorem linearInVariableStabilization_constantCoeff
     ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply,
     MvPowerSeries.coeff_zero_X, mul_zero]
 
-private theorem linearInVariableStabilization_hasSubst
+omit [Fintype σ] in
+private theorem linearInVariableStabilization_hasSubst [Finite σ]
     (π : F.valuationSubring) :
     MvPowerSeries.HasSubst
       (linearInVariableStabilization (σ := σ) π) :=
@@ -470,7 +474,8 @@ private theorem two_le_order_inVariable_sub_linearInVariableStabilization
     simp [inVariable, linearInVariableStabilization,
       PowerSeries.coeff_subst_single, hdi, hX]
 
-private theorem degree_add_one_le_order_subst_monomial_sub_linear_stabilization
+omit [Fintype σ] in
+private theorem degree_add_one_le_order_subst_monomial_sub_linear_stabilization [Finite σ]
     (ebar : LubinTateSeries F π)
     (d : σ →₀ ℕ) (c : F.valuationSubring) :
     ((d.degree + 1 : ℕ) : ℕ∞) ≤
@@ -543,7 +548,8 @@ private theorem coeff_subst_linearInVariableStabilization_monomial
   · rw [MvPowerSeries.coeff_monomial_ne hqd, mul_zero,
       ite_eq_right hqd]
 
-private theorem coeff_subst_inVariables_monomial_of_degree_le
+omit [Fintype σ] in
+private theorem coeff_subst_inVariables_monomial_of_degree_le [Finite σ]
     (ebar : LubinTateSeries F π)
     (q d : σ →₀ ℕ) (hq : q.degree ≤ d.degree)
     (c : F.valuationSubring) :
@@ -574,7 +580,8 @@ private theorem coeff_subst_inVariables_monomial_of_degree_le
   rw [hcoeff,
     coeff_subst_linearInVariableStabilization_monomial]
 
-private theorem coeff_subst_inVariables_add_monomial_of_degree_le
+omit [Fintype σ] in
+private theorem coeff_subst_inVariables_add_monomial_of_degree_le [Finite σ]
     (ebar : LubinTateSeries F π)
     (H : MvPowerSeries σ F.valuationSubring)
     (q d : σ →₀ ℕ) (hq : q.degree ≤ d.degree)
@@ -758,7 +765,8 @@ private theorem coeff_subst_lubinTateSeries_add_monomial_of_degree_le
         π * (if q = d then c else 0) := by
       rw [LubinTateSeries.coeff_one_eq_uniformizer]
 
-private theorem coeff_defect_add_monomial_eq_of_degree_le_constantCoeff
+omit [Fintype σ] in
+private theorem coeff_defect_add_monomial_eq_of_degree_le_constantCoeff [Finite σ]
     (e ebar : LubinTateSeries F π)
     {H : MvPowerSeries σ F.valuationSubring}
     (hH : MvPowerSeries.constantCoeff H = 0)
@@ -825,7 +833,8 @@ private theorem linearForm_eq_sum_monomial_stabilization
     MvPowerSeries.monomial_mul_monomial]
   simp
 
-private theorem coeff_defect_sum_linear_monomials_eq_zero
+omit [Fintype σ] in
+private theorem coeff_defect_sum_linear_monomials_eq_zero [Finite σ]
     (e ebar : LubinTateSeries F π)
     (L : σ → F.valuationSubring)
     (s : Finset σ) (q : σ →₀ ℕ) (hq : q.degree ≤ 1) :

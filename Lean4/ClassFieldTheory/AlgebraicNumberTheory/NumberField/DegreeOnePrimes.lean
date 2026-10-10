@@ -11,7 +11,13 @@ import Mathlib.NumberTheory.NumberField.Ideal.KummerDedekind
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.ZMod.Basic
 
-set_option autoImplicit false
+/-!
+# Degree-one primes of number fields
+
+Good prime divisors of primitive polynomial values give prime ideals
+of residue degree one. Every number field admits an unramified
+degree-one prime outside any specified finite set of rational primes.
+-/
 
 open scoped NumberField
 open NumberField IsDedekindDomain Polynomial

@@ -8,8 +8,6 @@ import Mathlib.Combinatorics.Hall.Finite
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.RestrictionKernel
 import ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CyclicPrimePowerFullDecomposition
 
-set_option autoImplicit false
-
 /-!
 # Base-place selection for S-unit Kummer extensions
 
@@ -18,7 +16,9 @@ pairwise distinct base places outside the finite avoidance set. Distinctness
 is obtained from Mathlib's Hall marriage theorem.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -189,6 +189,7 @@ noncomputable def sUnitKummerAvoidedBasePlaces
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
     Finset (HeightOneSpectrum (𝓞 K)) := by
+  classical
   let S' :=
     enlargeByFiniteKummerRadicalSupport
       (K := K) (L := E) n hmu S
@@ -226,6 +227,7 @@ theorem
         (K := K) (L := E) n hmu S ⊆
       sUnitKummerAvoidedBasePlaces
         (K := K) (Omega := Omega) E n hmu S := by
+  classical
   unfold sUnitKummerAvoidedBasePlaces
   dsimp only
   intro w hw
@@ -452,6 +454,7 @@ theorem sUnitKummerChosenBasePlaces_valuation_natCast_eq_one
           (K := K) (Omega := Omega) E n hmu
           p v hp hv hn r eG S i ∉
         chosenUnitFiniteSupport (K := K) nUnit := by
+    classical
     intro hmem
     apply
       sUnitKummerChosenBasePlaces_not_mem_avoided

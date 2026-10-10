@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.FiniteCyclicBarPeriodicChainComparison
 
-set_option autoImplicit false
 /-!
 # Canonical degree-two bar--periodic comparison for finite cyclic groups
 
@@ -588,7 +587,7 @@ theorem finiteCyclicBarCarryCycle_i
               (finiteCyclicCarryTwoCocycle A g hg a))) := by
     simpa only [ConcreteCategory.comp_apply] using hi
   rw [hi', groupCohomology.isoCocycles₂_inv_comp_iCocycles_apply]
-  simp [groupCohomology.inhomogeneousCochainsIso]
+  simp only [groupCohomology.inhomogeneousCochainsIso]
   change
     Rep.freeLiftLEquiv R G (Fin 2 → G) A
         ((Rep.freeLiftLEquiv R G (Fin 2 → G) A).symm

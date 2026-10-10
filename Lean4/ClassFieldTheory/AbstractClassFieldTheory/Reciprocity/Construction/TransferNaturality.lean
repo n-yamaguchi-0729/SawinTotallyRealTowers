@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.Transfer
 import Mathlib.GroupTheory.Abelianization.Defs
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
 /-!
 # Naturality of transfer under a quotient
 
@@ -18,6 +14,10 @@ This file supplies the group-theoretic source used in transfer--norm naturality.
 has kernel contained in a finite-index subgroup, it identifies the two left-coset spaces and
 transfer commutes with the induced maps on abelianizations.
 -/
+
+namespace ClassFormation
+
+
 
 noncomputable section
 

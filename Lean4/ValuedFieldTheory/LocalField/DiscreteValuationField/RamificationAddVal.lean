@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # Additive valuations in finite complete-DVF extensions
 
@@ -18,6 +16,8 @@ valuation ring.  The proof is characteristic-independent and follows from the
 ideal identity
 `m_K · O_L = m_L ^ e`.
 -/
+
+
 
 noncomputable section
 

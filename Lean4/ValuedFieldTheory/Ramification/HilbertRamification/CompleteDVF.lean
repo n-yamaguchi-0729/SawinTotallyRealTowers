@@ -11,8 +11,6 @@ import Mathlib.RingTheory.Invariant.Basic
 import ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
 
-set_option autoImplicit false
-
 /-!
 # Decomposition and inertia for finite extensions of complete DVFs
 
@@ -28,6 +26,8 @@ The valuation-subring definitions and their ordinary exactness are reused
 from `HilbertRamification.ValuationSubring`; this file only supplies the
 complete-DVF specialization and the finite-Galois surjectivity theorem.
 -/
+
+
 
 noncomputable section
 

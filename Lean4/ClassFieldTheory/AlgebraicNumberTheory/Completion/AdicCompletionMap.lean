@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 import Mathlib.NumberTheory.RamificationInertia.Valuation
 
-set_option autoImplicit false
-
 /-!
 # The canonical map between adic completions
 
@@ -16,6 +14,8 @@ A finite place above a base finite place determines the continuous
 extension of the number-field algebra map to their concrete adic
 completions.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

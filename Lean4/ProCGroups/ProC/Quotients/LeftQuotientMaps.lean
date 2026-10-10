@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProC.Subgroups.Products
 
-set_option autoImplicit false
-
 /-!
 # Maps between left quotients
 

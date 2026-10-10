@@ -8,10 +8,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 import Mathlib.RingTheory.Valuation.RamificationGroup
 import Mathlib.FieldTheory.Normal.Basic
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # The unique-extension characterization: automorphism invariance from unique extension
 
@@ -20,6 +16,8 @@ again an extension valuation ring.  Hence uniqueness forces the chosen ring
 to be fixed by every automorphism of the extension field.  This is the first
 Galois-theoretic step in the converse direction of the unique-extension characterization.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 
@@ -50,11 +48,13 @@ theorem algEquiv_smul_valuationSubring_hasExtension
       _ ↔ x ∈ V := by
         simpa only [ValuationSubring.mem_toSubring,
           ValuationSubring.valuationSubring_valuation] using
-          (ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_pullback_of_hasExtension_valuation
-            V.valuation W x)
+          (open ValuationTheory.DiscreteValuationField.Valuation in
+            valuationSubring_pullback_of_hasExtension_valuation
+              V.valuation W x)
       _ ↔ x ∈ V.toSubring := (V.mem_toSubring x).symm
   apply
-    ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+    open ValuationTheory.DiscreteValuationField.Valuation in
+      hasExtension_valuation_of_valuationSubring_pullback
   intro x
   simpa only [ValuationSubring.mem_toSubring,
     ValuationSubring.valuationSubring_valuation] using hpullback x
@@ -172,8 +172,9 @@ def valuationSubringMapOfHasExtension
   exact (algebraMap K L).restrict V.toSubring W.toSubring (by
     intro x hx
     exact
-      (ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_pullback_of_hasExtension_valuation
-        V.valuation W x).2 (by
+      (open ValuationTheory.DiscreteValuationField.Valuation in
+        valuationSubring_pullback_of_hasExtension_valuation
+          V.valuation W x).2 (by
           simpa only [ValuationSubring.valuationSubring_valuation,
             ValuationSubring.mem_toSubring] using hx))
 

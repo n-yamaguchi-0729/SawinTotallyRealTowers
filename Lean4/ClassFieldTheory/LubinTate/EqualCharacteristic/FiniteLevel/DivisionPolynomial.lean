@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.AmbientDivisionTorsion
 import Mathlib.FieldTheory.IsSepClosed
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: equal-characteristic Lubin--Tate division polynomials
 
@@ -22,6 +20,8 @@ cuts out the primitive level-`n+1` division points.  Here we construct these
 polynomials over `κ((T))`, prove the degree calculation, and choose an actual
 primitive root in the separable closure.
 -/
+
+
 
 noncomputable section
 

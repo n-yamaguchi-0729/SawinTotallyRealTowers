@@ -13,8 +13,6 @@ Relates membership in the valuation ring to the ambient valuation and exposes
 the associated surjective multiplicative valuation with a uniformizer.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

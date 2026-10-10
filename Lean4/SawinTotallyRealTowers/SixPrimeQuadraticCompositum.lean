@@ -12,8 +12,6 @@ import Mathlib.Data.Nat.PrimeFin
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Tactic.FinCases
 
-set_option autoImplicit false
-
 /-!
 # The five quadratic layers over the six-prime support
 

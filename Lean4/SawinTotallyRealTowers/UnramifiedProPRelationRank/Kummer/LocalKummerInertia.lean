@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnr
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 import GaloisCohomology.Kummer.Concrete.SimpleExtension
 
-set_option autoImplicit false
 /-!
 # Intrinsic inertia and local Kummer characters
 
@@ -90,7 +89,7 @@ noncomputable def localStandardH1LinearEquivSeparable
 theorem localStandardH1LinearEquivSeparable_apply
     (K : Type) [Field K]
     (chi : ContinuousH1ZMod (p := p) (G := Field.absoluteGaloisGroup K))
-    (sigma : Gal(SeparableClosure K / K)) :
+    (sigma : Gal(SeparableClosure K/K)) :
     localStandardH1LinearEquivSeparable p K chi (Additive.ofMul sigma) =
       chi (Additive.ofMul
         ((RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv
@@ -102,7 +101,7 @@ private theorem rootQuotient_eq_of_same_pow
     (a : Kˣ) (u u' : Lˣ)
     (hu : u ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a)
     (hu' : u' ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a)
-    (sigma : Gal(L / K)) :
+    (sigma : Gal(L/K)) :
     rootQuotient (K := K) (L := L) u sigma =
       rootQuotient (K := K) (L := L) u' sigma := by
   let D := chosenFiniteKummerRadicalDatum (K := K) (L := L) n
@@ -158,7 +157,7 @@ automorphisms fixing the chosen simple Kummer root. -/
 theorem localStandardH1LinearEquivSeparable_kummer_eq_zero_iff
     (K : Type) [Field K] [CharZero K]
     (hmu : (primitiveRoots p K).Nonempty) (a : Kˣ)
-    (sigma : Gal(SeparableClosure K / K)) :
+    (sigma : Gal(SeparableClosure K/K)) :
     localStandardH1LinearEquivSeparable p K
         (absoluteKummerContinuousH1LinearEquiv K p hmu
           (Additive.ofMul

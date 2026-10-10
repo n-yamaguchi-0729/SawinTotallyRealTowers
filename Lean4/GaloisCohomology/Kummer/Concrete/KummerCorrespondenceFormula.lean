@@ -9,8 +9,6 @@ import GaloisCohomology.Kummer.Concrete.ExtensionRoundTrip
 import GaloisCohomology.Kummer.Concrete.InfiniteInverse
 import GaloisCohomology.Kummer.Concrete.InfiniteContinuity
 
-set_option autoImplicit false
-
 /-!
 # the Kummer pairing formula
 
@@ -28,6 +26,8 @@ the quotient by their common open kernel.  Finite roots-of-unity duality
 solves that finite problem, and compactness of the profinite Galois group
 then supplies one automorphism solving all coordinates simultaneously.
 -/
+
+
 
 noncomputable section
 

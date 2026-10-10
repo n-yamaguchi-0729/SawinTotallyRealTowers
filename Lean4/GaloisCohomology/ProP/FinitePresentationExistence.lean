@@ -44,8 +44,6 @@ import Mathlib.Topology.Constructions
 import Mathlib.Topology.Instances.ZMod
 import Mathlib.Topology.Order
 
-set_option autoImplicit false
-
 /-!
 # Constructing finite minimal pro-p presentations
 

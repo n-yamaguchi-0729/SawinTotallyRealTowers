@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.Extension
 import ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
 import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
 
-set_option autoImplicit false
-
 /-!
 # Spectral extensions of nonarchimedean absolute values
 

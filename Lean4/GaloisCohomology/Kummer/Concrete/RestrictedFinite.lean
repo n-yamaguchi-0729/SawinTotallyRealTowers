@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
 import GaloisCohomology.Kummer.Concrete.RadicalExtension
 
-set_option autoImplicit false
-
 /-!
 # finite restricted Kummer pairing
 
@@ -25,6 +23,8 @@ because an automorphism in its kernel fixes every generator.
 
 No character-surjectivity or lattice-correspondence conclusion is assumed.
 -/
+
+
 
 noncomputable section
 

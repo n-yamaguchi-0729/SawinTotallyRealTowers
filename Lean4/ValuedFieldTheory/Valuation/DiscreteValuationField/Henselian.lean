@@ -6,11 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
 import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Ideal.Quotient.Operations
-
-set_option autoImplicit false
-
-namespace ValuationTheory
 
 /-!
 # Henselian discretely valued fields
@@ -18,6 +13,8 @@ namespace ValuationTheory
 This file contains the lightweight package for a discretely valued field whose
 valuation ring is Henselian at its maximal ideal.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 
@@ -58,7 +55,10 @@ theorem idempotentPolynomial_derivative_eval_isUnit_of_quotient_idempotent
     ⟨Ideal.Quotient.mk I
       ((Polynomial.X ^ 2 - Polynomial.X : Polynomial R).derivative.eval a0),
       ?_, ?_⟩
-  · simp [pow_two]
+  · simp only [pow_two, Polynomial.derivative_mul,
+      Polynomial.derivative_X, one_mul, mul_one, Polynomial.eval_sub,
+      Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one, map_sub, map_add,
+      map_one]
     calc
       (Ideal.Quotient.mk I a0 + Ideal.Quotient.mk I a0 - 1) *
           (Ideal.Quotient.mk I a0 + Ideal.Quotient.mk I a0 - 1) =
@@ -68,7 +68,10 @@ theorem idempotentPolynomial_derivative_eval_isUnit_of_quotient_idempotent
       _ = 1 := by
           rw [ha0.eq]
           ring
-  · simp [pow_two]
+  · simp only [pow_two, Polynomial.derivative_mul,
+      Polynomial.derivative_X, one_mul, mul_one, Polynomial.eval_sub,
+      Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_one, map_sub, map_add,
+      map_one]
     calc
       (Ideal.Quotient.mk I a0 + Ideal.Quotient.mk I a0 - 1) *
           (Ideal.Quotient.mk I a0 + Ideal.Quotient.mk I a0 - 1) =
@@ -223,23 +226,26 @@ theorem exists_polynomial_lift_residue (F : HenselianDVF.{u, v} K)
     fbar.support.sum fun n => Polynomial.monomial n (c n)
   refine ⟨f, ?_⟩
   ext n
+  rw [Polynomial.coeff_map]
+  change F.residueMap
+      ((fbar.support.sum fun b => Polynomial.monomial b (c b)).coeff n) = fbar.coeff n
+  rw [Polynomial.finsetSum_coeff, map_sum]
   by_cases hn : n ∈ fbar.support
-  · simp [f, Polynomial.coeff_map]
-    rw [Finset.sum_eq_single n]
-    · simp [hc]
+  · rw [Finset.sum_eq_single n]
+    · rw [Polynomial.coeff_monomial_same, hc n]
     · intro b hb hbn
-      simp [Polynomial.coeff_monomial, hbn]
+      rw [Polynomial.coeff_monomial_of_ne (c b) hbn.symm, map_zero]
     · intro hnot
       exact False.elim (hnot hn)
   · have hcoeff : fbar.coeff n = 0 := by
-      simpa [Polynomial.mem_support_iff] using hn
-    simp [f, Polynomial.coeff_map, hcoeff]
+      simpa only [Polynomial.mem_support_iff, not_not] using hn
+    rw [hcoeff]
     refine Finset.sum_eq_zero ?_
     intro b hb
     have hbn : n ≠ b := by
       intro h
-      exact hn (by simpa [h] using hb)
-    simp [Polynomial.coeff_monomial, hbn.symm]
+      exact hn (h.symm ▸ hb)
+    rw [Polynomial.coeff_monomial_of_ne (c b) hbn, map_zero]
 
 /-- The valuation subring of the henselian model is a discrete valuation ring. -/
 theorem valuationSubring_isDiscreteValuationRing (F : HenselianDVF.{u, v} K) :

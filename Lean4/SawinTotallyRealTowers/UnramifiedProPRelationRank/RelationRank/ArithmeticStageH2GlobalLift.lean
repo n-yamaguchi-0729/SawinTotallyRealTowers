@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.Cyclotomic
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2LocalRamificationCharacter
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
 
-set_option autoImplicit false
 /-!
 # Actual global lifts and their finite ramification defect
 

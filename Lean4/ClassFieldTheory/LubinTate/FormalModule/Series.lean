@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
 import Mathlib.RingTheory.PowerSeries.Basic
 
-set_option autoImplicit false
-
 /-!
 # Lubin--Tate power series
 
@@ -18,6 +16,8 @@ coefficient, prescribed linear coefficient, and reduces to the residue-field
 Frobenius power series. The chosen element is not required to be a uniformizer
 in the structure itself, so the coefficient package can be reused independently.
 -/
+
+
 
 noncomputable section
 

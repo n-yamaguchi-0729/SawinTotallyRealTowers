@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Henselian.Factorization.Truncation
 
-set_option autoImplicit false
-
 /-!
 # the power step in Hensel's iteration
 

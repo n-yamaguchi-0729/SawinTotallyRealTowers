@@ -6,10 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
 /-!
 # Recursive correction sequences
 
@@ -20,6 +16,10 @@ cohomological input is hidden here: the existence of each one-step lift is an
 explicit parameter, discharged for the normal-basis filtration in the next
 file.
 -/
+
+namespace LocalClassFieldTheory
+
+
 
 noncomputable section
 

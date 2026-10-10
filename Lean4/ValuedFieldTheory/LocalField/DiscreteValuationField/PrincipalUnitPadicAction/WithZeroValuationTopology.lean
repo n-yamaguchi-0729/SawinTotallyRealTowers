@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.AdicPadicModule
 
-set_option autoImplicit false
-
 /-!
 # Principal-unit topology from a normalized valuation
 
@@ -16,6 +14,8 @@ For a complete discrete valuation with value group `WithZero (Multiplicative ℤ
 inherited topology agrees with the canonical adic model, so the p-adic action and addition are
 continuous on the original principal-unit carrier.
 -/
+
+
 
 noncomputable section
 
@@ -37,6 +37,9 @@ variable {K : Type u} [Field K]
 
 open Internal
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Compare the type-level adic model with the principal-unit carrier under
 the canonical topology of a normalized complete discrete valuation. -/
 noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation
@@ -47,7 +50,7 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
     letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     AdicPrincipalUnits F.toCompleteDVF ≃ₜ+
       Additive
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) := by
+        ((higherPrincipalUnitGroup F.toCompleteDVF) 1) := by
   let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
   letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   letI : ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete
@@ -75,14 +78,14 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
       (t : TopologicalSpace F.toCompleteDVF.valuationSubring) :
       TopologicalSpace
         (Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          ((higherPrincipalUnitGroup
             F.toCompleteDVF) 1)) :=
     letI : TopologicalSpace F.toCompleteDVF.valuationSubring := t
     inferInstance
   have hcarrier :
       (inferInstance : TopologicalSpace
         (Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          ((higherPrincipalUnitGroup
             F.toCompleteDVF) 1))) =
         principalUnitAdicTopology F.toCompleteDVF := by
     change carrierTopology
@@ -94,7 +97,7 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
       @Continuous
         (AdicPrincipalUnits F.toCompleteDVF)
         (Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          ((higherPrincipalUnitGroup
             F.toCompleteDVF) 1))
         inferInstance
         (principalUnitAdicTopology F.toCompleteDVF)
@@ -103,7 +106,7 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
   have hcontinuousAdic_symm :
       @Continuous
         (Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          ((higherPrincipalUnitGroup
             F.toCompleteDVF) 1))
         (AdicPrincipalUnits F.toCompleteDVF)
         (principalUnitAdicTopology F.toCompleteDVF)
@@ -116,12 +119,12 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
       (congrArg
         (fun t : TopologicalSpace
             (Additive
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+              ((higherPrincipalUnitGroup
                 F.toCompleteDVF) 1)) =>
           @Continuous
             (AdicPrincipalUnits F.toCompleteDVF)
             (Additive
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+              ((higherPrincipalUnitGroup
                 F.toCompleteDVF) 1))
             inferInstance t
             (AdicPrincipalUnits.equiv F.toCompleteDVF))
@@ -133,11 +136,11 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
       (congrArg
         (fun t : TopologicalSpace
             (Additive
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+              ((higherPrincipalUnitGroup
                 F.toCompleteDVF) 1)) =>
           @Continuous
             (Additive
-              ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+              ((higherPrincipalUnitGroup
                 F.toCompleteDVF) 1))
             (AdicPrincipalUnits F.toCompleteDVF)
             t inferInstance
@@ -172,6 +175,9 @@ preserves `ℤ_p`-scalar multiplication.
   intro a x
   exact (AdicPrincipalUnits.linearEquivUnderlying F).map_smul a x
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- The same canonical action is jointly continuous for the topology carried
 directly by a standard `ℤᵐ⁰`-valued complete discrete valuation.  The bridge
 is the equality between the inherited valuation topology on the valuation
@@ -183,7 +189,7 @@ theorem principalUnitPadicContinuousSMulOfWithZeroValuation
     let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
     letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     ContinuousSMul ℤ_[F.residueCharacteristic]
-      (Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) := by
+      (Additive ((higherPrincipalUnitGroup F.toCompleteDVF) 1)) := by
   let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   let e :=
@@ -191,12 +197,15 @@ theorem principalUnitPadicContinuousSMulOfWithZeroValuation
   refine ⟨?_⟩
   have hpair : Continuous fun z : ℤ_[F.residueCharacteristic] ×
       Additive
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) =>
+        ((higherPrincipalUnitGroup F.toCompleteDVF) 1) =>
       (z.1, e.symm z.2) :=
     continuous_fst.prodMk (e.continuous_symm.comp continuous_snd)
   have htransport := e.continuous.comp (continuous_smul.comp hpair)
   exact htransport
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Continuous addition on `Additive U^1` for the direct normalized
 valuation topology. -/
 theorem principalUnitPadicContinuousAddOfWithZeroValuation
@@ -206,7 +215,7 @@ theorem principalUnitPadicContinuousAddOfWithZeroValuation
     let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
     letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     ContinuousAdd (Additive
-      ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) := by
+      ((higherPrincipalUnitGroup F.toCompleteDVF) 1)) := by
   let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   let e :=
@@ -214,9 +223,9 @@ theorem principalUnitPadicContinuousAddOfWithZeroValuation
   refine ⟨?_⟩
   have hpair : Continuous fun z :
       Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) ×
+          ((higherPrincipalUnitGroup F.toCompleteDVF) 1) ×
         Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) =>
+          ((higherPrincipalUnitGroup F.toCompleteDVF) 1) =>
       (e.symm z.1, e.symm z.2) :=
     (e.continuous_symm.comp continuous_fst).prodMk
       (e.continuous_symm.comp continuous_snd)

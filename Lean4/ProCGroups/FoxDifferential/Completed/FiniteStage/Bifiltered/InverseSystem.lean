@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.System
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — finite stage — bifiltered — inverse system
 

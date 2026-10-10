@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteUnitBounda
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerMuPCoefficients
 import GaloisCohomology.ProP.H2CocycleExtensionPullback
 
-set_option autoImplicit false
 /-!
 # Absolute lifts of finite Kummer cocycle extensions
 

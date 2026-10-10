@@ -11,8 +11,6 @@ import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Mathlib.RingTheory.RamificationInertia.Inertia
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # The different at a prime not dividing a Galois degree
 

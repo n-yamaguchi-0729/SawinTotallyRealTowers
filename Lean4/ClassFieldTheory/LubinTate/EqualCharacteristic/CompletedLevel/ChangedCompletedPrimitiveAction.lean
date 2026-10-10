@@ -4,17 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.RingTheory.Adjoin.PowerBasis
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedCompletedLevel
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveIrreducible
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: primitive action for the changed completed level
 
-The theta relation in the completed theta-intertwining theorem uses the source parameter `u⁻¹T`.  We first
+The theta relation in the completed theta-intertwining theorem uses the source parameter `u⁻¹T`.
+We first
 prove, genuinely by Eisenstein over `(AlgebraicClosure κ)[[T]]`, that its
 primitive polynomial stays irreducible over the completed maximal-unramified
 Laurent field.  We then enumerate its roots by source Lubin--Tate unit
@@ -24,6 +24,8 @@ field.
 The theta unit `u` and a source Lubin--Tate bracket unit `a` are deliberately
 kept as distinct parameters.  Repository index `n` is division level `n + 1`.
 -/
+
+
 
 noncomputable section
 

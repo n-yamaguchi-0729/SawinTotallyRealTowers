@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyFinite
 
-set_option autoImplicit false
-
 /-!
 # Cardinalities of finite unrestricted local-block families
 
@@ -15,7 +13,9 @@ This leaf computes the two finite-family Herbrand cardinalities from the
 finiteness results and the canonical family instance providers.
 -/
 
-open scoped NumberField BigOperators ValuativeRel Classical NNReal
+
+
+open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section

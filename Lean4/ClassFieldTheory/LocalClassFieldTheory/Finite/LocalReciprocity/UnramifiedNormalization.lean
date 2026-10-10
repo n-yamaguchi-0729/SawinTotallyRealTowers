@@ -15,8 +15,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Unramified
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
 
-set_option autoImplicit false
-
 /-!
 # Canonical unramified normalization
 
@@ -24,6 +22,8 @@ The canonical local norm-residue symbol is identified with the field-facing
 unramified Artin map. An element of normalized valuation one maps to arithmetic
 Frobenius, both algebraically and in the topological abelianization.
 -/
+
+
 
 noncomputable section
 
@@ -461,10 +461,13 @@ theorem localArtinMap_eq_one_of_valuationMap_eq_zero
     localArtinMap K L x = 1 := by
   rw [localArtinMap_eq_frobenius_zpow, hx, zpow_zero]
 
+open _root_.LocalFieldTheory.IsNonarchimedeanLocalField (
+  integerUnitsToFieldUnits
+) in
 /-- Every valuation-ring unit has trivial unramified Artin symbol. -/
 @[simp]
 theorem localArtinMap_units_unramified (u : 𝒪[K]ˣ) :
-    localArtinMap K L (LocalFieldTheory.IsNonarchimedeanLocalField.integerUnitsToFieldUnits K u) = 1 := by
+    localArtinMap K L (integerUnitsToFieldUnits K u) = 1 := by
   apply localArtinMap_eq_one_of_valuationMap_eq_zero K L
   rw [LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
     LocalFieldTheory.IsNonarchimedeanLocalField.v_integerUnitsToFieldUnits]

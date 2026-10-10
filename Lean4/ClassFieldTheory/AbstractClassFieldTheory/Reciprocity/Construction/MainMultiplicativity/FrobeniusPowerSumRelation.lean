@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
 
-set_option autoImplicit false
-
 /-!
 # The Frobenius power-sum relation for reciprocity multiplicativity
 
 This file proves the three-term action identity obtained from the Frobenius
 action remainders and their associated fixed-field prime elements.
 -/
+
+
 
 universe u
 

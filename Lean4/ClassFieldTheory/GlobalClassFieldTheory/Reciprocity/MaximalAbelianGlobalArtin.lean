@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinDescent
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinSurjectivity
 
-set_option autoImplicit false
-
 /-!
 # Global Artin map for the maximal abelian extension
 
@@ -18,7 +16,9 @@ maximal abelian subextension of the separable closure.  It also exposes the
 idele-representative evaluation and its finite Galois projections.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

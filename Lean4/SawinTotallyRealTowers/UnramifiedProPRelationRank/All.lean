@@ -10,4 +10,9 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.All
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.All
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.All
 
-set_option autoImplicit false
+/-!
+# Unramified pro-p relation-rank theory
+
+This aggregate exposes the global, local, Kummer, radical, and relation-rank modules for
+unramified pro-p extensions.
+-/

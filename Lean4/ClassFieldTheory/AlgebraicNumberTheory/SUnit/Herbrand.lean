@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
 import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Basic
 import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Norm
 
-set_option autoImplicit false
-
 /-!
 # The Herbrand quotient of the global S-unit group
 
@@ -20,7 +18,9 @@ integer direction, and combines the resulting exact sequences with the
 permutation-lattice calculation.
 -/
 
-open scoped BigOperators Classical NumberField nonZeroDivisors Pointwise
+
+
+open scoped BigOperators NumberField nonZeroDivisors Pointwise
 open IsDedekindDomain Module
 
 noncomputable section
@@ -1694,6 +1694,7 @@ theorem stableFinitePlace_stabilizer_card_eq_localDegree
     finitePlace_stabilizer_card_eq_localDegree
       K L v
 
+open scoped Classical in
 /-- The local degree attached to a logarithmic place.  At an
 archimedean place it is `1` or `2`; at a finite place it is
 `e(P/p) f(P/p)`. -/

@@ -9,8 +9,6 @@ import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.RingTheory.Valuation.Extension
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # Real lower ramification groups
 
@@ -25,6 +23,8 @@ the condition at `s` is membership in `m ^ ceil(s + 1)`.  The exponent is
 truncated at zero, so the definition extends harmlessly to every real number
 and is the full Galois group for `s <= -1`.
 -/
+
+
 
 noncomputable section
 

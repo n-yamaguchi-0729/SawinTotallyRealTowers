@@ -12,8 +12,6 @@ import ProCGroups.FiniteGeneration.Basic
 import ProCGroups.FreeProC.Basic
 import ProCGroups.ProC.Category.Basic
 
-set_option autoImplicit false
-
 /-!
 # Constructing free pro-C groups of finite rank
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProC.InverseLimits.Predicates
 
-set_option autoImplicit false
-
 /-!
 # Pro C Groups / Completion / Universal Property
 

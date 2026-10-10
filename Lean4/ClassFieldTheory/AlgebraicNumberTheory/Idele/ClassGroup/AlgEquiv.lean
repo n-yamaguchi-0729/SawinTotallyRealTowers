@@ -10,8 +10,6 @@ import Mathlib.RingTheory.Norm.Basic
 import Mathlib.RingTheory.TensorProduct.Maps
 import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 
-set_option autoImplicit false
-
 /-!
 # Relative idele classes under an isomorphic realization
 
@@ -28,6 +26,8 @@ The construction is the direct tensor-product congruence
 induced by an algebra equivalence `L ≃ₐ[K] M`.  In particular, no second
 model of relative adeles or of the idele-class norm is introduced.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

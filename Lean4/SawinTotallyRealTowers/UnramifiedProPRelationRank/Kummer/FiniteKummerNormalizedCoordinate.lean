@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.FiniteCyclicCarryCocycle
 import GaloisCohomology.Kummer.Concrete.FiniteKummerNormalizedGenerator
 
-set_option autoImplicit false
 /-!
 # Coordinates for normalized simple Kummer generators
 
@@ -63,7 +62,7 @@ theorem finiteKummerCoefficientRoot_generates_nthRootsSubgroup
 /-- A character taking the chosen generator to the inverse target generator
 negates the two generator coordinates. -/
 theorem finiteCyclicGeneratorCoordinate_eq_neg_characterCoordinate
-    {G M : Type} [Group G] [Fintype G] [Group M] [Fintype M]
+    {G M : Type} [Group G] [Fintype G] [Group M]
     (chi : G →* M) (g : G)
     (hg : ∀ sigma : G, sigma ∈ Subgroup.zpowers g)
     (zeta : M) (hzeta : ∀ x : M, x ∈ Subgroup.zpowers zeta)
@@ -83,7 +82,7 @@ canonical finite-dimensional structure is kept local to this definition. -/
 noncomputable def chosenSimpleKummerGeneratorCoordinate
     (K : Type) [Field K] (p : ℕ+)
     (hnK : ((p : ℕ) : K) ≠ 0) (b : Kˣ)
-    (g : Gal((chosenSimpleKummerExtension K p hnK b) / K))
+    (g : Gal((chosenSimpleKummerExtension K p hnK b)/K))
     (hg : ∀ sigma : Gal((chosenSimpleKummerExtension K p hnK b) / K),
       sigma ∈ Subgroup.zpowers g)
     (sigma : Gal((chosenSimpleKummerExtension K p hnK b) / K)) :
@@ -100,8 +99,8 @@ noncomputable def chosenSimpleKummerRootCharacterCoordinate
     (hnK : ((p : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) (b : Kˣ)
     (hcardG : Nat.card
-      Gal((chosenSimpleKummerExtension K p hnK b) / K) = (p : ℕ))
-    (sigma : Gal((chosenSimpleKummerExtension K p hnK b) / K)) :
+      Gal((chosenSimpleKummerExtension K p hnK b)/K) = (p : ℕ))
+    (sigma : Gal((chosenSimpleKummerExtension K p hnK b)/K)) :
     ZMod (Nat.card Gal((chosenSimpleKummerExtension K p hnK b) / K)) :=
   let E := chosenSimpleKummerExtension K p hnK b
   let hrootCard : Nat.card (nthRootsSubgroup E (p : ℕ)) = (p : ℕ) :=
@@ -124,7 +123,7 @@ theorem exists_chosenSimpleKummerNormalizedGeneratorCoordinate
     (hnK : ((p : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) (b : Kˣ)
     (hNT : Nontrivial
-      Gal((chosenSimpleKummerExtension K p hnK b) / K)) :
+      Gal((chosenSimpleKummerExtension K p hnK b)/K)) :
     let E := chosenSimpleKummerExtension K p hnK b
     let zetaUnit := finiteKummerCoefficientRootUnit K E p hmu
     let zeta : nthRootsSubgroup E (p : ℕ) :=

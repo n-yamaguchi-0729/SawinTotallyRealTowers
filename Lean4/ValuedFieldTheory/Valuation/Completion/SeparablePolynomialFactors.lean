@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.Completion.PolynomialFactors
 import Mathlib.FieldTheory.Separable
 
-set_option autoImplicit false
-
 /-!
 # Distinct factors of a separable polynomial
 

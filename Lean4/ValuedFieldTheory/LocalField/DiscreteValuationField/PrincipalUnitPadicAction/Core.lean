@@ -13,11 +13,11 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAct
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.AdicPadicModule
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.WithZeroValuationTopology
 
-set_option autoImplicit false
 /-!
 Assembles the inverse-limit and topological models used to define the `ℤ_[p]`-module structure on
 principal units.
 -/
+
 
 noncomputable section
 
@@ -42,7 +42,8 @@ open Internal
 /-- Natural p-adic scalars act by the ordinary group powers. -/
 @[simp] theorem principalUnitPadic_natCast_smul
     (F : LocalField.{u, v} K) (n : ℕ)
-    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) :
+    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+      F.toCompleteDVF) 1) :
     (n : ℤ_[F.residueCharacteristic]) • Additive.ofMul x =
       Additive.ofMul (x ^ n) := by
   calc
@@ -55,36 +56,41 @@ open Internal
 `principalUnitPadic_natCast_smul`. -/
 @[simp] theorem principalUnitPadic_nsmul_eq_pow
     (F : LocalField.{u, v} K) (n : ℕ)
-    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) :
+    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+      F.toCompleteDVF) 1) :
     Additive.toMul
         ((n : ℤ_[F.residueCharacteristic]) • Additive.ofMul x) = x ^ n := by
   exact congrArg Additive.toMul
     (principalUnitPadic_natCast_smul F n x)
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Every `U^r`, for `r >= 1`, is stable under the canonical p-adic action
 on `U^1`. -/
 theorem principalUnitPadic_smul_mem_higher
     (F : LocalField.{u, v} K) {r : ℕ} (hr : 1 ≤ r)
     (a : ℤ_[F.residueCharacteristic])
-    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)
+    (x : (higherPrincipalUnitGroup F.toCompleteDVF) 1)
     (hx : (x : F.valuationSubringˣ) ∈
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) r) :
+      (higherPrincipalUnitGroup F.toCompleteDVF) r) :
     ((Additive.toMul (a • Additive.ofMul x) :
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) :
+        (higherPrincipalUnitGroup F.toCompleteDVF) 1) :
       F.valuationSubringˣ) ∈
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) r := by
+        (higherPrincipalUnitGroup F.toCompleteDVF) r := by
   let n := r - 1
   have hn : n + 1 = r := Nat.sub_add_cancel hr
-  let y : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1 :=
+  let y : (higherPrincipalUnitGroup F.toCompleteDVF) 1 :=
     Additive.toMul (a • Additive.ofMul x)
   have hxq :
-      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF).principalUnitSubquotientMk
+      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF
+        ).principalUnitSubquotientMk
         1 (n + 1) x = 1 := by
     exact ((higherPrincipalUnitGroup.toPrincipalUnitFiltration
       F.toCompleteDVF).principalUnitSubquotient_mk_eq_one_iff x).2
       (by
         change (x : F.valuationSubringˣ) ∈
-          (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          (higherPrincipalUnitGroup
             F.toCompleteDVF) (n + 1)
         rw [hn]
         exact hx)
@@ -105,15 +111,18 @@ theorem principalUnitPadic_smul_mem_higher
         F a (Additive.ofMul x))
     exact h
   have hyq :
-      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF).principalUnitSubquotientMk
+      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF
+        ).principalUnitSubquotientMk
         1 (n + 1) y = 1 := by
     apply Additive.ofMul.injective
     calc
       Additive.ofMul
-          ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF).principalUnitSubquotientMk
+          ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF
+            ).principalUnitSubquotientMk
             1 (n + 1) y) =
           a • Additive.ofMul
-            ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF).principalUnitSubquotientMk
+            ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF
+              ).principalUnitSubquotientMk
               1 (n + 1) x) := by
         simpa only [principalUnitMulEquivInverseLimitCarrier_apply] using hcoord
       _ = a • Additive.ofMul (1 :
@@ -125,25 +134,28 @@ theorem principalUnitPadic_smul_mem_higher
       _ = Additive.ofMul (1 :
           Internal.principalUnitQuotientCarrier F.toCompleteDVF n) := rfl
   change (y : F.valuationSubringˣ) ∈
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) r
+    (higherPrincipalUnitGroup F.toCompleteDVF) r
   rw [← hn]
   exact ((higherPrincipalUnitGroup.toPrincipalUnitFiltration
     F.toCompleteDVF).principalUnitSubquotient_mk_eq_one_iff y).1 hyq
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- A p-adic scalar divisible by the residue characteristic kills the leading
 graded class: on `U^r` it lands in `U^(r+1)`. -/
 theorem principalUnitPadic_residueCharacteristic_mul_smul_mem_succ
     (F : LocalField.{u, v} K) {r : ℕ} (hr : 1 ≤ r)
     (b : ℤ_[F.residueCharacteristic])
-    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)
+    (x : (higherPrincipalUnitGroup F.toCompleteDVF) 1)
     (hx : (x : F.valuationSubringˣ) ∈
-      (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) r) :
+      (higherPrincipalUnitGroup F.toCompleteDVF) r) :
     ((Additive.toMul
         (((F.residueCharacteristic : ℤ_[F.residueCharacteristic]) * b) •
           Additive.ofMul x) :
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) :
+        (higherPrincipalUnitGroup F.toCompleteDVF) 1) :
       F.valuationSubringˣ) ∈
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) (r + 1) := by
+        (higherPrincipalUnitGroup F.toCompleteDVF) (r + 1) := by
   have hscalar :
       ((F.residueCharacteristic : ℤ_[F.residueCharacteristic]) * b) •
           Additive.ofMul x =

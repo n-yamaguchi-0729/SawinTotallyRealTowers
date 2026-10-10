@@ -14,8 +14,6 @@ Records when the valuation ring of an extension field is integral over the
 base valuation ring, the hypothesis needed to restrict field norms integrally.
 -/
 
-set_option autoImplicit false
-
 namespace Valuation
 
 /-- A nontrivial valuation stays nontrivial after passing to any valuation

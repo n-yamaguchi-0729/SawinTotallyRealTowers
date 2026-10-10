@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.H2CocycleExtension
 import GaloisCohomology.ProP.QuotientRestriction
 
-set_option autoImplicit false
 /-!
 # Differences of lifts to a central cocycle extension
 

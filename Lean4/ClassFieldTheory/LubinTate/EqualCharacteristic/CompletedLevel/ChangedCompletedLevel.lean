@@ -8,12 +8,11 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLevel
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizer
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the completed changed-uniformizer level
 
-For `u ∈ κ⟦T⟧ˣ`, the theta construction used in the completed theta-intertwining theorem intertwines the
+For `u ∈ κ⟦T⟧ˣ`, the theta construction used in the completed theta-intertwining theorem
+intertwines the
 target parameter `T` with the source parameter `u⁻¹T`.  This file therefore
 base-changes the primitive polynomial for `u⁻¹T` to the completed maximal-
 unramified field, forms its genuine splitting field, and constructs the
@@ -22,6 +21,8 @@ primitive analytic evaluation point there.
 The repository's primitive polynomial indexed by `n` cuts out division level
 `n + 1`; this shift is kept explicit throughout.
 -/
+
+
 
 noncomputable section
 

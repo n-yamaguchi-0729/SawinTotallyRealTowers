@@ -7,15 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.TowerRestriction
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 
-set_option autoImplicit false
-
 /-!
 # Cross-base restriction of finite-place Artin homomorphisms
 
-This module compares localized completions in a square of number fields with different base fields and transports restriction through the corresponding decomposition groups.
+This module compares localized completions in a square of number fields with different base fields
+and transports restriction through the corresponding decomposition groups.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField
+
+
+open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -114,7 +115,8 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
     (relativeFinitePlaceCompletionAlgEquiv v).symm_apply_apply,
     AbsoluteValue.completionAlgebra_algebraMap]
 
-/-- The continuous ring homomorphism between base completions attached to a finite place lying above another. -/
+/-- The continuous ring homomorphism between base completions attached to a finite place lying above
+another. -/
 noncomputable def finitePlaceArtinRelativeCompletionRingHom
     {K' : Type} [Field K'] [NumberField K']
     [Algebra K K']

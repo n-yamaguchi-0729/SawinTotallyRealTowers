@@ -10,8 +10,6 @@ import Mathlib.RingTheory.AdicCompletion.Topology
 import Mathlib.RingTheory.PowerSeries.Evaluation
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
-set_option autoImplicit false
-
 /-!
 # Analytic evaluation in standard Lubin--Tate level fields
 
@@ -24,6 +22,8 @@ valued extension.  The target carries its maximal-ideal adic topology.  The
 chosen primitive division point is a uniformizer, hence is topologically
 nilpotent and is therefore a valid evaluation point.
 -/
+
+
 
 noncomputable section
 

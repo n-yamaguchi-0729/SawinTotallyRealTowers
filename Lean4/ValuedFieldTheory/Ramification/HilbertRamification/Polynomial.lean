@@ -9,14 +9,14 @@ import Mathlib.Algebra.Ring.GeomSum
 import Mathlib.RingTheory.Ideal.Defs
 import Mathlib.Tactic.Ring
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: polynomial sources
 
 This file contains the generic polynomial congruence lemma used by the
 completion-free formalization of ramification-number theory.
 -/
+
+
 
 namespace RamificationTheory.HilbertRamification
 namespace Higher

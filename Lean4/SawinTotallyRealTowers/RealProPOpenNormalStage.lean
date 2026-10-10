@@ -9,8 +9,6 @@ import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.FieldTheory.Galois.GaloisClosure
 import ProCGroups.Profinite.OpenSubgroups
 
-set_option autoImplicit false
-
 /-!
 # Finite arithmetic stages of the real pro-p compositum
 

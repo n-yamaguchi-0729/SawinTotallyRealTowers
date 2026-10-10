@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRe
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 import Mathlib.GroupTheory.PGroup
 
-set_option autoImplicit false
 /-!
 # The finite Galois field detected by a discrete absolute representation
 

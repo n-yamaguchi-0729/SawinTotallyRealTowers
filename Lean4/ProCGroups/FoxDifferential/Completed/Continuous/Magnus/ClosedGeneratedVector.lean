@@ -8,8 +8,6 @@ import ProCGroups.FreeProC.FiniteBasis
 import ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
 import ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
 
-set_option autoImplicit false
-
 /-!
 # Fox Differential / Completed / Continuous Magnus / Closed Generated Vector
 

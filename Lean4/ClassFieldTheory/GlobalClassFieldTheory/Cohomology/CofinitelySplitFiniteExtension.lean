@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosu
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.PrimeOrderFixedField
 import ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CyclicPrimePowerFullDecomposition
 
-set_option autoImplicit false
-
 /-!
 # Cofinitely split finite extensions are trivial
 
@@ -22,7 +20,9 @@ modules; this file contains only the global class-field-theoretic
 conclusion.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

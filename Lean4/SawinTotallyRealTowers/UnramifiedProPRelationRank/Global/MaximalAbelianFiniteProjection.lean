@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
 
-set_option autoImplicit false
 /-!
 # Finite projections detect maximal-abelian Artin values
 

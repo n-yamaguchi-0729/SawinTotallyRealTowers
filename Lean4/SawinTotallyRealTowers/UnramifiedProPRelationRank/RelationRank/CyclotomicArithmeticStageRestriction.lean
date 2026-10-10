@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStageMapped
 
-set_option autoImplicit false
 /-!
 # Restriction from the synchronized cyclotomic stage
 
@@ -58,7 +57,7 @@ def cyclotomicArithmeticStageMappedRestriction
 /-- Restriction commutes with the actual original-stage embedding. -/
 theorem cyclotomicArithmeticStageMappedRestriction_commutes
     (e : AlgebraicClosure Cyclo ≃ₐ[Cyclo] AlgebraicClosure F)
-    (σ : Gal(cyclotomicArithmeticStageMappedField F p hpOdd U e / Cyclo))
+    (σ : Gal(cyclotomicArithmeticStageMappedField F p hpOdd U e/Cyclo))
     (x : OriginalStage) :
     cyclotomicArithmeticStageMappedOriginalAlgHom F p hpOdd U e
         (cyclotomicArithmeticStageMappedRestriction F p hpOdd U e σ x) =
@@ -69,10 +68,11 @@ theorem cyclotomicArithmeticStageMappedRestriction_commutes
 algebraic-closure equivalence. -/
 theorem cyclotomicArithmeticStageMappedRestriction_apply
     (e : AlgebraicClosure Cyclo ≃ₐ[Cyclo] AlgebraicClosure F)
-    (σ : Gal(cyclotomicArithmeticStageMappedField F p hpOdd U e / Cyclo))
+    (σ : Gal(cyclotomicArithmeticStageMappedField F p hpOdd U e/Cyclo))
     (x : OriginalStage) :
     e.symm (cyclotomicArithmeticStageMappedRestriction F p hpOdd U e σ x : AlgebraicClosure F) =
-      (σ (cyclotomicArithmeticStageMappedOriginalAlgHom F p hpOdd U e x) : AlgebraicClosure Cyclo) :=
+      (σ (cyclotomicArithmeticStageMappedOriginalAlgHom
+        F p hpOdd U e x) : AlgebraicClosure Cyclo) :=
   congrArg Subtype.val (cyclotomicArithmeticStageMappedRestriction_commutes F p hpOdd U e σ x)
 
 end ClassFieldTower.Martinet.Shafarevich

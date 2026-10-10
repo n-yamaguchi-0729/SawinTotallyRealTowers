@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitsNorm
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the explicit norm-subgroup computation: the sharp standard subgroup consists of norms
 
 The higher-unit norm calculation and the uniformizer norm combine to give
 the division-level inclusion `(T⁻¹) × U^(n+1) ≤ N(L_n/K)`.
 -/
+
+
 
 noncomputable section
 

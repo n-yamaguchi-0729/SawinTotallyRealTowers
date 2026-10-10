@@ -8,7 +8,6 @@ import GaloisCohomology.Cyclic.Herbrand.Induced
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
 /-!
 # Shapiro for the multiplicative induced local blocks
 

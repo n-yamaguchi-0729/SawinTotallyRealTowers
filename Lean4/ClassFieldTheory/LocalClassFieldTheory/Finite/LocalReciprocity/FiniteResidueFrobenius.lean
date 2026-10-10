@@ -9,12 +9,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 import Mathlib.FieldTheory.Finite.Extension
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: finite residue Frobenius coordinates
 
@@ -28,6 +22,12 @@ No cyclic generator is chosen.  The generator is the actual arithmetic
 Frobenius `x ↦ x ^ #k`, and the exponent map is obtained by factoring its
 integer powers through `ZMod [L : k]`.
 -/
+
+namespace LocalClassFieldTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 

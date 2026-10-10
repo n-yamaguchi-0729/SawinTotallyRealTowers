@@ -8,7 +8,6 @@ import ProCGroups.ProP.GeneratorRank
 import ProCGroups.ProP.Zassenhaus.Basic
 import ProCGroups.ProP.Zassenhaus.FiniteDegreeOne
 
-set_option autoImplicit false
 /-!
 # The second Zassenhaus subgroup
 

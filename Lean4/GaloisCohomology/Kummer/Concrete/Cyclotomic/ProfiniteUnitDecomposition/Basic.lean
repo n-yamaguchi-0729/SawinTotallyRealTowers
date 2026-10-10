@@ -9,14 +9,14 @@ import GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
 import ValuedFieldTheory.LocalField.Padic.UnitDecomposition
 import Mathlib.GroupTheory.Torsion
 
-set_option autoImplicit false
-
 /-!
 # Basic topological product equivalences for profinite units
 
 This module contains the reusable, inexpensive product equivalences used by
 the compiled stages of the profinite-unit decomposition.
 -/
+
+
 
 open scoped Topology
 

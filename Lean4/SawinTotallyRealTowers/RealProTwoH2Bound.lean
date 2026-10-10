@@ -27,8 +27,6 @@ import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # Six-dimensional degree two for the initial real pro-two group
 

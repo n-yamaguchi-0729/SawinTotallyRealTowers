@@ -8,14 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtensi
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity theorem: actual reduction maps
 
@@ -29,6 +21,14 @@ The reciprocity homomorphisms themselves belong to the finite reciprocity equiva
 lemmas below only construct the actual arrows and prove the algebraic diagram
 chases which will be applied to those homomorphisms.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

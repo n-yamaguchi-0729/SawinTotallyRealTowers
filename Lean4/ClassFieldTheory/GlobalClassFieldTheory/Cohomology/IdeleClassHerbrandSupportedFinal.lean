@@ -29,8 +29,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.Id
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
 import Mathlib.Algebra.BigOperators.GroupWithZero.Finset
 
-set_option autoImplicit false
-
 /-!
 # Supported ideles and the idele-class norm index
 
@@ -39,7 +37,9 @@ the unramified integral factors outside the support, and the exact
 sequence from `S`-units to supported ideles and idele classes.
 -/
 
-open scoped Classical NumberField TensorProduct
+
+
+open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -954,6 +954,7 @@ theorem
         (finitePlacesAbove (K := K) (L := L) S) q := by
   cases q with
   | inl W =>
+      classical
       let W₀ :=
         chosenInfinitePlaceAbove
           (L := L) (W.comap (algebraMap K L))

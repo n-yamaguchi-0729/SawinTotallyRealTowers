@@ -9,11 +9,6 @@ import Mathlib.FieldTheory.SeparableClosure
 import ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory CyclicCohomology KummerTheory
-
 /-!
 # Finite local reciprocity: realizing finite Galois extensions in a separable closure
 
@@ -26,6 +21,11 @@ is `Lˣ`, and the resulting abstract extension quotient is the actual
 No perfectness hypothesis is imposed; this includes equal-characteristic
 local fields such as finite extensions of `𝔽_q((t))`.
 -/
+
+namespace LocalClassFieldTheory
+open RamificationTheory CyclicCohomology KummerTheory
+
+
 
 noncomputable section
 
@@ -68,7 +68,8 @@ def finiteGaloisClosedFixingSubgroupOfEmbedding
   closedFixingSubgroup K (SeparableClosure K)
     (finiteGaloisFieldRangeOfEmbedding K L i)
 
-/-- The fixing subgroup of an embedded finite Galois extension is normal in the absolute subgroup. -/
+/-- The fixing subgroup of an embedded finite Galois extension is normal in the absolute
+subgroup. -/
 noncomputable instance finiteGaloisExtensionSubgroupOfEmbedding_normal
     (i : L →ₐ[K] SeparableClosure K) :
     (extensionSubgroup

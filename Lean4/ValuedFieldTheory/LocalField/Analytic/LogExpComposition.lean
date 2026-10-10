@@ -7,13 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 import ValuedFieldTheory.LocalField.Analytic.LogExpAdditivity
 
-set_option autoImplicit false
-
-open Filter
-open Polynomial
-open scoped Topology
-open scoped PowerSeries.WithPiTopology
-
 /-!
 # Exact logarithm--exponential compositions
 
@@ -22,6 +15,13 @@ the deep exponential–logarithm equivalence, on the sharp ramified
 convergence ball.  The source lemmas below justify the Cauchy products and
 the unconditional regrouping involved in power-series substitution.
 -/
+
+open Filter
+open Polynomial
+open scoped Topology
+open scoped PowerSeries.WithPiTopology
+
+
 
 noncomputable section
 
@@ -283,7 +283,7 @@ theorem hasSum_powerSeries_subst_sigma
 
 /-- Regrouping the expanded substitution by the final monomial degree gives
 the coefficient evaluation of the formal substitution itself.  Finiteness
-of every regrouped fiber is supplied by `PowerSeries.coeff_subst_finite'`.-/
+of every regrouped fiber is supplied by `PowerSeries.coeff_subst_finite'`. -/
 theorem hasSum_powerSeries_subst_coeff_mul_pow_of_sigma
     [Valued K (WithZero (Multiplicative ℤ))]
     (f g : PowerSeries K) (x z : K)

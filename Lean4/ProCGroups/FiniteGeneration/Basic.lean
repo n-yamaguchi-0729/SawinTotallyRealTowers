@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.FreeGroup.Basic
 import ProCGroups.Generation.QuotientGeneratorConvergingPairs
 
-set_option autoImplicit false
-
 /-!
 # Basic results on topological finite generation
 

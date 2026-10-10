@@ -12,8 +12,6 @@ import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 import Mathlib.RingTheory.Ideal.Maps
 import Mathlib.Data.Finset.Card
 
-set_option autoImplicit false
-
 /-!
 # A finite set of primes witnessing complete splitting
 

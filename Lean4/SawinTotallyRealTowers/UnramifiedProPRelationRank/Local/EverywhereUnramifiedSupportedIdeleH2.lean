@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFiniteP
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 
-set_option autoImplicit false
 /-!
 # H² of the everywhere-integral relative idele subgroup
 

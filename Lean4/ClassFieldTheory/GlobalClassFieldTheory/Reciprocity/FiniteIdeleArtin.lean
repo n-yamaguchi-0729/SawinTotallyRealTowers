@@ -18,8 +18,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerVa
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 import Mathlib.Algebra.BigOperators.Finprod
 
-set_option autoImplicit false
-
 /-!
 # The finite-place product of local Artin homomorphisms
 
@@ -29,7 +27,9 @@ places.  This file forms their `finprod` directly in the actual global
 Galois group.
 -/
 
-open scoped Classical IsMulCommutative NumberField NNReal ValuativeRel
+
+
+open scoped IsMulCommutative NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 

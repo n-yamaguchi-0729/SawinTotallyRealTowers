@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Cyclic.Herbrand.Induced
 
-set_option autoImplicit false
-
 /-!
 # Low-degree Tate cohomology of products
 
 This file proves that multiplicative Tate `H⁰` and `H⁻¹` commute with
 dependent products, giving the product step for low-degree Herbrand quotients.
 -/
+
+
 
 noncomputable section
 

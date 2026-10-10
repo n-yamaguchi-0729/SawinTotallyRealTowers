@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 import Mathlib.LinearAlgebra.Pi
 
-set_option autoImplicit false
 /-!
 # The family of finite-place unramified H¹ spaces
 

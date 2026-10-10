@@ -8,8 +8,6 @@ import SawinTotallyRealTowers.QuadraticBasis
 import SawinTotallyRealTowers.QuadraticTrace
 import Mathlib.RingTheory.Discriminant
 
-set_option autoImplicit false
-
 /-!
 # Discriminant of a quadratic square-root basis
 

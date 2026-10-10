@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.BigActual
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassFieldOverOriginalBase
 
-set_option autoImplicit false
-
 /-!
 # Big Hilbert reciprocity over the original number field
 
@@ -16,7 +14,9 @@ The original-base specialization is compiled separately from the realized-base
 specialization and reuses the shared reciprocity transport provider.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.ContinuousH1CupCochain
 import GaloisCohomology.ProP.FiniteTransgression
 
-set_option autoImplicit false
 /-!
 # The continuous cup product of two trivial mod-p characters
 

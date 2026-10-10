@@ -11,13 +11,13 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 
-set_option autoImplicit false
 /-!
 # Finite unramified valued extensions
 
 Develops the ideal, residue-field, Galois, trace, and norm consequences of a
 finite valued extension with ramification index one and full residue degree.
 -/
+
 
 namespace LocalFieldTheory
 
@@ -819,7 +819,7 @@ theorem galoisGroupEquivResidueAlgEquivOfUnramifiedValuationOfIsIntegralClosure_
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
     [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L]
-    (σ : Gal(L / K)) :
+    (σ : Gal(L/K)) :
     galoisGroupEquivResidueAlgEquivOfUnramifiedValuationOfIsIntegralClosure K L σ =
       galoisGroupResidueAlgEquivOfIsIntegralClosure K L σ :=
   rfl

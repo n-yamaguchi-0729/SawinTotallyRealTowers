@@ -12,8 +12,6 @@ import Mathlib.NumberTheory.NumberField.ClassNumber
 import Mathlib.NumberTheory.NumberField.Units.Regulator
 import Mathlib.RingTheory.DedekindDomain.Factorization
 
-set_option autoImplicit false
-
 /-!
 # Torsion and rank sources for `S`-units
 
@@ -21,6 +19,8 @@ This file supplies the algebraic rank and torsion input for `S`-units.
 The finite set `S` contains the finite places; all infinite places are
 understood to be present.
 -/
+
+
 
 noncomputable section
 

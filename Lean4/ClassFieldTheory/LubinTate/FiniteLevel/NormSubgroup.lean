@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FiniteLevel.NormUniformizer
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
-set_option autoImplicit false
-
 /-!
 # The norm subgroup of a standard Lubin--Tate level
 
@@ -20,6 +18,8 @@ entire cyclic subgroup of integral powers lies in the norm subgroup.
 The higher-principal-unit contribution is intentionally left to the later
 norm calculation.
 -/
+
+
 
 noncomputable section
 

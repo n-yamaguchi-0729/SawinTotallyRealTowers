@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.Conductor
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.LocalConductor
 
-set_option autoImplicit false
-
 /-!
 # Narrow finite and local conductor exponents
 
@@ -24,7 +22,9 @@ idele into its one-place component and the remaining defining-modulus
 component.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 
@@ -51,6 +51,7 @@ theorem exists_localDefiningExponent
 
 namespace ConductorialSubgroup
 
+open scoped Classical in
 /-- The finite local conductor exponent seen by a conductorial subgroup. -/
 noncomputable def narrowFiniteLocalConductorExponent
     (H : ConductorialSubgroup K)
@@ -63,8 +64,9 @@ theorem narrowFiniteLocalConductorExponent_spec
     (H : ConductorialSubgroup K)
     (v : HeightOneSpectrum (𝓞 K)) :
     RayClass.localHigherUnitClassSubgroup v
-        (H.narrowFiniteLocalConductorExponent v) ≤ H.1 :=
-  Nat.find_spec (exists_localDefiningExponent H.1 H.2 v)
+        (H.narrowFiniteLocalConductorExponent v) ≤ H.1 := by
+  classical
+  exact Nat.find_spec (exists_localDefiningExponent H.1 H.2 v)
 
 /-- Minimality of the finite local conductor exponent. -/
 theorem narrowFiniteLocalConductorExponent_le
@@ -73,6 +75,7 @@ theorem narrowFiniteLocalConductorExponent_le
     {n : ℕ}
     (hn : RayClass.localHigherUnitClassSubgroup v n ≤ H.1) :
     H.narrowFiniteLocalConductorExponent v ≤ n := by
+  classical
   exact Nat.find_min'
     (exists_localDefiningExponent H.1 H.2 v) hn
 
@@ -93,6 +96,7 @@ theorem narrowFiniteLocalConductorExponent_eq_zero_iff
 
 end ConductorialSubgroup
 
+open scoped Classical in
 /-- Replacing one finite exponent of a defining modulus, while retaining its
 selected real places, again gives a defining modulus. -/
 theorem replaceFiniteExponent_definingModulus
@@ -197,6 +201,7 @@ theorem narrowFiniteConductorExponent_eq_narrowFiniteLocalConductorExponent
     (v : HeightOneSpectrum (𝓞 K)) :
     H.narrowFiniteConductorExponent v =
       H.narrowFiniteLocalConductorExponent v := by
+  classical
   apply le_antisymm
   · let m := H.chosenDefiningModulus
     have hm : IsDefiningModulus H.1 m :=

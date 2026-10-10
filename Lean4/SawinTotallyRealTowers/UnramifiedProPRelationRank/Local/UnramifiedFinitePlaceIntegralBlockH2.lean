@@ -20,7 +20,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIn
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
 
-set_option autoImplicit false
 /-!
 # H² of the actual unramified finite-place integral block
 
@@ -154,7 +153,8 @@ theorem unramifiedFinitePlaceIntegralBlockTwoCocycle_isCoboundary
       ∃ b : Gal(L / K) → Additive
           (relativeLocalTensorDecompositionIntegralUnitSubgroup (K := K) (L := L) v),
         (groupCohomology.d₁₂ (Rep.ofMulDistribMulAction Gal(L / K)
-          (relativeLocalTensorDecompositionIntegralUnitSubgroup (K := K) (L := L) v))).hom b = c.1 := by
+          (relativeLocalTensorDecompositionIntegralUnitSubgroup
+            (K := K) (L := L) v))).hom b = c.1 := by
   let _ := unramifiedFinitePlaceIntegralBlockH2_subsingleton K L v hunram
   intro c
   exact (groupCohomology.H2π_eq_zero_iff c).1 (Subsingleton.elim _ _)

@@ -9,8 +9,6 @@ import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
 
-set_option autoImplicit false
-
 /-!
 # Absolute abelianization inside the separable closure
 
@@ -19,6 +17,8 @@ of the Galois group of its separable closure with the Galois group of the
 maximal abelian subextension.  Working inside the separable closure makes the
 construction uniform in every characteristic.
 -/
+
+
 
 noncomputable section
 
@@ -69,7 +69,7 @@ noncomputable def absoluteAbelianizationMulEquivMaximalAbelianGalois :
 maximal abelian extension. -/
 @[simp]
 theorem absoluteAbelianizationMulEquivMaximalAbelianGalois_mk
-    (sigma : Gal(SeparableClosure K / K)) :
+    (sigma : Gal(SeparableClosure K/K)) :
     absoluteAbelianizationMulEquivMaximalAbelianGalois K
         (QuotientGroup.mk sigma) =
       AlgEquiv.restrictNormalHom (maximalAbelianExtension K) sigma :=

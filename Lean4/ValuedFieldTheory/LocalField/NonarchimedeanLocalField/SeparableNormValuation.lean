@@ -11,12 +11,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSeque
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open LocalFieldTheory
-
 /-!
 # Finite local reciprocity: normalized valuation of field norms
 
@@ -25,6 +19,12 @@ class-formation framework is specialized to separable-closure units.  All
 ramification and residue degrees below are the actual invariants of the
 valuation-ring extension; no packaged norm-valuation hypothesis is assumed.
 -/
+
+namespace LocalClassFieldTheory
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 

@@ -9,12 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteRe
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalClassFieldAxiom
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHenselianValuation
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open LocalFieldTheory
-
 /-!
 # Finite local reciprocity: the local reciprocity law
 
@@ -23,6 +17,12 @@ class-field axiom constructed over the fixed separable closure are inserted
 into the abstract reciprocity theorem.  The resulting isomorphism is independent of the
 embedding used to realize the finite Galois extension in that closure.
 -/
+
+namespace LocalClassFieldTheory
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -44,7 +44,8 @@ noncomputable def abelianizationEquivNormQuotient :
     (localHenselianValuation K)
     (separableClosureUnits_isClassFormation K)
 
-/-- The isomorphism in the finite local reciprocity construction is independent of the embedding used to
+/-- The isomorphism in the finite local reciprocity construction is independent of the embedding
+used to
 realize `L/K` inside the fixed separable closure. -/
 private theorem abelianizationEquivNormQuotient_eq_of_embedding
     (i : L →ₐ[K] SeparableClosure K) :

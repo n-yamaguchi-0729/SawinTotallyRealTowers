@@ -9,15 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbst
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TateTransport
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory CyclicCohomology KummerTheory
-
-open LocalFieldTheory
-
-open ClassFormation
-
 /-!
 # The local class-field-axiom theorem: units in an abstract finite fixed-field tower
 
@@ -29,6 +20,15 @@ essential for transporting the actual Tate groups rather than only their
 underlying norm quotients.
 -/
 
+namespace LocalClassFieldTheory
+open RamificationTheory CyclicCohomology KummerTheory
+
+open LocalFieldTheory
+
+open ClassFormation
+
+
+
 noncomputable section
 
 open CategoryTheory
@@ -38,7 +38,7 @@ variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
 /-- Units of the concrete fixed field represented by an arbitrary closed
 subgroup, identified directly with the corresponding fixed coefficients. -/
 def abstractFixedFieldUnitsEquivGaloisFixed
-    (H : ClosedSubgroup (Gal(Ω / k))) :
+    (H : ClosedSubgroup (Gal(Ω/k))) :
     Additive (abstractFixedField k Ω H)ˣ ≃+
       ambientFixedAddSubgroup (galoisAmbientUnitsRep k Ω) H where
   toFun x := ⟨intermediateFieldUnitsToGaloisAmbient k Ω
@@ -82,7 +82,7 @@ omit [IsGalois k Ω] in
 /-- States the theorem `abstractFixedFieldUnitsEquivGaloisFixed_coe`. -/
 @[simp]
 theorem abstractFixedFieldUnitsEquivGaloisFixed_coe
-    (H : ClosedSubgroup (Gal(Ω / k)))
+    (H : ClosedSubgroup (Gal(Ω/k)))
     (x : Additive (abstractFixedField k Ω H)ˣ) :
     ((abstractFixedFieldUnitsEquivGaloisFixed k Ω H x).1 :
         Additive Ωˣ) =
@@ -93,7 +93,7 @@ theorem abstractFixedFieldUnitsEquivGaloisFixed_coe
 /-- Scalar extension from the lower fixed field does not change the
 underlying upper field or its unit group. -/
 def abstractRelativeFixedFieldUnitsEquivGaloisFixed
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup) :
     Additive (abstractRelativeFixedField k Ω hLK)ˣ ≃+
       ambientFixedAddSubgroup (galoisAmbientUnitsRep k Ω) L := by
@@ -104,7 +104,7 @@ omit [IsGalois k Ω] in
 /-- States the theorem `abstractRelativeFixedFieldUnitsEquivGaloisFixed_coe`. -/
 @[simp]
 theorem abstractRelativeFixedFieldUnitsEquivGaloisFixed_coe
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (x : Additive (abstractRelativeFixedField k Ω hLK)ˣ) :
     ((abstractRelativeFixedFieldUnitsEquivGaloisFixed
@@ -116,7 +116,7 @@ theorem abstractRelativeFixedFieldUnitsEquivGaloisFixed_coe
 /-- Carrier comparison between the descended class-formation representation and
 the actual unit group of the upper concrete fixed field. -/
 def abstractExtensionFixedRepresentationUnitsEquiv
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
     (extensionFixedRepresentation (galoisAmbientUnitsRep k Ω)
@@ -131,7 +131,7 @@ omit [IsGalois k Ω] in
 /-- States the theorem `abstractRelativeUnitsEquiv_extensionUnitsEquiv`. -/
 @[simp]
 theorem abstractRelativeUnitsEquiv_extensionUnitsEquiv
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (x : (extensionFixedRepresentation (galoisAmbientUnitsRep k Ω)
@@ -149,7 +149,7 @@ theorem abstractRelativeUnitsEquiv_extensionUnitsEquiv
 /-- On a quotient representative, the concrete relative Galois
 automorphism is restriction of the same ambient automorphism. -/
 theorem abstractExtensionQuotientEquivGaloisGroup_mk_apply_val
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (σ : K.toSubgroup)
@@ -204,7 +204,7 @@ theorem abstractExtensionQuotientEquivGaloisGroup_mk_apply_val
 /-- The abstract coset action on an upper fixed-field unit is the ordinary
 action of the corresponding concrete relative Galois automorphism. -/
 theorem relativeCosetAction_abstractRelativeFixedFieldUnit_val
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (x : Additive (abstractRelativeFixedField k Ω hLK)ˣ)
@@ -235,7 +235,7 @@ theorem relativeCosetAction_abstractRelativeFixedFieldUnit_val
 /-- The carrier comparison intertwines the descended quotient action with
 the actual relative Galois action. -/
 theorem abstractExtensionFixedRepresentationUnitsEquiv_action
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK)
@@ -277,7 +277,7 @@ theorem abstractExtensionFixedRepresentationUnitsEquiv_action
 concrete unit representation is reindexed along the canonical isomorphism
 from the abstract class-formation quotient to the actual relative Galois group. -/
 def abstractExtensionFixedRepresentationIsoUnitsRes
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
     letI := hnormal

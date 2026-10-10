@@ -7,7 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityDefinition
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction: independence of the prime element
+
+This file supplies the finite-Galois cofinality and compositum argument used to prove that the
+reciprocity construction is independent of its prime element.
+-/
 
 universe u
 
@@ -17,11 +22,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction: independence of the prime element
 
-This file supplies the finite-Galois cofinality and compositum argument used to prove that the reciprocity construction is independent of its prime element.
--/
 
 noncomputable section
 

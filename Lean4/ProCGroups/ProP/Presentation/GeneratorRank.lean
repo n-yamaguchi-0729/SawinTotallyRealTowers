@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.GeneratorRank
 import ProCGroups.ProP.Presentation.Minimal
 
-set_option autoImplicit false
 /-!
 # Generator rank of a minimal pro-p presentation
 

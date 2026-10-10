@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 
-set_option autoImplicit false
-
-namespace CyclicCohomology
-
 /-!
 # Cardinality identity from the standard Tate exact sequence
 
@@ -19,6 +15,8 @@ mathlib's homology long exact sequence to the standard two-periodic cyclic
 complex.  The resulting cardinality identity is transported to the
 arithmetic `H⁰` and `H⁻¹` presentations.
 -/
+
+namespace CyclicCohomology
 
 noncomputable section
 
@@ -69,12 +67,13 @@ private noncomputable def periodicChainMap
   f _ := (equivariantRepHom f hf).toModuleCatHom
   comm' := by
     rintro i j ⟨rfl⟩
+    have hrel : (ComplexShape.down ℕ).Rel (j + 1) j := rfl
     by_cases hj : Even (j + 1)
-    · simp [Rep.FiniteCyclicGroup.moduleCatChainComplex,
-        HomologicalComplex.alternatingConst, hj]
+    · simp only [Rep.FiniteCyclicGroup.moduleCatChainComplex,
+        HomologicalComplex.alternatingConst, dite_eq_ite, hrel, hj, ↓reduceIte]
       exact (subCompNormMap σ f hf).comm₂₃
-    · simp [Rep.FiniteCyclicGroup.moduleCatChainComplex,
-        HomologicalComplex.alternatingConst, hj]
+    · simp only [Rep.FiniteCyclicGroup.moduleCatChainComplex,
+        HomologicalComplex.alternatingConst, dite_eq_ite, hrel, hj, ↓reduceIte]
       exact (subCompNormMap σ f hf).comm₁₂
 
 private noncomputable def periodicShortComplex

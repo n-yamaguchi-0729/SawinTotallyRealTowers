@@ -8,14 +8,14 @@ import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.FieldTheory.KrullTopology
 import Mathlib.NumberTheory.NumberField.Basic
 
-set_option autoImplicit false
-
 /-!
 # Embeddings into a separable closure
 
 This file provides the common realization of a separable extension inside the
 chosen separable closure of its base field.
 -/
+
+
 
 noncomputable section
 

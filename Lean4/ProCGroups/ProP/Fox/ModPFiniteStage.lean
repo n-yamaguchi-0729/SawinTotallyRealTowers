@@ -8,7 +8,6 @@ import ProCGroups.ProP.Fox.ModPBoundary
 import ProCGroups.FoxDifferential.Completed.FreeProC.RelationReflection
 import ProCGroups.FoxDifferential.Completed.FiniteStage.RelationRealization
 
-set_option autoImplicit false
 /-!
 # Finite mod-p Fox stages of a presentation
 

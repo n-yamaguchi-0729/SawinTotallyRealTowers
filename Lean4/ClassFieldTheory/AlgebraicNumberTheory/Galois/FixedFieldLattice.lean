@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # Fixed fields and subgroup lattice operations
 
@@ -16,13 +14,15 @@ They do not depend on class field theory and belong with the general Galois
 infrastructure rather than a concrete reciprocity construction.
 -/
 
+
+
 namespace IntermediateField
 
 /-- Fixed fields turn a supremum of automorphism subgroups into the
 intersection of their fixed fields. -/
 theorem fixedField_sup_eq_inf
     {k Ω : Type*} [Field k] [Field Ω] [Algebra k Ω]
-    (S T : Subgroup (Gal(Ω / k))) :
+    (S T : Subgroup (Gal(Ω/k))) :
     IntermediateField.fixedField (S ⊔ T) =
       IntermediateField.fixedField S ⊓ IntermediateField.fixedField T := by
   apply le_antisymm

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldDegree
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the fixed-field prime element and its norm
 
@@ -18,6 +16,8 @@ identification its generator is the distinguished element
 primitive Eisenstein polynomial, and the chosen sign convention gives
 `N(-pi_delta) = aT`.
 -/
+
+
 
 noncomputable section
 
@@ -180,7 +180,8 @@ theorem equalCharacteristicCompletedFrobeniusPrimeElement_minpoly
     (equalCharacteristicChangedPrimitivePolynomial_eq_minpoly F a n).symm
 
 /-- The genuine integral minimal polynomial is Eisenstein at `(T)`.  This is
-the prime-element (uniformizer) certificate used in the proof of the completed theta-intertwining theorem. -/
+the prime-element (uniformizer) certificate used in the proof of the completed
+theta-intertwining theorem. -/
 theorem equalCharacteristicCompletedFrobeniusPrimeElement_eisenstein
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]

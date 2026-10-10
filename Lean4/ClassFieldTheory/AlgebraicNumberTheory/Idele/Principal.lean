@@ -9,8 +9,6 @@ import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 
-set_option autoImplicit false
-
 /-!
 # Principal ideles and their Galois module structure
 
@@ -18,6 +16,8 @@ This module exposes the diagonal embedding and idele class group, identifies
 field units with principal relative ideles, and transports low-degree Tate
 cohomology across that identification.
 -/
+
+
 
 noncomputable section
 

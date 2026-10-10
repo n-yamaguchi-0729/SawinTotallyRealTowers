@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionCosets
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusLift
 
-set_option autoImplicit false
-
 /-!
 # The lower Galois group in the totally ramified auxiliary tower
 
 This file identifies the lower Galois group with the original totally
 ramified quotient and constructs its cyclic generator.
 -/
+
+
 
 noncomputable section
 

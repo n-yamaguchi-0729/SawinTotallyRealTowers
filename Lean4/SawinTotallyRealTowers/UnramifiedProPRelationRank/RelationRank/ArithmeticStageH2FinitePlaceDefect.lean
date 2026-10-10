@@ -9,7 +9,6 @@ import GaloisCohomology.ProP.QuotientRestriction
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
 
-set_option autoImplicit false
 /-!
 # Finite-place splitting defects of arithmetic-stage H² embedding problems
 

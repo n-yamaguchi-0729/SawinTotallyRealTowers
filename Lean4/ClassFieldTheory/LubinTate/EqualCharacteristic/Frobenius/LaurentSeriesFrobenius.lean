@@ -11,10 +11,9 @@ import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.LinearAlgebra.Basis.Basic
 import Mathlib.LinearAlgebra.Dimension.Free
 
-set_option autoImplicit false
-
 /-!
-# The equal-characteristic completed-unramified construction: finite unramified coefficient extensions in equal characteristic
+# The equal-characteristic completed-unramified construction: finite unramified coefficient
+extensions in equal characteristic
 
 For a finite extension `l / k` of finite fields, coefficientwise extension
 makes `l((T))` a finite extension of `k((T))` of the same degree.  Every
@@ -24,9 +23,12 @@ on `l` gives the genuine Frobenius automorphism of this finite Laurent-series
 base change and fixes `T`.
 
 This is the finite unramified source used to model the completed maximal
-unramified field in the equal-characteristic completed-unramified construction.  The construction is coefficientwise and does not
+unramified field in the equal-characteristic completed-unramified construction.  The
+construction is coefficientwise and does not
 postulate an abstract unramified extension.
 -/
+
+
 
 noncomputable section
 
@@ -137,10 +139,13 @@ section FiniteBasis
 variable [Field k] [Field l] [Algebra k l]
   {ι : Type*} [Fintype ι]
 
+omit [Fintype ι] in
 private theorem laurentSeriesCoefficientBasis_linearIndependent
+    [Finite ι]
     (b : Module.Basis ι k l) :
     LinearIndependent k⸨X⸩
       (fun i : ι ↦ (HahnSeries.C (Γ := ℤ) (b i) : l⸨X⸩)) := by
+  let : Fintype ι := Fintype.ofFinite ι
   let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
   classical
   rw [Fintype.linearIndependent_iff]
@@ -166,11 +171,14 @@ private theorem laurentSeriesCoefficientBasis_linearIndependent
     exact hb
   exact hrepr i
 
+omit [Fintype ι] in
 private theorem laurentSeriesCoefficientBasis_span
+    [Finite ι]
     (b : Module.Basis ι k l) :
     Submodule.span k⸨X⸩
         (Set.range (fun i : ι ↦
           (HahnSeries.C (Γ := ℤ) (b i) : l⸨X⸩))) = ⊤ := by
+  let : Fintype ι := Fintype.ofFinite ι
   let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
   classical
   rw [eq_top_iff]
@@ -550,7 +558,7 @@ theorem equalCharacteristicFiniteUnramifiedFrobenius_coeff
 /-- Every automorphism of the chosen unramified factor is a power of its
 arithmetic Frobenius. -/
 theorem equalCharacteristicFiniteUnramifiedFrobenius_pow_surjective
-    (σ : Gal(equalCharacteristicFiniteUnramifiedExtension k p n / k⸨X⸩)) :
+    (σ : Gal(equalCharacteristicFiniteUnramifiedExtension k p n/k⸨X⸩)) :
     ∃ i < n, equalCharacteristicFiniteUnramifiedFrobenius k p n ^ i = σ := by
   obtain ⟨τ, rfl⟩ := (laurentSeriesCoefficientGalHom_surjective
     (k := k) (l := FiniteField.Extension k p n)) σ

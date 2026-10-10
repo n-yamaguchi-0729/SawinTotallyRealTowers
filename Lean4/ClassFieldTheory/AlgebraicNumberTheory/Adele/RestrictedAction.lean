@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
 
-set_option autoImplicit false
-
 /-!
 # Galois action on the restricted local product
 
@@ -16,6 +14,8 @@ place.  Consequently the exact restricted-product equivalence for
 relative ideles is equivariant, and the transported action is the
 coordinatewise tensor-conjugation action.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

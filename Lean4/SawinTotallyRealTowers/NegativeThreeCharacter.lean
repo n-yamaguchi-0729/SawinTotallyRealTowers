@@ -39,8 +39,6 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Order
 
-set_option autoImplicit false
-
 /-!
 # The quadratic character of negative three
 
@@ -78,7 +76,8 @@ private def quadraticAbsoluteCharacter (F : Type) [Field F]
     Field.absoluteGaloisGroup F →ₜ* Multiplicative (ZMod 2) := by
   let e := quadraticCharacterCoordinate F E hd
   let r : Field.absoluteGaloisGroup F →ₜ* Gal(E/F) :=
-    { toMonoidHom := AlgEquiv.restrictNormalHom (F := F) (K₁ := AlgebraicClosure F) E.toIntermediateField
+    { toMonoidHom := AlgEquiv.restrictNormalHom
+        (F := F) (K₁ := AlgebraicClosure F) E.toIntermediateField
       continuous_toFun := InfiniteGalois.restrictNormalHom_continuous E.toIntermediateField }
   have he : Continuous e := continuous_of_discreteTopology
   exact
@@ -88,8 +87,12 @@ private def quadraticAbsoluteCharacter (F : Type) [Field F]
 private theorem quadraticAbsoluteCharacter_eq_one_iff (F : Type) [Field F]
     (E : FiniteGaloisIntermediateField F (AlgebraicClosure F))
     (hd : Module.finrank F E = 2) (σ : Field.absoluteGaloisGroup F) :
-    quadraticAbsoluteCharacter F E hd σ = 1 ↔ AlgEquiv.restrictNormalHom (F := F) (K₁ := AlgebraicClosure F) E.toIntermediateField σ = 1 := by
-  change quadraticCharacterCoordinate F E hd (AlgEquiv.restrictNormalHom (F := F) (K₁ := AlgebraicClosure F) E.toIntermediateField σ) = 1 ↔ _
+    quadraticAbsoluteCharacter F E hd σ = 1 ↔
+      AlgEquiv.restrictNormalHom
+        (F := F) (K₁ := AlgebraicClosure F) E.toIntermediateField σ = 1 := by
+  change quadraticCharacterCoordinate F E hd
+    (AlgEquiv.restrictNormalHom
+      (F := F) (K₁ := AlgebraicClosure F) E.toIntermediateField σ) = 1 ↔ _
   exact (quadraticCharacterCoordinate F E hd).map_eq_one_iff
 
 private theorem quadraticAbsoluteCharacter_inertia

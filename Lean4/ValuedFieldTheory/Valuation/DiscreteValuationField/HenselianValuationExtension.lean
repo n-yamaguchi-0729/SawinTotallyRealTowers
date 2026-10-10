@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
 import Mathlib.RingTheory.Valuation.Extension
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Valuation-extension API for Henselian discretely valued fields
 
@@ -18,6 +14,8 @@ This file keeps the valuation-extension uniqueness interface separate from the
 lightweight Henselian-DVF core.  The core file is used by Hensel lifting and
 does not need to import mathlib's full `Valuation.HasExtension` API.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

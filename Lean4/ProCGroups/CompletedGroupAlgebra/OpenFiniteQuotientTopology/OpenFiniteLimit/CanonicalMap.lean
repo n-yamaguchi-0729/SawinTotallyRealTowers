@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteLimit.Topology
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Open Finite Limit / Canonical Map
 

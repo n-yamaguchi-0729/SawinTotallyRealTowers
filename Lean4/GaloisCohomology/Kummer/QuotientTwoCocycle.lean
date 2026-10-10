@@ -14,8 +14,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.GroupTheory.QuotientGroup.Defs
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
-
 /-!
 # Descent of mixed-zero two-cocycles to a quotient group
 

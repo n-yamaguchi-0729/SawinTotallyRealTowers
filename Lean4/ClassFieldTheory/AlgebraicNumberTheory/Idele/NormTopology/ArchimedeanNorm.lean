@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
 
-set_option autoImplicit false
-
 /-!
 # Archimedean behavior of idele norms
 
 The positive archimedean norm, and consequently the absolute idele norm, is
 preserved by the ordinary norm in a finite number-field extension.
 -/
+
+
 
 open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain

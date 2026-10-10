@@ -14,8 +14,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLo
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
 
-set_option autoImplicit false
-
 /-!
 # Power congruence subgroups inside finite-index idele-class subgroups
 
@@ -29,7 +27,9 @@ This is the concrete power-congruence core used in the existence proof for
 global class fields.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 
@@ -122,6 +122,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
     exact Subgroup.one_mem _
   have huFinite :
       u.2 ∈ RayClass.finiteCongruenceSubgroup m.finitePart := by
+    classical
     rw [RayClass.mem_finiteCongruenceSubgroup_iff]
     intro v
     by_cases hv : v ∈ S

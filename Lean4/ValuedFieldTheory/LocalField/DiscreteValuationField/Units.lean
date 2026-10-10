@@ -8,16 +8,14 @@ import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.QuotientGroup.Basic
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
 /-!
 # Principal-unit filtrations
 
 This file provides a theorem API for antitone principal-unit filtrations used by
 ramification and norm arguments.
 -/
+
+namespace LocalFieldTheory
 
 universe u v
 

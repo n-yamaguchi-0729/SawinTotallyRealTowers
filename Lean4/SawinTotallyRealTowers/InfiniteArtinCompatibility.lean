@@ -26,8 +26,6 @@ import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 import Mathlib.Tactic.Linarith
 
-set_option autoImplicit false
-
 /-!
 # Real Artin values and global reciprocity
 
@@ -120,7 +118,8 @@ theorem absoluteInfinitePlaceArtinNegOne_maximalAbelian
   let sigma : Field.absoluteGaloisGroup F := (absoluteGaloisGroupContinuousMulEquiv F).symm c
   let w : InfinitePlace (AlgebraicClosure F) := chosenInfinitePlaceAbove (L := AlgebraicClosure F) v
   have hr : w.IsRamified F := InfinitePlace.isRamified_iff.mpr
-    ⟨algebraicClosure_place_complex F w, IsTotallyReal.isReal (w.comap (algebraMap F (AlgebraicClosure F)))⟩
+    ⟨algebraicClosure_place_complex F w,
+      IsTotallyReal.isReal (w.comap (algebraMap F (AlgebraicClosure F)))⟩
   have hc : ComplexEmbedding.IsConj w.embedding c :=
     chosenInfinitePlaceArtinMonoidHom_neg_one_isConj_of_ramified
       (K := F) (L := AlgebraicClosure F) v hr

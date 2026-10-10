@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywher
 import ProCGroups.ProC.InverseLimits.Predicates
 import ProCGroups.Profinite.OpenSubgroups
 
-set_option autoImplicit false
 /-!
 # The maximal everywhere-unramified pro-p Galois group
 

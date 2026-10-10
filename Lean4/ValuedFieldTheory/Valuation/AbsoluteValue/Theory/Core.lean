@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 import ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
 
-set_option autoImplicit false
-
 /-! Provides the public declarations in the `ValuationTheory.AbsoluteValue.Theory` Lean module. -/
 
 noncomputable section
@@ -43,7 +41,8 @@ theorem uniformizerPowerIdeal_primeElement_eq_maximalIdeal_pow_of_normalized
   exact uniformizerPowerIdeal_primeElement_eq_exponentialMaxIdeal_pow_of_normalized
     hv hπ n
 
-/-- The ideal structure theorem for discrete valuation rings, successive-quotient part in maximal-ideal notation:
+/-- The ideal structure theorem for discrete valuation rings, successive-quotient part in
+maximal-ideal notation:
 `𝒪/𝔭 ≃+ 𝔭^n/𝔭^(n+1)`.  This retains the additive structure supplied by the
 generic quotient-of-powers theorem instead of weakening it to a bare
 bijection. -/
@@ -68,7 +67,8 @@ noncomputable def residue_addEquiv_maximalIdeal_pow_quotient
       (Ideal.powQuotPowSuccLinearEquivMapMkPowSuccPow
         (IsLocalRing.maximalIdeal (exponentialValuationSubring v)) n).toAddEquiv
 
-/-- The ideal structure theorem for discrete valuation rings, successive-quotient part in the principal-power notation `π^n𝒪`: `𝒪/(π) ≃+ π^n𝒪/π^(n+1)𝒪`, represented as the image of `π^n𝒪`
+/-- The ideal structure theorem for discrete valuation rings, successive-quotient part in the
+principal-power notation `π^n𝒪`: `𝒪/(π) ≃+ π^n𝒪/π^(n+1)𝒪`, represented as the image of `π^n𝒪`
 inside `𝒪/π^(n+1)𝒪`. -/
 noncomputable def residue_addEquiv_uniformizerPowerIdeal_quotient
     {K : Type*} [Field K] {v : ExponentialValuation K}
@@ -771,13 +771,15 @@ noncomputable def higherUnitGradedPieceMulEquivResidue {O : Type*}
       (higherUnitCoeffModHom (O := O) hπ.ne_zero n hn)
       (higherUnitCoeffModHom_surjective hπ n hn))
 
-/-- The unit-reduction and graded-piece equivalences, kernel part for the reduction map on unit groups. -/
+/-- The unit-reduction and graded-piece equivalences, kernel part for the reduction map on unit
+groups. -/
 theorem units_reduction_kernel
     {O : Type*} [CommRing O] (π : O) (n : ℕ) :
     (unitReduction (uniformizerPowerIdeal π n)).ker = higherUnitSubgroup π n :=
   unitReduction_ker_powerIdeal π n
 
-/-- The unit-reduction and graded-piece equivalences, surjectivity part for the reduction map on unit groups. -/
+/-- The unit-reduction and graded-piece equivalences, surjectivity part for the reduction map on
+unit groups. -/
 theorem units_reduction_surjective
     {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {π : O} (hπ : Irreducible π) {n : ℕ} (hn : 1 ≤ n) :
@@ -786,7 +788,8 @@ theorem units_reduction_surjective
     unitReduction_isLocalHom_of_dvr hπ hn
   exact unitReduction_surjective_of_isLocalHom (uniformizerPowerIdeal π n)
 
-/-- The unit-reduction and graded-piece equivalences, the named first-isomorphism-theorem equivalence
+/-- The unit-reduction and graded-piece equivalences, the named first-isomorphism-theorem
+equivalence
 `Oˣ/U⁽ⁿ⁾ ≃ (O/π^nO)ˣ`. -/
 noncomputable def units_quotient_equiv
     {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

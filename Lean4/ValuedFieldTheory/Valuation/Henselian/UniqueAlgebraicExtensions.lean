@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaE
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
 import ValuedFieldTheory.Valuation.Henselian.UniqueExtensionPrimitive
 
-set_option autoImplicit false
-
 /-!
 # unique extension criterion
 
@@ -66,7 +64,9 @@ theorem monicResidualCoprimeFactorLifting_of_unique_algebraic_extensions
       V hunique factors hfactors gbar hbar hgbar hhbar hredprod hcoprime
   exact ⟨G, H, hG, hH, hprod.symm.trans hGH, hGbar, hHbar⟩
 
-/-- the unique-extension criterion, forward direction.  the primitive factorization definition, in its exact
+open _root_.DiscreteValuationField.Valuation in
+/-- the unique-extension criterion, forward direction. the primitive factorization definition, in
+its exact
 factorization form, gives a unique extension valuation ring on every
 algebraic extension. -/
 theorem henselianUniqueExtension_unique_algebraic_valuationSubring_extension_of_henselian
@@ -107,7 +107,7 @@ theorem henselianUniqueExtension_unique_algebraic_valuationSubring_extension_of_
         ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
           (L := L) V.valuation hval := by
     simpa only [ValuationSubring.valuationSubring_valuation] using
-      DiscreteValuationField.Valuation.normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
+      normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
         (K := K) (L := L) V hval W.valuation
   change W.toSubring = (integralClosure V L).toSubring
   rw [hWic]
@@ -134,7 +134,8 @@ theorem henselianUniqueExtension_unique_algebraic_valuationSubring_extensions_of
     henselianUniqueExtension_unique_algebraic_valuationSubring_extension_of_henselian
       (L := L) v hnonarch hhens
 
-/-- the unique-extension criterion, converse in the exact factorization form of the primitive factorization definition.
+/-- the unique-extension criterion, converse in the exact factorization form of the primitive
+factorization definition.
 The Galois argument gives the primitive-irreducible reduction property, and
 the primitive-factor partition turns it into the required degree-controlled
 factorization. -/

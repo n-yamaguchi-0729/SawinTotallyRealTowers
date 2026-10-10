@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStage
 import ProCGroups.InverseSystems.Basic
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — continuous — universal — system
 

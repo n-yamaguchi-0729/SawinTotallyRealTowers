@@ -18,8 +18,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Torsion in finite cyclic local unit cohomology
 
@@ -36,7 +34,7 @@ theorem finiteCyclicLocalUnitsH2_torsion_natCard_le
     (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g)
     (n : ℕ) (hn : 0 < n) :
     Nat.card {x : groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 // n • x = 0} ≤ n := by

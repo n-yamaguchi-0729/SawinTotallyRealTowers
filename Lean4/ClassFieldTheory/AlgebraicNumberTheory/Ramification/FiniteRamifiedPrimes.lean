@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RingTheory.DedekindDomain.Different
 import Mathlib.RingTheory.DedekindDomain.Factorization
 
-set_option autoImplicit false
-
 /-!
 # Finiteness of ramified primes in Dedekind extensions
 
 In a finite separable extension of Dedekind domains, only finitely many
 height-one primes of either the extension ring or the base ring ramify.
 -/
+
+
 
 noncomputable section
 

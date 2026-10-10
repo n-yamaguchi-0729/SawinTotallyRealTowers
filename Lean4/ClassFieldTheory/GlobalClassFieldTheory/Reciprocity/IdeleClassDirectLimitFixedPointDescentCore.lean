@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFiniteLevel
 
-set_option autoImplicit false
-
 /-!
 # Descent of fixed rational idele classes
 
@@ -18,6 +16,8 @@ finite intermediate field is represented at a finite Galois level.  Its
 actual tower base change is Galois-fixed, hence descends to an idele class
 of the intermediate field.
 -/
+
+
 
 noncomputable section
 

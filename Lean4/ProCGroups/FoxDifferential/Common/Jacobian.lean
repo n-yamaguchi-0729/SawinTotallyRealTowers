@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Algebra.Module.LinearMap.Basic
 import Mathlib.Data.Matrix.Mul
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: common — jacobian
 

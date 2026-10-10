@@ -8,17 +8,18 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 import ValuedFieldTheory.Valuation.Topology.Models
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
-set_option autoImplicit false
-
 /-!
 # Coefficients for a complete DVR expansion
 
-This file formalizes the recursive coefficient construction in the recursive coefficient proof.  Given a section of the residue map and a uniformizer `π`, every element
+This file formalizes the recursive coefficient construction in the recursive coefficient proof.
+Given a section of the residue map and a uniformizer `π`, every element
 of the valuation ring has uniquely determined successive representative
 coefficients and remainders satisfying
 
 `u = a 0 + a 1 * π + ... + a (n - 1) * π ^ (n - 1) + π ^ n * b n`.
 -/
+
+
 
 noncomputable section
 

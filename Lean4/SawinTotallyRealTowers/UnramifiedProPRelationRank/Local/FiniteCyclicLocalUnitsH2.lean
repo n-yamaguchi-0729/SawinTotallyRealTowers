@@ -10,7 +10,6 @@ import GaloisCohomology.Cyclic.TateH0.NormImage
 import GaloisCohomology.Cyclic.TateH0.Main
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 
-set_option autoImplicit false
 /-!
 # Degree-two cohomology of cyclic local unit representations
 
@@ -41,7 +40,7 @@ The generator is used only for the finite-cyclic periodic resolution.
 noncomputable def finiteCyclicUnitsH2IsoNormQuotient
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
     groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 ≅
       ModuleCat.of Int (Additive (NormQuotient K L)) := by
@@ -61,7 +60,7 @@ noncomputable def finiteCyclicLocalUnitsH2IsoAbelianizedArtin
     (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
     groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 ≅
       ModuleCat.of Int (Additive (Abelianization (Gal(L / K)))) := by
@@ -81,7 +80,7 @@ noncomputable def finiteCyclicLocalUnitsH2AddEquivGalois
     (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
     groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 ≃+
       Additive (Gal(L / K)) := by

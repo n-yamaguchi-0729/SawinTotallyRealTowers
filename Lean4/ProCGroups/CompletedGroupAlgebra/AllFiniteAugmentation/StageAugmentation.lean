@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.TerminalIndex
 
-set_option autoImplicit false
-
 /-!
 # Augmentation at all-finite quotient stages
 

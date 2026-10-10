@@ -12,10 +12,16 @@ import Mathlib.NumberTheory.RamificationInertia.Unramified
 import Mathlib.NumberTheory.LegendreSymbol.Basic
 import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition
 import Mathlib.RingTheory.RamificationInertia.Inertia
-import Mathlib.RingTheory.Ideal.Quotient.Operations
 import Mathlib.Data.Nat.ModEq
 
-set_option autoImplicit false
+/-!
+# Completely split primes congruent to one modulo four
+
+A finite Galois number field admits completely split rational primes
+congruent to one modulo four and outside any specified finite set.
+The construction passes through an extension containing a square root
+of minus one.
+-/
 
 open scoped NumberField
 open NumberField IsDedekindDomain

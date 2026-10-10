@@ -10,8 +10,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopo
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport
 
-set_option autoImplicit false
-
 /-!
 # Canonical local data on finite fixed fields
 
@@ -20,6 +18,8 @@ field by the local class formation with the ordinary normalized valuation
 of its concrete fixed field.  The concrete field is equipped with the
 canonical spectral extension of the topology on the original local field.
 -/
+
+
 
 noncomputable section
 
@@ -31,13 +31,13 @@ open RamificationTheory.HilbertRamification.ValuationSubring
 
 private abbrev finiteFixedField
     (K : Type) [Field K]
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K))) :
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K))) :
     Type :=
   abstractFixedField K (SeparableClosure K) H.field
 
 local instance finiteFixedFieldSeparableClosureAlgebra
     (K : Type) [Field K]
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K))) :
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K))) :
     Algebra (finiteFixedField K H)
       (SeparableClosure (finiteFixedField K H)) :=
   (separableClosure (finiteFixedField K H)
@@ -94,7 +94,7 @@ class formation is the ordinary normalized local-field valuation. -/
 theorem localHenselianValuation_valuationAt_abstractFixedField
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (x : (abstractFixedField K (SeparableClosure K) H.field)ˣ) :
     letI : FiniteDimensional K
         (abstractFixedField K (SeparableClosure K) H.field) :=
@@ -209,6 +209,9 @@ theorem localHenselianValuation_valuationAt_abstractFixedField
     (zHatDivide_zHatMulNat (H.residueDegree (localResidueDatum K) : ℕ)
       (H.residueDegree (localResidueDatum K)).pos z)
 
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  hasExtension_valuation_of_valuationSubring_pullback
+) in
 /-- A separable-closure equivalence extending an embedding of a finite
 separable local extension identifies the two uniquely extended local
 valuation rings. -/
@@ -249,7 +252,7 @@ theorem localSeparableValuationSubring_eq_comap_finiteExtensionEquiv
   have hBext :
       (localCompleteDVF F).valuation.HasExtension B.valuation := by
     apply
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+      hasExtension_valuation_of_valuationSubring_pullback
     intro x
     change e (algebraMap F (SeparableClosure F) x) ∈ A ↔
       x ∈ (localCompleteDVF F).valuation.valuationSubring
@@ -435,6 +438,8 @@ theorem
   let kAF := decompositionResidueField F AF
   let OmegaA := selectedResidueField A
   let OmegaF := selectedResidueField AF
+  let : Algebra.IsAlgebraic kA OmegaA :=
+    (decompositionResidueExtension_normal (K := F) A).toIsAlgebraic
   have hAcomap :
       A.comap (algebraMap F (SeparableClosure K)) = C := by
     change A.comap i.toRingHom =
@@ -722,6 +727,9 @@ theorem localResidueDegree_semilinear_conjugation
     residueAbsoluteDegreeIn_semilinear_conjugation
       kAK OmegaK tau eResidue heResidue rhoK
 
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  hasExtension_valuation_of_valuationSubring_pullback
+) in
 /-- Every `F`-algebra equivalence from the standard separable closure of a
 finite fixed field `F` to the original ambient separable closure identifies
 the two uniquely extended local valuation rings. -/
@@ -775,7 +783,7 @@ theorem localSeparableValuationSubring_eq_comap_abstractFixedFieldEquiv
   have hBext :
       (localCompleteDVF F).valuation.HasExtension B.valuation := by
     apply
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+      hasExtension_valuation_of_valuationSubring_pullback
     intro x
     change e (algebraMap F (SeparableClosure F) x) ∈ A ↔
       x ∈ (localCompleteDVF F).valuation.valuationSubring
@@ -788,6 +796,10 @@ theorem localSeparableValuationSubring_eq_comap_abstractFixedFieldEquiv
   let : (localCompleteDVF F).valuation.HasExtension B.valuation := hBext
   exact localSeparableValuationSubring_eq_of_hasExtension F B
 
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  hasExtension_valuation_of_valuationSubring_pullback
+  valuationSubring_pullback_of_hasExtension_valuation
+) in
 /-- The residue field presented through the ambient separable closure is
 canonically equivalent to the residue intermediate field attached to the
 finite fixing subgroup, compatibly with their embeddings into the selected
@@ -832,7 +844,7 @@ private theorem exists_abstractFixedFieldResidueEquiv
     (abstractFixedField K (SeparableClosure K) H.field).val
   let : (localCompleteDVF K).valuation.HasExtension C.valuation := by
     apply
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+      hasExtension_valuation_of_valuationSubring_pullback
     intro x
     change ValuativeRel.valuation F (algebraMap K F x) ≤ 1 ↔
       (localCompleteDVF K).valuation x ≤ 1
@@ -841,10 +853,10 @@ private theorem exists_abstractFixedFieldResidueEquiv
     rfl
   have hVC : V.valuation.HasExtension C.valuation := by
     apply
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_valuation_of_valuationSubring_pullback
+      hasExtension_valuation_of_valuationSubring_pullback
     intro x
     simpa only [V, ValuationSubring.valuationSubring_valuation] using
-      (ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_pullback_of_hasExtension_valuation
+      (valuationSubring_pullback_of_hasExtension_valuation
         (localCompleteDVF K).valuation C x)
   have hC : A.comap (algebraMap F (SeparableClosure K)) = C := by
     simpa only [
@@ -927,7 +939,7 @@ private theorem exists_abstractFixedFieldResidueEquiv
 private theorem residueAbsoluteDegreeIn_eq_normalizedDegree_abstractFixedFieldEquiv
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     [FiniteDimensional K (finiteFixedField K H)]
     [NontriviallyNormedField (finiteFixedField K H)]
     [ValuativeRel (finiteFixedField K H)]
@@ -936,10 +948,8 @@ private theorem residueAbsoluteDegreeIn_eq_normalizedDegree_abstractFixedFieldEq
       (ValuativeRel.valuation (finiteFixedField K H))]
     [Fintype (decompositionResidueField (finiteFixedField K H)
       (localSeparableValuationSubring K))]
-    (e : SeparableClosure (finiteFixedField K H) ≃ₐ[
-      finiteFixedField K H] SeparableClosure K)
-    (sigma : Gal(SeparableClosure (finiteFixedField K H) /
-      finiteFixedField K H))
+    (e : SeparableClosure (finiteFixedField K H) ≃ₐ[finiteFixedField K H] SeparableClosure K)
+    (sigma : Gal(SeparableClosure (finiteFixedField K H)/finiteFixedField K H))
     (htop : decompositionGroup (finiteFixedField K H)
       (localSeparableValuationSubring K) = ⊤)
     (tau : decompositionResidueField (finiteFixedField K H)
@@ -955,6 +965,13 @@ private theorem residueAbsoluteDegreeIn_eq_normalizedDegree_abstractFixedFieldEq
           (localAbstractFixedResidueIntermediateField K H.field)
           (selectedResidueField (localSeparableValuationSubring K))
           (tau x)) :
+    letI : Algebra.IsAlgebraic
+        (decompositionResidueField (finiteFixedField K H)
+          (localSeparableValuationSubring K))
+        (selectedResidueField (localSeparableValuationSubring K)) :=
+      (decompositionResidueExtension_normal
+        (K := finiteFixedField K H)
+        (localSeparableValuationSubring K)).toIsAlgebraic
     residueAbsoluteDegreeIn
         (decompositionResidueField (finiteFixedField K H)
           (localSeparableValuationSubring K))
@@ -1037,11 +1054,9 @@ field. -/
 theorem localResidueDegree_eq_normalizedDegree_abstractFixedFieldEquiv
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
-    (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
-    (e : SeparableClosure (finiteFixedField K H) ≃ₐ[
-          finiteFixedField K H] SeparableClosure K)
-    (sigma : Gal(SeparableClosure (finiteFixedField K H) /
-      finiteFixedField K H)) :
+    (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
+    (e : SeparableClosure (finiteFixedField K H) ≃ₐ[finiteFixedField K H] SeparableClosure K)
+    (sigma : Gal(SeparableClosure (finiteFixedField K H)/finiteFixedField K H)) :
     letI : FiniteDimensional K
         (finiteFixedField K H) :=
       abstractFixedField_finiteDimensional
@@ -1081,6 +1096,8 @@ theorem localResidueDegree_eq_normalizedDegree_abstractFixedFieldEquiv
     finiteExtensionSpectralValuation_hasExtension K F
   let A := localSeparableValuationSubring K
   let kA := decompositionResidueField F A
+  let : Algebra.IsAlgebraic kA (selectedResidueField A) :=
+    (decompositionResidueExtension_normal (K := F) A).toIsAlgebraic
   let j : F →ₐ[K] SeparableClosure K :=
     (abstractFixedField K (SeparableClosure K) H.field).val
   have htop : decompositionGroup F A = ⊤ :=

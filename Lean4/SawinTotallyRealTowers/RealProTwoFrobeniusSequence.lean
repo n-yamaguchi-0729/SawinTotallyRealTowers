@@ -18,12 +18,9 @@ import ProCGroups.Presentations.Profinite
 import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.Order.Preorder.Finite
 import Mathlib.Data.Finset.Range
-import Mathlib.Data.Set.Image
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 import Mathlib.Tactic.Choose
 import Mathlib.Tactic.NormNum
-
-set_option autoImplicit false
 
 /-!
 # An infinite Frobenius quotient of the initial real pro-two group

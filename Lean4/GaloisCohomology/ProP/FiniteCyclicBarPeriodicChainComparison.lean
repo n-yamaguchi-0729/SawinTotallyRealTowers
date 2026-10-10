@@ -6,8 +6,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.FiniteCyclicBarPeriodicCarryIdentity
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+import Mathlib.RepresentationTheory.Equiv
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Algebra.Group.Action.Defs
+import Mathlib.Algebra.Group.Basic
+import Mathlib.Algebra.Group.Hom.Defs
+import Mathlib.Algebra.Group.Monoid
+import Mathlib.Algebra.Module.Defs
+import Mathlib.Algebra.MonoidAlgebra.Defs
+import Mathlib.Algebra.Ring.Defs
+import Mathlib.Algebra.Ring.Commute
+import Mathlib.RepresentationTheory.Basic
+import Mathlib.RepresentationTheory.Rep.Basic
 
-set_option autoImplicit false
 /-!
 # Low-degree bar--periodic chain comparison for finite cyclic groups
 
@@ -168,8 +179,21 @@ theorem finiteCyclicBarToPeriodicThree_comm
         finiteCyclicCarry g hg (x 1) (x 2) •
           finiteCyclicGeneratorPrefix (R := R) g hg (x 0) = _
   rw [map_nsmul, ← nsmul_sub, finiteCyclicGeneratorPrefix_sub]
-  simp [finiteCyclicBarToPeriodicTwo, Fin.sum_univ_three, Fin.contractNth,
-    sub_eq_add_neg, add_assoc]
+  simp only [Fin.isValue, Nat.reduceAdd, map_add, Fin.sum_univ_three,
+    finiteCyclicBarToPeriodicTwo, Rep.freeLift, Rep.hom_ofHom,
+    Representation.freeLift_single_single, map_nsmul,
+    Representation.ofMulAction_single, smul_eq_mul, mul_one]
+  change
+    finiteCyclicCarry g hg (x 1) (x 2) •
+        (MonoidAlgebra.single (x 0) (1 : R) - MonoidAlgebra.single 1 1) =
+      (1 : R) • (finiteCyclicCarry g hg (x 1) (x 2) •
+        MonoidAlgebra.single (x 0) 1) +
+        (((-1 : R) ^ 1) • (finiteCyclicCarry g hg (x 0 * x 1) (x 2) •
+          MonoidAlgebra.single 1 1) +
+          ((-1 : R) ^ 2) • (finiteCyclicCarry g hg (x 0) (x 1 * x 2) •
+            MonoidAlgebra.single 1 1) +
+          ((-1 : R) ^ 3) • (finiteCyclicCarry g hg (x 0) (x 1) •
+            MonoidAlgebra.single 1 1))
   have hcR :
       (finiteCyclicCarry g hg (x 0 * x 1) (x 2) : R) +
           finiteCyclicCarry g hg (x 0) (x 1) =
@@ -177,12 +201,13 @@ theorem finiteCyclicBarToPeriodicThree_comm
           finiteCyclicCarry g hg (x 0) (x 1 * x 2) := by
     simpa only [Nat.cast_add] using congrArg (fun n : ℕ ↦ (n : R))
       (finiteCyclicCarry_cocycle g hg (x 0) (x 1) (x 2))
-  ext z
-  by_cases hz : z = 1
-  · subst z
-    simp
-    linear_combination hcR
-  · simp [hz]
+  have hcAlg := congrArg (MonoidAlgebra.single (1 : G)) hcR
+  simp only [MonoidAlgebra.single_add] at hcAlg
+  simp only [pow_succ, pow_zero, one_mul, neg_one_mul, neg_neg, one_smul,
+    neg_one_smul, nsmul_sub]
+  simp only [MonoidAlgebra.smul_single]
+  simp only [nsmul_eq_mul, mul_one]
+  linear_combination hcAlg
 
 /-- Inductive data extending the explicit degree-zero through degree-three
 components to every degree. -/

@@ -9,7 +9,6 @@ import GaloisCohomology.ProP.PresentationH2Primitive
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
-set_option autoImplicit false
 /-!
 # Kernel characters extracted from presentation degree-two classes
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Henselian.MonicFactorization
 
-set_option autoImplicit false
-
 /-!
 # the nonmonic reduction branch
 
@@ -16,6 +14,8 @@ from the unique-extension criterion.  No uniqueness of valuation extensions is u
 all conjugate roots have the same value, a primitive irreducible polynomial
 with nonunit leading coefficient has constant reduction.
 -/
+
+
 
 noncomputable section
 
@@ -60,7 +60,8 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit_o
   have hconst : IsUnit (Q.coeff 0) := by
     by_contra hconst
     exact
-      (DiscreteValuationField.not_all_roots_same_valuation_of_primitive_irreducible_endpoints_nonunit
+      ((open DiscreteValuationField in
+        not_all_roots_same_valuation_of_primitive_irreducible_endpoints_nonunit)
         V B hQprim hQirr hsplit hlead hconst hα) hall
   have hconstBase : V.valuation (Q.coeff 0 : K) = 1 :=
     (V.valuation_eq_one_iff (Q.coeff 0)).mp hconst

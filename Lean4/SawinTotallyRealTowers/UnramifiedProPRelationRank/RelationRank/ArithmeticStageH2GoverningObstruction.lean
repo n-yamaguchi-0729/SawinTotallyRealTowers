@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalGoverningFieldLinearDuality
 
-set_option autoImplicit false
 /-!
 # Arithmetic-stage central obstructions and the governing field
 

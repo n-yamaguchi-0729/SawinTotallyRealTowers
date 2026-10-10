@@ -8,14 +8,14 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ArchimedeanNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
 
-set_option autoImplicit false
-
 /-!
 # The ordinary norm on idele classes
 
 The ordinary idele-class norm preserves the absolute norm and restricts to
 the norm-one idele-class subgroups.
 -/
+
+
 
 open scoped NumberField
 open NumberField

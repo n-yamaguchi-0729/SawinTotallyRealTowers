@@ -8,8 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedSy
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
-
 /-!
 # Abstract reciprocity, maximal-unramified reciprocity
 
@@ -18,6 +16,8 @@ valuation--Frobenius map whose restriction to every finite unramified
 extension is the inverse of the unramified norm-quotient equivalence.  This file first proves that
 finite compatibility and then records the two formulas.
 -/
+
+
 
 noncomputable section
 

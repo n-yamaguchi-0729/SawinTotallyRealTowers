@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # Closed fixing subgroups
 
 This module packages the closed subgroup attached to an intermediate field in
 the Krull topology.
 -/
+
+
 
 noncomputable section
 

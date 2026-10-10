@@ -9,8 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedField
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityPrimeNorm
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 
-set_option autoImplicit false
-
 /-!
 # Local and ambient comparison for prime witnesses
 
@@ -18,6 +16,8 @@ The chosen ambient prime witness represents the prescribed abelianized
 Galois element both under the concrete local Artin map and under the
 ambient fixed-field norm-residue construction.
 -/
+
+
 
 noncomputable section
 
@@ -44,7 +44,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     localArtinMonoidHom F E
         (ambientEmbeddedPrimeWitness K F E j e z) =
       z := by
@@ -339,7 +339,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     ambientEmbeddedPrimeSymbolProperty K F E j e z := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
@@ -651,7 +651,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     ambientEmbeddedPrimeTransportValue K F E j e z =
       ambientEmbeddedPrimeTarget K F E j e z := by
   have hsymbol :=
@@ -678,7 +678,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     ambientEmbeddedPrimeTarget K F E j e z = z := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
@@ -820,7 +820,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     ambientEmbeddedNormResidueAbelianElement K F E j e
         (ambientEmbeddedPrimeWitness K F E j e z) =
       z := by

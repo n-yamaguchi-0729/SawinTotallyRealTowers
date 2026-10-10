@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLocalComparison
 
-set_option autoImplicit false
-
 /-!
 # Lattice operations on narrow finite conductors
 
@@ -20,7 +18,9 @@ for a compositum.  For a generated subgroup one obtains the
 complementary divisibility by the pointwise minimum.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 
@@ -97,6 +97,7 @@ theorem narrowFiniteConductor_isDefiningModulus
     (H : ConductorialSubgroup K) :
     IsDefiningModulus H.1
       (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor) := by
+  classical
   obtain ⟨m, hm, hfinite⟩ :=
     H.exists_definingModulus_finitePart_eq_narrowFiniteConductor
   apply isDefiningModulus_mono H.1 hm
@@ -109,6 +110,7 @@ theorem inf_narrowFiniteConductor_isDefiningModulus
     IsDefiningModulus (H.1 ⊓ J.1)
       (RayClass.Modulus.narrowOfFinite
         (H.narrowFiniteConductor ⊔ J.narrowFiniteConductor)) := by
+  classical
   apply le_inf
   · exact
       isDefiningModulus_mono H.1 H.narrowFiniteConductor_isDefiningModulus
@@ -155,6 +157,7 @@ theorem narrowFiniteConductor_inf
           change H.1 ⊓ J.1 ≤ J.1
           exact inf_le_right)
 
+open scoped Classical in
 /-- The finite-prime support of the narrow finite conductor of an
 intersection is the union of the two conductor supports. -/
 theorem narrowFiniteConductor_inf_support

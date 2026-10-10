@@ -13,8 +13,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
 import ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
 import GaloisCohomology.Cyclic.Herbrand.Permutation.Module
 
-set_option autoImplicit false
-
 /-!
 # A sufficiently large unramified support for the idele-class calculation
 
@@ -26,7 +24,9 @@ It also compares the concrete tensor-coordinate supported subgroup of
 relative ideles with the ordinary supported idele subgroup of `L`.
 -/
 
-open scoped Classical NumberField TensorProduct
+
+
+open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -474,6 +474,7 @@ theorem sufficientlyLargeFiniteSet_subset_finitePlacesAbove_support :
           (ideleClassHerbrandSupport (K := K) (L := L)) :
             Finset (HeightOneSpectrum (𝓞 L))) :
         Set (HeightOneSpectrum (𝓞 L))) := by
+  classical
   intro W hW
   change W ∈ finitePlacesAbove
     (K := K) (L := L)

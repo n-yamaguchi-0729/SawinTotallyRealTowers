@@ -14,8 +14,6 @@ import Mathlib.Data.Int.Basic
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Tactic.Ring
 
-set_option autoImplicit false
-
 /-!
 # New prime divisors of integer-polynomial values
 

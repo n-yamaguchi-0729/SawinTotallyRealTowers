@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.HasseNormPrincipl
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteLocalFamily
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtin
 
-set_option autoImplicit false
-
 /-!
 # Finite-support reduction for the global Artin map
 
@@ -27,7 +25,9 @@ idele-class norm quotient may be evaluated on this finite-support
 approximation.
 -/
 
-open scoped NumberField TensorProduct Classical BigOperators
+
+
+open scoped NumberField TensorProduct BigOperators
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 
@@ -121,6 +121,7 @@ theorem artinFiniteSupportApproximation_infiniteComponent
   · intro hw
     exact (hw (Finset.mem_univ w)).elim
 
+open scoped Classical in
 /-- At a finite place, the approximation is the original component
 exactly on the finite Artin support and is one elsewhere. -/
 theorem artinFiniteSupportApproximation_finiteComponent
@@ -192,6 +193,7 @@ theorem artinFiniteSupportApproximation_finiteComponent_of_mem
         (artinFiniteSupportApproximation
           (K := K) (L := L) a) =
       IdeleGroup.finiteComponent v a := by
+  classical
   rw [artinFiniteSupportApproximation_finiteComponent,
     ite_eq_left hv]
 
@@ -208,9 +210,13 @@ theorem artinFiniteSupportApproximation_finiteComponent_of_notMem
         (artinFiniteSupportApproximation
           (K := K) (L := L) a) =
       1 := by
+  classical
   rw [artinFiniteSupportApproximation_finiteComponent,
     ite_eq_right hv]
 
+open _root_.GlobalClassFieldTheory.ClassFieldAxiom (
+  relativeIdeleNorm_range_eq_allPlaceLocalNormCondition
+) in
 /-- The quotient of an idele by its finite-support Artin approximation
 is an actual relative-idele norm. -/
 theorem
@@ -220,7 +226,7 @@ theorem
         (K := K) (L := L) a)⁻¹ ∈
       (RelativeIdeleGroup.norm K L).range := by
   rw [
-    _root_.GlobalClassFieldTheory.ClassFieldAxiom.relativeIdeleNorm_range_eq_allPlaceLocalNormCondition]
+    relativeIdeleNorm_range_eq_allPlaceLocalNormCondition]
   constructor
   · rw [_root_.GlobalClassFieldTheory.ClassFieldAxiom.allFinitePlaceLocalNormCondition]
     apply Subgroup.mem_iInf.mpr

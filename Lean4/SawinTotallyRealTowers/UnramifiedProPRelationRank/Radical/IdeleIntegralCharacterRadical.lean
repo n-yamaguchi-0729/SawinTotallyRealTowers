@@ -10,7 +10,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
 import Mathlib.Topology.Algebra.InfiniteSum.Constructions
 
-set_option autoImplicit false
 /-!
 # Integral idele characters annihilate the ideal-power radical
 
@@ -27,7 +26,7 @@ annihilates it. No global reciprocity comparison is an extra hypothesis.
 -/
 
 open NumberField IsDedekindDomain
-open scoped NumberField Topology BigOperators Classical
+open scoped NumberField Topology BigOperators
 noncomputable section
 
 namespace ClassFieldTower.Martinet.Shafarevich
@@ -65,6 +64,7 @@ theorem ideleCharacter_integralFinite_eq_one
       a ∈ (v.adicCompletionIntegers F).units → chi (IdeleGroup.finitePlaceIdele v a) = 1)
     (a : ∀ v : HeightOneSpectrum (𝓞 F), (v.adicCompletionIntegers F).units) :
     chi (integralFiniteIdeleContinuousHom F a) = 1 := by
+  classical
   have ha : HasProd (fun v => Pi.mulSingle v (a v)) a := by
     apply Pi.hasProd.2
     intro w
@@ -111,6 +111,7 @@ omit [NumberField F] [Fact (n : ℕ).Prime] in
 /-- Odd powers are surjective on all archimedean idele factors. -/
 theorem infiniteIdele_pow_surjective_of_odd :
     Function.Surjective (fun a : InfiniteIdeleGroup F => a ^ (n : ℕ)) := by
+  classical
   intro a
   let e : InfiniteIdeleGroup F ≃ₜ* (∀ w : InfinitePlace F, w.Completionˣ) :=
     ContinuousMulEquiv.piUnits

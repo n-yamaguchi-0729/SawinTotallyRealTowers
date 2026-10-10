@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
-set_option autoImplicit false
-
 /-!
 # Standard open subgroups of a nonarchimedean local field
 
@@ -15,6 +13,8 @@ An open finite-index subgroup of a nonarchimedean local field multiplicative gro
 contains a standard subgroup built from a uniformizer and a sufficiently deep
 principal-unit group.
 -/
+
+
 
 noncomputable section
 

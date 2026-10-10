@@ -14,8 +14,6 @@ import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
 import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Topology.Algebra.OpenSubgroup
 
-set_option autoImplicit false
-
 /-!
 # Topological finite local reciprocity
 
@@ -24,6 +22,8 @@ homeomorphic group isomorphism.  The key input is that the norm subgroup of a
 finite Galois extension is open.  Consequently its quotient is discrete, as
 is the topological abelianization of the finite Krull Galois group.
 -/
+
+
 
 noncomputable section
 
@@ -141,7 +141,6 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
     integerUnitNormSubgroup_isCompact K L
   have hclosed : IsClosed (integerUnitNormSubgroup K L : Set Kˣ) :=
     hcompact.isClosed
-
   let : Finite (Gal(L / K)) := by
     apply Nat.finite_of_card_ne_zero
     rw [IsGalois.card_aut_eq_finrank K L]
@@ -159,7 +158,6 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
     Subgroup.finiteIndex_of_finite_quotient
   let : ((localNormSubgroup K L).subgroupOf
       (localBaseUnitSubgroup K)).FiniteIndex := inferInstance
-
   have hrelativeClosed :
       IsClosed
         ((localNormSubgroup K L).subgroupOf (localBaseUnitSubgroup K) :
@@ -182,7 +180,6 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
         exact ⟨hz, z.property⟩
       · exact fun hz => hz.1]
     exact hpreimage
-
   have hrelativeOpen :
       IsOpen
         ((localNormSubgroup K L).subgroupOf (localBaseUnitSubgroup K) :
@@ -208,7 +205,6 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
       rw [hintersection] at hx'
       exact ⟨⟨x, hx'.2⟩, hx'.1, rfl⟩
   rw [himage] at himageOpen
-
   apply Subgroup.isOpen_mono
     (H₁ := integerUnitNormSubgroup K L)
     (H₂ := localNormSubgroup K L) ?_ himageOpen
@@ -216,6 +212,9 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
   rw [hintersection] at hx
   exact hx.1
 
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  valuationSubring_isIntegralClosure_of_isIntegral
+) in
 /-- The norm subgroup of a finite Galois extension of a nonarchimedean local
 field is open in the native topology of the base-field unit group. -/
 theorem localNormSubgroup_isOpen
@@ -235,7 +234,6 @@ theorem localNormSubgroup_isOpen
   let : NontriviallyNormedField K :=
     Valued.toNontriviallyNormedField
       (L := K) (Γ₀ := ValuativeRel.ValueGroupWithZero K)
-
   let : NontriviallyNormedField L :=
     spectralNorm.nontriviallyNormedField K L
   let : NormedAlgebra K L := spectralNorm.normedAlgebra K L
@@ -262,7 +260,6 @@ theorem localNormSubgroup_isOpen
     { toIsValuativeTopology := inferInstance
       toLocallyCompactSpace := inferInstance
       toIsNontrivial := inferInstance }
-
   let : (ValuativeRel.valuation K).HasExtension
       (ValuativeRel.valuation L) := by
     apply Valuation.HasExtension.ofComapInteger
@@ -274,7 +271,6 @@ theorem localNormSubgroup_isOpen
       ValuativeRel.valuation K x ≤ 1
     rw [spectralNorm_extends]
     exact Valued.toNormedField.norm_le_one_iff
-
   let : Algebra.IsIntegral 𝒪[K] 𝒪[L] := ⟨by
     intro y
     apply IsIntegral.tower_bot
@@ -317,7 +313,6 @@ theorem localNormSubgroup_isOpen
           Polynomial.map_toSubring]
         exact minpoly.aeval K (y : L)
       rwa [Polynomial.aeval_map_algebraMap K (y : L) p] at hmaproot⟩
-
   let : Algebra.IsIntegral
       (ValuativeRel.valuation K).valuationSubring
       (ValuativeRel.valuation L).valuationSubring := by
@@ -326,14 +321,13 @@ theorem localNormSubgroup_isOpen
   let hIntegralClosure : IsIntegralClosure
       (ValuativeRel.valuation L).valuationSubring
       (ValuativeRel.valuation K).valuationSubring L :=
-    ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_isIntegralClosure_of_isIntegral
+    valuationSubring_isIntegralClosure_of_isIntegral
       (ValuativeRel.valuation K) (ValuativeRel.valuation L)
   let : IsIntegralClosure 𝒪[L] 𝒪[K] L := by
     change IsIntegralClosure
       (ValuativeRel.valuation L).valuationSubring
       (ValuativeRel.valuation K).valuationSubring L
     exact hIntegralClosure
-
   exact localNormSubgroup_isOpen_of_compatibleLocalField K L
 
 /-- The native quotient topology on the finite norm quotient is discrete. -/

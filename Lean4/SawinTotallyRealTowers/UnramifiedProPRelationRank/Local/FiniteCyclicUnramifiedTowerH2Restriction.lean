@@ -12,7 +12,12 @@ import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 
-set_option autoImplicit false
+/-!
+# Vanishing of restriction after inflation in a local-field tower
+
+A cyclic base-units degree-two class vanishes after inflation and restriction to an
+unramified relative extension whose degree divides the lower ramification index.
+-/
 
 open CategoryTheory CategoryTheory.Limits
 open scoped ValuativeRel

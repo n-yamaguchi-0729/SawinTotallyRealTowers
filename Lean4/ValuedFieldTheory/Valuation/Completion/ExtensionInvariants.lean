@@ -28,8 +28,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
 import ValuedFieldTheory.Valuation.Completion.DegreeNormTrace
 import ValuedFieldTheory.Valuation.Henselian.Complete
 
-set_option autoImplicit false
-
 /-!
 # Local degree, ramification, and residue invariants
 
@@ -40,8 +38,11 @@ absolute value `v` on `K`, this file proves the exact degree formula
 The proof makes explicit the two facts used implicitly in the construction: metric
 completion preserves the value group and residue field, and every completed
 local extension `L_w / K_v` is finite separable.  The fundamental inequality then gives
-`[L_w : K_v] = e_w f_w`; summing and applying the local degree, norm, and trace formulas gives the result.
+`[L_w : K_v] = e_w f_w`; summing and applying the local degree, norm, and trace formulas gives
+the result.
 -/
+
+
 
 noncomputable section
 
@@ -247,7 +248,8 @@ theorem completionResidueMap_surjective
   let xV : V := ⟨x, (mem_absoluteValueExponentialSubring_iff a ha x).2 hx_le⟩
   refine ⟨IsLocalRing.residue V xV, ?_⟩
   rw [IsLocalRing.ResidueField.map_residue]
-  rw [ValuationTheory.DiscreteValuationField.ResidueField.residue_eq_residue_iff_sub_mem_maximalIdeal]
+  rw [(open ValuationTheory.DiscreteValuationField.ResidueField in
+    residue_eq_residue_iff_sub_mem_maximalIdeal)]
   rw [mem_absoluteValueExponentialSubring_maximalIdeal_iff aC haC]
   exact hclose
 

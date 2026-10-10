@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceMuPKummerTameUnramified
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
 
-set_option autoImplicit false
 /-!
 # Finite ramification support for natural `mu_p` Kummer classes
 
@@ -18,7 +17,7 @@ Kummer class.
 -/
 
 open NumberField IsDedekindDomain
-open scoped Classical NumberField
+open scoped NumberField
 
 noncomputable section
 
@@ -34,6 +33,7 @@ def finitePlaceKummerPrimeUnit : Kˣ :=
   Units.mk0 (p : K)
     (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)
 
+open scoped Classical in
 include p in
 /-- A finite set containing every possible ramified finite place of the
 Kummer class represented by `a`. -/
@@ -52,6 +52,7 @@ theorem finitePlaceAbsoluteKummerMuPH1RamificationLinearMap_eq_zero_of_not_mem_b
         (Additive.ofMul
           (QuotientGroup.mk'
             (powMonoidHom p : Kˣ →* Kˣ).range a)) = 0 := by
+  classical
   have hva : v ∉ chosenUnitFiniteSupport (K := K) a := by
     intro hva
     exact hv (Finset.mem_union_left _ hva)

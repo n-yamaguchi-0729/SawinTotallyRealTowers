@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Unramified.Definitions
 
-set_option autoImplicit false
-
 /-!
 # Henselianity along algebraic valued extensions
 
@@ -48,7 +46,8 @@ theorem exponentialValuation_hasUniqueAlgebraicValuationSubringExtensions
   have hV : Vv = Va :=
     associatedAbsoluteValue_valuationSubring_eq
       v (Real.exp 1) av havNonarch hav
-  have hhensA : ValuationTheory.DiscreteValuationField.HenselianValuationByFactorization Va.valuation := by
+  have hhensA : ValuationTheory.DiscreteValuationField.HenselianValuationByFactorization
+    Va.valuation := by
     rw [← hV]
     exact hhens
   change HasUniqueAlgebraicValuationSubringExtensions Vv
@@ -68,7 +67,8 @@ Hensel factorization on the target valuation ring. -/
 theorem henselianValuation_of_algebraic_extension
     {K L : Type u} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
-    (v : LubinTate.Valuations.ExponentialValuation K) (w : LubinTate.Valuations.ExponentialValuation L)
+    (v : LubinTate.Valuations.ExponentialValuation K)
+    (w : LubinTate.Valuations.ExponentialValuation L)
     (hExt : ∀ a : K, w (algebraMap K L a) = v a)
     (hhens : ValuationTheory.DiscreteValuationField.HenselianValuationByFactorization
       (LubinTate.Valuations.exponentialValuationSubringAsValuationSubring v).valuation) :

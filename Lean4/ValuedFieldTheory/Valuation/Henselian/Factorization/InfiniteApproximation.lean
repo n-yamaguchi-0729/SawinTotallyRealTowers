@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.Henselian.Factorization.FiniteApproximation
 
-set_option autoImplicit false
-
 /-!
 # compatible Hensel prefixes
 

@@ -8,14 +8,14 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 import Mathlib.NumberTheory.Padics.ProperSpace
 import Mathlib.NumberTheory.Padics.ValuativeRel
 
-set_option autoImplicit false
-
 /-!
 # The p-adic field as a nonarchimedean local field
 
 This file connects Mathlib's normed and valuative structures on `ℚ_p` to
 the topology-first local-field interface used by this library.
 -/
+
+
 
 noncomputable section
 

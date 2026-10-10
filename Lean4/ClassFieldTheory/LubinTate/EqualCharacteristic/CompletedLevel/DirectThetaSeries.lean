@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaSeries
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the direct-orientation theta series
 
@@ -23,6 +21,8 @@ constructed specialization `u⁻¹T → T`.  The first theta identity and
 analytic evaluation at division points are developed in the corresponding
 companion modules.
 -/
+
+
 
 noncomputable section
 

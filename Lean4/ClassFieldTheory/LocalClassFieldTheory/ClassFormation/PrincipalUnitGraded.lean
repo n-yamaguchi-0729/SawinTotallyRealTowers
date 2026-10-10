@@ -7,8 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.PrincipalUnitGraded` Lean module. -/
+/-!
+# Successive principal-unit quotients of normal-basis lattices
+
+The map sending an integer unit to its difference from one compares successive
+principal-unit quotients with the corresponding lattice quotients. The file proves
+injectivity and constructs this comparison at sufficiently deep uniformizer levels.
+-/
+
 
 namespace LocalClassFieldTheory
 
@@ -28,7 +34,6 @@ variable (K L : Type u) [Field K] [Field L] [Algebra K L]
   [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
 
 omit [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)] in
-
 /-- The map `u ↦ u - 1` on successive normal-basis principal-unit quotients
 is injective.  Its kernel calculation is exactly the statement that
 `u - 1 ∈ π_K^(n+1)M` if and only if `u ∈ V^(n+1)`. -/
@@ -233,7 +238,8 @@ theorem exists_chosenNormalBasisPrincipalUnitSuccQuotMulEquivLatticeSuccQuot
       (K := K) (L := L) with ⟨c₁, hc₁⟩
   rcases exists_chosenNormalBasisPrincipalUnitSet_mul_error_mem_succ
       (K := K) (L := L) with ⟨c₂, hc₂⟩
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_maximalIdeal_and_mul_closed
       (K := K) (L := L) with ⟨c₃, hc₃⟩
   refine ⟨max c₁ (max c₂ c₃), ?_⟩
   intro n hn

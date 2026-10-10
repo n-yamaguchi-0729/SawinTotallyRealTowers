@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.TrivialZModP
 import Mathlib.Tactic.Group
 
-set_option autoImplicit false
 /-!
 # Homogeneous and inhomogeneous cochains for a discrete group
 

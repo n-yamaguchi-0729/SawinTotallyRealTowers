@@ -7,11 +7,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCore
 
-set_option autoImplicit false
 /-!
 Proves the formal combinatorial identities behind additivity of the logarithm on products of
 principal units.
 -/
+
 
 open Filter
 open Polynomial
@@ -923,7 +923,8 @@ Establishes the identity `MvPowerSeries.coeff e (formalLogOnePlusProductFormulaD
 PowerSeries.coeff q (PowerSeries.log A) • MvPowerSeries.coeff e
 ((formalLogOnePlusProductArgument A) ^ q)`.
 -/
-theorem formalLogOnePlusProductFormulaDefect_coeff_of_pos_coords_eq_sum_range_degree_succ_filter_coord_le
+theorem
+  formalLogOnePlusProductFormulaDefect_coeff_of_pos_coords_eq_sum_range_degree_succ_filter_coord_le
     (A : Type*) [CommRing A] [Algebra ℚ A] (e : Fin 2 →₀ ℕ)
     (hleft : 0 < e (0 : Fin 2)) (hright : 0 < e (1 : Fin 2)) :
     MvPowerSeries.coeff e
@@ -955,7 +956,8 @@ theorem formalProductDefect_coeff_pos_eq_filtered_sum
         PowerSeries.coeff q (PowerSeries.log A) •
           MvPowerSeries.coeff e
             ((formalLogOnePlusProductArgument A) ^ q) := by
-  rw [formalLogOnePlusProductFormulaDefect_coeff_of_pos_coords_eq_sum_range_degree_succ_filter_coord_le
+  rw [
+  formalLogOnePlusProductFormulaDefect_coeff_of_pos_coords_eq_sum_range_degree_succ_filter_coord_le
     A e hleft hright]
   rw [finsupp_fin_two_degree_eq]
 

@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.FieldTheory.Galois.Abelian
 import GaloisCohomology.Kummer.Concrete.FiniteGeneration
 
-set_option autoImplicit false
-
 /-!
 # the radical-extension construction
 
@@ -23,6 +21,8 @@ the characteristic.  It is used exactly to make `X ^ n - a` separable.  The
 primitive-root hypothesis is used later to make the resulting Galois group
 abelian of exponent dividing `n`.
 -/
+
+
 
 noncomputable section
 

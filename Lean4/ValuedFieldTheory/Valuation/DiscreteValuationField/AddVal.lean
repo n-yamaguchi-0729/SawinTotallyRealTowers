@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.RingTheory.DiscreteValuationRing.Basic
 
-set_option autoImplicit false
-
 /-!
 # Normalized additive valuations on discrete valuation rings
 
@@ -15,6 +13,8 @@ This file supplies general-purpose facts about Mathlib's normalized additive
 valuation on a discrete valuation ring which are independent of any chosen
 valued-field presentation.
 -/
+
+
 
 noncomputable section
 

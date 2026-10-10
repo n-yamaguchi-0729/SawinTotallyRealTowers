@@ -6,9 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Algebra.Group.Action.Basic
 import Mathlib.Algebra.Group.Pi.Basic
-import Mathlib.Algebra.Group.Subgroup.Basic
-
-set_option autoImplicit false
+import Mathlib.Algebra.Group.Subgroup.Defs
 
 /-!
 # Induced groups of equivariant functions

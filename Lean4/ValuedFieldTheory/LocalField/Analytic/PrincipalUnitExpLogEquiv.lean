@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.Analytic.LogExpComposition
 import ValuedFieldTheory.LocalField.Analytic.LogExpContinuity
 
-set_option autoImplicit false
-
 /-!
 # Exponential and logarithm on deep principal units
 
@@ -16,6 +14,8 @@ This file combines the two evaluated formal composition identities with the
 valuation-theoretic endpoint maps and their continuity.  No finite-quotient
 or defect-membership hypothesis remains in the public result.
 -/
+
+
 
 noncomputable section
 
@@ -26,7 +26,11 @@ namespace MultiplicativeIntegerValuation
 
 variable {K : Type u} [Field K]
 
-/-- The local-field structure theory, the deep exponential–logarithm equivalence.  If the normalized valuation has
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- The local-field structure theory, the deep exponential–logarithm equivalence.  If the
+normalized valuation has
 ramification index `e`, then for every `n > e/(p-1)` the exponential and
 logarithm series give mutually inverse topological group isomorphisms
 `m^n ≃ U^n` (with the additive source written multiplicatively).
@@ -46,8 +50,9 @@ noncomputable def chosenExpLogContinuousMulEquiv
     Multiplicative
       ((completeDVFOfWithZeroValuation v).maximalIdeal ^ n :
         Ideal (completeDVFOfWithZeroValuation v).valuationSubring) ≃ₜ*
-      LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v) n := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
+      higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v) n := by
+  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u,
+    0} K := completeDVFOfWithZeroValuation v
   let LF : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
   let hnormalized :=
     WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
@@ -134,7 +139,7 @@ noncomputable def chosenExpLogContinuousMulEquiv
         hnKexp hnvalExp hnKlog hnvalLog
         (hthreshold_of_mem (a : F.valuationSubring) a.property) hcomplete
   have hexp_log :
-      ∀ u : LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F n,
+      ∀ u : higherPrincipalUnitGroup F n,
         principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled
           (v := v) (p := p) e n (π := π) hπ hπval hn hlevel'
           hnKexp hnvalExp hcomplete
@@ -146,7 +151,7 @@ noncomputable def chosenExpLogContinuousMulEquiv
       ((u : F.valuationSubringˣ) : F.valuationSubring) - 1
     have ha : a ∈ F.maximalIdeal ^ n := by
       simpa [a] using
-        (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.mem_iff
+        (higherPrincipalUnitGroup.mem_iff
           (F := F) n (u : F.valuationSubringˣ)).1 u.property
     have hexact :=
       expSeries_logOnePlusSeries_eq_one_add_ofWithZeroValuation_scaled_of_threshold

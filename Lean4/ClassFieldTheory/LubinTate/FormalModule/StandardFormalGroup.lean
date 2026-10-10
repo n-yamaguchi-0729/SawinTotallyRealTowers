@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.FormalModule.RecursiveIntertwiner
 import ClassFieldTheory.LubinTate.FormalModule.StandardSeries
 import Mathlib.RingTheory.FormalGroup.Basic
 
-set_option autoImplicit false
-
 /-!
 # The standard Lubin--Tate formal group
 
@@ -24,6 +22,8 @@ standard series: intertwiners remain intertwiners after a change of
 variables, after substituting an intertwining family, and after
 one-variable power-series composition.
 -/
+
+
 
 noncomputable section
 
@@ -227,7 +227,7 @@ namespace Intertwines
 /-- An intertwiner remains an intertwiner after substituting a family of
 intertwiners. -/
 theorem subst
-    [Fintype σ] [Fintype τ]
+    [Finite σ] [Finite τ]
     {e ebar ehat : LubinTateSeries F π}
     {H : MvPowerSeries σ F.valuationSubring}
     (hH : Intertwines e ebar H)
@@ -273,7 +273,7 @@ theorem subst
 
 /-- Reindexing variables preserves the intertwining equation. -/
 theorem reindex
-    [Fintype σ] [Fintype τ]
+    [Finite σ] [Finite τ]
     {e ebar : LubinTateSeries F π}
     {H : MvPowerSeries σ F.valuationSubring}
     (hH : Intertwines e ebar H)
@@ -291,7 +291,7 @@ theorem reindex
 /-- One-variable power-series composition is a special case of
 substitution by an intertwining family. -/
 theorem powerSeries_subst
-    [Fintype τ]
+    [Finite τ]
     {e ebar ehat : LubinTateSeries F π}
     {H : PowerSeries F.valuationSubring}
     (hH : Intertwines e ebar H)
@@ -306,7 +306,7 @@ end Intertwines
 
 /-- Zero intertwines any two series with zero constant coefficient. -/
 theorem intertwines_zero
-    [Fintype σ]
+    [Finite σ]
     (e ebar : LubinTateSeries F π) :
     Intertwines e ebar
       (0 : MvPowerSeries σ F.valuationSubring) := by
@@ -892,7 +892,7 @@ theorem standardLubinTateEndomorphismInVariable_hasLinearTerm
 
 /-- The reindexed series `[a](X_i)` remains an intertwiner. -/
 theorem standardLubinTateEndomorphismInVariable_intertwines
-    {σ : Type w} [Fintype σ]
+    {σ : Type w} [Finite σ]
     (a : F.valuationSubring) (i : σ) :
     Intertwines (standardSeries' hπ) (standardSeries' hπ)
       (standardLubinTateEndomorphismInVariable hπ a i) := by

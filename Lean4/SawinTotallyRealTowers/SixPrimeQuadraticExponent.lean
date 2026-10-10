@@ -14,8 +14,6 @@ import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
 import Mathlib.FieldTheory.Normal.Defs
 import Mathlib.GroupTheory.OrderOfElement
 
-set_option autoImplicit false
-
 /-!
 # Exponent two in the five-field quadratic compositum
 

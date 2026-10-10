@@ -7,14 +7,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldGeneration
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: degree of the completed Frobenius fixed field
 
 The direct theta value has the changed primitive polynomial over `k((T))`.
-Together with the fixed-field generation theorem this gives the exact extension degree `(q - 1) q^n`.
+Together with the fixed-field generation theorem this gives the exact extension degree `(q - 1)
+q^n`.
 -/
+
+
 
 noncomputable section
 

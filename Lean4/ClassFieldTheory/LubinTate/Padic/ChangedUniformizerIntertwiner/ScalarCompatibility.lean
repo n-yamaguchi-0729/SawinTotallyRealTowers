@@ -6,13 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
 
-set_option autoImplicit false
-
 /-!
 # Changed-uniformizer scalar compatibility
 
-This module proves that the changed-uniformizer intertwiner commutes with every scalar endomorphism and identifies its coefficientwise Frobenius twist.
+This module proves that the changed-uniformizer intertwiner commutes with every scalar
+endomorphism and identifies its coefficientwise Frobenius twist.
 -/
+
+
 
 noncomputable section
 

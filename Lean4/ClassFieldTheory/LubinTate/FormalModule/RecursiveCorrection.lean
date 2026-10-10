@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.FormalModule.RecursiveCoefficient
 
-set_option autoImplicit false
-
 /-!
 # Recursive monomial corrections for Lubin--Tate intertwiners
 
@@ -15,6 +13,8 @@ The coefficient selected in `RecursiveCoefficient` is inserted as a single
 monomial.  This file proves that the insertion preserves the prescribed linear
 term and cancels the defect coefficient in precisely that total degree.
 -/
+
+
 
 noncomputable section
 
@@ -265,7 +265,8 @@ private theorem linearInVariable_constantCoeff
     ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply,
     MvPowerSeries.coeff_zero_X, mul_zero]
 
-private theorem linearInVariable_hasSubst
+omit [Fintype σ] in
+private theorem linearInVariable_hasSubst [Finite σ]
     (π : F.valuationSubring) :
     MvPowerSeries.HasSubst (linearInVariable (σ := σ) π) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero
@@ -322,7 +323,8 @@ private theorem two_le_order_inVariable_sub_linearInVariable
       PowerSeries.coeff_subst_single, hdi,
       MvPowerSeries.coeff_X, hsingle]
 
-private theorem degree_add_one_le_order_subst_monomial_sub_linear
+omit [Fintype σ] in
+private theorem degree_add_one_le_order_subst_monomial_sub_linear [Finite σ]
     (ebar : LubinTateSeries F π)
     (d : σ →₀ ℕ) (c : F.valuationSubring) :
     ((d.degree + 1 : ℕ) : ℕ∞) ≤
@@ -383,7 +385,8 @@ private theorem coeff_subst_linearInVariable_monomial
   simp only [Finsupp.prod, Function.const_apply,
     Finset.prod_pow_eq_pow_sum, Finsupp.degree_apply]
 
-private theorem coeff_subst_inVariables_monomial
+omit [Fintype σ] in
+private theorem coeff_subst_inVariables_monomial [Finite σ]
     (ebar : LubinTateSeries F π)
     (d : σ →₀ ℕ) (c : F.valuationSubring) :
     MvPowerSeries.coeff d
@@ -408,7 +411,8 @@ private theorem coeff_subst_inVariables_monomial
   rw [map_sub, sub_eq_zero] at hcoeff
   rw [hcoeff, coeff_subst_linearInVariable_monomial]
 
-private theorem coeff_subst_inVariables_add_monomial
+omit [Fintype σ] in
+private theorem coeff_subst_inVariables_add_monomial [Finite σ]
     (ebar : LubinTateSeries F π)
     (H : MvPowerSeries σ F.valuationSubring)
     (d : σ →₀ ℕ) (c : F.valuationSubring) :

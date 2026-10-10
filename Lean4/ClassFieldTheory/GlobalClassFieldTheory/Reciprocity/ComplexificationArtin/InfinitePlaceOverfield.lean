@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RationalComplexification
 
-set_option autoImplicit false
-
 /-!
 # The complex-conjugation overfield at an infinite place
 
@@ -15,7 +13,9 @@ This module realizes the embedded field `L(i)` inside `ℂ`, constructs its
 complex place, and identifies ambient complex conjugation on that field.
 -/
 
-open scoped Classical IsMulCommutative
+
+
+open scoped IsMulCommutative
 open NumberField
 
 noncomputable section

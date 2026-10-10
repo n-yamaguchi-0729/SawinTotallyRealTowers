@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation
 import ValuedFieldTheory.Valuation.Henselian.Factorization.AdicLimits
 
-set_option autoImplicit false
-
 /-!
 # maximal-ideal limit from displayed factors
 

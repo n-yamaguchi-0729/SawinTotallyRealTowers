@@ -9,16 +9,16 @@ import ValuedFieldTheory.LocalField.NormUnits
 import ValuedFieldTheory.LocalField.DiscreteValuationField.NormFiltration
 import ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
 /-!
 # Field norm on unit groups
 
 This file connects mathlib's `Algebra.norm` with the unit-group and valued-norm
 APIs used by local CFT.
 -/
+
+namespace LocalFieldTheory
+
+
 
 noncomputable section
 

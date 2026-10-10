@@ -21,7 +21,13 @@ import Mathlib.LinearAlgebra.Dimension.Finite
 import Mathlib.GroupTheory.Index
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
+/-!
+# Unramified common extensions and fixed-field composita
+
+The relative unramified fixed field is identified with the compositum of the chosen
+intermediate fields. The comparison supplies its degree, Galois structure, residue
+degree, and unramified valuation extension.
+-/
 
 noncomputable section
 

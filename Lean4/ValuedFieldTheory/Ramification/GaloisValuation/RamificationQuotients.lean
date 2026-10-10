@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.GroupTheory.QuotientGroup.Finite
 
-set_option autoImplicit false
-
 /-!
 # Named quotients of antitone normal-subgroup filtrations
 
@@ -16,6 +14,8 @@ filtration and their construction, elimination, lifting, and mapping API.
 Arithmetic Herbrand functions and valuation-action specializations live in
 `RamificationTheory.GaloisValuation.Ramification`.
 -/
+
+
 
 noncomputable section
 

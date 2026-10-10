@@ -9,8 +9,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContract
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.TowerInvariants
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: number-field prime ideals in the fixed fields
 
@@ -18,6 +16,8 @@ This file proves the ramification and inertia invariant statements for the
 contracted primes `P_Z` and `P_T` appearing in
 the decomposition and inertia fixed-field tower.
 -/
+
+
 
 noncomputable section
 
@@ -127,7 +127,8 @@ equal to `1`. -/
 theorem dedekindTower_decompositionFieldPrime_tower_invariants
     (P : Ideal (𝓞 L)) [P.IsPrime] [P.IsMaximal]
     [Finite G] [IsGaloisGroup G K L] :
-    Ideal.ramificationIdx' (basePrime (K := K) P) (decompositionFieldPrime (K := K) (L := L) G P) = 1 ∧
+    Ideal.ramificationIdx' (basePrime (K := K) P) (decompositionFieldPrime (K := K) (L := L) G
+      P) = 1 ∧
       (decompositionFieldPrime (K := K) (L := L) G P).inertiaDeg
           (𝓞 K) = 1 ∧
       Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) P =
@@ -387,7 +388,8 @@ theorem dedekindRamification_inertiaFieldPrime_middle_invariants
     (P : Ideal (𝓞 L)) [P.IsPrime] [P.IsMaximal]
     [Finite G] [IsGaloisGroup G K L]
     [Algebra.IsSeparable ((𝓞 K) ⧸ basePrime (K := K) P) ((𝓞 L) ⧸ P)] :
-    Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K := K) (L := L) G P) = 1 ∧
+    Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K
+      := K) (L := L) G P) = 1 ∧
       (inertiaFieldPrime (K := K) (L := L) G P).inertiaDeg
           (𝓞 (decompositionField (K := K) (L := L) G P)) =
         P.inertiaDeg (𝓞 K) := by
@@ -427,7 +429,8 @@ theorem dedekindRamification_inertiaFieldPrime_middle_invariants
         Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) P :=
     htop.1.trans hdecomposition.2.2.1.symm
   have hmiddle :
-      Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K := K) (L := L) G P) = 1 ∧
+      Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime
+        (K := K) (L := L) G P) = 1 ∧
         (inertiaFieldPrime (K := K) (L := L) G P).inertiaDeg
             (𝓞 (decompositionField (K := K) (L := L) G P)) =
           P.inertiaDeg
@@ -527,7 +530,8 @@ theorem dedekindRamification_inertiaFieldPrime_tower_invariants
     Ideal.ramificationIdx' (inertiaFieldPrime (K := K) (L := L) G P) P =
         Ideal.ramificationIdx' (basePrime (K := K) P) P ∧
       P.inertiaDeg (𝓞 (inertiaField (K := K) (L := L) G P)) = 1 ∧
-      Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime (K := K) (L := L) G P) = 1 ∧
+      Ideal.ramificationIdx' (decompositionFieldPrime (K := K) (L := L) G P) (inertiaFieldPrime
+        (K := K) (L := L) G P) = 1 ∧
       (inertiaFieldPrime (K := K) (L := L) G P).inertiaDeg
           (𝓞 (decompositionField (K := K) (L := L) G P)) =
         P.inertiaDeg (𝓞 K) := by

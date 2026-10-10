@@ -7,15 +7,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
-set_option autoImplicit false
-
 /-!
-# LubinTate the explicit norm-subgroup computation: canonical algebra and norm subgroup at a finite level
+# LubinTate the explicit norm-subgroup computation: canonical algebra and norm subgroup at a
+finite level
 
 This light leaf names the canonical base algebra and its norm subgroup once,
 so the later inclusion and index arguments do not repeat expensive fallback
 typeclass searches.
 -/
+
+
 
 noncomputable section
 

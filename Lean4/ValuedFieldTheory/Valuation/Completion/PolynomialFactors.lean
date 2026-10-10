@@ -9,8 +9,6 @@ import Mathlib.FieldTheory.Minpoly.IsConjRoot
 import Mathlib.Algebra.Polynomial.FieldDivision
 import Mathlib.RingTheory.Adjoin.PowerBasis
 
-set_option autoImplicit false
-
 /-!
 # Irreducible factors as conjugacy classes of roots
 

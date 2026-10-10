@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNorm
 
-set_option autoImplicit false
-
 /-!
 # Base-unit norm images in field towers
 
@@ -16,6 +14,8 @@ argument: embedded base units, their powered image in a lower branch, and the
 image obtained after applying the lower norm.  The only theorem used is field
 norm transitivity.
 -/
+
+
 
 noncomputable section
 

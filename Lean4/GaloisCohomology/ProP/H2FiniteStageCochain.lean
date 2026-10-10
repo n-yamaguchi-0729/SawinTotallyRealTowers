@@ -9,7 +9,6 @@ import GaloisCohomology.ProP.PresentationH2Primitive
 import GaloisCohomology.ProP.FiniteTransgression
 import Mathlib.Tactic.FinCases
 
-set_option autoImplicit false
 /-!
 # Finite-stage realization of continuous degree-two classes
 -/
@@ -272,8 +271,7 @@ theorem descendedHomogeneousCochain_mem_cycles
       (descendedHomogeneousCochain W z heq)
   have hdabcd := congrArg (fun τ => τ a b c d) hd
   rw [hdabcd]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   change cocycleTupleMap z
       (triple (quotientSection (commonCoordinateSubgroup W) b)
         (quotientSection (commonCoordinateSubgroup W) c)

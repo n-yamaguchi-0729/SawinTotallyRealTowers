@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.FreeProPH2
 import GaloisCohomology.ProP.FiniteTransgressionKernel
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # Primitive selection for presentation degree-two classes
 

@@ -6,10 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.Augmentation
 
-set_option autoImplicit false
-
 /-!
-# Fox differential: completed — coefficient rings — mod-\(n\) completed group algebra — augmentation ideal
+# Fox differential: completed — coefficient rings — mod-\(n\) completed group algebra —
+augmentation ideal
 
 The principal declarations in this module are:
 

@@ -4,20 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Ring.Subring.Basic
 import Mathlib.Algebra.Ring.Pi
-
-set_option autoImplicit false
+import Mathlib.Algebra.Ring.Subring.Defs
+import Mathlib.Algebra.Group.Subgroup.Defs
 
 /-!
 # Compatible families in inverse systems
 
-The elementary inverse limits used in the local-field structure development are subobjects of dependent
+The elementary inverse limits used in the local-field structure development are subobjects of
+dependent
 products: their elements are precisely the families preserved by every
 transition map.  Keeping this construction at the level of `Subring` and
 `Subgroup` lets Lean inherit the ambient algebraic structure instead of
 rebuilding the same pointwise instances for each inverse system.
 -/
+
+
 
 namespace LubinTate
 
@@ -70,7 +72,7 @@ def compatibleGroupFamilies
 subgroup.  Declaring it explicitly keeps clients independent of reducibility
 of `compatibleGroupFamilies`. -/
 instance compatibleGroupFamiliesGroup
-    { ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
+    {ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
     (transition : ∀ {i j : ι}, i ≤ j → G j →* G i) :
     Group (compatibleGroupFamilies G transition) := by
   unfold compatibleGroupFamilies
@@ -79,7 +81,7 @@ instance compatibleGroupFamiliesGroup
 /-- Coordinatewise commutativity descends to the compatible-family inverse
 limit. -/
 instance compatibleGroupFamiliesCommGroup
-    { ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, CommGroup (G i)]
+    {ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, CommGroup (G i)]
     (transition : ∀ {i j : ι}, i ≤ j → G j →* G i) :
     CommGroup (compatibleGroupFamilies G transition) :=
   { (compatibleGroupFamiliesGroup G transition) with
@@ -90,7 +92,7 @@ instance compatibleGroupFamiliesCommGroup
 
 /-- Evaluation of a compatible family at one coordinate. -/
 def compatibleGroupFamiliesEval
-    { ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
+    {ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
     (transition : ∀ {i j : ι}, i ≤ j → G j →* G i) (i : ι) :
     compatibleGroupFamilies G transition →* G i :=
   (Pi.evalMonoidHom G i).comp (compatibleGroupFamilies G transition).subtype
@@ -98,7 +100,7 @@ def compatibleGroupFamiliesEval
 /-- Evaluation of a compatible group family returns its component at the chosen index. -/
 @[simp]
 theorem compatibleGroupFamiliesEval_apply
-    { ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
+    {ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
     (transition : ∀ {i j : ι}, i ≤ j → G j →* G i)
     (i : ι) (x : compatibleGroupFamilies G transition) :
     compatibleGroupFamiliesEval G transition i x = x.1 i :=
@@ -106,7 +108,7 @@ theorem compatibleGroupFamiliesEval_apply
 
 /-- The named compatibility law for an inverse-limit family. -/
 theorem compatibleGroupFamilies_transition
-    { ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
+    {ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
     (transition : ∀ {i j : ι}, i ≤ j → G j →* G i)
     (x : compatibleGroupFamilies G transition) {i j : ι} (hij : i ≤ j) :
     transition hij (compatibleGroupFamiliesEval G transition j x) =
@@ -117,7 +119,7 @@ theorem compatibleGroupFamilies_transition
 agree. -/
 @[ext]
 theorem compatibleGroupFamilies_ext
-    { ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
+    {ι : Type*} [Preorder ι] (G : ι → Type*) [∀ i, Group (G i)]
     (transition : ∀ {i j : ι}, i ≤ j → G j →* G i)
     {x y : compatibleGroupFamilies G transition}
     (h : ∀ i, compatibleGroupFamiliesEval G transition i x =

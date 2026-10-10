@@ -9,7 +9,6 @@ import ProCGroups.Cohomology.FreeProPProjective
 import ProCGroups.ProC.InverseLimits.FiniteQuotients
 import ProCGroups.ProC.Subgroups.Closed
 
-set_option autoImplicit false
 /-!
 # Degree-two cohomology of a free pro-p group
 

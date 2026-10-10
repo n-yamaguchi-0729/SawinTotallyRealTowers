@@ -6,8 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Lift` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Lift` Lean module. -/
+
 
 noncomputable section
 
@@ -20,7 +21,8 @@ open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 open Filter
 
-/-- States the theorem `principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_lift_mod_succ`. -/
+/-- States the theorem
+`principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_lift_mod_succ`. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_lift_mod_succ
     (K L : Type u)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
@@ -283,7 +285,8 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_su
 
 /-- The actual integral-closure correction sequence encoded by consecutive
 coherent approximation states. -/
-noncomputable def chosenPrincipalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxCorrectionSeq
+noncomputable def
+  chosenPrincipalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxCorrectionSeq
     (K L : Type u)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
@@ -420,7 +423,8 @@ theorem eventually_normIntegerUnits_div_mem_principalUnits_of_tendsto_units_of_i
 
 /-- The limit of the actual integral-closure coherent approximation states
 preserves all finite-depth error bounds. -/
-theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_limit_error_mem_add_all
+theorem
+  principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_limit_error_mem_add_all
     (K L : Type u)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]

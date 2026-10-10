@@ -11,8 +11,6 @@ import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
 import Mathlib.RingTheory.Algebraic.Integral
 import Mathlib.GroupTheory.Index
 
-set_option autoImplicit false
-
 /-!
 # Integral primitive elements and their finite index
 

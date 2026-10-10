@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
 
-set_option autoImplicit false
-
 /-!
 # Finite-place completion maps for relative tensor factors
 
 This module compares the absolute-value and adic-completion models at finite
 places and records how the resulting maps preserve norms and integrality.
 -/
+
+
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain
@@ -42,7 +42,6 @@ noncomputable def relativeFinitePlaceCompletionBaseMap
       (NumberField.HeightOneSpectrum.adicAbv K w)).toRingHom
 
 /-- These lemmas record the canonical map and equivalence interfaces for the finite-place model. -/
-
 @[simp]
 theorem relativeFinitePlaceCompletionBaseMap_apply
     (w : HeightOneSpectrum (𝓞 K))
@@ -81,7 +80,6 @@ noncomputable def relativeFinitePlaceCompletionRingHom
     (relativeFinitePlaceCompletionBaseMap_isometry w).continuous
 
 /-- Coercion, isometry, and surjectivity facts for the canonical ring homomorphism. -/
-
 @[simp]
 theorem relativeFinitePlaceCompletionRingHom_coe
     (w : HeightOneSpectrum (𝓞 K))
@@ -275,7 +273,7 @@ omit [NumberField L] in
 /-- The trace matrix of the tensor-product basis is obtained from the
 original trace matrix by scalar extension. -/
 theorem trace_tensorProduct_basis_mul
-    {ι : Type*} [Fintype ι]
+    {ι : Type*} [Finite ι]
     (b : Module.Basis ι K L)
     (A : Type*) [Field A] [Algebra K A]
     (i j : ι) :

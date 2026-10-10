@@ -5,10 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Mathlib.Algebra.Category.Grp.Limits
-import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
 import Mathlib.GroupTheory.QuotientGroup.Basic
-
-set_option autoImplicit false
+import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Defs
 
 /-!
 # Pro C Groups / Categorical / Algebraic Pullbacks

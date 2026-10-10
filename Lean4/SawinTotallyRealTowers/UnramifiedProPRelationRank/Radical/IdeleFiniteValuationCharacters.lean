@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKum
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 
-set_option autoImplicit false
 /-!
 # Characters of the finite valuation vector of an idele
 
@@ -18,7 +17,7 @@ vanishes on the open subgroup of ideles integral at every finite place. On princ
 the character agrees with the dual of global finite-valuation localization.
 -/
 
-open scoped NumberField WithZero Classical
+open scoped NumberField WithZero
 
 noncomputable section
 
@@ -64,6 +63,7 @@ theorem ideleFiniteValuationDefectHom_principalIdele (a : Kˣ) :
   simp only [WithZero.log, Int.cast_neg, neg_neg]
   rfl
 
+open scoped Classical in
 /-- A one-place idele has only its own valuation coordinate. -/
 theorem ideleFiniteValuationDefectHom_finitePlace
     (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
@@ -89,6 +89,7 @@ theorem finitePlaceIdele_mem_supportedAt_empty_of_integral
     (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ)
     (ha : a ∈ (v.adicCompletionIntegers K).units) :
     finitePlaceIdele v a ∈ IdeleGroup.supportedAt (K := K) ∅ := by
+  classical
   rw [mem_supportedAt_iff]
   intro w _
   change finiteComponent w (finitePlaceIdele v a) ∈ _

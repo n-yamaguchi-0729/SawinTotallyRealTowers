@@ -8,7 +8,6 @@ import ProCGroups.ProP.FiniteFrattini
 import ProCGroups.ProP.Zassenhaus.FiniteAugmentationSquare
 import Mathlib.LinearAlgebra.Dual.Lemmas
 
-set_option autoImplicit false
 /-!
 # Degree-one augmentation criterion for finite `p`-groups
 

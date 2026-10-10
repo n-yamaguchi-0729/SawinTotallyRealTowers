@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.InverseSystems.CompatibilityAndSurjectivity
 
-set_option autoImplicit false
-
 /-!
 # Cofinal reindexing, density, and projection neighborhoods
 

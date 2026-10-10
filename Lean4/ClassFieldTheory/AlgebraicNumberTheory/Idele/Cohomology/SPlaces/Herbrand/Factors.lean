@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyCardinality
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
 
-set_option autoImplicit false
-
 /-!
 # Transport from local blocks to unrestricted factors
 
@@ -16,7 +14,9 @@ This leaf transports the finite-family Herbrand calculation to the actual
 unrestricted relative S-idele factors.
 -/
 
-open scoped NumberField BigOperators ValuativeRel Classical NNReal
+
+
+open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section

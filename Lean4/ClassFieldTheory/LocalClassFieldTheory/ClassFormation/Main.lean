@@ -9,13 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FieldUnitsHerbrand
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open CyclicCohomology
-
-open LocalFieldTheory
-
 /-!
 # The local class-field axiom
 
@@ -23,6 +16,13 @@ For a cyclic extension of nonarchimedean local fields, the actual Tate
 cohomology of `Lˣ` has cardinalities `[L : K]` in degree zero and `1` in
 degree minus one.
 -/
+
+namespace LocalClassFieldTheory
+open CyclicCohomology
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 
@@ -41,7 +41,7 @@ variable (K L : Type) [Field K] [Field L] [Algebra K L]
 /-- The integer-unit Herbrand witness used by the local class-field axiom,
 including the proof that its Herbrand quotient is one. -/
 theorem exists_localIntegerUnitsHerbrandDefinedAndEqOne
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ hU : HerbrandQuotientDefined (Gal(L / K)) 𝒪[L]ˣ g,
@@ -71,14 +71,14 @@ theorem exists_localIntegerUnitsHerbrandDefinedAndEqOne
 /-- Canonical choice of the integer-unit finiteness witness constructed by
 the local normal-basis argument. -/
 private theorem localIntegerUnitsHerbrandDefined
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     HerbrandQuotientDefined (Gal(L / K)) 𝒪[L]ˣ g :=
   Classical.choose (exists_localIntegerUnitsHerbrandDefinedAndEqOne K L g hg)
 
 private theorem localIntegerUnitsHerbrandQuotient_eq_one
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     @herbrandQuotient (Gal(L / K)) 𝒪[L]ˣ _ _ _
@@ -90,7 +90,7 @@ private theorem localIntegerUnitsHerbrandQuotient_eq_one
 /-- Finiteness of actual unit Tate `H⁰`, produced from the same local
 normal-basis witness as the cardinality theorem. -/
 theorem localFieldUnitsTateH0FiniteOfGenerator
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     Finite (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) :=
   unitsTateH0FiniteOfIntegerUnitsHerbrand K L g hg
@@ -98,7 +98,7 @@ theorem localFieldUnitsTateH0FiniteOfGenerator
 
 /-- The local class-field-axiom theorem for a specified generator of the cyclic Galois group. -/
 theorem localFieldUnits_tate_card_of_generator
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     letI := localFieldUnitsTateH0FiniteOfGenerator K L g hg
     Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) = Module.finrank K L ∧
@@ -109,7 +109,7 @@ theorem localFieldUnits_tate_card_of_generator
 
 /-- States the theorem `localFieldUnitsTateH0FiniteOfIsCyclic`. -/
 theorem localFieldUnitsTateH0FiniteOfIsCyclic
-    [IsCyclic (Gal(L / K))] :
+    [IsCyclic (Gal(L/K))] :
     Finite (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) := by
   obtain ⟨g, hg⟩ := (IsCyclic.exists_generator :
     ∃ g : Gal(L / K), ∀ sigma : Gal(L / K),
@@ -118,7 +118,7 @@ theorem localFieldUnitsTateH0FiniteOfIsCyclic
 
 /-- Generator-free form of the local class-field-axiom theorem.  Both Tate
 cohomology objects are canonical and independent of the generator used in the proof. -/
-theorem localFieldUnits_tate_card_of_isCyclic [IsCyclic (Gal(L / K))] :
+theorem localFieldUnits_tate_card_of_isCyclic [IsCyclic (Gal(L/K))] :
     letI := localFieldUnitsTateH0FiniteOfIsCyclic K L
     Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) = Module.finrank K L ∧
       Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) = 1 := by

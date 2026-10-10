@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianCl
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteIndexNormClassField
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.OrdinaryNormClassField
 
-set_option autoImplicit false
-
 /-!
 # Construction of a closed finite-index class field
 
@@ -19,7 +17,9 @@ idèle-class subgroup. Norm-range and reciprocity statements live in later
 leaves so their elaboration environments do not remain resident here.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

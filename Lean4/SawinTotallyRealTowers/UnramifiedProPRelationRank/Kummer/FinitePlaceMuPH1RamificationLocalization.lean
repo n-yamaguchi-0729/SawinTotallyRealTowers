@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 import Mathlib.LinearAlgebra.Pi
 
-set_option autoImplicit false
 /-!
 # Finite-place ramification of natural `mu_p` Kummer classes
 

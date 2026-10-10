@@ -10,7 +10,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
 import Mathlib.Analysis.Normed.Field.Dense
 import Mathlib.FieldTheory.AlgebraicClosure
 
-set_option autoImplicit false
 /-!
 # Algebraic localization as a local algebraic closure
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.InverseSystems.ProfiniteSpace
 
-set_option autoImplicit false
-
 /-!
 # Factorization through finite stages
 

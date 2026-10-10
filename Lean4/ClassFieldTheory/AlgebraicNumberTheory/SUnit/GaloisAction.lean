@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
 import GaloisCohomology.Cyclic.Herbrand.Permutation.LatticeHerbrand
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 
-set_option autoImplicit false
-
 /-!
 # Galois actions on `S`-units and their logarithmic lattice
 
@@ -20,7 +18,9 @@ usual way.  For a stable finite set of finite places these actions restrict
 to the actual `S`-unit group.
 -/
 
-open scoped BigOperators Classical NumberField nonZeroDivisors
+
+
+open scoped BigOperators NumberField nonZeroDivisors
 open IsDedekindDomain Module
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 open CyclicCohomology
@@ -1087,6 +1087,7 @@ theorem extendedFullLogLattice_permutation_stable
         fullLogSpaceSplit_snd_smul K L hS] using
         hzrepr (Sum.inr j)
 
+open scoped Classical in
 /-- The canonical complete permutation sublattice of the extended
 logarithmic lattice has finite index. -/
 theorem extendedFullLogPermutationSublattice_finite_quotient

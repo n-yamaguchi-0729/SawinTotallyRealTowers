@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 
-set_option autoImplicit false
-
 /-!
 # Idèle-class norms from a finite normal closure
 
@@ -20,6 +18,8 @@ from the normal closure inside the norm subgroup of that copy.  Transport
 across the canonical algebra equivalence identifies the latter subgroup
 with the norm subgroup of the original extension.
 -/
+
+
 
 open scoped NumberField
 open NumberField

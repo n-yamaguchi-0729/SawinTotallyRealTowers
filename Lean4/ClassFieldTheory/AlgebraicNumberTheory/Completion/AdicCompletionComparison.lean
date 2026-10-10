@@ -14,8 +14,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Finite
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
 import Mathlib.NumberTheory.RamificationInertia.Valuation
 
-set_option autoImplicit false
-
 /-!
 # Comparing the exact-extension and concrete adic-completion maps
 
@@ -23,6 +21,8 @@ The completion map attached to an exact extension of a finite-place
 absolute value agrees with the canonical map between the concrete adic
 completions at the corresponding finite places.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

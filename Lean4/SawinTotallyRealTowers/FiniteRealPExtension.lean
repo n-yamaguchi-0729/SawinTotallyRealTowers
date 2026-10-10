@@ -9,8 +9,6 @@ import SawinTotallyRealTowers.RamificationSupportCompositum
 import SawinTotallyRealTowers.RealCompositum
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 
-set_option autoImplicit false
-
 /-!
 # Finite layers of the real tower with prescribed ramification
 

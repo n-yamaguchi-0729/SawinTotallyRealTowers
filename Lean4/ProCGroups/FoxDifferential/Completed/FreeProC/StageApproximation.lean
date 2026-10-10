@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.FreeProC.Density
 import ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — free pro-\(C\) — stage approximation
 

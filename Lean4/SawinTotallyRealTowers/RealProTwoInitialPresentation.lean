@@ -13,8 +13,6 @@ import ProCGroups.ProP.Presentation.GeneratorRank
 import ProCGroups.ProP.Presentation.FiniteGeneration
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # A five-generator minimal presentation of the actual initial group
 

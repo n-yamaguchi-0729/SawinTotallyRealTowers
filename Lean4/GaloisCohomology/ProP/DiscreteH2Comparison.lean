@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.ContinuousH1CupProduct
 import GaloisCohomology.ProP.DiscreteH2ShortComplexComparison
 import Mathlib.Algebra.Homology.ShortComplex.PreservesHomology
 
-set_option autoImplicit false
 /-!
 # Continuous and ordinary degree-two cohomology of a discrete group
 
@@ -258,7 +257,8 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
               (continuousH1CupHomogeneousTwoCocycleLifted chi psi))))) =
       SO.moduleCatLeftHomologyData.π cupCycle
   let z : (((trivialZModPCochainsLifted p Q).sc 2).map
-      (continuousCochainsToAddCommGrp p)).cycles := (((trivialZModPCochainsLifted p Q).sc 2).mapCyclesIso
+      (continuousCochainsToAddCommGrp p)).cycles :=
+    (((trivialZModPCochainsLifted p Q).sc 2).mapCyclesIso
     (continuousCochainsToAddCommGrp p)).inv (continuousH1CupHomogeneousTwoCocycleLifted chi psi)
   have hz :
       (((trivialZModPCochainsLifted p Q).sc 2).mapHomologyIso

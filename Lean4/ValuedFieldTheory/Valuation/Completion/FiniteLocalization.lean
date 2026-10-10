@@ -10,8 +10,6 @@ import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.RingTheory.TensorProduct.Finite
 import Mathlib.RingTheory.TensorProduct.Maps
 
-set_option autoImplicit false
-
 /-!
 # Finite localizations inside metric completions
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.DeepPrincipalUnits
 import ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.IntegralLattice
 
-set_option autoImplicit false
-
 /-!
 # First principal units in mixed characteristic
 
@@ -16,6 +14,8 @@ This module combines the deep free `Z_p` lattice with the finite quotient
 exact sequence and packages the algebraic and topological structure of
 the first principal-unit group.
 -/
+
+
 
 noncomputable section
 
@@ -89,7 +89,8 @@ structure FiniteRankTorsionData
     Module.finrank R (M ⧸ Submodule.torsion R M) = d
 
 /-- Algebraic bookkeeping for a finite torsion quotient of a finite free
-kernel.  This is the PID step used in the mixed-characteristic field-unit structure theorem: it proves finite
+kernel.  This is the PID step used in the mixed-characteristic field-unit structure theorem: it
+proves finite
 generation and rank of the middle term, and embeds its torsion into the
 finite quotient. -/
 theorem finite_rank_and_torsion_projection_of_surjective
@@ -273,7 +274,7 @@ theorem mixed_principalUnitSuccKernelData
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
     let p := F.residueCharacteristic
     let R := ℤ_[p]
-    let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+    let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
     letI : MixedQPadicContext F := mixedQPadicContext F
     letI : Module R M :=
       CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
@@ -283,7 +284,7 @@ theorem mixed_principalUnitSuccKernelData
   let F : LocalField.{u, 0} K := ofWithZeroValuation v
   let p : ℕ := F.residueCharacteristic
   let R := ℤ_[p]
-  let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+  let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
   let : MixedQPadicContext F := mixedQPadicContext F
   let : Module R M :=
     CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
@@ -296,7 +297,7 @@ theorem mixed_principalUnitSuccKernelData
     lt_trans hlevel (by exact_mod_cast Nat.lt_succ_self n)
   let hr : 1 ≤ n + 1 := Nat.succ_le_succ (Nat.zero_le n)
   let deep := Additive
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) (n + 1))
+    (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) (n + 1))
   let : Module R deep := F.higherPrincipalUnitPadicModule hr
   let : Module.Finite R deep :=
     mixed_deepPrincipalUnit_moduleFinite
@@ -322,7 +323,8 @@ theorem mixed_principalUnitSuccKernelData
       moduleFree := hHigherFree
       finrank := hrankHigher }
 
-/-- The finite quotient map in the mixed-characteristic field-unit structure theorem, with the deep logarithmic
+/-- The finite quotient map in the mixed-characteristic field-unit structure theorem, with the
+deep logarithmic
 lattice identified as its finite free kernel. -/
 noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
@@ -337,7 +339,7 @@ noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
     let p := F.residueCharacteristic
     let R := ℤ_[p]
-    let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+    let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
     letI : MixedQPadicContext F := mixedQPadicContext F
     letI : Module R M :=
       CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
@@ -351,7 +353,7 @@ noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
   let F : LocalField.{u, 0} K := ofWithZeroValuation v
   let p : ℕ := F.residueCharacteristic
   let R := ℤ_[p]
-  let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+  let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
   letI : MixedQPadicContext F := mixedQPadicContext F
   letI : Module R M :=
     CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
@@ -367,7 +369,7 @@ noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
   letI : Finite q := inferInstance
   letI : Module.Finite R q := Module.Finite.of_finite
   let projection : M →ₗ[R] q := F.principalUnitQuotientProjectionLinear n
-  let U := LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.toPrincipalUnitFiltration
+  let U := CompleteDVF.higherPrincipalUnitGroup.toPrincipalUnitFiltration
     F.toCompleteDVF
   let quotientKernel := (U.principalUnitSubgroup (n + 1)).subgroupOf
     (U.principalUnitSubgroup 1)
@@ -403,7 +405,8 @@ noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
       kernelFinrank := hrankN
       quotientTorsion := hqTorsion }
 
-/-- Algebraic data for the first principal units in the mixed-characteristic field-unit structure theorem.
+/-- Algebraic data for the first principal units in the mixed-characteristic field-unit
+structure theorem.
 The deep logarithmic lattice supplies the free kernel; the finite-level
 principal-unit quotient detects all torsion. -/
 noncomputable def chosenMixed_firstPrincipalUnitAlgebraicData
@@ -419,7 +422,7 @@ noncomputable def chosenMixed_firstPrincipalUnitAlgebraicData
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
     let p := F.residueCharacteristic
     let R := ℤ_[p]
-    let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+    let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
     letI : MixedQPadicContext F := mixedQPadicContext F
     letI : Module R M :=
       CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
@@ -428,7 +431,7 @@ noncomputable def chosenMixed_firstPrincipalUnitAlgebraicData
   let F : LocalField.{u, 0} K := ofWithZeroValuation v
   let p : ℕ := F.residueCharacteristic
   let R := ℤ_[p]
-  let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+  let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
   letI : MixedQPadicContext F := mixedQPadicContext F
   letI : Module R M :=
     CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
@@ -452,9 +455,9 @@ noncomputable def chosenMixed_firstPrincipalUnitAlgebraicData
   letI hTModule : Module R T := Submodule.module T
   letI : Finite T := exactData.finiteTorsion
   letI hqAddGroup : AddGroup q := inferInstance
-  let U1 := LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1
+  let U1 := CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1
   let valuationUnitsToFieldUnits :=
-    _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.valuationSubringUnitsToFieldUnits F.toCompleteDVF
+    CompleteDVF.valuationSubringUnitsToFieldUnits F.toCompleteDVF
   let principalToField : U1 →* K :=
     (Units.coeHom K).comp
       (valuationUnitsToFieldUnits.comp U1.subtype)
@@ -489,7 +492,8 @@ noncomputable def chosenMixed_firstPrincipalUnitAlgebraicData
       cardTorsion := hcard
       finrankFree := exactData.finrankFree }
 
-/-- The mixed-characteristic field-unit structure theorem, principal-unit factor in its literal algebraic and
+/-- The mixed-characteristic field-unit structure theorem, principal-unit factor in its literal
+algebraic and
 topological form.  The finite torsion is a cyclic `p`-group and the free
 factor has rank `[K : Q_p]`. -/
 noncomputable def mixed_firstPrincipalUnitStructure
@@ -511,11 +515,11 @@ noncomputable def mixed_firstPrincipalUnitStructure
       Multiplicative
           (ZMod (F.residueCharacteristic ^ a) ×
             (Fin d → ℤ_[F.residueCharacteristic])) ≃ₜ*
-        LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1 := by
+        CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1 := by
   let F : LocalField.{u, 0} K := ofWithZeroValuation v
   let p : ℕ := F.residueCharacteristic
   let R := ℤ_[p]
-  let M := Additive (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
+  let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
   letI : MixedWithZeroValuationContext v :=
     mixedWithZeroValuationContext v
   letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
@@ -540,7 +544,8 @@ noncomputable def mixed_firstPrincipalUnitStructure
       p M data.a d data.cyclicTorsion data.cardTorsion data.finrankFree
   exact ⟨data.a, continuousMulEquivOfAdditiveTarget eAdd⟩
 
-/-- The mixed-characteristic field-unit structure theorem, principal-unit factor with the logarithmic depth
+/-- The mixed-characteristic field-unit structure theorem, principal-unit factor with the
+logarithmic depth
 chosen internally.  Thus the statement retains only the hypotheses attached
 to the local field and a normalized valuation. -/
 noncomputable def chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
@@ -557,7 +562,7 @@ noncomputable def chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
       Multiplicative
           (ZMod (F.residueCharacteristic ^ a) ×
             (Fin d → ℤ_[F.residueCharacteristic])) ≃ₜ*
-        LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1 := by
+        CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1 := by
   let F : LocalField.{u, 0} K := ofWithZeroValuation v
   let hex := exists_nat_gt
     ((ramificationIndexOfWithZeroValuation v : ℚ) /

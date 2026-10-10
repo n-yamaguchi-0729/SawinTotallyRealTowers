@@ -8,8 +8,6 @@ import GaloisCohomology.Kummer.Concrete.ContinuousCharacters
 import GaloisCohomology.Kummer.Concrete.FiniteGeneration
 import GaloisCohomology.Kummer.Concrete.InfiniteContinuity
 
-set_option autoImplicit false
-
 /-!
 # Infinite Kummer character equivalence
 

@@ -8,8 +8,6 @@ import ProCGroups.Completion.UniversalProperty
 import ProCGroups.ProC.InverseLimits.Predicates
 import ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
 
-set_option autoImplicit false
-
 /-!
 # Pro C Groups / Completion / Finite Quotient Lifts
 

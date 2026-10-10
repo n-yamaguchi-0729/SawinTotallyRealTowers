@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.FormalModule.CoefficientEquation
 
-set_option autoImplicit false
-
 /-!
 # The standard Lubin--Tate series
 
@@ -19,6 +17,8 @@ where `q` is the cardinality of the residue field, is a Lubin--Tate
 series.  This gives the general formal-module construction a canonical
 polynomial input without making an equal-characteristic assumption.
 -/
+
+
 
 noncomputable section
 

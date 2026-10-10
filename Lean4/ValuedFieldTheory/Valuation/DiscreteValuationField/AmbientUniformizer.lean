@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 
-set_option autoImplicit false
-
 /-!
 # Uniformizers detected in an ambient complete discrete valuation field
 
@@ -15,6 +13,8 @@ An embedding into an ambient complete DVF can make a uniformizer easier to
 recognize.  For a finite separable extension, uniqueness of the extended
 valuation transports that recognition back to the chosen valuation.
 -/
+
+
 
 namespace ValuationTheory
 

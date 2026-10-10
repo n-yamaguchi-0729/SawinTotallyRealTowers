@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ThetaAtCompletedLevel
 import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: local injectivity of theta
 
@@ -16,6 +14,8 @@ The theta series has a unit linear coefficient and integral higher
 coefficients.  This file records the resulting nonarchimedean local
 isometry on the maximal ideal.
 -/
+
+
 
 noncomputable section
 

@@ -9,8 +9,6 @@ import SawinTotallyRealTowers.FiniteRealPExtensionSupport
 import Mathlib.FieldTheory.Normal.Basic
 import Mathlib.FieldTheory.SeparableClosure
 
-set_option autoImplicit false
-
 /-!
 # The maximal real compositum with prescribed ramification support
 

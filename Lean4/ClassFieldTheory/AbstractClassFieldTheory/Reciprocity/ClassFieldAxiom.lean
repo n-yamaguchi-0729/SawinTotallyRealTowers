@@ -6,12 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open CyclicCohomology
-
 /-!
 # Abstract reciprocity: the class field axiom
 
@@ -21,6 +15,12 @@ two numbers below are the orders of the Tate groups occurring in the
 original statement the class-field axiom, rather than cardinality data attached to an
 auxiliary reciprocity map.
 -/
+
+namespace ClassFormation
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

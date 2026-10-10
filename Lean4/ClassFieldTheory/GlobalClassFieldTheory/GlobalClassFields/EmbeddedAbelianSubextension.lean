@@ -8,8 +8,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubext
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
 import Mathlib.FieldTheory.Galois.Abelian
 
-set_option autoImplicit false
-
 /-!
 # Embedded finite abelian subextensions
 
@@ -19,6 +17,8 @@ subgroup of the embedded base field. This file also allows that base fixing
 subgroup to be replaced by a propositionally equal selected subgroup, as is
 needed by concrete class-field realizations.
 -/
+
+
 
 open scoped NumberField
 

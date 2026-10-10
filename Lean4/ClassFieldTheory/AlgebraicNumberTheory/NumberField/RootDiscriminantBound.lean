@@ -9,8 +9,6 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.NormNum
 
-set_option autoImplicit false
-
 /-!
 # From an integral discriminant bound to a root discriminant bound
 -/

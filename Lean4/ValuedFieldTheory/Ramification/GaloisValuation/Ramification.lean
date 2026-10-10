@@ -9,12 +9,6 @@ import ValuedFieldTheory.Ramification.GaloisValuation.RamificationQuotients
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
 import Mathlib.Data.Rat.Lemmas
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
-open LocalFieldTheory
-
 /-!
 # Ramification filtrations
 
@@ -22,6 +16,12 @@ This file provides the group-theoretic lower ramification APIs used by local CFT
 Concrete valued extensions supply the action quotient estimates; the subgroup
 and normality/antitonicity consequences are proved here.
 -/
+
+namespace RamificationTheory
+
+open LocalFieldTheory
+
+
 
 noncomputable section
 

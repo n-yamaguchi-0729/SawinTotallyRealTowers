@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.TrivialZModP
 import Mathlib.Topology.Algebra.Group.Quotient
 
-set_option autoImplicit false
+/-!
+# Quotient inflation followed by subgroup restriction
+
+Defines the continuous quotient projection and subgroup inclusion and
+identifies their composite cochain and cohomology maps with the constant-one map.
+-/
+
 open CategoryTheory
 
 namespace ClassFieldTower.Cohomology

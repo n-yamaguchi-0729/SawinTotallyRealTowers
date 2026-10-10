@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.LogConvergence
 
-set_option autoImplicit false
 /-!
 Develops the valuation estimates showing that logarithm and exponential series are inverse on
 their common principal-unit domain.
 -/
+
 
 open Filter
 open Polynomial
@@ -969,6 +969,9 @@ def completeDVFOfWithZeroValuation
   valuation := v
   instCompleteDiscrete := inferInstance
 
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
+) in
 /-- For a normalized `ℤᵐ⁰`-valued complete DVF, an integer-valuation lower
 bound gives membership in the corresponding maximal-ideal power. -/
 theorem mem_maximalIdeal_pow_ofWithZeroValuation_val_ge
@@ -1000,7 +1003,7 @@ theorem mem_maximalIdeal_pow_ofWithZeroValuation_val_ge
         v (a : K) ≤ WithZero.exp (-(n : ℤ)) :=
       WithZero.le_exp_of_log_le hlog
     exact
-      (ValuationTheory.DiscreteValuationField.Valuation.mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
+      (mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
         (val := v) hπ n (x := a)).2 (by
           change v (a : K) ≤ v ((π : K) ^ n)
           rw [map_pow, hπpow]
@@ -1026,6 +1029,9 @@ theorem mem_maximalIdeal_pow_succ_ofWithZeroValuation_val_gt
   have hgt := hval ha
   omega
 
+open _root_.ValuationTheory.DiscreteValuationField.Valuation (
+  mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
+) in
 /-- Conversely, membership in `m^n` gives the expected lower bound for the
 attached integer valuation. -/
 theorem ofWithZeroValuation_val_ge_of_mem_maximalIdeal_pow
@@ -1047,7 +1053,7 @@ theorem ofWithZeroValuation_val_ge_of_mem_maximalIdeal_pow
   have hva :
       v (a : K) ≤ WithZero.exp (-(n : ℤ)) := by
     have h :=
-      (ValuationTheory.DiscreteValuationField.Valuation.mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
+      (mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
         (val := v) hπ n (x := a)).1 ha
     change v (a : K) ≤ v ((π : K) ^ n) at h
     rw [map_pow, hπpow] at h
@@ -1130,7 +1136,8 @@ theorem logOnePlusSeries_expSeries_sub_self_mem_maximalIdeal_pow_succ_of_mem_max
 
 /-- If `a ∈ m^n` lies above the ramified threshold, then the second composite
 `exp(log(1+a)) - 1` is congruent to `a` modulo `m^(n+1)`. -/
-theorem expSeries_logOnePlusSeries_sub_one_sub_self_mem_maximalIdeal_pow_succ_of_mem_maximalIdeal_pow
+theorem
+  expSeries_logOnePlusSeries_sub_one_sub_self_mem_maximalIdeal_pow_succ_of_mem_maximalIdeal_pow
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     {p : ℕ} [Fact p.Prime] (e n : ℕ)

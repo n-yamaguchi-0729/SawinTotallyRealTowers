@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFields
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: decomposition and inertia tower
 
 This file contains the group-theoretic fixed-field part of the tower
 `Z_P ⊆ T_P ⊆ L` in prime-decomposition theory.
 -/
+
+
 
 noncomputable section
 

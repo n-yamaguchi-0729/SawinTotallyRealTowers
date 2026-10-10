@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 import Mathlib.NumberTheory.RamificationInertia.Unramified
 
-set_option autoImplicit false
-
 /-!
 # Finite-prime unramifiedness in towers of number fields
 
@@ -16,6 +14,8 @@ This file records the tower properties of being unramified at every
 finite prime.  The transitivity and intermediate-field arguments are
 proved from multiplicativity of ramification indices.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

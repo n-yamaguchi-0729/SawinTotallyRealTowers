@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.SimpleExtension
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
 
-set_option autoImplicit false
-
 /-!
 # Local Hilbert symbols
 
@@ -21,6 +19,8 @@ and the literal simple extension `K(β)` is formed.  If `K` contains the
 Galois.  The Hilbert symbol is the root quotient of the local Artin
 automorphism, transported back to `μₙ(K)`.
 -/
+
+
 
 noncomputable section
 

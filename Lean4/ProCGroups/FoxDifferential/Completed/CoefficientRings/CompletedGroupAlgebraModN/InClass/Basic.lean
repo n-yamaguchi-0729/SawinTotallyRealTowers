@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebra
 import Mathlib.Data.ZMod.Basic
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — in class — basic
 

@@ -8,15 +8,16 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 import ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
 import ValuedFieldTheory.Valuation.Completion.TensorProductProductFormulas
 
-set_option autoImplicit false
-
 /-!
 # Compatibility of local degree, norm, and trace
 
-The canonical decomposition of the completion tensor-product decomposition gives the sum of the local
+The canonical decomposition of the completion tensor-product decomposition gives the sum of the
+local
 degrees and the product/sum formulas for norm and trace.  Since the global
 norm and trace lie in `K`, their Lean statements are mapped into `K_v`.
 -/
+
+
 
 noncomputable section
 

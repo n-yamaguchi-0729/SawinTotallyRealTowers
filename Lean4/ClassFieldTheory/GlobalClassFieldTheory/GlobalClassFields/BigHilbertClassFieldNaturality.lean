@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
 
-set_option autoImplicit false
-
 /-!
 # Naturality of the big Hilbert class field
 
@@ -20,7 +18,9 @@ transport on the big-Hilbert reciprocity quotient and on the narrow class
 group, with formulas on genuine idele representatives.
 -/
 
-open scoped NumberField NumberField.LiesOver Classical TensorProduct
+
+
+open scoped NumberField NumberField.LiesOver TensorProduct
 
 noncomputable section
 

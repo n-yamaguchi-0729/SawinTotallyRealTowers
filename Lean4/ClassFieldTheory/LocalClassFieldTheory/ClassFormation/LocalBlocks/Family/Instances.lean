@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 
-set_option autoImplicit false
-
 /-!
 # Finite families of local idele blocks
 
 This file combines the local induced-module calculation over a finite
 family of places. It is the finite-support part of the localized class formation.
 -/
+
+
 
 noncomputable section
 

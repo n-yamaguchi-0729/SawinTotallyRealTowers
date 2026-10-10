@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.HilbertElementaryLayer
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
 
-set_option autoImplicit false
 /-!
 # The elementary Hilbert layer inside the maximal unramified pro-p extension
 
@@ -121,7 +120,7 @@ instance hilbertElementaryLayerInMaximal.instIsAbelianGalois
 /-- The Galois group of the copy has exponent dividing `p`. -/
 theorem hilbertElementaryLayerInMaximal_galois_pow_eq_one
     (p : ℕ) [Fact p.Prime]
-    (τ : Gal((hilbertElementaryLayerInMaximal K p) / K)) :
+    (τ : Gal((hilbertElementaryLayerInMaximal K p)/K)) :
     τ ^ p = 1 := by
   let eAut : Gal((hilbertElementaryLayer K p) / K) ≃*
       Gal((hilbertElementaryLayerInMaximal K p) / K) :=

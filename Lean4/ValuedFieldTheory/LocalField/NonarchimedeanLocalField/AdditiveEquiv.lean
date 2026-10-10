@@ -12,8 +12,6 @@ Turns a multiplicative group equivalence into the corresponding equivalence
 between the additive recodings of its source and target.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

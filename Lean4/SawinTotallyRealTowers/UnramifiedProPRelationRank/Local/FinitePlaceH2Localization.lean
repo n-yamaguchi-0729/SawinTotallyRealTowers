@@ -10,7 +10,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 import ValuedFieldTheory.Valuation.Completion.ExtensionFactorClassification
 import Mathlib.FieldTheory.AbsoluteGaloisGroup
 
-set_option autoImplicit false
 /-!
 # Degree-two localization at a finite place
 

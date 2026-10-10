@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormati
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
 
-set_option autoImplicit false
-
 /-!
 # The ordinary finite abelian class-field correspondence
 
@@ -25,6 +23,8 @@ two lattice formulas are now equalities of ordinary determinant-norm
 subgroups: composita correspond to intersections and intersection fields
 correspond to products.
 -/
+
+
 
 open scoped NumberField
 

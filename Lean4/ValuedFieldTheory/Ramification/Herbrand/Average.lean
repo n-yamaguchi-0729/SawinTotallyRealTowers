@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.Ramification.Herbrand.Function
 import ValuedFieldTheory.Ramification.Herbrand.Tower
 
-set_option autoImplicit false
-
 /-!
 # The fibre average in Herbrand's theorem
 
@@ -26,6 +24,8 @@ maximal depth, with the Herbrand function of the above filtration.  The
 valued-field equality between this average and the actual quotient depth is
 the separate input of the quotient-depth identity.
 -/
+
+
 
 noncomputable section
 
@@ -113,10 +113,13 @@ def quotientFiberAverage [Fintype G] {q : G ⧸ H} (hq : q ≠ 1) : ℝ :=
     D.depthRamificationIndex H
 
 omit [H.Normal] in
+open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
+  truncatedLowerDepth
+) in
 /-- States the theorem `truncatedLowerDepth_add_one`. -/
 theorem truncatedLowerDepth_add_one (n : ℕ)
     (τ : (D.depthLowerFiltration H).lower 0) :
-    (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth (D.depthLowerFiltration H)) n τ + 1 =
+    (truncatedLowerDepth (D.depthLowerFiltration H)) n τ + 1 =
       WithTop.untopD (α := ℕ) 0
         (min (D.depth ((τ : H) : G)) (WithTop.some (n + 1))) := by
   classical
@@ -127,7 +130,7 @@ theorem truncatedLowerDepth_add_one (n : ℕ)
           Finset.range n := by
       ext i
       simp [depthLowerFiltration, depthLowerSubgroup, htop]
-    rw [RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth, hfilter]
+    rw [truncatedLowerDepth, hfilter]
     simp only [Finset.card_range, htop, min_eq_right le_top,
       WithTop.untopD_coe]
   · let k := (D.depth ((τ : H) : G)).untop htop
@@ -155,7 +158,7 @@ theorem truncatedLowerDepth_add_one (n : ℕ)
         simp only [lt_min_iff] at hi
         refine ⟨hi.1, WithTop.coe_le_coe.2 ?_⟩
         omega
-    rw [RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth, hfilter, ← hdepth]
+    rw [truncatedLowerDepth, hfilter, ← hdepth]
     rw [← WithTop.coe_min]
     simp only [Finset.card_range, WithTop.untopD_coe]
     omega
@@ -180,15 +183,18 @@ theorem depth_eq_zero_of_not_mem_lower_zero (τ : H)
     simp [this]
 
 omit [H.Normal] in
+open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
+  truncatedLowerDepth
+) in
 /-- The truncation sum over all of `H` is the inertia-cardinality constant
 plus the Herbrand depth sum over `H_0`. -/
-theorem sum_min_depth_eq_card_add_truncated (n : ℕ) [Fintype G] :
+theorem sum_min_depth_eq_card_add_truncated (n : ℕ) [Finite G] :
     (∑ τ : H,
         (WithTop.untopD (α := ℕ) 0
           (min (D.depth (τ : G)) (WithTop.some (n + 1))) : ℝ)) =
       D.depthRamificationIndex H +
         ∑ τ : (D.depthLowerFiltration H).lower 0,
-          ((RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth (D.depthLowerFiltration H)) n τ : ℝ) := by
+          ((truncatedLowerDepth (D.depthLowerFiltration H)) n τ : ℝ) := by
   classical
   let F := D.depthLowerFiltration H
   let p : H → Prop := fun τ => τ ∈ F.lower 0
@@ -213,14 +219,14 @@ theorem sum_min_depth_eq_card_add_truncated (n : ℕ) [Fintype G] :
       intro τ
       simp [p]
     _ = ∑ τ : F.lower 0,
-        ((1 : ℝ) + ((RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth F) n τ : ℝ)) := by
+        ((1 : ℝ) + ((truncatedLowerDepth F) n τ : ℝ)) := by
       apply Finset.sum_congr rfl
       intro τ _
       dsimp [f, F]
       exact_mod_cast (by
         simpa [add_comm] using (D.truncatedLowerDepth_add_one H n τ).symm)
     _ = D.depthRamificationIndex H +
-        ∑ τ : F.lower 0, ((RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth F) n τ : ℝ) := by
+        ∑ τ : F.lower 0, ((truncatedLowerDepth F) n τ : ℝ) := by
       rw [Finset.sum_add_distrib]
       congr 1
       calc
@@ -231,6 +237,11 @@ theorem sum_min_depth_eq_card_add_truncated (n : ℕ) [Fintype G] :
           congrArg (fun k : ℕ => (k : ℝ))
             (Fintype.card_eq_nat_card (α := F.lower 0))
 
+open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
+  herbrandValueNat
+  herbrandValueNat_eq_depth_sum
+  truncatedLowerDepth
+) in
 /-- The natural-argument calculation at the heart of Herbrand's theorem.
 For a maximal representative of depth `n + 1`, the normalized fibre
 average minus one is the Herbrand function of `H` at `n`.
@@ -244,7 +255,7 @@ theorem quotientFiberAverage_sub_one_eq_herbrandValueNat_of_depth_eq_succ
       D.depth γ ≤ D.depth σ)
     (n : ℕ) (hdepth : D.depth σ = WithTop.some (n + 1)) :
     D.quotientFiberAverage H hq - 1 =
-      (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandValueNat (D.depthLowerFiltration H)) n := by
+      (herbrandValueNat (D.depthLowerFiltration H)) n := by
   classical
   let F := D.depthLowerFiltration H
   let f : WithTop ℕ → ℝ := fun d =>
@@ -276,12 +287,12 @@ theorem quotientFiberAverage_sub_one_eq_herbrandValueNat_of_depth_eq_succ
   have hdecomp := D.sum_min_depth_eq_card_add_truncated H n
   rw [← hsum] at hdecomp
   rw [quotientFiberAverage, hdecomp]
-  rw [show (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandValueNat (D.depthLowerFiltration H)) n =
+  rw [show (herbrandValueNat (D.depthLowerFiltration H)) n =
       (∑ τ : (D.depthLowerFiltration H).lower 0,
-          ((RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.truncatedLowerDepth (D.depthLowerFiltration H)) n τ : ℝ)) /
+          ((truncatedLowerDepth (D.depthLowerFiltration H)) n τ : ℝ)) /
         D.depthRamificationIndex H by
     simpa [depthRamificationIndex] using
-      RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandValueNat_eq_depth_sum (D.depthLowerFiltration H) n]
+      herbrandValueNat_eq_depth_sum (D.depthLowerFiltration H) n]
   have he : (D.depthRamificationIndex H : ℝ) ≠ 0 := by
     exact_mod_cast
       (show 0 < Nat.card ((D.depthLowerFiltration H).lower 0) from
@@ -314,6 +325,9 @@ theorem quotientFiberAverage_eq_zero_of_maximal_depth_zero
       _ = WithTop.some 0 := hdepthγ
   simp [quotientFiberAverage, hzero]
 
+open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
+  herbrandFunction
+) in
 /-- The fibre-average identity in the exact form used in the Herbrand quotient theorem.
 The finite natural depth of the chosen maximal representative is used in the
 real argument `m - 1`, including the endpoint `m = 0`. -/
@@ -323,7 +337,7 @@ theorem quotientFiberAverage_sub_one_eq_herbrandFunction_of_maximal
     (hmax : ∀ γ : G, QuotientGroup.mk' H γ = q →
       D.depth γ ≤ D.depth σ) :
     D.quotientFiberAverage H hq - 1 =
-      (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction (D.depthLowerFiltration H))
+      (herbrandFunction (D.depthLowerFiltration H))
         ((D.quotientFiberDepth H hq ⟨σ, hσq⟩ : ℝ) - 1) := by
   by_cases hm : D.quotientFiberDepth H hq ⟨σ, hσq⟩ = 0
   · have hdepth : D.depth σ = WithTop.some 0 := by
@@ -349,6 +363,10 @@ theorem quotientFiberAverage_sub_one_eq_herbrandFunction_of_maximal
     norm_num
     exact hnat
 
+open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
+  herbrandFunction
+  herbrandFunction_strictMono
+) in
 /-- Natural-threshold form of the last equivalence in the proof of
 Herbrand's theorem.  The normalized average is at least `η_H(s) + 1`
 exactly when its quotient fibre contains an element of depth at least
@@ -360,7 +378,7 @@ theorem quotientFiberAverage_ge_herbrandFunction_add_one_iff_exists
       D.depth γ ≤ D.depth σ)
     (s : ℕ) :
     D.quotientFiberAverage H hq ≥
-        (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction (D.depthLowerFiltration H)) s + 1 ↔
+        (herbrandFunction (D.depthLowerFiltration H)) s + 1 ↔
       ∃ γ : QuotientFiber H q,
         WithTop.some (s + 1) ≤ D.depth (γ : G) := by
   let F := D.depthLowerFiltration H
@@ -394,13 +412,16 @@ theorem quotientFiberAverage_ge_herbrandFunction_add_one_iff_exists
     rw [hdepth]
     exact WithTop.coe_le_coe
   rw [hfiber, hwithTopNat, ← hrealNat]
-  change D.quotientFiberAverage H hq ≥ (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction F) s + 1 ↔ _
-  rw [show D.quotientFiberAverage H hq ≥ (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction F) s + 1 ↔
-      (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction F) s ≤ D.quotientFiberAverage H hq - 1 by
+  change D.quotientFiberAverage H hq ≥ (herbrandFunction F) s + 1 ↔ _
+  rw [show D.quotientFiberAverage H hq ≥ (herbrandFunction F) s + 1 ↔
+      (herbrandFunction F) s ≤ D.quotientFiberAverage H hq - 1 by
     constructor <;> intro h <;> linarith]
   rw [havg]
-  exact (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_strictMono F).le_iff_le
+  exact (herbrandFunction_strictMono F).le_iff_le
 
+open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
+  herbrandFunction
+) in
 /-- Every nontrivial quotient fibre admits a maximal representative for
 which the Herbrand fibre-average identity holds. -/
 theorem exists_maximal_representative_quotientFiberAverage [Fintype G]
@@ -409,7 +430,7 @@ theorem exists_maximal_representative_quotientFiberAverage [Fintype G]
       (∀ γ : G, QuotientGroup.mk' H γ = q →
         D.depth γ ≤ D.depth σ) ∧
       D.quotientFiberAverage H hq - 1 =
-        (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction (D.depthLowerFiltration H))
+        (herbrandFunction (D.depthLowerFiltration H))
           ((D.quotientFiberDepth H hq ⟨σ, hσq⟩ : ℝ) - 1) := by
   obtain ⟨σ, hσq, hmax⟩ := D.exists_maximal_depth_representative H hq
   refine ⟨σ, hσq, hmax, ?_⟩

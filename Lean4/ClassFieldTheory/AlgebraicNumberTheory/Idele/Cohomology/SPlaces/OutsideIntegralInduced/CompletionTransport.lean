@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 
-set_option autoImplicit false
-
 /-!
 # Transporting integer rings across finite-place cosets
 
 This file transports completion fields and their valuation rings from every
 right coset of a decomposition group to the chosen algebraic localization.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

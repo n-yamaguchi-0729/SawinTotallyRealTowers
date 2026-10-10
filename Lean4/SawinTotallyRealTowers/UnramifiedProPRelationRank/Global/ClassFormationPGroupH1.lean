@@ -9,7 +9,6 @@ import ProCGroups.ProP.FinitePGroupMaximal
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
 
-set_option autoImplicit false
 /-!
 # Degree-one vanishing for finite p-extensions of a class formation
 

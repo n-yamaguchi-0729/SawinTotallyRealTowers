@@ -9,8 +9,6 @@ import ProCGroups.FoxDifferential.Completed.Continuous.Magnus.ClosedGeneratedVec
 import ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Topology
 import ProCGroups.FoxDifferential.Completed.FreeProC.RelationReflection
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — free pro-\(C\) — natural topology
 

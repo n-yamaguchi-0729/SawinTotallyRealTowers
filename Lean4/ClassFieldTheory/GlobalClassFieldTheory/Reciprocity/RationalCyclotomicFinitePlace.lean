@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleArtin
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 import Mathlib.NumberTheory.NumberField.Cyclotomic.Ideal
 
-set_option autoImplicit false
-
 /-!
 # Unramified finite places of rational cyclotomic levels
 
@@ -19,6 +17,8 @@ to the finite-place completions used by the global Artin map.  A rational
 prime outside the conductor is unramified at the actual chosen extension
 of its normalized finite-place absolute value.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

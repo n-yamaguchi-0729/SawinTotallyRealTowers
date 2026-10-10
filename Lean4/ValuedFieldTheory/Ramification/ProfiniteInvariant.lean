@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.Galois.Profinite
 import Mathlib.RingTheory.Invariant.Profinite
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
 /-!
 # Profinite invariant rings: normality on prime residue fields
 
@@ -20,6 +16,10 @@ statement.  The proof is the same finite-orbit argument as in this construction:
 element of the discrete ring is fixed by an open normal subgroup, so its
 orbit polynomial is computed in a finite quotient.
 -/
+
+namespace RamificationTheory
+
+
 
 noncomputable section
 

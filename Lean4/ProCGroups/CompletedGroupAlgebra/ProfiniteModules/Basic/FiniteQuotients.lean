@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.OpenSubmodule
 
-set_option autoImplicit false
-
 /-!
 # Finite quotients of profinite modules
 

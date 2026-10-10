@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.FiniteStageTransgressionLinear
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Quotient
 
-set_option autoImplicit false
 /-!
 # Finite-stage transgression for the absolute unramified quotient
 

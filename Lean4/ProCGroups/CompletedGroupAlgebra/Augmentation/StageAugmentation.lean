@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.UnitRepresentation
 
-set_option autoImplicit false
-
 /-!
 # Augmentation at in-class quotient stages
 

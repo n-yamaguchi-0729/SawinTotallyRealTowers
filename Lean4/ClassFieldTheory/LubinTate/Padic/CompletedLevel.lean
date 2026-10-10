@@ -12,8 +12,6 @@ import Mathlib.RingTheory.AdicCompletion.Topology
 import Mathlib.RingTheory.PowerSeries.Evaluation
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
-set_option autoImplicit false
-
 /-!
 # Completed p-adic Lubin--Tate levels
 
@@ -31,6 +29,8 @@ The integral polynomial, splitting field, and valuations below are the
 existing mathlib/LCFT objects.  No parallel p-adic field, integer ring, or
 completion is introduced.
 -/
+
+
 
 noncomputable section
 

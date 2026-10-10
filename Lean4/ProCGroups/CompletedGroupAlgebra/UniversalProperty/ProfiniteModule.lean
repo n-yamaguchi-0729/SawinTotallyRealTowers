@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.UniversalProperty.OpenSubmoduleQuotient
 
-set_option autoImplicit false
-
 /-!
 # Lifts to profinite modules
 

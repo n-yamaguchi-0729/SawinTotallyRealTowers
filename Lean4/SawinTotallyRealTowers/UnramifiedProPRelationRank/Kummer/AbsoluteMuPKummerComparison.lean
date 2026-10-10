@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerLinear
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTrivialization
 
-set_option autoImplicit false
 /-!
 # Comparing natural and trivial-coefficient absolute Kummer H¹
 
@@ -183,7 +182,7 @@ noncomputable def absoluteContinuousZModCharacterH1LinearEquiv :
       map_add' := fun chi psi ↦ by ext sigma; rfl }
   exact { e with map_smul' := ZMod.map_smul e }
 
-omit [CharZero K] in
+omit [CharZero K] [Fact p.Prime] in
 @[simp]
 theorem absoluteContinuousZModCharacterH1LinearEquiv_apply
     (chi : absoluteContinuousZModCharacterModP K p)
@@ -249,17 +248,6 @@ theorem absoluteMuPCocyclesMap_kummer_eq
   let Czero := ClassFieldTower.Cohomology.trivialZModPCochains p
     (Field.absoluteGaloisGroup K)
   apply ClassFieldTower.Cohomology.topModule_mono_injective (Czero.iCycles 1)
-  change Czero.iCycles 1
-      (ContinuousCohomology.cocyclesMap
-        (ContinuousMonoidHom.id (Field.absoluteGaloisGroup K))
-        (absoluteMuPTopRepTrivialIso K p hmu).hom 1
-        (absoluteKummerMuPHomogeneousOneCocycle K p a)) =
-    Czero.iCycles 1
-      (ClassFieldTower.Cohomology.cocycleOfH1
-        (absoluteKummerContinuousH1LinearEquiv K p hmu
-          (Additive.ofMul
-            (QuotientGroup.mk'
-              (powMonoidHom p : Kˣ →* Kˣ).range a))))
   rw [← ConcreteCategory.comp_apply, HomologicalComplex.cyclesMap_i]
   let chi := absoluteKummerContinuousH1LinearEquiv K p hmu
     (Additive.ofMul

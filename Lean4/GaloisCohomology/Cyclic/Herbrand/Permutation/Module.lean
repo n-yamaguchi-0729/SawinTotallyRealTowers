@@ -11,8 +11,6 @@ import Mathlib.Data.ZMod.QuotientGroup
 import Mathlib.GroupTheory.GroupAction.Quotient
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Herbrand quotients of permutation lattices
 
@@ -23,6 +21,8 @@ transitive permutation lattices, and multiplies over a finite family of
 orbits.  It also records invariance under passage to a finite-index stable
 subgroup.
 -/
+
+
 
 open scoped BigOperators
 
@@ -861,9 +861,11 @@ theorem permutationFunctionOrbitEquiv_equivariant :
       f ((x * g)⁻¹ • ω.out)
   rw [mul_inv_rev, mul_smul]
 
+omit [Fintype ι] in
 /-- Degree-zero Tate cohomology of a finite integral permutation module
 is finite for a cyclic generator. -/
 theorem permutationFunctionHerbrandH0Finite
+    [Finite ι]
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :
@@ -939,9 +941,11 @@ theorem permutationFunctionHerbrandH0Finite
     herbrandH0Finite_of_equivariantMulEquiv
       e.symm (mulEquiv_symm_commutes_smul e he)
 
+omit [Fintype ι] in
 /-- Degree-minus-one Tate cohomology of a finite integral permutation
 module is finite for a cyclic generator. -/
 theorem permutationFunctionHerbrandHMinusOneFinite
+    [Finite ι]
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :
@@ -1018,10 +1022,13 @@ theorem permutationFunctionHerbrandHMinusOneFinite
     herbrandHMinusOneFinite_of_equivariantMulEquiv
       e.symm (mulEquiv_symm_commutes_smul e he) σ
 
-/-- Canonical orbit form of the permutation-lattice Herbrand quotient formula: the Herbrand quotient of the
+omit [Fintype ι] in
+/-- Canonical orbit form of the permutation-lattice Herbrand quotient formula: the Herbrand
+quotient of the
 integer-valued functions on a finite `G`-set is the product of the
 orders of the stabilizers of its orbits. -/
 theorem permutationFunction_herbrandQuotient_eq_stabilizerProduct
+    [Finite ι]
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :

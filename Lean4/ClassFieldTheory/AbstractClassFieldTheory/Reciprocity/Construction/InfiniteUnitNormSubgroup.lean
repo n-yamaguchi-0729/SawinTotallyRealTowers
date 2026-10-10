@@ -6,7 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.InfiniteUnitDescent
 
-set_option autoImplicit false
+/-!
+# Infinite unit norm subgroups
+
+This module defines the finite-level and infinite unit norm ranges, proves
+their tower compatibility, and compares them with the ambient norm
+subgroups.
+-/
 
 universe u
 
@@ -15,13 +21,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Infinite unit norm subgroups
 
-This module defines the finite-level and infinite unit norm ranges, proves
-their tower compatibility, and compares them with the ambient norm
-subgroups.
--/
 
 noncomputable section
 

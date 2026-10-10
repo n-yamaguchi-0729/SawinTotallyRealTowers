@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntermediateFieldNormResidueNaturality
 
-set_option autoImplicit false
-
 /-!
 # Restriction naturality of the actual abelian local Artin map
 
 The actual algebraic and continuous Artin maps commute with restriction
 between finite abelian intermediate fields of the fixed separable closure.
 -/
+
+
 
 noncomputable section
 

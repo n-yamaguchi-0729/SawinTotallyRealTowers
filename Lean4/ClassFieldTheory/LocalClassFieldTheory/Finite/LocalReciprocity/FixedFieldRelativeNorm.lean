@@ -9,8 +9,6 @@ import Mathlib.FieldTheory.PrimitiveElement
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
 
-set_option autoImplicit false
-
 /-!
 # Relative norms on actual fixed fields
 
@@ -20,6 +18,8 @@ intermediate extension need not be normal: relative left cosets are
 identified with field embeddings into the common separably closed ambient
 field, and both norms are then the same product of conjugates.
 -/
+
+
 
 noncomputable section
 
@@ -43,7 +43,7 @@ noncomputable local instance finiteSeparableAlgHomFintypeRelative
 /-- A left coset of the abstract fixing subgroup restricts to an embedding
 of the upper concrete fixed field into the common ambient field. -/
 def abstractFixedFieldCosetToAlgHom
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup) :
     (K.toSubgroup ⧸ extensionSubgroup K L hLK) →
       (abstractRelativeFixedField k Ω hLK →ₐ[
@@ -79,7 +79,7 @@ omit [IsSepClosed Ω] in
 /-- States the theorem `abstractFixedFieldCosetToAlgHom_mk`. -/
 @[simp]
 theorem abstractFixedFieldCosetToAlgHom_mk
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup) (σ : K.toSubgroup) :
     abstractFixedFieldCosetToAlgHom k Ω K L hLK
         (QuotientGroup.mk σ) =
@@ -88,7 +88,7 @@ theorem abstractFixedFieldCosetToAlgHom_mk
   rfl
 
 private theorem abstractFixedFieldCosetToAlgHom_surjective
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [FiniteDimensional (abstractFixedField k Ω K)
       (abstractRelativeFixedField k Ω hLK)] :
@@ -127,7 +127,7 @@ private theorem abstractFixedFieldCosetToAlgHom_surjective
 
 omit [IsSepClosed Ω] in
 private theorem abstractFixedFieldCosetToAlgHom_injective
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup) :
     Function.Injective
       (abstractFixedFieldCosetToAlgHom k Ω K L hLK) := by
@@ -157,7 +157,7 @@ private theorem abstractFixedFieldCosetToAlgHom_injective
 /-- Abstract relative left cosets are precisely the embeddings of the upper
 concrete fixed field into the ambient separably closed field. -/
 def abstractFixedFieldCosetEquivAlgHom
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [FiniteDimensional (abstractFixedField k Ω K)
       (abstractRelativeFixedField k Ω hLK)] :
@@ -171,7 +171,7 @@ def abstractFixedFieldCosetEquivAlgHom
 omit [IsSepClosed Ω] in
 /-- States the theorem `relativeCosetAction_abstractFixedFieldUnit_val`. -/
 theorem relativeCosetAction_abstractFixedFieldUnit_val
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (x : (abstractRelativeFixedField k Ω hLK)ˣ)
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK) :
@@ -190,13 +190,13 @@ theorem relativeCosetAction_abstractFixedFieldUnit_val
 field norm between the two concrete fixed fields, without a normality
 assumption on the intermediate extension. -/
 theorem relativeNorm_abstractFixedFieldUnit_eq_normUnits
-    (K L : ClosedSubgroup (Gal(Ω / k)))
+    (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     [hKabsolute : Finite
-      ((baseField Gal(Ω / k)).toSubgroup ⧸
-        extensionSubgroup (baseField Gal(Ω / k)) K
+      ((baseField Gal(Ω/k)).toSubgroup ⧸
+        extensionSubgroup (baseField Gal(Ω/k)) K
           (le_baseField K))]
     (x : (abstractRelativeFixedField k Ω hLK)ˣ) :
     relativeNorm (galoisAmbientUnitsRep k Ω) K L hLK
@@ -233,7 +233,6 @@ theorem relativeNorm_abstractFixedFieldUnit_eq_normUnits
         K L hLK
         (abstractRelativeFixedFieldUnitsEquivGaloisFixed
           k Ω K L hLK (Additive.ofMul x)) q) : Ωˣ) : Ω) = _
-
   change (Units.coeHom Ω) (∏ q : Q,
     Additive.toMul
       (relativeCosetAction (galoisAmbientUnitsRep k Ω)

@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
 import ValuedFieldTheory.Valuation.Henselian.Factorization.WeakLimits
 import ValuedFieldTheory.Valuation.Henselian.Factorization.PrincipalLimits
 
-set_option autoImplicit false
-
 /-!
 # explicit valuation-ring Hensel statement
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Semidirect
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: finite stage — stage — derivative — lift
 

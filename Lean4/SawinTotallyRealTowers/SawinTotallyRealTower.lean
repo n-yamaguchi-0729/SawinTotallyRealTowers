@@ -17,8 +17,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.NumberField.RootDiscriminantBound
 import Mathlib.NumberTheory.NumberField.Discriminant.Basic
 import Mathlib.Order.Preorder.Finite
 
-set_option autoImplicit false
-
 /-!
 # Sawin's totally real tower
 

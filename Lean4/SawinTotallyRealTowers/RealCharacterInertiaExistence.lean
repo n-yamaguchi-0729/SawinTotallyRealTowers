@@ -32,8 +32,6 @@ import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Arbitrary finite inertia data with a prescribed real value
 
@@ -46,7 +44,7 @@ correction preserves all inertia outside an allowed set containing three.
 -/
 
 open NumberField IsDedekindDomain
-open scoped NumberField BigOperators Classical
+open scoped NumberField BigOperators
 
 noncomputable section
 namespace ClassFieldTower.Sawin
@@ -172,6 +170,7 @@ private theorem localRadicalValue_negThree_ne_zero :
   exact negativeThreeCharacter_three_neg_one_ne_one
     (Multiplicative.toAdd.injective (he.symm.trans h))
 
+open scoped Classical in
 /-- Any finite local quadratic-character family can be corrected only at
 three so that its actual reciprocity functional annihilates the rational
 ideal-square radical. -/
@@ -273,6 +272,7 @@ theorem exists_absoluteCharacter_with_prescribed_inertia_and_real_value
       (∀ (v : HeightOneSpectrum (𝓞 ℚ)), v ∉ S → v ∉ T →
         ∀ σ : finitePlaceAbsoluteInertiaSubgroup ℚ v,
           γ (finitePlaceAbsoluteDecompositionInclusion ℚ v σ.1) = 1) := by
+  classical
   let v₃ : HeightOneSpectrum (𝓞 ℚ) :=
     (Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm
       (⟨3, Nat.prime_three⟩ : Nat.Primes)

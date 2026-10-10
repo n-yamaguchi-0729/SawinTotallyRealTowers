@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteRestrictedProductBaseC
 import ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
 
-set_option autoImplicit false
-
 /-!
 # Scalar extension from relative to ordinary ideles
 
@@ -19,6 +17,8 @@ infinite place of the base field are identified with exact extensions of
 its absolute value.  Surjectivity is reduced through the finite normal
 closure to the Galois valuation-extension comparison.
 -/
+
+
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain

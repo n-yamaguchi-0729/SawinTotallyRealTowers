@@ -23,8 +23,6 @@ import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
 import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
-
 /-!
 # The finite Kummer coefficient kernel lies in the absolute inflation kernel
 

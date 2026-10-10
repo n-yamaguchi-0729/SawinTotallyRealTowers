@@ -13,7 +13,13 @@ import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 
-set_option autoImplicit false
+/-!
+# Vanishing of cyclic units cohomology under unramified restriction
+
+Inflation of a cyclic degree-two units class followed by restriction vanishes for an
+unramified extension of the specified degree. The proof transports the base-units
+comparison to units cohomology.
+-/
 
 open CategoryTheory CategoryTheory.Limits
 open scoped ValuativeRel

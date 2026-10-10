@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransfer
 
-set_option autoImplicit false
-
 /-!
 # Abstract reciprocity: the maximal-unramified symbol
 
@@ -18,6 +16,8 @@ arithmetic Frobenius.  The valuation--Frobenius map below is kept as a
 candidate until its compatibility with the finite norm-residue symbols has
 been proved from the unramified norm-quotient equivalence.
 -/
+
+
 
 noncomputable section
 
@@ -122,9 +122,7 @@ theorem finiteUnramifiedRestriction_mk
     finiteUnramifiedRestriction D K L hUnramified (QuotientGroup.mk k) =
       L.extensionQuotientMk k := by
   apply L.extensionQuotientMulEquiv.injective
-  simp [finiteUnramifiedRestriction,
-    maximalUnramifiedExtensionRestriction_mk,
-    FiniteGaloisSubextension.toGaloisExtensionQuotientMulEquiv]
+  simp only [FiniteGaloisSubextension.extensionQuotientMk_apply]
   exact L.toGaloisSubextension.extensionQuotientMk_apply k
 
 /--
@@ -142,7 +140,8 @@ theorem finiteUnramifiedRestriction_frobenius
   rw [finiteUnramifiedRestriction, MonoidHom.comp_apply,
     maximalUnramifiedRestriction_frobenius]
   apply L.extensionQuotientMulEquiv.injective
-  simp [FiniteGaloisSubextension.toGaloisExtensionQuotientMulEquiv]
+  simp only [MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_ofClass,
+    MulEquiv.apply_symm_apply]
   exact
     L.toGaloisSubextension.extensionQuotientMulEquiv.apply_symm_apply
       (D.unramifiedFrobenius K L.field L.below)
@@ -556,7 +555,8 @@ theorem maximalUnramifiedNormResidueSymbol_finiteReciprocity_of_generator
 /-- The finite restriction of the maximal-unramified symbol is the
 inverse of finite unramified reciprocity.  The map `r` is kept explicit
 here so this statement records the uniqueness argument of maximal-unramified reciprocity
-without anticipating the final name of the finite reciprocity equivalence: the unramified norm-quotient equivalence
+without anticipating the final name of the finite reciprocity equivalence: the unramified
+norm-quotient equivalence
 promotes any reciprocity map with the Frobenius--prime value to an
 equivalence, and the preceding compatibility identifies its inverse. -/
 theorem maximalUnramifiedNormResidueSymbol_finiteRestriction_of_generator

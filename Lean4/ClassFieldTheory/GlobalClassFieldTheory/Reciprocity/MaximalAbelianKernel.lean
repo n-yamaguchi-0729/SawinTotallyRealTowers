@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.IdentityComponent
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldOriginalField
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
 
-set_option autoImplicit false
-
 /-!
 # The kernel of maximal abelian global reciprocity
 
@@ -24,7 +22,9 @@ closed finite-index idele-class subgroup, whose selected finite class field
 supplies the detecting finite Galois coordinate.
 -/
 
-open scoped Classical NumberField
+
+
+open scoped NumberField
 
 noncomputable section
 

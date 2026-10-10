@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedScalarEndomorphism
 import ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
 
-set_option autoImplicit false
-
 /-!
 # The completed multiplicative primitive point
 
@@ -17,6 +15,8 @@ completed standard primitive point.  It proves the exact standard and
 changed-uniformizer torsion bounds and constructs the actual unit action on
 that point.
 -/
+
+
 
 noncomputable section
 

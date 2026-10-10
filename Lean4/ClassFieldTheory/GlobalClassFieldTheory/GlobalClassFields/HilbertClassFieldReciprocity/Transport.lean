@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
 
-set_option autoImplicit false
-
 /-!
 # Generic transport core for Hilbert class-field reciprocity
 
@@ -17,7 +15,9 @@ reuse the named data provider without rebuilding the generic reciprocity
 composite.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

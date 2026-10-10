@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Zassenhaus.Functoriality
 
-set_option autoImplicit false
 /-!
 # Zassenhaus depth predicates
 

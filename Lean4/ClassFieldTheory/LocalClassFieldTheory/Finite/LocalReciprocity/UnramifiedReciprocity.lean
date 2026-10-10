@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormComparison
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 
-set_option autoImplicit false
-
 /-!
 # Unramified reciprocity
 
@@ -17,6 +15,8 @@ quotient with its normalized valuation model, the generator-normalized
 Frobenius model of the Galois group, and the canonical equivalence with the
 abelianization of that cyclic group.
 -/
+
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -65,7 +65,7 @@ theorem unramifiedLocalReciprocityIsoToGaloisGroup_inverseIntegerRingUniformizer
   rw [LocalClassFieldTheory.valuationModDegreeMulHom_apply,
     LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
     v_inverseIntegerRingUniformizerFieldUnit]
-  simp
+  simp only [Int.cast_one]
   rw [← galoisGroupEquivZModOfUnramifiedValuationNormalized_arithmeticFrobenius K L]
   exact (galoisGroupEquivZModOfUnramifiedValuationNormalized K L).symm_apply_apply _
 

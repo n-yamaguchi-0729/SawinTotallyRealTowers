@@ -13,8 +13,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalT
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 
-set_option autoImplicit false
-
 /-!
 # Finite-place support for relative ideles
 
@@ -25,6 +23,8 @@ unit groups supplied by the completion decomposition. The resulting supported
 subgroups are stable under the Galois action and exhaust the full
 relative idele group.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -195,7 +195,10 @@ theorem relativeBasisIntegralAt_repr_mem
       w.adicCompletionIntegers K := by
   classical
   rcases hx with ⟨c, rfl⟩
-  simp
+  simp only [map_sum, Algebra.TensorProduct.basis_repr_tmul,
+    Module.Basis.repr_self, Finsupp.mapRange_single, map_one,
+    Finsupp.smul_single, smul_eq_mul, mul_one,
+    Finsupp.coe_finsetSum, Finset.sum_apply]
   rw [Finset.sum_eq_single i]
   · simpa only [Finsupp.single_eq_same] using (c i).property
   · intro j _ hji

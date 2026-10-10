@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.MultiplicativeInducedShapiro
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 
-set_option autoImplicit false
 /-!
 # H² of an unramified infinite-place idele block
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.Coordinates
 
-set_option autoImplicit false
-
 /-!
 # Joint local components of relative adeles and ideles
 
@@ -17,6 +15,8 @@ homomorphism on relative ideles.  Surjectivity onto the restricted local
 product is handled separately, once integral compatibility with the local
 tensor decomposition has been established.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -70,7 +70,11 @@ theorem relativeAdeleInfiniteComponent_basis_repr
         (K := K) (L := L) z i).1 w := by
   classical
   rw [relativeAdeleInfiniteComponent_eq_sum_tmul_coefficients]
-  simp [relativeExtensionBasis, Finsupp.single_apply]
+  simp only [map_sum, Finsupp.finsetSum_apply,
+    Algebra.TensorProduct.basis_repr_tmul, Module.Basis.repr_self,
+    Finsupp.smul_apply, Finsupp.mapRange_apply, Finsupp.single_apply,
+    smul_eq_mul, apply_ite, map_zero, mul_zero,
+    Finset.sum_ite_eq', Finset.mem_univ, ite_true]
   change
     (relativeAdeleCoefficient
         (K := K) (L := L) z i).1 w *

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageChosenUnramified
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
 
-set_option autoImplicit false
 /-!
 # Field-unit primitives for Kummer classes at the arithmetic stage
 
@@ -35,7 +34,7 @@ local notation "StageField" => FiniteEverywhereUnramifiedProPExtension.field
 the field-unit representation. -/
 theorem openNormalArithmeticStage_kummerH2_eq_zero
     (x : groupCohomology
-      (Rep.trivial ℤ Gal(StageField / F) (ULift (ZMod (n : ℕ)))) 2) :
+      (Rep.trivial ℤ Gal(StageField/F) (ULift (ZMod (n : ℕ)))) 2) :
     (finiteKummerCoefficientH2Map F StageField n hmu).hom x = 0 :=
   unramifiedFiniteKummerCoefficientH2Map_eq_zero F StageField n hmu
     (openNormalArithmeticStage F (n : ℕ) hpOdd U).isPGroup
@@ -47,7 +46,7 @@ theorem openNormalArithmeticStage_kummerH2_eq_zero
 field-unit primitive after the chosen Kummer coefficient map. -/
 theorem openNormalArithmeticStage_kummerTwoCocycle_isFieldUnitsCoboundary
     (c : groupCohomology.cocycles₂
-      (Rep.trivial ℤ Gal(StageField / F) (ULift (ZMod (n : ℕ))))) :
+      (Rep.trivial ℤ Gal(StageField/F) (ULift (ZMod (n : ℕ))))) :
     ∃ b : Gal(StageField / F) → Additive StageFieldˣ,
       (groupCohomology.d₁₂ (Rep.ofAlgebraAutOnUnits F StageField)).hom b =
         (groupCohomology.mapCocycles₂ (MonoidHom.id Gal(StageField / F))

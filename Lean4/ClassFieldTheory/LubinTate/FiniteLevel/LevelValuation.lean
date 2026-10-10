@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
 import ValuedFieldTheory.Ramification.HilbertRamification.CompleteDVF
 import ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
-set_option autoImplicit false
-
 /-!
 # Uniqueness of the valuation on standard Lubin--Tate levels
 
@@ -18,6 +16,8 @@ Consequently the complete discrete valuation selected from its integral
 closure is the unique extension of the base valuation.  This is the bridge
 needed by the genuine lower- and upper-numbering ramification groups.
 -/
+
+
 
 noncomputable section
 
@@ -30,12 +30,15 @@ open ValuationTheory.DiscreteValuationField.ValuedExtension
 
 variable {K : Type u} [Field K]
 
+open _root_.ValuationTheory.DiscreteValuationField.ValuedExtension (
+  HasUniqueValuationExtension
+) in
 /-- The chosen complete valuation on a standard Lubin--Tate level is the
 unique extension of the base valuation. -/
 theorem standardLubinTateLevelCompleteDVF_hasUniqueValuationExtension
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    ValuationTheory.DiscreteValuationField.ValuedExtension.HasUniqueValuationExtension.{u, v, u, 0, 0}
+    HasUniqueValuationExtension.{u, v, u, 0, 0}
       (base := F.toCompleteDVF)
       (target := standardLubinTateLevelCompleteDVF hπ n) := by
   let : FiniteDimensional K (standardLubinTateLevelField hπ n) :=

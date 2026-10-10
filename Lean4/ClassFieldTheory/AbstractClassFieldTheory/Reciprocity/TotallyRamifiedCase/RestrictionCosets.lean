@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 
-set_option autoImplicit false
-
 /-!
 # Restriction transport for finite Galois subextensions
 
 This file constructs quotient restriction maps, their coset equivalences,
 and the compatible relative actions and norms used in ramified towers.
 -/
+
+
 
 noncomputable section
 

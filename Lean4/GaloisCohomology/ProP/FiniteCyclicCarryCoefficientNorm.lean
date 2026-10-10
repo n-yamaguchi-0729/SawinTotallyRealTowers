@@ -10,8 +10,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 import Mathlib.RepresentationTheory.Rep.Basic
 
-set_option autoImplicit false
-
 /-!
 # Vanishing of a coefficient-changed cyclic carry class
 

@@ -11,10 +11,9 @@ import Mathlib.Algebra.Module.RingHom
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.LinearAlgebra.FreeModule.Basic
 
-set_option autoImplicit false
-
 /-!
-# The primitive-division-module equivalence: equal-characteristic division points are free of rank one
+# The primitive-division-module equivalence: equal-characteristic division points are free of
+rank one
 
 For the standard equal-characteristic Lubin--Tate series, the points killed by
 the `(n + 1)`-st iterate form a free rank-one module over
@@ -22,6 +21,8 @@ the `(n + 1)`-st iterate form a free rank-one module over
 The primitive polynomial is indexed by `n`, while its roots lie at division
 level `n + 1`.
 -/
+
+
 
 noncomputable section
 
@@ -169,8 +170,8 @@ noncomputable def equalCharacteristicLubinTateTorsionEquivRootSet
   toFun x := ⟨x.1, by
     have hP : equalCharacteristicLubinTatePiPolynomialIterate F (n + 1) ≠ 0 := by
       apply Polynomial.ne_zero_of_natDegree_gt
-      rw [equalCharacteristicLubinTatePiPolynomialIterate_natDegree]
-      exact Nat.pow_pos Nat.card_pos
+      · rw [equalCharacteristicLubinTatePiPolynomialIterate_natDegree]
+        exact Nat.pow_pos Nat.card_pos
     rw [Polynomial.mem_rootSet_of_ne hP, Polynomial.aeval_def,
       ← equalCharacteristicSeparableBaseHom_eq_algebraMap,
       equalCharacteristicLubinTatePiPolynomialIterate_eval₂]
@@ -178,8 +179,8 @@ noncomputable def equalCharacteristicLubinTateTorsionEquivRootSet
   invFun x := ⟨x.1, by
     have hP : equalCharacteristicLubinTatePiPolynomialIterate F (n + 1) ≠ 0 := by
       apply Polynomial.ne_zero_of_natDegree_gt
-      rw [equalCharacteristicLubinTatePiPolynomialIterate_natDegree]
-      exact Nat.pow_pos Nat.card_pos
+      · rw [equalCharacteristicLubinTatePiPolynomialIterate_natDegree]
+        exact Nat.pow_pos Nat.card_pos
     have hx := (Polynomial.mem_rootSet_of_ne hP).mp x.2
     rw [Polynomial.aeval_def,
       ← equalCharacteristicSeparableBaseHom_eq_algebraMap,
@@ -579,7 +580,8 @@ theorem equalCharacteristicLubinTatePrimitiveEvaluation_surjective
         rfl
     _ = x := ha
 
-/-- The public the primitive-division-module equivalence equivalence: at positive division level `n + 1`,
+/-- The public the primitive-division-module equivalence equivalence: at positive division level
+`n + 1`,
 evaluation at a primitive division point identifies `κ⟦T⟧/(T^(n+1))`
 with the entire division module. -/
 noncomputable def equalCharacteristicLubinTateFreeRankOneEquiv
@@ -608,7 +610,8 @@ theorem equalCharacteristicLubinTateFreeRankOneEquiv_apply_one
     equalCharacteristicLubinTatePrimitiveTorsionPoint F n
   exact one_smul _ _
 
-/-- In particular the division module of the primitive-division-module equivalence is genuinely free.  The
+/-- In particular the division module of the primitive-division-module equivalence is genuinely
+free.  The
 displayed linear equivalence above supplies its one-element basis. -/
 noncomputable instance equalCharacteristicLubinTateDivisionModuleFree
     (F : LocalField.{u, v} K)

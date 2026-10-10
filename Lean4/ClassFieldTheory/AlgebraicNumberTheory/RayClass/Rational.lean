@@ -12,8 +12,6 @@ import Mathlib.NumberTheory.NumberField.Units.Basic
 import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.NumberTheory.Padics.RingHoms
 
-set_option autoImplicit false
-
 /-!
 # Ray class groups of the rational numbers
 
@@ -24,7 +22,9 @@ positive generator of an ideal prime to this modulus gives the explicit
 isomorphism with `(ZMod m)ˣ`.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -1002,7 +1002,7 @@ theorem principalLocalHigherUnit_iff_modEq
 /-- Congruences modulo pairwise coprime moduli combine to a congruence
 modulo their finite product. -/
 theorem intModEq_finset_prod_of_pairwise_coprime
-    {ι : Type*} [DecidableEq ι]
+    {ι : Type*}
     (s : Finset ι) (f : ι → ℕ)
     (hpair :
       ∀ i ∈ s, ∀ j ∈ s, i ≠ j →
@@ -1010,6 +1010,7 @@ theorem intModEq_finset_prod_of_pairwise_coprime
     {a b : ℤ}
     (hmod : ∀ i ∈ s, a ≡ b [ZMOD f i]) :
     a ≡ b [ZMOD ∏ i ∈ s, f i] := by
+  classical
   induction s using Finset.induction_on with
   | empty =>
       exact Int.modEq_of_dvd (one_dvd (b - a))

@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotients
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
-set_option autoImplicit false
-
 /-!
 # Transition maps between absolute finite quotients
 
 The canonical finite quotient identifications commute with quotient
 transition on the profinite side and restriction on the Galois side.
 -/
+
+
 
 noncomputable section
 

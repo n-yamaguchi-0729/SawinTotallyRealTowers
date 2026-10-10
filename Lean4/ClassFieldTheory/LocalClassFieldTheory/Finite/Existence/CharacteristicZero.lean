@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CyclotomicKummerD
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupSurjectivity
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
-set_option autoImplicit false
-
 /-!
 # Local existence theorem in characteristic zero
 
@@ -18,6 +16,8 @@ subgroup attached to any finite-index subgroup of `Kˣ`.  Consequently the
 ordinary norm-subgroup order embedding is surjective, hence an order
 isomorphism.
 -/
+
+
 
 noncomputable section
 

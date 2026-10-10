@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
 import Mathlib.Dynamics.BirkhoffSum.Basic
 
-set_option autoImplicit false
+/-!
+# Universal norm descent
+
+This module contains the representation-theoretic lifting and correction
+calculation used by the abstract reciprocity construction, together with
+the norm, action, and iterate identities it requires.
+-/
 
 universe u v
 
@@ -16,13 +22,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Universal norm descent
 
-This module contains the representation-theoretic lifting and correction
-calculation used by the abstract reciprocity construction, together with
-the norm, action, and iterate identities it requires.
--/
 
 noncomputable section
 

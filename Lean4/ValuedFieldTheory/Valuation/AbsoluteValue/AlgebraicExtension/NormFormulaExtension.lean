@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
 
-set_option autoImplicit false
-
 /-!
 # algebraic extension and integral closure
 
@@ -73,8 +71,9 @@ theorem normFormula_algebraic_extension
     ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
       (L := L) V.valuation hval
   have hBext : V.valuation.HasExtension B.valuation :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv_hasExtension
-      (L := L) V.valuation hval
+    open ValuationTheory.DiscreteValuationField.Valuation in
+      integralClosureValuationSubringOfMemOrInv_hasExtension
+        (L := L) V.valuation hval
   have hBclosure : B.toSubring = (integralClosure V L).toSubring := by
     change
       (integralClosure V.valuation.valuationSubring L).toSubring =
@@ -84,8 +83,9 @@ theorem normFormula_algebraic_extension
   intro W hW
   let : V.valuation.HasExtension W.valuation := hW.1
   simpa only [ValuationSubring.valuationSubring_valuation] using
-    DiscreteValuationField.Valuation.normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
-      (K := K) (L := L) V hval W.valuation
+    open DiscreteValuationField.Valuation in
+      normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
+        (K := K) (L := L) V hval W.valuation
 
 /-- Exact extension of nonarchimedean absolute values supplies extension of
 the canonical valuations of their closed unit balls. -/
@@ -290,8 +290,9 @@ theorem normFormula_finite_extension_norm_formula
       absoluteValueValuation_hasExtension_of_extends
         v w hnonarch hwnonarch hw_ext
     have hW :=
-      DiscreteValuationField.Valuation.normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
-        (K := K) (L := L) V hval W.valuation
+      open DiscreteValuationField.Valuation in
+        normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
+          (K := K) (L := L) V hval W.valuation
     have hextendedBase : ∀ a : K, extended (algebraMap K L a) = v a :=
       normFormula_finite_normFormulaAbsoluteValue_of_henselFactorization_extends_base
         (K := K) (L := L) v hnonarch hv
@@ -299,8 +300,9 @@ theorem normFormula_finite_extension_norm_formula
       absoluteValueValuation_hasExtension_of_extends
         v extended hnonarch hextendedNonarch hextendedBase
     have hR :=
-      DiscreteValuationField.Valuation.normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
-        (K := K) (L := L) V hval R.valuation
+      open DiscreteValuationField.Valuation in
+        normFormula_extension_valuationSubring_eq_integralClosure_of_mem_or_inv
+          (K := K) (L := L) V hval R.valuation
     have hsub : W = R := by
       simpa only [ValuationSubring.valuationSubring_valuation] using
         hW.trans hR.symm

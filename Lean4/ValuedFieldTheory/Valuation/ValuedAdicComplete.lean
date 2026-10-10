@@ -6,22 +6,23 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 import Mathlib.RingTheory.AdicCompletion.Topology
+import Mathlib.RingTheory.Valuation.Discrete.RankOne
+import Mathlib.GroupTheory.ArchimedeanDensely
 import Mathlib.Topology.Algebra.Valued.ValuedField
-
-set_option autoImplicit false
-
-universe u v
-
-namespace ValuationTheory
 
 /-!
 # Adic completeness of complete rank-one discrete valued fields
 
-This file supplies the common source used in the valuation-topology and adic-completeness arguments: on a
-rank-one discrete valued field with archimedean ambient value group, the
+This file supplies the common source used in the valuation-topology and adic-completeness
+arguments: on a
+rank-one discrete valued field, the
 native topology of the valuation ring is its maximal-ideal adic topology.
 Consequently a complete valued field has an adically complete valuation ring.
 -/
+
+universe u v
+
+namespace ValuationTheory
 
 noncomputable section
 
@@ -47,7 +48,7 @@ theorem rankOneDiscreteValuationSubring_isDiscreteValuationRing
 valued field is its maximal-ideal adic topology. -/
 theorem rankOneDiscreteValuationSubring_isAdic
     {K : Type u} [Field K] {Gamma : Type v}
-    [LinearOrderedCommGroupWithZero Gamma] [MulArchimedean Gamma]
+    [LinearOrderedCommGroupWithZero Gamma]
     [Valued K Gamma]
     [(Valued.v : Valuation K Gamma).IsRankOneDiscrete] :
     IsAdic
@@ -85,7 +86,7 @@ theorem rankOneDiscreteValuationSubring_isAdic
     convert h_preimage_open using 1
     ext x
     exact
-      (ValuationTheory.DiscreteValuationField.Valuation.mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
+      (DiscreteValuationField.Valuation.mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
           (val := val) (pi := pi) hpi n)
   · intro s hs
     rcases
@@ -94,41 +95,31 @@ theorem rankOneDiscreteValuationSubring_isAdic
       ⟨t, ht, hts⟩
     rcases (Valued.hasBasis_nhds_zero K Gamma).mem_iff.mp ht with
       ⟨gamma, _hgamma, hgamma_t⟩
-    let gamma' : Gammaˣ :=
-      Units.map
-        (MonoidWithZeroHom.ValueGroup₀.embedding (f := (val : K →*₀ Gamma)))
-        gamma
-    rcases exists_pow_lt
-        (Valuation.IsRankOneDiscrete.generator_lt_one val)
-        gamma' with
-      ⟨n, hn⟩
+    have : MulArchimedean val.ValueGroup₀ :=
+      (Valuation.IsRankOneDiscrete.valueGroup₀_equiv_withZeroMulInt val).symm.mulArchimedean
+    have hpi_restrict : val.restrict (pi : K) < 1 :=
+      val.restrict_lt_one_iff.mpr hpi.val_lt_one
+    obtain ⟨n, hn⟩ := exists_pow_lt₀ hpi_restrict gamma
     refine ⟨n, ?_⟩
     intro x hx
     apply hts
     apply hgamma_t
     change val.restrict (x : K) < gamma.1
-    rw [Valuation.restrict_lt_iff_lt_embedding]
     have hx_le :=
-      (ValuationTheory.DiscreteValuationField.Valuation.mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
-          (val := val) (pi := pi) hpi n).1 hx
+      (DiscreteValuationField.Valuation.mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow
+        (val := val) (pi := pi) hpi n).mp hx
     calc
-      val (x : K) ≤ val (((pi ^ n : val.valuationSubring) : K)) := hx_le
-      _ = ((Valuation.IsRankOneDiscrete.generator val) ^ n : Gamma) := by
-            simp [map_pow, hpi.val]
-      _ < MonoidWithZeroHom.ValueGroup₀.embedding (f := (val : K →*₀ Gamma)) gamma.1 := by
-        have hn_coe := Units.val_lt_val.mp hn
-        change
-          ((Valuation.IsRankOneDiscrete.generator val : Gammaˣ) : Gamma) ^ n <
-            MonoidWithZeroHom.ValueGroup₀.embedding
-              (f := (val : K →*₀ Gamma)) gamma.1 at hn_coe
-        exact hn_coe
+      val.restrict (x : K) ≤ val.restrict (((pi ^ n : val.valuationSubring) : K)) :=
+        val.restrict_le_iff.mpr hx_le
+      _ = val.restrict (pi : K) ^ n := map_pow val.restrict (pi : K) n
+      _ < gamma.1 := hn
 
 /-- Completeness of a rank-one discrete valued field produces adic
 completeness of its valuation ring; no adic-completeness assumption is
 exposed. -/
 theorem rankOneDiscreteValuationSubring_isAdicComplete
     {K : Type u} [Field K] {Gamma : Type v}
-    [LinearOrderedCommGroupWithZero Gamma] [MulArchimedean Gamma]
+    [LinearOrderedCommGroupWithZero Gamma]
     [Valued K Gamma]
     [(Valued.v : Valuation K Gamma).IsRankOneDiscrete]
     [CompleteSpace K] :
@@ -150,7 +141,7 @@ theorem rankOneDiscreteValuationSubring_isAdicComplete
 valuation, gives a `CompleteDVF` by construction. -/
 noncomputable def completeDVFOfCompleteValuedField
     {K : Type u} [Field K] {Gamma : Type v}
-    [LinearOrderedCommGroupWithZero Gamma] [MulArchimedean Gamma]
+    [LinearOrderedCommGroupWithZero Gamma]
     [Valued K Gamma]
     [(Valued.v : Valuation K Gamma).IsRankOneDiscrete]
     [CompleteSpace K] :

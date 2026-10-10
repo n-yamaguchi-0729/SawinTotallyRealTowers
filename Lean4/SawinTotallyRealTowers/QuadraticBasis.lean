@@ -12,8 +12,6 @@ import Mathlib.LinearAlgebra.Dimension.Free
 import Mathlib.RingTheory.Adjoin.PowerBasis
 import Mathlib.RingTheory.PowerBasis
 
-set_option autoImplicit false
-
 /-!
 # The basis associated to a quadratic generator
 

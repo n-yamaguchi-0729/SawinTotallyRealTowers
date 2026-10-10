@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.SixPrimeSupport
 import Mathlib.Data.Finset.Card
 
-set_option autoImplicit false
 /-!
 # Finite coordinates for the six-prime support
 

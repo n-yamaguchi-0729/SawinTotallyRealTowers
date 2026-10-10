@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
 import GaloisCohomology.Kummer.Concrete.GaloisCohomology
 
-set_option autoImplicit false
 /-!
 # Correcting finite unit boundaries to absolute roots-of-unity boundaries
 

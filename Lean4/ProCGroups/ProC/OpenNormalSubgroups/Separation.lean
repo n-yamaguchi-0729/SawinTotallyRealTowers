@@ -11,8 +11,6 @@ import ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
 import ProCGroups.GroupTheory.CentralizerNormalizerCommensurator
 import ProCGroups.Profinite.Basic
 
-set_option autoImplicit false
-
 /-!
 # Separation by open normal quotients
 

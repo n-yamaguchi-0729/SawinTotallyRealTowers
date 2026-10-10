@@ -25,9 +25,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
-      "historicalBodySHA256": "64da6f6976fa7183d9a47ba927558ff037c1d0ce771e678fd34823ec1377b696",
-      "currentSourceSHA256": "703c0e8fbcf251b0ba7dc1e761280b56ea6b36d50d2a49f795ac6083adc207ff",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "85ef50b27f275c6c9db43b1d2eeece3d8b6966f61c77bb7ac5cf572fd5ce993c",
+      "currentSourceSHA256": "b0864cafb0321562c49683f2dfaac7e95316fc0af74abfccb4cf7d9cd2521d83",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
           "propext",
@@ -65,7 +65,10 @@
         "primaryOwner": "ValuedFieldTheory",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "64da6f6976fa7183d9a47ba927558ff037c1d0ce771e678fd34823ec1377b696",
+      "originalSourceSHA256": "703c0e8fbcf251b0ba7dc1e761280b56ea6b36d50d2a49f795ac6083adc207ff",
+      "sourceUpdatePreservesLeanCode": true
     },
     {
       "name": "AlgebraicNumberTheory.Valuations.henselFactorization_prefixStateSeq_of_mem_span._unsafe_rec",
@@ -88,9 +91,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
-      "historicalBodySHA256": "92423448de17438d64cc613f609dba8571cb48aeade45933521636eb61a8d25c",
-      "currentSourceSHA256": "59c4a292d3449c7ba6dc0754b4a75502ffc5a1a2231177916ad1ade3a0711fcf",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "263610113f8dc0dcd5c4f826378bdf6c3e6fcc4d812b1589681aa137df7ee7d9",
+      "currentSourceSHA256": "08fc09513eed8aee3a4a64ff703f9891840c57df9793333fa2d73ec4d7e02f15",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
           "propext",
@@ -128,7 +131,10 @@
         "primaryOwner": "ValuedFieldTheory",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "92423448de17438d64cc613f609dba8571cb48aeade45933521636eb61a8d25c",
+      "originalSourceSHA256": "59c4a292d3449c7ba6dc0754b4a75502ffc5a1a2231177916ad1ade3a0711fcf",
+      "sourceUpdatePreservesLeanCode": true
     },
     {
       "name": "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct._unsafe_rec",
@@ -148,9 +154,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
-      "historicalBodySHA256": "0c69a323a7671fa0759a596f282cb4732c671ed945d8f2622474ca940d6f7699",
-      "currentSourceSHA256": "062b87de1eee72041e2108b510a82ef705e93d13bfea8041552da5f9d1d09160",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "17736eae2a776f414e87c48214ee9d23bc39c35259da617abadaed38386d6bbd",
+      "currentSourceSHA256": "a3925244c1120d058011905b2b4e7e266823a65eb8bb33e2d8d420ac0e774dfb",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
           "propext",
@@ -185,7 +191,10 @@
         "primaryOwner": "ClassFieldTheory",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "0c69a323a7671fa0759a596f282cb4732c671ed945d8f2622474ca940d6f7699",
+      "originalSourceSHA256": "062b87de1eee72041e2108b510a82ef705e93d13bfea8041552da5f9d1d09160",
+      "sourceUpdatePreservesLeanCode": true
     },
     {
       "name": "LocalClassFieldTheory.filteredCorrectionProduct._unsafe_rec",
@@ -205,9 +214,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
-      "historicalBodySHA256": "dd2274244f543d52fb9e71f5992034d9f9c8248f100c8d572a1817c320846f10",
-      "currentSourceSHA256": "0b18130e36f017fa2e76f602e4c5cd47275728564580d0f24cdf5ee84d6f929f",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "7da09c1090b9b92f549ce82f5ab228b05509cef30868666fd0c0a90e217a698c",
+      "currentSourceSHA256": "c6e853e9a0d1cc52686b356bfaa7ff85d1fd8dc27eacf83093f941a3a0363d7b",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [],
         "hasNonSyntheticSorry": false,
@@ -238,7 +247,10 @@
         "primaryOwner": "ClassFieldTheory",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "dd2274244f543d52fb9e71f5992034d9f9c8248f100c8d572a1817c320846f10",
+      "originalSourceSHA256": "0b18130e36f017fa2e76f602e4c5cd47275728564580d0f24cdf5ee84d6f929f",
+      "sourceUpdatePreservesLeanCode": true
     },
     {
       "name": "LocalFieldTheory.principalUnitsCorrectionProduct._unsafe_rec",
@@ -258,9 +270,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
-      "historicalBodySHA256": "4e7b06ad825da3f8b21349488e4f1683a78c454bb04364d791eaa097e184dddf",
-      "currentSourceSHA256": "f7258c7d6a37c0a2fafa52b891e7cf0db674faafb6807a37e24d23c246a81e38",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "92ba97fd419aafa991ab149bea3ff60ca3722057b44c40725bef832ce240cded",
+      "currentSourceSHA256": "b09667fed891819c61f76a9a12126522956c31af487f21fc6c40e0b11992ce06",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
           "propext",
@@ -295,7 +307,10 @@
         "primaryOwner": "ValuedFieldTheory",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "4e7b06ad825da3f8b21349488e4f1683a78c454bb04364d791eaa097e184dddf",
+      "originalSourceSHA256": "f7258c7d6a37c0a2fafa52b891e7cf0db674faafb6807a37e24d23c246a81e38",
+      "sourceUpdatePreservesLeanCode": true
     },
     {
       "name": "ProCGroups.Generation.wordProducts._unsafe_rec",
@@ -318,9 +333,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ProCGroups/Generation/Basic.lean",
-      "historicalBodySHA256": "19459344e33f669eac133c243a6393450e8fc6804e9f88ec98aaa468a06074f9",
-      "currentSourceSHA256": "50d4778f06ed4c6a3b22ab39a42a44343897e60c76f4073a85c78b57be712113",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "6917210d635e42a7e7129a3f922ffab6615e452549c9652df13be6663ae03820",
+      "currentSourceSHA256": "4d1b7318799d0764ccf4915ed0147dbd8bd4be4bd5085234e7a09ffb81bb759c",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
           "propext"
@@ -356,7 +371,10 @@
         "primaryOwner": "ProCGroups",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "19459344e33f669eac133c243a6393450e8fc6804e9f88ec98aaa468a06074f9",
+      "originalSourceSHA256": "50d4778f06ed4c6a3b22ab39a42a44343897e60c76f4073a85c78b57be712113",
+      "sourceUpdatePreservesLeanCode": true
     },
     {
       "name": "_private.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint.0.IsAdicComplete.contractingApproximation._unsafe_rec",
@@ -394,9 +412,9 @@
       "isPartial": true,
       "isUnsafe": false,
       "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
-      "historicalBodySHA256": "d9738b1470ae7d228699a7ac90748002328c64dd546814f85ba85196952c5153",
-      "currentSourceSHA256": "4a4cd9501abacf9dfb664f99ef6c571def4483b6981e2271077e4ea0a9107d38",
-      "sourceMatchesHistoricalCommit": true,
+      "historicalBodySHA256": "c52905ff4ada18b2b8fee07088b7938ad311ecc9aae0e2cd1869c67f9ebee07b",
+      "currentSourceSHA256": "bcf9344ae174219f873f07cf02c3d7d7a4cae2d6133247267fc0d9bb31c34b3a",
+      "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [],
         "hasNonSyntheticSorry": false,
@@ -445,7 +463,16 @@
         "primaryOwner": "ValuedFieldTheory",
         "typeHasSorry": false,
         "valueHasSorry": false
-      }
+      },
+      "originalHistoricalBodySHA256": "d9738b1470ae7d228699a7ac90748002328c64dd546814f85ba85196952c5153",
+      "originalSourceSHA256": "4a4cd9501abacf9dfb664f99ef6c571def4483b6981e2271077e4ea0a9107d38",
+      "sourceUpdatePreservesLeanCode": true
     }
-  ]
+  ],
+  "sourceUpdateReview": {
+    "sourceCommit": "dd8bcd65a9166c5a82e8bb48cd1b19d42d688b2a",
+    "previousPublicCommit": "b9cfda0ccad0175e215a212ab218bc51d101380f",
+    "changes": "Only autoImplicit centralization, comment layout and whitespace. Declaration identities, proof/definition code and seven-partial allowlist are unchanged. Original source/body hashes and historical findings are retained.",
+    "approvedBodyHashField": "historicalBodySHA256 now pins the reviewed synchronized layout; originalHistoricalBodySHA256 preserves the earlier layout."
+  }
 }

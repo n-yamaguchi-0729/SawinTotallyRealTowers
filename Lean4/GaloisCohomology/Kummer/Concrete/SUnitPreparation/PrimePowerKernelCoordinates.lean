@@ -11,15 +11,16 @@ import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.IntermediateField.Basic
 import Mathlib.RingTheory.LocalRing.Module
 
-set_option autoImplicit false
-
 /-!
 # Prime-power kernel coordinates
 
-Linear-algebraic coordinates for kernels of surjections between finite free modules over `ZMod (p ^ v)`.
+Linear-algebraic coordinates for kernels of surjections between finite free modules over `ZMod (p ^
+v)`.
 -/
 
-open scoped Classical IsMulCommutative
+
+
+open scoped IsMulCommutative
 
 noncomputable section
 

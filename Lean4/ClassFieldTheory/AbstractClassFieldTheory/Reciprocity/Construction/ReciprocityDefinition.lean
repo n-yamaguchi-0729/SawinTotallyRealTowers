@@ -9,7 +9,14 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Froben
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.NormSubgroup
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.PrimeChoice
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction, the reciprocity construction: the reciprocity map
+
+For a Frobenius element `σ`, let `Σ` be its fixed field.  The reciprocity
+class is the class of `N_{Σ|K}(π_Σ)` in
+`A_K / N_{\widetilde L|K} A_{\widetilde L}`.  Independence of the prime
+element is proved separately from the unit-cohomology axiom.
+-/
 
 universe u
 
@@ -19,14 +26,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction, the reciprocity construction: the reciprocity map
 
-For a Frobenius element `σ`, let `Σ` be its fixed field.  The reciprocity
-class is the class of `N_{Σ|K}(π_Σ)` in
-`A_K / N_{\widetilde L|K} A_{\widetilde L}`.  Independence of the prime
-element is proved separately from the unit-cohomology axiom.
--/
 
 noncomputable section
 
@@ -71,7 +71,8 @@ theorem frobeniusFixedField_absoluteFinite (D : DegreeData G)
         (le_baseField
           (D.frobeniusFixedField (K.toFiniteResidueAbstractField D) L hLK
             (hLnormal := by
-              simpa only [FiniteAbstractField.toFiniteResidueAbstractField] using hLnormal) σ))) := by
+              simpa only [FiniteAbstractField.toFiniteResidueAbstractField] using hLnormal) σ)))
+                := by
   let KR := K.toFiniteResidueAbstractField D
   let hLnormalKR : (extensionSubgroup KR.field L hLK).Normal := by
     simpa only [KR, FiniteAbstractField.toFiniteResidueAbstractField] using hLnormal

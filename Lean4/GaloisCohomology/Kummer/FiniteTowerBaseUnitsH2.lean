@@ -11,8 +11,6 @@ import Mathlib.Algebra.Module.LinearMap.Defs
 import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Base-unit coefficients along a field tower
 

@@ -10,8 +10,6 @@ import ProCGroups.ReidemeisterSchreier.Profinite.OpenSubgroups.RankBound
 import Mathlib.SetTheory.Cardinal.Finite
 import Mathlib.SetTheory.Cardinal.ToNat
 
-set_option autoImplicit false
-
 /-!
 # Finite generation of open subgroups
 
@@ -36,12 +34,13 @@ theorem topologicallyFinitelyGenerated_openSubgroup
   classical
   obtain ⟨s, hs⟩ := hfg
   have hfinite : topologicalRank G < Cardinal.aleph0 :=
-    (topologicalRank_le_mk_of_topologicallyGenerates hs).trans_lt (Cardinal.lt_aleph0_iff_finite.mpr inferInstance)
+    (topologicalRank_le_mk_of_topologicallyGenerates hs).trans_lt
+      (Cardinal.lt_aleph0_iff_finite.mpr inferInstance)
   have hrank : topologicalRank G = (topologicalRank G).toNat :=
     (Cardinal.cast_toNat_of_lt_aleph0 hfinite).symm
   have hbound :=
-    ReidemeisterSchreier.Profinite.topologicalRank_openSubgroup_le_rankTransform_of_topologicalRank_eq_nat
-      hrank U
+    (open _root_.ReidemeisterSchreier.Profinite in
+      topologicalRank_openSubgroup_le_rankTransform_of_topologicalRank_eq_nat hrank U)
   obtain ⟨X, hX, hXcard⟩ :=
     exists_topologicallyGenerates_card_eq_topologicalRank (G := (U : Subgroup G))
   have hXfinite : Cardinal.mk X < Cardinal.aleph0 :=

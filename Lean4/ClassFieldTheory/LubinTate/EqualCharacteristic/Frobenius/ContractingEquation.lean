@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.Algebra.BigOperators.NatAntidiagonal
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the contracting Frobenius equation: the contracting Frobenius equation
 
@@ -26,6 +24,8 @@ than `n`.
 This file records that source-producing recursion directly.  No completeness
 or external existence assumption is needed.
 -/
+
+
 
 noncomputable section
 

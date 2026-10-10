@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Basic.ClassComparison
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Canonical Maps
 

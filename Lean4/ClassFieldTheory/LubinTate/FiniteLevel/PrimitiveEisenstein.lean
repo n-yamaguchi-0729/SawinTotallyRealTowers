@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.FiniteLevel.DivisionPolynomial
 import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 
-set_option autoImplicit false
-
 /-!
 # Eisenstein property of the standard primitive division polynomials
 
@@ -28,6 +26,8 @@ irreducible over the valuation ring.
 
 The argument is independent of the characteristic of `F`.
 -/
+
+
 
 noncomputable section
 

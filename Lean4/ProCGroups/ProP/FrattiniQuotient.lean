@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.FrattiniPowers
 
-set_option autoImplicit false
 /-!
 # The power--commutator quotient
 

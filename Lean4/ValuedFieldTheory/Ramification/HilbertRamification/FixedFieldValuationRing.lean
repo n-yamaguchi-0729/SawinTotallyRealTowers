@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
 import Mathlib.RingTheory.DiscreteValuationRing.TFAE
 
-set_option autoImplicit false
-
 /-!
 # Restricted valuation rings on actual fixed fields
 
@@ -18,6 +16,8 @@ extension identifies that restricted ring with the integral closure of the
 base valuation ring.  It is consequently a DVR, without a completeness or
 Henselian assumption.
 -/
+
+
 
 noncomputable section
 
@@ -112,7 +112,9 @@ theorem base_hasExtension_fixedFieldValuationSubringDVF
         (K := K) (target := target) H).valuation := by
   apply _root_.Valuation.HasExtension.ofComapInteger
   ext a
-  simp [ValuationSubring.integer_valuation, _root_.Valuation.mem_integer_iff]
+  simp only [Subring.mem_comap]
+  rw [ValuationSubring.integer_valuation]
+  change target.valuation (algebraMap K L a) ≤ 1 ↔ base.valuation a ≤ 1
   exact _root_.Valuation.HasExtension.val_map_le_one_iff
     (vR := base.valuation) (vA := target.valuation) a
 

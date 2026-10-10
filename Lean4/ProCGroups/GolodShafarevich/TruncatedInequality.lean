@@ -9,7 +9,6 @@ import ProCGroups.GolodShafarevich.TruncatedFoxSequence
 import Mathlib.Algebra.Exact.Sequence
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # Truncated Golod--Shafarevich dimension inequality
 

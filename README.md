@@ -204,13 +204,17 @@ lake env lean --error=warning tests/Statement.lean
 lake env lean --error=warning tests/MartinetStatement.lean
 ```
 
-The repository contains **269 Sawin modules**: 268 from the maintained
-workspace, including `SawinTotallyRealTowers.All`, and the standalone
-Martinet corollary. Their imports require **1,471 bundled support modules**
-from CFT, PCG, GC, and VFT. All **1,740** local modules are reachable from
+The repository contains **269 maintained Sawin modules**, including
+`SawinTotallyRealTowers.All` and the Martinet corollary. Their imports require
+**1,414 bundled support modules** from CFT, PCG, GC, and VFT. All
+**1,683** local modules are reachable from
 the two default targets. The [source manifest](.github/verification/source-manifest.json)
 records the initial extraction commit, each module's imports, and the current
 source hashes.
+
+Elaboration and linter options are shared in `lakefile.toml`:
+`autoImplicit = false`, unused-variable and missing-documentation checks,
+and the Mathlib standard linter set. Maintained sources do not override these options.
 
 ## Verification
 
@@ -230,8 +234,9 @@ declarations. It then exports the complete safe declaration union, checks it
 with pinned NanoDa, replays the closure with the official Lean kernel, and
 checks the three named public theorems against the compiled inventory. The
 accepted Shafarevich benchmark uses submission-specific helpers; this CI
-checks its public theorem, not that exact benchmark submission. The expanded
-The current Lean 4.35.0-rc2 bundle is checked by this full CI pipeline.
+checks its public theorem, not that exact benchmark submission. This full
+pipeline is configured for the current Lean 4.35.0-rc2 bundle; historical
+benchmark results do not certify a newer revision.
 
 The physical inventory and SHA-pinned closure can be checked without a build:
 
@@ -247,6 +252,15 @@ The complete pipeline requires a clean committed checkout, the pinned Mathlib
 cache, and the pinned exporter and NanoDa tools. Its commands and artifact
 paths are in [the workflow](.github/workflows/lean.yml) and explained in
 [verification notes](.github/verification/README.md).
+
+CI builds local modules in dependency-depth stages and saves completed project
+compiler outputs after each stage. The cache excludes downloaded dependencies,
+toolchains, and large generated `*.setup.json` inputs. It checks the available
+archive space before saving and validates cached file hashes on restoration;
+a missing or invalid cache falls back to a normal build. A separate verification
+job still runs the complete declaration, NanoDa, and Lean kernel checks on every
+run, including cache hits. Build stages stop after five hours to leave time for
+saving completed outputs and diagnostic receipts before the runner deadline.
 
 ## Authorship and AI assistance
 

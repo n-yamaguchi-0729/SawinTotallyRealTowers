@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormal
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedCompositumBaseChange
 
-set_option autoImplicit false
 /-!
 # The actual cyclotomic base change of an unramified arithmetic stage
 

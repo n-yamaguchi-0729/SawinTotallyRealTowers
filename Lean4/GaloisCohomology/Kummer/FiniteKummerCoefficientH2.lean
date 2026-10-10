@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.FieldTheory.KummerExtension
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
 /-!
 # Finite Kummer coefficients in degree-two group cohomology
 
@@ -103,7 +102,7 @@ theorem finiteKummerCoefficientAddHom_pow_eq_one
 base field. -/
 theorem finiteKummerCoefficientAddHom_fixed
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (sigma : Gal(L / K)) (z : ULift (ZMod (p : ℕ))) :
+    (sigma : Gal(L/K)) (z : ULift (ZMod (p : ℕ))) :
     (Rep.ofAlgebraAutOnUnits K L).ρ sigma
         (finiteKummerCoefficientAddHom K L p hmu z) =
       finiteKummerCoefficientAddHom K L p hmu z := by
@@ -125,7 +124,7 @@ theorem finiteKummerCoefficientAddHom_fixed
 `ZMod p` representation to the extension-unit representation. -/
 noncomputable def finiteKummerCoefficientRepHom
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) :
-    Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ))) ⟶
+    Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ))) ⟶
       Rep.ofAlgebraAutOnUnits K L := by
   apply Rep.ofHom
   refine ⟨(finiteKummerCoefficientAddHom K L p hmu).toIntLinearMap, ?_⟩
@@ -142,9 +141,9 @@ in ordinary degree-two group cohomology. -/
 noncomputable def finiteKummerCoefficientH2Map
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) :
     groupCohomology
-        (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2 ⟶
+        (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2 ⟶
       groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 :=
-  groupCohomology.map (MonoidHom.id (Gal(L / K)))
+  groupCohomology.map (MonoidHom.id (Gal(L/K)))
     (finiteKummerCoefficientRepHom K L p hmu) 2
 
 /-- On an inhomogeneous cocycle representative, coefficient change applies
@@ -152,14 +151,14 @@ the chosen-root homomorphism pointwise. -/
 theorem finiteKummerCoefficientCocyclesMap_apply
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
     (z : groupCohomology.cocycles
-      (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2)
-    (x : Fin 2 → Gal(L / K)) :
+      (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2)
+    (x : Fin 2 → Gal(L/K)) :
     groupCohomology.iCocycles (Rep.ofAlgebraAutOnUnits K L) 2
-        (groupCohomology.cocyclesMap (MonoidHom.id (Gal(L / K)))
+        (groupCohomology.cocyclesMap (MonoidHom.id (Gal(L/K)))
           (finiteKummerCoefficientRepHom K L p hmu) 2 z) x =
       finiteKummerCoefficientAddHom K L p hmu
         (groupCohomology.iCocycles
-          (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2 z x) := by
+          (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2 z x) := by
   rw [← ConcreteCategory.comp_apply,
     HomologicalComplex.cyclesMap_i, ConcreteCategory.comp_apply]
   rfl
@@ -169,17 +168,17 @@ change. -/
 theorem finiteKummerCoefficientH2Map_quotient
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
     (z : groupCohomology.cocycles
-      (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2) :
+      (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2) :
     finiteKummerCoefficientH2Map K L p hmu
         (groupCohomology.π
-          (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2 z) =
+          (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2 z) =
       groupCohomology.π (Rep.ofAlgebraAutOnUnits K L) 2
-        (groupCohomology.cocyclesMap (MonoidHom.id (Gal(L / K)))
+        (groupCohomology.cocyclesMap (MonoidHom.id (Gal(L/K)))
           (finiteKummerCoefficientRepHom K L p hmu) 2 z) := by
   change
     (groupCohomology.π
-        (Rep.trivial ℤ (Gal(L / K)) (ULift (ZMod (p : ℕ)))) 2 ≫
-      groupCohomology.map (MonoidHom.id (Gal(L / K)))
+        (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2 ≫
+      groupCohomology.map (MonoidHom.id (Gal(L/K)))
         (finiteKummerCoefficientRepHom K L p hmu) 2) z = _
   rw [groupCohomology.π_map]
   rfl

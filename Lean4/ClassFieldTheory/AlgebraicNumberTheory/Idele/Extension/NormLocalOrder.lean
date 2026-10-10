@@ -13,8 +13,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
 import ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 import Mathlib.RingTheory.RamificationInertia.Inertia
 
-set_option autoImplicit false
-
 /-!
 # Local orders of finite-place norms
 
@@ -29,6 +27,8 @@ also concrete:
 * the residue degree of the completed extension is identified with the
   inertia degree of the corresponding prime of the number-field extension.
 -/
+
+
 
 open scoped NumberField ValuativeRel WithZero
 open NumberField IsDedekindDomain

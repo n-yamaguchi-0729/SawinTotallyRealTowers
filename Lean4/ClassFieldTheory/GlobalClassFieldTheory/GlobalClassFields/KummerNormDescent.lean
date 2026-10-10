@@ -14,8 +14,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLo
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.Continuity
 
-set_option autoImplicit false
-
 /-!
 # Descent of power-local-unit idèle subgroups
 
@@ -30,6 +28,8 @@ Passing to principal-idèle quotients gives the idèle-class norm descent
 needed when a Kummer extension is first constructed after a finite base
 extension and then viewed over the original number field.
 -/
+
+
 
 open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain

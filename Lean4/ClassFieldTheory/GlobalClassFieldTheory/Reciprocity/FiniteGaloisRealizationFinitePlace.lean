@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationCore
 
-set_option autoImplicit false
-
 /-!
 # Finite places in the compatible Galois realization
 
@@ -15,6 +13,8 @@ This module extends a chosen finite place of `L` to the common rational
 separable closure and compares its decomposition data with the corresponding
 places and completions in the original number-field tower.
 -/
+
+
 
 open scoped NumberField
 open NumberField

@@ -6,12 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity construction: the field fixed by a Frobenius lift
 
@@ -19,6 +13,12 @@ This file passes from the group-dual `Γ` of the Frobenius fixed-field theorem t
 abstract field `Σ`.  Thus `G_Σ` is the inverse image of `Γ` under
 `G_K → G_K / I_L`, embedded back into the ambient profinite group.
 -/
+
+namespace ClassFormation
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

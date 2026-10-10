@@ -19,8 +19,6 @@ import Mathlib.Tactic.FinCases
 import Mathlib.Tactic.Ring
 import Lean.Elab.Tactic.Omega
 
-set_option autoImplicit false
-
 /-!
 # Integral bases of squarefree quadratic number fields
 

@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLo
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SupportedIdelePowerLocalUnitQuotient
 
-set_option autoImplicit false
-
 /-!
 # Supported idele power quotient
 
@@ -17,7 +15,9 @@ This file expresses the supported idele quotient as the product of its local
 archimedean and finite-place power indices and evaluates its cardinality.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel TensorProduct
+
+
+open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open KummerTheory
@@ -30,6 +30,7 @@ namespace GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type} [Field K] [NumberField K]
 
+open scoped Classical in
 /-- The middle term in the supported exact sequence, evaluated as the
 product of its actual local power indices.  The archimedean factors are
 the sign indices, while each finite factor is the finite local
@@ -165,6 +166,7 @@ theorem prod_finitePlaceNthPowerDefect
       prod_absNorm_maxPowDividing_natCast
         (K := K) n S hS
 
+open scoped Classical in
 /-- The product of the archimedean local power indices.  Only real
 places and an even exponent contribute a factor `2`. -/
 theorem prod_infinitePlace_nthPowerIndex
@@ -198,6 +200,7 @@ theorem prod_infinitePlace_nthPowerIndex
     simp [InfinitePlace.nrRealPlaces]
   · simp [hn]
 
+open scoped Classical in
 /-- The archimedean signature calculation used together with the finite
 product formula.  If `K` contains a primitive `n`-th root with `n > 2`,
 it has no real places; the remaining cases are `n = 1, 2`. -/
@@ -276,6 +279,7 @@ theorem card_supportedIdeleQuotient_eq_power_two_totalPlaceCard
             (K := K) n S T) =
       (n : ℕ) ^
         (2 * totalPlaceCard (K := K) S) := by
+  classical
   have hfinite :
       (∏ v : ↥S,
           (n : ℕ) *

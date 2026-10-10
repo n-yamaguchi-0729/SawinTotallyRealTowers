@@ -10,8 +10,6 @@ import SawinTotallyRealTowers.QuadraticSquarefreeGenerator
 import SawinTotallyRealTowers.RationalRamificationSupport
 import Mathlib.Algebra.Order.Ring.Cast
 
-set_option autoImplicit false
-
 /-!
 # Positive squarefree generators with prescribed ramification support
 

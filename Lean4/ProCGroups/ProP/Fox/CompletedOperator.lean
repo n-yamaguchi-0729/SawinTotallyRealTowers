@@ -8,7 +8,6 @@ import ProCGroups.ProP.Fox.ModPGroupDerivative
 import ProCGroups.CompletedGroupAlgebra.UniversalProperty.ProfiniteModule
 import ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Comparison
 
-set_option autoImplicit false
 /-!
 # Completed mod-p Fox operators
 

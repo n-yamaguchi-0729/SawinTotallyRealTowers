@@ -15,8 +15,6 @@ import ProCGroups.ProP.FrattiniPowers
 import ProCGroups.ProP.FrattiniQuotient
 import ProCGroups.ProP.GeneratorRank
 
-set_option autoImplicit false
-
 /-!
 # Minimal epimorphisms of finitely generated pro-p groups
 

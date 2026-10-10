@@ -6,18 +6,18 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
 
-set_option autoImplicit false
-
-namespace RamificationTheory
-
-open ValuationTheory
-
 /-!
 # Absolute Galois ramification
 
 This file develops the decomposition and inertia subgroups of an absolute
 Galois group after the finite-level valuation-restriction layer.
 -/
+
+namespace RamificationTheory
+
+open ValuationTheory
+
+
 
 noncomputable section
 
@@ -127,9 +127,10 @@ theorem decompositionSubgroup_eq_top_of_finite_separable_restrictUnique
           (show Gal(AlgebraicClosure K / K) from σ)
             (x : AlgebraicClosure K) ∈ A := by
       exact
-        RamificationTheory.ValuationSubring.mem_algEquiv_apply_iff_of_restrictIntermediateField_unique
-          (v := v) (A := A) (E := E) (huniq E)
-          (show Gal(AlgebraicClosure K / K) from σ) x
+        (open RamificationTheory.ValuationSubring in
+          mem_algEquiv_apply_iff_of_restrictIntermediateField_unique
+            (v := v) (A := A) (E := E) (huniq E)
+            (show Gal(AlgebraicClosure K / K) from σ) x)
     have hpow :
         z ^ n ∈ A ↔
           (show Gal(AlgebraicClosure K / K) from σ) (z ^ n) ∈ A := by
@@ -165,9 +166,10 @@ theorem valuationSubring_mem_preserved_on_finite_separable_intermediate_of_restr
     (σ : Field.absoluteGaloisGroup K) (x : E) :
     ((x : AlgebraicClosure K) ∈ A) ↔
       (show Gal(AlgebraicClosure K / K) from σ) (x : AlgebraicClosure K) ∈ A :=
-  RamificationTheory.ValuationSubring.mem_algEquiv_apply_iff_of_restrictIntermediateField_unique
-    (v := F.valuation) (A := A) (E := E) huniq
-    (show Gal(AlgebraicClosure K / K) from σ) x
+  (open RamificationTheory.ValuationSubring in
+    mem_algEquiv_apply_iff_of_restrictIntermediateField_unique
+      (v := F.valuation) (A := A) (E := E) huniq
+      (show Gal(AlgebraicClosure K / K) from σ) x)
 
 /-- Target-free finite-level membership preservation from the integral
 valuation-ring frontier on that finite separable level. -/
@@ -195,33 +197,44 @@ theorem valuationSubring_mem_preserved_on_finite_separable_intermediate_of_integ
           RamificationTheory.ValuationSubring.restrictIntermediateField_hasExtension
             (v := F.valuation) (A := A) E
         have hAInt : Algebra.IsIntegral F.valuation.valuationSubring
-            ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation.valuationSubring :=
+            ((RamificationTheory.ValuationSubring.restrictIntermediateField A
+              E)).valuation.valuationSubring :=
           hintegral ((RamificationTheory.ValuationSubring.restrictIntermediateField A E))
         have hBInt : Algebra.IsIntegral F.valuation.valuationSubring
             B.valuation.valuationSubring :=
           hintegral B
         have hsub :
-            ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation.valuationSubring =
+            ((RamificationTheory.ValuationSubring.restrictIntermediateField A
+              E)).valuation.valuationSubring =
               B.valuation.valuationSubring := by
           ext z
           constructor
           · intro hz
             have hz_int : z ∈ integralClosure F.valuation.valuationSubring E :=
-              ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_mem_integralClosure_of_isIntegral
-                (L := E) F.valuation ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation ⟨z, hz⟩
+              (open ValuationTheory.DiscreteValuationField.Valuation in
+                valuationSubring_mem_integralClosure_of_isIntegral
+                  (L := E) F.valuation
+                    ((RamificationTheory.ValuationSubring.restrictIntermediateField
+                    A E)).valuation ⟨z, hz⟩)
             exact
-              ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
-                (L := E) F.valuation B.valuation ⟨z, hz_int⟩
+              (open ValuationTheory.DiscreteValuationField.Valuation in
+                integralClosure_mem_valuationSubring_of_hasExtension
+                  (L := E) F.valuation B.valuation ⟨z, hz_int⟩)
           · intro hz
             have hz_int : z ∈ integralClosure F.valuation.valuationSubring E :=
-              ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_mem_integralClosure_of_isIntegral
-                (L := E) F.valuation B.valuation ⟨z, hz⟩
+              (open ValuationTheory.DiscreteValuationField.Valuation in
+                valuationSubring_mem_integralClosure_of_isIntegral
+                  (L := E) F.valuation B.valuation ⟨z, hz⟩)
             exact
-              ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
-                (L := E) F.valuation ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation ⟨z, hz_int⟩
+              (open ValuationTheory.DiscreteValuationField.Valuation in
+                integralClosure_mem_valuationSubring_of_hasExtension
+                  (L := E) F.valuation
+                    ((RamificationTheory.ValuationSubring.restrictIntermediateField
+                    A E)).valuation ⟨z, hz_int⟩)
         calc
           RamificationTheory.ValuationSubring.restrictIntermediateField A E =
-              (RamificationTheory.ValuationSubring.restrictIntermediateField A E).valuation.valuationSubring :=
+              (RamificationTheory.ValuationSubring.restrictIntermediateField A
+                E).valuation.valuationSubring :=
             (ValuationSubring.valuationSubring_valuation _).symm
           _ = B.valuation.valuationSubring := hsub
           _ = B := ValuationSubring.valuationSubring_valuation B)
@@ -261,16 +274,18 @@ theorem valuationSubring_mem_preserved_on_finite_separable_intermediate
     (E : IntermediateField K (AlgebraicClosure K))
     [FiniteDimensional K E] [Algebra.IsSeparable K E]
     (target : ValuationTheory.DiscreteValuationField.HenselianDVF.{u, w} E)
-    (hA : target.valuation.valuationSubring = (RamificationTheory.ValuationSubring.restrictIntermediateField A E))
+    (hA : target.valuation.valuationSubring =
+      (RamificationTheory.ValuationSubring.restrictIntermediateField A E))
     (huniq :
-      ValuationTheory.DiscreteValuationField.HenselianDVF.HasUniqueValuationExtension.{u, v, u, w, u}
-        F target)
+      (open ValuationTheory.DiscreteValuationField.HenselianDVF in
+        HasUniqueValuationExtension.{u, v, u, w, u} F target))
     (σ : Field.absoluteGaloisGroup K) (x : E) :
     ((x : AlgebraicClosure K) ∈ A) ↔
       (show Gal(AlgebraicClosure K / K) from σ) (x : AlgebraicClosure K) ∈ A :=
-  RamificationTheory.ValuationSubring.mem_algEquiv_apply_iff_of_restrictIntermediateField_henselianUnique
-    (base := F) (A := A) (E := E) (target := target) hA huniq
-    (show Gal(AlgebraicClosure K / K) from σ) x
+  (open RamificationTheory.ValuationSubring in
+    mem_algEquiv_apply_iff_of_restrictIntermediateField_henselianUnique
+      (base := F) (A := A) (E := E) (target := target) hA huniq
+      (show Gal(AlgebraicClosure K / K) from σ) x)
 
 /-- Henselian-DVF specialization of the target-free Route-P core. -/
 theorem decompositionSubgroup_eq_top_of_henselianDVF_restrictUnique
@@ -313,33 +328,42 @@ theorem decompositionSubgroup_eq_top_of_finite_separable_integral
     RamificationTheory.ValuationSubring.restrictIntermediateField_hasExtension
       (v := F.valuation) (A := A) E
   have hAInt : Algebra.IsIntegral F.valuation.valuationSubring
-      ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation.valuationSubring :=
+      ((RamificationTheory.ValuationSubring.restrictIntermediateField A
+        E)).valuation.valuationSubring :=
     hintegral E ((RamificationTheory.ValuationSubring.restrictIntermediateField A E))
   have hBInt : Algebra.IsIntegral F.valuation.valuationSubring
       B.valuation.valuationSubring :=
     hintegral E B
   have hsub :
-      ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation.valuationSubring =
+      ((RamificationTheory.ValuationSubring.restrictIntermediateField A
+        E)).valuation.valuationSubring =
         B.valuation.valuationSubring := by
     ext z
     constructor
     · intro hz
       have hz_int : z ∈ integralClosure F.valuation.valuationSubring E :=
-        ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_mem_integralClosure_of_isIntegral
-          (L := E) F.valuation ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation ⟨z, hz⟩
+        (open ValuationTheory.DiscreteValuationField.Valuation in
+          valuationSubring_mem_integralClosure_of_isIntegral
+            (L := E) F.valuation ((RamificationTheory.ValuationSubring.restrictIntermediateField A
+              E)).valuation ⟨z, hz⟩)
       exact
-        ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
-          (L := E) F.valuation B.valuation ⟨z, hz_int⟩
+        (open ValuationTheory.DiscreteValuationField.Valuation in
+          integralClosure_mem_valuationSubring_of_hasExtension
+            (L := E) F.valuation B.valuation ⟨z, hz_int⟩)
     · intro hz
       have hz_int : z ∈ integralClosure F.valuation.valuationSubring E :=
-        ValuationTheory.DiscreteValuationField.Valuation.valuationSubring_mem_integralClosure_of_isIntegral
-          (L := E) F.valuation B.valuation ⟨z, hz⟩
+        (open ValuationTheory.DiscreteValuationField.Valuation in
+          valuationSubring_mem_integralClosure_of_isIntegral
+            (L := E) F.valuation B.valuation ⟨z, hz⟩)
       exact
-        ValuationTheory.DiscreteValuationField.Valuation.integralClosure_mem_valuationSubring_of_hasExtension
-          (L := E) F.valuation ((RamificationTheory.ValuationSubring.restrictIntermediateField A E)).valuation ⟨z, hz_int⟩
+        (open ValuationTheory.DiscreteValuationField.Valuation in
+          integralClosure_mem_valuationSubring_of_hasExtension
+            (L := E) F.valuation ((RamificationTheory.ValuationSubring.restrictIntermediateField A
+              E)).valuation ⟨z, hz_int⟩)
   calc
     RamificationTheory.ValuationSubring.restrictIntermediateField A E =
-        (RamificationTheory.ValuationSubring.restrictIntermediateField A E).valuation.valuationSubring :=
+        (RamificationTheory.ValuationSubring.restrictIntermediateField A
+          E).valuation.valuationSubring :=
       (ValuationSubring.valuationSubring_valuation _).symm
     _ = B.valuation.valuationSubring := hsub
     _ = B := ValuationSubring.valuationSubring_valuation B
@@ -381,9 +405,10 @@ theorem decompositionSubgroup_eq_top_of_finite_separable_henselianUnique
       ∀ (E : IntermediateField K (AlgebraicClosure K))
         [FiniteDimensional K E] [Algebra.IsSeparable K E],
           ∃ target : ValuationTheory.DiscreteValuationField.HenselianDVF.{u, w} E,
-            target.valuation.valuationSubring = (RamificationTheory.ValuationSubring.restrictIntermediateField A E) ∧
-              ValuationTheory.DiscreteValuationField.HenselianDVF.HasUniqueValuationExtension.{u, v, u, w, u}
-                F target) :
+            target.valuation.valuationSubring =
+              (RamificationTheory.ValuationSubring.restrictIntermediateField A E) ∧
+              (open ValuationTheory.DiscreteValuationField.HenselianDVF in
+                HasUniqueValuationExtension.{u, v, u, w, u} F target)) :
     decompositionSubgroup K A = ⊤ := by
   apply decompositionSubgroup_eq_top_of_finite_separable_restrictUnique
     (v := F.valuation) (A := A)
@@ -392,8 +417,9 @@ theorem decompositionSubgroup_eq_top_of_finite_separable_henselianUnique
   have htarget :
       target.valuation.valuationSubring = B := by
     have hsub :=
-      ValuationTheory.DiscreteValuationField.HenselianDVF.valuationSubring_eq_of_hasUniqueValuationExtension
-        F target htargetUnique B.valuation
+      (open ValuationTheory.DiscreteValuationField.HenselianDVF in
+        valuationSubring_eq_of_hasUniqueValuationExtension
+          F target htargetUnique B.valuation)
     simpa [ValuationSubring.valuationSubring_valuation] using hsub
   exact hA.symm.trans htarget
 
@@ -409,9 +435,10 @@ theorem decompositionSubgroup_eq_top_of_henselianDVF_powerRoute
       ∀ (E : IntermediateField K (AlgebraicClosure K))
         [FiniteDimensional K E] [Algebra.IsSeparable K E],
           ∃ target : ValuationTheory.DiscreteValuationField.HenselianDVF.{u, w} E,
-            target.valuation.valuationSubring = (RamificationTheory.ValuationSubring.restrictIntermediateField A E) ∧
-              ValuationTheory.DiscreteValuationField.HenselianDVF.HasUniqueValuationExtension.{u, v, u, w, u}
-                F target) :
+            target.valuation.valuationSubring =
+              (RamificationTheory.ValuationSubring.restrictIntermediateField A E) ∧
+              (open ValuationTheory.DiscreteValuationField.HenselianDVF in
+                HasUniqueValuationExtension.{u, v, u, w, u} F target)) :
     decompositionSubgroup K A = ⊤ :=
   decompositionSubgroup_eq_top_of_finite_separable_henselianUnique
     (K := K) F A huniq
@@ -843,7 +870,8 @@ noncomputable def absoluteQuotientKernelEquivResidueActionRangeOfDecompositionSu
   QuotientGroup.quotientKerEquivRange
     (absoluteResidueActionOfDecompositionSubgroupEqTop K A hA)
 
-/-- States the theorem `absoluteQuotientKernelEquivResidueActionRangeOfDecompositionSubgroupEqTop_mk`. -/
+/-- States the theorem
+`absoluteQuotientKernelEquivResidueActionRangeOfDecompositionSubgroupEqTop_mk`. -/
 @[simp] theorem absoluteQuotientKernelEquivResidueActionRangeOfDecompositionSubgroupEqTop_mk
     (A : ValuationSubring (AlgebraicClosure K))
     (hA : decompositionSubgroup K A = ⊤)
@@ -872,7 +900,8 @@ noncomputable def absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionS
       (absoluteResidueActionOfDecompositionSubgroupEqTop_ker K A hA).symm).trans
     (absoluteQuotientKernelEquivResidueActionRangeOfDecompositionSubgroupEqTop K A hA)
 
-/-- States the theorem `absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_mk`. -/
+/-- States the theorem
+`absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_mk`. -/
 @[simp] theorem absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_mk
     (A : ValuationSubring (AlgebraicClosure K))
     (hA : decompositionSubgroup K A = ⊤)
@@ -895,8 +924,11 @@ noncomputable def absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionS
       (absoluteResidueActionOfDecompositionSubgroupEqTop K A hA).rangeRestrict σ
   rfl
 
-/-- States the theorem `absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_symm_rangeRestrict`. -/
-@[simp] theorem absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_symm_rangeRestrict
+/-- States the theorem
+`absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_symm_rangeRestrict`. -/
+@[simp]
+theorem
+absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_symm_rangeRestrict
     (A : ValuationSubring (AlgebraicClosure K))
     (hA : decompositionSubgroup K A = ⊤)
     (σ : Field.absoluteGaloisGroup K) :

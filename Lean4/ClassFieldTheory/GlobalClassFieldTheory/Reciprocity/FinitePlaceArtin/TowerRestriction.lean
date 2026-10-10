@@ -6,15 +6,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
 
-set_option autoImplicit false
-
 /-!
 # Restriction in a finite-place Artin tower
 
-This module restricts finite-place extensions through an intermediate field and proves restriction naturality for the corresponding global Artin homomorphisms.
+This module restricts finite-place extensions through an intermediate field and proves restriction
+naturality for the corresponding global Artin homomorphisms.
 -/
 
-open scoped Classical IsMulCommutative NNReal NumberField
+
+
+open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

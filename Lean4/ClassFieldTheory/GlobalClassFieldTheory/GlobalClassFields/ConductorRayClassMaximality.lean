@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
 
-set_option autoImplicit false
-
 /-!
 # Exact narrow finite conductor ray-class presentations
 
@@ -17,6 +15,8 @@ This file characterizes injectivity of that map by equality of the two
 finite orders and proves uniqueness of subgroups whose exact narrow finite
 conductor ray-class presentations are maximal.
 -/
+
+
 
 open scoped IsMulCommutative NumberField
 
@@ -300,7 +300,7 @@ theorem
   calc
     H.1 = RayClass.Modulus.congruenceSubgroup
       (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor) :=
-      H.subgroup_eq_narrowFiniteConductorCongruenceSubgroup_iff_rayClassGroup_card_eq_quotient_card.2
+     H.subgroup_eq_narrowFiniteConductorCongruenceSubgroup_iff_rayClassGroup_card_eq_quotient_card.2
         hHcard
     _ = RayClass.Modulus.congruenceSubgroup
       (RayClass.Modulus.narrowOfFinite J.narrowFiniteConductor) :=
@@ -309,7 +309,8 @@ theorem
           (RayClass.Modulus.narrowOfFinite f))
         hconductor
     _ = J.1 :=
-      (J.subgroup_eq_narrowFiniteConductorCongruenceSubgroup_iff_rayClassGroup_card_eq_quotient_card.2
+      (
+     J.subgroup_eq_narrowFiniteConductorCongruenceSubgroup_iff_rayClassGroup_card_eq_quotient_card.2
         hJcard).symm
 
 /-- The quotients by two maximal exact narrow finite conductor subgroups

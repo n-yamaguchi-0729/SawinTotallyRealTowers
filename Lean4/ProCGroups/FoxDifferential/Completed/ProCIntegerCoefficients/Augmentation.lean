@@ -9,8 +9,6 @@ import ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
 import Mathlib.Algebra.Exact.Basic
 import Mathlib.RingTheory.Ideal.Maps
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — augmentation
 

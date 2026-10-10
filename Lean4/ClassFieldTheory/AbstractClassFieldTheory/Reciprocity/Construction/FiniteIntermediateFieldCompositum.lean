@@ -6,7 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
 
-set_option autoImplicit false
+/-!
+# Finite intermediate-field composita
+
+This module records the quotient cardinal and common-compositum facts for
+finite intermediate fields used by the norm-descent tower.
+-/
 
 universe u v
 
@@ -15,12 +20,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
-/-!
-# Finite intermediate-field composita
 
-This module records the quotient cardinal and common-compositum facts for
-finite intermediate fields used by the norm-descent tower.
--/
 
 noncomputable section
 

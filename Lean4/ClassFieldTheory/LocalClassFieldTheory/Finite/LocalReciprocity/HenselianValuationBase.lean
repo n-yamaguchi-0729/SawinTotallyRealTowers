@@ -8,15 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExte
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-open RamificationTheory KummerTheory
-
-open LocalFieldTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: the value group of the local henselian valuation
 
@@ -26,6 +17,15 @@ in `ℤ̂`.  Its range is proved to be exactly the ordinary integers inside
 `ℤ̂`, and the quotients by `nℤ` are identified with `ZMod n`.  These are the
 source-producing parts of the Henselian valuation condition.
 -/
+
+namespace LocalClassFieldTheory
+open RamificationTheory KummerTheory
+
+open LocalFieldTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 

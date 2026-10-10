@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.Profinite.OpenSubgroups
 
-set_option autoImplicit false
-
 /-!
 # Closed subgroups and cosets
 

@@ -9,7 +9,6 @@ import GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
 import ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 import Mathlib.FieldTheory.AbsoluteGaloisGroup
 
-set_option autoImplicit false
 /-!
 # Absolute Kummer characters
 

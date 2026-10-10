@@ -10,7 +10,6 @@ import GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 import GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter
 import Mathlib.Algebra.Field.ZMod
 
-set_option autoImplicit false
 /-!
 # Prime-to-index injectivity of continuous degree-two restriction
 

@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Algebra.Module.MinimalAxioms
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.FiniteQuotientPadicModule
 
-set_option autoImplicit false
-
 /-!
 # The p-adic module on the prodiscrete principal-unit limit
 
 Coordinatewise scalar multiplication makes the prodiscrete inverse limit a topological
 module over the p-adic integers.
 -/
+
+
 
 noncomputable section
 

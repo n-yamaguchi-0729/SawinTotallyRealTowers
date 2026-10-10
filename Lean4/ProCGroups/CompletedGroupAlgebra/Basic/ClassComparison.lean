@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Topology
 import ProCGroups.CompletedGroupAlgebra.Basic.InClass.Topology
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Basic / Class Comparison
 

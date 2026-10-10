@@ -8,8 +8,6 @@ import Mathlib.FieldTheory.LinearDisjoint
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.TensorProduct.Basis
 
-set_option autoImplicit false
-
 /-!
 # Coprime tensor-product base change of a Galois extension
 
@@ -23,6 +21,8 @@ For Galoisness, every automorphism of `L / K` is extended by
 `id_M ⊗ σ`; these distinct automorphisms already account for the full
 dimension of the tensor product.
 -/
+
+
 
 open scoped TensorProduct
 

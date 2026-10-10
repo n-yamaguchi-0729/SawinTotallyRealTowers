@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGroup
 
-set_option autoImplicit false
 /-!
 # Arithmetic fields attached to open normal quotients
 

@@ -9,7 +9,6 @@ import ProCGroups.ProP.Zassenhaus.FiniteLinearization
 import Mathlib.Algebra.CharP.Algebra
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
 /-!
 # The augmentation-square subgroup at a finite stage
 

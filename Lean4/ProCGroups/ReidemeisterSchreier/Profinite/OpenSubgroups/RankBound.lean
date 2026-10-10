@@ -9,8 +9,6 @@ import ProCGroups.GroupTheory.Subgroups
 import ProCGroups.FiniteGeneration.Basic
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Cardinal and finite-rank Schreier bounds
 
@@ -42,7 +40,8 @@ noncomputable def schreierRankTransformCardinal (κ : Cardinal) (n : ℕ) : Card
     (_root_.ReidemeisterSchreier.Schreier.rankTransform κ.toNat n : Cardinal)
   else κ
 
-/-- On a finite cardinal, the cardinal Schreier transform agrees with the usual natural-number formula. -/
+/-- On a finite cardinal, the cardinal Schreier transform agrees with the usual natural-number
+formula. -/
 @[simp] theorem schreierRankTransformCardinal_natCast (d n : ℕ) :
     schreierRankTransformCardinal (d : Cardinal) n =
       (_root_.ReidemeisterSchreier.Schreier.rankTransform d n : Cardinal) := by

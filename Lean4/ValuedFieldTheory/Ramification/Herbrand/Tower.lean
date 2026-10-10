@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.GaloisValuation.Ramification
 
-set_option autoImplicit false
-
 /-!
 # Finite-group sources for Herbrand's theorem
 
@@ -24,10 +22,13 @@ the identity
 `i(σ τ) = min (i(σ), i(τ))`
 
 for such a representative `σ` and every `τ` in the normal subgroup.  The
-remaining valued-field input for the Herbrand quotient theorem is the quotient-depth identity: the depth
+remaining valued-field input for the Herbrand quotient theorem is the quotient-depth identity:
+the depth
 on the quotient is the normalized sum of the depths in this fibre.  That
 input is deliberately not packaged here as a hypothesis or data field.
 -/
+
+
 
 noncomputable section
 
@@ -210,7 +211,8 @@ theorem depth_mul_eq_min_of_maximal_representative
 
 /-- The fibre-sum form of the maximal-representative identity.  Composing
 `f` with a finite-depth cast gives exactly the sum appearing in
-the Herbrand quotient theorem, after the quotient-depth identity supplies the quotient-depth average. -/
+the Herbrand quotient theorem, after the quotient-depth identity supplies the quotient-depth
+average. -/
 theorem sum_depth_quotientFiber_eq_sum_min_of_maximal_representative
     [Finite G] {M : Type*} [AddCommMonoid M]
     (f : WithTop ℕ → M) {σ : G}

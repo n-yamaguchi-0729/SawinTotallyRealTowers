@@ -7,14 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusLift
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # normalized degree and Frobenius theory: henselian valuations
 
@@ -23,6 +15,14 @@ in .  Accordingly a valuation and a norm are additive homomorphisms.  This
 file formalizes the valuation-quotient axiom and constructs the normalized valuations of
 normalized-valuation functoriality.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

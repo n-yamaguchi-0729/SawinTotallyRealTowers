@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 
-set_option autoImplicit false
-
 /-!
 # Algebraic localization inside an absolute-value completion
 

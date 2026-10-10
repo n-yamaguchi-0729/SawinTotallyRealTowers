@@ -11,8 +11,6 @@ import ProCGroups.Generation.Basic
 import ProCGroups.Topologies.ContinuousMonoidHom
 import Mathlib.Algebra.Group.Subgroup.Lattice
 
-set_option autoImplicit false
-
 /-!
 # Frobenius in the actual maximal real pro-p extension
 

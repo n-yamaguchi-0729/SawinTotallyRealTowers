@@ -11,9 +11,16 @@ import Mathlib.Algebra.Order.Field.Power
 import Mathlib.Analysis.SpecialFunctions.Log.Base
 import Mathlib.NumberTheory.Padics.PadicVal.Basic
 import Mathlib.Topology.Algebra.Order.Field
-import Mathlib.Tactic
-
-set_option autoImplicit false
+import Batteries.Tactic.Init
+import Lean.Elab.Tactic.NormCast
+import Lean.Elab.Tactic.Omega
+import Lean.Elab.Tactic.RCases
+import Mathlib.Algebra.Order.Field.Basic
+import Mathlib.Order.Filter.Defs
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Linarith.Frontend
+import Mathlib.Tactic.Positivity.Basic
+import Mathlib.Tactic.Ring.RingNF
 
 /-!
 # Arithmetic lemmas for local-field index calculations
@@ -21,10 +28,13 @@ set_option autoImplicit false
 This file contains the pure natural-number cancellation steps used after local-field
 norm and value-group arguments have produced an lcm divisibility.
 
-It also contains the elementary `p`-adic valuation estimates used in the local-field structure development,
+It also contains the elementary `p`-adic valuation estimates used in the local-field structure
+development,
 the logarithm and exponential estimates for the convergence and valuation behavior of the
 logarithm and exponential series.
 -/
+
+
 
 namespace LocalFieldTheory.DiscreteValuationField
 

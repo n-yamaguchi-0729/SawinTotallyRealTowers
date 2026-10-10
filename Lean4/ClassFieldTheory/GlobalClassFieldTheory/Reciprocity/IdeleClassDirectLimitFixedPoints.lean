@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPointDescent
 import GaloisCohomology.Kummer.Abstract.KummerDelta
 
-set_option autoImplicit false
-
 /-!
 # Fixed points of the rational idele-class direct limit
 
 The actual idele class group of a finite rational intermediate field is
 identified with the corresponding fixed subgroup of the direct limit.
 -/
+
+
 
 noncomputable section
 

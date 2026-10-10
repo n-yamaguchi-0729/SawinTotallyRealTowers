@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
 import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
 import Mathlib.RingTheory.Valuation.Extension
 
-set_option autoImplicit false
-
 /-!
 # The canonical topology on a finite extension of a local field
 
@@ -19,6 +17,8 @@ nonarchimedean local field.  The definitions are deliberately explicit: they
 let downstream constructions put several finite extensions in one diagram
 while using the same topology on every field.
 -/
+
+
 
 noncomputable section
 

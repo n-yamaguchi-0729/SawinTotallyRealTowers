@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
 
-set_option autoImplicit false
-
 /-!
 # Absolute data for finite local existence
 
@@ -18,6 +16,8 @@ group, its unit representation, and the ground-field fixing subgroup.  Both
 the characteristic-zero and equal-characteristic existence arguments use
 these definitions.
 -/
+
+
 
 noncomputable section
 
@@ -68,10 +68,10 @@ end OpenFiniteIndexSubgroup
 fixed field Galois over the concrete local base field. -/
 theorem abstractFixedField_isGalois_of_base_normal
     (K : Type) [Field K]
-    (H : ClosedSubgroup (Gal(SeparableClosure K / K)))
+    (H : ClosedSubgroup (Gal(SeparableClosure K/K)))
     (hnormal :
       (extensionSubgroup
-        (baseField (Gal(SeparableClosure K / K))) H
+        (baseField (Gal(SeparableClosure K/K))) H
         (le_baseField H)).Normal) :
     IsGalois K (abstractFixedField K (SeparableClosure K) H) := by
   let B := baseField (Gal(SeparableClosure K / K))

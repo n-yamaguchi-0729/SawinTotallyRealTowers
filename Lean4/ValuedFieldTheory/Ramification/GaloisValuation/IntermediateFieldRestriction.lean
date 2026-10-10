@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # Restriction between normal intermediate fields
 
@@ -15,6 +13,8 @@ This module packages the canonical restriction map between two intermediate
 fields in a common ambient extension without requiring callers to install the
 auxiliary algebra and scalar-tower instances.
 -/
+
+
 
 noncomputable section
 

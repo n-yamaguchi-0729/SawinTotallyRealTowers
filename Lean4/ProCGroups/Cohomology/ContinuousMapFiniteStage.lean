@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.InverseSystems.FiniteStageFactorization
 import ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
 
-set_option autoImplicit false
 /-!
 # Finite-stage factorization of continuous maps
 

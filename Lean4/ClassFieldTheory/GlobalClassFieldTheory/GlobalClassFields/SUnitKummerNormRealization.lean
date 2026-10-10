@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 import ClassFieldTheory.KummerTheory.Concrete.SUnitKummerUnramified
 import ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.StandardSubgroupIndex
 
-set_option autoImplicit false
-
 /-!
 # Exact norm realization by the full S-unit Kummer extension
 
@@ -23,7 +21,9 @@ from the independently computed quotient cardinal and the global
 norm-residue index formula.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 
 noncomputable section
 

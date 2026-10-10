@@ -11,7 +11,6 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Positivity
 import Mathlib.Tactic.Ring
 
-set_option autoImplicit false
 /-!
 # Numerical Golod--Shafarevich criterion
 

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.LevelAlgebra
 import ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the explicit norm-subgroup computation: the uniformizer factor is a norm
 
@@ -17,6 +15,8 @@ negative primitive Lubin--Tate division point.  This light leaf isolates the
 valuation factor of the norm-subgroup calculation from the later openness
 and index arguments.
 -/
+
+
 
 noncomputable section
 

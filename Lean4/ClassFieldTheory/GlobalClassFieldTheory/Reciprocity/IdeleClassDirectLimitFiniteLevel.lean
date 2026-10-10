@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFiniteLevelCore
 
-set_option autoImplicit false
-
 /-!
 # Tensor comparison and injectivity at finite rational levels
 
@@ -15,6 +13,8 @@ This endpoint leaf contains the tensor-unflattening comparisons and the
 resulting injectivity theorems.  The finite-level normal-closure maps and
 their tower compatibility live in the reusable core leaf.
 -/
+
+
 
 open scoped NumberField TensorProduct
 open NumberField

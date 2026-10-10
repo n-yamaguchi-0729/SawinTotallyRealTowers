@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 import Mathlib.LinearAlgebra.Pi
 
-set_option autoImplicit false
 /-!
 # The family of finite-place degree-two localization maps
 

@@ -8,8 +8,6 @@ import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.FamilyC
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
 
-set_option autoImplicit false
-
 /-!
 # Cohomology of the unrestricted factors of a relative `S`-idele
 
@@ -18,7 +16,9 @@ real/complex norm calculation.  It treats the finite family consisting
 of all infinite places and the finite places in `S`.
 -/
 
-open scoped NumberField BigOperators ValuativeRel Classical NNReal
+
+
+open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -49,7 +49,8 @@ noncomputable def relativeUnrestrictedSPlaceLocalDegree
           (K := K) (L := L) S i).extension.1))
 
 omit [NumberField K] [NumberField L] in
-/-- The decomposition-group localization equivalence identifies the order of a decomposition group with
+/-- The decomposition-group localization equivalence identifies the order of a decomposition group
+with
 the degree of its localized completion. -/
 theorem absoluteValueDecompositionGroup_card_eq_localizedDegree
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
@@ -240,6 +241,7 @@ theorem relativeUnrestrictedLocalHerbrandH0_card_eq_localDegree
           v (chosenInfinitePlaceAbove (L := L) v)
           (chosenInfinitePlaceAbove_comap
             (L := L) v)
+      classical
       have hgroup :
           Nat.card (absoluteValueDecompositionGroup K w.1) =
             if w.IsUnramified K then 1 else 2 := by

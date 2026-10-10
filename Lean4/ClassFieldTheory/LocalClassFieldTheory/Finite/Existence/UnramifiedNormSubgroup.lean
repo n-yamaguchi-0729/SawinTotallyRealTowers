@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Unramified norm subgroups
 
@@ -19,6 +17,8 @@ extension of degree n is characterized by divisibility of the normalized
 valuation by n. This file packages that subgroup, its quotient map, and
 the canonical identification of the quotient with ZMod n.
 -/
+
+
 
 noncomputable section
 
@@ -170,7 +170,8 @@ theorem unramifiedNormClass_eq_one_iff (K : Type u)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (n : Nat) (x : Kˣ) :
     unramifiedNormClass K n x = 1 ↔
-      (n : Int) ∣ LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K (Additive.ofMul x) := by
+      (n : Int) ∣ LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K (Additive.ofMul
+        x) := by
   exact (QuotientGroup.eq_one_iff (N := unramifiedNormSubgroup K n) x).trans
     (mem_unramifiedNormSubgroup_iff K n x)
 
@@ -251,7 +252,8 @@ theorem unramifiedNormQuotient_card_eq_degree (K : Type u)
     _ = Nat.card (ZMod n) := Nat.card_congr Multiplicative.toAdd
     _ = n := Nat.card_zmod n
 
-/-- Two units define the same norm class exactly when the degree divides their valuation difference. -/
+/-- Two units define the same norm class exactly when the degree divides their valuation difference.
+-/
 theorem unramifiedNormClass_eq_iff (K : Type u)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (n : Nat) (x y : Kˣ) :

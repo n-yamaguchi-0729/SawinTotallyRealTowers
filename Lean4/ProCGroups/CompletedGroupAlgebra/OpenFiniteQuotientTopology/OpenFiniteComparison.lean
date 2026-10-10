@@ -8,8 +8,6 @@ import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteLim
 import Mathlib.Algebra.Ring.TransferInstance
 import Mathlib.Topology.Homeomorph.TransferInstance
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Open Finite Comparison
 

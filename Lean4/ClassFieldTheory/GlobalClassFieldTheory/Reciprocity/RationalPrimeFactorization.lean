@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
 
-set_option autoImplicit false
-
 /-!
 # Prime factorization of a nonzero rational number
 
@@ -20,7 +18,9 @@ The last declarations package rational `p`-adic units as units of `ℤ_[p]` and
 identify the reduction of a natural unit modulo `p ^ k`.
 -/
 
-open scoped BigOperators Classical
+
+
+open scoped BigOperators
 
 noncomputable section
 

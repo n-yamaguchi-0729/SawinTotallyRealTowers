@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Rat.Cast.Defs
 
-set_option autoImplicit false
-
 /-!
 # Signed squarefree representatives of rational square classes
 

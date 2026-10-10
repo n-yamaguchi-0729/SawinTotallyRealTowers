@@ -8,8 +8,6 @@ import ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
 import ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
 import Mathlib.RingTheory.AdicCompletion.Basic
 
-set_option autoImplicit false
-
 /-!
 # Principal adic filtrations in complete nonarchimedean valuation rings
 

@@ -5,9 +5,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
-import Mathlib.RingTheory.Ideal.Quotient.Operations
-
-set_option autoImplicit false
 
 /-!
 # Finite ray-modulus data
@@ -16,6 +13,8 @@ This file contains the finite local data used by ray congruence subgroups.
 A full modulus, including a selected set of real places, is defined in
 `AlgebraicNumberTheory.RayClass.FullModulus`.
 -/
+
+
 
 open scoped NumberField
 open NumberField IsDedekindDomain

@@ -8,7 +8,6 @@ import GaloisCohomology.Kummer.FiniteKummerCupCoefficientSquare
 import GaloisCohomology.Kummer.Concrete.SimpleExtension
 import ValuedFieldTheory.Ramification.GaloisValuation.IntermediateFieldRestriction
 
-set_option autoImplicit false
 /-!
 # Normalized generators for chosen simple Kummer extensions
 
@@ -44,12 +43,12 @@ theorem chosenSimpleKummerRootCharacter_surjective_of_nontrivial
     (hnK : ((p : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) (b : Kˣ)
     (hNT : Nontrivial
-      Gal((chosenSimpleKummerExtension K p hnK b) / K)) :
+      Gal((chosenSimpleKummerExtension K p hnK b)/K)) :
     Function.Surjective
       (chosenSimpleKummerRootCharacter K p hnK hmu b) := by
   let E := chosenSimpleKummerExtension K p hnK b
   let chi := chosenSimpleKummerRootCharacter K p hnK hmu b
-  let : Nontrivial Gal(E / K) := hNT
+  let : Nontrivial Gal(E/K) := hNT
   have hmuE : (primitiveRoots (p : ℕ) E).Nonempty := by
     let zeta : K := hmu.choose
     have hzeta : IsPrimitiveRoot zeta (p : ℕ) :=
@@ -67,7 +66,7 @@ theorem chosenSimpleKummerRootCharacter_surjective_of_nontrivial
   apply MonoidHom.range_eq_top.mp
   rcases chi.range.eq_bot_or_eq_top_of_prime_card with hbot | htop
   · exfalso
-    obtain ⟨sigma, hsigma⟩ := exists_ne (1 : Gal(E / K))
+    obtain ⟨sigma, hsigma⟩ := exists_ne (1 : Gal(E/K))
     apply hsigma
     apply chosenSimpleKummerRootCharacter_injective K p hnK hmu b
     have hsigma_mem : chi sigma ∈ chi.range := ⟨sigma, rfl⟩
@@ -81,14 +80,14 @@ theorem exists_chosenSimpleKummerGenerator_rootCharacter_eq
     (hnK : ((p : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) (b : Kˣ)
     (hNT : Nontrivial
-      Gal((chosenSimpleKummerExtension K p hnK b) / K)) :
+      Gal((chosenSimpleKummerExtension K p hnK b)/K)) :
     let E := chosenSimpleKummerExtension K p hnK b
     let zetaUnit := finiteKummerCoefficientRootUnit K E p hmu
     let zeta : nthRootsSubgroup E (p : ℕ) :=
       ⟨zetaUnit,
         (finiteKummerCoefficientRootUnit_isPrimitiveRoot K E p hmu).pow_eq_one⟩
-    ∃ g : Gal(E / K),
-      (∀ sigma : Gal(E / K), sigma ∈ Subgroup.zpowers g) ∧
+    ∃ g : Gal(E/K),
+      (∀ sigma : Gal(E/K), sigma ∈ Subgroup.zpowers g) ∧
       chosenSimpleKummerRootCharacter K p hnK hmu b g = zeta := by
   dsimp only
   let E := chosenSimpleKummerExtension K p hnK b
@@ -127,14 +126,14 @@ theorem exists_chosenSimpleKummerGenerator_rootCharacter_eq_inv
     (hnK : ((p : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) (b : Kˣ)
     (hNT : Nontrivial
-      Gal((chosenSimpleKummerExtension K p hnK b) / K)) :
+      Gal((chosenSimpleKummerExtension K p hnK b)/K)) :
     let E := chosenSimpleKummerExtension K p hnK b
     let zetaUnit := finiteKummerCoefficientRootUnit K E p hmu
     let zeta : nthRootsSubgroup E (p : ℕ) :=
       ⟨zetaUnit,
         (finiteKummerCoefficientRootUnit_isPrimitiveRoot K E p hmu).pow_eq_one⟩
-    ∃ g : Gal(E / K),
-      (∀ sigma : Gal(E / K), sigma ∈ Subgroup.zpowers g) ∧
+    ∃ g : Gal(E/K),
+      (∀ sigma : Gal(E/K), sigma ∈ Subgroup.zpowers g) ∧
       chosenSimpleKummerRootCharacter K p hnK hmu b g = zeta⁻¹ := by
   dsimp only
   obtain ⟨g, hg, hchi⟩ :=

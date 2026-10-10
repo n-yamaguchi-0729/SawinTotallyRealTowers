@@ -8,7 +8,6 @@ import ProCGroups.ProP.FinitePGroupMaximal
 import Mathlib.Algebra.Group.Hom.Instances
 import Mathlib.GroupTheory.GroupAction.DomAct.Basic
 
-set_option autoImplicit false
 /-!
 # Conjugation-invariant characters of finite p-groups
 

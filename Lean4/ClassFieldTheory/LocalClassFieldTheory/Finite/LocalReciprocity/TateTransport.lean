@@ -6,12 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ClassFormation
-
 /-!
 # The local class-field-axiom theorem: transport of cyclic Tate complexes
 
@@ -21,6 +15,12 @@ module.  This file records the two honest functorial comparisons needed to
 transport the local class-field-axiom theorem: reindexing a representation along a group
 isomorphism and replacing a representation by an isomorphic one.
 -/
+
+namespace LocalClassFieldTheory
+
+open ClassFormation
+
+
 
 noncomputable section
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.FrattiniPowers
 import Mathlib.NumberTheory.NumberField.ClassNumber
 
-set_option autoImplicit false
 /-!
 # The elementary `p`-class quotient
 

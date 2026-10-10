@@ -14,8 +14,6 @@ Develops `U^n/U^(n+1)` and identifies it with the additive ideal quotient
 `𝓂^n/𝓂^(n+1)` through the first-order map `a ↦ 1 + a`.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section
@@ -541,7 +539,8 @@ def principalUnitsSuccIncl (K : Type u) [Field K] [ValuativeRel K] (n : Nat) :
     intro a b
     rfl
 
-/-- The inclusion `U^(n+1) → U^n` retains the underlying unit and its stronger filtration witness. -/
+/-- The inclusion `U^(n+1) → U^n` retains the underlying unit and its stronger filtration
+witness. -/
 theorem principalUnitsSuccIncl_apply
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat)
     (u : principalUnits K (n + 1)) :

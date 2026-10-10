@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.Group.Quotient
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
-set_option autoImplicit false
-
 /-!
 # Continuous equivalences of quotient groups
 
@@ -16,6 +14,8 @@ This module supplies the quotient equivalence induced by a continuous
 multiplicative equivalence.  It belongs to the general local-field support
 layer and does not depend on the separate pro-\(C\) groups library.
 -/
+
+
 
 open scoped Topology
 

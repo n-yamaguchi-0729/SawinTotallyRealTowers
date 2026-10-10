@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerVa
 import ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
 
-set_option autoImplicit false
-
 /-!
 # Comparison of the chosen and canonical valuations on the p-adic field
 
@@ -20,6 +18,8 @@ from `ℤ_[p]`, whereas mathlib's nonarchimedean-local-field API uses
 valuations and makes the comparison usable when transporting valuation
 extensions.
 -/
+
+
 
 noncomputable section
 

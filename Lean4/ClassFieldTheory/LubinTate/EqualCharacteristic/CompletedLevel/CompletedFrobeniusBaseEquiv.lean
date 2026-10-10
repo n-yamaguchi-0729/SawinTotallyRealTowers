@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusContinuity
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the completed Frobenius lift over the Laurent base
 
@@ -15,6 +13,8 @@ The prescribed completed lift is semilinear over the completed maximal
 unramified field.  Arithmetic Frobenius on that field fixes the embedded
 Laurent base `k((T))`; hence the lift is an actual `k((T))`-automorphism.
 -/
+
+
 
 noncomputable section
 
@@ -52,7 +52,8 @@ local instance equalCharacteristicCompletedFrobeniusScalarTower
       (equalCharacteristicCompletedLevelField F n) :=
   IsScalarTower.of_algebraMap_eq' rfl
 
-/-- The completed theta-intertwining theorem completed lift fixes every element of the embedded Laurent
+/-- The completed theta-intertwining theorem completed lift fixes every element of the embedded
+Laurent
 base `k((T))`. -/
 @[simp]
 theorem equalCharacteristicCompletedFrobeniusLiftEquiv_fixesLaurentBase
@@ -74,7 +75,8 @@ theorem equalCharacteristicCompletedFrobeniusLiftEquiv_fixesLaurentBase
     (equalCharacteristicCompletedUnramifiedFrobenius F.residueField).commutes]
   rfl
 
-/-- The prescribed the completed theta-intertwining theorem lift, regarded as an automorphism over the original
+/-- The prescribed the completed theta-intertwining theorem lift, regarded as an automorphism
+over the original
 Laurent field `k((T))`. -/
 noncomputable def equalCharacteristicCompletedFrobeniusAlgEquiv
     (F : LocalField.{u, v} K)

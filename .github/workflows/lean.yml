@@ -14,7 +14,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build-depth1:
+    if: github.event.repository.private == false
+    uses: ./.github/workflows/build-depth.yml
+    with:
+      depth: 1
+
+  build-depth2:
+    if: github.event.repository.private == false
+    needs: build-depth1
+    uses: ./.github/workflows/build-depth.yml
+    with:
+      depth: 2
+
+  build-depth3:
+    if: github.event.repository.private == false
+    needs: build-depth2
+    uses: ./.github/workflows/build-depth.yml
+    with:
+      depth: 3
+
   verify:
+    if: github.event.repository.private == false
+    needs: build-depth3
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
@@ -47,6 +69,27 @@ jobs:
           lint: "false"
           use-mathlib-cache: "true"
           use-github-cache: "false"
+      - name: Restore completed project outputs from the depth jobs
+        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
+        with:
+          path: |
+            .lake/build/lib/lean
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            ${{ runner.temp }}/project-build-cache.json
+          key: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-verify-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-
+            lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+      - name: Validate cached output integrity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/project_cache.py restore \
+            --metadata "$RUNNER_TEMP/project-build-cache.json" \
+            --report "$RUNNER_TEMP/verification/cache-restore.json"
       - name: Build exact independent checker revisions
         shell: bash
         run: |
@@ -54,7 +97,7 @@ jobs:
           python3 -B .github/verification/setup_tools.py \
             --checkouts "$RUNNER_TEMP/verification-tools" \
             --output "$RUNNER_TEMP/verification/setup"
-      - name: Fresh build, exact targets, declaration audit, NanoDa and official kernel replay
+      - name: Rehashed build, exact targets, declaration audit, NanoDa and official kernel replay
         shell: bash
         run: |
           set -euo pipefail

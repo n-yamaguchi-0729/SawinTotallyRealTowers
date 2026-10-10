@@ -13,8 +13,6 @@ import Mathlib.RingTheory.Ideal.Norm.AbsNorm
 import Mathlib.RingTheory.KrullDimension.Basic
 import Mathlib.RingTheory.RamificationInertia.Ramification
 
-set_option autoImplicit false
-
 /-!
 # A discriminant bound from a prime-to-degree ramification support
 

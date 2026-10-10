@@ -11,8 +11,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.Id
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
 
-set_option autoImplicit false
-
 /-!
 # Unramifiedness of the full `S`-unit Kummer extension
 
@@ -28,7 +26,9 @@ generating the full extension is used to kill the full inertia group away
 from `S`.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

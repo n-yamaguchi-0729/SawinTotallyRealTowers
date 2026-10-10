@@ -6,11 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitLevelMapFixed
 
-set_option autoImplicit false
-
 /-!
-# LubinTate the explicit norm-subgroup computation: the standard level lies in the higher-unit fixed field
+# LubinTate the explicit norm-subgroup computation: the standard level lies in the higher-unit
+fixed field
 -/
+
+
 
 noncomputable section
 
@@ -43,7 +44,8 @@ local instance equalCharacteristicHigherUnitMembershipScalarTower
       (equalCharacteristicCompletedLevelField F n) :=
   IsScalarTower.of_algebraMap_eq' rfl
 
-/-- States the theorem `equalCharacteristicLubinTateLevelFieldToCompleted_mem_fixedField_of_mem_higherUnit`. -/
+/-- States the theorem
+`equalCharacteristicLubinTateLevelFieldToCompleted_mem_fixedField_of_mem_higherUnit`. -/
 theorem
     equalCharacteristicLubinTateLevelFieldToCompleted_mem_fixedField_of_mem_higherUnit
     (F : LocalField K)

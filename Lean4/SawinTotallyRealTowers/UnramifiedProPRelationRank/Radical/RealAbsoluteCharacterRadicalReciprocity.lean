@@ -28,8 +28,6 @@ import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Real-split quadratic characters annihilate the finite-support radical
 
@@ -40,8 +38,9 @@ radical. Actual real and finite Artin comparisons give this reciprocity
 statement for a real-split absolute quadratic character.
 -/
 
+
 open NumberField IsDedekindDomain
-open scoped NumberField BigOperators Classical
+open scoped NumberField BigOperators
 
 namespace ClassFieldTower.Martinet.Shafarevich
 open ClassFieldTower.ProP KummerTheory
@@ -63,6 +62,7 @@ private theorem two_finite_restriction_principal_radical
     (a : (idealNthPowerRadicalKummerSubgroup F (2 : ℕ+)).1) :
     (∏ v : ↥S, psi (IdeleGroup.finitePlaceIdele v.1
       (Units.map (algebraMap F (v.1.adicCompletion F)).toMonoidHom a.1))) = 1 := by
+  classical
   let r : IdeleGroup F →ₜ* Multiplicative (ZMod 2) :=
     finiteSupportIdeleRestrictionCharacter F (2 : ℕ+) S psi
   let d : IdeleGroup F →ₜ* Multiplicative (ZMod 2) :=
@@ -104,7 +104,8 @@ private theorem finiteSupport_absolute_eq_restriction
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
     finiteSupportLocalReciprocityIdeleCharacter F (n : ℕ) S
       (fun v ↦ finitePlaceAbsoluteH1AdicRestriction F (n : ℕ) v.1 (Additive.ofMul chi)) =
-      finiteSupportIdeleRestrictionCharacter F n S (globalReciprocityIdeleCharacter F (n : ℕ) chi) := by
+      finiteSupportIdeleRestrictionCharacter F n S
+        (globalReciprocityIdeleCharacter F (n : ℕ) chi) := by
   ext z
   rw [finiteSupportLocalReciprocityIdeleCharacter_apply]
   change _ = ∏ v : ↥S, globalReciprocityIdeleCharacter F (n : ℕ) chi

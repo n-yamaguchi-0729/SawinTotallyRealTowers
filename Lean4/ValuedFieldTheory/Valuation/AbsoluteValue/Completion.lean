@@ -10,8 +10,6 @@ import Mathlib.Analysis.Normed.Field.Instances
 import Mathlib.Analysis.Normed.Module.Completion
 import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
 
-set_option autoImplicit false
-
 /-!
 # Completions of absolute-valued fields
 

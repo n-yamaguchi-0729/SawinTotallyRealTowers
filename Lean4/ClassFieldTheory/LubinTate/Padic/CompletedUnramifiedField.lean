@@ -9,8 +9,6 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
 import ValuedFieldTheory.Valuation.LocalRingEquiv
 
-set_option autoImplicit false
-
 /-!
 # The p-adic completed-unramified coefficient field
 
@@ -25,6 +23,8 @@ This file equips that existing mathlib fraction field with its canonical
 an actual `ℚ_[p]`-algebra automorphism.  No second Witt ring, p-adic field,
 or Frobenius is introduced.
 -/
+
+
 
 noncomputable section
 
@@ -358,6 +358,9 @@ theorem padicCompletedUnramifiedIntegerMap_map_maximalIdeal
           (padicCompletedUnramifiedCompleteDVF p).valuationSubring :=
       ValuationTheory.ringEquiv_map_maximalIdeal e
 
+open _root_.ValuationTheory.DiscreteValuationField.ValuedExtension (
+  valuation_hasExtension_of_local_valuationSubring_map
+) in
 /-- The canonical valuation on the completed-unramified coefficient field
 extends the p-adic valuation.  This is obtained from the actual local map of
 valuation rings, rather than postulated as part of the completed field
@@ -371,7 +374,7 @@ theorem padicCompletedUnramifiedValuation_hasExtension
     apply ((IsLocalRing.local_hom_TFAE f).out 3 1).mp
     rw [padicCompletedUnramifiedIntegerMap_map_maximalIdeal]
   exact
-    ValuationTheory.DiscreteValuationField.ValuedExtension.valuation_hasExtension_of_local_valuationSubring_map
+    valuation_hasExtension_of_local_valuationSubring_map
         (padicLocalField p).toCompleteDVF
         (padicCompletedUnramifiedCompleteDVF p)
         f

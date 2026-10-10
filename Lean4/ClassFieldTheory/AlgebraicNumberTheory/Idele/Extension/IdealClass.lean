@@ -10,8 +10,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
 import Mathlib.NumberTheory.RamificationInertia.Valuation
 import Mathlib.RingTheory.ClassGroup.ExtendedHom
 
-set_option autoImplicit false
-
 /-!
 # Extension of ideles and ideal classes
 
@@ -21,6 +19,8 @@ gives the usual extension map on ideles.  This file descends that map to
 idele classes and compares it with extension of fractional ideals and
 ideal classes.
 -/
+
+
 
 open scoped NumberField TensorProduct nonZeroDivisors
 open NumberField IsDedekindDomain

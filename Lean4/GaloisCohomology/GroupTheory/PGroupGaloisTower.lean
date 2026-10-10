@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Subgroup.Basic
 import Mathlib.Algebra.Order.GroupWithZero.Basic
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.PGroup
@@ -13,8 +12,6 @@ import Mathlib.GroupTheory.Subgroup.Center
 import Mathlib.GroupTheory.Sylow
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import Mathlib.LinearAlgebra.Dimension.Free
-
-set_option autoImplicit false
 
 /-!
 # A central prime-degree step in a finite Galois p-extension

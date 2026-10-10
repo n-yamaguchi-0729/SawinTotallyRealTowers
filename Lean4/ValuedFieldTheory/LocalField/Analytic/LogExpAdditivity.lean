@@ -7,13 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.Homomorphisms
 
-set_option autoImplicit false
-
-open Filter
-open Polynomial
-open scoped Topology
-open scoped PowerSeries.WithPiTopology
-
 /-!
 # Scaled logarithm additivity for local fields
 
@@ -23,6 +16,13 @@ evaluate the formal identity
 valued field whose normalized valuation restricts to `e * v_p` on the natural
 numbers.
 -/
+
+open Filter
+open Polynomial
+open scoped Topology
+open scoped PowerSeries.WithPiTopology
+
+
 
 noncomputable section
 
@@ -370,7 +370,8 @@ theorem valuation_formalLogOnePlusProductArgument_sigmaTerm_le_max
 summable.  No rearrangement hypothesis is exposed: nonzero terms in each
 fixed outer degree have finite polynomial support, while their values are
 bounded by the convergent one-variable logarithm terms. -/
-theorem summable_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_ofWithZeroValuation_scaled
+theorem
+  summable_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_ofWithZeroValuation_scaled
     [Algebra ℚ K]
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     {p : ℕ} [Fact p.Prime] (e : ℕ) (x y : K)
@@ -484,7 +485,8 @@ theorem summable_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_of
 
 /-- The expanded product-argument Sigma-family has sum equal to the scaled
 logarithm of `x + y + xy`. -/
-theorem hasSum_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_sigma_ofWithZeroValuation_scaled
+theorem
+hasSum_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_sigma_ofWithZeroValuation_scaled
     [Algebra ℚ K]
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     {p : ℕ} [Fact p.Prime] (e : ℕ) (x y : K)
@@ -542,7 +544,8 @@ theorem hasSum_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_sigm
 /-- Regrouping the scaled Sigma-family by monomial exponent evaluates the
 substituted formal logarithm itself.  The inner sum is finite for every fixed
 monomial, by the degree bound in power-series substitution. -/
-theorem hasSum_formalLogOnePlusProductArgument_logSubst_monomialValue_pair_ofWithZeroValuation_scaled
+theorem
+  hasSum_formalLogOnePlusProductArgument_logSubst_monomialValue_pair_ofWithZeroValuation_scaled
     [Algebra ℚ K]
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     {p : ℕ} [Fact p.Prime] (e : ℕ) (x y : K)
@@ -575,8 +578,9 @@ theorem hasSum_formalLogOnePlusProductArgument_logSubst_monomialValue_pair_ofWit
         (logOnePlusSeriesFieldOfWithZeroValuation v
           (x + y + x * y) hnK) := by
     simpa [sigmaTerm] using
-      hasSum_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_sigma_ofWithZeroValuation_scaled
-        (v := v) (p := p) e x y hnK hnval hvx hvy hcomplete
+      (
+hasSum_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_sigma_ofWithZeroValuation_scaled
+        (v := v) (p := p) e x y hnK hnval hvx hvy hcomplete)
   let swap :
       (Sigma fun _ : (Fin 2 →₀ ℕ) => ℕ) ≃
         (Sigma fun _ : ℕ => Fin 2 →₀ ℕ) :=
@@ -660,6 +664,9 @@ theorem logOnePlusSeriesField_mul_argument_eq_add_ofWithZeroValuation_scaled
   exact formalLogOnePlusProductFormula_hasSum_monomialValue_eq
     (A := K) hleft hright
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- Scaled logarithm-series additivity on first principal units.  Unlike the
 earlier endpoint reduction, this theorem has no defect-convergence hypothesis. -/
 theorem principalUnitLogSeries_mul_eq_add_ofWithZeroValuation_scaled
@@ -667,7 +674,7 @@ theorem principalUnitLogSeries_mul_eq_add_ofWithZeroValuation_scaled
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     {p : ℕ} [Fact p.Prime] (e : ℕ)
-    (u w : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1)
+    (u w : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1)
     (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0))
     (hnval : ∀ n : ℕ,
       v (((n + 1 : ℕ) : K)) =
@@ -690,6 +697,9 @@ theorem principalUnitLogSeries_mul_eq_add_ofWithZeroValuation_scaled
   rw [principalUnitLogSeries_mul_argument_ofWithZeroValuation]
   simpa [principalUnitLogSeriesOfWithZeroValuation, x, y] using hadd
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /-- The scaled logarithm series as a genuine homomorphism on first principal
 units, with no supplied additivity or defect theorem. -/
 noncomputable def principalUnitLogSeriesHomOfWithZeroValuationScaled
@@ -704,7 +714,7 @@ noncomputable def principalUnitLogSeriesHomOfWithZeroValuationScaled
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1 →*
+    (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1 →*
       Multiplicative K where
   toFun u := Multiplicative.ofAdd
     (principalUnitLogSeriesOfWithZeroValuation v u hnK)
@@ -719,6 +729,9 @@ noncomputable def principalUnitLogSeriesHomOfWithZeroValuationScaled
     rw [principalUnitLogSeries_mul_eq_add_ofWithZeroValuation_scaled
       (v := v) (p := p) e u w hnK hnval hcomplete]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
 /--
 Establishes the identity `Multiplicative.toAdd (principalUnitLogSeriesHomOfWithZeroValuationScaled
 (v := v) (p := p) e hnK hnval hcomplete u) = principalUnitLogSeriesOfWithZeroValuation v u hnK`.
@@ -735,7 +748,7 @@ Establishes the identity `Multiplicative.toAdd (principalUnitLogSeriesHomOfWithZ
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K)
-    (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
     Multiplicative.toAdd
         (principalUnitLogSeriesHomOfWithZeroValuationScaled
           (v := v) (p := p) e hnK hnval hcomplete u) =

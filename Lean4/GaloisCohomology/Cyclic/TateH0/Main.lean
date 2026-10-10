@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Cyclic.TateH0.NormImage
 
-set_option autoImplicit false
-
 /-!
 # Degree-zero Tate cohomology and the norm quotient
 

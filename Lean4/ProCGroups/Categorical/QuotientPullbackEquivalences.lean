@@ -4,10 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
 import ProCGroups.Categorical.ProfinitePullbacks
 import ProCGroups.ProC.Quotients.ClosedNormal
-
-set_option autoImplicit false
 
 /-!
 # Pro C Groups / Categorical / Quotient Pullback Equivalences

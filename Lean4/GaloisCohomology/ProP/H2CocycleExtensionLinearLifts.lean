@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.H2CentralExtensionClass
 
-set_option autoImplicit false
 /-!
 # Linear operations and character corrections on cocycle lifts
 

@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Zassenhaus.Basic
 
-set_option autoImplicit false
 /-!
 # Commutator and power laws for the Zassenhaus filtration
 

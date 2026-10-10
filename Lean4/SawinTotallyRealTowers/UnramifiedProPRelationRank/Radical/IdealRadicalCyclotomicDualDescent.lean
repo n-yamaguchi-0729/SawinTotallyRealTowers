@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicModule
 
-set_option autoImplicit false
 /-!
 # Descent from the cyclotomic ideal-radical dual
 

@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaPrincipalUnits
 import ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.Core
 
-set_option autoImplicit false
-
 /-!
 # Topological structure of local-field units
 
@@ -17,6 +15,8 @@ This file assembles the valuation, Teichmuller, and principal-unit factors in
 the canonical factor order.  All topologies are the ones carried directly by
 the given `WithZero (Multiplicative ℤ)`-valued valuation.
 -/
+
+
 
 noncomputable section
 
@@ -30,7 +30,10 @@ namespace LocalField
 
 variable {K : Type u} [Field K]
 
-/-- The local-field structure theory, the mixed-characteristic field-unit structure theorem.  In mixed characteristic the
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWithZeroValuation) in
+/-- The local-field structure theory, the mixed-characteristic field-unit structure theorem.  In
+mixed characteristic the
 first principal units are a finite cyclic `p`-group times
 `[K : ℚ_p]` copies of `ℤ_p`; adjoining the valuation and Teichmuller factors
 gives the displayed topological decomposition of `Kˣ` in the canonical factor order. -/
@@ -68,13 +71,16 @@ noncomputable def chosenFieldUnitsStructure_mixedCharacteristic
     chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
       v hv
   exact ⟨a,
-    CompleteDVF.higherPrincipalUnitGroup.fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWithZeroValuation
+    fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWithZeroValuation
       v hπ
       (Multiplicative
         (ZMod (F.residueCharacteristic ^ a) ×
           (Fin d → ℤ_[F.residueCharacteristic]))) e⟩
 
-/-- The exact principal-unit factor in the equal-characteristic field-unit structure theorem, reindexed from
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation) in
+/-- The exact principal-unit factor in the equal-characteristic field-unit structure theorem,
+reindexed from
 the prime-to-`p` degrees and residue-basis coordinates by `ℕ`. -/
 noncomputable def chosenFirstPrincipalUnitStructure_equalCharacteristic
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
@@ -99,7 +105,7 @@ noncomputable def chosenFirstPrincipalUnitStructure_equalCharacteristic
   let E :=
     (CompleteDVF.higherPrincipalUnitGroup.iwasawaGlobalAdicPrincipalUnitsContinuousAddEquiv
       F hπ).trans
-      (CompleteDVF.higherPrincipalUnitGroup.adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation
+      (adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation
         v)
   let I := iwasawaPadicIntProductContinuousAddEquivNat
     F.residueCharacteristic
@@ -113,7 +119,10 @@ noncomputable def chosenFirstPrincipalUnitStructure_equalCharacteristic
     I.symm.trans E
   exact LocalFieldTheory.DiscreteValuationField.continuousMulEquivOfAdditiveTarget eAdd
 
-/-- The local-field structure theory, the equal-characteristic field-unit structure theorem.  In equal characteristic the
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWithZeroValuation) in
+/-- The local-field structure theory, the equal-characteristic field-unit structure theorem.  In
+equal characteristic the
 Iwasawa generators identify the first principal units with a countable
 product of `ℤ_p`; adjoining the valuation and Teichmuller factors gives the
 canonical topological decomposition of `Kˣ`. -/
@@ -135,7 +144,7 @@ noncomputable def chosenFieldUnitsStructure_equalCharacteristic
   let ePrincipal :=
     chosenFirstPrincipalUnitStructure_equalCharacteristic v
   exact
-    CompleteDVF.higherPrincipalUnitGroup.fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWithZeroValuation
+    fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWithZeroValuation
       v hπ (Multiplicative (ℕ → ℤ_[F.residueCharacteristic])) ePrincipal
 
 end LocalField

@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizer
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: evaluation of changed Lubin--Tate polynomials
 
@@ -17,6 +15,8 @@ with their ambient Lubin--Tate endomorphisms.  Keeping the evaluation layer
 separate avoids rebuilding the larger algebraic changed-uniformizer
 construction when it is used at completed points.
 -/
+
+
 
 noncomputable section
 

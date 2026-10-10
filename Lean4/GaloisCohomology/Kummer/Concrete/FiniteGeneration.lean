@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.GroupTheory.FiniteAbelian.Duality
 import GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
 
-set_option autoImplicit false
-
 /-!
 # finite actual-field form
 
@@ -21,6 +19,8 @@ The proof uses finite-abelian character separation and the finite Kummer
 character isomorphism.  It is the finite `n`-th-power, actual-field form of
 the Kummer generation theorem; it is not the general abstract-module or infinite statement.
 -/
+
+
 
 noncomputable section
 

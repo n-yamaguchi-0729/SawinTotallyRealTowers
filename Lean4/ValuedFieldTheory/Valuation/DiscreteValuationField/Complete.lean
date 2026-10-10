@@ -8,13 +8,11 @@ import ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
 import ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Complete discretely valued fields
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

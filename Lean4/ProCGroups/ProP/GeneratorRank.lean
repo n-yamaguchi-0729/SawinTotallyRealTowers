@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.BurnsideBasis
 import ProCGroups.ProP.ElementaryAbelianRank
 
-set_option autoImplicit false
 /-!
 # Generator rank of a finitely generated pro-p group
 

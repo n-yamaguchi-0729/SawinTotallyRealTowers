@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Fox.CoefficientReduction
 import ProCGroups.ProP.Zassenhaus.GroupLike
 
-set_option autoImplicit false
 /-!
 # Compatibility of mod-p coefficient reduction
 

@@ -10,8 +10,6 @@ import SawinTotallyRealTowers.QuadraticIntegralParity
 import Mathlib.Algebra.Ring.Parity
 import Mathlib.NumberTheory.NumberField.Basic
 
-set_option autoImplicit false
-
 /-!
 # Integer coordinates in a quadratic number field
 

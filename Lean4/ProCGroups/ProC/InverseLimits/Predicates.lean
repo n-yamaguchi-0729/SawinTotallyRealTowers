@@ -8,8 +8,6 @@ import ProCGroups.FiniteGroups.StandardClasses
 import ProCGroups.Generation.QuotientCriteria
 import ProCGroups.ProC.InverseLimits.FiniteQuotients
 
-set_option autoImplicit false
-
 /-!
 # Finite-quotient predicates for profinite groups
 

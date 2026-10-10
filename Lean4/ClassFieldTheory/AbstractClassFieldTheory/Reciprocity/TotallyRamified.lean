@@ -6,18 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
 
-set_option autoImplicit false
-
-namespace ClassFormation
-
-open KummerTheory
-
-open CyclicCohomology
-
 /-!
 # The abstract reciprocity theorem: the totally ramified calculation
 
-This file isolates the calculation.  The input from the finite reciprocity equivalence is an equality in an actual finite norm quotient.  Such an equality is
+This file isolates the calculation.  The input from the finite reciprocity equivalence is an
+equality in an actual finite norm quotient.  Such an equality is
 first turned into an equality of actual norms.  For the cyclic totally
 ramified extension `M / M⁰`, the class-field axiom then supplies the element `a` with
 `aᵒ-a = v-u`.  The element written in this construction as
@@ -30,6 +23,14 @@ identification of a reciprocity value with the prime-norm class.  No
 compatibility record or theorem-shaped certificate is introduced for that
 comparison.
 -/
+
+namespace ClassFormation
+
+open KummerTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 

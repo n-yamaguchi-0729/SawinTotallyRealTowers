@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.RestrictedFinite
 import ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
-set_option autoImplicit false
-
 /-!
 # The maximal Kummer subgroup
 
 The largest admissible Kummer subgroup is the full unit group.  Its
 restricted radical quotient is canonically the ordinary power-class group.
 -/
+
+
 
 noncomputable section
 

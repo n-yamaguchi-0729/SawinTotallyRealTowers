@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairing
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MaximalKummerNorm
 
-set_option autoImplicit false
-
 /-!
 # Nondegeneracy of the local Hilbert pairing
 
@@ -17,6 +15,8 @@ local Hilbert-symbol characters with the subgroup of powers.  The resulting
 symbol therefore descends to a nondegenerate pairing on the local power-class
 group.
 -/
+
+
 
 noncomputable section
 

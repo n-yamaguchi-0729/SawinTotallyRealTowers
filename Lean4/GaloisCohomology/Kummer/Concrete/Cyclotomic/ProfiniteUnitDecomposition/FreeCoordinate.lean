@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.CyclotomicQuotient
 
-set_option autoImplicit false
-
 /-!
 # Local coordinates of the profinite-unit decomposition
 -/
+
+
 
 open scoped Topology
 

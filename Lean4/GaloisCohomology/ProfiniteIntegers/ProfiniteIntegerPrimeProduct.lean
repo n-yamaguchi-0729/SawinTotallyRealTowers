@@ -8,14 +8,14 @@ import GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 import Mathlib.Data.ZMod.QuotientRing
 import Mathlib.NumberTheory.Padics.RingHoms
 
-set_option autoImplicit false
-
 /-!
 # Prime decomposition of the profinite integers
 
 This file constructs the canonical map
 `ℤ̂ → ∏ p : Nat.Primes, ℤ_p` from the compatible finite reductions.
 -/
+
+
 
 open scoped Topology
 

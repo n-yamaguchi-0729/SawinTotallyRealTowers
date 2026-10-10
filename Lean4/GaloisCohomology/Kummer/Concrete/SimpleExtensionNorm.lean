@@ -9,8 +9,6 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 import Mathlib.GroupTheory.Coset.Card
 import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
 
-set_option autoImplicit false
-
 /-!
 # Norm witnesses in simple Kummer extensions
 
@@ -19,6 +17,8 @@ unit and its nonzero complement.  The construction uses the finite quotient
 of the roots of unity by the image of the simple Kummer character, so it does
 not require the defining power polynomial to be irreducible.
 -/
+
+
 
 noncomputable section
 

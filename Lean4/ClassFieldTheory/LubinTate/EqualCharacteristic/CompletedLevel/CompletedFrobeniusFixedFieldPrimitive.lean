@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedCompletedPrimitiveAction
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: the fixed-field primitive point over the completed base
 
@@ -17,6 +15,8 @@ The direct theta value has the changed completed primitive polynomial as
 its minimal polynomial over the completed maximal-unramified Laurent field.
 Comparing degrees shows that this point generates the whole completed level.
 -/
+
+
 
 noncomputable section
 
@@ -75,7 +75,8 @@ private theorem
   simpa [equalCharacteristicCompletedLevelBaseHom] using
     equalCharacteristicDirectThetaAtCompletedPrimitiveRoot_isRoot_target F a n
 
-/-- States the theorem `equalCharacteristicDirectThetaAtCompletedPrimitiveRoot_isIntegral_completedBase`. -/
+/-- States the theorem
+`equalCharacteristicDirectThetaAtCompletedPrimitiveRoot_isIntegral_completedBase`. -/
 theorem
     equalCharacteristicDirectThetaAtCompletedPrimitiveRoot_isIntegral_completedBase
     (F : LocalField.{u, v} K)

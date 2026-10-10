@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
 
-set_option autoImplicit false
-
 /-!
 # Finiteness of localized-completion Herbrand groups
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

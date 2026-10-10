@@ -9,8 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertCla
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
 
-set_option autoImplicit false
-
 /-!
 # Small Hilbert norm subgroups and everywhere-unramified extensions
 
@@ -25,6 +23,8 @@ surjection from the ordinary class group, its exact kernel
 factorization, and the divisibility of the extension norm quotient order
 by the class number.
 -/
+
+
 
 open scoped IsMulCommutative NumberField NumberField.LiesOver
 

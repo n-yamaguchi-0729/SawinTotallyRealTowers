@@ -9,7 +9,6 @@ import GaloisCohomology.Kummer.Concrete.RestrictedFinite
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
 import ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
-set_option autoImplicit false
 /-!
 # The empty-support Shafarevich radical
 

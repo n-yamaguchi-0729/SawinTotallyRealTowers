@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 
-set_option autoImplicit false
-
 /-!
 # Ideles in the ordinary idele-class norm quotient
 
@@ -15,6 +13,8 @@ This file supplies the useful composite from ideles to the quotient
 of `C_K` by the range of the ordinary norm `C_L → C_K`, used by the
 global norm-residue-symbol constructions.
 -/
+
+
 
 open scoped NumberField
 

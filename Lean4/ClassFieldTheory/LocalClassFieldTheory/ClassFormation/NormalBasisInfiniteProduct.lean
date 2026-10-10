@@ -9,8 +9,9 @@ import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotie
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct` Lean module. -/
+
 
 namespace LocalClassFieldTheory
 open CyclicCohomology
@@ -176,7 +177,7 @@ the ambient local field. -/
 theorem tendsto_galoisGroupIntegerUnits_sigmaMinusOne_of_tendsto
     [UniformSpace L] [IsUniformAddGroup L] [IsNonarchimedeanLocalField L]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
-    (g : Gal(L / K)) (f : Nat → 𝒪[L]ˣ) (x : 𝒪[L]ˣ)
+    (g : Gal(L/K)) (f : Nat → 𝒪[L]ˣ) (x : 𝒪[L]ˣ)
     (hf : Tendsto (fun d : Nat => ((f d : 𝒪[L]ˣ) : 𝒪[L])) atTop
       (nhds ((x : 𝒪[L]ˣ) : 𝒪[L]))) :
     letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
@@ -292,7 +293,6 @@ theorem chosenNormalBasisPrincipalUnitCorrectionProduct_eq_principalUnitsCorrect
       rfl
 
 omit [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)] in
-
 /-- If `V^n` is multiplicatively closed, every finite correction product
 stays in `V^n`. -/
 theorem chosenNormalBasisPrincipalUnitCorrectionProduct_mem
@@ -316,7 +316,6 @@ theorem chosenNormalBasisPrincipalUnitCorrectionProduct_mem
         (Nat.le_add_right n d) (hz d)
 
 omit [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)] in
-
 /-- The quotient of two partial products is controlled by the filtration
 level at the earlier index.  This is the exact tail recurrence used in both
 `H⁰` and `H⁻¹` correction arguments. -/
@@ -385,7 +384,6 @@ theorem exists_tendsto_chosenNormalBasisPrincipalUnitCorrectionProduct_principal
       (K := K) (L := L) hb hbn z hz d).symm
 
 omit [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)] in
-
 /-- A unit-valued limit of partial products remains in the initial
 normal-basis filtration level whenever that lattice is closed. -/
 theorem chosenNormalBasisPrincipalUnitCorrectionProduct_limit_mem
@@ -440,7 +438,8 @@ theorem exists_tendsto_chosenNormalBasisPrincipalUnitCorrectionProduct
                     𝒪[L]ˣ) : 𝒪[L]))
                 atTop (nhds ((x : 𝒪[L]ˣ) : 𝒪[L])) ∧
               x ∈ chosenNormalBasisPrincipalUnitSet K L n := by
-  rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_integerRingFieldSubmodule
+  rcases
+    exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_le_integerRingFieldSubmodule
       (K := K) (L := L) with ⟨b, hb⟩
   rcases exists_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice_mul_mul_mem_self
       (K := K) (L := L) with ⟨cMul, hcMul⟩

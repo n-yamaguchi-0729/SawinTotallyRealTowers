@@ -10,8 +10,6 @@ import SawinTotallyRealTowers.QuadraticIntegralGenerator
 import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
 import Mathlib.RingTheory.Norm.Transitivity
 
-set_option autoImplicit false
-
 /-!
 # Integral coordinates in a quadratic number field
 

@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPFiniteSupport
 
-set_option autoImplicit false
 /-!
 # Cofinality of finite everywhere-unramified pro-p extensions
 

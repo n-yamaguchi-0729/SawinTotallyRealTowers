@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.FieldTheory.Normal.Basic
 
-set_option autoImplicit false
-
 /-!
 # Ranges of embeddings of normal extensions
 
@@ -15,6 +13,8 @@ This file records the intrinsic image of a normal field extension inside an
 ambient field: every embedding over the base has the same intermediate-field
 range.
 -/
+
+
 
 namespace AlgHom
 

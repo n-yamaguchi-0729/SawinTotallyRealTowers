@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
 
-set_option autoImplicit false
-
 /-!
 # Valuations of standard Lubin--Tate iterates at a primitive point
 
@@ -21,6 +19,8 @@ The first summand has valuation `q ^ (i + 1)`.  The second has strictly
 larger valuation because the image of the base uniformizer has valuation
 equal to the totally ramified level degree `(q - 1) q ^ n`.
 -/
+
+
 
 noncomputable section
 

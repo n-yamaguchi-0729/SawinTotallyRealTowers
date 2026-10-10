@@ -17,8 +17,6 @@ import Mathlib.LinearAlgebra.Dimension.Free
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 
-set_option autoImplicit false
-
 /-!
 # Degree and square classes of multiquadratic extensions
 
@@ -35,11 +33,12 @@ namespace ClassFieldTower.Sawin
 
 private theorem isSquare_adjoin_of_product
     (F : Type u) (Ω : Type v) [Field F] [Field Ω] [Algebra F Ω]
-    {ι : Type w} [DecidableEq ι] (d : ι → F) (α : ι → Ω)
+    {ι : Type w} (d : ι → F) (α : ι → Ω)
     (s t : Finset ι) (ht : t ⊆ s)
     (hRoot : ∀ i ∈ s, α i ^ 2 = algebraMap F Ω (d i))
     (b q : F) (hClass : b = (∏ i ∈ t, d i) * q ^ 2) :
     IsSquare (algebraMap F (IntermediateField.adjoin F (α '' (s : Set ι))) b) := by
+  classical
   let K : IntermediateField F Ω := IntermediateField.adjoin F (α '' (s : Set ι))
   let β : t → K := fun i ↦ ⟨α i, IntermediateField.subset_adjoin F _ ⟨i, ht i.property, rfl⟩⟩
   apply (isSquare_iff_exists_sq _).mpr
@@ -62,7 +61,7 @@ private theorem isSquare_adjoin_of_product
 expected degree, and precisely their subproduct classes become squares. -/
 theorem finrank_and_squareClasses_adjoin_independent_squareRoots
     (F : Type u) (Ω : Type v) [Field F] [Field Ω] [Algebra F Ω]
-    {ι : Type w} [DecidableEq ι] (d : ι → F) (α : ι → Ω)
+    {ι : Type w} (d : ι → F) (α : ι → Ω)
     (hTwo : (2 : F) ≠ 0) (s : Finset ι)
     (hRoot : ∀ i ∈ s, α i ^ 2 = algebraMap F Ω (d i))
     (hIndependent : ∀ t : Finset ι, t ⊆ s → t.Nonempty → ¬ IsSquare (∏ i ∈ t, d i)) :
@@ -70,6 +69,7 @@ theorem finrank_and_squareClasses_adjoin_independent_squareRoots
       ∀ b : F,
         IsSquare (algebraMap F (IntermediateField.adjoin F (α '' (s : Set ι))) b) ↔
           ∃ t : Finset ι, t ⊆ s ∧ ∃ q : F, b = (∏ i ∈ t, d i) * q ^ 2 := by
+  classical
   induction s using Finset.induction_on with
   | empty =>
       have hEmpty : IntermediateField.adjoin F

@@ -16,8 +16,6 @@ import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 
-set_option autoImplicit false
-
 /-!
 # Killing real conjugation makes the kernel field totally real
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.ProP.ContinuousH1Bridge
 import Mathlib.Tactic.Ring
 
-set_option autoImplicit false
 /-!
 # The continuous cup product of two trivial mod-p characters
 
@@ -100,8 +99,7 @@ theorem continuousH1CupHomogeneousTwoCochainLifted_mem_cycles
       (continuousH1CupHomogeneousTwoCochainLifted χ ψ)
   have hdh := congrArg (fun τ ↦ τ g h k l) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
   change
     ULift.up
           (χ (Additive.ofMul (h⁻¹ * k)) *

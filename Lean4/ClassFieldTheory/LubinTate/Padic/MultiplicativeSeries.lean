@@ -8,8 +8,6 @@ import ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
 import ClassFieldTheory.LubinTate.FormalModule.Series
 import Mathlib.RingTheory.PowerSeries.Binomial
 
-set_option autoImplicit false
-
 /-!
 # The multiplicative Lubin--Tate series over `ℚ_p`
 
@@ -22,6 +20,8 @@ coefficient `p`, and reduction `X ^ p`.  Thus it is the Lubin--Tate series
 attached to the multiplicative formal group and the canonical prime
 uniformizer of `ℚ_p`.
 -/
+
+
 
 noncomputable section
 

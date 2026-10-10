@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.Presentation.Minimal
 import ProCGroups.ProP.Zassenhaus.Depth
 
-set_option autoImplicit false
 /-!
 # Zassenhaus depth of displayed relators
 

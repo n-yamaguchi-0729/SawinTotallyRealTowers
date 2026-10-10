@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 
-set_option autoImplicit false
-
 /-!
 # The chosen localization at a finite place
 
@@ -17,7 +15,9 @@ extension with its canonical valued local-field structures. It also defines
 unramifiedness for that actual completed extension.
 -/
 
-open scoped NumberField Classical ValuativeRel NNReal
+
+
+open scoped NumberField ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -350,7 +350,8 @@ noncomputable instance chosenFinitePlaceLocalizedIntegerModuleFinite
       (K := K) (L := L) w₀)
 
 /-- The chosen extension of the completed field is unramified, expressed
-using the intrinsic valuation on the algebraic localization.  The canonical local-field instances for the chosen completion are exported
+using the intrinsic valuation on the algebraic localization.  The canonical local-field instances
+for the chosen completion are exported
 from this module, so clients only supply the mathematical unramifiedness
 hypothesis. -/
 noncomputable def ChosenFinitePlaceIsUnramified

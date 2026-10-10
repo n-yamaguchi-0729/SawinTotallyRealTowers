@@ -11,8 +11,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassV
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealization
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassNormTopology
 
-set_option autoImplicit false
-
 /-!
 # Class fields from ordinary idele-class norm neighbourhoods
 
@@ -23,6 +21,8 @@ constructs its class field.  The final theorem below transports the
 result back to the ordinary idele class group of the actual fixed field,
 so its conclusion is an equality of genuine determinant-norm ranges.
 -/
+
+
 
 open scoped NumberField
 

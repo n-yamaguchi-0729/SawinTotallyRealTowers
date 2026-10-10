@@ -5,11 +5,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueQuotient
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerDecomposition
-
-set_option autoImplicit false
 
 /-!
 # The standard Lubin--Tate action on primitive division points
@@ -25,6 +24,8 @@ The action is faithful precisely modulo the higher principal-unit subgroup
 `U^(n + 1)`.  This is the finite-level congruence needed to descend the
 action from valuation-ring units to the standard finite unit parameters.
 -/
+
+
 
 noncomputable section
 
@@ -55,9 +56,9 @@ private theorem standardLubinTateSeries_hasLinearTerm
           linearForm (fun _ : Unit => π) =
         (PowerSeries.X : PowerSeries F.valuationSubring) ^
           Nat.card F.residueField := by
-    simp [LubinTateSeries.standardLubinTateSeries_toPowerSeries,
-      standardLubinTatePowerSeries, linearForm]
-    rw [PowerSeries.C_apply, PowerSeries.X_apply]
+    rw [LubinTateSeries.standardLubinTateSeries_toPowerSeries]
+    dsimp only [standardLubinTatePowerSeries, linearForm]
+    rw [Fintype.sum_unique, PowerSeries.C_apply, PowerSeries.X_apply]
     ring
   rw [HasLinearTerm, hlinear, ← PowerSeries.order_eq_order,
     PowerSeries.order_X_pow]

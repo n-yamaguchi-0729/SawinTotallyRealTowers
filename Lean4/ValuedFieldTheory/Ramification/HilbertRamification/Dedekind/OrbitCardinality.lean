@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
-set_option autoImplicit false
-
 /-!
 # Hilbert ramification theory: prime-decomposition cardinalities
 
@@ -15,6 +13,8 @@ This file records the parts of the prime-decomposition tower identity that are
 already available from the Dedekind-domain Galois action and mathlib's
 ramification/inertia API.
 -/
+
+
 
 noncomputable section
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldCoefficientDescent
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: generation of the completed Frobenius fixed field
 
@@ -15,6 +13,8 @@ The coefficient-descent inclusion and the already proved fixedness of the
 direct theta value identify the fixed field with its simple Laurent-base
 extension.
 -/
+
+
 
 noncomputable section
 

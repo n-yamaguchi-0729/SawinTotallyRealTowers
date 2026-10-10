@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.FiniteQuotients
 
-set_option autoImplicit false
-
 /-!
 # The open-finite quotient system
 

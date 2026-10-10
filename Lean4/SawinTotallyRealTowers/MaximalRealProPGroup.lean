@@ -11,8 +11,6 @@ import ProCGroups.Profinite.OpenSubgroups
 import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.FieldTheory.Galois.Profinite
 
-set_option autoImplicit false
-
 /-!
 # The Galois group of the maximal real pro-p compositum
 

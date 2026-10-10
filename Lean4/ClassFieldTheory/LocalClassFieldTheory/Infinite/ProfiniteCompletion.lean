@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.Definitions.LocalClassFieldTheory.TopologicalProfiniteCompletion
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
 
-set_option autoImplicit false
-
 /-!
 # Completion by open finite quotients
 
@@ -21,6 +19,8 @@ reciprocity.
 The construction uses Mathlib's category of profinite groups, products, and
 closed subgroups; it does not depend on a separate copied inverse-system implementation.
 -/
+
+
 
 noncomputable section
 

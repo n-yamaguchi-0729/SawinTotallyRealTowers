@@ -7,8 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction
 import GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientTower
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient` Lean module. -/
+
 
 namespace LocalClassFieldTheory
 open LocalFieldTheory

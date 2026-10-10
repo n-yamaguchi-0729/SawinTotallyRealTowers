@@ -9,11 +9,11 @@ import ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom
 import ValuedFieldTheory.Ramification.Herbrand.Average
 import ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
-set_option autoImplicit false
-
 /-!
 # General-DVF ramification numbers as a nonarchimedean depth
 -/
+
+
 
 noncomputable section
 

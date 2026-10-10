@@ -9,7 +9,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLo
 import ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
 
-set_option autoImplicit false
 /-!
 # Finite-place valuation defects and local Kummer duality
 

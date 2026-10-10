@@ -19,8 +19,6 @@ import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Cy
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.FreeCoordinate
 import GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.FiniteOrder
 
-set_option autoImplicit false
-
 /-!
 # The cyclotomic torsion fixed field
 
@@ -38,6 +36,8 @@ torsion closure and the group-theoretic decomposition of `ℤ̂ˣ` gives the
 cyclotomic `ℤ̂`-extension.
 -/
 
+
+
 noncomputable section
 
 namespace GlobalClassFieldTheory
@@ -47,6 +47,8 @@ open scoped IsMulCommutative
 open KummerTheory
 open ClassFormation
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+  (continuousMulEquivOfCompactToT2) in
 private noncomputable def rationalCyclotomicTorsionRestrictionEquiv :
     (rationalCyclotomicField ≃ₐ[ℚ]
         rationalCyclotomicField) ⧸
@@ -58,7 +60,7 @@ private noncomputable def rationalCyclotomicTorsionRestrictionEquiv :
         rationalCyclotomicTorsionFixedField) :=
     krullTopology_t2
   exact
-    LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup.continuousMulEquivOfCompactToT2
+    continuousMulEquivOfCompactToT2
       (InfiniteGalois.normalAutEquivQuotient
         (k := ℚ) (K := rationalCyclotomicField)
         rationalCyclotomicTorsionClosure)

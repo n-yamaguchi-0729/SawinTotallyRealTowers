@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtensionNorm
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 
-set_option autoImplicit false
-
 /-!
 # Finite norm quotients for rational fixed fields
 
 The abstract finite norm subgroup and quotient are identified with the
 ordinary idele-class norm range and quotient of the actual fixed-field extension.
 -/
+
+
 
 noncomputable section
 

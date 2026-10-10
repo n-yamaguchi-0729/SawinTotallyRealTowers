@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2LocalizationFamily
 
-set_option autoImplicit false
 /-!
 # Localization of degree-two classes inflated from the unramified quotient
 

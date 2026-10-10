@@ -9,8 +9,6 @@ import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.RingTheory.Polynomial.GaussLemma
 import Mathlib.SetTheory.Cardinal.Finite
 
-set_option autoImplicit false
-
 /-!
 # Primitive roots and standard Lubin--Tate level fields
 
@@ -28,6 +26,8 @@ uses the identity
 for `f(X) = X ^ q + π * X`, together with the fact that `q - 1` is nonzero
 in the base field.
 -/
+
+
 
 noncomputable section
 
@@ -115,7 +115,8 @@ theorem standardLubinTatePrimitivePolynomialOverField_irreducible
   let : IsIntegrallyClosed F.valuationSubring :=
     F.toCompleteDVF.toDVF.valuationSubring_isIntegrallyClosed
   exact
-    (standardLubinTatePrimitivePolynomial_monic F π n).irreducible_iff_irreducible_map_fraction_map.mp
+    (standardLubinTatePrimitivePolynomial_monic F π
+      n).irreducible_iff_irreducible_map_fraction_map.mp
       (standardLubinTatePrimitivePolynomial_irreducible hπ n)
 
 /-- The natural number `q - 1` is nonzero in the local field. -/

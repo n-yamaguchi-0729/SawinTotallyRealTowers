@@ -14,8 +14,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompa
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.FinitePadicAuxiliaryField
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.Factorization
 
-set_option autoImplicit false
-
 /-!
 # Exact finite ramification loci for abelian norm data
 
@@ -31,7 +29,9 @@ requires the compatibility between the actual global norm-residue map
 and the chosen local Artin map on one-place ideles.
 -/
 
-open scoped NumberField Classical NumberField.LiesOver
+
+
+open scoped NumberField NumberField.LiesOver
 
 noncomputable section
 
@@ -408,6 +408,7 @@ theorem infiniteTensorNormSubgroup_eq_top_iff_isUnramifiedIn
         v hunramified,
       pow_one]
 
+open scoped Classical in
 /-- The infinite part of the full conductor of an idèle-class norm range is
 exactly the set of ramified real places. -/
 theorem ideleClassNormFullConductor_infinitePart_eq_realRamificationLocus :
@@ -514,6 +515,9 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
 
+open _root_.GlobalClassFieldTheory.GlobalClassFields (
+  ideleClassNorm_narrowFiniteConductor_apply_eq_chosenLocalConductorExponent
+) in
 /-- The finite exponent of the full norm conductor is the local conductor
 exponent at the chosen completion above the place. -/
 theorem abelianFullConductor_finiteExponent_eq_localConductorExponent
@@ -526,9 +530,13 @@ theorem abelianFullConductor_finiteExponent_eq_localConductorExponent
     GlobalClassFieldTheory.GlobalClassFields.ideleClassNormNarrowFiniteConductor
         (K := K) (L := L) v = _
   exact
-    GlobalClassFieldTheory.GlobalClassFields.ideleClassNorm_narrowFiniteConductor_apply_eq_chosenLocalConductorExponent
+    ideleClassNorm_narrowFiniteConductor_apply_eq_chosenLocalConductorExponent
       (K := K) (L := L) v
 
+open _root_.GlobalClassFieldTheory.GlobalClassFields (
+  ideleClassNormLocalHigherUnitExponent_eq_localConductorExponent
+  ideleClassNormLocalHigherUnitExponent_eq_zero_iff_chosenFinitePlaceIsUnramified
+) in
 /-- A finite place has conductor exponent zero precisely when the chosen
 local extension is unramified. -/
 theorem abelianFullConductor_finiteExponent_eq_zero_iff_unramified
@@ -538,12 +546,15 @@ theorem abelianFullConductor_finiteExponent_eq_zero_iff_unramified
       _root_.ChosenFinitePlaceIsUnramified
         (K := K) (L := L) v := by
   rw [abelianFullConductor_finiteExponent_eq_localConductorExponent]
-  rw [← GlobalClassFieldTheory.GlobalClassFields.ideleClassNormLocalHigherUnitExponent_eq_localConductorExponent
+  rw [← ideleClassNormLocalHigherUnitExponent_eq_localConductorExponent
     (K := K) (L := L) v]
   exact
-    GlobalClassFieldTheory.GlobalClassFields.ideleClassNormLocalHigherUnitExponent_eq_zero_iff_chosenFinitePlaceIsUnramified
+    ideleClassNormLocalHigherUnitExponent_eq_zero_iff_chosenFinitePlaceIsUnramified
       (K := K) (L := L) v
 
+open _root_.GlobalClassFieldTheory.GlobalClassFields (
+  ideleClassNormFullConductor_infinitePart_eq_realRamificationLocus
+) in
 /-- A real place belongs to the full norm conductor exactly when it
 ramifies, equivalently complexifies, in the extension. -/
 theorem abelianFullConductor_mem_infinitePart_iff_realRamified
@@ -552,7 +563,8 @@ theorem abelianFullConductor_mem_infinitePart_iff_realRamified
         (GlobalClassFieldTheory.GlobalClassFields.ideleClassNormConductorialSubgroup
           (K := K) (L := L)).fullConductor.infinitePart ↔
       ¬ v.1.IsUnramifiedIn L := by
-  rw [GlobalClassFieldTheory.GlobalClassFields.ideleClassNormFullConductor_infinitePart_eq_realRamificationLocus]
+  classical
+  rw [ideleClassNormFullConductor_infinitePart_eq_realRamificationLocus]
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
 
 end ClassFieldTheory

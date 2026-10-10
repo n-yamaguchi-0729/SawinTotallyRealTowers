@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Topology.Algebra.ClopenNhdofOne
 import Mathlib.Topology.Algebra.Group.Quotient
 
-set_option autoImplicit false
-
 /-!
 # Totally disconnected quotient groups
 
 This file proves that a closed normal quotient of a compact Hausdorff totally
 disconnected topological group is totally disconnected.
 -/
+
+
 
 namespace QuotientGroup
 

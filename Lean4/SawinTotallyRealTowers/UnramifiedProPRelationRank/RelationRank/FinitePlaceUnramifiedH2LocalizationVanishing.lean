@@ -9,7 +9,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlac
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 import ProCGroups.Topologies.QuotientMaps
 
-set_option autoImplicit false
 /-!
 # Vanishing of localized unramified degree-two classes
 

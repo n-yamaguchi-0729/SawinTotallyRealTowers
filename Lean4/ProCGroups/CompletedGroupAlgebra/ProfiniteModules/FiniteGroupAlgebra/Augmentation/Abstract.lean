@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Algebraic group-algebra augmentation
 

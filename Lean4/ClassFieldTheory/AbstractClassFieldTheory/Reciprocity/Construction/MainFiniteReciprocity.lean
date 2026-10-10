@@ -13,7 +13,18 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMu
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FiniteStageCorrections
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ReciprocityMapMul
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction, the finite reciprocity equivalence
+
+This file carries out the descent preparation.  The reciprocity
+value on the Frobenius semigroup is first mapped to the finite norm quotient.
+We then compare two lifts by their positive Frobenius exponents, construct
+the degree-zero quotient between unequal lifts, and prove that this quotient
+has zero finite reciprocity value.  Finally reciprocity multiplicativity supplies
+additivity on the Frobenius semigroup, so the lift supplied by the finite degree-quotient
+decomposition descends to the additive reciprocity homomorphism of the finite reciprocity
+equivalence.
+-/
 
 universe u
 
@@ -27,16 +38,7 @@ open CategoryTheory
 open scoped BigOperators
 
 
-/-!
-# The abstract reciprocity construction, the finite reciprocity equivalence
 
-This file carries out the descent preparation.  The reciprocity
-value on the Frobenius semigroup is first mapped to the finite norm quotient.
-We then compare two lifts by their positive Frobenius exponents, construct
-the degree-zero quotient between unequal lifts, and prove that this quotient
-has zero finite reciprocity value.  Finally reciprocity multiplicativity supplies
-additivity on the Frobenius semigroup, so the lift supplied by the finite degree-quotient decomposition descends to the additive reciprocity homomorphism of the finite reciprocity equivalence.
--/
 
 noncomputable section
 
@@ -595,7 +597,8 @@ private theorem finiteReciprocityValue_eq_of_same_restriction_of_mul
   · rcases h with ⟨ι, hσ, _, hι⟩
     rw [hσ, hmul, hι, add_zero]
 
-/-- The finite degree-quotient decomposition candidate is additive as soon as reciprocity multiplicativity
+/-- The finite degree-quotient decomposition candidate is additive as soon as reciprocity
+multiplicativity
 is available.  Lift-independence is invoked for the chosen lift of a
 product and the product of the two chosen lifts. -/
 private theorem finiteReciprocityCandidate_add_of_mul
@@ -802,7 +805,8 @@ end finiteReciprocityHom
 /-!
 # The abstract reciprocity construction, the unramified norm-quotient equivalence
 
-This file proves the generator calculation in the unramified case: the finite reciprocity equivalence sends arithmetic Frobenius to the prime
+This file proves the generator calculation in the unramified case: the finite reciprocity
+equivalence sends arithmetic Frobenius to the prime
 class.  That class generates the finite norm quotient, so the resulting
 reciprocity homomorphism is promoted to an additive equivalence.
 -/
@@ -1063,7 +1067,8 @@ theorem unramifiedReciprocity_bijective_of_generator
     _ = Nat.card (FiniteNormQuotient A K.field L hLK) :=
       (Nat.card_congr e.toEquiv).symm
 
-/-- Additive-equivalence form of the generator criterion for the unramified norm-quotient equivalence.  This is useful independently of the particular construction of the
+/-- Additive-equivalence form of the generator criterion for the unramified norm-quotient
+equivalence.  This is useful independently of the particular construction of the
 reciprocity homomorphism: a homomorphism with the required Frobenius value
 is canonically promoted to an equivalence. -/
 noncomputable def unramifiedReciprocity_equiv_of_generator

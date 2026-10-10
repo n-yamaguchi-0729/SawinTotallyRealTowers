@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
 
-set_option autoImplicit false
 /-!
 # Evaluating the finite-cyclic periodic unit class
 
@@ -29,7 +28,7 @@ noncomputable section
 unit. -/
 noncomputable def finiteCyclicGeneratorFixedUnitInvariant
     (K L : Type) [Field K] [Field L] [Algebra K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) :
@@ -47,7 +46,7 @@ noncomputable def finiteCyclicGeneratorFixedUnitInvariant
 noncomputable def finiteCyclicGeneratorFixedBaseUnit
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) : Kˣ :=
@@ -59,7 +58,7 @@ noncomputable def finiteCyclicGeneratorFixedBaseUnit
 noncomputable def finiteCyclicUnitsH2PeriodicClass
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) :
@@ -84,7 +83,7 @@ in the finite-cyclic periodic short complex. -/
 noncomputable def finiteCyclicUnitsTateHZeroPeriodicClass
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) :
@@ -159,7 +158,7 @@ quotient class of the same underlying fixed unit. -/
 theorem finiteCyclicUnitsTateHZeroPeriodicClass_eq
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) :
@@ -297,7 +296,7 @@ representative as the norm class of its canonical base-field unit. -/
 theorem H0TateUnitsIsoNormQuotient_periodicClass
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) :
@@ -317,7 +316,7 @@ base-field value. -/
 theorem finiteCyclicUnitsH2IsoNormQuotient_periodicClass
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
     (a : LinearMap.ker
       ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id)) :
@@ -336,16 +335,16 @@ theorem finiteCyclicUnitsH2IsoNormQuotient_periodicClass
     ⟨a.1, by
       change A.ρ g a.1 - a.1 = 0
       exact a.2⟩
-  change
-    (H0TateUnitsIsoNormQuotient K L).hom
-        ((finiteCyclicGroupH2IsoTateHZero A g hg).hom
-          (Rep.FiniteCyclicGroup.groupCohomologyπEven
-            A g hg 2 (by decide) a')) = _
-  rw [finiteCyclicGroupH2IsoTateHZero_groupCohomologyπEven]
-  change
-    (H0TateUnitsIsoNormQuotient K L).hom
-        (finiteCyclicUnitsTateHZeroPeriodicClass K L g hg a) = _
-  exact H0TateUnitsIsoNormQuotient_periodicClass K L g hg a
+  have hclass :
+      (finiteCyclicGroupH2IsoTateHZero A g hg).hom
+          (finiteCyclicUnitsH2PeriodicClass K L g hg a) =
+        finiteCyclicUnitsTateHZeroPeriodicClass K L g hg a := by
+    dsimp only [finiteCyclicUnitsH2PeriodicClass,
+      finiteCyclicUnitsTateHZeroPeriodicClass]
+    exact finiteCyclicGroupH2IsoTateHZero_groupCohomologyπEven A g hg a'
+  rw [finiteCyclicUnitsH2IsoNormQuotient, Iso.trans_hom, ModuleCat.comp_apply]
+  exact (congrArg (fun z => (H0TateUnitsIsoNormQuotient K L).hom z) hclass).trans
+    (H0TateUnitsIsoNormQuotient_periodicClass K L g hg a)
 
 end
 

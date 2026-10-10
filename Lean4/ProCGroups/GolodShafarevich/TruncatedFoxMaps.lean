@@ -9,7 +9,6 @@ import ProCGroups.GolodShafarevich.GradedPieces
 import Mathlib.Algebra.Field.ZMod
 import Mathlib.LinearAlgebra.Quotient.Pi
 
-set_option autoImplicit false
 /-!
 # Truncated mod-p Fox maps
 

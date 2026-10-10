@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
 
-set_option autoImplicit false
-
 /-!
 # Continuous closed finite-index class-field reciprocity
 
@@ -17,7 +15,9 @@ elimination preserves the native quotient topology, so no discrete topology
 instances are reconstructed here.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

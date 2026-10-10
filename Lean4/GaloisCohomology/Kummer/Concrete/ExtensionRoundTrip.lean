@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Kummer.Concrete.InfiniteGeneration
 import GaloisCohomology.Kummer.Concrete.RadicalExtension
 
-set_option autoImplicit false
-
 /-!
 # extension-side round trip
 
@@ -16,6 +14,8 @@ For an abelian Galois intermediate extension `E/K` of exponent dividing
 `n`, adjoining in the ambient algebraic closure all `n`-th roots belonging
 to the actual radical subgroup of `E` recovers `E` itself.
 -/
+
+
 
 noncomputable section
 

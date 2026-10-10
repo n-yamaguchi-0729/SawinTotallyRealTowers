@@ -13,8 +13,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorSupport
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorRayClassMaximality
 
-set_option autoImplicit false
-
 /-!
 # Narrow finite conductors of actual idele-class norm subgroups
 
@@ -33,7 +31,9 @@ finite places.  The full conductor, including an archimedean component,
 is deliberately not defined here.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 
 noncomputable section
 
@@ -82,6 +82,7 @@ theorem exists_localHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup
     RayClass.exists_localHigherUnitGroup_subset v hnormNhds
   exact ⟨n, fun _ hx => hn hx⟩
 
+open scoped Classical in
 /-- The least higher-unit exponent whose group lies in the chosen
 finite-place norm subgroup. -/
 noncomputable def ideleClassNormLocalHigherUnitExponent
@@ -91,6 +92,7 @@ noncomputable def ideleClassNormLocalHigherUnitExponent
       (K := K) (L := L) v)
 
 omit [NumberField L] in
+open scoped Classical in
 /-- The local higher-unit group at the selected exponent lies in the
 chosen local norm subgroup. -/
 theorem ideleClassNormLocalHigherUnitExponent_spec
@@ -105,6 +107,7 @@ theorem ideleClassNormLocalHigherUnitExponent_spec
       (K := K) (L := L) v)
 
 omit [NumberField L] in
+open scoped Classical in
 /-- The selected local higher-unit exponent is minimal among all
 exponents whose higher-unit group lies in the chosen local norm
 subgroup. -/
@@ -155,6 +158,7 @@ theorem ideleClassNormLocalHigherUnitExponent_eq_zero_of_chosenUnramified
         (K := K) (L := L) v) :
     ideleClassNormLocalHigherUnitExponent
         (K := K) (L := L) v = 0 := by
+  classical
   apply Nat.eq_zero_of_le_zero
   apply Nat.find_min'
     (exists_localHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup

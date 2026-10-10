@@ -7,19 +7,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerLift
 import ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
 
-set_option autoImplicit false
-
-namespace LocalFieldTheory
-
-open ValuationTheory
-open ValuationTheory.DiscreteValuationField.ResidueField
-
 /-!
 # Teichmuller and principal-unit decompositions
 
 Decomposes valuation-ring units and field units into residue roots, first principal units,
 and a uniformizer factor.
 -/
+
+namespace LocalFieldTheory
+
+open ValuationTheory
+open ValuationTheory.DiscreteValuationField.ResidueField
+
+
 
 noncomputable section
 

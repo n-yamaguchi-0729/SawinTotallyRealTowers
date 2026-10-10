@@ -9,10 +9,6 @@ import ProCGroups.ReidemeisterSchreier.Quiver
 import ProCGroups.ReidemeisterSchreier.Schreier
 import Mathlib.Data.Set.Card
 
-set_option autoImplicit false
-
-universe u
-
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Free Basis
 
@@ -20,6 +16,8 @@ Using the action groupoid and Schreier prefix tree, this module constructs a
 free basis indexed by complement edges and transports it to the canonical
 type of nontrivial Schreier pairs.
 -/
+
+universe u
 
 namespace ReidemeisterSchreier.Discrete.OpenSubgroups
 

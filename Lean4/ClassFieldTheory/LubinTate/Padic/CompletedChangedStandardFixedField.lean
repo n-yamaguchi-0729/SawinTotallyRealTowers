@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.Padic.CompletedChangedStandardCompositum
 
-set_option autoImplicit false
-
 /-!
 # Fixed field of the finite changed-uniformizer Artin candidate
 
@@ -16,6 +14,8 @@ by the inverse completed Frobenius has fixed field exactly the changed
 Lubin--Tate factor.  Thus the automorphisms over the changed factor are
 precisely the powers of the finite Artin candidate.
 -/
+
+
 
 noncomputable section
 

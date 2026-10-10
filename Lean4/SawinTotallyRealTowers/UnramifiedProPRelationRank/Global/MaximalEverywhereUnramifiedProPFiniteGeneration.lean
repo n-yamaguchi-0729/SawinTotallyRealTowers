@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FrattiniClassField
 
-set_option autoImplicit false
 /-!
 # Finite generation of the maximal everywhere-unramified pro-p Galois group
 

@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ChoiceCountSystem
 
-set_option autoImplicit false
-
 /-!
 # Explicit counts for basic-factor choices
 
 This module solves the coordinate-count system and relates its solution to the
 label-count and multinomial choice spaces.
 -/
+
+
 
 noncomputable section
 

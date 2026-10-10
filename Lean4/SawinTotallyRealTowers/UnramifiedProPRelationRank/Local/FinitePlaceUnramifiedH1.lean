@@ -9,7 +9,6 @@ import ProCGroups.ProP.ContinuousH1
 import ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 import ValuedFieldTheory.Ramification.HilbertRamification.LocalizationRamificationGroups
 
-set_option autoImplicit false
 /-!
 # Unramified degree-one characters at a finite place
 

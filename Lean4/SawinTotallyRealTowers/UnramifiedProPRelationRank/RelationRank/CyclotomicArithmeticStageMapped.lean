@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStage
 
-set_option autoImplicit false
 /-!
 # The cyclotomic stage in a synchronized algebraic closure
 

@@ -8,7 +8,6 @@ import ProCGroups.ProP.Fox.CompletedOperatorCompatibility
 import ProCGroups.ProP.Fox.FiltrationDrop
 import ProCGroups.ProP.Presentation.RelatorDepth
 
-set_option autoImplicit false
 /-!
 # Filtration drop for the completed presentation Fox operator
 

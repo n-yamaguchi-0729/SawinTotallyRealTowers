@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
 import ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
 import Mathlib.FieldTheory.Normal.Closure
 
-set_option autoImplicit false
-
 /-!
 # Complete splitting and normal closures
 
@@ -33,7 +31,9 @@ the `K`-conjugates of `L`, then `H` has trivial normal core.
 completely already in `M`.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusNorms
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamified
 
-set_option autoImplicit false
-
 /-!
 # The fixed source in the totally ramified reciprocity argument
 
 This file converts a finite cyclic extension to the canonical finite Galois
 boundary and carries out the source-producing fixed-element calculation.
 -/
+
+
 
 noncomputable section
 

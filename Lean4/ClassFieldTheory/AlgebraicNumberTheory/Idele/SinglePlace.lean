@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
 import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
 
-set_option autoImplicit false
-
 /-!
 # Ideles supported at one place
 
@@ -19,7 +17,9 @@ that embedding at finite places and the corresponding one-component
 relative idele.
 -/
 
-open scoped NumberField Classical TensorProduct
+
+
+open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -28,6 +28,7 @@ namespace IdeleGroup
 
 variable {K : Type*} [Field K] [NumberField K]
 
+open scoped Classical in
 /-- The dependent archimedean value which is `x` at `v` and `1`
 elsewhere. -/
 private def infinitePlaceValue
@@ -44,6 +45,7 @@ private theorem infinitePlaceValue_same
     (v : InfinitePlace K)
     (x : v.Completionˣ) :
     infinitePlaceValue v x v = x := by
+  classical
   exact Pi.mulSingle_eq_same
     (M := fun u : InfinitePlace K ↦ u.Completionˣ) v x
 
@@ -54,6 +56,7 @@ private theorem infinitePlaceValue_of_ne
     (x : v.Completionˣ)
     (h : w ≠ v) :
     infinitePlaceValue v x w = 1 := by
+  classical
   exact Pi.mulSingle_eq_of_ne
     (M := fun u : InfinitePlace K ↦ u.Completionˣ) h x
 
@@ -104,6 +107,7 @@ def infinitePlaceIdele
 theorem continuous_infinitePlaceIdele
     (v : InfinitePlace K) :
     Continuous (infinitePlaceIdele v) := by
+  classical
   change Continuous
     (fun x : v.Completionˣ ↦
       (ContinuousMulEquiv.piUnits.symm
@@ -184,6 +188,7 @@ def infinitePlaceIdeleClass
     (IdeleGroup.principalSubgroup K)).comp
       (infinitePlaceIdele v)
 
+open scoped Classical in
 /-- The dependent local value which is `x` at `v` and `1` elsewhere. -/
 private def finitePlaceValue
     (v : HeightOneSpectrum (𝓞 K))
@@ -297,6 +302,7 @@ variable
     {L : Type*} [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L]
 
+open scoped Classical in
 /-- The dependent archimedean tensor value which is `z` at `v` and
 `1` elsewhere. -/
 private def relativeInfinitePlaceValue
@@ -421,6 +427,7 @@ theorem relativeInfinitePlaceIdele_finiteComponent
     relativeIdeleOfLocalData_finiteComponent]
   rfl
 
+open scoped Classical in
 /-- The dependent local tensor value which is `z` at `v` and `1`
 elsewhere. -/
 private def relativeFinitePlaceValue

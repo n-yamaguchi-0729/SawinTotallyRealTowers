@@ -15,8 +15,6 @@ import Mathlib.Algebra.Group.Subgroup.Ker
 import Mathlib.GroupTheory.Index
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
-set_option autoImplicit false
-
 /-!
 # A finite witness for a finite quotient by countably many relations
 

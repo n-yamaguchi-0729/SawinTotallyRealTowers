@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
 import Mathlib.RingTheory.Norm.Basic
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: the uniformizer norm in the equal-characteristic level field
 
@@ -16,6 +14,8 @@ For a primitive level-`n+1` division point `λ`, its Eisenstein minimal
 polynomial has constant coefficient `T`.  The power-basis norm formula
 therefore gives the norm identity `N(-λ) = T`.
 -/
+
+
 
 noncomputable section
 

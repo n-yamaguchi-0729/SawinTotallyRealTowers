@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteIdeleH2Injection
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
 
-set_option autoImplicit false
 /-!
 # Recovering a field-unit primitive from an idele primitive
 

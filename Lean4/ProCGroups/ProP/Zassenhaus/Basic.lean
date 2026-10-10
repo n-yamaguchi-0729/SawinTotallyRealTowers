@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProP.FrattiniPowers
 import ProCGroups.ProP.Zassenhaus.GroupLike
 
-set_option autoImplicit false
 /-!
 # Basic mod-`p` Zassenhaus subgroups
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProC.Subgroups.Closed
 
-set_option autoImplicit false
-
 /-!
 # Closed subgroups of products of pro-\(C\) groups
 

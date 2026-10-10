@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
 
-set_option autoImplicit false
-
 /-!
 # Bijectivity criteria for maps out of the open-quotient completion
 
@@ -17,6 +15,8 @@ target are cofinal among the defining open finite-index normal subgroups of
 the source.  These criteria isolate the purely topological part of infinite
 local reciprocity from the arithmetic existence theorem.
 -/
+
+
 
 noncomputable section
 

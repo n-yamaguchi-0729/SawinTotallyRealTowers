@@ -13,8 +13,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFie
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.SmallOriginal
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteLocalGlobalArtinCompatibility
 
-set_option autoImplicit false
-
 /-!
 # Unramifiedness and maximality of Hilbert class fields
 
@@ -23,6 +21,8 @@ idele-class norm ranges.  Exact local--global narrow finite conductor
 compatibility therefore turns the vanishing of their intrinsic finite conductors into actual
 unramifiedness at every finite prime.
 -/
+
+
 
 open scoped NumberField
 
@@ -49,7 +49,7 @@ theorem isUnramifiedAtFinitePlaces_of_normRange_eq_bigHilbertNormSubgroup
   apply
     (ideleClassNorm_narrowFiniteConductor_eq_zero_iff_all_finitePlaces_unramified
       (K := K) (L := L)).1
-  show
+  change
     (ideleClassNormConductorialSubgroup
       (K := K) (L := L)).narrowFiniteConductor = 0
   have hsub :
@@ -69,7 +69,7 @@ theorem isUnramifiedAtFinitePlaces_of_normRange_eq_smallHilbertNormSubgroup
   apply
     (ideleClassNorm_narrowFiniteConductor_eq_zero_iff_all_finitePlaces_unramified
       (K := K) (L := L)).1
-  show
+  change
     (ideleClassNormConductorialSubgroup
       (K := K) (L := L)).narrowFiniteConductor = 0
   have hsub :

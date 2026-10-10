@@ -7,8 +7,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.AbsoluteRamification
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `RamificationTheory.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence` Lean module. -/
+/-! Provides the public declarations in the
+`RamificationTheory.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence` Lean module. -/
+
 
 namespace RamificationTheory
 
@@ -323,7 +324,7 @@ chosen algebraic closure.  The extension is canonical because
 `AlgebraicClosure K` is purely inseparable over `SeparableClosure K`. -/
 noncomputable def separableClosureExtensionAlgEquiv
     (K : Type u) [Field K]
-    (τ : Gal(SeparableClosure K / K)) :
+    (τ : Gal(SeparableClosure K/K)) :
     Gal(AlgebraicClosure K / K) := by
   letI : Algebra (SeparableClosure K) (AlgebraicClosure K) :=
     (separableClosure K (AlgebraicClosure K)).val.toRingHom.toAlgebra
@@ -386,7 +387,7 @@ def restrictToSeparableClosure
 @[simp]
 theorem separableClosureExtensionAlgEquiv_restricts
     (K : Type u) [Field K]
-    (τ : Gal(SeparableClosure K / K)) (x : SeparableClosure K) :
+    (τ : Gal(SeparableClosure K/K)) (x : SeparableClosure K) :
     separableClosureExtensionAlgEquiv K τ x = τ x := by
   dsimp [separableClosureExtensionAlgEquiv]
   let : Algebra (SeparableClosure K) (AlgebraicClosure K) :=
@@ -411,7 +412,7 @@ theorem separableClosureExtensionAlgEquiv_restricts
 /-- States the theorem `restrictToSeparableClosure_extension`. -/
 @[simp]
 theorem restrictToSeparableClosure_extension
-    (K : Type u) [Field K] (τ : Gal(SeparableClosure K / K)) :
+    (K : Type u) [Field K] (τ : Gal(SeparableClosure K/K)) :
     AlgEquiv.separableClosure (separableClosureExtensionAlgEquiv K τ) = τ := by
   ext x
   exact separableClosureExtensionAlgEquiv_restricts K τ x
@@ -419,7 +420,7 @@ theorem restrictToSeparableClosure_extension
 /-- States the theorem `extension_restrictToSeparableClosure`. -/
 @[simp]
 theorem extension_restrictToSeparableClosure
-    (K : Type u) [Field K] (σ : Gal(AlgebraicClosure K / K)) :
+    (K : Type u) [Field K] (σ : Gal(AlgebraicClosure K/K)) :
     separableClosureExtensionAlgEquiv K (AlgEquiv.separableClosure σ) = σ := by
   let : Algebra (SeparableClosure K) (AlgebraicClosure K) :=
     (separableClosure K (AlgebraicClosure K)).val.toRingHom.toAlgebra
@@ -531,7 +532,7 @@ theorem finiteDimensional_separablePartInAbsoluteSeparableClosure
 theorem separableClosureExtension_mem_fixingSubgroup_of_mem_separablePart
     (K : Type u) [Field K]
     (E : IntermediateField K (AlgebraicClosure K)) [FiniteDimensional K E]
-    (τ : Gal(SeparableClosure K / K))
+    (τ : Gal(SeparableClosure K/K))
     (hτ : τ ∈ (separablePartInAbsoluteSeparableClosure K E).fixingSubgroup) :
     separableClosureExtensionAlgEquiv K τ ∈ E.fixingSubgroup := by
   let Esep : IntermediateField K E := separableClosure K E
@@ -639,7 +640,7 @@ def ofIntermediateFieldInExtension
 @[simp]
 theorem ofIntermediateFieldInExtension_apply
     {K : Type u} {M : Type v} [Field K] [Field M] [Algebra K M]
-    (E : IntermediateField K M) (σ : Gal(M / E)) :
+    (E : IntermediateField K M) (σ : Gal(M/E)) :
     ofIntermediateFieldInExtension E σ = σ.restrictScalars K :=
   rfl
 
@@ -685,7 +686,7 @@ def ofIntermediateField (E : IntermediateField K (AlgebraicClosure K)) :
 @[simp]
 theorem ofIntermediateField_apply
     (E : IntermediateField K (AlgebraicClosure K))
-    (σ : Gal(AlgebraicClosure K / E)) :
+    (σ : Gal(AlgebraicClosure K/E)) :
     ofIntermediateField K E σ = σ.restrictScalars K :=
   rfl
 
@@ -719,7 +720,7 @@ theorem ofIntermediateField_injective
 /-- States the theorem `ofIntermediateField_eq_iff`. -/
 theorem ofIntermediateField_eq_iff
     (E : IntermediateField K (AlgebraicClosure K))
-    (σ τ : Gal(AlgebraicClosure K / E)) :
+    (σ τ : Gal(AlgebraicClosure K/E)) :
     ofIntermediateField K E σ = ofIntermediateField K E τ ↔ σ = τ :=
   ⟨fun h => ofIntermediateField_injective K E h, fun h => by rw [h]⟩
 
@@ -876,7 +877,7 @@ theorem openSubgroupOfFiniteIntermediateField_toSubgroup
 @[simp]
 theorem mem_openSubgroupOfFiniteIntermediateField
     (E : IntermediateField K (AlgebraicClosure K)) [FiniteDimensional K E]
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (σ : Gal(AlgebraicClosure K/K)) :
     σ ∈ openSubgroupOfFiniteIntermediateField K E ↔
       ∀ x ∈ E, σ x = x := by
   rw [← IntermediateField.mem_fixingSubgroup_iff E σ]
@@ -921,7 +922,7 @@ theorem openSubgroupOfFiniteIntermediateFieldSup_toSubgroup
 theorem mem_openSubgroupOfFiniteIntermediateFieldSup
     (E F : IntermediateField K (AlgebraicClosure K))
     [FiniteDimensional K E] [FiniteDimensional K F]
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (σ : Gal(AlgebraicClosure K/K)) :
     σ ∈ openSubgroupOfFiniteIntermediateFieldSup K E F ↔
       σ ∈ openSubgroupOfFiniteIntermediateField K E ∧
         σ ∈ openSubgroupOfFiniteIntermediateField K F := by
@@ -945,7 +946,7 @@ theorem range_ofIntermediateField_sup
 /-- States the theorem `mem_range_ofIntermediateField_sup_iff`. -/
 theorem mem_range_ofIntermediateField_sup_iff
     (E F : IntermediateField K (AlgebraicClosure K))
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (σ : Gal(AlgebraicClosure K/K)) :
     σ ∈ MonoidHom.range (ofIntermediateField K (E ⊔ F)) ↔
       σ ∈ E.fixingSubgroup ∧ σ ∈ F.fixingSubgroup := by
   rw [range_ofIntermediateField_sup, Subgroup.mem_inf]
@@ -999,7 +1000,7 @@ theorem openSubgroupOfFiniteIntermediateFieldEquiv_apply
 @[simp]
 theorem coe_openSubgroupOfFiniteIntermediateFieldEquiv_symm_apply
     (E : IntermediateField K (AlgebraicClosure K)) [FiniteDimensional K E]
-    (σ : Gal(AlgebraicClosure K / E)) :
+    (σ : Gal(AlgebraicClosure K/E)) :
     ((openSubgroupOfFiniteIntermediateFieldEquiv K E).symm σ :
       Gal(AlgebraicClosure K / K)) =
       ofIntermediateField K E σ :=
@@ -1099,7 +1100,7 @@ theorem isOpen_range_ofIntermediateField
 /-- States the theorem `mem_range_ofIntermediateField_iff`. -/
 theorem mem_range_ofIntermediateField_iff
     (E : IntermediateField K (AlgebraicClosure K))
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (σ : Gal(AlgebraicClosure K/K)) :
     σ ∈ MonoidHom.range (ofIntermediateField K E) ↔
       σ ∈ E.fixingSubgroup := by
   rw [range_ofIntermediateField]
@@ -1159,7 +1160,7 @@ def quotientEquivGalOfNormalIntermediateField
 @[simp]
 theorem quotientEquivGalOfNormalIntermediateField_mk'
     (E : IntermediateField K (AlgebraicClosure K)) [Normal K E]
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (σ : Gal(AlgebraicClosure K/K)) :
     quotientEquivGalOfNormalIntermediateField K E
         (QuotientGroup.mk' E.fixingSubgroup σ) =
       AlgEquiv.restrictNormalHom E σ := by
@@ -1181,7 +1182,7 @@ def quotientNormalClosureOpenSubgroupEquivGal
 @[simp]
 theorem quotientNormalClosureOpenSubgroupEquivGal_mk'
     (E : IntermediateField K (AlgebraicClosure K)) [FiniteDimensional K E]
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (σ : Gal(AlgebraicClosure K/K)) :
     quotientNormalClosureOpenSubgroupEquivGal K E
         (QuotientGroup.mk'
           (openSubgroupOfNormalClosureFiniteIntermediateField K E :
@@ -1250,7 +1251,7 @@ theorem range_ofIntermediateField_index_eq_finrank
 from the topological finite-level API to mathlib's infinite Galois
 correspondence. -/
 def closedSubgroupOfOpenSubgroup
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     ClosedSubgroup (Gal(AlgebraicClosure K / K)) :=
   ⟨H.toSubgroup, by
     change IsClosed (H : Set (Gal(AlgebraicClosure K / K)))
@@ -1259,21 +1260,21 @@ def closedSubgroupOfOpenSubgroup
 /-- States the theorem `closedSubgroupOfOpenSubgroup_toSubgroup`. -/
 @[simp]
 theorem closedSubgroupOfOpenSubgroup_toSubgroup
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     (closedSubgroupOfOpenSubgroup K H :
       Subgroup (Gal(AlgebraicClosure K / K))) = H.toSubgroup :=
   rfl
 
 /-- The finite fixed field attached to an open subgroup of `G_K`. -/
 def fixedFieldOfOpenSubgroup
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     IntermediateField K (AlgebraicClosure K) :=
   IntermediateField.fixedField H.toSubgroup
 
 /-- States the theorem `fixedFieldOfOpenSubgroup_def`. -/
 @[simp]
 theorem fixedFieldOfOpenSubgroup_def
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K H =
       IntermediateField.fixedField H.toSubgroup :=
   rfl
@@ -1282,7 +1283,7 @@ theorem fixedFieldOfOpenSubgroup_def
 open subgroup, as a subgroup of `G_K`. -/
 theorem fixingSubgroup_fixedFieldOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     (fixedFieldOfOpenSubgroup K H).fixingSubgroup = H.toSubgroup := by
   exact InfiniteGalois.fixingSubgroup_fixedField
     (closedSubgroupOfOpenSubgroup K H)
@@ -1290,7 +1291,7 @@ theorem fixingSubgroup_fixedFieldOfOpenSubgroup
 /-- Open subgroups of `G_K` have finite fixed fields. -/
 theorem finiteDimensional_fixedFieldOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     FiniteDimensional K (fixedFieldOfOpenSubgroup K H) := by
   refine (InfiniteGalois.isOpen_iff_finite
     (K := AlgebraicClosure K) (fixedFieldOfOpenSubgroup K H)).1 ?_
@@ -1300,7 +1301,7 @@ theorem finiteDimensional_fixedFieldOfOpenSubgroup
 /-- Provides the instance `instFiniteDimensional`. -/
 instance fixedFieldOfOpenSubgroup.instFiniteDimensional
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     FiniteDimensional K (fixedFieldOfOpenSubgroup K H) :=
   finiteDimensional_fixedFieldOfOpenSubgroup K H
 
@@ -1320,7 +1321,7 @@ open subgroup back to that open subgroup. -/
 @[simp]
 theorem openSubgroupOfFiniteIntermediateField_fixedFieldOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     openSubgroupOfFiniteIntermediateField K
         (fixedFieldOfOpenSubgroup K H) = H := by
   apply OpenSubgroup.toSubgroup_injective
@@ -1336,14 +1337,14 @@ private theorem intermediateField_eq_of_fixingSubgroup_eq
 
 /-- The open-subgroup fixed-field construction is antitone. -/
 theorem fixedFieldOfOpenSubgroup_le_of_le
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) (hHJ : H ≤ J) :
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) (hHJ : H ≤ J) :
     fixedFieldOfOpenSubgroup K J ≤ fixedFieldOfOpenSubgroup K H := by
   exact IntermediateField.fixedField_le hHJ
 
 /-- Order comparison under the open-subgroup fixed-field correspondence. -/
 theorem fixedFieldOfOpenSubgroup_le_iff
     [IsGalois K (AlgebraicClosure K)]
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K H ≤ fixedFieldOfOpenSubgroup K J ↔ J ≤ H := by
   constructor
   · intro h
@@ -1361,7 +1362,7 @@ theorem fixedFieldOfOpenSubgroup_le_iff
 fields. -/
 theorem fixedFieldOfOpenSubgroup_inf
     [IsGalois K (AlgebraicClosure K)]
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K (H ⊓ J) =
       fixedFieldOfOpenSubgroup K H ⊔ fixedFieldOfOpenSubgroup K J := by
   apply intermediateField_eq_of_fixingSubgroup_eq K
@@ -1374,7 +1375,7 @@ theorem fixedFieldOfOpenSubgroup_inf
 /-- The open subgroup generated by two open subgroups corresponds to the
 intersection of their finite fixed fields. -/
 theorem fixedFieldOfOpenSubgroup_sup
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K (H ⊔ J) =
       fixedFieldOfOpenSubgroup K H ⊓ fixedFieldOfOpenSubgroup K J := by
   ext x
@@ -1412,8 +1413,8 @@ reverse Galois correspondence.  Its fixed field is the image of the original
 finite fixed field under the chosen absolute Galois element. -/
 def conjugateOpenSubgroupOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     OpenSubgroup (Gal(AlgebraicClosure K / K)) := by
   let E : IntermediateField K (AlgebraicClosure K) :=
     fixedFieldOfOpenSubgroup K H
@@ -1429,8 +1430,8 @@ conjugate subgroup. -/
 @[simp]
 theorem conjugateOpenSubgroupOfOpenSubgroup_toSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     (conjugateOpenSubgroupOfOpenSubgroup K σ H :
       Subgroup (Gal(AlgebraicClosure K / K))) =
       Subgroup.map (MulAut.conj σ).toMonoidHom H.toSubgroup := by
@@ -1454,8 +1455,8 @@ theorem conjugateOpenSubgroupOfOpenSubgroup_toSubgroup
 conjugating the element back into the original open subgroup. -/
 theorem mem_conjugateOpenSubgroupOfOpenSubgroup_iff
     [IsGalois K (AlgebraicClosure K)]
-    (σ τ : Gal(AlgebraicClosure K / K))
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ τ : Gal(AlgebraicClosure K/K))
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     τ ∈ conjugateOpenSubgroupOfOpenSubgroup K σ H ↔
       σ⁻¹ * τ * σ ∈ H := by
   change τ ∈ (conjugateOpenSubgroupOfOpenSubgroup K σ H :
@@ -1474,8 +1475,8 @@ finite fixed field. -/
 @[simp]
 theorem fixedFieldOfConjugateOpenSubgroupOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K
         (conjugateOpenSubgroupOfOpenSubgroup K σ H) =
       (fixedFieldOfOpenSubgroup K H).map
@@ -1494,8 +1495,8 @@ to the conjugate of the compositum of their fixed fields. -/
 @[simp]
 theorem fixedFieldOfConjugateOpenSubgroupOfOpenSubgroup_inf
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K
         (conjugateOpenSubgroupOfOpenSubgroup K σ (H ⊓ J)) =
       (fixedFieldOfOpenSubgroup K H ⊔ fixedFieldOfOpenSubgroup K J).map
@@ -1508,8 +1509,8 @@ conjugate of the intersection of the fixed fields. -/
 @[simp]
 theorem fixedFieldOfConjugateOpenSubgroupOfOpenSubgroup_sup
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenSubgroup K
         (conjugateOpenSubgroupOfOpenSubgroup K σ (H ⊔ J)) =
       (fixedFieldOfOpenSubgroup K H ⊓ fixedFieldOfOpenSubgroup K J).map
@@ -1521,7 +1522,7 @@ theorem fixedFieldOfConjugateOpenSubgroupOfOpenSubgroup_sup
 @[simp]
 theorem conjugateOpenSubgroupOfOpenSubgroup_one
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     conjugateOpenSubgroupOfOpenSubgroup K 1 H = H := by
   apply OpenSubgroup.toSubgroup_injective
   rw [conjugateOpenSubgroupOfOpenSubgroup_toSubgroup]
@@ -1532,8 +1533,8 @@ theorem conjugateOpenSubgroupOfOpenSubgroup_one
 @[simp]
 theorem conjugateOpenSubgroupOfOpenSubgroup_inf
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     conjugateOpenSubgroupOfOpenSubgroup K σ (H ⊓ J) =
       conjugateOpenSubgroupOfOpenSubgroup K σ H ⊓
         conjugateOpenSubgroupOfOpenSubgroup K σ J := by
@@ -1549,8 +1550,8 @@ theorem conjugateOpenSubgroupOfOpenSubgroup_inf
 @[simp]
 theorem conjugateOpenSubgroupOfOpenSubgroup_sup
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H J : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H J : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     conjugateOpenSubgroupOfOpenSubgroup K σ (H ⊔ J) =
       conjugateOpenSubgroupOfOpenSubgroup K σ H ⊔
         conjugateOpenSubgroupOfOpenSubgroup K σ J := by
@@ -1566,7 +1567,7 @@ This is the canonical finite Galois quotient lying below an arbitrary finite
 level. -/
 def openNormalCoreOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     OpenNormalSubgroup (Gal(AlgebraicClosure K / K)) where
   toOpenSubgroup :=
     ⟨H.toSubgroup.normalCore, by
@@ -1582,7 +1583,7 @@ def openNormalCoreOfOpenSubgroup
 @[simp]
 theorem openNormalCoreOfOpenSubgroup_toSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     (openNormalCoreOfOpenSubgroup K H :
       Subgroup (Gal(AlgebraicClosure K / K))) = H.toSubgroup.normalCore :=
   rfl
@@ -1590,7 +1591,7 @@ theorem openNormalCoreOfOpenSubgroup_toSubgroup
 /-- The normal core is contained in the original open subgroup. -/
 theorem openNormalCoreOfOpenSubgroup_le
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     (openNormalCoreOfOpenSubgroup K H :
       Subgroup (Gal(AlgebraicClosure K / K))) ≤ H.toSubgroup := by
   rw [openNormalCoreOfOpenSubgroup_toSubgroup]
@@ -1599,14 +1600,14 @@ theorem openNormalCoreOfOpenSubgroup_le
 /-- The fixed field of an open normal subgroup is a finite Galois
 intermediate field. -/
 def fixedFieldOfOpenNormalSubgroup
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K))) :
     IntermediateField K (AlgebraicClosure K) :=
   fixedFieldOfOpenSubgroup K H.toOpenSubgroup
 
 /-- States the theorem `fixedFieldOfOpenNormalSubgroup_def`. -/
 @[simp]
 theorem fixedFieldOfOpenNormalSubgroup_def
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenNormalSubgroup K H =
       IntermediateField.fixedField H.toSubgroup :=
   rfl
@@ -1614,14 +1615,14 @@ theorem fixedFieldOfOpenNormalSubgroup_def
 /-- Provides the instance `instFiniteDimensional`. -/
 instance fixedFieldOfOpenNormalSubgroup.instFiniteDimensional
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K))) :
     FiniteDimensional K (fixedFieldOfOpenNormalSubgroup K H) :=
   fixedFieldOfOpenSubgroup.instFiniteDimensional K H.toOpenSubgroup
 
 /-- States the theorem `isGalois_fixedFieldOfOpenNormalSubgroup`. -/
 theorem isGalois_fixedFieldOfOpenNormalSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K))) :
     IsGalois K (fixedFieldOfOpenNormalSubgroup K H) := by
   refine (InfiniteGalois.normal_iff_isGalois
     (K := AlgebraicClosure K) (fixedFieldOfOpenNormalSubgroup K H)).1 ?_
@@ -1632,7 +1633,7 @@ theorem isGalois_fixedFieldOfOpenNormalSubgroup
 /-- Provides the instance `instNormal`. -/
 instance fixedFieldOfOpenNormalSubgroup.instNormal
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K))) :
     Normal K (fixedFieldOfOpenNormalSubgroup K H) := by
   have : IsGalois K (fixedFieldOfOpenNormalSubgroup K H) :=
     isGalois_fixedFieldOfOpenNormalSubgroup K H
@@ -1642,7 +1643,7 @@ instance fixedFieldOfOpenNormalSubgroup.instNormal
 of `G_K`. -/
 def quotientOpenNormalSubgroupEquivGalFixedField
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K))) :
     Gal(AlgebraicClosure K / K) ⧸ H.toSubgroup ≃*
       Gal(fixedFieldOfOpenNormalSubgroup K H / K) := by
   let Hc : ClosedSubgroup (Gal(AlgebraicClosure K / K)) :=
@@ -1656,8 +1657,8 @@ def quotientOpenNormalSubgroupEquivGalFixedField
 @[simp]
 theorem quotientOpenNormalSubgroupEquivGalFixedField_mk'
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K / K)))
-    (σ : Gal(AlgebraicClosure K / K)) :
+    (H : OpenNormalSubgroup (Gal(AlgebraicClosure K/K)))
+    (σ : Gal(AlgebraicClosure K/K)) :
     quotientOpenNormalSubgroupEquivGalFixedField K H
         (QuotientGroup.mk' H.toSubgroup σ) =
       AlgEquiv.restrictNormalHom
@@ -1676,7 +1677,7 @@ theorem quotientOpenNormalSubgroupEquivGalFixedField_mk'
 fields to taking the normal closure. -/
 theorem fixedFieldOfOpenNormalCoreOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenNormalSubgroup K
         (openNormalCoreOfOpenSubgroup K H) =
       IntermediateField.normalClosure K (fixedFieldOfOpenSubgroup K H)
@@ -1739,8 +1740,8 @@ expressed on fixed fields. -/
 @[simp]
 theorem fixedFieldOfOpenNormalCoreOfConjugateOpenSubgroupOfOpenSubgroup
     [IsGalois K (AlgebraicClosure K)]
-    (σ : Gal(AlgebraicClosure K / K))
-    (H : OpenSubgroup (Gal(AlgebraicClosure K / K))) :
+    (σ : Gal(AlgebraicClosure K/K))
+    (H : OpenSubgroup (Gal(AlgebraicClosure K/K))) :
     fixedFieldOfOpenNormalSubgroup K
         (openNormalCoreOfOpenSubgroup K
           (conjugateOpenSubgroupOfOpenSubgroup K σ H)) =

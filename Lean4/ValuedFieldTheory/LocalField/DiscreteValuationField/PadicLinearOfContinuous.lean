@@ -10,8 +10,6 @@ import Mathlib.LinearAlgebra.Pi
 import Mathlib.LinearAlgebra.Isomorphisms
 import Mathlib.RingTheory.Finiteness.Finsupp
 
-set_option autoImplicit false
-
 /-!
 # Continuous additive maps of p-adic modules are p-adic linear
 
@@ -20,6 +18,8 @@ the field-unit structure theorem: compatibility with ordinary integral powers, t
 continuity of the p-adic scalar orbit, forces compatibility with every
 p-adic scalar.
 -/
+
+
 
 noncomputable section
 

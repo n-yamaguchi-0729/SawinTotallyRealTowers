@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
 
-set_option autoImplicit false
-
 /-!
 # Localized-units Herbrand quotient
 -/
+
+
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

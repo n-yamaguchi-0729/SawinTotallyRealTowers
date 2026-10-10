@@ -4,9 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import ProCGroups.FreeProC.Basic
 import ProCGroups.ProP.Presentation.Basic
 
-set_option autoImplicit false
 /-!
 # Projectivity of finite-basis free pro-p groups
 
@@ -53,11 +53,12 @@ theorem freeProP_exists_continuous_lift_of_surjective
   have hφ : FreeProC.FamilyConvergesToOneAlongOpenSubgroups (G := E) φ :=
     FreeProC.FamilyConvergesToOneAlongOpenSubgroups.of_finite_domain φ
   obtain ⟨s₀, hs₀, _⟩ :=
-    FreeProC.IsEpimorphicallyFreeProCGroupOnConvergingSet.existsUnique_lift_of_convergesToOneAlongOpenSubgroups_of_finiteGroupClass
+    (open _root_.ProCGroups.FreeProC.IsEpimorphicallyFreeProCGroupOnConvergingSet in
+      existsUnique_lift_of_convergesToOneAlongOpenSubgroups_of_finiteGroupClass
         (FiniteGroupClass.pGroup p)
         (FiniteGroupClass.pGroup_formation p).isomClosed
         (FiniteGroupClass.pGroup_subgroupClosed p)
-        hfree hE φ hφ
+        hfree hE φ hφ)
   let s : sourceData.carrier →ₜ* E :=
     { toMonoidHom := s₀
       continuous_toFun := hs₀.1 }

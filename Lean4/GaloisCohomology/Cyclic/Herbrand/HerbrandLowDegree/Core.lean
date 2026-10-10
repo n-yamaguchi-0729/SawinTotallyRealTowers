@@ -7,10 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Cardinality
 
-set_option autoImplicit false
-
-namespace CyclicCohomology
-
 /-!
 # Low-degree Herbrand quotients
 
@@ -18,6 +14,8 @@ The foundational constructions and their comparison with mathlib Tate
 cohomology are split into focused modules.  This public module retains the
 Herbrand quotient and its multiplicativity result.
 -/
+
+namespace CyclicCohomology
 
 noncomputable section
 

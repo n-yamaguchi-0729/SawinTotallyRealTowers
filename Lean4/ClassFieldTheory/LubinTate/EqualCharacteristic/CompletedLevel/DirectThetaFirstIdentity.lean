@@ -8,8 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaSeries
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
 
-set_option autoImplicit false
-
 /-!
 # First theta identity for the completed change of parameter
 
@@ -23,6 +21,8 @@ The proof follows the uniqueness argument: both sides have
 the same linear coefficient and satisfy the same contracting coefficient
 recursion.
 -/
+
+
 
 noncomputable section
 

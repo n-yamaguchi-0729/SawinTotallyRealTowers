@@ -7,7 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.NormSubgroup
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
+/-!
+# The abstract reciprocity construction: passage to a finite norm quotient
+
+For finite `L | K`, the universal norm subgroup from `\widetilde L` is
+contained in the single norm image from `L`.  Hence the reciprocity construction descends
+canonically to `A_K / N_{L|K}A_L`, the target in the finite reciprocity equivalence.
+-/
 
 universe u
 
@@ -17,13 +23,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# The abstract reciprocity construction: passage to a finite norm quotient
 
-For finite `L | K`, the universal norm subgroup from `\widetilde L` is
-contained in the single norm image from `L`.  Hence the reciprocity construction descends
-canonically to `A_K / N_{L|K}A_L`, the target in the finite reciprocity equivalence.
--/
 
 noncomputable section
 

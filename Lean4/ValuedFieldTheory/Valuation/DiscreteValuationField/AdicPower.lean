@@ -6,16 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.RingTheory.AdicCompletion.Functoriality
 
-set_option autoImplicit false
-
-namespace ValuationTheory
-
 /-!
 # Adic completeness and positive powers of an ideal
 
 This file contains small generic source lemmas used to pass from completeness
 for a positive power `I ^ n` back to completeness for `I`.
 -/
+
+namespace ValuationTheory
 
 noncomputable section
 

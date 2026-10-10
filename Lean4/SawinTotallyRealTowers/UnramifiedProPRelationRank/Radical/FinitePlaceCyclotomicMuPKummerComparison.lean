@@ -14,7 +14,6 @@ import Mathlib.Topology.Algebra.Group.Basic
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # Finite-place comparison of natural and intrinsic-local Kummer H¹
 
@@ -300,7 +299,7 @@ private theorem rootQuotient_eq_of_same_pow_of_primitiveRoots_forComparison
     (a : Kˣ) (u u' : Lˣ)
     (hu : u ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a)
     (hu' : u' ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a)
-    (sigma : Gal(L / K)) :
+    (sigma : Gal(L/K)) :
     rootQuotient (K := K) (L := L) u sigma =
       rootQuotient (K := K) (L := L) u' sigma := by
   let D := chosenFiniteKummerRadicalDatum (K := K) (L := L) n

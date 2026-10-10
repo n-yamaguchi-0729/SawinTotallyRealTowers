@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import SawinTotallyRealTowers.QuadraticGenerator
 import SawinTotallyRealTowers.RationalSquarefree
 
-set_option autoImplicit false
-
 /-!
 # Squarefree integer generators of rational quadratic extensions
 

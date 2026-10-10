@@ -9,15 +9,16 @@ import GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
 import ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
 
-set_option autoImplicit false
-
 /-!
 # Power quotients of S-unit groups
 
-The finite `n`-th-power quotient of an `S`-unit group, its cardinality, and explicit `ZMod n` coordinates.
+The finite `n`-th-power quotient of an `S`-unit group, its cardinality, and explicit `ZMod n`
+coordinates.
 -/
 
-open scoped NumberField Classical IsMulCommutative NNReal ValuativeRel
+
+
+open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 

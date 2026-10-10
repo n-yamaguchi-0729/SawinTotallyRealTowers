@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
 
-set_option autoImplicit false
 /-!
 # Absolute Artin action on an embedded finite extension
 
@@ -30,7 +29,7 @@ variable (L : Type) [Field L] [Algebra K L]
 /-- Actual Artin action in the separable-closure model. -/
 theorem separableAbsoluteLocalArtinMap_lift_action
     (i : L →ₐ[K] SeparableClosure K) (a : Kˣ)
-    (sigma : Gal(SeparableClosure K / K))
+    (sigma : Gal(SeparableClosure K/K))
     (hsigma : (QuotientGroup.mk sigma : localAbsoluteAbelianProfinite K) =
       separableAbsoluteLocalArtinMap K a)
     (z : L) :
@@ -66,7 +65,7 @@ theorem separableAbsoluteLocalArtinMap_lift_action
 /-- Actual Artin action in the algebraic-closure model. -/
 theorem absoluteLocalArtinMap_lift_action
     (i : L →ₐ[K] AlgebraicClosure K) (a : Kˣ)
-    (sigma : Gal(AlgebraicClosure K / K))
+    (sigma : Gal(AlgebraicClosure K/K))
     (hsigma : (QuotientGroup.mk (show Field.absoluteGaloisGroup K from sigma) :
       Field.absoluteGaloisGroupAbelianization K) =
       absoluteLocalArtinMap K a)

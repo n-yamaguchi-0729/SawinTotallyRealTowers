@@ -15,8 +15,6 @@ Constructs the quotient of valuation-ring units by first principal units and
 identifies it, multiplicatively and additively, with the residue-field units.
 -/
 
-set_option autoImplicit false
-
 namespace LocalFieldTheory
 
 noncomputable section

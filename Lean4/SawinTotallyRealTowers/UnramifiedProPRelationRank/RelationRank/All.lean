@@ -44,4 +44,9 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.LeanEvalAd
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound
 
-set_option autoImplicit false
+/-!
+# Cohomological bounds for unramified pro-p relation ranks
+
+This aggregate collects arithmetic-stage localization and transgression comparisons,
+degree-two vanishing results, ramification-support bounds, and relation-rank bounds.
+-/

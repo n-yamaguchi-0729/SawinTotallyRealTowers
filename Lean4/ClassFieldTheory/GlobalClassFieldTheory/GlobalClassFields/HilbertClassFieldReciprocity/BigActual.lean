@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFie
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassFieldNaturality
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldComparison
 
-set_option autoImplicit false
-
 /-!
 # Big Hilbert reciprocity over the realized base field
 
@@ -17,7 +15,9 @@ This leaf specializes the shared reciprocity transport to the actual base
 field of the selected big Hilbert class field.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

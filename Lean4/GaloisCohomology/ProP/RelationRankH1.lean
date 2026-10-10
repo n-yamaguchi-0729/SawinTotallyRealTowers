@@ -8,7 +8,6 @@ import GaloisCohomology.ProP.InvariantKernelH1
 import ProCGroups.ProP.Presentation.RelationNakayama
 import ProCGroups.Cohomology.RelativeNakayama
 
-set_option autoImplicit false
 /-!
 # Relation rank and invariant kernel H1
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.SubtypeLinear
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: completed — finite stage — basic
 

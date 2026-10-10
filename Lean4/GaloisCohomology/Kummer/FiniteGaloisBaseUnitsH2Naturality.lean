@@ -16,8 +16,6 @@ import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.RepresentationTheory.Rep.Res
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Base-unit inflation and restriction
 
@@ -132,7 +130,8 @@ theorem finiteGaloisBaseUnitsH2_inflation_restriction :
           f ≫ groupCohomology.map t (relativeUnitsRepHom K N L) 2) hFirst
     _ = groupCohomology.map (r.comp t) ψ 2 := hSecond
     _ = groupCohomology.map (A := Rep.trivial ℤ Gal(M/K) (Additive Kˣ))
-        (B := Rep.ofAlgebraAutOnUnits L N) (r.comp t) (finiteTowerBaseUnitsRepHom K L N) 2 := hCoefficients
+        (B := Rep.ofAlgebraAutOnUnits L N) (r.comp t)
+          (finiteTowerBaseUnitsRepHom K L N) 2 := hCoefficients
     _ = groupCohomology.map (A := Rep.trivial ℤ Gal(M/K) (Additive Kˣ))
         (B := Rep.trivial ℤ Gal(N/L) (Additive Kˣ)) (r.comp t)
         (𝟙 (Rep.trivial ℤ Gal(N/L) (Additive Kˣ))) 2 ≫ finiteTowerBaseUnitsH2Map K L N :=

@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosu
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.CoordinatePlaces
 import ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.PrimeSet
 
-set_option autoImplicit false
-
 /-!
 # Decomposition groups and fields for S-unit Kummer prime selection
 
@@ -18,7 +16,9 @@ coordinate subgroups, proves complete splitting in the prescribed extension,
 and identifies the associated decomposition fields.
 -/
 
-open scoped NumberField Classical IsMulCommutative
+
+
+open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
 
@@ -277,6 +277,7 @@ theorem sUnitKummerChosenDecompositionGroup_eq_zpowers
       fullSUnitKummerExtension_galois_pow_eq_one
         (K := K) (Omega := Omega) n hmu S' g.1
   have hupper : Nat.card D ≤ (n : ℕ) := by
+    classical
     rw [Nat.card_eq_fintype_card]
     calc
       Fintype.card D =
@@ -326,6 +327,7 @@ theorem finitePlaceSplitsCompletely_of_mem_sUnitKummerPrimeSet
           p v hp hv hn r eG S →
         _root_.FinitePlaceSplitsCompletely
           (K := K) (L := E) w := by
+  classical
   intro w hw
   rw [sUnitKummerPrimeSet, Finset.mem_image] at hw
   obtain ⟨i, -, rfl⟩ := hw

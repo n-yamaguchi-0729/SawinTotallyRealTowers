@@ -6,8 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Common.FiniteFamilyLinearMap
 import ProCGroups.FoxDifferential.Completed.Continuous.Universal.NaturalTopology
-
-set_option autoImplicit false
+import ProCGroups.FoxDifferential.Common.Jacobian
 
 /-!
 # Fox differential: completed — continuous — presented coordinates
@@ -106,7 +105,7 @@ algebraic finite-family map to the same finite stage.
 -/
 theorem zcSepDiffModuleStageProj_comp_presentedSepFamilyMap
     (psi : ContinuousMonoidHom G H)
-    {X : Type v} [Fintype X] [DecidableEq X] (family : X -> G)
+    {X : Type v} [Fintype X] (family : X -> G)
     (i : ZCCompletedDifferentialModuleIndex C psi.toMonoidHom) :
     (zcSeparatedCompletedDifferentialModuleStageProjectionAdd C psi.toMonoidHom i).comp
         (presentedSeparatedDifferentialFamilyMapProCInteger
@@ -114,6 +113,7 @@ theorem zcSepDiffModuleStageProj_comp_presentedSepFamilyMap
       (zcCompletedDifferentialModuleStageProjection C psi.toMonoidHom i).comp
         (presentedCompletedDifferentialFamilyMapProCInteger
           (G := G) (H := H) C psi family) := by
+  classical
   apply linearMap_ext_pi_single
   intro x
   rw [LinearMap.comp_apply, LinearMap.comp_apply,

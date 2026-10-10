@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLo
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleFiniteValuationCharacters
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleCharacterGlobalLift
 
-set_option autoImplicit false
 /-!
 # Global correction of a finite local character family
 
@@ -20,7 +19,7 @@ integral units; the valuation correction changes only the unramified part.
 -/
 
 open NumberField IsDedekindDomain
-open scoped NumberField Topology Classical
+open scoped NumberField Topology
 
 noncomputable section
 

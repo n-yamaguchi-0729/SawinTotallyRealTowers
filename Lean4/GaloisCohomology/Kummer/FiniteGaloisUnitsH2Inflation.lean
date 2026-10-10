@@ -16,8 +16,6 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 import Mathlib.Tactic.Abel
 
-set_option autoImplicit false
-
 /-!
 # Injectivity of field-unit H² inflation
 
@@ -99,10 +97,12 @@ omit [Normal K E] in
 private theorem exists_unitsInclusion_eq_of_fixed (a : Rep.ofAlgebraAutOnUnits K L)
     (ha : ∀ τ : Gal(L/E), (Rep.ofAlgebraAutOnUnits K L).ρ (τ.restrictScalars K) a = a) :
     ∃ b : Rep.ofAlgebraAutOnUnits K E, unitsInclusion K L E b = a := by
-  have hfix : ∀ τ : Gal(L/E), τ ((show Additive Lˣ from a).toMul : L) = ((show Additive Lˣ from a).toMul : L) := by
+  have hfix : ∀ τ : Gal(L/E),
+      τ ((show Additive Lˣ from a).toMul : L) = ((show Additive Lˣ from a).toMul : L) := by
     intro τ
     exact congrArg Units.val (ha τ)
-  obtain ⟨b, hb⟩ := (IsGalois.mem_range_algebraMap_iff_fixed (F := E) (E := L) ((show Additive Lˣ from a).toMul : L)).mpr hfix
+  obtain ⟨b, hb⟩ := (IsGalois.mem_range_algebraMap_iff_fixed (F := E) (E := L)
+    ((show Additive Lˣ from a).toMul : L)).mpr hfix
   have hb0 : b ≠ 0 := by
     intro h
     apply Units.ne_zero (show Additive Lˣ from a).toMul
@@ -127,7 +127,8 @@ private theorem exists_primitive_constant_on_relativeAut
       ∀ τ : Gal(L/E), b' (τ.restrictScalars K) = b' 1 := by
   have h0 : b 1 = unitsInclusion K L E (c (1, 1)) := by
     simpa only [map_one, Module.End.one_apply, one_mul, sub_self, zero_add] using hb 1 1
-  have hfixed (τ : Gal(L/E)) : (Rep.ofAlgebraAutOnUnits K L).ρ (τ.restrictScalars K) (b 1) = b 1 := by
+  have hfixed (τ : Gal(L/E)) :
+      (Rep.ofAlgebraAutOnUnits K L).ρ (τ.restrictScalars K) (b 1) = b 1 := by
     rw [h0, unitsInclusion_relative_fixed]
   let f : Gal(L/E) → Lˣ := fun τ ↦ (show Additive Lˣ from b (τ.restrictScalars K) - b 1).toMul
   have hf : groupCohomology.IsMulCocycle₁ f := by

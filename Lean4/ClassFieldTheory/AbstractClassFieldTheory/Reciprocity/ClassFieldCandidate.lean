@@ -9,8 +9,6 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubext
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
 import GaloisCohomology.Cyclic.IntegralRepUniverse
 
-set_option autoImplicit false
-
 /-!
 # A finite class-field candidate from a norm-open subgroup
 
@@ -29,6 +27,8 @@ classification conclusion depending on that specialization is
 asserted here.
 -/
 
+
+
 noncomputable section
 
 namespace ClassFormation
@@ -42,14 +42,16 @@ variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G] [IsTopologica
 /-! ## The finite level beneath an open norm-topology subgroup -/
 
 omit [IsTopologicalGroup G] in
-/-- The first step in the proof of the finite abelian classification theorem: an open subgroup in the
+/-- The first step in the proof of the finite abelian classification theorem: an open subgroup
+in the
 norm topology contains the norm subgroup of an actual finite Galois
 extension. -/
 theorem normOpenAddSubgroup_contains_finiteNormSubgroup
     (A : Rep ℤ G) (K : ClosedSubgroup G)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (hH : IsNormOpen A K H) :
-    ∃ E : FiniteGaloisSubextension K, ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H :=
+    ∃ E : FiniteGaloisSubextension K,
+      ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H :=
   (normTopology_addSubgroup_isOpen_iff A K H).1 hH
 
 namespace FiniteGaloisSubextension
@@ -333,7 +335,8 @@ theorem candidateQuotient_eq_one_iff
 
 /-- The finite abelian intermediate extension determined by the subgroup
 transported from `H / N_E`.  This is the field candidate in the
-surjectivity proof of the finite abelian classification theorem.  No claim that its norm subgroup equals
+surjectivity proof of the finite abelian classification theorem.  No claim that its norm
+subgroup equals
 `H` is made before finite reciprocity is available. -/
 def classFieldCandidate
     (A : Rep ℤ G) (E : FiniteGaloisSubextension K)

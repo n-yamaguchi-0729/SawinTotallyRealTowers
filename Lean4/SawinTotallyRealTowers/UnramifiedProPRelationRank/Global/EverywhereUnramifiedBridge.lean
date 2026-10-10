@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 import ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
 
-set_option autoImplicit false
 /-!
 # Everywhere-unramified bridges for number fields
 

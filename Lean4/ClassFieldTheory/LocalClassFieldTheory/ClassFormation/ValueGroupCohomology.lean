@@ -9,8 +9,9 @@ import Mathlib.Data.ZMod.QuotientGroup
 import GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.ValueGroupCohomology` Lean module. -/
+/-! Provides the public declarations in the
+`LocalClassFieldTheory.ClassFormation.ValueGroupCohomology` Lean module. -/
+
 
 namespace LocalClassFieldTheory
 
@@ -184,7 +185,7 @@ theorem galoisGroupValueGroup_normKernelSubgroup_eq_bot :
 /-- Finiteness of value-group `H⁻¹`, derived from the vanishing of its
 norm kernel. -/
 theorem galoisGroupValueGroupHerbrandHMinusOneFinite
-    (σ : Gal(L / K)) :
+    (σ : Gal(L/K)) :
     letI := galoisGroupValueGroupMulDistribMulAction K L
     Finite
       (HerbrandHMinusOne (Gal(L / K)) (Multiplicative Int) σ) := by
@@ -209,7 +210,7 @@ theorem galoisGroupValueGroupHerbrandHMinusOneFinite
 
 /-- Value-group factor for the local class-field axiom: `H⁻¹(G,ℤ)` is trivial. -/
 theorem galoisGroupValueGroup_herbrandHMinusOne_card_eq_one
-    (σ : Gal(L / K)) :
+    (σ : Gal(L/K)) :
     letI := galoisGroupValueGroupMulDistribMulAction K L
     letI := galoisGroupValueGroupHerbrandHMinusOneFinite K L σ
     Nat.card

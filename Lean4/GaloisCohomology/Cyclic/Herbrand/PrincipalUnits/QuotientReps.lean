@@ -6,8 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
-set_option autoImplicit false
-/-! Provides the public declarations in the `CyclicCohomology.Herbrand.PrincipalUnits.QuotientReps` Lean module. -/
+/-!
+# Representatives of integer units modulo principal units
+
+This file defines the integer-unit quotient by a principal-unit subgroup and
+compares it with the concrete quotient used in the normal-basis calculations.
+-/
+
 
 namespace CyclicCohomology
 

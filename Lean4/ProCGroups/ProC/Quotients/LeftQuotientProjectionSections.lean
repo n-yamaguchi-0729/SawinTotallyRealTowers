@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 import ProCGroups.ProC.Quotients.DescendingClosedSubgroupQuotients
 
-set_option autoImplicit false
-
 /-!
 # Continuous sections of left-quotient projections
 

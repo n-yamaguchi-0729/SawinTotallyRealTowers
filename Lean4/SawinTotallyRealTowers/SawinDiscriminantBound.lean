@@ -11,8 +11,6 @@ import SawinTotallyRealTowers.RamificationSupport
 import Mathlib.GroupTheory.PGroup
 import Mathlib.FieldTheory.Galois.Basic
 
-set_option autoImplicit false
-
 /-!
 # A uniform discriminant bound for the initial Sawin tower
 

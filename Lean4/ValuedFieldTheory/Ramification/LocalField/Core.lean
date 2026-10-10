@@ -12,8 +12,6 @@ import ValuedFieldTheory.Ramification.HilbertRamification.FiniteGaloisLevelIndep
 import ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
 import ValuedFieldTheory.Ramification.HilbertRamification.HerbrandTheorem
 
-set_option autoImplicit false
-
 /-!
 # Upper ramification jumps
 
@@ -21,6 +19,8 @@ The actual finite-level upper filtration attached to the canonical
 complete-DVF structure of a nonarchimedean local field, together with its
 right-limit subgroup and the intrinsic predicate for an upper jump.
 -/
+
+
 
 noncomputable section
 
@@ -273,7 +273,7 @@ theorem localUpperRamificationGroup_map_autCongr
           (base := base.toDVF) (target := targetM.toDVF)
           huniqM s := by
     exact
-      RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_eq_of_card_lower_eq
+      DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_eq_of_card_lower_eq
         _ _ hcard s
   have hinverse (u : ℝ) :
       inverseHerbrandFunctionOfUniqueExtension
@@ -348,7 +348,7 @@ private theorem fixedFieldUpperRamificationGroup_map_autCongr
     [IsGalois K L] [IsGalois K M]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
-    (H : Subgroup Gal(L / K)) [H.Normal]
+    (H : Subgroup Gal(L/K)) [H.Normal]
     (e : IntermediateField.fixedField H ≃ₐ[K] M)
     (t : ℝ) :
     Subgroup.map (AlgEquiv.autCongr e).toMonoidHom
@@ -554,7 +554,7 @@ private theorem fixedFieldUpperRamificationGroup_map_autCongr
           (base := base.toDVF) (target := targetM.toDVF)
           huniqM s := by
     exact
-      RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_eq_of_card_lower_eq
+      DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_eq_of_card_lower_eq
         _ _ hcard s
   have hinverse (u : ℝ) :
       fixedFieldInverseHerbrandFunction
@@ -593,7 +593,7 @@ private theorem fixedFieldUpperRamificationGroup_eq_local
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
-    (H : Subgroup Gal(L / K)) [H.Normal]
+    (H : Subgroup Gal(L/K)) [H.Normal]
     (t : ℝ) :
     fixedFieldUpperRamificationGroup
         (chosenLocalExtensionCompleteDVF_hasUniqueDVFValuationExtension
@@ -689,12 +689,13 @@ theorem localUpperRamificationGroup_map_restrict
       E.val (intermediateFieldRestrictNormalHom E F hEF σ x) =
         E.val ((qEquiv.toMonoidHom.comp (QuotientGroup.mk' H)) σ x)
     rw [intermediateFieldRestrictNormalHom_apply_val]
-    simp [qEquiv, eFixed, eEF, EF, H, AlgEquiv.autCongr_apply,
-      IsGalois.normalAutEquivQuotient_apply]
+    simp only [qEquiv, eFixed, eEF, EF, H, IntermediateField.coe_val,
+      MulEquiv.toMonoidHom_eq_coe, MonoidHom.coe_comp, MonoidHom.coe_ofClass,
+      QuotientGroup.coe_mk', Function.comp_apply]
     symm
-    exact
-      AlgEquiv.restrictNormal_commutes σ
-        (IntermediateField.fixedField H) (eFixed.symm x)
+    exact congrArg F.val
+      (AlgEquiv.restrictNormal_commutes σ
+        (IntermediateField.fixedField H) (eFixed.symm x))
   have hmapComap :
       Subgroup.map
           (IsGalois.normalAutEquivQuotient H).toMonoidHom
@@ -866,7 +867,7 @@ private theorem localInverseHerbrandFunction_eq_self_of_nonpos
       huniq).injective
   rw [herbrandFunctionOfUniqueExtension_psi]
   exact
-    (RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_of_nonpos
+    (DiscreteValuationField.AntitoneNormalSubgroupFiltration.herbrandFunction_of_nonpos
       (lowerRamificationFiltrationOfUniqueExtension
         (base := (localCompleteDVF K).toDVF)
         (target := (chosenLocalExtensionCompleteDVF K L).toDVF)

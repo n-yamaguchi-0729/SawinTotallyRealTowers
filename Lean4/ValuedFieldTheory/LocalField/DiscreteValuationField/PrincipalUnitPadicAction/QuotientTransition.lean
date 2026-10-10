@@ -7,14 +7,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitCore
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.TopologyModelTypes
 
-set_option autoImplicit false
-
 /-!
 # Transitions between principal-unit quotients
 
 These additive maps use the concrete principal-unit filtration of a complete
 discrete valuation field. Neither finiteness nor a scalar action is required.
 -/
+
+
 
 noncomputable section
 

@@ -17,8 +17,6 @@ import Mathlib.LinearAlgebra.LinearIndependent.Defs
 import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
-
 /-!
 # Finite normal generation from finite-dimensional H²
 

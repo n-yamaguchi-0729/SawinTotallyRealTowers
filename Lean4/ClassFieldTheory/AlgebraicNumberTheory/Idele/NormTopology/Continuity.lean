@@ -15,8 +15,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Finite
 import ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
 
-set_option autoImplicit false
-
 /-!
 # Continuity of the global idele norm
 
@@ -24,6 +22,8 @@ The norm on ideles in a finite number-field extension is continuous. The
 proof works first on the open chart with integral finite components and then
 uses the topological-group structure to obtain continuity everywhere.
 -/
+
+
 
 open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain
@@ -265,7 +265,8 @@ private theorem infinitePlace_normUnits_continuous
       have hExtensionUnitsContinuous : Continuous eExtensionUnits := by
         change Continuous (Units.map eExtension.toMonoidHom)
         refine
-          ((InfinitePlace.Completion.isometryEquivRealOfIsReal hWReal).continuous.units_map _).congr ?_
+          ((InfinitePlace.Completion.isometryEquivRealOfIsReal hWReal).continuous.units_map
+            _).congr ?_
         intro x
         apply Units.ext
         rfl
@@ -320,7 +321,8 @@ private theorem infinitePlace_normUnits_continuous
       have hExtensionUnitsContinuous : Continuous eExtensionUnits := by
         change Continuous (Units.map eExtension.toMonoidHom)
         refine
-          ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex hWComplex).continuous.units_map _).congr ?_
+          ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex hWComplex).continuous.units_map
+            _).congr ?_
         intro x
         apply Units.ext
         rfl
@@ -357,7 +359,8 @@ private theorem infinitePlace_normUnits_continuous
     have hBaseUnitsContinuous : Continuous eBaseUnits.symm := by
       change Continuous (Units.map eBase.symm.toMonoidHom)
       simpa only [eBase] using
-        (InfinitePlace.Completion.isometryEquivComplexOfIsComplex hvComplex).symm.continuous.units_map _
+        (InfinitePlace.Completion.isometryEquivComplexOfIsComplex
+          hvComplex).symm.continuous.units_map _
     rcases
         InfinitePlace.LiesOver.embedding_comp_eq_or_conjugate_embedding_comp_eq
           W.1 v₀ with hEmbedding | hConjugate
@@ -388,7 +391,8 @@ private theorem infinitePlace_normUnits_continuous
       have hExtensionUnitsContinuous : Continuous eExtensionUnits := by
         change Continuous (Units.map eExtension.toMonoidHom)
         refine
-          ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex hWComplex).continuous.units_map _).congr ?_
+          ((InfinitePlace.Completion.isometryEquivComplexOfIsComplex hWComplex).continuous.units_map
+            _).congr ?_
         intro x
         apply Units.ext
         rfl

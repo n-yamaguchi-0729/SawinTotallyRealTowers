@@ -8,14 +8,14 @@ import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Froben
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Universal
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.TransferOrbitClosure
 
-set_option autoImplicit false
-
 /-!
 # Frobenius action remainders
 
 This file develops the Frobenius exponent, conjugation, quotient-action, and
 action-remainder identities used by reciprocity-map multiplicativity.
 -/
+
+
 
 universe u
 
@@ -335,9 +335,10 @@ theorem frobeniusActionRemainder_mul (D : DegreeData G)
           (D.frobeniusActionConjugate K L hLK φ σ₂
             (D.frobeniusExponent K L hLK σ₁)) *
         D.frobeniusActionRemainder K L hLK φ σ₁ := by
-  simp [frobeniusActionRemainder, frobeniusExponent_mul,
+  simp only [frobeniusActionRemainder, frobeniusExponent_mul,
     frobeniusActionConjugate_coe, frobeniusExponent_actionConjugate,
-    frobeniusMul_coe, pow_add, mul_assoc]
+    frobeniusMul_coe, pow_add, mul_inv_rev, inv_pow, inv_inv, mul_assoc,
+    inv_mul_cancel_left]
   have hp : φ.1 ^ D.frobeniusExponent K L hLK σ₁ *
       φ.1 ^ D.frobeniusExponent K L hLK σ₂ =
       φ.1 ^ D.frobeniusExponent K L hLK σ₂ *

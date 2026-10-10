@@ -10,14 +10,14 @@ import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFields
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.NumberFieldPrimes
 import ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
 
-set_option autoImplicit false
-
 /-!
 # Unramifiedness in a compositum
 
 This file contains reusable criteria for proving that a prime in a number
 field compositum is unramified from the inertia groups of its two factors.
 -/
+
+
 
 noncomputable section
 

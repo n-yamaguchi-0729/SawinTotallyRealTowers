@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectBrack
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusContinuity
 import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaFirstIdentity
 
-set_option autoImplicit false
-
 /-!
 # The completed theta-intertwining theorem: Frobenius fixes the direct theta value
 
@@ -22,6 +20,8 @@ semilinear Frobenius lift.  The first theta identity then reduces fixedness to
 `[u]([u⁻¹](lambda)) = lambda`, which is the genuine finite bracket action
 on the completed division point.
 -/
+
+
 
 noncomputable section
 
@@ -131,7 +131,8 @@ private noncomputable local instance
       (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   (equalCharacteristicCompletedLevelCoefficientHom F n).toAlgebra
 
-/-- Restriction of the completed theta-intertwining theorem Frobenius lift to the spectral valuation ring. -/
+/-- Restriction of the completed theta-intertwining theorem Frobenius lift to the spectral
+valuation ring. -/
 private noncomputable def equalCharacteristicCompletedIntegerFrobeniusLift
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
@@ -241,7 +242,8 @@ private theorem equalCharacteristicCompletedIntegerFrobeniusLift_hasEval
   rw [hpow]
   simpa only [map_zero] using h
 
-/-- Convergent evaluation is semilinear for the completed theta-intertwining theorem Frobenius lift. -/
+/-- Convergent evaluation is semilinear for the completed theta-intertwining theorem Frobenius
+lift. -/
 private theorem equalCharacteristicCompletedIntegerFrobeniusLift_evaluation
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]

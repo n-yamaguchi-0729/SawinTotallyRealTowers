@@ -8,8 +8,6 @@ import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin
 import ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 import Mathlib.FieldTheory.Galois.Abelian
 
-set_option autoImplicit false
-
 /-!
 # Complexification of a number field
 
@@ -17,7 +15,9 @@ This module forms the actual compositum with the rational fourth-root field
 and proves that restriction to the rational cyclotomic factor is faithful.
 -/
 
-open scoped Classical IsMulCommutative
+
+
+open scoped IsMulCommutative
 open AlgebraicNumberTheory NumberField
 
 noncomputable section
@@ -295,7 +295,7 @@ private noncomputable def numberFieldComplexificationTransportCyclotomic :
     (numberFieldComplexificationCyclotomicEquiv F)).toMonoidHom
 
 private theorem numberFieldComplexificationRestriction_commutes
-    (σ : Gal(numberFieldComplexification F / F)) :
+    (σ : Gal(numberFieldComplexification F/F)) :
     numberFieldComplexificationTransportCyclotomic F
         (numberFieldComplexificationRestriction F σ) =
       numberFieldComplexificationLayerRestriction F

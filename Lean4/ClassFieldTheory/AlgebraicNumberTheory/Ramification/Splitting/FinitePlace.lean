@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 import GaloisCohomology.GroupTheory.Finite
 
-set_option autoImplicit false
-
 /-!
 # Decomposition groups and complete splitting at finite places
 
@@ -26,7 +24,9 @@ complete splitting is equivalent both to cardinality one and to local
 degree one.
 -/
 
-open scoped NumberField Classical
+
+
+open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section

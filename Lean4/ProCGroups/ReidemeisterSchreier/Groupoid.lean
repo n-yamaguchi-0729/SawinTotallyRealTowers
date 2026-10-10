@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
 
-set_option autoImplicit false
-
 /-!
 # Reidemeister Schreier / Groupoid
 

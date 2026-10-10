@@ -7,7 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
 import ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
 
-set_option autoImplicit false
+/-!
+# normalized degree and Frobenius theory: functoriality of normalized valuations
+
+This file proves the two functorial assertions of normalized-valuation functoriality from the
+source norm laws.
+-/
 
 namespace ClassFormation
 
@@ -15,12 +20,7 @@ open KummerTheory
 
 open CyclicCohomology
 
-/-!
-# normalized degree and Frobenius theory: functoriality of normalized valuations
 
-This file proves the two functorial assertions of normalized-valuation functoriality from the
-source norm laws.
--/
 
 noncomputable section
 
@@ -113,7 +113,8 @@ theorem FiniteAbstractField.residueDegree_conjugate
 
 namespace ValuationData
 
-/-- **conjugation compatibility of normalized valuations.** The normalized valuations are compatible with
+/-- **conjugation compatibility of normalized valuations.** The normalized valuations are compatible
+with
 conjugation: `v_{K^σ}(a^σ) = v_K(a)` (the right-action notation). -/
 theorem normalizedValuation_conjugate [ContinuousMul G]
     (v : ValuationData D A) (K : FiniteAbstractField G) (σ : G)

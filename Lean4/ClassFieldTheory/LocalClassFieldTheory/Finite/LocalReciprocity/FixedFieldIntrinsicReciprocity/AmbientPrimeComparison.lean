@@ -8,14 +8,14 @@ import Mathlib.GroupTheory.Abelianization.Defs
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeWitnessComparison
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
 
-set_option autoImplicit false
-
 /-!
 # Ambient prime comparison
 
 The local Artin map and the ambient embedded norm-residue construction
 agree on norm classes and therefore agree pointwise.
 -/
+
+
 
 noncomputable section
 
@@ -43,7 +43,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E / F)) :
+    (z : Abelianization Gal(E/F)) :
     ∃ x : Fˣ,
       localArtinMonoidHom F E x = z ∧
         ambientEmbeddedNormResidueAbelianElement K F E j e x = z := by

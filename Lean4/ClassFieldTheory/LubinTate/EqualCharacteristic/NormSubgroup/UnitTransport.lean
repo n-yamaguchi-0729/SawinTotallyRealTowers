@@ -10,8 +10,6 @@ import ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUnif
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 import ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnitTopology
 
-set_option autoImplicit false
-
 /-!
 # LubinTate the explicit norm-subgroup computation: power-series units as Laurent field units
 
@@ -24,6 +22,8 @@ valuation-zero unit subgroup, and it carries the explicit Lubin--Tate kernel
 to the higher-unit subgroup `U^(n+1)`.  The same composite is definitionally the
 Laurent unit multiplying `T` in the changed uniformizer of the completed theta-intertwining theorem.
 -/
+
+
 
 noncomputable section
 
@@ -77,7 +77,8 @@ theorem equalCharacteristicChangedLaurentUniformizerUnit_eq_unit_mul
 
 /-- Multiplication by `T` does not change norm membership for a Lubin--Tate
 level, because both `T⁻¹` and `T` are already norms.  Thus the prime norm
-`uT` used in the completed theta-intertwining theorem detects exactly whether the unit `u` is a norm. -/
+`uT` used in the completed theta-intertwining theorem detects exactly whether the unit `u` is a
+norm. -/
 theorem equalCharacteristicChangedLaurentUniformizerUnit_mem_normSubgroup_iff
     {K₀ : Type} [Field K₀]
     (F : LocalField K₀)

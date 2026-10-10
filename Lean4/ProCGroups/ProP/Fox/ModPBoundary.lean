@@ -8,7 +8,6 @@ import ProCGroups.ProP.Fox.ModPGroupDerivative
 import ProCGroups.ProP.Fox.Rows
 import ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
 
-set_option autoImplicit false
 /-!
 # Mod-p Fox boundary and displayed relation matrix
 

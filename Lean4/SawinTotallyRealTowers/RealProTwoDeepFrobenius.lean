@@ -15,8 +15,6 @@ import ProCGroups.FiniteGeneration.Basic
 import Mathlib.Data.Finset.Union
 import Mathlib.NumberTheory.NumberField.Basic
 
-set_option autoImplicit false
-
 /-!
 # New rational primes with deep Frobenius lifts
 

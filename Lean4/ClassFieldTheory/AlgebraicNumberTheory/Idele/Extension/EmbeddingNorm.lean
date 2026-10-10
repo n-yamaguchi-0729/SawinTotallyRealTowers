@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
 import Mathlib.FieldTheory.Normal.Basic
 
-set_option autoImplicit false
-
 /-!
 # Norms through an ambient Galois extension
 
@@ -17,6 +15,8 @@ If `L/K` is embedded in a finite Galois extension `M/K`, extending the
 determinant norm of an element of `A ⊗[K] L` to `A ⊗[K] M` gives the
 product over all `K`-embeddings `L → M`.
 -/
+
+
 
 open scoped BigOperators TensorProduct
 open NumberField

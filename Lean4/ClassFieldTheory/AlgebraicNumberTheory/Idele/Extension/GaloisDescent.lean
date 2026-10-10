@@ -9,8 +9,6 @@ import GaloisCohomology.Kummer.Concrete.GaloisCohomology
 import Mathlib.Algebra.Group.Action.Basic
 import Mathlib.GroupTheory.GroupAction.Quotient
 
-set_option autoImplicit false
-
 /-!
 # Galois descent for idele classes
 
@@ -20,6 +18,8 @@ group. Noether's form of Hilbert 90 then shows that every fixed
 class has a fixed representative. Together with fixed-idele descent, this identifies
 the fixed subgroup with the embedded copy of `C_K`.
 -/
+
+
 
 open scoped NumberField
 open NumberField

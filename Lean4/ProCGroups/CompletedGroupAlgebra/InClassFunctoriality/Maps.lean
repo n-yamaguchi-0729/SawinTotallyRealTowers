@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.StageMaps
 
-set_option autoImplicit false
-
 /-!
 # Completed Group Algebra / Functoriality Within a Class / Maps
 

@@ -19,8 +19,6 @@ import Mathlib.RepresentationTheory.Rep.Basic
 import Mathlib.RepresentationTheory.Rep.Res
 import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
-set_option autoImplicit false
-
 /-!
 # Unit H² in an arbitrary finite Galois tower
 

@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # Continuous cohomology with trivial `ZMod p` coefficients
 

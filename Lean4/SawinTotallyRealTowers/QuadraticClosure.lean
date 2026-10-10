@@ -17,8 +17,6 @@ import Mathlib.FieldTheory.KummerPolynomial
 import Mathlib.FieldTheory.Minpoly.Field
 import Mathlib.RingTheory.PowerBasis
 
-set_option autoImplicit false
-
 /-!
 # Quadratic fields inside the algebraic closure of ℚ
 

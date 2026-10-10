@@ -9,10 +9,6 @@ import Mathlib.FieldTheory.PurelyInseparable.Basic
 import Mathlib.RingTheory.Valuation.Integral
 import Mathlib.RingTheory.Valuation.ValuationSubring
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
 /-!
 # Residues of algebraically closed valued fields
 
@@ -21,6 +17,10 @@ algebraically closed.  This is the missing source needed to apply the
 intrinsic finite-field degree map to the residue of an algebraic closure of a
 local field.
 -/
+
+namespace LocalClassFieldTheory
+
+
 
 noncomputable section
 

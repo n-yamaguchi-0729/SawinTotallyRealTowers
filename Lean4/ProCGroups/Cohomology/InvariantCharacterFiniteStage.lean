@@ -8,7 +8,6 @@ import ProCGroups.Cohomology.FiniteInvariantCharacter
 import Mathlib.Topology.Instances.ZMod
 import ProCGroups.ProC.Quotients.ClosedSubgroupNeighborhoods
 
-set_option autoImplicit false
 /-!
 # Finite-stage descent of invariant characters
 

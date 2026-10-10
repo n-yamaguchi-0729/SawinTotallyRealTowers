@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
 
-set_option autoImplicit false
-
 /-!
 # Integral local induced modules
 
 This file identifies the product of valuation-ring unit groups over the
 extensions of a finite place with the corresponding induced module.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

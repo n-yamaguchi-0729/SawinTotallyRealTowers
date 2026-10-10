@@ -9,7 +9,16 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExte
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 import GaloisCohomology.Cyclic.TateH0.NormImage
 
-set_option autoImplicit false
+/-!
+# Finite local reciprocity: the abstract norm on separable-closure units
+
+The coefficient module in local class field theory is the unit group of a
+separable closure.  This file compares the norm defined in the abstract class-formation framework by
+a
+sum over abstract Galois cosets with the ordinary field norm.  The comparison
+is proved first for an arbitrary (possibly infinite) Galois ambient field, so
+it does not require the ground field to be perfect.
+-/
 
 namespace LocalClassFieldTheory
 open RamificationTheory KummerTheory
@@ -18,15 +27,7 @@ open LocalFieldTheory
 
 open ClassFormation CyclicCohomology
 
-/-!
-# Finite local reciprocity: the abstract norm on separable-closure units
 
-The coefficient module in local class field theory is the unit group of a
-separable closure.  This file compares the norm defined in the abstract class-formation framework by a
-sum over abstract Galois cosets with the ordinary field norm.  The comparison
-is proved first for an arbitrary (possibly infinite) Galois ambient field, so
-it does not require the ground field to be perfect.
--/
 
 noncomputable section
 
@@ -353,7 +354,6 @@ noncomputable local instance embeddedFieldRangeIsGalois :
   IsGalois.of_algEquiv (AlgEquiv.ofInjectiveField i)
 
 omit [IsGalois K Ω] [FiniteDimensional K L] [IsGalois K L] in
-
 /-- The field norm is invariant under an algebra equivalence, at unit level. -/
 theorem normUnits_embeddedExtensionAlgEquiv (x : Lˣ) :
     normUnits K (AlgHom.fieldRange i)
@@ -364,7 +364,6 @@ theorem normUnits_embeddedExtensionAlgEquiv (x : Lˣ) :
     (AlgEquiv.ofInjectiveField i) (x : L)
 
 omit [IsGalois K Ω] [FiniteDimensional K L] [IsGalois K L] in
-
 /-- The ordinary norm subgroups are independent of the chosen realization of
 the finite extension inside the ambient Galois extension. -/
 theorem localNormSubgroup_fieldRange_eq :

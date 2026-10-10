@@ -8,14 +8,6 @@ import Mathlib.SetTheory.Cardinal.Finite
 import GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open LocalFieldTheory
-
-open CyclicCohomology
-
 /-!
 # The Herbrand quotient of the integer-unit group
 
@@ -29,6 +21,14 @@ has the actual `Gal(L / K)` actions.  Vanishing of the two low-degree
 Herbrand groups of `V`, together with finiteness of the quotient, gives
 `h(G, 𝒪_Lˣ) = 1` by the Herbrand-quotient multiplicativity theorem.
 -/
+
+namespace LocalClassFieldTheory
+
+open LocalFieldTheory
+
+open CyclicCohomology
+
+
 
 noncomputable section
 
@@ -99,7 +99,7 @@ theorem integerUnits_herbrandQuotient_eq_one_of_chosenNormalBasis
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
     (hfinite : Finite (𝒪[L]ˣ ⧸ V))
-    (g : Gal(L / K))
+    (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g)
     (hH0 :
       letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV

@@ -10,7 +10,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLo
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
 import GaloisCohomology.ProP.H2FiniteStageFamily
 
-set_option autoImplicit false
 /-!
 # The actual radical functional of an arithmetic-stage degree-two class
 

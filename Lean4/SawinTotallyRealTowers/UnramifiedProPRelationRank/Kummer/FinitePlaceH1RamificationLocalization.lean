@@ -14,7 +14,6 @@ import Mathlib.Topology.Algebra.Group.Basic
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Mathlib.Topology.Instances.ZMod
 
-set_option autoImplicit false
 /-!
 # Finite-place ramification restriction of absolute H¹ characters
 

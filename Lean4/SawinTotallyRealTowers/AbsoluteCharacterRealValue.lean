@@ -10,14 +10,11 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Loca
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 import Mathlib.Algebra.Group.TypeTags.Basic
 import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.AbsoluteGaloisGroup
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
 import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 import Mathlib.Tactic.FinCases
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
-
-set_option autoImplicit false
 
 /-!
 # Prescribing the real value of an absolute quadratic character

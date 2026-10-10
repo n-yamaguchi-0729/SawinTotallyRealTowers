@@ -5,8 +5,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import GaloisCohomology.ProP.ContinuousH1Bridge
+import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+import Mathlib.RepresentationTheory.Continuous.Basic
+import Mathlib.RepresentationTheory.Continuous.TopRep
+import Mathlib.Topology.ContinuousMap.Algebra
+import Mathlib.Topology.ContinuousMap.Basic
+import Mathlib.Topology.ContinuousMap.Defs
 
-set_option autoImplicit false
 /-!
 # Normalized cocycles and primitives for free pro-p degree-two cohomology
 
@@ -214,8 +219,10 @@ theorem homogeneousPrimitive_boundary
   have hd := TopRep.homogeneousCochains.d_apply X 1 t
   have hdpoint := congrArg (fun τ => τ x₀ x₁ x₂) hd
   rw [hdpoint]
-  simp [X, C, t, d_succ, d_zero, hom_sub, ContIntertwiningMap.sub_apply,
-    coind₁ι_toFun, coind₁Map_toFun]
+  simp only [Nat.reduceAdd, hom_d_succ, d_zero, hom_ofHom,
+    ContIntertwiningMap.sub_apply, coind₁ι_toFun, coind₁Map_toFun,
+    ContinuousMap.sub_apply, ContinuousMap.const_apply, ContinuousMap.comp_apply,
+    ContinuousMap.coe_mk]
   rw [homogeneousPrimitive_apply z b x₁ x₂,
     homogeneousPrimitive_apply z b x₀ x₂,
     homogeneousPrimitive_apply z b x₀ x₁]

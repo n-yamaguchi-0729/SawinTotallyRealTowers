@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbe
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
 import ProCGroups.Abelian.TopologicalAbelianization
 
-set_option autoImplicit false
 /-!
 # Global reciprocity for an absolute finite character
 
@@ -36,7 +35,8 @@ def globalReciprocityMaximalAbelianCharacter :
     Gal(maximalAbelianExtension F / F) →ₜ* Multiplicative (ZMod p) :=
   (ProCGroups.Abelian.TopologicalAbelianization.lift
     (chi.comp (ContinuousMonoidHom.toContinuousMonoidHom
-      (RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv F).symm))).comp
+      (RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv
+        F).symm))).comp
     (ContinuousMonoidHom.toContinuousMonoidHom
       (absoluteTopologicalAbelianizationEquivMaximalAbelianGalois F).symm)
 

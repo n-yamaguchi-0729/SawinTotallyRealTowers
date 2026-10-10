@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationInvariants
 
-set_option autoImplicit false
-
 /-!
 # Ramification ideals in finite complete-DVF extensions
 
@@ -16,6 +14,8 @@ The base maximal ideal maps to the `e`-th power of the target maximal ideal, whe
 `e` is the canonical ramification index.  Every statement is expressed directly
 in the ambient valued-extension context; no extension marker is involved.
 -/
+
+
 
 noncomputable section
 

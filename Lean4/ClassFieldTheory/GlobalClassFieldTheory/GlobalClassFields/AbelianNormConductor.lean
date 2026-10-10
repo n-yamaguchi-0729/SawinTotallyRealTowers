@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteRestrictedProductBaseC
 import ClassFieldTheory.LocalClassFieldTheory.Finite.UnramifiedConductor
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
 
-set_option autoImplicit false
-
 /-!
 # Unramified finite places and abelian norm conductors
 
@@ -25,7 +23,9 @@ class field theory, and the local conductor-zero criterion then detects
 unramifiedness.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 
 noncomputable section
 

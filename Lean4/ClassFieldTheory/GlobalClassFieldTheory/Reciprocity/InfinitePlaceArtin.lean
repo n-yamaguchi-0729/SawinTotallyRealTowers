@@ -12,8 +12,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
 import Mathlib.Algebra.Group.Hom.Instances
 
-set_option autoImplicit false
-
 /-!
 # Archimedean Artin homomorphisms
 
@@ -24,7 +22,9 @@ At an unramified infinite place the decomposition group, and hence the
 local homomorphism, is trivial.
 -/
 
-open scoped BigOperators Classical IsMulCommutative NumberField
+
+
+open scoped BigOperators IsMulCommutative NumberField
   NumberField.LiesOver
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
@@ -79,6 +79,7 @@ private theorem ramifiedInfinitePlaceConjugation_sq
       (ramifiedInfinitePlaceConjugation_isConj
         (K := K) w hRamified) x
 
+open scoped Classical in
 /-- The archimedean Artin homomorphism associated with a specified
 infinite place above the base place. -/
 noncomputable def infinitePlaceArtinMonoidHomOfPlace
@@ -221,6 +222,7 @@ theorem infinitePlaceArtinMonoidHomOfPlace_eq
         (K := K) (L := L) v w hw =
       infinitePlaceArtinMonoidHomOfPlace
         (K := K) (L := L) v w' hw' := by
+  classical
   obtain ⟨g, hg⟩ :=
     InfinitePlace.exists_smul_eq_of_comap_eq
       (hw.trans hw'.symm)
@@ -312,6 +314,7 @@ theorem infinitePlaceArtinMonoidHomOfPlace_restrict_tower
       infinitePlaceArtinMonoidHomOfPlace
         (K := K) (L := E) v
         (wL.comap (algebraMap E L)) hwE := by
+  classical
   let wE := wL.comap (algebraMap E L)
   by_cases hLUnramified : wL.IsUnramified K
   · have hEUnramified : wE.IsUnramified K :=
@@ -563,6 +566,7 @@ theorem infinitePlaceArtinMonoidHomOfPlace_norm_restriction
         (K := K) (L := L) v w hw).comp
         (LocalFieldTheory.normUnits
           v.Completion W.Completion) := by
+  classical
   let w := w'.comap (algebraMap L L')
   have hw :
       w.comap (algebraMap K L) = v := by
@@ -955,6 +959,7 @@ theorem chosenInfinitePlaceArtinMonoidHom_eq_one_of_real_pos
           hvReal (x : v.Completion)) :
     chosenInfinitePlaceArtinMonoidHom
         (K := K) (L := L) v x = 1 := by
+  classical
   let e : v.Completion ≃+* ℝ :=
     InfinitePlace.Completion.ringEquivRealOfIsReal
       hvReal
@@ -1014,6 +1019,7 @@ theorem chosenInfinitePlaceArtinMonoidHom_ker
           (K := K) (L := L) v) =
       infiniteTensorNormSubgroup
         (K := K) (L := L) v := by
+  classical
   let w :=
     chosenInfinitePlaceAbove
       (L := L) v

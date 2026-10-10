@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalGov
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicModule
 import SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
 
-set_option autoImplicit false
 /-!
 # Linear Kummer duality for the ideal-radical governing field
 

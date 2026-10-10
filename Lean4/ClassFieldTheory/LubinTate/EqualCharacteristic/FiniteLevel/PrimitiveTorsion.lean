@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.SetTheory.Cardinal.Finite
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.DivisionPolynomial
 
-set_option autoImplicit false
-
 /-!
 # The uniformizer norm identity: primitive equal-characteristic division points
 
@@ -18,6 +16,8 @@ iterate.  This file chooses one such root in the fixed separable closure and
 records that exact-level property.  No irreducibility or Galois assertion is
 used here.
 -/
+
+
 
 noncomputable section
 

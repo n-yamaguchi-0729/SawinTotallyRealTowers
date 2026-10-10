@@ -8,7 +8,6 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
 import ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
 import Mathlib.LinearAlgebra.Dimension.Finite
 
-set_option autoImplicit false
 /-!
 # Finite Kummer and class-group parameters
 

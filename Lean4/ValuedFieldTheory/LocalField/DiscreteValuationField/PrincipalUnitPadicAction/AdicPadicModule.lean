@@ -8,14 +8,14 @@ import Mathlib.Algebra.Module.MinimalAxioms
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.ProdiscretePadicModule
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.AdicProdiscreteComparison
 
-set_option autoImplicit false
-
 /-!
 # The p-adic module on adic principal units
 
 The coordinatewise p-adic action is transported across the canonical adic/prodiscrete
 comparison, producing its linear and topological forms on first principal units.
 -/
+
+
 
 noncomputable section
 
@@ -42,7 +42,8 @@ inverse limit to `U^1`. -/
 noncomputable instance principalUnitPadicSMul
     (F : LocalField.{u, v} K) :
     SMul ℤ_[F.residueCharacteristic]
-      (Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) where
+      (Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+        F.toCompleteDVF) 1)) where
   smul a x :=
     (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).symm
       (a • principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF x)
@@ -54,7 +55,8 @@ Establishes the identity `a • x = (principalUnitAddEquivInverseLimitCarrier F.
 @[simp] theorem principalUnitPadic_smul_def
     (F : LocalField.{u, v} K)
     (a : ℤ_[F.residueCharacteristic])
-    (x : Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) :
+    (x : Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+      F.toCompleteDVF) 1)) :
     a • x =
       (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).symm
         (a • principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF x) :=
@@ -65,11 +67,13 @@ local field. -/
 noncomputable instance principalUnitPadicModule
     (F : LocalField.{u, v} K) :
     Module ℤ_[F.residueCharacteristic]
-      (Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) :=
+      (Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+        F.toCompleteDVF) 1)) :=
   Module.ofMinimalAxioms
     (fun (a : ℤ_[F.residueCharacteristic])
         (x y : Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) => by
+          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+            F.toCompleteDVF) 1)) => by
       apply (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).injective
       simp only [principalUnitPadic_smul_def, AddEquiv.apply_symm_apply,
         (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).map_add]
@@ -78,7 +82,8 @@ noncomputable instance principalUnitPadicModule
         (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF y))
     (fun (a b : ℤ_[F.residueCharacteristic])
         (x : Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) => by
+          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+            F.toCompleteDVF) 1)) => by
       apply (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).injective
       simp only [principalUnitPadic_smul_def, AddEquiv.apply_symm_apply,
         (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).map_add]
@@ -86,13 +91,15 @@ noncomputable instance principalUnitPadicModule
         (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF x))
     (fun (a b : ℤ_[F.residueCharacteristic])
         (x : Additive
-          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) => by
+          ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+            F.toCompleteDVF) 1)) => by
       apply (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).injective
       simp only [principalUnitPadic_smul_def, AddEquiv.apply_symm_apply]
       exact (principalUnitInverseLimitCarrierPadicModule F).mul_smul a b
         (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF x))
     (fun (x : Additive
-        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) => by
+        ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+          F.toCompleteDVF) 1)) => by
       apply (principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF).injective
       simp only [principalUnitPadic_smul_def, AddEquiv.apply_symm_apply]
       exact (principalUnitInverseLimitCarrierPadicModule F).one_smul
@@ -143,7 +150,8 @@ principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF x`.
 @[simp] theorem Internal.principalUnitAddEquivInverseLimitCarrier_map_smul
     (F : LocalField.{u, v} K)
     (a : ℤ_[F.residueCharacteristic])
-    (x : Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1)) :
+    (x : Additive ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+      F.toCompleteDVF) 1)) :
     principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF (a • x) =
       a • principalUnitAddEquivInverseLimitCarrier F.toCompleteDVF x := by
   change
@@ -161,7 +169,8 @@ of `x`. -/
 @[simp] theorem Internal.principalUnitPadic_smul_carrier_coordinate
     (F : LocalField.{u, v} K)
     (a : ℤ_[F.residueCharacteristic])
-    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF) 1) (n : ℕ) :
+    (x : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
+      F.toCompleteDVF) 1) (n : ℕ) :
     Additive.ofMul
         ((principalUnitMulEquivInverseLimitCarrier F.toCompleteDVF
           (Additive.toMul (a • Additive.ofMul x))).1 n) =

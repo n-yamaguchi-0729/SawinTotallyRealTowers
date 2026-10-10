@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtension
 
-set_option autoImplicit false
-
 /-!
 # Galois actions on rational fixed-field idele classes
 
 Naturality of the fixed-field comparison for automorphisms and the
 finite-extension Galois action.
 -/
+
+
 
 noncomputable section
 

@@ -8,14 +8,14 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIn
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 
-set_option autoImplicit false
-
 /-!
 # Shared completion spine for integral local induction
 
 This file names the coherent algebra, valuation, and integral-closure
 structures used by every integral local-induction leaf.
 -/
+
+
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

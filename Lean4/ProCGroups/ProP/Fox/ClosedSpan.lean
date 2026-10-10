@@ -6,7 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.ProP.Fox.Rows
 
-set_option autoImplicit false
 /-!
 # Closed generation of completed kernel Fox rows
 

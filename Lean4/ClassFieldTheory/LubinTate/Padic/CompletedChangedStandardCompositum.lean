@@ -8,8 +8,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.FiniteAbelianCompositum
 import ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerFixedField
 import ClassFieldTheory.LubinTate.Padic.CompletedStandardLevelTransport
 
-set_option autoImplicit false
-
 /-!
 # The finite standard/changed compositum in the completed p-adic level
 
@@ -25,6 +23,8 @@ factor, and acts on the standard factor by the direct unit parameter.  This
 is the finite automorphism which the changed-uniformizer norm calculation
 will identify with the actual local Artin symbol.
 -/
+
+
 
 noncomputable section
 

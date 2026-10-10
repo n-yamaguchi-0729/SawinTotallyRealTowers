@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitAbstractFixedField
 
-set_option autoImplicit false
-
 /-!
 # Finite extensions in the rational idele-class representation
 
 The fixed representation of a finite abstract extension is compared with
 the relative idele class group of its two actual fixed fields.
 -/
+
+
 
 noncomputable section
 

@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
 
-set_option autoImplicit false
-
 /-!
 # The in-class augmentation ideal
 

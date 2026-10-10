@@ -9,8 +9,6 @@ import ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.InfiniteOnePlaceBa
 import Mathlib.NumberTheory.NumberField.CMField
 import Mathlib.RingTheory.RootsOfUnity.Complex
 
-set_option autoImplicit false
-
 /-!
 # The rational cyclotomic complexification
 
@@ -18,7 +16,9 @@ This module realizes the quadratic complexification as the fourth-root
 cyclotomic field and proves the rational principal-idele Artin formula.
 -/
 
-open scoped BigOperators Classical IsMulCommutative NumberField
+
+
+open scoped BigOperators IsMulCommutative NumberField
 open NumberField IsDedekindDomain
 open IdeleGroup
 
@@ -161,11 +161,11 @@ theorem complexFourthRootField_map_complexConjugation :
     rw [← map_pow, hx, map_one]
   · intro hz
     refine ⟨star z, ?_, ?_⟩
-    rcases hz with ⟨n, hn, hn0, hz⟩
-    refine ⟨n, hn, hn0, ?_⟩
-    rw [← star_pow, hz, star_one]
-    change star (star z) = z
-    exact star_star z
+    · rcases hz with ⟨n, hn, hn0, hz⟩
+      refine ⟨n, hn, hn0, ?_⟩
+      rw [← star_pow, hz, star_one]
+    · change star (star z) = z
+      exact star_star z
 
 /-- The chosen infinite place of the rational complexification is
 ramified over the unique real place of `ℚ`. -/

@@ -9,8 +9,6 @@ import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidu
 import ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
 
-set_option autoImplicit false
-
 /-!
 # Finite quotients of the absolute abelianized Galois group
 
@@ -20,6 +18,8 @@ fixed separable closure.  The corresponding finite quotient is canonically
 identified, as a topological group, with the actual Galois group of that
 subextension.
 -/
+
+
 
 noncomputable section
 
@@ -217,8 +217,7 @@ instance absoluteFiniteQuotientField_isAbelianGalois
     have hab : a * b = b * a := mul_comm _ _
     exact congrArg QuotientGroup.mk hab
   refine { is_comm.comm := fun σ τ => ?_ }
-  ·
-    exact (absoluteFiniteQuotientEquiv K N).symm.injective (by
+  · exact (absoluteFiniteQuotientEquiv K N).symm.injective (by
       simp only [map_mul]
       exact hquotient_comm
         ((absoluteFiniteQuotientEquiv K N).symm σ)

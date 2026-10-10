@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
 
-set_option autoImplicit false
-
 /-!
 # Fox differential: prime-power completed group algebra — basic — stage coeff map — coeff
 

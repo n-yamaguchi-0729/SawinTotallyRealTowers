@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ProCGroups.CompletedGroupAlgebra.Separation
 
-set_option autoImplicit false
-
 /-!
 # A base index for all-finite augmentation
 

@@ -12,8 +12,6 @@ import Mathlib.Topology.Algebra.Ring.Compact
 import Mathlib.Topology.Connected.Clopen
 import Mathlib.Topology.Instances.Sign
 
-set_option autoImplicit false
-
 /-!
 # The congruence topology on the idele class group
 
@@ -23,7 +21,9 @@ the congruence subgroups are cofinal among the closed finite-index subgroups
 of the idele class group.
 -/
 
-open scoped Classical NumberField RestrictedProduct WithZero
+
+
+open scoped NumberField RestrictedProduct WithZero
 open NumberField IsDedekindDomain
 open Topology
 
@@ -137,6 +137,7 @@ theorem localHigherUnitGroup_le_finiteLocalUnits
   obtain ⟨y, rfl, _⟩ := hx
   exact y.property
 
+open scoped Classical in
 /-- The finite idele congruence subgroup is open. -/
 theorem isOpen_finiteCongruenceSubgroup (m : FiniteModulus K) :
     IsOpen
@@ -195,6 +196,7 @@ theorem isOpen_finiteCongruenceSubgroup (m : FiniteModulus K) :
   rw [heq]
   exact hUOpen
 
+open scoped Classical in
 omit [NumberField K] in
 /-- At a real place the positivity subgroup is open; at a complex place it
 is the whole local multiplicative group. -/
@@ -419,6 +421,7 @@ theorem exists_localHigherUnitGroup_subset
   rw [dist_eq_norm]
   exact (localHigherUnit_norm_sub_one_le v ϖ hϖ n hx).trans_lt hn
 
+open scoped Classical in
 /-- Every identity neighborhood in the finite ideles contains a finite
 congruence subgroup. -/
 theorem exists_finiteCongruenceSubgroup_subset
@@ -543,6 +546,7 @@ theorem continuous_positiveRealUnit :
     exact continuous_subtype_val.inv₀
       (fun x : Set.Ioi (0 : ℝ) ↦ x.2.ne')
 
+open scoped Classical in
 omit [NumberField K] in
 /-- The positive local multiplicative group at an infinite place is
 connected. -/

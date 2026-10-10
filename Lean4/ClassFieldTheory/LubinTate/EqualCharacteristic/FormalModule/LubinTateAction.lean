@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateEndomorphism
 
-set_option autoImplicit false
-
 /-!
 # Equal-characteristic Lubin--Tate action
 
@@ -15,6 +13,8 @@ This file proves the algebraic identities needed to turn the finite brackets
 from `EqualCharacteristicLubinTateEnd` into the action of
 `(κ⟦T⟧ / T^n)ˣ` on the `T^n`-division points.
 -/
+
+
 
 noncomputable section
 

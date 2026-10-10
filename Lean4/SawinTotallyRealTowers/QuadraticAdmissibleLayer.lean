@@ -13,8 +13,6 @@ import Mathlib.Algebra.Order.Ring.Cast
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.PGroup
 
-set_option autoImplicit false
-
 /-!
 # Admissible quadratic layers from supported radicands
 

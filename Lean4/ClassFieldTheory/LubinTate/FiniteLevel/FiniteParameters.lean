@@ -8,8 +8,6 @@ import ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
 import ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
 import Mathlib.GroupTheory.Coset.Card
 
-set_option autoImplicit false
-
 /-!
 # Finite unit parameters for standard Lubin--Tate levels
 
@@ -24,6 +22,8 @@ where `q` is the residue-field cardinality.  The final declarations descend
 the standard Lubin--Tate action on the chosen primitive point to this finite
 parameter quotient.
 -/
+
+
 
 noncomputable section
 

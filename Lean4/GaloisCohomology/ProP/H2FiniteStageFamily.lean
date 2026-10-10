@@ -6,8 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import GaloisCohomology.ProP.H2FiniteStage
 import Mathlib.LinearAlgebra.Dimension.Free
+import Mathlib.Data.Fintype.EquivFin
 
-set_option autoImplicit false
 /-!
 # Common finite-stage realization of degree-two classes
 
@@ -147,7 +147,7 @@ private theorem exists_common_inflation_finset
 /-- Every finite family of lifted degree-two classes of a pro-`p` group inflates from one common
 finite `p`-group quotient. -/
 theorem exists_openNormalSubgroupInClass_inflation_eq_degree_two_family
-    {ι : Type v} [Fintype ι]
+    {ι : Type v} [Finite ι]
     (hG : HasOpenNormalBasisInClass (FiniteGroupClass.pGroup p) G)
     (x : ι → continuousCohomologyZModPLifted p G 2) :
     ∃ U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) G,
@@ -157,6 +157,7 @@ theorem exists_openNormalSubgroupInClass_inflation_eq_degree_two_family
           continuousCohomologyZModPMapLifted p
             (OpenNormalSubgroupInClass.quotientProj U) 2 (xU i) = x i := by
   classical
+  let : Fintype ι := Fintype.ofFinite ι
   obtain ⟨U, hU⟩ := exists_common_inflation_finset hG x Finset.univ
   choose xU hxU using fun i ↦ hU i (Finset.mem_univ i)
   exact ⟨U, xU, hxU⟩

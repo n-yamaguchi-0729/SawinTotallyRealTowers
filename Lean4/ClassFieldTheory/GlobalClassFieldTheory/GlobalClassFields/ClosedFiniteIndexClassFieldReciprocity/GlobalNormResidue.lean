@@ -7,8 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
 import ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Evaluation
 
-set_option autoImplicit false
-
 /-!
 # Norm-residue evaluation for a closed finite-index class field
 
@@ -16,7 +14,9 @@ This leaf proves that the selected class-field reciprocity equivalence sends
 the global norm-residue symbol to the corresponding quotient class.
 -/
 
-open scoped Classical IsMulCommutative NumberField
+
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 

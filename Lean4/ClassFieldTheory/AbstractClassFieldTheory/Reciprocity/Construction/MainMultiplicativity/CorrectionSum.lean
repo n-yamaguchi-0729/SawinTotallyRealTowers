@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
 
-set_option autoImplicit false
-
 /-!
 # Correction sums for reciprocity multiplicativity
 
 This file packages the three correction coefficients and action elements,
 proves their degree-zero property, and identifies their action-difference sum.
 -/
+
+
 
 universe u
 

@@ -8,7 +8,6 @@ import ProCGroups.ProP.Zassenhaus.AugmentationFiltration
 import ProCGroups.Completion.ProCIntegerPrimePower
 import ProCGroups.FoxDifferential.Completed.Continuous.Topology
 
-set_option autoImplicit false
 /-!
 # Continuous reduction of completed pro-p group algebras modulo p
 

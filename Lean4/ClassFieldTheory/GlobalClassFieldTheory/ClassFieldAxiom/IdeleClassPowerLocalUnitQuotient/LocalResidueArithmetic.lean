@@ -11,8 +11,6 @@ import ValuedFieldTheory.LocalField.Padic.PrincipalUnits
 import ValuedFieldTheory.Valuation.ValuedAdicComplete
 import Mathlib.NumberTheory.NumberField.ProductFormula
 
-set_option autoImplicit false
-
 /-!
 # Residue arithmetic for finite-place power indices
 
@@ -20,7 +18,9 @@ This file relates global ideal norms to the residue fields and ramification
 invariants of the corresponding finite completions.
 -/
 
-open scoped NumberField Classical NNReal ValuativeRel
+
+
+open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 
@@ -44,6 +44,10 @@ theorem absNorm_eq_card_adicResidueField
       (ringOfIntegersQuotientEquivAdicResidueField
         v).toEquiv
 
+open _root_.LocalFieldTheory.DiscreteValuationField.ValuedExtension
+  (exists_unit_mul_target_uniformizer_pow_eq_base_uniformizer_image) in
+open _root_.LocalFieldTheory.DiscreteValuationField.WithZeroValuation
+  (exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective) in
 /-- The valuation-theoretic ramification index used by the local field
 formula agrees with the extension ramification index. -/
 theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
@@ -84,7 +88,7 @@ theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
   let target := F.toCompleteDVF
   let :
       (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicDVRValuation p).IsRankOneDiscrete :=
-    (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF p).instCompleteDiscrete.isRankOneDiscrete
+    (DiscreteValuationField.Examples.Qp.padicCompleteDVF p).instCompleteDiscrete.isRankOneDiscrete
   let ϖ : base.valuationSubring :=
     LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicIntEquivValuationSubring
       p (p : ℤ_[p])
@@ -98,7 +102,7 @@ theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
         (ϖ : ℚ_[p]) := by
     dsimp [base, ϖ] at hϖval ⊢
     exact
-      LocalFieldTheory.DiscreteValuationField.WithZeroValuation.isUniformizer_of_valuation_eq_exp_neg_one
+      DiscreteValuationField.WithZeroValuation.isUniformizer_of_valuation_eq_exp_neg_one
         (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicDVRValuation p)
         ((LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicIntEquivValuationSubring
           p (p : ℤ_[p]) :
@@ -106,14 +110,14 @@ theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
               p).valuationSubring) : ℚ_[p])
         hϖval
   obtain ⟨π, hπval⟩ :=
-    LocalFieldTheory.DiscreteValuationField.WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
+    exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
       ν hν
   have hπ :
       target.valuation.IsUniformizer (π : E) :=
-    LocalFieldTheory.DiscreteValuationField.WithZeroValuation.isUniformizer_of_valuation_eq_exp_neg_one
+    DiscreteValuationField.WithZeroValuation.isUniformizer_of_valuation_eq_exp_neg_one
       ν (π : E) hπval
   obtain ⟨u, hu⟩ :=
-    LocalFieldTheory.DiscreteValuationField.ValuedExtension.exists_unit_mul_target_uniformizer_pow_eq_base_uniformizer_image
+    exists_unit_mul_target_uniformizer_pow_eq_base_uniformizer_image
       base target hϖ hπ
   have huval :
       ν ((u : target.valuationSubring) : E) = 1 := by
@@ -167,7 +171,7 @@ theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
         congr 1
         simp
   have hcustom :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.valuation_residueCharacteristic_eq_exp_neg_ramificationIndex
+    DiscreteValuationField.LocalField.valuation_residueCharacteristic_eq_exp_neg_ramificationIndex
       ν
   have hexp :
       WithZero.exp
@@ -248,6 +252,8 @@ theorem card_localField_residueField_eq_pow_residueDegree
       rw [hfinrank,
         LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF_residueField_card]
 
+open _root_.LocalFieldTheory.DiscreteValuationField.ValuedExtension
+  (degree_eq_ramificationIndex_mul_residueDegree_of_finite_separable) in
 /-- Degree over `ℚ_p` is ramification index times residue degree. -/
 theorem finrank_qp_eq_ramificationIndex_mul_residueDegree
     {E : Type*} [Field E]
@@ -288,7 +294,7 @@ theorem finrank_qp_eq_ramificationIndex_mul_residueDegree
     ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
       ν hν]
   exact
-    LocalFieldTheory.DiscreteValuationField.ValuedExtension.degree_eq_ramificationIndex_mul_residueDegree_of_finite_separable
+    degree_eq_ramificationIndex_mul_residueDegree_of_finite_separable
       base target
 
 /-- The absolute norm of `v` is `p^f`, with `p` the residue

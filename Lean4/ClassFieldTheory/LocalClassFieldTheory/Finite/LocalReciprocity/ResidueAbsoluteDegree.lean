@@ -9,12 +9,6 @@ import Mathlib.FieldTheory.AbsoluteGaloisGroup
 import Mathlib.FieldTheory.Galois.Infinite
 import Mathlib.FieldTheory.IsSepClosed
 
-set_option autoImplicit false
-
-namespace LocalClassFieldTheory
-
-open ClassFormation
-
 /-!
 # Finite local reciprocity: the absolute residue degree map
 
@@ -30,6 +24,12 @@ global statement from the compatible finite Frobenius coordinates:
 * inversion gives the continuous degree map of the finite local reciprocity construction.
 -/
 
+namespace LocalClassFieldTheory
+
+open ClassFormation
+
+
+
 noncomputable section
 
 universe u
@@ -40,7 +40,8 @@ open Polynomial
 
 variable (k : Type u) [Field k] [Fintype k]
 
-private instance finiteFieldRingCharPrime : Fact (ringChar k).Prime :=
+omit [Fintype k] in
+private instance finiteFieldRingCharPrime [Finite k] : Fact (ringChar k).Prime :=
   ⟨CharP.char_is_prime k (ringChar k)⟩
 
 private noncomputable instance absoluteGaloisGroupT2 :

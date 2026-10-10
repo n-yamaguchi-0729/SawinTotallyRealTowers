@@ -7,10 +7,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
 import ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
 
-set_option autoImplicit false
-
 /-!
-# the nonarchimedean valuation construction, the irreducible coefficient estimate: the coefficient norm of an irreducible polynomial
+# The coefficient norm of an irreducible polynomial
+
+The nonarchimedean valuation construction supplies the irreducible coefficient estimate.
 
 The unique nonarchimedean extension to a splitting field is invariant under
 all ground-field automorphisms.  Normality of a splitting field therefore
