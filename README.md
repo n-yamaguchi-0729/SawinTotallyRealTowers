@@ -43,17 +43,11 @@ import SawinTotallyRealTowers.All
 
 ## Main results
 
-**[Sawin's totally real tower](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean)**
-
-One infinite prime set splits completely in totally real fields of unbounded degree with bounded root discriminant.
-
-**[Martinet's discriminant bound](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean)**
-
-Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound.
-
-**[Shafarevich's relation-rank bound](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean)**
-
-For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction.
+| Result | Mathematical content |
+| --- | --- |
+| [Sawin's totally real tower](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean) | One infinite prime set splits completely in totally real fields of unbounded degree with bounded root discriminant. |
+| [Martinet's discriminant bound](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean) | Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound. |
+| [Shafarevich's relation-rank bound](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) | For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction. |
 
 ## Problem statements and related projects
 
