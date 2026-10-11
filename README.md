@@ -266,7 +266,7 @@ saving completed outputs and diagnostic receipts before the runner deadline.
 
 ## Authorship and AI-written code
 
-All original code in this library is written by AI (OpenAI Codex).
+All original code in this library is written by OpenAI Codex.
 [Naganori Yamaguchi](https://github.com/n-yamaguchi-0729) sets the mathematical
 goals and scope, directs development, and maintains the library.
 The benchmark statements and their source licenses are credited in the
