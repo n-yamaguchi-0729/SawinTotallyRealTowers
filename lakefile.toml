@@ -1,11 +1,13 @@
-name = "SawinTotallyRealTowers"
-version = "1.0.0"
-defaultTargets = ["SawinTotallyRealTowers.All", "SawinTotallyRealTowers.MartinetCorollary"]
 enableArtifactCache = false
-restoreAllArtifacts = false
+
+name = "Nyll"
+version = "0.1.0-dev"
+buildDir = ".lake/build"
+keywords = ["math"]
+defaultTargets = ["Nyll"]
 
 [leanOptions]
-pp.unicode.fun = true
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 autoImplicit = false
 linter.unusedVariables = true
 linter.missingDocs = true
@@ -16,31 +18,16 @@ name = "mathlib"
 scope = "leanprover-community"
 rev = "065356127b1dc0016f66b7283ce0ce2c4055aa55"
 
+# All sources share one library configuration and the package-wide checks.
 [[lean_lib]]
-name = "ProCGroups"
-srcDir = "Lean4"
-roots = []
-globs = ["ProCGroups.+"]
-
-[[lean_lib]]
-name = "ValuedFieldTheory"
-srcDir = "Lean4"
-roots = []
-globs = ["ValuedFieldTheory.+"]
-[[lean_lib]]
-name = "GaloisCohomology"
-srcDir = "Lean4"
-roots = []
-globs = ["GaloisCohomology.+"]
-
-[[lean_lib]]
-name = "ClassFieldTheory"
-srcDir = "Lean4"
-roots = []
-globs = ["ClassFieldTheory.+"]
-
-[[lean_lib]]
-name = "SawinTotallyRealTowers"
-srcDir = "Lean4"
-roots = []
-globs = ["SawinTotallyRealTowers.+"]
+name = "Nyll"
+globs = [
+  "Nyll.All",
+  "Nyll",
+  "Nyll.ProCGroups.+",
+  "Nyll.ValuedFieldTheory.+",
+  "Nyll.GaloisCohomology.+",
+  "Nyll.SchemeTheory.+",
+  "Nyll.ClassFieldTheory.+",
+  "Nyll.SawinTotallyRealTowers.+",
+]

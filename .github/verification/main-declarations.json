@@ -4,17 +4,17 @@
     {
       "name": "ClassFieldTower.Sawin.sawin_totally_real_tower",
       "kind": "theorem",
-      "module": "SawinTotallyRealTowers.SawinTotallyRealTower"
+      "module": "Nyll.SawinTotallyRealTowers.SawinTotallyRealTower"
     },
     {
       "name": "ClassFieldTower.Sawin.exists_totallyReal_discr_le",
       "kind": "theorem",
-      "module": "SawinTotallyRealTowers.MartinetCorollary"
+      "module": "Nyll.SawinTotallyRealTowers.MartinetCorollary"
     },
     {
       "name": "ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound",
       "kind": "theorem",
-      "module": "SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound"
+      "module": "Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound"
     }
   ]
 }

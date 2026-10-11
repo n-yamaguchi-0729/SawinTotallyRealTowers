@@ -7,9 +7,7 @@ https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608
 Lean Eval repository: Copyright 2026 Lean FRO, LLC; Apache 2.0.
 -/
 
-import SawinTotallyRealTowers.MartinetCorollary
-
-set_option autoImplicit false
+import Nyll.SawinTotallyRealTowers.MartinetCorollary
 
 open NumberField
 

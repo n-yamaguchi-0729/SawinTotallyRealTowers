@@ -13,8 +13,7 @@ import time
 
 import generate_manifest
 
-DEPTH = {"ProCGroups": 1, "ValuedFieldTheory": 1, "GaloisCohomology": 1,
-         "ClassFieldTheory": 2, "SawinTotallyRealTowers": 3}
+DEPTH = {'ProCGroups': 1, 'ValuedFieldTheory': 1, 'GaloisCohomology': 1, 'SchemeTheory': 1, 'ClassFieldTheory': 2, 'AlgebraicCurves': 2, 'EtaleFundamentalGroups': 2, 'EtaleCohomology': 2, 'SawinTotallyRealTowers': 3, 'JacobianVarieties': 3, 'Yamaguchi26AbfaithfulGalois': 3, 'Yamaguchi26SolvableCoverings': 3, 'AnabelianGeometry': 3, 'EntryPoint': 4}
 HERE = Path(__file__).resolve().parent
 
 

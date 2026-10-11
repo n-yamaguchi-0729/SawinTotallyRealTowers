@@ -237,7 +237,9 @@ def analyze(root, config):
         module = next(iter(modules))
         if not any(b for m, b in candidates if m == module):
             error("not-buildable", "Maintained source is not buildable under Lake roots/globs.", path=relative, module=module)
-        labels = [owner for owner, prefixes in owners.items() if any(prefix_of(p, module) for p in prefixes)]
+        labels = (["EntryPoint"] if module in {"Nyll", "Nyll.All"} else
+                  [owner for owner, prefixes in owners.items() if owner != "EntryPoint"
+                   and any(prefix_of(p, module) for p in prefixes)])
         if len(labels) != 1:
             error("owner-mapping", "Module must have exactly one configured owner.", module=module, owners=labels)
             continue
@@ -284,8 +286,8 @@ def analyze(root, config):
                 continue
             for target in names:
                 import_count += 1
-                pcg = module.split(".")[0]
-                if pcg in {"PCG", "ProCGroups"} and not (prefix_of(pcg, target) or prefix_of("Mathlib", target)):
+                pcg = rows[module]["owner"]
+                if pcg in {"PCG", "ProCGroups"} and not (prefix_of("Nyll." + pcg, target) or prefix_of("Mathlib", target)):
                     error("pcg-import-policy", "PCG may import only itself or Mathlib.", module=module, target=target, line=line_no)
                 if target in rows: graph[module].add(target)
                 elif target.split(".")[0] in local_roots or not any(prefix_of(p, target) for p in external):

@@ -8,8 +8,6 @@ import Lean
 import Lean.Util.CollectAxioms
 import Lean.Util.Sorry
 
-set_option autoImplicit false
-
 /-!
 Portable pre-submission inventory. This is an external audit program, not a proof module.
 It imports the manifest roots at private level and selects declarations by their origin module,

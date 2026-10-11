@@ -56,7 +56,7 @@ class MainReceiptChecks(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'kind/owner changed'):
             main_gate.check(contract, rows)
         rows[2]['kind'] = 'theorem'
-        rows[2]['originModule'] = 'SawinTotallyRealTowers.Other'
+        rows[2]['originModule'] = 'Nyll.SawinTotallyRealTowers.Other'
         with self.assertRaisesRegex(ValueError, 'origin changed'):
             main_gate.check(contract, rows)
 

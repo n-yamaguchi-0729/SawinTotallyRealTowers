@@ -17,50 +17,50 @@ class SourceClosureTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.rows = {}
-        self.put('Proof.Base', 'theorem one : True := True.intro\n')
-        self.put('Proof.Entry', 'import Proof.Base\nexample : True := one\n')
-        self.manifest = {'roots': ['Proof.Entry'], 'moduleRows': self.rows}
+        self.put('Nyll.Proof.Base', 'theorem one : True := True.intro\n')
+        self.put('Nyll.Proof.Entry', 'import Nyll.Proof.Base\nexample : True := one\n')
+        self.manifest = {'roots': ['Nyll.Proof.Entry'], 'moduleRows': self.rows}
 
     def put(self, module, text):
-        rel = 'Lean4/' + module.replace('.', '/') + '.lean'; p = self.root/rel
+        rel = module.replace('.', '/') + '.lean'; p = self.root/rel
         p.parent.mkdir(parents=True, exist_ok=True); p.write_text(text)
-        self.rows[module] = {'owner': module.split('.')[0], 'path': rel,
+        self.rows[module] = {'owner': module.split('.')[1], 'path': rel,
                             'sha256': source.digest(p), 'imports': source.source_imports(text)}
 
     def test_valid_exact_closure(self):
         self.assertEqual(source.audit_rows(self.root, self.manifest)['moduleCount'], 2)
 
     def test_missing_file_rejected(self):
-        (self.root/'Lean4/Proof/Base.lean').unlink()
+        (self.root/'Nyll/Proof/Base.lean').unlink()
         with self.assertRaisesRegex(ValueError, 'Missing'): source.audit_rows(self.root, self.manifest)
 
     def test_source_mutation_rejected(self):
-        (self.root/'Lean4/Proof/Base.lean').write_text('theorem false_claim : False := by sorry\n')
+        (self.root/'Nyll/Proof/Base.lean').write_text('theorem false_claim : False := by sorry\n')
         with self.assertRaisesRegex(ValueError, 'SHA'): source.audit_rows(self.root, self.manifest)
 
     def test_extra_unreachable_module_rejected(self):
-        self.put('Proof.Extra', 'example : True := True.intro\n')
+        self.put('Nyll.Proof.Extra', 'example : True := True.intro\n')
         with self.assertRaisesRegex(ValueError, 'outside'): source.audit_rows(self.root, self.manifest)
 
     def test_missing_local_import_rejected(self):
-        self.put('Proof.Entry', 'import Proof.Missing\n')
+        self.put('Nyll.Proof.Entry', 'import Nyll.Proof.Missing\n')
         with self.assertRaisesRegex(ValueError, 'Unresolved'): source.audit_rows(self.root, self.manifest)
 
     def test_cycle_rejected(self):
-        self.put('Proof.Base', 'import Proof.Entry\n')
+        self.put('Nyll.Proof.Base', 'import Nyll.Proof.Entry\n')
         with self.assertRaisesRegex(ValueError, 'cycle'): source.audit_rows(self.root, self.manifest)
 
     def test_aggregate_in_import_closure_accepted(self):
-        self.put('Proof.All', 'import Proof.Base\n')
-        self.put('Proof.Entry', 'import Proof.All\n')
+        self.put('Nyll.Proof.All', 'import Nyll.Proof.Base\n')
+        self.put('Nyll.Proof.Entry', 'import Nyll.Proof.All\n')
         self.assertEqual(source.audit_rows(self.root, self.manifest)['moduleCount'], 3)
 
     def test_forged_path_rejected(self):
-        self.rows['Proof.Base']['path'] = '../Base.lean'
+        self.rows['Nyll.Proof.Base']['path'] = '../Base.lean'
         with self.assertRaisesRegex(ValueError, 'path/owner'): source.audit_rows(self.root, self.manifest)
 
     def test_hole_rejected_even_with_updated_hash(self):
-        self.put('Proof.Base', 'example : True := by sorry\n')
+        self.put('Nyll.Proof.Base', 'example : True := by sorry\n')
         with self.assertRaisesRegex(ValueError, 'placeholder'): source.audit_rows(self.root, self.manifest)
 
     def test_nested_comments_and_strings_are_not_imports(self):
@@ -75,7 +75,7 @@ class InventoryTests(unittest.TestCase):
     def setUp(self):
         mod = source.ENTRY
         self.manifest = {'roots': [mod], 'moduleRows': {mod: {
-            'owner': 'SawinTotallyRealTowers', 'path': 'Lean4/'+mod.replace('.', '/')+'.lean',
+            'owner': 'SawinTotallyRealTowers', 'path': mod.replace('.', '/')+'.lean',
             'sha256': 'a'*64}}}
         self.baseline = {'allowedPartialDeclarations': []}
         self.summary = {'auditPassed':True,'moduleCoverageExact':True,'importRoots':[mod],
@@ -101,7 +101,7 @@ class InventoryTests(unittest.TestCase):
         mod = source.MARTINET_ENTRY
         self.manifest['roots'].append(mod)
         self.manifest['moduleRows'][mod] = {
-            'owner': 'SawinTotallyRealTowers', 'path': 'Lean4/'+mod.replace('.', '/')+'.lean',
+            'owner': 'SawinTotallyRealTowers', 'path': mod.replace('.', '/')+'.lean',
             'sha256': 'b'*64}
         self.summary.update(importRoots=list(self.manifest['roots']),
                             primaryModuleCount=2, loadedPrimaryModuleCount=2)
@@ -163,31 +163,46 @@ class InventoryTests(unittest.TestCase):
         self.summary['allSelected']['declarations']=2
         with self.assertRaisesRegex(ValueError,'source changed'): self.check([self.row,partial])
 
-    def test_all_seven_historical_partial_sources_match_body_and_current_hashes(self):
+    def test_all_pinned_partial_sources_match_header_body_and_current_hashes(self):
         root = Path(__file__).resolve().parents[1]
         baseline = json.loads((root/'.github/verification/historical-partial-baseline.json').read_text())
         manifest = json.loads((root/'.github/verification/source-manifest.json').read_text())
-        self.assertEqual(len(baseline['allowedPartialDeclarations']), 7)
+        self.assertEqual(len(baseline['allowedPartialDeclarations']), 31)
         for old in baseline['allowedPartialDeclarations']:
             with self.subTest(old=old['name']):
                 path = old['sourcePath']
                 self.assertEqual(manifest['moduleRows'][old['originModule']]['sha256'],
                                  old['currentSourceSHA256'])
                 self.assertEqual(source.digest(root/path), old['currentSourceSHA256'])
-                self.assertEqual(verify.historical_body_sha(root, path),
+                self.assertEqual(verify.historical_body_sha(root, path, old),
                                  old['historicalBodySHA256'])
 
     def test_historical_partial_header_must_be_exactly_recognized(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            path = root/'Lean4/Proof.lean'; path.parent.mkdir()
+            path = root/'Nyll/Nyll.Proof.lean'; path.parent.mkdir()
             body = b'theorem old : True := True.intro\n'
             path.write_bytes(verify.COPYRIGHT_HEADER + body)
-            self.assertEqual(verify.historical_body_sha(root, 'Lean4/Proof.lean'),
+            self.assertEqual(verify.historical_body_sha(root, 'Nyll/Nyll.Proof.lean'),
                              hashlib.sha256(body).hexdigest())
             path.write_bytes(b'/- other header -/\n\n' + body)
             with self.assertRaisesRegex(ValueError, 'recognized copyright header'):
-                verify.historical_body_sha(root, 'Lean4/Proof.lean')
+                verify.historical_body_sha(root, 'Nyll/Nyll.Proof.lean')
+
+    def test_pinned_external_copyright_header_cannot_change(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / 'External.lean'
+            header = b'/- Copyright upstream contributor. Authors: upstream contributor -/\n\n'
+            body = b'def example : Nat := 0\n'
+            pin = {'copyrightHeaderByteLength': len(header),
+                   'copyrightHeaderSHA256': hashlib.sha256(header).hexdigest()}
+            path.write_bytes(header + body)
+            self.assertEqual(verify.historical_body_sha(root, 'External.lean', pin),
+                             hashlib.sha256(body).hexdigest())
+            path.write_bytes(header.replace(b'upstream', b'replaced') + body)
+            with self.assertRaisesRegex(ValueError, 'exact pinned copyright header'):
+                verify.historical_body_sha(root, 'External.lean', pin)
 
 class ReplayTests(unittest.TestCase):
     def test_missing_completion_rejected(self):

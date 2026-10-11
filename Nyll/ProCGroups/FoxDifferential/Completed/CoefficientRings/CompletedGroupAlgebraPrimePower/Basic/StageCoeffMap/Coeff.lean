@@ -1,0 +1,33 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
+import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
+
+/-!
+# Fox differential: prime-power completed group algebra — basic — stage coeff map — coeff
+
+The principal declarations in this module are:
+
+- `primePower_pos`
+  The prime-power moduli used throughout the compatibility layer are positive.
+-/
+
+namespace FoxDifferential
+
+noncomputable section
+
+open ProCGroups.InverseSystems
+open ProCGroups.ProC
+
+universe u
+
+/-- The prime-power moduli used throughout the compatibility layer are positive. -/
+theorem primePower_pos (ℓ a : ℕ) [Fact (0 < ℓ)] : 0 < ℓ ^ a :=
+  pow_pos (Fact.out : 0 < ℓ) a
+
+end
+
+end FoxDifferential

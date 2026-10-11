@@ -1,0 +1,36 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassField
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.All
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.CyclicNormQuotient
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedReciprocity
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedSymbol
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormContinuity
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopologyCharacterization
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ProfiniteAPI
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Sylow
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamified
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.All
+import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
+
+/-!
+# Abstract reciprocity
+
+Public aggregate for the class-formation reciprocity theorem and the canonical
+construction and naturality of its reciprocity maps.
+-/

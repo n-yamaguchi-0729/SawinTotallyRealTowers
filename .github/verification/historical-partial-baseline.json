@@ -1,9 +1,1343 @@
 {
-  "purpose": "Expected exact historical partial declarations whose origin modules lie in the standalone closure. Derivation only; final compiled inventory must confirm exact equality.",
+  "purpose": "Exact compiler-generated partial declarations from the six bundled dependency families. Every declaration identity, source file, copyright header, and body is pinned; compiled inventory must match the complete set.",
   "baselineSHA256": "54169222df454c7cf9c63de7fb782c79851bd6f9f62f813e35ce5c4d41ed7c3e",
-  "fullBaselineCount": 18,
-  "selectedCount": 7,
+  "selectedCount": 31,
   "allowedPartialDeclarations": [
+    {
+      "name": "AlgebraicCurves.Foundations.CommutativeAlgebra.Proofs.Module_Flat_exists_ne_zero_flat_localization_tensorProduct.GenericFlatness.filt._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicCurves"
+        },
+        {
+          "str": "Foundations"
+        },
+        {
+          "str": "CommutativeAlgebra"
+        },
+        {
+          "str": "Proofs"
+        },
+        {
+          "str": "Module_Flat_exists_ne_zero_flat_localization_tensorProduct"
+        },
+        {
+          "str": "GenericFlatness"
+        },
+        {
+          "str": "filt"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.RingTheory.Flat.GenericFlatness",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/RingTheory/Flat/GenericFlatness.lean",
+      "currentSourceSHA256": "1beaac1fbbc4a8d91bf47273b87faf006e5c5c2d46c1c9e63eff867c322d1fcc",
+      "historicalBodySHA256": "dbe901978eddb7947bef456eb67016973f3af5c9edcc62d3dd6e3626b3c2cd0a",
+      "copyrightHeaderSHA256": "1a67907d09ad2340f8590023ea98008a71fbc42f4f3caf0c4c5b993c8f25689f",
+      "copyrightHeaderByteLength": 823,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicCurves.Foundations.CommutativeAlgebra.Proofs.Module_Flat_exists_ne_zero_flat_localization_tensorProduct.GenericFlatness.filt._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicCurves"
+          },
+          {
+            "str": "Foundations"
+          },
+          {
+            "str": "CommutativeAlgebra"
+          },
+          {
+            "str": "Proofs"
+          },
+          {
+            "str": "Module_Flat_exists_ne_zero_flat_localization_tensorProduct"
+          },
+          {
+            "str": "GenericFlatness"
+          },
+          {
+            "str": "filt"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.RingTheory.Flat.GenericFlatness",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "1beaac1fbbc4a8d91bf47273b87faf006e5c5c2d46c1c9e63eff867c322d1fcc",
+      "preNyllBodySHA256": "dbe901978eddb7947bef456eb67016973f3af5c9edcc62d3dd6e3626b3c2cd0a",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/RingTheory/Flat/GenericFlatness.lean",
+        "sourceSHA256": "1beaac1fbbc4a8d91bf47273b87faf006e5c5c2d46c1c9e63eff867c322d1fcc",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicCurves.Foundations.CommutativeAlgebra.Proofs.Module_Flat_exists_ne_zero_flat_localization_tensorProduct.GenericFlatness.filt._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicCurves"
+            },
+            {
+              "str": "Foundations"
+            },
+            {
+              "str": "CommutativeAlgebra"
+            },
+            {
+              "str": "Proofs"
+            },
+            {
+              "str": "Module_Flat_exists_ne_zero_flat_localization_tensorProduct"
+            },
+            {
+              "str": "GenericFlatness"
+            },
+            {
+              "str": "filt"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.RingTheory.Flat.GenericFlatness",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/RingTheory/Flat/GenericFlatness.lean",
+        "sourceSHA256": "1beaac1fbbc4a8d91bf47273b87faf006e5c5c2d46c1c9e63eff867c322d1fcc"
+      }
+    },
+    {
+      "name": "AlgebraicCurves.Geometry.Schemes.Proofs.ChowDatumProj_nonempty_of.AlgebraicGeometry.ProjSpace.Segre.segreAux._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicCurves"
+        },
+        {
+          "str": "Geometry"
+        },
+        {
+          "str": "Schemes"
+        },
+        {
+          "str": "Proofs"
+        },
+        {
+          "str": "ChowDatumProj_nonempty_of"
+        },
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "ProjSpace"
+        },
+        {
+          "str": "Segre"
+        },
+        {
+          "str": "segreAux"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Morphisms.ChowDatumProj_nonempty_of",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Morphisms/ChowDatumProj_nonempty_of.lean",
+      "currentSourceSHA256": "cb11080950364b84d3832adfb983418e43b6043706f93b2177e93f28609fc454",
+      "historicalBodySHA256": "530fa07cb5d8ca2ac9ae0a69f61023ac1c4b887ebbc5d64358a8006ad5515d47",
+      "copyrightHeaderSHA256": "b78c1a9fc566990fb51a363842cf642d57b67e88614f3dabb853daee6d96942f",
+      "copyrightHeaderByteLength": 808,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicCurves.Geometry.Schemes.Proofs.ChowDatumProj_nonempty_of.AlgebraicGeometry.ProjSpace.Segre.segreAux._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicCurves"
+          },
+          {
+            "str": "Geometry"
+          },
+          {
+            "str": "Schemes"
+          },
+          {
+            "str": "Proofs"
+          },
+          {
+            "str": "ChowDatumProj_nonempty_of"
+          },
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "ProjSpace"
+          },
+          {
+            "str": "Segre"
+          },
+          {
+            "str": "segreAux"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Morphisms.ChowDatumProj_nonempty_of",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "424ed97416f8e6a3edb708745dbba5a85edf3c11b8a1d197c631a59576e05ad4",
+      "preNyllBodySHA256": "d7251a5a5863a00079b40b03efff3265c529f00e6477aef931e0c58605e1d873",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Morphisms/ChowDatumProj_nonempty_of.lean",
+        "sourceSHA256": "424ed97416f8e6a3edb708745dbba5a85edf3c11b8a1d197c631a59576e05ad4",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicCurves.Geometry.Schemes.Proofs.ChowDatumProj_nonempty_of.AlgebraicGeometry.ProjSpace.Segre.segreAux._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicCurves"
+            },
+            {
+              "str": "Geometry"
+            },
+            {
+              "str": "Schemes"
+            },
+            {
+              "str": "Proofs"
+            },
+            {
+              "str": "ChowDatumProj_nonempty_of"
+            },
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "ProjSpace"
+            },
+            {
+              "str": "Segre"
+            },
+            {
+              "str": "segreAux"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Morphisms.ChowDatumProj_nonempty_of",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Morphisms/ChowDatumProj_nonempty_of.lean",
+        "sourceSHA256": "cb11080950364b84d3832adfb983418e43b6043706f93b2177e93f28609fc454"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.ProjSpace.prodLiftAux._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "ProjSpace"
+        },
+        {
+          "str": "prodLiftAux"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.ProjectiveSpace.Basic",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/ProjectiveSpace/Basic.lean",
+      "currentSourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+      "historicalBodySHA256": "f7da2c7b3382c2416d8076c1648190a059828b0e14cdc4912dabb26edb8e4dbe",
+      "copyrightHeaderSHA256": "e71d0d2b40b9a2c0e37b84563c538dda2b389eaf67981edc856cc269b48a3294",
+      "copyrightHeaderByteLength": 798,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.ProjSpace.prodLiftAux._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "ProjSpace"
+          },
+          {
+            "str": "prodLiftAux"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.ProjectiveSpace.Basic",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+      "preNyllBodySHA256": "f7da2c7b3382c2416d8076c1648190a059828b0e14cdc4912dabb26edb8e4dbe",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/ProjectiveSpace/Basic.lean",
+        "sourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.ProjSpace.prodLiftAux._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "ProjSpace"
+            },
+            {
+              "str": "prodLiftAux"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.ProjectiveSpace.Basic",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/ProjectiveSpace/Basic.lean",
+        "sourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.ProjSpace.prodOverAux._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "ProjSpace"
+        },
+        {
+          "str": "prodOverAux"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.ProjectiveSpace.Basic",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/ProjectiveSpace/Basic.lean",
+      "currentSourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+      "historicalBodySHA256": "f7da2c7b3382c2416d8076c1648190a059828b0e14cdc4912dabb26edb8e4dbe",
+      "copyrightHeaderSHA256": "e71d0d2b40b9a2c0e37b84563c538dda2b389eaf67981edc856cc269b48a3294",
+      "copyrightHeaderByteLength": 798,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.ProjSpace.prodOverAux._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "ProjSpace"
+          },
+          {
+            "str": "prodOverAux"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.ProjectiveSpace.Basic",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+      "preNyllBodySHA256": "f7da2c7b3382c2416d8076c1648190a059828b0e14cdc4912dabb26edb8e4dbe",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/ProjectiveSpace/Basic.lean",
+        "sourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.ProjSpace.prodOverAux._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "ProjSpace"
+            },
+            {
+              "str": "prodOverAux"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.ProjectiveSpace.Basic",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/ProjectiveSpace/Basic.lean",
+        "sourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.ProjSpace.prodPr._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "ProjSpace"
+        },
+        {
+          "str": "prodPr"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.ProjectiveSpace.Basic",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/ProjectiveSpace/Basic.lean",
+      "currentSourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+      "historicalBodySHA256": "f7da2c7b3382c2416d8076c1648190a059828b0e14cdc4912dabb26edb8e4dbe",
+      "copyrightHeaderSHA256": "e71d0d2b40b9a2c0e37b84563c538dda2b389eaf67981edc856cc269b48a3294",
+      "copyrightHeaderByteLength": 798,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.ProjSpace.prodPr._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "ProjSpace"
+          },
+          {
+            "str": "prodPr"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.ProjectiveSpace.Basic",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+      "preNyllBodySHA256": "f7da2c7b3382c2416d8076c1648190a059828b0e14cdc4912dabb26edb8e4dbe",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/ProjectiveSpace/Basic.lean",
+        "sourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.ProjSpace.prodPr._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "ProjSpace"
+            },
+            {
+              "str": "prodPr"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.ProjectiveSpace.Basic",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/ProjectiveSpace/Basic.lean",
+        "sourceSHA256": "a6da6eba53b559063985fcae1d8e4814e3811e4c3d4dcfdcc620d4b7a5ac8b1e"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.Scheme.Modules.pullbackTensorPowIso._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "Scheme"
+        },
+        {
+          "str": "Modules"
+        },
+        {
+          "str": "pullbackTensorPowIso"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Modules.TensorPowerComparison",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Modules/TensorPowerComparison.lean",
+      "currentSourceSHA256": "4da22ffafdeddc38ee94ac607e066feb5cd839a7ab45217842e7f5beb30fe0ca",
+      "historicalBodySHA256": "5dc098eb304461abfee7dab3be1240aa48490b38628408689b513e2336ef32fb",
+      "copyrightHeaderSHA256": "e28501ef39959cd506e2f65a861115766c2697d0e2a1b11213237ce098a53eaf",
+      "copyrightHeaderByteLength": 912,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.Scheme.Modules.pullbackTensorPowIso._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "Scheme"
+          },
+          {
+            "str": "Modules"
+          },
+          {
+            "str": "pullbackTensorPowIso"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Modules.TensorPowerComparison",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "53e01fce0515e44156f0004f0034e918c9c659676ad567826e734c43c69f956c",
+      "preNyllBodySHA256": "8c99af1d768dde2903c04b06223ad590c03a85297b082511d9bdd03b67373d1b",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Modules/TensorPowerComparison.lean",
+        "sourceSHA256": "53e01fce0515e44156f0004f0034e918c9c659676ad567826e734c43c69f956c",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.Scheme.Modules.pullbackTensorPowIso._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "Scheme"
+            },
+            {
+              "str": "Modules"
+            },
+            {
+              "str": "pullbackTensorPowIso"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Modules.TensorPowerComparison",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Modules/TensorPowerComparison.lean",
+        "sourceSHA256": "4da22ffafdeddc38ee94ac607e066feb5cd839a7ab45217842e7f5beb30fe0ca"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.Scheme.Modules.tensorPow._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "Scheme"
+        },
+        {
+          "str": "Modules"
+        },
+        {
+          "str": "tensorPow"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Modules.TensorPowers",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Modules/TensorPowers.lean",
+      "currentSourceSHA256": "1fc172f78a8d6b3523ba2c17f6ee664524aa819bc74a201665806e0203990e8e",
+      "historicalBodySHA256": "09a998ef9ce8872bd30aaeab155812ec8a8ea058061d9f923b73bc0592600f30",
+      "copyrightHeaderSHA256": "560b6df75ca94796a7b4f93426fbd72c9db83f58b21e1645f7c6ba78f430e036",
+      "copyrightHeaderByteLength": 786,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.Scheme.Modules.tensorPow._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "Scheme"
+          },
+          {
+            "str": "Modules"
+          },
+          {
+            "str": "tensorPow"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Modules.TensorPowers",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "14e20a82116abdc7330b8a082a2b4ceeeb2433f313ebe95648c6f8f13e72aa14",
+      "preNyllBodySHA256": "a94b70c8163bded71851a94dea9511f69123456e2a3b1159d8b481cfd72bfaf5",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Modules/TensorPowers.lean",
+        "sourceSHA256": "14e20a82116abdc7330b8a082a2b4ceeeb2433f313ebe95648c6f8f13e72aa14",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.Scheme.Modules.tensorPow._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "Scheme"
+            },
+            {
+              "str": "Modules"
+            },
+            {
+              "str": "tensorPow"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Modules.TensorPowers",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Modules/TensorPowers.lean",
+        "sourceSHA256": "1fc172f78a8d6b3523ba2c17f6ee664524aa819bc74a201665806e0203990e8e"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.Scheme.Modules.tensorPowAdd._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "Scheme"
+        },
+        {
+          "str": "Modules"
+        },
+        {
+          "str": "tensorPowAdd"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Modules.TensorPowerComparison",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Modules/TensorPowerComparison.lean",
+      "currentSourceSHA256": "4da22ffafdeddc38ee94ac607e066feb5cd839a7ab45217842e7f5beb30fe0ca",
+      "historicalBodySHA256": "5dc098eb304461abfee7dab3be1240aa48490b38628408689b513e2336ef32fb",
+      "copyrightHeaderSHA256": "e28501ef39959cd506e2f65a861115766c2697d0e2a1b11213237ce098a53eaf",
+      "copyrightHeaderByteLength": 912,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.Scheme.Modules.tensorPowAdd._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "Scheme"
+          },
+          {
+            "str": "Modules"
+          },
+          {
+            "str": "tensorPowAdd"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Modules.TensorPowerComparison",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "53e01fce0515e44156f0004f0034e918c9c659676ad567826e734c43c69f956c",
+      "preNyllBodySHA256": "8c99af1d768dde2903c04b06223ad590c03a85297b082511d9bdd03b67373d1b",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Modules/TensorPowerComparison.lean",
+        "sourceSHA256": "53e01fce0515e44156f0004f0034e918c9c659676ad567826e734c43c69f956c",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.Scheme.Modules.tensorPowAdd._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "Scheme"
+            },
+            {
+              "str": "Modules"
+            },
+            {
+              "str": "tensorPowAdd"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Modules.TensorPowerComparison",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Modules/TensorPowerComparison.lean",
+        "sourceSHA256": "4da22ffafdeddc38ee94ac607e066feb5cd839a7ab45217842e7f5beb30fe0ca"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.Scheme.Modules.tensorPowMapIso._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "Scheme"
+        },
+        {
+          "str": "Modules"
+        },
+        {
+          "str": "tensorPowMapIso"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Modules.TensorPowerComparison",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Modules/TensorPowerComparison.lean",
+      "currentSourceSHA256": "4da22ffafdeddc38ee94ac607e066feb5cd839a7ab45217842e7f5beb30fe0ca",
+      "historicalBodySHA256": "5dc098eb304461abfee7dab3be1240aa48490b38628408689b513e2336ef32fb",
+      "copyrightHeaderSHA256": "e28501ef39959cd506e2f65a861115766c2697d0e2a1b11213237ce098a53eaf",
+      "copyrightHeaderByteLength": 912,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.Scheme.Modules.tensorPowMapIso._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "Scheme"
+          },
+          {
+            "str": "Modules"
+          },
+          {
+            "str": "tensorPowMapIso"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Modules.TensorPowerComparison",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "53e01fce0515e44156f0004f0034e918c9c659676ad567826e734c43c69f956c",
+      "preNyllBodySHA256": "8c99af1d768dde2903c04b06223ad590c03a85297b082511d9bdd03b67373d1b",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Modules/TensorPowerComparison.lean",
+        "sourceSHA256": "53e01fce0515e44156f0004f0034e918c9c659676ad567826e734c43c69f956c",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.Scheme.Modules.tensorPowMapIso._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "Scheme"
+            },
+            {
+              "str": "Modules"
+            },
+            {
+              "str": "tensorPowMapIso"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Modules.TensorPowerComparison",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Modules/TensorPowerComparison.lean",
+        "sourceSHA256": "4da22ffafdeddc38ee94ac607e066feb5cd839a7ab45217842e7f5beb30fe0ca"
+      }
+    },
+    {
+      "name": "AlgebraicGeometry.Scheme.Modules.tensorPowSection._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "AlgebraicGeometry"
+        },
+        {
+          "str": "Scheme"
+        },
+        {
+          "str": "Modules"
+        },
+        {
+          "str": "tensorPowSection"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Modules.TensorSections",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Modules/TensorSections.lean",
+      "currentSourceSHA256": "f5056e11a6bafd06f86c50b5fced2b24d87120c2aa25be1978c5df0f11bfaa46",
+      "historicalBodySHA256": "ae108d81e0c5eceda80d4059c6456514cba629e35f3ce96b88cc90cedd43c5ef",
+      "copyrightHeaderSHA256": "19ed57002d44863c117b4055bd79117c63fe3e75e7f62a504b707f104d4f616d",
+      "copyrightHeaderByteLength": 810,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "AlgebraicGeometry.Scheme.Modules.tensorPowSection._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "AlgebraicGeometry"
+          },
+          {
+            "str": "Scheme"
+          },
+          {
+            "str": "Modules"
+          },
+          {
+            "str": "tensorPowSection"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Modules.TensorSections",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "5aef84f7b00f9320d9584bd11c898f61472c2aef70b5817d484ddb35e612ac0e",
+      "preNyllBodySHA256": "d1bb45b978aa5d06bcf9f50b730d4c623c7d7299f2a772a5f8ec538eac37e5c0",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Modules/TensorSections.lean",
+        "sourceSHA256": "5aef84f7b00f9320d9584bd11c898f61472c2aef70b5817d484ddb35e612ac0e",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicGeometry.Scheme.Modules.tensorPowSection._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicGeometry"
+            },
+            {
+              "str": "Scheme"
+            },
+            {
+              "str": "Modules"
+            },
+            {
+              "str": "tensorPowSection"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Modules.TensorSections",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Modules/TensorSections.lean",
+        "sourceSHA256": "f5056e11a6bafd06f86c50b5fced2b24d87120c2aa25be1978c5df0f11bfaa46"
+      }
+    },
     {
       "name": "AlgebraicNumberTheory.Valuations.henselFactorization_henselIterate._unsafe_rec",
       "nameParts": [
@@ -20,13 +1354,13 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration",
+      "originModule": "Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration",
       "primaryOwner": "ValuedFieldTheory",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
-      "historicalBodySHA256": "85ef50b27f275c6c9db43b1d2eeece3d8b6966f61c77bb7ac5cf572fd5ce993c",
-      "currentSourceSHA256": "b0864cafb0321562c49683f2dfaac7e95316fc0af74abfccb4cf7d9cd2521d83",
+      "sourcePath": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
+      "historicalBodySHA256": "60223bc1b61bcd22756749eb2b8e39f14138b4c98e02a9e680005f546acdaeb5",
+      "currentSourceSHA256": "aa24f4d629f3d16bf38465edffb9e20788334ea423cd29d7f3b2efa358c7a254",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -68,7 +1402,62 @@
       },
       "originalHistoricalBodySHA256": "64da6f6976fa7183d9a47ba927558ff037c1d0ce771e678fd34823ec1377b696",
       "originalSourceSHA256": "703c0e8fbcf251b0ba7dc1e761280b56ea6b36d50d2a49f795ac6083adc207ff",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "b0864cafb0321562c49683f2dfaac7e95316fc0af74abfccb4cf7d9cd2521d83",
+      "preNyllBodySHA256": "85ef50b27f275c6c9db43b1d2eeece3d8b6966f61c77bb7ac5cf572fd5ce993c",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
+        "sourceSHA256": "b0864cafb0321562c49683f2dfaac7e95316fc0af74abfccb4cf7d9cd2521d83",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicNumberTheory.Valuations.henselFactorization_henselIterate._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicNumberTheory"
+            },
+            {
+              "str": "Valuations"
+            },
+            {
+              "str": "henselFactorization_henselIterate"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration",
+          "primaryOwner": "ValuedFieldTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
+        "sourceSHA256": "aa24f4d629f3d16bf38465edffb9e20788334ea423cd29d7f3b2efa358c7a254"
+      }
     },
     {
       "name": "AlgebraicNumberTheory.Valuations.henselFactorization_prefixStateSeq_of_mem_span._unsafe_rec",
@@ -86,13 +1475,13 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation",
+      "originModule": "Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation",
       "primaryOwner": "ValuedFieldTheory",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
-      "historicalBodySHA256": "263610113f8dc0dcd5c4f826378bdf6c3e6fcc4d812b1589681aa137df7ee7d9",
-      "currentSourceSHA256": "08fc09513eed8aee3a4a64ff703f9891840c57df9793333fa2d73ec4d7e02f15",
+      "sourcePath": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
+      "historicalBodySHA256": "ebcd51d8e701d68926401fb7c0f1b21216c3d797f11774d6a223a7d769dff319",
+      "currentSourceSHA256": "682e5e16ea115795407b9bd037981a13ff213d51906292d4f335260118c29345",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -134,7 +1523,62 @@
       },
       "originalHistoricalBodySHA256": "92423448de17438d64cc613f609dba8571cb48aeade45933521636eb61a8d25c",
       "originalSourceSHA256": "59c4a292d3449c7ba6dc0754b4a75502ffc5a1a2231177916ad1ade3a0711fcf",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "08fc09513eed8aee3a4a64ff703f9891840c57df9793333fa2d73ec4d7e02f15",
+      "preNyllBodySHA256": "263610113f8dc0dcd5c4f826378bdf6c3e6fcc4d812b1589681aa137df7ee7d9",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
+        "sourceSHA256": "08fc09513eed8aee3a4a64ff703f9891840c57df9793333fa2d73ec4d7e02f15",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "AlgebraicNumberTheory.Valuations.henselFactorization_prefixStateSeq_of_mem_span._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "AlgebraicNumberTheory"
+            },
+            {
+              "str": "Valuations"
+            },
+            {
+              "str": "henselFactorization_prefixStateSeq_of_mem_span"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation",
+          "primaryOwner": "ValuedFieldTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
+        "sourceSHA256": "682e5e16ea115795407b9bd037981a13ff213d51906292d4f335260118c29345"
+      }
     },
     {
       "name": "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct._unsafe_rec",
@@ -149,13 +1593,13 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct",
+      "originModule": "Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct",
       "primaryOwner": "ClassFieldTheory",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
-      "historicalBodySHA256": "17736eae2a776f414e87c48214ee9d23bc39c35259da617abadaed38386d6bbd",
-      "currentSourceSHA256": "a3925244c1120d058011905b2b4e7e266823a65eb8bb33e2d8d420ac0e774dfb",
+      "sourcePath": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
+      "historicalBodySHA256": "cbb6831fb58faf8efed8db8216cc78bd18c33a043c71fda722b68f2ded94dd91",
+      "currentSourceSHA256": "d22f6c7c5cd2f910acd6fa738f92eb25bcd3c9d21497d62ba867aa66bc6de2fc",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -194,7 +1638,59 @@
       },
       "originalHistoricalBodySHA256": "0c69a323a7671fa0759a596f282cb4732c671ed945d8f2622474ca940d6f7699",
       "originalSourceSHA256": "062b87de1eee72041e2108b510a82ef705e93d13bfea8041552da5f9d1d09160",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "a3925244c1120d058011905b2b4e7e266823a65eb8bb33e2d8d420ac0e774dfb",
+      "preNyllBodySHA256": "17736eae2a776f414e87c48214ee9d23bc39c35259da617abadaed38386d6bbd",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
+        "sourceSHA256": "a3925244c1120d058011905b2b4e7e266823a65eb8bb33e2d8d420ac0e774dfb",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "LocalClassFieldTheory"
+            },
+            {
+              "str": "chosenNormalBasisPrincipalUnitCorrectionProduct"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct",
+          "primaryOwner": "ClassFieldTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
+        "sourceSHA256": "d22f6c7c5cd2f910acd6fa738f92eb25bcd3c9d21497d62ba867aa66bc6de2fc"
+      }
     },
     {
       "name": "LocalClassFieldTheory.filteredCorrectionProduct._unsafe_rec",
@@ -209,13 +1705,13 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence",
+      "originModule": "Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence",
       "primaryOwner": "ClassFieldTheory",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
-      "historicalBodySHA256": "7da09c1090b9b92f549ce82f5ab228b05509cef30868666fd0c0a90e217a698c",
-      "currentSourceSHA256": "c6e853e9a0d1cc52686b356bfaa7ff85d1fd8dc27eacf83093f941a3a0363d7b",
+      "sourcePath": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
+      "historicalBodySHA256": "c43b5f1db9510b4cf00c279477735ae7219e2861ee64eb6e8f6fc68ba4f8a75f",
+      "currentSourceSHA256": "1c31491ae5c87b30d73ddafa35b9ff58e406c9e7967fb50adc48db234e21bd5f",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [],
@@ -250,7 +1746,55 @@
       },
       "originalHistoricalBodySHA256": "dd2274244f543d52fb9e71f5992034d9f9c8248f100c8d572a1817c320846f10",
       "originalSourceSHA256": "0b18130e36f017fa2e76f602e4c5cd47275728564580d0f24cdf5ee84d6f929f",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "c6e853e9a0d1cc52686b356bfaa7ff85d1fd8dc27eacf83093f941a3a0363d7b",
+      "preNyllBodySHA256": "7da09c1090b9b92f549ce82f5ab228b05509cef30868666fd0c0a90e217a698c",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
+        "sourceSHA256": "c6e853e9a0d1cc52686b356bfaa7ff85d1fd8dc27eacf83093f941a3a0363d7b",
+        "finding": {
+          "axioms": [],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "LocalClassFieldTheory.filteredCorrectionProduct._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "LocalClassFieldTheory"
+            },
+            {
+              "str": "filteredCorrectionProduct"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence",
+          "primaryOwner": "ClassFieldTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/FilteredLiftingSequence.lean",
+        "sourceSHA256": "1c31491ae5c87b30d73ddafa35b9ff58e406c9e7967fb50adc48db234e21bd5f"
+      }
     },
     {
       "name": "LocalFieldTheory.principalUnitsCorrectionProduct._unsafe_rec",
@@ -265,13 +1809,13 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients",
+      "originModule": "Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients",
       "primaryOwner": "ValuedFieldTheory",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
-      "historicalBodySHA256": "92ba97fd419aafa991ab149bea3ff60ca3722057b44c40725bef832ce240cded",
-      "currentSourceSHA256": "b09667fed891819c61f76a9a12126522956c31af487f21fc6c40e0b11992ce06",
+      "sourcePath": "Nyll/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
+      "historicalBodySHA256": "994c328ee17e55c6fe62046baf39c4535195400cff866e6a947eaa8c41db4b66",
+      "currentSourceSHA256": "a3c85b005fa3be9a403aa5cf55c4294ea00ea66429197fd68e3fdece8fe333ef",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -310,7 +1854,179 @@
       },
       "originalHistoricalBodySHA256": "4e7b06ad825da3f8b21349488e4f1683a78c454bb04364d791eaa097e184dddf",
       "originalSourceSHA256": "f7258c7d6a37c0a2fafa52b891e7cf0db674faafb6807a37e24d23c246a81e38",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "b09667fed891819c61f76a9a12126522956c31af487f21fc6c40e0b11992ce06",
+      "preNyllBodySHA256": "92ba97fd419aafa991ab149bea3ff60ca3722057b44c40725bef832ce240cded",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
+        "sourceSHA256": "b09667fed891819c61f76a9a12126522956c31af487f21fc6c40e0b11992ce06",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "LocalFieldTheory.principalUnitsCorrectionProduct._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "LocalFieldTheory"
+            },
+            {
+              "str": "principalUnitsCorrectionProduct"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients",
+          "primaryOwner": "ValuedFieldTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
+        "sourceSHA256": "a3c85b005fa3be9a403aa5cf55c4294ea00ea66429197fd68e3fdece8fe333ef"
+      }
+    },
+    {
+      "name": "ProCGroups.FiniteStepSolvableQuotients.closedDerivedSeries._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ProCGroups"
+        },
+        {
+          "str": "FiniteStepSolvableQuotients"
+        },
+        {
+          "str": "closedDerivedSeries"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.FiniteStepSolvableQuotients.Commutators.DerivedSeriesAndQuotients",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/FiniteStepSolvableQuotients/Commutators/DerivedSeriesAndQuotients.lean",
+      "currentSourceSHA256": "7872f49e297a1e91b3b53bc25682e63608ba8e95f2c7dcbfb2a38818c5b8721d",
+      "historicalBodySHA256": "2c82dd518de265c392afe83e1ce94837065d88f03d057afc98b85e16b7871e2e",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ProCGroups.FiniteStepSolvableQuotients.closedDerivedSeries._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ProCGroups"
+          },
+          {
+            "str": "FiniteStepSolvableQuotients"
+          },
+          {
+            "str": "closedDerivedSeries"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.FiniteStepSolvableQuotients.Commutators.DerivedSeriesAndQuotients",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "2b409a048fb3ee0e5837241d7e10043efe747afb9142e5cd83b3e7acb5c2094f",
+      "preNyllBodySHA256": "d57c0a39ab577ec086afc2e606cab9a07e93db64a6be34bad8251fdcbf63212e",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/FiniteStepSolvableQuotients/Commutators/DerivedSeriesAndQuotients.lean",
+        "sourceSHA256": "2b409a048fb3ee0e5837241d7e10043efe747afb9142e5cd83b3e7acb5c2094f",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ProCGroups.FiniteStepSolvableQuotients.closedDerivedSeries._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ProCGroups"
+            },
+            {
+              "str": "FiniteStepSolvableQuotients"
+            },
+            {
+              "str": "closedDerivedSeries"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.FiniteStepSolvableQuotients.Commutators.DerivedSeriesAndQuotients",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/FiniteStepSolvableQuotients/Commutators/DerivedSeriesAndQuotients.lean",
+        "sourceSHA256": "7872f49e297a1e91b3b53bc25682e63608ba8e95f2c7dcbfb2a38818c5b8721d"
+      }
     },
     {
       "name": "ProCGroups.Generation.wordProducts._unsafe_rec",
@@ -328,11 +2044,11 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ProCGroups.Generation.Basic",
+      "originModule": "Nyll.ProCGroups.Generation.Basic",
       "primaryOwner": "ProCGroups",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ProCGroups/Generation/Basic.lean",
+      "sourcePath": "Nyll/ProCGroups/Generation/Basic.lean",
       "historicalBodySHA256": "6917210d635e42a7e7129a3f922ffab6615e452549c9652df13be6663ae03820",
       "currentSourceSHA256": "4d1b7318799d0764ccf4915ed0147dbd8bd4be4bd5085234e7a09ffb81bb759c",
       "sourceMatchesHistoricalCommit": false,
@@ -374,13 +2090,1854 @@
       },
       "originalHistoricalBodySHA256": "19459344e33f669eac133c243a6393450e8fc6804e9f88ec98aaa468a06074f9",
       "originalSourceSHA256": "50d4778f06ed4c6a3b22ab39a42a44343897e60c76f4073a85c78b57be712113",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "4d1b7318799d0764ccf4915ed0147dbd8bd4be4bd5085234e7a09ffb81bb759c",
+      "preNyllBodySHA256": "6917210d635e42a7e7129a3f922ffab6615e452549c9652df13be6663ae03820",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/Generation/Basic.lean",
+        "sourceSHA256": "4d1b7318799d0764ccf4915ed0147dbd8bd4be4bd5085234e7a09ffb81bb759c",
+        "finding": {
+          "axioms": [
+            "propext"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ProCGroups.Generation.wordProducts._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ProCGroups"
+            },
+            {
+              "str": "Generation"
+            },
+            {
+              "str": "wordProducts"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.Generation.Basic",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/Generation/Basic.lean",
+        "sourceSHA256": "4d1b7318799d0764ccf4915ed0147dbd8bd4be4bd5085234e7a09ffb81bb759c"
+      }
     },
     {
-      "name": "_private.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint.0.IsAdicComplete.contractingApproximation._unsafe_rec",
+      "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.prefixClosedAlongList._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "FiniteQuotientSchreierData"
+        },
+        {
+          "str": "prefixClosedAlongList"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.WordCertificates",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/WordCertificates.lean",
+      "currentSourceSHA256": "7dfd10fd7a3cc6a98a2e2696c66f13997d0ba95d36f754166d204e674e4fc51d",
+      "historicalBodySHA256": "b0f08dd8816d996f148a72e0769e9cd06dd06c8e9792b981d839de27a0ec9d11",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.prefixClosedAlongList._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "FiniteQuotientSchreierData"
+          },
+          {
+            "str": "prefixClosedAlongList"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.WordCertificates",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "fa7ee732632cbcd81725c1f37de7b0d25482ad7161af5577510b2ff02f411e80",
+      "preNyllBodySHA256": "a6984170b54e35ae8a9bdb0e28114144f273ae5bb58e702aa80998169922c5b0",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/WordCertificates.lean",
+        "sourceSHA256": "fa7ee732632cbcd81725c1f37de7b0d25482ad7161af5577510b2ff02f411e80",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.prefixClosedAlongList._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "FiniteQuotientSchreierData"
+            },
+            {
+              "str": "prefixClosedAlongList"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.WordCertificates",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/WordCertificates.lean",
+        "sourceSHA256": "7dfd10fd7a3cc6a98a2e2696c66f13997d0ba95d36f754166d204e674e4fc51d"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.prefixClosedQuotientSectionWordAlongList._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "FiniteQuotientSchreierData"
+        },
+        {
+          "str": "prefixClosedQuotientSectionWordAlongList"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.WordCertificates",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/WordCertificates.lean",
+      "currentSourceSHA256": "7dfd10fd7a3cc6a98a2e2696c66f13997d0ba95d36f754166d204e674e4fc51d",
+      "historicalBodySHA256": "b0f08dd8816d996f148a72e0769e9cd06dd06c8e9792b981d839de27a0ec9d11",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.prefixClosedQuotientSectionWordAlongList._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "FiniteQuotientSchreierData"
+          },
+          {
+            "str": "prefixClosedQuotientSectionWordAlongList"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.WordCertificates",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "fa7ee732632cbcd81725c1f37de7b0d25482ad7161af5577510b2ff02f411e80",
+      "preNyllBodySHA256": "a6984170b54e35ae8a9bdb0e28114144f273ae5bb58e702aa80998169922c5b0",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/WordCertificates.lean",
+        "sourceSHA256": "fa7ee732632cbcd81725c1f37de7b0d25482ad7161af5577510b2ff02f411e80",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.prefixClosedQuotientSectionWordAlongList._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "FiniteQuotientSchreierData"
+            },
+            {
+              "str": "prefixClosedQuotientSectionWordAlongList"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.WordCertificates",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/WordCertificates.lean",
+        "sourceSHA256": "7dfd10fd7a3cc6a98a2e2696c66f13997d0ba95d36f754166d204e674e4fc51d"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.tauList._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "FiniteQuotientSchreierData"
+        },
+        {
+          "str": "tauList"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.Tau",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/Tau.lean",
+      "currentSourceSHA256": "9f2d7a45e9dd7cde4ded6533b52980fa51adead9262fd69045e2310b93e06f20",
+      "historicalBodySHA256": "7c36b96e50dfe6f75947ec739621a90a4dee3ce9f32b6633043654c0cf075e0d",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.tauList._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "FiniteQuotientSchreierData"
+          },
+          {
+            "str": "tauList"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.Tau",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "747b714645c6c8a581e2fcc0aac4b64879b011058955cb3aa3142efec8fddb46",
+      "preNyllBodySHA256": "b98651eb6ffbfe2f1f1b3bcd157b35ab4aba33b959a49092fec91cb718b4ae80",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/Tau.lean",
+        "sourceSHA256": "747b714645c6c8a581e2fcc0aac4b64879b011058955cb3aa3142efec8fddb46",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.FiniteQuotientSchreierData.tauList._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "FiniteQuotientSchreierData"
+            },
+            {
+              "str": "tauList"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.FiniteQuotient.Tau",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/FiniteQuotient/Tau.lean",
+        "sourceSHA256": "9f2d7a45e9dd7cde4ded6533b52980fa51adead9262fd69045e2310b93e06f20"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.toCertificate._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "Presentations"
+        },
+        {
+          "str": "VerifiedTietzeScript"
+        },
+        {
+          "str": "toCertificate"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+      "currentSourceSHA256": "85552f251cfe0f3c626622d00271c032a9eae2b981ede0c50b5a91e89cffedb6",
+      "historicalBodySHA256": "9e410b837a305a5d095560e3599b537a05eefca3ad90272355a5f51f73628118",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.toCertificate._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "Presentations"
+          },
+          {
+            "str": "VerifiedTietzeScript"
+          },
+          {
+            "str": "toCertificate"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "58dfced694008dbbad465664481a7686f58446557f1733ebc3defa113f4cd479",
+      "preNyllBodySHA256": "54d75d5f987d5d7a66accf9ee5f95626377cb2e79d34d3722d454a19357006c8",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+        "sourceSHA256": "58dfced694008dbbad465664481a7686f58446557f1733ebc3defa113f4cd479",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.toCertificate._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "Presentations"
+            },
+            {
+              "str": "VerifiedTietzeScript"
+            },
+            {
+              "str": "toCertificate"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+        "sourceSHA256": "85552f251cfe0f3c626622d00271c032a9eae2b981ede0c50b5a91e89cffedb6"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.trace._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "Presentations"
+        },
+        {
+          "str": "VerifiedTietzeScript"
+        },
+        {
+          "str": "trace"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+      "currentSourceSHA256": "85552f251cfe0f3c626622d00271c032a9eae2b981ede0c50b5a91e89cffedb6",
+      "historicalBodySHA256": "9e410b837a305a5d095560e3599b537a05eefca3ad90272355a5f51f73628118",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.trace._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "Presentations"
+          },
+          {
+            "str": "VerifiedTietzeScript"
+          },
+          {
+            "str": "trace"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "58dfced694008dbbad465664481a7686f58446557f1733ebc3defa113f4cd479",
+      "preNyllBodySHA256": "54d75d5f987d5d7a66accf9ee5f95626377cb2e79d34d3722d454a19357006c8",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+        "sourceSHA256": "58dfced694008dbbad465664481a7686f58446557f1733ebc3defa113f4cd479",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.trace._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "Presentations"
+            },
+            {
+              "str": "VerifiedTietzeScript"
+            },
+            {
+              "str": "trace"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+        "sourceSHA256": "85552f251cfe0f3c626622d00271c032a9eae2b981ede0c50b5a91e89cffedb6"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.trans._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "Presentations"
+        },
+        {
+          "str": "VerifiedTietzeScript"
+        },
+        {
+          "str": "trans"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+      "currentSourceSHA256": "85552f251cfe0f3c626622d00271c032a9eae2b981ede0c50b5a91e89cffedb6",
+      "historicalBodySHA256": "9e410b837a305a5d095560e3599b537a05eefca3ad90272355a5f51f73628118",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.trans._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "Presentations"
+          },
+          {
+            "str": "VerifiedTietzeScript"
+          },
+          {
+            "str": "trans"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "58dfced694008dbbad465664481a7686f58446557f1733ebc3defa113f4cd479",
+      "preNyllBodySHA256": "54d75d5f987d5d7a66accf9ee5f95626377cb2e79d34d3722d454a19357006c8",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+        "sourceSHA256": "58dfced694008dbbad465664481a7686f58446557f1733ebc3defa113f4cd479",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.Presentations.VerifiedTietzeScript.trans._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "Presentations"
+            },
+            {
+              "str": "VerifiedTietzeScript"
+            },
+            {
+              "str": "trans"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Tietze.Script",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Tietze/Script.lean",
+        "sourceSHA256": "85552f251cfe0f3c626622d00271c032a9eae2b981ede0c50b5a91e89cffedb6"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.Presentations.freeGroupSubstitutionWord._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "Presentations"
+        },
+        {
+          "str": "freeGroupSubstitutionWord"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Relators.FreeGroupLift",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Relators/FreeGroupLift.lean",
+      "currentSourceSHA256": "d888c485ed4789115feb021c1bff7006ceae64f553bcbbe06ca99baa80805c39",
+      "historicalBodySHA256": "b6b8be462ba11e3880e8d5ed602e77b9ff6cdced7f0257450e1b694d5a847fe7",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.Presentations.freeGroupSubstitutionWord._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "Presentations"
+          },
+          {
+            "str": "freeGroupSubstitutionWord"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Relators.FreeGroupLift",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "78a7c9fc2215a4f9816ae6c71df3a73b7d0391f7115f1bdc44d74785a2127671",
+      "preNyllBodySHA256": "54e7cc05b40544c67267109d601eef9c7b4e73b8139a7fe1f9b1ff7ac1570aa3",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Relators/FreeGroupLift.lean",
+        "sourceSHA256": "78a7c9fc2215a4f9816ae6c71df3a73b7d0391f7115f1bdc44d74785a2127671",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.Presentations.freeGroupSubstitutionWord._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "Presentations"
+            },
+            {
+              "str": "freeGroupSubstitutionWord"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.Presentations.Relators.FreeGroupLift",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/Presentations/Relators/FreeGroupLift.lean",
+        "sourceSHA256": "d888c485ed4789115feb021c1bff7006ceae64f553bcbbe06ca99baa80805c39"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.representativePrefixClosedAlongList._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "SchreierRewriting"
+        },
+        {
+          "str": "representativePrefixClosedAlongList"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+      "currentSourceSHA256": "ee4d39ab9582cc9ba494b0a2fee335d54b0070188c0a9b188a3080562a76a8cc",
+      "historicalBodySHA256": "299439f1c1a05737e59435d8e75c3fc5ea540b4300fbb91b211161b072a3143e",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.representativePrefixClosedAlongList._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "SchreierRewriting"
+          },
+          {
+            "str": "representativePrefixClosedAlongList"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "5e6fbe56981737ca905eb5949ba329fab3c580d1b83b03cdf63ea36ecd6635dd",
+      "preNyllBodySHA256": "98a77ebc0fe0e09b18e3930df14fe5c96f291a9076028d3ba120e244b6adb875",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+        "sourceSHA256": "5e6fbe56981737ca905eb5949ba329fab3c580d1b83b03cdf63ea36ecd6635dd",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.representativePrefixClosedAlongList._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "SchreierRewriting"
+            },
+            {
+              "str": "representativePrefixClosedAlongList"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+        "sourceSHA256": "ee4d39ab9582cc9ba494b0a2fee335d54b0070188c0a9b188a3080562a76a8cc"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.representativeTauList._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "SchreierRewriting"
+        },
+        {
+          "str": "representativeTauList"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+      "currentSourceSHA256": "ee4d39ab9582cc9ba494b0a2fee335d54b0070188c0a9b188a3080562a76a8cc",
+      "historicalBodySHA256": "299439f1c1a05737e59435d8e75c3fc5ea540b4300fbb91b211161b072a3143e",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.representativeTauList._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "SchreierRewriting"
+          },
+          {
+            "str": "representativeTauList"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "5e6fbe56981737ca905eb5949ba329fab3c580d1b83b03cdf63ea36ecd6635dd",
+      "preNyllBodySHA256": "98a77ebc0fe0e09b18e3930df14fe5c96f291a9076028d3ba120e244b6adb875",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+        "sourceSHA256": "5e6fbe56981737ca905eb5949ba329fab3c580d1b83b03cdf63ea36ecd6635dd",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.representativeTauList._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "SchreierRewriting"
+            },
+            {
+              "str": "representativeTauList"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+        "sourceSHA256": "ee4d39ab9582cc9ba494b0a2fee335d54b0070188c0a9b188a3080562a76a8cc"
+      }
+    },
+    {
+      "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.tauList._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "ReidemeisterSchreier"
+        },
+        {
+          "str": "Discrete"
+        },
+        {
+          "str": "SchreierRewriting"
+        },
+        {
+          "str": "tauList"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+      "primaryOwner": "ProCGroups",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+      "currentSourceSHA256": "ee4d39ab9582cc9ba494b0a2fee335d54b0070188c0a9b188a3080562a76a8cc",
+      "historicalBodySHA256": "299439f1c1a05737e59435d8e75c3fc5ea540b4300fbb91b211161b072a3143e",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.tauList._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "ReidemeisterSchreier"
+          },
+          {
+            "str": "Discrete"
+          },
+          {
+            "str": "SchreierRewriting"
+          },
+          {
+            "str": "tauList"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+        "primaryOwner": "ProCGroups",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "5e6fbe56981737ca905eb5949ba329fab3c580d1b83b03cdf63ea36ecd6635dd",
+      "preNyllBodySHA256": "98a77ebc0fe0e09b18e3930df14fe5c96f291a9076028d3ba120e244b6adb875",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+        "sourceSHA256": "5e6fbe56981737ca905eb5949ba329fab3c580d1b83b03cdf63ea36ecd6635dd",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "ReidemeisterSchreier.Discrete.SchreierRewriting.tauList._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "ReidemeisterSchreier"
+            },
+            {
+              "str": "Discrete"
+            },
+            {
+              "str": "SchreierRewriting"
+            },
+            {
+              "str": "tauList"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ProCGroups.ReidemeisterSchreier.Discrete.ReidemeisterSchreier.Rewriting",
+          "primaryOwner": "ProCGroups",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ProCGroups/ReidemeisterSchreier/Discrete/ReidemeisterSchreier/Rewriting.lean",
+        "sourceSHA256": "ee4d39ab9582cc9ba494b0a2fee335d54b0070188c0a9b188a3080562a76a8cc"
+      }
+    },
+    {
+      "name": "SchemeTheory.RegularLocalResolution.P2mAB.StablyFree.HasFFR._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "SchemeTheory"
+        },
+        {
+          "str": "RegularLocalResolution"
+        },
+        {
+          "str": "P2mAB"
+        },
+        {
+          "str": "StablyFree"
+        },
+        {
+          "str": "HasFFR"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.RingTheory.RegularLocalFiniteFreeResolution",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/RingTheory/RegularLocalFiniteFreeResolution.lean",
+      "currentSourceSHA256": "6a54ea6ae99e3e00728a96d1c293ec6d42f37fa48def6ac62b3928bc0b5b3739",
+      "historicalBodySHA256": "e46ffe65d7cc140efcaee53bb46d4c45aaa238181e37ca584e041862b12564c9",
+      "copyrightHeaderSHA256": "009bf09fa793a07f388bf66830ebff95b49896ef2afe52f5ce54d6891bbeb8b8",
+      "copyrightHeaderByteLength": 819,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": false,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "SchemeTheory.RegularLocalResolution.P2mAB.StablyFree.HasFFR._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "SchemeTheory"
+          },
+          {
+            "str": "RegularLocalResolution"
+          },
+          {
+            "str": "P2mAB"
+          },
+          {
+            "str": "StablyFree"
+          },
+          {
+            "str": "HasFFR"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.RingTheory.RegularLocalFiniteFreeResolution",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "d48064fb1328d246fef2a314c91ca9f0a2951369ee4f4b9ab8f563954de9351e",
+      "preNyllBodySHA256": "18da9ac71c05539966e4f5c6339ddf793900534666406643b7b5bbb3bb102962",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/RingTheory/RegularLocalFiniteFreeResolution.lean",
+        "sourceSHA256": "d48064fb1328d246fef2a314c91ca9f0a2951369ee4f4b9ab8f563954de9351e",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": false,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "SchemeTheory.RegularLocalResolution.P2mAB.StablyFree.HasFFR._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "SchemeTheory"
+            },
+            {
+              "str": "RegularLocalResolution"
+            },
+            {
+              "str": "P2mAB"
+            },
+            {
+              "str": "StablyFree"
+            },
+            {
+              "str": "HasFFR"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.RingTheory.RegularLocalFiniteFreeResolution",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/RingTheory/RegularLocalFiniteFreeResolution.lean",
+        "sourceSHA256": "6a54ea6ae99e3e00728a96d1c293ec6d42f37fa48def6ac62b3928bc0b5b3739"
+      }
+    },
+    {
+      "name": "_private.Nyll.SchemeTheory.Affine.WeilRestriction.FiniteEtale.0.CommAlgCat.tensorPower._unsafe_rec",
       "nameParts": [
         {
           "str": "_private"
+        },
+        {
+          "str": "Nyll"
+        },
+        {
+          "str": "SchemeTheory"
+        },
+        {
+          "str": "Affine"
+        },
+        {
+          "str": "WeilRestriction"
+        },
+        {
+          "str": "FiniteEtale"
+        },
+        {
+          "num": 0
+        },
+        {
+          "str": "CommAlgCat"
+        },
+        {
+          "str": "tensorPower"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Affine.WeilRestriction.FiniteEtale",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Affine/WeilRestriction/FiniteEtale.lean",
+      "currentSourceSHA256": "dc293ce201da0c9c34ea29c50aeac23d12e0a5bff4215c173aecaf8074d7ac8e",
+      "historicalBodySHA256": "fa43aa18fb7789bf6733ac294fa122dd0a8eaf9b55d9163e06db4c2fa2fbf59a",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": true,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "_private.SchemeTheory.Affine.WeilRestriction.FiniteEtale.0.CommAlgCat.tensorPower._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "_private"
+          },
+          {
+            "str": "SchemeTheory"
+          },
+          {
+            "str": "Affine"
+          },
+          {
+            "str": "WeilRestriction"
+          },
+          {
+            "str": "FiniteEtale"
+          },
+          {
+            "num": 0
+          },
+          {
+            "str": "CommAlgCat"
+          },
+          {
+            "str": "tensorPower"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Affine.WeilRestriction.FiniteEtale",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "584822c9c85ab159816e5fdbf11a4ba717d60c4b3931e31d9dbfaf33e84fc638",
+      "preNyllBodySHA256": "cc379abc65d152b8dbc330eb2c8bf2a0212378f15c84db20f2780d4db90f20c4",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Affine/WeilRestriction/FiniteEtale.lean",
+        "sourceSHA256": "584822c9c85ab159816e5fdbf11a4ba717d60c4b3931e31d9dbfaf33e84fc638",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": true,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "_private.SchemeTheory.Affine.WeilRestriction.FiniteEtale.0.CommAlgCat.tensorPower._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "_private"
+            },
+            {
+              "str": "SchemeTheory"
+            },
+            {
+              "str": "Affine"
+            },
+            {
+              "str": "WeilRestriction"
+            },
+            {
+              "str": "FiniteEtale"
+            },
+            {
+              "num": 0
+            },
+            {
+              "str": "CommAlgCat"
+            },
+            {
+              "str": "tensorPower"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Affine.WeilRestriction.FiniteEtale",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Affine/WeilRestriction/FiniteEtale.lean",
+        "sourceSHA256": "dc293ce201da0c9c34ea29c50aeac23d12e0a5bff4215c173aecaf8074d7ac8e"
+      }
+    },
+    {
+      "name": "_private.Nyll.SchemeTheory.Affine.WeilRestriction.FiniteEtale.0.CommAlgCat.tensorPowerHomEquiv._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "_private"
+        },
+        {
+          "str": "Nyll"
+        },
+        {
+          "str": "SchemeTheory"
+        },
+        {
+          "str": "Affine"
+        },
+        {
+          "str": "WeilRestriction"
+        },
+        {
+          "str": "FiniteEtale"
+        },
+        {
+          "num": 0
+        },
+        {
+          "str": "CommAlgCat"
+        },
+        {
+          "str": "tensorPowerHomEquiv"
+        },
+        {
+          "str": "_unsafe_rec"
+        }
+      ],
+      "originModule": "Nyll.SchemeTheory.Affine.WeilRestriction.FiniteEtale",
+      "primaryOwner": "SchemeTheory",
+      "isPartial": true,
+      "isUnsafe": false,
+      "sourcePath": "Nyll/SchemeTheory/Affine/WeilRestriction/FiniteEtale.lean",
+      "currentSourceSHA256": "dc293ce201da0c9c34ea29c50aeac23d12e0a5bff4215c173aecaf8074d7ac8e",
+      "historicalBodySHA256": "fa43aa18fb7789bf6733ac294fa122dd0a8eaf9b55d9163e06db4c2fa2fbf59a",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "sourceUpdatePreservesLeanCode": true,
+      "historicalFinding": {
+        "axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "hasNonSyntheticSorry": false,
+        "hasSyntheticSorry": false,
+        "hasTransitiveSorry": false,
+        "isPartial": true,
+        "isPrimary": true,
+        "isPrivateName": true,
+        "isRepairedModule": false,
+        "isSafeKernelRoot": false,
+        "isUnsafe": false,
+        "kind": "definition",
+        "name": "_private.SchemeTheory.Affine.WeilRestriction.FiniteEtale.0.CommAlgCat.tensorPowerHomEquiv._unsafe_rec",
+        "nameParts": [
+          {
+            "str": "_private"
+          },
+          {
+            "str": "SchemeTheory"
+          },
+          {
+            "str": "Affine"
+          },
+          {
+            "str": "WeilRestriction"
+          },
+          {
+            "str": "FiniteEtale"
+          },
+          {
+            "num": 0
+          },
+          {
+            "str": "CommAlgCat"
+          },
+          {
+            "str": "tensorPowerHomEquiv"
+          },
+          {
+            "str": "_unsafe_rec"
+          }
+        ],
+        "nameToStringRoundTrip": true,
+        "nonstandardAxioms": [],
+        "originModule": "SchemeTheory.Affine.WeilRestriction.FiniteEtale",
+        "primaryOwner": "SchemeTheory",
+        "typeHasSorry": false,
+        "valueHasSorry": false
+      },
+      "sourceMatchesHistoricalCommit": false,
+      "preNyllSourceSHA256": "584822c9c85ab159816e5fdbf11a4ba717d60c4b3931e31d9dbfaf33e84fc638",
+      "preNyllBodySHA256": "cc379abc65d152b8dbc330eb2c8bf2a0212378f15c84db20f2780d4db90f20c4",
+      "introducedByClosureExpansion": true,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/SchemeTheory/Affine/WeilRestriction/FiniteEtale.lean",
+        "sourceSHA256": "584822c9c85ab159816e5fdbf11a4ba717d60c4b3931e31d9dbfaf33e84fc638",
+        "finding": {
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": true,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "_private.SchemeTheory.Affine.WeilRestriction.FiniteEtale.0.CommAlgCat.tensorPowerHomEquiv._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "_private"
+            },
+            {
+              "str": "SchemeTheory"
+            },
+            {
+              "str": "Affine"
+            },
+            {
+              "str": "WeilRestriction"
+            },
+            {
+              "str": "FiniteEtale"
+            },
+            {
+              "num": 0
+            },
+            {
+              "str": "CommAlgCat"
+            },
+            {
+              "str": "tensorPowerHomEquiv"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "SchemeTheory.Affine.WeilRestriction.FiniteEtale",
+          "primaryOwner": "SchemeTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/SchemeTheory/Affine/WeilRestriction/FiniteEtale.lean",
+        "sourceSHA256": "dc293ce201da0c9c34ea29c50aeac23d12e0a5bff4215c173aecaf8074d7ac8e"
+      }
+    },
+    {
+      "name": "_private.Nyll.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint.0.IsAdicComplete.contractingApproximation._unsafe_rec",
+      "nameParts": [
+        {
+          "str": "_private"
+        },
+        {
+          "str": "Nyll"
         },
         {
           "str": "ValuedFieldTheory"
@@ -407,11 +3964,11 @@
           "str": "_unsafe_rec"
         }
       ],
-      "originModule": "ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint",
+      "originModule": "Nyll.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint",
       "primaryOwner": "ValuedFieldTheory",
       "isPartial": true,
       "isUnsafe": false,
-      "sourcePath": "Lean4/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
+      "sourcePath": "Nyll/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
       "historicalBodySHA256": "c52905ff4ada18b2b8fee07088b7938ad311ecc9aae0e2cd1869c67f9ebee07b",
       "currentSourceSHA256": "bcf9344ae174219f873f07cf02c3d7d7a4cae2d6133247267fc0d9bb31c34b3a",
       "sourceMatchesHistoricalCommit": false,
@@ -466,13 +4023,85 @@
       },
       "originalHistoricalBodySHA256": "d9738b1470ae7d228699a7ac90748002328c64dd546814f85ba85196952c5153",
       "originalSourceSHA256": "4a4cd9501abacf9dfb664f99ef6c571def4483b6981e2271077e4ea0a9107d38",
-      "sourceUpdatePreservesLeanCode": true
+      "sourceUpdatePreservesLeanCode": true,
+      "preNyllSourceSHA256": "bcf9344ae174219f873f07cf02c3d7d7a4cae2d6133247267fc0d9bb31c34b3a",
+      "preNyllBodySHA256": "c52905ff4ada18b2b8fee07088b7938ad311ecc9aae0e2cd1869c67f9ebee07b",
+      "copyrightHeaderSHA256": "277d15be4c913fbc964c5252fb1f7a887bd2a2e4ea5c54ed41fcda5f609f4c1f",
+      "copyrightHeaderByteLength": 228,
+      "compiledSourceProvenance": {
+        "repository": "https://github.com/n-yamaguchi-0729/lean4-math-library",
+        "commit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+        "path": "Lean4/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
+        "sourceSHA256": "bcf9344ae174219f873f07cf02c3d7d7a4cae2d6133247267fc0d9bb31c34b3a",
+        "finding": {
+          "axioms": [],
+          "hasNonSyntheticSorry": false,
+          "hasSyntheticSorry": false,
+          "hasTransitiveSorry": false,
+          "isPartial": true,
+          "isPrimary": true,
+          "isPrivateName": true,
+          "isRepairedModule": false,
+          "isSafeKernelRoot": false,
+          "isUnsafe": false,
+          "kind": "definition",
+          "name": "_private.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint.0.IsAdicComplete.contractingApproximation._unsafe_rec",
+          "nameParts": [
+            {
+              "str": "_private"
+            },
+            {
+              "str": "ValuedFieldTheory"
+            },
+            {
+              "str": "Valuation"
+            },
+            {
+              "str": "Topology"
+            },
+            {
+              "str": "AdicContractingFixedPoint"
+            },
+            {
+              "num": 0
+            },
+            {
+              "str": "IsAdicComplete"
+            },
+            {
+              "str": "contractingApproximation"
+            },
+            {
+              "str": "_unsafe_rec"
+            }
+          ],
+          "nameToStringRoundTrip": true,
+          "nonstandardAxioms": [],
+          "originModule": "ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint",
+          "primaryOwner": "ValuedFieldTheory",
+          "typeHasSorry": false,
+          "valueHasSorry": false
+        },
+        "migration": "Only local import prefixes and audited whitespace differ; copyright and all remaining bytes match."
+      },
+      "canonicalSource": {
+        "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "path": "Nyll/ValuedFieldTheory/Valuation/Topology/AdicContractingFixedPoint.lean",
+        "sourceSHA256": "bcf9344ae174219f873f07cf02c3d7d7a4cae2d6133247267fc0d9bb31c34b3a"
+      }
     }
   ],
   "sourceUpdateReview": {
-    "sourceCommit": "dd8bcd65a9166c5a82e8bb48cd1b19d42d688b2a",
-    "previousPublicCommit": "b9cfda0ccad0175e215a212ab218bc51d101380f",
-    "changes": "Only autoImplicit centralization, comment layout and whitespace. Declaration identities, proof/definition code and seven-partial allowlist are unchanged. Original source/body hashes and historical findings are retained.",
-    "approvedBodyHashField": "historicalBodySHA256 now pins the reviewed synchronized layout; originalHistoricalBodySHA256 preserves the earlier layout."
-  }
+    "changes": "The full ProCGroups and SchemeTheory families add 24 existing compiler-generated recursion declarations (11 and 13 respectively). All 31 declarations were inventoried from the immutable source commit at private import level and trust level zero. No unsafe declarations, sorry dependencies, or nonstandard axioms were found. Public mathematical names are unchanged; private names include the new Nyll module prefix.",
+    "sourceCommit": "59ebcb40c2b0afe6ef51e9273b523bae9326db85",
+    "compiledDeclarationCount": 70149,
+    "compiledSafeDeclarationCount": 70118,
+    "inventorySummarySHA256": "dd4995bfb0cfa91d968f320913d29fd44301f281f09ddce9953170433beea8d2",
+    "inventoryDeclarationsSHA256": "c914d9fac1564b638bc5894c22d5ecf0430150fdc7c8839000fb5c017a757a05",
+    "approvedBodyHashField": "historicalBodySHA256 pins the current migrated body; prior hashes and original compiler findings remain recorded."
+  },
+  "originalSelectedCount": 7,
+  "closureExpansionCount": 24,
+  "originalFullBaselineCount": 18
 }

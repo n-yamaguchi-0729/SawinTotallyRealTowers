@@ -8,8 +8,6 @@ import Lean
 import Lean.Replay
 import Lean.Util.FoldConsts
 
-set_option autoImplicit false
-
 open Lean
 
 /-- Inventory is separate from the kernel-replay result: replay accepts axioms. -/

@@ -1,0 +1,48 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CharacteristicZero
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.Classification
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CyclotomicKummerDescent
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.EqualCharacteristic
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.EqualCharacteristicDominatingExtension
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.KummerNormOpen
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LubinTateUniformizerDiagonal
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MathlibFieldClassification
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MaximalKummerNorm
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupSurjectivity
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.OrderReversal
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkChosenFiniteAbelianFields
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkChosenFiniteAbelianNorms
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkFiniteAbelianFields
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkFiniteAbelianNorms
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkIntermediateFields
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkLocalClassification
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkOpenSubgroups
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkSeparableClosure
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.StandardDominatingExtension
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.StandardLubinTate
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.StandardSubgroupIntersection
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedLubinTateDiagonal
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnshrinkFiniteAbelianFields
+
+/-!
+# Finite local existence theorem
+
+The ordinary norm-subgroup assignment is an order embedding into the
+opposite poset of native open finite-index subgroups.  Kummer theory in
+characteristic zero and transported Lubin--Tate levels in positive
+characteristic prove the existing characteristic-specific order
+isomorphisms.  The canonical standard Lubin--Tate construction now also
+provides a characteristic-independent finite abelian factor with its exact
+norm subgroup.
+-/

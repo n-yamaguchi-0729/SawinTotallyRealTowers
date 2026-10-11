@@ -7,9 +7,7 @@ https://github.com/google-deepmind/formal-conjectures/blob/8323e878b83fcd7f4a448
 Original statement: Copyright 2025 The Formal Conjectures Authors; Apache 2.0.
 -/
 
-import SawinTotallyRealTowers.SawinTotallyRealTower
-
-set_option autoImplicit false
+import Nyll.SawinTotallyRealTowers.SawinTotallyRealTower
 
 open scoped NumberField
 open NumberField IsDedekindDomain

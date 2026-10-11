@@ -5,6 +5,9 @@
 
 A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem.
 
+This library is extracted from [NYLL](https://github.com/n-yamaguchi-0729/NYLL).
+Bundled dependencies use the same `Nyll` imports as the complete library.
+
 ## Scope
 
 One infinite set of primes congruent to 1 modulo 4 splits completely in totally real
@@ -16,9 +19,9 @@ and a development of Shafarevich's relation-rank bound.
 
 | Result | Mathematical content |
 | --- | --- |
-| [Sawin's totally real tower](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean) | One infinite prime set splits completely in totally real fields of unbounded degree with bounded root discriminant. |
-| [Martinet's discriminant bound](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean) | Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound. |
-| [Shafarevich's relation-rank bound](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) | For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction. |
+| [Sawin's totally real tower](Nyll/SawinTotallyRealTowers/SawinTotallyRealTower.lean) | One infinite prime set splits completely in totally real fields of unbounded degree with bounded root discriminant. |
+| [Martinet's discriminant bound](Nyll/SawinTotallyRealTowers/MartinetCorollary.lean) | Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound. |
+| [Shafarevich's relation-rank bound](Nyll/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) | For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction. |
 
 ### Problem statements and related projects
 
@@ -30,16 +33,16 @@ proofs and supporting library are developed here.
 
 | Project | Statement and route to the library |
 | --- | --- |
-| Formal Conjectures | [Sawin's totally real tower theorem](https://google-deepmind.github.io/formal-conjectures/theorem/?name=Erdos90.sawin_totally_real_tower) ([source statement](https://github.com/google-deepmind/formal-conjectures/blob/8323e878b83fcd7f4a448256069352a265460d75/FormalConjectures/ErdosProblems/90.lean#L193)) is proved by [the Sawin theorem](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean). The [API check](tests/Statement.lean) tests the exact target. |
-| Lean Eval: Martinet | [Martinet's totally real towers problem](https://leanprover.github.io/lean-eval-leaderboard/problems/martinet_totally_real_towers/) ([source challenge](https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/martinet_totally_real_towers/Challenge.lean)) follows from [the Sawin theorem](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean). The [API check](tests/MartinetStatement.lean) tests the exact target; a submission was [accepted by Lean Eval](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json). |
-| Lean Eval: Shafarevich | [Shafarevich's relation-rank bound problem](https://leanprover.github.io/lean-eval-leaderboard/problems/shafarevich_relation_rank_bound/) ([source challenge](https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/shafarevich_relation_rank_bound/Challenge.lean)) is represented by the [relation-rank theorem](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean). [Adapter lemmas](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/LeanEvalAdapter.lean) relate the library's representations to the benchmark. A submission was [accepted by Lean Eval](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json). |
+| Formal Conjectures | [Sawin's totally real tower theorem](https://google-deepmind.github.io/formal-conjectures/theorem/?name=Erdos90.sawin_totally_real_tower) ([source statement](https://github.com/google-deepmind/formal-conjectures/blob/8323e878b83fcd7f4a448256069352a265460d75/FormalConjectures/ErdosProblems/90.lean#L193)) is proved by [the Sawin theorem](Nyll/SawinTotallyRealTowers/SawinTotallyRealTower.lean). The [API check](tests/Statement.lean) tests the exact target. |
+| Lean Eval: Martinet | [Martinet's totally real towers problem](https://leanprover.github.io/lean-eval-leaderboard/problems/martinet_totally_real_towers/) ([source challenge](https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/martinet_totally_real_towers/Challenge.lean)) follows from [the Sawin theorem](Nyll/SawinTotallyRealTowers/MartinetCorollary.lean). The [API check](tests/MartinetStatement.lean) tests the exact target; a submission was [accepted by Lean Eval](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json). |
+| Lean Eval: Shafarevich | [Shafarevich's relation-rank bound problem](https://leanprover.github.io/lean-eval-leaderboard/problems/shafarevich_relation_rank_bound/) ([source challenge](https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/shafarevich_relation_rank_bound/Challenge.lean)) is represented by the [relation-rank theorem](Nyll/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean). [Adapter lemmas](Nyll/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/LeanEvalAdapter.lean) relate the library's representations to the benchmark. A submission was [accepted by Lean Eval](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json). |
 
 <details>
 <summary>Exact benchmark statements and proofs</summary>
 
 ### Formal Conjectures: Sawin's totally real tower
 
-This is the complete declaration and proof of the [Sawin theorem](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean). The linked source contains its imports and namespace context. The [exact statement check](tests/Statement.lean) matches the pinned Formal Conjectures target above.
+This is the complete declaration and proof of the [Sawin theorem](Nyll/SawinTotallyRealTowers/SawinTotallyRealTower.lean). The linked source contains its imports and namespace context. The [exact statement check](tests/Statement.lean) matches the pinned Formal Conjectures target above.
 
 ```lean
 theorem sawin_totally_real_tower :
@@ -84,7 +87,7 @@ theorem sawin_totally_real_tower :
 
 ### Lean Eval: Martinet's totally real towers
 
-This is the complete theorem endpoint from the accepted Lean Eval submission. Its `Submission.Vendor` import belongs to the submission package; the corresponding theorem in this repository is [`exists_totallyReal_discr_le`](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean). The [exact statement check](tests/MartinetStatement.lean) also typechecks against the public theorem.
+This is the complete theorem endpoint from the accepted Lean Eval submission. Its `Submission.Vendor` import belongs to the submission package; the corresponding theorem in this repository is [`exists_totallyReal_discr_le`](Nyll/SawinTotallyRealTowers/MartinetCorollary.lean). The [exact statement check](tests/MartinetStatement.lean) also typechecks against the public theorem.
 
 ```lean
 import Mathlib
@@ -110,7 +113,7 @@ end Submission
 
 ### Lean Eval: Shafarevich's relation-rank bound
 
-This is the complete theorem endpoint from the accepted Lean Eval submission. The submission-specific `ChallengeDeps` and `Submission.Helpers` modules supply the benchmark definitions and adapters; this block is the submitted endpoint, not a stand-alone file in this repository. The public [relation-rank theorem](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) and [adapter](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/LeanEvalAdapter.lean) contain the supporting development.
+This is the complete theorem endpoint from the accepted Lean Eval submission. The submission-specific `ChallengeDeps` and `Submission.Helpers` modules supply the benchmark definitions and adapters; this block is the submitted endpoint, not a stand-alone file in this repository. The public [relation-rank theorem](Nyll/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) and [adapter](Nyll/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/LeanEvalAdapter.lean) contain the supporting development.
 
 ```lean
 import ChallengeDeps
@@ -171,7 +174,7 @@ and the [Remarks paper](https://arxiv.org/abs/2605.20695).
 Import the Sawin theorem:
 
 ```lean
-import SawinTotallyRealTowers.SawinTotallyRealTower
+import Nyll.SawinTotallyRealTowers.SawinTotallyRealTower
 
 #check ClassFieldTower.Sawin.sawin_totally_real_tower
 ```
@@ -179,7 +182,7 @@ import SawinTotallyRealTowers.SawinTotallyRealTower
 Import the Martinet corollary:
 
 ```lean
-import SawinTotallyRealTowers.MartinetCorollary
+import Nyll.SawinTotallyRealTowers.MartinetCorollary
 
 #check ClassFieldTower.Sawin.exists_totallyReal_discr_le
 ```
@@ -187,7 +190,7 @@ import SawinTotallyRealTowers.MartinetCorollary
 Import the relation-rank theorem:
 
 ```lean
-import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound
+import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound
 
 #check ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound
 ```
@@ -195,7 +198,7 @@ import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.Shafarevic
 Import the whole maintained Sawin library:
 
 ```lean
-import SawinTotallyRealTowers.All
+import Nyll.SawinTotallyRealTowers.All
 ```
 
 ## Build
@@ -226,7 +229,7 @@ Comparator and NanoDa checks, and official Lean 4.33 kernel replay. Its
 passed. Those results predate the expanded Lean 4.34 source bundle.
 
 [CI](.github/workflows/lean.yml) is configured to inventory all physical sources,
-check the SHA-pinned import closure, build the two roots with warnings as errors,
+check the SHA-pinned import closure, build the complete `Nyll` root with warnings as errors,
 compile the exact Formal Conjectures and Martinet statements, and audit every
 bundled declaration for unexpected axioms, sorry, unsafe code, and new partial
 declarations. It then exports the complete safe declaration union, checks it
@@ -270,4 +273,5 @@ their source licenses are credited in the corresponding Lean files.
 
 ## License
 
-Apache License 2.0. See [LICENSE](LICENSE).
+Apache License 2.0. See [LICENSE](LICENSE). Bundled scheme-theory foundations
+retain the [Anthropic FLT notices](Nyll/SchemeTheory/ANTHROPIC_FLT_NOTICE).

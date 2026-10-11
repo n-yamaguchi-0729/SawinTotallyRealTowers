@@ -1,24 +1,29 @@
 {
   "owners": {
-    "SawinTotallyRealTowers": [
-      "SawinTotallyRealTowers"
-    ],
-    "ClassFieldTheory": [
-      "ClassFieldTheory"
+    "ProCGroups": [
+      "Nyll.ProCGroups"
     ],
     "ValuedFieldTheory": [
-      "ValuedFieldTheory"
+      "Nyll.ValuedFieldTheory"
     ],
     "GaloisCohomology": [
-      "GaloisCohomology"
+      "Nyll.GaloisCohomology"
     ],
-    "ProCGroups": [
-      "ProCGroups"
+    "SchemeTheory": [
+      "Nyll.SchemeTheory"
+    ],
+    "ClassFieldTheory": [
+      "Nyll.ClassFieldTheory"
+    ],
+    "SawinTotallyRealTowers": [
+      "Nyll.SawinTotallyRealTowers"
+    ],
+    "EntryPoint": [
+      "Nyll"
     ]
   },
   "roots": [
-    "SawinTotallyRealTowers.All",
-    "SawinTotallyRealTowers.MartinetCorollary"
+    "Nyll"
   ],
   "leanToolchain": "leanprover/lean4:v4.35.0-rc2",
   "mathlibRevision": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
@@ -41,5 +46,21 @@
     ".github/verification",
     "tests"
   ],
-  "enforceSourcePolicy": false
+  "enforceSourcePolicy": false,
+  "orderedLibraries": [
+    "ProCGroups",
+    "ValuedFieldTheory",
+    "GaloisCohomology",
+    "SchemeTheory",
+    "ClassFieldTheory",
+    "SawinTotallyRealTowers"
+  ],
+  "depths": {
+    "ProCGroups": 1,
+    "ValuedFieldTheory": 1,
+    "GaloisCohomology": 1,
+    "SchemeTheory": 1,
+    "ClassFieldTheory": 2,
+    "SawinTotallyRealTowers": 3
+  }
 }

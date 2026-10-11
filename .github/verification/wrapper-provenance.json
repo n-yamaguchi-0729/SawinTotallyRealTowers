@@ -9,8 +9,14 @@
   },
   "exportSelectedSourcePath": ".github/verification/ExportSelected.lean",
   "bundledSHA256": {
+    "Inventory.lean": "7d052d15525b9068aa76c2f69d04ef63b2c5ad9fd1da6ffae534e1f7dc0f3a2e",
+    "ExportSelected.lean": "9370f7f59574d5bd10161ca2588ed270f75ad139ae6393ea217f71a27f12177e",
+    "ReplaySix.lean": "0077e49bc5f3f66a583f1a1f4581b8bfe3f7888f99b59fbf020ba2ce79403b29"
+  },
+  "preNyllBundledSHA256": {
     "Inventory.lean": "c3c20d5762c945e3de39fa5c2685abf814c3aa02bdc943f4249937611eefa7d2",
     "ExportSelected.lean": "214ca63daef63850b66520e0022b50d78c8020c1883edf91f95325662fd6aed0",
     "ReplaySix.lean": "3c7456f8cec8ba3262725748f42e91af42105c8da6b92267d2d09ccfb15c7e92"
-  }
+  },
+  "migration": "Only per-file autoImplicit commands were removed; direct wrapper invocations pass -DautoImplicit=false. Proof-checking code is unchanged."
 }

@@ -1,0 +1,125 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
+import Nyll.SchemeTheory.Modules.ProjectivePresentationFaithfullyFlatDescent
+import Nyll.SchemeTheory.Modules.FlatSectionsBaseChange
+import Nyll.SchemeTheory.Modules.AffineFlatSectionsBaseChange
+import Nyll.SchemeTheory.Modules.SectionsGluing
+import Nyll.SchemeTheory.Modules.SpanningFrameDescent
+import Nyll.SchemeTheory.Modules.SectionsLocalizationFiniteCover
+import Nyll.SchemeTheory.Modules.SectionsAlgebra
+import Nyll.SchemeTheory.Modules.PullbackUnitComposition
+import Nyll.SchemeTheory.Modules.PullbackLocalSection
+import Nyll.SchemeTheory.Modules.PullbackFrame
+import Nyll.SchemeTheory.Modules.ProjectivePresentationIso
+import Nyll.SchemeTheory.Modules.ProjectivePresentationFromFrames
+import Nyll.SchemeTheory.Modules.ProjectivePresentationBaseChange
+import Nyll.SchemeTheory.Modules.ProjectivePresentation
+import Nyll.SchemeTheory.Modules.OpenImmersionUnit
+import Nyll.SchemeTheory.Modules.LocallyTrivialSectionsLocalization
+import Nyll.SchemeTheory.Modules.Invertible
+import Nyll.SchemeTheory.Modules.Frames
+import Nyll.SchemeTheory.Modules.FrameLocality
+import Nyll.SchemeTheory.Modules.FrameLinearCombination
+import Nyll.SchemeTheory.Modules.FrameFromTrivialization
+import Nyll.SchemeTheory.Modules.FrameDescent
+import Nyll.SchemeTheory.Modules.AffineSectionsBaseChange
+import Nyll.SchemeTheory.Modules.PresheafPullbackMonoidal
+import Nyll.SchemeTheory.Modules.Monoidal
+import Nyll.SchemeTheory.Modules.InternalHomSheaf
+import Nyll.SchemeTheory.Modules.SheafificationMonoidal
+import Nyll.SchemeTheory.Modules.PresheafInternalHom
+import Nyll.SchemeTheory.Modules.TensorSections
+import Nyll.SchemeTheory.Modules.PullbackMonoidal
+import Nyll.SchemeTheory.Modules.TensorPowers
+
+
+import Nyll.SchemeTheory.Modules.TensorPowerComparison
+import Nyll.SchemeTheory.Modules.AbelianSectionLocalization
+import Nyll.SchemeTheory.Modules.QuasicoherentAffineLocalization
+import Nyll.SchemeTheory.Modules.NativeSectionRestriction
+import Nyll.SchemeTheory.Modules.LocalizationCriteria
+import Nyll.SchemeTheory.Modules.SectionLocalization
+import Nyll.SchemeTheory.Modules.PushforwardCoefficients
+import Nyll.SchemeTheory.Modules.LocalizationRestrictionOfScalars
+import Nyll.SchemeTheory.Modules.GlobalSectionLocalization
+import Nyll.SchemeTheory.Modules.NativeSectionObjects
+import Nyll.SchemeTheory.Modules.PushforwardSectionComparison
+import Nyll.SchemeTheory.Modules.PushforwardLocalization
+import Nyll.SchemeTheory.Modules.FiniteRelativeSpec
+import Nyll.SchemeTheory.Modules.GeneratedAlgebraPresheaf
+import Nyll.SchemeTheory.Modules.GeneratedAlgebraLocalization
+import Nyll.SchemeTheory.Modules.GeneratedFiniteAlgebra
+import Nyll.SchemeTheory.Modules.AffineSourceColimit
+import Nyll.SchemeTheory.Modules.DirectImageAlgebra
+import Nyll.SchemeTheory.Modules.GeneratedAlgebraSource
+import Nyll.SchemeTheory.Modules.QuasicoherentLocal
+import Nyll.SchemeTheory.Modules.QuasicoherentKernel
+import Nyll.SchemeTheory.Modules.QuasicoherentKernelGlobal
+import Nyll.SchemeTheory.Modules.PushforwardRestrict
+import Nyll.SchemeTheory.Modules.QuasicoherentPushforward
+import Nyll.SchemeTheory.Modules.DirectImageAlgebraQuasicoherent
+import Nyll.SchemeTheory.Modules.QuasicoherentCokernel
+import Nyll.SchemeTheory.Modules.KernelSubmodule
+import Nyll.SchemeTheory.Modules.QuasicoherentExtension
+import Nyll.SchemeTheory.Modules.SubmoduleEmbeddedIso
+import Nyll.SchemeTheory.Modules.KernelSubmoduleScheme
+import Nyll.SchemeTheory.Modules.SubmoduleGluing
+import Nyll.SchemeTheory.Modules.GeneratedAlgebraLocalFactors
+import Nyll.SchemeTheory.Modules.SubmoduleGluingQuasicoherent
+import Nyll.SchemeTheory.Modules.FiniteTypeTilde
+import Nyll.SchemeTheory.Modules.FiniteTypeLocality
+import Nyll.SchemeTheory.Modules.FiniteTypeQuotient
+import Nyll.SchemeTheory.Modules.ImageSubmodule
+import Nyll.SchemeTheory.Modules.QuasicoherentImage
+import Nyll.SchemeTheory.Modules.QuasicoherentCoprod
+import Nyll.SchemeTheory.Modules.FiniteTypeCoprod
+import Nyll.SchemeTheory.Modules.AffineFiniteSubmodule
+import Nyll.SchemeTheory.Modules.ImageSubmoduleRestriction
+import Nyll.SchemeTheory.Modules.FiniteQuasicoherentSum
+import Nyll.SchemeTheory.Modules.FiniteTypeRestriction
+import Nyll.SchemeTheory.Modules.SubmoduleGluingFiniteType
+import Nyll.SchemeTheory.Modules.QuasicoherentSubmoduleOverExtension
+import Nyll.SchemeTheory.Modules.FiniteGeneratingSections
+import Nyll.SchemeTheory.Modules.AffineSubmoduleLocalization
+import Nyll.SchemeTheory.Modules.FiniteTypePushforward
+import Nyll.SchemeTheory.Modules.FiniteTypeSchemeRestriction
+import Nyll.SchemeTheory.Modules.FiniteTypeTop
+import Nyll.SchemeTheory.Modules.AffineFiniteSubmoduleExtension
+import Nyll.SchemeTheory.Modules.AffineModuleEpi
+import Nyll.SchemeTheory.Modules.AffineOpenModuleEpi
+import Nyll.SchemeTheory.Modules.FiniteTypeAffineSections
+import Nyll.SchemeTheory.Modules.SubmoduleCoverEquality
+import Nyll.SchemeTheory.Modules.SubmoduleOverEquality
+import Nyll.SchemeTheory.Modules.SubmoduleRestrictionComparison
+import Nyll.SchemeTheory.Modules.AffineSectionLocalizationFinite
+import Nyll.SchemeTheory.Modules.FiniteTypeLocalAffineSections
+import Nyll.SchemeTheory.Modules.FiniteSectionSubmodule
+import Nyll.SchemeTheory.Modules.SubmoduleTopRestriction
+import Nyll.SchemeTheory.Modules.KernelSubmoduleRestriction
+import Nyll.SchemeTheory.Modules.FiniteOpenSectionSubmodule
+import Nyll.SchemeTheory.Modules.SubmoduleRestrictedSections
+import Nyll.SchemeTheory.Modules.FiniteTypeIteratedSlice
+import Nyll.SchemeTheory.Modules.FiniteTypeSubopen
+import Nyll.SchemeTheory.Modules.SubmoduleGluingUnion
+import Nyll.SchemeTheory.Modules.FiniteSubmoduleUnionExtension
+import Nyll.SchemeTheory.Modules.AffineFiniteSubmoduleOnOpen
+import Nyll.SchemeTheory.Modules.AffineChartFiniteSubmoduleExtension
+import Nyll.SchemeTheory.Modules.FiniteSubmoduleExtension
+import Nyll.SchemeTheory.Modules.FiniteLocalSectionExtension
+import Nyll.SchemeTheory.Modules.FiniteAffineSectionSubmodule
+
+import Nyll.SchemeTheory.Modules.TensorFrames
+import Nyll.SchemeTheory.Modules.TensorPowerFrames
+import Nyll.SchemeTheory.Modules.TensorSectionMaps
+import Nyll.SchemeTheory.Modules.TensorSectionRightUnitor
+import Nyll.SchemeTheory.Modules.TensorSectionSheafification
+import Nyll.SchemeTheory.Modules.TensorSectionAssociator
+import Nyll.SchemeTheory.Modules.TensorPowerSectionProduct
+import Nyll.SchemeTheory.Modules.SectionRing
+import Nyll.SchemeTheory.Modules.SectionRingConstruction
+
+/-! Canonical aggregate for SchemeTheory.Modules. -/

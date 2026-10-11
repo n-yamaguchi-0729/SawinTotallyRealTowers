@@ -1,0 +1,51 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
+import Nyll.ValuedFieldTheory.LocalField.Analytic.Arithmetic
+import Nyll.ValuedFieldTheory.LocalField.Analytic.ContinuousFieldUnitLog
+import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+import Nyll.ValuedFieldTheory.LocalField.Analytic.FieldUnitLogExtension
+import Nyll.ValuedFieldTheory.LocalField.Analytic.FieldUnitLogUniqueness
+import Nyll.ValuedFieldTheory.LocalField.Analytic.LogDenominatorLowerBound
+import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpAdditivity
+import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpComposition
+import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpContinuity
+import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.All
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharExpThreshold
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharLogTermBound
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLog
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogBound
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogEquivariance
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogImage
+import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogEquiv
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPadicIntMap
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPadicIntMapContinuous
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogLinearity
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitPadicPow
+import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitPadicContinuity
+import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitValuationTopology
+import Nyll.ValuedFieldTheory.LocalField.Analytic.CharacterAveraging
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharAutomorphismRepresentations
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPadicIntMapEquivariance
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitPadicEquivariance
+import Nyll.ValuedFieldTheory.LocalField.Analytic.NormalBasisCharacterEigenvector
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitPadicPowMod
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPadicIntMapExtension
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogScaling
+
+import Nyll.ValuedFieldTheory.LocalField.Analytic.RepresentationCharacterTwist
+import Nyll.ValuedFieldTheory.LocalField.Analytic.AugmentationDivisibility
+import Nyll.ValuedFieldTheory.LocalField.Analytic.PrimeOrderDivisibility
+import Nyll.ValuedFieldTheory.LocalField.Analytic.NormalBasisSubgroupCharacterVector
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogReduced
+import Nyll.ValuedFieldTheory.LocalField.Analytic.MixedCharPrincipalUnitLogRepresentation
+
+/-!
+# Analytic local-field infrastructure
+
+Public aggregate for logarithm and exponential series on local fields,
+including convergence, continuity, and applications to field units.
+-/

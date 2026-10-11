@@ -8,20 +8,20 @@ from pathlib import Path
 import re
 import tomllib
 
-ENTRY = 'SawinTotallyRealTowers.SawinTotallyRealTower'
+ENTRY = 'Nyll.SawinTotallyRealTowers.SawinTotallyRealTower'
 MAIN = 'ClassFieldTower.Sawin.sawin_totally_real_tower'
-MARTINET_ENTRY = 'SawinTotallyRealTowers.MartinetCorollary'
-ALL_ENTRY = 'SawinTotallyRealTowers.All'
+MARTINET_ENTRY = 'Nyll.SawinTotallyRealTowers.MartinetCorollary'
+ALL_ENTRY = 'Nyll.SawinTotallyRealTowers.All'
 MARTINET_MAIN = 'ClassFieldTower.Sawin.exists_totallyReal_discr_le'
-SHAFAREVICH_ENTRY = 'SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound'
+SHAFAREVICH_ENTRY = 'Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound'
 SHAFAREVICH_MAIN = 'ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound'
-ROOTS = [ALL_ENTRY, MARTINET_ENTRY]
+ROOTS = ['Nyll']
 REQUIRED_DECLARATIONS = [
     {'name': MAIN, 'originModule': ENTRY, 'kind': 'theorem'},
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
     {'name': SHAFAREVICH_MAIN, 'originModule': SHAFAREVICH_ENTRY, 'kind': 'theorem'},
 ]
-OWNERS = {'ClassFieldTheory': 657, 'GaloisCohomology': 154, 'ProCGroups': 321, 'SawinTotallyRealTowers': 269, 'ValuedFieldTheory': 282}
+OWNERS = {'ClassFieldTheory': 1246, 'EntryPoint': 2, 'GaloisCohomology': 316, 'ProCGroups': 724, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 993, 'ValuedFieldTheory': 591}
 MATHLIB = '065356127b1dc0016f66b7283ce0ce2c4055aa55'
 TOOLCHAIN = 'leanprover/lean4:v4.35.0-rc2'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
@@ -80,8 +80,8 @@ def audit_rows(root, manifest):
     require(rows and manifest['roots'], 'Empty manifest')
     for module, row in rows.items():
         require(re.fullmatch(r"[A-Za-z_][A-Za-z0-9_'.]*", module), 'Invalid module name')
-        expected = 'Lean4/' + module.replace('.', '/') + '.lean'
-        require(row['path'] == expected and row['owner'] == module.split('.')[0],
+        expected = module.replace('.', '/') + '.lean'
+        require(row['path'] == expected and row['owner'] == ('EntryPoint' if module in {'Nyll', 'Nyll.All'} else module.split('.')[1]),
                 'Module path/owner mismatch: ' + module)
         path = root / expected
         require(path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(root),
@@ -121,17 +121,20 @@ def audit(root, manifest):
     require(manifest['ownerCounts'] == OWNERS and
             manifest['moduleCount'] == len(manifest['moduleRows']) == sum(OWNERS.values()),
             'Frozen bundle owner/count policy changed')
-    physical = {p.relative_to(root).as_posix() for p in (root / 'Lean4').rglob('*.lean')}
+    physical = {p.relative_to(root).as_posix() for p in [root / 'Nyll.lean', *(root / 'Nyll').rglob('*.lean')]}
     expected = {r['path'] for r in manifest['moduleRows'].values()}
     require(physical == expected, 'Physical source set differs from the manifest')
     config = tomllib.loads((root / 'lakefile.toml').read_text())
-    require(config['name'] == 'SawinTotallyRealTowers' and config['defaultTargets'] == ROOTS,
+    require(config['name'] == 'Nyll' and config['defaultTargets'] == ['Nyll'],
             'Lake package/default target changed')
-    libs = {x['name']: x for x in config['lean_lib']}
-    require(len(config['lean_lib']) == 5 and set(libs) == set(OWNERS), 'Library owners changed')
-    for owner, lib in libs.items():
-        require(lib.get('srcDir') == 'Lean4' and lib.get('roots') == [] and
-                lib['globs'] == [owner + '.+'], 'Wrong library registration: ' + owner)
+    libraries = config['lean_lib']
+    ordered = ['ProCGroups', 'ValuedFieldTheory', 'GaloisCohomology', 'SchemeTheory',
+               'ClassFieldTheory', 'SawinTotallyRealTowers']
+    expected_globs = ['Nyll.All', 'Nyll'] + ['Nyll.' + owner + '.+' for owner in ordered]
+    require(len(libraries) == 1 and libraries[0]['name'] == 'Nyll' and
+            libraries[0].get('srcDir', '.') == '.' and
+            libraries[0].get('roots', ['Nyll']) == ['Nyll'] and
+            libraries[0]['globs'] == expected_globs, 'Wrong canonical library registration')
     require((root / 'lean-toolchain').read_text().strip() == TOOLCHAIN, 'Toolchain changed')
     require(len(config['require']) == 1 and config['require'][0]['name'] == 'mathlib' and
             config['require'][0]['rev'] == MATHLIB, 'Direct external dependency changed')

@@ -10,20 +10,24 @@ repository root. Its repository-specific inputs are:
   from the library-source inventory.
 - `main-declarations.json`: selected public declarations whose names, kinds,
   owner, and specified source modules must remain available.
-- `source-manifest.json`: the exact SHA-pinned 1,740-module closure.
-- `historical-partial-baseline.json`: seven pre-existing partial declarations
-  and the exact source hashes that produced them.
+- `source-manifest.json`: the exact SHA-pinned 4,141-module closure.
+- `historical-partial-baseline.json`: 31 pre-existing compiler-generated recursion declarations
+  and their exact source, copyright-header, and body hashes. Seven belonged to
+  the previous extract; the expanded dependency families contribute another
+  eleven from ProCGroups and thirteen from SchemeTheory. The baseline records
+  each declaration and the immutable source commit used for the compiler audit.
 
 The other files implement the shared procedure:
 
 1. `generate_manifest.py` inventories every maintained physical Lean source,
-   checks import reachability and records source hashes. Its general CFT source
-   policy is disabled here because Sawin has seven historical partials. The
+   checks import reachability and records source hashes. The
    separate pinned closure checker rejects source `sorry`, `admit`,
    `native_decide`, `axiom`, and `unsafe` declarations; the compiled inventory
-   rejects new partials. For the seven historical partials it checks both the
-   current whole-file SHA and the original body SHA after an exact recognized
-   copyright header.
+   rejects new partials. For every pinned recursion declaration it checks the
+   current whole-file SHA, exact copyright-header SHA, and body SHA. The
+   baseline is an exact set: an added, removed, renamed, or changed declaration
+   fails the audit. The safe-root export and main theorem checks retain their
+   complete coverage.
    Python regression tests exercise those inventory guards.
 2. `check_source_closure.py` checks each bundled source hash, import, and exact
    closure against the pinned manifest, then compares it with the generated
@@ -46,8 +50,7 @@ The runtime stages run in order: build, inventory, selection, export, coverage,
 NanoDa, and kernel replay. Every stage must pass. Use a fresh output directory
 for each local attempt and follow the commands in the workflow; a static source
 audit alone does not verify proofs. Full verification requires a clean committed
-checkout. The expanded bundle's full NanoDa pipeline has not yet been run.
-The workflow keeps its artifacts for 14 days.
+checkout. The workflow keeps its artifacts for 14 days.
 
 ## Incremental build stages
 

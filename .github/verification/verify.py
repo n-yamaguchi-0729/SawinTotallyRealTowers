@@ -23,9 +23,9 @@ LEAN_REV = '11acb17ec6b07a8f9e9173e6845197929540936b'
 EXPORT_COMMIT = '6cea97789dc088ea47fcea15692db85685aedac5'
 NANODA_COMMIT = '4c544ed4099c8227f07d5de77ad1e69fb0740a27'
 WRAPPERS = {
-    'Inventory.lean': 'c3c20d5762c945e3de39fa5c2685abf814c3aa02bdc943f4249937611eefa7d2',
-    'ExportSelected.lean': '214ca63daef63850b66520e0022b50d78c8020c1883edf91f95325662fd6aed0',
-    'ReplaySix.lean': '3c7456f8cec8ba3262725748f42e91af42105c8da6b92267d2d09ccfb15c7e92',
+    'Inventory.lean': '7d052d15525b9068aa76c2f69d04ef63b2c5ad9fd1da6ffae534e1f7dc0f3a2e',
+    'ExportSelected.lean': '9370f7f59574d5bd10161ca2588ed270f75ad139ae6393ea217f71a27f12177e',
+    'ReplaySix.lean': '0077e49bc5f3f66a583f1a1f4581b8bfe3f7888f99b59fbf020ba2ce79403b29',
 }
 COPYRIGHT_HEADER = (
     '/-\n'
@@ -95,15 +95,22 @@ def export_coverage(exported, inventory, selectors):
             'axiomNameParts': sorted(axioms), 'unexpectedAxiomNameParts': sorted(axioms - ALLOWED_PARTS),
             'metadata': metadata, 'lines': lines}
 
-def historical_body_sha(root, relative):
+def historical_body_sha(root, relative, pinned_header=None):
     root = Path(root).resolve()
     path = (root / relative).resolve()
     require(path.is_relative_to(root) and path.is_file(),
             'Historical partial source path escaped package')
     source = path.read_bytes()
-    require(source.startswith(COPYRIGHT_HEADER),
-            'Historical partial source does not have the recognized copyright header')
-    return hashlib.sha256(source[len(COPYRIGHT_HEADER):]).hexdigest()
+    if pinned_header is None:
+        require(source.startswith(COPYRIGHT_HEADER),
+                'Historical partial source does not have the recognized copyright header')
+        length = len(COPYRIGHT_HEADER)
+    else:
+        length = pinned_header['copyrightHeaderByteLength']
+        require(isinstance(length, int) and 0 < length < len(source) and
+                hashlib.sha256(source[:length]).hexdigest() == pinned_header['copyrightHeaderSHA256'],
+                'Historical partial source does not have the exact pinned copyright header')
+    return hashlib.sha256(source[length:]).hexdigest()
 
 def validate_inventory_data(summary, declarations, modules, manifest, baseline, source_root):
     expected = manifest['moduleRows']; roots = manifest['roots']
@@ -153,7 +160,7 @@ def validate_inventory_data(summary, declarations, modules, manifest, baseline, 
             require(origin['path'] == old['sourcePath'] and
                     origin['sha256'] == old['currentSourceSHA256'],
                     'Historical partial current source changed: ' + name)
-            require(historical_body_sha(source_root, origin['path']) == old['historicalBodySHA256'],
+            require(historical_body_sha(source_root, origin['path'], old if 'copyrightHeaderSHA256' in old else None) == old['historicalBodySHA256'],
                     'Historical partial original source body changed: ' + name)
             partials[name] = row
         rows[name] = row
@@ -183,7 +190,7 @@ def validate_replay(path, manifest):
     require(inv['roots'] == manifest['roots'], 'Replay root mismatch')
     loaded = inv['loaded_modules']
     require(len(loaded) == len(set(loaded)), 'Duplicate loaded module')
-    local = {m for m in loaded if m.split('.')[0] in OWNERS}
+    local = {m for m in loaded if m == 'Nyll' or m.startswith('Nyll.')}
     require(local == set(manifest['moduleRows']), 'Replay local module closure mismatch')
     return {'officialKernelReplay': 'PASS', 'loadedModuleCount': len(loaded),
             'loadedConstantCount': inv['constant_count'], 'localModuleCoverageExact': True,
@@ -303,8 +310,8 @@ class Runner:
 
     def project_paths(self):
         paths = {self.root / n for n in ['lakefile.toml','lake-manifest.json','lean-toolchain',
-                                         'LICENSE','README.md','.gitignore']}
-        for folder in ['Lean4','tests','.github']:
+                                         'LICENSE','README.md','.gitignore','Nyll.lean']}
+        for folder in ['Nyll','tests','.github']:
             paths.update(p for p in (self.root/folder).rglob('*') if p.is_file()
                          and '__pycache__' not in p.parts)
         return paths
@@ -408,7 +415,7 @@ class Runner:
                     'Verification requires a clean committed checkout')
             manifest = json.loads((self.root/'.github/verification/source-manifest.json').read_text())
             baseline = json.loads((self.root/'.github/verification/historical-partial-baseline.json').read_text())
-            require(len(baseline['allowedPartialDeclarations']) == 7, 'Expected seven historical partials')
+            require(len(baseline['allowedPartialDeclarations']) == 31, 'Expected exactly 31 inventoried compiler-generated partials')
             for name, expected in WRAPPERS.items():
                 require(digest(HERE/name) == expected, 'Official wrapper modified: ' + name)
             self.receipt['sourceAudit'] = audit(self.root, manifest)
@@ -416,8 +423,8 @@ class Runner:
             self.stage('python-tests', [sys.executable,'-B','-m','unittest','discover','-s','tests',
                                        '-p','test_*.py','-v'])
             self.stage('build', [self.lake,'--no-ansi','--rehash','--wfail','build', *ROOTS])
-            self.stage('statement', [self.lake,'env','lean','-j1','--error=warning','tests/Statement.lean'])
-            self.stage('martinet-statement', [self.lake,'env','lean','-j1','--error=warning',
+            self.stage('statement', [self.lake,'env','lean','-j1','-DautoImplicit=false','--error=warning','tests/Statement.lean'])
+            self.stage('martinet-statement', [self.lake,'env','lean','-j1','-DautoImplicit=false','--error=warning',
                                               'tests/MartinetStatement.lean'])
             require(self.snapshots(self.project_paths()) == project, 'Input changed during build')
             version = self.stage('lean-version', [self.lake,'env','lean','--version'], True)
@@ -437,7 +444,7 @@ class Runner:
             self.seal(self.output/'sealed-inputs.json')
             self.guard(project, runtime, ident, tools)
             inv = self.output/'inventory'; inv.mkdir()
-            command = [self.lake,'env',str(Path(prefix)/'bin/lean'),'-j1','--run',str(HERE/'Inventory.lean')]
+            command = [self.lake,'env',str(Path(prefix)/'bin/lean'),'-j1','-DautoImplicit=false','--run',str(HERE/'Inventory.lean')]
             self.stage('inventory', command + [str(self.root/'.github/verification/source-manifest.json'), str(inv)])
             self.receipt['inventory'] = validate_inventory(inv, manifest, baseline, self.root)
             for path in inv.rglob('*'):
@@ -447,7 +454,7 @@ class Runner:
             self.guard(project, runtime, ident, tools)
             export_env = dict(self.env, LEAN_PATH=search + os.pathsep +
                               str(self.exporter/'.lake/build/lib/lean'))
-            exported = self.stage('export', [str(Path(prefix)/'bin/lean'), '-j1', '--run',
+            exported = self.stage('export', [str(Path(prefix)/'bin/lean'), '-j1','-DautoImplicit=false', '--run',
                 str(HERE/'ExportSelected.lean'), str(self.selector_path), *manifest['roots']],
                 env=export_env, output=self.output/'selected.ndjson')
             self.guard(project, runtime, ident, tools)
@@ -466,7 +473,7 @@ class Runner:
             self.receipt['nanoDaRun'] = True
             self.receipt['independentKernelCheckPerformed'] = True
             self.guard(project, runtime, ident, tools)
-            self.stage('replay', [self.lake,'env',str(Path(prefix)/'bin/lean'),'-j1','--run',
+            self.stage('replay', [self.lake,'env',str(Path(prefix)/'bin/lean'),'-j1','-DautoImplicit=false','--run',
                                  str(HERE/'ReplaySix.lean'), *manifest['roots']])
             self.receipt['replay'] = validate_replay(self.output/'replay.log', manifest)
             self.guard(project, runtime, ident, tools)

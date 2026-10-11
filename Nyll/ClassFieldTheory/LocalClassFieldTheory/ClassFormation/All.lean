@@ -1,0 +1,34 @@
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
+-/
+
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanHilbert90
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FieldUnitsHerbrand
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.All
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.All
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Main
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasis
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGradedLifting
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisRecursiveLifting
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.PrincipalUnitGraded
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValuationHerbrand
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
+
+/-!
+# The local class formation
+
+Public aggregate for the normal-basis, unit-filtration, valuation, and
+cohomology calculations establishing the local class-field axiom.
+-/

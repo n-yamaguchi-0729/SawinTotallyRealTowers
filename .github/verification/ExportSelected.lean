@@ -6,8 +6,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Export
 
-set_option autoImplicit false
-
 open Lean
 
 /-!
