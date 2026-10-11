@@ -43,11 +43,17 @@ import SawinTotallyRealTowers.All
 
 ## Main results
 
-| Result | Mathematical content |
-| --- | --- |
-| [`sawin_totally_real_tower`](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean) | One infinite prime set splits completely in totally real fields of unbounded degree with bounded root discriminant. |
-| [`exists_totallyReal_discr_le`](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean) | Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound. |
-| [`shafarevich_relation_rank_bound`](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) | For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction. |
+**[Sawin's totally real tower](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean)**
+
+One infinite prime set splits completely in totally real fields of unbounded degree with bounded root discriminant.
+
+**[Martinet's discriminant bound](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean)**
+
+Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound.
+
+**[Shafarevich's relation-rank bound](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean)**
+
+For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction.
 
 ## Problem statements and related projects
 
@@ -192,9 +198,8 @@ and the [Remarks paper](https://arxiv.org/abs/2605.20695).
 
 ## Build
 
-This repository pins Lean **4.35.0-rc2** and Mathlib
-**065356127b1dc0016f66b7283ce0ce2c4055aa55**. Mathlib is the only direct
-external Git dependency; its dependencies are pinned in
+The Lean toolchain and dependencies are pinned in
+[`lean-toolchain`](lean-toolchain), [`lakefile.toml`](lakefile.toml), and
 [`lake-manifest.json`](lake-manifest.json).
 
 ```sh
@@ -214,7 +219,7 @@ source hashes.
 
 Elaboration and linter options are shared in `lakefile.toml`:
 `autoImplicit = false`, unused-variable and missing-documentation checks,
-and the Mathlib standard linter set. Maintained sources do not override these options.
+and the standard linter set. Maintained sources do not override these options.
 
 ## Verification
 
@@ -248,7 +253,7 @@ python3 -B .github/verification/check_source_closure.py \
   --generated-manifest /tmp/sawin-modules.json
 ```
 
-The complete pipeline requires a clean committed checkout, the pinned Mathlib
+The complete pipeline requires a clean committed checkout, the dependency
 cache, and the pinned exporter and NanoDa tools. Its commands and artifact
 paths are in [the workflow](.github/workflows/lean.yml) and explained in
 [verification notes](.github/verification/README.md).
