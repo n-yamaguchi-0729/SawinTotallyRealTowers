@@ -3,43 +3,14 @@
 [![Lean](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml/badge.svg)](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem. One infinite
-set of primes congruent to 1 modulo 4 splits completely in totally real
+A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem.
+
+## Scope
+
+One infinite set of primes congruent to 1 modulo 4 splits completely in totally real
 number fields of arbitrarily large degree, with root discriminant at most
 **255255**. The library also contains Martinet's totally real tower corollary
 and a development of Shafarevich's relation-rank bound.
-
-## Public API
-
-Import the Sawin theorem:
-
-```lean
-import SawinTotallyRealTowers.SawinTotallyRealTower
-
-#check ClassFieldTower.Sawin.sawin_totally_real_tower
-```
-
-Import the Martinet corollary:
-
-```lean
-import SawinTotallyRealTowers.MartinetCorollary
-
-#check ClassFieldTower.Sawin.exists_totallyReal_discr_le
-```
-
-Import the relation-rank theorem:
-
-```lean
-import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound
-
-#check ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound
-```
-
-Import the whole maintained Sawin library:
-
-```lean
-import SawinTotallyRealTowers.All
-```
 
 ## Main results
 
@@ -49,7 +20,7 @@ import SawinTotallyRealTowers.All
 | [Martinet's discriminant bound](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean) | Totally real fields of arbitrarily large degree satisfy a uniform exponential discriminant bound. |
 | [Shafarevich's relation-rank bound](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean) | For odd `p`, bounds the relation rank of the maximal everywhere-unramified pro-`p` Galois group by its generator rank, the unit rank, and the roots-of-unity correction. |
 
-## Problem statements and related projects
+### Problem statements and related projects
 
 This repository develops proofs for mathematical statements also published as
 challenges by [Formal Conjectures](https://github.com/google-deepmind/formal-conjectures)
@@ -62,6 +33,9 @@ proofs and supporting library are developed here.
 | Formal Conjectures | [Sawin's totally real tower theorem](https://google-deepmind.github.io/formal-conjectures/theorem/?name=Erdos90.sawin_totally_real_tower) ([source statement](https://github.com/google-deepmind/formal-conjectures/blob/8323e878b83fcd7f4a448256069352a265460d75/FormalConjectures/ErdosProblems/90.lean#L193)) is proved by [the Sawin theorem](Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean). The [API check](tests/Statement.lean) tests the exact target. |
 | Lean Eval: Martinet | [Martinet's totally real towers problem](https://leanprover.github.io/lean-eval-leaderboard/problems/martinet_totally_real_towers/) ([source challenge](https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/martinet_totally_real_towers/Challenge.lean)) follows from [the Sawin theorem](Lean4/SawinTotallyRealTowers/MartinetCorollary.lean). The [API check](tests/MartinetStatement.lean) tests the exact target; a submission was [accepted by Lean Eval](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json). |
 | Lean Eval: Shafarevich | [Shafarevich's relation-rank bound problem](https://leanprover.github.io/lean-eval-leaderboard/problems/shafarevich_relation_rank_bound/) ([source challenge](https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608453ce/generated/shafarevich_relation_rank_bound/Challenge.lean)) is represented by the [relation-rank theorem](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/ShafarevichRelationRankBound.lean). [Adapter lemmas](Lean4/SawinTotallyRealTowers/UnramifiedProPRelationRank/RelationRank/LeanEvalAdapter.lean) relate the library's representations to the benchmark. A submission was [accepted by Lean Eval](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json). |
+
+<details>
+<summary>Exact benchmark statements and proofs</summary>
 
 ### Formal Conjectures: Sawin's totally real tower
 
@@ -185,10 +159,44 @@ theorem shafarevich_relation_rank_bound (F : Type) [Field F] [NumberField F] (p 
 end Submission
 ```
 
+</details>
+
 See [Naganori Yamaguchi's Lean 4 projects](https://n-yamaguchi-0729.github.io/homepage-jp)
 for links to these challenge pages and to the related ProCGroups and
 ClassFieldTheory libraries. Mathematical references: [Sawin's paper](https://arxiv.org/abs/2605.20579)
 and the [Remarks paper](https://arxiv.org/abs/2605.20695).
+
+## Public API
+
+Import the Sawin theorem:
+
+```lean
+import SawinTotallyRealTowers.SawinTotallyRealTower
+
+#check ClassFieldTower.Sawin.sawin_totally_real_tower
+```
+
+Import the Martinet corollary:
+
+```lean
+import SawinTotallyRealTowers.MartinetCorollary
+
+#check ClassFieldTower.Sawin.exists_totallyReal_discr_le
+```
+
+Import the relation-rank theorem:
+
+```lean
+import SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ShafarevichRelationRankBound
+
+#check ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound
+```
+
+Import the whole maintained Sawin library:
+
+```lean
+import SawinTotallyRealTowers.All
+```
 
 ## Build
 
@@ -202,14 +210,6 @@ lake --wfail build
 lake env lean --error=warning tests/Statement.lean
 lake env lean --error=warning tests/MartinetStatement.lean
 ```
-
-The repository contains **269 maintained Sawin modules**, including
-`SawinTotallyRealTowers.All` and the Martinet corollary. Their imports require
-**1,414 bundled support modules** from CFT, PCG, GC, and VFT. All
-**1,683** local modules are reachable from
-the two default targets. The [source manifest](.github/verification/source-manifest.json)
-records the initial extraction commit, each module's imports, and the current
-source hashes.
 
 Elaboration and linter options are shared in `lakefile.toml`:
 `autoImplicit = false`, unused-variable and missing-documentation checks,
