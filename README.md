@@ -264,12 +264,13 @@ job still runs the complete declaration, NanoDa, and Lean kernel checks on every
 run, including cache hits. Build stages stop after five hours to leave time for
 saving completed outputs and diagnostic receipts before the runner deadline.
 
-## Authorship and AI assistance
+## Authorship and AI-written code
 
-Astra GPT-6 Codex assisted with Lean development, statement review, and
-preparation of this repository. [Naganori Yamaguchi](https://github.com/n-yamaguchi-0729)
-is the human author and responsible maintainer. The benchmark statements and
-their source licenses are credited in the corresponding Lean files.
+All original code in this library is written by AI (OpenAI Codex).
+[Naganori Yamaguchi](https://github.com/n-yamaguchi-0729) sets the mathematical
+goals and scope, directs development, and maintains the library.
+The benchmark statements and their source licenses are credited in the
+corresponding Lean files.
 
 ## License
 
