@@ -23,7 +23,6 @@ import Nyll.SchemeTheory.Etale.OverField.All
 import Nyll.SchemeTheory.Etale.ProperLocalCover
 import Nyll.SchemeTheory.Etale.ResidueBaseChange
 import Nyll.SchemeTheory.Etale.ResidueFieldExtension
-import Nyll.SchemeTheory.Etale.RingHom
 import Nyll.SchemeTheory.Etale.UniversalHomeomorphismSections
 import Nyll.SchemeTheory.Etale.AffineBaseChangeProperties
 import Nyll.SchemeTheory.Etale.HenselianLocalSection

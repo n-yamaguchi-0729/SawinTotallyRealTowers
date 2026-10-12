@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Algebra.Tower
+import Mathlib.FieldTheory.IsSepClosed
+import Mathlib.FieldTheory.Normal.Basic
 import Mathlib.NumberTheory.Cyclotomic.Basic
+import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 
 /-!
 # The rational cyclotomic closure
@@ -91,6 +95,61 @@ noncomputable instance rationalCyclotomicLevel_numberField
     NumberField (rationalCyclotomicLevel n) :=
   IsCyclotomicExtension.numberField
     {(n : ℕ)} ℚ (rationalCyclotomicLevel n)
+
+/-- Every unit modulo `m` is realized on all `m`-th roots of unity
+by an automorphism of the separable closure of `ℚ`. -/
+theorem exists_separableClosureRatAutomorphism_pow_of_unit
+    (m : ℕ) [NeZero m] (u : (ZMod m)ˣ) :
+    ∃ σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ,
+      ∀ z : SeparableClosure ℚ, z ^ m = 1 →
+        σ z = z ^ u.val.val := by
+  let n : ℕ+ := ⟨m, NeZero.pos m⟩
+  let K : IntermediateField ℚ rationalCyclotomicField :=
+    rationalCyclotomicLevel n
+  have hK : IsCyclotomicExtension {m} ℚ K :=
+    rationalCyclotomicLevel_isCyclotomicExtension n
+  obtain ⟨τ, hτ⟩ :=
+    (IsCyclotomicExtension.Rat.galEquivZMod m K (hK := hK)).surjective u
+  obtain ⟨σ, hσ⟩ :=
+    (AlgEquiv.restrictNormalHom_surjective
+      (F := ℚ) (K₁ := K) (E := SeparableClosure ℚ)) τ
+  change σ.restrictNormal K = τ at hσ
+  refine ⟨σ, ?_⟩
+  intro z hz
+  have hzCyc : z ∈ rationalCyclotomicField := by
+    apply IntermediateField.subset_adjoin
+    exact ⟨m, Set.mem_univ m, NeZero.ne m, hz⟩
+  let zCyc : rationalCyclotomicField := ⟨z, hzCyc⟩
+  have hzCyc_pow : zCyc ^ m = 1 := by
+    apply Subtype.ext
+    exact hz
+  have hzK : zCyc ∈ K := by
+    apply IntermediateField.subset_adjoin
+    exact ⟨m, Set.mem_singleton m, NeZero.ne m, hzCyc_pow⟩
+  let y : K := ⟨zCyc, hzK⟩
+  have hy : y ^ m = 1 := by
+    apply Subtype.ext
+    exact hzCyc_pow
+  have haction : τ y = y ^ u.val.val := by
+    have h :=
+      IsCyclotomicExtension.Rat.galEquivZMod_apply_of_pow_eq
+        m K (hK := hK) τ hy
+    rw [hτ] at h
+    exact h
+  have hy_map : algebraMap K (SeparableClosure ℚ) y = z := by
+    rw [IsScalarTower.algebraMap_apply
+      K rationalCyclotomicField (SeparableClosure ℚ)]
+    simp only [IntermediateField.algebraMap_apply, y, zCyc]
+  have hcomm :=
+    AlgEquiv.restrictNormal_commutes σ K y
+  rw [hσ] at hcomm
+  calc
+    σ z = algebraMap K (SeparableClosure ℚ) (τ y) := by
+      rw [hcomm, hy_map]
+    _ = algebraMap K (SeparableClosure ℚ) (y ^ u.val.val) :=
+      congrArg (algebraMap K (SeparableClosure ℚ)) haction
+    _ = z ^ u.val.val := by
+      rw [map_pow, hy_map]
 
 /-- Divisibility of orders gives the canonical inclusion between internal
 cyclotomic levels. -/

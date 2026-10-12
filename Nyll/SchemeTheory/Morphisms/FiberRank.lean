@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SchemeTheory.Morphisms.FlatRank
+import Mathlib.AlgebraicGeometry.Morphisms.FlatRank
+import Mathlib.Topology.LocallyConstant.Basic
 import Mathlib.AlgebraicGeometry.Fiber
 import Mathlib.AlgebraicGeometry.FunctionField
-import Mathlib.AlgebraicGeometry.Morphisms.FlatRank
 
 /-!
 # Rank comparisons on actual generic and scheme-theoretic fibers
@@ -37,7 +37,7 @@ theorem finrank_eq_genericStalkPullback
     f.finrank x = g.finrank (IsLocalRing.closedPoint X.functionField) := by
   calc
     f.finrank x = f.finrank (genericPoint X) :=
-      finrank_eq_const_of_preconnectedSpace f x (genericPoint X)
+      f.isLocallyConstant_finrank.apply_eq_of_preconnectedSpace x (genericPoint X)
     _ = f.finrank (X.fromSpecStalk (genericPoint X)
         (IsLocalRing.closedPoint X.functionField)) := by
       rw [Scheme.fromSpecStalk_closedPoint]

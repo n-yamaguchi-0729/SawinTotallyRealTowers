@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.SchemeTheory.Etale.FiniteRadicialLocalSplitting
-public import Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting
 public import Mathlib.AlgebraicGeometry.Cover.Open
 public import Mathlib.AlgebraicGeometry.Morphisms.Etale
 public import Mathlib.AlgebraicGeometry.Morphisms.UnderlyingMap

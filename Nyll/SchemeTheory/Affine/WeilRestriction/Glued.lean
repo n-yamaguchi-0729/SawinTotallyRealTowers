@@ -10,7 +10,7 @@ public import Nyll.SchemeTheory.Affine.WeilRestriction.LocalCover
 public import Nyll.SchemeTheory.WeilRestriction.DirectedCover
 public import Nyll.SchemeTheory.WeilRestriction.Restriction
 public import Nyll.SchemeTheory.WeilRestriction.GluingData
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Nyll.SchemeTheory.Affine.WeilRestriction.Global
 
 /-!

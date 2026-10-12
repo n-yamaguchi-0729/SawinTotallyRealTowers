@@ -21,7 +21,7 @@ REQUIRED_DECLARATIONS = [
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
     {'name': SHAFAREVICH_MAIN, 'originModule': SHAFAREVICH_ENTRY, 'kind': 'theorem'},
 ]
-OWNERS = {'ClassFieldTheory': 1246, 'EntryPoint': 2, 'GaloisCohomology': 316, 'ProCGroups': 724, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 993, 'ValuedFieldTheory': 591}
+OWNERS = {'ClassFieldTheory': 1246, 'EntryPoint': 2, 'GaloisCohomology': 316, 'ProCGroups': 724, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 1008, 'ValuedFieldTheory': 591}
 MATHLIB = '065356127b1dc0016f66b7283ce0ce2c4055aa55'
 TOOLCHAIN = 'leanprover/lean4:v4.35.0-rc2'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}

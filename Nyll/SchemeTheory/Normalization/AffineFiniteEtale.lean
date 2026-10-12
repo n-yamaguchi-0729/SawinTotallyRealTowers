@@ -5,7 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.SchemeTheory.Normalization.Affine
-import Nyll.SchemeTheory.FiniteEtale.Basic
+import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 import Nyll.SchemeTheory.Etale.AffineBaseChangeProperties
 import Mathlib.RingTheory.RingHom.Etale
 import Mathlib.AlgebraicGeometry.Morphisms.Finite

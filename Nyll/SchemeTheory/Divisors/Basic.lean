@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
 import Mathlib.AlgebraicGeometry.Morphisms.Etale
+import Mathlib.Data.List.Forall2
+import Mathlib.Data.List.OfFn
+import Mathlib.RingTheory.LocalRing.RingHom.Basic
 import Mathlib.RingTheory.Regular.RegularSequence
 import Mathlib.RingTheory.RegularLocalRing.Defs
 
@@ -46,6 +49,29 @@ def IsRegularSystemOfParameters
     (t : Fin d → R) : Prop :=
   RingTheory.Sequence.IsRegular R (List.ofFn t) ∧
     Ideal.ofList (List.ofFn t) = IsLocalRing.maximalIdeal R
+
+/-- Ring isomorphisms transport a regular system of parameters by mapping
+its concrete regular sequence and its maximal ideal. -/
+theorem IsRegularSystemOfParameters.map_ringEquiv
+    {R S : Type u} [CommRing R] [CommRing S]
+    [IsLocalRing R] [IsLocalRing S] {d : ℕ} {t : Fin d → R}
+    (h : IsRegularSystemOfParameters t) (e : R ≃+* S) :
+    IsRegularSystemOfParameters (e ∘ t) := by
+  constructor
+  · have hreg : RingTheory.Sequence.IsRegular S ((List.ofFn t).map e) :=
+      (e.toAddEquiv.isRegular_congr
+        (List.forall₂_map_right_iff.mpr
+          (List.forall₂_same.mpr fun a _ z ↦ e.map_mul a z))).mp h.1
+    simpa only [List.map_ofFn] using hreg
+  · calc
+      Ideal.ofList (List.ofFn (e ∘ t)) =
+          Ideal.ofList (List.ofFn ((e : R →+* S) ∘ t)) := rfl
+      _ = Ideal.map (e : R →+* S) (Ideal.ofList (List.ofFn t)) := by
+        simpa only [List.map_ofFn] using
+          (Ideal.map_ofList (e : R →+* S) (List.ofFn t)).symm
+      _ = Ideal.map (e : R →+* S) (IsLocalRing.maximalIdeal R) :=
+        congrArg (Ideal.map (e : R →+* S)) h.2
+      _ = IsLocalRing.maximalIdeal S := IsLocalRing.map_ringEquiv_maximalIdeal e
 
 /-- The product of the first `r` members of a parameter family. -/
 def initialParameterProduct

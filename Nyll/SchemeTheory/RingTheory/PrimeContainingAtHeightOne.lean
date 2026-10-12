@@ -23,7 +23,9 @@ namespace SchemeTheory
 
 universe u
 
-private theorem two_le_quotient_dimension_of_prime_chain
+/-- A strict prime chain below the maximal ideal gives quotient dimension at
+least two. The primes need not be minimal, and Noetherianity is unnecessary. -/
+theorem two_le_quotient_dimension_of_prime_chain
     {R : Type u} [CommRing R] [IsLocalRing R]
     (P Q : Ideal R) [P.IsPrime] [Q.IsPrime]
     (hPQ : P < Q) (hQm : Q < maximalIdeal R) :

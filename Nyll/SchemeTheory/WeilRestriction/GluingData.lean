@@ -8,7 +8,7 @@ module
 
 public import Nyll.SchemeTheory.WeilRestriction.LocalRepresenterDiagram
 public import Nyll.SchemeTheory.WeilRestriction.IteratedSlice
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Mathlib.AlgebraicGeometry.RelativeGluing
 public import Mathlib.CategoryTheory.Limits.Constructions.Over.Connected
 public import Nyll.SchemeTheory.WeilRestriction.LocalRepresenters

@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SchemeTheory.FiniteEtale.Basic
-import Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting
+import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
+import Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting
 import Mathlib.AlgebraicGeometry.AffineScheme
 import Mathlib.AlgebraicGeometry.Cover.MorphismProperty
 import Mathlib.AlgebraicGeometry.Cover.Open

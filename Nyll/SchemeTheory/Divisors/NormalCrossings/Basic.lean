@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Nyll.SchemeTheory.Divisors.Basic
 import Mathlib.RingTheory.Regular.RegularSequence
 import Mathlib.RingTheory.RegularLocalRing.Defs
 
@@ -38,11 +39,10 @@ def boundaryProduct {R : Type u} [CommMonoid R] {d : ℕ}
 
 /-- A finite family is a regular system of parameters when it is a regular
 sequence and generates the maximal ideal. -/
-def IsRegularSystemOfParameters
+abbrev IsRegularSystemOfParameters
     {R : Type u} [CommRing R] [IsLocalRing R] {d : ℕ}
     (t : Fin d → R) : Prop :=
-  RingTheory.Sequence.IsRegular R (List.ofFn t) ∧
-    Ideal.ofList (List.ofFn t) = IsLocalRing.maximalIdeal R
+  AlgebraicGeometry.Scheme.IsRegularSystemOfParameters t
 
 /-- An explicit split strict-normal-crossings equation in a local ring.
 

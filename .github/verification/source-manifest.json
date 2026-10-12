@@ -3,17 +3,17 @@
   "entryModule": "Nyll.SawinTotallyRealTowers.SawinTotallyRealTower",
   "entryDeclaration": "ClassFieldTower.Sawin.sawin_totally_real_tower",
   "sourceCommit": "6b3d98d9d0cde2c61ba3e34394a6ad6fe4c9c28d",
-  "synchronizedFromCommit": "dd8bcd65a9166c5a82e8bb48cd1b19d42d688b2a",
+  "synchronizedFromCommit": "04db6c198b64f54df97780130bf14529436c0c41",
   "leanToolchain": "leanprover/lean4:v4.35.0-rc2",
   "mathlibRevision": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
-  "moduleCount": 4141,
+  "moduleCount": 4156,
   "ownerCounts": {
     "ClassFieldTheory": 1246,
     "EntryPoint": 2,
     "GaloisCohomology": 316,
     "ProCGroups": 724,
     "SawinTotallyRealTowers": 269,
-    "SchemeTheory": 993,
+    "SchemeTheory": 1008,
     "ValuedFieldTheory": 591
   },
   "roots": [
@@ -31,7 +31,7 @@
     "Nyll.All": {
       "owner": "EntryPoint",
       "path": "Nyll/All.lean",
-      "sha256": "8c629548aa8676a995ad59aa3e3d428a92894e53ff79e3da017d3b09ecc5180b",
+      "sha256": "0f403dd7db4fac7e66a270f62d4fc0734b79e2dddf4cd9a9af845f65fab18ce4",
       "imports": [
         "Nyll.ProCGroups.All",
         "Nyll.ValuedFieldTheory.All",
@@ -15628,9 +15628,13 @@
     "Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField": {
       "owner": "GaloisCohomology",
       "path": "Nyll/GaloisCohomology/Kummer/Concrete/Cyclotomic/RationalCyclotomicField.lean",
-      "sha256": "0291919ba2f5374e6774a1a3cf301c8f3f6b2a928ba12c75c2b2394abade5ed7",
+      "sha256": "2906324659c3c0c852f7897a1899aac923b08ff6caaf41496fb4b91f1c2460a0",
       "imports": [
-        "Mathlib.NumberTheory.Cyclotomic.Basic"
+        "Mathlib.Algebra.Algebra.Tower",
+        "Mathlib.FieldTheory.IsSepClosed",
+        "Mathlib.FieldTheory.Normal.Basic",
+        "Mathlib.NumberTheory.Cyclotomic.Basic",
+        "Mathlib.NumberTheory.NumberField.Cyclotomic.Galois"
       ]
     },
     "Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicTorsionField": {
@@ -29743,16 +29747,13 @@
     "Nyll.SchemeTheory.Affine.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/All.lean",
-      "sha256": "8fce357726da70dfb83890ed7e43dd62922a1ce490b0081557a0ce922a771610",
+      "sha256": "e96c04846dcca307e83345b785740a319c1a82072c6be0b01c584c818393927f",
       "imports": [
         "Nyll.SchemeTheory.Affine.SeparatedIntersections",
         "Nyll.SchemeTheory.Affine.PullbackSectionsPushout",
         "Nyll.SchemeTheory.Affine.FlatBaseChangeSections",
         "Nyll.SchemeTheory.Affine.FlatMinimalPrime",
         "Nyll.SchemeTheory.Affine.GeometricPointLocalization",
-        "Nyll.SchemeTheory.Affine.GeometricIrreducibility",
-        "Nyll.SchemeTheory.Affine.Over",
-        "Nyll.SchemeTheory.Affine.Property",
         "Nyll.SchemeTheory.Affine.RegularSection",
         "Nyll.SchemeTheory.Affine.StalkLocalization",
         "Nyll.SchemeTheory.Affine.WeilRestriction.All",
@@ -29827,25 +29828,9 @@
     "Nyll.SchemeTheory.Affine.FlatMinimalPrime": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/FlatMinimalPrime.lean",
-      "sha256": "67daba2c788b527f3f224b9978b2eb3054b4279ef8a8fe565b4df8207f49b92a",
+      "sha256": "99a613418cea389dd0cf1123a72ff3f4d0ce0c9546f69962d7a6a74d6267c5e9",
       "imports": [
-        "Nyll.SchemeTheory.Affine.GeometricIrreducibility"
-      ]
-    },
-    "Nyll.SchemeTheory.Affine.GeometricIrreducibility": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Affine/GeometricIrreducibility.lean",
-      "sha256": "43eee25d97e6e5bc3a687839544bc0dc18e2d4c587921099ac3824e040a29d2f",
-      "imports": [
-        "Mathlib.Algebra.Lie.OfAssociative",
-        "Mathlib.Order.CompletePartialOrder",
-        "Mathlib.RingTheory.Flat.TorsionFree",
-        "Mathlib.RingTheory.Henselian",
-        "Mathlib.RingTheory.PicardGroup",
-        "Mathlib.RingTheory.RegularLocalRing.Defs",
-        "Mathlib.RingTheory.RingHom.Flat",
-        "Mathlib.RingTheory.SimpleRing.Principal",
-        "Mathlib.RingTheory.Spectrum.Prime.Homeomorph"
+        "Nyll.SchemeTheory.Pi1.Affine.GeometricIrreducibility"
       ]
     },
     "Nyll.SchemeTheory.Affine.GeometricPointLocalization": {
@@ -29879,16 +29864,6 @@
         "Mathlib.Topology.Homeomorph.Defs"
       ]
     },
-    "Nyll.SchemeTheory.Affine.Over": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Affine/Over.lean",
-      "sha256": "a247e9374dd0af95ab197f5e47c3c2d2a45cf1689f36a2ad1f96fcafb5686ec3",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.ColimitsOver",
-        "Mathlib.AlgebraicGeometry.Morphisms.Affine",
-        "Mathlib.AlgebraicGeometry.Morphisms.Flat"
-      ]
-    },
     "Nyll.SchemeTheory.Affine.PrimePairHartogs": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/PrimePairHartogs.lean",
@@ -29897,16 +29872,6 @@
         "Nyll.SchemeTheory.Affine.RegularSection",
         "Nyll.SchemeTheory.RingTheory.Descent.PrimeAwayTensorDetection",
         "Mathlib.RingTheory.Localization.Away.Basic"
-      ]
-    },
-    "Nyll.SchemeTheory.Affine.Property": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Affine/Property.lean",
-      "sha256": "63f8b66cef0942b5f261df27e27227c370a74ef8ad13aa03ee0eb790b8c01ca5",
-      "imports": [
-        "Mathlib.Algebra.Category.Ring.Under.Property",
-        "Mathlib.AlgebraicGeometry.Morphisms.AffineAnd",
-        "Nyll.SchemeTheory.Affine.Over"
       ]
     },
     "Nyll.SchemeTheory.Affine.PullbackSectionsPushout": {
@@ -30090,11 +30055,11 @@
     "Nyll.SchemeTheory.Affine.WeilRestriction.GlobalFiniteEtale": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/WeilRestriction/GlobalFiniteEtale.lean",
-      "sha256": "33f3c118222e139c91af8aac31afd60faa74a3d546642fa3843e2969c2bea2dd",
+      "sha256": "ba6a7227b1926acf2750a1e24d051e1d5c074fe5cf41172ad5d2ae451aac8dcd",
       "imports": [
         "Nyll.SchemeTheory.Affine.WeilRestriction.Global",
         "Nyll.SchemeTheory.WeilRestriction.BaseChange",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.Finite",
         "Mathlib.AlgebraicGeometry.Morphisms.Etale",
         "Mathlib.AlgebraicGeometry.Morphisms.RingHomProperties",
@@ -30105,24 +30070,24 @@
     "Nyll.SchemeTheory.Affine.WeilRestriction.Glued": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/WeilRestriction/Glued.lean",
-      "sha256": "6071da5e0ae23a7ae9b46a3b7341b841d2ff5fc4dbbc61ab69bd598a982ce481",
+      "sha256": "7b7014d6e2cb34b723200a829a57649b2891a23a1fdf1290ef2e8dc1d287f82f",
       "imports": [
         "Nyll.SchemeTheory.Affine.WeilRestriction.LocalCover",
         "Nyll.SchemeTheory.WeilRestriction.DirectedCover",
         "Nyll.SchemeTheory.WeilRestriction.Restriction",
         "Nyll.SchemeTheory.WeilRestriction.GluingData",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Affine.WeilRestriction.Global"
       ]
     },
     "Nyll.SchemeTheory.Affine.WeilRestriction.GluedRepresentable": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/WeilRestriction/GluedRepresentable.lean",
-      "sha256": "252e63dd3e70635ceb4bb74f50557a5b5f3cba8487b2c9f2949d9c98b21417bc",
+      "sha256": "176d5a06fce8ec9c83987a44efc329791538909a3a60e5d14d8867d947dedb97",
       "imports": [
         "Nyll.SchemeTheory.Affine.WeilRestriction.Global",
         "Nyll.SchemeTheory.Affine.WeilRestriction.Glued",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.WeilRestriction.BaseChange",
         "Nyll.SchemeTheory.WeilRestriction.GluedRepresentable",
         "Nyll.SchemeTheory.WeilRestriction.Sheaf"
@@ -30131,10 +30096,10 @@
     "Nyll.SchemeTheory.Affine.WeilRestriction.InternalHom": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/WeilRestriction/InternalHom.lean",
-      "sha256": "ec41e871379b8f708a3ad5ba3a9d985ec541d1c9374d631f2ba609ca26e14e55",
+      "sha256": "a1654eccd70325eb14c156a85587441ca979e7cb6b8022187e65906000712d6d",
       "imports": [
         "Nyll.SchemeTheory.Affine.WeilRestriction.FiniteEtale",
-        "Nyll.SchemeTheory.Affine.Property",
+        "Nyll.SchemeTheory.Pi1.Affine.Property",
         "Mathlib.CategoryTheory.Monoidal.Cartesian.Over",
         "Mathlib.AlgebraicGeometry.GammaSpecAdjunction"
       ]
@@ -30161,14 +30126,14 @@
     "Nyll.SchemeTheory.Affine.WeilRestriction.LocalCover": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Affine/WeilRestriction/LocalCover.lean",
-      "sha256": "3926f5b9579557f2397fb86a8b9e2ded979307327f7bb257198317286a337f9b",
+      "sha256": "a62112cca2d69dfa7e75b21e9bad8e053c91e73137127efbbcf149dd71d01475",
       "imports": [
         "Nyll.SchemeTheory.Affine.WeilRestriction.LocalRestriction",
         "Mathlib.AlgebraicGeometry.Cover.Open",
         "Mathlib.AlgebraicGeometry.OpenImmersion",
         "Mathlib.RingTheory.Spectrum.Prime.Topology",
         "Nyll.SchemeTheory.Affine.WeilRestriction.Global",
-        "Nyll.SchemeTheory.FiniteEtale.Basic"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic"
       ]
     },
     "Nyll.SchemeTheory.Affine.WeilRestriction.LocalRestriction": {
@@ -30186,7 +30151,7 @@
     "Nyll.SchemeTheory.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/All.lean",
-      "sha256": "16219b55bf40e943baf31c37abd59b9224c00150dd990632d6cab897a933bec8",
+      "sha256": "eacbcd10bf23496a7702799ada9f665884bb234815a8b1941d78716e6803c9da",
       "imports": [
         "Nyll.SchemeTheory.ProjectiveSpace.All",
         "Nyll.SchemeTheory.Modules.All",
@@ -30210,18 +30175,18 @@
         "Nyll.SchemeTheory.Sheaves.All",
         "Nyll.SchemeTheory.Gluing.All",
         "Nyll.SchemeTheory.Cohomology.All",
-        "Nyll.SchemeTheory.HomologicalAlgebra.All"
+        "Nyll.SchemeTheory.HomologicalAlgebra.All",
+        "Nyll.SchemeTheory.Pi1.All"
       ]
     },
     "Nyll.SchemeTheory.CategoryTheory.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/CategoryTheory/All.lean",
-      "sha256": "b748b9d0f4671902550d95471d98bfddb207d9a3fd18d85453ea21883081e58a",
+      "sha256": "6184e0b3f153a9ccd7a38a469bc0bd12a280f94e1ff085fa6378419105f95323",
       "imports": [
         "Nyll.SchemeTheory.CategoryTheory.DescentComparison",
         "Nyll.SchemeTheory.CategoryTheory.ModuleCatTensorExtension",
         "Nyll.SchemeTheory.CategoryTheory.OverPullbackLeft",
-        "Nyll.SchemeTheory.CategoryTheory.Over",
         "Nyll.SchemeTheory.CategoryTheory.OverTotalPresheaf",
         "Nyll.SchemeTheory.CategoryTheory.PresheafModulePushforward",
         "Nyll.SchemeTheory.CategoryTheory.Pullback",
@@ -30266,14 +30231,6 @@
         "Mathlib.Algebra.Module.Equiv.Defs",
         "Mathlib.Algebra.Module.Equiv.Basic",
         "Mathlib.Algebra.Algebra.Basic"
-      ]
-    },
-    "Nyll.SchemeTheory.CategoryTheory.Over": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/CategoryTheory/Over.lean",
-      "sha256": "ddf4e451a92d71b412da9f2dae0471e57809e982ffa62269442abbca039a41ca",
-      "imports": [
-        "Mathlib.CategoryTheory.Limits.MorphismProperty"
       ]
     },
     "Nyll.SchemeTheory.CategoryTheory.OverPullbackLeft": {
@@ -31288,7 +31245,7 @@
     "Nyll.SchemeTheory.Descent.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Descent/All.lean",
-      "sha256": "f71ba37e0437a6cf8d60a2e53172f3c50e9f42c4832b68baaadb7297575fe0b4",
+      "sha256": "19add70bed790c19a345344576da86242a624b7e1eb618823fcee9cdc1baede6",
       "imports": [
         "Nyll.SchemeTheory.Descent.AffineAlgebraCoaction",
         "Nyll.SchemeTheory.Descent.AffineCocycle",
@@ -31299,7 +31256,6 @@
         "Nyll.SchemeTheory.Descent.FaithfullyFlatAlgebra",
         "Nyll.SchemeTheory.Descent.Equivariance",
         "Nyll.SchemeTheory.Descent.EffectiveAffine",
-        "Nyll.SchemeTheory.Descent.FlatEqualizer",
         "Nyll.SchemeTheory.Descent.FpqcLocalCoequalizer",
         "Nyll.SchemeTheory.Descent.AffineTransitionHom",
         "Nyll.SchemeTheory.Descent.AffineTransitionEquality",
@@ -31328,7 +31284,8 @@
         "Nyll.SchemeTheory.Descent.NoetherianImageIdempotentLift",
         "Nyll.SchemeTheory.Descent.FGSubalgebra",
         "Nyll.SchemeTheory.Descent.SubalgebraStages",
-        "Nyll.SchemeTheory.Descent.SubalgebraStages_nonempty_isLimit_cone"
+        "Nyll.SchemeTheory.Descent.SubalgebraStages_nonempty_isLimit_cone",
+        "Nyll.SchemeTheory.Descent.EqualizerScalars"
       ]
     },
     "Nyll.SchemeTheory.Descent.CanonicalAlgebraEqualizer": {
@@ -31358,18 +31315,26 @@
     "Nyll.SchemeTheory.Descent.EffectiveAffine": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Descent/EffectiveAffine.lean",
-      "sha256": "6ff04729620e9f17e88bf62fb01580917d5bb801b5d59e094b79aecfcebcc2f3",
+      "sha256": "f292ab7270f1edc1f4857245b7e57d2dbf7ab8b8311512ac8ee9a1534cb8ceec",
       "imports": [
         "Nyll.SchemeTheory.Descent.AlgebraCoaction",
         "Nyll.SchemeTheory.Descent.AffineCocycle",
         "Nyll.SchemeTheory.Descent.FaithfullyFlatAlgebra",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.FaithfullyFlatDescent",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Pullbacks",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic",
         "Mathlib.Algebra.Category.Ring.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.AffineAnd",
         "Mathlib.RingTheory.TensorProduct.Maps"
+      ]
+    },
+    "Nyll.SchemeTheory.Descent.EqualizerScalars": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Descent/EqualizerScalars.lean",
+      "sha256": "66e7fd485afa7cb6916c29b992373af9de60b3ac00ae5ff4b051828c723c3826",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.Descent.EqualizerScalars"
       ]
     },
     "Nyll.SchemeTheory.Descent.Equivariance": {
@@ -31409,15 +31374,6 @@
         "Mathlib.CategoryTheory.Monad.Adjunction",
         "Mathlib.CategoryTheory.Monad.Equalizer",
         "Mathlib.RingTheory.TensorProduct.Maps"
-      ]
-    },
-    "Nyll.SchemeTheory.Descent.FlatEqualizer": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Descent/FlatEqualizer.lean",
-      "sha256": "d9905a04ae7ca733d7d1f55774c6fee285b26e6bfbf01a5fd433f14b497449ea",
-      "imports": [
-        "Mathlib.RingTheory.TensorProduct.Maps",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Equalizer"
       ]
     },
     "Nyll.SchemeTheory.Descent.FpqcLocalCoequalizer": {
@@ -31643,37 +31599,47 @@
     "Nyll.SchemeTheory.Divisors.ArithmeticBoundary": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Divisors/ArithmeticBoundary.lean",
-      "sha256": "86d156a85ce4e98fe47cd5c46d37332389a8196a1cb3f969985b1d1c52abdaa8",
+      "sha256": "ac5029945efabf917f5bad610a67b90721046f21cd533cb05d3ef7483cc3fc51",
       "imports": [
         "Mathlib.AlgebraicGeometry.Geometrically.Integral",
         "Mathlib.AlgebraicGeometry.Limits",
         "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
         "Nyll.SchemeTheory.Divisors.Basic",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Normalization.Normal"
       ]
     },
     "Nyll.SchemeTheory.Divisors.ArithmeticBoundaryEtale": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Divisors/ArithmeticBoundaryEtale.lean",
-      "sha256": "9a3a481bfef54d07b152175cf2c4b80ffa3ef3c9f3d2eb8d5fed53291bbaab44",
+      "sha256": "23b70d49728129dfa61994f4c0ecc9b908e38ddf665a370e0a257857884cc8c3",
       "imports": [
+        "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "Mathlib.AlgebraicGeometry.AffineScheme",
+        "Mathlib.AlgebraicGeometry.IdealSheaf.Basic",
+        "Mathlib.Data.Finset.Insert",
+        "Mathlib.RingTheory.Ideal.Maps",
+        "Mathlib.RingTheory.Ideal.Operations",
         "Mathlib.Algebra.CharP.Algebra",
         "Mathlib.Algebra.Category.Ring.Constructions",
         "Mathlib.RingTheory.Regular.Flat",
         "Mathlib.RingTheory.Ideal.Quotient.Operations",
         "Nyll.SchemeTheory.Divisors.ArithmeticBoundary",
+        "Nyll.SchemeTheory.Divisors.Basic",
         "Nyll.SchemeTheory.Divisors.EtaleRegularity",
-        "Nyll.SchemeTheory.FiniteEtale.Geometry"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry"
       ]
     },
     "Nyll.SchemeTheory.Divisors.Basic": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Divisors/Basic.lean",
-      "sha256": "1444367b6c660966db19a320c1836488cc404d3693df9d6b477b48bcd858d046",
+      "sha256": "7c7745b52bb2ad74a72bd7ec2e77730349ca3c710092aaee1fe643740a2e634f",
       "imports": [
         "Mathlib.AlgebraicGeometry.IdealSheaf.Functorial",
         "Mathlib.AlgebraicGeometry.Morphisms.Etale",
+        "Mathlib.Data.List.Forall2",
+        "Mathlib.Data.List.OfFn",
+        "Mathlib.RingTheory.LocalRing.RingHom.Basic",
         "Mathlib.RingTheory.Regular.RegularSequence",
         "Mathlib.RingTheory.RegularLocalRing.Defs"
       ]
@@ -31768,9 +31734,12 @@
     "Nyll.SchemeTheory.Divisors.LocalComplement": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Divisors/LocalComplement.lean",
-      "sha256": "23cc7b5c1f925e5a9450973ebdf07a4ee51d85b2824e4277e3f158819ad5c059",
+      "sha256": "267c920250154b1790e290de145b3e2450c357d714bfc8211f888e3f33dc2613",
       "imports": [
-        "Nyll.SchemeTheory.Divisors.LocalScheme"
+        "Nyll.SchemeTheory.Divisors.LocalScheme",
+        "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+        "Mathlib.AlgebraicGeometry.IdealSheaf.Basic",
+        "Mathlib.Data.Finset.Lattice.Fold"
       ]
     },
     "Nyll.SchemeTheory.Divisors.LocalScheme": {
@@ -31801,8 +31770,9 @@
     "Nyll.SchemeTheory.Divisors.NormalCrossings.Basic": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Divisors/NormalCrossings/Basic.lean",
-      "sha256": "661092324c47d4f439e474ce2722c75e3d61fa11b7b6c8fb487273d31a2cc65c",
+      "sha256": "09a99a16e66c4c5f8ede49ed273c2e16e6cfb878d82aa82daaf737a847d04c17",
       "imports": [
+        "Nyll.SchemeTheory.Divisors.Basic",
         "Mathlib.RingTheory.Regular.RegularSequence",
         "Mathlib.RingTheory.RegularLocalRing.Defs"
       ]
@@ -31873,8 +31843,9 @@
     "Nyll.SchemeTheory.Divisors.NormalCrossings.Transport": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Divisors/NormalCrossings/Transport.lean",
-      "sha256": "83610208d121b9e268b495f73288c6786a110ed0f684dc212ca80581d032f484",
+      "sha256": "12d0541e05e4369a716047c42af4bc419c9fbc7eaa557735a81577264519aa6d",
       "imports": [
+        "Nyll.SchemeTheory.Divisors.Basic",
         "Nyll.SchemeTheory.Divisors.NormalCrossings.Basic",
         "Mathlib.RingTheory.Ideal.Quotient.Operations"
       ]
@@ -32091,7 +32062,7 @@
     "Nyll.SchemeTheory.Etale.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Etale/All.lean",
-      "sha256": "16c2d4102e22e3d8a3c63b3c8b2bc014354bc328c657456b7e0495cdad3ec47e",
+      "sha256": "c29813946fc17d2571288c1cbc1ac0bbbac5b92de4dc701723c21381fac9c64e",
       "imports": [
         "Nyll.SchemeTheory.Etale.AffineClosedLift",
         "Nyll.SchemeTheory.Etale.AffineResidueField",
@@ -32112,7 +32083,6 @@
         "Nyll.SchemeTheory.Etale.ProperLocalCover",
         "Nyll.SchemeTheory.Etale.ResidueBaseChange",
         "Nyll.SchemeTheory.Etale.ResidueFieldExtension",
-        "Nyll.SchemeTheory.Etale.RingHom",
         "Nyll.SchemeTheory.Etale.UniversalHomeomorphismSections",
         "Nyll.SchemeTheory.Etale.AffineBaseChangeProperties",
         "Nyll.SchemeTheory.Etale.HenselianLocalSection",
@@ -32274,10 +32244,10 @@
     "Nyll.SchemeTheory.Etale.FiniteRadicialSplittingAlgebra": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Etale/FiniteRadicialSplittingAlgebra.lean",
-      "sha256": "5387059b7beab9eb576aa14107c51a0a5a586051ffdf83bb1e9835226352e320",
+      "sha256": "fcc50d281d10e9fadac7ec44ecec9d4d451ec0508d122fc861df61f1c43a905a",
       "imports": [
         "Nyll.SchemeTheory.Etale.FiniteRadicialLocalSplitting",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting",
         "Mathlib.AlgebraicGeometry.Cover.Open",
         "Mathlib.AlgebraicGeometry.Morphisms.Etale",
         "Mathlib.AlgebraicGeometry.Morphisms.UnderlyingMap",
@@ -32289,11 +32259,11 @@
     "Nyll.SchemeTheory.Etale.FiniteRadicialSplittingCover": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Etale/FiniteRadicialSplittingCover.lean",
-      "sha256": "0144469c286bfb870f195834b18588608cc460a8d3d3bd0a0a652594f21e3814",
+      "sha256": "980feffe88c9ca48331333c3038bb661ca82b98e314c91f5df822fe395081fd7",
       "imports": [
         "Nyll.SchemeTheory.Etale.FiniteRadicialSplittingAlgebra",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting",
-        "Nyll.SchemeTheory.RingTheory.Finite",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting",
+        "Mathlib.RingTheory.Finiteness.Defs",
         "Mathlib.RingTheory.RingHom.Etale",
         "Mathlib.RingTheory.RingHom.Finite",
         "Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra",
@@ -32404,18 +32374,17 @@
     "Nyll.SchemeTheory.Etale.IntegralRefinement": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Etale/IntegralRefinement.lean",
-      "sha256": "d562acf2556336db579b8d21fa9c8df0e44c8992e6004d8c74074a44e3b1030f",
+      "sha256": "12623cd480db605fb8768df1313541a98de54afeb4b0739b20b88aa13f6a3420",
       "imports": [
         "Nyll.SchemeTheory.Etale.FiniteAffineCover",
         "Nyll.SchemeTheory.Etale.GeometricFiberBound",
         "Nyll.SchemeTheory.Etale.NormalizationRemainderDegree",
-        "Nyll.SchemeTheory.Morphisms.ClosedImmersion",
+        "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
         "Nyll.SchemeTheory.Morphisms.QuasiFinite",
         "Nyll.SchemeTheory.Normalization.IntegralOpen",
         "Mathlib.AlgebraicGeometry.IdealSheaf.Basic",
         "Mathlib.AlgebraicGeometry.IdealSheaf.Subscheme",
         "Mathlib.AlgebraicGeometry.Limits",
-        "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
         "Mathlib.AlgebraicGeometry.Morphisms.Integral",
         "Mathlib.AlgebraicGeometry.Morphisms.QuasiCompact",
         "Mathlib.AlgebraicGeometry.Morphisms.QuasiSeparated",
@@ -32566,9 +32535,9 @@
     "Nyll.SchemeTheory.Etale.OverField.Decomposition": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Etale/OverField/Decomposition.lean",
-      "sha256": "68c1bb57dc6164080ef7f19c08ca16d3d14f024dd20c3fca9a7e7f99b482bb5d",
+      "sha256": "e607af905b78434c6db612432dcf5c33cb4a2185daabca420b2478ea4b0f8686",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Geometry"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry"
       ]
     },
     "Nyll.SchemeTheory.Etale.ProperLocalCover": {
@@ -32640,14 +32609,6 @@
         "Mathlib.RingTheory.LocalRing.ResidueField.Basic"
       ]
     },
-    "Nyll.SchemeTheory.Etale.RingHom": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Etale/RingHom.lean",
-      "sha256": "d3a293bbf0e65d7fd8413276ac60273612f0be1ed1bfc43238fde960363af4e0",
-      "imports": [
-        "Mathlib.RingTheory.RingHom.LocallyStandardSmooth"
-      ]
-    },
     "Nyll.SchemeTheory.Etale.UniversalHomeomorphismSections": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Etale/UniversalHomeomorphismSections.lean",
@@ -32682,11 +32643,11 @@
     "Nyll.SchemeTheory.FiniteEtale.AffineEquivalence": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/AffineEquivalence.lean",
-      "sha256": "6415fa8d572f470be134e94fe33a30e4ba5aaede671f40b768bed133cadc41f6",
+      "sha256": "d35d889bcfd60de695c7a9b56826d60dfc7c9af20972b34d031c112c4ef3bcf4",
       "imports": [
         "Mathlib.RingTheory.Etale.Finite",
         "Mathlib.CategoryTheory.Opposites",
-        "Nyll.SchemeTheory.FiniteEtale.Basic"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.AffineThickening": {
@@ -32777,9 +32738,9 @@
     "Nyll.SchemeTheory.FiniteEtale.AffinizationExtension": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/AffinizationExtension.lean",
-      "sha256": "965655830cf6df4bf975ec5b1e44d99f24f94b4a46f1af85bf37f2ec1faa6500",
+      "sha256": "516d2f54b8b77548ca66ef5668c962d86b4e15221080eb926527669faad70e67",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Geometry",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry",
         "Nyll.SchemeTheory.FiniteEtale.SectionsDescent",
         "Nyll.SchemeTheory.Affine.AffinizationDescent",
         "Mathlib.AlgebraicGeometry.Morphisms.SchemeTheoreticallyDominant",
@@ -32792,11 +32753,8 @@
     "Nyll.SchemeTheory.FiniteEtale.Algebra.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/All.lean",
-      "sha256": "27b40e1d05ebdca6b891b22afbf4d9105630a8d5c061fb1d281ccd7978003e95",
+      "sha256": "6dedd03befeee5d17a5ce06215415bd0236355408c66aea44b7f064793368732",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Basic",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Descent",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Equalizer",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleQuotientLift",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleSection",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.FaithfullyFlatDescent",
@@ -32818,7 +32776,6 @@
         "Nyll.SchemeTheory.FiniteEtale.Algebra.JacobsonSection",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.NilpotentBaseChange",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.SectionFactor",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.PrimeRigidity",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.PointSpecialization",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.FiniteGeometricallyReducedEtale",
@@ -32829,38 +32786,8 @@
         "Nyll.SchemeTheory.FiniteEtale.Algebra.ProductBaseChangeComparison",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.UniversalHomeomorphismAlgHom",
         "Nyll.SchemeTheory.FiniteEtale.Algebra.FiniteRadicialEssentialSurjectivity",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.IntegralRadicialEssentialSurjectivity"
-      ]
-    },
-    "Nyll.SchemeTheory.FiniteEtale.Algebra.Basic": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Basic.lean",
-      "sha256": "286a9b29cd2381a3380ebfaa4794add4e7456d48c9147515584e605d5e2e979a",
-      "imports": [
-        "Mathlib.Algebra.Lie.OfAssociative",
-        "Mathlib.RingTheory.RingHom.Etale",
-        "Mathlib.RingTheory.RingHom.Finite",
-        "Mathlib.RingTheory.TotallySplit",
-        "Nyll.SchemeTheory.RingTheory.Finite"
-      ]
-    },
-    "Nyll.SchemeTheory.FiniteEtale.Algebra.Descent": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Descent.lean",
-      "sha256": "fd2907028f8a32828d191e95699749e94f2c982bdc0a19ebb15436a6965c35ce",
-      "imports": [
-        "Mathlib.RingTheory.Etale.Descent",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Basic"
-      ]
-    },
-    "Nyll.SchemeTheory.FiniteEtale.Algebra.Equalizer": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Equalizer.lean",
-      "sha256": "45a3e519a84fc4b746cdbc873c4797113740623fe3a4af811fb3c7f5430a7ca4",
-      "imports": [
-        "Mathlib.Logic.Function.Coequalizer",
-        "Mathlib.RingTheory.Finiteness.ModuleFinitePresentation",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Descent"
+        "Nyll.SchemeTheory.FiniteEtale.Algebra.IntegralRadicialEssentialSurjectivity",
+        "Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleSplitting"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleFromLocalizations": {
@@ -32910,6 +32837,20 @@
         "Mathlib.RingTheory.Ideal.Over",
         "Mathlib.RingTheory.Ideal.Quotient.Operations",
         "Mathlib.RingTheory.TensorProduct.Quotient"
+      ]
+    },
+    "Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleSplitting": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/EtaleSplitting.lean",
+      "sha256": "246a6610261b0a3c819c0b9f8fcbd523945396edf0a6cf20ba49d809aaa296c9",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Equalizer",
+        "Mathlib.RingTheory.Etale.Basic",
+        "Mathlib.RingTheory.Finiteness.ModuleFinitePresentation",
+        "Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra",
+        "Mathlib.RingTheory.Spectrum.Prime.Topology",
+        "Mathlib.RingTheory.TensorProduct.Maps",
+        "Mathlib.RingTheory.TotallySplit"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.Algebra.FaithfullyFlatDescent": {
@@ -33261,26 +33202,6 @@
         "Mathlib.RingTheory.Ideal.Quotient.Operations"
       ]
     },
-    "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Splitting.lean",
-      "sha256": "1566fa76ae807c9ffd3fd1d1f4e57d5f20e9debe3e7ece94cf9117a857fdd514",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.PullbackCarrier",
-        "Mathlib.RingTheory.RingHom.Bijective",
-        "Mathlib.RingTheory.Etale.Basic",
-        "Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra",
-        "Mathlib.RingTheory.Spectrum.Prime.Chevalley",
-        "Mathlib.RingTheory.Spectrum.Prime.Topology",
-        "Mathlib.RingTheory.TensorProduct.Maps",
-        "Mathlib.RingTheory.TensorProduct.Pi",
-        "Mathlib.Algebra.Algebra.Pi",
-        "Mathlib.RingTheory.TotallySplit",
-        "Nyll.SchemeTheory.Morphisms.Flat",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Equalizer",
-        "Nyll.SchemeTheory.Descent.FlatEqualizer"
-      ]
-    },
     "Nyll.SchemeTheory.FiniteEtale.Algebra.UniversalHomeomorphismAlgHom": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/UniversalHomeomorphismAlgHom.lean",
@@ -33298,7 +33219,7 @@
     "Nyll.SchemeTheory.FiniteEtale.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/All.lean",
-      "sha256": "4261673d5ce06bc1e412c2bb6f4a554d9e6493d1cb606f76cae1013b1846a68d",
+      "sha256": "f184362dfaec54a11a010d1c63bdab69227390f3a01d556da6b8bb87819ec01e",
       "imports": [
         "Nyll.SchemeTheory.FiniteEtale.AffineEquivalence",
         "Nyll.SchemeTheory.FiniteEtale.AffineThickening",
@@ -33306,15 +33227,15 @@
         "Nyll.SchemeTheory.FiniteEtale.Algebra.All",
         "Nyll.SchemeTheory.FiniteEtale.Away.All",
         "Nyll.SchemeTheory.FiniteEtale.BaseChange.All",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.FiniteEtale.ClopenFull",
         "Nyll.SchemeTheory.FiniteEtale.ClopenPullback",
         "Nyll.SchemeTheory.FiniteEtale.ConnectedFiberSections",
         "Nyll.SchemeTheory.FiniteEtale.ConnectedFiberFullyFaithful",
         "Nyll.SchemeTheory.FiniteEtale.MaximalOpenExtension",
         "Nyll.SchemeTheory.FiniteEtale.FullOfSectionDescent",
         "Nyll.SchemeTheory.FiniteEtale.DensePullback",
+        "Nyll.SchemeTheory.FiniteEtale.DVRUnramifiedExtension",
         "Nyll.SchemeTheory.FiniteEtale.Forget.All",
-        "Nyll.SchemeTheory.FiniteEtale.Geometry",
         "Nyll.SchemeTheory.FiniteEtale.Henselian.All",
         "Nyll.SchemeTheory.FiniteEtale.Local.All",
         "Nyll.SchemeTheory.FiniteEtale.LocalSplitting",
@@ -33421,9 +33342,9 @@
     "Nyll.SchemeTheory.FiniteEtale.BaseChange.PullbackComposition": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/BaseChange/PullbackComposition.lean",
-      "sha256": "94bcfdf226ae73b64f91b85925d6901c2bf3273aa78c1f271893fa08646938f8",
+      "sha256": "fbe668525e1a7d94a1afe7a5a016e6427f119c707edac5fb4976112fefeeb5b8",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.Pasting"
       ]
     },
@@ -33462,26 +33383,33 @@
         "Nyll.SchemeTheory.FiniteEtale.BaseChange.PullbackResidue"
       ]
     },
-    "Nyll.SchemeTheory.FiniteEtale.Basic": {
+    "Nyll.SchemeTheory.FiniteEtale.ClopenFull": {
       "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FiniteEtale/Basic.lean",
-      "sha256": "7a15b990e97f1cea4fa88b2ed6dca7a22d702f1a8ff0691c6750c993c4008100",
+      "path": "Nyll/SchemeTheory/FiniteEtale/ClopenFull.lean",
+      "sha256": "1f42c1ea59cf83a2837287ff79ca1400088c9926b05b6446c0729514cbe3ac95",
       "imports": [
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.FiniteEtale.ClopenPullback",
+        "Nyll.SchemeTheory.Topology.ConnectedComponentsMap",
+        "Mathlib.AlgebraicGeometry.Limits",
+        "Mathlib.AlgebraicGeometry.Morphisms.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.Etale",
-        "Mathlib.CategoryTheory.Limits.Constructions.EpiMono",
-        "Mathlib.CategoryTheory.Limits.MorphismProperty",
-        "Nyll.SchemeTheory.Morphisms.Finite",
-        "Nyll.SchemeTheory.Etale.RingHom",
-        "Nyll.SchemeTheory.Affine.Property",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting"
+        "Mathlib.AlgebraicGeometry.Morphisms.Finite",
+        "Mathlib.AlgebraicGeometry.Morphisms.UnderlyingMap",
+        "Mathlib.AlgebraicGeometry.OpenImmersion",
+        "Mathlib.AlgebraicGeometry.Properties",
+        "Mathlib.AlgebraicGeometry.Restrict",
+        "Mathlib.CategoryTheory.Functor.FullyFaithful",
+        "Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts.BinaryFan",
+        "Mathlib.Topology.Sets.Closeds"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.ClopenPullback": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/ClopenPullback.lean",
-      "sha256": "8f92a85962c0f0e0155595118deebeafa81413379da8f0053613a0f6e550b0a5",
+      "sha256": "9bfaf6a648ce2c5b8f8b65a6b35f860011f0fdd774638814a27a99c37639cf81",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
         "Mathlib.AlgebraicGeometry.Morphisms.UnderlyingMap",
         "Mathlib.AlgebraicGeometry.OpenImmersion",
@@ -33515,12 +33443,28 @@
         "Mathlib.Topology.Connected.Clopen"
       ]
     },
+    "Nyll.SchemeTheory.FiniteEtale.DVRUnramifiedExtension": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/FiniteEtale/DVRUnramifiedExtension.lean",
+      "sha256": "3c066f065015ed44dc1ab19de67436ada9982d6995ba3f5bdeaa6da74144047a",
+      "imports": [
+        "Nyll.SchemeTheory.FiniteEtale.AffineEquivalence",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRFiniteEtaleAlgebra",
+        "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRNormalization",
+        "Mathlib.Algebra.Algebra.Tower",
+        "Mathlib.CategoryTheory.Functor.FullyFaithful",
+        "Mathlib.CategoryTheory.Opposites",
+        "Mathlib.RingTheory.Etale.Finite",
+        "Mathlib.RingTheory.Ideal.Quotient.Basic"
+      ]
+    },
     "Nyll.SchemeTheory.FiniteEtale.DensePullback": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/DensePullback.lean",
-      "sha256": "dde6294d61a58140a3b4e1958291c033963029c093ffbb3fa2036b37f0b44116",
+      "sha256": "ac5bb10f334cd7af58dc12fd96b644472b9434acf7d1440a9d638474f0e4f989",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Morphisms.DominantBaseChange",
         "Nyll.SchemeTheory.Morphisms.UnramifiedHomExt",
         "Mathlib.AlgebraicGeometry.Morphisms.UniversallyOpen"
@@ -33551,11 +33495,11 @@
     "Nyll.SchemeTheory.FiniteEtale.Forget.FiniteCoequalizers": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/Forget/FiniteCoequalizers.lean",
-      "sha256": "4a38dcfbe97e759a65c614e19e5dfd60bb329959d4bff92306c45a7748157742",
+      "sha256": "c3b59b17e3de4e17bdb39ea3e51dce7f0a36f2587752ad9847b0762d6232d507",
       "imports": [
         "Nyll.SchemeTheory.Descent.FpqcLocalCoequalizer",
         "Nyll.SchemeTheory.FiniteEtale.Forget.FiniteCoproducts",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting",
         "Mathlib.AlgebraicGeometry.Limits",
         "Mathlib.AlgebraicGeometry.Cover.MorphismProperty",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.Iso",
@@ -33574,53 +33518,24 @@
     "Nyll.SchemeTheory.FiniteEtale.Forget.FiniteLimits": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/Forget/FiniteLimits.lean",
-      "sha256": "2e8343142e4f0a01d41bb6253f022abd18d9777813ed6944ee3c06515e4670b6",
+      "sha256": "a2aca952b953f7e4aa4d6906b8cdc9260b5101ccb2176d8519a2f7c38550c759",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
-        "Nyll.SchemeTheory.CategoryTheory.Over",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
+        "Mathlib.CategoryTheory.Limits.MorphismProperty",
         "Mathlib.AlgebraicGeometry.Pullbacks"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.FullOfSectionDescent": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/FullOfSectionDescent.lean",
-      "sha256": "48f5326cd34b41e384a0bff74f92f9ec38199e6501caac49e8c7fe9d9d252ea6",
+      "sha256": "7050b03d9090e5655f1aa5f8296e62ae0908eb0a5d1abf59e0727ab6464b2946",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.WeilRestriction.FiniteEtale",
         "Mathlib.CategoryTheory.Functor.FullyFaithful",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.HasPullback",
         "Mathlib.CategoryTheory.Monoidal.Cartesian.Over",
         "Mathlib.CategoryTheory.Yoneda"
-      ]
-    },
-    "Nyll.SchemeTheory.FiniteEtale.Geometry": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FiniteEtale/Geometry.lean",
-      "sha256": "7dc561f66f60b4846043beabe7e4ef5dc5ff2da4c8c036de56d72d86b5767dba",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.Morphisms.FormallyUnramified",
-        "Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite",
-        "Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale",
-        "Mathlib.AlgebraicGeometry.Sites.Fpqc",
-        "Mathlib.AlgebraicGeometry.Morphisms.Immersion",
-        "Mathlib.AlgebraicGeometry.Morphisms.UniversallyInjective",
-        "Mathlib.CategoryTheory.MorphismProperty.Limits",
-        "Mathlib.CategoryTheory.Galois.IsFundamentalgroup",
-        "Mathlib.RingTheory.Smooth.StandardSmoothCotangent",
-        "Mathlib.RingTheory.Etale.Finite",
-        "Mathlib.RingTheory.Flat.TorsionFree",
-        "Mathlib.RingTheory.Henselian",
-        "Mathlib.Topology.Connected.CardComponents",
-        "Mathlib.Topology.Connected.LocallyConnected",
-        "Nyll.SchemeTheory.Morphisms.ClosedImmersion",
-        "Nyll.SchemeTheory.Morphisms.Flat",
-        "Nyll.SchemeTheory.Etale.RingHom",
-        "Nyll.SchemeTheory.Morphisms.Smooth",
-        "Nyll.SchemeTheory.CategoryTheory.Over",
-        "Nyll.SchemeTheory.RingTheory.QuotientProducts",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
-        "Nyll.SchemeTheory.Morphisms.FlatRank"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.Henselian.All": {
@@ -33725,10 +33640,10 @@
     "Nyll.SchemeTheory.FiniteEtale.InverseLimitEquality": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/InverseLimitEquality.lean",
-      "sha256": "e0f7cf46701b1c1563a682d1ca0e6b4ecbd97560a2f6c7a9bade010fd32a5028",
+      "sha256": "f165048addaecd7def0fddff7e3726bfcf31d658af5390390f11e5c6472e53cc",
       "imports": [
         "Nyll.SchemeTheory.Descent.AffineTransitionHom",
-        "Nyll.SchemeTheory.FiniteEtale.Basic"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.InverseLimitFiniteCover": {
@@ -33874,10 +33789,10 @@
     "Nyll.SchemeTheory.FiniteEtale.LocalSplitting": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/LocalSplitting.lean",
-      "sha256": "95f40eff16d5915c9a8c9bd2b23da21cb26075c4215f2714588703db88d5fc36",
+      "sha256": "48c54e50e61f55f91e7b0de94d3a0ff78ea7cb8529f23deb81abb98689c8a955",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
-        "Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting",
         "Mathlib.AlgebraicGeometry.AffineScheme",
         "Mathlib.AlgebraicGeometry.Cover.MorphismProperty",
         "Mathlib.AlgebraicGeometry.Cover.Open",
@@ -33906,9 +33821,9 @@
     "Nyll.SchemeTheory.FiniteEtale.PointSections": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/PointSections.lean",
-      "sha256": "fd6acaf8a7832cbbe40e9ea6220447359f0f1266b3de6b68f5290811dfe555f8",
+      "sha256": "52aeafceb7562ec40f43e3a8b3bf2096bc43427458dfebd16e8e3005cd9afaac",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Geometry",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry",
         "Mathlib.AlgebraicGeometry.GammaSpecAdjunction",
         "Mathlib.AlgebraicGeometry.Morphisms.Finite",
         "Mathlib.RingTheory.RingHom.Finite"
@@ -33917,10 +33832,10 @@
     "Nyll.SchemeTheory.FiniteEtale.ProperClosedFiberFaithful": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/ProperClosedFiberFaithful.lean",
-      "sha256": "57469afd09e76ace7843bac6cf0397fdad4e1bf834c1a1eb8a2a92656ffd9470",
+      "sha256": "6eb7120729b0b9ea8af7dfbd718e7625c099042590b769cc3ee8e08dfc3b8a44",
       "imports": [
         "Nyll.SchemeTheory.FiniteEtale.isIso_of_isIso_pullback_closedFibre_of_isFinite_of_etale_of_isProper",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Morphisms.UnramifiedHomExt",
         "Mathlib.AlgebraicGeometry.Morphisms.Proper",
         "Mathlib.CategoryTheory.EpiMono",
@@ -33940,9 +33855,9 @@
     "Nyll.SchemeTheory.FiniteEtale.PullbackFaithful": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/PullbackFaithful.lean",
-      "sha256": "b699f5c4cad20059c32e384ef01d2928bc152dc49d700ab1ec036d479e7d0e82",
+      "sha256": "adee07e958bb67d3150760b0829de381e2fdabd4203748eeb76ace3db990542d",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Morphisms.EtaleReduced",
         "Mathlib.AlgebraicGeometry.Morphisms.QuasiCompact",
         "Mathlib.AlgebraicGeometry.Morphisms.SchemeTheoreticallyDominant",
@@ -33984,31 +33899,31 @@
     "Nyll.SchemeTheory.FiniteEtale.RawOverlapFiniteness": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/RawOverlapFiniteness.lean",
-      "sha256": "8d26154e7ed93b28aa989950da78660b829f0df178f02dceadb8627b71461290",
+      "sha256": "166373ee53745582de4f5263f6e4c62dc6c20b83d08cf30d5e331eb5da9f8ae7",
       "imports": [
         "Nyll.SchemeTheory.Gluing.RecoveredPullback",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.QuasiSeparated"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.RelativeGluing": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/RelativeGluing.lean",
-      "sha256": "f9129291463dd2b112b95b58cddd50751e8d8f5417bbf1f5016678f8244676d3",
+      "sha256": "d5057e7ac912db8bd9c017752abec182f507f90f2b76b5b087e1aa36beb01fb5",
       "imports": [
         "Mathlib.AlgebraicGeometry.Gluing",
         "Mathlib.AlgebraicGeometry.PullbackCarrier",
         "Mathlib.AlgebraicGeometry.Morphisms.Basic",
-        "Nyll.SchemeTheory.FiniteEtale.Basic"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic"
       ]
     },
     "Nyll.SchemeTheory.FiniteEtale.RelativeOverlapFiniteness": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/RelativeOverlapFiniteness.lean",
-      "sha256": "e830e69dd39b91ea60e546185b616d009a3d1e05be52b9ca89d140f269af012d",
+      "sha256": "5f143c7e34395906477f4d48ddabb2e75a954cbdb908a5e1bf2f74cbddff0ed6",
       "imports": [
         "Nyll.SchemeTheory.Gluing.RelativeOverlap",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.QuasiSeparated"
       ]
     },
@@ -34036,10 +33951,10 @@
     "Nyll.SchemeTheory.FiniteEtale.SectionsDescent": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/SectionsDescent.lean",
-      "sha256": "00e5fcfab4d6d32f6abcd1fe758f6e94ae1871c5bce0bc04f843a161896d12ac",
+      "sha256": "9d472bd32719e78a432edf88465f8fbc5a7e76ed2e06c4a3276e724d1e45504f",
       "imports": [
         "Nyll.SchemeTheory.Affine.FlatBaseChangeAffinization",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.Algebra.Category.Ring.Constructions",
         "Mathlib.RingTheory.Etale.Descent",
         "Mathlib.RingTheory.Finiteness.Descent"
@@ -34078,10 +33993,10 @@
     "Nyll.SchemeTheory.FiniteEtale.ThickeningGluing": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/ThickeningGluing.lean",
-      "sha256": "2f40e6dece5832fca076fcb035929b1a2c98e7b1a4fd3960004bea74d5d0d594",
+      "sha256": "de255456dbf565adf8b645cab1a54cfa927c0618b32c387be9b05b6399284fe4",
       "imports": [
         "Nyll.SchemeTheory.FiniteEtale.AffineThickening",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.FiniteEtale.PullbackRepresentable",
         "Nyll.SchemeTheory.FiniteEtale.ThickeningFullyFaithful",
         "Nyll.SchemeTheory.WeilRestriction.GluedRepresentable",
@@ -34104,9 +34019,9 @@
     "Nyll.SchemeTheory.FiniteEtale.TwoOpenGluing": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/TwoOpenGluing.lean",
-      "sha256": "5095c13b240b2e2110708864f0d142011ff8f6f8758d6b26a66e566dd81b84c2",
+      "sha256": "69ce5dd6c9449c2cb5a42e84c8fc6893bf62539162c8ad04d29b175f6fc3f603",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Gluing",
         "Mathlib.AlgebraicGeometry.Limits",
         "Mathlib.AlgebraicGeometry.PullbackCarrier",
@@ -34118,11 +34033,11 @@
     "Nyll.SchemeTheory.FiniteEtale.UniversalHomeomorphismFullyFaithful": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FiniteEtale/UniversalHomeomorphismFullyFaithful.lean",
-      "sha256": "90c9c044c355d73cffefa07e1981c23f647e95f07a3e1af052a2b15b15504a5e",
+      "sha256": "a9535f22decd361ce165494257165d1e89635efd25da610a402a98c3f3b4d982",
       "imports": [
         "Nyll.SchemeTheory.Etale.UniversalHomeomorphismSections",
         "Nyll.SchemeTheory.Morphisms.UnramifiedHomExt",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.CategoryTheory.Comma.Over.Pullback",
         "Mathlib.CategoryTheory.MorphismProperty.OverAdjunction"
       ]
@@ -34141,7 +34056,7 @@
     "Nyll.SchemeTheory.FunctionFields.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FunctionFields/All.lean",
-      "sha256": "0cf9ebd19ec8a3aed588bfc753d28d51b722cd5637c739fb1283c4211745bf94",
+      "sha256": "04df5c7cc1c7a72b986229b6e6e6043dfcb4a88f3f1d1c7fccfecb26afefade7",
       "imports": [
         "Nyll.SchemeTheory.FunctionFields.Functoriality",
         "Nyll.SchemeTheory.FunctionFields.GeometricIntegrality",
@@ -34151,7 +34066,6 @@
         "Nyll.SchemeTheory.FunctionFields.PrimeDivisors.All",
         "Nyll.SchemeTheory.FunctionFields.SeparableClosure.All",
         "Nyll.SchemeTheory.FunctionFields.StalkFactorization",
-        "Nyll.SchemeTheory.FunctionFields.Transcendence",
         "Nyll.SchemeTheory.FunctionFields.Valuations.All",
         "Nyll.SchemeTheory.FunctionFields.StalkFunctoriality"
       ]
@@ -34382,16 +34296,6 @@
         "Mathlib.AlgebraicGeometry.Morphisms.OpenImmersion"
       ]
     },
-    "Nyll.SchemeTheory.FunctionFields.Transcendence": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/FunctionFields/Transcendence.lean",
-      "sha256": "38ef4c1140910f61afb5736b0e80dd58d705eba17c6984083905fd7c9f7c37de",
-      "imports": [
-        "Mathlib.Algebra.Lie.OfAssociative",
-        "Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra",
-        "Mathlib.RingTheory.Smooth.Basic"
-      ]
-    },
     "Nyll.SchemeTheory.FunctionFields.Valuations.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/FunctionFields/Valuations/All.lean",
@@ -34523,11 +34427,11 @@
     "Nyll.SchemeTheory.Gluing.RelativeChartBaseChange": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Gluing/RelativeChartBaseChange.lean",
-      "sha256": "041833b5b20ce07c9aae6ad1b1631be737ed867604917c7787b0524c9ecc8eae",
+      "sha256": "1a10aeb47a371a2afc2e9910fd0da6aae8d7d4d69f256757675d97c31c9eb560",
       "imports": [
         "Nyll.SchemeTheory.Gluing.RecoveredPullback",
         "Nyll.SchemeTheory.Gluing.RelativeOverlap",
-        "Nyll.SchemeTheory.FiniteEtale.Basic"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic"
       ]
     },
     "Nyll.SchemeTheory.Gluing.RelativeOverlap": {
@@ -34592,12 +34496,13 @@
     "Nyll.SchemeTheory.LocalGeometry.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/LocalGeometry/All.lean",
-      "sha256": "c34e2eb9602d1d05ed5c965bde05f53f30d4033d0b226c0920c807f9ef944b16",
+      "sha256": "ea5d45b895f3f92dc430b47061cf40fd492297d8c121d2dd18b6f8753bcae311",
       "imports": [
         "Nyll.SchemeTheory.LocalGeometry.EtaleStalkPrimeLocalization",
         "Nyll.SchemeTheory.LocalGeometry.HeightOne.All",
         "Nyll.SchemeTheory.LocalGeometry.HeightTwo.All",
         "Nyll.SchemeTheory.LocalGeometry.PuncturedSpectrum",
+        "Nyll.SchemeTheory.LocalGeometry.PuncturedDVR",
         "Nyll.SchemeTheory.LocalGeometry.RegularLocal.All",
         "Nyll.SchemeTheory.LocalGeometry.ConnectedDomainStalks",
         "Nyll.SchemeTheory.LocalGeometry.LocalRepresentabilityULift",
@@ -34690,9 +34595,9 @@
     "Nyll.SchemeTheory.LocalGeometry.HeightOne.Localization": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/LocalGeometry/HeightOne/Localization.lean",
-      "sha256": "59522f9df89de7c6c6c881013f40bcbd0b600f717db900ed425f8f1719b10b82",
+      "sha256": "1cd67a472e0c73ff5599533066062805469e2ea6bea3dceba7bb809feebe8752",
       "imports": [
-        "Mathlib.RingTheory.DiscreteValuationRing.TFAE",
+        "Nyll.SchemeTheory.RingTheory.RegularLocalDimensionOne",
         "Mathlib.RingTheory.Ideal.KrullsHeightTheorem",
         "Mathlib.RingTheory.LocalRing.ResidueField.Ideal",
         "Mathlib.RingTheory.RegularLocalRing.Defs"
@@ -34792,6 +34697,24 @@
         "Mathlib.CategoryTheory.Yoneda",
         "Nyll.SchemeTheory.CategoryTheory.OverTotalPresheaf",
         "Mathlib.Util.WithWeakNamespace"
+      ]
+    },
+    "Nyll.SchemeTheory.LocalGeometry.PuncturedDVR": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/LocalGeometry/PuncturedDVR.lean",
+      "sha256": "1ed28a6fa4d06b772fb6a44f07843437378a7588606f7924ef94fc2ae7eeebe9",
+      "imports": [
+        "Nyll.SchemeTheory.LocalGeometry.PuncturedSpectrum",
+        "Nyll.SchemeTheory.RingTheory.DVRFractionFieldAway",
+        "Mathlib.Algebra.GroupWithZero.Associated",
+        "Mathlib.AlgebraicGeometry.OpenImmersion",
+        "Mathlib.AlgebraicGeometry.Restrict",
+        "Mathlib.RingTheory.DiscreteValuationRing.Basic",
+        "Mathlib.RingTheory.Ideal.Span",
+        "Mathlib.RingTheory.LocalRing.MaximalIdeal.Basic",
+        "Mathlib.RingTheory.Localization.Basic",
+        "Mathlib.RingTheory.Localization.FractionRing",
+        "Mathlib.RingTheory.Spectrum.Prime.Topology"
       ]
     },
     "Nyll.SchemeTheory.LocalGeometry.PuncturedSpectrum": {
@@ -36360,24 +36283,18 @@
     "Nyll.SchemeTheory.Morphisms.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Morphisms/All.lean",
-      "sha256": "1b6206f42a5621097546a5ee53f291d880c249e48b30a2bd6a55bbec1ea35eca",
+      "sha256": "750e29cc076d0bf44b3052f435efedf5151ccc65f6f818200ae649786b23e1fa",
       "imports": [
-        "Nyll.SchemeTheory.Morphisms.ClosedImmersion",
         "Nyll.SchemeTheory.Morphisms.ClosedImmersionLift",
         "Nyll.SchemeTheory.Morphisms.DominantBaseChange",
         "Nyll.SchemeTheory.Morphisms.EtaleRadicial",
         "Nyll.SchemeTheory.Morphisms.EtaleReduced",
-        "Nyll.SchemeTheory.Morphisms.Finite",
         "Nyll.SchemeTheory.Morphisms.FiniteDescent",
-        "Nyll.SchemeTheory.Morphisms.Flat",
-        "Nyll.SchemeTheory.Morphisms.FlatRank",
         "Nyll.SchemeTheory.Morphisms.GeometricallyIntegralDescent",
         "Nyll.SchemeTheory.Morphisms.NormalizationFiniteFactor",
         "Nyll.SchemeTheory.Morphisms.OpenImmersionLocalization",
         "Nyll.SchemeTheory.Morphisms.OpenImmersionQuotient",
         "Nyll.SchemeTheory.Morphisms.RadicialDescent",
-        "Nyll.SchemeTheory.Morphisms.Smooth",
-        "Nyll.SchemeTheory.Morphisms.SmoothLocus",
         "Nyll.SchemeTheory.Morphisms.SigmaPullback",
         "Nyll.SchemeTheory.Morphisms.UnramifiedHomExt",
         "Nyll.SchemeTheory.Morphisms.SmoothGeometricallyIntegral",
@@ -36441,14 +36358,6 @@
         "Mathlib.Topology.QuasiSeparated"
       ]
     },
-    "Nyll.SchemeTheory.Morphisms.ClosedImmersion": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Morphisms/ClosedImmersion.lean",
-      "sha256": "3a22d9304d0b0416d7c9ac4a6976793091f1c20ecf8a26b464937e4dc640417f",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion"
-      ]
-    },
     "Nyll.SchemeTheory.Morphisms.ClosedImmersionLift": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Morphisms/ClosedImmersionLift.lean",
@@ -36506,20 +36415,12 @@
     "Nyll.SchemeTheory.Morphisms.FiberRank": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Morphisms/FiberRank.lean",
-      "sha256": "6e93e09663121af0dc4caa9fa6970bdd576dddee2cf3f388a05780f8f38a6f6a",
+      "sha256": "414ab69a7ba3c466f55e434a23549bb674d0b5f573d28ddb502b2c177359d1ed",
       "imports": [
-        "Nyll.SchemeTheory.Morphisms.FlatRank",
+        "Mathlib.AlgebraicGeometry.Morphisms.FlatRank",
+        "Mathlib.Topology.LocallyConstant.Basic",
         "Mathlib.AlgebraicGeometry.Fiber",
-        "Mathlib.AlgebraicGeometry.FunctionField",
-        "Mathlib.AlgebraicGeometry.Morphisms.FlatRank"
-      ]
-    },
-    "Nyll.SchemeTheory.Morphisms.Finite": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Morphisms/Finite.lean",
-      "sha256": "8b95daf4ebb10b2a44442c554ad3f99150c6ae0456353036392e28b3f40bbeab",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.Morphisms.Proper"
+        "Mathlib.AlgebraicGeometry.FunctionField"
       ]
     },
     "Nyll.SchemeTheory.Morphisms.FiniteDescent": {
@@ -36552,14 +36453,6 @@
         "Mathlib.RingTheory.Unramified.Field"
       ]
     },
-    "Nyll.SchemeTheory.Morphisms.Flat": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Morphisms/Flat.lean",
-      "sha256": "df168e1b4393cc018e6c2bbe136f0d3277697fdbbcc1fd4359ece6365c8096cf",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.Morphisms.FlatMono"
-      ]
-    },
     "Nyll.SchemeTheory.Morphisms.FlatBaseChangeNormalization": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Morphisms/FlatBaseChangeNormalization.lean",
@@ -36567,14 +36460,6 @@
       "imports": [
         "Nyll.SchemeTheory.Morphisms.ProperNormalization",
         "Nyll.SchemeTheory.Affine.FlatBaseChangeAffinization"
-      ]
-    },
-    "Nyll.SchemeTheory.Morphisms.FlatRank": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Morphisms/FlatRank.lean",
-      "sha256": "fd6343ce03f2b873e2323dcbe574f9db3e0e1877da4deabe57d469b3e6c71051",
-      "imports": [
-        "Mathlib.AlgebraicGeometry.Morphisms.FlatRank"
       ]
     },
     "Nyll.SchemeTheory.Morphisms.GeometricallyIntegralDescent": {
@@ -36799,7 +36684,7 @@
     "Nyll.SchemeTheory.Morphisms.SigmaPullback": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Morphisms/SigmaPullback.lean",
-      "sha256": "92b36a5559abfa01897fe9a41c01ec02b98fe5438688c355f12667af9ef5db86",
+      "sha256": "717d3117ff0bc6124fb947b463fcaf2445b7524713e5fad193d4cc3cc8a2fab1",
       "imports": [
         "Mathlib.AlgebraicGeometry.Cover.MorphismProperty",
         "Mathlib.AlgebraicGeometry.Cover.Open",
@@ -36809,15 +36694,7 @@
         "Mathlib.CategoryTheory.Limits.Shapes.Products",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Defs",
         "Mathlib.CategoryTheory.MorphismProperty.Basic",
-        "Nyll.SchemeTheory.FiniteEtale.Basic"
-      ]
-    },
-    "Nyll.SchemeTheory.Morphisms.Smooth": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Morphisms/Smooth.lean",
-      "sha256": "60de3eba609720518f110b376b89d818a45ed36d4c3e90e0bf92a450787cc9f6",
-      "imports": [
-        "Mathlib.RingTheory.TotallySplit"
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic"
       ]
     },
     "Nyll.SchemeTheory.Morphisms.SmoothGeometricallyIntegral": {
@@ -36830,14 +36707,6 @@
         "Mathlib.AlgebraicGeometry.Geometrically.Connected",
         "Mathlib.AlgebraicGeometry.Geometrically.Integral",
         "Mathlib.AlgebraicGeometry.Morphisms.Smooth"
-      ]
-    },
-    "Nyll.SchemeTheory.Morphisms.SmoothLocus": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/Morphisms/SmoothLocus.lean",
-      "sha256": "d9a8f0b9ba0b2092bc346558209801967d6603a7f19b450a6c62fda9ed53a6cf",
-      "imports": [
-        "Mathlib.RingTheory.Smooth.Locus"
       ]
     },
     "Nyll.SchemeTheory.Morphisms.UnramifiedHomExt": {
@@ -36987,10 +36856,10 @@
     "Nyll.SchemeTheory.Normalization.AffineFiniteEtale": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Normalization/AffineFiniteEtale.lean",
-      "sha256": "57b29a3fc4b0531bdeb92e407fd03620c8edadf1856da53e4d70cc7bd1b13638",
+      "sha256": "d5ff8dc692084fbea3b569ddbe0a3aec293e457dec713dae7ea49210a0a69c42",
       "imports": [
         "Nyll.SchemeTheory.Normalization.Affine",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Etale.AffineBaseChangeProperties",
         "Mathlib.RingTheory.RingHom.Etale",
         "Mathlib.AlgebraicGeometry.Morphisms.Finite"
@@ -37067,13 +36936,13 @@
     "Nyll.SchemeTheory.Normalization.FiniteEtaleOpen": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Normalization/FiniteEtaleOpen.lean",
-      "sha256": "1bd9c6051d0488f83e3ea766bf32b2e791deb1cafbafd6f22c453a2e52743d7d",
+      "sha256": "b2de3bf03c4f867eb9dae49b8780b82e09dccd68641b8e9868430494ced9a409",
       "imports": [
         "Mathlib.AlgebraicGeometry.Noetherian",
         "Mathlib.AlgebraicGeometry.Normalization",
         "Mathlib.AlgebraicGeometry.OpenImmersion",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.Normalization.IntegralOpen"
       ]
     },
@@ -37177,11 +37046,15 @@
     "Nyll.SchemeTheory.Normalization.IntegralClosure.FiniteProduct": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/Normalization/IntegralClosure/FiniteProduct.lean",
-      "sha256": "261f16069ab42e68274422fa3dc74fbf86b7e73c16c990e2b02d4fcf3227d34b",
+      "sha256": "53c6b954466d8c5cbac07ee7c0a70747425fe529d5a0c38c1d4404bfcfce0104",
       "imports": [
+        "Mathlib.Algebra.Algebra.Tower",
+        "Mathlib.Algebra.Polynomial.Monic",
+        "Mathlib.RingTheory.Artinian.Module",
         "Mathlib.RingTheory.Etale.Pi",
+        "Mathlib.RingTheory.Ideal.Quotient.Operations",
         "Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic",
-        "Mathlib.Algebra.Polynomial.Monic"
+        "Mathlib.RingTheory.Spectrum.Maximal.Basic"
       ]
     },
     "Nyll.SchemeTheory.Normalization.IntegralClosure.IntegralBase.All": {
@@ -37467,6 +37340,312 @@
         "Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic"
       ]
     },
+    "Nyll.SchemeTheory.Pi1.Affine.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Affine/All.lean",
+      "sha256": "e6f56f350c4a825a0f13a33cabe76359714a5bfb2955c2ac9f0202e131c7790f",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.Affine.GeometricIrreducibility",
+        "Nyll.SchemeTheory.Pi1.Affine.Over",
+        "Nyll.SchemeTheory.Pi1.Affine.Property"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Affine.GeometricIrreducibility": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Affine/GeometricIrreducibility.lean",
+      "sha256": "28d9e8a83bfdd70506955211e7a6e7ea0965cfea31cc7a5cc958fb028b4568c1",
+      "imports": [
+        "Mathlib.Topology.Irreducible",
+        "Mathlib.Algebra.Lie.OfAssociative",
+        "Mathlib.Order.CompletePartialOrder",
+        "Mathlib.RingTheory.Flat.TorsionFree",
+        "Mathlib.RingTheory.Henselian",
+        "Mathlib.RingTheory.Ideal.Maps",
+        "Mathlib.RingTheory.PicardGroup",
+        "Mathlib.RingTheory.RegularLocalRing.Defs",
+        "Mathlib.RingTheory.RingHom.Flat",
+        "Mathlib.RingTheory.SimpleRing.Principal",
+        "Mathlib.RingTheory.Spectrum.Prime.Homeomorph"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Affine.Over": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Affine/Over.lean",
+      "sha256": "2cc9110ba3acffe001e60c50f7505511e98960a28c30a21bb007aec4f8509ef2",
+      "imports": [
+        "Mathlib.AlgebraicGeometry.ColimitsOver",
+        "Mathlib.AlgebraicGeometry.Morphisms.Affine",
+        "Mathlib.AlgebraicGeometry.Morphisms.Flat"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Affine.Property": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Affine/Property.lean",
+      "sha256": "8c667218bcb1a8f43736fcce160e0af3e545ec4dff80754ec793510ef9bec93a",
+      "imports": [
+        "Mathlib.Algebra.Category.Ring.Under.Property",
+        "Mathlib.AlgebraicGeometry.Morphisms.AffineAnd",
+        "Nyll.SchemeTheory.Pi1.Affine.Over"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/All.lean",
+      "sha256": "947faa8e6dcdaecb475e9f752864e423cb4cba3c5e7da60103f8fb34e30e89dd",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.Affine.All",
+        "Nyll.SchemeTheory.Pi1.Descent.All",
+        "Nyll.SchemeTheory.Pi1.Etale.All",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.All",
+        "Nyll.SchemeTheory.Pi1.FunctionFields.All",
+        "Nyll.SchemeTheory.Pi1.Morphisms.All",
+        "Nyll.SchemeTheory.Pi1.RingTheory.All"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Descent.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Descent/All.lean",
+      "sha256": "b1841f90c754ba07b1997fc7b0b69a70bc5dad528d2f884af02aed0a50de7be2",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.Descent.EqualizerScalars",
+        "Nyll.SchemeTheory.Pi1.Descent.FlatEqualizer"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Descent.EqualizerScalars": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Descent/EqualizerScalars.lean",
+      "sha256": "79acf0092b54407bdecc3b67c5160b707b1f29ba00fb8d6d4b95bd410c032f7a",
+      "imports": [
+        "Mathlib.RingTheory.TensorProduct.Maps",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Equalizer"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Descent.FlatEqualizer": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Descent/FlatEqualizer.lean",
+      "sha256": "59c499154a8d67aa29dd1f6acc495b5090f0b7f53b449f5e6f76e2e465c4aa8f",
+      "imports": [
+        "Mathlib.RingTheory.TensorProduct.Maps",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Equalizer",
+        "Nyll.SchemeTheory.Descent.EqualizerScalars"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Etale.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Etale/All.lean",
+      "sha256": "91169c3b5fcaaf7aca0724fa063e60e91a944eab4eae1a1e08dd23381a547fd3",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.Etale.RingHom"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Etale.RingHom": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Etale/RingHom.lean",
+      "sha256": "607f48cff001a7d46849befba378de13c88a2e0aece214e0adc979052218ab99",
+      "imports": [
+        "Mathlib.RingTheory.RingHom.LocallyStandardSmooth"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/All.lean",
+      "sha256": "a9722355cd5d095757700cb0ecff4e13d97d4898c688dce16df09c22d13f7766",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Descent",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Equalizer",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Basic": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Basic.lean",
+      "sha256": "44ad693e0285ba3c5481fd64cd4d415f955221602f66f5dbf761e1392de19056",
+      "imports": [
+        "Mathlib.Algebra.Lie.OfAssociative",
+        "Mathlib.RingTheory.RingHom.Etale",
+        "Mathlib.RingTheory.RingHom.Finite",
+        "Mathlib.RingTheory.TotallySplit",
+        "Mathlib.RingTheory.Finiteness.Defs"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Descent": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Descent.lean",
+      "sha256": "be411c9ce5b2d05f9beb7515ef6ac0f0479798bef5b8608f1d6c18d1a6a0082e",
+      "imports": [
+        "Mathlib.RingTheory.Etale.Descent",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Basic"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Equalizer": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Equalizer.lean",
+      "sha256": "61239f40c83416f753d2005c533dcd06026d44ce5f5df9efe907477e4ab9e0db",
+      "imports": [
+        "Mathlib.Algebra.Group.Basic",
+        "Mathlib.Algebra.Group.Idempotent",
+        "Mathlib.Logic.Function.Coequalizer",
+        "Mathlib.RingTheory.Finiteness.ModuleFinitePresentation",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Descent"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Splitting.lean",
+      "sha256": "8fb8537ce4fc1c1a29e35d025f3720b2648223b85f84941225de95b070986952",
+      "imports": [
+        "Mathlib.AlgebraicGeometry.PullbackCarrier",
+        "Mathlib.RingTheory.RingHom.Bijective",
+        "Mathlib.RingTheory.Etale.Basic",
+        "Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra",
+        "Mathlib.RingTheory.Spectrum.Prime.Chevalley",
+        "Mathlib.RingTheory.Spectrum.Prime.Topology",
+        "Mathlib.RingTheory.TensorProduct.Maps",
+        "Mathlib.RingTheory.TensorProduct.Pi",
+        "Mathlib.Algebra.Algebra.Pi",
+        "Mathlib.RingTheory.TotallySplit",
+        "Nyll.SchemeTheory.Pi1.Morphisms.Flat",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Equalizer",
+        "Nyll.SchemeTheory.Pi1.Descent.FlatEqualizer",
+        "Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleSplitting"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/All.lean",
+      "sha256": "86d20707f30005db9cb6f93287f8cf0c409561828118bd7e605389a56fb132d1",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.All",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Basic.lean",
+      "sha256": "148ea80d21c6139a710fe496d215be2f73330b0fdb1e00c40126aa9d81501e3d",
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.Etale",
+        "Mathlib.CategoryTheory.Limits.Constructions.EpiMono",
+        "Mathlib.CategoryTheory.Limits.MorphismProperty",
+        "Nyll.SchemeTheory.Pi1.Morphisms.Finite",
+        "Nyll.SchemeTheory.Pi1.Etale.RingHom",
+        "Nyll.SchemeTheory.Pi1.Affine.Property",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Geometry.lean",
+      "sha256": "01a63484662d455b4e33aa871af4a9f9e094d2c38f6d2ed74d2a682a195e0247",
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.FormallyUnramified",
+        "Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite",
+        "Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale",
+        "Mathlib.AlgebraicGeometry.Sites.Fpqc",
+        "Mathlib.AlgebraicGeometry.Morphisms.Immersion",
+        "Mathlib.AlgebraicGeometry.Morphisms.UniversallyInjective",
+        "Mathlib.CategoryTheory.MorphismProperty.Limits",
+        "Mathlib.CategoryTheory.Galois.IsFundamentalgroup",
+        "Mathlib.RingTheory.Smooth.StandardSmoothCotangent",
+        "Mathlib.RingTheory.Etale.Finite",
+        "Mathlib.RingTheory.Flat.TorsionFree",
+        "Mathlib.RingTheory.Henselian",
+        "Mathlib.Topology.Connected.CardComponents",
+        "Mathlib.Topology.Connected.LocallyConnected",
+        "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
+        "Nyll.SchemeTheory.Pi1.Morphisms.Flat",
+        "Nyll.SchemeTheory.Pi1.Etale.RingHom",
+        "Nyll.SchemeTheory.Pi1.Morphisms.Smooth",
+        "Mathlib.CategoryTheory.Limits.MorphismProperty",
+        "Nyll.SchemeTheory.Pi1.RingTheory.QuotientProducts",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
+        "Mathlib.AlgebraicGeometry.Morphisms.FlatRank",
+        "Mathlib.Topology.LocallyConstant.Basic"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FunctionFields.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FunctionFields/All.lean",
+      "sha256": "310f93ed65844d7071315b9112955fac93e7e13543f4e2195d93d06164705ad9",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.FunctionFields.Transcendence"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.FunctionFields.Transcendence": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/FunctionFields/Transcendence.lean",
+      "sha256": "f3db233a8a1e88512c541cdef992829493107b78cc60c4c95f9eedc497c05197",
+      "imports": [
+        "Mathlib.Algebra.Lie.OfAssociative",
+        "Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra",
+        "Mathlib.RingTheory.Smooth.Basic"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Morphisms.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Morphisms/All.lean",
+      "sha256": "126b6f094e63065b0577a2c97f369d82d217abc932dbf90f0a0c92d8db036115",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.Morphisms.Finite",
+        "Nyll.SchemeTheory.Pi1.Morphisms.Flat",
+        "Nyll.SchemeTheory.Pi1.Morphisms.Smooth",
+        "Nyll.SchemeTheory.Pi1.Morphisms.SmoothLocus"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Morphisms.Finite": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Morphisms/Finite.lean",
+      "sha256": "79879e088d7f5f9796ea09f18f32b83a12ec4cd1ab8d947aeb7bae8d5fdb674b",
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.Proper"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Morphisms.Flat": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Morphisms/Flat.lean",
+      "sha256": "10a0bffdcf26d823544afb6c3e5dbc3006614c7b0f0a96039c2698b11077439b",
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.FlatMono"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Morphisms.Smooth": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Morphisms/Smooth.lean",
+      "sha256": "10d78f06164c1aa9fa2c6dab578f50645ec27bdffb64ac935ab0203d24b9e612",
+      "imports": [
+        "Mathlib.RingTheory.RingHom.Smooth",
+        "Mathlib.RingTheory.TotallySplit"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.Morphisms.SmoothLocus": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/Morphisms/SmoothLocus.lean",
+      "sha256": "e45d75eb95089a8f7ba3190404da9cf7d1ba4e0f7d29a0aff19d9d065c09b4a4",
+      "imports": [
+        "Mathlib.Algebra.Module.LocalizedModule.Basic",
+        "Mathlib.RingTheory.EssentialFiniteness",
+        "Mathlib.RingTheory.Localization.Away.AdjoinRoot",
+        "Mathlib.RingTheory.Smooth.Locus"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.RingTheory.All": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/RingTheory/All.lean",
+      "sha256": "081194ed7cb783abe0bafd496e718f33e19714e2f314b808ee2b1fe3cec9b261",
+      "imports": [
+        "Nyll.SchemeTheory.Pi1.RingTheory.QuotientProducts"
+      ]
+    },
+    "Nyll.SchemeTheory.Pi1.RingTheory.QuotientProducts": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/Pi1/RingTheory/QuotientProducts.lean",
+      "sha256": "5e3df9b5c42b7abe1dba2be4fbc90c0b80c6c0eb720ec9495bff138fcffa82dd",
+      "imports": [
+        "Mathlib.RingTheory.Ideal.Quotient.Operations"
+      ]
+    },
     "Nyll.SchemeTheory.PlaneCurves.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/PlaneCurves/All.lean",
@@ -37697,7 +37876,7 @@
     "Nyll.SchemeTheory.RingTheory.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/RingTheory/All.lean",
-      "sha256": "9dddfa1c2065dc3dff639bc08f7c2b9da2e36a895ee4dd4494293f078939e930",
+      "sha256": "c1e0a8e92198aaf199cdc5edfb3c3796f28ecd7ec4957b095ec0b247026241a6",
       "imports": [
         "Nyll.SchemeTheory.RingTheory.AdicCompletion.All",
         "Nyll.SchemeTheory.RingTheory.CyclicIdempotentAnnihilator",
@@ -37705,9 +37884,10 @@
         "Nyll.SchemeTheory.RingTheory.Descent.All",
         "Nyll.SchemeTheory.RingTheory.DepthTwoRegularPair",
         "Nyll.SchemeTheory.RingTheory.RegularLocalQuotientLift",
+        "Nyll.SchemeTheory.RingTheory.RegularLocalDimensionOne",
+        "Nyll.SchemeTheory.RingTheory.ReducedCartierDivisor",
         "Nyll.SchemeTheory.RingTheory.PuncturedHypersurfacePrime",
         "Nyll.SchemeTheory.RingTheory.DeterminantTrickCongruence",
-        "Nyll.SchemeTheory.RingTheory.Finite",
         "Nyll.SchemeTheory.RingTheory.FiniteOpenFactor",
         "Nyll.SchemeTheory.RingTheory.GenericFiber.All",
         "Nyll.SchemeTheory.RingTheory.HenselianCyclicIdempotent",
@@ -37733,7 +37913,6 @@
         "Nyll.SchemeTheory.RingTheory.LocalizationIdempotentFactor",
         "Nyll.SchemeTheory.RingTheory.OpenImmersionFiniteFactor",
         "Nyll.SchemeTheory.RingTheory.QuotientBaseChange",
-        "Nyll.SchemeTheory.RingTheory.QuotientProducts",
         "Nyll.SchemeTheory.RingTheory.Ramification.All",
         "Nyll.SchemeTheory.RingTheory.SmoothReduced",
         "Nyll.SchemeTheory.RingTheory.TensorProductPrime",
@@ -37798,6 +37977,7 @@
         "Nyll.SchemeTheory.RingTheory.HenselianLocalRing_of_isIntegral_of_isLocalRing",
         "Nyll.SchemeTheory.RingTheory.HenselianLocalRing_of_moduleFinite_of_isLocalRing",
         "Nyll.SchemeTheory.RingTheory.Module_Finite_of_ker_le_range_of_isNoetherianRing",
+        "Nyll.SchemeTheory.RingTheory.NonfiniteGeneratorCount",
         "Nyll.SchemeTheory.RingTheory.PrimeContainingAtHeightOne",
         "Nyll.SchemeTheory.RingTheory.NormPolynomial"
       ]
@@ -38382,14 +38562,6 @@
         "Mathlib.RingTheory.Spectrum.Prime.Topology",
         "Mathlib.SetTheory.Cardinal.Finite",
         "Mathlib.Topology.Compactness.Compact"
-      ]
-    },
-    "Nyll.SchemeTheory.RingTheory.Finite": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/RingTheory/Finite.lean",
-      "sha256": "b861081d03b807b6dd6dd8b0c87cfa2d21aff8907532d12b4cb3b196f70d88ec",
-      "imports": [
-        "Mathlib.RingTheory.Finiteness.Defs"
       ]
     },
     "Nyll.SchemeTheory.RingTheory.FiniteOpenFactor": {
@@ -39434,6 +39606,19 @@
         "Mathlib.RingTheory.Noetherian.Basic"
       ]
     },
+    "Nyll.SchemeTheory.RingTheory.NonfiniteGeneratorCount": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/RingTheory/NonfiniteGeneratorCount.lean",
+      "sha256": "294a57dbaba807deda7780a756667debb5f47d7df58499ece442c9a07fd6b5e1",
+      "imports": [
+        "Mathlib.Algebra.Algebra.Subalgebra.Lattice",
+        "Mathlib.Algebra.MvPolynomial.Eval",
+        "Mathlib.Data.Nat.Find",
+        "Mathlib.RingTheory.FiniteType",
+        "Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic",
+        "Mathlib.RingTheory.IntegralClosure.Algebra.Basic"
+      ]
+    },
     "Nyll.SchemeTheory.RingTheory.NormPolynomial": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/RingTheory/NormPolynomial.lean",
@@ -39471,7 +39656,7 @@
     "Nyll.SchemeTheory.RingTheory.PrimeContainingAtHeightOne": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/RingTheory/PrimeContainingAtHeightOne.lean",
-      "sha256": "a433af542e80a1042cdcd441c1b11374ad1ed6b4d0e4cbdf37263b813e7165a9",
+      "sha256": "45ecfd982c63c2a6f3df31db23da275a79b78f4975d381400b8a0f324ac2ab88",
       "imports": [
         "Nyll.SchemeTheory.RingTheory.PuncturedHypersurfacePrime",
         "Mathlib.RingTheory.Ideal.Height",
@@ -39499,14 +39684,6 @@
         "Mathlib.RingTheory.Ideal.Quotient.Operations",
         "Mathlib.RingTheory.TensorProduct.Maps",
         "Mathlib.RingTheory.TensorProduct.Quotient"
-      ]
-    },
-    "Nyll.SchemeTheory.RingTheory.QuotientProducts": {
-      "owner": "SchemeTheory",
-      "path": "Nyll/SchemeTheory/RingTheory/QuotientProducts.lean",
-      "sha256": "5424b4af585f73849f879ad405ea539b5a45882f1abe93059f297de847d06e1a",
-      "imports": [
-        "Mathlib.RingTheory.Ideal.Quotient.Operations"
       ]
     },
     "Nyll.SchemeTheory.RingTheory.Ramification.All": {
@@ -40037,10 +40214,26 @@
     "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.All": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/RingTheory/Ramification/Unramified/All.lean",
-      "sha256": "876bfb4b1e131ca5a2306ef7e990629d56048eb44ceca52e9fb045c231e42439",
+      "sha256": "83d00bc02b601a78e55b697cf58ce86bb7834b31a46d14e7d76205b504452afc",
       "imports": [
         "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.FiniteDiagonal",
-        "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRNormalization"
+        "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRNormalization",
+        "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRFiniteEtaleAlgebra"
+      ]
+    },
+    "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRFiniteEtaleAlgebra": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/RingTheory/Ramification/Unramified/DVRFiniteEtaleAlgebra.lean",
+      "sha256": "feb1cfcad11675545b1ea1569eee93a11f91adeb09fdb98c290144265e57ed78",
+      "imports": [
+        "Nyll.SchemeTheory.Normalization.IntegralClosure.FiniteProduct",
+        "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRNormalization",
+        "Mathlib.RingTheory.Artinian.Module",
+        "Mathlib.RingTheory.Etale.Field",
+        "Mathlib.RingTheory.Etale.Pi",
+        "Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic",
+        "Mathlib.RingTheory.TensorProduct.Maps",
+        "Mathlib.RingTheory.TensorProduct.Pi"
       ]
     },
     "Nyll.SchemeTheory.RingTheory.Ramification.Unramified.DVRNormalization": {
@@ -40065,6 +40258,25 @@
       "imports": [
         "Mathlib.RingTheory.Localization.Away.Basic",
         "Mathlib.RingTheory.Unramified.Finite"
+      ]
+    },
+    "Nyll.SchemeTheory.RingTheory.ReducedCartierDivisor": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/RingTheory/ReducedCartierDivisor.lean",
+      "sha256": "816c679b66ebbb6b9bba6130abd945a5a54e7e9e6b0f383dfec1721b4ae991fd",
+      "imports": [
+        "Mathlib.Algebra.GroupWithZero.Action.Regular",
+        "Mathlib.LinearAlgebra.Span.Defs",
+        "Mathlib.RingTheory.DiscreteValuationRing.TFAE",
+        "Mathlib.RingTheory.Ideal.MinimalPrime.Localization",
+        "Mathlib.RingTheory.Ideal.Quotient.Nilpotent",
+        "Mathlib.RingTheory.Localization.AtPrime.Basic",
+        "Mathlib.RingTheory.Localization.Defs",
+        "Mathlib.RingTheory.Localization.Ideal",
+        "Mathlib.RingTheory.Localization.Submodule",
+        "Mathlib.RingTheory.RegularLocalRing.Defs",
+        "Nyll.SchemeTheory.RingTheory.RegularLocalDomain",
+        "Nyll.SchemeTheory.RingTheory.RegularLocalQuotientLift"
       ]
     },
     "Nyll.SchemeTheory.RingTheory.RegularLocalDepth": {
@@ -40111,6 +40323,19 @@
         "Mathlib.Tactic.TermCongr",
         "Nyll.SchemeTheory.RingTheory.CohenMacaulay",
         "Nyll.SchemeTheory.RingTheory.LocalAlgebra"
+      ]
+    },
+    "Nyll.SchemeTheory.RingTheory.RegularLocalDimensionOne": {
+      "owner": "SchemeTheory",
+      "path": "Nyll/SchemeTheory/RingTheory/RegularLocalDimensionOne.lean",
+      "sha256": "23120e09ddd4465248386b40f5c56adf6a8323ed72fc6be158efa7bd700f6100",
+      "imports": [
+        "Nyll.SchemeTheory.RingTheory.RegularLocalDomain",
+        "Mathlib.Data.ENat.Basic",
+        "Mathlib.RingTheory.DiscreteValuationRing.TFAE",
+        "Mathlib.RingTheory.KrullDimension.Basic",
+        "Mathlib.RingTheory.LocalRing.ResidueField.Ideal",
+        "Mathlib.RingTheory.RegularLocalRing.Defs"
       ]
     },
     "Nyll.SchemeTheory.RingTheory.RegularLocalDomain": {
@@ -40854,12 +41079,12 @@
     "Nyll.SchemeTheory.WeilRestriction.Affine": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/WeilRestriction/Affine.lean",
-      "sha256": "2aab92f76856a173cafebebddc4e0f856914b6b105bd9dcc680a7524046475e6",
+      "sha256": "31f5770a064328666722604831952d0771a8ee959bcfd2eadf3be496456bb9c1",
       "imports": [
         "Nyll.SchemeTheory.Affine.WeilRestriction.GluedRepresentable",
         "Nyll.SchemeTheory.WeilRestriction.Congr",
         "Mathlib.RingTheory.Etale.Finite",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.Morphisms.Affine",
         "Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic"
       ]
@@ -40934,9 +41159,9 @@
     "Nyll.SchemeTheory.WeilRestriction.FiniteEtale": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/WeilRestriction/FiniteEtale.lean",
-      "sha256": "03267780f53830504b03d427ad2011927f434954fd54cae5644d1585491a703c",
+      "sha256": "f4634b906ad232de050fc9bbe15bd9d6b9d30c1b213d5b1340e9c03f04ce57e9",
       "imports": [
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Nyll.SchemeTheory.WeilRestriction.Affine",
         "Nyll.SchemeTheory.WeilRestriction.BaseChange",
         "Nyll.SchemeTheory.WeilRestriction.GluedRepresentable",
@@ -40985,11 +41210,11 @@
     "Nyll.SchemeTheory.WeilRestriction.GluingData": {
       "owner": "SchemeTheory",
       "path": "Nyll/SchemeTheory/WeilRestriction/GluingData.lean",
-      "sha256": "fab95baf3cbd868076aae8be9b90d56ff402c6a7665f3553d32e3c50b431be8a",
+      "sha256": "eb59675ec68d10725396562d899adf940d855cc1142d28ebe1f96c590dda75fc",
       "imports": [
         "Nyll.SchemeTheory.WeilRestriction.LocalRepresenterDiagram",
         "Nyll.SchemeTheory.WeilRestriction.IteratedSlice",
-        "Nyll.SchemeTheory.FiniteEtale.Basic",
+        "Nyll.SchemeTheory.Pi1.FiniteEtale.Basic",
         "Mathlib.AlgebraicGeometry.RelativeGluing",
         "Mathlib.CategoryTheory.Limits.Constructions.Over.Connected",
         "Nyll.SchemeTheory.WeilRestriction.LocalRepresenters"
@@ -47842,7 +48067,7 @@
     "ClassFieldTower.Sawin.exists_totallyReal_discr_le",
     "ClassFieldTower.Martinet.Shafarevich.shafarevich_relation_rank_bound"
   ],
-  "sourceCommitScope": "sourceCommit identifies the initial 1,600-module extraction. synchronizedFromCommit identifies the later maintained workspace snapshot for every current module except the standalone Martinet corollary, which is recorded in additionalModuleProvenance. moduleRows contains SHA-256 hashes of the exact files in this repository.",
+  "sourceCommitScope": "sourceCommit identifies the initial extraction. previousSynchronizedFromCommit retains the preceding synchronization record. synchronizedFromCommit pins the current NYLL snapshot used for every non-entry module. Nyll.lean and Nyll/All.lean are the generated subset entry points for this repository. additionalModuleProvenance retains the historical Martinet corollary provenance. moduleRows records SHA-256 hashes of the exact current repository files.",
   "additionalModuleProvenance": {
     "SawinTotallyRealTowers.MartinetCorollary": {
       "kind": "new-corollary",
@@ -47851,5 +48076,6 @@
       "derivedFromModule": "SawinTotallyRealTowers.SawinTotallyRealTower",
       "derivedFromDeclaration": "ClassFieldTower.Sawin.sawin_totally_real_tower"
     }
-  }
+  },
+  "previousSynchronizedFromCommit": "dd8bcd65a9166c5a82e8bb48cd1b19d42d688b2a"
 }

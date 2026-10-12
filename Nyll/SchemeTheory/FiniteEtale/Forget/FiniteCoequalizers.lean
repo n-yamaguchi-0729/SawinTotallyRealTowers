@@ -3,13 +3,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Christian Merten
 The cited pi1 file has no copyright notice; its holder requires review.
 
-Based on pi1 source (comparison revision; exact copied commit unverified):
+The simultaneous-splitting argument is adapted from this pinned pi1 source:
 https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/KerTensor.lean
+-/
+
+/-
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729).
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors of Nyll-local additions: Naganori Yamaguchi (assisted by OpenAI Codex).
+
+This file is a Nyll extension, not an upstream pi1 module.
+The initial AlgHom.AreSplit definition, its scalar-tower comparison and
+AlgHom.exists_areSplit adapt Christian Merten's single-map AlgHom.IsSplit,
+AlgHom.IsSplit.iff_of_isScalarTower and Algebra.exists_isSplit arguments in
+Pi1/RingTheory/KerTensor.lean to a simultaneous pair of maps. The upstream
+credit and the unresolved upstream copyright notice above apply to those
+adapted arguments. The concrete coequalizer and descent implementation is
+Nyll-local; it is not supplied by the cited pi1 file.
 -/
 
 import Nyll.SchemeTheory.Descent.FpqcLocalCoequalizer
 import Nyll.SchemeTheory.FiniteEtale.Forget.FiniteCoproducts
-import Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting
+import Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting
 import Mathlib.AlgebraicGeometry.Limits
 import Mathlib.AlgebraicGeometry.Cover.MorphismProperty
 import Mathlib.CategoryTheory.Limits.Shapes.Pullback.Iso

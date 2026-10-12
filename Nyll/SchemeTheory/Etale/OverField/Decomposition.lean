@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.SchemeTheory.FiniteEtale.Geometry
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry
 
 /-!
 # Étale schemes over a field

@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.SchemeTheory.FiniteEtale.AffineThickening
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Nyll.SchemeTheory.FiniteEtale.PullbackRepresentable
 public import Nyll.SchemeTheory.FiniteEtale.ThickeningFullyFaithful
 public import Nyll.SchemeTheory.WeilRestriction.GluedRepresentable

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Nyll.SchemeTheory.Divisors.Basic
 import Nyll.SchemeTheory.Divisors.NormalCrossings.Basic
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 
@@ -29,25 +30,7 @@ theorem IsSplitStrictNormalCrossingsAt.map_ringEquiv
     IsSplitStrictNormalCrossingsAt (e f) (e ∘ t) r := by
   rcases h with ⟨hrpos, hrd, hparams, hprime, hassoc, hbranch⟩
   refine ⟨hrpos, hrd, ?_, ?_, ?_, ?_⟩
-  · constructor
-    · have hreg : RingTheory.Sequence.IsRegular S
-          ((List.ofFn t).map e) :=
-        (e.toAddEquiv.isRegular_congr
-          (List.forall₂_map_right_iff.mpr
-            (List.forall₂_same.mpr fun a _ z ↦ e.map_mul a z))).mp
-          hparams.1
-      simpa only [List.map_ofFn] using hreg
-    · calc
-        Ideal.ofList (List.ofFn (e ∘ t)) =
-            Ideal.ofList (List.ofFn ((e : R →+* S) ∘ t)) := rfl
-        _ =
-            Ideal.map (e : R →+* S) (Ideal.ofList (List.ofFn t)) := by
-              simpa only [List.map_ofFn] using
-                (Ideal.map_ofList (e : R →+* S) (List.ofFn t)).symm
-        _ = Ideal.map (e : R →+* S) (IsLocalRing.maximalIdeal R) :=
-          congrArg (Ideal.map (e : R →+* S)) hparams.2
-        _ = IsLocalRing.maximalIdeal S :=
-          IsLocalRing.map_ringEquiv_maximalIdeal e
+  · exact AlgebraicGeometry.Scheme.IsRegularSystemOfParameters.map_ringEquiv hparams e
   · intro i hi
     change Prime (e (t i))
     exact (MulEquiv.prime_iff e.toMulEquiv).mpr (hprime i hi)

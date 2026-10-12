@@ -9,7 +9,7 @@ module
 public import Nyll.SchemeTheory.Affine.WeilRestriction.GluedRepresentable
 public import Nyll.SchemeTheory.WeilRestriction.Congr
 public import Mathlib.RingTheory.Etale.Finite
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Mathlib.AlgebraicGeometry.Morphisms.Affine
 public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
 

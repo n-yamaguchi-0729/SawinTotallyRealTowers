@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Nyll.SchemeTheory.Morphisms.DominantBaseChange
 public import Nyll.SchemeTheory.Morphisms.UnramifiedHomExt
 public import Mathlib.AlgebraicGeometry.Morphisms.UniversallyOpen

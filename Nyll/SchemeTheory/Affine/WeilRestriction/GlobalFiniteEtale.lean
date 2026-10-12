@@ -8,7 +8,7 @@ module
 
 public import Nyll.SchemeTheory.Affine.WeilRestriction.Global
 public import Nyll.SchemeTheory.WeilRestriction.BaseChange
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Mathlib.AlgebraicGeometry.Morphisms.Finite
 public import Mathlib.AlgebraicGeometry.Morphisms.Etale
 public import Mathlib.AlgebraicGeometry.Morphisms.RingHomProperties

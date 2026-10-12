@@ -10,7 +10,7 @@ public import Nyll.SchemeTheory.Descent.AlgebraCoaction
 public import Nyll.SchemeTheory.Descent.AffineCocycle
 public import Nyll.SchemeTheory.Descent.FaithfullyFlatAlgebra
 public import Nyll.SchemeTheory.FiniteEtale.Algebra.FaithfullyFlatDescent
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Mathlib.AlgebraicGeometry.Pullbacks
 public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
 

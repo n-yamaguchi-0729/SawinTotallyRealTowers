@@ -10,15 +10,15 @@ import Nyll.SchemeTheory.FiniteEtale.AffineUniversalHomeomorphismModel
 import Nyll.SchemeTheory.FiniteEtale.Algebra.All
 import Nyll.SchemeTheory.FiniteEtale.Away.All
 import Nyll.SchemeTheory.FiniteEtale.BaseChange.All
-import Nyll.SchemeTheory.FiniteEtale.Basic
+import Nyll.SchemeTheory.FiniteEtale.ClopenFull
 import Nyll.SchemeTheory.FiniteEtale.ClopenPullback
 import Nyll.SchemeTheory.FiniteEtale.ConnectedFiberSections
 import Nyll.SchemeTheory.FiniteEtale.ConnectedFiberFullyFaithful
 import Nyll.SchemeTheory.FiniteEtale.MaximalOpenExtension
 import Nyll.SchemeTheory.FiniteEtale.FullOfSectionDescent
 import Nyll.SchemeTheory.FiniteEtale.DensePullback
+import Nyll.SchemeTheory.FiniteEtale.DVRUnramifiedExtension
 import Nyll.SchemeTheory.FiniteEtale.Forget.All
-import Nyll.SchemeTheory.FiniteEtale.Geometry
 import Nyll.SchemeTheory.FiniteEtale.Henselian.All
 import Nyll.SchemeTheory.FiniteEtale.Local.All
 import Nyll.SchemeTheory.FiniteEtale.LocalSplitting

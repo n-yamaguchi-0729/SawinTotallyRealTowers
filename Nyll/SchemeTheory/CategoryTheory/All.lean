@@ -7,7 +7,6 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Nyll.SchemeTheory.CategoryTheory.DescentComparison
 import Nyll.SchemeTheory.CategoryTheory.ModuleCatTensorExtension
 import Nyll.SchemeTheory.CategoryTheory.OverPullbackLeft
-import Nyll.SchemeTheory.CategoryTheory.Over
 import Nyll.SchemeTheory.CategoryTheory.OverTotalPresheaf
 
 import Nyll.SchemeTheory.CategoryTheory.PresheafModulePushforward

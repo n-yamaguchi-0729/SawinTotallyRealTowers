@@ -9,9 +9,6 @@ import Nyll.SchemeTheory.Affine.PullbackSectionsPushout
 import Nyll.SchemeTheory.Affine.FlatBaseChangeSections
 import Nyll.SchemeTheory.Affine.FlatMinimalPrime
 import Nyll.SchemeTheory.Affine.GeometricPointLocalization
-import Nyll.SchemeTheory.Affine.GeometricIrreducibility
-import Nyll.SchemeTheory.Affine.Over
-import Nyll.SchemeTheory.Affine.Property
 import Nyll.SchemeTheory.Affine.RegularSection
 import Nyll.SchemeTheory.Affine.StalkLocalization
 import Nyll.SchemeTheory.Affine.WeilRestriction.All

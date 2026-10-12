@@ -8,6 +8,7 @@ import Nyll.SchemeTheory.LocalGeometry.EtaleStalkPrimeLocalization
 import Nyll.SchemeTheory.LocalGeometry.HeightOne.All
 import Nyll.SchemeTheory.LocalGeometry.HeightTwo.All
 import Nyll.SchemeTheory.LocalGeometry.PuncturedSpectrum
+import Nyll.SchemeTheory.LocalGeometry.PuncturedDVR
 import Nyll.SchemeTheory.LocalGeometry.RegularLocal.All
 
 import Nyll.SchemeTheory.LocalGeometry.ConnectedDomainStalks

@@ -11,7 +11,7 @@ public import Mathlib.AlgebraicGeometry.Cover.Open
 public import Mathlib.AlgebraicGeometry.OpenImmersion
 public import Mathlib.RingTheory.Spectrum.Prime.Topology
 public import Nyll.SchemeTheory.Affine.WeilRestriction.Global
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 
 /-!
 # A principal open cover carrying finite étale internal Homs

@@ -8,7 +8,7 @@ module
 
 public import Nyll.SchemeTheory.Etale.UniversalHomeomorphismSections
 public import Nyll.SchemeTheory.Morphisms.UnramifiedHomExt
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Mathlib.CategoryTheory.Comma.Over.Pullback
 public import Mathlib.CategoryTheory.MorphismProperty.OverAdjunction
 

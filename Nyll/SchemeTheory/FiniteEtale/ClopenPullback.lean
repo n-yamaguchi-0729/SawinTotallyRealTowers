@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 public import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
 public import Mathlib.AlgebraicGeometry.Morphisms.UnderlyingMap
 public import Mathlib.AlgebraicGeometry.OpenImmersion
@@ -48,7 +48,8 @@ private lemma range_clopenFiniteEtale {X : Scheme.{u}} (U : Clopens X) :
     Set.range (clopenFiniteEtale U).hom = (U : Set X) :=
   Scheme.Opens.range_ι U.toOpens
 
-private lemma clopen_subset_of_preimage_subset {X Y : Scheme.{u}} (f : X ⟶ Y)
+/-- Fullness of finite étale pullback reflects containment of clopen subsets. -/
+lemma clopen_subset_of_preimage_subset {X Y : Scheme.{u}} (f : X ⟶ Y)
     [(FiniteEtale.pullback f).Full] (U V : Clopens Y)
     (h : f ⁻¹' (U : Set Y) ⊆ f ⁻¹' (V : Set Y)) :
     (U : Set Y) ⊆ (V : Set Y) := by

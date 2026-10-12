@@ -28,6 +28,8 @@ import Nyll.SchemeTheory.Sheaves.All
 import Nyll.SchemeTheory.Gluing.All
 import Nyll.SchemeTheory.Cohomology.All
 import Nyll.SchemeTheory.HomologicalAlgebra.All
+import Nyll.SchemeTheory.Pi1.All
+
 /-!
 # Scheme theory
 

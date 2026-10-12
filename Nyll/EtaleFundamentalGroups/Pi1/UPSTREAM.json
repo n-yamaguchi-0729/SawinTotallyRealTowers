@@ -1,0 +1,4608 @@
+{
+  "schema": "nyll.pi1.provenance.v1",
+  "description": "Pinned upstream provenance and current Nyll adaptation source hashes; this is not a build-success certificate.",
+  "recorded_at_utc": "2026-10-12T04:02:00.178023+00:00",
+  "upstream": {
+    "repository": "https://github.com/chrisflav/pi1",
+    "git_url": "https://github.com/chrisflav/pi1.git",
+    "branch": "master",
+    "pinned_source_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+    "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+    "tree_sha1": "8680793712f51b2277907cb13d094c001eb69e5d",
+    "commit_date": "2026-05-19T19:25:46+02:00",
+    "commit_subject": "reduce imports and remove upstreamed files (#9)",
+    "latest_branch_verification": {
+      "method": "git ls-remote https://github.com/chrisflav/pi1.git refs/heads/master",
+      "ref": "refs/heads/master",
+      "verified_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "started_at_utc": "2026-10-12T04:11:20.589604+00:00",
+      "finished_at_utc": "2026-10-12T04:11:21.116517+00:00",
+      "recorded_at_utc": "2026-10-12T04:20:11.879197+00:00",
+      "note": "Exact read-only remote-ref verification; these times are not acquisition timestamps."
+    },
+    "acquired_at_utc": null,
+    "original_import_commit": null,
+    "original_import_commit_status": "The exact commit originally copied into Nyll is unverified. The refreshed pinned comparison commit does not resolve that historical uncertainty.",
+    "lean_toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib": {
+      "url": "https://github.com/leanprover-community/mathlib4",
+      "type": "git",
+      "subDir": null,
+      "scope": "leanprover-community",
+      "rev": "53f8a93a7739dd4eb33926f645811ebb6cee21bf",
+      "name": "mathlib",
+      "manifestFile": "lake-manifest.json",
+      "inputRev": "master",
+      "inherited": false,
+      "configFile": "lakefile.lean"
+    },
+    "configuration_caveat": "Upstream disables unusedTactic/unreachableTactic linters and sets backward.isDefEq.respectTransparency=false and maxSynthPendingDepth=3; these are upstream metadata, not approved Nyll configuration changes.",
+    "tracked_file_count": 35,
+    "leaf_count": 25,
+    "aggregate_count": 1
+  },
+  "license": {
+    "spdx": "Apache-2.0",
+    "local_path": "Nyll/EtaleFundamentalGroups/Pi1/LICENSE",
+    "upstream_path": "LICENSE",
+    "git_blob_sha1": "8dada3edaf50dbc082c9a125058f25def75e625a",
+    "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+    "byte_count": 11357,
+    "byte_identical_to_upstream": true,
+    "upstream_NOTICE_files": [],
+    "upstream_ATTRIBUTION_files": []
+  },
+  "upstream_tracked_tree": [
+    {
+      "path": ".github/workflows/lean_action_ci.yml",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "dec510c56279a01aa20f21bc2fcc7d460b6036e2",
+      "sha256": "6b0452f390d96fa26b0e82a35b0c3ccd3aa07f9a0ed25dc0e42c9992f8afe908",
+      "byte_count": 798,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/.github/workflows/lean_action_ci.yml"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "63be97ed264acdc6ac8ef173ffb17cbab28c73b0",
+      "sha256": "b58b1ff658a0a0f6fd9fa2d3749da78523dd29893fc92d195b4b5f4541a86a4e",
+      "byte_count": 22,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/.gitignore"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "8dada3edaf50dbc082c9a125058f25def75e625a",
+      "sha256": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
+      "byte_count": 11357,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/LICENSE"
+    },
+    {
+      "path": "Pi1.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "3688fc5f34269111b7efa7879d5695333d6c4cfc",
+      "sha256": "f5f2fec8f048baf0a6d9f809f1ec6ed093cff1a74320ec7aad0b44c1986db998",
+      "byte_count": 1302,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Pi1.FundamentalGroup.AffineAnd",
+        "Pi1.FundamentalGroup.AffineColimits",
+        "Pi1.FundamentalGroup.FiniteEtale",
+        "Pi1.FundamentalGroup.Galois",
+        "Pi1.FundamentalGroup.Point",
+        "Pi1.FundamentalGroup.Rank",
+        "Pi1.Mathlib.AlgebraicGeometry.Limits",
+        "Pi1.Mathlib.AlgebraicGeometry.Morphisms.Finite",
+        "Pi1.Mathlib.AlgebraicGeometry.Morphisms.Flat",
+        "Pi1.Mathlib.CategoryTheory.Galois.IsFundamentalGroup",
+        "Pi1.Mathlib.CategoryTheory.Limits.MorphismProperty",
+        "Pi1.Mathlib.RingTheory.Flat.Equalizer",
+        "Pi1.Mathlib.RingTheory.Geometric",
+        "Pi1.Mathlib.RingTheory.Ideal.Quotient.Operations",
+        "Pi1.Mathlib.RingTheory.RingHom.Etale",
+        "Pi1.Mathlib.RingTheory.RingHom.Finite",
+        "Pi1.Mathlib.RingTheory.RingHom.Smooth",
+        "Pi1.Mathlib.RingTheory.TensorProduct.Basic",
+        "Pi1.RingTheory.FiniteEtale.Basic",
+        "Pi1.RingTheory.FiniteEtale.Descent",
+        "Pi1.RingTheory.FiniteEtale.Equalizer",
+        "Pi1.RingTheory.KerTensor",
+        "Pi1.RingTheory.Smooth.StandardSmoothSmooth",
+        "Pi1.RingTheory.StableProperties",
+        "Pi1.RingTheory.Transcendence"
+      ],
+      "source_role": "aggregate",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9dda579a54305cf3cf0000b200a7a16b6215573f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b78c77d857a290a8ec34a5e353323d39e48d22db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "df81ec54e79cc093d0849e2f81c75b2062dc267b",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "2baade970fa3fa28c9dc6849e19b3680bbedce43",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "62169bf3b30d8e4592c610f43432c67bb00e0769",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "854aebce4095de28e9c94ba2c1f617efc51a3fce",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "3d44da6304519749602e8b23a8ded7b8982f686a",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b4506ee5e68f622a96fdb0a241bfdef6088e4294",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "14ecca876fcd750ca93d687722ea4c7b8f224e5c",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "1dd22e8e50e7ec672d1285f627adeece55e4f7cb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "1d02efb4a2b5ec643420599836343fd644b02e24",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d3d2d9b89d25d5045e47f279c5ad0aa715abd3fe",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "fcf865fb90ffe4af179ade9abe77be23edfa602d",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "aa470b5eeb3ef09f4c9b123a8d10a3228b3b83ab",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "645cdb8de0a0e0e7f1093bd71847c3ea9def7bb1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "872d9e1919fe67fb17012886ee20fa36d163128d",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b5ddc931e8a31f8514ad9f5a3f9148b65c8ede6a",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7cfeb0834b2fa6ae56846ac65156684e7ef3e6f7",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ddfe186d1b82b678a45b478ee8095cca62f2ba35",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "95c0cedb22858d1dc97763647021ff5da13b6305",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "48986cd15cfb9fca84d29e0dbbc8d4a22befab72",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9c26bfed59a5f247c2265b578b8da75631adf322",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d5223b693e8369f9fdc118e121d85c772c8846f1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "030465b3c1fe7ce485e3c24e4934169ade4c5a7e",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "49534b367e7a802fd9550a63816efab5887a7f4c",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "659416abd4e97a524f2e73e203d631e432ba66d8",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "009c1197766f6e24fa826bc90b84f160083edfd7",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "714ef9d4c192b7aacc7abd9242af962721ed948a",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "3b790bae9594ae7640763b31db37e833e5cc2634",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f0928edd17025421fb18bd13ff472ae23e783127",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "860fc0689a075dba8964eb71f01b62faec74cfd3",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "41c6ef93bdc58677b542cbd24213b821473de56d",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d772bc7b8cc0654671ad11856f59e783a59e2577",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "32db8754789923b43c1e3652f7eaa7e9393db771",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "57219e68672eb825ee63c72d8c0f5ecc431dd9f3",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a8a4b59682588ae5fbcec4b0b0a4868dba1fec97",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "931941aec2fe2e3eb4cf35f95173e1f6e82ca41d",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "48a186e77c03247c253a4fa8a9dfc29a3422a11f",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": []
+    },
+    {
+      "path": "Pi1/FundamentalGroup/AffineAnd.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "27273ea74326807aedbc09ec5f3af099c85a93e7",
+      "sha256": "f53ab3e3836d5f9e46df0aec7cf5c78f8d81c87594ddda8d74edd139d4a33548",
+      "byte_count": 28753,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/AffineAnd.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.Algebra.Category.Ring.Under.Property",
+        "Mathlib.AlgebraicGeometry.Morphisms.AffineAnd",
+        "Pi1.FundamentalGroup.AffineColimits"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9dda579a54305cf3cf0000b200a7a16b6215573f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b78c77d857a290a8ec34a5e353323d39e48d22db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "fb0bed17b7f28ba50e37feb89f0e43de179443a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7069255912718837c2adeb88e0efba046954f2c0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "6046840f6fad521169a0c5dba32155f3c4741ef6",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bf57a551209c8ff29cbea092cd2bc5dbcf10f0ff",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "009c1197766f6e24fa826bc90b84f160083edfd7",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f010d7dd33b139c3317b11a7b76b1c86ff5f6c8c",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Affine/Property.lean"
+      ]
+    },
+    {
+      "path": "Pi1/FundamentalGroup/AffineColimits.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "e62a9ff1d5369528bccb558fb25751b3c9033d80",
+      "sha256": "b8ba3f256be55783421c5e9dd607ea5d10830bce13c5ad7a75b0dc3d05e6bfd3",
+      "byte_count": 18505,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/AffineColimits.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.ColimitsOver",
+        "Mathlib.AlgebraicGeometry.Morphisms.Affine",
+        "Mathlib.AlgebraicGeometry.Morphisms.Flat"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9dda579a54305cf3cf0000b200a7a16b6215573f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "df81ec54e79cc093d0849e2f81c75b2062dc267b",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5303fb4f2ea531f643bbf95b54adba1c439bfe66",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7069255912718837c2adeb88e0efba046954f2c0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "6046840f6fad521169a0c5dba32155f3c4741ef6",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d5223b693e8369f9fdc118e121d85c772c8846f1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c1870b7c9dfa4fb0613ce1a129b9e035af672fc5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f010d7dd33b139c3317b11a7b76b1c86ff5f6c8c",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c0f6368e9b3ef119478f5484442fd224e9720719",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Affine/Over.lean"
+      ]
+    },
+    {
+      "path": "Pi1/FundamentalGroup/FiniteEtale.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "86cb5d23bda3371182145792b284a64cc887dd4e",
+      "sha256": "8daf69366f06f5610be596585237bb56ef4bc6b0d40f816897c5aca1e98c0684",
+      "byte_count": 8182,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/FiniteEtale.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.Etale",
+        "Pi1.Mathlib.AlgebraicGeometry.Morphisms.Finite",
+        "Pi1.Mathlib.RingTheory.RingHom.Etale",
+        "Pi1.FundamentalGroup.AffineAnd",
+        "Pi1.RingTheory.StableProperties",
+        "Pi1.RingTheory.KerTensor"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "327313968591d0a850e0a373ef2f5f0cd31881a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "645cdb8de0a0e0e7f1093bd71847c3ea9def7bb1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d9d533d85cc6ab67ea7fe4581b2115d61a9decd1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5616d962cd1b2996bff046367881f52a967122c9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5b5c14a95f97ed95be5bdcbdb50dc1cc8b3a7aa9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5b5b975bea2038257f9ea6dd1463c74d7c6b1f8e",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "e3eed934ba9cc148211f3cd686e11cc436e5d5cf",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f010d7dd33b139c3317b11a7b76b1c86ff5f6c8c",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c0f6368e9b3ef119478f5484442fd224e9720719",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/FiniteEtale/Basic.lean"
+      ]
+    },
+    {
+      "path": "Pi1/FundamentalGroup/Galois.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "088140fc1d9fd47aad0ad4a63b4bfde42ea92291",
+      "sha256": "bd609a17863be92678b4ae47fd3ef220899adc1055d878945e107bef072d9354",
+      "byte_count": 28708,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Galois.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.FormallyUnramified",
+        "Mathlib.AlgebraicGeometry.Morphisms.QuasiFinite",
+        "Mathlib.AlgebraicGeometry.Morphisms.WeaklyEtale",
+        "Mathlib.AlgebraicGeometry.Sites.Fpqc",
+        "Mathlib.AlgebraicGeometry.Morphisms.Immersion",
+        "Mathlib.AlgebraicGeometry.Morphisms.UniversallyInjective",
+        "Mathlib.CategoryTheory.MorphismProperty.Limits",
+        "Mathlib.CategoryTheory.Galois.IsFundamentalgroup",
+        "Mathlib.RingTheory.Smooth.StandardSmoothCotangent",
+        "Mathlib.RingTheory.Flat.TorsionFree",
+        "Mathlib.RingTheory.Henselian",
+        "Mathlib.Topology.Connected.CardComponents",
+        "Pi1.Mathlib.AlgebraicGeometry.Limits",
+        "Pi1.Mathlib.AlgebraicGeometry.Morphisms.Flat",
+        "Pi1.Mathlib.RingTheory.RingHom.Etale",
+        "Pi1.Mathlib.RingTheory.RingHom.Smooth",
+        "Pi1.Mathlib.CategoryTheory.Limits.MorphismProperty",
+        "Pi1.Mathlib.RingTheory.Ideal.Quotient.Operations",
+        "Pi1.FundamentalGroup.FiniteEtale",
+        "Pi1.FundamentalGroup.Rank"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9dda579a54305cf3cf0000b200a7a16b6215573f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b78c77d857a290a8ec34a5e353323d39e48d22db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "fb0bed17b7f28ba50e37feb89f0e43de179443a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "0093b9314373404b31e1066bfe7066f3fbf00225",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "2a654764c3d09fc27771a19f8ffb671597ef8227",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "327313968591d0a850e0a373ef2f5f0cd31881a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9a83a1353f4394d4e292c27150b8944f0e496b1f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "95c0cedb22858d1dc97763647021ff5da13b6305",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "eede560f491c1f0550c0fd1309eab96ae56b62a1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "49c114936266bc960baf040e32cbff854ba542b3",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c28319d791e388c92de15819e10bda6378df5ee5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d9d533d85cc6ab67ea7fe4581b2115d61a9decd1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5616d962cd1b2996bff046367881f52a967122c9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "009c1197766f6e24fa826bc90b84f160083edfd7",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5b5c14a95f97ed95be5bdcbdb50dc1cc8b3a7aa9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "1dee38392ffbbdc11df54aacb8f18515ba15c380",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f540fb86b0efbe001c566b5c1799dc879319d4db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "0fd11e4809089651ef272fc3a78545f87ed64454",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "59696ca6106c0b7f1d7d6a3dcc31288d3fe9b16e",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "e3eed934ba9cc148211f3cd686e11cc436e5d5cf",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c0f6368e9b3ef119478f5484442fd224e9720719",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/EtaleFundamentalGroups/FiniteEtale/GaloisCategory.lean",
+        "Nyll/SchemeTheory/FiniteEtale/Geometry.lean"
+      ]
+    },
+    {
+      "path": "Pi1/FundamentalGroup/Point.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "19a04af866500068b49c987678587fb8b6e8b7fc",
+      "sha256": "574af98bb14c12de108d6c0e3d7807e3aa8331ad39a5c3f809a941ed089f0374",
+      "byte_count": 13362,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Point.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [
+          {
+            "token": "sorry",
+            "line": 118,
+            "column": 14
+          },
+          {
+            "token": "sorry",
+            "line": 119,
+            "column": 13
+          },
+          {
+            "token": "sorry",
+            "line": 120,
+            "column": 15
+          },
+          {
+            "token": "sorry",
+            "line": 121,
+            "column": 16
+          },
+          {
+            "token": "sorry",
+            "line": 126,
+            "column": 3
+          },
+          {
+            "token": "sorry",
+            "line": 131,
+            "column": 3
+          },
+          {
+            "token": "sorry",
+            "line": 137,
+            "column": 3
+          },
+          {
+            "token": "sorry",
+            "line": 181,
+            "column": 5
+          },
+          {
+            "token": "sorry",
+            "line": 202,
+            "column": 3
+          },
+          {
+            "token": "sorry",
+            "line": 275,
+            "column": 3
+          }
+        ],
+        "comment_or_string": [
+          {
+            "token": "sorry",
+            "line": 84,
+            "column": 5
+          }
+        ]
+      },
+      "imports": [
+        "Pi1.FundamentalGroup.Galois",
+        "Mathlib.CategoryTheory.Galois.IsFundamentalgroup",
+        "Mathlib.FieldTheory.Galois.Profinite",
+        "Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "fb0bed17b7f28ba50e37feb89f0e43de179443a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "2baade970fa3fa28c9dc6849e19b3680bbedce43",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/EtaleFundamentalGroups/GeometricFiber/FundamentalGroup.lean"
+      ]
+    },
+    {
+      "path": "Pi1/FundamentalGroup/Rank.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "01b3a0e3682380708ff84e87e53bda1fa8d2877b",
+      "sha256": "80a599ad04dda2ef80e88955f2f5e3cc04c698e1cf2717b7f89826381c42a774",
+      "byte_count": 597,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Rank.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.FlatRank"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7069255912718837c2adeb88e0efba046954f2c0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b5ddc931e8a31f8514ad9f5a3f9148b65c8ede6a",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7cfeb0834b2fa6ae56846ac65156684e7ef3e6f7",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ddfe186d1b82b678a45b478ee8095cca62f2ba35",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "49c114936266bc960baf040e32cbff854ba542b3",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "659416abd4e97a524f2e73e203d631e432ba66d8",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Morphisms/FlatRank.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/AlgebraicGeometry/Limits.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "bfb5e98043a6fbef72823524a6742032aa61263d",
+      "sha256": "308190893eee2479065c4aa6f1e1f847a9f674a25df530abfc478bdc08779dc6",
+      "byte_count": 736,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/AlgebraicGeometry/Limits.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "387da6741487c242324a8e9e269ba28dc88a72e0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "1dee38392ffbbdc11df54aacb8f18515ba15c380",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f540fb86b0efbe001c566b5c1799dc879319d4db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "0fd11e4809089651ef272fc3a78545f87ed64454",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "59696ca6106c0b7f1d7d6a3dcc31288d3fe9b16e",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "e3eed934ba9cc148211f3cd686e11cc436e5d5cf",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c0f6368e9b3ef119478f5484442fd224e9720719",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Morphisms/ClosedImmersion.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/AlgebraicGeometry/Morphisms/Finite.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "f49b98a044a68d9f362fc15226edfeee51e5d7ba",
+      "sha256": "3bebdfee930982ac5190382a0413cd7205bf4f02ad445c2ba827f0fcda08be23",
+      "byte_count": 490,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/AlgebraicGeometry/Morphisms/Finite.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.Proper"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d7f43de9cd30c0c5437d79ae8273774be2c7d4ff",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "c0f6368e9b3ef119478f5484442fd224e9720719",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Morphisms/Finite.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "c24ef1cecc1462b5a71a9162bf7127574609bdda",
+      "sha256": "745b7bb5ffa51bdf3cc5899e004029c5ad694bfb7a524615278624af9892c4b4",
+      "byte_count": 895,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.Morphisms.FlatMono"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d3d2d9b89d25d5045e47f279c5ad0aa715abd3fe",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9a83a1353f4394d4e292c27150b8944f0e496b1f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "6046840f6fad521169a0c5dba32155f3c4741ef6",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ddfe186d1b82b678a45b478ee8095cca62f2ba35",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "48986cd15cfb9fca84d29e0dbbc8d4a22befab72",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9c26bfed59a5f247c2265b578b8da75631adf322",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "030465b3c1fe7ce485e3c24e4934169ade4c5a7e",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Morphisms/Flat.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/CategoryTheory/Galois/IsFundamentalGroup.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "fd3481b3f2723c31c37bb57426f7df3caf39d5c3",
+      "sha256": "c8c7de4b52838bd54811a47d3d742961c92ca14aa14015867f3eaefc912e1ab1",
+      "byte_count": 838,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/CategoryTheory/Galois/IsFundamentalGroup.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.CategoryTheory.Galois.IsFundamentalgroup"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "2baade970fa3fa28c9dc6849e19b3680bbedce43",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/EtaleFundamentalGroups/GaloisCategories/FundamentalGroup.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "4c7a8454dc552d873e91ba0d19b97c230e6363ee",
+      "sha256": "6bab3385ff1329ba43a89e3e66f0fed1a4ea28d054c73c922807086d000d1b77",
+      "byte_count": 1778,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.CategoryTheory.Limits.MorphismProperty"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "009c1197766f6e24fa826bc90b84f160083edfd7",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/CategoryTheory/Over.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/Flat/Equalizer.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "6996d777efbfbc1693b7bf1b3d0c5cbfbacdfe45",
+      "sha256": "45c5b8432327bca15fc3545953b983c3e40f29dc9457b661b4df988e703049b7",
+      "byte_count": 10396,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Flat/Equalizer.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Pi1.Mathlib.RingTheory.TensorProduct.Basic",
+        "Pi1.RingTheory.FiniteEtale.Equalizer"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "690762c9386deafb03b4d4a0ea9c6a5c1c6256db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "872d9e1919fe67fb17012886ee20fa36d163128d",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Descent/FlatEqualizer.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/Geometric.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "508409f0ad5c389ea2f281277c3d23a26112a5e1",
+      "sha256": "450db41aaca4f4b758dd33fefbbadd986182493db142fbf8b99676bb264a2346",
+      "byte_count": 14700,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Geometric.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.Algebra.Lie.OfAssociative",
+        "Mathlib.Order.CompletePartialOrder",
+        "Mathlib.RingTheory.Flat.TorsionFree",
+        "Mathlib.RingTheory.Henselian",
+        "Mathlib.RingTheory.PicardGroup",
+        "Mathlib.RingTheory.RegularLocalRing.Defs",
+        "Mathlib.RingTheory.RingHom.Flat",
+        "Mathlib.RingTheory.SimpleRing.Principal",
+        "Mathlib.RingTheory.Spectrum.Prime.Homeomorph"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7069255912718837c2adeb88e0efba046954f2c0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9a83a1353f4394d4e292c27150b8944f0e496b1f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b5ddc931e8a31f8514ad9f5a3f9148b65c8ede6a",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "977673b886f15debd12c36b00565db9ef74f1732",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "3b245e282a1692ee6af509d629db3503b8d21175",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Affine/GeometricIrreducibility.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/Ideal/Quotient/Operations.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "c98eda256002e75136ed15a0cddcf6756b7d97b4",
+      "sha256": "c8243bdbb3e76026d8ac4254c419d3a255577ca4feb0c53724042477d65168be",
+      "byte_count": 357,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Ideal/Quotient/Operations.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.Ideal.Quotient.Operations"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d5223b693e8369f9fdc118e121d85c772c8846f1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5616d962cd1b2996bff046367881f52a967122c9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "7469d01e5158e3ace43ad8dc372ea4030fac834b",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/RingTheory/QuotientProducts.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/RingHom/Etale.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "20eb2e803e9d4164f04b0efe69380dfd10efda59",
+      "sha256": "f4385b0057262bf3fb45fa3414d37332714c69ecf95590ebb66404fb296d4c57",
+      "byte_count": 3032,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/RingHom/Etale.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.RingHom.LocallyStandardSmooth"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b4506ee5e68f622a96fdb0a241bfdef6088e4294",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "adea6fa5ee4ee3c223ed9053b71213db6b70ceb7",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5616d962cd1b2996bff046367881f52a967122c9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "71255529caab9c336989471318e8ac8ac0099772",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "5b5b975bea2038257f9ea6dd1463c74d7c6b1f8e",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Etale/RingHom.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/RingHom/Finite.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "c415ab99d7400c94ab43d91cd9b86a7f25bc5b2c",
+      "sha256": "d7c02bd3eac24355e31c8602bbf1107d54a6a0ab7f379a5ca70ba35d3f3ca431",
+      "byte_count": 329,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/RingHom/Finite.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.Finiteness.Defs"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ddfe186d1b82b678a45b478ee8095cca62f2ba35",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/RingTheory/Finite.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/RingHom/Smooth.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "6aa0376cacdd00acc7f221ba365af9781296515b",
+      "sha256": "ad277e5850ec36ccbd5be18fb8ad5860eccc03dc695fc7f12a1d51ca3c3e40e1",
+      "byte_count": 1211,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/RingHom/Smooth.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.TotallySplit"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2025 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b4506ee5e68f622a96fdb0a241bfdef6088e4294",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9a83a1353f4394d4e292c27150b8944f0e496b1f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d9d533d85cc6ab67ea7fe4581b2115d61a9decd1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "71255529caab9c336989471318e8ac8ac0099772",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Morphisms/Smooth.lean"
+      ]
+    },
+    {
+      "path": "Pi1/Mathlib/RingTheory/TensorProduct/Basic.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "5ce0f465a46056184814f3f8659a071e1d9f3479",
+      "sha256": "7c4ded5a6030198fa99308e1e9e78236e542d8ae5e37a5869fac1d95e4fb21a4",
+      "byte_count": 1594,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/TensorProduct/Basic.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.TensorProduct.Maps"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "690762c9386deafb03b4d4a0ea9c6a5c1c6256db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "68b855376234a96689e1f2549a553973f7347db0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9a83a1353f4394d4e292c27150b8944f0e496b1f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "3b245e282a1692ee6af509d629db3503b8d21175",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": []
+    },
+    {
+      "path": "Pi1/RingTheory/FiniteEtale/Basic.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "5bac8ad46412db0bc8d51fc107aa78a9baae2a3a",
+      "sha256": "d308a5432a8a2c2104fe1e716744f3211ad691f040556a49546fc150ee5888c5",
+      "byte_count": 5247,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/FiniteEtale/Basic.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.Algebra.Lie.OfAssociative",
+        "Mathlib.RingTheory.RingHom.Etale",
+        "Mathlib.RingTheory.TotallySplit",
+        "Pi1.Mathlib.RingTheory.RingHom.Finite"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "690762c9386deafb03b4d4a0ea9c6a5c1c6256db",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ddfe186d1b82b678a45b478ee8095cca62f2ba35",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d9d533d85cc6ab67ea7fe4581b2115d61a9decd1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ca5e1a3813e92d0fbd9788c4aa2d63ee788e0204",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "71255529caab9c336989471318e8ac8ac0099772",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "45dd686c6053ab3afe378a40b34afc4f4ebf0263",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/FiniteEtale/Algebra/Basic.lean"
+      ]
+    },
+    {
+      "path": "Pi1/RingTheory/FiniteEtale/Descent.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "33b616498844d317b600ea95923315dfcdcb193a",
+      "sha256": "9ad0c62c7eab41d4df9986279441b7f2077e141bf52def71040f137ab9a6ca9a",
+      "byte_count": 617,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/FiniteEtale/Descent.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.Etale.Descent",
+        "Pi1.RingTheory.FiniteEtale.Basic"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "68b855376234a96689e1f2549a553973f7347db0",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "699fd0905b01142667565b6d1b86128d3c79c2d6",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "45dd686c6053ab3afe378a40b34afc4f4ebf0263",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/FiniteEtale/Algebra/Descent.lean"
+      ]
+    },
+    {
+      "path": "Pi1/RingTheory/FiniteEtale/Equalizer.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "80704094ff402154a3521ed18b4ff49a8273cb81",
+      "sha256": "c046de155e67493b47cae9fe922c4f9f9a56ed607dfcc9681e3092c25ac29e1b",
+      "byte_count": 22872,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/FiniteEtale/Equalizer.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.Logic.Function.Coequalizer",
+        "Mathlib.RingTheory.Finiteness.ModuleFinitePresentation",
+        "Pi1.RingTheory.FiniteEtale.Descent"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "fb0bed17b7f28ba50e37feb89f0e43de179443a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "872d9e1919fe67fb17012886ee20fa36d163128d",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f0928edd17025421fb18bd13ff472ae23e783127",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ca5e1a3813e92d0fbd9788c4aa2d63ee788e0204",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "45dd686c6053ab3afe378a40b34afc4f4ebf0263",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/FiniteEtale/Algebra/Equalizer.lean"
+      ]
+    },
+    {
+      "path": "Pi1/RingTheory/KerTensor.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "a3b0f928e07bb7c9ed2dff74d37f9d21e3712a34",
+      "sha256": "1c83f5c6a467f2727fd852e23a0034617a8fd433adb160b0dab6cd4cb91006dd",
+      "byte_count": 24933,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/KerTensor.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.AlgebraicGeometry.PullbackCarrier",
+        "Mathlib.RingTheory.RingHom.Bijective",
+        "Pi1.Mathlib.AlgebraicGeometry.Morphisms.Flat",
+        "Pi1.RingTheory.FiniteEtale.Equalizer",
+        "Pi1.Mathlib.RingTheory.Flat.Equalizer"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "a7547971c50345011f798be053553f77845bae50",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "d3d2d9b89d25d5045e47f279c5ad0aa715abd3fe",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "645cdb8de0a0e0e7f1093bd71847c3ea9def7bb1",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "44a50156fc8c3d64d25e15fdfd95a48ddce26891",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "f8e0bdada2e856b40b2069392c8216b29a3984c9",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "3b5d349007035ac0fa34bb408e9b183efe52d505",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "872d9e1919fe67fb17012886ee20fa36d163128d",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/FiniteEtale/Algebra/Splitting.lean",
+        "Nyll/SchemeTheory/FiniteEtale/Forget/FiniteCoequalizers.lean"
+      ]
+    },
+    {
+      "path": "Pi1/RingTheory/Smooth/StandardSmoothSmooth.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "b2eceb43084886e284854be317ad973700cbc2cf",
+      "sha256": "f1598eda4eb8f815b55ecc5f62e6707566222557a6364e21eba220e98e09b9a4",
+      "byte_count": 11562,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/Smooth/StandardSmoothSmooth.lean",
+      "copyright_notices": [
+        {
+          "line": 2,
+          "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+        }
+      ],
+      "author_notices": [
+        {
+          "line": 4,
+          "text": "Authors: Christian Merten"
+        }
+      ],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.RingTheory.Smooth.Locus"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "/-\nCopyright (c) 2024 Christian Merten. All rights reserved.\nReleased under Apache 2.0 license as described in the file LICENSE.\nAuthors: Christian Merten\n-/\n",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "bc882de6c21fc770f162d12cb917c356dc9f3ab5",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b4506ee5e68f622a96fdb0a241bfdef6088e4294",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/Morphisms/SmoothLocus.lean"
+      ]
+    },
+    {
+      "path": "Pi1/RingTheory/StableProperties.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "bfc791a832bd2904cf3aee08ecd382a83ac770ab",
+      "sha256": "47cd2658453d17e1735377e6967b78f6f1b8932c1a9d159be41c55558c8abdd6",
+      "byte_count": 4907,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/StableProperties.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.Algebra.Category.Ring.Under.Property"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "b8558e60e529da1ee725803d0ff73bdb0b085ffd",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9dda579a54305cf3cf0000b200a7a16b6215573f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "645cdb8de0a0e0e7f1093bd71847c3ea9def7bb1",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": []
+    },
+    {
+      "path": "Pi1/RingTheory/Transcendence.lean",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "ebb01c9b079bb2bcc58d44c3de3434a99603f954",
+      "sha256": "636383603c356a985d3e12a4caafeeb15197105c1cff03a221ac8e27895367ab",
+      "byte_count": 2316,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/Transcendence.lean",
+      "copyright_notices": [],
+      "author_notices": [],
+      "copyright_holder_inference": null,
+      "absent_notice_policy": "No copyright holder or file author is inferred from repository ownership, git commit authors, or another file.",
+      "proof_placeholder_scan": {
+        "code": [],
+        "comment_or_string": []
+      },
+      "imports": [
+        "Mathlib.Algebra.Lie.OfAssociative",
+        "Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra",
+        "Mathlib.RingTheory.Smooth.Basic"
+      ],
+      "source_role": "leaf",
+      "exact_pre_module_header": "",
+      "git_history_author_evidence": [
+        {
+          "commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "30c0cd7da8ad4da246a1f04c749dcb69fa5a6e70",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "fb0bed17b7f28ba50e37feb89f0e43de179443a4",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "829fbee163ef346fca3edcb172d7b5166d3d75ad",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "ba506759d70c4e67be42aca1927b8043b890f8c3",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "9a83a1353f4394d4e292c27150b8944f0e496b1f",
+          "author_name": "Christian Merten"
+        },
+        {
+          "commit": "659416abd4e97a524f2e73e203d631e432ba66d8",
+          "author_name": "Christian Merten"
+        }
+      ],
+      "git_authors_are_not_copyright_holders": true,
+      "mapped_original_paths": [
+        "Nyll/SchemeTheory/FunctionFields/Transcendence.lean"
+      ]
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "774867353fd47e9ef93ae4869868fd7a8f2a86f6",
+      "sha256": "f02b26d1cedce5b4f825b6533a429b39938dcddfa353a7ef5008049d5b1cbfff",
+      "byte_count": 1073,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/README.md"
+    },
+    {
+      "path": "lake-manifest.json",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "ae9661e2308dfc6dc8bd5d76b37eda0672d8bac9",
+      "sha256": "ad1a3a821d8d1e552309959a6e257b1fbea920d5af38efdb3f2ff52d0cf8341f",
+      "byte_count": 3160,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/lake-manifest.json"
+    },
+    {
+      "path": "lakefile.toml",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "bb68d37e35f3a59290a9ecf59e6a8ee40fe58e8b",
+      "sha256": "d8f63e6e4372b68302c27397746704a788254df6950a0d1309b48b1f795d6567",
+      "byte_count": 437,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/lakefile.toml"
+    },
+    {
+      "path": "lean-toolchain",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "635bb9534e5a211d17a7d660a07dd31d1d64c450",
+      "sha256": "1ee63fe6f76474c34be9237250a262ec421d03541fa9ec284d61fd89e2b4523f",
+      "byte_count": 28,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/lean-toolchain"
+    },
+    {
+      "path": "scripts/build_docs.sh",
+      "mode": "100755",
+      "git_object_type": "blob",
+      "git_blob_sha1": "0c3e16f3abe2efc5a98dc26853ae4c4e2a4047be",
+      "sha256": "9920074f4a7bfa67733a5a4855df32a176fbeeaf96ac63aceb79bc8b805b4215",
+      "byte_count": 1139,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/scripts/build_docs.sh"
+    },
+    {
+      "path": "scripts/to_module_system.py",
+      "mode": "100644",
+      "git_object_type": "blob",
+      "git_blob_sha1": "a062645d82947c032cbfd5d03ddb97e8858ac053",
+      "sha256": "000315ae698ab2478fc0289c472508b3416b5a36bba216e36ec31ca12b3894ee",
+      "byte_count": 2981,
+      "permalink": "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/scripts/to_module_system.py"
+    }
+  ],
+  "local_environment": {
+    "lean_toolchain": "leanprover/lean4:v4.35.0-rc2",
+    "mathlib": {
+      "url": "https://github.com/leanprover-community/mathlib4",
+      "type": "git",
+      "subDir": null,
+      "scope": "leanprover-community",
+      "rev": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+      "name": "mathlib",
+      "manifestFile": "lake-manifest.json",
+      "inputRev": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+      "inherited": false,
+      "configFile": "lakefile.lean"
+    },
+    "config_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "8dc8d6f560141069d9073e370611716ef77ada0da8ffa37e2149f44b2e63ac7a",
+        "byte_count": 29
+      },
+      {
+        "path": "lakefile.toml",
+        "sha256": "2f16d14068b857a83535d7309afd9203dde451cac9273112624e794c9e8651dd",
+        "byte_count": 1018
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "ad850380b47b59868a88c7b76f8775a3fa5a55e432e1d111a007ff2ebf056ded",
+        "byte_count": 3558
+      }
+    ],
+    "compatibility": "Upstream targets Lean 4.30.0-rc2; Nyll targets Lean 4.35.0-rc2 with a different pinned mathlib. Ports are maintained adaptations, not source-identical imports."
+  },
+  "original_local_snapshot": {
+    "git_commit": "ef955617990cafb8acc87f0d96d5f6fd156387d3",
+    "file_count": 25,
+    "verification": "All 25 original raw-byte SHA256 values were verified against Git blobs at this commit."
+  },
+  "original_to_current_mappings": [
+    {
+      "original_path": "Nyll/EtaleFundamentalGroups/GaloisCategories/FundamentalGroup.lean",
+      "original_sha256": "9d3afd5697bad54feb44b63d5896c666e8a8d20c7cbdbb527a5a7b2ab8620cb3",
+      "original_git_blob_sha1": "292083383f4214ffa019b26f044cc59ead8147a1",
+      "upstream_path": "Pi1/Mathlib/CategoryTheory/Galois/IsFundamentalGroup.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/EtaleFundamentalGroups/Pi1/GaloisCategories/FundamentalGroup.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/EtaleFundamentalGroups/GeometricFiber/FundamentalGroup.lean",
+      "original_sha256": "9da5b4f8e61f6f327e5419e7b6059ca64041f4b6d58851b7f9f33fd304e93baa",
+      "original_git_blob_sha1": "9ad134bcab070d573f2828e429f742af32d8d9dd",
+      "upstream_path": "Pi1/FundamentalGroup/Point.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/EtaleFundamentalGroups/Pi1/GeometricFiber/FieldPoints.lean",
+          "role": "adapted_upstream_port"
+        },
+        {
+          "path": "Nyll/EtaleFundamentalGroups/GeometricFiber/FundamentalGroup.lean",
+          "role": "nyll_extension"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Independent upstream-derived field-point API moved to Pi1/GeometricFiber/FieldPoints.lean.",
+        "Nyll completions of upstream Point.lean placeholders and dependent fiber-action/fundamental-group repairs; existing IsSepClosed and IsSepClosure assumptions preserved.",
+        "Nyll completions of upstream Point.lean placeholders and dependent fiber-action/fundamental-group repairs; existing IsSepClosed and IsSepClosure assumptions preserved."
+      ]
+    },
+    {
+      "original_path": "Nyll/EtaleFundamentalGroups/FiniteEtale/GaloisCategory.lean",
+      "original_sha256": "d4fa46b878e89faa34a4e674a02e9980e12a56b0a39415afd6f1974b6a94ef65",
+      "original_git_blob_sha1": "d5086dc410642b2adf1f864b99219981d53817d1",
+      "upstream_path": "Pi1/FundamentalGroup/Galois.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/EtaleFundamentalGroups/Pi1/FiniteEtale/GaloisCategory.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Morphisms/FlatRank.lean",
+      "original_sha256": "fd6343ce03f2b873e2323dcbe574f9db3e0e1877da4deabe57d469b3e6c71051",
+      "original_git_blob_sha1": "3ff24273f42c0c5991c4b812de720fd9333c95b6",
+      "upstream_path": "Pi1/FundamentalGroup/Rank.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Duplicate local port retired in favour of Mathlib.AlgebraicGeometry.Morphisms.FlatRank."
+      ],
+      "mathlib_replacement": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.AlgebraicGeometry.Morphisms.FlatRank",
+        "path": "Mathlib/AlgebraicGeometry/Morphisms/FlatRank.lean",
+        "sha256": "c21c8be96ec05a8c1083ece8823234431568758b64497be727cbd36fb55d23f6",
+        "git_blob_sha1": "a7cce39dcb92ad68c034d0b3acef4f8d65e8c668",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/AlgebraicGeometry/Morphisms/FlatRank.lean"
+      },
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/FlatRank.lean",
+        "sha256_before_removal": "fe41fed23ca0f1cc66c4b9392b054924074f76824c2573435c7203ac6547fbfe",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      }
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Morphisms/Smooth.lean",
+      "original_sha256": "60de3eba609720518f110b376b89d818a45ed36d4c3e90e0bf92a450787cc9f6",
+      "original_git_blob_sha1": "0638c1935bea9f139667b7af6ecdb49b408ae0e1",
+      "upstream_path": "Pi1/Mathlib/RingTheory/RingHom/Smooth.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Morphisms/Smooth.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Morphisms/SmoothLocus.lean",
+      "original_sha256": "d9a8f0b9ba0b2092bc346558209801967d6603a7f19b450a6c62fda9ed53a6cf",
+      "original_git_blob_sha1": "9f4a6962fed6b3be1fff44981d6efaf1a6aa2f10",
+      "upstream_path": "Pi1/RingTheory/Smooth/StandardSmoothSmooth.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Morphisms/SmoothLocus.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Removed two specialized instances already supplied by canonical general instances and duplicate iso_symm_apply simp lemma; direct imports of three canonical owners."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Morphisms/Flat.lean",
+      "original_sha256": "df168e1b4393cc018e6c2bbe136f0d3277697fdbbcc1fd4359ece6365c8096cf",
+      "original_git_blob_sha1": "b9c6381421b09b24203e634a17092e55df7e74aa",
+      "upstream_path": "Pi1/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten, Andrew Yang"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [
+        "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean"
+      ],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Morphisms/Flat.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Morphisms/Finite.lean",
+      "original_sha256": "8b95daf4ebb10b2a44442c554ad3f99150c6ae0456353036392e28b3f40bbeab",
+      "original_git_blob_sha1": "8b4dfa851f4d5e996d4bf2d5c452097da36cb2c4",
+      "upstream_path": "Pi1/Mathlib/AlgebraicGeometry/Morphisms/Finite.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Morphisms/Finite.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Morphisms/ClosedImmersion.lean",
+      "original_sha256": "3a22d9304d0b0416d7c9ac4a6976793091f1c20ecf8a26b464937e4dc640417f",
+      "original_git_blob_sha1": "3e1265251637451030bad5cd2959ff76f6d5bfbd",
+      "upstream_path": "Pi1/Mathlib/AlgebraicGeometry/Limits.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Duplicate local port retired in favour of Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion."
+      ],
+      "mathlib_replacement": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
+        "path": "Mathlib/AlgebraicGeometry/Morphisms/ClosedImmersion.lean",
+        "sha256": "61f1228d346ee77fec7f648dc9966660795f2cc993959795ad58be0563697cf6",
+        "git_blob_sha1": "a7312cac9d4a9f2d805875774848b223ae738349",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/AlgebraicGeometry/Morphisms/ClosedImmersion.lean"
+      },
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/ClosedImmersion.lean",
+        "sha256_before_removal": "4f0df7b6820042c4e372a723a398f346682282f2bb3158fa95ad75686d57adc2",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      }
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Descent/FlatEqualizer.lean",
+      "original_sha256": "d9905a04ae7ca733d7d1f55774c6fee285b26e6bfbf01a5fd433f14b497449ea",
+      "original_git_blob_sha1": "49b436c673af56fec227c93744a567b09f744be8",
+      "upstream_path": "Pi1/Mathlib/RingTheory/Flat/Equalizer.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [
+        "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/RingTheory/Flat/Equalizer.lean"
+      ],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Descent/FlatEqualizer.lean",
+          "role": "adapted_upstream_port"
+        },
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Descent/EqualizerScalars.lean",
+          "role": "adapted_upstream_port"
+        },
+        {
+          "path": "Nyll/SchemeTheory/Descent/EqualizerScalars.lean",
+          "role": "nyll_extension"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Nyll helper separated: AlgHom.equalizerRestrictScalars_apply."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Etale/RingHom.lean",
+      "original_sha256": "d3a293bbf0e65d7fd8413276ac60273612f0be1ed1bfc43238fde960363af4e0",
+      "original_git_blob_sha1": "4d5456b56cf5c7511924c9b790ae43d99c9c44de",
+      "upstream_path": "Pi1/Mathlib/RingTheory/RingHom/Etale.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [
+        "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/RingTheory/RingHom/Etale.lean"
+      ],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Etale/RingHom.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/RingTheory/QuotientProducts.lean",
+      "original_sha256": "5424b4af585f73849f879ad405ea539b5a45882f1abe93059f297de847d06e1a",
+      "original_git_blob_sha1": "1dec8c618ff60e09f99381a22b2c27c859b800d4",
+      "upstream_path": "Pi1/Mathlib/RingTheory/Ideal/Quotient/Operations.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/RingTheory/QuotientProducts.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/RingTheory/Finite.lean",
+      "original_sha256": "b861081d03b807b6dd6dd8b0c87cfa2d21aff8907532d12b4cb3b196f70d88ec",
+      "original_git_blob_sha1": "784b2f76906a105bbfeefdbacc6ddb9ac73fc3c3",
+      "upstream_path": "Pi1/Mathlib/RingTheory/RingHom/Finite.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Duplicate local port retired in favour of Mathlib.RingTheory.Finiteness.Defs."
+      ],
+      "mathlib_replacement": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.RingTheory.Finiteness.Defs",
+        "path": "Mathlib/RingTheory/Finiteness/Defs.lean",
+        "sha256": "c22de11b826e235da8f48da713e7d22dba05c884c4982f64babeff3490a4a98b",
+        "git_blob_sha1": "e6c84f5229785bee769abce19b52d51e03d2ca63",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/RingTheory/Finiteness/Defs.lean"
+      },
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/RingTheory/Finite.lean",
+        "sha256_before_removal": "09adfb8b93346ec849e37e4576044841fc817def66184c52bff99f64ce0bd793",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      }
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/CategoryTheory/Over.lean",
+      "original_sha256": "ddf4e451a92d71b412da9f2dae0471e57809e982ffa62269442abbca039a41ca",
+      "original_git_blob_sha1": "c256813e67d04ffad3699c1c01d5c392e2ca25ba",
+      "upstream_path": "Pi1/Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [
+        "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/CategoryTheory/Limits/MorphismProperty.lean"
+      ],
+      "destinations": [],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Duplicate local port retired in favour of Mathlib.CategoryTheory.Limits.MorphismProperty."
+      ],
+      "mathlib_replacement": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.CategoryTheory.Limits.MorphismProperty",
+        "path": "Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+        "sha256": "27c96127bcf51d08c7599732f91172da5f810173d5e1151f2c141040a1d40cf7",
+        "git_blob_sha1": "498ed5b92421af34cb5b56eb5ead9ff04d51ebdc",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/CategoryTheory/Limits/MorphismProperty.lean"
+      },
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/CategoryTheory/Over.lean",
+        "sha256_before_removal": "0d7c4ee97d2ed42964a36095e4b3934fcd3ca4666331176c2d31527d715bc9a8",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      }
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FunctionFields/Transcendence.lean",
+      "original_sha256": "38ef4c1140910f61afb5736b0e80dd58d705eba17c6984083905fd7c9f7c37de",
+      "original_git_blob_sha1": "210abc23de0ed5d6805d2abd645cbbfe5d3db63c",
+      "upstream_path": "Pi1/RingTheory/Transcendence.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FunctionFields/Transcendence.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Affine/Property.lean",
+      "original_sha256": "63f8b66cef0942b5f261df27e27227c370a74ef8ad13aa03ee0eb790b8c01ca5",
+      "original_git_blob_sha1": "70558437178b90ac92c09693b8fb3a914d2188af",
+      "upstream_path": "Pi1/FundamentalGroup/AffineAnd.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Affine/Property.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Affine/GeometricIrreducibility.lean",
+      "original_sha256": "43eee25d97e6e5bc3a687839544bc0dc18e2d4c587921099ac3824e040a29d2f",
+      "original_git_blob_sha1": "d275cbe047d285023ac096c32f78a7f228dedca7",
+      "upstream_path": "Pi1/Mathlib/RingTheory/Geometric.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Affine/GeometricIrreducibility.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Removed IsHomeomorph.irreducibleSpace wrapper. Both directions of final closure equivalence now use the canonical homeomorphism irreducibility equivalence with symmetry; direct owner import."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/Affine/Over.lean",
+      "original_sha256": "a247e9374dd0af95ab197f5e47c3c2d2a45cf1689f36a2ad1f96fcafb5686ec3",
+      "original_git_blob_sha1": "f9d81e62f7d5d962c7cfc0b2861c7831d046c023",
+      "upstream_path": "Pi1/FundamentalGroup/AffineColimits.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/Affine/Over.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Geometry.lean",
+      "original_sha256": "7dc561f66f60b4846043beabe7e4ef5dc5ff2da4c8c036de56d72d86b5767dba",
+      "original_git_blob_sha1": "156c04c0d7a4c7a6fd75600e4af168acf46183a7",
+      "upstream_path": "Pi1/FundamentalGroup/Galois.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Geometry.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Retained Nyll local comparisons: private lemma finite_primeSpectrum_of_etale_field, def etaleFunctionsAlgEquiv, private lemma isoSpec_hom_comp_specMap_algebraMap, private lemma isoSpec_hom_comp_specMap_algEquiv."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Basic.lean",
+      "original_sha256": "7a15b990e97f1cea4fa88b2ed6dca7a22d702f1a8ff0691c6750c993c4008100",
+      "original_git_blob_sha1": "088f8990187646163962dc1dde687dbecd044437",
+      "upstream_path": "Pi1/FundamentalGroup/FiniteEtale.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [
+          {
+            "line": 2,
+            "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+          }
+        ],
+        "author_notices": [
+          {
+            "line": 4,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Basic.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Equalizer.lean",
+      "original_sha256": "45a3e519a84fc4b746cdbc873c4797113740623fe3a4af811fb3c7f5430a7ca4",
+      "original_git_blob_sha1": "501da87889a726fb9dfea785abbcaa591765c755",
+      "upstream_path": "Pi1/RingTheory/FiniteEtale/Equalizer.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Equalizer.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Basic.lean",
+      "original_sha256": "286a9b29cd2381a3380ebfaa4794add4e7456d48c9147515584e605d5e2e979a",
+      "original_git_blob_sha1": "d79a0368016284df8ca4be52ec69eb7dd211840b",
+      "upstream_path": "Pi1/RingTheory/FiniteEtale/Basic.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Basic.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Splitting.lean",
+      "original_sha256": "1566fa76ae807c9ffd3fd1d1f4e57d5f20e9debe3e7ece94cf9117a857fdd514",
+      "original_git_blob_sha1": "691d5736be5b589deb19379114b2edfa12ec698f",
+      "upstream_path": "Pi1/RingTheory/KerTensor.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Splitting.lean",
+          "role": "adapted_upstream_port"
+        },
+        {
+          "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/EtaleSplitting.lean",
+          "role": "nyll_extension"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Nyll helper separated: Algebra.exists_etale_isFiniteSplit."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Algebra/Descent.lean",
+      "original_sha256": "fd2907028f8a32828d191e95699749e94f2c982bdc0a19ebb15436a6965c35ce",
+      "original_git_blob_sha1": "88a28e0f7b30df9369c36f7a26e192989d17bb94",
+      "upstream_path": "Pi1/RingTheory/FiniteEtale/Descent.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Descent.lean",
+          "role": "adapted_upstream_port"
+        }
+      ],
+      "local_changes": [
+        "Module relocation/splitting with direct imports updated to current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy."
+      ]
+    },
+    {
+      "original_path": "Nyll/SchemeTheory/FiniteEtale/Forget/FiniteCoequalizers.lean",
+      "original_sha256": "4a38dcfbe97e759a65c614e19e5dfd60bb329959d4bff92306c45a7748157742",
+      "original_git_blob_sha1": "fa4236dee22f4f4d3750ea9a5cc95b24d3b842f5",
+      "upstream_path": "Pi1/RingTheory/KerTensor.lean",
+      "comparison_commit": "5c5c0171efc863ce9990171bdf46d7cb5fd582fb",
+      "original_attribution_evidence": {
+        "copyright_notices": [],
+        "author_notices": [
+          {
+            "line": 3,
+            "text": "Authors: Christian Merten"
+          }
+        ],
+        "copyright_holder_inference": null,
+        "absent_notice_policy": "No copyright holder or file author inferred from repository ownership or git authors."
+      },
+      "additional_original_source_urls": [],
+      "destinations": [
+        {
+          "path": "Nyll/SchemeTheory/FiniteEtale/Forget/FiniteCoequalizers.lean",
+          "role": "nyll_extension"
+        }
+      ],
+      "local_changes": [
+        "Source retained at its original path with separate provenance; direct imports updated to their current owners.",
+        "Lean/mathlib API and proof adaptations; not a pristine upstream copy.",
+        "Nyll simultaneous-map splitting adaptation and concrete coequalizer/descent construction; retained at the existing path with separate credits."
+      ]
+    }
+  ],
+  "mapping_summary": {
+    "original_local_files": 25,
+    "distinct_upstream_leaf_files_mapped": 23,
+    "upstream_leaf_files": 25,
+    "unmapped_upstream_leaf_files": 2,
+    "adapted_port_files": 21,
+    "nyll_extension_files": 4,
+    "aggregate_files": 13,
+    "current_local_source_files": 25,
+    "upstream_leaves_with_current_local_adaptations": 19,
+    "upstream_leaves_supplied_by_mathlib": 6,
+    "historically_mapped_ports_now_replaced_by_mathlib": 4
+  },
+  "mathlib_replacements": [
+    {
+      "upstream_path": "Pi1/RingTheory/StableProperties.lean",
+      "assessment": "All mathematical declarations have current mathlib suppliers; do not recreate a local duplicate file.",
+      "declarations": [
+        {
+          "upstream": "RingHom.HasStableEqualizers",
+          "current": "RingHom.HasStableEqualizers",
+          "file": "Mathlib/RingTheory/Flat/Equalizer.lean",
+          "line": 360,
+          "relation": "same property and quantifiers"
+        },
+        {
+          "upstream": "CommRingCat.preservesFiniteProducts_pushout",
+          "current": "RingHom.HasFiniteProducts.preservesFiniteProducts_pushout",
+          "file": "Mathlib/Algebra/Category/Ring/Under/Property.lean",
+          "line": 88,
+          "relation": "same finite-product preservation, renamed owner"
+        },
+        {
+          "upstream": "CommRingCat.preservesLimit_parallelPair_tensorProd_of_tensorEqualizer_bijective",
+          "current": "CommRingCat.preservesLimit_parallelPair_tensorProd_iff_tensorEqualizer_bijective",
+          "file": "Mathlib/Algebra/Category/Ring/Under/Property.lean",
+          "line": 146,
+          "relation": "use iff.mpr for the original implication"
+        },
+        {
+          "upstream": "CommRingCat.preservesLimit_parallelPair_tensorProd_of_hasStableEqualizers",
+          "current": "RingHom.HasStableEqualizers.preservesLimit_parallelPair_tensorProd",
+          "file": "Mathlib/Algebra/Category/Ring/Under/Property.lean",
+          "line": 173,
+          "relation": "same statement, renamed owner"
+        },
+        {
+          "upstream": "CommRingCat.preservesEqualizers_pushout_of_hasStableEqualizers",
+          "current": "RingHom.HasStableEqualizers.preservesEqualizers_pushout",
+          "file": "Mathlib/Algebra/Category/Ring/Under/Property.lean",
+          "line": 180,
+          "relation": "same statement, renamed owner"
+        },
+        {
+          "upstream": "CommRingCat.preservesFiniteLimits_pushout_of_hasStableEqualizers",
+          "current": "RingHom.HasStableEqualizers.preservesFiniteLimits_pushout",
+          "file": "Mathlib/Algebra/Category/Ring/Under/Property.lean",
+          "line": 202,
+          "relation": "same statement, renamed owner"
+        }
+      ],
+      "pre_refresh_local_use": {
+        "path": "Nyll/SchemeTheory/FiniteEtale/Basic.lean",
+        "lines": [
+          85,
+          390
+        ]
+      },
+      "current_local_owner": "Nyll/SchemeTheory/Pi1/FiniteEtale/Basic.lean"
+    },
+    {
+      "upstream_path": "Pi1/Mathlib/RingTheory/TensorProduct/Basic.lean",
+      "assessment": "Current mathlib supplies stronger or generalized API; old helper names are unnecessary.",
+      "declarations": [
+        {
+          "upstream": "Algebra.TensorProduct.comm'",
+          "current": "Algebra.TensorProduct.commRight",
+          "file": "Mathlib/RingTheory/TensorProduct/Maps.lean",
+          "line": 416,
+          "relation": "Under the same local rightAlgebra instance, (commRight R S T).toLinearEquiv has the original S-linear type."
+        },
+        {
+          "upstream": "Algebra.TensorProduct.assoc'",
+          "current": "Algebra.TensorProduct.assoc",
+          "file": "Mathlib/RingTheory/TensorProduct/Maps.lean",
+          "line": 445,
+          "relation": "Original assoc' R S A B C is supplied by generalized assoc R R S A B C."
+        },
+        {
+          "upstream": "Algebra.TensorProduct.assoc'_tmul",
+          "current": "Algebra.TensorProduct.assoc_tmul",
+          "file": "Mathlib/RingTheory/TensorProduct/Maps.lean",
+          "line": 456,
+          "relation": "same specialization R R S A B C"
+        },
+        {
+          "upstream": "Algebra.TensorProduct.assoc'_symm_tmul",
+          "current": "Algebra.TensorProduct.assoc_symm_tmul",
+          "file": "Mathlib/RingTheory/TensorProduct/Maps.lean",
+          "line": 460,
+          "relation": "same specialization R R S A B C"
+        }
+      ],
+      "validation": "Declaration/type inspection only; no Lean command run.",
+      "pre_refresh_local_use": {
+        "path": "Nyll/SchemeTheory/Descent/FlatEqualizer.lean",
+        "lines": [
+          147,
+          148,
+          175,
+          177,
+          197,
+          199,
+          208
+        ]
+      },
+      "current_local_owner": "Nyll/SchemeTheory/Pi1/Descent/FlatEqualizer.lean"
+    },
+    {
+      "upstream_path": "Pi1/FundamentalGroup/Rank.lean",
+      "assessment": "Previously adapted local port removed because canonical mathlib already supplies the required declarations.",
+      "original_local_path": "Nyll/SchemeTheory/Morphisms/FlatRank.lean",
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/FlatRank.lean",
+        "sha256_before_removal": "fe41fed23ca0f1cc66c4b9392b054924074f76824c2573435c7203ac6547fbfe",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      },
+      "current_mathlib_supplier": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.AlgebraicGeometry.Morphisms.FlatRank",
+        "path": "Mathlib/AlgebraicGeometry/Morphisms/FlatRank.lean",
+        "sha256": "c21c8be96ec05a8c1083ece8823234431568758b64497be727cbd36fb55d23f6",
+        "git_blob_sha1": "a7cce39dcb92ad68c034d0b3acef4f8d65e8c668",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/AlgebraicGeometry/Morphisms/FlatRank.lean"
+      },
+      "declarations": [
+        {
+          "old": "AlgebraicGeometry.finrank_eq_const_of_preconnectedSpace",
+          "canonical": "Scheme.Hom.isLocallyConstant_finrank + IsLocallyConstant.apply_eq_of_preconnectedSpace",
+          "equivalence": "Original body was exactly application of these two existing results. Both owning modules imported directly in consumers."
+        }
+      ]
+    },
+    {
+      "upstream_path": "Pi1/Mathlib/AlgebraicGeometry/Limits.lean",
+      "assessment": "Previously adapted local port removed because canonical mathlib already supplies the required declarations.",
+      "original_local_path": "Nyll/SchemeTheory/Morphisms/ClosedImmersion.lean",
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/ClosedImmersion.lean",
+        "sha256_before_removal": "4f0df7b6820042c4e372a723a398f346682282f2bb3158fa95ad75686d57adc2",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      },
+      "current_mathlib_supplier": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion",
+        "path": "Mathlib/AlgebraicGeometry/Morphisms/ClosedImmersion.lean",
+        "sha256": "61f1228d346ee77fec7f648dc9966660795f2cc993959795ad58be0563697cf6",
+        "git_blob_sha1": "a7312cac9d4a9f2d805875774848b223ae738349",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/AlgebraicGeometry/Morphisms/ClosedImmersion.lean"
+      },
+      "declarations": [
+        {
+          "old": "AlgebraicGeometry.isClosedImmersion_of_isPreimmersion_of_isClosed",
+          "canonical": "AlgebraicGeometry.IsClosedImmersion.of_isPreimmersion (Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion:62)",
+          "equivalence": "Same morphism and closed range; full f explicitly W.ι / U.ι in the two consumers."
+        },
+        {
+          "old": "AlgebraicGeometry.isClosedImmersion_iff_isClosed_range_of_isPreimmersion",
+          "canonical": "AlgebraicGeometry.IsClosedImmersion.iff_isPreimmersion (Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion:58)",
+          "equivalence": "Canonical iff combines IsPreimmersion with closed range; old theorem assumed IsPreimmersion. No consumers of deleted specialized iff."
+        }
+      ]
+    },
+    {
+      "upstream_path": "Pi1/Mathlib/RingTheory/RingHom/Finite.lean",
+      "assessment": "Previously adapted local port removed because canonical mathlib already supplies the required declarations.",
+      "original_local_path": "Nyll/SchemeTheory/RingTheory/Finite.lean",
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/RingTheory/Finite.lean",
+        "sha256_before_removal": "09adfb8b93346ec849e37e4576044841fc817def66184c52bff99f64ce0bd793",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      },
+      "current_mathlib_supplier": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.RingTheory.Finiteness.Defs",
+        "path": "Mathlib/RingTheory/Finiteness/Defs.lean",
+        "sha256": "c22de11b826e235da8f48da713e7d22dba05c884c4982f64babeff3490a4a98b",
+        "git_blob_sha1": "e6c84f5229785bee769abce19b52d51e03d2ca63",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/RingTheory/Finiteness/Defs.lean"
+      },
+      "declarations": [
+        {
+          "old": "RingHom.finite_algebraMap_iff",
+          "canonical": "RingHom.finite_algebraMap (Mathlib.RingTheory.Finiteness.Defs:180)",
+          "equivalence": "Identical algebraMap finite iff Module.Finite statement."
+        }
+      ]
+    },
+    {
+      "upstream_path": "Pi1/Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+      "assessment": "Previously adapted local port removed because canonical mathlib already supplies the required declarations.",
+      "original_local_path": "Nyll/SchemeTheory/CategoryTheory/Over.lean",
+      "retired_local_port": {
+        "path": "Nyll/SchemeTheory/Pi1/CategoryTheory/Over.lean",
+        "sha256_before_removal": "0d7c4ee97d2ed42964a36095e4b3934fcd3ca4666331176c2d31527d715bc9a8",
+        "reason": "Direct use of the canonical pinned mathlib API; duplicate local declarations removed."
+      },
+      "current_mathlib_supplier": {
+        "repository": "https://github.com/leanprover-community/mathlib4",
+        "commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+        "module": "Mathlib.CategoryTheory.Limits.MorphismProperty",
+        "path": "Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+        "sha256": "27c96127bcf51d08c7599732f91172da5f810173d5e1151f2c141040a1d40cf7",
+        "git_blob_sha1": "498ed5b92421af34cb5b56eb5ead9ff04d51ebdc",
+        "source_url": "https://github.com/leanprover-community/mathlib4/blob/065356127b1dc0016f66b7283ce0ce2c4055aa55/Mathlib/CategoryTheory/Limits/MorphismProperty.lean"
+      },
+      "declarations": [
+        {
+          "old": "CategoryTheory.MorphismProperty.Over anonymous CreatesFiniteLimits / PreservesFiniteLimits forget / pullback instances",
+          "canonical": "Mathlib.CategoryTheory.Limits.MorphismProperty:304,310,313",
+          "equivalence": "Same conclusions. Mathlib bundles composition and identities as IsMultiplicative; actual finite-etale consumers have the existing IsFiniteEtale IsMultiplicative instance at Basic:144. Generic signatures were not strengthened."
+        }
+      ]
+    }
+  ],
+  "mathlib_replacement_evidence": [
+    {
+      "path": "Mathlib/RingTheory/Flat/Equalizer.lean",
+      "sha256": "3d7f8271904334d2697e662b2ea0c38f1ca8100e12b5c7bb77949cadae2f9c0e",
+      "git_blob_sha1": "10ee1cdddfba10606249558bc7e1b9babe3f0bd7"
+    },
+    {
+      "path": "Mathlib/Algebra/Category/Ring/Under/Property.lean",
+      "sha256": "fded6056e5d38d52139a44b9d1906540f4f78516a3f337945513a5c247c6a7c0",
+      "git_blob_sha1": "d58aa65795a2e805cb62234d9ba2af6ea931f584"
+    },
+    {
+      "path": "Mathlib/RingTheory/TensorProduct/Maps.lean",
+      "sha256": "05707a5dfad01c14333a78eacba15ee2ef156d7331d4f372aec09d82303fa9a0",
+      "git_blob_sha1": "f9fe918d7be97282ae874ea81b1c038bd1f2108b"
+    },
+    {
+      "path": "Mathlib/AlgebraicGeometry/Morphisms/FlatRank.lean",
+      "sha256": "c21c8be96ec05a8c1083ece8823234431568758b64497be727cbd36fb55d23f6",
+      "git_blob_sha1": "a7cce39dcb92ad68c034d0b3acef4f8d65e8c668"
+    },
+    {
+      "path": "Mathlib/AlgebraicGeometry/Morphisms/ClosedImmersion.lean",
+      "sha256": "61f1228d346ee77fec7f648dc9966660795f2cc993959795ad58be0563697cf6",
+      "git_blob_sha1": "a7312cac9d4a9f2d805875774848b223ae738349"
+    },
+    {
+      "path": "Mathlib/RingTheory/Finiteness/Defs.lean",
+      "sha256": "c22de11b826e235da8f48da713e7d22dba05c884c4982f64babeff3490a4a98b",
+      "git_blob_sha1": "e6c84f5229785bee769abce19b52d51e03d2ca63"
+    },
+    {
+      "path": "Mathlib/CategoryTheory/Limits/MorphismProperty.lean",
+      "sha256": "27c96127bcf51d08c7599732f91172da5f810173d5e1151f2c141040a1d40cf7",
+      "git_blob_sha1": "498ed5b92421af34cb5b56eb5ead9ff04d51ebdc"
+    },
+    {
+      "path": "Mathlib/RingTheory/Localization/Away/AdjoinRoot.lean",
+      "sha256": "3dd1eb23af494ca086b108075fd260807423faf01e096edcacd17a105d91580d",
+      "git_blob_sha1": "81edaac3dcbb0775400c23c386a3e9ff2b5fdec9"
+    },
+    {
+      "path": "Mathlib/RingTheory/EssentialFiniteness.lean",
+      "sha256": "86ca8d82a3589228fb866a1700081453ed4b7b0fb5abb8ab2fc4fd9558a083c8",
+      "git_blob_sha1": "a57625a143386f5396971d9e49d1e1d5c5dcc9fc"
+    },
+    {
+      "path": "Mathlib/Algebra/Module/LocalizedModule/Basic.lean",
+      "sha256": "66ffbd94582c6dd777e9bfda13e18a4222eee75ba787354d0792c3fc0cd0a3e3",
+      "git_blob_sha1": "a684782a5cd388b0b4df922b1713a245793e2ea5"
+    },
+    {
+      "path": "Mathlib/Topology/Irreducible.lean",
+      "sha256": "f871d16345c8f6a9808bbe9d4f137d1e551dccdd13681d5f2a937575f494b4cb",
+      "git_blob_sha1": "6faf624f1e5d57fec395926d9cc9b844e790cef7"
+    },
+    {
+      "path": "Mathlib/RingTheory/Ideal/Maps.lean",
+      "sha256": "dc9a8082cdbc439bfb03cd4e3317c5df866c9e30de41d8c2584377f5b4aae6f7",
+      "git_blob_sha1": "092500e218b795ad73f2f55e9210eb65804d1024"
+    },
+    {
+      "path": "Mathlib/RingTheory/RingHom/Smooth.lean",
+      "sha256": "94ba3c54cf51a66368786bcedc8a220972e8160d3d552de15214a8e5142ba58f",
+      "git_blob_sha1": "ca757ab5bba703c2bb97b7f0744c5dbb0e1ed19f"
+    },
+    {
+      "path": "Mathlib/Algebra/Group/Idempotent.lean",
+      "sha256": "83f13915b30591f804d8c9330fdec07127608f83e04a3598f56f05770a9b9c9f",
+      "git_blob_sha1": "b906c879422f18644e9902077e85813fa957f027"
+    }
+  ],
+  "upstream_proof_placeholders": {
+    "method": "Lexical scan preserving line/column offsets after masking nested Lean block comments, line comments, and string literals; Point.lean occurrences manually inspected.",
+    "real_sorry_count": 10,
+    "real_admit_count": 0,
+    "noncode_sorry_count": 1,
+    "upstream_file_with_real_sorry": "Pi1/FundamentalGroup/Point.lean",
+    "real_sorry_lines": [
+      118,
+      119,
+      120,
+      121,
+      126,
+      131,
+      137,
+      181,
+      202,
+      275
+    ],
+    "commented_sorry_lines": [
+      84
+    ],
+    "declarations_with_real_sorry": [
+      "AlgebraicGeometry.FiniteEtale.fiberObjEquivHom",
+      "AlgebraicGeometry.FiniteEtale.fiberObjEquivHom_symm_naturality",
+      "AlgebraicGeometry.FiniteEtale.fiberObjEquivHom_naturality",
+      "AlgebraicGeometry.FiniteEtale.fiberIsoCoyoneda",
+      "anonymous ContinuousSMul instance at line 179",
+      "AlgebraicGeometry.FiniteEtale.isField_of_isConnected",
+      "AlgebraicGeometry.FiniteEtale.isGalois_of_isGalois"
+    ],
+    "port_policy": "Do not replace completed local constructions with upstream placeholders; this audit does not accept admitted declarations as completed results."
+  },
+  "local_source_snapshot": {
+    "recorded_at_utc": "2026-10-12T06:31:02.474027+00:00",
+    "hash_algorithm": "SHA-256 over raw bytes",
+    "scope": "Adapted pi1 ports, their Pi1 aggregates, and explicitly mapped Nyll extensions; excludes this manifest and documentation.",
+    "files": [
+      {
+        "path": "Nyll/EtaleFundamentalGroups/GeometricFiber/FundamentalGroup.lean",
+        "role": "nyll_extension",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/Point.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            },
+            {
+              "line": 9,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            },
+            {
+              "line": 11,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Point.lean"
+          ]
+        },
+        "local_change_description": "Nyll completions of upstream Point.lean placeholders and dependent fiber-action/fundamental-group repairs; existing IsSepClosed and IsSepClosure assumptions preserved.",
+        "sha256": "97521a296c26a3dd7e69f434d39108cc0538b15ee4aa44ad7c2be1d34998423a",
+        "byte_count": 24386
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/All.lean",
+        "role": "aggregate",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "9aba08d5d37f918bea346e1b9c083f8ce6b70e2c209d7169d273529827da86b0",
+        "byte_count": 401
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/FiniteEtale/All.lean",
+        "role": "aggregate",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "e806d7190aff6f1add637a8fbcd55ba3148d56f8a25afc7d511e96b90d7d2314",
+        "byte_count": 294
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/FiniteEtale/GaloisCategory.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/Galois.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Galois.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "4fdc3f8a7991130be85c86f717a3a46ed9b47033f0b2b912ca129ba4eafcc030",
+        "byte_count": 6259
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/GaloisCategories/All.lean",
+        "role": "aggregate",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "3c8eb40d5fba9da720bfd9effbef848db74a526b59513355ec1b71e674be3d77",
+        "byte_count": 301
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/GaloisCategories/FundamentalGroup.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [
+          "Pi1/Mathlib/CategoryTheory/Galois/IsFundamentalGroup.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/CategoryTheory/Galois/IsFundamentalGroup.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "b8c14d12e871c7582fb2a23f070a2b59f707b60221b8a2fbd1b4984cdcec05b6",
+        "byte_count": 1582
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/GeometricFiber/All.lean",
+        "role": "aggregate",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "760daf1cc28dd56ea129a299a3e711b082e2c11e2880df430212a7e965b45e15",
+        "byte_count": 294
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/GeometricFiber/FieldPoints.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "EtaleFundamentalGroups",
+        "depth": 2,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/Point.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Point.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "da44218698e54697ae23137144b0db089152cd34995169fb73e44a49dba91fb9",
+        "byte_count": 11381
+      },
+      {
+        "path": "Nyll/SchemeTheory/Descent/EqualizerScalars.lean",
+        "role": "nyll_extension",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/Flat/Equalizer.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll forward-map computation AlgHom.equalizerRestrictScalars_apply, split from the scalar-restriction comparison.",
+        "sha256": "66e7fd485afa7cb6916c29b992373af9de60b3ac00ae5ff4b051828c723c3826",
+        "byte_count": 929
+      },
+      {
+        "path": "Nyll/SchemeTheory/FiniteEtale/Algebra/EtaleSplitting.lean",
+        "role": "nyll_extension",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/KerTensor.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/KerTensor.lean"
+          ]
+        },
+        "local_change_description": "Nyll etale-neighbourhood refinement Algebra.exists_etale_isFiniteSplit, stronger than the referenced upstream splitting construction.",
+        "sha256": "246a6610261b0a3c819c0b9f8fcbd523945396edf0a6cf20ba49d809aaa296c9",
+        "byte_count": 3009
+      },
+      {
+        "path": "Nyll/SchemeTheory/FiniteEtale/Forget/FiniteCoequalizers.lean",
+        "role": "nyll_extension",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/KerTensor.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 11,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729)."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            },
+            {
+              "line": 13,
+              "text": "Authors of Nyll-local additions: Naganori Yamaguchi (assisted by OpenAI Codex)."
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/KerTensor.lean"
+          ]
+        },
+        "local_change_description": "Nyll simultaneous-map splitting adaptation and concrete coequalizer/descent construction; retained at the existing path with separate credits.",
+        "sha256": "c3b59b17e3de4e17bdb39ea3e51dce7f0a36f2587752ad9847b0762d6232d507",
+        "byte_count": 108839
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Affine/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "e6f56f350c4a825a0f13a33cabe76359714a5bfb2955c2ac9f0202e131c7790f",
+        "byte_count": 374
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Affine/GeometricIrreducibility.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/Geometric.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Geometric.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated. Removed IsHomeomorph.irreducibleSpace wrapper. Both directions of final closure equivalence now use the canonical homeomorphism irreducibility equivalence with symmetry; direct owner import. Removed Ideal.under_mono alias; imported canonical Ideal.comap_mono owner directly.",
+        "sha256": "28d9e8a83bfdd70506955211e7a6e7ea0965cfea31cc7a5cc958fb028b4568c1",
+        "byte_count": 13144
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Affine/Over.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/AffineColimits.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            },
+            {
+              "line": 20,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729)."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            },
+            {
+              "line": 21,
+              "text": "Authors of local modifications: Naganori Yamaguchi (assisted by OpenAI Codex)."
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/AffineColimits.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "2cc9110ba3acffe001e60c50f7505511e98960a28c30a21bb007aec4f8509ef2",
+        "byte_count": 30830
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Affine/Property.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/AffineAnd.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            },
+            {
+              "line": 20,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729)."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            },
+            {
+              "line": 21,
+              "text": "Authors of local modifications: Naganori Yamaguchi (assisted by OpenAI Codex)."
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/AffineAnd.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "8c667218bcb1a8f43736fcce160e0af3e545ec4dff80754ec793510ef9bec93a",
+        "byte_count": 48151
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "947faa8e6dcdaecb475e9f752864e423cb4cba3c5e7da60103f8fb34e30e89dd",
+        "byte_count": 528
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Descent/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "b1841f90c754ba07b1997fc7b0b69a70bc5dad528d2f884af02aed0a50de7be2",
+        "byte_count": 333
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Descent/EqualizerScalars.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/Flat/Equalizer.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Flat/Equalizer.lean",
+            "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/RingTheory/Flat/Equalizer.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "79acf0092b54407bdecc3b67c5160b707b1f29ba00fb8d6d4b95bd410c032f7a",
+        "byte_count": 2033
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Descent/FlatEqualizer.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/Flat/Equalizer.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Flat/Equalizer.lean",
+            "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/RingTheory/Flat/Equalizer.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "59c499154a8d67aa29dd1f6acc495b5090f0b7f53b449f5e6f76e2e465c4aa8f",
+        "byte_count": 14321
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Etale/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "91169c3b5fcaaf7aca0724fa063e60e91a944eab4eae1a1e08dd23381a547fd3",
+        "byte_count": 271
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Etale/RingHom.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/RingHom/Etale.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/RingHom/Etale.lean",
+            "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/RingTheory/RingHom/Etale.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "607f48cff001a7d46849befba378de13c88a2e0aece214e0adc979052218ab99",
+        "byte_count": 4097
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "a9722355cd5d095757700cb0ecff4e13d97d4898c688dce16df09c22d13f7766",
+        "byte_count": 458
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Basic.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/FiniteEtale/Basic.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/FiniteEtale/Basic.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "44ad693e0285ba3c5481fd64cd4d415f955221602f66f5dbf761e1392de19056",
+        "byte_count": 6322
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Descent.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/FiniteEtale/Descent.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/FiniteEtale/Descent.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "be411c9ce5b2d05f9beb7515ef6ac0f0479798bef5b8608f1d6c18d1a6a0082e",
+        "byte_count": 1580
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Equalizer.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/FiniteEtale/Equalizer.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/FiniteEtale/Equalizer.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated. Removed IsIdempotentElem.eq_one_of_isUnit proof; two uses now call canonical iff .mp directly. Zero branch uses canonical sub_eq_self.mp.",
+        "sha256": "61239f40c83416f753d2005c533dcd06026d44ce5f5df9efe907477e4ab9e0db",
+        "byte_count": 24203
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Splitting.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/KerTensor.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/KerTensor.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "8fb8537ce4fc1c1a29e35d025f3720b2648223b85f84941225de95b070986952",
+        "byte_count": 26053
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "86d20707f30005db9cb6f93287f8cf0c409561828118bd7e605389a56fb132d1",
+        "byte_count": 378
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Basic.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/FiniteEtale.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            },
+            {
+              "line": 20,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729)."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            },
+            {
+              "line": 21,
+              "text": "Authors of local modifications: Naganori Yamaguchi (assisted by OpenAI Codex)."
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/FiniteEtale.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "148ea80d21c6139a710fe496d215be2f73330b0fdb1e00c40126aa9d81501e3d",
+        "byte_count": 15883
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Geometry.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/FundamentalGroup/Galois.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            },
+            {
+              "line": 20,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729)."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            },
+            {
+              "line": 21,
+              "text": "Authors of local modifications: Naganori Yamaguchi (assisted by OpenAI Codex)."
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/FundamentalGroup/Galois.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "01a63484662d455b4e33aa871af4a9f9e094d2c38f6d2ed74d2a682a195e0247",
+        "byte_count": 34847
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FunctionFields/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "310f93ed65844d7071315b9112955fac93e7e13543f4e2195d93d06164705ad9",
+        "byte_count": 286
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FunctionFields/Transcendence.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/Transcendence.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/Transcendence.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "f3db233a8a1e88512c541cdef992829493107b78cc60c4c95f9eedc497c05197",
+        "byte_count": 3291
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "126b6f094e63065b0577a2c97f369d82d217abc932dbf90f0a0c92d8db036115",
+        "byte_count": 415
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/Finite.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/AlgebraicGeometry/Morphisms/Finite.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/AlgebraicGeometry/Morphisms/Finite.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "79879e088d7f5f9796ea09f18f32b83a12ec4cd1ab8d947aeb7bae8d5fdb674b",
+        "byte_count": 1192
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/Flat.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten, Andrew Yang"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean",
+            "https://github.com/leanprover-community/mathlib4/blob/53f8a93a7739dd4eb33926f645811ebb6cee21bf/Mathlib/AlgebraicGeometry/Morphisms/Flat.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "10a0bffdcf26d823544afb6c3e5dbc3006614c7b0f0a96039c2698b11077439b",
+        "byte_count": 2054
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/Smooth.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/RingHom/Smooth.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2025 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/RingHom/Smooth.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated. Removed Smooth.ofLocalizationSpan wrapper; canonical PropertyIsLocal owner imported directly.",
+        "sha256": "10d78f06164c1aa9fa2c6dab578f50645ec27bdffb64ac935ab0203d24b9e612",
+        "byte_count": 1796
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/SmoothLocus.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/RingTheory/Smooth/StandardSmoothSmooth.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2024 Christian Merten. All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/RingTheory/Smooth/StandardSmoothSmooth.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated. Removed two specialized instances already supplied by canonical general instances and duplicate iso_symm_apply simp lemma; direct imports of three canonical owners.",
+        "sha256": "e45d75eb95089a8f7ba3190404da9cf7d1ba4e0f7d29a0aff19d9d065c09b4a4",
+        "byte_count": 11483
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/RingTheory/All.lean",
+        "role": "aggregate",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [],
+        "attribution_evidence": {
+          "copyright_notices": [
+            {
+              "line": 2,
+              "text": "Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved."
+            }
+          ],
+          "author_notices": [
+            {
+              "line": 4,
+              "text": "Authors: Naganori Yamaguchi (assisted by OpenAI Codex)"
+            }
+          ],
+          "source_urls": []
+        },
+        "local_change_description": "Nyll module aggregation.",
+        "sha256": "081194ed7cb783abe0bafd496e718f33e19714e2f314b808ee2b1fe3cec9b261",
+        "byte_count": 285
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/RingTheory/QuotientProducts.lean",
+        "role": "adapted_upstream_port",
+        "owning_library": "SchemeTheory",
+        "depth": 1,
+        "upstream_paths": [
+          "Pi1/Mathlib/RingTheory/Ideal/Quotient/Operations.lean"
+        ],
+        "attribution_evidence": {
+          "copyright_notices": [],
+          "author_notices": [
+            {
+              "line": 3,
+              "text": "Authors: Christian Merten"
+            }
+          ],
+          "source_urls": [
+            "https://github.com/chrisflav/pi1/blob/5c5c0171efc863ce9990171bdf46d7cb5fd582fb/Pi1/Mathlib/RingTheory/Ideal/Quotient/Operations.lean"
+          ]
+        },
+        "local_change_description": "Maintained adaptation: namespace/declaration ownership retained, paths/imports and Lean/mathlib APIs updated.",
+        "sha256": "5e3df9b5c42b7abe1dba2be4fbc90c0b80c6c0eb720ec9495bff138fcffa82dd",
+        "byte_count": 1319
+      }
+    ]
+  },
+  "attribution_policy": {
+    "upstream_file_notices": "Exact explicit notices are retained per file; absence is not a copyright determination.",
+    "git_author_evidence": "Git author records evidence history only and do not establish copyright holders.",
+    "legacy_local_notices": "Retained original Nyll notices and their cited mathlib sources are separate evidence; they are not represented as headers present in the current pi1 file.",
+    "nyll_additions": "Copyright and authorship notices for Nyll-local additions apply only to those additions; they do not replace upstream attribution.",
+    "distinct_project": {
+      "repository": "https://github.com/anthropics/fermats-last-theorem",
+      "part_of_this_pi1_inventory": false
+    }
+  },
+  "freeze_policy": {
+    "upstream_pin": "Change the pin only through an explicit reviewed upstream refresh.",
+    "ports": "After any necessary Lean/API repair, refresh only the local-source raw-byte hashes against the existing registered path set; source moves or attribution changes require review.",
+    "validation": "Normal lake --wfail validation is required. Build results and exact tested source identities are recorded separately after execution; this manifest makes no build-passed claim.",
+    "depth": "Foundation implementations remain SchemeTheory (depth 1); EFG implementations remain depth 2. Provenance storage in EFG does not change dependency ownership."
+  },
+  "documentation_authorship": {
+    "copyright": "Copyright (c) 2026 Naganori Yamaguchi.",
+    "authors": [
+      "Naganori Yamaguchi (assisted by OpenAI Codex)"
+    ],
+    "author_url": "https://github.com/n-yamaguchi-0729",
+    "license": "Apache-2.0",
+    "scope": "New NYLL documentation prose and manifest organization only. Quoted or recorded pi1/mathlib/other external notices retain their own attribution; the upstream LICENSE is unmodified."
+  },
+  "canonical_mathlib_deduplication": {
+    "mathlib_commit": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+    "declaration_replacements": [
+      {
+        "old": "CategoryTheory.MorphismProperty.Over anonymous CreatesFiniteLimits / PreservesFiniteLimits forget / pullback instances",
+        "canonical": "Mathlib.CategoryTheory.Limits.MorphismProperty:304,310,313",
+        "equivalence": "Same conclusions. Mathlib bundles composition and identities as IsMultiplicative; actual finite-etale consumers have the existing IsFiniteEtale IsMultiplicative instance at Basic:144. Generic signatures were not strengthened."
+      },
+      {
+        "old": "AlgebraicGeometry.isClosedImmersion_of_isPreimmersion_of_isClosed",
+        "canonical": "AlgebraicGeometry.IsClosedImmersion.of_isPreimmersion (Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion:62)",
+        "equivalence": "Same morphism and closed range; full f explicitly W.ι / U.ι in the two consumers."
+      },
+      {
+        "old": "AlgebraicGeometry.isClosedImmersion_iff_isClosed_range_of_isPreimmersion",
+        "canonical": "AlgebraicGeometry.IsClosedImmersion.iff_isPreimmersion (Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion:58)",
+        "equivalence": "Canonical iff combines IsPreimmersion with closed range; old theorem assumed IsPreimmersion. No consumers of deleted specialized iff."
+      },
+      {
+        "old": "AlgebraicGeometry.finrank_eq_const_of_preconnectedSpace",
+        "canonical": "Scheme.Hom.isLocallyConstant_finrank + IsLocallyConstant.apply_eq_of_preconnectedSpace",
+        "equivalence": "Original body was exactly application of these two existing results. Both owning modules imported directly in consumers."
+      },
+      {
+        "old": "RingHom.finite_algebraMap_iff",
+        "canonical": "RingHom.finite_algebraMap (Mathlib.RingTheory.Finiteness.Defs:180)",
+        "equivalence": "Identical algebraMap finite iff Module.Finite statement."
+      },
+      {
+        "old": "Localization.Away.finitePresentation",
+        "canonical": "Mathlib.RingTheory.Localization.Away.AdjoinRoot:52 instance",
+        "equivalence": "General instance specializes S=R; Algebra.FinitePresentation R R is canonical. No new setup or assumptions."
+      },
+      {
+        "old": "Localization.essFiniteType",
+        "canonical": "Mathlib.RingTheory.EssentialFiniteness:215 instance",
+        "equivalence": "General localization instance specializes S=R, with canonical EssFiniteType.of_finiteType/of_id."
+      },
+      {
+        "old": "IsLocalizedModule.iso_symm_apply''",
+        "canonical": "IsLocalizedModule.iso_symm_apply (Mathlib.Algebra.Module.LocalizedModule.Basic:909)",
+        "equivalence": "Identical statement and simp attribute; no explicit named usages outside removed definition."
+      },
+      {
+        "old": "IsHomeomorph.irreducibleSpace",
+        "canonical": "Homeomorph.irreducibleSpace_iff (Mathlib.Topology.Irreducible:547)",
+        "equivalence": "The final theorem needs both directions; original e maps L-spectrum to K-spectrum, so canonical iff is reversed. No geometric data altered."
+      },
+      {
+        "old": "Ideal.under_mono",
+        "canonical": "Ideal.comap_mono (Mathlib.RingTheory.Ideal.Maps:84)",
+        "equivalence": "under is comap by algebraMap and the original body was exactly this canonical lemma; no consumers."
+      },
+      {
+        "old": "RingHom.Smooth.ofLocalizationSpan",
+        "canonical": "RingHom.Smooth.propertyIsLocal.ofLocalizationSpan (Mathlib.RingTheory.RingHom.Smooth:144–149)",
+        "equivalence": "Identical PropertyIsLocal field expression; no consumers."
+      },
+      {
+        "old": "IsIdempotentElem.eq_one_of_isUnit",
+        "canonical": "IsIdempotentElem.iff_eq_one_of_isUnit (Mathlib.Algebra.Group.Idempotent:96)",
+        "equivalence": "Existing Monoid iff.mp has the same CommRing specialization; both callers preserved. sub_eq_self derives e=0 from 1-e=1."
+      }
+    ],
+    "consumer_api_changes": [
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Basic.lean",
+        "proof_replacements": [
+          [
+            "RingHom.finite_algebraMap_iff",
+            "RingHom.finite_algebraMap"
+          ]
+        ]
+      },
+      {
+        "path": "Nyll/SchemeTheory/Etale/FiniteRadicialSplittingCover.lean",
+        "proof_replacements": [
+          [
+            "RingHom.finite_algebraMap_iff",
+            "RingHom.finite_algebraMap"
+          ]
+        ]
+      },
+      {
+        "path": "Nyll/SchemeTheory/Etale/IntegralRefinement.lean",
+        "proof_replacements": [
+          [
+            "isClosedImmersion_of_isPreimmersion_of_isClosed W.ι hWclosed",
+            "IsClosedImmersion.of_isPreimmersion W.ι hWclosed"
+          ]
+        ]
+      },
+      {
+        "path": "Nyll/EtaleFundamentalGroups/Pi1/FiniteEtale/GaloisCategory.lean",
+        "proof_replacements": [
+          [
+            "apply isClosedImmersion_of_isPreimmersion_of_isClosed",
+            "apply IsClosedImmersion.of_isPreimmersion U.ι"
+          ]
+        ]
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Geometry.lean",
+        "proof_replacements": [
+          [
+            "finrank_eq_const_of_preconnectedSpace f z (g.base y)",
+            "f.isLocallyConstant_finrank.apply_eq_of_preconnectedSpace z (g.base y)"
+          ],
+          [
+            "finrank_eq_const_of_preconnectedSpace _ _ (f.base x)",
+            "f.isLocallyConstant_finrank.apply_eq_of_preconnectedSpace y (f.base x)"
+          ]
+        ]
+      },
+      {
+        "path": "Nyll/SchemeTheory/Morphisms/FiberRank.lean",
+        "proof_replacements": [
+          [
+            "finrank_eq_const_of_preconnectedSpace f x (genericPoint X)",
+            "f.isLocallyConstant_finrank.apply_eq_of_preconnectedSpace x (genericPoint X)"
+          ]
+        ]
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/SmoothLocus.lean",
+        "changes": "Removed two specialized instances already supplied by canonical general instances and duplicate iso_symm_apply simp lemma; direct imports of three canonical owners."
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Affine/GeometricIrreducibility.lean",
+        "changes": "Removed IsHomeomorph.irreducibleSpace wrapper. Both directions of final closure equivalence now use the canonical homeomorphism irreducibility equivalence with symmetry; direct owner import. Removed Ideal.under_mono alias; imported canonical Ideal.comap_mono owner directly."
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/Morphisms/Smooth.lean",
+        "changes": "Removed Smooth.ofLocalizationSpan wrapper; canonical PropertyIsLocal owner imported directly."
+      },
+      {
+        "path": "Nyll/SchemeTheory/Pi1/FiniteEtale/Algebra/Equalizer.lean",
+        "changes": "Removed IsIdempotentElem.eq_one_of_isUnit proof; two uses now call canonical iff .mp directly. Zero branch uses canonical sub_eq_self.mp."
+      }
+    ],
+    "removed_local_aggregate": "Nyll/SchemeTheory/Pi1/CategoryTheory/All.lean",
+    "scope": "Canonical existing APIs replace duplicate local declarations; historical upstream tree and original local evidence are preserved.",
+    "validation": "No Lean success inferred from the static equivalence audit.",
+    "removed_counts": {
+      "deleted_source_files": 4,
+      "declarations_in_deleted_files": 7,
+      "additional_declarations_removed_in_retained_files": 7,
+      "total_removed_declarations": 14,
+      "removed_named_declarations": 9,
+      "removed_instances": 5,
+      "retained_source_files_changed": 11
+    },
+    "audit_frozen_at_utc": "2026-10-12T04:22:10.331669+00:00"
+  }
+}

@@ -5,6 +5,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.SchemeTheory.Divisors.LocalScheme
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.AlgebraicGeometry.IdealSheaf.Basic
+import Mathlib.Data.Finset.Lattice.Fold
 
 /-!
 # Local descriptions of support complements
@@ -18,6 +21,8 @@ localization away from that principal generator.
 noncomputable section
 
 open AlgebraicGeometry CategoryTheory TopologicalSpace
+
+open scoped BigOperators
 
 namespace PrimeSpectrum
 
@@ -81,6 +86,17 @@ namespace AlgebraicGeometry.Scheme.IdealSheafData
 universe u
 
 variable {X Y : Scheme.{u}}
+
+/-- The support of a finite product is the finite union of the supports. -/
+lemma support_finset_prod {ι : Type*} (s : Finset ι)
+    (I : ι → X.IdealSheafData) :
+    (∏ i ∈ s, I i).support = s.sup (fun i => (I i).support) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+      rw [Finset.prod_empty, one_eq_top, support_top, Finset.sup_empty]
+  | insert i s hi ih =>
+      rw [Finset.prod_insert hi, support_mul, Finset.sup_insert, ih]
 
 /-- The canonical open complement of the support of an ideal sheaf. -/
 def supportComplement (I : X.IdealSheafData) : X.Opens := I.support.compl

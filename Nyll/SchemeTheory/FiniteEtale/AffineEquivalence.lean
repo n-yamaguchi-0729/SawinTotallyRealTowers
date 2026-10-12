@@ -8,7 +8,7 @@ module
 
 public import Mathlib.RingTheory.Etale.Finite
 public import Mathlib.CategoryTheory.Opposites
-public import Nyll.SchemeTheory.FiniteEtale.Basic
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 
 /-!
 # Finite étale covers of an affine scheme

@@ -7,8 +7,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.SchemeTheory.Etale.FiniteRadicialSplittingAlgebra
-public import Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting
-public import Nyll.SchemeTheory.RingTheory.Finite
+public import Nyll.SchemeTheory.Pi1.FiniteEtale.Algebra.Splitting
+public import Mathlib.RingTheory.Finiteness.Defs
 public import Mathlib.RingTheory.RingHom.Etale
 public import Mathlib.RingTheory.RingHom.Finite
 public import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
@@ -90,11 +90,11 @@ theorem Etale.exists_finite_split_cover_of_finite_radicial
       e.symm⟩⟩
   choose n hn using hmodels
   have hfinite : Module.Finite (∀ i : t, D i.val) (∀ i : t, Fin (n i) → D i.val) := by
-    apply RingHom.finite_algebraMap_iff.mp
+    apply RingHom.finite_algebraMap.mp
     exact RingHom.finite_ofLocalizationSpan.pi RingHom.finite_respectsIso
       (fun i : t ↦ D i.val) (fun i : t ↦ Fin (n i) → D i.val)
       (fun i : t ↦ algebraMap (D i.val) (Fin (n i) → D i.val))
-      (fun i : t ↦ RingHom.finite_algebraMap_iff.mpr inferInstance)
+      (fun i : t ↦ RingHom.finite_algebraMap.mpr inferInstance)
   have hmodelEtale :
       Algebra.Etale (∀ i : t, D i.val) (∀ i : t, Fin (n i) → D i.val) := by
     apply RingHom.etale_algebraMap.mp

@@ -4,22 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SchemeTheory.Morphisms.ClosedImmersion
 import Nyll.SchemeTheory.Morphisms.ClosedImmersionLift
 import Nyll.SchemeTheory.Morphisms.DominantBaseChange
 import Nyll.SchemeTheory.Morphisms.EtaleRadicial
 import Nyll.SchemeTheory.Morphisms.EtaleReduced
-import Nyll.SchemeTheory.Morphisms.Finite
 import Nyll.SchemeTheory.Morphisms.FiniteDescent
-import Nyll.SchemeTheory.Morphisms.Flat
-import Nyll.SchemeTheory.Morphisms.FlatRank
 import Nyll.SchemeTheory.Morphisms.GeometricallyIntegralDescent
 import Nyll.SchemeTheory.Morphisms.NormalizationFiniteFactor
 import Nyll.SchemeTheory.Morphisms.OpenImmersionLocalization
 import Nyll.SchemeTheory.Morphisms.OpenImmersionQuotient
 import Nyll.SchemeTheory.Morphisms.RadicialDescent
-import Nyll.SchemeTheory.Morphisms.Smooth
-import Nyll.SchemeTheory.Morphisms.SmoothLocus
 import Nyll.SchemeTheory.Morphisms.SigmaPullback
 import Nyll.SchemeTheory.Morphisms.UnramifiedHomExt
 import Nyll.SchemeTheory.Morphisms.SmoothGeometricallyIntegral

@@ -4,13 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.AlgebraicGeometry.AffineScheme
+import Mathlib.AlgebraicGeometry.IdealSheaf.Basic
+import Mathlib.Data.Finset.Insert
+import Mathlib.RingTheory.Ideal.Maps
+import Mathlib.RingTheory.Ideal.Operations
 import Mathlib.Algebra.CharP.Algebra
 import Mathlib.Algebra.Category.Ring.Constructions
 import Mathlib.RingTheory.Regular.Flat
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 import Nyll.SchemeTheory.Divisors.ArithmeticBoundary
+import Nyll.SchemeTheory.Divisors.Basic
 import Nyll.SchemeTheory.Divisors.EtaleRegularity
-import Nyll.SchemeTheory.FiniteEtale.Geometry
+import Nyll.SchemeTheory.Pi1.FiniteEtale.Geometry
 
 /-!
 # Arithmetic boundaries under finite etale morphisms
@@ -211,6 +218,29 @@ lemma stalkIdeal_eq_map_ideal (I : X.IdealSheafData) (x : X)
     simpa only [homOfLE_leOfHom, TopCat.Presheaf.germ_res'] using
       (hV.trans hU.symm).le
   · exact I.map_ideal_le_stalkIdeal x U hxU
+
+/-- Taking the stalk ideal preserves multiplication of ideal sheaves. -/
+lemma stalkIdeal_mul (I J : X.IdealSheafData) (x : X) :
+    (I * J).stalkIdeal x = I.stalkIdeal x * J.stalkIdeal x := by
+  obtain ⟨U, hU, hxU, -⟩ :=
+    exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := x)
+      (show x ∈ (⊤ : X.Opens) from trivial)
+  let V : X.affineOpens := ⟨U, hU⟩
+  rw [(I * J).stalkIdeal_eq_map_ideal x V hxU,
+    I.stalkIdeal_eq_map_ideal x V hxU, J.stalkIdeal_eq_map_ideal x V hxU,
+    Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, Ideal.map_mul]
+
+/-- Taking the stalk ideal commutes with finite products of ideal sheaves. -/
+lemma stalkIdeal_finset_prod {ι : Type*} (s : Finset ι)
+    (I : ι → X.IdealSheafData) (x : X) :
+    (∏ i ∈ s, I i).stalkIdeal x = ∏ i ∈ s, (I i).stalkIdeal x := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    rw [Finset.prod_empty, Finset.prod_empty, Scheme.IdealSheafData.one_eq_top,
+      stalkIdeal_top, Ideal.one_eq_top]
+  | insert i s hi ih =>
+    rw [Finset.prod_insert hi, Finset.prod_insert hi, stalkIdeal_mul, ih]
 
 /-- On an affine target chart, the ideal of a pulled-back closed subscheme is
 the extension of the original ideal. -/

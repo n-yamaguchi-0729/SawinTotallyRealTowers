@@ -7,7 +7,7 @@ Authors: Christian Merten, Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.AlgebraicGeometry.Gluing
 import Mathlib.AlgebraicGeometry.PullbackCarrier
 import Mathlib.AlgebraicGeometry.Morphisms.Basic
-import Nyll.SchemeTheory.FiniteEtale.Basic
+import Nyll.SchemeTheory.Pi1.FiniteEtale.Basic
 
 /-!
 The range and open-immersion lifting arguments below adapt Christian Merten's

@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Etale.Pi
-import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
+import Mathlib.Algebra.Algebra.Tower
 import Mathlib.Algebra.Polynomial.Monic
+import Mathlib.RingTheory.Artinian.Module
+import Mathlib.RingTheory.Etale.Pi
+import Mathlib.RingTheory.Ideal.Quotient.Operations
+import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
+import Mathlib.RingTheory.Spectrum.Maximal.Basic
 
 /-!
 # Integral closure in a finite product
@@ -14,7 +18,9 @@ import Mathlib.Algebra.Polynomial.Monic
 Completion of a finite separable field extension splits its generic fibre as
 a finite product of completed fields.  To aggregate local normalization
 statements one needs the corresponding integral closure to split coordinatewise.
-This file proves that comparison directly from monic equations.
+This file proves that comparison directly from monic equations. For a reduced
+Artinian algebra, its canonical product of maximal-ideal quotients then gives
+the corresponding product decomposition of its integral closure.
 -/
 
 noncomputable section
@@ -99,5 +105,24 @@ theorem integralClosure_pi_etale
   exact Algebra.Etale.of_equiv (integralClosurePiAlgEquiv A).symm
 
 end EtaleFundamentalGroups
+
+namespace SchemeTheory
+
+universe u v
+
+/-- The normalization of a reduced Artinian algebra is the product of the
+normalizations in its actual maximal-ideal quotients. The algebra structures
+are the canonical quotient and coordinatewise structures, with scalars
+restricted from the Artinian algebra to the original base ring. -/
+def integralClosureFactorsEquiv
+    (R : Type u) (A : Type v) [CommRing R] [CommRing A] [Algebra R A]
+    [IsArtinianRing A] [IsReduced A] :
+    integralClosure R A ≃ₐ[R]
+      ∀ m : MaximalSpectrum A, integralClosure R (A ⧸ m.asIdeal) :=
+  (((IsArtinianRing.equivPi A).restrictScalars R).mapIntegralClosure).trans
+    (EtaleFundamentalGroups.integralClosurePiAlgEquiv
+      (R := R) (fun m : MaximalSpectrum A => A ⧸ m.asIdeal))
+
+end SchemeTheory
 
 end

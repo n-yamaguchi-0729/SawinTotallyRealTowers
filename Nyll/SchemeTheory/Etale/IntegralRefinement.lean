@@ -7,13 +7,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Nyll.SchemeTheory.Etale.FiniteAffineCover
 import Nyll.SchemeTheory.Etale.GeometricFiberBound
 import Nyll.SchemeTheory.Etale.NormalizationRemainderDegree
-import Nyll.SchemeTheory.Morphisms.ClosedImmersion
+import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
 import Nyll.SchemeTheory.Morphisms.QuasiFinite
 import Nyll.SchemeTheory.Normalization.IntegralOpen
 import Mathlib.AlgebraicGeometry.IdealSheaf.Basic
 import Mathlib.AlgebraicGeometry.IdealSheaf.Subscheme
 import Mathlib.AlgebraicGeometry.Limits
-import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
 import Mathlib.AlgebraicGeometry.Morphisms.Integral
 import Mathlib.AlgebraicGeometry.Morphisms.QuasiCompact
 import Mathlib.AlgebraicGeometry.Morphisms.QuasiSeparated
@@ -252,7 +251,7 @@ private theorem integral_refinement_of_bound (n : ℕ) :
         rw [Scheme.Opens.range_ι]
         exact f.etaleNormalizationRemainder_isClosed
       have : IsClosedImmersion W.ι :=
-        isClosedImmersion_of_isPreimmersion_of_isClosed W.ι hWclosed
+        IsClosedImmersion.of_isPreimmersion W.ι hWclosed
       have : CompactSpace (pullback f π : Scheme.{u}) := inferInstance
       have : CompactSpace W.toScheme := QuasiCompact.compactSpace_of_compactSpace W.ι
       let q : W.toScheme ⟶ Y := W.ι ≫ pullback.snd f π

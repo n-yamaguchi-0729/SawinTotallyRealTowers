@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.SchemeTheory.Affine.WeilRestriction.FiniteEtale
-public import Nyll.SchemeTheory.Affine.Property
+public import Nyll.SchemeTheory.Pi1.Affine.Property
 public import Mathlib.CategoryTheory.Monoidal.Cartesian.Over
 public import Mathlib.AlgebraicGeometry.GammaSpecAdjunction
 

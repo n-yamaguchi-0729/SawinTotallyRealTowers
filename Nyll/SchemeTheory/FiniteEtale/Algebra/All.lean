@@ -4,9 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SchemeTheory.FiniteEtale.Algebra.Basic
-import Nyll.SchemeTheory.FiniteEtale.Algebra.Descent
-import Nyll.SchemeTheory.FiniteEtale.Algebra.Equalizer
 import Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleQuotientLift
 import Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleSection
 import Nyll.SchemeTheory.FiniteEtale.Algebra.FaithfullyFlatDescent
@@ -28,7 +25,6 @@ import Nyll.SchemeTheory.FiniteEtale.Algebra.JacobsonRigidity
 import Nyll.SchemeTheory.FiniteEtale.Algebra.JacobsonSection
 import Nyll.SchemeTheory.FiniteEtale.Algebra.NilpotentBaseChange
 import Nyll.SchemeTheory.FiniteEtale.Algebra.SectionFactor
-import Nyll.SchemeTheory.FiniteEtale.Algebra.Splitting
 import Nyll.SchemeTheory.FiniteEtale.Algebra.PrimeRigidity
 
 
@@ -43,3 +39,4 @@ import Nyll.SchemeTheory.FiniteEtale.Algebra.ProductBaseChangeComparison
 import Nyll.SchemeTheory.FiniteEtale.Algebra.UniversalHomeomorphismAlgHom
 import Nyll.SchemeTheory.FiniteEtale.Algebra.FiniteRadicialEssentialSurjectivity
 import Nyll.SchemeTheory.FiniteEtale.Algebra.IntegralRadicialEssentialSurjectivity
+import Nyll.SchemeTheory.FiniteEtale.Algebra.EtaleSplitting

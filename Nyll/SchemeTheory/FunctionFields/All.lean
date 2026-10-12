@@ -12,7 +12,6 @@ import Nyll.SchemeTheory.FunctionFields.PlainIntegerBase
 import Nyll.SchemeTheory.FunctionFields.PrimeDivisors.All
 import Nyll.SchemeTheory.FunctionFields.SeparableClosure.All
 import Nyll.SchemeTheory.FunctionFields.StalkFactorization
-import Nyll.SchemeTheory.FunctionFields.Transcendence
 import Nyll.SchemeTheory.FunctionFields.Valuations.All
 import Nyll.SchemeTheory.FunctionFields.StalkFunctoriality
 

@@ -13,7 +13,6 @@ import Nyll.SchemeTheory.Descent.AlgebraCoaction
 import Nyll.SchemeTheory.Descent.FaithfullyFlatAlgebra
 import Nyll.SchemeTheory.Descent.Equivariance
 import Nyll.SchemeTheory.Descent.EffectiveAffine
-import Nyll.SchemeTheory.Descent.FlatEqualizer
 import Nyll.SchemeTheory.Descent.FpqcLocalCoequalizer
 import Nyll.SchemeTheory.Descent.AffineTransitionHom
 import Nyll.SchemeTheory.Descent.AffineTransitionEquality
@@ -46,3 +45,4 @@ import Nyll.SchemeTheory.Descent.SubalgebraStages_nonempty_isLimit_cone
 
 
 /- Canonical aggregate for SchemeTheory.Descent. -/
+import Nyll.SchemeTheory.Descent.EqualizerScalars
