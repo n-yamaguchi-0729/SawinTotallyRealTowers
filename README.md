@@ -6,7 +6,9 @@
 A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem.
 
 This library is extracted from [NYLL](https://github.com/n-yamaguchi-0729/NYLL).
-Bundled dependencies use the same `Nyll` imports as the complete library.
+<!-- nyll-publication:distribution:begin -->
+Only the module-level import closure of `Nyll.SawinTotallyRealTowers.All` is bundled. Dependencies retain their canonical `Nyll` imports.
+<!-- nyll-publication:distribution:end -->
 
 ## Scope
 
@@ -275,6 +277,8 @@ corresponding Lean files.
 
 ## License
 
-Apache License 2.0. See [LICENSE](LICENSE). Bundled scheme-theory foundations
-retain the [Anthropic FLT notices](Nyll/SchemeTheory/ANTHROPIC_FLT_NOTICE).
-For pi1 adaptations and their preserved notices, see [NOTICE](NOTICE).
+<!-- nyll-publication:credits:begin -->
+Apache License 2.0. See [LICENSE](LICENSE).
+
+Additional source-specific credits are preserved in [NOTICE](NOTICE).
+<!-- nyll-publication:credits:end -->

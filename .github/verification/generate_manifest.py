@@ -293,6 +293,52 @@ def analyze(root, config):
                 elif target.split(".")[0] in local_roots or not any(prefix_of(p, target) for p in external):
                     error("unresolved-local-import", "Import has no included local source or explicitly allowed external prefix.", module=module, target=target, line=line_no)
                 else: external_imports.add(target)
+    # Public extracts register only primary roots. Dependency families may be partial,
+    # with no All.lean at all. Physical closure is still audited below from Nyll.
+    if "primaryRoots" in config:
+        primary = config["primaryRoots"]
+        ordered = config.get("orderedLibraries", [])
+        depths = config.get("depths", {})
+        if (not isinstance(primary, list) or not primary or
+                not all(valid_name(name) for name in primary) or len(set(primary)) != len(primary)):
+            raise ValueError("primaryRoots must be distinct nonempty module names.")
+        if roots != ["Nyll"] or not all(name.startswith("Nyll.") and name.endswith(".All")
+                                       and len(name.split(".")) == 3 for name in primary):
+            error("public-primary-roots", "Public entry policy must name primary library roots.")
+        actual_owners = {row["owner"] for row in rows.values()} - {"EntryPoint"}
+        if (not isinstance(ordered, list) or len(set(ordered)) != len(ordered)
+                or set(ordered) != actual_owners or set(depths) != actual_owners):
+            error("public-owner-policy", "Physical owners differ from ordered library/depth policy.")
+        elif any(not isinstance(depths[owner], int) or isinstance(depths[owner], bool)
+                 or depths[owner] < 1 for owner in ordered):
+            error("public-depth-policy", "Library depths must be positive integers.")
+        else:
+            if [depths[owner] for owner in ordered] != sorted(depths.values()):
+                error("public-depth-order", "Library order is not shallow to deep.")
+            if primary != ["Nyll." + owner + ".All" for owner in ordered
+                           if "Nyll." + owner + ".All" in primary]:
+                error("public-primary-order", "Primary roots differ from canonical library order.")
+            for name, deps in graph.items():
+                if name in {"Nyll", "Nyll.All"}:
+                    continue
+                for dep in deps:
+                    if dep in {"Nyll", "Nyll.All"} or (
+                            depths[rows[dep]["owner"]] > depths[rows[name]["owner"]]):
+                        error("reverse-depth-import", "Import points to a deeper library or entry.",
+                              module=name, target=dep)
+        if "Nyll.All" in texts:
+            actual = [name for line in mask_noncode(texts["Nyll.All"]).splitlines()
+                      if (match := IMPORT.fullmatch(line))
+                      for name in (match.group(1) or "").split()]
+            if actual != primary:
+                error("public-root-order", "Nyll.All must import exactly the primary roots.",
+                      expected=primary, actual=actual)
+        if "Nyll" in graph and graph["Nyll"] != {"Nyll.All"}:
+            error("public-entry", "Nyll must import only Nyll.All.")
+        expected_globs = ["Nyll.All", "Nyll"] + ["Nyll." + owner + ".+" for owner in ordered]
+        if len(libraries) != 1 or libraries[0]["name"] != "Nyll" or (
+                libraries[0]["globs"] != expected_globs):
+            error("public-globs", "Lake globs differ from the physical-family order.")
     for module in roots + repaired:
         if module not in rows:
             error("missing-requested-module", "Requested root/subset module is absent from maintained sources.", module=module)

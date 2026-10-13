@@ -415,7 +415,7 @@ class Runner:
                     'Verification requires a clean committed checkout')
             manifest = json.loads((self.root/'.github/verification/source-manifest.json').read_text())
             baseline = json.loads((self.root/'.github/verification/historical-partial-baseline.json').read_text())
-            require(len(baseline['allowedPartialDeclarations']) == 31, 'Expected exactly 31 inventoried compiler-generated partials')
+            require(len(baseline['allowedPartialDeclarations']) == baseline['selectedCount'], 'Historical partial selection/count mismatch')
             for name, expected in WRAPPERS.items():
                 require(digest(HERE/name) == expected, 'Official wrapper modified: ' + name)
             self.receipt['sourceAudit'] = audit(self.root, manifest)

@@ -1,0 +1,40 @@
+name: Sync verified NYLL
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync-nyll-main
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository_owner == 'n-yamaguchi-0729' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+          path: targets/${{ github.event.repository.name }}
+      - name: Publish a changed extract and rerun its Lean workflow
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+          TARGET_NAME: ${{ github.event.repository.name }}
+        run: |
+          python3 -B "targets/$TARGET_NAME/.github/scripts/publication/auto_sync.py" \
+            --repository "$TARGET_REPOSITORY" \
+            --checkout "$GITHUB_WORKSPACE/targets/$TARGET_NAME" \
+            --workdir "$RUNNER_TEMP/nyll-publication-${{ github.run_id }}-${{ github.run_attempt }}" \
+            --apply

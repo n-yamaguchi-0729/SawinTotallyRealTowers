@@ -167,7 +167,7 @@ class InventoryTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         baseline = json.loads((root/'.github/verification/historical-partial-baseline.json').read_text())
         manifest = json.loads((root/'.github/verification/source-manifest.json').read_text())
-        self.assertEqual(len(baseline['allowedPartialDeclarations']), 31)
+        self.assertEqual(len(baseline['allowedPartialDeclarations']), baseline['selectedCount'])
         for old in baseline['allowedPartialDeclarations']:
             with self.subTest(old=old['name']):
                 path = old['sourcePath']

@@ -1,0 +1,153 @@
+name: One library with incremental cache handoff
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        required: true
+        type: string
+      target:
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ inputs.stage }}
+    if: github.event.repository.private == false || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      LEAN_NUM_THREADS: '1'
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+
+      - name: Reserve space on the ephemeral runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          echo "MATHLIB_CACHE_DIR=$RUNNER_TEMP/mathlib-downloads" >> "$GITHUB_ENV"
+          mkdir -p tmp/ci-libraries
+          {
+            echo 'Before removing unused preinstalled SDKs:'
+            df -h . "$RUNNER_TEMP"
+            # This Lean-only job does not use these image-provided SDKs.
+            # Keep the runner, Node, Python, C/C++ tools, Lean and all proof artifacts.
+            sudo du -sh /usr/local/lib/android /usr/share/dotnet /usr/local/.ghcup \
+              /usr/share/swift /opt/hostedtoolcache/CodeQL 2>/dev/null || true
+            sudo rm -rf -- /usr/local/lib/android /usr/share/dotnet /usr/local/.ghcup \
+              /usr/share/swift /opt/hostedtoolcache/CodeQL
+            echo 'After removing unused preinstalled SDKs:'
+            df -h . "$RUNNER_TEMP"
+          } | tee tmp/ci-libraries/capacity.log
+          free_kib=$(df -Pk . "$RUNNER_TEMP" / | awk 'NR > 1 && (!seen++ || $4 < free) { free=$4 } END { print free }')
+          # Reserve room for dependencies, legacy cache migration and new compiler setup files.
+          # Toolchain, download expansion and runner logs also need headroom.
+          if (( free_kib < 33554432 )); then
+            echo '::error::At least 32 GiB free is required before restoring Lean artifacts.'
+            exit 1
+          fi
+
+      - name: Audit source closure, depth, globs and proof placeholders
+        run: python3 .github/scripts/audit.py
+
+      - name: Install pinned Lean toolchain
+        uses: leanprover/lean-action@f061402b660e0c34644504b324e830f2991d4865
+        with:
+          auto-config: 'false'
+          build: 'false'
+          test: 'false'
+          lint: 'false'
+          use-mathlib-cache: 'false'
+          use-github-cache: 'false'
+
+      - name: Get pinned Mathlib artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake exe cache get Mathlib
+          # The pinned cache command deletes only downloaded .ltar archives.
+          # Unpacked .lake proof artifacts remain available to every later stage.
+          lake exe cache clean!
+          {
+            echo 'After installing Lean and unpacking Mathlib:'
+            df -h . "$RUNNER_TEMP"
+            du -sh .lake/packages "$MATHLIB_CACHE_DIR"
+          } | tee -a tmp/ci-libraries/capacity.log
+
+      # The pinned Lake creates setup.json only when compiling. It is not a
+      # traced output. Cache real Lean/native artifacts and hashes, not setup.json.
+      - name: Restore reusable project artifacts
+        id: restore
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: |
+            .lake/build/lib
+            .lake/build/bin
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            .lake/build/ir/**/*.o
+            .lake/build/ir/**/*.o.*
+          key: proof-build-v4-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-${{ inputs.stage }}
+          restore-keys: |
+            proof-build-v4-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-
+            proof-build-v4-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+
+      - name: Build library
+        id: build
+        # Leave an hour for cache compression/upload and logs before the job limit.
+        timeout-minutes: 300
+        shell: bash
+        env:
+          LIBRARY_STAGE: ${{ inputs.stage }}
+          LIBRARY_TARGET: ${{ inputs.target }}
+        run: |
+          if [[ -n "$LIBRARY_TARGET" ]]; then
+            bash .github/scripts/library-build.sh "$LIBRARY_STAGE" "$LIBRARY_TARGET"
+          else
+            bash .github/scripts/library-build.sh "$LIBRARY_STAGE"
+          fi
+
+      - name: Measure reusable cache and require archive headroom
+        id: capacity
+        if: always() && steps.build.outcome != 'skipped'
+        shell: bash
+        run: python3 .github/scripts/library-cache-capacity.py
+
+      - name: Save reusable artifacts for the next job
+        if: always() && steps.capacity.outputs.save == 'true' && steps.restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830
+        with:
+          path: |
+            .lake/build/lib
+            .lake/build/bin
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            .lake/build/ir/**/*.o
+            .lake/build/ir/**/*.o.*
+          key: ${{ steps.restore.outputs.cache-primary-key }}
+
+      - name: Upload build logs and cache measurements
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: library-build-logs-${{ inputs.stage }}-${{ github.run_attempt }}
+          path: |
+            tmp/ci-libraries/*.log
+            tmp/ci-libraries/*.json
+            tmp/ci-libraries/*-plan/receipt.json
+            tmp/ci-libraries/*-plan/targets.txt
+          if-no-files-found: ignore
+          retention-days: 7

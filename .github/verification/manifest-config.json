@@ -9,9 +9,6 @@
     "GaloisCohomology": [
       "Nyll.GaloisCohomology"
     ],
-    "SchemeTheory": [
-      "Nyll.SchemeTheory"
-    ],
     "ClassFieldTheory": [
       "Nyll.ClassFieldTheory"
     ],
@@ -51,7 +48,6 @@
     "ProCGroups",
     "ValuedFieldTheory",
     "GaloisCohomology",
-    "SchemeTheory",
     "ClassFieldTheory",
     "SawinTotallyRealTowers"
   ],
@@ -59,8 +55,10 @@
     "ProCGroups": 1,
     "ValuedFieldTheory": 1,
     "GaloisCohomology": 1,
-    "SchemeTheory": 1,
     "ClassFieldTheory": 2,
     "SawinTotallyRealTowers": 3
-  }
+  },
+  "primaryRoots": [
+    "Nyll.SawinTotallyRealTowers.All"
+  ]
 }

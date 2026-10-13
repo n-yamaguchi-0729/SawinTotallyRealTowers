@@ -13,28 +13,28 @@ import time
 
 import generate_manifest
 
-DEPTH = {'ProCGroups': 1, 'ValuedFieldTheory': 1, 'GaloisCohomology': 1, 'SchemeTheory': 1, 'ClassFieldTheory': 2, 'AlgebraicCurves': 2, 'EtaleFundamentalGroups': 2, 'EtaleCohomology': 2, 'SawinTotallyRealTowers': 3, 'JacobianVarieties': 3, 'Yamaguchi26AbfaithfulGalois': 3, 'Yamaguchi26SolvableCoverings': 3, 'AnabelianGeometry': 3, 'EntryPoint': 4}
 HERE = Path(__file__).resolve().parent
 
 
-def plan(root, manifest, depth):
+def plan(root, manifest, depth, depths):
+    depths = dict(depths, EntryPoint=max(depths.values()) + 1)
     rows = manifest["moduleRows"]
     graph = {}
     for name, row in rows.items():
         owner = row["owner"]
-        if owner not in DEPTH:
+        if owner not in depths:
             raise ValueError("Unassigned public library depth: " + owner)
         source = root / row["path"]
         if not source.resolve().is_relative_to(root):
             raise ValueError("Source outside the package")
-        clean = generate_manifest.mask_noncode(source.read_text())
+        clean = generate_manifest.mask_noncode(source.read_text(encoding="utf-8"))
         graph[name] = {target for line in clean.splitlines()
                        if (match := generate_manifest.IMPORT.fullmatch(line))
                        for target in (match.group(1) or "").split() if target in rows}
         for target in graph[name]:
-            if DEPTH[rows[target]["owner"]] > DEPTH[owner]:
+            if depths[rows[target]["owner"]] > depths[owner]:
                 raise ValueError("Reverse-depth import: " + name + " -> " + target)
-    selected = {name for name, row in rows.items() if DEPTH[row["owner"]] == depth}
+    selected = {name for name, row in rows.items() if depths[row["owner"]] == depth}
     if not selected:
         raise ValueError("This package has no modules at the requested depth")
     imported = {target for name in selected for target in graph[name] if target in selected}
@@ -68,7 +68,7 @@ def main():
     manifest, audit = generate_manifest.analyze(root, config)
     if not audit["staticPassed"]:
         raise ValueError("Physical source audit failed: " + str(audit["errors"]))
-    frontier, count = plan(root, manifest, args.depth)
+    frontier, count = plan(root, manifest, args.depth, config["depths"])
     command = ["lake", "--no-ansi", "--rehash", "--wfail", "build",
                *("+" + name for name in frontier)]
     args.output.mkdir(parents=True, exist_ok=False)

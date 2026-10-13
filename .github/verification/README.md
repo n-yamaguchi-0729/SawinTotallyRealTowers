@@ -10,12 +10,11 @@ repository root. Its repository-specific inputs are:
   from the library-source inventory.
 - `main-declarations.json`: selected public declarations whose names, kinds,
   owner, and specified source modules must remain available.
-- `source-manifest.json`: the exact SHA-pinned 4,141-module closure.
-- `historical-partial-baseline.json`: 31 pre-existing compiler-generated recursion declarations
-  and their exact source, copyright-header, and body hashes. Seven belonged to
-  the previous extract; the expanded dependency families contribute another
-  eleven from ProCGroups and thirteen from SchemeTheory. The baseline records
-  each declaration and the immutable source commit used for the compiler audit.
+- `source-manifest.json`: the exact SHA-pinned module closure listed in `moduleRows`.
+- `historical-partial-baseline.json`: the pre-existing compiler-generated recursion
+  declarations in the current import closure, with exact source, copyright-header,
+  and body hashes. The original compiler-audit commits are retained as historical
+  evidence; the baseline membership matches the current source manifest.
 
 The other files implement the shared procedure:
 
