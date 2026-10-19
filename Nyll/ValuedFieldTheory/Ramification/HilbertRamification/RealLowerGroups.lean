@@ -176,18 +176,10 @@ def valuationSubringAutOfUniqueExtension
     ⟨σ⁻¹ (a : L),
       (mem_valuationSubring_algEquiv_iff_of_hasUniqueValuationExtension
           (base := base) (target := target) huniq σ⁻¹ (a : L)).1 a.property⟩
-  left_inv a := by
-    ext
-    simp
-  right_inv a := by
-    ext
-    simp
-  map_mul' a b := by
-    ext
-    simp
-  map_add' a b := by
-    ext
-    simp
+  left_inv a := Subtype.ext (σ.symm_apply_apply a)
+  right_inv a := Subtype.ext (σ.apply_symm_apply a)
+  map_mul' a b := Subtype.ext (map_mul σ (a : L) (b : L))
+  map_add' a b := Subtype.ext (map_add σ (a : L) (b : L))
 
 /-- States the theorem `valuationSubringAutOfUniqueExtension_apply_coe`. -/
 @[simp] theorem valuationSubringAutOfUniqueExtension_apply_coe
@@ -205,9 +197,7 @@ def valuationSubringAutOfUniqueExtension
       base target)
     (a : target.valuationSubring) :
     valuationSubringAutOfUniqueExtension
-      (base := base) (target := target) huniq 1 a = a := by
-  ext
-  simp
+      (base := base) (target := target) huniq 1 a = a := Subtype.ext rfl
 
 /-- States the theorem `valuationSubringAutOfUniqueExtension_mul_apply`. -/
 @[simp] theorem valuationSubringAutOfUniqueExtension_mul_apply
@@ -231,9 +221,7 @@ def valuationSubringAutOfUniqueExtension
     valuationSubringAutOfUniqueExtension
       (base := base) (target := target) huniq σ
       (valuationSubringAutOfUniqueExtension
-        (base := base) (target := target) huniq σ⁻¹ a) = a := by
-  ext
-  simp
+        (base := base) (target := target) huniq σ⁻¹ a) = a := Subtype.ext (σ.apply_symm_apply a)
 
 /-- A uniquely extended valuation-ring automorphism preserves the maximal
 ideal. -/
@@ -328,7 +316,8 @@ def lowerRamificationGroup
         realRamificationIdeal target s}
   one_mem' := by
     intro a
-    simp
+    rw [valuationSubringAutOfUniqueExtension_one_apply, sub_self]
+    exact Ideal.zero_mem _
   mul_mem' := by
     intro σ τ hσ hτ a
     have hτa :

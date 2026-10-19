@@ -259,11 +259,15 @@ private noncomputable def fixedFieldTopValuationSubringActionHomDVF
   toFun tau := valuationSubringAutOfUniqueExtension
     (base := base) (target := target) huniq (tau : Gal(L/K))
   map_one' := by
-    ext a
-    simp
+    apply RingEquiv.ext
+    intro a
+    exact valuationSubringAutOfUniqueExtension_one_apply
+      (base := base) (target := target) huniq a
   map_mul' sigma tau := by
-    ext a
-    simp
+    apply RingEquiv.ext
+    intro a
+    exact valuationSubringAutOfUniqueExtension_mul_apply
+      (base := base) (target := target) huniq sigma tau a
 
 private noncomputable def fixedFieldInertiaSubgroupDVF
     (huniq :

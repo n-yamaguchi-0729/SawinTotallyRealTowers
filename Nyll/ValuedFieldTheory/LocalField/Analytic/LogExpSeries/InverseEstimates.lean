@@ -812,7 +812,7 @@ theorem expSeriesField_eq_one_iff_ofWithZeroValuation_of_lt_exp_neg_one
         (sub_eq_zero.mpr h)
   · intro hx
     subst x
-    simp
+    exact expSeriesField_zero_ofWithZeroValuation v hnK
 
 /-- The exponential-series value itself has valuation one on the normalized
 convergence radius.  This is the field-side unit statement used by the
@@ -991,8 +991,7 @@ theorem mem_maximalIdeal_pow_ofWithZeroValuation_val_ge
   · have hπpow :
         v (π : K) ^ n =
           WithZero.exp (-(n : ℤ)) := by
-      rw [hπval, ← WithZero.exp_nsmul]
-      simp
+      rw [hπval, ← WithZero.exp_nsmul, nsmul_eq_mul, mul_neg_one]
     have hlog :
         WithZero.log (v (a : K)) ≤ -(n : ℤ) := by
       have hNlog :
@@ -1048,8 +1047,7 @@ theorem ofWithZeroValuation_val_ge_of_mem_maximalIdeal_pow
   have hπpow :
       v (π : K) ^ n =
         WithZero.exp (-(n : ℤ)) := by
-    rw [hπval, ← WithZero.exp_nsmul]
-    simp
+    rw [hπval, ← WithZero.exp_nsmul, nsmul_eq_mul, mul_neg_one]
   have hva :
       v (a : K) ≤ WithZero.exp (-(n : ℤ)) := by
     have h :=

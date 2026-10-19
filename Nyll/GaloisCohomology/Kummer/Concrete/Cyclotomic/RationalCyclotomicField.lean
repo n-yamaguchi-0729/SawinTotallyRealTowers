@@ -192,7 +192,7 @@ theorem iSup_rationalCyclotomicLevel :
             m ≠ 0 ∧ x ^ m = 1}
         (by
           refine
-            ⟨(npos : ℕ), by simp, npos.ne_zero, ?_⟩
+            ⟨(npos : ℕ), Set.mem_singleton _, npos.ne_zero, ?_⟩
           change ζ ^ n = 1
           exact hpow))
 

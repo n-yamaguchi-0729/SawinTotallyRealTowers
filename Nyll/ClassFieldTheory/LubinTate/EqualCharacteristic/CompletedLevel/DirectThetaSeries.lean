@@ -74,8 +74,7 @@ theorem equalCharacteristicDirectTargetUniformizer_mul_gamma
       PowerSeries.map (algebraMap k (AlgebraicClosure k)) (u : k⟦X⟧) *
           PowerSeries.map (algebraMap k (AlgebraicClosure k))
             ((u⁻¹ : k⟦X⟧ˣ) : k⟦X⟧) = 1 := by
-    rw [← map_mul]
-    simp
+    rw [← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]
   rw [equalCharacteristicDirectCompletedTargetUniformizer,
     equalCharacteristicDirectThetaGamma]
   calc
@@ -113,8 +112,7 @@ theorem equalCharacteristicDirectTargetUniformizer_mul_beta
       PowerSeries.map (algebraMap k (AlgebraicClosure k)) (u : k⟦X⟧) *
           PowerSeries.map (algebraMap k (AlgebraicClosure k))
             ((u⁻¹ : k⟦X⟧ˣ) : k⟦X⟧) = 1 := by
-    rw [← map_mul]
-    simp
+    rw [← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]
   rw [equalCharacteristicDirectCompletedTargetUniformizer,
     equalCharacteristicDirectThetaBeta]
   calc

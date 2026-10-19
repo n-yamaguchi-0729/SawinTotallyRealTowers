@@ -113,12 +113,12 @@ private theorem decompositionGroup_action_locallyConstant
       (((sigma : L ≃ₐ[K] L)) • (E.fixingSubgroup : Set (L ≃ₐ[K] L)))
   refine ⟨U, E.fixingSubgroup_isOpen.smul
       (sigma : L ≃ₐ[K] L) |>.preimage continuous_subtype_val, ?_, ?_⟩
-  · exact ⟨1, E.fixingSubgroup.one_mem, by simp⟩
+  · exact ⟨1, E.fixingSubgroup.one_mem, mul_one _⟩
   · intro tau htau
     rcases htau with ⟨g, hg, heq⟩
     have hga : g (a : L) = (a : L) :=
       (IntermediateField.mem_fixingSubgroup_iff E g).mp hg (a : L)
-        (IntermediateField.subset_adjoin (F := K) (S := {(a : L)}) (by simp))
+        (IntermediateField.subset_adjoin (F := K) (S := {(a : L)}) (Set.mem_singleton (a : L)))
     apply Subtype.ext
     change (((tau : decompositionGroup K A) : L ≃ₐ[K] L) (a : L)) =
       (((sigma : decompositionGroup K A) : L ≃ₐ[K] L) (a : L))

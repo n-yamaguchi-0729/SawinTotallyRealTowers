@@ -765,7 +765,7 @@ n))`.
   rw [N.zeroQuotientModuloResidueDegreeClassEquivValueModResidueDegree_mk_mk
       hϖG (ϖG ^ n),
     vG.val_uniformizer_zpow hϖG n]
-  simp
+  exact (N.zeroQuotientModuloResidueDegreeClassEquivValueModResidueDegree hϖG).apply_symm_apply _
 
 /-- One criterion in the double quotient by the residue-degree class subgroup. -/
 theorem zeroQuotientModuloResidueDegreeClass_mk_eq_one_iff
@@ -1869,7 +1869,7 @@ QuotientGroup.mk' N.normSubgroup (ϖG ^ n)`.
   apply (N.normQuotientEquivValueModResidueDegree hϖG hϖH hzero).injective
   rw [N.normQuotientEquivValueModResidueDegree_uniformizer_zpow
       hϖG hϖH hzero n]
-  simp
+  exact (N.normQuotientEquivValueModResidueDegree hϖG hϖH hzero).apply_symm_apply _
 
 /-- Compatibility of the natural map `G/G⁰ → G/N` with the value-modulo
 residue-degree map. -/
@@ -2124,8 +2124,7 @@ theorem normQuotient_uniformizer_zpow_residueDegree_eq_one
   let _hϖG := hϖG
   rw [N.normQuotient_mk_eq_one_iff_mem]
   exact N.mem_normSubgroup_of_residueDegree_dvd_val_of_zeroSubgroup_le
-    hϖH hzero (by
-      simp)
+    hϖH hzero (by rw [vG.val_uniformizer_zpow hϖG])
 
 /-- Uniformizer powers in the norm quotient are periodic modulo the residue
 degree under the standard unit-norm-surjectivity hypothesis. -/
@@ -2266,7 +2265,7 @@ theorem normQuotient_closure_uniformizerClass_eq_top
     exact Subgroup.zpow_mem
       (Subgroup.closure
         ({QuotientGroup.mk' N.normSubgroup ϖG} : Set (G ⧸ N.normSubgroup)))
-      (Subgroup.subset_closure (by simp)) n
+      (Subgroup.subset_closure (Set.mem_singleton _)) n
 
 /-- Under the value-group equivalence, the `n`th power of the target
 uniformizer class maps to the class of `n` modulo the residue-degree subgroup. -/
@@ -2639,7 +2638,7 @@ theorem normSubgroup_eq_sup_of_source_decomposition
       simpa [hU] using hmap
     have hγ : γ ^ n ∈ Subgroup.closure ({γ} : Set G) :=
       (Subgroup.closure ({γ} : Set G)).zpow_mem
-        (Subgroup.subset_closure (by simp)) n
+        (Subgroup.subset_closure (Set.mem_singleton _)) n
     rw [hy, N.toHom.map_mul, N.toHom.map_zpow, hϖ]
     exact (P ⊔ Subgroup.closure ({γ} : Set G)).mul_mem
       ((le_sup_left : P ≤ P ⊔ Subgroup.closure ({γ} : Set G)) hNuP)

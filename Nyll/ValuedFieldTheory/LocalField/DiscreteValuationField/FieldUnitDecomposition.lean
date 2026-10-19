@@ -298,8 +298,7 @@ theorem fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_snd
         (uniformizerValueExponent F) hπ x := by
     simp [E]
   calc
-    (E.symm x).2 = Multiplicative.ofAdd (Multiplicative.toAdd ((E.symm x).2)) := by
-      simp
+    (E.symm x).2 = Multiplicative.ofAdd (Multiplicative.toAdd ((E.symm x).2)) := rfl
     _ = Multiplicative.ofAdd ((uniformizerValueExponent F) hπ x) := by
       rw [h]
 
@@ -388,7 +387,7 @@ theorem fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_unitPart_eq_mul_unifo
       fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_factors_mul_uniformizer_zpow
         F hπ x
   calc
-    u = u * 1 := by simp
+    u = u * 1 := (mul_one u).symm
     _ = u * (ϖ ^ (uniformizerValueExponent F) hπ x *
         ϖ ^ (-((uniformizerValueExponent F) hπ x))) := by
           rw [← zpow_add, add_neg_cancel, zpow_zero]
@@ -916,8 +915,8 @@ theorem valuationSubringUnitsEquivRootsTimesPrincipalUnits_symm_snd_eq
     ((E.symm u).2 : F.valuationSubringˣ) =
         ((E.symm u).1 : F.valuationSubringˣ)⁻¹ *
           (((E.symm u).1 : F.valuationSubringˣ) *
-            ((E.symm u).2 : F.valuationSubringˣ)) := by
-      simp
+            ((E.symm u).2 : F.valuationSubringˣ)) :=
+      (inv_mul_cancel_left _ _).symm
     _ = ((E.symm u).1 : F.valuationSubringˣ)⁻¹ * u := by
       rw [hprod]
 

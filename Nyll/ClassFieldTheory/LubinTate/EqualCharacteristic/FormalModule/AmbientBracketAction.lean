@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Mathlib.SetTheory.Cardinal.Finite
+import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
 import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateAction
 
 /-!
@@ -39,30 +40,6 @@ private theorem ambientAddMonoidEnd_mul_apply
     (f * g) x = f (g x) :=
   rfl
 
-private theorem ambientAddMonoidEnd_sum_apply
-    {A I : Type*} [AddCommMonoid A]
-    (s : Finset I) (f : I → AddMonoid.End A) (x : A) :
-    (∑ i ∈ s, f i) x = ∑ i ∈ s, f i x := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, Finset.sum_insert hi]
-      change f i x + (∑ j ∈ s, f j) x = f i x + ∑ j ∈ s, f j x
-      rw [ih]
-
-private theorem ambientAddMonoidHom_map_finset_sum
-    {A I : Type*} [AddCommMonoid A]
-    (f : AddMonoid.End A) (s : Finset I) (g : I → A) :
-    f (∑ i ∈ s, g i) = ∑ i ∈ s, f (g i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, Finset.sum_insert hi]
-      exact (f.map_add _ _).trans
-        (congrArg (fun x ↦ f (g i) + x) ih)
-
 /-- The distinguished endomorphism `Y ↦ Y^q + tY` in an ambient field. -/
 noncomputable def equalCharacteristicLubinTateAmbientPiEnd
     (F : LocalField.{u, v} K)
@@ -72,7 +49,7 @@ noncomputable def equalCharacteristicLubinTateAmbientPiEnd
     iterateFrobenius A F.residueCharacteristic
         (CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F) x +
       t * x
-  map_zero' := by simp
+  map_zero' := by rw [map_zero, mul_zero, add_zero]
   map_add' x y := by
     rw [(iterateFrobenius A F.residueCharacteristic
       (CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F)).map_add,
@@ -174,7 +151,8 @@ theorem equalCharacteristicLubinTateAmbientPiIterate_coefficient_mul
     equalCharacteristicLubinTateAmbientPiIterate F t i (ι a * x) =
       ι a * equalCharacteristicLubinTateAmbientPiIterate F t i x := by
   induction i generalizing x with
-  | zero => simp
+  | zero => rw [equalCharacteristicLubinTateAmbientPiIterate_zero,
+      equalCharacteristicLubinTateAmbientPiIterate_zero]
   | succ i ih =>
       rw [equalCharacteristicLubinTateAmbientPiIterate_succ,
         equalCharacteristicLubinTateAmbientPiEnd_coefficient_mul,
@@ -201,12 +179,18 @@ theorem equalCharacteristicLubinTateAmbientBracket_apply
       ∑ i ∈ Finset.range n,
         ι (PowerSeries.coeff i a) *
           equalCharacteristicLubinTateAmbientPiIterate F t i x := by
-  rw [equalCharacteristicLubinTateAmbientBracket,
-    ambientAddMonoidEnd_sum_apply]
+  rw [equalCharacteristicLubinTateAmbientBracket]
+  refine (AddMonoidHom.finsetSum_apply
+    (fun i : ℕ =>
+      equalCharacteristicLubinTateAmbientCoefficientEnd F ι (PowerSeries.coeff i a) *
+        equalCharacteristicLubinTateAmbientPiIterate F t i) (Finset.range n) x).trans ?_
   apply Finset.sum_congr rfl
   intro i hi
-  rw [ambientAddMonoidEnd_mul_apply,
-    equalCharacteristicLubinTateAmbientCoefficientEnd_apply]
+  exact (ambientAddMonoidEnd_mul_apply
+    (equalCharacteristicLubinTateAmbientCoefficientEnd F ι (PowerSeries.coeff i a))
+    (equalCharacteristicLubinTateAmbientPiIterate F t i) x).trans
+      (equalCharacteristicLubinTateAmbientCoefficientEnd_apply F ι (PowerSeries.coeff i a)
+        (equalCharacteristicLubinTateAmbientPiIterate F t i x))
 
 /-- The ambient bracket of the zero series is the zero endomorphism. -/
 @[simp]
@@ -221,7 +205,7 @@ theorem equalCharacteristicLubinTateAmbientBracket_zero
     equalCharacteristicLubinTateAmbientBracket F ι t n 0 x =
       (0 : AddMonoid.End A) x
   rw [equalCharacteristicLubinTateAmbientBracket_apply]
-  simp
+  simp only [map_zero, zero_mul, Finset.sum_const_zero, AddMonoid.End.zero_apply]
 
 /-- The ambient bracket is additive in its power-series parameter. -/
 @[simp]
@@ -271,7 +255,8 @@ theorem equalCharacteristicLubinTateAmbientBracket_C
       equalCharacteristicLubinTateAmbientPiIterate]
   · intro i hi hi0
     simp [PowerSeries.coeff_C, hi0]
-  · simp
+  · intro hzero
+    exact False.elim (hzero (Finset.mem_range.mpr (Nat.succ_pos n)))
 
 /-- Ambient iterates add their exponents under composition. -/
 theorem equalCharacteristicLubinTateAmbientPiIterate_add
@@ -417,7 +402,7 @@ theorem equalCharacteristicLubinTateAmbientPiEnd_bracket
       equalCharacteristicLubinTateAmbientBracket F ι t n a
         (equalCharacteristicLubinTateAmbientPiEnd F t x) := by
   rw [equalCharacteristicLubinTateAmbientBracket_apply,
-    ambientAddMonoidHom_map_finset_sum,
+    map_sum,
     equalCharacteristicLubinTateAmbientBracket_apply]
   apply Finset.sum_congr rfl
   intro i hi

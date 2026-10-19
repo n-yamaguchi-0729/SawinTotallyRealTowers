@@ -56,7 +56,9 @@ theorem rootCharacter_one_withoutSection
   rw [← D.rootQuotient_eq_rootCocycle_of_same_pow hfixed (1 : D.carrier)
     (u := Units.map (algebraMap K L).toMonoidHom (1 : Kˣ))]
   · exact rootQuotient_algebraMap_unit (K := K) (L := L) 1 σ
-  · simp
+  · change (Units.map (algebraMap K L).toMonoidHom 1) ^ (n : ℕ) =
+      Units.map (algebraMap K L).toMonoidHom 1
+    rw [map_one, one_pow]
 
 /-- The root character, bundled with its codomain restricted to `μₙ(L)`. -/
 def rootCharacterToMuWithoutSection (a : D.carrier)

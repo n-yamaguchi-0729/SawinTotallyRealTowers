@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
+import Mathlib.RingTheory.TensorProduct.Maps
 
 /-!
 # Galois action on the restricted local product
@@ -54,16 +55,8 @@ variable
 `A ⊗[K] L`. -/
 noncomputable def scalarTensorConjugation
     (σ : L ≃ₐ[K] L) :
-    A ⊗[K] L ≃ₐ[A] A ⊗[K] L := by
-  let f : A ⊗[K] L →ₐ[A] A ⊗[K] L :=
-    Algebra.TensorProduct.map
-      (AlgHom.id A A) σ.toAlgHom
-  let g : A ⊗[K] L →ₐ[A] A ⊗[K] L :=
-    Algebra.TensorProduct.map
-      (AlgHom.id A A) σ.symm.toAlgHom
-  exact AlgEquiv.ofAlgHom f g
-    (by ext x; simp [f, g])
-    (by ext x; simp [f, g])
+    A ⊗[K] L ≃ₐ[A] A ⊗[K] L :=
+  Algebra.TensorProduct.congr (AlgEquiv.refl : A ≃ₐ[A] A) σ
 
 omit [NumberField K] [NumberField L]
     [FiniteDimensional K L] in
@@ -84,8 +77,8 @@ theorem scalarTensorConjugation_one
         (K := K) (L := L) (A := A)
         (1 : L ≃ₐ[K] L) z = z := by
   induction z using TensorProduct.inductionOn with
-  | tmul a x => simp
-  | add x y hx hy => simp [hx, hy]
+  | tmul a x => rw [scalarTensorConjugation_tmul, AlgEquiv.one_apply]
+  | add x y hx hy => rw [map_add, hx, hy]
 
 omit [NumberField K] [NumberField L]
     [FiniteDimensional K L] in
@@ -99,8 +92,9 @@ theorem scalarTensorConjugation_mul
         (scalarTensorConjugation
           (K := K) (L := L) (A := A) τ z) := by
   induction z using TensorProduct.inductionOn with
-  | tmul a x => simp
-  | add x y hx hy => simp [hx, hy]
+  | tmul a x =>
+      simp only [scalarTensorConjugation_tmul, AlgEquiv.mul_apply]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 /-- The action by tensor conjugation on local tensor units. -/
 @[reducible]

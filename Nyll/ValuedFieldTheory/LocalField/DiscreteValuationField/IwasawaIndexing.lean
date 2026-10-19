@@ -35,7 +35,7 @@ def iwasawaDegreeEmbedding (p : ℕ) (hp : 0 < p) : ℕ ↪ IwasawaDegree p wher
     ⟨1 + p * k, by
       constructor
       · omega
-      · exact (Nat.coprime_add_mul_left_left 1 p k).2 (by simp)⟩
+      · exact (Nat.coprime_add_mul_left_left 1 p k).2 (Nat.coprime_one_left p)⟩
   inj' := by
     intro a b h
     have hv : 1 + p * a = 1 + p * b := congrArg Subtype.val h
@@ -80,6 +80,6 @@ noncomputable def iwasawaPadicIntProductContinuousAddEquivNat
       apply funext
       intro j
       obtain ⟨i, rfl⟩ := e.surjective j
-      simp)
+      simp only [Pi.add_apply, Homeomorph.piCongrLeft_apply_apply])
 
 end LocalFieldTheory.DiscreteValuationField

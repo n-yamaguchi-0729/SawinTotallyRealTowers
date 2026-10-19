@@ -76,9 +76,8 @@ theorem normFormula_finiteExtensionNormFormulaValue_strong_triangle_of_henselFac
           (fun h => hxne h.symm)
       have hone :
           finiteExtensionNormFormulaValue v (1 : L) ≤ 1 := by
-        rw [← (show algebraMap K L (1 : K) = (1 : L) by simp),
-          normFormula_finiteExtensionNormFormulaValue_algebraMap]
-        simp
+        rw [← (map_one (algebraMap K L)),
+          normFormula_finiteExtensionNormFormulaValue_algebraMap, v.map_one]
       have hydiv :
           finiteExtensionNormFormulaValue v (y / x) ≤ 1 := by
         rw [normFormula_finiteExtensionNormFormulaValue_div]
@@ -99,7 +98,7 @@ theorem normFormula_finiteExtensionNormFormulaValue_strong_triangle_of_henselFac
         _ ≤ finiteExtensionNormFormulaValue v x * 1 :=
               mul_le_mul_of_nonneg_left hadd
                 (finiteExtensionNormFormulaValue_nonneg v x)
-        _ = finiteExtensionNormFormulaValue v x := by simp
+        _ = finiteExtensionNormFormulaValue v x := mul_one _
   rcases le_total (finiteExtensionNormFormulaValue v y)
       (finiteExtensionNormFormulaValue v x) with hyx | hxy
   · exact (hle_left hyx).trans

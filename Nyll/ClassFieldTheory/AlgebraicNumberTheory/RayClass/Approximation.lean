@@ -407,9 +407,7 @@ def finiteIdeleOfFinset
       ∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
         v ∉ S := by
     rw [Filter.eventually_cofinite]
-    convert S.finite_toSet using 1
-    ext v
-    simp
+    exact S.finite_toSet.subset (fun _ hv => not_not.mp hv)
   filter_upwards [haway] with v hv
   change f v ∈ (v.adicCompletionIntegers K).units
   simp [f, hv]

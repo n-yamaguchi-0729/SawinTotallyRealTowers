@@ -38,8 +38,7 @@ variable (L : Type*) [Field L]
 /-- The subgroup of units whose `n`-th power is `1`. -/
 def nthRootsSubgroup (n : ℕ) : Subgroup Lˣ where
   carrier := {u | u ^ n = 1}
-  one_mem' := by
-    simp
+  one_mem' := one_pow n
   mul_mem' := by
     intro u v hu hv
     change (u * v) ^ n = 1
@@ -97,8 +96,11 @@ def rootQuotient (β : Lˣ) (σ : Gal(L/K)) : Lˣ :=
 @[simp] theorem rootQuotient_algebraMap_unit (u : Kˣ) (σ : Gal(L/K)) :
     rootQuotient (K := K) (L := L) (Units.map (algebraMap K L).toMonoidHom u) σ = 1 := by
   unfold rootQuotient
-  ext
-  simp
+  have hfixed : σ • Units.map (algebraMap K L).toMonoidHom u =
+      Units.map (algebraMap K L).toMonoidHom u := by
+    apply Units.ext
+    exact σ.commutes (u : K)
+  rw [hfixed, div_self']
 
 /-- The root-quotient attached to a product is the product of the root-quotients. -/
 theorem rootQuotient_mul_root (u v : Lˣ) (σ : Gal(L/K)) :
@@ -226,8 +228,8 @@ theorem isMulCocycle₁_rootCocycle (a : D.carrier) :
 @[simp] theorem smul_algebraMap_unit (σ : Gal(L/K)) (u : Kˣ) :
     σ • Units.map (algebraMap K L).toMonoidHom u =
       Units.map (algebraMap K L).toMonoidHom u := by
-  ext
-  simp
+  apply Units.ext
+  exact σ.commutes (u : K)
 
 /-- The chosen root-quotient of `a` lands in the `n`-torsion subgroup of `Lˣ`. -/
 theorem rootCocycle_pow_eq_one (a : D.carrier) (σ : Gal(L/K)) :
@@ -259,7 +261,7 @@ theorem changeRoot_rootQuotient_pow_eq_one
   have hpow : (u / v) ^ (n : ℕ) = 1 :=
     D.div_pow_eq_one_of_same_image a hu hv
   rw [hpow]
-  simp
+  exact smul_one τ
 
 /-- Change-of-root quotient cocycles land in `μₙ(L)`. -/
 theorem changeRoot_rootQuotient_mem_nthRootsSubgroup

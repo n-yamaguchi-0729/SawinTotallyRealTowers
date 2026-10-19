@@ -42,7 +42,7 @@ noncomputable instance finiteCharacterModule (N : Type u) [Monoid N] :
     intro χ
     ext n
     change Multiplicative.ofAdd (p • (χ.toMul n).toAdd) = 1
-    simp
+    rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul, ofAdd_zero]
 
 /-- Ambient-conjugation-invariant finite characters, as an additive subgroup. -/
 def invariantFiniteCharacterAddSubgroup (N : Subgroup P) [N.Normal] :

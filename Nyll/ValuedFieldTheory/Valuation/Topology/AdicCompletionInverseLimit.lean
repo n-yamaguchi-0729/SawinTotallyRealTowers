@@ -69,7 +69,7 @@ theorem adicCompletion_units_coordinates_surjective
           unitReduction (I ^ n) u =
             Units.map (AdicCompletion.evalₐ I n).toMonoidHom z := by
   refine ⟨(adicCompletionUnitsEquiv I).symm z, ?_, ?_⟩
-  · simp
+  · exact (adicCompletionUnitsEquiv I).apply_symm_apply z
   · intro n
     apply Units.ext
     change Ideal.Quotient.mk (I ^ n)
@@ -1063,7 +1063,7 @@ theorem higherUnitQuotient_mk_eq_mk_iff_sub_mem
         (((v / u : Oˣ) : O) - 1) * (u : O)
             = ((v : O) * ((u⁻¹ : Oˣ) : O) - 1) * (u : O) := rfl
         _ = (v : O) * (((u⁻¹ : Oˣ) : O) * (u : O)) - (u : O) := by ring
-        _ = (v : O) - (u : O) := by simp
+        _ = (v : O) - (u : O) := by rw [Units.inv_mul, mul_one]
     simpa [hcalc] using hmul
   · intro hsub
     have hmem :
@@ -1077,7 +1077,7 @@ theorem higherUnitQuotient_mk_eq_mk_iff_sub_mem
         ((v / u : Oˣ) : O) - 1
             = (v : O) * ((u⁻¹ : Oˣ) : O) - 1 := rfl
         _ = (v : O) * ((u⁻¹ : Oˣ) : O) -
-              (u : O) * ((u⁻¹ : Oˣ) : O) := by simp
+              (u : O) * ((u⁻¹ : Oˣ) : O) := by rw [Units.mul_inv]
         _ = ((v : O) - (u : O)) * ((u⁻¹ : Oˣ) : O) := by ring
     have hdiv : v / u ∈ higherUnitSubgroup π n :=
       (mem_higherUnitSubgroup_iff_sub_one_mem_powerIdeal

@@ -103,7 +103,7 @@ theorem inclusion_principalIdele
         (R := K) (A := NumberField.AdeleRing (𝓞 K) K)
         (B := L))
         (algebraMap K L (x : K))
-  simp
+  simp only [AlgHom.commutes]
 
 /-- The norm of relative ideles, obtained as the determinant over
 the base adele ring. -/

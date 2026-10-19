@@ -261,8 +261,9 @@ theorem higherUnit_iff_sub_one_mem_powerIdeal {O : Type*} [CommRing O]
 def higherUnitSubgroup {O : Type*} [CommRing O] (π : O) (n : ℕ) : Subgroup Oˣ where
   carrier := {u | HigherUnit π n u}
   one_mem' := by
-    use 0
-    simp
+    refine ⟨0, ?_⟩
+    change (1 : O) = 1 + π ^ n * 0
+    rw [mul_zero, add_zero]
   mul_mem' := by
     rintro u v ⟨a, ha⟩ ⟨b, hb⟩
     use a + b + π ^ n * a * b
@@ -273,8 +274,7 @@ def higherUnitSubgroup {O : Type*} [CommRing O] (π : O) (n : ℕ) : Subgroup O�
   inv_mem' := by
     rintro u ⟨a, ha⟩
     use -((u⁻¹ : Oˣ) : O) * a
-    have hmul : ((u⁻¹ : Oˣ) : O) * (u : O) = 1 := by
-      simp
+    have hmul : ((u⁻¹ : Oˣ) : O) * (u : O) = 1 := Units.inv_mul u
     calc
       ((u⁻¹ : Oˣ) : O) =
           ((u⁻¹ : Oˣ) : O) * (u : O) -
@@ -433,7 +433,7 @@ theorem unitReduction_ker_powerIdeal {O : Type*} [CommRing O]
     rw [← (Ideal.Quotient.mk (uniformizerPowerIdeal π n)).map_one]
     apply Ideal.Quotient.eq.mpr
     have hπ : π ^ n ∈ uniformizerPowerIdeal π n :=
-      Ideal.subset_span (by simp)
+      Ideal.subset_span (Set.mem_singleton (π ^ n))
     simpa using (uniformizerPowerIdeal π n).mul_mem_right a hπ
 
 /-- For a normalized exponential valuation, the kernel of reduction modulo
@@ -581,9 +581,9 @@ noncomputable def higherUnitCoeffModHom {O : Type*}
     have hcoeff :
         chosenHigherUnitCoeff π n (1 : higherUnitSubgroup π n) = 0 := by
       apply chosenHigherUnitCoeff_eq_of_repr hπ0
-      simp
-    rw [hcoeff]
-    simp
+      change (1 : O) = 1 + π ^ n * 0
+      rw [mul_zero, add_zero]
+    rw [hcoeff, map_zero]
   map_mul' u v := by
     apply Multiplicative.ofAdd.injective
     let I : Ideal O := Ideal.span ({π} : Set O)
@@ -611,7 +611,7 @@ noncomputable def higherUnitCoeffModHom {O : Type*}
     apply Ideal.Quotient.eq.mpr
     have hpow_mem : π ^ n * cu * cv ∈ I := by
       have hbase : π ^ n ∈ uniformizerPowerIdeal π n :=
-        Ideal.subset_span (by simp)
+        Ideal.subset_span (Set.mem_singleton (π ^ n))
       have hmem' : π ^ n * (cu * cv) ∈ I :=
         uniformizerPowerIdeal_le_span_singleton (π := π) hn
           ((uniformizerPowerIdeal π n).mul_mem_right (cu * cv) hbase)
@@ -674,7 +674,7 @@ theorem higherUnitCoeffModHom_surjective {O : Type*}
   have hx_mem : π ^ n * a ∈ IsLocalRing.maximalIdeal O := by
     rw [hπ.maximalIdeal_eq]
     have hbase : π ^ n ∈ uniformizerPowerIdeal π n :=
-      Ideal.subset_span (by simp)
+      Ideal.subset_span (Set.mem_singleton (π ^ n))
     exact uniformizerPowerIdeal_le_span_singleton (π := π) hn
       ((uniformizerPowerIdeal π n).mul_mem_right a hbase)
   have hunit : IsUnit (1 + π ^ n * a) :=
@@ -698,7 +698,7 @@ noncomputable def higherUnitOneAdd {O : Type*}
   let hmem : π ^ n * a ∈ IsLocalRing.maximalIdeal O := by
     rw [hπ.maximalIdeal_eq]
     have hbase : π ^ n ∈ uniformizerPowerIdeal π n :=
-      Ideal.subset_span (by simp)
+      Ideal.subset_span (Set.mem_singleton (π ^ n))
     exact uniformizerPowerIdeal_le_span_singleton (π := π) hn
       ((uniformizerPowerIdeal π n).mul_mem_right a hbase)
   let hunit : IsUnit (1 + π ^ n * a) :=

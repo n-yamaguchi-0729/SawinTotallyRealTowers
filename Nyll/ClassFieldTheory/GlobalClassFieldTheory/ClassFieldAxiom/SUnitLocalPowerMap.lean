@@ -471,8 +471,10 @@ theorem sUnitLocalUnitPowerMap_sUnitKummerPrimeSet_surjective
           Nat.card Gal(E/K) :=
         Nat.card_congr eQuotient.toEquiv
       _ = (n : ℕ) ^ r := by
-        rw [Nat.card_congr eG.toEquiv, Nat.card_pi]
-        simp
+        rw [Nat.card_congr eG.toEquiv, Nat.card_fun,
+          Nat.card_congr
+            (Multiplicative.toAdd : Multiplicative (ZMod (n : ℕ)) ≃ ZMod (n : ℕ)),
+          Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]
   have hPLe : P ≤ Delta :=
     nthPowerSubgroup_le_sUnitLocalPowerKernel
       (K := K) n S' T
@@ -705,7 +707,7 @@ theorem sUnitLocalUnitPowerMap_sUnitKummerPrimeSet_surjective
         intro w _
         exact hLocalCard w
       _ = (n : ℕ) ^ T.card := by
-        simp
+        rw [Finset.prod_const, Finset.card_univ, Fintype.card_coe]
       _ =
           (n : ℕ) ^
             (totalPlaceCard (K := K) S' - r) := by

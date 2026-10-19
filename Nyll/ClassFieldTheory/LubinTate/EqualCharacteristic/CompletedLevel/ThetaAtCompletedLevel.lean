@@ -121,10 +121,18 @@ noncomputable def equalCharacteristicCompletedBaseIntegerToLevel
           rw [spectralNorm_extends,
             Valued.toNormedField.norm_le_one_iff]
           exact x.property)⟩
-  map_one' := by ext; simp
-  map_mul' x y := by ext; simp
-  map_zero' := by ext; simp
-  map_add' x y := by ext; simp
+  map_one' := Subtype.ext (map_one (algebraMap
+    (equalCharacteristicCompletedUnramifiedField F.residueField)
+    (equalCharacteristicCompletedLevelField F n)))
+  map_mul' x y := Subtype.ext (map_mul (algebraMap
+    (equalCharacteristicCompletedUnramifiedField F.residueField)
+    (equalCharacteristicCompletedLevelField F n)) x.1 y.1)
+  map_zero' := Subtype.ext (map_zero (algebraMap
+    (equalCharacteristicCompletedUnramifiedField F.residueField)
+    (equalCharacteristicCompletedLevelField F n)))
+  map_add' x y := Subtype.ext (map_add (algebraMap
+    (equalCharacteristicCompletedUnramifiedField F.residueField)
+    (equalCharacteristicCompletedLevelField F n)) x.1 y.1)
 
 /-- Coefficients in `(AlgebraicClosure k)[[T]]`, analytically included in
 the valuation ring of the completed level field. -/

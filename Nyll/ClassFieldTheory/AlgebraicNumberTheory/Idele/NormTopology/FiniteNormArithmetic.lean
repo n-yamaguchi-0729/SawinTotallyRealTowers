@@ -156,9 +156,9 @@ private theorem zpow_finset_sum
   classical
   induction s using Finset.induction_on with
   | empty =>
-      simp
+      simp only [Finset.sum_empty, zpow_zero, Finset.prod_empty]
   | @insert i s hi ih =>
-      simp [hi, ih, zpow_add]
+      rw [Finset.sum_insert hi, Finset.prod_insert hi, zpow_add, ih]
 
 /-- The order of a finite component of the ordinary idele norm is the sum
 of the upstairs orders weighted by their inertia degrees. -/

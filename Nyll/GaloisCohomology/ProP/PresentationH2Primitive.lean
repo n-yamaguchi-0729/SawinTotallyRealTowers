@@ -56,7 +56,7 @@ theorem homologyπ_surjective
     rw [← he]
     change e.hom (TopModuleCat.cokerπ S.toCycles x) = y
     rw [hx]
-    simp
+    exact e.inv_hom_id_apply y
   have hiso : Function.Surjective S.leftHomologyIso.hom :=
     (ConcreteCategory.bijective_of_isIso S.leftHomologyIso.hom).2
   intro y

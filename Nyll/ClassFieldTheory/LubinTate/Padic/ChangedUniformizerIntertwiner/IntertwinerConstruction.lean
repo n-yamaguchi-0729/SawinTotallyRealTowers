@@ -45,9 +45,8 @@ private noncomputable def padicChangedUniformizerApproximation
               padicCompletedUnramifiedWittRing p)
         constantCoeff_eq_zero := by
           rw [← PowerSeries.coeff_zero_eq_constantCoeff,
-            PowerSeries.coeff_monomial]
-          simp
-        coeff_one_eq := by simp }
+            PowerSeries.coeff_monomial, ite_eq_right Nat.zero_ne_one]
+        coeff_one_eq := PowerSeries.coeff_monomial_same _ _ }
   | n + 1 =>
       let A := padicChangedUniformizerApproximation p u n
       let m := n + 2
@@ -249,20 +248,17 @@ private theorem padicChangedUniformizerDefect_coeff_one
     apply padicChangedUniformizerDefect_coeff_eq_of_coeff_eq_le
       p u hH
     · rw [← PowerSeries.coeff_zero_eq_constantCoeff,
-        PowerSeries.coeff_monomial]
-      simp
+        PowerSeries.coeff_monomial, ite_eq_right Nat.zero_ne_one]
     · intro q hq
       interval_cases q
       · rw [PowerSeries.coeff_zero_eq_constantCoeff_apply, hH,
-          PowerSeries.coeff_monomial]
-        simp
+          PowerSeries.coeff_monomial, ite_eq_right Nat.zero_ne_one]
       · simpa [H, ε] using hcoeff
   let P : PowerSeries (padicCompletedUnramifiedWittRing p) :=
     PowerSeries.monomial 1 ε
   have hPconstant : PowerSeries.constantCoeff P = 0 := by
     rw [← PowerSeries.coeff_zero_eq_constantCoeff,
-      PowerSeries.coeff_monomial]
-    simp
+      PowerSeries.coeff_monomial, ite_eq_right Nat.zero_ne_one]
   have hPsubst : PowerSeries.HasSubst P :=
     PowerSeries.HasSubst.of_constantCoeff_zero' hPconstant
   have hΦP :
@@ -287,8 +283,7 @@ private theorem padicChangedUniformizerDefect_coeff_one
         WittVector.frobenius ε * (p : padicCompletedUnramifiedWittRing p) := by
     rw [hΦP, padicChangedUniformizer_subst_monomial,
       PowerSeries.coeff_C_mul,
-      padicCompletedMultiplicativeSeries_coeff_pow_self]
-    simp
+      padicCompletedMultiplicativeSeries_coeff_pow_self, pow_one]
   have hleft :
       PowerSeries.coeff 1
           (PowerSeries.subst P
@@ -574,7 +569,7 @@ theorem padicChangedUniformizerIntertwiner_unique
               ((V⁻¹ : (padicCompletedUnramifiedWittRing p)ˣ) :
                   padicCompletedUnramifiedWittRing p) *
                 ((V : padicCompletedUnramifiedWittRing p) * c) := by
-            simp
+            rw [← mul_assoc, Units.inv_mul, one_mul]
           _ =
               ((V⁻¹ : (padicCompletedUnramifiedWittRing p)ˣ) :
                   padicCompletedUnramifiedWittRing p) *
@@ -604,7 +599,7 @@ theorem padicChangedUniformizerIntertwiner_unique
                   padicCompletedUnramifiedWittRing p) *
                 (p : padicCompletedUnramifiedWittRing p) ^ (m - 1) *
                 WittVector.frobenius 0 := by
-        simp
+        rw [map_zero, mul_zero, zero_add]
       have hcZero : c = 0 :=
         hunique.unique hcSolution hzeroSolution
       exact sub_eq_zero.mp (by simpa only [c] using hcZero)

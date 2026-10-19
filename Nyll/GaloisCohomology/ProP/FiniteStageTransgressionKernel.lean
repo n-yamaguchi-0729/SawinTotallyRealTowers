@@ -82,7 +82,7 @@ theorem quotientSectionResidue_finiteStage_out_mul
     OneHom.coe_mk]
   rw [finiteStageQuotientMap_out, finiteStageQuotientMap_out,
     finiteStageQuotientMap_out]
-  simp
+  simp only [map_mul, map_inv, mul_assoc, inv_mul_cancel_left]
 
 theorem quotientSectionResidue_finiteStage_decomposition
     (R : ClosedSubgroup F) [R.Normal]
@@ -103,7 +103,7 @@ theorem quotientSectionResidue_finiteStage_decomposition
         finiteStageQuotientMap R U
           (QuotientGroup.mk' (R : Subgroup F) g) by rfl]
   rw [finiteStageQuotientMap_out]
-  simp
+  simp only [mul_assoc, inv_mul_cancel_left]
 
 theorem transgressionFactor_eq_inflated_add_residue_boundary
     (R : ClosedSubgroup F) [R.Normal]

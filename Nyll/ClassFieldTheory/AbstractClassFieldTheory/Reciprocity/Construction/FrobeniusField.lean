@@ -275,7 +275,7 @@ theorem frobeniusFixedSubgroupWithin_inf_fieldInertiaWithin
         rw [D.normalizedDegree_ker K]
         exact hk.2
       rw [hdk]
-      simp
+      simp only [toAdd_one, nsmul_zero]
     have ha : a = 1 := by
       apply D.frobeniusFixedField_normalizedDegree_injective K L hLK σ
       simpa using hda

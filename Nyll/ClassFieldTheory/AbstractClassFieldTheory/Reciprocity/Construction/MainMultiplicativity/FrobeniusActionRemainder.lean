@@ -102,7 +102,7 @@ theorem frobeniusQuotientAction_fixedFieldInclusion (D : DegreeData G)
   have hσClosure : σ.1 ∈
       (D.frobeniusClosure K L hLK σ).toSubgroup := by
     exact Subgroup.le_topologicalClosure _
-      (Subgroup.subset_closure (by simp))
+      (Subgroup.subset_closure ⟨(), rfl⟩)
   have hkFixed : k ∈ D.frobeniusFixedSubgroupWithin K L hLK σ := by
     change QuotientGroup.mk k ∈
       (D.frobeniusClosure K L hLK σ).toSubgroup
@@ -153,8 +153,8 @@ theorem frobeniusActionRemainder_mem_degreeKernel (D : DegreeData G)
       (φ.1 ^ D.frobeniusExponent K L hLK σ * σ.1⁻¹) = 1
   rw [map_mul, map_pow, map_inv,
     D.extensionNormalizedDegree_frobenius_eq_pow K L hLK σ,
-    D.extensionNormalizedDegree_frobenius_eq_pow K L hLK φ, hφ]
-  simp
+    D.extensionNormalizedDegree_frobenius_eq_pow K L hLK φ, hφ,
+    pow_one, mul_inv_cancel]
 
 /-- Conjugate adapted to the left action:
 `σ₄ˡ = φⁿ²σ₁φ⁻ⁿ²`. -/

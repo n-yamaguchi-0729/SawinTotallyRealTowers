@@ -108,7 +108,10 @@ theorem base_uniformizer_image_val_eq_ramificationIndex
         rw [hu]
       _ = ((u : target.valuationSubring) : L) *
           (π : L) ^ ramificationIndex base.toDVF target.toDVF := by
-        simp
+        exact (map_mul target.valuation.valuationSubring.subtype
+          (u : target.valuationSubring) (π ^ ramificationIndex base.toDVF target.toDVF)).trans
+            (congrArg (fun z : L => ((u : target.valuationSubring) : L) * z)
+              (map_pow target.valuation.valuationSubring.subtype π _))
   have hbase :
       baseUnitsMap (K := K) (L := L) ϖK =
         (CompleteDVF.valuationSubringUnitsToFieldUnits target) u *

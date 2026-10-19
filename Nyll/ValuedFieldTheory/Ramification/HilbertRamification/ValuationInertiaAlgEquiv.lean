@@ -44,15 +44,15 @@ theorem autCongr_mem_valuationInertiaGroupInAut
   have hsquare :
       e.symm.toRingHom.comp (algebraMap K M) =
         (algebraMap K L).comp (RingHom.id K) := by
-    ext x
-    simp
+    rw [RingHom.comp_id]
+    exact e.symm.toAlgHom.comp_algebraMap
   let etaRaw :=
     HilbertRamification.ValuationSubring.galoisPullback_inertiaGroupMap
       (RingHom.id K) e.symm.toRingHom hsquare A eta
   have hAB : A.comap e.symm.toRingHom = B := by
     ext y
     change e (e.symm y) ∈ B ↔ y ∈ B
-    simp
+    rw [e.apply_symm_apply]
   have hraw :
       (((etaRaw :
           RamificationTheory.HilbertRamification.ValuationSubring.inertiaGroup K
@@ -100,7 +100,7 @@ theorem autCongr_mem_valuationInertiaGroupInAut_iff
   have hAB : A.comap e.symm.toRingHom = B := by
     ext y
     change e (e.symm y) ∈ B ↔ y ∈ B
-    simp
+    rw [e.apply_symm_apply]
   constructor
   · intro hsigma
     have hsigma' : AlgEquiv.autCongr e sigma ∈

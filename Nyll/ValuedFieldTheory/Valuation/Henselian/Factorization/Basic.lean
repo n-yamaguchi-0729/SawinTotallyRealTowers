@@ -261,7 +261,7 @@ theorem henselFactorization_coeff_mem_ker_sub_mul_of_lifts
         exact henselFactorization_map_sub_mul φ f g0 h0
       _ = gbar * hbar - gbar * hbar := by
         rw [hfbar, hg0, hh0]
-      _ = 0 := by simp
+      _ = 0 := sub_self _
   exact (henselFactorization_map_eq_zero_iff_coeff_mem_ker φ _).1 hmap
 
 /-- local-ring form of the first congruence input for the
@@ -291,8 +291,7 @@ theorem henselFactorization_coeff_mem_ker_sub_one_of_map_eq_one
       (P - 1).map φ = P.map φ - 1 := by
         simp [Polynomial.map_sub]
       _ = 0 := by
-        rw [hP]
-        simp
+        rw [hP, sub_self]
   exact (henselFactorization_map_eq_zero_iff_coeff_mem_ker φ _).1 hmap
 
 /-- local-ring form of the lifted Bezout congruence:
@@ -397,8 +396,7 @@ theorem henselFactorization_correction_congruence_after_division
       _ = (a * g0 + b * h0).map φ * fn.map φ - fn.map φ := by
         exact henselFactorization_map_mul_sub_self φ (a * g0 + b * h0) fn
       _ = 0 := by
-        rw [hbez]
-        simp
+        rw [hbez, one_mul, sub_self]
   exact (henselFactorization_map_eq_zero_iff_coeff_mem_ker φ _).1 hmap
 
 /-- correction congruence after division, read directly

@@ -340,15 +340,15 @@ def chosenNormalBasisPiResidueInverseIndexAddEquiv :
   left_inv := by
     intro f
     funext σ
-    simp
+    simp only [inv_inv, AddEquiv.symm_apply_apply]
   right_inv := by
     intro f
     funext σ
-    simp
+    simp only [inv_inv, AddEquiv.apply_symm_apply]
   map_add' := by
     intro f g
     funext σ
-    simp
+    exact map_add (integerRingModMaximalIdealAddEquivResidue K) (f σ⁻¹) (g σ⁻¹)
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- The inverse-index equivalence evaluates a residue function at the inverse Galois element. -/

@@ -90,12 +90,12 @@ local instance : IsAbelianGalois F (powerCommutatorFixedField F p) where
     let e := InfiniteGalois.normalAutEquivQuotient
       (powerCommutatorClosed F p)
     calc
-      σ * τ = e (e.symm σ * e.symm τ) := by simp
+      σ * τ = e (e.symm σ * e.symm τ) := by rw [map_mul, e.apply_symm_apply, e.apply_symm_apply]
       _ = e (e.symm τ * e.symm σ) := by
         congr 1
         exact powerCommutatorQuotient_mul_comm p
           Gal((M F p) / F) _ _
-      _ = τ * σ := by simp
+      _ = τ * σ := by rw [map_mul, e.apply_symm_apply, e.apply_symm_apply]
 
 -- The local group instance must be reducible so that quotient operations agree
 -- definitionally with those used by `normalAutEquivQuotient`.

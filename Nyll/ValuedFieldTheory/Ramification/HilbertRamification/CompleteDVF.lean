@@ -382,7 +382,8 @@ theorem inertiaGroup_map_galEquivDecompositionGroup
         ValuationSubring.inertiaGroup K
           target.valuation.valuationSubring
       simpa using htau
-    · simp
+    · exact (galEquivDecompositionGroup
+        (base := base) (target := target)).apply_symm_apply tau
 
 /-- The kernel of the full residue action is the full inertia group. -/
 theorem residueAction_ker

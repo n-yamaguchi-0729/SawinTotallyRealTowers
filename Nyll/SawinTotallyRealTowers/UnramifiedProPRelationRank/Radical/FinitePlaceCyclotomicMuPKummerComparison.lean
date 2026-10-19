@@ -142,8 +142,7 @@ private noncomputable def absoluteGaloisSemilinearCongrContinuousMonoidHom
           algebraMap K' (AlgebraicClosure K') x
         rw [IsAlgClosure.equivOfEquiv_symm_algebraMap]
         rw [sigma.commutes]
-        rw [IsAlgClosure.equivOfEquiv_algebraMap]
-        simp }
+        rw [IsAlgClosure.equivOfEquiv_algebraMap, c.apply_symm_apply] }
   let phi : Gal(AlgebraicClosure K / K) →*
       Gal(AlgebraicClosure K' / K') :=
     { toFun := conjugate

@@ -185,7 +185,9 @@ theorem valuation_eq_one_of_valuationMap_eq_zero (K : Type u)
       WithZero.unzero
         (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
           (ValuativeRel.valuation K (x : K)))
-        (by simp) = (1 : Multiplicative Int) := by
+        ((map_ne_zero (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)).2
+          ((Valuation.ne_zero_iff (ValuativeRel.valuation K)).2 x.ne_zero)) =
+        (1 : Multiplicative Int) := by
     have h := congrArg Multiplicative.ofAdd hx
     simpa using h
   apply (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).injective
@@ -193,7 +195,9 @@ theorem valuation_eq_one_of_valuationMap_eq_zero (K : Type u)
       ((WithZero.unzero
         (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
           (ValuativeRel.valuation K (x : K)))
-        (by simp) : Multiplicative Int) : WithZero (Multiplicative Int)) =
+        ((map_ne_zero (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)).2
+          ((Valuation.ne_zero_iff (ValuativeRel.valuation K)).2 x.ne_zero)) :
+        Multiplicative Int) : WithZero (Multiplicative Int)) =
         (1 : WithZero (Multiplicative Int)) := by
     simpa using congrArg
       (fun y : Multiplicative Int => (y : WithZero (Multiplicative Int))) hunzero
@@ -257,11 +261,13 @@ def integerUnitOfValuationMapZero (K : Type u)
     have hv := valuation_eq_one_of_valuationMap_eq_zero K hx
     simp [hv]⟩
   val_inv := by
-    ext
-    simp
+    apply Subtype.ext
+    change (x : K) * (x : K)⁻¹ = 1
+    exact mul_inv_cancel₀ x.ne_zero
   inv_val := by
-    ext
-    simp
+    apply Subtype.ext
+    change (x : K)⁻¹ * (x : K) = 1
+    exact inv_mul_cancel₀ x.ne_zero
 
 /-- The valuation-ring unit reconstructed from a field unit of valuation zero maps back to that
 field unit. -/

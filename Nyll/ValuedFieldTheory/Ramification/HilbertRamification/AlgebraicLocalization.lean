@@ -120,7 +120,8 @@ theorem valuationPreservingCompletionRingEquiv_completionMap
       have hy : (y : vK.Completion) =
           algebraMap K vK.Completion (WithAbs.equiv vK y) := by
         rw [← AbsoluteValue.toCompletion_eq_algebraMap]
-        simp
+        exact congrArg (fun z : WithAbs vK => (z : vK.Completion))
+          ((WithAbs.equiv vK).symm_apply_apply y).symm
       rw [hy, AbsoluteValue.completionMap_coe]
       change
         valuationPreservingCompletionRingEquiv vK w σ hσ

@@ -65,7 +65,7 @@ theorem finiteCyclicPrefixNat_card_eq_norm_one
       rw [Rep.norm_apply, Representation.norm, LinearMap.sum_apply]
       apply Finset.sum_congr rfl
       intro x _
-      simp
+      rw [leftRegular_single_one, mul_one]
 
 omit [Fintype G] in
 /-- Degree zero of the explicit map from the bar resolution to the periodic resolution. -/
@@ -326,7 +326,7 @@ noncomputable def finiteCyclicBarToPeriodicResolutionHom
             key₁).trans (by
               congr 1
               · exact Action.diagonalSuccIsoTensorTrivial_inv_hom_apply h x
-              · simp)
+              · exact mul_one (1 : R))
     change
       ((Rep.trivial R G R).leftRegularHom 1).hom
           ((finiteCyclicBarToPeriodicZero (R := R) (G := G)).hom

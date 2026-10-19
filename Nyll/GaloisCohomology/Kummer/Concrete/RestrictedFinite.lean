@@ -265,7 +265,8 @@ def restrictedKummerTranspose
       (RestrictedRadicalQuotient n Delta →* nthRootsSubgroup L (n : ℕ)) where
   toFun sigma :=
     { toFun := fun q => restrictedQuotientKummerCharacter n hmu Delta hDelta q sigma
-      map_one' := by simp
+      map_one' := DFunLike.congr_fun
+        (restrictedQuotientKummerCharacter n hmu Delta hDelta).map_one sigma
       map_mul' := by
         intro q r
         exact congrArg (fun chi : Gal(L/K) →* nthRootsSubgroup L (n : ℕ) => chi sigma)

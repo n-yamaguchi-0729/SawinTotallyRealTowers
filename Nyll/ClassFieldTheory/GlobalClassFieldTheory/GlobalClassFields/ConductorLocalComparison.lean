@@ -255,7 +255,7 @@ theorem exists_definingModulus_finitePart_agrees_on_finset
         ⟨H.chosenDefiningModulus,
           H.chosenDefiningModulus_spec, ?_, ?_⟩
       · intro v hv
-        simp at hv
+        exact False.elim (Finset.notMem_empty v hv)
       · intro v _hv
         rfl
   | @insert v s hv ih =>

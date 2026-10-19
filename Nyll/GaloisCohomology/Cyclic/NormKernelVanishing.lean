@@ -115,7 +115,7 @@ noncomputable def finiteCyclicH1IsoTateHMinusOne {G : Type} [Group G] [Fintype G
       groupCohomology.H1 A ≅
         (Rep.FiniteCyclicGroup.subCompNormHom A g).homology := by
     simpa using
-      (Rep.FiniteCyclicGroup.groupCohomologyIsoOdd A g hg 1 (by simp))
+      (Rep.FiniteCyclicGroup.groupCohomologyIsoOdd A g hg 1 ⟨0, rfl⟩)
   exact e ≪≫ (TateCohomology.isoFiniteCyclicNegOne A g hg).symm
 
 /-- Elementwise content of the vanishing condition in the cyclic norm-kernel vanishing
@@ -139,10 +139,10 @@ theorem normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
   let : Module ℤ A.V := A.hV2
   let x' : LinearMap.ker A.norm.hom.toLinearMap := ⟨x, hx⟩
   have hclass :
-      Rep.FiniteCyclicGroup.groupCohomologyπOdd A g hg 1 (by simp) x' = 0 :=
+      Rep.FiniteCyclicGroup.groupCohomologyπOdd A g hg 1 ⟨0, rfl⟩ x' = 0 :=
     Subsingleton.elim _ _
   rcases (Rep.FiniteCyclicGroup.groupCohomologyπOdd_eq_zero_iff
-    A g hg 1 (by simp) x').1 hclass with ⟨y, hy⟩
+    A g hg 1 ⟨0, rfl⟩ x').1 hclass with ⟨y, hy⟩
   exact ⟨y, by simpa [Rep.sub_hom] using hy⟩
 
 end

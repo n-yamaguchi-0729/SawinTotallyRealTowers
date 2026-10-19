@@ -267,7 +267,7 @@ theorem padicCyclicClosure_degree_injective_of_primePower_finiteCoordinate
         change
           (c : ℤ_[p]) ∈
             Ideal.span ({(c : ℤ_[p])} : Set ℤ_[p])
-        exact Ideal.subset_span (by simp)
+        exact Ideal.subset_span (Set.mem_singleton (c : ℤ_[p]))
       rw [hbot] at hcMem
       have hc0 : (c : ℤ_[p]) = 0 := by
         simpa only [AddSubgroup.mem_bot] using hcMem
@@ -308,14 +308,7 @@ theorem padicCyclicClosure_degree_injective_of_primePower_finiteCoordinate
       mem_closure_iff.mp hzclosure O hOopen hzO
     have hrange :
         Set.range (fun _ : Unit => γ) =
-          ({γ} : Set G) := by
-      ext x
-      constructor
-      · rintro ⟨u, rfl⟩
-        simp
-      · intro hx
-        rw [Set.mem_singleton_iff] at hx
-        exact ⟨(), hx.symm⟩
+          ({γ} : Set G) := Set.range_const
     have hyZPowers :
         y ∈ Subgroup.zpowers γ := by
       rw [Subgroup.zpowers_eq_closure, ← hrange]

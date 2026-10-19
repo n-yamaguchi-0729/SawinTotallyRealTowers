@@ -5,6 +5,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 
 /-!
 # Inclusion of integral local induced modules
@@ -40,49 +45,42 @@ variable (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
 /-- Pointwise inclusion of integer units embeds the integral induced
 block into the ordinary local multiplicative induced block. -/
 noncomputable def inducedIntegerUnitsToLocalPlaceBlock :
-    letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion :=
+    let _ : Algebra K w.1.Completion :=
+      LocalInductionInternal.extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion :=
       LocalInductionInternal.extensionCompletionSMul vK w
-    letI := LocalInductionInternal.completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 :=
+    let _ : Algebra vK.Completion w.1.Completion :=
+      LocalInductionInternal.completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 :=
       LocalInductionInternal.baseValued vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let _ : ValuativeRel vK.Completion :=
       LocalInductionInternal.baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       LocalInductionInternal.localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       LocalInductionInternal.localizedValuativeRel vK w hvKna
-    letI : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+    let _ : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
       LocalInductionInternal.integerAlgebra vK w hvKna
-    letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-    letI := LocalInductionInternal.isIntegralClosure
-      vK w hvK hvKna
-    letI := decompositionGroupLocalizedIntegerUnitsAction
-      (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
+    let _ : Valuation.HasExtension
+        (ValuativeRel.valuation vK.Completion)
+        (ValuativeRel.valuation (LocalizedCompletion vK w)) :=
+      LocalInductionInternal.valuationHasExtension vK w hvKna
+    let _ : IsIntegralClosure
+        𝒪[LocalizedCompletion vK w] 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+      LocalInductionInternal.isIntegralClosure vK w hvK hvKna
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) 𝒪[LocalizedCompletion vK w]ˣ :=
+      decompositionGroupLocalizedIntegerUnitsAction
+        (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
     CyclicCohomology.InducedModule
-          (B := 𝒪[LocalizedCompletion vK w]ˣ)
-          (absoluteValueDecompositionGroup K w.1) →*
+        (B := 𝒪[LocalizedCompletion vK w]ˣ)
+        (absoluteValueDecompositionGroup K w.1) →*
       LocalPlaceBlock vK hvK w := by
-  letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-  letI : SMul K w.1.Completion :=
-    LocalInductionInternal.extensionCompletionSMul vK w
-  letI := LocalInductionInternal.completionAlgebra vK w
-  letI : Valued vK.Completion ℝ≥0 :=
-    LocalInductionInternal.baseValued vK hvKna
-  letI : ValuativeRel vK.Completion :=
-    LocalInductionInternal.baseValuativeRel vK hvKna
-  letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
-    LocalInductionInternal.localizedValued vK w hvKna
-  letI : ValuativeRel (LocalizedCompletion vK w) :=
-    LocalInductionInternal.localizedValuativeRel vK w hvKna
-  letI : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
-    LocalInductionInternal.integerAlgebra vK w hvKna
-  letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-  letI := LocalInductionInternal.isIntegralClosure
-    vK w hvK hvKna
-  letI := decompositionGroupLocalizedIntegerUnitsAction
-    (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
-  letI := decompositionGroupLocalUnitsAction vK hvK w
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel hIntegerAlgebra hExtension hClosure hIntegerAction
+  let hFieldAction : MulDistribMulAction
+      (absoluteValueDecompositionGroup K w.1) (LocalizedCompletion vK w)ˣ :=
+    decompositionGroupLocalUnitsAction vK hvK w
   refine
     { toFun := fun f =>
         ⟨fun g =>
@@ -97,16 +95,6 @@ noncomputable def inducedIntegerUnitsToLocalPlaceBlock :
                   LocalFieldTheory.IsNonarchimedeanLocalField.integerUnitsToFieldUnits
                     (LocalizedCompletion vK w) (f.1 g)
             rw [f.2 h g]
-            let : MulDistribMulAction
-                (Gal(LocalizedCompletion vK w / vK.Completion))
-                𝒪[LocalizedCompletion vK w]ˣ :=
-              galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure
-                vK.Completion (LocalizedCompletion vK w)
-            let : MulDistribMulAction
-                (Gal(LocalizedCompletion vK w / vK.Completion))
-                (LocalizedCompletion vK w)ˣ :=
-              galoisGroupFieldUnitsMulDistribMulAction
-                vK.Completion (LocalizedCompletion vK w)
             exact
               integerUnitsToFieldUnits_galoisGroup_equivariant
                 vK.Completion (LocalizedCompletion vK w)
@@ -126,48 +114,38 @@ omit [NumberField K] [NumberField L] in
 /-- The map from induced localized integer units to the corresponding
 local-place block is injective. -/
 theorem inducedIntegerUnitsToLocalPlaceBlock_injective :
-    letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion :=
+    let _ : Algebra K w.1.Completion :=
+      LocalInductionInternal.extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion :=
       LocalInductionInternal.extensionCompletionSMul vK w
-    letI := LocalInductionInternal.completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 :=
+    let _ : Algebra vK.Completion w.1.Completion :=
+      LocalInductionInternal.completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 :=
       LocalInductionInternal.baseValued vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let _ : ValuativeRel vK.Completion :=
       LocalInductionInternal.baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       LocalInductionInternal.localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       LocalInductionInternal.localizedValuativeRel vK w hvKna
-    letI : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+    let _ : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
       LocalInductionInternal.integerAlgebra vK w hvKna
-    letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-    letI := LocalInductionInternal.isIntegralClosure
-      vK w hvK hvKna
-    letI := decompositionGroupLocalizedIntegerUnitsAction
-      (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
+    let _ : Valuation.HasExtension
+        (ValuativeRel.valuation vK.Completion)
+        (ValuativeRel.valuation (LocalizedCompletion vK w)) :=
+      LocalInductionInternal.valuationHasExtension vK w hvKna
+    let _ : IsIntegralClosure
+        𝒪[LocalizedCompletion vK w] 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+      LocalInductionInternal.isIntegralClosure vK w hvK hvKna
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) 𝒪[LocalizedCompletion vK w]ˣ :=
+      decompositionGroupLocalizedIntegerUnitsAction
+        (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
     Function.Injective
       (inducedIntegerUnitsToLocalPlaceBlock
         (K := K) (L := L) vK hvK hvKna w) := by
-  let := LocalInductionInternal.extensionCompletionAlgebra vK w
-  let : SMul K w.1.Completion :=
-    LocalInductionInternal.extensionCompletionSMul vK w
-  let := LocalInductionInternal.completionAlgebra vK w
-  let : Valued vK.Completion ℝ≥0 :=
-    LocalInductionInternal.baseValued vK hvKna
-  let : ValuativeRel vK.Completion :=
-    LocalInductionInternal.baseValuativeRel vK hvKna
-  let : Valued (LocalizedCompletion vK w) ℝ≥0 :=
-    LocalInductionInternal.localizedValued vK w hvKna
-  let : ValuativeRel (LocalizedCompletion vK w) :=
-    LocalInductionInternal.localizedValuativeRel vK w hvKna
-  let : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
-    LocalInductionInternal.integerAlgebra vK w hvKna
-  let := LocalInductionInternal.valuationHasExtension vK w hvKna
-  let := LocalInductionInternal.isIntegralClosure
-    vK w hvK hvKna
-  let := decompositionGroupLocalizedIntegerUnitsAction
-    (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
-  intro f₁ f₂ h
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel hIntegerAlgebra hExtension hClosure hIntegerAction f₁ f₂ h
   apply Subtype.ext
   funext g
   apply

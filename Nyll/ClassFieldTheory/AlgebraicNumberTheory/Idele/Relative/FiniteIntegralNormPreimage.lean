@@ -67,19 +67,13 @@ theorem exists_finitePlaceCompletionIntegerUnit_of_unitsEquiv_eq
     let vK := HeightOneSpectrum.adicAbv K v₀
     let hvKna : IsNonarchimedean (vK : K → ℝ) :=
       HeightOneSpectrum.isNonarchimedean_adicAbv K v₀
-    letI : Valued vK.Completion ℝ≥0 :=
+    let _ : Valued vK.Completion ℝ≥0 :=
       finitePlaceCompletionValued vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let _ : ValuativeRel vK.Completion :=
       finitePlaceCompletionValuativeRel vK hvKna
     ∃ x₀O : 𝒪[vK.Completion]ˣ,
       integerUnitsToFieldUnits vK.Completion x₀O = x₀ := by
-  let vK := HeightOneSpectrum.adicAbv K v₀
-  let hvKna : IsNonarchimedean (vK : K → ℝ) :=
-    HeightOneSpectrum.isNonarchimedean_adicAbv K v₀
-  let : Valued vK.Completion ℝ≥0 :=
-    finitePlaceCompletionValued vK hvKna
-  let : ValuativeRel vK.Completion :=
-    finitePlaceCompletionValuativeRel vK hvKna
+  intro vK hvKna baseValued baseRel
   rw [Submonoid.mem_units_iff] at hxUnit
   have hx₀norm :
       ‖(x₀ : vK.Completion)‖ ≤ 1 := by
@@ -124,19 +118,11 @@ theorem exists_finitePlaceCompletionIntegerUnit_of_unitsEquiv_eq
           (finitePlaceCompletion_mem_integers_iff_norm_le_one
             vK hvKna (x₀ : vK.Completion)).2 hx₀norm⟩
       inv :=
-        ⟨x₀⁻¹,
-          by
-            simpa using
-              (finitePlaceCompletion_mem_integers_iff_norm_le_one
-                vK hvKna
-                ((x₀⁻¹ : vK.Completionˣ) :
-                  vK.Completion)).2 hx₀invnorm⟩
-      val_inv := by
-        apply Subtype.ext
-        simp
-      inv_val := by
-        apply Subtype.ext
-        simp }
+        ⟨((x₀⁻¹ : vK.Completionˣ) : vK.Completion),
+          (finitePlaceCompletion_mem_integers_iff_norm_le_one
+            vK hvKna ((x₀⁻¹ : vK.Completionˣ) : vK.Completion)).2 hx₀invnorm⟩
+      val_inv := Subtype.ext (congrArg Units.val (mul_inv_cancel x₀))
+      inv_val := Subtype.ext (congrArg Units.val (inv_mul_cancel x₀)) }
   refine ⟨x₀O, ?_⟩
   apply Units.ext
   rfl
@@ -232,13 +218,9 @@ theorem exists_absoluteValueCompletionIntegerUnit_of_localizedCompletion_norm_bo
         (absoluteValueExtension_isNonarchimedean
           vK hvKna w))ˣ :=
     { val := ⟨yW, hyWMem⟩
-      inv := ⟨yW⁻¹, by simpa using hyWInvMem⟩
-      val_inv := by
-        apply Subtype.ext
-        simp
-      inv_val := by
-        apply Subtype.ext
-        simp }
+      inv := ⟨((yW⁻¹ : w.1.Completionˣ) : w.1.Completion), hyWInvMem⟩
+      val_inv := Subtype.ext (congrArg Units.val (mul_inv_cancel yW))
+      inv_val := Subtype.ext (congrArg Units.val (inv_mul_cancel yW)) }
   refine ⟨yO, ?_⟩
   rfl
 
@@ -454,8 +436,7 @@ theorem prod_norm_finitePlaceLocalTensorDecompositionUnitsComponent_single_eq
             (fun _ => 1) =
           1
       rw [dite_eq_right hwu]
-    rw [hAway]
-    simp
+    simp only [hAway, map_one, Units.val_one]
   · intro hw
     exact (hw (Finset.mem_univ w)).elim
 

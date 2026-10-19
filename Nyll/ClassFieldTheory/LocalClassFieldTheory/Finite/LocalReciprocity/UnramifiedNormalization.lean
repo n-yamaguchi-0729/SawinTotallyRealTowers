@@ -193,8 +193,7 @@ theorem normClass_localAbstractPrimeFieldUnit_eq_uniformizer :
     valuationMap_localAbstractPrimeFieldUnit_mod K
       (Module.finrank K L) (Module.finrank_pos),
     LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
-    v_inverseIntegerRingUniformizerFieldUnit]
-  simp
+    v_inverseIntegerRingUniformizerFieldUnit, Int.cast_one]
 
 /-! ## Canonical norm-residue normalization -/
 
@@ -323,8 +322,7 @@ theorem abelianizationEquivNormQuotient_symm_eq_unramifiedLocalReciprocityIso :
     rw [normQuotientUnramifiedValuationEquivZModOfIsIntegralClosure_mk,
       valuationModDegreeMulHom_apply,
       LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
-      v_inverseIntegerRingUniformizerFieldUnit]
-    simp
+      v_inverseIntegerRingUniformizerFieldUnit, Int.cast_one]
   have hpowers (z : NormQuotient K L) :
       ∃ m : ℤ, p ^ m = z := by
     obtain ⟨m, hm⟩ := ZMod.intCast_surjective (e z).toAdd

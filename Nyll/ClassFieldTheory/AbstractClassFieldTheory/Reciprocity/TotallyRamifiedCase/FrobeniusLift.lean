@@ -48,6 +48,7 @@ theorem exists_degreeOneFrobeniusLiftOfTotallyRamified
   have hImage :=
     (L.isTotallyRamified_iff_image_le D).1 hTot hsDegree
   obtain ⟨l, hlL, hlDegree⟩ := hImage
+  change D.degree l = D.degree s.1 at hlDegree
   let lL : L.field.toSubgroup := ⟨l, hlL⟩
   let lK : K.field.toSubgroup := Subgroup.inclusion L.below lL
   let i : K.field.toSubgroup := s * lK⁻¹
@@ -61,8 +62,7 @@ theorem exists_degreeOneFrobeniusLiftOfTotallyRamified
     dsimp [i, lK, lL]
     rw [map_mul, map_inv]
     change D.degree s.1 * (D.degree l)⁻¹ = 1
-    rw [← hlDegree]
-    simp
+    rw [← hlDegree, mul_inv_cancel]
   have htDegree : D.extensionNormalizedDegree K L.field L.below t =
       (Multiplicative.ofAdd (1 : ZHat) : ZHatMul) ^ (1 : ℕ) := by
     change D.extensionNormalizedDegree K L.field L.below

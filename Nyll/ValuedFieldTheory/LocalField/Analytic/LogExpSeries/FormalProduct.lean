@@ -220,8 +220,7 @@ theorem formalLogOnePlusProductArgument_pow_coeff_eq_zero_of_coord_sum_lt
     MvPowerSeries.coeff e ((formalLogOnePlusProductArgument A) ^ q) = 0 := by
   rw [formalLogOnePlusProductArgument_pow_coeff_eq_card_choices,
     formalLogOnePlusProductArgumentBasicFactorChoices_eq_empty_of_coord_sum_lt_q
-      hsum]
-  simp
+      hsum, Finset.card_empty, Nat.cast_zero]
 
 /--
 Establishes the identity `MvPowerSeries.coeff e ((formalLogOnePlusProductArgument A) ^ q) = 0`.
@@ -328,7 +327,7 @@ theorem formalLogOnePlusProductArgument_logSubst_coeff_term_eq_zero_of_degree_lt
       0 := by
   rw [formalLogOnePlusProductArgument_pow_coeff_eq_zero_of_degree_lt
     A q e hdegree]
-  simp
+  exact smul_zero _
 
 /--
 Establishes the identity `PowerSeries.coeff q (PowerSeries.log A) •
@@ -342,7 +341,7 @@ theorem formalLogOnePlusProductArgument_logSubst_coeff_term_eq_zero_of_left_coor
       0 := by
   rw [formalLogOnePlusProductArgument_pow_coeff_eq_zero_of_left_coord_lt
     A q e hleft]
-  simp
+  exact smul_zero _
 
 /--
 Establishes the identity `PowerSeries.coeff q (PowerSeries.log A) •
@@ -356,7 +355,7 @@ theorem formalLogOnePlusProductArgument_logSubst_coeff_term_eq_zero_of_right_coo
       0 := by
   rw [formalLogOnePlusProductArgument_pow_coeff_eq_zero_of_right_coord_lt
     A q e hright]
-  simp
+  exact smul_zero _
 
 /-- Expands a coefficient of the logarithm substituted at the product
 argument as a finite sum bounded by the total degree of the exponent. -/
@@ -829,14 +828,7 @@ theorem finsupp_fin_two_right_pos_of_not_left_axis
 /-- Establishes the identity `Finsupp.degree e = e (0 : Fin 2) + e (1 : Fin 2)`. -/
 theorem finsupp_fin_two_degree_eq (e : Fin 2 →₀ ℕ) :
     Finsupp.degree e = e (0 : Fin 2) + e (1 : Fin 2) := by
-  classical
-  have huniv :
-      (Finset.univ : Finset (Fin 2)) =
-        {0, 1} := by
-    ext i
-    fin_cases i <;> simp
-  rw [Finsupp.degree_eq_sum, huniv]
-  simp
+  rw [Finsupp.degree_eq_sum, Fin.sum_univ_two]
 
 /-- Establishes the inequality `e ≠ Finsupp.single (0 : Fin 2) d`. -/
 theorem finsupp_fin_two_ne_single_left_of_right_pos
@@ -1087,7 +1079,7 @@ theorem formalLogOnePlusProduct_alternating_sum_choose_eq_zero
             Polynomial.coeff
               (C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
                 P ^ (a + b - 1 - m)) (a - 1) := by
-      simp
+      rw [Polynomial.finsetSum_coeff]
     rw [hsumcoeff]
     apply Finset.sum_congr rfl
     intro m hm
@@ -1175,8 +1167,7 @@ theorem formalLogOnePlusProduct_alternating_sum_choose_filter_eq_zero
       change
         ((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ) *
           (Nat.choose (a + b - 1 - m) (a - 1) : ℚ) = 0
-      rw [hchooseZero]
-      simp))
+      rw [hchooseZero, Nat.cast_zero, mul_zero]))
 
 /--
 After the substitution `q = a + b - m`, the mixed logarithmic coefficient rewrites as the
@@ -1329,8 +1320,7 @@ theorem formalLogOnePlusProduct_rational_mixed_sum_eq_zero
           rw [Finset.mul_sum]
     _ = 0 := by
           rw [formalLogOnePlusProduct_alternating_sum_choose_filter_eq_zero
-            a b ha hb]
-          simp
+            a b ha hb, mul_zero]
 
 /--
 Establishes the identity `MvPowerSeries.coeff e (formalLogOnePlusProductFormulaDefect A) = 0`.
@@ -1377,8 +1367,7 @@ theorem formalLogOnePlusProductFormulaDefect_coeff_of_pos_coords_eq_zero
           rw [map_sum]
     _ = 0 := by
           rw [formalLogOnePlusProduct_rational_mixed_sum_eq_zero
-            (e (0 : Fin 2)) (e (1 : Fin 2)) hleft hright]
-          simp
+            (e (0 : Fin 2)) (e (1 : Fin 2)) hleft hright, map_zero]
 
 /--
 Establishes the identity `MvPowerSeries.coeff e (formalLogOnePlusProductFormulaDefect A) = 0`.
@@ -1489,8 +1478,7 @@ theorem formalLogOnePlusProductArgument_pow_monomialValue_sum_eq
     _ = MvPolynomial.eval a (P ^ q) := by
           rw [MvPolynomial.eval_eq]
           simp [Finsupp.prod]
-    _ = (MvPolynomial.eval a P) ^ q := by
-          simp
+    _ = (MvPolynomial.eval a P) ^ q := map_pow (MvPolynomial.eval a) P q
     _ = (x + y + x * y) ^ q := by
           simp [P, a]
 

@@ -346,7 +346,7 @@ class ExtractTests(unittest.TestCase):
         self.assertIn("cron: '0 0 * * *'", workflow)
         self.assertIn('  workflow_dispatch:', workflow)
         self.assertIn('persist-credentials: false', workflow)
-        self.assertIn('actions/checkout@11d5960a326750d5838078e36cf38b85af677262', workflow)
+        self.assertIn('actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1', workflow)
 
     def test_minimal_modules_not_whole_dependency_families(self):
         config = '''name = "Nyll"
@@ -382,8 +382,9 @@ globs = [
         self.assertEqual(desired['Nyll/ProCGroups/Needed.lean'], files['Nyll/ProCGroups/Needed.lean'])
 
     def test_import_parser_masks_nested_comments_and_strings(self):
-        text = '/- outer /- import Wrong.Nested -/ import Wrong.Outer -/\n' \
-               'def s := "import Wrong.String"\npublic import Right.Real -- import Wrong.Tail\n'
+        text = 'module\n/- outer /- import Wrong.Nested -/ import Wrong.Outer -/\n' \
+               'public import Right.Real -- import Wrong.Tail\n' \
+               'def s := "import Wrong.String"\n'
         self.assertEqual([m for m, _, _ in core.imports(text)], ['Right.Real'])
 
     def test_token_never_appears_in_arguments(self):

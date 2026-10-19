@@ -185,10 +185,8 @@ lemma normIntegerUnitsValue_mul_inv [ValuativeRel K] [ValuativeRel L]
       Algebra.norm K (((x⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) : L) = 1
   have hx : (((x : 𝒪[L]ˣ) : 𝒪[L]) : L) *
       (((x⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) : L) = 1 := by
-    change (((x * x⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) : L) = 1
-    simp
-  rw [← map_mul (Algebra.norm K)]
-  simp [hx]
+    exact congrArg (fun u : 𝒪[L]ˣ => ((u : 𝒪[L]) : L)) (mul_inv_cancel x)
+  rw [← map_mul (Algebra.norm K), hx, map_one]
 
 /-- The inverse norm value multiplied by the norm value of an integer unit is one. -/
 lemma normIntegerUnitsValue_inv_mul [ValuativeRel K] [ValuativeRel L]
@@ -200,10 +198,8 @@ lemma normIntegerUnitsValue_inv_mul [ValuativeRel K] [ValuativeRel L]
       Algebra.norm K (((x : 𝒪[L]ˣ) : 𝒪[L]) : L) = 1
   have hx : (((x⁻¹ : 𝒪[L]ˣ) : 𝒪[L]) : L) *
       (((x : 𝒪[L]ˣ) : 𝒪[L]) : L) = 1 := by
-    change (((x⁻¹ * x : 𝒪[L]ˣ) : 𝒪[L]) : L) = 1
-    simp
-  rw [← map_mul (Algebra.norm K)]
-  simp [hx]
+    exact congrArg (fun u : 𝒪[L]ˣ => ((u : 𝒪[L]) : L)) (inv_mul_cancel x)
+  rw [← map_mul (Algebra.norm K), hx, map_one]
 
 /-- Norm restricted to valuation-integer units. -/
 def normIntegerUnits

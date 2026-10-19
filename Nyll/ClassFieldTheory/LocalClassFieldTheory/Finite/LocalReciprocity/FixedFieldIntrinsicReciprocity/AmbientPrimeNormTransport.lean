@@ -50,18 +50,10 @@ theorem exists_valuationOne_unit_of_ringEquiv
       ⟨phi.symm (y : M), (hmem (phi.symm (y : M))).2 (by
         rw [phi.apply_symm_apply]
         exact y.property)⟩
-    left_inv := fun x => by
-      ext
-      simp
-    right_inv := fun y => by
-      ext
-      simp
-    map_mul' := fun x y => by
-      ext
-      simp
-    map_add' := fun x y => by
-      ext
-      simp }
+    left_inv := fun x => Subtype.ext (phi.symm_apply_apply (x : L))
+    right_inv := fun y => Subtype.ext (phi.apply_symm_apply (y : M))
+    map_mul' := fun x y => Subtype.ext (map_mul phi (x : L) (y : L))
+    map_add' := fun x y => Subtype.ext (map_add phi (x : L) (y : L)) }
   let piOL : 𝒪[L] :=
     chosenIntegerRingUniformizer L
   have hpiOL : Irreducible piOL :=
@@ -278,7 +270,7 @@ theorem
       (localHenselianValuation K).valueGroup) : ZHat)) = 1
   rw [localHenselianValuation_valuationAt_abstractFixedField K H p]
   rw [hp]
-  simp
+  exact (Int.castRingHom ZHat).map_one'
 
 /-- Under the canonical fixed-field unit identifications, the abstract
 relative norm from an intrinsic fixed field is the ordinary field norm on

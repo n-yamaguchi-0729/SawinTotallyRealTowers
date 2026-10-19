@@ -204,7 +204,7 @@ private theorem equalCharacteristicLubinTateTruncationIdeal_le_constantCoeff_ker
   rw [Set.mem_singleton_iff.mp ha]
   change PowerSeries.constantCoeff
       (PowerSeries.X ^ (n + 1) : F.residueField⟦X⟧) = 0
-  simp
+  rw [map_pow, PowerSeries.constantCoeff_X, zero_pow (Nat.succ_ne_zero n)]
 
 /-- Constant coefficient descends to every positive truncated power-series
 ring. -/

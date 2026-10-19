@@ -39,7 +39,8 @@ noncomputable def ofWithZeroValuation
     MultiplicativeIntegerValuation Kˣ where
   val x := -WithZero.log (v (x : K))
   map_one := by
-    simp
+    change -WithZero.log (v 1) = 0
+    rw [v.map_one, WithZero.log_one, neg_zero]
   map_mul x y := by
     have hx : v (x : K) ≠ 0 :=
       (_root_.Valuation.ne_zero_iff v).2 x.ne_zero
@@ -89,7 +90,7 @@ theorem ofWithZeroValuation_val_pow
     (ofWithZeroValuation v).val (π ^ n) = n := by
   simpa using
     ofWithZeroValuation_val_unit_mul_pow
-      v 1 π n (by simp) hπ
+      v 1 π n v.map_one hπ
 
 /-- Natural-number denominator form of the attached integer valuation.
 

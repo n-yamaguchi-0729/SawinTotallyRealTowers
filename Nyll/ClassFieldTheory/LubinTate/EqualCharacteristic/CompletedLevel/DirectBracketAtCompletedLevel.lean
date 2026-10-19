@@ -350,7 +350,7 @@ theorem equalCharacteristicCompletedDirectBracketAtSourceIterate_eq_ambient
           | zero =>
               simp [H, PowerSeries.coeff_zero_eq_constantCoeff_apply,
                 equalCharacteristicCompletedDirectBracket_constantCoeff]
-          | succ d => simp
+          | succ d => rw [zero_pow (Nat.succ_ne_zero d), mul_zero]
         rw [hterm]
         exact hasSum_zero
       exact congrArg Subtype.val hsub

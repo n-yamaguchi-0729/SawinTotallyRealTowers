@@ -34,9 +34,9 @@ theorem henselFactorization_lowPart_coeff_of_le
   unfold henselFactorization_lowPart
   rw [Polynomial.finsetSum_coeff]
   rw [Finset.sum_eq_single n]
-  · simp
+  · exact Polynomial.coeff_monomial_same n (P.coeff n)
   · intro b _hb hbn
-    simp [Polynomial.coeff_monomial, hbn]
+    rw [Polynomial.coeff_monomial, ite_eq_right hbn]
   · intro hnot
     exact False.elim (hnot (Finset.mem_range.mpr (Nat.lt_succ_of_le hn)))
 

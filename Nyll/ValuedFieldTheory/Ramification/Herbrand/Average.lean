@@ -171,7 +171,7 @@ theorem depth_eq_zero_of_not_mem_lower_zero (τ : H)
   have hnot : ¬ (1 : ℕ) ≤ D.depth (τ : G) := hτ
   by_cases htop : D.depth (τ : G) = ⊤
   · rw [htop] at hnot
-    simp at hnot
+    exact (hnot le_top).elim
   · let k := (D.depth (τ : G)).untop htop
     have hdepth : WithTop.some k = D.depth (τ : G) :=
       WithTop.coe_untop _ _

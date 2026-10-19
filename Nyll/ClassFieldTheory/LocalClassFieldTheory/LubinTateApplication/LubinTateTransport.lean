@@ -9,6 +9,7 @@ import Mathlib.SetTheory.Cardinal.Finite
 import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
 import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormSubgroup
 import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+import Nyll.ValuedFieldTheory.Ramification.LocalField.BaseChange
 
 /-!
 # Lubin--Tate application: transport to an equal-characteristic local field
@@ -61,8 +62,7 @@ theorem equalCharacteristicResidueCard
     Nat.card F.residueField =
       F.residueCharacteristic ^
         (equalCharacteristicResidueRank F : ℕ) := by
-  simpa [equalCharacteristicResidueRank] using
-    residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F
+  exact residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank F
 
 /-! ## The prescribed prime element in the target local field -/
 
@@ -324,7 +324,7 @@ theorem equalCharacteristicTargetLaurentUnitsEquiv_uniformizer_inv
       ϖ := by
   rw [map_inv,
     equalCharacteristicTargetLaurentUnitsEquiv_uniformizer]
-  simp
+  exact inv_inv ϖ
 
 /-! ## Principal-unit containment under the Laurent equivalence -/
 
@@ -641,59 +641,36 @@ theorem equalCharacteristicTransportedLubinTateLevel_isAbelianGalois
     (hϖ : valuationMap K (Additive.ofMul ϖ) = 1)
     (m : ℕ) :
     let F := equalCharacteristicTargetLocalField K
-    letI : CharP K F.residueCharacteristic :=
+    let : CharP K F.residueCharacteristic :=
       equalCharacteristicTargetResidueCharacteristicCharP K p
     let E := equalCharacteristicLubinTateLevelField F m
-    letI : CharP K p := hKp
-    letI : Algebra K E :=
+    let : CharP K p := hKp
+    let : Algebra K E :=
       equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
     IsAbelianGalois K E := by
-  let F := equalCharacteristicTargetLocalField K
+  intro F charResidue E charP algKE
+  let : CharP K F.residueCharacteristic := charResidue
   let B := F.residueField⸨X⸩
-  let : CharP K F.residueCharacteristic :=
-    equalCharacteristicTargetResidueCharacteristicCharP K p
-  let E := equalCharacteristicLubinTateLevelField F m
   let : Algebra B E := equalCharacteristicLubinTateLevelAlgebra F m
-  let : IsAbelianGalois B E :=
+  let : Algebra K E := algKE
+  have : IsAbelianGalois B E :=
     equalCharacteristicLubinTateLevelField_isAbelianGalois F m
-  let : CharP K p := hKp
-  let : Algebra K E :=
-    equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
-  let e := equalCharacteristicTargetLaurentRingEquiv K p ϖ hϖ
+  let : CharP K p := charP
+  let e : B ≃+* K := equalCharacteristicTargetLaurentRingEquiv K p ϖ hϖ
   have he (x : B) :
-      algebraMap K E (e x) = algebraMap B E x := by
-    have hcomp :=
-      DFunLike.congr_fun
-        (equalCharacteristicTransportedLubinTateLevelAlgebra_comp
-          K p ϖ hϖ m) x
-    simpa [e] using hcomp
+      algebraMap K E (e x) = algebraMap B E x :=
+    DFunLike.congr_fun
+      (equalCharacteristicTransportedLubinTateLevelAlgebra_comp
+        K p ϖ hϖ m) x
   let : IsGalois K E :=
     equalCharacteristicTransportedLubinTateLevel_isGalois
       K p ϖ hϖ m
-  let restrictToLaurent :
-      Gal(E / K) →* Gal(E / B) :=
-    { toFun := fun (σ : Gal(E / K)) =>
-        show Gal(E / B) from
-          { σ.toRingEquiv with
-            commutes' := fun x => by
-              rw [← he x]
-              exact σ.commutes (e x) }
-      map_one' := by
-        ext x
-        rfl
-      map_mul' σ τ := by
-        ext x
-        rfl }
-  have hrestrict :
-      Function.Injective restrictToLaurent := by
-    intro σ τ hστ
-    apply AlgEquiv.ext
-    intro x
-    exact DFunLike.congr_fun hστ x
-  refine { is_comm.comm := fun σ τ => hrestrict ?_ }
-  exact
-    (inferInstance : IsMulCommutative (Gal(E / B))).is_comm.comm
-      (restrictToLaurent σ) (restrictToLaurent τ)
+  let q : Gal(E / B) ≃* Gal(E / K) :=
+    RamificationTheory.LocalField.galoisGroupEquivOfBaseRingEquiv B K E e he
+  have hcomm : IsMulCommutative (Gal(E / B)) := inferInstance
+  refine { is_comm.comm := fun (σ τ : Gal(E / K)) => ?_ }
+  exact q.symm.injective ((q.symm.map_mul σ τ).trans
+    ((hcomm.is_comm.comm (q.symm σ) (q.symm τ)).trans (q.symm.map_mul τ σ).symm))
 
 /-- The actual norm subgroup of the transported level field. -/
 noncomputable def equalCharacteristicTransportedLubinTateNormSubgroup
@@ -836,7 +813,7 @@ theorem equalCharacteristicTransportedLubinTateNormSubgroup_le_of_pos
     equalCharacteristicTransportedLubinTateNormSubgroup
         K p ϖ hϖ (n - 1) ≤
       LocalFieldTheory.uniformizerPrincipalSubgroup K ϖ 1 n := by
-  simpa [Nat.sub_add_cancel hn] using
+  simpa only [Nat.sub_add_cancel hn] using
     (equalCharacteristicTransportedLubinTateNormSubgroup_le_uniformizerPrincipalSubgroup
       K p ϖ hϖ (n - 1))
 

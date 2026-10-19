@@ -148,6 +148,14 @@ noncomputable def trivialZModPLifted : TopRep.{u} (ZMod p) G := by
   exact TopRep.of
     (ContRepresentation.trivial (ZMod p) G (ULift.{u} (ZMod p)))
 
+/-- The same lifted finite additive coefficients viewed as a trivial
+integral topological representation. -/
+noncomputable def trivialIntegralZModPLifted : TopRep.{u} ℤ G := by
+  have : ContinuousSMul ℤ (ULift.{u} (ZMod p)) :=
+    ⟨continuous_of_discreteTopology⟩
+  exact TopRep.of
+    (ContRepresentation.trivial ℤ G (ULift.{u} (ZMod p)))
+
 @[simp]
 theorem trivialZModPLifted_action (g : G) (x : ULift.{u} (ZMod p)) :
     (trivialZModPLifted p G).ρ g x = x :=

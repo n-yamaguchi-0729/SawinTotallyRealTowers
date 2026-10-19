@@ -124,7 +124,7 @@ noncomputable def homogeneousOneCochainAddEquiv :
     intro f
     funext g
     change f (1⁻¹ * g) = f g
-    simp
+    rw [inv_one, one_mul]
   map_add' := by
     intro c d
     funext g
@@ -190,7 +190,7 @@ noncomputable def homogeneousTwoCochainAddEquiv :
     funext gh
     change
       f (1⁻¹ * gh.1, gh.1⁻¹ * (gh.1 * gh.2)) = f gh
-    simp
+    rw [inv_one, one_mul, inv_mul_cancel_left]
   map_add' := by
     intro c d
     funext gh
@@ -277,9 +277,9 @@ noncomputable def homogeneousThreeCochainAddEquiv :
             (ghk.1 * ghk.2.1 * ghk.2.2)) = f ghk
     apply congrArg f
     apply Prod.ext
-    · simp
+    · rw [inv_one, one_mul]
     · apply Prod.ext
-      · simp
+      · exact inv_mul_cancel_left _ _
       · group
   map_add' := by
     intro c d

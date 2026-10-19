@@ -91,11 +91,11 @@ noncomputable def equalCharacteristicCompletedFrobeniusPullbackAlgebraNorm
       (equalCharacteristicCompletedUnramifiedField F.residueField)
       (equalCharacteristicCompletedLevelField F n) where
   toFun x := ‖equalCharacteristicCompletedFrobeniusLiftEquiv F n a x‖
-  map_zero' := by simp
+  map_zero' := by rw [map_zero, norm_zero]
   add_le' x y := by
     rw [map_add]
     exact norm_add_le _ _
-  neg' x := by simp
+  neg' x := by rw [map_neg, norm_neg]
   mul_le' x y := by
     rw [map_mul, norm_mul]
   eq_zero_of_map_eq_zero' x hx := by

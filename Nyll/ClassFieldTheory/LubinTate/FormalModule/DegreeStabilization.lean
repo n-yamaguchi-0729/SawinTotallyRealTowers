@@ -208,7 +208,7 @@ private theorem natCast_le_order_pow_of_one_le_order_stabilization
     (hf : (1 : ℕ∞) ≤ f.order) :
     (n : ℕ∞) ≤ (f ^ n).order := by
   calc
-    (n : ℕ∞) = n • (1 : ℕ∞) := by simp
+    (n : ℕ∞) = n • (1 : ℕ∞) := by rw [nsmul_eq_mul, mul_one]
     _ ≤ n • f.order := nsmul_le_nsmul_right hf n
     _ ≤ (f ^ n).order := MvPowerSeries.le_order_pow n
 
@@ -219,7 +219,9 @@ private theorem le_order_finset_sum_stabilization
     m ≤ (∑ i ∈ s, f i).order := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty =>
+      rw [Finset.sum_empty, MvPowerSeries.order_zero]
+      exact le_top
   | @insert i s hi ih =>
       rw [Finset.sum_insert hi]
       exact
@@ -236,7 +238,9 @@ private theorem natCast_sum_le_order_finset_prod_pow_stabilization
       (∏ i ∈ s, (f i) ^ n i).order := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty =>
+      rw [Finset.sum_empty, Nat.cast_zero]
+      exact bot_le
   | @insert i s hi ih =>
       rw [Finset.sum_insert hi, Finset.prod_insert hi]
       calc
@@ -303,7 +307,9 @@ private theorem natCast_sum_add_one_le_order_prod_pow_sub_prod_pow_stabilization
         ∏ i ∈ s, (g i) ^ n i).order := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty =>
+      rw [Finset.prod_empty, Finset.prod_empty, sub_self, MvPowerSeries.order_zero]
+      exact le_top
   | @insert i s hi ih =>
       have hni : n i ≠ 0 :=
         hn i (Finset.mem_insert_self i s)
@@ -441,8 +447,7 @@ private theorem two_le_order_inVariable_sub_linearInVariableStabilization
   by_cases hdi : d = Finsupp.single i (d i)
   · by_cases hzero : d i = 0
     · have hd0 : d = 0 := by
-        rw [hdi, hzero]
-        simp
+        rw [hdi, hzero, Finsupp.single_zero]
       subst d
       simp [inVariable, linearInVariableStabilization,
         PowerSeries.coeff_subst_single,
@@ -464,8 +469,7 @@ private theorem two_le_order_inVariable_sub_linearInVariableStabilization
   · have hsingle : d ≠ Finsupp.single i 1 := by
       intro h
       apply hdi
-      rw [h]
-      simp
+      rw [h, Finsupp.single_eq_same]
     have hX :
         MvPowerSeries.coeff d
           (MvPowerSeries.X i :
@@ -618,12 +622,13 @@ private theorem coeff_pow_add_monomial_sub_pow_of_degree_le
   have hd0 : d ≠ 0 := by
     intro h
     subst d
-    simp at hd
+    rw [map_zero] at hd
+    omega
   by_cases hn : n = 1
   · subst n
     simp [MvPowerSeries.coeff_monomial]
   · rcases n with _ | n
-    · simp
+    · simp only [pow_zero, sub_self, map_zero, zero_ne_one, ite_false]
     · have hn0 : n ≠ 0 := by
         intro h
         apply hn
@@ -707,7 +712,8 @@ private theorem coeff_subst_lubinTateSeries_add_monomial_of_degree_le
   have hd0 : d ≠ 0 := by
     intro h
     subst d
-    simp at hd
+    rw [map_zero] at hd
+    omega
   have hMconstant :
       MvPowerSeries.constantCoeff
           (MvPowerSeries.monomial d c) = 0 :=
@@ -830,8 +836,7 @@ private theorem linearForm_eq_sum_monomial_stabilization
   intro i _
   rw [← MvPowerSeries.monomial_zero_eq_C_apply,
     MvPowerSeries.X_def,
-    MvPowerSeries.monomial_mul_monomial]
-  simp
+    MvPowerSeries.monomial_mul_monomial, zero_add, mul_one]
 
 omit [Fintype σ] in
 private theorem coeff_defect_sum_linear_monomials_eq_zero [Finite σ]
@@ -877,9 +882,10 @@ private theorem coeff_defect_sum_linear_monomials_eq_zero [Finite σ]
       rw [
         coeff_defect_add_monomial_eq_of_degree_le_constantCoeff
           e ebar hconstant q (Finsupp.single i 1) hq'
-          (by simp) (L i),
+          (by rw [Finsupp.degree_single]) (L i),
         ih]
-      simp
+      simp only [Finsupp.degree_single, Nat.sub_self, pow_zero,
+        sub_self, zero_mul, mul_zero, ite_self, add_zero]
 
 private theorem coeff_defect_linearForm_eq_zero_of_degree_le_one
     (e ebar : LubinTateSeries F π)

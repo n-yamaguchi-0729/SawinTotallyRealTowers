@@ -361,8 +361,8 @@ theorem archimedeanNorm_norm
                 _root_.infinitePlaceBelow (K := K) W = v₀}
               (Subtype.fintype fun W =>
                 _root_.infinitePlaceBelow (K := K) W = v₀) := by
-        ext W
-        simp
+        exact congrArg (fun h : Fintype _ => h.elems)
+          (Subsingleton.elim _ _)
       rw [hUniv]
       rw [map_prod, Finset.prod_pow]
     _ =

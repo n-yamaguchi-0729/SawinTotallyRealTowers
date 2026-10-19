@@ -74,8 +74,7 @@ theorem presentationNormalizedPrimitive_factors
   change P.quotient.toMonoidHom a = P.quotient.toMonoidHom b at hab
   let n : P.quotient.toMonoidHom.ker := ⟨a⁻¹ * b, by
     change P.quotient.toMonoidHom (a⁻¹ * b) = 1
-    rw [map_mul, map_inv, hab]
-    simp⟩
+    rw [map_mul, map_inv, hab, inv_mul_cancel]⟩
   have hn : P.quotient (n : sourceData.carrier) = 1 := n.2
   have hmul := presentationNormalizedPrimitive_mul_of_right_kernel P x a n hn
   have habn : a * (n : sourceData.carrier) = b := by

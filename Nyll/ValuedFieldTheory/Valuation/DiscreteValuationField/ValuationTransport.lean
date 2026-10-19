@@ -104,18 +104,10 @@ noncomputable def valuationSubringRingEquivOfComap
     change v (e (e.symm (y : K))) ≤ 1
     rw [e.apply_symm_apply]
     exact y.2⟩
-  left_inv x := by
-    ext
-    simp
-  right_inv y := by
-    ext
-    simp
-  map_mul' x y := by
-    ext
-    simp
-  map_add' x y := by
-    ext
-    simp
+  left_inv x := Subtype.ext (e.symm_apply_apply (x : L))
+  right_inv y := Subtype.ext (e.apply_symm_apply (y : K))
+  map_mul' x y := Subtype.ext (map_mul e (x : L) (y : L))
+  map_add' x y := Subtype.ext (map_add e (x : L) (y : L))
 
 /-- The valuation-subring equivalence induced by a comap acts through the ambient ring map. -/
 @[simp] theorem valuationSubringRingEquivOfComap_apply

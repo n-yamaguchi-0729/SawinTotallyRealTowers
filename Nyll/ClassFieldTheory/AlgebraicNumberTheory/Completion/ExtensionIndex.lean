@@ -257,8 +257,7 @@ theorem finitePlaceExtensionCentreIdeal_ne_bot
   intro hbot
   apply v.ne_bot
   rw [← finitePlaceExtensionCentreIdeal_under
-    (K := K) (L := L) v w, hbot]
-  simp
+    (K := K) (L := L) v w, hbot, Ideal.under_bot]
 
 /-- The finite place of `L` centred at an exact extension of the
 absolute value at `v`. -/
@@ -461,7 +460,7 @@ theorem finitePlaceExtensions_isEquiv_of_centres_eq
   intro x
   by_cases hx : x = 0
   · subst x
-    simp
+    rw [map_zero, map_zero]
   calc
     wF.1 x < 1 ↔ 1 < (wF.1 x)⁻¹ :=
       (one_lt_inv₀ (wF.1.pos hx)).symm

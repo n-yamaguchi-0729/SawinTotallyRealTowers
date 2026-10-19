@@ -158,8 +158,7 @@ theorem standardLubinTateUnitFactorFieldUnit_eq_changed_mul_uniformizer_inv
     standardLubinTateUnitFactorFieldUnit F u =
       standardLubinTateChangedUniformizerUnit hπ u *
         (standardLubinTateBaseUniformizerUnit hπ)⁻¹ := by
-  rw [standardLubinTateChangedUniformizerUnit_eq_unit_mul]
-  simp
+  rw [standardLubinTateChangedUniformizerUnit_eq_unit_mul, mul_inv_cancel_right]
 
 /-- The negative primitive generator at the changed level has norm `uπ`. -/
 theorem standardLubinTateChanged_norm_neg_levelGenerator

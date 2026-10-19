@@ -5,6 +5,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 
 /-!
 # Integral local induction equivalence
@@ -41,47 +44,39 @@ variable (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
 rewritten
 as the induced integer-unit module at a chosen extension. -/
 noncomputable def completionProductIntegerUnitsEquivInducedModule :
-    letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion :=
+    let _ : Algebra K w.1.Completion :=
+      LocalInductionInternal.extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion :=
       LocalInductionInternal.extensionCompletionSMul vK w
-    letI := LocalInductionInternal.completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 :=
+    let _ : Algebra vK.Completion w.1.Completion :=
+      LocalInductionInternal.completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 :=
       LocalInductionInternal.baseValued vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let _ : ValuativeRel vK.Completion :=
       LocalInductionInternal.baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       LocalInductionInternal.localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       LocalInductionInternal.localizedValuativeRel vK w hvKna
-    letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-    letI := LocalInductionInternal.isIntegralClosure
-      vK w hvK hvKna
-    letI := decompositionGroupLocalizedIntegerUnitsAction
-      (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
+    let _ : Valuation.HasExtension
+        (ValuativeRel.valuation vK.Completion)
+        (ValuativeRel.valuation (LocalizedCompletion vK w)) :=
+      LocalInductionInternal.valuationHasExtension vK w hvKna
+    let _ : IsIntegralClosure
+        𝒪[LocalizedCompletion vK w] 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+      LocalInductionInternal.isIntegralClosure vK w hvK hvKna
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) 𝒪[LocalizedCompletion vK w]ˣ :=
+      decompositionGroupLocalizedIntegerUnitsAction
+        (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
     (∀ w' : AbsoluteValueExtension vK L,
       (absoluteValueCompletionIntegers w'.1
-        (absoluteValueExtension_isNonarchimedean
-          vK hvKna w'))ˣ) ≃*
+        (absoluteValueExtension_isNonarchimedean vK hvKna w'))ˣ) ≃*
       CyclicCohomology.InducedModule
         (B := 𝒪[LocalizedCompletion vK w]ˣ)
         (absoluteValueDecompositionGroup K w.1) := by
-  letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-  letI : SMul K w.1.Completion :=
-    LocalInductionInternal.extensionCompletionSMul vK w
-  letI := LocalInductionInternal.completionAlgebra vK w
-  letI : Valued vK.Completion ℝ≥0 :=
-    LocalInductionInternal.baseValued vK hvKna
-  letI : ValuativeRel vK.Completion :=
-    LocalInductionInternal.baseValuativeRel vK hvKna
-  letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
-    LocalInductionInternal.localizedValued vK w hvKna
-  letI : ValuativeRel (LocalizedCompletion vK w) :=
-    LocalInductionInternal.localizedValuativeRel vK w hvKna
-  letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-  letI := LocalInductionInternal.isIntegralClosure
-    vK w hvK hvKna
-  letI := decompositionGroupLocalizedIntegerUnitsAction
-    (vK := vK) (hvK := hvK) (hvKna := hvKna) (w := w)
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel hExtension hClosure hIntegerAction
   let reindex :=
     Equiv.piCongrLeft'
       (fun w' : AbsoluteValueExtension vK L =>

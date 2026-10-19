@@ -404,12 +404,9 @@ def principalUnitsMapOfUnramifiedValuation (K L : Type u)
     ⟨integerUnitsMapOfValuationExtension K L u.1,
       integerUnitsMapOfValuationExtension_mem_principalUnits_of_unramifiedValuation
         K L n u.2⟩
-  map_one' := by
-    ext
-    simp
-  map_mul' u v := by
-    ext
-    simp
+  map_one' := Subtype.ext (map_one (integerUnitsMapOfValuationExtension K L))
+  map_mul' u v := Subtype.ext
+    (map_mul (integerUnitsMapOfValuationExtension K L) u.1 v.1)
 
 /-- The map on principal units for an unramified extension is induced by the integer-ring inclusion.
 The map on principal units for an unramified extension is induced by the integer-ring inclusion. -/

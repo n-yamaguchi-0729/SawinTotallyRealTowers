@@ -286,7 +286,7 @@ noncomputable def unitRepresentationOverK
       map_one' := by
         ext u
         change A.ρ (1 : G) u.1.1 = u.1.1
-        simp
+        simp only [map_one, Module.End.one_apply]
       map_mul' := by
         intro k₁ k₂
         ext u

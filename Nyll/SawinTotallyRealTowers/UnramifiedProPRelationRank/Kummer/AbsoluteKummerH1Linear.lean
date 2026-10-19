@@ -38,7 +38,7 @@ theorem absolutePowerClassQuotient_pow_eq_one
     x ^ p = 1 := by
   refine QuotientGroup.induction_on x fun a ↦ ?_
   rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
-  exact ⟨a, by simp⟩
+  exact ⟨a, rfl⟩
 
 omit [Fact p.Prime] in
 /-- Every continuous absolute mod-`p` character has exponent dividing `p`. -/
@@ -51,7 +51,7 @@ theorem absoluteContinuousZModCharacter_pow_eq_one
     ContinuousMonoidHom.one_toFun]
   apply Multiplicative.ofAdd.injective
   change p • (x σ).toAdd = 0
-  simp
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- The power-class group as its canonical `ZMod p`-module object. -/
 noncomputable def absolutePowerClassModP : ModuleCat (ZMod p) := by

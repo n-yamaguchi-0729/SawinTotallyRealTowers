@@ -43,7 +43,7 @@ def kernelRowsInDisplayedClosedSpan
       presentationFoxDerivative P x ∈ displayedRelatorFoxRowClosedSpan P}
   one_mem' := by
     constructor
-    · simp
+    · exact P.quotient.toMonoidHom.ker.one_mem
     · rw [ScalarCrossedHom.map_one]
       exact (displayedRelatorFoxRowClosedSpan P).zero_mem
   mul_mem' := by

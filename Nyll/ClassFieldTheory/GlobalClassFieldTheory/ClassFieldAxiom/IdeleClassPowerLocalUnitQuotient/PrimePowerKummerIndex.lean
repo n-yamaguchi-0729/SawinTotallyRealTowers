@@ -110,21 +110,7 @@ theorem
           (K := K) n S' T) =
       Module.finrank K E := by
   classical
-  dsimp only
-  let hnK : ((n : ℕ) : K) ≠ 0 := by
-    exact_mod_cast n.ne_zero
-  let nUnit : Kˣ :=
-    Units.mk0 ((n : ℕ) : K) hnK
-  let S₀ :=
-    (S ∪ IdeleGroup.sufficientlyLargeFiniteSet (K := K)) ∪
-      chosenUnitFiniteSupport (K := K) nUnit
-  let S' :=
-    enlargeByFiniteKummerRadicalSupport
-      (K := K) (L := E) n hmu S₀
-  let T :=
-    sUnitKummerPrimeSet
-      (K := K) (Omega := Omega) E n hmu
-      p v hp hv hn r eG S₀
+  intro hnK nUnit S₀ S' T
   let hST : Disjoint S' T :=
     (sUnitKummerPrimeSet_disjoint_enlargeByFiniteKummerRadicalSupport
       (K := K) (Omega := Omega) E n hmu
@@ -311,8 +297,10 @@ theorem
       hClassCard
     _ = Nat.card Gal(E/K) := by
       symm
-      rw [Nat.card_congr eG.toEquiv, Nat.card_pi]
-      simp
+      rw [Nat.card_congr eG.toEquiv, Nat.card_fun,
+        Nat.card_congr
+          (Multiplicative.toAdd : Multiplicative (ZMod (n : ℕ)) ≃ ZMod (n : ℕ)),
+        Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]
     _ = Module.finrank K E :=
       IsGalois.card_aut_eq_finrank K E
 

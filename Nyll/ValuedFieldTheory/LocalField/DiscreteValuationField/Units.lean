@@ -873,13 +873,13 @@ theorem card_principalUnitSubquotient_self
       (U.principalUnitSubgroup n).subgroupOf
           (U.principalUnitSubgroup n) = ⊤ := by
     ext x
-    simp
+    exact iff_of_true x.property (Subgroup.mem_top x)
   change Nat.card
     (U.principalUnitSubgroup n ⧸
       (U.principalUnitSubgroup n).subgroupOf
         (U.principalUnitSubgroup n)) = 1
   rw [htop]
-  simp
+  exact Nat.card_eq_one_iff_unique.mpr ⟨QuotientGroup.subsingleton_quotient_top, ⟨1⟩⟩
 
 /-- Cardinality multiplication for principal-unit subquotients:
 `#(U^l/U^n) = #(U^m/U^n) * #(U^l/U^m)`. -/
@@ -1320,7 +1320,7 @@ theorem principalUnitSubgroupClassInQuotient_refl_eq_bot
   rw [← U.quotient_principalUnitSubgroup_mapOfLe_ker_eq_classInQuotient
       (le_rfl : n ≤ n),
     U.quotient_principalUnitSubgroup_mapOfLe_refl n]
-  simp
+  exact MonoidHom.ker_id
 
 /-- The restricted level-change map for `n ≤ n` is the identity on
 `U^l/U^n`. -/

@@ -160,7 +160,7 @@ def validate_inventory_data(summary, declarations, modules, manifest, baseline, 
             require(origin['path'] == old['sourcePath'] and
                     origin['sha256'] == old['currentSourceSHA256'],
                     'Historical partial current source changed: ' + name)
-            require(historical_body_sha(source_root, origin['path'], old if 'copyrightHeaderSHA256' in old else None) == old['historicalBodySHA256'],
+            require(historical_body_sha(source_root, origin['path'], old if 'copyrightHeaderSHA256' in old else None) == old.get('currentBodySHA256', old['historicalBodySHA256']),
                     'Historical partial original source body changed: ' + name)
             partials[name] = row
         rows[name] = row

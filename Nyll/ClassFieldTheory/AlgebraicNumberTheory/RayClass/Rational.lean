@@ -170,7 +170,9 @@ theorem rationalFractionalIdeal_eq_span_positiveGenerator
           (FractionalIdeal.spanSingleton_eq_spanSingleton
             (S := nonZeroDivisors (𝓞 ℚ))).2
         refine ⟨-1, ?_⟩
-        simp
+        change (-1 : 𝓞 ℚ) • rawRationalIdealGenerator I =
+          -rawRationalIdealGenerator I
+        exact neg_one_smul (𝓞 ℚ) _
 
 /-- Positive rational generators of the same principal fractional ideal
 are equal. -/
@@ -460,7 +462,9 @@ theorem rationalResidueUnit_mul
 
 /-- The rational residue unit of one is one. -/
 theorem rationalResidueUnit_one (m : ℕ) :
-    rationalResidueUnit m 1 (by simp) (by simp) = 1 := by
+    rationalResidueUnit m 1
+        (by simpa only [Rat.num_one, Int.natAbs_one] using Nat.coprime_one_left m)
+        (by simpa only [Rat.den_one] using Nat.coprime_one_left m) = 1 := by
   apply Units.ext
   simp [rationalResidueUnit, rationalNumeratorResidueUnit,
     rationalDenominatorResidueUnit]
@@ -480,7 +484,7 @@ theorem rationalResidueUnit_eq_one_iff_modEq
   · intro h
     have hND : N = D := by
       calc
-        N = (N * D⁻¹) * D := by simp
+        N = (N * D⁻¹) * D := (inv_mul_cancel_right N D).symm
         _ = (1 : (ZMod m)ˣ) * D := by
           rw [show N * D⁻¹ = 1 by
             simpa only [N, D, rationalResidueUnit] using h]
@@ -512,7 +516,9 @@ noncomputable def primeToIdealResidueHom
       rationalResidueUnit m
           (positiveRationalIdealGenerator
             (1 : FractionalIdealGroup ℚ)) _ _ =
-        rationalResidueUnit m 1 (by simp) (by simp) :=
+        rationalResidueUnit m 1
+        (by simpa only [Rat.num_one, Int.natAbs_one] using Nat.coprime_one_left m)
+        (by simpa only [Rat.den_one] using Nat.coprime_one_left m) :=
           rationalResidueUnit_congr m
             positiveRationalIdealGenerator_one _ _ _ _
       _ = 1 := rationalResidueUnit_one m
@@ -643,11 +649,14 @@ residue reduction. -/
 theorem rationalResidueUnit_natCast
     (m a : ℕ) (hcop : Nat.Coprime a m) :
     (rationalResidueUnit m (a : ℚ)
-        (by simpa using hcop) (by simp) : ZMod m) =
+        (by simpa only [Rat.num_natCast, Int.natAbs_natCast] using hcop)
+        (by simpa only [Rat.den_natCast] using Nat.coprime_one_left m) : ZMod m) =
       (a : ZMod m) := by
   have hden :
-      rationalDenominatorResidueUnit m (a : ℚ) (by simp) = 1 :=
-    rationalDenominatorResidueUnit_natCast m a (by simp)
+      rationalDenominatorResidueUnit m (a : ℚ)
+        (by simpa only [Rat.den_natCast] using Nat.coprime_one_left m) = 1 :=
+    rationalDenominatorResidueUnit_natCast m a
+      (by simpa only [Rat.den_natCast] using Nat.coprime_one_left m)
   change
     (rationalNumeratorResidueUnit m (a : ℚ) _ *
       (rationalDenominatorResidueUnit m (a : ℚ) _)⁻¹ :
@@ -681,7 +690,7 @@ theorem primeToIdealResidueHom_surjective
       Nat.Coprime ((a : ℚ).num.natAbs) m := by
     simpa using hcop
   have haden : Nat.Coprime ((a : ℚ).den) m := by
-    simp
+    simpa only [Rat.den_natCast] using Nat.coprime_one_left m
   apply Units.ext
   change
     (rationalResidueUnit m

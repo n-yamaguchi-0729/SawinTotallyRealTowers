@@ -891,12 +891,11 @@ private theorem ostrowski_gelfandMazur_of_real_rpow
     (hnorm : ∀ q : ℚ,
       ostrowski_restrictRatAbsoluteValue (K := K) v q =
         Rat.AbsoluteValue.real q ^ s) :
-    letI : Algebra ℝ (WithAbs v) :=
+    let : Algebra ℝ (WithAbs v) :=
       ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
     Nonempty (WithAbs v ≃ₐ[ℝ] ℝ) ∨
       Nonempty (WithAbs v ≃ₐ[ℝ] ℂ) := by
-  let : Algebra ℝ (WithAbs v) :=
-    ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
+  intro realAlgebra
   exact ostrowski_gelfandMazur_of_real_rpow_scalar (WithAbs v) hs
     (ostrowski_realAlgebra_norm_algebraMap_of_real_rpow
       (K := K) v hcomplete s hs hnorm)
@@ -908,16 +907,14 @@ private theorem ostrowski_realAlgEquiv_norm_eq_of_real_rpow
     (hnorm : ∀ q : ℚ,
       ostrowski_restrictRatAbsoluteValue (K := K) v q =
         Rat.AbsoluteValue.real q ^ s) :
-    letI : Algebra ℝ (WithAbs v) :=
+    let : Algebra ℝ (WithAbs v) :=
       ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
     ∀ (e : WithAbs v ≃ₐ[ℝ] ℝ) (x : WithAbs v),
       ‖x‖ = ‖e x‖ ^ s := by
-  let : Algebra ℝ (WithAbs v) :=
-    ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
-  intro e x
+  intro realAlgebra e x
   have hx : x = algebraMap ℝ (WithAbs v) (e x) := by
     calc
-      x = e.symm (e x) := by simp
+      x = e.symm (e x) := (e.symm_apply_apply x).symm
       _ = algebraMap ℝ (WithAbs v) (e x) := by
         simpa using (AlgEquiv.commutes e.symm (e x))
   rw [hx]
@@ -932,13 +929,11 @@ private theorem ostrowski_realBranch_abs_eq_of_real_rpow
     (hnorm : ∀ q : ℚ,
       ostrowski_restrictRatAbsoluteValue (K := K) v q =
         Rat.AbsoluteValue.real q ^ s) :
-    letI : Algebra ℝ (WithAbs v) :=
+    let : Algebra ℝ (WithAbs v) :=
       ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
     ∀ (e : WithAbs v ≃ₐ[ℝ] ℝ) (x : K),
       v x = ‖e ((WithAbs.equiv v).symm x)‖ ^ s := by
-  let : Algebra ℝ (WithAbs v) :=
-    ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
-  intro e x
+  intro realAlgebra e x
   change ‖((WithAbs.equiv v).symm x : WithAbs v)‖ =
     ‖e ((WithAbs.equiv v).symm x)‖ ^ s
   exact ostrowski_realAlgEquiv_norm_eq_of_real_rpow
@@ -957,9 +952,10 @@ private theorem norm_symm_I_eq_one
     simp [Complex.I_sq]
   have hsqnorm : ‖e.symm Complex.I‖ ^ 2 = (1 : ℝ) := by
     calc
-      ‖e.symm Complex.I‖ ^ 2 = ‖(e.symm Complex.I : F) ^ 2‖ := by simp
+      ‖e.symm Complex.I‖ ^ 2 = ‖(e.symm Complex.I : F) ^ 2‖ :=
+        (norm_pow (e.symm Complex.I) 2).symm
       _ = ‖(-1 : F)‖ := by rw [hsq]
-      _ = 1 := by simp
+      _ = 1 := by rw [norm_neg, norm_one]
   nlinarith [norm_nonneg (e.symm Complex.I),
     sq_nonneg (‖e.symm Complex.I‖ - 1), hsqnorm]
 
@@ -996,7 +992,8 @@ private theorem norm_symm_le_one_of_norm_eq_one
   obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt (2 : ℝ) hlt
   have hbound : ‖e.symm z‖ ^ n ≤ (2 : ℝ) := by
     calc
-      ‖e.symm z‖ ^ n = ‖(e.symm z : F) ^ n‖ := by simp
+      ‖e.symm z‖ ^ n = ‖(e.symm z : F) ^ n‖ :=
+        (norm_pow (e.symm z) n).symm
       _ = ‖e.symm (z ^ n)‖ := by
           congr 1
           exact (map_pow e.symm z n).symm
@@ -1043,9 +1040,8 @@ private theorem norm_symm_eq_one_of_norm_eq_one
             rw [norm_mul]
       _ = ‖(1 : F)‖ := by
           congr 1
-          rw [← map_mul]
-          simp [hz0]
-      _ = 1 := by simp
+          rw [← map_mul, mul_inv_cancel₀ hz0, map_one]
+      _ = 1 := norm_one
   have hpos_inv : 0 < ‖e.symm z⁻¹‖ := norm_pos_iff.mpr (by
     intro h
     apply hz0
@@ -1095,15 +1091,13 @@ private theorem ostrowski_complexAlgEquiv_norm_eq_of_real_rpow
     (hnorm : ∀ q : ℚ,
       ostrowski_restrictRatAbsoluteValue (K := K) v q =
         Rat.AbsoluteValue.real q ^ s) :
-    letI : Algebra ℝ (WithAbs v) :=
+    let : Algebra ℝ (WithAbs v) :=
       ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
     ∀ (e : WithAbs v ≃ₐ[ℝ] ℂ) (x : WithAbs v),
       ‖x‖ = ‖e x‖ ^ s := by
-  let : Algebra ℝ (WithAbs v) :=
-    ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
-  intro e x
+  intro realAlgebra e x
   calc
-    ‖x‖ = ‖e.symm (e x)‖ := by simp
+    ‖x‖ = ‖e.symm (e x)‖ := congrArg norm (e.symm_apply_apply x).symm
     _ = ‖e x‖ ^ s :=
         AlgEquiv.norm_symm_apply_eq_norm_rpow hs
           (ostrowski_realAlgebra_norm_algebraMap_of_real_rpow
@@ -1116,13 +1110,11 @@ private theorem ostrowski_complexBranch_abs_eq_of_real_rpow
     (hnorm : ∀ q : ℚ,
       ostrowski_restrictRatAbsoluteValue (K := K) v q =
         Rat.AbsoluteValue.real q ^ s) :
-    letI : Algebra ℝ (WithAbs v) :=
+    let : Algebra ℝ (WithAbs v) :=
       ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
     ∀ (e : WithAbs v ≃ₐ[ℝ] ℂ) (x : K),
       v x = ‖e ((WithAbs.equiv v).symm x)‖ ^ s := by
-  let : Algebra ℝ (WithAbs v) :=
-    ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
-  intro e x
+  intro realAlgebra e x
   change ‖((WithAbs.equiv v).symm x : WithAbs v)‖ =
     ‖e ((WithAbs.equiv v).symm x)‖ ^ s
   exact ostrowski_complexAlgEquiv_norm_eq_of_real_rpow

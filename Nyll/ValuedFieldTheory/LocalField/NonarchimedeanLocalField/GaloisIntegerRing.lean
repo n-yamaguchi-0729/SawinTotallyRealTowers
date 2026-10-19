@@ -59,22 +59,10 @@ def galoisGroupIntegerRingEquivOfIsIntegralClosure
     ⟨σ (x : L), galoisGroup_mem_integerRing_of_isIntegralClosure K L σ x⟩
   invFun x :=
     ⟨σ.symm (x : L), galoisGroup_mem_integerRing_of_isIntegralClosure K L σ.symm x⟩
-  left_inv := by
-    intro x
-    ext
-    simp
-  right_inv := by
-    intro x
-    ext
-    simp
-  map_mul' := by
-    intro x y
-    ext
-    simp
-  map_add' := by
-    intro x y
-    ext
-    simp
+  left_inv x := Subtype.ext (σ.symm_apply_apply (x : L))
+  right_inv x := Subtype.ext (σ.apply_symm_apply (x : L))
+  map_mul' x y := Subtype.ext (map_mul σ (x : L) (y : L))
+  map_add' x y := Subtype.ext (map_add σ (x : L) (y : L))
 
 /-- Restriction sends a field automorphism to the corresponding automorphism of the integral-closure
 valuation ring. -/

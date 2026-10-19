@@ -8,6 +8,7 @@ import Mathlib.SetTheory.Cardinal.Finite
 import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentModel
 import Mathlib.Algebra.CharP.Algebra
 import Mathlib.Algebra.CharP.Frobenius
+import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
 
 /-!
 # The equal-characteristic Lubin–Tate action: the equal-characteristic Lubin--Tate endomorphism
@@ -47,18 +48,6 @@ private theorem addMonoidEnd_mul_apply
     (f * g) x = f (g x) :=
   rfl
 
-private theorem addMonoidEnd_sum_apply
-    {R : Type*} [AddCommMonoid R] {I : Type*}
-    (s : Finset I) (f : I → AddMonoid.End R) (x : R) :
-    (∑ i ∈ s, f i) x = ∑ i ∈ s, f i x := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, Finset.sum_insert hi]
-      change f i x + (∑ j ∈ s, f j) x = f i x + ∑ j ∈ s, f j x
-      rw [ih]
-
 private instance equalCharacteristicLaurentCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] :
@@ -78,7 +67,8 @@ noncomputable def equalCharacteristicLubinTatePiEnd
     iterateFrobenius F.residueField⸨X⸩ F.residueCharacteristic
         (CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F) x +
       equalCharacteristicLaurentUniformizer F * x
-  map_zero' := by simp
+  map_zero' := by
+    rw [map_zero, mul_zero, add_zero]
   map_add' x y := by
     rw [(iterateFrobenius F.residueField⸨X⸩ F.residueCharacteristic
       (CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F)).map_add,
@@ -184,7 +174,9 @@ theorem equalCharacteristicLubinTatePiIterate_coefficient_mul
       algebraMap F.residueField F.residueField⸨X⸩ a *
         equalCharacteristicLubinTatePiIterate F i x := by
   induction i generalizing x with
-  | zero => simp
+  | zero =>
+      rw [equalCharacteristicLubinTatePiIterate_zero,
+        equalCharacteristicLubinTatePiIterate_zero]
   | succ i ih =>
       rw [equalCharacteristicLubinTatePiIterate_succ,
         equalCharacteristicLubinTatePiEnd_coefficient_mul,
@@ -214,12 +206,17 @@ theorem equalCharacteristicLubinTateBracket_apply
             (PowerSeries.coeff i a) *
           equalCharacteristicLubinTatePiIterate F i x :=
   by
-    rw [equalCharacteristicLubinTateBracket,
-      addMonoidEnd_sum_apply]
+    rw [equalCharacteristicLubinTateBracket]
+    refine (AddMonoidHom.finsetSum_apply
+      (fun i : ℕ => equalCharacteristicCoefficientEnd F (PowerSeries.coeff i a) *
+        equalCharacteristicLubinTatePiIterate F i) (Finset.range n) x).trans ?_
     apply Finset.sum_congr rfl
     intro i hi
-    rw [addMonoidEnd_mul_apply,
-      equalCharacteristicCoefficientEnd_apply]
+    exact (addMonoidEnd_mul_apply
+      (equalCharacteristicCoefficientEnd F (PowerSeries.coeff i a))
+      (equalCharacteristicLubinTatePiIterate F i) x).trans
+        (equalCharacteristicCoefficientEnd_apply F (PowerSeries.coeff i a)
+          (equalCharacteristicLubinTatePiIterate F i x))
 
 /-- The Lubin–Tate bracket of the zero series is the zero endomorphism. -/
 @[simp]
@@ -234,7 +231,7 @@ theorem equalCharacteristicLubinTateBracket_zero
     equalCharacteristicLubinTateBracket F n 0 x =
       (0 : AddMonoid.End F.residueField⸨X⸩) x
   rw [equalCharacteristicLubinTateBracket_apply]
-  simp
+  simp only [map_zero, zero_mul, Finset.sum_const_zero, AddMonoid.End.zero_apply]
 
 /-- The Lubin–Tate bracket is additive in its power-series parameter. -/
 @[simp]
@@ -283,7 +280,8 @@ theorem equalCharacteristicLubinTateBracket_C
       equalCharacteristicLubinTatePiIterate]
   · intro i hi hi0
     simp [PowerSeries.coeff_C, hi0]
-  · simp
+  · intro h
+    exact False.elim (h (Finset.mem_range.mpr (Nat.succ_pos n)))
 
 /-- The bracket of `X` is the Lubin–Tate `π`-endomorphism. -/
 @[simp]

@@ -23,6 +23,12 @@ universe u v w
 variable (K : Type u) (L : Type v)
 variable [Field K] [Field L] [Algebra K L]
 
+/-- Negation contributes one sign for each basis vector in the field norm. -/
+theorem algebraNorm_neg (x : L) :
+    Algebra.norm K (-x) = (-1) ^ Module.finrank K L * Algebra.norm K x := by
+  rw [show -x = algebraMap K L (-1) * x by rw [map_neg, map_one, neg_one_mul],
+    map_mul, Algebra.norm_algebraMap]
+
 /-- The algebra norm, restricted to unit groups. -/
 def normUnits : Lˣ →* Kˣ :=
   Units.map (Algebra.norm K)

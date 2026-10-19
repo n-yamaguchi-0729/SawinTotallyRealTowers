@@ -110,7 +110,7 @@ theorem chosenFinitePlaceIsUnramified_of_no_ramifiedFinitePlaces
           (_root_.chosenFinitePlaceExtension (L := L) v),
         hramified⟩
   rw [hunramifiedFinite] at hv
-  simp at hv
+  exact Finset.notMem_empty v hv
 
 /-- In an extension unramified at every finite and infinite place,
 every idele integral at all finite places is an actual relative-idele

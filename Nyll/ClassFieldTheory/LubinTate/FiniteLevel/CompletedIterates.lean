@@ -127,7 +127,7 @@ theorem standardLubinTatePrimitivePointIterateInteger_addVal
         omega
       have hdegreele : q ^ n ≤ d := by
         calc
-          q ^ n = 1 * q ^ n := by simp
+          q ^ n = 1 * q ^ n := (one_mul _).symm
           _ ≤ (q - 1) * q ^ n :=
             Nat.mul_le_mul_right (q ^ n) hqsub
       have htailpos : 0 < q ^ i := Nat.pow_pos hqpos

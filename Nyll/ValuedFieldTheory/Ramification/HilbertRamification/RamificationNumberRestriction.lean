@@ -75,7 +75,7 @@ theorem addVal_cosetGeneratorDisplacementProduct
               (base := base) (target := target) huniq (sigma * tau) z - z) := by
     intro s
     induction s using Finset.induction_on with
-    | empty => simp
+    | empty => rw [Finset.prod_empty, Finset.sum_empty, IsDiscreteValuationRing.addVal_one]
     | @insert tau s htau ih =>
         rw [Finset.prod_insert htau, Finset.sum_insert htau,
           IsDiscreteValuationRing.addVal_mul, ih]

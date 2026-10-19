@@ -131,7 +131,8 @@ private noncomputable def scaledZHatReductionCharacter (a : ZMod p) :
     (a * zHatReduction p (Fact.out : p.Prime).pos z.toAdd)
   map_one' := by
     apply Multiplicative.ext
-    simp
+    change a * zHatReduction p (Fact.out : p.Prime).pos 0 = 0
+    rw [map_zero, mul_zero]
   map_mul' x y := by
     apply Multiplicative.ext
     simp [mul_add]
@@ -168,7 +169,9 @@ private theorem continuousCharacter_zHat_eq_scaledReduction
         ((f generator).toAdd *
           zHatReduction p (Fact.out : p.Prime).pos (1 : ZHat))
       apply Multiplicative.ext
-      simp
+      change (f generator).toAdd =
+        (f generator).toAdd * zHatReduction p (Fact.out : p.Prime).pos 1
+      rw [zHatReduction_one, mul_one]
   exact congrFun hEqFun z
 
 /-- Every intrinsic unramified local character is a scalar multiple of

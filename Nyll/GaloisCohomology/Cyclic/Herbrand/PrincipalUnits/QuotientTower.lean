@@ -73,7 +73,8 @@ theorem integerUnitsModPrincipalUnitsSuccMap_surjective
     (motive := fun q => ∃ a, integerUnitsModPrincipalUnitsSuccMap K n a = q)
     q ?_
   intro x
-  exact ⟨integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) x, by simp⟩
+  exact ⟨integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) x,
+    integerUnitsModPrincipalUnitsSuccMap_mk K n x⟩
 
 /-- The induced homomorphism on the finite quotient `𝒪_Kˣ/U_K^n`. -/
 def integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv
@@ -124,8 +125,8 @@ def integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv
       integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv_mk]
     have h :
         Units.mapEquiv e.symm.toMulEquiv (Units.mapEquiv e.toMulEquiv u) = u := by
-      ext
-      simp
+      apply Units.ext
+      exact e.symm_apply_apply (u : 𝒪[K])
     exact congrArg
       (integerUnitsModPrincipalUnitsAtLevelMk K n) h
   right_inv := by
@@ -140,8 +141,8 @@ def integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv
       integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv_mk]
     have h :
         Units.mapEquiv e.toMulEquiv (Units.mapEquiv e.symm.toMulEquiv u) = u := by
-      ext
-      simp
+      apply Units.ext
+      exact e.apply_symm_apply (u : 𝒪[K])
     exact congrArg
       (integerUnitsModPrincipalUnitsAtLevelMk K n) h
   map_mul' := by

@@ -230,7 +230,7 @@ theorem equalCharacteristicDirectQAdditiveIntertwinerCoefficient_unique
           (0 : (AlgebraicClosure k)⟦X⟧) -
               equalCharacteristicDirectThetaGamma u (j + 1) *
                 equalCharacteristicPowerSeriesFrobenius k 0 = 0 := by
-        simp
+        rw [map_zero, mul_zero, sub_self]
       have hdelta : delta = 0 :=
         hunique.unique hhom hzeroSolution
       exact sub_eq_zero.mp (by simpa only [delta] using hdelta)

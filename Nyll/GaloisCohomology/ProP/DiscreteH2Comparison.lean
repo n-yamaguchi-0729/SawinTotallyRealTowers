@@ -38,7 +38,7 @@ noncomputable def discreteH2MappedShortComplexIso :
         ordinaryCochainsToAddCommGrp :=
   (continuousCochainsToAddCommGrp p).mapShortComplex.mapIso
       ((trivialZModPCochainsLifted p Q).isoSc' 1 2 3
-        (by simp) (by simp)) ≪≫
+        (CochainComplex.prev_nat_succ 1) (CochainComplex.next ℕ 2)) ≪≫
     discreteH2ShortComplexIso (p := p) (Q := Q)
 
 /-- The canonical additive-group isomorphism from lifted continuous
@@ -97,7 +97,7 @@ theorem dehomogenizeTwo_continuousH1Cup
           psi (Additive.ofMul (gh.1⁻¹ * (gh.1 * gh.2)))) =
       ULift.up
         (chi (Additive.ofMul gh.1) * psi (Additive.ofMul gh.2))
-  simp
+  rw [inv_one, one_mul, inv_mul_cancel_left]
 
 /-- The ordinary inhomogeneous two-cocycle represented by the canonical
 character cup formula. -/

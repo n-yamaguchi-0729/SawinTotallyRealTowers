@@ -55,7 +55,7 @@ theorem hasSum_powerSeries_pow_coeff_mul_pow
         hsingle.congr_fun fun d => by
           by_cases hd : d = 0
           · subst d
-            simp
+            simp only [PowerSeries.coeff_zero_one, pow_zero, mul_one, ite_true]
           · simp [PowerSeries.coeff_one, hd]
       simpa only [pow_zero] using hsingle'
   | succ q ih =>
@@ -106,7 +106,7 @@ theorem valuation_powerSeries_pow_coeff_mul_pow_le
   | zero =>
       by_cases hd : d = 0
       · subst d
-        simp
+        simp only [pow_zero, PowerSeries.coeff_zero_one, mul_one, v.map_one, le_refl]
       · simp [PowerSeries.coeff_one, hd]
   | succ q ih =>
       rw [pow_succ, PowerSeries.coeff_mul, Finset.sum_mul]
@@ -120,7 +120,7 @@ theorem valuation_powerSeries_pow_coeff_mul_pow_le
         rw [← hijsum, pow_add]
         ring
       rw [heq, v.map_mul, pow_succ]
-      exact mul_le_mul (ih ij.1) (hcoeff ij.2) (by simp) (by simp)
+      exact mul_le_mul (ih ij.1) (hcoeff ij.2) bot_le bot_le
 
 /-- The valuation of a term in the expanded substitution is bounded by the
 corresponding outer-series term. -/
@@ -416,7 +416,7 @@ theorem hasSum_powerSeries_sub_one_coeff_mul_pow
     hsingle.congr_fun fun d => by
       by_cases hd : d = 0
       · subst d
-        simp
+        simp only [PowerSeries.coeff_zero_one, pow_zero, mul_one, ite_true]
       · simp [PowerSeries.coeff_one, hd]
   refine (hf.sub hone).congr_fun ?_
   intro d
@@ -481,8 +481,7 @@ theorem valuation_powerSeries_log_coeff_mul_pow_le_self_scaled
         cases n with
         | zero =>
             rw [powerSeries_log_coeff_mul_pow_eq_signedLogSeriesTermField
-              (K := K) x hnK 0]
-            simp
+              (K := K) x hnK 0, signedLogSeriesTermField_zero]
         | succ n =>
             rw [powerSeries_log_coeff_mul_pow_eq_signedLogSeriesTermField
               (K := K) x hnK (n + 1)]
@@ -510,14 +509,19 @@ theorem valuation_formalExp_sub_one_coeff_mul_pow_le_self_scaled
   · subst x
     by_cases hd : d = 0
     · subst d
-      simp
+      rw [PowerSeries.coeff_zero_eq_constantCoeff, map_sub,
+        PowerSeries.constantCoeff_exp, PowerSeries.constantCoeff_one, sub_self, zero_mul]
     · simp [hd]
   · have hthresholdRat :
         (e : ℚ) / ((p : ℚ) - 1) <
           ((ofWithZeroValuation v).val (Units.mk0 x hx) : ℚ) := by
       exact_mod_cast hthreshold hx
     cases d with
-    | zero => simp
+    | zero =>
+        rw [PowerSeries.coeff_zero_eq_constantCoeff, map_sub,
+          PowerSeries.constantCoeff_exp, PowerSeries.constantCoeff_one,
+          sub_self, zero_mul, v.map_zero]
+        exact bot_le
     | succ n =>
         cases n with
         | zero => simp [PowerSeries.coeff_exp]
@@ -577,7 +581,7 @@ theorem hasSum_powerSeries_one_add_X_coeff_mul_pow
     hsingle.congr_fun fun d => by
       by_cases hd : d = 0
       · subst d
-        simp
+        simp only [PowerSeries.coeff_zero_one, pow_zero, mul_one, ite_true]
       · simp [PowerSeries.coeff_one, hd]
   have hx := hasSum_powerSeries_X_coeff_mul_pow (K := K) x
   refine (hone.add hx).congr_fun ?_
@@ -615,7 +619,8 @@ theorem expSeries_logOnePlusSeries_eq_one_add_ofWithZeroValuation_scaled_of_thre
   let : IsAddTorsionFree K := IsAddTorsionFree.of_module_rat K
   by_cases hx : x = 0
   · subst x
-    simp
+    rw [logOnePlusSeriesField_zero_ofWithZeroValuation,
+      expSeriesField_zero_ofWithZeroValuation, add_zero]
   · let y : K := logOnePlusSeriesFieldOfWithZeroValuation v x hnKlog
     have hvx_lt_one : v x < (1 : WithZero (Multiplicative ℤ)) :=
       valuation_lt_one_ofWithZeroValuation_scaled_threshold_real
@@ -716,7 +721,8 @@ theorem logOnePlusSeries_expSeries_sub_one_eq_self_ofWithZeroValuation_scaled_of
   let : IsAddTorsionFree K := IsAddTorsionFree.of_module_rat K
   by_cases hx : x = 0
   · subst x
-    simp
+    rw [expSeriesField_zero_ofWithZeroValuation, sub_self,
+      logOnePlusSeriesField_zero_ofWithZeroValuation]
   · let y : K := expSeriesFieldOfWithZeroValuation v x hnKexp - 1
     have hvx_lt_one : v x < (1 : WithZero (Multiplicative ℤ)) :=
       valuation_lt_one_ofWithZeroValuation_scaled_threshold_real
@@ -767,7 +773,7 @@ theorem logOnePlusSeries_expSeries_sub_one_eq_self_ofWithZeroValuation_scaled_of
         (v := v) (p := p) e hnKexp hnvalExp hthreshold
     have hg0 :
         PowerSeries.constantCoeff ((PowerSeries.exp K) - 1) = 0 := by
-      simp
+      rw [map_sub, PowerSeries.constantCoeff_exp, PowerSeries.constantCoeff_one, sub_self]
     have hcomp :
         HasSum
           (fun d : ℕ =>

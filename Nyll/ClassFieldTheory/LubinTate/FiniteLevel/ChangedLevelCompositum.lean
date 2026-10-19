@@ -307,7 +307,8 @@ theorem
         standardLubinTateChangedLevelCompositumField hπ u n) :
       SeparableClosure K) =
         chosenStandardLubinTatePrimitiveRoot hπ n := by
-  simp
+  rw [standardLubinTateLevelToChangedLevelCompositum_coe,
+    standardLubinTateLevelGenerator_coe]
 
 /-- The changed primitive generator has the same ambient value after
 inclusion in the compositum. -/
@@ -323,7 +324,8 @@ theorem
       SeparableClosure K) =
         chosenStandardLubinTatePrimitiveRoot
           (standardLubinTateChangedUniformizer_isUniformizer hπ u) n := by
-  simp
+  rw [standardLubinTateChangedLevelToCompositum_coe,
+    standardLubinTateLevelGenerator_coe]
 
 /-- The algebra structure corresponding to the original-level inclusion. -/
 @[reducible]

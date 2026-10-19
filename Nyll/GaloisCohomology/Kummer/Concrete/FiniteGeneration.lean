@@ -90,24 +90,10 @@ theorem finiteKummerRootSet_adjoin_eq_top
     obtain ⟨phi, hphi⟩ :=
       CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity Gal(L/K) K hsigma_ne
     let chi : Gal(L/K) →* nthRootsSubgroup L (n : ℕ) :=
-      { toFun := fun tau =>
-          ⟨Units.map (algebraMap K L).toMonoidHom (phi tau), by
-            calc
-              (Units.map (algebraMap K L).toMonoidHom (phi tau)) ^ (n : ℕ) =
-                  Units.map (algebraMap K L).toMonoidHom ((phi tau) ^ (n : ℕ)) :=
-                (map_pow (Units.map (algebraMap K L).toMonoidHom)
-                  (phi tau) (n : ℕ)).symm
-              _ = Units.map (algebraMap K L).toMonoidHom (phi (tau ^ (n : ℕ))) := by
-                exact congrArg (Units.map (algebraMap K L).toMonoidHom)
-                  (map_pow phi tau (n : ℕ)).symm
-              _ = 1 := by rw [hexponent tau, map_one, map_one]⟩
-        map_one' := by
-          apply Subtype.ext
-          simp
-        map_mul' := by
-          intro sigma tau
-          apply Subtype.ext
-          simp }
+      ((Units.map (algebraMap K L).toMonoidHom).comp phi).codRestrict
+        (nthRootsSubgroup L (n : ℕ)) (fun tau => by
+          change (Units.map (algebraMap K L).toMonoidHom (phi tau)) ^ (n : ℕ) = 1
+          rw [← map_pow, ← map_pow, hexponent tau, map_one, map_one])
     have hchi_sigma : chi sigma ≠ 1 := by
       intro hchi
       have hmap : Units.map (algebraMap K L).toMonoidHom (phi sigma) = 1 := by

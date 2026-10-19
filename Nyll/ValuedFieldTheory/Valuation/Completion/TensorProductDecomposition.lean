@@ -232,8 +232,7 @@ theorem completionTensorDecomposition_factorEquiv_toAlgHom
         (1 ⊗ₜ[K] (completionTensorDecomposition_powerBasis K L).gen) w
   rw [completionTensorDecomposition_factorEquiv_one_tmul_gen
       (K := K) (L := L) vK hvK w,
-    completionTensorMap_leftCanonicalHom_tmul_apply]
-  simp
+    completionTensorMap_leftCanonicalHom_tmul_apply, map_one, one_mul]
 
 /-- The canonical product map in the left tensor order is bijective. -/
 theorem completionTensorDecomposition_leftCanonicalHom_bijective

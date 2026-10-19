@@ -242,4 +242,4 @@ theorem
       exact
         relativeUnrestrictedLocalHerbrandHMinusOne_card_eq_one
           S i σ hgen
-    _ = 1 := by simp
+    _ = 1 := Finset.prod_const_one

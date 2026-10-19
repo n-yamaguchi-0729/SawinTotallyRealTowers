@@ -241,7 +241,9 @@ theorem valuation_natCast_le_one_ofWithZeroValuation_scaled
     (m : ℕ) :
     v (m : K) ≤ 1 := by
   cases m with
-  | zero => simp
+  | zero =>
+      rw [Nat.cast_zero, v.map_zero]
+      exact zero_le_one
   | succ n =>
       rw [hnval n]
       calc
@@ -260,10 +262,10 @@ theorem mvPowerSeriesMonomialValue_pair
         (fun i : Fin 2 => if i = 0 then x else y) d =
       x ^ d 0 * y ^ d 1 := by
   rw [mvPowerSeriesMonomialValue, Finsupp.prod_fintype]
-  · rw [Fin.prod_univ_two]
-    simp
+  · rw [Fin.prod_univ_two, ite_eq_left rfl,
+      ite_eq_right (by decide : (1 : Fin 2) ≠ 0)]
   · intro i
-    simp
+    exact pow_zero _
 
 /-- If the `d`-coefficient of `(X + Y + XY)^q` is nonzero, then its total
 degree is at least `q`. -/
@@ -303,7 +305,7 @@ theorem valuation_mvPowerSeriesMonomialValue_pair_le_max_pow
     calc
       v x ^ d 0 * v y ^ d 1 ≤ r ^ d 0 * r ^ d 1 :=
         mul_le_mul (pow_le_pow_left' hxr _) (pow_le_pow_left' hyr _)
-          (by simp) (by simp)
+          bot_le bot_le
       _ = r ^ (d 0 + d 1) := by rw [pow_add]
   have hpow : r ^ (d 0 + d 1) ≤ r ^ q :=
     pow_le_pow_of_le_one (by exact bot_le) hr hq
@@ -718,7 +720,8 @@ noncomputable def principalUnitLogSeriesHomOfWithZeroValuationScaled
       Multiplicative K where
   toFun u := Multiplicative.ofAdd
     (principalUnitLogSeriesOfWithZeroValuation v u hnK)
-  map_one' := by simp
+  map_one' := congrArg Multiplicative.ofAdd
+    (principalUnitLogSeries_one_ofWithZeroValuation v hnK)
   map_mul' u w := by
     change
       Multiplicative.ofAdd

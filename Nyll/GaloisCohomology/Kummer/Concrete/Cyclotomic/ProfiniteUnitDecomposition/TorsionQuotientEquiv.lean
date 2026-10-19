@@ -80,7 +80,7 @@ noncomputable def torsionQuotientEquivOfZHatMulDecomposition
     change x = 1 ↔
       x ∈ (⊥ : Subgroup (Multiplicative ZHat)) ∧
         y ∈ (⊤ : Subgroup T)
-    simp
+    simp only [Subgroup.mem_bot, Subgroup.mem_top, and_true]
   have hker :
       freePart.ker =
         (CommGroup.torsion G).topologicalClosure := by

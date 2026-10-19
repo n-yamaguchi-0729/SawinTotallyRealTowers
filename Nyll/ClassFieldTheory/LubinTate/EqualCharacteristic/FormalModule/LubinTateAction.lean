@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateEndomorphism
+import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 
 /-!
 # Equal-characteristic Lubin--Tate action
@@ -28,18 +29,6 @@ namespace EqualCharacteristic
 open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
-
-private theorem addMonoidHom_map_finset_sum
-    {A I : Type*} [AddCommMonoid A]
-    (f : AddMonoid.End A) (s : Finset I) (g : I → A) :
-    f (∑ i ∈ s, g i) = ∑ i ∈ s, f (g i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, Finset.sum_insert hi]
-      exact (f.map_add _ _).trans
-        (congrArg (fun x ↦ f (g i) + x) ih)
 
 /-- Delete the constant coefficient of a power series and shift all
 remaining coefficients down by one place. -/
@@ -291,7 +280,7 @@ theorem equalCharacteristicLubinTatePiEnd_bracket
       equalCharacteristicLubinTateBracket F n a
         (equalCharacteristicLubinTatePiEnd F x) := by
   rw [equalCharacteristicLubinTateBracket_apply,
-    addMonoidHom_map_finset_sum,
+    map_sum,
     equalCharacteristicLubinTateBracket_apply]
   apply Finset.sum_congr rfl
   intro i hi

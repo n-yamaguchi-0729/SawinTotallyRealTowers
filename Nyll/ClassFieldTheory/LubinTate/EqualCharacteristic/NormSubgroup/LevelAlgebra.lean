@@ -30,18 +30,6 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type} [Field K]
 
-noncomputable local instance equalCharacteristicLaurentSeriesField
-    (F : LocalField K) : Field F.residueField⸨X⸩ :=
-  @HahnSeries.instField ℤ F.residueField Int.instAddCommGroup
-    Int.instLinearOrder Int.instIsOrderedAddMonoid inferInstance
-
-noncomputable local instance equalCharacteristicLaurentSeriesMonoid
-    (F : LocalField K) : Monoid F.residueField⸨X⸩ :=
-  @CommMonoid.toMonoid F.residueField⸨X⸩
-    (@CommRing.toCommMonoid F.residueField⸨X⸩
-      (@Field.toCommRing F.residueField⸨X⸩
-        (equalCharacteristicLaurentSeriesField F)))
-
 attribute [local instance]
   equalCharacteristicLubinTateLevelFieldAlgebra
   equalCharacteristicLubinTateLevelFieldSMul

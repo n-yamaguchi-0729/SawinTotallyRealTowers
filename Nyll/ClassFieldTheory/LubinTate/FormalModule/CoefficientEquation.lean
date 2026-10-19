@@ -5,6 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
+import Mathlib.Algebra.Group.Units.Basic
+import Mathlib.Logic.Function.Basic
 
 /-!
 # Coefficient equations for a fixed uniformizer
@@ -69,14 +71,8 @@ theorem isUnit_one_sub_uniformizer_pow
 right-hand side. -/
 theorem existsUnique_mul_eq_of_isUnit
     {R : Type*} [CommRing R] {a : R} (ha : IsUnit a) (b : R) :
-    ∃! x : R, a * x = b := by
-  rcases ha with ⟨u, rfl⟩
-  refine ⟨(↑(u⁻¹) : R) * b, by simp, ?_⟩
-  intro y hy
-  calc
-    y = ((↑(u⁻¹) : R) * (u : R)) * y := by simp
-    _ = (↑(u⁻¹) : R) * ((u : R) * y) := by rw [mul_assoc]
-    _ = (↑(u⁻¹) : R) * b := by rw [hy]
+    ∃! x : R, a * x = b :=
+  (IsUnit.isUnit_iff_mulLeft_bijective.mp ha).existsUnique b
 
 /-- The scalar coefficient equation in positive total degree has a
 unique solution in the valuation ring. -/

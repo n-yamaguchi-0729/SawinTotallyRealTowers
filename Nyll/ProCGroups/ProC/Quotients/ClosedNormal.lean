@@ -65,7 +65,7 @@ theorem totallyDisconnectedSpace_quotient_closedNormal
       have hgn : g * v⁻¹ = n := by
         calc
           g * v⁻¹ = (n * v) * v⁻¹ := by rw [hnv]
-          _ = n := by simp
+          _ = n := by rw [mul_assoc, mul_inv_cancel, mul_one]
       apply hvW
       simpa [hgn] using hnN
     let Kbar : Subgroup (G ⧸ N) := K.map q

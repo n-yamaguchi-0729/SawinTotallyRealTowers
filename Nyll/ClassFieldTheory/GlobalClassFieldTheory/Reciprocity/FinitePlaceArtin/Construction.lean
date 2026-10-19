@@ -488,7 +488,9 @@ theorem finitePlaceLocalArtinInput_chosenLocalOrderSection_valuationMap
     IsNonarchimedeanLocalField.v_apply]
   change Multiplicative.toAdd
     (WithZero.unzero
-      (x := φ (ValuativeRel.valuation C (x : C))) (by simp)) = -1
+      (x := φ (ValuativeRel.valuation C (x : C))) (by
+        rw [hφeq]
+        exact WithZero.exp_ne_zero)) = -1
   rw [WithZero.toAdd_unzero_eq_log, hφeq, WithZero.log_exp]
 
 /-- The canonical algebra structure on the localized completion used by the

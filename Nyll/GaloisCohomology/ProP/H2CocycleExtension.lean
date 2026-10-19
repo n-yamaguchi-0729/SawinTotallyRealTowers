@@ -78,14 +78,12 @@ instance instGroup : Group (H2CocycleExtension z) where
   one_mul x := by
     apply ext
     · change 0 + x.left + normalizedCocycle z 1 x.right = x.left
-      rw [normalizedCocycle_one_left]
-      simp
+      rw [normalizedCocycle_one_left, zero_add, add_zero]
     · exact one_mul _
   mul_one x := by
     apply ext
     · change x.left + 0 + normalizedCocycle z x.right 1 = x.left
-      rw [normalizedCocycle_one_right]
-      simp
+      rw [normalizedCocycle_one_right, add_zero, add_zero]
     · exact mul_one _
   inv_mul_cancel x := by
     apply ext
@@ -190,8 +188,7 @@ def kernelMulEquiv : (projection z).ker ≃* Multiplicative (A p) where
       x.1.left + y.1.left
     have hx : x.1.right = 1 := x.property
     have hy : y.1.right = 1 := y.property
-    rw [hx, hy, normalizedCocycle_one_left]
-    simp
+    rw [hx, hy, normalizedCocycle_one_left, add_zero]
 
 /-- Additively, the kernel is exactly the lifted copy of `ZMod p`. -/
 def kernelAddEquiv : Additive ((projection z).ker) ≃+ A p :=
@@ -219,8 +216,7 @@ theorem kernel_le_center : (projection z).ker ≤ Subgroup.center (H2CocycleExte
     rw [hx, normalizedCocycle_one_left, normalizedCocycle_one_right]
     simp [add_comm]
   · change y.right * x.right = x.right * y.right
-    rw [hx]
-    simp
+    rw [hx, mul_one, one_mul]
 
 instance instFinite [Fact p.Prime] [Finite Q] : Finite (H2CocycleExtension z) :=
   Finite.of_equiv (A p × Q) (toProdEquiv z).symm

@@ -160,7 +160,7 @@ theorem partition_primitive_irreducible_factors_along_coprime_reduction
           Polynomial.natDegree_eq_zero_of_isUnit hgunit]
   | cons Q factors ih =>
       have hQdata : Q.IsPrimitive ∧ Irreducible (Q.map V.subtype) :=
-        hfactors Q (by simp)
+        hfactors Q (Multiset.mem_cons_self Q factors)
       have htail : ∀ R ∈ factors,
           R.IsPrimitive ∧ Irreducible (R.map V.subtype) := by
         intro R hR

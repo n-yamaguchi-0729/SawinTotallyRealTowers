@@ -81,7 +81,7 @@ theorem prod_twistedFinRotate_div
     (τ • v 0) * R * (R⁻¹ * (v 0)⁻¹) =
         (τ • v 0) * (v 0)⁻¹ *
           (R * R⁻¹) := by ac_rfl
-    _ = τ • v 0 * (v 0)⁻¹ := by simp
+    _ = τ • v 0 * (v 0)⁻¹ := by rw [mul_inv_cancel, mul_one]
 
 /-- Multiplication by the cyclic generator advances `finRotate`, with the
 last coordinate wrapping to the full-period power. -/
@@ -292,7 +292,7 @@ noncomputable def cyclicCosetEquiv (H : Subgroup G) (σ : G)
           (QuotientGroup.mk' H σ) ^ i)
           (Finset.range H.index) := by
       rw [hcover]
-      simp
+      exact Finset.mem_univ _
     obtain ⟨i, hi, hqi⟩ := Finset.mem_image.mp hxmem
     have hdiv : x / σ ^ i ∈ H := by
       apply QuotientGroup.eq_iff_div_mem.mp
@@ -495,7 +495,7 @@ noncomputable def inducedCoordinateProduct (σ : G)
   toFun f :=
     ∏ i : Fin H.index,
       inducedCoordinates H σ hgen f i
-  map_one' := by simp
+  map_one' := by simp only [map_one, Pi.one_apply, Finset.prod_const_one]
   map_mul' f k := by
     simp only [map_mul, Pi.mul_apply,
       Finset.prod_mul_distrib]

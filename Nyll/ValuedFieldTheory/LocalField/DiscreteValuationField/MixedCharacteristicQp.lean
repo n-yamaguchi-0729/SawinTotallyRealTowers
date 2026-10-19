@@ -905,8 +905,8 @@ theorem qpadicNumbersEquivQpadicClosureSubfield_ratCast
     (F : LocalField.{u, v} K) [CharZero K] (q : ℚ) :
     F.qpadicNumbersEquivQpadicClosureSubfield
         (q : ℚ_[F.residueCharacteristic]) =
-      F.ratCastToQpadicClosureSubfield q := by
-  simp
+      F.ratCastToQpadicClosureSubfield q :=
+  F.qpadicNumbersToQpadicClosureSubfield_ratCast q
 
 open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
   mrangeRestrictValued

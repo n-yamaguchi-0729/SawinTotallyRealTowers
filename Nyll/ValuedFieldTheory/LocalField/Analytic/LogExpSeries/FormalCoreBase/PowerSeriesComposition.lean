@@ -49,8 +49,7 @@ theorem eq_zero_of_derivative_mul_one_add_X_eq_self
   ext n
   induction n with
   | zero =>
-      rw [PowerSeries.coeff_zero_eq_constantCoeff, hc]
-      simp
+      rw [PowerSeries.coeff_zero_eq_constantCoeff, hc, map_zero]
   | succ n ih =>
       cases n with
       | zero =>
@@ -98,7 +97,7 @@ theorem eq_one_add_X_of_derivative_mul_one_add_X_eq_self
       PowerSeries.derivative (1 + PowerSeries.X : PowerSeries A) *
           (1 + PowerSeries.X : PowerSeries A) =
         (1 + PowerSeries.X : PowerSeries A) := by
-    simp
+    rw [map_add, PowerSeries.derivative_one, PowerSeries.derivative_X, zero_add, one_mul]
   have hzero :
       PowerSeries.derivative (f - (1 + PowerSeries.X : PowerSeries A)) *
           (1 + PowerSeries.X : PowerSeries A) =
@@ -191,7 +190,7 @@ theorem log_subst_exp_sub_one_eq_X
       congrArg (fun q : PowerSeries A => PowerSeries.subst e q) hlog
     have hone : PowerSeries.subst e (1 : PowerSeries A) = 1 := by
       rw [← PowerSeries.coe_substAlgHom he]
-      simp
+      exact map_one _
     change PowerSeries.subst e
         (PowerSeries.derivative l * (1 + PowerSeries.X : PowerSeries A)) =
       PowerSeries.subst e (1 : PowerSeries A) at hsubst

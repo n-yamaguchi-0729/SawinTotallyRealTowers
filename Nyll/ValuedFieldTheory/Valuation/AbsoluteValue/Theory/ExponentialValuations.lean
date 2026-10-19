@@ -124,7 +124,7 @@ theorem exponentialValuation_ne_zero_of_value_eq_zero {K : Type*} [Field K]
   intro hzero
   have htop : v x = ⊤ := (v.eq_top_iff x).mpr hzero
   rw [hx] at htop
-  simp at htop
+  exact WithTop.coe_ne_top htop
 
 /-- The inverse of a value-zero element again has value zero. -/
 theorem exponentialValuation_inv_of_value_eq_zero {K : Type*} [Field K]
@@ -157,10 +157,10 @@ def exponentialValuationSubring {K : Type*} [Field K]
   zero_mem' := by
     change (0 : WithTop ℝ) ≤ v (0 : K)
     rw [(v.eq_top_iff 0).mpr rfl]
-    simp
+    exact le_top
   one_mem' := by
     change (0 : WithTop ℝ) ≤ v (1 : K)
-    simp
+    rw [exponentialValuation_one]
   add_mem' := by
     intro x y hx hy
     change (0 : WithTop ℝ) ≤ v (x + y)
@@ -192,7 +192,7 @@ theorem exponentialValuationRing_mem_or_inv_mem {K : Type*} [Field K]
     subst x
     change (0 : WithTop ℝ) ≤ v (0 : K)
     rw [(v.eq_top_iff 0).mpr rfl]
-    simp
+    exact le_top
   · obtain ⟨r, hr⟩ := exponentialValuation_exists_real_of_ne_zero v hx
     by_cases hr_nonneg : 0 ≤ r
     · left
@@ -541,7 +541,7 @@ def exponentialMaxIdeal {K : Type*} [Field K]
   zero_mem' := by
     change (0 : WithTop ℝ) < v (0 : K)
     rw [(v.eq_top_iff 0).mpr rfl]
-    simp
+    exact WithTop.coe_lt_top (0 : ℝ)
   add_mem' := by
     intro x y hx hy
     change (0 : WithTop ℝ) < v ((x + y : exponentialValuationSubring v) : K)
@@ -569,7 +569,8 @@ theorem one_not_mem_exponentialMaxIdeal {K : Type*} [Field K]
     (v : ExponentialValuation K) :
     (1 : exponentialValuationSubring v) ∉ exponentialMaxIdeal v := by
   change ¬ (0 : WithTop ℝ) < v (1 : K)
-  simp
+  rw [exponentialValuation_one]
+  exact lt_irrefl _
 
 /-- Inside the valuation ring, not lying in the positive-value ideal is the same
 as having value zero. -/
@@ -735,7 +736,7 @@ theorem primeElementFor_of_value_eq_one {K : Type*} [Field K]
   · intro hzero
     have htop : v π = ⊤ := (v.eq_top_iff π).mpr hzero
     rw [hπ] at htop
-    simp at htop
+    exact WithTop.coe_ne_top htop
   · exact hπ
 
 /-- A normalized exponential valuation has a normalized prime element. -/
@@ -818,7 +819,7 @@ theorem primeElementFor_pow_value {K : Type*} [Field K]
     v (π ^ n) = ((n : ℝ) : WithTop ℝ) := by
   induction n with
   | zero =>
-      simp
+      simp only [pow_zero, exponentialValuation_one, Nat.cast_zero, WithTop.coe_zero]
   | succ n ih =>
       rw [pow_succ, v.map_mul, ih, hπ.2]
       norm_num [Nat.cast_succ, WithTop.coe_add]
@@ -859,8 +860,7 @@ theorem primeElementFor_unit_mul_zpow_value
     v ((u : K) * π ^ m) = ((m : ℝ) : WithTop ℝ) := by
   have hu_val : v (u : K) = 0 :=
     exponentialValuation_eq_zero_of_isUnit v hu
-  rw [v.map_mul, hu_val, primeElementFor_zpow_value v hπ m]
-  simp
+  rw [v.map_mul, hu_val, primeElementFor_zpow_value v hπ m, zero_add]
 
 /-- For a normalized exponential valuation and a normalized prime element, every
 nonzero field element is a unit times an integer power of the prime element. -/
@@ -1122,7 +1122,7 @@ theorem uniformizerPowerIdeal_mem_iff_value_ge_of_pow_value
       rw [hcast, v.map_mul, hpow_val]
     calc
       (((n : ℝ) * s : ℝ) : WithTop ℝ) =
-          0 + (((n : ℝ) * s : ℝ) : WithTop ℝ) := by simp
+          0 + (((n : ℝ) * s : ℝ) : WithTop ℝ) := (zero_add _).symm
       _ ≤ v (a : K) + (((n : ℝ) * s : ℝ) : WithTop ℝ) :=
         add_le_add ha_nonneg le_rfl
       _ = v (x : K) := hx_val.symm
@@ -1185,7 +1185,7 @@ theorem uniformizerPowerIdeal_le_ideal_of_mem_value_eq_of_pow_value
     dsimp [uK]
     rw [v.map_mul, hxval, hinv_val]
     change ((((n : ℝ) * s + -((n : ℝ) * s) : ℝ) : WithTop ℝ) = 0)
-    simp
+    rw [add_neg_cancel, WithTop.coe_zero]
   have hu_mem : uK ∈ exponentialValuationSubring v := by
     change (0 : WithTop ℝ) ≤ v uK
     rw [hu_val]
@@ -1270,7 +1270,7 @@ theorem exists_nat_index_of_nonneg_int_multiple
     ∃ n : ℕ, a = (((n : ℝ) * s : ℝ) : WithTop ℝ) := by
   rcases h with ⟨m, rfl⟩
   cases m with
-  | ofNat n => exact ⟨n, by simp⟩
+  | ofNat n => exact ⟨n, by rw [Int.ofNat_eq_natCast, Int.cast_natCast]⟩
   | negSucc n =>
       have hmneg : ((Int.negSucc n : ℤ) : ℝ) < 0 := by
         have hcast :
@@ -1343,7 +1343,7 @@ theorem nonzero_ideal_eq_uniformizerPowerIdeal
     by_cases hyK0 : (y : K) = 0
     · have hyval_top : v (y : K) = ⊤ := (v.eq_top_iff (y : K)).mpr hyK0
       rw [hyval_top]
-      simp
+      exact le_top
     · have hy0 : y ≠ 0 := by
         intro hy0
         exact hyK0 (by
@@ -1364,7 +1364,7 @@ theorem normalizedExponentialValuationSubring_isPrincipalIdealRing
   intro I
   by_cases hI : I = ⊥
   · rw [hI]
-    exact ⟨0, by simp⟩
+    exact ⟨0, (Submodule.span_singleton_eq_bot.mpr rfl).symm⟩
   · rcases nonzero_ideal_eq_uniformizerPowerIdeal hv hπ I hI with
       ⟨n, hIn⟩
     refine ⟨(primeElementInValuationSubring v hπ) ^ n, ?_⟩
@@ -1412,7 +1412,7 @@ theorem discretePrimeElement_ne_zero_of_value
   intro hzero
   have htop : v π = ⊤ := (v.eq_top_iff π).mpr hzero
   rw [hπ] at htop
-  simp at htop
+  exact WithTop.coe_ne_top htop
 
 /-- Powers of a discrete prime element have the expected scaled value. -/
 theorem discretePrimeElement_pow_value
@@ -1421,7 +1421,7 @@ theorem discretePrimeElement_pow_value
     v (π ^ n) = (((n : ℝ) * s : ℝ) : WithTop ℝ) := by
   induction n with
   | zero =>
-      simp
+      simp only [pow_zero, exponentialValuation_one, Nat.cast_zero, zero_mul, WithTop.coe_zero]
   | succ n ih =>
       rw [pow_succ, v.map_mul, ih, hπ]
       change ((((n : ℝ) * s + s : ℝ) : WithTop ℝ) =
@@ -1490,7 +1490,7 @@ theorem discreteExponentialValuationSubring_isPrincipalIdealRing
   intro I
   by_cases hI : I = ⊥
   · rw [hI]
-    exact ⟨0, by simp⟩
+    exact ⟨0, (Submodule.span_singleton_eq_bot.mpr rfl).symm⟩
   · have hvalue :
         ∀ x : exponentialValuationSubring v, x ≠ 0 →
           ∃ n : ℕ, v (x : K) = (((n : ℝ) * s : ℝ) : WithTop ℝ) := by
@@ -1511,7 +1511,7 @@ theorem discreteExponentialValuationSubring_isPrincipalIdealRing
       by_cases hyK0 : (y : K) = 0
       · have hyval_top : v (y : K) = ⊤ := (v.eq_top_iff (y : K)).mpr hyK0
         rw [hyval_top]
-        simp
+        exact le_top
       · have hy0 : y ≠ 0 := by
           intro hy0
           exact hyK0 (by

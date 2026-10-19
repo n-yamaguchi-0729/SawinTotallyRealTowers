@@ -94,7 +94,8 @@ noncomputable def chosenPadicModuleContinuousAddEquivZModProdFinPi
       change split (torsionEquiv z.1, freeEquiv z.2) =
         split (torsionEquiv z.1, 0) + split (0, freeEquiv z.2)
       rw [← split.map_add]
-      simp
+      congr 1
+      exact Prod.ext (add_zero _).symm (zero_add _).symm
     change Continuous (fun z => algebraic z)
     rw [hfun]
     exact (htorsion.comp continuous_fst).add (hfree.comp continuous_snd)

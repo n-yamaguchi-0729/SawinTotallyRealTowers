@@ -382,7 +382,7 @@ theorem quotientMapOfMapsFiltrationLevels_mk_mem_filtrationPreimageClass_iff
         (QuotientGroup.mk' (UH.principalUnitSubgroup n) x) = 1 ↔
       N.toHom x ∈ UG.principalUnitSubgroup (targetLevel n)
   rw [N.quotientMapOfMapsFiltrationLevels_apply_mk' UG UH targetLevel hN n x]
-  simp
+  exact QuotientGroup.eq_one_iff (N.toHom x)
 
 /-- Injectivity of the filtration quotient norm map is equivalent to the
 filtration-preimage kernel class being trivial. -/
@@ -866,7 +866,7 @@ theorem quotientMapOfMapsFiltrationLevels_mk_eq_one_iff
         (QuotientGroup.mk x) = 1 ↔
       N.toHom x ∈ UG.principalUnitSubgroup (targetLevel n) := by
   rw [quotientMapOfMapsFiltrationLevels_apply_mk]
-  simp
+  exact QuotientGroup.eq_one_iff (N.toHom x)
 
 /-- Equality criterion for the quotient map induced by filtration-compatible
 norms. -/
@@ -1172,7 +1172,10 @@ the canonical embeddings of subquotients as classes in ambient quotients. -/
               UH.principalUnitSubgroupClassInQuotient m n) :
               H ⧸ UH.principalUnitSubgroup n)) z ?_
   intro x
-  simp
+  rw [principalUnitSubquotientMapOfMapsFiltrationLevels_apply_mk,
+    UG.coe_principalUnitSubquotientEquivClassInQuotientOfLe_mk,
+    UH.coe_principalUnitSubquotientEquivClassInQuotientOfLe_mk,
+    quotientMapOfMapsFiltrationLevels_apply_mk', mapLevelOfMapsFiltrationLevels_apply]
 
 /-- The graded-piece form of
 `principalUnitSubquotientMapOfMapsFiltrationLevels`. -/

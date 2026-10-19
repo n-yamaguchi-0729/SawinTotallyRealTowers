@@ -33,7 +33,8 @@ noncomputable def v (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
       (WithZero.unzero
         (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
           (ValuativeRel.valuation K ((Additive.toMul x : Kˣ) : K)))
-        (by simp))
+        ((map_ne_zero (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)).2
+          ((Valuation.ne_zero_iff (ValuativeRel.valuation K)).2 (Additive.toMul x).ne_zero)))
 
 /-- The normalized integer valuation is obtained by transporting the field valuation to
 multiplicative integers and taking its additive exponent. -/
@@ -45,7 +46,8 @@ theorem v_apply (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
         (WithZero.unzero
           (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
             (ValuativeRel.valuation K ((Additive.toMul x : Kˣ) : K)))
-          (by simp)) :=
+          ((map_ne_zero (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)).2
+            ((Valuation.ne_zero_iff (ValuativeRel.valuation K)).2 (Additive.toMul x).ne_zero))) :=
   rfl
 
 /-- Every integer occurs as the normalized valuation of a nonzero field element. -/
@@ -58,8 +60,8 @@ theorem v_surjective (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K
       ((Multiplicative.ofAdd n : Multiplicative Int) : WithZero (Multiplicative Int))
   obtain ⟨a, ha⟩ := ValuativeRel.valuation_surjective γ
   have hγ_ne : γ ≠ 0 := by
-    dsimp [γ]
-    simp
+    exact (map_ne_zero
+      (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).symm).2 WithZero.coe_ne_zero
   have ha0 : a ≠ 0 := by
     intro h
     apply hγ_ne
@@ -84,10 +86,11 @@ theorem v_one (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
       WithZero.unzero
         (x := (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
           (ValuativeRel.valuation K (((1 : Kˣ) : K))))
-        (by simp) = (1 : Multiplicative Int) := by
+        ((map_ne_zero (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)).2
+          ((Valuation.ne_zero_iff (ValuativeRel.valuation K)).2 (Units.ne_zero (1 : Kˣ)))) =
+        (1 : Multiplicative Int) := by
     apply WithZero.coe_injective
-    rw [WithZero.coe_unzero]
-    simp
+    simp only [WithZero.coe_unzero, Units.val_one, map_one, WithZero.coe_one]
   rw [hunzero]
   exact toAdd_one
 
@@ -112,11 +115,10 @@ theorem v_pow (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     v K (Additive.ofMul (x ^ n)) = (n : Int) * v K (Additive.ofMul x) := by
   induction n with
   | zero =>
-      rw [pow_zero, v_one]
-      simp
+      rw [pow_zero, v_one, Nat.cast_zero, zero_mul]
   | succ n ih =>
       rw [pow_succ, v_mul, ih]
-      rw [show ((n + 1 : Nat) : Int) = (n : Int) + 1 by simp]
+      rw [show ((n + 1 : Nat) : Int) = (n : Int) + 1 from Nat.cast_add_one n]
       ring
 
 /-- Raising a field unit to an integral power multiplies its normalized valuation by that integer.

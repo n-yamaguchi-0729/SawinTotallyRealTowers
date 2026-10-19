@@ -294,7 +294,7 @@ theorem eventually_div_mem_principalUnits_of_tendsto_units
       ((f d : 𝒪[K]ˣ) : 𝒪[K]) * ↑(x⁻¹) - 1 =
           ((f d : 𝒪[K]ˣ) : 𝒪[K]) * ↑(x⁻¹) -
             ((x : 𝒪[K]ˣ) : 𝒪[K]) * ↑(x⁻¹) := by
-            simp
+            rw [Units.mul_inv]
       _ = (((f d : 𝒪[K]ˣ) : 𝒪[K]) - ((x : 𝒪[K]ˣ) : 𝒪[K])) * ↑(x⁻¹) := by
             ring]
   exact (𝓂[K] ^ n : Ideal 𝒪[K]).mul_mem_right _ hd
@@ -352,7 +352,8 @@ theorem principalUnitsCorrectionProduct_div_mem
       principalUnits K (n + m) := by
   induction d with
   | zero =>
-      simp
+      rw [add_zero, div_self']
+      exact (principalUnits K (n + m)).one_mem
   | succ d ih =>
       have hprod :
           principalUnitsCorrectionProduct K n z (m + (d + 1)) =
@@ -1048,8 +1049,8 @@ theorem principalUnitsSuccQuotMk_eq_oneAdd_of_sub_one_sub_mem_succ
     simp only [div_eq_mul_inv, Units.val_mul]
     have hunit :
         ((principalUnitOneAddOfMemPow K hn (a : 𝒪[K]) a.2 : 𝒪[K]ˣ) : 𝒪[K]) *
-          ↑(principalUnitOneAddOfMemPow K hn (a : 𝒪[K]) a.2)⁻¹ = 1 := by
-      simp
+          ↑(principalUnitOneAddOfMemPow K hn (a : 𝒪[K]) a.2)⁻¹ = 1 :=
+      Units.mul_inv _
     calc
       ((u : 𝒪[K]ˣ) : 𝒪[K]) *
             ↑(principalUnitOneAddOfMemPow K hn (a : 𝒪[K]) a.2)⁻¹ - 1 =
@@ -1108,8 +1109,8 @@ theorem principalUnitsSuccQuotOfIdealPow_eq_of_sub_mem_succ
       principalUnitOneAddOfMemPow_val K hn (b : 𝒪[K]) b.2
     have hbinv :
         ((principalUnitOneAddOfMemPow K hn (b : 𝒪[K]) b.2 : 𝒪[K]ˣ) : 𝒪[K]) *
-          ↑(principalUnitOneAddOfMemPow K hn (b : 𝒪[K]) b.2)⁻¹ = 1 := by
-      simp
+          ↑(principalUnitOneAddOfMemPow K hn (b : 𝒪[K]) b.2)⁻¹ = 1 :=
+      Units.mul_inv _
     calc
       (1 + (a : 𝒪[K])) * ↑(principalUnitOneAddOfMemPow K hn ↑b b.2)⁻¹ - 1 =
           (1 + (a : 𝒪[K])) * ↑(principalUnitOneAddOfMemPow K hn ↑b b.2)⁻¹ -
@@ -1178,8 +1179,9 @@ theorem finset_prod_one_add_sub_one_mem_maximalIdeal_of_mem_pow
   classical
   revert a
   refine Finset.induction_on s ?base ?step
-  · intro a ha
-    simp
+  · intro a _ha
+    rw [Finset.prod_empty, sub_self]
+    exact (𝓂[K] : Ideal 𝒪[K]).zero_mem
   · intro i s hi ih a ha
     have hai_pow : a i ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := ha i (by simp [hi])
     have hai : a i ∈ (𝓂[K] : Ideal 𝒪[K]) := by
@@ -1212,8 +1214,9 @@ theorem finset_prod_one_add_sub_one_sub_sum_mem_maximalIdeal_pow_succ
   classical
   revert a
   refine Finset.induction_on s ?base ?step
-  · intro a ha
-    simp
+  · intro a _ha
+    rw [Finset.prod_empty, Finset.sum_empty, sub_self, sub_zero]
+    exact (𝓂[K] ^ (n + 1) : Ideal 𝒪[K]).zero_mem
   · intro i s hi ih a ha
     have hai : a i ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := ha i (by simp [hi])
     have hs : ∀ j ∈ s, a j ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := by
@@ -1248,7 +1251,7 @@ theorem principalUnitsSuccQuotOfIdealPow_zero
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat) (hn : 1 ≤ n) :
     principalUnitsSuccQuotOfIdealPow K n hn (0 : (𝓂[K] ^ n : Ideal 𝒪[K])) = 1 := by
   apply principalUnitsSuccQuotOfIdealPow_eq_one_of_mem_succ
-  simp
+  exact (𝓂[K] ^ (n + 1) : Ideal 𝒪[K]).zero_mem
 
 /-- Modulo `U^(n+1)`, the class represented by `1 + (a+b)` is the product of the classes represented
 by `1+a` and `1+b`. -/
@@ -1296,8 +1299,8 @@ theorem principalUnitsSuccQuotOfIdealPow_add
             ((a + b : (𝓂[K] ^ n : Ideal 𝒪[K])) : 𝒪[K]) (a + b).2 : 𝒪[K]ˣ) :
             𝒪[K]) *
           ↑(principalUnitOneAddOfMemPow K hn
-            ((a + b : (𝓂[K] ^ n : Ideal 𝒪[K])) : 𝒪[K]) (a + b).2)⁻¹ = 1 := by
-      simp
+            ((a + b : (𝓂[K] ^ n : Ideal 𝒪[K])) : 𝒪[K]) (a + b).2)⁻¹ = 1 :=
+      Units.mul_inv _
     calc
       ((1 + (a : 𝒪[K])) * (1 + (b : 𝒪[K]))) *
             ↑(principalUnitOneAddOfMemPow K hn

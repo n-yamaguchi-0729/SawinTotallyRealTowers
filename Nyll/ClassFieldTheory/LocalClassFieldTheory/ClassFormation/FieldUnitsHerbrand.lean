@@ -107,8 +107,7 @@ theorem fieldUnits_tate_card_of_integerUnits_herbrand_eq_one
       @herbrandQuotient (Gal(L / K)) (Multiplicative Int) _ _ _
           (galoisGroupValueGroupMulDistribMulAction K L) g hZ.1 hZ.2 =
         (Module.finrank K L : ℚ) := by
-    rw [herbrandQuotient_eq_card_ratio, hZ0, hZm1]
-    simp
+    rw [herbrandQuotient_eq_card_ratio, hZ0, hZm1, Nat.cast_one, div_one]
   have hm1_actual :
       Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) = 1 :=
     unitsTateHminusOne_card_eq_one K L g hg
@@ -120,13 +119,12 @@ theorem fieldUnits_tate_card_of_integerUnits_herbrand_eq_one
       @herbrandQuotient (Gal(L / K)) Lˣ _ _ _
           (galoisGroupFieldUnitsMulDistribMulAction K L)
           g hField.1 hField.2 = (Module.finrank K L : ℚ) := by
-    rw [hmult, hU_one, hZ_one]
-    simp
+    rw [hmult, hU_one, hZ_one, one_mul]
   have h0_field_rat :
       (Nat.card (HerbrandH0 (Gal(L / K)) Lˣ) : ℚ) =
         (Module.finrank K L : ℚ) := by
-    rw [← hField_quotient, herbrandQuotient_eq_card_ratio, hm1_field]
-    simp
+    rw [← hField_quotient, herbrandQuotient_eq_card_ratio, hm1_field,
+      Nat.cast_one, div_one]
   have h0_field :
       Nat.card (HerbrandH0 (Gal(L / K)) Lˣ) = Module.finrank K L := by
     exact_mod_cast h0_field_rat

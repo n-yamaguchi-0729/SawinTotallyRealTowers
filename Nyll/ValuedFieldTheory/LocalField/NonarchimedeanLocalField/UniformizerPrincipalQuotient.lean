@@ -41,8 +41,8 @@ theorem uniformizerUnitFactor_one
     LocalFieldTheory.IsNonarchimedeanLocalField.uniformizerUnitFactor K pi hpi 1 = 1 := by
   apply integerUnitsToFieldUnits_injective K
   rw [LocalFieldTheory.IsNonarchimedeanLocalField.integerUnitsToFieldUnits_uniformizerUnitFactor]
-  rw [LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_ofMul_one]
-  simp
+  rw [LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_ofMul_one,
+    zpow_zero, div_one, map_one]
 
 /-- The unit factor associated with a normalized uniformizer is
 multiplicative. -/
@@ -78,8 +78,7 @@ theorem uniformizerUnitFactor_integerUnit
       (Additive.ofMul (integerUnitsToFieldUnits K u)) = 0 := by
     rw [LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply]
     exact v_integerUnitsToFieldUnits K u
-  rw [hv]
-  simp
+  rw [hv, zpow_zero, div_one]
 
 /-- Extract the unit factor and reduce it modulo the `n`-th principal-unit
 subgroup. -/
@@ -152,8 +151,7 @@ theorem fieldUnitsToIntegerUnitsPrincipalQuotientHom_ker
       have hfactor : IsNonarchimedeanLocalField.uniformizerUnitFactor K pi hpi pi = 1 := by
         apply integerUnitsToFieldUnits_injective K
         rw [IsNonarchimedeanLocalField.integerUnitsToFieldUnits_uniformizerUnitFactor,
-          hpi]
-        simp
+          hpi, zpow_one, div_self', map_one]
       rw [hfactor]
       exact map_one _
     · rintro x ⟨u, hu, rfl⟩

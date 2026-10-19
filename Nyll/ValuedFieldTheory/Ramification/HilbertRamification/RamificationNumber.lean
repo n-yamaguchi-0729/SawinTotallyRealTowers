@@ -45,8 +45,12 @@ def valuationSubringDisplacementSubalgebraOfUniqueExtension
     {a | valuationSubringAutOfUniqueExtension
           (base := base) (target := target) huniq sigma a - a ∈
         target.maximalIdeal ^ n}
-  zero_mem' := by simp
-  one_mem' := by simp
+  zero_mem' := by
+    rw [Set.mem_ofPred_eq, map_zero, sub_self]
+    exact Ideal.zero_mem _
+  one_mem' := by
+    rw [Set.mem_ofPred_eq, map_one, sub_self]
+    exact Ideal.zero_mem _
   add_mem' := by
     intro a b ha hb
     change
@@ -66,7 +70,7 @@ def valuationSubringDisplacementSubalgebraOfUniqueExtension
               (base := base) (target := target) huniq sigma a - a) +
             (valuationSubringAutOfUniqueExtension
               (base := base) (target := target) huniq sigma b - b) := by
-      simp
+      rw [map_add]
       ring
     rw [hrewrite]
     exact Ideal.add_mem _ ha hb
@@ -91,7 +95,7 @@ def valuationSubringDisplacementSubalgebraOfUniqueExtension
                 (base := base) (target := target) huniq sigma b - b) +
             (valuationSubringAutOfUniqueExtension
                 (base := base) (target := target) huniq sigma a - a) * b := by
-      simp
+      rw [map_mul]
       ring
     rw [hrewrite]
     exact Ideal.add_mem _
@@ -210,12 +214,12 @@ theorem ramificationNumberOfUniqueExtension_eq_of_adjoin_eq_top
     intro n han
     rw [natCast_le_ramificationNumberOfUniqueExtension_iff] at han ⊢
     exact valuationSubringAutOfUniqueExtension_sub_mem_of_mem_adjoin
-      (base := base) (target := target) huniq han (by rw [ha]; simp)
+      (base := base) (target := target) huniq han (by rw [ha]; trivial)
   · rw [← ENat.forall_natCast_le_iff_le]
     intro n hbn
     rw [natCast_le_ramificationNumberOfUniqueExtension_iff] at hbn ⊢
     exact valuationSubringAutOfUniqueExtension_sub_mem_of_mem_adjoin
-      (base := base) (target := target) huniq hbn (by rw [hb]; simp)
+      (base := base) (target := target) huniq hbn (by rw [hb]; trivial)
 
 variable [FiniteDimensional K L] [IsGalois K L]
 variable [Algebra.IsSeparable base.residueField target.residueField]
@@ -291,7 +295,7 @@ theorem mem_lowerRamificationGroup_nat_iff_intrinsicRamificationNumberOfUniqueEx
       (base := base) (target := target) huniq hgen (by
         rw [chosenRamificationGeneratorOfUniqueExtension_adjoin_eq_top
           (base := base) (target := target) huniq]
-        simp)
+        trivial)
 
 end Higher
 end RamificationTheory.HilbertRamification

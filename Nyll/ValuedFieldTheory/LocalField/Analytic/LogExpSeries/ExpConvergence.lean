@@ -427,8 +427,7 @@ theorem expSeriesTermField_eq_zero_of_eq_zero_of_ne_zero
     _ = expSeriesTermField (0 : K) hnK 0 := by
       exact tsum_eq_single 0 fun n hn =>
         expSeriesTermField_eq_zero_of_eq_zero_of_ne_zero rfl hnK hn
-    _ = 1 := by
-      simp
+    _ = 1 := expSeriesTermField_zero (0 : K) hnK
 
 /-- Field-element exponential-series terms tend to zero under the normalized
 radius condition `v x < exp (-1)`.  This version also covers `x = 0`. -/
@@ -1064,7 +1063,8 @@ theorem tendsto_expSeriesPartialSumField_ofWithZeroValuation_of_lt_exp_neg_one
 theorem valuation_zero_lt_exp_neg_one
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ))) :
     v (0 : K) < WithZero.exp (-1 : ℤ) := by
-  simp
+  rw [v.map_zero]
+  exact WithZero.pos_iff_ne_zero.mpr WithZero.exp_ne_zero
 
 /-- The additive ball on which the local exponential series converges. -/
 def expConvergenceAddSubgroupOfWithZeroValuation

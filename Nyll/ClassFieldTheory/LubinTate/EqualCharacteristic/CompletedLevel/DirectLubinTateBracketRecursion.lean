@@ -80,16 +80,14 @@ private theorem equalCharacteristicDirectBracketScalarSeries_eq
           have := natCard_pow_injective k (h.trans (pow_zero _).symm)
           omega
         rw [equalCharacteristicDirectBracketScalarCoefficient]
-        rw [PowerSeries.coeff_X, ite_eq_right hpow]
-        simp
+        rw [PowerSeries.coeff_X, ite_eq_right hpow, mul_zero]
   · have hne : n ≠ 1 := by
       intro h
       subst n
-      exact hn ⟨0, by simp⟩
+      exact hn ⟨0, pow_zero _⟩
     rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k _ n hn,
       PowerSeries.coeff_C_mul]
-    rw [PowerSeries.coeff_X, ite_eq_right hne]
-    simp
+    rw [PowerSeries.coeff_X, ite_eq_right hne, mul_zero]
 
 /-- The recursive candidate is the sum of its scalar term and the genuine
 formal substitution `[tail(a)] ∘ e_T`. -/
@@ -326,7 +324,9 @@ theorem equalCharacteristicCompletedDirectEndomorphismCoefficient_unique
         simp [gamma, hpow.ne]
       have hunique := existsUnique_contractingFrobeniusEquation
         (RingHom.id (AlgebraicClosure k)) gamma 0 hgamma
-      have hdelta : delta = 0 := hunique.unique (by simpa using hhom) (by simp)
+      have hdelta : delta = 0 := hunique.unique
+        (by simpa only [PowerSeries.map_id, id_eq] using hhom)
+        (by rw [map_zero, mul_zero, sub_self])
       exact sub_eq_zero.mp (by simpa only [delta] using hdelta)
 
 /-- Formal recursive identity for the standard bracket. -/

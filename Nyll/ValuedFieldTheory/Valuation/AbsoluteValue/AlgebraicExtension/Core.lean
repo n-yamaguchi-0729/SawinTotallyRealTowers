@@ -116,8 +116,8 @@ private theorem algebraicExtension_standardComplexAbsoluteValue_extends_standard
     (x : ℝ) :
     algebraicExtension_standardComplexAbsoluteValue (algebraMap ℝ ℂ x) =
       algebraicExtension_standardRealAbsoluteValue x := by
-  change ‖(algebraMap ℝ ℂ x)‖ = ‖x‖
-  simp
+  change ‖(x : ℂ)‖ = ‖x‖
+  exact Complex.norm_real x
 
 /-- Pull back an absolute value along a `K`-algebra equivalence.  This is the
 transport step used after the archimedean classification identifies a complete
@@ -194,7 +194,7 @@ private theorem algebraicExtension_real_algEquiv_real_unique_rpow_extension
   ext x
   have hx : x = algebraMap ℝ L (e x) := by
     calc
-      x = e.symm (e x) := by simp
+      x = e.symm (e x) := (e.symm_apply_apply x).symm
       _ = algebraMap ℝ L (e x) := by
         simpa using (AlgEquiv.commutes e.symm (e x))
   rw [hx, hw]
@@ -231,7 +231,7 @@ private theorem algebraicExtension_real_algEquiv_complex_unique_rpow_extension
   calc
     w x = ‖y‖ := by
       simp [y, WithAbs.norm_eq_apply_ofAbs]
-    _ = ‖e'.symm (e' y)‖ := by simp
+    _ = ‖e'.symm (e' y)‖ := congrArg norm (e'.symm_apply_apply y).symm
     _ = ‖e' y‖ ^ s :=
       AlgEquiv.norm_symm_apply_eq_norm_rpow
         (F := WithAbs w) (s := s) hs0 hnorm e' (e' y)
@@ -252,7 +252,7 @@ private theorem algebraicExtension_complex_algEquiv_complex_unique_rpow_extensio
   ext x
   have hx : x = algebraMap ℂ L (e x) := by
     calc
-      x = e.symm (e x) := by simp
+      x = e.symm (e x) := (e.symm_apply_apply x).symm
       _ = algebraMap ℂ L (e x) := by
         simpa using (AlgEquiv.commutes e.symm (e x))
   rw [hx, hw]

@@ -69,7 +69,7 @@ theorem closedNormalClosure_countable_eq_closure_iSup (R₀ : Set F) (f : ℕ �
     · exact (le_iSup H 0) (subset_closedNormalClosure _ (Or.inl hx))
     · apply le_iSup H (n + 1)
       apply subset_closedNormalClosure _
-      exact Or.inr ⟨n, by simp, rfl⟩
+      exact Or.inr ⟨n, Finset.mem_range.mpr (Nat.lt_succ_self n), rfl⟩
   · apply Subgroup.topologicalClosure_minimal _ _ (closedNormalClosure_isClosed _)
     exact iSup_le (prefix_closedNormalClosure_le R₀ f)
 

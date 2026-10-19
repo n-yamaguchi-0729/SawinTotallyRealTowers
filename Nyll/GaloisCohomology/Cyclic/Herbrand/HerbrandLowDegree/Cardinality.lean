@@ -134,11 +134,15 @@ private noncomputable def periodicScIsoEven
     (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
     (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
     (fun _ _ => ComplexShape.down_nat_odd_add)
-    (by simp)
+    (by
+      change n + 1 = (ComplexShape.down ℕ).prev n
+      exact (ChainComplex.prev ℕ n).symm)
     (by
       induction n generalizing h₀ with
       | zero => exact (NeZero.ne 0 rfl).elim
-      | succ n _ => simp)
+      | succ n _ =>
+          change (ComplexShape.down ℕ).next (n + 1) + 1 = n + 1
+          rw [ChainComplex.next_nat_succ])
     hn
 
 private noncomputable def periodicScIsoOdd
@@ -151,8 +155,13 @@ private noncomputable def periodicScIsoOdd
     (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
     (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
     (fun _ _ => ComplexShape.down_nat_odd_add)
-    (by simp)
-    (by rcases hn with ⟨m, rfl⟩; simp)
+    (by
+      change n + 1 = (ComplexShape.down ℕ).prev n
+      exact (ChainComplex.prev ℕ n).symm)
+    (by
+      rcases hn with ⟨m, rfl⟩
+      change (ComplexShape.down ℕ).next (2 * m + 1) + 1 = 2 * m + 1
+      rw [ChainComplex.next_nat_succ])
     hn
 
 private noncomputable def periodicHomologyIsoEven
@@ -410,11 +419,11 @@ theorem herbrand_exact_cardinality_identity
   let eA2 : S.X₁.homology 2 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G A σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := A) (n := 2) σ hgen (by simp : Even 2)
+      (G := G) (A := A) (n := 2) σ hgen (⟨1, rfl⟩ : Even 2)
   let eB2 : S.X₂.homology 2 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G B σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := B) (n := 2) σ hgen (by simp : Even 2)
+      (G := G) (A := B) (n := 2) σ hgen (⟨1, rfl⟩ : Even 2)
   let pA4 : S.X₁.homology 4 ≅
       (Rep.FiniteCyclicGroup.subCompNormHom
         (Rep.ofMulDistribMulAction G A) σ).homology := by
@@ -429,12 +438,12 @@ theorem herbrand_exact_cardinality_identity
       (Rep.FiniteCyclicGroup.subCompNormHom
         (Rep.ofMulDistribMulAction G A) σ).homology := by
     exact periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G A) σ (by simp : Even 2)
+      (Rep.ofMulDistribMulAction G A) σ (⟨1, rfl⟩ : Even 2)
   let pB2 : S.X₂.homology 2 ≅
       (Rep.FiniteCyclicGroup.subCompNormHom
         (Rep.ofMulDistribMulAction G B) σ).homology := by
     exact periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G B) σ (by simp : Even 2)
+      (Rep.ofMulDistribMulAction G B) σ (⟨1, rfl⟩ : Even 2)
   let : Finite (S.X₁.homology 4) := finite_source_of_moduleIso eA4
   let : Finite (S.X₂.homology 4) := finite_source_of_moduleIso eB4
   let : Finite (S.X₃.homology 4) := finite_source_of_moduleIso eC4
@@ -444,29 +453,29 @@ theorem herbrand_exact_cardinality_identity
   let : Finite (S.X₁.homology 2) := finite_source_of_moduleIso eA2
   let f4 := HomologicalComplex.homologyMap S.f 4
   let g4 := HomologicalComplex.homologyMap S.g 4
-  let δ43 := hS.δ 4 3 (by simp)
+  let δ43 := hS.δ 4 3 (by decide)
   let f3 := HomologicalComplex.homologyMap S.f 3
   let g3 := HomologicalComplex.homologyMap S.g 3
-  let δ32 := hS.δ 3 2 (by simp)
+  let δ32 := hS.δ 3 2 (by decide)
   let f2 := HomologicalComplex.homologyMap S.f 2
   have hexactB4 : Function.Exact f4 g4 :=
     (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
       (hS.homology_exact₂ 4)
   have hexactC4 : Function.Exact g4 δ43 :=
     (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
-      (hS.homology_exact₃ 4 3 (by simp))
+      (hS.homology_exact₃ 4 3 (by decide))
   have hexactA3 : Function.Exact δ43 f3 :=
     (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
-      (hS.homology_exact₁ 4 3 (by simp))
+      (hS.homology_exact₁ 4 3 (by decide))
   have hexactB3 : Function.Exact f3 g3 :=
     (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
       (hS.homology_exact₂ 3)
   have hexactC3 : Function.Exact g3 δ32 :=
     (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
-      (hS.homology_exact₃ 3 2 (by simp))
+      (hS.homology_exact₃ 3 2 (by decide))
   have hexactA2 : Function.Exact δ32 f2 :=
     (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
-      (hS.homology_exact₁ 3 2 (by simp))
+      (hS.homology_exact₁ 3 2 (by decide))
   have hB4 :=
     moduleCat_card_eq_card_range_mul_card_range_of_exact f4 g4 hexactB4
   have hC4 :=
@@ -494,7 +503,7 @@ theorem herbrand_exact_cardinality_identity
         Nat.card (MonoidHom.range
           q.hom.toAddMonoidHom.toMultiplicative) := by
     apply moduleCatRangeCard_eq_of_conjugate f2 q pA2 pB2
-    exact periodicHomologyIsoEven_naturality σ (by simp : Even 2) i hi
+    exact periodicHomologyIsoEven_naturality σ (⟨1, rfl⟩ : Even 2) i hi
   have hrange :
       Nat.card (MonoidHom.range
           f4.hom.toAddMonoidHom.toMultiplicative) =

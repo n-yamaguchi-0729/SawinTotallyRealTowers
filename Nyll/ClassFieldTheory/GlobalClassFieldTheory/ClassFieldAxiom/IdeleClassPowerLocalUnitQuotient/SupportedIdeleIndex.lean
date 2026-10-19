@@ -233,7 +233,7 @@ theorem prod_infinitePlace_nthPowerIndex_mul_natDegree
           2 * Fintype.card (InfinitePlace K) := by
       omega
     rw [harch, hreal, hdegree]
-    simp
+    simp only [pow_zero, ite_self, one_mul]
   · have hnle : (n : ℕ) ≤ 2 :=
       Nat.le_of_not_gt hlarge
     have hnpos : 0 < (n : ℕ) := n.pos
@@ -244,7 +244,7 @@ theorem prod_infinitePlace_nthPowerIndex_mul_natDegree
     · have hn : n = (1 : ℕ+) := Subtype.ext hone
       subst n
       rw [harch]
-      simp
+      norm_num
     · have hn : n = (2 : ℕ+) := Subtype.ext htwo
       subst n
       rw [harch]

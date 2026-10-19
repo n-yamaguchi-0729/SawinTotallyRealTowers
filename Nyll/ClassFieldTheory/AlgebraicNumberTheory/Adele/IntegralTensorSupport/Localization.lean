@@ -207,7 +207,7 @@ theorem localizedScaledRelativeIntegerLattice_eq_top_of_notMem
       w.asIdeal.primeCompl
       (RelativeExtensionIntegerLocalization
         (K := K) (L := L) w)
-      (by simp)
+      Submodule.span_univ
   rw [← htop]
   refine Submodule.span_le.2 ?_
   rintro y ⟨x, -, rfl⟩

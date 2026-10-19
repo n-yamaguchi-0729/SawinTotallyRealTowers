@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Group.Pi.Lemmas
+import Mathlib.Order.Filter.Cofinite
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
@@ -69,29 +71,21 @@ def infinitePlaceIdele
     (ContinuousMulEquiv.piUnits.symm
       (infinitePlaceValue v x), 1)
   map_one' := by
-    have hvalue : infinitePlaceValue v 1 = 1 := by
-      funext w
-      by_cases hw : w = v
-      · subst w
-        exact infinitePlaceValue_same v 1
-      · exact infinitePlaceValue_of_ne v w 1 hw
+    classical
+    have hvalue : infinitePlaceValue v 1 = 1 :=
+      Pi.mulSingle_one (M := fun w : InfinitePlace K => w.Completionˣ) v
     apply Prod.ext
     · change
         ContinuousMulEquiv.piUnits.symm
             (infinitePlaceValue v 1) = 1
       rw [hvalue, map_one]
-    · simp
+    · rfl
   map_mul' x y := by
+    classical
     have hvalue :
         infinitePlaceValue v (x * y) =
-          infinitePlaceValue v x * infinitePlaceValue v y := by
-      funext w
-      by_cases hw : w = v
-      · subst w
-        simp
-      · simp [infinitePlaceValue_of_ne v w x hw,
-          infinitePlaceValue_of_ne v w y hw,
-          infinitePlaceValue_of_ne v w (x * y) hw]
+          infinitePlaceValue v x * infinitePlaceValue v y :=
+      Pi.mulSingle_mul (f := fun w : InfinitePlace K => w.Completionˣ) v x y
     apply Prod.ext
     · change
         ContinuousMulEquiv.piUnits.symm
@@ -101,7 +95,7 @@ def infinitePlaceIdele
             ContinuousMulEquiv.piUnits.symm
               (infinitePlaceValue v y)
       rw [hvalue, map_mul]
-    · simp
+    · exact (one_mul 1).symm
 
 /-- Inserting a unit at one archimedean place is continuous. -/
 theorem continuous_infinitePlaceIdele
@@ -195,14 +189,16 @@ private def finitePlaceValue
     (x : (v.adicCompletion K)ˣ)
     (w : HeightOneSpectrum (𝓞 K)) :
     (w.adicCompletion K)ˣ :=
-  if h : w = v then h.symm ▸ x else 1
+  Pi.mulSingle (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) v x w
 
 @[simp]
 private theorem finitePlaceValue_same
     (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ) :
     finitePlaceValue v x v = x := by
-  simp [finitePlaceValue]
+  classical
+  exact Pi.mulSingle_eq_same
+    (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) v x
 
 @[simp]
 private theorem finitePlaceValue_of_ne
@@ -210,7 +206,9 @@ private theorem finitePlaceValue_of_ne
     (x : (v.adicCompletion K)ˣ)
     (h : w ≠ v) :
     finitePlaceValue v x w = 1 := by
-  simp [finitePlaceValue, h]
+  classical
+  exact Pi.mulSingle_eq_of_ne
+    (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) h x
 
 /-- The idele whose `v`-component is prescribed and whose other
 components are `1`. -/
@@ -222,35 +220,27 @@ def finitePlaceIdele
       ⟨finitePlaceValue v x, by
         have hAway :
             ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-              w ≠ v := by
-          rw [Filter.eventually_cofinite]
-          simp
+              w ≠ v := Filter.eventually_cofinite_ne v
         filter_upwards [hAway] with w hw
         rw [finitePlaceValue_of_ne v w x hw]
         exact Subgroup.one_mem _⟩)
   map_one' := by
+    classical
     apply Prod.ext
     · rfl
     · apply RestrictedProduct.ext
       intro w
-      change finitePlaceValue v 1 w = (1 : (w.adicCompletion K)ˣ)
-      by_cases hw : w = v
-      · subst w
-        simp
-      · simp [finitePlaceValue_of_ne v w 1 hw]
+      exact congrFun
+        (Pi.mulSingle_one (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) v) w
   map_mul' x y := by
+    classical
     apply Prod.ext
-    · simp
+    · exact (one_mul 1).symm
     · apply RestrictedProduct.ext
       intro w
-      change finitePlaceValue v (x * y) w =
-        finitePlaceValue v x w * finitePlaceValue v y w
-      by_cases hw : w = v
-      · subst w
-        simp
-      · simp [finitePlaceValue_of_ne v w x hw,
-          finitePlaceValue_of_ne v w y hw,
-          finitePlaceValue_of_ne v w (x * y) hw]
+      exact congrFun
+        (Pi.mulSingle_mul (f := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ)
+          v x y) w
 
 /-- A finite-place idele recovers its prescribed component at the
 supporting place. -/
@@ -468,9 +458,7 @@ private noncomputable def relativeFinitePlaceData
         (1 : RelativeIdeleGroup K L)).eventually_integral i
     have hAway :
         ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-          w ≠ v := by
-      rw [Filter.eventually_cofinite]
-      simp
+          w ≠ v := Filter.eventually_cofinite_ne v
     filter_upwards [hBase, hAway] with w hw hne
     have hOne :
         (relativeIdeleToLocalData
@@ -491,9 +479,7 @@ private noncomputable def relativeFinitePlaceData
         (1 : RelativeIdeleGroup K L)).eventually_inverse_integral i
     have hAway :
         ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-          w ≠ v := by
-      rw [Filter.eventually_cofinite]
-      simp
+          w ≠ v := Filter.eventually_cofinite_ne v
     filter_upwards [hBase, hAway] with w hw hne
     have hOne :
         (relativeIdeleToLocalData

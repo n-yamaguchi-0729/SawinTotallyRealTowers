@@ -5,6 +5,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
+import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
 
 /-!
 # Finiteness of localized-completion Herbrand groups
@@ -38,37 +46,31 @@ theorem localHerbrandH0Finite
       τ ∈ Subgroup.zpowers σ)
     [ValuativeRel vK.Completion]
     [IsNonarchimedeanLocalField vK.Completion] :
-    letI hK :=
+    let hK : Algebra k w.1.Completion :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := k) w.1
-    letI : SMul k w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let _ : SMul k w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI := localizedCompletionGlobalAlgebra vK w
-    letI := localizedCompletionIsScalarTower vK w
-    letI : FiniteDimensional vK.Completion
+    let _ : Algebra k (LocalizedCompletion vK w) :=
+      localizedCompletionGlobalAlgebra vK w
+    let _ : IsScalarTower k vK.Completion (LocalizedCompletion vK w) :=
+      localizedCompletionIsScalarTower vK w
+    let _ : FiniteDimensional vK.Completion
         (LocalizedCompletion vK w) :=
       localizedCompletionModuleFinite vK hvK w
-    letI : IsGalois vK.Completion
+    let _ : IsGalois vK.Completion
         (LocalizedCompletion vK w) :=
       HilbertRamification.algebraicLocalization_isGalois vK w
-    letI : Fintype (absoluteValueDecompositionGroup k w.1) :=
+    let _ : Fintype (absoluteValueDecompositionGroup k w.1) :=
       Fintype.ofFinite _
-    letI :=
+    let _ : MulDistribMulAction (absoluteValueDecompositionGroup k w.1)
+        (LocalizedCompletion vK w)ˣ :=
       decompositionGroupLocalUnitsAction vK hvK w
     Finite
       (HerbrandH0 (absoluteValueDecompositionGroup k w.1)
         (LocalizedCompletion vK w)ˣ) := by
-  let := localizedCompletionBaseAlgebra vK w
-  let := localizedCompletionGlobalAlgebra vK w
-  let := localizedCompletionIsScalarTower vK w
-  let : FiniteDimensional vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionFiniteDimensional vK hvK w
-  let : IsGalois vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionIsGalois vK w
-  let := localizedCompletionDecompositionGroupFintype vK w
+  intro hK hSMulK hCompletion hGlobal hTower hFinite hGalois hFintype hAction
   let g :=
     localizedCompletionGaloisGenerator
       vK hvK w σ hgen
@@ -100,23 +102,26 @@ theorem localHerbrandHMinusOneFinite
       τ ∈ Subgroup.zpowers σ)
     [ValuativeRel vK.Completion]
     [IsNonarchimedeanLocalField vK.Completion] :
-    letI hK :=
+    let hK : Algebra k w.1.Completion :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := k) w.1
-    letI : SMul k w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let _ : SMul k w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI := localizedCompletionGlobalAlgebra vK w
-    letI := localizedCompletionIsScalarTower vK w
-    letI : FiniteDimensional vK.Completion
+    let _ : Algebra k (LocalizedCompletion vK w) :=
+      localizedCompletionGlobalAlgebra vK w
+    let _ : IsScalarTower k vK.Completion (LocalizedCompletion vK w) :=
+      localizedCompletionIsScalarTower vK w
+    let _ : FiniteDimensional vK.Completion
         (LocalizedCompletion vK w) :=
       localizedCompletionModuleFinite vK hvK w
-    letI : IsGalois vK.Completion
+    let _ : IsGalois vK.Completion
         (LocalizedCompletion vK w) :=
       HilbertRamification.algebraicLocalization_isGalois vK w
-    letI : Fintype (absoluteValueDecompositionGroup k w.1) :=
+    let _ : Fintype (absoluteValueDecompositionGroup k w.1) :=
       Fintype.ofFinite _
-    letI :=
+    let _ : MulDistribMulAction (absoluteValueDecompositionGroup k w.1)
+        (LocalizedCompletion vK w)ˣ :=
       decompositionGroupLocalUnitsAction vK hvK w
     Finite
       (HerbrandHMinusOne
@@ -125,16 +130,7 @@ theorem localHerbrandHMinusOneFinite
         (subgroupGeneratorOfGenerator
           (absoluteValueDecompositionGroup k w.1)
           σ hgen)) := by
-  let := localizedCompletionBaseAlgebra vK w
-  let := localizedCompletionGlobalAlgebra vK w
-  let := localizedCompletionIsScalarTower vK w
-  let : FiniteDimensional vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionFiniteDimensional vK hvK w
-  let : IsGalois vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionIsGalois vK w
-  let := localizedCompletionDecompositionGroupFintype vK w
+  intro hK hSMulK hCompletion hGlobal hTower hFinite hGalois hFintype hAction
   let g :=
     localizedCompletionGaloisGenerator
       vK hvK w σ hgen

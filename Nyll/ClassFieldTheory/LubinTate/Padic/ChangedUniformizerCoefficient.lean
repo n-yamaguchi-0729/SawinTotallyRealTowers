@@ -131,17 +131,13 @@ private theorem padicChangedUniformizerRotation_coeff_zero_ne_zero
     (p : ℕ) [Fact p.Prime]
     (u : (padicLocalField p).valuationSubringˣ) :
     (WittVector.frobeniusRotation p
-      (show
-        ((1 : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 by
-        simp)
+      (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
       (completedUnramifiedWittUnit_coeff_zero_ne_zero p
         (padicValuationUnitToCompletedUnramifiedWittUnit p u))).coeff 0 ≠ 0 := by
   simpa only [WittVector.frobeniusRotation,
     WittVector.coeff_mk, WittVector.frobeniusRotationCoeff] using
     (WittVector.RecursionBase.solution_nonzero p
-      (show
-        ((1 : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 by
-        simp)
+      (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
       (completedUnramifiedWittUnit_coeff_zero_ne_zero p
         (padicValuationUnitToCompletedUnramifiedWittUnit p u)))
 
@@ -154,9 +150,7 @@ noncomputable def padicChangedUniformizerLinearCoefficient
   Classical.choose
     (WittVector.isUnit_of_coeff_zero_ne_zero
       (WittVector.frobeniusRotation p
-        (show
-          ((1 : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 by
-          simp)
+        (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
         (completedUnramifiedWittUnit_coeff_zero_ne_zero p
           (padicValuationUnitToCompletedUnramifiedWittUnit p u)))
       (padicChangedUniformizerRotation_coeff_zero_ne_zero p u))
@@ -168,17 +162,13 @@ private theorem padicChangedUniformizerLinearCoefficient_coe
     (padicChangedUniformizerLinearCoefficient p u :
         padicCompletedUnramifiedWittRing p) =
       WittVector.frobeniusRotation p
-        (show
-          ((1 : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 by
-          simp)
+        (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
         (completedUnramifiedWittUnit_coeff_zero_ne_zero p
           (padicValuationUnitToCompletedUnramifiedWittUnit p u)) :=
   Classical.choose_spec
     (WittVector.isUnit_of_coeff_zero_ne_zero
       (WittVector.frobeniusRotation p
-        (show
-          ((1 : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 by
-          simp)
+        (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
         (completedUnramifiedWittUnit_coeff_zero_ne_zero p
           (padicValuationUnitToCompletedUnramifiedWittUnit p u)))
       (padicChangedUniformizerRotation_coeff_zero_ne_zero p u))
@@ -196,11 +186,9 @@ theorem padicChangedUniformizerLinearCoefficient_frobenius
         (padicValuationUnitToCompletedUnramifiedWittUnit p u :
           padicCompletedUnramifiedWittRing p) := by
   rw [padicChangedUniformizerLinearCoefficient_coe]
-  simpa only [mul_one] using
+  simpa only [Units.val_one, mul_one] using
     (WittVector.frobenius_frobeniusRotation p
-      (show
-        ((1 : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 by
-        simp)
+      (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
       (completedUnramifiedWittUnit_coeff_zero_ne_zero p
         (padicValuationUnitToCompletedUnramifiedWittUnit p u)))
 
@@ -215,7 +203,7 @@ private noncomputable def padicChangedUniformizerCoefficientOperator
         padicCompletedUnramifiedWittRing p) *
       (p : padicCompletedUnramifiedWittRing p) ^ (m - 1) *
       WittVector.frobenius a
-  map_zero' := by simp
+  map_zero' := by rw [map_zero, mul_zero]
   map_add' a b := by
     simp only [map_add, mul_add]
 

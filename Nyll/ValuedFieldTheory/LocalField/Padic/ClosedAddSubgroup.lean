@@ -49,7 +49,7 @@ theorem addSubgroup_isOpen_of_isClosed_of_ne_bot
     intro hzero
     have hxmem :
         x ∈ (Ideal.span ({x} : Set ℤ_[p]) : Ideal ℤ_[p]) :=
-      Ideal.subset_span (by simp)
+      Ideal.subset_span (Set.mem_singleton x)
     rw [hzero] at hxmem
     exact hx0 (by simpa using hxmem)
   obtain ⟨n, hn⟩ := PadicInt.ideal_eq_span_pow_p hspan_ne

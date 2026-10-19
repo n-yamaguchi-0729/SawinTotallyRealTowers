@@ -542,7 +542,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
       congrArg Subtype.val hval
     _ = k • (1 : ZHat) := rfl
     _ = Int.castRingHom ZHat (k : ℤ) := by
-      simp
+      simp only [nsmul_one, Int.coe_castRingHom, Int.cast_natCast]
 
 end ValuationData
 

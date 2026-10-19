@@ -292,7 +292,8 @@ theorem finitePlaceGlobalArtinMonoidHom_continuous :
               (chosenFinitePlaceLocalNormSubgroup
                 (K := K) (L := L) v : Set _) by
         ext a
-        simp]
+        simp only [Set.mem_ofPred_eq, Set.mem_iInter, Set.mem_preimage,
+          SetLike.mem_coe]]
       exact isOpen_biInter_finset fun v _ =>
         (chosenFinitePlaceLocalNormSubgroup_isOpen
           (K := K) (L := L) v).preimage

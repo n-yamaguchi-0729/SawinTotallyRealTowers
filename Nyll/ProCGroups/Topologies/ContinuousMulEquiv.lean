@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Group.End
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.Topology.Algebra.ContinuousMonoidHom
 import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
@@ -86,6 +87,43 @@ succession.
     ofBijectiveCompactToT2 φ hφcont hφ x = φ x := by
   unfold ofBijectiveCompactToT2
   rfl
+
+/-- Transport a jointly continuous action through an equivalence, after one
+fixed action on its target. The algebraic action is the existing `MulAut.congr`. -/
+theorem exists_conjugated_action
+    {Γ B H : Type*} [Group Γ] [Group B] [Group H]
+    [TopologicalSpace Γ] [TopologicalSpace B] [TopologicalSpace H]
+    (e₀ : B ≃ₜ* H) (R : Γ →* MulAut H)
+    (hR : Continuous (fun z : Γ × H => R z.1 z.2)) (α : Γ) :
+    ∃ (e : B ≃ₜ* H) (ρ : Γ →* MulAut B),
+      Continuous (fun z : Γ × B => ρ z.1 z.2) ∧
+      (∀ σ x, e (ρ σ x) = R σ (e x)) ∧
+      ∀ x, e x = R α⁻¹ (e₀ x) := by
+  have hc (σ : Γ) : Continuous (R σ) := by
+    have hp : Continuous (fun x : H => (σ, x)) :=
+      continuous_const.prodMk continuous_id
+    have hh := hR.comp hp
+    exact hh
+  have hinv : (R α⁻¹).symm = R α := by
+    change (R α⁻¹)⁻¹ = R α
+    rw [← map_inv, inv_inv]
+  let a : H ≃ₜ* H :=
+    { toMulEquiv := R α⁻¹
+      continuous_toFun := hc α⁻¹
+      continuous_invFun := by
+        change Continuous (R α⁻¹).symm
+        rw [hinv]
+        exact hc α }
+  let e := e₀.trans a
+  let ρ : Γ →* MulAut B := (MulAut.congr e.symm.toMulEquiv).toMonoidHom.comp R
+  refine ⟨e, ρ, ?_, ?_, fun _ => rfl⟩
+  · change Continuous (fun z : Γ × B => e.symm (R z.1 (e z.2)))
+    have hp : Continuous (fun z : Γ × B => (z.1, e z.2)) :=
+      continuous_fst.prodMk (e.continuous_toFun.comp continuous_snd)
+    exact e.symm.continuous_toFun.comp (hR.comp hp)
+  · intro σ x
+    change e (e.symm (R σ (e x))) = R σ (e x)
+    exact e.apply_symm_apply _
 
 end ContinuousMulEquiv
 

@@ -118,7 +118,7 @@ theorem fullSUnitKummerExtension_ideleClassNormRange_eq_powerLocalUnit
       ideleClassPowerLocalUnitSubgroup_le_ideleClassNorm_range
         (K := K) (L := E) n r eG S ∅ harch
     · intro v hv
-      simp at hv
+      exact False.elim (Finset.notMem_empty v hv)
     · exact hAway
   have hPowerLe :
       ideleClassPowerLocalUnitSubgroup

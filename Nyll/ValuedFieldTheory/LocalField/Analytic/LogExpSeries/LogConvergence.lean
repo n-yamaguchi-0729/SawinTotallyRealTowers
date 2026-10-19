@@ -53,7 +53,7 @@ theorem logOnePlusSeriesField_eq_self_add_tsum_succ_of_summable
         ∑' n : ℕ, signedLogSeriesTermField x hnK (n + 1) :=
       hs'.tsum_eq_zero_add
     _ = x + ∑' n : ℕ, signedLogSeriesTermField x hnK (n + 1) := by
-      simp
+      rw [signedLogSeriesTermField_zero]
 
 /-- A summable exponential series splits into the constant term `1` and the
 positive-degree tail. -/
@@ -76,17 +76,14 @@ theorem expSeriesField_eq_one_add_tsum_succ_of_summable
         ∑' n : ℕ, expSeriesTermField x hnK (n + 1) :=
       hs'.tsum_eq_zero_add
     _ = 1 + ∑' n : ℕ, expSeriesTermField x hnK (n + 1) := by
-      simp
+      rw [expSeriesTermField_zero]
 
 /-- Establishes the identity `logSeriesTermField x hnK n = 0`. -/
 theorem logSeriesTermField_eq_zero_of_eq_zero
     {x : K} (hx : x = 0)
     (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) (n : ℕ) :
     logSeriesTermField x hnK n = 0 := by
-  have hpow : (0 : K) ^ (n + 1) = 0 := by
-    cases n with
-    | zero => simp
-    | succ n => simp
+  have hpow : (0 : K) ^ (n + 1) = 0 := zero_pow (Nat.succ_ne_zero n)
   simp [logSeriesTermField, hx, hpow]
 
 /-- Establishes the identity `signedLogSeriesTermField x hnK n = 0`. -/
@@ -733,8 +730,8 @@ theorem valuation_signedLogSeriesTermField_lt_self_of_inv_sub_one_lt
   have hval :
       v (signedLogSeriesTermField x hnK n) =
         v (logSeriesTermField x hnK n) := by
-    rw [signedLogSeriesTermField, v.map_mul]
-    simp
+    rw [signedLogSeriesTermField, v.map_mul, v.map_pow, v.map_neg,
+      v.map_one, one_pow, one_mul]
   rw [hval]
   exact hlog
 
@@ -799,8 +796,8 @@ theorem tendsto_logHigherTailPartialSumField_ofWithZeroValuation_of_lt_one
       fun N : ℕ =>
         ∑ n ∈ Finset.range N, signedLogSeriesTermField x hnK (n + 1) := by
     funext N
-    rw [logOnePlusPartialSumField, Finset.sum_range_succ']
-    simp
+    rw [logOnePlusPartialSumField, Finset.sum_range_succ',
+      signedLogSeriesTermField_zero, add_sub_cancel_right]
   simpa [htail] using hsub
 
 /-- The full higher-degree logarithm tail has valuation strictly smaller than
@@ -910,7 +907,7 @@ theorem logOnePlusSeriesField_eq_zero_iff_of_inv_sub_one_lt
         hcomplete) hlog
   · intro hx
     subst x
-    simp
+    exact logOnePlusSeriesField_zero_ofWithZeroValuation v hnK
 
 /-- Above the ramified threshold `e/(p-1)`, each higher logarithm term has
 strictly smaller `ℤᵐ⁰`-value than the linear term. -/
@@ -968,8 +965,8 @@ theorem valuation_signedLogSeriesTermField_lt_self_of_scaled_inv_sub_one_lt
   have hval :
       v (signedLogSeriesTermField x hnK n) =
         v (logSeriesTermField x hnK n) := by
-    rw [signedLogSeriesTermField, v.map_mul]
-    simp
+    rw [signedLogSeriesTermField, v.map_mul, v.map_pow, v.map_neg,
+      v.map_one, one_pow, one_mul]
   rw [hval]
   exact hlog
 
@@ -1034,8 +1031,8 @@ theorem tendsto_logHigherTailPartialSumField_ofWithZeroValuation_scaled_of_lt_on
       fun N : ℕ =>
         ∑ n ∈ Finset.range N, signedLogSeriesTermField x hnK (n + 1) := by
     funext N
-    rw [logOnePlusPartialSumField, Finset.sum_range_succ']
-    simp
+    rw [logOnePlusPartialSumField, Finset.sum_range_succ',
+      signedLogSeriesTermField_zero, add_sub_cancel_right]
   simpa [htail] using hsub
 
 /-- The full higher-degree logarithm tail has valuation strictly smaller than
@@ -1145,7 +1142,7 @@ theorem logOnePlusSeriesField_eq_zero_iff_of_scaled_inv_sub_one_lt
         hcomplete) hlog
   · intro hx
     subst x
-    simp
+    exact logOnePlusSeriesField_zero_ofWithZeroValuation v hnK
 
 end MultiplicativeIntegerValuation
 end LocalFieldTheory.DiscreteValuationField

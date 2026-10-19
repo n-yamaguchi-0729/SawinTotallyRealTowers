@@ -68,8 +68,7 @@ theorem decompositionGroup_mapEquiv_mem_principalUnitGroup
         rfl
       _ = τ • (1 : IsLocalRing.ResidueField A) := by
         rw [huRes]
-      _ = 1 := by
-        simp
+      _ = 1 := smul_one τ
   have huA' :
       (uA' : Lˣ) ∈ A.principalUnitGroup := by
     rw [A.coe_mem_principalUnitGroup_iff (x := uA')]

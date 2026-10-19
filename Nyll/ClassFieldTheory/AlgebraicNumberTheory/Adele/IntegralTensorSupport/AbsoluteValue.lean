@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Module.NatInt
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
 import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
@@ -104,7 +105,7 @@ theorem absoluteValueExtension_isNonarchimedean
   intro n
   calc
     w.1 (n : E) =
-        w.1 (algebraMap F E (n : F)) := by simp
+        w.1 (algebraMap F E (n : F)) := by rw [map_natCast (algebraMap F E)]
     _ = vF (n : F) := w.2 (n : F)
     _ ≤ 1 :=
       hvF.apply_natCast_le_one (map_zero_le vF 1) (map_one vF)
@@ -123,9 +124,6 @@ theorem absoluteValue_le_one_of_isIntegral
   let : IsIntegrallyClosedIn V F :=
     (isIntegrallyClosed_iff_isIntegrallyClosedIn F).1
       inferInstance
-  let : IsScalarTower ℤ V F :=
-    IsScalarTower.of_algebraMap_eq fun n => by
-      simp
   have hxV : IsIntegral V x :=
     hx.tower_top
   obtain ⟨y, hy⟩ :=

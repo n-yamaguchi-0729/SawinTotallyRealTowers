@@ -295,7 +295,7 @@ def exponentialValueSubgroup
     {K : Type*} [Field K] (v : LubinTate.Valuations.ExponentialValuation K) :
     AddSubgroup ℝ where
   carrier := {r | ∃ x : K, x ≠ 0 ∧ v x = (r : WithTop ℝ)}
-  zero_mem' := ⟨1, one_ne_zero, by simp⟩
+  zero_mem' := ⟨1, one_ne_zero, LubinTate.Valuations.exponentialValuation_one v⟩
   add_mem' := by
     rintro r s ⟨x, hx, hr⟩ ⟨y, hy, hs⟩
     refine ⟨x * y, mul_ne_zero hx hy, ?_⟩
@@ -442,7 +442,7 @@ private theorem maximalIdeal_eq_span_discretePrimeElement
         subst n
         have hxval0 : v (x : K) = 0 := by simpa using hn
         rw [hxval0] at hxpos
-        simp at hxpos
+        exact lt_irrefl (0 : WithTop ℝ) hxpos
       have hsle : ((s : ℝ) : WithTop ℝ) ≤ v (x : K) := by
         rw [hn]
         exact WithTop.coe_le_coe.mpr (by
@@ -760,10 +760,10 @@ noncomputable def exponentialAssociatedAbsoluteValue
   · intro x y
     by_cases hx : x = 0
     · subst x
-      simp
+      simp only [zero_mul, ite_true]
     by_cases hy : y = 0
     · subst y
-      simp
+      simp only [mul_zero, ite_true]
     have hxy : x * y ≠ 0 := mul_ne_zero hx hy
     have hreal : (v (x * y)).untop₀ =
         (v x).untop₀ + (v y).untop₀ := by
@@ -789,10 +789,10 @@ noncomputable def exponentialAssociatedAbsoluteValue
   · intro x y
     by_cases hx : x = 0
     · subst x
-      simp
+      simp only [zero_add, ite_true, le_refl]
     by_cases hy : y = 0
     · subst y
-      simp
+      simp only [add_zero, ite_true, le_refl]
     by_cases hxy : x + y = 0
     · simp only [hx, hy, hxy, ite_false, ite_true]
       positivity
@@ -848,10 +848,12 @@ theorem associatedAbsoluteValue_nonarchimedean
   intro x y
   by_cases hx : x = 0
   · subst x
-    simp
+    rw [zero_add]
+    exact le_max_right _ _
   by_cases hy : y = 0
   · subst y
-    simp
+    rw [add_zero]
+    exact le_max_left _ _
   by_cases hxy : x + y = 0
   · simp [hxy]
   obtain ⟨r, hvr, habvr⟩ := hassoc.2 x hx
@@ -905,7 +907,7 @@ theorem associatedAbsoluteValue_extends
   intro a
   by_cases ha : a = 0
   · subst a
-    simp
+    rw [map_zero, map_zero, map_zero]
   · have hma : algebraMap K L a ≠ 0 :=
       (map_ne_zero (algebraMap K L)).mpr ha
     obtain ⟨r, hvr, havr⟩ := hav.2 a ha
@@ -1429,8 +1431,8 @@ theorem ramificationInvariants_fundamental_inequality
       v w hExt pi hpi0 hpiBij.1
   have honeLI : LinearIndependent k
       (fun _ : Unit ↦ IsLocalRing.residue W (1 : W)) := by
-    rw [linearIndependent_unique_iff]
-    simp
+    rw [linearIndependent_unique_iff, map_one]
+    exact one_ne_zero
   have hprodQ :=
     ramificationInvariants_valueCosets_mul_residueLifts_linearIndependent_arbitrary
       v w hExt pi hpiDistinct (fun _ : Unit ↦ (1 : W)) honeLI

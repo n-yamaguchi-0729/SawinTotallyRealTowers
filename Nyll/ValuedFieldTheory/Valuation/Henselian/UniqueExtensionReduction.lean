@@ -438,10 +438,11 @@ theorem partition_monic_irreducible_factors_along_coprime_reduction
       have hh : hbar = 1 := hhmonic.isUnit_iff.1 hhunit
       subst gbar
       subst hbar
-      exact ⟨1, 1, Polynomial.monic_one, Polynomial.monic_one, by simp, by simp, by simp⟩
+      exact ⟨1, 1, Polynomial.monic_one, Polynomial.monic_one,
+        (one_mul 1).symm, Polynomial.map_one _, Polynomial.map_one _⟩
   | cons Q factors ih =>
       have hQdata : Q.Monic ∧ Irreducible (Q.map V.subtype) :=
-        hfactors Q (by simp)
+        hfactors Q (Multiset.mem_cons_self Q factors)
       have htail : ∀ R ∈ factors,
           R.Monic ∧ Irreducible (R.map V.subtype) := by
         intro R hR

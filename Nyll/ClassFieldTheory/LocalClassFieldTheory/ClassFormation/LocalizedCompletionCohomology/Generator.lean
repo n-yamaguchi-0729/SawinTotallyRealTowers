@@ -47,16 +47,16 @@ noncomputable def localizedCompletionGaloisGenerator
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let hK : Algebra K w.1.Completion :=
+      AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let _ : SMul K w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
     LocalizedCompletion vK w ≃ₐ[vK.Completion]
-      LocalizedCompletion vK w :=
-  (decompositionGroupEquivAlgebraicLocalizationAut
-    vK hvK w)
-      (subgroupGeneratorOfGenerator
-        (absoluteValueDecompositionGroup K w.1) σ hgen)
+      LocalizedCompletion vK w := by
+  intro hK hSMulK hCompletion
+  exact (decompositionGroupEquivAlgebraicLocalizationAut vK hvK w)
+    (subgroupGeneratorOfGenerator (absoluteValueDecompositionGroup K w.1) σ hgen)
 
 theorem localizedCompletionGaloisGenerator_generates
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
@@ -64,16 +64,17 @@ theorem localizedCompletionGaloisGenerator_generates
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let hK : Algebra K w.1.Completion :=
+      AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let _ : SMul K w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
     ∀ τ : LocalizedCompletion vK w ≃ₐ[vK.Completion]
         LocalizedCompletion vK w,
       τ ∈ Subgroup.zpowers
         (localizedCompletionGaloisGenerator
           vK hvK w σ hgen) := by
-  let := localizedCompletionBaseAlgebra vK w
+  intro hK hSMulK hCompletion
   let H := absoluteValueDecompositionGroup K w.1
   let e :=
     decompositionGroupEquivAlgebraicLocalizationAut

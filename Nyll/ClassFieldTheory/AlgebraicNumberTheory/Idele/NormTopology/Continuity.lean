@@ -49,15 +49,13 @@ theorem finitePlace_normUnits_mem_integerUnits
     (W : {W : HeightOneSpectrum (𝓞 L) //
       _root_.finitePlaceBelow (K := K) W = v₀})
     (z : (W.1.adicCompletionIntegers L).units) :
-    letI : Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
+    let _ : Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
       (finitePlaceAdicCompletionMap K L v₀ W).toAlgebra
     LocalFieldTheory.normUnits
         (v₀.adicCompletion K) (W.1.adicCompletion L)
         ((W.1.adicCompletionIntegers L).units.subtype z) ∈
       (v₀.adicCompletionIntegers K).units := by
-  let : Algebra
-      (v₀.adicCompletion K) (W.1.adicCompletion L) :=
-    (finitePlaceAdicCompletionMap K L v₀ W).toAlgebra
+  intro completionAlgebra
   apply
     (FiniteIdeleGroup.localOrder_eq_zero_iff v₀
       (LocalFieldTheory.normUnits
@@ -66,20 +64,19 @@ theorem finitePlace_normUnits_mem_integerUnits
   rw [FiniteIdeleGroup.localOrder_normUnits]
   rw [(FiniteIdeleGroup.localOrder_eq_zero_iff W.1
     ((W.1.adicCompletionIntegers L).units.subtype z)).mpr z.property]
-  simp
+  exact mul_zero _
 
 omit [FiniteDimensional K L] in
 private theorem finitePlace_normUnits_continuous
     (v₀ : HeightOneSpectrum (𝓞 K))
     (W : {W : HeightOneSpectrum (𝓞 L) //
       _root_.finitePlaceBelow (K := K) W = v₀}) :
-    letI : Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
+    let _ : Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
       (finitePlaceAdicCompletionMap K L v₀ W).toAlgebra
     Continuous
       (LocalFieldTheory.normUnits
         (v₀.adicCompletion K) (W.1.adicCompletion L)) := by
-  let : Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
-    (finitePlaceAdicCompletionMap K L v₀ W).toAlgebra
+  intro completionAlgebra
   let : IsScalarTower
       K (v₀.adicCompletion K) (W.1.adicCompletion L) :=
     finitePlaceAdicCompletionMap_isScalarTower K L v₀ W
@@ -88,9 +85,6 @@ private theorem finitePlace_normUnits_continuous
     continuousSMul_of_algebraMap _ _ (by
       change Continuous (finitePlaceAdicCompletionMap K L v₀ W)
       exact finitePlaceAdicCompletionMap_continuous K L v₀ W)
-  let : FiniteDimensional
-      (v₀.adicCompletion K) (W.1.adicCompletion L) :=
-    inferInstance
   let : NontriviallyNormedField (v₀.adicCompletion K) :=
     NontriviallyNormedField.ofNormNeOne (by
       obtain ⟨ϖ, hϖ⟩ :=
@@ -287,7 +281,7 @@ private theorem infinitePlace_normUnits_continuous
           _ = eBaseUnits
               (eBaseUnits.symm
                 (LocalFieldTheory.normUnits ℝ ℝ (eExtensionUnits x))) := by
-            simp
+            exact (eBaseUnits.apply_symm_apply _).symm
       change Continuous (fun x : W.1.Completionˣ =>
         LocalFieldTheory.normUnits v₀.Completion W.1.Completion x)
       rw [hNormEq]
@@ -343,7 +337,7 @@ private theorem infinitePlace_normUnits_continuous
           _ = eBaseUnits
               (eBaseUnits.symm
                 (LocalFieldTheory.normUnits ℝ ℂ (eExtensionUnits x))) := by
-            simp
+            exact (eBaseUnits.apply_symm_apply _).symm
       change Continuous (fun x : W.1.Completionˣ =>
         LocalFieldTheory.normUnits v₀.Completion W.1.Completion x)
       rw [hNormEq]
@@ -413,7 +407,7 @@ private theorem infinitePlace_normUnits_continuous
           _ = eBaseUnits
               (eBaseUnits.symm
                 (LocalFieldTheory.normUnits ℂ ℂ (eExtensionUnits x))) := by
-            simp
+            exact (eBaseUnits.apply_symm_apply _).symm
       change Continuous (fun x : W.1.Completionˣ =>
         LocalFieldTheory.normUnits v₀.Completion W.1.Completion x)
       rw [hNormEq]
@@ -469,7 +463,7 @@ private theorem infinitePlace_normUnits_continuous
           _ = eBaseUnits
               (eBaseUnits.symm
                 (LocalFieldTheory.normUnits ℂ ℂ (eExtensionUnits x))) := by
-            simp
+            exact (eBaseUnits.apply_symm_apply _).symm
       change Continuous (fun x : W.1.Completionˣ =>
         LocalFieldTheory.normUnits v₀.Completion W.1.Completion x)
       rw [hNormEq]
@@ -620,8 +614,8 @@ private theorem norm_integralIdeleEmbedding_infinite
             _root_.infinitePlaceBelow (K := K) W = v₀}
           (Subtype.fintype fun W =>
             _root_.infinitePlaceBelow (K := K) W = v₀) := by
-    ext W
-    simp
+    exact congrArg (fun h : Fintype _ => h.elems)
+      (Subsingleton.elim _ _)
   rw [hUniv]
   rfl
 

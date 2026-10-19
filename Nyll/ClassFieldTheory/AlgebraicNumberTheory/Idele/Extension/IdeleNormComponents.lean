@@ -408,7 +408,7 @@ private theorem finiteComponent_norm_eq_prod_exact_index
           (Units.mapEquiv eBase.symm.toMulEquiv
             (finiteComponent v (norm K L a))) := by
       apply Units.ext
-      simp
+      exact (eBase.apply_symm_apply _).symm
     _ = Units.mapEquiv eBase.toMulEquiv
         (∏ w : AbsoluteValueExtension vK L,
           Units.map (Algebra.norm vK.Completion)
@@ -956,7 +956,7 @@ theorem infiniteComponent_norm_eq_prod
           (Units.mapEquiv eBase.toMulEquiv
             (infiniteComponent v (norm K L a))) := by
       apply Units.ext
-      simp
+      exact (eBase.symm_apply_apply _).symm
     _ = Units.mapEquiv eBase.symm.toMulEquiv
         (∏ W : {W : InfinitePlace L //
             _root_.infinitePlaceBelow (K := K) W = v},

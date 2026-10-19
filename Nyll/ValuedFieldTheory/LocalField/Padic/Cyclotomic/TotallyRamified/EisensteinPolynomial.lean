@@ -112,7 +112,7 @@ theorem padicCyclotomicTotallyRamifiedShiftedCyclotomicPadicInt_irreducible
     (cyclotomic.monic _ ℤ_[p]).comp_X_add_C 1
   apply hei.irreducible hprime hmonic.isPrimitive
   rw [padicCyclotomicTotallyRamifiedShiftedCyclotomicPadicInt, natDegree_comp,
-    show (X + 1 : ℤ_[p][X]) = X + C 1 by simp,
+    show (X + 1 : ℤ_[p][X]) = X + C 1 by rw [Polynomial.C_1],
     natDegree_X_add_C, mul_one, natDegree_cyclotomic]
   exact (Nat.totient_pos.mpr (pow_pos (Fact.out : Nat.Prime p).pos _))
 
@@ -258,7 +258,8 @@ theorem padicCyclotomic_norm_one_sub_primitiveRoot_eq_prime
       change Even (Nat.totient n)
       exact Nat.totient_even hn_gt_two
     rw [show 1 - ζ = -(ζ - 1) by ring,
-      show -(ζ - 1) = algebraMap ℚ_[p] L (-1) * (ζ - 1) by simp,
+      show -(ζ - 1) = algebraMap ℚ_[p] L (-1) * (ζ - 1) by
+        rw [map_neg, map_one, neg_one_mul],
       map_mul, Algebra.norm_algebraMap, hsub, heven.neg_one_pow, one_mul]
 
 /-- The primitive root is integral over the actual p-adic integer ring. -/

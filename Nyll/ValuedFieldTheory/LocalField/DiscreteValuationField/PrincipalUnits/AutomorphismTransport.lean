@@ -261,8 +261,7 @@ theorem unitEquiv_div_mem_principalUnit_one_of_residueUnitHom_fixed
     valuationSubringUnitEquivOfPreserves F e hmem u / u ∈
       higherPrincipalUnitGroup F 1 := by
   rw [← higherPrincipalUnitGroup.residueUnitHom_eq_one_iff]
-  rw [map_div, hres u]
-  simp
+  rw [map_div, hres u, div_self']
 
 /-- Quotient form of
 `unitEquiv_div_mem_principalUnit_one_of_residueUnitHom_fixed`: residue-trivial

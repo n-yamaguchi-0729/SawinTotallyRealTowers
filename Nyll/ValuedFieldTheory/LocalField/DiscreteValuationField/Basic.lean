@@ -333,8 +333,7 @@ theorem valuation_ratCast_eq_intCast_of_not_residueCharacteristic_dvd_den
           exact F.toCompleteDVF.valuation.map_div (q.num : K) (q.den : K)
     _ = F.toCompleteDVF.valuation (q.num : K) / 1 := by
           rw [F.valuation_natCast_eq_one_of_not_residueCharacteristic_dvd hden]
-    _ = F.toCompleteDVF.valuation (q.num : K) := by
-          simp
+    _ = F.toCompleteDVF.valuation (q.num : K) := div_one _
 
 /-- A rational number with denominator prime to the residue characteristic lies
 in the valuation subring.  This is the local `ℤ_(p)` input for the converse

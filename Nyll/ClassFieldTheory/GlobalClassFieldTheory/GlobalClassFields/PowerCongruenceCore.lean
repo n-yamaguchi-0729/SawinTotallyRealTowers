@@ -115,7 +115,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
           simp only [u, map_mul, map_inv, map_pow]
         _ = 1 := by
            rw [hbInfComponent, hbInfPow]
-           simp
+           exact mul_inv_cancel _
     change IdeleGroup.infiniteComponent w u ∈
       m.localInfiniteCongruenceSubgroup w
     rw [huComponent]
@@ -141,7 +141,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
                 (IdeleGroup.finiteComponent vS.1 b ^
                   (n : ℕ))⁻¹ = 1
             rw [hbFiniteComponent vS, hbFinitePow vS]
-            simp
+            exact mul_inv_cancel _
       change IdeleGroup.finiteComponent v u ∈
         RayClass.localHigherUnitGroup v (m.finitePart v)
       rw [huComponent]
@@ -189,7 +189,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
     calc
       a = a *
           ((b ^ (n : ℕ)) * (b ^ (n : ℕ))⁻¹) := by
-        simp
+        rw [mul_inv_cancel, mul_one]
       _ = b ^ (n : ℕ) *
           (a * (b ^ (n : ℕ))⁻¹) := by
         ac_rfl

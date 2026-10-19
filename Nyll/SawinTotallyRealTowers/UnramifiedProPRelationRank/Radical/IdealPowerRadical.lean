@@ -38,7 +38,7 @@ def idealNthPowerRadicalKummerSubgroup (n : ℕ+) :
     by
       intro a ha
       obtain ⟨b, rfl⟩ := (mem_unitNthPowersSubgroup_iff n).mp ha
-      exact ⟨toPrincipalIdeal (𝓞 K) K b, by simp⟩⟩
+      exact ⟨toPrincipalIdeal (𝓞 K) K b, (map_pow (toPrincipalIdeal (𝓞 K) K) b (n : ℕ)).symm⟩⟩
 
 /-- Membership in the ideal-power radical is exactly the existence of an
 `n`-th root for the principal fractional ideal. -/
@@ -109,7 +109,8 @@ noncomputable def idealNthRootHom (n : ℕ+) :
   toFun := idealNthRoot K n
   map_one' := by
     apply idealNthRoot_eq_of_pow_eq K n 1 1
-    simp
+    rw [one_pow]
+    exact (map_one (toPrincipalIdeal (𝓞 K) K)).symm
   map_mul' a b := by
     apply idealNthRoot_eq_of_pow_eq K n (a * b)
       (idealNthRoot K n a * idealNthRoot K n b)

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Nyll.ClassFieldTheory.Algebra.RestrictedProduct.Valuation
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 import Mathlib.RingTheory.DedekindDomain.Factorization
 import Mathlib.RingTheory.ClassGroup.Basic
@@ -34,141 +35,95 @@ namespace FiniteIdeleGroup
 uniformizer has exponent one. -/
 def localOrder (v : HeightOneSpectrum (𝓞 K)) :
     (v.adicCompletion K)ˣ →* Multiplicative ℤ :=
-  MonoidHom.mk'
-    (fun x => Multiplicative.ofAdd (-WithZero.log (Valued.v (x : v.adicCompletion K))))
-    fun x y => by
-      apply Multiplicative.ext
-      simp [WithZero.log_mul, add_comm]
+  RestrictedProduct.DiscreteValuation.localOrder (v.adicCompletion K)
 
 @[simp]
 theorem localOrder_apply (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ) :
     (localOrder v x).toAdd =
       -WithZero.log (Valued.v (x : v.adicCompletion K)) :=
-  rfl
+  RestrictedProduct.DiscreteValuation.localOrder_apply (v.adicCompletion K) x
 
 @[simp]
 theorem localOrder_eq_zero_iff (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ) :
     (localOrder v x).toAdd = 0 ↔
-      x ∈ (v.adicCompletionIntegers K).units := by
-  rw [localOrder_apply]
-  rw [HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one]
-  change -WithZero.log (Valued.v (x : v.adicCompletion K)) = 0 ↔
-    Valued.v (x : v.adicCompletion K) = 1
-  rw [neg_eq_zero]
-  let z : ℤᵐ⁰ := Valued.v (x : v.adicCompletion K)
-  have hz : z ≠ 0 := by
-    dsimp [z]
-    simp
-  constructor
-  · intro h
-    have h' :
-        WithZero.logEquiv (Units.mk0 z hz) =
-          WithZero.logEquiv (1 : (ℤᵐ⁰)ˣ) := by
-      simpa [WithZero.logEquiv_apply] using h
-    have hu := (WithZero.logEquiv (G := ℤ)).injective h'
-    simpa [z] using congrArg Units.val hu
-  · intro h
-    rw [h]
-    rfl
+      x ∈ (v.adicCompletionIntegers K).units :=
+  RestrictedProduct.DiscreteValuation.localOrder_eq_zero_iff (v.adicCompletion K) x
 
 /-- The set of finite places where a finite idele is not an integral unit is
 finite. -/
 theorem finite_nonLocalUnits (a : FiniteIdeleGroup K) :
     {v : HeightOneSpectrum (𝓞 K) |
       a v ∉ (v.adicCompletionIntegers K).units}.Finite :=
-  Filter.eventually_cofinite.mp a.2
+  RestrictedProduct.DiscreteValuation.finite_nonLocalUnits
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) a
 
 /-- The finitely supported family of normalized local orders of a finite
 idele. -/
 def valuationVectorAdd (a : FiniteIdeleGroup K) :
     HeightOneSpectrum (𝓞 K) →₀ ℤ :=
-  Finsupp.onFinset (finite_nonLocalUnits a).toFinset
-    (fun v => (localOrder v (a v)).toAdd) (fun v hv => by
-      rw [Set.Finite.mem_toFinset]
-      intro hmem
-      exact hv ((localOrder_eq_zero_iff v (a v)).2 hmem))
+  RestrictedProduct.DiscreteValuation.valuationVectorAdd
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) a
 
 @[simp]
 theorem valuationVectorAdd_apply (a : FiniteIdeleGroup K)
     (v : HeightOneSpectrum (𝓞 K)) :
     valuationVectorAdd a v = (localOrder v (a v)).toAdd :=
-  rfl
+  RestrictedProduct.DiscreteValuation.valuationVectorAdd_apply
+    (fun w : HeightOneSpectrum (𝓞 K) => w.adicCompletion K) a v
 
 /-- The finite valuation vector is a homomorphism from finite ideles to the
 free abelian group on finite places. -/
 def valuationVector :
     FiniteIdeleGroup K →* Multiplicative
       (HeightOneSpectrum (𝓞 K) →₀ ℤ) :=
-  MonoidHom.mk' (fun a => Multiplicative.ofAdd (valuationVectorAdd a))
-    fun a b => by
-      apply Multiplicative.ext
-      ext v
-      exact congrArg Multiplicative.toAdd
-        (map_mul (localOrder v) (a v) (b v))
+  RestrictedProduct.DiscreteValuation.valuationVector
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K)
 
 @[simp]
 theorem valuationVector_apply (a : FiniteIdeleGroup K)
     (v : HeightOneSpectrum (𝓞 K)) :
     (valuationVector a).toAdd v =
       (localOrder v (a v)).toAdd :=
-  rfl
+  RestrictedProduct.DiscreteValuation.valuationVector_apply
+    (fun w : HeightOneSpectrum (𝓞 K) => w.adicCompletion K) a v
 
 /-- A chosen local element of prescribed normalized order. -/
 def chosenLocalOrderSection (v : HeightOneSpectrum (𝓞 K)) (n : ℤ) :
     (v.adicCompletion K)ˣ :=
-  let x := Classical.choose
-    (HeightOneSpectrum.valuedAdicCompletion_surjective K v
-      (WithZero.exp (-n)))
-  Units.mk0 x (by
-    intro hx
-    have hval := Classical.choose_spec
-      (HeightOneSpectrum.valuedAdicCompletion_surjective K v
-        (WithZero.exp (-n)))
-    change Valued.v x = WithZero.exp (-n) at hval
-    rw [hx, map_zero] at hval
-    exact WithZero.exp_ne_zero hval.symm)
+  RestrictedProduct.DiscreteValuation.chosenLocalOrderSection (v.adicCompletion K)
+    (HeightOneSpectrum.valuedAdicCompletion_surjective K v) n
 
 @[simp]
 theorem localOrder_chosenLocalOrderSection
     (v : HeightOneSpectrum (𝓞 K)) (n : ℤ) :
-    (localOrder v (chosenLocalOrderSection v n)).toAdd = n := by
-  rw [localOrder_apply]
-  change -WithZero.log
-    (Valued.v (Classical.choose
-      (HeightOneSpectrum.valuedAdicCompletion_surjective K v
-        (WithZero.exp (-n))))) = n
-  rw [Classical.choose_spec
-    (HeightOneSpectrum.valuedAdicCompletion_surjective K v
-      (WithZero.exp (-n)))]
-  simp
+    (localOrder v (chosenLocalOrderSection v n)).toAdd = n :=
+  RestrictedProduct.DiscreteValuation.localOrder_chosenLocalOrderSection
+    (v.adicCompletion K) (HeightOneSpectrum.valuedAdicCompletion_surjective K v) n
 
 /-- A finite idele with a prescribed finitely supported valuation vector. -/
 def valuationVectorSection
     (e : HeightOneSpectrum (𝓞 K) →₀ ℤ) :
     FiniteIdeleGroup K :=
-  ⟨fun v => chosenLocalOrderSection v (e v), by
-    filter_upwards [e.support.eventually_cofinite_notMem] with v hv
-    apply (localOrder_eq_zero_iff v _).1
-    rw [localOrder_chosenLocalOrderSection, Finsupp.notMem_support_iff.mp hv]⟩
+  RestrictedProduct.DiscreteValuation.valuationVectorSection
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K)
+    (fun v => HeightOneSpectrum.valuedAdicCompletion_surjective K v) e
 
 @[simp]
 theorem valuationVector_valuationVectorSection
     (e : HeightOneSpectrum (𝓞 K) →₀ ℤ) :
     valuationVector (valuationVectorSection e) =
-      Multiplicative.ofAdd e := by
-  apply Multiplicative.ext
-  ext v
-  rw [valuationVector_apply]
-  change (localOrder v (chosenLocalOrderSection v (e v))).toAdd = e v
-  rw [localOrder_chosenLocalOrderSection]
+      Multiplicative.ofAdd e :=
+  RestrictedProduct.DiscreteValuation.valuationVector_valuationVectorSection
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K)
+    (fun v => HeightOneSpectrum.valuedAdicCompletion_surjective K v) e
 
 theorem valuationVector_surjective :
-    Function.Surjective (valuationVector (K := K)) := by
-  intro e
-  refine ⟨valuationVectorSection e.toAdd, ?_⟩
-  exact valuationVector_valuationVectorSection e.toAdd
+    Function.Surjective (valuationVector (K := K)) :=
+  RestrictedProduct.DiscreteValuation.valuationVector_surjective
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K)
+    (fun v => HeightOneSpectrum.valuedAdicCompletion_surjective K v)
 
 end FiniteIdeleGroup
 
@@ -308,14 +263,9 @@ theorem fractionalIdeal_surjective :
     valuationVector_surjective
 
 /-- Finite ideles integral at every finite place. -/
-def integralSubgroup : Subgroup (FiniteIdeleGroup K) where
-  carrier := {a | ∀ v : HeightOneSpectrum (𝓞 K),
-    a v ∈ (v.adicCompletionIntegers K).units}
-  one_mem' v := (v.adicCompletionIntegers K).units.one_mem
-  mul_mem' ha hb v :=
-    (v.adicCompletionIntegers K).units.mul_mem (ha v) (hb v)
-  inv_mem' ha v :=
-    (v.adicCompletionIntegers K).units.inv_mem (ha v)
+def integralSubgroup : Subgroup (FiniteIdeleGroup K) :=
+  RestrictedProduct.DiscreteValuation.integralSubgroup
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K)
 
 @[simp]
 theorem mem_integralSubgroup_iff (a : FiniteIdeleGroup K) :
@@ -326,29 +276,21 @@ theorem mem_integralSubgroup_iff (a : FiniteIdeleGroup K) :
 
 theorem fractionalIdeal_ker :
     (fractionalIdeal (K := K)).ker = integralSubgroup := by
-  ext a
+  apply Subgroup.ext
+  intro a
+  have hv := RestrictedProduct.DiscreteValuation.valuationVector_eq_one_iff
+    (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) a
+  change valuationVector a = 1 ↔ a ∈ integralSubgroup at hv
   constructor
-  · intro ha v
-    have hv :
-        valuationVector a =
-          (1 : Multiplicative
-            (HeightOneSpectrum (𝓞 K) →₀ ℤ)) := by
-      apply (FractionalIdealGroup.factorizationEquiv
-        (K := K)).injective
-      simpa [fractionalIdeal] using ha
-    apply (localOrder_eq_zero_iff v (a v)).1
-    rw [← valuationVector_apply a v, hv]
-    rfl
   · intro ha
-    have hv :
-        valuationVector a =
-          (1 : Multiplicative
-            (HeightOneSpectrum (𝓞 K) →₀ ℤ)) := by
-      apply Multiplicative.ext
-      ext v
-      rw [valuationVector_apply]
-      exact (localOrder_eq_zero_iff v (a v)).2 (ha v)
-    simp [fractionalIdeal, hv]
+    apply hv.1
+    apply (FractionalIdealGroup.factorizationEquiv (K := K)).injective
+    change fractionalIdeal a = FractionalIdealGroup.factorizationEquiv 1
+    rw [map_one]
+    exact ha
+  · intro ha
+    change FractionalIdealGroup.factorizationEquiv (valuationVector a) = 1
+    rw [hv.2 ha, map_one]
 
 /-- The ideal group as the quotient of finite ideles by the everywhere
 integral finite ideles. -/

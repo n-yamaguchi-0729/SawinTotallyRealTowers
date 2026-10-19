@@ -40,7 +40,7 @@ theorem moduleFiniteOfPi
   classical
   apply Module.Finite.of_surjective (LinearMap.proj i)
   intro x
-  exact ⟨Pi.single i x, by simp⟩
+  exact ⟨Pi.single i x, Pi.single_eq_same i x⟩
 
 /-- Multiplication on a binary product is the product of the two
 multiplication endomorphisms. -/

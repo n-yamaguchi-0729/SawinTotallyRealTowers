@@ -430,7 +430,7 @@ theorem card_lower_succ_eq_sum_indicator (i : ℕ) :
   rw [show (∑ σ : F.lower 0,
       if (σ : G) ∈ F.lower (i + 1) then 1 else 0) =
       (Finset.univ.filter fun σ : F.lower 0 =>
-        (σ : G) ∈ F.lower (i + 1)).card by simp]
+        (σ : G) ∈ F.lower (i + 1)).card from Finset.sum_boole _ _]
   congr 1
   ext σ
   simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_filter]

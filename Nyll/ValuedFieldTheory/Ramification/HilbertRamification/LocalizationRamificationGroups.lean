@@ -83,7 +83,7 @@ private theorem mem_extensionValuationSubring_smul
     w.1 ((sigma : L ≃ₐ[K] L)⁻¹ x) ≤ 1 ↔
         w.1 ((sigma : L ≃ₐ[K] L)
           ((sigma : L ≃ₐ[K] L)⁻¹ x)) ≤ 1 := by rw [h]
-    _ ↔ w.1 x ≤ 1 := by simp
+    _ ↔ w.1 x ≤ 1 := by rw [AlgEquiv.aut_inv, (sigma : L ≃ₐ[K] L).apply_symm_apply]
 
 /-- The chosen-valuation decomposition group is the valuation-subring decomposition
 group attached to the same absolute value. -/
@@ -152,7 +152,8 @@ private theorem local_mem_localizationValuationSubring_smul
     AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2 (tau⁻¹ z) ≤ 1 ↔
         AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
           (tau (tau⁻¹ z)) ≤ 1 := by rw [h]
-    _ ↔ AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2 z ≤ 1 := by simp
+    _ ↔ AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2 z ≤ 1 := by
+      rw [AlgEquiv.aut_inv, tau.apply_symm_apply]
 
 /-- Every automorphism of the localization over `K_v` belongs to its
 valuation-subring decomposition group. -/

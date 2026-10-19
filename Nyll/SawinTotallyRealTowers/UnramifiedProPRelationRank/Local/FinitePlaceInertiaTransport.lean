@@ -151,29 +151,25 @@ theorem algebraicLocalizationValuationSubring_eq_normValuationSubring
     (vK : AbsoluteValue K ℝ) (w : AbsoluteValueExtension vK L)
     (hvKna : IsNonarchimedean (vK : K → ℝ))
     (hw : LubinTate.Valuations.NonarchimedeanAbsoluteValue w.1) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI : Valued (AbsoluteValue.algebraicLocalization vK w.1 w.2) NNReal :=
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let _ := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let : Valued (AbsoluteValue.algebraicLocalization vK w.1 w.2) NNReal :=
       localizedCompletionFinitePlaceValued vK w hvKna
-    letI : ValuativeRel (AbsoluteValue.algebraicLocalization vK w.1 w.2) :=
+    let : ValuativeRel (AbsoluteValue.algebraicLocalization vK w.1 w.2) :=
       localizedCompletionFinitePlaceValuativeRel vK w hvKna
     HilbertRamification.algebraicLocalizationValuationSubring vK w hw =
       (ValuativeRel.valuation
         (AbsoluteValue.algebraicLocalization vK w.1 w.2)).valuationSubring := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let _ : SMul K w.1.Completion := hK.toSMul
-  let _ := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK hSmul hCompletion hValued hRel
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
-  let _ : Valued E NNReal :=
-    localizedCompletionFinitePlaceValued vK w hvKna
-  let _ : ValuativeRel E :=
-    localizedCompletionFinitePlaceValuativeRel vK w hvKna
   ext x
   rw [mem_absoluteValueValuationSubring_iff]
   change ‖x‖ ≤ 1 ↔
     x ∈ (ValuativeRel.valuation E).valuationSubring
-  rw [← localizedCompletion_mem_integers_iff_norm_le_one vK w hvKna]
+  have hnorm : x ∈ (ValuativeRel.valuation E).integer ↔ ‖x‖ ≤ 1 :=
+    localizedCompletion_mem_integers_iff_norm_le_one vK w hvKna x
+  rw [← hnorm]
   rw [Valuation.mem_integer_iff, Valuation.mem_valuationSubring_iff]
 
 /-- The norm-induced valuation on a number-field finite-place completion is

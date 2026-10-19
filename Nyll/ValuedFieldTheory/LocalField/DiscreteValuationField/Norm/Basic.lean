@@ -71,8 +71,7 @@ theorem mem_valuationHom_ker_iff (x : G) :
   · intro hx
     exact Multiplicative.ofAdd.injective (by simpa using hx)
   · intro hx
-    rw [hx]
-    simp
+    exact congrArg Multiplicative.ofAdd hx
 
 /-- `val` satisfies the inverse formula `V.val x⁻¹ = -V.val x`. -/
 @[simp] theorem val_inv (x : G) :
@@ -92,8 +91,7 @@ theorem mem_valuationHom_ker_iff (x : G) :
     V.val (x ^ n) = (n : ℤ) * V.val x := by
   induction n with
   | zero =>
-      rw [pow_zero, V.val_one]
-      simp
+      rw [pow_zero, V.val_one, Nat.cast_zero, zero_mul]
   | succ n ih =>
       calc
         V.val (x ^ Nat.succ n) = V.val (x ^ n * x) := by
@@ -881,7 +879,7 @@ theorem inv_mul_mem_zeroSubgroup_iff_exists_mul_zeroSubgroup_eq (x y : G) :
       ∃ u : G, u ∈ V.zeroSubgroup ∧ y * u = x := by
   constructor
   · intro hxy
-    exact ⟨y⁻¹ * x, hxy, by simp⟩
+    exact ⟨y⁻¹ * x, hxy, mul_inv_cancel_left y x⟩
   · rintro ⟨u, hu, hyu⟩
     have hu_eq : u = y⁻¹ * x := by
       have h := congrArg (fun t : G => y⁻¹ * t) hyu

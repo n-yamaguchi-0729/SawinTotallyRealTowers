@@ -38,7 +38,8 @@ noncomputable def quotientSectionFactor (N : Subgroup P) [N.Normal]
     (q r : P ⧸ N) : N :=
   ⟨Quotient.out q * Quotient.out r * (Quotient.out (q * r))⁻¹, by
     rw [← QuotientGroup.eq_one_iff]
-    simp⟩
+    simp only [QuotientGroup.mk_mul, QuotientGroup.mk_inv,
+      Quotient.out_eq', mul_inv_cancel]⟩
 
 @[simp]
 theorem quotientSectionFactor_apply (N : Subgroup P) [N.Normal]
@@ -82,7 +83,7 @@ theorem transgressionFactor_cocycle
         (transgressionFactor N χ r s + transgressionFactor N χ q (r * s)) -
           (transgressionFactor N χ q r + transgressionFactor N χ (q * r) s) := by
             abel
-    _ = 0 := by rw [← hadd]; simp
+    _ = 0 := by rw [← hadd, sub_self]
 
 /-- The homogeneous degree-two cochain associated to a finite quotient factor set. -/
 noncomputable def transgressionHomogeneousCochain
@@ -184,7 +185,7 @@ noncomputable def homogeneousCocycleOfElement
   let one : B.V := by
     change ULift.{u} (ZMod p)
     exact ULift.up 1
-  exact K.liftCycles k (n + 1) (by simp) hk one
+  exact K.liftCycles k (n + 1) (CochainComplex.next ℕ n) hk one
 
 @[simp]
 theorem iCycles_homogeneousCocycleOfElement
@@ -211,17 +212,17 @@ theorem iCycles_homogeneousCocycleOfElement
   let one : B.V := by
     change ULift.{u} (ZMod p)
     exact ULift.up 1
-  have h := K.liftCycles_i k (n + 1) (by simp) hk
+  have h := K.liftCycles_i k (n + 1) (CochainComplex.next ℕ n) hk
   have h1 := ConcreteCategory.congr_hom h one
   have h2 :
-      (K.iCycles n).hom ((K.liftCycles k (n + 1) (by simp) hk).hom one) =
+      (K.iCycles n).hom ((K.liftCycles k (n + 1) (CochainComplex.next ℕ n) hk).hom one) =
         k.hom one := by
-    change ((K.liftCycles k (n + 1) (by simp) hk ≫ K.iCycles n).hom) one = k.hom one
+    change ((K.liftCycles k (n + 1) (CochainComplex.next ℕ n) hk ≫ K.iCycles n).hom) one = k.hom one
     exact h1
-  change (K.iCycles n) (K.liftCycles k (n + 1) (by simp) hk one) = x
+  change (K.iCycles n) (K.liftCycles k (n + 1) (CochainComplex.next ℕ n) hk one) = x
   rw [h2]
   change (1 : ZMod p) • x = x
-  simp
+  exact one_smul (ZMod p) x
 
 /-- The factor-set cochain as a continuous homogeneous degree-two cocycle. -/
 noncomputable def transgressionHomogeneousCocycle

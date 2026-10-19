@@ -70,7 +70,7 @@ theorem dedekindTower_tower_invariants_of_top_product
           = (eBase * eTop) * (fBase * fTop) := by ac_rfl
       _ = e * f := by rw [← he, ← hf]
       _ = eTop * fTop := hprod.symm
-      _ = 1 * (eTop * fTop) := by simp
+      _ = 1 * (eTop * fTop) := (one_mul _).symm
   have heBase : eBase = 1 :=
     Nat.eq_one_of_mul_eq_one_right hmain
   have hfBase : fBase = 1 :=

@@ -153,7 +153,7 @@ theorem range_ordinaryUnitToIdealRadical_eq_ker_toClassTorsion
             (integralUnitToIdealNthPowerRadical K n u)) = 1
         rw [idealNthRoot_eq_of_pow_eq K n
           (integralUnitToIdealNthPowerRadical K n u) 1]
-        · simp
+        · exact map_one (ClassGroup.mk K)
         · rw [one_pow]
           exact ((RayClass.toPrincipalIdeal_eq_one_iff_mem_integralUnits _).2
             ⟨u, rfl⟩).symm
@@ -176,7 +176,7 @@ theorem range_ordinaryUnitToIdealRadical_eq_ker_toClassTorsion
     have hx :
         toPrincipalIdeal (𝓞 K) K (a.1 / b ^ (n : ℕ)) = 1 := by
       rw [map_div, map_pow, hb, ← idealNthRoot_pow K n a]
-      simp
+      exact div_self' _
     obtain ⟨u, hu⟩ :=
       (RayClass.toPrincipalIdeal_eq_one_iff_mem_integralUnits
         (a.1 / b ^ (n : ℕ))).mp hx

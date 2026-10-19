@@ -91,7 +91,7 @@ theorem localHigherUnitGroup_zero
         ((v.adicCompletionIntegers K) ⧸
           (IsLocalRing.maximalIdeal
             (v.adicCompletionIntegers K)) ^ 0) :=
-      Ideal.Quotient.subsingleton_iff.mpr (by simp)
+      Ideal.Quotient.subsingleton_iff.mpr (by rw [pow_zero, Ideal.one_eq_top])
     apply Units.ext
     exact Subsingleton.elim _ _
 
@@ -102,7 +102,10 @@ def infinitePositiveSubgroup (v : InfinitePlace K) :
   carrier := {x | ∀ hv : v.IsReal,
     0 < NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal
       hv (x : v.Completion)}
-  one_mem' hv := by simp
+  one_mem' hv := by
+    change 0 < NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hv 1
+    rw [map_one]
+    exact zero_lt_one
   mul_mem' {x y} hx hy hv := by
     change 0 <
       NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal

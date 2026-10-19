@@ -32,7 +32,12 @@ private theorem finite_iSup_extension_le_extension
   classical
   induction s using Finset.induction_on with
   | empty =>
-      exact ⟨FiniteEverywhereUnramifiedProPExtension.bot, by simp⟩
+      refine ⟨FiniteEverywhereUnramifiedProPExtension.bot, ?_⟩
+      apply iSup_le
+      intro E
+      apply iSup_le
+      intro hE
+      exact False.elim (Finset.notMem_empty E hE)
   | @insert E s hE ih =>
       obtain ⟨C, hC⟩ := ih
       refine ⟨FiniteEverywhereUnramifiedProPExtension.sup hpOdd E C, ?_⟩

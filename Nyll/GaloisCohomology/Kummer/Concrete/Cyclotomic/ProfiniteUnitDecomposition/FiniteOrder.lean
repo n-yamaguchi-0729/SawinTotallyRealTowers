@@ -45,9 +45,9 @@ theorem zHatUnit_padicCoordinate_isOfFinOrder_of_freeCoordinate_eq_zero
         (a, (1 : Multiplicative ℤ_[p.1])) := by
     apply isOfFinOrder_iff_pow_eq_one.mpr
     refine ⟨orderOf a, orderOf_pos a, ?_⟩
-    ext
+    apply Prod.ext
     · exact pow_orderOf_eq_one a
-    · simp
+    · exact one_pow (orderOf a)
   have hsource :
       (a, (1 : Multiplicative ℤ_[p.1])) =
         (padicUnitDecomposition p.1).symm

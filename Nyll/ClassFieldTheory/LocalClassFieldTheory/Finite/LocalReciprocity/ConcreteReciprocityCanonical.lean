@@ -170,7 +170,7 @@ theorem finiteGaloisBase_conjugator
         (⊥ : IntermediateField K (SeparableClosure K)).fixingSubgroup ↔
       τ ∈ (⊥ : IntermediateField K (SeparableClosure K)).fixingSubgroup
     rw [IntermediateField.fixingSubgroup_bot]
-    simp
+    exact iff_of_true (Subgroup.mem_top _) (Subgroup.mem_top _)
   exact congrArg (fun H : Subgroup (G K) => H.carrier) hs
 
 /-- The finite quotient attached to an explicit finite Galois realization. -/

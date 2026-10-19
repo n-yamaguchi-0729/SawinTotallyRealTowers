@@ -147,10 +147,12 @@ private noncomputable def equalCharacteristicCompletedIntegerFrobeniusLift
         (x : equalCharacteristicCompletedLevelField F n)‖ ≤ 1 by
       rw [equalCharacteristicCompletedFrobeniusLift_norm]
       exact_mod_cast x.property)⟩
-  map_one' := by ext; simp
-  map_mul' x y := by ext; simp
-  map_zero' := by ext; simp
-  map_add' x y := by ext; simp
+  map_one' := Subtype.ext (map_one (equalCharacteristicCompletedFrobeniusLiftEquiv F n u⁻¹))
+  map_mul' x y := Subtype.ext
+    (map_mul (equalCharacteristicCompletedFrobeniusLiftEquiv F n u⁻¹) x.1 y.1)
+  map_zero' := Subtype.ext (map_zero (equalCharacteristicCompletedFrobeniusLiftEquiv F n u⁻¹))
+  map_add' x y := Subtype.ext
+    (map_add (equalCharacteristicCompletedFrobeniusLiftEquiv F n u⁻¹) x.1 y.1)
 
 @[simp]
 private theorem equalCharacteristicCompletedIntegerFrobeniusLift_coe
@@ -417,8 +419,8 @@ private theorem
       (equalCharacteristicCompletedPrimitiveRoot F n)
       (equalCharacteristicCompletedPrimitiveRoot_torsion F n)]
   have hu : (u : F.residueField⟦X⟧) *
-      ((u⁻¹ : F.residueField⟦X⟧ˣ) : F.residueField⟦X⟧) = 1 := by
-    simp
+      ((u⁻¹ : F.residueField⟦X⟧ˣ) : F.residueField⟦X⟧) = 1 :=
+    u.val_inv
   rw [hu]
   exact equalCharacteristicLubinTateAmbientBracket_one_apply_of_torsion
     F (equalCharacteristicCompletedLevelResidueHom F n)

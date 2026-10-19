@@ -436,8 +436,10 @@ theorem algebraicLocalizationDensity_localization_principalUnit_map
           (localization vK w)ˣ) : localization vK w) - 1) =
       localizationAbsoluteValue vK w
         (toLocalization vK w ((x : L) - 1)) := by
-          congr 1
-          simp
+          apply congrArg (localizationAbsoluteValue vK w)
+          change toLocalization vK w (x : L) - 1 =
+            toLocalization vK w ((x : L) - 1)
+          rw [map_sub, map_one]
     _ = w.1 ((x : L) - 1) :=
       AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2 _
     _ < 1 := hxAbs
@@ -499,7 +501,8 @@ theorem algebraicLocalizationDensity_localization_mem_ramification_of_commutes
         localizationAbsoluteValue vK w
           (tauE ((u : localization vK w) - 1)) := by
             congr 1
-            simp
+            change tauE (u : localization vK w) - 1 = tauE ((u : localization vK w) - 1)
+            rw [map_sub, map_one]
       _ = localizationAbsoluteValue vK w
           ((u : localization vK w) - 1) :=
         algebraicLocalizationDensity_localizationAbsoluteValue_algEquiv vK w hvK tauE _

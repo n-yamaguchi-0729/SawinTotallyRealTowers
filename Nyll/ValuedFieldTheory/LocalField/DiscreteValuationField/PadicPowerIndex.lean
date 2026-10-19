@@ -139,8 +139,8 @@ noncomputable def padicIntPiNsmulQuotientEquiv
   let a := padicValNat p n
   let f : (ι → ℤ_[p]) →+ (ι → ZMod (p ^ a)) :=
     { toFun := fun x i => PadicInt.toZModPow a (x i)
-      map_zero' := by ext i; simp
-      map_add' := by intro x y; ext i; simp }
+      map_zero' := funext fun i => map_zero (PadicInt.toZModPow a)
+      map_add' := fun x y => funext fun i => map_add (PadicInt.toZModPow a) (x i) (y i) }
   have hf : Function.Surjective f := by
     intro y
     have hcoord : ∀ i : ι, ∃ x : ℤ_[p],
@@ -262,7 +262,7 @@ theorem nsmulAddKernel_padicInt_pi_eq_bot
     rw [nsmul_eq_mul] at hi
     exact (mul_eq_zero.mp hi).resolve_left hnZ
   · rintro rfl
-    simp
+    exact smul_zero n
 
 /-- Nonzero scalar multiplication has a finite (trivial) kernel on any
 product of copies of `Z_p`. -/
@@ -352,8 +352,7 @@ theorem card_finite_prod_padicInt_finPi_nsmulQuotient_eq_kernel_mul
     LocalFieldTheory.card_additive_nsmulQuotient_eq_nsmulKernel,
     card_padicInt_finPi_nsmulQuotient (p := p) d n,
     card_nsmulAddKernel_product,
-    card_nsmulAddKernel_padicInt_pi (p := p) n]
-  simp
+    card_nsmulAddKernel_padicInt_pi (p := p) n, mul_one]
 
 /-- Equal-characteristic free-factor calculation: when `p ∤ n`, an arbitrary
 product of copies of `Z_p` contributes neither kernel nor cokernel. -/

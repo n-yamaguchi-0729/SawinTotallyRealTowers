@@ -96,11 +96,10 @@ theorem finitePlaceAdicCompletionMap_isScalarTower
     (w : HeightOneSpectrum (𝓞 K))
     (W : {W : HeightOneSpectrum (𝓞 L) //
       finitePlaceBelow (K := K) W = w}) :
-    letI : Algebra (w.adicCompletion K) (W.1.adicCompletion L) :=
+    let _ : Algebra (w.adicCompletion K) (W.1.adicCompletion L) :=
       (finitePlaceAdicCompletionMap K L w W).toAlgebra
     IsScalarTower K (w.adicCompletion K) (W.1.adicCompletion L) := by
-  let : Algebra (w.adicCompletion K) (W.1.adicCompletion L) :=
-    (finitePlaceAdicCompletionMap K L w W).toAlgebra
+  intro completionAlgebra
   apply IsScalarTower.of_algebraMap_eq
   intro x
   change
@@ -156,7 +155,7 @@ theorem finitePlaceAdicCompletionMap_self_apply
         (k : W.adicCompletion K)
     rw [finitePlaceAdicCompletionMap_coe
       K K W ⟨W, finitePlaceBelow_self W⟩ k]
-    simp
+    rfl
 
 /-- Canonical maps between concrete adic completions compose in a
 number-field tower. -/

@@ -86,7 +86,7 @@ theorem mem_idealNthPowerRadicalKummerSubgroup_iff_valuation
   · intro h
     let c := FractionalIdealGroup.countVector
       (toPrincipalIdeal (𝓞 K) K a)
-    let d := c.mapRange (fun z : ℤ ↦ z / (n : ℤ)) (by simp)
+    let d := c.mapRange (fun z : ℤ ↦ z / (n : ℤ)) (Int.zero_ediv _)
     refine ⟨FractionalIdealGroup.factorization
       (K := K) (Multiplicative.ofAdd d), ?_⟩
     apply FractionalIdealGroup.ext_count

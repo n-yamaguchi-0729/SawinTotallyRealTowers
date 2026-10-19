@@ -85,9 +85,7 @@ def lowerToQuotientImageHom (F : AntitoneNormalSubgroupFiltration G)
     F.lower n →* (quotientImageFiltration F H).lower n where
   toFun sigma :=
     ⟨QuotientGroup.mk' H (sigma : G), ⟨sigma, sigma.property, rfl⟩⟩
-  map_one' := by
-    apply Subtype.ext
-    simp
+  map_one' := Subtype.ext (map_one (QuotientGroup.mk' H))
   map_mul' sigma tau := by
     apply Subtype.ext
     change QuotientGroup.mk' H (((sigma * tau : F.lower n) : G)) =
@@ -182,14 +180,13 @@ def transportEquiv (F : AntitoneNormalSubgroupFiltration G) (e : G ≃* G') :
 def lowerEquivTransportEquiv
     (F : AntitoneNormalSubgroupFiltration G) (e : G ≃* G') (n : ℕ) :
     F.lower n ≃ (transportEquiv F e).lower n where
-  toFun sigma := ⟨e (sigma : G), by simp⟩
+  toFun sigma := ⟨e (sigma : G), by
+    change e.symm (e (sigma : G)) ∈ F.lower n
+    rw [e.symm_apply_apply]
+    exact sigma.property⟩
   invFun tau := ⟨e.symm (tau : G'), tau.property⟩
-  left_inv sigma := by
-    apply Subtype.ext
-    simp
-  right_inv tau := by
-    apply Subtype.ext
-    simp
+  left_inv sigma := Subtype.ext (e.symm_apply_apply sigma)
+  right_inv tau := Subtype.ext (e.apply_symm_apply tau)
 
 /-- States the theorem `card_lower_transportEquiv`. -/
 theorem card_lower_transportEquiv

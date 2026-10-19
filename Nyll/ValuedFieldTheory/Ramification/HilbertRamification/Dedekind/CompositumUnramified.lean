@@ -303,7 +303,7 @@ theorem isUnramifiedAt_of_inertiaGroup_eq_bot
     rw [← inertia_card_eq_ramificationIdx
       (A := 𝓞 K) (B := 𝓞 M)
       p P Gal(M/K) hp0, hI]
-    simp
+    exact Nat.card_unique
   exact Ideal.ramificationIdx_eq_one_iff.mp he
 
 /-- In the rational-base case, ramification index one forces the
@@ -352,7 +352,7 @@ theorem isUnramifiedAt_int_of_inertiaGroup_eq_bot
       P.ramificationIdx ℤ = 1 := by
     rw [← inertia_card_eq_ramificationIdx
       (A := ℤ) (B := 𝓞 K) p P Gal(K/ℚ) hp0, hI]
-    simp
+    exact Nat.card_unique
   exact Ideal.ramificationIdx_eq_one_iff.mp he
 
 end HilbertRamification.Dedekind

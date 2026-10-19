@@ -227,7 +227,7 @@ theorem finiteCyclicCarryTwoCocycle_zpow_val
     (i j : ZMod (Nat.card G)) :
     finiteCyclicCarryTwoCocycle A g hg a (g ^ i.val, g ^ j.val) =
       zmodCarry i j • a.1 := by
-  simp
+  rw [finiteCyclicCarryTwoCocycle_apply, finiteCyclicCarry_zpow_val]
 
 @[simp]
 theorem finiteCyclicCarryTwoCocycle_one_left
@@ -237,7 +237,7 @@ theorem finiteCyclicCarryTwoCocycle_one_left
     (a : LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap)
     (x : G) :
     finiteCyclicCarryTwoCocycle A g hg a (1, x) = 0 := by
-  simp
+  rw [finiteCyclicCarryTwoCocycle_apply, finiteCyclicCarry_one_left, zero_smul]
 
 @[simp]
 theorem finiteCyclicCarryTwoCocycle_one_right
@@ -247,7 +247,7 @@ theorem finiteCyclicCarryTwoCocycle_one_right
     (a : LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap)
     (x : G) :
     finiteCyclicCarryTwoCocycle A g hg a (x, 1) = 0 := by
-  simp
+  rw [finiteCyclicCarryTwoCocycle_apply, finiteCyclicCarry_one_right, zero_smul]
 
 end
 

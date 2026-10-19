@@ -34,7 +34,8 @@ def isoZeroBoundary {R G : Type u} [CommRing R] [Group G] [Fintype G]
     .mk A.norm.toModuleCatHom (groupCohomology.d₀₁ A)
       (Rep.norm_comp_d_eq_zero A)
   let eS : (tateComplex A).sc 0 ≅ S :=
-    (tateComplex A).isoSc' (-1) 0 1 (by simp) (by simp) ≪≫
+    (tateComplex A).isoSc' (-1) 0 1 (by exact (ComplexShape.up ℤ).prev_eq' (by decide))
+      (by exact (ComplexShape.up ℤ).next_eq' (by decide)) ≪≫
       ShortComplex.isoMk
         (by exact groupHomology.chainsIso₀ A)
         (groupCohomology.cochainsIso₀ A)
@@ -44,7 +45,7 @@ def isoZeroBoundary {R G : Type u} [CommRing R] [Group G] [Fintype G]
             (groupHomology.chainsIso₀ A).hom ≫ A.norm.toModuleCatHom =
               A.tateNorm ≫ (groupCohomology.cochainsIso₀ A).hom
           rw [Rep.tateNorm]
-          simp)
+          simp only [Category.assoc, Iso.inv_hom_id, Category.comp_id])
         (groupCohomology.comp_d₀₁_eq A)
   exact ShortComplex.homologyMapIso eS
 
@@ -93,7 +94,8 @@ def isoFiniteCyclicNegOne {R G : Type u} [CommRing R] [CommGroup G] [Fintype G]
   let S : ShortComplex (ModuleCat R) :=
     .mk (groupHomology.d₁₀ A) A.norm.toModuleCatHom (Rep.comp_eq_zero A)
   let eS : (tateComplex A).sc (-1) ≅ S :=
-    (tateComplex A).isoSc' (-2) (-1) 0 (by simp) (by simp) ≪≫
+    (tateComplex A).isoSc' (-2) (-1) 0 (by exact (ComplexShape.up ℤ).prev_eq' (by decide))
+      (by exact (ComplexShape.up ℤ).next_eq' (by decide)) ≪≫
       ShortComplex.isoMk
         (groupHomology.chainsIso₁ A)
         (groupHomology.chainsIso₀ A)

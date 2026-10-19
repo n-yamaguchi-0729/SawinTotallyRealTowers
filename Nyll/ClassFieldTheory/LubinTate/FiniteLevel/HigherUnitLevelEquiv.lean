@@ -330,8 +330,9 @@ theorem standardLubinTatePrimitivePolynomial_derivative_eval₂_addVal
       exact Nat.cast_card_eq_zero F.residueField
     rw [Nat.cast_sub
       (Nat.le_of_lt
-        (Finite.one_lt_card : 1 < Nat.card F.residueField)), hqzero]
-    simp
+        (Finite.one_lt_card : 1 < Nat.card F.residueField)), hqzero,
+      Nat.cast_one, zero_sub]
+    exact neg_ne_zero.mpr one_ne_zero
   have hqsubunitBase :
       IsUnit ((q - 1 : ℕ) : F.valuationSubring) :=
     (F.toCompleteDVF.residue_ne_zero_iff_isUnit

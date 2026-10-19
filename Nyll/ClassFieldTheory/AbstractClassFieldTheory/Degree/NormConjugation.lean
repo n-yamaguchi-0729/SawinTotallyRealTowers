@@ -121,12 +121,15 @@ noncomputable def relativeConjugateCosetEquiv [ContinuousMul G]
     constructor
     · intro hxy
       refine ⟨x⁻¹ * y, hxy, ?_⟩
-      simp
+      change e (x⁻¹ * y) = (e x)⁻¹ * e y
+      rw [map_mul, map_inv]
     · rintro ⟨z, hz, hez⟩
       have heq : z = x⁻¹ * y := by
         apply e.injective
-        simpa using hez
-      simpa [heq] using hz)
+        change e z = (e x)⁻¹ * e y at hez
+        simpa only [map_mul, map_inv] using hez
+      rw [← heq]
+      exact hz)
 
 /--
 Establishes the identity `relativeConjugateCosetEquiv K L hLK s (QuotientGroup.mk k) =

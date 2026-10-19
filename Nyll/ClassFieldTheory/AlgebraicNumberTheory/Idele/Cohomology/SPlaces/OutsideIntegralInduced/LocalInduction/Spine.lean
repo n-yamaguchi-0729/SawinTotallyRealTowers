@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
 import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
 
 /-!
 # Shared completion spine for integral local induction
@@ -68,9 +69,10 @@ noncomputable def baseValued
 @[reducible]
 noncomputable def baseValuativeRel
     (hvKna : IsNonarchimedean (vK : K → ℝ)) :
-    letI : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
-    ValuativeRel vK.Completion :=
-  finitePlaceCompletionValuativeRel vK hvKna
+    let _ : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
+    ValuativeRel vK.Completion := by
+  intro hBaseValued
+  exact finitePlaceCompletionValuativeRel vK hvKna
 
 /-- The canonical valued structure on the chosen localized completion. -/
 @[reducible]
@@ -83,35 +85,34 @@ noncomputable def localizedValued
 @[reducible]
 noncomputable def localizedValuativeRel
     (hvKna : IsNonarchimedean (vK : K → ℝ)) :
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       localizedValued vK w hvKna
-    ValuativeRel (LocalizedCompletion vK w) :=
-  localizedCompletionFinitePlaceValuativeRel vK w hvKna
+    ValuativeRel (LocalizedCompletion vK w) := by
+  intro hLocalValued
+  exact localizedCompletionFinitePlaceValuativeRel vK w hvKna
 
 /-- The canonical algebra of the localized completion over the completed
 base valuation ring. -/
 @[reducible]
 noncomputable def integerAlgebra
     (hvKna : IsNonarchimedean (vK : K → ℝ)) :
-    letI := extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion := extensionCompletionSMul vK w
-    letI := completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
-    letI : ValuativeRel vK.Completion := baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Algebra K w.1.Completion :=
+      extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion :=
+      extensionCompletionSMul vK w
+    let _ : Algebra vK.Completion w.1.Completion :=
+      completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 :=
+      baseValued vK hvKna
+    let _ : ValuativeRel vK.Completion :=
+      baseValuativeRel vK hvKna
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       localizedValuativeRel vK w hvKna
     Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) := by
-  letI := extensionCompletionAlgebra vK w
-  letI : SMul K w.1.Completion := extensionCompletionSMul vK w
-  letI := completionAlgebra vK w
-  letI : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
-  letI : ValuativeRel vK.Completion := baseValuativeRel vK hvKna
-  letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
-    localizedValued vK w hvKna
-  letI : ValuativeRel (LocalizedCompletion vK w) :=
-    localizedValuativeRel vK w hvKna
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel
   exact Algebra.ofSubsemiring 𝒪[vK.Completion]
 
 omit [NumberField K] [NumberField L] [FiniteDimensional K L]
@@ -120,19 +121,23 @@ omit [NumberField K] [NumberField L] [FiniteDimensional K L]
 local-induction completion pair. -/
 theorem valuationHasExtension
     (hvKna : IsNonarchimedean (vK : K → ℝ)) :
-    letI := extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion := extensionCompletionSMul vK w
-    letI := completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
-    letI : ValuativeRel vK.Completion := baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Algebra K w.1.Completion :=
+      extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion := extensionCompletionSMul vK w
+    let _ : Algebra vK.Completion w.1.Completion :=
+      completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
+    let _ : ValuativeRel vK.Completion := baseValuativeRel vK hvKna
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       localizedValuativeRel vK w hvKna
     Valuation.HasExtension
       (ValuativeRel.valuation vK.Completion)
-      (ValuativeRel.valuation (LocalizedCompletion vK w)) :=
-  localizedCompletionValuationHasExtension vK w hvKna
+      (ValuativeRel.valuation (LocalizedCompletion vK w)) := by
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel
+  exact localizedCompletionValuationHasExtension vK w hvKna
 
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 /-- The canonical integral-closure certificate for the integral
@@ -140,23 +145,29 @@ local-induction completion pair. -/
 theorem isIntegralClosure
     (hvK : vK.IsNontrivial)
     (hvKna : IsNonarchimedean (vK : K → ℝ)) :
-    letI := extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion := extensionCompletionSMul vK w
-    letI := completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
-    letI : ValuativeRel vK.Completion := baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Algebra K w.1.Completion :=
+      extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion := extensionCompletionSMul vK w
+    let _ : Algebra vK.Completion w.1.Completion :=
+      completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 := baseValued vK hvKna
+    let _ : ValuativeRel vK.Completion := baseValuativeRel vK hvKna
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       localizedValuativeRel vK w hvKna
-    letI : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+    let _ : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
       integerAlgebra vK w hvKna
-    letI := valuationHasExtension vK w hvKna
+    let _ : Valuation.HasExtension
+        (ValuativeRel.valuation vK.Completion)
+        (ValuativeRel.valuation (LocalizedCompletion vK w)) :=
+      valuationHasExtension vK w hvKna
     IsIntegralClosure
       𝒪[LocalizedCompletion vK w]
       𝒪[vK.Completion]
-      (LocalizedCompletion vK w) :=
-  localizedCompletionIsIntegralClosureWithExtension
-    vK w hvK hvKna
+      (LocalizedCompletion vK w) := by
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel hIntegerAlgebra hExtension
+  exact localizedCompletionIsIntegralClosureWithExtension vK w hvK hvKna
 
 end LocalInductionInternal

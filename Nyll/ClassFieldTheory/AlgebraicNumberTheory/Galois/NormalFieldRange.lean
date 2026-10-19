@@ -37,7 +37,8 @@ theorem fieldRange_eq_of_normal
     intro x hx
     rw [← hrange]
     rcases AlgHom.mem_fieldRange.mp hx with ⟨y, rfl⟩
-    exact AlgHom.mem_fieldRange.mpr ⟨v.equivFieldRange y, by simp⟩
+    exact AlgHom.mem_fieldRange.mpr
+      ⟨v.equivFieldRange y, congrArg u (v.equivFieldRange.symm_apply_apply y)⟩
   exact le_antisymm
     (fieldRange_le_of_normal f g) (fieldRange_le_of_normal g f)
 

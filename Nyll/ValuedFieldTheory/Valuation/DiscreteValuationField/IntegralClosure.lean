@@ -53,10 +53,12 @@ theorem primeSpectrum_subsingleton_of_isArtinianRing_of_idempotents_trivial
         P ∈ (PrimeSpectrum.basicOpen (0 : A) : Set (PrimeSpectrum A)) := by
       rw [← heopen]
       exact Set.mem_singleton P
-    simp at hPmem
+    exact (show P ∉ (PrimeSpectrum.basicOpen (0 : A) : Set (PrimeSpectrum A)) by
+      rw [PrimeSpectrum.basicOpen_zero]
+      exact Set.notMem_empty P) hPmem
   · have hQmem : Q ∈ ({P} : Set (PrimeSpectrum A)) := by
-      rw [heopen]
-      simp
+      rw [heopen, PrimeSpectrum.basicOpen_one]
+      trivial
     exact hPQ hQmem.symm
 
 /-- Over a local base ring, the canonical map from an algebra to the fiber over
@@ -256,10 +258,10 @@ def integralClosureToTargetValuationSubringOfHasExtension
     ⟨(z : L),
       integralClosure_mem_target_valuationSubring_of_hasExtension
         (K := K) (L := L) base target z⟩
-  map_zero' := by ext; simp
-  map_one' := by ext; simp
-  map_add' z₁ z₂ := by ext; simp
-  map_mul' z₁ z₂ := by ext; simp
+  map_zero' := Subtype.ext rfl
+  map_one' := Subtype.ext rfl
+  map_add' _ _ := Subtype.ext rfl
+  map_mul' _ _ := Subtype.ext rfl
 
 omit [FiniteDimensional K L] in
 /-- The map from the integral closure to the target valuation ring uses the ambient inclusion. -/
@@ -318,10 +320,10 @@ def targetValuationSubringToIntegralClosureOfModuleFinite
     ⟨(z : L),
       target_valuationSubring_mem_integralClosure_of_moduleFinite
         (K := K) (L := L) base target z⟩
-  map_zero' := by ext; simp
-  map_one' := by ext; simp
-  map_add' z₁ z₂ := by ext; simp
-  map_mul' z₁ z₂ := by ext; simp
+  map_zero' := Subtype.ext rfl
+  map_one' := Subtype.ext rfl
+  map_add' _ _ := Subtype.ext rfl
+  map_mul' _ _ := Subtype.ext rfl
 
 omit [FiniteDimensional K L] in
 /-- The inverse map sends a target integer to its integral-closure representative. -/
@@ -783,8 +785,7 @@ theorem integralClosure_base_maximal_fiber_subsingleton_of_idempotents_lift
   rcases hlift e he with ⟨b, hbidem, hbmap⟩
   rcases (integralClosure_idempotent_eq_zero_or_one base target) b hbidem with rfl | rfl
   · left
-    rw [← hbmap]
-    simp
+    rw [← hbmap, map_zero]
   · right
     rw [← hbmap]
     exact (Algebra.TensorProduct.includeRight :
@@ -1400,8 +1401,7 @@ theorem integralClosure_base_maximal_fiber_subsingleton_of_idempotents_lift
   rcases hlift e he with ⟨b, hbidem, hbmap⟩
   rcases (integralClosure_idempotent_eq_zero_or_one base target) b hbidem with rfl | rfl
   · left
-    rw [← hbmap]
-    simp
+    rw [← hbmap, map_zero]
   · right
     rw [← hbmap]
     exact (Algebra.TensorProduct.includeRight :

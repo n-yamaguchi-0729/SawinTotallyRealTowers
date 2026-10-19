@@ -370,7 +370,7 @@ theorem ker_compositumRestrictionLeft_inf_ker_compositumRestrictionRight
   · intro hq
     rw [Subgroup.mem_bot] at hq
     subst q
-    simp
+    exact Subgroup.one_mem _
 
 /-! ## Recovering a field from the order of its finite quotient -/
 

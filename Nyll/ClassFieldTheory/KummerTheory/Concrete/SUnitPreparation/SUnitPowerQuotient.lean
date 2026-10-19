@@ -87,11 +87,11 @@ def finsuppModHom (d n : ℕ) :
     (Fin d →₀ ℤ) →+ (Fin d → ZMod n) where
   toFun x i := x i
   map_zero' := by
-    ext i
-    simp
+    funext i
+    exact Int.cast_zero
   map_add' x y := by
-    ext i
-    simp
+    funext i
+    exact Int.cast_add (x i) (y i)
 
 /-- Every vector over `ZMod n` has an integral lift. -/
 theorem finsuppModHom_surjective (d n : ℕ) :
@@ -180,8 +180,7 @@ theorem card_finsupp_nsmulQuotient
   let _ : NeZero (n : ℕ) := ⟨n.ne_zero⟩
   rw [Nat.card_congr
     (finsuppNsmulQuotientEquivPiZMod d n).toEquiv,
-    Nat.card_pi]
-  simp
+    Nat.card_fun, Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]
 
 omit [NumberField K] in
 /-- A primitive `n`-th root in `K` embeds a cyclic subgroup of order `n`
@@ -276,7 +275,7 @@ noncomputable def numberFieldTorsionNthPowerQuotientEquivZMod
           NumberField.Units.torsion K →*
             NumberField.Units.torsion K).range ≃*
       Multiplicative (ZMod (n : ℕ)) := by
-  letI : IsCyclic
+  have : IsCyclic
       (NumberField.Units.torsion K ⧸
         (powMonoidHom (n : ℕ) :
           NumberField.Units.torsion K →*
@@ -288,9 +287,10 @@ noncomputable def numberFieldTorsionNthPowerQuotientEquivZMod
             NumberField.Units.torsion K).range)
       (QuotientGroup.mk'_surjective _)
   apply mulEquivOfCyclicCardEq
-  rw [card_numberField_torsion_nthPowerQuotient
-    (K := K) n hmu]
-  simp
+  rw [card_numberField_torsion_nthPowerQuotient (K := K) n hmu,
+    Nat.card_congr
+      (Multiplicative.toAdd : Multiplicative (ZMod (n : ℕ)) ≃ ZMod (n : ℕ)),
+    Nat.card_zmod]
 
 /-- The `n`-th-power quotient of an `S`-unit group is finite. -/
 noncomputable instance finite_sUnit_nthPowerQuotient

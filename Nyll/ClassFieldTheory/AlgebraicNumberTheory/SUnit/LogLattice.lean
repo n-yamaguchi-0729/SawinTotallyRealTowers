@@ -64,7 +64,8 @@ noncomputable def reducedLog :
   map_zero' := by
     apply Prod.ext
     · ext w
-      simp
+      change w.1.mult * Real.log (w.1 (1 : K)) = 0
+      rw [map_one, Real.log_one, mul_zero]
     · ext v
       change
         (divisorCoordinate (K := K) S 1 v : ℝ) = 0
@@ -98,7 +99,7 @@ theorem adicAbv_eq_zpow_neg_divisorCoordinate
     valuation_eq_exp_neg_count (K := K)]
   rw [WithZeroMulInt.toNNReal_neg_apply]
   · norm_cast
-  · simp
+  · exact WithZero.exp_ne_zero
 
 /-- The logarithm of a normalized finite absolute value is the divisor
 coordinate times `-log Nv`. -/
@@ -278,7 +279,7 @@ instance instDiscreteTopology_reducedLogLattice :
       (show
         (0 :
           NumberField.Units.dirichletUnitTheorem.logSpace K) ∈
-        NumberField.Units.unitLattice K by simp)
+        NumberField.Units.unitLattice K from (NumberField.Units.unitLattice K).zero_mem)
   let δ : ℝ := min ε 1
   have hδpos : 0 < δ := lt_min hεpos zero_lt_one
   refine discreteTopology_iff_isOpen_singleton_zero.mpr
@@ -486,7 +487,9 @@ noncomputable def fullLogAmbient :
               SUnitGroup (K := K) S) : Kˣ) : K))
   map_zero' := by
     ext p
-    cases p <;> simp
+    cases p <;>
+      simp only [toMul_zero, Subgroup.coe_one, Units.val_one,
+        map_one, Real.log_one, mul_zero, Pi.zero_apply]
   map_add' x y := by
     ext p
     cases p <;> simp [Real.log_mul, mul_add]
@@ -522,7 +525,7 @@ theorem adicAbv_eq_one_of_not_mem
         (((x : Kˣ) : K)) = 1 := by
   rw [NumberField.HeightOneSpectrum.adicAbv_def,
     x.property v hv]
-  simp
+  simp only [map_one, NNReal.coe_one]
 
 /-- For an `S`-unit the finite part of the global product formula is
 the product over the finite places in `S`. -/

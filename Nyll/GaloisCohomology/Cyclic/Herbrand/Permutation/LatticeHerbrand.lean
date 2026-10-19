@@ -52,10 +52,10 @@ def intCoordinatePermutation (σ : Equiv.Perm ι) :
   invFun x i := x (σ i)
   left_inv x := by
     funext i
-    simp
+    exact congrArg x (σ.symm_apply_apply i)
   right_inv x := by
     funext i
-    simp
+    exact congrArg x (σ.apply_symm_apply i)
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 

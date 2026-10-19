@@ -280,10 +280,7 @@ private theorem classFieldAxiom_unramifiedUnits_hZero
       haK]
     exact hc
   let homologyEquiv : H ≃ T.homology :=
-    { toFun := fun x => T.moduleCatLeftHomologyData.homologyIso.inv x
-      invFun := fun x => T.moduleCatLeftHomologyData.homologyIso.hom x
-      left_inv := by intro x; simp
-      right_inv := by intro x; simp }
+    T.moduleCatLeftHomologyData.homologyIso.symm.toLinearEquiv.toEquiv
   let eHTate : H ≃ tateCohomology M 0 :=
     homologyEquiv.trans
       (TateCohomology.isoFiniteCyclicZero M g hg).symm.toLinearEquiv.toEquiv
@@ -1108,8 +1105,7 @@ theorem abstractReciprocity_cyclicTower_normMap_injective
           Nat.card (FiniteNormQuotient A K M hMK) := by
         have hpRange : p.range = ⊤ :=
           (AddMonoidHom.range_eq_top).2 hpsurjective
-        rw [hpRange]
-        simp
+        rw [hpRange, AddSubgroup.card_top]
   have hdegree :
       (ELM.degree : ℕ) * (EMK.degree : ℕ) = (ELK.degree : ℕ) := by
     rw [← ELM.relIndex_eq_degree, ← EMK.relIndex_eq_degree,
@@ -1174,7 +1170,7 @@ theorem abstractReciprocity_zHat_nsmul_eq_natCast_forces_zero
         _ =
           zHatReduction n hn (n • z) := congrArg (zHatReduction n hn) h.symm
         _ = n • zHatReduction n hn z := map_nsmul (zHatReduction n hn) n z
-        _ = 0 := by simp
+        _ = 0 := by rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
     simpa using hkmodInt
   exact Nat.eq_zero_of_dvd_of_lt
     ((ZMod.natCast_eq_zero_iff k n).1 hkmod) hk

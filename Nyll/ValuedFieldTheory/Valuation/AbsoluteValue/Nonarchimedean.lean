@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Mathlib.Analysis.AbsoluteValue.Equivalence
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Algebra.Order.Ring.IsNonarchimedean
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
 # Nonarchimedean absolute values
@@ -21,20 +22,6 @@ open Filter
 open scoped Topology
 
 namespace AbsoluteValue
-
-private theorem finset_sum_le
-    {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
-    {ι : Type*} (s : Finset ι) (f : ι → K) :
-    v (s.sum f) ≤ s.sum (fun i => v (f i)) := by
-  classical
-  refine Finset.induction_on s ?empty ?insert
-  · simp
-  · intro i s his ih
-    rw [Finset.sum_insert his, Finset.sum_insert his]
-    exact (v.add_le (f i) (s.sum f)).trans
-      (by
-        simpa [add_comm, add_left_comm, add_assoc] using
-          add_le_add_left ih (v (f i)))
 
 private theorem nat_bound_ge_one
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
@@ -62,7 +49,7 @@ private theorem add_pow_le_of_bounded_nat
           (fun m => x ^ m * y ^ (n - m) * (n.choose m : K))) ≤
         (Finset.range (n + 1)).sum
           (fun m => v (x ^ m * y ^ (n - m) * (n.choose m : K))) :=
-    finset_sum_le v (Finset.range (n + 1))
+    v.sum_le (Finset.range (n + 1))
       (fun m => x ^ m * y ^ (n - m) * (n.choose m : K))
   have hterm :
       ∀ m ∈ Finset.range (n + 1),
@@ -230,7 +217,8 @@ theorem isNonarchimedean_iff_bounded_nat
       ∃ C : ℝ, ∀ n : ℕ, v (n : K) ≤ C := by
   constructor
   · intro h
-    exact ⟨1, fun n => h.apply_natCast_le_one (by simp) (by simp)⟩
+    exact ⟨1, fun n => h.apply_natCast_le_one
+      (by rw [v.map_zero, v.map_one]; exact zero_le_one) v.map_one⟩
   · exact isNonarchimedean_of_bounded_nat v
 
 

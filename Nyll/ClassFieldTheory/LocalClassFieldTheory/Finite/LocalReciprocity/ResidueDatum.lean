@@ -103,7 +103,7 @@ theorem residueDatumIn_fieldImage_closedFixingSubgroup
           (zHatReduction (Module.finrank k E) Module.finrank_pos z.toAdd)) = 1
       rw [show zHatReduction (Module.finrank k E) Module.finrank_pos z.toAdd = 0
         from hz]
-      simp
+      exact map_one (finiteResidueFrobeniusExponentHom k E)
     · exact (residueAbsoluteFrobeniusEquivIn k Omega).symm_apply_apply z
 
 /-- Internal finite-coordinate calculation: the degree image of the fixing

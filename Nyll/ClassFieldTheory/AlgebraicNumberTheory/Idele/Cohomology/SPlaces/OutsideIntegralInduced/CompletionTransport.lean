@@ -41,14 +41,14 @@ variable (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
 Galois conjugation and then into the chosen algebraic localization. -/
 noncomputable def rightCosetCompletionRingEquivLocalized
     (q : InducedRightCosets (absoluteValueDecompositionGroup K w.1)) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK : Algebra K w.1.Completion :=
+      AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let _ : SMul K w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
+      AbsoluteValue.completionAlgebra vK w.1 w.2
     (rightCosetExtensionEquiv vK hvK w q).1.Completion ≃+*
       LocalizedCompletion vK w := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK hSMulK hCompletionAlgebra
   change
     (absoluteValueExtensionConjugate
       vK w (Quotient.out q)).1.Completion ≃+*
@@ -64,14 +64,13 @@ theorem rightCosetCompletionRingEquivLocalized_norm_eq
     (q : InducedRightCosets (absoluteValueDecompositionGroup K w.1))
     (x : (absoluteValueExtensionConjugate
       vK w (Quotient.out q)).1.Completion) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
-    ‖rightCosetCompletionRingEquivLocalized vK hvK w q x‖ =
-      ‖x‖ := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK : Algebra K w.1.Completion :=
+      AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let _ : SMul K w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
+      AbsoluteValue.completionAlgebra vK w.1 w.2
+    ‖rightCosetCompletionRingEquivLocalized vK hvK w q x‖ = ‖x‖ := by
+  intro hK hSMulK hCompletionAlgebra
   let z :=
     conjugateExtensionCompletionRingEquiv
       vK w (Quotient.out q) x
@@ -96,12 +95,14 @@ theorem rightCosetCompletionRingEquivLocalized_norm_eq
 noncomputable def rightCosetCompletionIntegersRingEquivLocalized
     (hvKna : IsNonarchimedean (vK : K → ℝ))
     (q : InducedRightCosets (absoluteValueDecompositionGroup K w.1)) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let hK : Algebra K w.1.Completion :=
+      AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let _ : SMul K w.1.Completion := hK.toSMul
+    let _ : Algebra vK.Completion w.1.Completion :=
+      AbsoluteValue.completionAlgebra vK w.1 w.2
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       localizedCompletionFinitePlaceValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       localizedCompletionFinitePlaceValuativeRel vK w hvKna
     (absoluteValueCompletionIntegers
       (absoluteValueExtensionConjugate
@@ -111,13 +112,7 @@ noncomputable def rightCosetCompletionIntegersRingEquivLocalized
         (absoluteValueExtensionConjugate
           vK w (Quotient.out q)))) ≃+*
       𝒪[LocalizedCompletion vK w] := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
-  letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
-    localizedCompletionFinitePlaceValued vK w hvKna
-  letI : ValuativeRel (LocalizedCompletion vK w) :=
-    localizedCompletionFinitePlaceValuativeRel vK w hvKna
+  intro hK hSMulK hCompletionAlgebra hLocalValued hLocalRel
   let e :
       (absoluteValueExtensionConjugate
         vK w (Quotient.out q)).1.Completion ≃+*
@@ -125,12 +120,11 @@ noncomputable def rightCosetCompletionIntegersRingEquivLocalized
     rightCosetCompletionRingEquivLocalized vK hvK w q
   refine e.restrict _ _ ?_
   intro x
-  rw [mem_absoluteValueCompletionIntegers_iff,
-    localizedCompletion_mem_integers_iff_norm_le_one]
-  have hnorm :=
-    rightCosetCompletionRingEquivLocalized_norm_eq
-      vK hvK w q x
-  change ‖e x‖ = ‖x‖ at hnorm
+  have hmem : e x ∈ 𝒪[LocalizedCompletion vK w] ↔ ‖e x‖ ≤ 1 :=
+    localizedCompletion_mem_integers_iff_norm_le_one vK w hvKna (e x)
+  rw [mem_absoluteValueCompletionIntegers_iff, hmem]
+  have hnorm : ‖e x‖ = ‖x‖ :=
+    rightCosetCompletionRingEquivLocalized_norm_eq vK hvK w q x
   rw [hnorm]
 
 end CompletionTransport

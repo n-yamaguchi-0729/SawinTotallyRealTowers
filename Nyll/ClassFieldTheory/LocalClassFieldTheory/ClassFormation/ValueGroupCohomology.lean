@@ -48,18 +48,13 @@ theorem galoisGroupValueGroup_tateNorm_toAdd (a : Multiplicative Int) :
 /-- Reduction modulo `|G|` on the fixed subgroup of the trivial value-group
 module. -/
 def galoisGroupValueGroupFixedToZModHom :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let _ : MulDistribMulAction (Gal(L / K)) (Multiplicative Int) :=
+      galoisGroupValueGroupMulDistribMulAction K L
     fixedSubgroup (Gal(L / K)) (Multiplicative Int) →*
       Multiplicative (ZMod (Fintype.card (Gal(L / K)))) := by
-  letI := galoisGroupValueGroupMulDistribMulAction K L
-  exact
-    { toFun := fun x => Multiplicative.ofAdd
-        ((Multiplicative.toAdd (x : Multiplicative Int) : Int) :
-          ZMod (Fintype.card (Gal(L / K))))
-      map_one' := by simp
-      map_mul' := by
-        intro x y
-        simp }
+  intro valueAction
+  exact (Int.castAddHom (ZMod (Fintype.card (Gal(L / K))))).toMultiplicative.comp
+    (fixedSubgroup (Gal(L / K)) (Multiplicative Int)).subtype
 
 /-- States the theorem `galoisGroupValueGroupFixedToZModHom_surjective`. -/
 theorem galoisGroupValueGroupFixedToZModHom_surjective :
@@ -149,8 +144,12 @@ theorem galoisGroupValueGroup_herbrandH0_card :
     Nat.card (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) =
       Fintype.card (Gal(L / K)) := by
   let := galoisGroupValueGroupMulDistribMulAction K L
-  rw [Nat.card_congr (galoisGroupValueGroupHerbrandH0MulEquivZMod K L).toEquiv]
-  simp
+  rw [Nat.card_congr (galoisGroupValueGroupHerbrandH0MulEquivZMod K L).toEquiv,
+    Nat.card_congr
+      (Multiplicative.toAdd :
+        Multiplicative (ZMod (Fintype.card (Gal(L / K)))) ≃
+          ZMod (Fintype.card (Gal(L / K)))),
+    Nat.card_zmod]
 
 /-- For a finite Galois extension, the value-group factor is the extension
 degree appearing in the local class-field-axiom theorem. -/

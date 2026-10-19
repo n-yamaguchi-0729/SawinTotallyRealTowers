@@ -252,8 +252,8 @@ theorem zmodLaurentCoeffMap_powerSeries_X :
         (algebraMap (ZMod p)⟦X⟧ (ZMod p)⸨X⸩))
       (PowerSeries.X : (ZMod p)⟦X⟧) =
     (algebraMap k⟦X⟧ k⸨X⸩) (PowerSeries.X : k⟦X⟧)
-  rw [zmodLaurentCoeffMap_comp_powerSeries]
-  simp
+  rw [zmodLaurentCoeffMap_comp_powerSeries, RingHom.comp_apply,
+    zmodPowerSeriesCoeffMap_X]
 
 /-- The induced algebra structure of `k((X))` over `F_p((X))`. -/
 @[reducible]

@@ -135,8 +135,8 @@ noncomputable def multiplicativeIntegerValuationOfUniformizer
   val x := (uniformizerValueExponent F) hπ x
   map_one := by
     apply ((uniformizerValueUnit_zpow_inj F) hπ).1
-    rw [(uniformizerValueUnit_zpow_uniformizerValueExponent_eq_fieldUnitValueUnit F)]
-    simp
+    rw [(uniformizerValueUnit_zpow_uniformizerValueExponent_eq_fieldUnitValueUnit F),
+      fieldUnitValueUnit_one, zpow_zero]
   map_mul x y := by
     apply ((uniformizerValueUnit_zpow_inj F) hπ).1
     calc

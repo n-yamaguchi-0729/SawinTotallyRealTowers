@@ -128,7 +128,7 @@ theorem finitePlaceExtension_isEquiv_adicAbv
     rw [finitePlaceExtension_adicAbv_valuationSubring]
   by_cases hx : x = 0
   · subst x
-    simp
+    rw [map_zero, map_zero]
   calc
     w.1 x < 1 ↔ 1 < (w.1 x)⁻¹ :=
       (one_lt_inv₀ (w.1.pos hx)).symm

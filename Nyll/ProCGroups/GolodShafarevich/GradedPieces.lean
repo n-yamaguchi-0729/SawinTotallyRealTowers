@@ -117,8 +117,8 @@ theorem shiftedTruncatedAugmentationDimension_eq_star (N shift : ℕ) :
             hexp
         _ = ⊤ := by
           rw [closedAugmentationPower_zero_eq_top]
-          ext x
-          simp
+          exact Submodule.restrictScalars_top (ZMod p)
+            (ModPCompletedGroupAlgebra p G) (ModPCompletedGroupAlgebra p G)
     unfold shiftedTruncatedAugmentationDimension
     calc
       Module.finrank (ZMod p)

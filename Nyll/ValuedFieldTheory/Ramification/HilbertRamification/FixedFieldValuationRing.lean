@@ -314,18 +314,12 @@ def fixedFieldValuationSubringLiftedAutDVF
       exact
         (mem_valuationSubring_algEquiv_iff_of_hasUniqueValuationExtension
           (base := base) (target := target) huniq (sigma⁻¹) _).1 a.property⟩
-  left_inv a := by
-    ext
-    simp
-  right_inv a := by
-    ext
-    simp
-  map_mul' a b := by
-    ext
-    simp
-  map_add' a b := by
-    ext
-    simp
+  left_inv a := Subtype.ext ((IsGalois.normalAutEquivQuotient H sigma).symm_apply_apply a)
+  right_inv a := Subtype.ext ((IsGalois.normalAutEquivQuotient H sigma).apply_symm_apply a)
+  map_mul' a b := Subtype.ext (map_mul (IsGalois.normalAutEquivQuotient H sigma)
+    (a : fixedFieldDVF (K := K) H) (b : fixedFieldDVF (K := K) H))
+  map_add' a b := Subtype.ext (map_add (IsGalois.normalAutEquivQuotient H sigma)
+    (a : fixedFieldDVF (K := K) H) (b : fixedFieldDVF (K := K) H))
 
 /-- States the theorem `fixedFieldValuationSubringDVFToTarget_aut_apply`. -/
 @[simp] theorem fixedFieldValuationSubringDVFToTarget_aut_apply
@@ -391,10 +385,12 @@ def fixedFieldValuationSubringAutDVF
   invFun a := ⟨q⁻¹ (a : fixedFieldDVF (K := K) H),
     (fixedFieldDVF_aut_mem_valuationSubring_iff
       (base := base) (target := target) huniq H q⁻¹ _).1 a.property⟩
-  left_inv a := by ext; simp
-  right_inv a := by ext; simp
-  map_mul' a b := by ext; simp
-  map_add' a b := by ext; simp
+  left_inv a := Subtype.ext (q.symm_apply_apply a)
+  right_inv a := Subtype.ext (q.apply_symm_apply a)
+  map_mul' a b := Subtype.ext (map_mul q
+    (a : fixedFieldDVF (K := K) H) (b : fixedFieldDVF (K := K) H))
+  map_add' a b := Subtype.ext (map_add q
+    (a : fixedFieldDVF (K := K) H) (b : fixedFieldDVF (K := K) H))
 
 /-- States the theorem `fixedFieldValuationSubringAutDVF_apply_coe`. -/
 @[simp] theorem fixedFieldValuationSubringAutDVF_apply_coe

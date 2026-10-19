@@ -46,7 +46,7 @@ theorem finitePlaceDecompositionContinuousZModCharacter_pow_eq_one
   rw [ContinuousMonoidHom.pow_apply, ContinuousMonoidHom.one_toFun]
   apply Multiplicative.ofAdd.injective
   change p • (chi sigma).toAdd = 0
-  simp
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- Continuous mod-`p` characters of the absolute decomposition subgroup at `v`, with their
 canonical `ZMod p`-module structure. -/

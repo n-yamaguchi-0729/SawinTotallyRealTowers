@@ -183,8 +183,7 @@ theorem normFormula_finite_normFormulaAbsoluteValue_eq_of_valuationSubring_eq_of
             (K := K) (L := L) v hnonarch hv (Algebra.norm K x)]
       exact div_self hvnorm_ne
     have hrzinv : rAbs z⁻¹ = 1 := by
-      rw [map_inv₀, hrz]
-      simp
+      rw [map_inv₀, hrz, inv_one]
     have hzR :
         z ∈ absoluteValueValuationSubring
           rAbs hrnonarch := by

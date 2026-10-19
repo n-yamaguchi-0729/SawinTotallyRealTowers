@@ -89,7 +89,7 @@ theorem equalCharacteristicPowerSeriesLaurent_baseChange_commutes
           algebraMap F.residueField (AlgebraicClosure F.residueField)
             ((↑f : F.residueField⸨X⸩).coeff (Int.negSucc i))
       rw [PowerSeries.coeff_coe, PowerSeries.coeff_coe]
-      simp
+      simp only [Int.negSucc_lt_zero, ite_true, map_zero]
 
 /-- Passing the integral polynomial to the Laurent fraction field gives
 exactly the completed primitive polynomial. -/
@@ -128,8 +128,8 @@ theorem equalCharacteristicCompletedIntegralPrimitivePolynomial_map_constantCoef
       ← PowerSeries.coeff_zero_eq_constantCoeff_apply,
       PowerSeries.coeff_map]
   rw [hcomp, ← Polynomial.map_map,
-    equalCharacteristicLubinTateIntegralPrimitivePolynomial_map_constantCoeff]
-  simp
+    equalCharacteristicLubinTateIntegralPrimitivePolynomial_map_constantCoeff,
+    Polynomial.map_pow, Polynomial.map_X]
 
 /-- States the theorem `equalCharacteristicCompletedIntegralPrimitivePolynomial_coeff_zero`. -/
 theorem equalCharacteristicCompletedIntegralPrimitivePolynomial_coeff_zero

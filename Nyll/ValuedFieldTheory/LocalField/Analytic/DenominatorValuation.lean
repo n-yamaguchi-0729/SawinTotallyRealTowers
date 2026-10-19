@@ -152,8 +152,7 @@ theorem valuation_residueCharacteristic_eq_exp_neg_ramificationIndex
             (v ((ofWithZeroValuation v).residueCharacteristic : K))) :=
       (WithZero.exp_log hpv_ne').symm
     _ = WithZero.exp (-(ramificationIndexOfWithZeroValuation v : ℤ)) := by
-      rw [ramificationIndexOfWithZeroValuation_intCast v]
-      simp
+      rw [ramificationIndexOfWithZeroValuation_intCast v, neg_neg]
 
 /-- A nonzero natural number has valuation equal to the value of its
 residue-characteristic power.  This is the denominator formula needed for the

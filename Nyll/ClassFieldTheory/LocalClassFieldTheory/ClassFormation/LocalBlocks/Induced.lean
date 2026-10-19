@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
+import Nyll.ProCGroups.InducedFunctions
 import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 
 /-!
@@ -59,12 +60,14 @@ theorem decompositionGroup_smul_localUnit_coe
     (w : AbsoluteValueExtension vK L)
     (σ : absoluteValueDecompositionGroup K w.1)
     (x : (LocalizedCompletion vK w)ˣ) :
-    letI :=
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) (LocalizedCompletion vK w)ˣ :=
       decompositionGroupLocalUnitsAction vK hvK w
     ((σ • x : (LocalizedCompletion vK w)ˣ) :
         LocalizedCompletion vK w) =
       decompositionGroupEquivAlgebraicLocalizationAut
-        vK hvK w σ (x : LocalizedCompletion vK w) :=
+        vK hvK w σ (x : LocalizedCompletion vK w) := by
+  intro hAction
   rfl
 
 /-- The block of local multiplicative groups above `v`, after choosing
@@ -72,14 +75,13 @@ one extension `w`.  It is the induced module from the decomposition group
 at `w`. -/
 abbrev LocalPlaceBlock
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
-    (w : AbsoluteValueExtension vK L) :=
-  @InducedModule
-    (G := L ≃ₐ[K] L)
-    (B := (LocalizedCompletion vK w)ˣ)
-    inferInstance
+    (w : AbsoluteValueExtension vK L) :
+    Subgroup ((L ≃ₐ[K] L) → (LocalizedCompletion vK w)ˣ) :=
+  let _ : MulDistribMulAction
+      (absoluteValueDecompositionGroup K w.1) (LocalizedCompletion vK w)ˣ :=
+    decompositionGroupLocalUnitsAction vK hvK w
+  InducedModule (B := (LocalizedCompletion vK w)ˣ)
     (absoluteValueDecompositionGroup K w.1)
-    inferInstance
-    (decompositionGroupLocalUnitsAction vK hvK w)
 
 /-- In cyclic coordinates, the local block is a finite product
 of conjugate copies of the chosen completion. -/
@@ -89,14 +91,14 @@ noncomputable def localPlaceBlockEquivProduct
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) (LocalizedCompletion vK w)ˣ :=
       decompositionGroupLocalUnitsAction vK hvK w
     LocalPlaceBlock vK hvK w ≃*
       (Fin (absoluteValueDecompositionGroup K w.1).index →
         (LocalizedCompletion vK w)ˣ) :=
   by
-    letI :=
-      decompositionGroupLocalUnitsAction vK hvK w
+    intro hAction
     exact inducedCoordinatesOfFiniteCyclic
       (absoluteValueDecompositionGroup K w.1) σ hgen
 
@@ -107,19 +109,17 @@ noncomputable def localPlaceBlockHerbrandH0Equiv
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) (LocalizedCompletion vK w)ˣ :=
       decompositionGroupLocalUnitsAction vK hvK w
-    letI : Fintype (absoluteValueDecompositionGroup K w.1) :=
-      Fintype.ofFinite _
+    let _ : Fintype (absoluteValueDecompositionGroup K w.1) :=
+      Fintype.ofFinite (absoluteValueDecompositionGroup K w.1)
     HerbrandH0 (L ≃ₐ[K] L)
         (LocalPlaceBlock vK hvK w) ≃*
       HerbrandH0 (absoluteValueDecompositionGroup K w.1)
         (LocalizedCompletion vK w)ˣ :=
   by
-    letI :=
-      decompositionGroupLocalUnitsAction vK hvK w
-    letI : Fintype (absoluteValueDecompositionGroup K w.1) :=
-      Fintype.ofFinite _
+    intro hAction hFintype
     exact inducedHerbrandH0EquivOfFiniteCyclic
       (absoluteValueDecompositionGroup K w.1) σ hgen
 
@@ -130,10 +130,11 @@ noncomputable def localPlaceBlockHerbrandHMinusOneEquiv
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let _ : MulDistribMulAction
+        (absoluteValueDecompositionGroup K w.1) (LocalizedCompletion vK w)ˣ :=
       decompositionGroupLocalUnitsAction vK hvK w
-    letI : Fintype (absoluteValueDecompositionGroup K w.1) :=
-      Fintype.ofFinite _
+    let _ : Fintype (absoluteValueDecompositionGroup K w.1) :=
+      Fintype.ofFinite (absoluteValueDecompositionGroup K w.1)
     HerbrandHMinusOne (L ≃ₐ[K] L)
         (LocalPlaceBlock vK hvK w) σ ≃*
       HerbrandHMinusOne
@@ -142,10 +143,7 @@ noncomputable def localPlaceBlockHerbrandHMinusOneEquiv
         (subgroupGeneratorOfGenerator
           (absoluteValueDecompositionGroup K w.1) σ hgen) :=
   by
-    letI :=
-      decompositionGroupLocalUnitsAction vK hvK w
-    letI : Fintype (absoluteValueDecompositionGroup K w.1) :=
-      Fintype.ofFinite _
+    intro hAction hFintype
     exact inducedHerbrandHMinusOneEquivOfFiniteCyclic
       (absoluteValueDecompositionGroup K w.1) σ hgen
 

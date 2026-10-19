@@ -138,9 +138,7 @@ theorem equalCharacteristicSourceBracketCoefficient_succ_comparison
   have hqj : 1 ≤ qj := by
     exact Nat.one_le_iff_ne_zero.mpr
       (pow_ne_zero _ Nat.card_pos.ne')
-  have hvu : v * (u : k⟦X⟧) = 1 := by
-    change (((u⁻¹ * u : k⟦X⟧ˣ) : k⟦X⟧)) = 1
-    simp
+  have hvu : v * (u : k⟦X⟧) = 1 := u.inv_val
   have hpiGamma :
       equalCharacteristicSourceUniformizer u *
           equalCharacteristicSourceBracketGamma u (j + 1) =
@@ -374,7 +372,7 @@ theorem equalCharacteristicQAdditiveSeries_pow_card_pow
         if i ≤ n then a (n - i) ^ (Nat.card k ^ i) else 0) := by
   induction i with
   | zero =>
-      simp
+      simp only [pow_zero, pow_one, Nat.zero_le, ite_true, Nat.sub_zero]
   | succ i ih =>
       rw [pow_succ, pow_mul, ih,
         equalCharacteristicQAdditiveSeries_pow_card]
@@ -474,7 +472,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_qAdditiveSeries
         n hn
       simp [hzero]
     · rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k b d hde]
-      simp
+      exact zero_smul _ _
 
 end QAdditiveComposition
 
@@ -671,7 +669,7 @@ theorem equalCharacteristicQAdditiveIntertwinerCoefficient_unique
           (0 : (AlgebraicClosure k)⟦X⟧) -
               equalCharacteristicThetaGamma u (j + 1) *
                 equalCharacteristicPowerSeriesFrobenius k 0 = 0 := by
-        simp
+        rw [map_zero, mul_zero, sub_self]
       have hdelta : delta = 0 :=
         hunique.unique hhom hzeroSolution
       exact sub_eq_zero.mp (by simpa only [delta] using hdelta)

@@ -130,8 +130,7 @@ theorem linearEquiv_comap_pow_smul_top
       (I ^ n • ⊤ : Submodule R M) := by
   rw [Submodule.comap_equiv_eq_map_symm]
   rw [Submodule.map_smul'']
-  rw [Submodule.map_top]
-  simp
+  rw [Submodule.map_top, LinearMap.range_eq_top.mpr e.symm.surjective]
 
 /-- Mapping an adic power submodule along a linear equivalence gives the
 corresponding adic power submodule on the target. -/
@@ -143,8 +142,7 @@ theorem linearEquiv_map_pow_smul_top
     ((I ^ n • ⊤ : Submodule R M).map (e : M →ₗ[R] N)) =
       (I ^ n • ⊤ : Submodule R N) := by
   rw [Submodule.map_smul'']
-  rw [Submodule.map_top]
-  simp
+  rw [Submodule.map_top, LinearMap.range_eq_top.mpr e.surjective]
 
 /-- Adic Hausdorffness is preserved by linear equivalence of modules. -/
 theorem isHausdorff_of_linearEquiv

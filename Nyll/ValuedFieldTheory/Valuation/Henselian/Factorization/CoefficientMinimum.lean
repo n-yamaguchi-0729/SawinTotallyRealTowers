@@ -34,7 +34,7 @@ theorem henselFactorization_exists_mem_finset_dvd_all
   induction s using Finset.induction_on with
   | empty =>
       rcases hs with ⟨x, hx⟩
-      simp at hx
+      exact (Finset.notMem_empty x hx).elim
   | @insert a s ha ih =>
       by_cases hs' : s.Nonempty
       · rcases ih hs' with ⟨π, hπs, hπall⟩
@@ -255,7 +255,7 @@ theorem henselFactorization_left_eq_zero_of_twoPolynomialCoeffFinset_empty
       henselFactorization_mem_twoPolynomialCoeffFinset_left
         (P := P) (Q := Q) hn
     rw [h] at hmem
-    simp at hmem
+    exact (Finset.notMem_empty _ hmem).elim
   · exact Polynomial.notMem_support_iff.mp hn
 
 /-- if the finite coefficient set is empty, the second
@@ -271,7 +271,7 @@ theorem henselFactorization_right_eq_zero_of_twoPolynomialCoeffFinset_empty
       henselFactorization_mem_twoPolynomialCoeffFinset_right
         (P := P) (Q := Q) hn
     rw [h] at hmem
-    simp at hmem
+    exact (Finset.notMem_empty _ hmem).elim
   · exact Polynomial.notMem_support_iff.mp hn
 
 /-- the empty finite coefficient set is exactly the branch
@@ -288,8 +288,8 @@ theorem henselFactorization_twoPolynomialCoeffFinset_empty_iff
       henselFactorization_right_eq_zero_of_twoPolynomialCoeffFinset_empty
         (P := P) (Q := Q) h⟩
   · rintro ⟨rfl, rfl⟩
-    unfold henselFactorization_twoPolynomialCoeffFinset
-    simp
+    simp only [henselFactorization_twoPolynomialCoeffFinset,
+      Polynomial.support_zero, Finset.image_empty, Finset.empty_union]
 
 end Valuations
 end AlgebraicNumberTheory

@@ -47,22 +47,10 @@ theorem maximalKummerRadicalExtension_finiteDimensional
     FiniteDimensional K
       (kummerRadicalExtension (K := K) (Omega := Omega) n
         (maximalKummerSubgroup K n).1) := by
-  let Delta := maximalKummerSubgroup K n
-  let E := kummerRadicalExtension (K := K) (Omega := Omega) n Delta.1
-  let R := RestrictedRadicalQuotient n Delta
-  let M := nthRootsSubgroup E (n : ℕ)
-  let _ : IsGalois K E :=
-    kummerRadicalExtension_isGalois (K := K) (Omega := Omega) n Delta.1
-  let _ : Finite R := finite_maximalRestrictedRadicalQuotient K n hnK
-  let _ : NeZero (n : ℕ) := ⟨n.ne_zero⟩
-  let _ : Fintype M := nthRootsSubgroupFintype E (n : ℕ)
-  let _ : Finite (R →* M) :=
-    Finite.of_injective (fun chi : R →* M => (chi : R → M))
-      DFunLike.coe_injective
-  let e := kummerRadicalExtensionRestrictedTransposeMulEquiv
-    (K := K) (Omega := Omega) n hnK hmu Delta
-  let _ : Finite Gal(E/K) := Finite.of_equiv (R →* M) e.symm.toEquiv
-  exact IsGalois.finiteDimensional_of_finite K E
+  have hfinite : Finite (RestrictedRadicalQuotient n (maximalKummerSubgroup K n)) :=
+    finite_maximalRestrictedRadicalQuotient K n hnK
+  exact kummerRadicalExtension_finiteDimensional_of_finite_quotient
+    n hnK hmu (maximalKummerSubgroup K n)
 
 end KummerTheory
 

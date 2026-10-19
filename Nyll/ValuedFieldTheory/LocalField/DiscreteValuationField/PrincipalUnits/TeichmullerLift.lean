@@ -70,7 +70,9 @@ noncomputable def residueTeichmullerLift [Finite F.residueField] :
       ((e.symm (Units.mk0 (1 : F.residueField) hone) :
           higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
           F.valuationSubringˣ) = 1 := by
-    simp
+    exact congrArg
+      (fun ζ : higherPrincipalUnitGroup.residueRootsOfUnityGroup F =>
+        (ζ : F.valuationSubringˣ)) hroot
   simp [higherPrincipalUnitGroup.residueTeichmullerLift, hone]
 
 /-- The Teichmuller lift reduces to the residue class it lifts. -/
@@ -88,8 +90,7 @@ theorem residueMap_residueTeichmullerLift [Finite F.residueField]
               higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
               F.valuationSubringˣ)) =
           Units.mk0 y hy := by
-      change e (e.symm (Units.mk0 y hy)) = Units.mk0 y hy
-      simp
+      exact e.apply_symm_apply (Units.mk0 y hy)
     have hval :=
       congrArg (fun u : F.residueFieldˣ => (u : F.residueField)) hroot
     simpa [higherPrincipalUnitGroup.residueTeichmullerLift, hy, e,
@@ -125,7 +126,9 @@ theorem residueTeichmullerLift_mul [Finite F.residueField]
           ((e.symm (Units.mk0 y hy) :
             higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
             F.valuationSubringˣ) := by
-    simp
+    exact congrArg
+      (fun ζ : higherPrincipalUnitGroup.residueRootsOfUnityGroup F =>
+        (ζ : F.valuationSubringˣ)) hroot
   simp [higherPrincipalUnitGroup.residueTeichmullerLift, hx, hy, hxy]
 
 /-- Every Teichmuller representative is a root of `T^q - T`, where

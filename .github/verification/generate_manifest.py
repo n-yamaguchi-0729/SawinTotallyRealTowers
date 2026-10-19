@@ -13,7 +13,18 @@ import tomllib
 
 NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z")
 SHA = re.compile(r"[0-9a-f]{40}\Z")
-IMPORT = re.compile(r"^\s*(?:(?:public|meta)\s+){0,2}import(?:\s+(.*))?$")
+HEADER_WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*")
+HEADER_MODIFIERS = {"noncomputable", "private", "protected", "unsafe", "partial",
+                    "nonrec", "public", "meta", "local", "scoped"}
+BODY_COMMANDS = {
+    "theorem", "lemma", "def", "abbrev", "instance", "structure", "class", "inductive",
+    "axiom", "opaque", "constant", "namespace", "section", "end", "universe", "universes",
+    "variable", "variables", "open", "export", "attribute", "include", "omit", "set_option",
+    "syntax", "macro", "macro_rules", "elab", "elab_rules", "initialize", "builtin_initialize",
+    "example", "notation", "infix", "infixl", "infixr", "prefix", "postfix", "run_cmd",
+    "mutual", "deriving", "declare_syntax_cat", "register_option", "with_weak_namespace",
+    "alias", "notation3", "unif_hint", "assert_not_exists", "assert_not_imported",
+}
 FORBIDDEN = re.compile(r"(?<![\w'.])(?:sorry|admit|native_decide|axiom|constant)(?![\w'])")
 LIMITATION = ("Static lexical/configuration checks do not establish proof safety. "
               "They do not elaborate Lean, expand macros, resolve external modules, "
@@ -43,6 +54,88 @@ def valid_name(value):
 
 def prefix_of(prefix, name):
     return name == prefix or name.startswith(prefix + ".")
+
+
+def header_imports(source):
+    """Return (module, start, end) for Lean's header, preserving source offsets.
+
+    Follow the pinned Lean Parser.Module.Syntax grammar, including arbitrary
+    whitespace/comments between header tokens. Read one module per import, and
+    stop at the first recognized body command so quotations and strings in
+    declarations cannot create dependencies. Unsupported header spellings fail
+    closed. As in the guide parser, escaped/Unicode module names are unsupported.
+    """
+    position, size = (1 if source.startswith("\ufeff") else 0), len(source)
+
+    def fail(message, start):
+        line = source.count("\n", 0, start) + 1
+        raise ValueError(f"Unsupported or malformed Lean header at line {line}: {message}")
+
+    def token():
+        nonlocal position
+        while position < size:
+            if source[position].isspace():
+                position += 1
+            elif source.startswith("--", position):
+                end = source.find("\n", position + 2)
+                position = size if end < 0 else end + 1
+            elif source.startswith("/-", position):
+                start, depth, position = position, 1, position + 2
+                while depth and position < size:
+                    if source.startswith("/-", position):
+                        depth, position = depth + 1, position + 2
+                    elif source.startswith("-/", position):
+                        depth, position = depth - 1, position + 2
+                    else:
+                        position += 1
+                if depth:
+                    fail("unterminated comment", start)
+            else:
+                break
+        start = position
+        if position == size:
+            return "", start, start
+        match = HEADER_WORD.match(source, position)
+        if match:
+            position = match.end()
+            return match.group(), start, position
+        if source.startswith("@[", position):
+            position += 2
+            return "@[", start, position
+        position += 1
+        return source[start], start, position
+
+    word, start, end = token()
+    modular = word == "module"
+    if modular:
+        word, start, end = token()
+    if word == "prelude":
+        word, start, end = token()
+    imports = []
+    reserved = BODY_COMMANDS | HEADER_MODIFIERS | {"import", "module", "prelude", "all"}
+    while word:
+        modifiers = []
+        while word in HEADER_MODIFIERS:
+            modifiers.append(word)
+            word, start, end = token()
+        if word != "import":
+            if word in BODY_COMMANDS or (not modifiers and word in {"@[", "#"}):
+                return imports
+            fail(f"unexpected token {word!r}", start)
+        if modifiers not in ([], ["public"], ["meta"], ["public", "meta"]):
+            fail("unsupported import modifiers", start)
+        if modifiers and not modular:
+            fail("import modifiers require 'module'", start)
+        word, start, end = token()
+        if word == "all":
+            if not modular or "public" in modifiers:
+                fail("'import all' requires 'module' and cannot be public", start)
+            word, start, end = token()
+        if not valid_name(word) or word in reserved:
+            fail(f"expected a supported module name, found {word!r}", start)
+        imports.append((word, start, end))
+        word, start, end = token()
+    return imports
 
 
 def mask_noncode(text):
@@ -257,7 +350,7 @@ def analyze(root, config):
     graph = {module: set() for module in rows}
     external_imports, import_count = set(), 0
     local_roots = {prefix.split(".")[0] for prefixes in owners.values() for prefix in prefixes}
-    command_words = {"set_option", "open", "namespace", "section", "noncomputable", "def", "theorem", "lemma", "variable", "universe", "attribute"}
+    module_imports = {}
     for module, text in texts.items():
         path = rows[module]["path"]
         try: clean = mask_noncode(text)
@@ -270,29 +363,21 @@ def analyze(root, config):
         if config.get("enforceSourcePolicy", False):
             for message in source_policy(clean):
                 error("source-policy", message, path=path)
-        previous_import = False
-        for line_no, line in enumerate(clean.splitlines(), 1):
-            if not line.strip(): continue
-            match = IMPORT.fullmatch(line)
-            if not match:
-                if previous_import and line[:1].isspace() and all(valid_name(n) for n in line.split()) and line.split()[0] not in command_words:
-                    error("import-unsupported", "Multiline import syntax is unsupported; put all imported names on its import line.", path=path, line=line_no)
-                previous_import = False
-                continue
-            previous_import = True
-            names = (match.group(1) or "").split()
-            if not names or not all(map(valid_name, names)):
-                error("import-unsupported", "Malformed or unsupported import spelling.", path=path, line=line_no)
-                continue
-            for target in names:
-                import_count += 1
-                pcg = rows[module]["owner"]
-                if pcg in {"PCG", "ProCGroups"} and not (prefix_of("Nyll." + pcg, target) or prefix_of("Mathlib", target)):
-                    error("pcg-import-policy", "PCG may import only itself or Mathlib.", module=module, target=target, line=line_no)
-                if target in rows: graph[module].add(target)
-                elif target.split(".")[0] in local_roots or not any(prefix_of(p, target) for p in external):
-                    error("unresolved-local-import", "Import has no included local source or explicitly allowed external prefix.", module=module, target=target, line=line_no)
-                else: external_imports.add(target)
+        try:
+            module_imports[module] = header_imports(text)
+        except ValueError as exc:
+            error("import-unsupported", str(exc), path=path)
+            continue
+        for target, start, _ in module_imports[module]:
+            line_no = text.count("\n", 0, start) + 1
+            import_count += 1
+            pcg = rows[module]["owner"]
+            if pcg in {"PCG", "ProCGroups"} and not (prefix_of("Nyll." + pcg, target) or prefix_of("Mathlib", target)):
+                error("pcg-import-policy", "PCG may import only itself or Mathlib.", module=module, target=target, line=line_no)
+            if target in rows: graph[module].add(target)
+            elif target.split(".")[0] in local_roots or not any(prefix_of(p, target) for p in external):
+                error("unresolved-local-import", "Import has no included local source or explicitly allowed external prefix.", module=module, target=target, line=line_no)
+            else: external_imports.add(target)
     # Public extracts register only primary roots. Dependency families may be partial,
     # with no All.lean at all. Physical closure is still audited below from Nyll.
     if "primaryRoots" in config:
@@ -327,9 +412,7 @@ def analyze(root, config):
                         error("reverse-depth-import", "Import points to a deeper library or entry.",
                               module=name, target=dep)
         if "Nyll.All" in texts:
-            actual = [name for line in mask_noncode(texts["Nyll.All"]).splitlines()
-                      if (match := IMPORT.fullmatch(line))
-                      for name in (match.group(1) or "").split()]
+            actual = [name for name, _, _ in module_imports.get("Nyll.All", [])]
             if actual != primary:
                 error("public-root-order", "Nyll.All must import exactly the primary roots.",
                       expected=primary, actual=actual)
@@ -367,7 +450,7 @@ def analyze(root, config):
     if repaired: manifest["repairedModules"] = repaired
     report = {
         "schemaVersion": 1, "staticPassed": not errors, "proofSafetyEstablished": False,
-        "limitation": LIMITATION, "supportedConfiguration": "Lake TOML; simple module names; one-line imports; Git lock entries",
+        "limitation": LIMITATION, "supportedConfiguration": "Lake TOML; simple module names; tokenized Lean headers; Git lock entries",
         "packageRoot": str(root), "moduleCount": len(rows), "physicalMaintainedLeanFiles": len(files),
         "allPhysicalSourcesMapped": len(rows) == len(files),
         "ownerModuleCounts": dict(sorted(Counter(row["owner"] for row in rows.values()).items())),

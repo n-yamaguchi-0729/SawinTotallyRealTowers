@@ -78,7 +78,8 @@ noncomputable def localReciprocityPowerClassCharacter
   rintro _ ⟨a, rfl⟩
   rw [MonoidHom.mem_ker, powMonoidHom_apply, map_pow]
   apply Multiplicative.toAdd.injective
-  simp
+  rw [toAdd_pow, toAdd_one,
+    nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- The power-class functional attached to a continuous local character. -/
 noncomputable def localReciprocityPowerClassFunctional

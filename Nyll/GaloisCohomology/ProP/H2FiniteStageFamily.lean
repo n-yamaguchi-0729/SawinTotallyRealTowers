@@ -121,7 +121,7 @@ private theorem exists_common_inflation_finset
   classical
   induction s using Finset.induction_on with
   | empty =>
-      exact ⟨OpenNormalSubgroupInClass.top, by simp⟩
+      exact ⟨OpenNormalSubgroupInClass.top, fun i hi => (Finset.notMem_empty i hi).elim⟩
   | @insert a s ha ih =>
       obtain ⟨U, hU⟩ := ih
       obtain ⟨V, xV, hxV⟩ :=

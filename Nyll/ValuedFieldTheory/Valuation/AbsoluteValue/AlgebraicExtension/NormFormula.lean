@@ -85,8 +85,8 @@ theorem normFormula_finiteExtensionNormFormulaValue_eq_minpoly_coeff_zero_rpow
         using
           (Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly
             (IntermediateField.adjoin.powerBasis hxint))
-    rw [hgen, v.map_mul, v.map_pow, AbsoluteValue.map_neg]
-    simp
+    rw [hgen, v.map_mul, v.map_pow, AbsoluteValue.map_neg,
+      v.map_one, one_pow, one_mul]
   rw [finiteExtensionNormFormulaValue, hnorm]
   rw [← Module.finrank_mul_finrank K
       (IntermediateField.adjoin K ({x} : Set L)) L,

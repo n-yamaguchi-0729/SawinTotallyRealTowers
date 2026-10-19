@@ -480,7 +480,9 @@ theorem principalUnitExpSeries_val_valuation_eq_one_ofWithZeroValuation
   apply Subtype.ext
   apply Units.ext
   apply Subtype.ext
-  simp
+  rw [principalUnitExpSeries_val_ofWithZeroValuation,
+    expSeriesField_zero_ofWithZeroValuation,
+    Subgroup.coe_one, Units.val_one, OneMemClass.coe_one]
 
 /-- The principal-unit exponential has trivial kernel at the identity on the
 normalized convergence ball. -/
@@ -517,7 +519,7 @@ theorem principalUnitExpSeries_eq_one_iff_ofWithZeroValuation
     exact hne hzero
   · intro hx
     subst x
-    simp
+    exact principalUnitExpSeries_zero_ofWithZeroValuation v hnK hnval hcomplete
 
 /--
 The underlying field value of the product of two exponential-series principal units is the product
@@ -545,7 +547,12 @@ of their field exponential series.
           F.valuationSubring) : K) =
       expSeriesFieldOfWithZeroValuation v x hnK *
         expSeriesFieldOfWithZeroValuation v y hnK := by
-  simp
+  intro F
+  exact congrArg₂ (fun a b : K => a * b)
+    (principalUnitExpSeries_val_ofWithZeroValuation
+      (v := v) (p := p) x hnK hnval hvx hcomplete)
+    (principalUnitExpSeries_val_ofWithZeroValuation
+      (v := v) (p := p) y hnK hnval hvy hcomplete)
 
 /-- Principal-unit exponential multiplicativity on the normalized convergence
 ball.  This is the principal-unit form of the field-side identity
@@ -703,8 +710,7 @@ noncomputable def principalUnitExpSeriesHomOfWithZeroValuation
     principalUnitExpSeriesOfWithZeroValuation
       (v := v) (p := p) (x.toAdd : K) hnK hnval x.toAdd.property
       hcomplete
-  map_one' := by
-    simp
+  map_one' := principalUnitExpSeries_zero_ofWithZeroValuation v hnK hnval hcomplete
   map_mul' := by
     intro x y
     simpa using
@@ -897,8 +903,9 @@ p) (x : K) hnK hnval x.property hcomplete`.
         (v := v) (p := p) hnK hnval hcomplete).range) :
       (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) =
       principalUnitExpSeriesOfWithZeroValuation
-        (v := v) (p := p) (x : K) hnK hnval x.property hcomplete := by
-  simp
+        (v := v) (p := p) (x : K) hnK hnval x.property hcomplete :=
+  principalUnitExpSeriesMulEquivRange_apply_coe
+    (v := v) (p := p) hnK hnval hcomplete (Multiplicative.ofAdd x)
 
 /--
 Establishes the identity `principalUnitExpSeriesHomOfWithZeroValuation (v := v) (p := p) hnK hnval
@@ -1059,8 +1066,9 @@ theorem principalUnitSubOne_expSeries_mul_ofWithZeroValuation
         (expSeriesFieldOfWithZeroValuation v y hnK - 1) +
           (expSeriesFieldOfWithZeroValuation v x hnK - 1) *
             (expSeriesFieldOfWithZeroValuation v y hnK - 1) := by
-  rw [principalUnitSubOne_mul_ofWithZeroValuation]
-  simp
+  rw [principalUnitSubOne_mul_ofWithZeroValuation,
+    principalUnitSubOne_expSeries_ofWithZeroValuation,
+    principalUnitSubOne_expSeries_ofWithZeroValuation]
 
 end MultiplicativeIntegerValuation
 end LocalFieldTheory.DiscreteValuationField

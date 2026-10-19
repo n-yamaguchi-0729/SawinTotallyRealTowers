@@ -49,7 +49,7 @@ theorem galois_pow_eq_one_of_field_equiv_pi_zmod
   ext i
   apply Multiplicative.toAdd.injective
   change (n : ℕ) • Multiplicative.toAdd (eG sigma i) = 0
-  simp
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- Local `n`-th powers are norms from the chosen finite-place
 completion when every global Galois automorphism has exponent dividing

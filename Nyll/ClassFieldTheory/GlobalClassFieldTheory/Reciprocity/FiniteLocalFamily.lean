@@ -57,7 +57,7 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
       rfl
     rw [hright]
     simp_rw [hfactor]
-    simp
+    exact Finset.prod_const_one
   · apply RestrictedProduct.ext
     intro w
     change

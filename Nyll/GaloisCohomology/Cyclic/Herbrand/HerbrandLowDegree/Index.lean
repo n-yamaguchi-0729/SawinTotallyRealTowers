@@ -68,7 +68,7 @@ theorem le_herbrandH0_card_of_herbrandQuotient_eq_nat
   rw [herbrandH0_card_eq_mul_herbrandHMinusOne_card
     σ n hquotient]
   calc
-    n = n * 1 := by simp
+    n = n * 1 := (mul_one n).symm
     _ ≤ n *
         Nat.card
           (HerbrandHMinusOne G A σ) :=

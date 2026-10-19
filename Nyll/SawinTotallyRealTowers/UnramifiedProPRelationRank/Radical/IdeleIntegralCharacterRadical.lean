@@ -142,7 +142,8 @@ theorem ideleCharacter_integral_eq_one
   obtain ⟨b, hb⟩ := infiniteIdele_pow_surjective_of_odd F n hpOdd a.1
   have hinf : chi (a.1, 1) = 1 := by
     rw [← hb]
-    have hp : (b ^ (n : ℕ), (1 : FiniteIdeleGroup F)) = (b, 1) ^ (n : ℕ) := by simp
+    have hp : (b ^ (n : ℕ), (1 : FiniteIdeleGroup F)) = (b, 1) ^ (n : ℕ) := by
+      rw [Prod.pow_mk, one_pow]
     rw [hp, map_pow, multiplicativeZMod_pow_eq_one]
   let u : ∀ v : HeightOneSpectrum (𝓞 F), (v.adicCompletionIntegers F).units :=
     fun v => ⟨a.2 v, ha v⟩

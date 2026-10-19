@@ -94,7 +94,7 @@ noncomputable def frobeniusQuotientRepresentation (D : DegreeData G)
       map_one' := by
         ext a
         change A.ρ (1 : G) a.1 = a.1
-        simp
+        simp only [map_one, Module.End.one_apply]
       map_mul' := by
         intro q r
         refine Quotient.inductionOn₂' q r ?_
@@ -241,7 +241,7 @@ theorem frobeniusPowerSum_eq_nsmul_of_fixed (D : DegreeData G) (A : Rep ℤ G)
     exact hi
   unfold DegreeData.frobeniusPowerSum
   simp_rw [hpow]
-  simp
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin]
 
 /-- Equivariance of `N_{\widetilde L/\widetilde K}` expressed inside
 `A_{\widetilde L}`. -/
@@ -434,7 +434,8 @@ theorem descend_maximalUnramified_fixed_of_finiteSupport (D : DegreeData G)
     exact congrArg Subtype.val hfixed
   have hfPowFixed (n : ℕ) : A.ρ (f.1 ^ n) aI.1 = aI.1 := by
     induction n with
-    | zero => simp
+    | zero =>
+        simp only [pow_zero, map_one, Module.End.one_apply]
     | succ n ih =>
         rw [pow_succ, map_mul]
         change A.ρ (f.1 ^ n) (A.ρ f.1 aI.1) = aI.1
@@ -462,8 +463,7 @@ theorem descend_maximalUnramified_fixed_of_finiteSupport (D : DegreeData G)
     have hzInertia : z ∈ D.fieldInertiaWithin K.field := by
       rw [← D.normalizedDegree_ker K]
       change D.normalizedDegree K z = 1
-      rw [map_mul, map_inv, map_pow, htDegree, hfDegree]
-      simp
+      rw [map_mul, map_inv, map_pow, htDegree, hfDegree, inv_mul_cancel]
     let zI : (D.maximalUnramifiedField K.field).toSubgroup :=
       ⟨z.1, ⟨z.2, hzInertia⟩⟩
     have hzFixed : A.ρ z.1 aI.1 = aI.1 := aI.2 zI
@@ -493,7 +493,7 @@ theorem descend_maximalUnramified_fixed_of_finiteSupport (D : DegreeData G)
       rw [← hsval, ← hrval']
       exact aP.2 rP
     calc
-      A.ρ k.1 aI.1 = A.ρ (t.1 * (t.1⁻¹ * k.1)) aI.1 := by simp
+      A.ρ k.1 aI.1 = A.ρ (t.1 * (t.1⁻¹ * k.1)) aI.1 := by rw [mul_inv_cancel_left]
       _ = A.ρ t.1 (A.ρ (t.1⁻¹ * k.1) aI.1) := by rw [map_mul]; rfl
       _ = A.ρ t.1 aI.1 := by rw [hrFixed]
       _ = aI.1 := htFixed

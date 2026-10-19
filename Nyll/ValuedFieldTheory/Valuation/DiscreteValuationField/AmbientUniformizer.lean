@@ -53,18 +53,10 @@ noncomputable def valuationSubringMapOfIsEquivComap
           (x := (a : L)) (y := (1 : L))).1 ha
       change vM (ι (a : L)) ≤ 1
       simpa only [_root_.Valuation.comap_apply, map_one] using hcomap⟩
-  map_one' := by
-    apply Subtype.ext
-    simp
-  map_mul' a b := by
-    apply Subtype.ext
-    simp
-  map_zero' := by
-    apply Subtype.ext
-    simp
-  map_add' a b := by
-    apply Subtype.ext
-    simp
+  map_one' := Subtype.ext (map_one ι)
+  map_mul' a b := Subtype.ext (map_mul ι (a : L) (b : L))
+  map_zero' := Subtype.ext (map_zero ι)
+  map_add' a b := Subtype.ext (map_add ι (a : L) (b : L))
 
 /-- The valuation-ring map induced by an equivalent ambient pullback acts
 through the original field embedding. -/

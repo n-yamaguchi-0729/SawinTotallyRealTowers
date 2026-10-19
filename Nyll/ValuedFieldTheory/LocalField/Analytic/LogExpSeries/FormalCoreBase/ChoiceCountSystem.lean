@@ -206,7 +206,8 @@ theorem formalLogOnePlusProductArgument_totalChoiceCount_eq
       intro i hi
       exact formalLogOnePlusProductArgumentBasicFactor_total_indicator
         (hbasic i hi)
-    _ = q := by simp
+    _ = q := by
+      rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, Nat.cast_id]
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentLeftChoiceCount q l +

@@ -42,31 +42,19 @@ def cyclicFixedCycleEquiv
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
     let T := Rep.FiniteCyclicGroup.normHomCompSub M g
     ambientFixedAddSubgroup A K ≃+
       T.moduleCatLeftHomologyData.K := by
-  dsimp only
-  letI := hnormal
-  letI := hfinite
-  letI := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  letI : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  letI : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
-  let M := extensionFixedRepresentation A K L hLK hnormal
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  intro instNormal instFinite instFintype instCyclic instCommGroup M T
   let toCycle : ambientFixedAddSubgroup A K →
       T.moduleCatLeftHomologyData.K := fun a => by
     let aL := fixedFieldInclusion A K L hLK a
@@ -135,38 +123,21 @@ def cyclicNormClassHom
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
     let T := Rep.FiniteCyclicGroup.normHomCompSub M g
     ambientFixedAddSubgroup A K →+
       T.moduleCatLeftHomologyData.H := by
-  dsimp only
-  letI := hnormal
-  letI := hfinite
-  letI := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  letI : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  letI : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
-  let M := extensionFixedRepresentation A K L hLK hnormal
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  intro instNormal instFinite instFintype instCyclic instCommGroup M T
   let e := cyclicFixedCycleEquiv A K L hLK hnormal hfinite g hg
-  exact
-    { toFun := fun a => T.moduleCatLeftHomologyData.π (e a)
-      map_zero' := by simp
-      map_add' := by
-        intro a b
-        simp }
+  exact T.moduleCatLeftHomologyData.π.hom.toAddMonoidHom.comp e.toAddMonoidHom
 
 /--
 The cyclic norm-class map evaluates by applying the fixed-cycle equivalence and projecting to
@@ -181,15 +152,13 @@ theorem cyclicNormClassHom_apply
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (a : ambientFixedAddSubgroup A K) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
     let T := Rep.FiniteCyclicGroup.normHomCompSub M g
@@ -208,15 +177,13 @@ theorem cyclicFixedCycleEquiv_relativeNorm
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (a : ambientFixedAddSubgroup A L) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
     let T := Rep.FiniteCyclicGroup.normHomCompSub M g
@@ -224,17 +191,7 @@ theorem cyclicFixedCycleEquiv_relativeNorm
         (relativeNorm A K L hLK a) =
       T.moduleCatToCycles
         ((extensionFixedRepresentationEquiv A K L hLK hnormal).symm a) := by
-  dsimp only
-  let := hnormal
-  let := hfinite
-  let := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  let : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  let : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
-  let M := extensionFixedRepresentation A K L hLK hnormal
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  intro instNormal instFinite instFintype instCyclic instCommGroup M T
   apply Subtype.ext
   apply Subtype.ext
   exact (extensionFixedRepresentation_norm_coe
@@ -250,26 +207,17 @@ theorem cyclicNormClassHom_ker
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     (cyclicNormClassHom A K L hLK hnormal hfinite g hg).ker =
       finiteNormSubgroup A K L hLK := by
-  let := hnormal
-  let := hfinite
-  let := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  let : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  let : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
+  intro instNormal instFinite instFintype instCyclic instCommGroup
   let M := extensionFixedRepresentation A K L hLK hnormal
   let T := Rep.FiniteCyclicGroup.normHomCompSub M g
   let : Module ℤ T.X₁ := T.X₁.isModule
@@ -325,26 +273,17 @@ theorem cyclicNormClassHom_surjective
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     Function.Surjective
       (cyclicNormClassHom A K L hLK hnormal hfinite g hg) := by
-  let := hnormal
-  let := hfinite
-  let := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  let : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  let : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
+  intro instNormal instFinite instFintype instCyclic instCommGroup
   let M := extensionFixedRepresentation A K L hLK hnormal
   let T := Rep.FiniteCyclicGroup.normHomCompSub M g
   let e := cyclicFixedCycleEquiv A K L hLK hnormal hfinite g hg
@@ -366,29 +305,19 @@ def cyclicFiniteNormQuotientEquivConcrete
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
     let T := Rep.FiniteCyclicGroup.normHomCompSub M g
     FiniteNormQuotient A K L hLK ≃+
       T.moduleCatLeftHomologyData.H := by
-  dsimp only
-  letI := hnormal
-  letI := hfinite
-  letI := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  letI : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  letI : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
+  intro instNormal instFinite instFintype instCyclic instCommGroup M T
   let f := cyclicNormClassHom A K L hLK hnormal hfinite g hg
   exact
     (finiteNormQuotientConcreteEquiv A K L hLK).trans
@@ -407,30 +336,18 @@ def cyclicConcreteEquivTateHZero
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    letI : IsCyclic
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       isCyclic_of_generator g hg
-    letI : CommGroup
-        (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+    let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
     let T := Rep.FiniteCyclicGroup.normHomCompSub M g
     T.moduleCatLeftHomologyData.H ≃+ tateCohomology M 0 := by
-  dsimp only
-  letI := hnormal
-  letI := hfinite
-  letI := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-  letI : IsCyclic (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    isCyclic_of_generator g hg
-  letI : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
-    IsCyclic.commGroup
-  let M := extensionFixedRepresentation A K L hLK hnormal
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  intro instNormal instFinite instFintype instCyclic instCommGroup M T
   exact
     (T.moduleCatHomologyIso.symm ≪≫
       (TateCohomology.isoFiniteCyclicZero M g hg).symm).toLinearEquiv.toAddEquiv
@@ -444,17 +361,13 @@ def cyclicFiniteNormQuotientEquivTateHZero
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
     (g : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := hnormal
-    letI := hfinite
-    letI := Fintype.ofFinite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+    let _ : (extensionSubgroup K L hLK).Normal := hnormal
+    let _ : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK) := hfinite
+    let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
     let M := extensionFixedRepresentation A K L hLK hnormal
     FiniteNormQuotient A K L hLK ≃+ tateCohomology M 0 := by
-  dsimp only
-  letI := hnormal
-  letI := hfinite
-  letI := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+  intro instNormal instFinite instFintype M
   exact
     (cyclicFiniteNormQuotientEquivConcrete
       A K L hLK hnormal hfinite g hg).trans

@@ -179,7 +179,8 @@ theorem formalLogOnePlusProductArgumentBasicFactorProductChoices_card
   classical
   rw [formalLogOnePlusProductArgumentBasicFactorProductChoices,
     Finset.card_finsupp]
-  simp
+  simp only [formalLogOnePlusProductArgumentBasicFactorFinset_card,
+    Finset.prod_const, Finset.card_range]
 
 /-- Sequences of `q` basic factors whose exponent-vector sum is `e`. -/
 noncomputable def formalLogOnePlusProductArgumentBasicFactorChoices
@@ -321,10 +322,10 @@ theorem formalLogOnePlusProductArgument_mixedChoiceCount_eq_labelCount_two
           (2 : Fin 3) := by
       intro htwo
       rcases hbasic i hi with hleft | hright | hmixed'
-      · rw [hleft] at htwo
-        simp at htwo
-      · rw [hright] at htwo
-        simp at htwo
+      · rw [hleft, formalLogOnePlusProductArgumentBasicFactorLabel_left] at htwo
+        exact (by decide : (0 : Fin 3) ≠ 2) htwo
+      · rw [hright, formalLogOnePlusProductArgumentBasicFactorLabel_right] at htwo
+        exact (by decide : (1 : Fin 3) ≠ 2) htwo
       · exact hmixed hmixed'
     simp [hmixed, hlabel]
 

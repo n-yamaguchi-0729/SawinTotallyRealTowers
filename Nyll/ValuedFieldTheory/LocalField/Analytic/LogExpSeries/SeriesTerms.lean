@@ -829,8 +829,7 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_of_pos
   have hvle : v (y : K) ≤ WithZero.exp (-(N : ℤ)) :=
     WithZero.le_exp_of_log_le hlog
   have hsign : v ((-1 : K) ^ n) = 1 := by
-    rw [v.map_pow]
-    simp
+    rw [v.map_pow, v.map_neg, v.map_one, one_pow]
   have hvsigned :
       v ((-1 : K) ^ n * (y : K)) ≤ WithZero.exp (-(N : ℤ)) := by
     rw [v.map_mul, hsign, one_mul]
@@ -1070,8 +1069,7 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_scaled_of_pos
   have hvle : v (y : K) ≤ WithZero.exp (-(N : ℤ)) :=
     WithZero.le_exp_of_log_le hlog
   have hsign : v ((-1 : K) ^ n) = 1 := by
-    rw [v.map_pow]
-    simp
+    rw [v.map_pow, v.map_neg, v.map_one, one_pow]
   have hvsigned :
       v ((-1 : K) ^ n * (y : K)) ≤ WithZero.exp (-(N : ℤ)) := by
     rw [v.map_mul, hsign, one_mul]

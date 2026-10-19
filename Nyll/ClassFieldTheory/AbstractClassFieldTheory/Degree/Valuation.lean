@@ -42,8 +42,8 @@ def normToBase (A : Rep ℤ G) (K : ClosedSubgroup G)
 /-- Multiplication by `n` on an additive subgroup. -/
 def nsmulOnAddSubgroup (Z : AddSubgroup ZHat) (n : ℕ) : Z →+ Z where
   toFun z := ⟨n • z.1, Z.nsmul_mem z.2 n⟩
-  map_zero' := by ext; simp
-  map_add' x y := by ext; simp
+  map_zero' := Subtype.ext (nsmul_zero n)
+  map_add' x y := Subtype.ext (smul_add n x.1 y.1)
 
 /-- The subgroup `nZ` inside a value group `Z`. -/
 def nsmulWithin (Z : AddSubgroup ZHat) (n : ℕ) : AddSubgroup Z :=

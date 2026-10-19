@@ -249,7 +249,7 @@ theorem rightSubgroup_le_normalCore_of_doubleCoset_projection_injective
         DoubleCoset.mk H D (g * d) := by
     rw [DoubleCoset.eq]
     exact
-      ⟨1, H.one_mem, d, hd, by simp⟩
+      ⟨1, H.one_mem, d, hd, by rw [one_mul]⟩
   have hleft :
       DoubleCoset.mk H (⊥ : Subgroup G) g =
         DoubleCoset.mk H (⊥ : Subgroup G)
@@ -270,7 +270,7 @@ theorem rightSubgroup_le_normalCore_of_doubleCoset_projection_injective
           (g * d) * g⁻¹ := rfl
       _ = (h * g) * g⁻¹ := by
         rw [heq]
-      _ = h := by simp
+      _ = h := mul_inv_cancel_right h g
   rw [hconj]
   exact hh
 

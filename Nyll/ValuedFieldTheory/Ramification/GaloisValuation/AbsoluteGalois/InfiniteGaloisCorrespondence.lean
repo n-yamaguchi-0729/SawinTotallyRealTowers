@@ -76,14 +76,8 @@ private theorem finiteDimensional_comap_algEquiv
         intro x
         ext
         exact e.apply_symm_apply x.1
-      map_add' := by
-        intro x y
-        ext
-        simp
-      map_smul' := by
-        intro a x
-        ext
-        simp }
+      map_add' x y := Subtype.ext (map_add e x.1 y.1)
+      map_smul' a x := Subtype.ext (e.toLinearEquiv.map_smul a x.1) }
   exact Module.Finite.equiv eLin.symm
 
 private theorem finiteDimensional_map_algEquiv
@@ -107,10 +101,7 @@ private theorem finiteDimensional_map_algEquiv
         intro x
         ext
         exact e.apply_symm_apply x.1
-      map_add' := by
-        intro x y
-        ext
-        simp
+      map_add' x y := Subtype.ext (map_add e x.1 y.1)
       map_smul' := by
         intro a x
         ext
@@ -129,10 +120,8 @@ def semilinearRingEquivPreimageIntermediateField
       e (algebraMap F Ω x) = algebraMap F' Ω' (τ x))
     (E : IntermediateField F' Ω') : IntermediateField F Ω where
   carrier := {x : Ω | e x ∈ E}
-  zero_mem' := by
-    simp
-  one_mem' := by
-    simp
+  zero_mem' := by rw [Set.mem_ofPred_eq, map_zero]; exact E.zero_mem
+  one_mem' := by rw [Set.mem_ofPred_eq, map_one]; exact E.one_mem
   add_mem' := by
     intro x y hx hy
     simpa using E.add_mem hx hy
@@ -191,10 +180,7 @@ theorem finiteDimensional_semilinearRingEquivPreimageIntermediateField
         ⟨e.symm x.1,
           semilinearRingEquivPreimageIntermediateField_symm_mem
             τ e he E x.2⟩
-      map_add' := by
-        intro x y
-        ext
-        simp
+      map_add' x y := Subtype.ext (map_add e.symm x.1 y.1)
       map_smul' := by
         intro a x
         ext
@@ -934,7 +920,7 @@ theorem mem_openSubgroupOfFiniteIntermediateFieldSup
         σ ∈ (openSubgroupOfFiniteIntermediateField K F :
           Subgroup (Gal(AlgebraicClosure K / K)))
   rw [openSubgroupOfFiniteIntermediateFieldSup_toSubgroup]
-  simp
+  exact Subgroup.mem_inf
 
 /-- States the theorem `range_ofIntermediateField_sup`. -/
 theorem range_ofIntermediateField_sup
@@ -1527,7 +1513,8 @@ theorem conjugateOpenSubgroupOfOpenSubgroup_one
   apply OpenSubgroup.toSubgroup_injective
   rw [conjugateOpenSubgroupOfOpenSubgroup_toSubgroup]
   ext τ
-  simp
+  simp only [Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply,
+    one_mul, inv_one, mul_one, exists_eq_right]
 
 /-- States the theorem `conjugateOpenSubgroupOfOpenSubgroup_inf`. -/
 @[simp]

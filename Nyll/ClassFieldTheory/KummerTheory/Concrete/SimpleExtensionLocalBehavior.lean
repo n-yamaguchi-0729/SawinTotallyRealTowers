@@ -218,10 +218,10 @@ theorem
     integerRing_moduleFinite_of_isIntegralClosure C F
   have hbAbv : vK (b : K) = 1 := by
     rw [HeightOneSpectrum.adicAbv_def, hb]
-    simp
+    simp only [map_one, NNReal.coe_one]
   have hnAbv : vK ((n : ℕ) : K) = 1 := by
     rw [HeightOneSpectrum.adicAbv_def, hn]
-    simp
+    simp only [map_one, NNReal.coe_one]
   have hbNorm :
       ‖algebraMap K C (b : K)‖ = 1 := by
     calc

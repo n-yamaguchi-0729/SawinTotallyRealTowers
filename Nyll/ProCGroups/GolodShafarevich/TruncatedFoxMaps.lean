@@ -221,7 +221,9 @@ private def presentationModPAugmentationLinearMap :
     ModPCompletedGroupAlgebra p G →ₗ[ZMod p] ZMod p where
   toFun := completedGroupAlgebraCanonicalAugmentationInClass
     (R := ZMod p) (G := G) (FiniteGroupClass.pGroup p)
-  map_add' x y := by simp
+  map_add' x y := map_add
+    (completedGroupAlgebraCanonicalAugmentationInClass
+      (R := ZMod p) (G := G) (FiniteGroupClass.pGroup p)) x y
   map_smul' c x := by
     change completedGroupAlgebraCanonicalAugmentationInClass
         (R := ZMod p) (G := G) (FiniteGroupClass.pGroup p) (c • x) =

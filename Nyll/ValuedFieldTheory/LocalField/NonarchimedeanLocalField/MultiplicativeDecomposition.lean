@@ -59,7 +59,8 @@ theorem valuationUnitsMulHom_continuous
   rw [hset]
   have hopen :=
     (Valuation.isOpen_sphere (v := ValuativeRel.valuation K)
-      (r := (ValuativeRel.valuation K).restrict (x : K)) (by simp)).preimage
+      (r := (ValuativeRel.valuation K).restrict (x : K))
+        ((Valuation.ne_zero_iff (ValuativeRel.valuation K).restrict).2 x.ne_zero)).preimage
       Units.continuous_val
   simpa only [Set.preimage_ofPred_eq, Valuation.restrict_inj] using hopen
 
@@ -79,8 +80,7 @@ theorem uniformizerUnitFactor_one
     uniformizerUnitFactor K ϖ hϖ 1 = 1 := by
   apply integerUnitsToFieldUnits_injective K
   rw [integerUnitsToFieldUnits_uniformizerUnitFactor]
-  rw [valuationMap_ofMul_one]
-  simp
+  rw [valuationMap_ofMul_one, zpow_zero, div_one, map_one]
 
 /-- The unit factor respects multiplication. -/
 theorem uniformizerUnitFactor_mul

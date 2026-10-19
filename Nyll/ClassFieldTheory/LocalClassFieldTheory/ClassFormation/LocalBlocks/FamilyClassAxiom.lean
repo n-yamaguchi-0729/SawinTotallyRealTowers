@@ -652,7 +652,7 @@ theorem localBlockFamilyHerbrandHMinusOne_card_eq_one [Finite ι]
       exact localHerbrandHMinusOne_card_eq_one
         (d i).base (d i).base_isNontrivial
         (d i).extension σ hgen
-    _ = 1 := by simp
+    _ = 1 := Finset.prod_const_one
 
 /-- The Herbrand quotient of a finite family of local blocks is
 the product of the corresponding local degrees. -/
@@ -980,7 +980,6 @@ theorem localBlockFamily_herbrandQuotient_eq_product_localDegrees
               (d i).base_isNontrivial
               (d i).extension σ hgen
       rw [herbrandQuotient_eq_card_ratio,
-        hH0, hHMinusOne]
-      simp
+        hH0, hHMinusOne, Nat.cast_one, div_one]
 
 end LocalClassFieldTheory

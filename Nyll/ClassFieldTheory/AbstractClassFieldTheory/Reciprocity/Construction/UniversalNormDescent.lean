@@ -244,7 +244,7 @@ theorem rep_norm_eq_generatorPowerSum
         exact IsCyclic.image_range_orderOf hg
       have hq : q ∈ Finset.image (fun i => g ^ i) (Finset.range n) := by
         rw [himage]
-        simp
+        exact Finset.mem_univ q
       obtain ⟨i, hi, hiq⟩ := Finset.mem_image.mp hq
       exact ⟨⟨i, Finset.mem_range.mp hi⟩, hiq⟩)
   have hsum : (∑ q : Q, B.ρ q x) =

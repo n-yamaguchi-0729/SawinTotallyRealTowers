@@ -124,7 +124,7 @@ theorem infiniteKummerRootCharacter_continuous
   rw [show (𝓝 : DiscreteNthRootsSubgroup Ω (n : ℕ) →
       Filter (DiscreteNthRootsSubgroup Ω (n : ℕ))) = pure from nhds_discrete _,
     tendsto_pure]
-  exact (infiniteKummerRootCharacter_isOpen_ker n hmu a).mem_nhds (by simp)
+  exact (infiniteKummerRootCharacter_isOpen_ker n hmu a).mem_nhds (Subgroup.one_mem _)
 
 /-- The continuous Kummer character attached to one radical element. -/
 def infiniteKummerContinuousRootCharacter

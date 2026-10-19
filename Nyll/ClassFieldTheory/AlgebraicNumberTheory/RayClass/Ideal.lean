@@ -376,8 +376,7 @@ theorem idealRayProjection_ker (m : Modulus K) :
     have hn : n ∈ congruenceSubgroupInPrimeTo m := by
       rw [← primeToIdealMap_ker m, MonoidHom.mem_ker]
       change primeToIdealMap m (a * p⁻¹) = 1
-      rw [map_mul, map_inv, hpa]
-      simp
+      rw [map_mul, map_inv, hpa, mul_inv_cancel]
     rw [raySubgroupInPrimeTo, Subgroup.mem_sup]
     refine ⟨n, hn, p, hp, ?_⟩
     dsimp [n]
@@ -660,7 +659,10 @@ theorem isOpen_unitRatioSet
 theorem val_mem_unitRatioSet
     {F : Type*} [Field F] (a : Fˣ) (U : Subgroup Fˣ) :
     (a : F) ∈ unitRatioSet a U := by
-  exact ⟨a, by simp, rfl⟩
+  refine ⟨a, ?_, rfl⟩
+  change a * a⁻¹ ∈ U
+  rw [mul_inv_cancel]
+  exact U.one_mem
 
 /-- The open local conditions that make `a / x` prime to `m`. -/
 def approximationTarget (m : Modulus K) (a : IdeleGroup K) :

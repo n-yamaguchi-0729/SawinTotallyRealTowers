@@ -81,8 +81,8 @@ private noncomputable def baseUnitToInvariantUnit (K L : Type)
           (Units.mapEquiv σ.toMulEquiv (Units.map (algebraMap K L).toMonoidHom x)) =
         Additive.ofMul (Units.map (algebraMap K L).toMonoidHom x)
     apply Additive.ofMul.injective
-    ext
-    simp
+    apply Units.ext
+    exact σ.commutes (x : K)
 
 private lemma invariantUnitToBaseUnit_baseUnitToInvariantUnit (K L : Type)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]

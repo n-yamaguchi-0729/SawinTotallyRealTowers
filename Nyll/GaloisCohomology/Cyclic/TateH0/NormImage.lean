@@ -110,7 +110,8 @@ lemma additive_toMul_finset_sum_units {ι : Type*} (L : Type*) [Field L]
       Finset.prod s (fun i => Additive.toMul (f i)) := by
   classical
   refine Finset.induction_on s ?h0 ?hstep
-  · simp
+  · rw [Finset.sum_empty, Finset.prod_empty]
+    rfl
   · intro a s ha hs
     simp [Finset.sum_insert, Finset.prod_insert, ha, hs]
 

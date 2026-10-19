@@ -147,10 +147,10 @@ theorem exists_idempotent_lift_of_henselianRing_mk
   | inl hR =>
       have ha0zero : a0 = 0 := Subsingleton.elim _ _
       refine ⟨0, ?_, ?_, ?_⟩
-      · rw [IsIdempotentElem]
-        simp
-      · simp [ha0zero]
-      · simp [ha0zero]
+      · exact mul_zero 0
+      · rw [ha0zero]
+      · rw [ha0zero, sub_self]
+        exact I.zero_mem
   | inr hR =>
       let : Nontrivial R := hR
       let p : Polynomial R := Polynomial.X ^ 2 - Polynomial.X

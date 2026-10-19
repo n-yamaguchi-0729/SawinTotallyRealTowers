@@ -43,7 +43,12 @@ noncomputable def finitePlaceIntegerToCompletion
       (algebraMap (𝓞 K) K))
     𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] (by
       intro x
-      rw [finitePlaceCompletion_mem_integers_iff_norm_le_one]
+      apply (show algebraMap K (ChosenFinitePlaceBaseCompletion (K := K) v) (x : K) ∈
+          𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] ↔
+          ‖algebraMap K (ChosenFinitePlaceBaseCompletion (K := K) v) (x : K)‖ ≤ 1 from
+        finitePlaceCompletion_mem_integers_iff_norm_le_one
+          (HeightOneSpectrum.adicAbv K v)
+          (HeightOneSpectrum.isNonarchimedean_adicAbv K v) _).2
       change ‖((WithAbs.toAbs (HeightOneSpectrum.adicAbv K v) (x : K) :
         WithAbs (HeightOneSpectrum.adicAbv K v)) :
           ChosenFinitePlaceBaseCompletion (K := K) v)‖ ≤ 1
@@ -135,7 +140,11 @@ noncomputable def finitePlaceIdealResidueEquivCompletion
       𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] (by
         intro x
         rw [mem_absoluteValueExponentialSubring_iff]
-        rw [finitePlaceCompletion_mem_integers_iff_norm_le_one]
+        have hmem : x ∈ 𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] ↔
+            ‖x‖ ≤ 1 :=
+          finitePlaceCompletion_mem_integers_iff_norm_le_one a
+            (HeightOneSpectrum.isNonarchimedean_adicAbv K v) x
+        rw [RingEquiv.refl_apply, hmem]
         rfl)
   exact (finitePlaceIdealResidueEquivLocalization v).trans
     ((IsLocalRing.ResidueField.mapEquiv eBase).trans
@@ -178,9 +187,11 @@ theorem finitePlaceCompletionRingEquiv_mem_integers_iff
       ‖finitePlaceCompletionRingEquiv v x‖ = ‖x‖ :=
     (finitePlaceCompletionRingHom_isometry v).norm_map_of_map_zero
       (map_zero (finitePlaceCompletionRingHom v)) x
-  rw [finitePlaceCompletion_mem_integers_iff_norm_le_one
-    (HeightOneSpectrum.adicAbv K v)
-    (HeightOneSpectrum.isNonarchimedean_adicAbv K v) x]
+  have hmem : x ∈ 𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] ↔ ‖x‖ ≤ 1 :=
+    finitePlaceCompletion_mem_integers_iff_norm_le_one
+      (HeightOneSpectrum.adicAbv K v)
+      (HeightOneSpectrum.isNonarchimedean_adicAbv K v) x
+  rw [hmem]
   constructor
   · intro hx
     apply mem_adicCompletionIntegers_of_norm_le_one v
@@ -248,12 +259,11 @@ noncomputable def chosenFinitePlaceLocalizedIntegerRingEquiv
                   vK (RayClass.adicAbv_isNontrivial v) w x) ∈
               W.adicCompletionIntegers L ↔
             x ∈ 𝒪[E]
-        rw [
-          finitePlaceExtensionAdicCompletionRingEquiv_mem_integers_iff,
-          mem_absoluteValueCompletionIntegers_iff,
-          localizedCompletion_mem_integers_iff_norm_le_one
-            vK w
-            (HeightOneSpectrum.isNonarchimedean_adicAbv K v) x]
+        have hmem : x ∈ 𝒪[E] ↔ ‖x‖ ≤ 1 :=
+          localizedCompletion_mem_integers_iff_norm_le_one vK w
+            (HeightOneSpectrum.isNonarchimedean_adicAbv K v) x
+        rw [finitePlaceExtensionAdicCompletionRingEquiv_mem_integers_iff,
+          mem_absoluteValueCompletionIntegers_iff, hmem]
         rfl)
 
 /-- The integer rings of the standard completion at the centre and of the

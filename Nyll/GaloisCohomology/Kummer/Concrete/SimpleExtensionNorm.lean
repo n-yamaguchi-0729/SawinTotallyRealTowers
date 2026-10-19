@@ -88,7 +88,7 @@ theorem unit_mem_localNormSubgroup_chosenSimpleKummerExtension_one_sub
     refine ⟨(q, sigma), ?_⟩
     change Quotient.out q * chi sigma = z
     rw [hsigma]
-    simp
+    exact mul_inv_cancel_left _ _
   let indexEquiv : Q × Gal(E / K) ≃ mu :=
     Equiv.ofBijective indexMap ⟨indexMap_injective, indexMap_surjective⟩
   have indexEquiv_apply (q : Q) (sigma : Gal(E / K)) :

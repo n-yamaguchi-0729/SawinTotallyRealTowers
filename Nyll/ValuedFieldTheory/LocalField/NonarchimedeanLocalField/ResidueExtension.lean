@@ -274,7 +274,8 @@ theorem residueUnitsMap_residueField_norm_eq_prod_algEquiv (K L : Type u)
     ↑(Finset.univ.prod (fun τ : 𝓀[L] ≃ₐ[𝓀[K]] 𝓀[L] =>
       Units.mapEquiv τ.toMulEquiv u))
   rw [Algebra.norm_eq_prod_automorphisms]
-  simp
+  exact (map_prod (Units.coeHom 𝓀[L])
+    (fun τ : 𝓀[L] ≃ₐ[𝓀[K]] 𝓀[L] => Units.mapEquiv τ.toMulEquiv u) Finset.univ).symm
 
 /-- Quotient-level form of
 `residueUnitsMap_residueField_norm_eq_prod_algEquiv`. -/

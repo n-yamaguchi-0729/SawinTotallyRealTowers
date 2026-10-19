@@ -55,11 +55,9 @@ theorem equalCharacteristicLubinTateNormSubgroup_eq_uniformizerPrincipalSubgroup
   let d := (Nat.card F.residueField - 1) * Nat.card F.residueField ^ n
   have hindexH : H.index = d := by
     rw [Subgroup.index_eq_card]
-    simpa [B, H, pi, d] using
-      (equalCharacteristicLubinTateUniformizerPrincipalQuotient_natCard F n)
+    exact equalCharacteristicLubinTateUniformizerPrincipalQuotient_natCard F n
   have hindexN : N.index = d := by
-    simpa [N, d] using
-      (equalCharacteristicLubinTateNormSubgroup_index F n)
+    exact equalCharacteristicLubinTateNormSubgroup_index F n
   have hdpos : 0 < d := by
     dsimp [d]
     exact Nat.mul_pos

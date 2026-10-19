@@ -93,7 +93,7 @@ noncomputable def
       (integerUnitsToFieldUnits_mem_range_iff_valuationMap_eq_zero K x).2 hxval
     have hxU : x ∈ LocalFieldTheory.fieldPrincipalUnits K 0 := by
       rw [← hu]
-      exact ⟨u, by simp, rfl⟩
+      exact ⟨u, by rw [LocalFieldTheory.principalUnits_zero]; exact Subgroup.mem_top u, rfl⟩
     have hxnorm := hU hxU
     simpa [LocalFieldTheory.DiscreteValuationField.fieldNormSubgroup,
       localNormSubgroup] using hxnorm

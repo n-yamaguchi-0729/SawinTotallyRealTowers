@@ -272,7 +272,8 @@ def towerRelativeAdeleAlgEquiv :
         towerRelativeAdeleFlatten K M L
             ((a ⊗ₜ[K] (1 : M)) ⊗ₜ[M] (1 : L)) =
           a ⊗ₜ[K] (1 : L)
-      simp }
+      simp only [towerRelativeAdeleFlatten_tmul, intermediateAdeleInclusion_tmul,
+        map_one, mul_one] }
 
 /-- Unit group of the tower presentation of the relative adeles of
 `L`. -/

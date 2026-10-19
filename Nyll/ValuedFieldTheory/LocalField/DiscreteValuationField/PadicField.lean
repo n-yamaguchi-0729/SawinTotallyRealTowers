@@ -375,7 +375,7 @@ subgroup. -/
 theorem one_mem_rootsOfUnity_padic
     (p m : ℕ) [Fact p.Prime] :
     (1 : (ℚ_[p])ˣ) ∈ rootsOfUnity (p ^ m) ℚ_[p] :=
-  (mem_rootsOfUnity_padic_iff p m 1).2 (by simp)
+  (rootsOfUnity (p ^ m) ℚ_[p]).one_mem
 
 /-- A primitive p-adic `p^m`-power root is a root of mathlib's corresponding
 cyclotomic polynomial over `ℚ_[p]`. -/

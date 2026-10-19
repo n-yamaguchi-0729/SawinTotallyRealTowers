@@ -332,7 +332,9 @@ theorem chosenNormalBasisPrincipalUnitCorrectionProduct_div_mem
         chosenNormalBasisPrincipalUnitCorrectionProduct (L := L) z m ∈
       chosenNormalBasisPrincipalUnitSet K L (n + m) := by
   induction d with
-  | zero => simp
+  | zero =>
+      rw [Nat.add_zero, div_self']
+      exact chosenNormalBasisPrincipalUnitSet_one_mem (K := K) (L := L) (n + m)
   | succ d ih =>
       have hprod :
           chosenNormalBasisPrincipalUnitCorrectionProduct (L := L) z (m + (d + 1)) =

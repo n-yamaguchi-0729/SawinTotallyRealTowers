@@ -246,7 +246,7 @@ theorem sigmaMinusOne_mul_inv_mul (σ : G) (a a' : A) :
     σ • a' * (σ • a)⁻¹ * (a * a'⁻¹) * (σ • a * a⁻¹)
         = σ • a' * (((σ • a)⁻¹ * σ • a) * ((a * a⁻¹) * a'⁻¹)) := by
           ac_rfl
-    _ = σ • a' * a'⁻¹ := by simp
+    _ = σ • a' * a'⁻¹ := by rw [inv_mul_cancel, mul_inv_cancel, one_mul, one_mul]
 
 /-- Herbrand-quotient theory: the norm image `N_G A`. -/
 def tateNormSubgroup (G : Type uG) (A : Type uA) [Group G] [Fintype G] [CommGroup A]
@@ -944,7 +944,7 @@ theorem normKernel_le_augmentationSubgroup_of_mulEquiv
         (map_tateNorm (G := G) (A := A) (B := B) e.toMonoidHom
           (fun g a => by simpa using he g a) a).symm
       _ = e 1 := by rw [haNorm]
-      _ = 1 := by simp
+      _ = 1 := e.map_one
   rcases hB hea with ⟨b, hb⟩
   refine ⟨e.symm b, ?_⟩
   apply e.injective
@@ -1216,7 +1216,7 @@ theorem rightRegularCyclicPrimitive_mul_sigma_mul_inv_of_index_eq_card_sub_one
       apply rightRegularCyclicIndex_eq_of_repr (G := G) σ hgen
       simp [hxσ]
     rw [hidx]
-    simp
+    exact ZMod.val_zero
   have hwrap :
       rightRegularCyclicPartialProduct (G := G) (B := B) σ f 0 *
           (rightRegularCyclicPartialProduct (G := G) (B := B) σ f
@@ -1256,8 +1256,7 @@ theorem rightRegularCyclicPrimitive_mul_sigma_mul_inv_of_partialProduct_eq_one
     have hcard_le : Fintype.card G ≤ i + 1 := le_of_not_gt hsucc
     have hsucc_eq : i + 1 = Fintype.card G := le_antisymm hsucc_le hcard_le
     have hlast : i = Fintype.card G - 1 := by
-      rw [← hsucc_eq]
-      simp
+      rw [← hsucc_eq, Nat.add_sub_cancel]
     exact rightRegularCyclicPrimitive_mul_sigma_mul_inv_of_index_eq_card_sub_one
       (G := G) (B := B) σ hgen f x (by simpa [i] using hlast) hprod
 
@@ -1404,14 +1403,14 @@ theorem rightRegularFunction_fixed_le_tateNormSubgroup :
               intro hxg_one
               apply hg
               calc
-                g = 1 * g := by simp
-                _ = (x⁻¹ * x) * g := by simp
+                g = 1 * g := (one_mul g).symm
+                _ = (x⁻¹ * x) * g := by rw [inv_mul_cancel]
                 _ = x⁻¹ * (x * g) := by rw [mul_assoc]
                 _ = x⁻¹ * 1 := by rw [hxg_one]
-                _ = x⁻¹ := by simp
+                _ = x⁻¹ := mul_one _
             simp [d, hxg]
           · intro hxinv
-            simp at hxinv
+            exact (hxinv (Finset.mem_univ _)).elim
         _ = f 1 := by simp [d]
     _ = f x := hfixed_x.symm
 

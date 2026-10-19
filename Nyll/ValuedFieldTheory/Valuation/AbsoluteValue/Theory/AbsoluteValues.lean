@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Mathlib.Analysis.AbsoluteValue.Equivalence
 import Mathlib.Algebra.Order.Ring.IsNonarchimedean
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.NumberTheory.Ostrowski
 import Mathlib.Topology.UniformSpace.AbsoluteValue
@@ -113,15 +114,7 @@ theorem absoluteValue_finset_sum_le
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     {ι : Type*} (s : Finset ι) (f : ι → K) :
     v (s.sum f) ≤ s.sum (fun i => v (f i)) := by
-  classical
-  refine Finset.induction_on s ?empty ?insert
-  · simp
-  · intro i s his ih
-    rw [Finset.sum_insert his, Finset.sum_insert his]
-    exact (v.add_le (f i) (s.sum f)).trans
-      (by
-        simpa [add_comm, add_left_comm, add_assoc] using
-          add_le_add_left ih (v (f i)))
+  exact v.sum_le s f
 
 /-- The equivalence relation on absolute values: two absolute values are equivalent if they induce
 the same topology. -/
@@ -293,8 +286,8 @@ theorem absoluteValueApproximation_sum_sub
     (∑ j, a j * e j) - a i =
       ∑ j, if j = i then a j * (e j - 1) else a j * e j := by
   classical
-  have hsingle : (∑ j : ι, if j = i then a j else 0) = a i := by
-    simp
+  have hsingle : (∑ j : ι, if j = i then a j else 0) = a i :=
+    Fintype.sum_ite_eq' i a
   calc
     (∑ j, a j * e j) - a i
         = (∑ j, a j * e j) - ∑ j, (if j = i then a j else 0) := by
@@ -491,7 +484,7 @@ theorem nat_le_one_of_strong_triangle
     (hstrong : StrongTriangle v) (n : ℕ) :
     v (n : K) ≤ 1 := by
   exact ((strong_triangle_iff_isNonarchimedean v).mp hstrong).apply_natCast_le_one
-    (by simp) (by simp)
+    (by rw [v.map_zero, v.map_one]; exact zero_le_one) v.map_one
 
 /-- The easy direction of the boundedness characterization of nonarchimedean absolute values: a
 valuation satisfying the strong triangle inequality is nonarchimedean in the

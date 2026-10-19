@@ -96,7 +96,7 @@ theorem abs_coeff_prod_X_sub_C_le_pow_card
   | empty =>
       cases i <;> simp [Polynomial.coeff_one]
   | @cons α s ih =>
-      have hα : w α ≤ B := hs α (by simp)
+      have hα : w α ≤ B := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β ≤ B := by
         intro β hβ
         exact hs β (by simp [hβ])
@@ -152,9 +152,9 @@ theorem abs_multiset_prod_eq_pow_card_of_eq
     (t : ℝ) (s : Multiset L) (hs : ∀ α ∈ s, w α = t) :
     w s.prod = t ^ s.card := by
   induction s using Multiset.induction_on with
-  | empty => simp
+  | empty => simp only [Multiset.prod_zero, w.map_one, Multiset.card_zero, pow_zero]
   | @cons α s ih =>
-      have hα : w α = t := hs α (by simp)
+      have hα : w α = t := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β = t := by
         intro β hβ
         exact hs β (by simp [hβ])
@@ -211,8 +211,8 @@ theorem uniqueExtensionCoefficients_coeff_abs_le_endpoint_max_of_unique_extensio
           Polynomial.leadingCoeff_map_of_injective (algebraMap K L).injective,
           hlead,
           abs_multiset_prod_eq_pow_card_of_eq w t
-            (f.map (algebraMap K L)).roots hall]
-        simp
+            (f.map (algebraMap K L)).roots hall,
+          w.map_pow, AbsoluteValue.map_neg, w.map_one, one_pow, one_mul]
   intro i
   have hcoeff :
       algebraMap K L (f.coeff i) =
@@ -274,7 +274,7 @@ theorem uniqueExtensionCoefficients_polynomialCoeffAbsMax_eq_endpoint_max
     (Finset.range (f.natDegree + 1)).image fun i => v (f.coeff i)
   let hT : T.Nonempty := by
     refine ⟨v (f.coeff 0), ?_⟩
-    exact Finset.mem_image.mpr ⟨0, by simp, rfl⟩
+    exact Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (Nat.succ_pos _), rfl⟩
   change T.max' hT = max (v (f.coeff 0)) (v f.leadingCoeff)
   refine le_antisymm ?_ ?_
   · refine Finset.max'_le T hT _ ?_
@@ -284,10 +284,10 @@ theorem uniqueExtensionCoefficients_polynomialCoeffAbsMax_eq_endpoint_max
       v w f huniq hirr i
   · refine max_le ?_ ?_
     · exact Finset.le_max' T (v (f.coeff 0))
-        (Finset.mem_image.mpr ⟨0, by simp, rfl⟩)
+        (Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (Nat.succ_pos _), rfl⟩)
     · exact Finset.le_max' T (v f.leadingCoeff)
         (Finset.mem_image.mpr
-          ⟨f.natDegree, by simp,
+          ⟨f.natDegree, Finset.mem_range.mpr (Nat.lt_succ_self _),
             by rw [Polynomial.leadingCoeff]⟩)
 
 end Valuations

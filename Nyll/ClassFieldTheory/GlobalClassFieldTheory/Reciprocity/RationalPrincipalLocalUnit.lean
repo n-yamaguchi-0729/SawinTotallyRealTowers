@@ -136,8 +136,7 @@ theorem standardLubinTateBaseUniformizerUnit_eq_rationalPrimeGenerator
       (padicLocalField p.1).valuationSubring) :
         ℚ_[p.1]) =
       algebraMap ℚ ℚ_[p.1] (p.1 : ℚ)
-  rw [padicIntEquivValuationSubring_coe]
-  simp
+  rw [padicIntEquivValuationSubring_coe, PadicInt.coe_natCast, map_natCast]
 
 /-- Restoring the removed `p`-power recovers the original rational field
 unit.  This is the multiplicative factorization used after completion. -/
@@ -164,8 +163,7 @@ theorem rationalPrimeUnit_mul_primeGenerator_zpow
             padicValRat p.1 (x : ℚ)) := by
       ac_rfl
     _ = x := by
-      rw [← zpow_add]
-      simp
+      rw [← zpow_add, neg_add_cancel, zpow_zero, mul_one]
 
 /-- In `ℚ_[p]ˣ`, a rational field unit is its actual integral
 `rationalPrimeUnit` factor times the corresponding power of the standard
@@ -322,8 +320,7 @@ theorem rationalPadicFieldUnit_uniformizerUnitPart
         simpa only [F, hπ, X, u, ϖ] using
           rationalPadicFieldUnit_eq_unitFactor_mul_baseUniformizer_zpow
             x p]
-  rw [mul_assoc, ← zpow_add]
-  simp
+  rw [mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]
 
 /-- Under the canonical equivalence between `ℚ_[p]` and the height-one
 completion at `p`, the principal finite component of the rational `p`-unit

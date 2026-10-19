@@ -48,8 +48,14 @@ theorem mem_localBaseUnitSubgroup_iff_valuation_eq_one
         inv := ⟨(x⁻¹ : K), by
           rw [Valuation.mem_integer_iff]
           simp [hx]⟩
-        val_inv := by ext; simp
-        inv_val := by ext; simp }
+        val_inv := by
+          apply Subtype.ext
+          change (x : K) * (x : K)⁻¹ = 1
+          exact mul_inv_cancel₀ x.ne_zero
+        inv_val := by
+          apply Subtype.ext
+          change (x : K)⁻¹ * (x : K) = 1
+          exact inv_mul_cancel₀ x.ne_zero }
     exact ⟨a, by ext; rfl⟩
 
 /-- The image of valuation-ring units is open in the native topology of a

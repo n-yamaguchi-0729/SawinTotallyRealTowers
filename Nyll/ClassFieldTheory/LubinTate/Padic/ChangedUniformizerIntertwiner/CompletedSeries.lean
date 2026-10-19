@@ -167,8 +167,7 @@ theorem padicCompletedMultiplicativeSeries_map_constantCoeff
     charP_of_injective_ringHom PowerSeries.C_injective p
   rw [padicCompletedMultiplicativeSeries_eq]
   simp only [map_sub, map_pow, map_add, map_one, PowerSeries.map_X]
-  rw [add_pow_char]
-  simp
+  rw [add_pow_char, one_pow, add_sub_cancel_left]
 
 /-- Reduction of the completed changed-standard series modulo `p` is
 `X ^ p`. -/
@@ -184,8 +183,8 @@ theorem padicCompletedChangedStandardSeries_map_constantCoeff
   rw [padicCompletedChangedStandardSeries_eq]
   simp only [map_add, map_mul, map_pow, PowerSeries.map_C,
     PowerSeries.map_X, map_natCast]
-  rw [CharP.cast_eq_zero (PowerSeries (AlgebraicClosure (ZMod p))) p]
-  simp
+  rw [CharP.cast_eq_zero (PowerSeries (AlgebraicClosure (ZMod p))) p,
+    mul_zero, zero_mul, zero_add]
 
 /-- Coefficientwise Witt-vector Frobenius preserves a zero constant
 coefficient. -/

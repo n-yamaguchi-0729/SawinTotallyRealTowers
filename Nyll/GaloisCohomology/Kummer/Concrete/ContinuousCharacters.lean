@@ -37,7 +37,7 @@ private theorem continuousCharacterExistsFiniteGaloisFixingSubgroupLeKer
     ∃ E : FiniteGaloisIntermediateField K Ω,
       E.fixingSubgroup ≤ χ.toMonoidHom.ker := by
   have hnhds : (χ.toMonoidHom.ker : Set Gal(Ω/K)) ∈ 𝓝 1 :=
-    (continuousCharacterIsOpenKer χ).mem_nhds (by simp)
+    (continuousCharacterIsOpenKer χ).mem_nhds χ.toMonoidHom.ker.one_mem
   obtain ⟨E, hE⟩ :=
     (InfiniteGalois.krullTopology_mem_nhds_one_iff_of_isGalois
       (k := K) (K := Ω) (χ.toMonoidHom.ker : Set Gal(Ω/K))).1 hnhds

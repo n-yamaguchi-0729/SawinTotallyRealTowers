@@ -5,6 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 
 /-!
 # Integral local induced modules
@@ -41,44 +43,35 @@ variable (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
 ring of the chosen localization. -/
 @[reducible]
 noncomputable def decompositionGroupLocalizedIntegerUnitsAction :
-    letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-    letI : SMul K w.1.Completion :=
+    let _ : Algebra K w.1.Completion :=
+      LocalInductionInternal.extensionCompletionAlgebra vK w
+    let _ : SMul K w.1.Completion :=
       LocalInductionInternal.extensionCompletionSMul vK w
-    letI := LocalInductionInternal.completionAlgebra vK w
-    letI : Valued vK.Completion ℝ≥0 :=
+    let _ : Algebra vK.Completion w.1.Completion :=
+      LocalInductionInternal.completionAlgebra vK w
+    let _ : Valued vK.Completion ℝ≥0 :=
       LocalInductionInternal.baseValued vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let _ : ValuativeRel vK.Completion :=
       LocalInductionInternal.baseValuativeRel vK hvKna
-    letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
+    let _ : Valued (LocalizedCompletion vK w) ℝ≥0 :=
       LocalInductionInternal.localizedValued vK w hvKna
-    letI : ValuativeRel (LocalizedCompletion vK w) :=
+    let _ : ValuativeRel (LocalizedCompletion vK w) :=
       LocalInductionInternal.localizedValuativeRel vK w hvKna
-    letI : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+    let _ : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
       LocalInductionInternal.integerAlgebra vK w hvKna
-    letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-    letI := LocalInductionInternal.isIntegralClosure
-      vK w hvK hvKna
+    let _ : Valuation.HasExtension
+        (ValuativeRel.valuation vK.Completion)
+        (ValuativeRel.valuation (LocalizedCompletion vK w)) :=
+      LocalInductionInternal.valuationHasExtension vK w hvKna
+    let _ : IsIntegralClosure
+        𝒪[LocalizedCompletion vK w] 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
+      LocalInductionInternal.isIntegralClosure vK w hvK hvKna
     MulDistribMulAction
       (absoluteValueDecompositionGroup K w.1)
       𝒪[LocalizedCompletion vK w]ˣ := by
-  letI := LocalInductionInternal.extensionCompletionAlgebra vK w
-  letI : SMul K w.1.Completion :=
-    LocalInductionInternal.extensionCompletionSMul vK w
-  letI := LocalInductionInternal.completionAlgebra vK w
-  letI : Valued vK.Completion ℝ≥0 :=
-    LocalInductionInternal.baseValued vK hvKna
-  letI : ValuativeRel vK.Completion :=
-    LocalInductionInternal.baseValuativeRel vK hvKna
-  letI : Valued (LocalizedCompletion vK w) ℝ≥0 :=
-    LocalInductionInternal.localizedValued vK w hvKna
-  letI : ValuativeRel (LocalizedCompletion vK w) :=
-    LocalInductionInternal.localizedValuativeRel vK w hvKna
-  letI : Algebra 𝒪[vK.Completion] (LocalizedCompletion vK w) :=
-    LocalInductionInternal.integerAlgebra vK w hvKna
-  letI := LocalInductionInternal.valuationHasExtension vK w hvKna
-  letI := LocalInductionInternal.isIntegralClosure
-    vK w hvK hvKna
-  letI : MulDistribMulAction
+  intro hBaseAlgebra hBaseSMul hCompletionAlgebra hBaseValued hBaseRel
+    hLocalValued hLocalRel hIntegerAlgebra hExtension hClosure
+  let hGaloisAction : MulDistribMulAction
       (Gal(LocalizedCompletion vK w / vK.Completion))
       𝒪[LocalizedCompletion vK w]ˣ :=
     galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure

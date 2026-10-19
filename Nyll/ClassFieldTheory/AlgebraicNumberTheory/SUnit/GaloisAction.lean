@@ -117,8 +117,7 @@ theorem finitePlaceEquiv_inv_apply
     (v : HeightOneSpectrum (𝓞 L)) :
     finitePlaceEquiv K L σ
         (finitePlaceEquiv K L σ⁻¹ v) = v := by
-  rw [← finitePlaceEquiv_mul]
-  simp
+  rw [← finitePlaceEquiv_mul, mul_inv_cancel, finitePlaceEquiv_one]
 
 /-- The actual Galois action on finite places of `L`. -/
 @[reducible]
@@ -142,7 +141,7 @@ theorem intValuation_finitePlaceEquiv
   let e := (NumberField.RingOfIntegers.mapAlgEquiv σ).toRingEquiv
   by_cases hr : r = 0
   · subst r
-    simp
+    rw [map_zero, map_zero, map_zero]
   change
     (finitePlaceEquiv K L σ v).intValuation (e r) =
       v.intValuation r
@@ -327,8 +326,7 @@ theorem sUnit_smul_mem
     change
       finitePlaceEquiv K L σ
           (finitePlaceEquiv K L σ⁻¹ v) = v
-    rw [← finitePlaceEquiv_mul]
-    simp
+    exact finitePlaceEquiv_inv_apply K L σ v
   rw [hvw] at htransport
   change v.valuation L (σ (x : L)) = 1
   exact htransport.trans hxw
@@ -585,8 +583,7 @@ noncomputable def fullLogSpaceSplit
           normalizedLogDiagonal L S, by
       apply LinearMap.mem_ker.mpr
       rw [map_sub, map_smul,
-        coordinateSum_normalizedLogDiagonal]
-      simp⟩,
+        coordinateSum_normalizedLogDiagonal, smul_eq_mul, mul_one, sub_self]⟩,
       SUnitGroup.coordinateSum (K := L) S z)
   map_add' z z' := by
     apply Prod.ext

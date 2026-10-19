@@ -273,7 +273,7 @@ theorem exists_chosenNormalBasisPrincipalUnit_h0_oneStep_lifting
       (L := L) hV aprimev).1
     dsimp [aprimev]
     rw [map_div, hmkbn]
-    simp
+    exact div_self' _
   have havfixed : ∀ sigma : Gal(L / K), sigma • av = av := by
     intro sigma
     apply Subtype.ext
@@ -304,8 +304,8 @@ theorem exists_chosenNormalBasisPrincipalUnit_h0_oneStep_lifting
     change a = tateNorm (Gal(L / K)) 𝒪[L]ˣ (bv : 𝒪[L]ˣ) *
       (aprimev : 𝒪[L]ˣ)
     rw [← hbnval]
-    dsimp [aprimev, av]
-    simp
+    dsimp only [aprimev, av, Subgroup.coe_div]
+    rw [mul_div_cancel]
 
 /-- One-step `H⁻¹` lifting: for a chosen generator, every
 sufficiently deep norm-one unit is a coboundary from the same level times a
@@ -376,7 +376,7 @@ theorem exists_chosenNormalBasisPrincipalUnit_hMinusOne_oneStep_lifting
           (fun sigma z =>
             (chosenNormalBasisPrincipalUnitSuccQuotMulDistribMulAction_smul_mk
               (K := K) (L := L) k hV hVn hVsucc sigma z).symm) av).symm
-      _ = 1 := by rw [hnormv]; simp
+      _ = 1 := by rw [hnormv, map_one, map_one]
   let qker : normKernelSubgroup (Gal(L / K))
       (Multiplicative (chosenNormalBasisLatticeSuccQuot K L k)) :=
     ⟨q, hqnorm⟩
@@ -445,12 +445,12 @@ theorem exists_chosenNormalBasisPrincipalUnit_hMinusOne_oneStep_lifting
       (L := L) hV aprimev).1
     dsimp [aprimev]
     rw [map_div, hmkcob]
-    simp
+    exact div_self' _
   have haprimeNormV : tateNorm (Gal(L / K)) Vn aprimev = 1 := by
     dsimp [aprimev, cobv]
     rw [div_eq_mul_inv, tateNorm_mul, tateNorm_inv, hnormv,
       tateNorm_sigmaMinusOne_eq_one]
-    simp
+    rw [inv_one, one_mul]
   have haprimeNorm : tateNorm (Gal(L / K)) 𝒪[L]ˣ
       (aprimev : 𝒪[L]ˣ) = 1 := by
     have hmap := map_tateNorm
@@ -479,8 +479,8 @@ theorem exists_chosenNormalBasisPrincipalUnit_hMinusOne_oneStep_lifting
     change a = sigmaMinusOne (Gal(L / K)) 𝒪[L]ˣ g (bv : 𝒪[L]ˣ) *
       (aprimev : 𝒪[L]ˣ)
     rw [← hcobval]
-    dsimp [aprimev, av]
-    simp
+    dsimp only [aprimev, av, Subgroup.coe_div]
+    rw [mul_div_cancel]
 
 end
 end LocalClassFieldTheory

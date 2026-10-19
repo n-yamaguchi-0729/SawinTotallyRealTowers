@@ -792,8 +792,8 @@ noncomputable def principalUnitLogSeriesHomOfTendstoFieldDefect_ofWithZeroValuat
       Multiplicative K where
   toFun u := Multiplicative.ofAdd
     (principalUnitLogSeriesOfWithZeroValuation v u hnK)
-  map_one' := by
-    simp
+  map_one' := congrArg Multiplicative.ofAdd
+    (principalUnitLogSeries_one_ofWithZeroValuation v hnK)
   map_mul' u w := by
     change
       Multiplicative.ofAdd
@@ -853,10 +853,8 @@ noncomputable def fieldUnitDecompositionLogHomOfPrincipalUnitHom
     CompleteDVF.higherPrincipalUnitGroup.fieldUnitDecompositionFactors F →*
       Multiplicative A where
   toFun z := φ z.1.2
-  map_one' := by
-    simp
-  map_mul' z w := by
-    simp
+  map_one' := φ.map_one
+  map_mul' z w := φ.map_mul z.1.2 w.1.2
 
 /--
 The defining evaluation formula for `fieldUnitDecompositionLogHomOfPrincipalUnitHom` is
@@ -880,8 +878,7 @@ Multiplicative ℤ)) = 1`.
     (φ : (CompleteDVF.higherPrincipalUnitGroup F) 1 →* Multiplicative A)
     (ζ : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
     fieldUnitDecompositionLogHomOfPrincipalUnitHom (F := F) φ
-        ((ζ, 1), (1 : Multiplicative ℤ)) = 1 := by
-  simp
+        ((ζ, 1), (1 : Multiplicative ℤ)) = 1 := φ.map_one
 
 /--
 Establishes the identity `fieldUnitDecompositionLogHomOfPrincipalUnitHom (F := F) φ (((1 :
@@ -895,8 +892,7 @@ u`.
     (u : (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) :
     fieldUnitDecompositionLogHomOfPrincipalUnitHom (F := F) φ
         (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F), u),
-          (1 : Multiplicative ℤ)) = φ u := by
-  simp
+          (1 : Multiplicative ℤ)) = φ u := rfl
 
 /--
 Establishes the identity `fieldUnitDecompositionLogHomOfPrincipalUnitHom (F := F) φ (((1 :
@@ -911,8 +907,7 @@ CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F), (1 :
     fieldUnitDecompositionLogHomOfPrincipalUnitHom (F := F) φ
         (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F),
             (1 : (CompleteDVF.higherPrincipalUnitGroup F) 1)),
-          Multiplicative.ofAdd m) = 1 := by
-  simp
+          Multiplicative.ofAdd m) = 1 := φ.map_one
 
 /-- A field-unit logarithm homomorphism obtained from a chosen the
 uniformizer–residue–principal-unit decomposition
@@ -949,7 +944,7 @@ theorem fieldUnitLogHomOfPrincipalUnitHom_apply_of_decomposition_eq
     {x : Kˣ} (hx : e z = x) :
     fieldUnitLogHomOfPrincipalUnitHom (F := F) e φ x = φ z.1.2 := by
   subst x
-  simp
+  rw [fieldUnitLogHomOfPrincipalUnitHom_apply, e.symm_apply_apply]
 
 /-- Establishes the identity `fieldUnitLogHomOfPrincipalUnitHom (F := F) e φ x = 1`. -/
 theorem fieldUnitLogHomOfPrincipalUnitHom_eq_one_of_root_decomposition

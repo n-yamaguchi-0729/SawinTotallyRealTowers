@@ -450,7 +450,7 @@ private theorem
     | zero =>
         simp [PowerSeries.coeff_zero_eq_constantCoeff_apply,
           equalCharacteristicDirectThetaSeriesFrobeniusIterate_constantCoeff]
-    | succ m => simp
+    | succ m => rw [zero_pow (Nat.succ_ne_zero m), mul_zero]
   rw [hterms]
   exact hasSum_zero
 
@@ -471,7 +471,7 @@ private theorem
     (equalCharacteristicDirectThetaSourceIterateInteger F n i) 0
     (equalCharacteristicDirectThetaFrobeniusIterateAtSourceIterate F u n i) 0
     (equalCharacteristicDirectThetaSourceIterateInteger_norm_lt_one F n i)
-    (by simp)
+    (by simpa only [norm_zero] using (zero_lt_one : (0 : ℝ) < 1))
     (equalCharacteristicDirectThetaFrobeniusIterateAtSourceIterate_hasSum
       F u n i)
     (equalCharacteristicDirectThetaFrobeniusIterateAtZero_hasSum F u n i)

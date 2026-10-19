@@ -39,10 +39,10 @@ def coordinatePermutation (σ : Equiv.Perm ι) :
   invFun x i := x (σ i)
   left_inv x := by
     funext i
-    simp
+    exact congrArg x (σ.symm_apply_apply i)
   right_inv x := by
     funext i
-    simp
+    exact congrArg x (σ.apply_symm_apply i)
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
@@ -84,7 +84,8 @@ theorem coordinatePermutation_single
   ext j
   by_cases h : j = σ i
   · subst j
-    simp
+    rw [coordinatePermutation_apply, σ.symm_apply_apply, Pi.single_eq_same,
+      Pi.single_eq_same]
   · have h' : σ.symm j ≠ i := by
       intro hij
       apply h
@@ -333,7 +334,7 @@ theorem averagedLatticeVector_diagonal_bound
           (Fintype.card G : ℝ) * t =
         ∑ g : G, (a g - t) := by
     rw [Finset.sum_sub_distrib]
-    simp
+    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   rw [heq]
   calc
     |∑ g : G, (a g - t)| ≤
@@ -342,7 +343,8 @@ theorem averagedLatticeVector_diagonal_bound
     _ ≤ ∑ _g : G, latticeApproximationRadius L :=
       Finset.sum_le_sum fun g _ ↦ ha g
     _ = (Fintype.card G : ℝ) *
-        latticeApproximationRadius L := by simp
+        latticeApproximationRadius L := by
+          simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
 theorem averagedLatticeVector_offDiagonal_bound
     (ρ : G →* Equiv.Perm ι)
@@ -373,7 +375,8 @@ theorem averagedLatticeVector_offDiagonal_bound
     _ ≤ ∑ _g : G, latticeApproximationRadius L :=
       Finset.sum_le_sum fun g _ ↦ ha g
     _ = (Fintype.card G : ℝ) *
-        latticeApproximationRadius L := by simp
+        latticeApproximationRadius L := by
+          simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
 /-- The coordinate matrix whose columns are the averaged lattice
 vectors. -/

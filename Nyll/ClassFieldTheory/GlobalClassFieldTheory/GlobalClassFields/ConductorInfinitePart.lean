@@ -177,6 +177,7 @@ theorem eraseRealPlace_isDefiningModulus_iff
     IsDefiningModulus H (m.eraseRealPlace v) ↔
       IsDefiningModulus H m ∧
         (IdeleGroup.infinitePlaceIdeleClass v.1).range ≤ H := by
+  classical
   constructor
   · intro hm'
     refine ⟨?_, ?_⟩
@@ -185,7 +186,9 @@ theorem eraseRealPlace_isDefiningModulus_iff
           (eraseRealPlace_le m v)).trans hm'
     · exact
         (infinitePlaceIdeleClass_range_le_congruenceSubgroup_of_not_mem
-          (m.eraseRealPlace v) v (by simp)).trans hm'
+          (m.eraseRealPlace v) v (by
+            rw [RayClass.Modulus.infinitePart_eraseRealPlace]
+            exact Finset.notMem_erase v m.infinitePart)).trans hm'
   · rintro ⟨hm, hvH⟩
     exact eraseRealPlace_isDefiningModulus_of_range_le H m hm v hvH
 

@@ -46,12 +46,12 @@ theorem henselFactorization_of_complete
   have hG : G ≠ 0 := by
     intro hzero
     subst G
-    simp at hGresidue
+    rw [Polynomial.map_zero] at hGresidue
     exact hgbar hGresidue.symm
   have hH : H ≠ 0 := by
     intro hzero
     subst H
-    simp at hHresidue
+    rw [Polynomial.map_zero] at hHresidue
     exact hhbar hHresidue.symm
   have hdegree :
       H.natDegree = f.natDegree - gbar.natDegree := by

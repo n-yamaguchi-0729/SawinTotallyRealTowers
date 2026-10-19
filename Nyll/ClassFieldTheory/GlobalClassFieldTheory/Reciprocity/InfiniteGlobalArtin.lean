@@ -72,12 +72,8 @@ private theorem rationalPositiveArchimedeanInfinitePart_component
 `ℝ₊ˣ → I_ℚ`.  Its finite component is one, and at the unique infinite
 place it is the positive real unit supplied by the input. -/
 noncomputable def rationalPositiveArchimedeanIdele :
-    ℝ≥0ˣ →* IdeleGroup ℚ := by
-  exact
-    { toFun := fun r =>
-        (rationalPositiveArchimedeanInfinitePart r, 1)
-      map_one' := by simp
-      map_mul' := by simp }
+    ℝ≥0ˣ →* IdeleGroup ℚ :=
+  rationalPositiveArchimedeanInfinitePart.prod 1
 
 /-- The positive archimedean section has trivial finite component at
 every finite place of `ℚ`. -/

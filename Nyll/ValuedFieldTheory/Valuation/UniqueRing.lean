@@ -44,7 +44,8 @@ theorem algEquiv_smul_valuationSubring_hasExtension
       _ ↔ σ⁻¹ • algebraMap K L x ∈ W :=
         ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem
       _ ↔ algebraMap K L x ∈ W := by
-        simp
+        change σ.symm (algebraMap K L x) ∈ W ↔ algebraMap K L x ∈ W
+        rw [σ.symm.commutes]
       _ ↔ x ∈ V := by
         simpa only [ValuationSubring.mem_toSubring,
           ValuationSubring.valuationSubring_valuation] using
@@ -108,10 +109,10 @@ def valuationSubringEquivOfUniqueExtension
   invFun x := ⟨σ⁻¹ (x : L),
     (algEquiv_mem_valuationSubring_iff_of_unique_extension
       V W hW huniq σ⁻¹ (x : L)).2 x.2⟩
-  left_inv x := by ext; simp
-  right_inv x := by ext; simp
-  map_mul' x y := by ext; simp
-  map_add' x y := by ext; simp
+  left_inv x := Subtype.ext (σ.symm_apply_apply (x : L))
+  right_inv x := Subtype.ext (σ.apply_symm_apply (x : L))
+  map_mul' x y := Subtype.ext (map_mul σ (x : L) (y : L))
+  map_add' x y := Subtype.ext (map_add σ (x : L) (y : L))
 
 /-- The unique-extension equivalence acts on underlying valuation-ring elements as expected. -/
 @[simp]

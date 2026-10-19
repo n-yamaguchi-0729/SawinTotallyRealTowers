@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Nyll.ProCGroups.FiniteGeneration.Basic
 import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+import Mathlib.Algebra.Group.Subgroup.Ker
+import Mathlib.Data.Fintype.Perm
+import Mathlib.Topology.Algebra.Group.ContinuousInv
 
 /-!
 # Characteristic chains from bounded-index intersections
@@ -107,17 +110,7 @@ theorem continuousMonoidHom_eq_of_eqOn_topologicalGenerators
     {f g : ContinuousMonoidHom G R}
     (hfg : ∀ x ∈ (↑s : Set G), f x = g x) :
     f = g := by
-  let K : Subgroup G := {
-    carrier := { x | f x = g x }
-    one_mem' := by simp only [mem_ofPred_eq, map_one]
-    mul_mem' := by
-      intro a b ha hb
-      change f (a * b) = g (a * b)
-      rw [map_mul, map_mul, ha, hb]
-    inv_mem' := by
-      intro a ha
-      simpa using congrArg Inv.inv ha
-  }
+  let K : Subgroup G := f.toMonoidHom.eqLocus g.toMonoidHom
   have hKclosed : IsClosed ((K : Subgroup G) : Set G) := by
     change IsClosed { x | f x = g x }
     exact isClosed_eq f.continuous_toFun g.continuous_toFun
@@ -130,9 +123,10 @@ theorem continuousMonoidHom_eq_of_eqOn_topologicalGenerators
         (Subgroup.closure (↑s : Set G)).topologicalClosure ≤ K :=
       Subgroup.topologicalClosure_minimal _ hsub hKclosed
     rw [TopologicallyGenerates] at hsgen
-    simpa [hsgen] using hcl
+    rw [hsgen] at hcl
+    exact hcl
   ext x
-  simpa [K] using htop (show x ∈ (⊤ : Subgroup G) from by simp only [Subgroup.mem_top])
+  exact htop (Subgroup.mem_top x)
 
 /--
 A finitely generated profinite group admits only finitely many continuous homomorphisms into a
@@ -184,14 +178,6 @@ instance instTopologicalSpaceFinitePerm (n : ℕ) : TopologicalSpace (Equiv.Perm
 /-- The finite permutation type carries the discrete topology. -/
 instance instDiscreteTopologyFinitePerm (n : ℕ) : DiscreteTopology (Equiv.Perm (Fin n)) :=
   ⟨rfl⟩
-
-/-- The finite permutation group is a topological group with the discrete topology. -/
-instance instIsTopologicalGroupFinitePerm (n : ℕ) : IsTopologicalGroup (Equiv.Perm (Fin n)) := by
-  infer_instance
-
-/-- The finite permutation type is finite. -/
-instance instFiniteFinitePerm (n : ℕ) : Finite (Equiv.Perm (Fin n)) := by
-  infer_instance
 
 /-- The finite coset action, viewed as a continuous homomorphism into a discrete permutation
 group. -/
@@ -261,31 +247,7 @@ theorem hasFiniteOpenSubgroupsOfIndex_of_topologicallyFinitelyGenerated
   let S : Type u :=
     { H : Subgroup G // IsOpen (H : Set G) ∧ Finite (G ⧸ H) ∧ Nat.card (G ⧸ H) = n }
   let code : S → ContinuousMonoidHom G (Equiv.Perm (Fin n)) × Fin n := fun H =>
-    let φ := openSubgroupIndexAction (G := G) H.1 H.2.2.1 H.2.2.2
-    let e := openSubgroupIndexEquiv (G := G) H.1 H.2.2.1 H.2.2.2
-    let hφker :
-        IsOpen ((φ.ker : Subgroup G) : Set G) := by
-      have : Finite (G ⧸ H.1) := H.2.2.1
-      have : H.1.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient (H := H.1)
-      have hHclosed : IsClosed ((H.1 : Subgroup G) : Set G) :=
-        Subgroup.isClosed_of_isOpen H.1 H.2.1
-      have hker :
-          φ.ker = (MulAction.toPermHom G (G ⧸ H.1)).ker := by
-        ext g
-        change
-          e.permCongr (MulAction.toPerm g) = 1 ↔ MulAction.toPerm g = 1
-        have hperm_one : e.permCongr (1 : Equiv.Perm (G ⧸ H.1)) = (1 : Equiv.Perm (Fin n)) := by
-          ext x
-          simp only [Equiv.permCongr_apply, Equiv.Perm.coe_one, id_eq, Equiv.apply_symm_apply]
-        rw [← hperm_one]
-        exact e.permCongr.injective.eq_iff
-      have hopenCore : IsOpen (((H.1).normalCore : Subgroup G) : Set G) :=
-        (H.1).normalCore.isOpen_of_isClosed_of_finiteIndex ((H.1).normalCore_isClosed hHclosed)
-      simpa [hker, Subgroup.normalCore_eq_ker (H := H.1)] using hopenCore
-    have hφcont : Continuous φ :=
-      ProCGroups.MonoidHom.continuous_of_isOpen_ker_to_discrete φ hφker
-    ({ toMonoidHom := φ
-       continuous_toFun := hφcont },
+    (openSubgroupIndexContinuousHom (G := G) H.1 H.2.1 H.2.2.1 H.2.2.2,
       openSubgroupIndexBasepoint (G := G) H.1 H.2.2.1 H.2.2.2)
   have hhomfinite : Finite (ContinuousMonoidHom G (Equiv.Perm (Fin n))) :=
     finite_continuousMonoidHom_to_finite_of_topologicallyFinitelyGenerated
@@ -301,13 +263,16 @@ theorem hasFiniteOpenSubgroupsOfIndex_of_topologicallyFinitelyGenerated
     have hφg := DFunLike.congr_fun
       (congrArg ContinuousMonoidHom.toMonoidHom (congrArg Prod.fst hHK)) g
     have hb := congrArg Prod.snd hHK
-    dsimp only [code] at hφg hb
-    exact Iff.of_eq <| by simp [hφg, hb]
+    change openSubgroupIndexAction (G := G) H.1 H.2.2.1 H.2.2.2 g =
+      openSubgroupIndexAction (G := G) K.1 K.2.2.1 K.2.2.2 g at hφg
+    change openSubgroupIndexBasepoint (G := G) H.1 H.2.2.1 H.2.2.2 =
+      openSubgroupIndexBasepoint (G := G) K.1 K.2.2.1 K.2.2.2 at hb
+    rw [hφg, hb]
   have hSfinite :
       Finite
         { H : Subgroup G //
           IsOpen (H : Set G) ∧ Finite (G ⧸ H) ∧ Nat.card (G ⧸ H) = n } := by
-    simpa [S] using (Finite.of_injective code hcode)
+    exact Finite.of_injective code hcode
   exact (Set.finite_coe_iff
     (s := { H : Subgroup G |
       IsOpen (H : Set G) ∧ Finite (G ⧸ H) ∧ Nat.card (G ⧸ H) = n })).mp hSfinite

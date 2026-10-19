@@ -161,7 +161,7 @@ private theorem
   let v := IsDiscreteValuationRing.maximalIdeal W
   by_cases hx : x = 0
   · subst x
-    simp
+    rw [map_zero]
   obtain ⟨m, u, hxu⟩ :=
     WittVector.exists_eq_pow_p_mul' x hx
   have hu : v.intValuation (u : W) = 1 := by

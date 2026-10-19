@@ -207,8 +207,8 @@ theorem padicCompletedMultiplicativeSeries_coeff_pow_self
         PowerSeries.constantCoeff
           (PowerSeries.divXPowOrder (M ^ m)) := by
       rw [PowerSeries.constantCoeff_divXPowOrder,
-        PowerSeries.order_pow, hMorder]
-      simp
+        PowerSeries.order_pow, hMorder,
+        nsmul_eq_mul, mul_one, ENat.toNat_natCast]
     _ =
         PowerSeries.constantCoeff
           ((PowerSeries.divXPowOrder M) ^ m) := by
@@ -270,7 +270,9 @@ private theorem padicChangedUniformizer_coeff_pow_add_monomial
         ((p - 1 : ℕ) : ℕ∞) ≤
           (∑ i ∈ s, A ^ i * H ^ (p - 1 - i)).order := by
       induction s using Finset.induction_on with
-      | empty => simp
+      | empty =>
+          rw [Finset.sum_empty, PowerSeries.order_zero]
+          exact le_top
       | @insert i s hi ih =>
           rw [Finset.sum_insert hi]
           exact
@@ -583,8 +585,8 @@ theorem powerSeries_truncTotal_succ_eq_of_coeff_eq_le
   by_cases hd : d.degree < m + 1
   · rw [MvPowerSeries.coeff_truncTotal H hd,
       MvPowerSeries.coeff_truncTotal H' hd]
-    have hdegree : d.degree = d () :=
-      Finset.sum_eq_single () (by simp) (by simp)
+    have hdegree : d.degree = d () := by
+      rw [Finsupp.degree_eq_sum, Fintype.sum_unique]
     simpa only [PowerSeries.coeff_def (R := R) (s := d) rfl] using
       hcoeff (d ()) (by omega)
   · rw [MvPowerSeries.coeff_truncTotal_eq_zero H (not_lt.mp hd),

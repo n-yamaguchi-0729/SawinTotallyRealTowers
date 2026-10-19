@@ -35,7 +35,7 @@ def ambientFixedAddSubgroup (A : Rep ℤ G) (H : ClosedSubgroup G) :
     AddSubgroup A.V := by
   exact
     { carrier := {a | ∀ h : H.toSubgroup, A.ρ h.1 a = a}
-      zero_mem' := by simp
+      zero_mem' := fun h => map_zero (A.ρ h.1)
       add_mem' := by
         intro a b ha hb h
         rw [map_add, ha h, hb h]

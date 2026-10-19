@@ -30,15 +30,17 @@ def absoluteValueUnitBallSubring
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     (hnonarch : LubinTate.Valuations.NonarchimedeanAbsoluteValue v) : Subring K where
   carrier := {x | v x ≤ 1}
-  zero_mem' := by simp
-  one_mem' := by simp
+  zero_mem' := by change v 0 ≤ 1; rw [v.map_zero]; exact zero_le_one
+  one_mem' := by change v 1 ≤ 1; rw [v.map_one]
   add_mem' := by
     intro x y hx hy
     exact (LubinTate.Valuations.strong_triangle_of_nonarchimedean
       v hnonarch x y).trans (max_le hx hy)
   neg_mem' := by
     intro x hx
-    simpa using hx
+    change v (-x) ≤ 1
+    rw [AbsoluteValue.map_neg]
+    exact hx
   mul_mem' := by
     intro x y hx hy
     change v (x * y) ≤ 1
@@ -106,25 +108,24 @@ theorem isUnit_iff_abs_eq_one_of_mem_iff_le_one
     have hinv_le : v ((x : K)⁻¹) ≤ 1 :=
       (hS ((x : K)⁻¹)).1 hx_inv.2
     have hmul : v (x : K) * v ((x : K)⁻¹) = 1 := by
-      rw [← v.map_mul, mul_inv_cancel₀ hx_inv.1]
-      simp
+      rw [← v.map_mul, mul_inv_cancel₀ hx_inv.1, v.map_one]
     have hge : 1 ≤ v (x : K) := by
       calc
         1 = v (x : K) * v ((x : K)⁻¹) := hmul.symm
         _ ≤ v (x : K) * 1 :=
           mul_le_mul_of_nonneg_left hinv_le (v.nonneg (x : K))
-        _ = v (x : K) := by simp
+        _ = v (x : K) := mul_one _
     exact le_antisymm hx_le hge
   · intro hx
     rw [Submonoid.isUnit_iff_and (S := S) (a := x)]
     constructor
     · intro hx_zero
       have hzero_one : (0 : ℝ) = 1 := by
-        simp [hx_zero] at hx
+        rw [hx_zero, v.map_zero] at hx
+        exact hx
       exact zero_ne_one hzero_one
     · exact (hS ((x : K)⁻¹)).2 <| by
-        rw [map_inv₀, hx]
-        simp
+        rw [map_inv₀, hx, inv_one]
 
 /-- In the same closed-unit-ball situation, nonunits are exactly the elements
 of absolute value strictly less than `1`. -/

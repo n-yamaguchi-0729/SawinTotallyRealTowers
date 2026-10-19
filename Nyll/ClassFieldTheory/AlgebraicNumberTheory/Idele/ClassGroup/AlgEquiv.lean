@@ -1225,7 +1225,7 @@ noncomputable def relativeAdeleCongrOfAlgEquiv
                 relativeAdeleMapOfCompatibleEquiv_tmul
                   eK.symm eA.symm hA' eL.symm h'
                   (eA a) (eL x)
-              _ = a ⊗ₜ[K] x := by simp
+              _ = a ⊗ₜ[K] x := by rw [eA.symm_apply_apply, eL.symm_apply_apply]
       right_inv := by
         intro z
         induction z using TensorProduct.inductionOn with
@@ -1248,7 +1248,7 @@ noncomputable def relativeAdeleCongrOfAlgEquiv
               _ = eA (eA.symm a) ⊗ₜ[K'] eL (eL.symm x) :=
                 relativeAdeleMapOfCompatibleEquiv_tmul
                   eK eA hA eL h (eA.symm a) (eL.symm x)
-              _ = a ⊗ₜ[K'] x := by simp }
+              _ = a ⊗ₜ[K'] x := by rw [eA.apply_symm_apply, eL.apply_symm_apply] }
 
 @[simp]
 theorem relativeAdeleCongrOfAlgEquiv_tmul
@@ -1296,8 +1296,7 @@ theorem relativeIdeleCongrOfAlgEquiv_principalIdele
     relativeAdeleCongrOfAlgEquiv eK eL h
         ((1 : NumberField.AdeleRing (𝓞 K) K) ⊗ₜ[K] (x : L)) =
       (1 : NumberField.AdeleRing (𝓞 K') K') ⊗ₜ[K'] eL (x : L)
-  rw [relativeAdeleCongrOfAlgEquiv_tmul]
-  simp
+  rw [relativeAdeleCongrOfAlgEquiv_tmul, map_one]
 
 /-- The semilinear relative-idele transport identifies the principal
 subgroups. -/
@@ -1396,8 +1395,7 @@ theorem relativeAdeleCongrOfAlgEquiv_norm
       (adeleCongr eK a) ⊗ₜ[K'] (1 : L') =
         relativeAdeleCongrOfAlgEquiv eK eL h
           (a ⊗ₜ[K] (1 : L))
-    rw [relativeAdeleCongrOfAlgEquiv_tmul]
-    simp
+    rw [relativeAdeleCongrOfAlgEquiv_tmul, map_one]
   have hnorm :=
     Algebra.norm_eq_of_equiv_equiv
       (adeleCongr eK)

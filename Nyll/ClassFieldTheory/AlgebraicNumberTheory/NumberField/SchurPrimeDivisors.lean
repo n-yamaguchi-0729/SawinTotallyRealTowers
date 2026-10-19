@@ -51,7 +51,8 @@ theorem exists_prime_not_mem_dvd_eval
     intro s t h
     exact (mul_left_cancel₀ hAP) (add_left_cancel h)
   have hBad : (f.eval ⁻¹' ({0, A, -A} : Set ℤ)).Finite :=
-    Filter.TendstoCofinite.finite_preimage f.eval (by simp)
+    Filter.TendstoCofinite.finite_preimage f.eval
+      (((Set.finite_singleton (-A)).insert A).insert 0)
   obtain ⟨x, ⟨t, rfl⟩, hx⟩ :=
     (Set.infinite_range_of_injective hInjective).exists_notMem_finite hBad
   have hx0 : f.eval (a + A * (P : ℤ) * t) ≠ 0 := by

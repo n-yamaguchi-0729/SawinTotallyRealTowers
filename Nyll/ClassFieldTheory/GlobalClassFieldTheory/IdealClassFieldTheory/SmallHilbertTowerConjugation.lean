@@ -185,7 +185,8 @@ private noncomputable def conjugateFixedAddEquiv
           A.ρ (s * s⁻¹) a.1 := by
             exact congrArg (fun φ => φ a.1)
               (map_mul A.ρ s s⁻¹).symm
-      _ = a.1 := by simp
+      _ = a.1 := by
+        simp only [mul_inv_cancel, map_one, Module.End.one_apply]
   right_inv := by
     intro b
     apply Subtype.ext
@@ -195,7 +196,8 @@ private noncomputable def conjugateFixedAddEquiv
           A.ρ (s⁻¹ * s) b.1 := by
             exact congrArg (fun φ => φ b.1)
               (map_mul A.ρ s⁻¹ s).symm
-      _ = b.1 := by simp
+      _ = b.1 := by
+        simp only [inv_mul_cancel, map_one, Module.End.one_apply]
   map_add' := by
     intro a b
     apply Subtype.ext

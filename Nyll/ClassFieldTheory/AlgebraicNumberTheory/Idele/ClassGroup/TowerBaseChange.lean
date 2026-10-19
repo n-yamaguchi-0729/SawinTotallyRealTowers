@@ -475,8 +475,7 @@ theorem towerRelativeIdeleBaseChangeMulEquiv_principalIdele
     towerActualRelativeAdeleRingEquiv K M L
         ((1 : RelativeAdeleRing K M) ⊗ₜ[M] (x : L)) =
       (1 : NumberField.AdeleRing (𝓞 M) M) ⊗ₜ[M] (x : L)
-  rw [towerActualRelativeAdeleRingEquiv_tmul]
-  simp
+  rw [towerActualRelativeAdeleRingEquiv_tmul, map_one]
 
 omit [NumberField L] [FiniteDimensional M L] in
 /-- The tower-to-actual comparison transports the restricted

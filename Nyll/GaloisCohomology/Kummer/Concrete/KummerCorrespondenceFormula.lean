@@ -174,13 +174,13 @@ theorem exists_pairing_element_matching_finset
         apply MonoidHom.ext
         intro q
         obtain ⟨g, rfl⟩ := QuotientGroup.mk'_surjective H q
-        simp
+        exact DFunLike.congr_fun f.map_one g
       map_mul' := by
         intro r s
         apply MonoidHom.ext
         intro q
         obtain ⟨g, rfl⟩ := QuotientGroup.mk'_surjective H q
-        simp }
+        exact DFunLike.congr_fun (map_mul f r.1 s.1) g }
   have hf0 : Function.Injective f0 := by
     intro r s hrs
     apply Subtype.ext
@@ -192,7 +192,7 @@ theorem exists_pairing_element_matching_finset
   let t0 : Q →* (R0 →* DiscreteNthRootsSubgroup L (n : ℕ)) :=
     { toFun := fun q =>
         { toFun := fun r => f0 r q
-          map_one' := by simp
+          map_one' := DFunLike.congr_fun f0.map_one q
           map_mul' := by intro r s; exact DFunLike.congr_fun (map_mul f0 r s) q }
       map_one' := by
         apply MonoidHom.ext
@@ -505,6 +505,27 @@ def kummerRadicalExtensionRestrictedTransposeMulEquiv
     (kummerRadicalExtensionRestrictedTranspose n hn hmu Delta)
     ⟨kummerRadicalExtensionRestrictedTranspose_injective n hn hmu Delta,
       kummerRadicalExtensionRestrictedTranspose_surjective n hn hmu Delta⟩
+
+/-- A finite radical quotient produces an actual finite extension. This uses
+the faithful Kummer pairing and does not assume the field finite in advance. -/
+theorem kummerRadicalExtension_finiteDimensional_of_finite_quotient
+    (n : ℕ+) (hn : ((n : ℕ) : K) ≠ 0)
+    (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
+    (Delta : KummerSubgroup K n) [Finite (RestrictedRadicalQuotient n Delta)] :
+    FiniteDimensional K
+      (kummerRadicalExtension (K := K) (Omega := Omega) n Delta.1) := by
+  let E := kummerRadicalExtension (K := K) (Omega := Omega) n Delta.1
+  let R := RestrictedRadicalQuotient n Delta
+  let M := nthRootsSubgroup E (n : ℕ)
+  have hGalois : IsGalois K E := kummerRadicalExtension_isGalois n Delta.1
+  have hnzero : NeZero (n : ℕ) := ⟨n.ne_zero⟩
+  let hM : Fintype M := nthRootsSubgroupFintype E (n : ℕ)
+  have hcharacters : Finite (R →* M) :=
+    Finite.of_injective (fun chi : R →* M => (chi : R → M)) DFunLike.coe_injective
+  have hGal : Finite Gal(E/K) := Finite.of_injective
+    (kummerRadicalExtensionRestrictedTranspose (K := K) (Omega := Omega) n hn hmu Delta)
+    (kummerRadicalExtensionRestrictedTranspose_injective n hn hmu Delta)
+  exact IsGalois.finiteDimensional_of_finite K E
 
 end RadicalExtensionPairing
 

@@ -240,13 +240,14 @@ theorem quotientUnitHom_surjective_of_pos {n : ℕ} (hn : 1 ≤ n) :
       calc
         Ideal.Quotient.mk (F.maximalIdeal ^ n) (a * b) =
             Ideal.Quotient.mk (F.maximalIdeal ^ n) a *
-              Ideal.Quotient.mk (F.maximalIdeal ^ n) b := by simp
+              Ideal.Quotient.mk (F.maximalIdeal ^ n) b :=
+          map_mul (Ideal.Quotient.mk (F.maximalIdeal ^ n)) a b
         _ = ((y : (F.valuationSubring ⧸ F.maximalIdeal ^ n)ˣ) :
               F.valuationSubring ⧸ F.maximalIdeal ^ n) *
               ((y⁻¹ : (F.valuationSubring ⧸ F.maximalIdeal ^ n)ˣ) :
                 F.valuationSubring ⧸ F.maximalIdeal ^ n) := by
               rw [ha, hb]
-        _ = 1 := by simp
+        _ = 1 := Units.mul_inv y
     have hdiff_pow : a * b - 1 ∈ F.maximalIdeal ^ n := by
       exact (Ideal.Quotient.mk_eq_mk_iff_sub_mem
         (I := F.maximalIdeal ^ n) (a * b) (1 : F.valuationSubring)).1
@@ -259,7 +260,7 @@ theorem quotientUnitHom_surjective_of_pos {n : ℕ} (hn : 1 ≤ n) :
     have hone : (1 : F.valuationSubring) ∈ F.maximalIdeal := by
       have hsub : a * b - (a * b - 1) ∈ F.maximalIdeal :=
         F.maximalIdeal.sub_mem hab_mem hdiff_max
-      simp at hsub
+      rwa [sub_sub_cancel] at hsub
     exact (IsLocalRing.maximalIdeal.isMaximal F.valuationSubring).isPrime.one_notMem hone
   rcases ha_unit with ⟨u, rfl⟩
   refine ⟨u, ?_⟩
@@ -728,8 +729,8 @@ theorem principalUnitSuccQuotOfIdealPow_eq_of_sub_mem_succ
             (b : F.valuationSubring) b.2 : F.valuationSubringˣ) :
           F.valuationSubring) *
           ↑(higherPrincipalUnitGroup.principalUnitOneAddOfMemPow F hn
-            (b : F.valuationSubring) b.2)⁻¹ = 1 := by
-      simp
+            (b : F.valuationSubring) b.2)⁻¹ = 1 :=
+      Units.mul_inv _
     calc
       (1 + (a : F.valuationSubring)) *
             ↑(higherPrincipalUnitGroup.principalUnitOneAddOfMemPow F hn
@@ -840,8 +841,8 @@ theorem principalUnitSuccQuotOfIdealPow_add
           F.valuationSubring) *
           ↑(higherPrincipalUnitGroup.principalUnitOneAddOfMemPow F hn
             ((a + b : (F.maximalIdeal ^ n : Ideal F.valuationSubring)) :
-              F.valuationSubring) (a + b).2)⁻¹ = 1 := by
-      simp
+              F.valuationSubring) (a + b).2)⁻¹ = 1 :=
+      Units.mul_inv _
     calc
       ((1 + (a : F.valuationSubring)) * (1 + (b : F.valuationSubring))) *
             ↑(higherPrincipalUnitGroup.principalUnitOneAddOfMemPow F hn
@@ -907,7 +908,8 @@ higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow F n hn a`.
         (0 : ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u))) = 1
   rw [higherPrincipalUnitGroup.principalUnitSuccQuotOfMaximalIdealPowSuccQuot_mk]
   exact higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_eq_one_of_mem_succ
-    F n hn (0 : ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u)) (by simp)
+    F n hn (0 : ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u))
+      (F.maximalIdeal ^ (n + 1)).zero_mem
 
 /--
 `principalUnitSuccQuotOfMaximalIdealPowSuccQuot` satisfies the addition formula
@@ -981,7 +983,8 @@ noncomputable def principalUnitSuccQuotOfMaximalIdealPowSuccQuotAdd
   map_zero' := by
     change Additive.ofMul
         (higherPrincipalUnitGroup.principalUnitSuccQuotOfMaximalIdealPowSuccQuot F n hn 0) = 0
-    simp
+    exact congrArg Additive.ofMul
+      (higherPrincipalUnitGroup.principalUnitSuccQuotOfMaximalIdealPowSuccQuot_map_zero F n hn)
   map_add' x y := by
     change Additive.ofMul
         (higherPrincipalUnitGroup.principalUnitSuccQuotOfMaximalIdealPowSuccQuot F n hn (x + y)) =
@@ -1204,7 +1207,7 @@ theorem card_principalUnitSubquotient_one_eq_residue_pow_of_uniformizer
               higherPrincipalUnitGroup.card_principalUnitSuccQuot_eq_residue_of_uniformizer
                 F hpi (1 + i) hpos
     _ = Nat.card F.residueField ^ (n - 1) := by
-          simp
+          rw [Finset.prod_const, Finset.card_range]
 
 /-- Under the inverse of `U^n/U^(n+1) ≃ k`, the residue of `r` is represented
 by the principal unit `1 + r * pi^n`. -/

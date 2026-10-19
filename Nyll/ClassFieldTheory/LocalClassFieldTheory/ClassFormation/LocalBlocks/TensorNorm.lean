@@ -342,7 +342,7 @@ theorem localTensorDetNorm_eq_prod_chosenCoordinates
       (K := K) (vK := vK) (w := w) =
       Finset.univ by
     ext q
-    simp]
+    simp only [mem_decompositionRightCosetsFinset, Finset.mem_univ]]
   rw [← (rightCosetExtensionEquiv
     vK hvK w).prod_comp]
   apply Finset.prod_congr rfl

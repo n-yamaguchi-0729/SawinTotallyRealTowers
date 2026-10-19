@@ -448,8 +448,8 @@ theorem degreeCardinal_eq_relativeRamificationIndexCardinal_of_isTotallyRamified
     (hE : E.IsTotallyRamified D) :
     E.degreeCardinal = E.relativeRamificationIndexCardinal D := by
   rw [E.degreeCardinal_eq_relativeResidueDegreeCardinal_mul_relativeRamificationIndexCardinal D,
-    E.relativeResidueDegreeCardinal_eq_one_of_isTotallyRamified D hE]
-  simp
+    E.relativeResidueDegreeCardinal_eq_one_of_isTotallyRamified D hE,
+    Cardinal.lift_one, one_mul]
 
 end AbstractExtension
 

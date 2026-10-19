@@ -74,8 +74,9 @@ theorem finiteCyclicGeneratorCoordinate_eq_neg_characterCoordinate
   obtain ⟨i, rfl⟩ := Subgroup.mem_zpowers_iff.mp (hg sigma)
   rw [finiteCyclicGeneratorCoordinate_zpow, map_zpow, hchi]
   simp only [inv_zpow]
-  rw [← zpow_neg]
-  simp
+  rw [← zpow_neg, zmodMulEquivOfGenerator_symm_apply_zpow]
+  change (i : ZMod (Nat.card G)) = -((-i : ℤ) : ZMod (Nat.card G))
+  rw [Int.cast_neg, neg_neg]
 
 /-- The generator coordinate on a chosen simple Kummer extension.  The
 canonical finite-dimensional structure is kept local to this definition. -/

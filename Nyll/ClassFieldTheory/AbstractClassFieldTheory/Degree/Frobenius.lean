@@ -149,7 +149,7 @@ theorem normalizedDegree_ker (D : DegreeData G)
     rw [← D.residueDegree_nsmul_normalizedDegree K k]
     change (K.residueDegree : ℕ) • (D.normalizedDegree K k).toAdd = 0
     rw [show D.normalizedDegree K k = 1 from hk]
-    simp
+    simp only [toAdd_one, nsmul_zero]
   · intro hk
     apply Multiplicative.ext
     apply zHatMulNat_injective K.residueDegree.property
@@ -157,7 +157,7 @@ theorem normalizedDegree_ker (D : DegreeData G)
       (K.residueDegree : ℕ) • (1 : ZHatMul).toAdd
     rw [D.residueDegree_nsmul_normalizedDegree K k]
     rw [show D.degree k.1 = 1 from hk]
-    simp
+    simp only [toAdd_one, nsmul_zero]
 
 private theorem fieldInertiaWithin_le_normalizedDegree_ker
     (D : DegreeData G) (K : FiniteResidueAbstractField D) :

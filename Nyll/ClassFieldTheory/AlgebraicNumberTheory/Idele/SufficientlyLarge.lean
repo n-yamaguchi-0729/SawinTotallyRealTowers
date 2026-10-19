@@ -124,8 +124,7 @@ theorem supportedAt_sup_principalSubgroup_eq_top :
     idealClass_surjective_on_sufficientlyLarge
       (K := K) (idealClass a)
   have hquot : a * r⁻¹ ∈ (idealClass (K := K)).ker := by
-    rw [MonoidHom.mem_ker, map_mul, map_inv, hr]
-    simp
+    rw [MonoidHom.mem_ker, map_mul, map_inv, hr, mul_inv_cancel]
   have hquot' :
       a * r⁻¹ ∈ supportedAt (K := K) S ⊔ principalSubgroup K :=
     hkernel hquot

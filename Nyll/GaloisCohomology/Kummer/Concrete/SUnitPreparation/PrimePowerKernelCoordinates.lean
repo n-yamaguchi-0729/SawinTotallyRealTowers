@@ -109,8 +109,7 @@ theorem free_ker_of_surjective_linearMap_of_isLocalRing
         LinearMap.id := by
     ext x
     change x.1 - sec (f x.1) = x.1
-    rw [show f x.1 = 0 from x.2]
-    simp
+    rw [show f x.1 = 0 from x.2, map_zero, sub_zero]
   let : Module.Projective R (LinearMap.ker f) :=
     Module.Projective.of_split
       (LinearMap.ker f).subtype projection hprojection
@@ -322,6 +321,6 @@ theorem galois_pow_eq_one_of_equiv_pi_zmod
   apply Multiplicative.toAdd.injective
   change
     (n : ℕ) • Multiplicative.toAdd (eG sigma i) = 0
-  simp
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 end KummerTheory

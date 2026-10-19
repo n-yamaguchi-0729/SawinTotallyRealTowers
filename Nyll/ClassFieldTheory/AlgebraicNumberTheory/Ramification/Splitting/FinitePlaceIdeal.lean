@@ -70,8 +70,7 @@ theorem absoluteValueDecompositionGroup_eq_finitePlaceStabilizer
               (finitePlaceExtensionCentre (K := K) (L := L) v w)) :=
         congrArg (finitePlaceEquiv K L σ) hc.symm
       _ = finitePlaceExtensionCentre (K := K) (L := L) v w := by
-        rw [← finitePlaceEquiv_mul]
-        simp
+        rw [← finitePlaceEquiv_mul, mul_inv_cancel, finitePlaceEquiv_one]
   · intro h
     apply finitePlaceExtensionCentre_injective
       (K := K) (L := L) v
@@ -84,8 +83,7 @@ theorem absoluteValueDecompositionGroup_eq_finitePlaceStabilizer
               (finitePlaceExtensionCentre (K := K) (L := L) v w)) :=
         congrArg (finitePlaceEquiv K L σ⁻¹) h.symm
       _ = finitePlaceExtensionCentre (K := K) (L := L) v w := by
-        rw [← finitePlaceEquiv_mul]
-        simp
+        rw [← finitePlaceEquiv_mul, inv_mul_cancel, finitePlaceEquiv_one]
 
 omit [FiniteDimensional K L] in
 /-- Complete splitting can be tested at the centre of any exact extension

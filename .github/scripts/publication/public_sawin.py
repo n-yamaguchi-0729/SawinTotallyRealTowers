@@ -4,8 +4,40 @@
 from collections import Counter
 import hashlib
 import json
+from pathlib import Path
 import re
 import tomllib
+
+
+def refresh_reviewed_source(row, previous, current, source_commit):
+    """Admit only an explicitly reviewed source transition, preserving its history."""
+    sha = lambda data: hashlib.sha256(data).hexdigest()
+    changes = json.loads((Path(__file__).with_name('sawin-reviewed-source-updates.json'))
+                         .read_text(encoding='utf-8'))['reviewedSourceChanges']
+    matches = [x for x in changes if x['path'] == row['sourcePath']
+               and x['old'] == row['currentSourceSHA256'] == sha(previous)
+               and x['new'] == sha(current)]
+    if len(matches) != 1:
+        raise ValueError('Historical partial source changed; audit required: ' + row['sourcePath'])
+    update = matches[0]
+    length = row['copyrightHeaderByteLength']
+    if not (previous[:length] == current[:length]
+            and sha(current[:length]) == row['copyrightHeaderSHA256']
+            and sha(previous[length:]) == update['old_body_sha256']
+            == row.get('currentBodySHA256', row['historicalBodySHA256'])
+            and sha(current[length:]) == update['current_body_sha256']
+            and update['recursive_parent_declaration_unchanged'] is True):
+        raise ValueError('Reviewed partial source/header evidence differs: ' + row['sourcePath'])
+    row.setdefault('reviewedSourceUpdates', []).append({
+        'previousCanonicalSource': row.get('canonicalSource'),
+        'previousSourceSHA256': sha(previous), 'previousBodySHA256': sha(previous[length:]),
+        'sourceSHA256': sha(current), 'bodySHA256': sha(current[length:]),
+        'recursiveParentDeclarationUnchanged': True,
+        'changedProofDeclarations': update['changed_proofs']})
+    row['currentSourceSHA256'] = sha(current)
+    row['currentBodySHA256'] = sha(current[length:])
+    row['canonicalSource'] = {'repository': 'https://github.com/n-yamaguchi-0729/NYLL',
+        'commit': source_commit, 'path': row['sourcePath'], 'sourceSHA256': sha(current)}
 
 
 def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
@@ -51,7 +83,8 @@ def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
                 if row["originModule"] in rows]
     for row in retained:
         if row["currentSourceSHA256"] != rows[row["originModule"]]["sha256"]:
-            raise ValueError("Historical partial source changed; audit required: " + row["sourcePath"])
+            refresh_reviewed_source(row, (repo / row['sourcePath']).read_bytes(),
+                                    desired[row['sourcePath']], source_commit)
     baseline.update(allowedPartialDeclarations=retained, selectedCount=len(retained),
         purpose="Previously admitted compiler-generated partial declarations whose original modules "
                 "remain in this exact source closure. Original declaration, source, header, body, "
@@ -65,6 +98,14 @@ def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
         verify = verify.replace(old_check, new_check)
     elif new_check not in verify:
         raise ValueError("Historical partial verifier changed")
+    old_body_check = "== old['historicalBodySHA256']"
+    new_body_check = "== old.get('currentBodySHA256', old['historicalBodySHA256'])"
+    if old_body_check in verify:
+        if verify.count(old_body_check) != 1:
+            raise ValueError('Historical partial body check is ambiguous')
+        verify = verify.replace(old_body_check, new_body_check)
+    elif new_body_check not in verify:
+        raise ValueError('Historical partial body verifier changed')
     test_path = "tests/test_verification.py"
     tests = (repo / test_path).read_text(encoding="utf-8")
     old_test = "self.assertEqual(len(baseline['allowedPartialDeclarations']), 31)"
@@ -73,6 +114,12 @@ def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
         tests = tests.replace(old_test, new_test)
     elif new_test not in tests:
         raise ValueError("Historical partial test changed")
+    old_body_test = "old['historicalBodySHA256'])"
+    new_body_test = "old.get('currentBodySHA256', old['historicalBodySHA256']))"
+    if new_body_test not in tests:
+        if tests.count(old_body_test) != 1:
+            raise ValueError('Historical partial body test is ambiguous')
+        tests = tests.replace(old_body_test, new_body_test)
     compile(verify, verify_path, "exec")
     compile(tests, test_path, "exec")
     return {

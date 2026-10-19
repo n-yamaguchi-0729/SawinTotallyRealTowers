@@ -49,8 +49,8 @@ def topModuleLineLifted {M : TopModuleCat.{u} (ZMod p)} (x : M) :
             rw [show (a + b).down = a.down + b.down by rfl, add_smul]
           map_smul' := by
             intro a b
-            rw [show (a • b).down = a * b.down by rfl, mul_smul]
-            simp }
+            change (a * b.down) • x = a • (b.down • x)
+            exact mul_smul a b.down x }
       cont := Continuous.smul
         ((ContinuousLinearEquiv.ulift :
           ULift.{u} (ZMod p) ≃L[ZMod p] ZMod p).continuous) continuous_const }
@@ -144,14 +144,13 @@ theorem homogeneousOneCochainLineOfH1Lifted_comp_d
   intro a
   change ((ClassFieldTower.Cohomology.trivialZModPCochainsLifted p G).d 1 2).hom
     (a.down • homogeneousOneCochainOfH1Lifted χ) = 0
-  rw [map_smul, homogeneousOneCochainOfH1Lifted_mem_cycles]
-  simp
+  rw [map_smul, homogeneousOneCochainOfH1Lifted_mem_cycles, smul_zero]
 
 /-- Regard a continuous additive character as a lifted homogeneous one-cocycle. -/
 def cocycleOfH1Lifted (χ : ContinuousH1ZMod (p := p) (G := G)) :
     ClassFieldTower.Cohomology.trivialZModPCocyclesLifted p G 1 := by
   exact ((ClassFieldTower.Cohomology.trivialZModPCochainsLifted p G).liftCycles
-    (homogeneousOneCochainLineOfH1Lifted χ) 2 (by simp)
+    (homogeneousOneCochainLineOfH1Lifted χ) 2 (CochainComplex.next ℕ 1)
       (homogeneousOneCochainLineOfH1Lifted_comp_d χ)) 1
 
 /-- The homogeneous one-cochain underlying a lifted one-cocycle. -/
@@ -166,13 +165,13 @@ theorem homogeneousOneCochainOfCocycleLifted_cocycleOfH1Lifted
       homogeneousOneCochainOfH1Lifted χ := by
   change (ClassFieldTower.Cohomology.trivialZModPCochainsLifted p G).iCycles 1
     (((ClassFieldTower.Cohomology.trivialZModPCochainsLifted p G).liftCycles
-      (homogeneousOneCochainLineOfH1Lifted χ) 2 (by simp)
+      (homogeneousOneCochainLineOfH1Lifted χ) 2 (CochainComplex.next ℕ 1)
         (homogeneousOneCochainLineOfH1Lifted_comp_d χ)) 1) = _
   rw [← ConcreteCategory.comp_apply,
     (ClassFieldTower.Cohomology.trivialZModPCochainsLifted p G).liftCycles_i]
   change ((1 : ULift.{u} (ZMod p)).down : ZMod p) •
     homogeneousOneCochainOfH1Lifted χ = _
-  simp
+  exact one_smul (ZMod p) _
 
 theorem homogeneousOneCochainOfCocycleLifted_mem_cycles
     (z : ClassFieldTower.Cohomology.trivialZModPCocyclesLifted p G 1) :
@@ -277,7 +276,7 @@ theorem h1OfCocycleLifted_cocycleOfH1Lifted
   change ((homogeneousOneCochainOfCocycleLifted (cocycleOfH1Lifted χ)).1 1 g.toMul).down = χ g
   rw [homogeneousOneCochainOfCocycleLifted_cocycleOfH1Lifted,
     homogeneousOneCochainOfH1Lifted_apply]
-  simp
+  rw [inv_one, one_mul, ofMul_toMul]
 
 theorem cocycleOfH1Lifted_h1OfCocycleLifted
     (z : ClassFieldTower.Cohomology.trivialZModPCocyclesLifted p G 1) :
@@ -539,14 +538,13 @@ theorem homogeneousOneCochainLineOfH1_comp_d
   intro a
   change ((ClassFieldTower.Cohomology.trivialZModPCochains p G₀).d 1 2).hom
     (a • homogeneousOneCochainOfH1 χ) = 0
-  rw [map_smul, homogeneousOneCochainOfH1_mem_cycles]
-  simp
+  rw [map_smul, homogeneousOneCochainOfH1_mem_cycles, smul_zero]
 
 /-- Regard a continuous additive character as a small-universe homogeneous one-cocycle. -/
 def cocycleOfH1 (χ : ContinuousH1ZMod (p := p) (G := G₀)) :
     ClassFieldTower.Cohomology.trivialZModPCocycles p G₀ 1 := by
   exact ((ClassFieldTower.Cohomology.trivialZModPCochains p G₀).liftCycles
-    (homogeneousOneCochainLineOfH1 χ) 2 (by simp)
+    (homogeneousOneCochainLineOfH1 χ) 2 (CochainComplex.next ℕ 1)
       (homogeneousOneCochainLineOfH1_comp_d χ)) 1
 
 /-- The homogeneous one-cochain underlying a small-universe one-cocycle. -/
@@ -561,12 +559,12 @@ theorem homogeneousOneCochainOfCocycle_cocycleOfH1
       homogeneousOneCochainOfH1 χ := by
   change (ClassFieldTower.Cohomology.trivialZModPCochains p G₀).iCycles 1
     (((ClassFieldTower.Cohomology.trivialZModPCochains p G₀).liftCycles
-      (homogeneousOneCochainLineOfH1 χ) 2 (by simp)
+      (homogeneousOneCochainLineOfH1 χ) 2 (CochainComplex.next ℕ 1)
         (homogeneousOneCochainLineOfH1_comp_d χ)) 1) = _
   rw [← ConcreteCategory.comp_apply,
     (ClassFieldTower.Cohomology.trivialZModPCochains p G₀).liftCycles_i]
   change (1 : ZMod p) • homogeneousOneCochainOfH1 χ = _
-  simp
+  exact one_smul (ZMod p) _
 
 theorem homogeneousOneCochainOfCocycle_mem_cycles
     (z : ClassFieldTower.Cohomology.trivialZModPCocycles p G₀ 1) :
@@ -657,7 +655,7 @@ theorem h1OfCocycle_cocycleOfH1
   change (homogeneousOneCochainOfCocycle (cocycleOfH1 χ)).1 1 g.toMul = χ g
   rw [homogeneousOneCochainOfCocycle_cocycleOfH1]
   change χ (Additive.ofMul (1⁻¹ * g.toMul)) = χ g
-  simp
+  rw [inv_one, one_mul, ofMul_toMul]
 
 theorem cocycleOfH1_h1OfCocycle
     (z : ClassFieldTower.Cohomology.trivialZModPCocycles p G₀ 1) :

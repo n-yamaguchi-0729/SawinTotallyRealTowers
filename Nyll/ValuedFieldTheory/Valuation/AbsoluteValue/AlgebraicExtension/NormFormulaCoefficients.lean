@@ -158,8 +158,7 @@ theorem normFormula_monic_coeff_abs_le_one_of_const_abs_le_one_of_henselFactoriz
     (hconst : v (f.coeff 0) ≤ 1) :
     ∀ i : ℕ, v (f.coeff i) ≤ 1 := by
   have hlead : v f.leadingCoeff = 1 := by
-    rw [hmonic.leadingCoeff]
-    simp
+    rw [hmonic.leadingCoeff, v.map_one]
   have hendpoint :
       max (v (f.coeff 0)) (v f.leadingCoeff) ≤ 1 := by
     rw [hlead]

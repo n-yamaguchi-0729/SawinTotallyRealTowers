@@ -67,8 +67,10 @@ theorem galoisRank_le_totalPlaceCard_enlargedS
       (K := K) (Omega := Omega) n hnK hmu S'
   have hcardE :
       Nat.card Gal(E/K) = (n : ℕ) ^ r := by
-    rw [Nat.card_congr eG.toEquiv, Nat.card_pi]
-    simp
+    rw [Nat.card_congr eG.toEquiv, Nat.card_fun,
+      Nat.card_congr
+        (Multiplicative.toAdd : Multiplicative (ZMod (n : ℕ)) ≃ ZMod (n : ℕ)),
+      Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]
   have hcardN :
       Nat.card Gal(N/K) =
         (n : ℕ) ^ totalPlaceCard (K := K) S' :=
@@ -140,8 +142,10 @@ theorem card_enlargedSUnitKummerRestrictionHom_ker
       (K := K) (Omega := Omega) E n hmu hexponentE S
   have hcardE :
       Nat.card Gal(E/K) = (n : ℕ) ^ r := by
-    rw [Nat.card_congr eG.toEquiv, Nat.card_pi]
-    simp
+    rw [Nat.card_congr eG.toEquiv, Nat.card_fun,
+      Nat.card_congr
+        (Multiplicative.toAdd : Multiplicative (ZMod (n : ℕ)) ≃ ZMod (n : ℕ)),
+      Nat.card_zmod, Nat.card_eq_fintype_card, Fintype.card_fin]
   have hcardN :
       Nat.card Gal(N/K) =
         (n : ℕ) ^ totalPlaceCard (K := K) S' :=

@@ -125,7 +125,7 @@ theorem homogeneousOneCochainNormalizedValue_inflated_primitive
           (finiteStageQuotientMap R U q) (finiteStageQuotientMap R U r)) := by
     rw [inflatedTransgressionCochain_apply]
     congr 2
-    · simp
+    · rw [inv_one, one_mul]
     · exact congrArg (finiteStageQuotientMap R U) (by group)
   rw [htrans] at hcpoint
   let e : ULift.{u} (ZMod p) ≃ₗ[ZMod p] ZMod p := ULift.moduleEquiv

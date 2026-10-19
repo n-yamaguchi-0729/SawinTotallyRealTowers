@@ -122,7 +122,7 @@ theorem integralPowerSeriesEvaluation_norm_sub
   · subst y
     have hvalue : fx = fy := hfx.unique hfy
     subst fy
-    simp
+    rw [sub_self, sub_self]
   let term : ℕ → Valued.integer L :=
     fun m ↦ c m * x ^ m - c m * y ^ m
   let linear : Valued.integer L := c 1 * (x - y)

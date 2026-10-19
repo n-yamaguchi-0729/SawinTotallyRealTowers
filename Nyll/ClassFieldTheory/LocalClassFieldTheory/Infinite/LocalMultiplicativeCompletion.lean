@@ -86,8 +86,8 @@ theorem exists_openFiniteIndexNormalSubgroup_not_mem_localMultiplicativeGroup
         change integerUnitsToFieldUnits K
           (uniformizerUnitFactor K (chosenLocalUniformizer K)
             (chosenLocalUniformizer_spec K) x) = x
-        rw [integerUnitsToFieldUnits_uniformizerUnitFactor, hvaluation']
-        simp
+        rw [integerUnitsToFieldUnits_uniformizerUnitFactor, hvaluation',
+          zpow_zero, div_one]
       calc
         x = integerUnitsToFieldUnits K (unitFactor x) := hembed.symm
         _ = integerUnitsToFieldUnits K ux := rfl

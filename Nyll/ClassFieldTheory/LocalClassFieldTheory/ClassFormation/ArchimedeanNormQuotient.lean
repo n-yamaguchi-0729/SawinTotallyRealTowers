@@ -246,7 +246,7 @@ theorem herbrandH0_card_eq_one_of_group_card_eq_one
           ext g
           simp [Subsingleton.elim g 1]
         rw [huniv]
-        simp)
+        simp only [Finset.prod_singleton, one_smul])
   exact Nat.card_unique
 
 /-- At a complex place above a real place, the completion norm quotient
@@ -255,13 +255,12 @@ def infiniteCompletionNormQuotientEquivRealComplex
     (v : InfinitePlace K) (w : InfinitePlace L)
     (hw : w.comap (algebraMap K L) = v)
     (hv : v.IsReal) (hwc : w.IsComplex) :
-    letI : w.1.LiesOver v.1 :=
+    let _ : w.1.LiesOver v.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
     NormQuotient v.Completion w.Completion ≃*
       NormQuotient ℝ ℂ := by
-  letI : w.1.LiesOver v.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
-  letI :
+  intro placeLiesOver
+  have :
       NumberField.ComplexEmbedding.LiesOver
         (InfinitePlace.Completion.extensionEmbedding w)
         (InfinitePlace.Completion.extensionEmbedding v) :=
@@ -271,7 +270,16 @@ def infiniteCompletionNormQuotientEquivRealComplex
     normQuotientEquivOfRingEquiv
       (InfinitePlace.Completion.ringEquivRealOfIsReal hv)
       (InfinitePlace.Completion.ringEquivComplexOfIsComplex hwc)
-      (by ext; simp)
+      (by
+        apply RingHom.ext
+        intro x
+        change (InfinitePlace.Completion.extensionEmbeddingOfIsReal hv x : ℂ) =
+          InfinitePlace.Completion.extensionEmbedding w
+            (algebraMap v.Completion w.Completion x)
+        rw [InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]
+        exact (NumberField.ComplexEmbedding.LiesOver.over_apply
+          (InfinitePlace.Completion.extensionEmbedding w)
+          (InfinitePlace.Completion.extensionEmbedding v)).symm)
 
 /-- The algebraic localization used in the local cohomology block is
 canonically the whole absolute-value completion, also at an infinite
@@ -388,8 +396,8 @@ def absoluteCompletionNormQuotientEquivRealComplex
           (y : v.1.Completion) =
             algebraMap K v.1.Completion
               (WithAbs.equiv v.1 y) := by
-        rw [← AbsoluteValue.toCompletion_eq_algebraMap]
-        simp
+        rw [← AbsoluteValue.toCompletion_eq_algebraMap,
+          AbsoluteValue.toCompletion_apply, RingEquiv.symm_apply_apply]
       have hmap :
           AbsoluteValue.completionMap v.1 w.1
               (infinitePlaceAbsoluteValueExtension v w hw).2
@@ -783,7 +791,7 @@ theorem infinitePlaceLocalHerbrandH0Finite
             ext g
             simp [Subsingleton.elim g 1]
           rw [huniv]
-          simp)
+          simp only [Finset.prod_singleton, one_smul])
     exact
       Finite.of_injective
         (fun _ :

@@ -5,6 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Completed
+import Mathlib.Algebra.Group.Units.Hom
+import Mathlib.Algebra.GroupWithZero.Action.End
 
 /-!
 # Group-like unit representations
@@ -24,21 +26,8 @@ universe u v w z
 /-- The canonical embedding of a group into the units of its abstract group algebra. -/
 noncomputable def groupAlgebraUnitRepresentation
     (R : Type u) (G : Type v) [CommRing R] [Group G] :
-    G →* (MonoidAlgebra R G)ˣ where
-  toFun g :=
-    { val := MonoidAlgebra.of R G g
-      inv := MonoidAlgebra.of R G g⁻¹
-      val_inv := by
-        rw [← map_mul, mul_inv_cancel, map_one]
-      inv_val := by
-        rw [← map_mul, inv_mul_cancel, map_one]}
-  map_one' := by
-    apply Units.ext
-    exact map_one (MonoidAlgebra.of R G)
-  map_mul' := by
-    intro g h
-    apply Units.ext
-    exact map_mul (MonoidAlgebra.of R G) g h
+    G →* (MonoidAlgebra R G)ˣ :=
+  (MonoidAlgebra.of R G).toHomUnits
 
 /-- The value of the abstract unit representation is the corresponding group-like basis element. -/
 @[simp]
@@ -101,28 +90,8 @@ core of Proposition 5.3.6(a).
 @[reducible]
 noncomputable def unitRepresentationDistribMulAction
     (G : Type u) (S : Type v) (A : Type w) [Group G] [Ring S] [AddCommGroup A]
-    [Module S A] (ρ : G →* Sˣ) : DistribMulAction G A where
-  smul g a := ((ρ g : Sˣ) : S) • a
-  one_smul := by
-    intro a
-    change (((ρ (1 : G) : Sˣ) : S) • a) = a
-    rw [map_one]
-    exact one_smul S a
-  mul_smul := by
-    intro g h a
-    change (((ρ (g * h) : Sˣ) : S) • a) =
-      (((ρ g : Sˣ) : S) • (((ρ h : Sˣ) : S) • a))
-    rw [map_mul]
-    exact mul_smul (((ρ g : Sˣ) : S)) (((ρ h : Sˣ) : S)) a
-  smul_zero := by
-    intro g
-    change (((ρ g : Sˣ) : S) • (0 : A)) = 0
-    exact smul_zero (((ρ g : Sˣ) : S))
-  smul_add := by
-    intro g a b
-    change (((ρ g : Sˣ) : S) • (a + b)) =
-      ((ρ g : Sˣ) : S) • a + ((ρ g : Sˣ) : S) • b
-    exact smul_add (((ρ g : Sˣ) : S)) a b
+    [Module S A] (ρ : G →* Sˣ) : DistribMulAction G A :=
+  DistribMulAction.compHom A ((Units.coeHom S).comp ρ)
 
 /--
 The pulled-back action is continuous whenever the unit representation is continuous after

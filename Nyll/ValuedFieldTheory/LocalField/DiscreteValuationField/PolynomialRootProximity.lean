@@ -41,15 +41,14 @@ private theorem addVal_multiset_prod_le
     IsDiscreteValuationRing.addVal R ((s.map f).prod) ≤
       IsDiscreteValuationRing.addVal R ((s.map g).prod) := by
   induction s using Multiset.induction_on with
-  | empty =>
-      simp
+  | empty => exact le_rfl
   | @cons z s ih =>
       rw [Multiset.map_cons, Multiset.prod_cons,
         Multiset.map_cons, Multiset.prod_cons,
         IsDiscreteValuationRing.addVal_mul,
         IsDiscreteValuationRing.addVal_mul]
       apply add_le_add
-      · exact h z (by simp)
+      · exact h z (Multiset.mem_cons_self z s)
       · apply ih
         intro t ht
         exact h t (by simp [ht])

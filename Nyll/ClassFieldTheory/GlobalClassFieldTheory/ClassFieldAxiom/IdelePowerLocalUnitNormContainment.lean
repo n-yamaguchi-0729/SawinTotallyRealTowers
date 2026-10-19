@@ -604,7 +604,7 @@ theorem
           QuotientGroup.mk'
             (IdeleGroup.principalSubgroup K) a
       rw [← huq, map_mul, map_inv, hsOne, map_mul, hqOne]
-      simp
+      simp only [inv_one]
     let : IsCyclic (M ≃ₐ[K] M) := by
       simpa only [M] using
         KummerTheory.chosenSimpleKummerExtension_isCyclic

@@ -290,7 +290,7 @@ theorem
       _ =
           WithZero.exp (-(eGlobal : ℤ)) := by
         congr 1
-        simp
+        rw [nsmul_eq_mul, mul_neg, mul_one]
   have hint :
       (-1 : ℤ) = -(eGlobal : ℤ) :=
     WithZero.exp_injective hexp

@@ -66,7 +66,7 @@ private theorem kernelCosetToSaturationCoset_surjective (d : G →* D) {L K : Su
   obtain ⟨n, hnKer, l, hlL, hnl⟩ :=
     (Subgroup.mem_sup_of_normal_left (s := d.ker) (t := L)).mp hzSup
   have hnK : n ∈ K := by
-    rw [show n = (z : G) * l⁻¹ by rw [← hnl]; simp]
+    rw [show n = (z : G) * l⁻¹ by rw [← hnl, mul_inv_cancel_right]]
     exact K.mul_mem z.property.1 (K.inv_mem (hLK hlL))
   let n' : ↑(K ⊓ d.ker) := ⟨n, hnK, hnKer⟩
   refine ⟨Quotient.mk'' n', ?_⟩

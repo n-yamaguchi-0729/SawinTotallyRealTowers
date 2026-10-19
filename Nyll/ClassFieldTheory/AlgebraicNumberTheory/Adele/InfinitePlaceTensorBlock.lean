@@ -54,12 +54,12 @@ number fields. -/
 theorem infinitePlaceCompletionAlgEquiv_algebraMap
     (v : InfinitePlace K) (w : InfinitePlace L)
     (hw : w.comap (algebraMap K L) = v) :
-    letI : w.1.LiesOver v.1 :=
+    let _ : w.1.LiesOver v.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
     let u : AbsoluteValueExtension v.1 L :=
       ⟨w.1, fun x =>
         congrArg (fun q : InfinitePlace K => q.1 x) hw⟩
-    letI : Algebra v.1.Completion u.1.Completion :=
+    let _ : Algebra v.1.Completion u.1.Completion :=
       AbsoluteValue.completionAlgebra v.1 u.1 u.2
     RingHom.comp
         (algebraMap v.1.Completion u.1.Completion)
@@ -67,13 +67,7 @@ theorem infinitePlaceCompletionAlgEquiv_algebraMap
       RingHom.comp
         (infinitePlaceCompletionAlgEquiv w).toRingEquiv
         (algebraMap v.Completion w.Completion) := by
-  let : w.1.LiesOver v.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
-  let u : AbsoluteValueExtension v.1 L :=
-    ⟨w.1, fun x =>
-      congrArg (fun q : InfinitePlace K => q.1 x) hw⟩
-  let : Algebra v.1.Completion u.1.Completion :=
-    AbsoluteValue.completionAlgebra v.1 u.1 u.2
+  intro hLiesOver u completionAlgebra
   ext x
   refine InfinitePlace.Completion.induction_on v x ?_ ?_
   · exact
@@ -88,8 +82,8 @@ theorem infinitePlaceCompletionAlgEquiv_algebraMap
         (y : v.1.Completion) =
           algebraMap K v.1.Completion
             (WithAbs.equiv v.1 y) := by
-      rw [← AbsoluteValue.toCompletion_eq_algebraMap]
-      simp
+      rw [← AbsoluteValue.toCompletion_eq_algebraMap,
+        AbsoluteValue.toCompletion_apply, RingEquiv.symm_apply_apply]
     change
       AbsoluteValue.completionMap v.1 u.1 u.2
           (y : v.1.Completion) =

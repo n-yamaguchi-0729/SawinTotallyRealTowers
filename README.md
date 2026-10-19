@@ -10,6 +10,8 @@ A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem.
 This library is extracted from [NYLL](https://github.com/n-yamaguchi-0729/NYLL).
 <!-- nyll-publication:distribution:begin -->
 Only the module-level import closure of `Nyll.SawinTotallyRealTowers.All` is bundled. Dependencies retain their canonical `Nyll` imports.
+
+Supporting modules are included from [ClassFieldTheory](Nyll/ClassFieldTheory/), [GaloisCohomology](Nyll/GaloisCohomology/), [ProCGroups](Nyll/ProCGroups/), [ValuedFieldTheory](Nyll/ValuedFieldTheory/). These dependency libraries are included only to the extent required by the imports.
 <!-- nyll-publication:distribution:end -->
 
 ## Scope

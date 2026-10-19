@@ -83,8 +83,7 @@ noncomputable def arithmeticStageH2ProjectionKernelEquivCoefficient
       x.1.left + y.1.left
     rw [arithmeticStageH2Projection_right_eq_one F p hpOdd U xU x,
       arithmeticStageH2Projection_right_eq_one F p hpOdd U xU y,
-      FreeProPH2Cocycle.normalizedCocycle_one_left]
-    simp
+      FreeProPH2Cocycle.normalizedCocycle_one_left, add_zero]
 
 /-- A stage obstruction character is a radical character valued in the
 central coefficient kernel of the arithmetic-stage embedding problem. -/

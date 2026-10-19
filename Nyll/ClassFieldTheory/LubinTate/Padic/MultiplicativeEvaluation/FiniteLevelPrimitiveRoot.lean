@@ -71,7 +71,9 @@ private theorem padicMultiplicativeScalarEndomorphism_nat
     dsimp only [A]
     simp only [map_sub, PowerSeries.coeff_one]
     rw [PowerSeries.coeff_one_pow]
-    simp
+    simp only [map_add, map_one, PowerSeries.coeff_one, PowerSeries.coeff_one_X,
+      PowerSeries.constantCoeff_X, ite_eq_right Nat.one_ne_zero,
+      zero_add, add_zero, one_pow, mul_one, sub_zero]
   have hAlinear :
       HasLinearTerm A
         (fun _ : Unit =>

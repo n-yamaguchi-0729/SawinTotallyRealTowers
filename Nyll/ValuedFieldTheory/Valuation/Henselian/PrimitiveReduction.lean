@@ -94,7 +94,7 @@ theorem associated_multiset_map_prod_of_forall
   | empty => exact Associated.refl 1
   | cons i s ih =>
       simp only [Multiset.map_cons, Multiset.prod_cons]
-      exact (h i (by simp)).mul_mul
+      exact (h i (Multiset.mem_cons_self i s)).mul_mul
         (ih (fun j hj => h j (by simp [hj])))
 
 /-- Gauss association descends through a valuation subring: primitive
@@ -126,7 +126,7 @@ theorem associated_of_isPrimitive_of_map_associated
     dsimp [cV]
     change (((uf⁻¹ : Vˣ) : V) : K) * ((g.coeff i : V) : K) = c
     rw [← hicoeff, ← huf]
-    have hinvV : ((uf⁻¹ : Vˣ) : V) * (uf : V) = 1 := by simp
+    have hinvV : ((uf⁻¹ : Vˣ) : V) * (uf : V) = 1 := Units.inv_mul uf
     have hinvK := congrArg V.subtype hinvV
     change (((uf⁻¹ : Vˣ) : V) : K) * ((uf : V) : K) = 1 at hinvK
     rw [← mul_assoc, hinvK, one_mul]
@@ -178,7 +178,7 @@ theorem isPrimitive_finset_prod_of_valuationSubring
     (∏ i ∈ s, f i).IsPrimitive := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty => exact Polynomial.isPrimitive_one
   | @insert a s ha ih =>
       rw [Finset.prod_insert ha]
       exact isPrimitive_mul_of_valuationSubring V
@@ -193,11 +193,11 @@ theorem isPrimitive_multiset_prod_of_valuationSubring
     (hs : ∀ f ∈ s, f.IsPrimitive) :
     s.prod.IsPrimitive := by
   induction s using Multiset.induction_on with
-  | empty => simp
+  | empty => exact Polynomial.isPrimitive_one
   | cons f s ih =>
       rw [Multiset.prod_cons]
       exact isPrimitive_mul_of_valuationSubring V
-        (hs f (by simp))
+        (hs f (Multiset.mem_cons_self f s))
         (ih (fun g hg => hs g (by simp [hg])))
 
 /-- Every irreducible polynomial over the fraction field of a valuation
@@ -259,8 +259,8 @@ theorem exists_primitive_irreducible_lift_of_irreducible
     rcases hr with ⟨s, hs⟩
     apply IsUnit.of_mul_eq_one (s.coeff i)
     calc
-      r * s.coeff i = (Polynomial.C r * s).coeff i := by
-        simp
+      r * s.coeff i = (Polynomial.C r * s).coeff i :=
+        (Polynomial.coeff_C_mul s).symm
       _ = q.coeff i := by rw [← hs]
       _ = 1 := hqcoeffi
   have hqmap : q.map V.subtype = Polynomial.C a⁻¹ * p := by

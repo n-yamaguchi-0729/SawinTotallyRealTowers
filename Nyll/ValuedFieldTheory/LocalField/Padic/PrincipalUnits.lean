@@ -246,8 +246,7 @@ theorem padicInt_exists_degree_root_of_mem_maximalIdeal_pow_succ
   have hpred_qp_ne : (p - 1 : ℤ_[p]) ≠ 0 := by exact_mod_cast hpred_ne
   have hpred_unit : IsUnit (p - 1 : ℤ_[p]) := by
     rw [PadicInt.isUnit_iff, PadicInt.norm_eq_zpow_neg_valuation hpred_qp_ne,
-      hvalpred]
-    simp
+      hvalpred, Nat.cast_zero, neg_zero, zpow_zero]
   let u : ℤ_[p]ˣ := hpred_unit.unit
   have hu : (u : ℤ_[p]) = (p - 1 : ℤ_[p]) := hpred_unit.unit_spec
   rw [PadicInt.maximalIdeal_eq_span_p, Ideal.span_singleton_pow,

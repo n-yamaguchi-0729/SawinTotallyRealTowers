@@ -24,6 +24,7 @@ from public_ci import desired_ci
 from public_extract_provenance import (provenance_files, managed_provenance_paths,
     readme_for_extract, sawin_verification_readme, local_markdown_links)
 from public_sawin import desired_sawin
+from ci_templates.generate_manifest import header_imports
 
 # Runtime paths are supplied explicitly; this module does not depend on a
 # developer checkout, work/tmp, or another unpublished helper.
@@ -32,13 +33,12 @@ CLONES = Path()
 SOURCE = ''
 TOPICS = [
     ['ProCGroups', 'ValuedFieldTheory', 'GaloisCohomology', 'SchemeTheory'],
-    ['ClassFieldTheory', 'AlgebraicCurves', 'EtaleFundamentalGroups', 'EtaleCohomology'],
+    ['ClassFieldTheory', 'AlgebraicCurves', 'EtaleFundamentalGroups', 'EtaleCohomology',
+     'AbelianVarieties'],
     ['SawinTotallyRealTowers', 'JacobianVarieties', 'Yamaguchi26AbfaithfulGalois',
-     'Yamaguchi26SolvableCoverings', 'AnabelianGeometry', 'ShimizuYamaguchi26BranchedCoverings'],
+     'Yamaguchi26SolvableCoverings', 'AnabelianGeometry'],
 ]
 DEPTH = {topic: depth for depth, topics in enumerate(TOPICS, 1) for topic in topics}
-IMPORT_LINE = re.compile(r'^[ \t]*(?:(?:public|private|meta)[ \t]+)*import[ \t]+([^\n]+)', re.M)
-MODULE_NAME = re.compile(r'[\w\u0080-\uffff]+(?:\.[\w\u0080-\uffff]+)*')
 
 
 PRIMARY = {
@@ -48,7 +48,7 @@ PRIMARY = {
     'EtaleFundamentalGroupsAndCohomology': ['EtaleFundamentalGroups', 'EtaleCohomology'],
     'JacobianVarieties': ['JacobianVarieties'],
     'YamaguchiPapersFormalization': ['Yamaguchi26AbfaithfulGalois',
-        'Yamaguchi26SolvableCoverings', 'ShimizuYamaguchi26BranchedCoverings'],
+        'Yamaguchi26SolvableCoverings'],
     'AnabelianGeometry': ['AnabelianGeometry'],
 }
 
@@ -104,12 +104,7 @@ def mask_comments_and_strings(text: str) -> str:
 
 
 def imports(text: str) -> list[tuple[str, int, int]]:
-    masked = mask_comments_and_strings(text)
-    result = []
-    for line in IMPORT_LINE.finditer(masked):
-        for name in MODULE_NAME.finditer(line.group(1)):
-            result.append((name.group(), line.start(1) + name.start(), line.start(1) + name.end()))
-    return result
+    return header_imports(text)
 
 
 def require(condition, message):
@@ -245,6 +240,18 @@ CANONICAL_REPOSITORY = OWNER + '/NYLL'
 PACKAGE = '.github/scripts/publication/'
 PUBLICATION = '.github/verification/publication.json'
 SAWIN_MANIFEST = '.github/verification/source-manifest.json'
+# Audited private planning/operations documents, including their historical paths.
+# Keep this explicit: public source and attribution documents are not work plans.
+INTERNAL_DOCUMENT_PATHS = {
+    'Nyll/AbelianVarieties/IMPLEMENTATION_PLAN.md',
+    'Nyll/AlgebraicCurves/LibraryScope.md',
+    'Nyll/AlgebraicCurves/SharedLibraryMigrationCandidates.md',
+    'Nyll/AnabelianGeometry/FORMALIZATION_STATUS.md',
+    'Nyll/ClassFieldTheory/FUNCTION_FIELD_PLAN.md',
+    'Nyll/EtaleFundamentalGroups/StacksProjectChapter58.md',
+    'Nyll/JacobianVarieties/GENERALIZED_JACOBIAN_IMPLEMENTATION_PLAN.md',
+    'Nyll/JacobianVarieties/JV_HANDOFF_2026-10-14.md',
+}
 
 
 def json_bytes(value):
@@ -259,23 +266,14 @@ def validate_remote(repo, name):
     require(remote in allowed, 'Origin is not the whitelisted repository: ' + name)
 
 
-def agents_for_extract(record):
-    roots = ', '.join('`' + x + '`' for x in record['primary_roots'])
-    return ('# Public library workspace instructions\n\n'
-        'This repository is a source extract of NYLL. Its primary roots are ' + roots + '.\n'
-        'Keep exactly their recursive local import closure. Do not bundle an entire dependency '
-        'library to supply individual modules. Nyll/All.lean imports only the primary roots.\n\n'
-        'The publication pipeline verifies source bytes against the recorded NYLL commit. '
-        'Preserve copyright, author and source notices for every retained file; README and '
-        'NOTICE describe only material actually included. Record the source SHA and managed '
-        'file hashes in .github/verification/publication.json.\n\n'
-        'Within the shared NYLL publication workspace, validate Lean in the canonical NYLL '
-        'root and reuse its .lake/build cache; do not build this exported checkout. '
-        'GitHub CI and independent consumers build from this repository root using its '
-        'pinned toolchain and .lake/build. Never relocate the build cache.\n\n'
-        'Automatic updates accept only a successful libraries.yml run for the exact current '
-        'NYLL main commit. They cannot roll back or replace a divergent published snapshot. '
-        'Use normal pushes and rerun lean.yml after a changed extract is committed.\n').encode()
+def is_internal_document(path):
+    """Private workspace instructions are never part of a public extract.
+
+    Match explicit document names, not broad substrings: user-facing README,
+    source attribution and license files must not be mistaken for work plans.
+    """
+    return (Path(path).name in {'AGENTS.md', 'PLAN.md', 'HANDOFF.md', 'ROADMAP.md'}
+            or path in INTERNAL_DOCUMENT_PATHS)
 
 
 def normalized_comparison(path, data):
@@ -342,7 +340,6 @@ def prepare_repository(name, files, cfg, order, graph, source_imports):
     desired.update(provenance_files(files, selected_paths))
     desired['README.md'] = readme_for_extract((repo / 'README.md').read_text(encoding='utf-8'),
                                              files, selected_paths, primary)
-    desired['AGENTS.md'] = agents_for_extract(record)
     package_files = {p: data for p, data in files.items() if p.startswith(PACKAGE)}
     require(PACKAGE + 'auto_sync.py' in package_files and PACKAGE + 'public7_sync.py' in package_files,
             'Canonical SHA does not include the publication owner package')
@@ -357,10 +354,15 @@ def prepare_repository(name, files, cfg, order, graph, source_imports):
         verification_readme = '.github/verification/README.md'
         desired[verification_readme] = sawin_verification_readme(
             (repo / verification_readme).read_text(encoding='utf-8'))
+    require(not any(is_internal_document(p) for p in desired),
+            'Internal workspace document in publication inputs')
     tracked = set(git(repo, 'ls-files', '-z').decode().rstrip('\0').split('\0'))
     physical = {p.relative_to(repo).as_posix() for p in (repo / 'Nyll').rglob('*.lean')}
     require(physical <= tracked, 'Untracked Lean source in public checkout')
     deletes = {p for p in tracked if p.startswith('Nyll/') and p.endswith('.lean') and p not in desired}
+    # These may predate the managed-file inventory. Remove them at every depth,
+    # even when they were not recorded by an earlier publication.
+    deletes |= {p for p in tracked if is_internal_document(p)}
     deletes |= (set(managed_provenance_paths(files)) & tracked) - set(desired)
     previous = None
     if (repo / PUBLICATION).exists():

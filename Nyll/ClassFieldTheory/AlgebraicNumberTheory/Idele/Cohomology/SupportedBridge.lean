@@ -282,11 +282,11 @@ noncomputable def sUnitToRelativePrincipalSupportedIntersection
   map_one' := by
     apply Subtype.ext
     apply Subtype.ext
-    simp
+    exact map_one (RelativeIdeleGroup.principalIdele K L)
   map_mul' x y := by
     apply Subtype.ext
     apply Subtype.ext
-    simp
+    exact map_mul (RelativeIdeleGroup.principalIdele K L) (x : Lˣ) (y : Lˣ)
 
 /-- The intersection of the relative principal ideles with the
 relative `S`-idele subgroup is precisely the ordinary group of

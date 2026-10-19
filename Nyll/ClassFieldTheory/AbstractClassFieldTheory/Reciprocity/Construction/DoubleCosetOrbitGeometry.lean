@@ -83,7 +83,7 @@ noncomputable def orbitQuotientEquivDoubleCoset
         (Quotient.exact' (Quotient.out_eq' (QuotientGroup.mk x : Q ⧸ H)))
     exact ⟨1, S.one_mem,
       (Quotient.out (QuotientGroup.mk x : Q ⧸ H))⁻¹ * x,
-      hh, by simp⟩
+      hh, by rw [one_mul, mul_inv_cancel_left]⟩
 
 /-- The orbit-to-double-coset equivalence sends the orbit represented by
 `x` to its double coset.  This exposes that the definition is independent
@@ -105,7 +105,7 @@ theorem orbitQuotientEquivDoubleCoset_mk
         (Quotient.out_eq' (QuotientGroup.mk x : Q ⧸ H)))
   exact ⟨1, S.one_mem,
     (Quotient.out (QuotientGroup.mk x : Q ⧸ H))⁻¹ * x,
-    hh, by simp⟩
+    hh, by rw [one_mul, mul_inv_cancel_left]⟩
 
 /-- The inverse double-coset equivalence sends a represented double coset
 to the corresponding represented orbit. -/
@@ -251,17 +251,19 @@ noncomputable def leftCosetEquivOfMulEquiv
   toFun := Quotient.map' e (by
     intro x y hxy
     rw [QuotientGroup.leftRel_apply] at hxy ⊢
-    exact ⟨x⁻¹ * y, hxy, by simp⟩)
+    refine ⟨x⁻¹ * y, hxy, ?_⟩
+    change e (x⁻¹ * y) = (e x)⁻¹ * e y
+    rw [map_mul, map_inv])
   invFun := Quotient.map' e.symm (by
     intro x y hxy
     rw [QuotientGroup.leftRel_apply] at hxy ⊢
     obtain ⟨z, hz, heq⟩ := hxy
     have hzEq : e.symm (x⁻¹ * y) = z := by
       rw [← heq]
-      simp
+      exact e.symm_apply_apply z
     have hxyEq : (e.symm x)⁻¹ * e.symm y = z := by
       calc
-        (e.symm x)⁻¹ * e.symm y = e.symm (x⁻¹ * y) := by simp
+        (e.symm x)⁻¹ * e.symm y = e.symm (x⁻¹ * y) := by rw [map_mul, map_inv]
         _ = z := hzEq
     rw [hxyEq]
     exact hz)

@@ -277,7 +277,9 @@ theorem standardLubinTateEndomorphismEvalAt_unit_injective
     x =
         standardLubinTateEndomorphismEvalAt hπ n x hx
           (((u⁻¹ : F.valuationSubringˣ) : F.valuationSubring) *
-            (u : F.valuationSubring)) := by simp
+            (u : F.valuationSubring)) := by
+              rw [← Units.val_mul, inv_mul_cancel, Units.val_one,
+                standardLubinTateEndomorphismEvalAt_one]
     _ =
         standardLubinTateEndomorphismEvalAt hπ n ux hux
           ((u⁻¹ : F.valuationSubringˣ) : F.valuationSubring) :=
@@ -298,7 +300,9 @@ theorem standardLubinTateEndomorphismEvalAt_unit_injective
       (standardLubinTateEndomorphismEvalAt_mul hπ n y hy
         ((u⁻¹ : F.valuationSubringˣ) : F.valuationSubring)
         (u : F.valuationSubring)).symm
-    _ = y := by simp
+    _ = y := by
+      rw [← Units.val_mul, inv_mul_cancel, Units.val_one,
+        standardLubinTateEndomorphismEvalAt_one]
 
 /-- Evaluating `[π ^ r]` is the same as evaluating the `r`-fold standard
 division-polynomial iterate. -/
@@ -515,7 +519,8 @@ theorem
               rw [huone]
       _ = standardLubinTateEndomorphismValue hπ n (1 + (-1)) :=
         (standardLubinTateEndomorphismValue_add hπ n 1 (-1)).symm
-      _ = 0 := by simp
+      _ = 0 := by
+        rw [add_neg_cancel, standardLubinTateEndomorphismValue_zero]
   · intro hu
     have hzero :
         standardLubinTateEndomorphismValue hπ n
@@ -547,7 +552,8 @@ theorem
               rw [hzero, standardLubinTateEndomorphismValue_zero]
       _ = standardLubinTateEndomorphismValue hπ n (1 + 0) :=
         (standardLubinTateEndomorphismValue_add hπ n 1 0).symm
-      _ = standardLubinTatePrimitivePointInteger hπ n := by simp
+      _ = standardLubinTatePrimitivePointInteger hπ n := by
+        rw [add_zero, standardLubinTateEndomorphismValue_one]
 
 /-- Two unit actions give the same primitive integer point exactly when
 their quotient lies in `U^(n + 1)`. -/
@@ -589,7 +595,8 @@ theorem
           standardLubinTatePrimitivePointIntegerAction hπ n (w⁻¹ * w) :=
         (standardLubinTatePrimitivePointIntegerAction_mul
           hπ n w⁻¹ w).symm
-      _ = standardLubinTatePrimitivePointInteger hπ n := by simp
+      _ = standardLubinTatePrimitivePointInteger hπ n := by
+        rw [inv_mul_cancel, standardLubinTatePrimitivePointIntegerAction_one]
   · intro huw
     have hfixed :=
       (standardLubinTatePrimitivePointIntegerAction_eq_self_iff_mem_higherPrincipalUnitGroup

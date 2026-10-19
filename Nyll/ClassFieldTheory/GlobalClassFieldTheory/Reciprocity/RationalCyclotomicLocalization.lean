@@ -38,7 +38,7 @@ noncomputable def rationalCyclotomicLevelPrimitiveRoot
       (S := {(m : ℕ)})
       (n := (m : ℕ))
       ℚ (KummerTheory.rationalCyclotomicLevel m)
-      (by simp) m.ne_zero)
+      (Set.mem_singleton (m : ℕ)) m.ne_zero)
 
 /-- The finite adic absolute value of the rational base at `v`. -/
 abbrev rationalCyclotomicAdicAbsoluteValue
@@ -104,7 +104,7 @@ theorem rationalCyclotomicLevelPrimitiveRoot_isPrimitiveRoot
       (S := {(m : ℕ)})
       (n := (m : ℕ))
       ℚ (KummerTheory.rationalCyclotomicLevel m)
-      (by simp) m.ne_zero)
+      (Set.mem_singleton (m : ℕ)) m.ne_zero)
 
 section RationalGlobalToLocalized
 

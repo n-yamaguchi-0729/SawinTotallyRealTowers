@@ -34,9 +34,7 @@ noncomputable def emptySUnitEquivNumberFieldUnits :
     (congrArg
       (fun S : Set (HeightOneSpectrum (𝓞 K)) ↦ S.unit K)
       (show ((↑(∅ : Finset (HeightOneSpectrum (𝓞 K))) :
-        Set (HeightOneSpectrum (𝓞 K)))) = ∅ by
-          ext v
-          simp))).trans
+        Set (HeightOneSpectrum (𝓞 K)))) = ∅ from Finset.coe_empty))).trans
     (SUnitGroup.emptyEquivNumberFieldUnits (K := K))
 
 /-- Ordinary global units modulo `n`-th powers. -/
@@ -51,7 +49,7 @@ theorem ordinaryUnitNthPowerQuotient_pow_eq_one
     x ^ p = 1 := by
   refine QuotientGroup.induction_on x fun u ↦ ?_
   rw [← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]
-  simp
+  exact ⟨u, rfl⟩
 
 omit [NumberField K] in
 /-- The canonical `ZMod p`-module structure on the additive presentation

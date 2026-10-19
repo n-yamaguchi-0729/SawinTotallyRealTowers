@@ -91,10 +91,10 @@ def integralClosureValuationSubringIntegerMapOfMemOrInv
     ⟨algebraMap K L (a : K),
       (integralClosureValuationSubringOfMemOrInv_pullback
         (L := L) base.valuation hval (a : K)).2 a.2⟩
-  map_zero' := by ext; simp
-  map_one' := by ext; simp
-  map_add' := by intro a b; ext; simp
-  map_mul' := by intro a b; ext; simp
+  map_zero' := Subtype.ext (map_zero (algebraMap K L))
+  map_one' := Subtype.ext (map_one (algebraMap K L))
+  map_add' := fun a b => Subtype.ext (map_add (algebraMap K L) (a : K) (b : K))
+  map_mul' := fun a b => Subtype.ext (map_mul (algebraMap K L) (a : K) (b : K))
 
 omit [FiniteDimensional K L] in
 /-- The finite-extension integer map into the integral closure is the ambient algebra map. -/

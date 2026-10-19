@@ -85,11 +85,9 @@ theorem laurentSeriesCoefficientMap_single_one
     [Field k] [Field l] (f : k →+* l) :
     laurentSeriesCoefficientMap f (HahnSeries.single (1 : ℤ) 1) =
       (HahnSeries.single (1 : ℤ) 1 : l⸨X⸩) := by
-  ext m
-  by_cases h : m = 1
-  · subst m
-    simp
-  · simp [HahnSeries.coeff_single_of_ne h]
+  change HahnSeries.map (HahnSeries.single (1 : ℤ) 1) f.toZeroHom = _
+  rw [HahnSeries.map_single]
+  exact congrArg (HahnSeries.single (1 : ℤ)) (map_one f)
 
 /-- The induced `k((T))`-algebra structure on `l((T))`. -/
 @[reducible]
@@ -258,10 +256,12 @@ noncomputable def laurentSeriesCoefficientRingEquiv
   invFun := laurentSeriesCoefficientMap e.symm.toRingHom
   left_inv x := by
     ext m
-    simp
+    change e.symm (e (x.coeff m)) = x.coeff m
+    exact e.symm_apply_apply (x.coeff m)
   right_inv x := by
     ext m
-    simp
+    change e (e.symm (x.coeff m)) = x.coeff m
+    exact e.apply_symm_apply (x.coeff m)
   map_add' := map_add (laurentSeriesCoefficientMap e.toRingHom)
   map_mul' := map_mul (laurentSeriesCoefficientMap e.toRingHom)
 
@@ -324,13 +324,13 @@ noncomputable def laurentSeriesCoefficientGalHom
         apply AlgEquiv.ext
         intro x
         ext m
-        simp
+        simp only [laurentSeriesCoefficientAlgEquiv_coeff, AlgEquiv.one_apply]
       map_mul' := by
         intro e f
         apply AlgEquiv.ext
         intro x
         ext m
-        simp }
+        simp only [AlgEquiv.mul_apply, laurentSeriesCoefficientAlgEquiv_coeff] }
 
 /-- The Galois homomorphism sends an automorphism to its coefficientwise Laurent action. -/
 @[simp]
@@ -432,11 +432,10 @@ theorem equalCharacteristicLaurentFrobenius_single_one :
         (HahnSeries.single (1 : ℤ) 1 : l⸨X⸩) =
       HahnSeries.single (1 : ℤ) 1 := by
   let : Fintype k := Fintype.ofFinite k
-  ext m
-  by_cases h : m = 1
-  · subst m
-    simp
-  · simp [HahnSeries.coeff_single_of_ne h]
+  change laurentSeriesCoefficientMap
+    (FiniteField.frobeniusAlgEquivOfAlgebraic k l).toRingHom
+      (HahnSeries.single (1 : ℤ) 1) = _
+  exact laurentSeriesCoefficientMap_single_one _
 
 end FiniteFields
 

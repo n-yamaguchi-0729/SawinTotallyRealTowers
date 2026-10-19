@@ -104,7 +104,7 @@ def exponentialValuationRestrict
   toFun x := w (x : L)
   eq_top_iff x := by
     rw [w.eq_top_iff]
-    simp
+    exact ⟨fun h => Subtype.ext h, fun h => congrArg Subtype.val h⟩
   map_mul x y := by
     exact w.map_mul (x : L) (y : L)
   add_le_min x y := by
@@ -311,7 +311,7 @@ theorem algebraicUnramifiedExtension_of_finiteSupport
   rw [algebraicUnramifiedExtension_iff]
   intro x
   obtain ⟨E, hmem, hE⟩ := h {x}
-  exact ⟨E, hmem x (by simp), hE⟩
+  exact ⟨E, hmem x (Finset.mem_singleton_self x), hE⟩
 
 end UnramifiedExtensions
 

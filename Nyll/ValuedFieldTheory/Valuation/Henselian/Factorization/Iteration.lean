@@ -58,7 +58,8 @@ theorem henselFactorization_henselIterate_reduction_of_mem
   induction n with
   | zero =>
       intro i
-      simp
+      rw [henselFactorization_henselIterate_zero, sub_self, Polynomial.coeff_zero]
+      exact (IsLocalRing.maximalIdeal R).zero_mem
   | succ n ih =>
       intro i
       simpa [henselFactorization_henselIterate_succ] using
@@ -81,7 +82,8 @@ theorem henselFactorization_henselIterate_span_singleton
   induction n with
   | zero =>
       intro i
-      simp
+      rw [henselFactorization_henselIterate_zero, sub_self, Polynomial.coeff_zero]
+      exact (Ideal.span ({π} : Set R)).zero_mem
   | succ n ih =>
       intro i
       simpa [henselFactorization_henselIterate_succ] using

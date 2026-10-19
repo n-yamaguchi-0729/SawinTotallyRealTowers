@@ -39,8 +39,8 @@ noncomputable def finiteCyclicBaseUnitFixed
           (Units.map (algebraMap K L).toMonoidHom a)) =
       Additive.ofMul (Units.map (algebraMap K L).toMonoidHom a)
   apply congrArg Additive.ofMul
-  ext
-  simp
+  apply Units.ext
+  exact g.commutes (a : K)
 
 /-- Recovering the base-field unit from its embedded invariant representative
 is the identity. -/

@@ -119,7 +119,9 @@ theorem cyclic_single_radical_of_tateHMinusOne_isZero
     exact (Subgroup.zpowers_le.mpr hg_mem) (hg q)
   have horbit (i : ℕ) : B.ρ (g ^ i) a = i • eta + a := by
     induction i with
-    | zero => simp
+    | zero =>
+        let : Module ℤ B.V := B.hV2
+        rw [pow_zero, map_one, zero_smul, zero_add, Module.End.one_apply]
     | succ i hi =>
         rw [pow_succ', map_mul]
         change B.ρ g (B.ρ (g ^ i) a) = _

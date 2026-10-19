@@ -104,7 +104,8 @@ theorem galoisGroup_apply_mem_chosenNormalBasisIntegerLattice
       rfl
     rw [hτ]
     exact normalBasis_mem_integerLattice (K := K) (L := L) (τ * σ)
-  · simp
+  · rw [map_zero]
+    exact (chosenNormalBasisIntegerLattice K L).zero_mem
   · intro x y _ _ hx hy
     simpa using
       (chosenNormalBasisIntegerLattice K L).add_mem hx hy
@@ -255,7 +256,8 @@ theorem exists_chosenBaseUniformizerPow_mul_mem_of_field_span_eq_top
     refine ⟨0, ?_⟩
     simpa using hyM
   · refine ⟨0, ?_⟩
-    simp
+    rw [mul_zero]
+    exact M.zero_mem
   · intro y z _ _ hy hz
     rcases hy with ⟨m, hm⟩
     rcases hz with ⟨n, hn⟩
@@ -330,7 +332,7 @@ theorem exists_chosenBaseUniformizerPowSubmodule_le_of_fg_of_field_span_eq_top
       have hyt : y ∈ t := by
         exact (Set.Finite.mem_toFinset hSfinite).2 hyS
       exact hpow_mono (Finset.le_sup hyt) (hnOf_spec y)
-    · simp
+    · simp only [mul_zero, zero_mem]
     · intro y z _ _ hy hz
       simpa [mul_add] using M.add_mem hy hz
     · intro a y _ hy
@@ -400,7 +402,7 @@ theorem exists_chosenBaseUniformizerPow_mul_mul_mem_of_fg_of_field_span_eq_top
       ?hgen ?hzero ?hadd ?hsmul hyP
     · intro y hyT
       exact hgen x y hxS hyT
-    · simp
+    · simp only [mul_zero, zero_mem]
     · intro y z _ _ hy hz
       simpa [mul_add] using M.add_mem hy hz
     · intro a y _ hy
@@ -418,7 +420,8 @@ theorem exists_chosenBaseUniformizerPow_mul_mul_mem_of_fg_of_field_span_eq_top
     ?gen ?zero ?add ?smul hxN
   · intro x hxS
     exact hleft x hxS y hyP
-  · simp
+  · rw [zero_mul, mul_zero]
+    exact M.zero_mem
   · intro x z _ _ hx hz
     convert M.add_mem hx hz using 1 ; ring
   · intro a x _ hx
@@ -865,12 +868,13 @@ omit [FiniteDimensional K L] [IsGalois K L] [TopologicalSpace K]
 def maximalIdealFieldSubmodule : Submodule 𝒪[K] L where
   carrier := {x | ∃ a : 𝒪[L], a ∈ (𝓂[L] : Ideal 𝒪[L]) ∧ (a : L) = x}
   zero_mem' := by
-    refine ⟨0, by simp, by simp⟩
+    exact ⟨0, (𝓂[L] : Ideal 𝒪[L]).zero_mem,
+      ZeroMemClass.coe_zero (ValuativeRel.valuation L).integer⟩
   add_mem' := by
     intro x y hx hy
     rcases hx with ⟨a, ha, rfl⟩
     rcases hy with ⟨b, hb, rfl⟩
-    refine ⟨a + b, (𝓂[L] : Ideal 𝒪[L]).add_mem ha hb, by simp⟩
+    exact ⟨a + b, (𝓂[L] : Ideal 𝒪[L]).add_mem ha hb, rfl⟩
   smul_mem' := by
     intro c x hx
     rcases hx with ⟨a, ha, rfl⟩
@@ -947,7 +951,7 @@ theorem exists_chosenBaseUniformizerPowSubmodule_le_integerRingFieldSubmodule_of
       have hyt : y ∈ t := by
         exact (Set.Finite.mem_toFinset hSfinite).2 hyS
       exact hpow_mono (Finset.le_sup hyt) (hnOf_spec y)
-    · simp
+    · simp only [mul_zero, zero_mem]
     · intro y z _ _ hy hz
       simpa [mul_add] using add_mem hy hz
     · intro a y _ hy
@@ -1104,8 +1108,8 @@ omit [Valuation.HasExtension
 /-- The identity belongs to the chosen normal-basis principal-unit set. -/
 theorem chosenNormalBasisPrincipalUnitSet_one_mem (n : Nat) :
     (1 : 𝒪[L]ˣ) ∈ chosenNormalBasisPrincipalUnitSet K L n := by
-  rw [mem_chosenNormalBasisPrincipalUnitSet_iff]
-  simp
+  rw [mem_chosenNormalBasisPrincipalUnitSet_iff, Units.val_one, sub_self]
+  exact Submodule.zero_mem _
 
 omit [Valuation.HasExtension
   (ValuativeRel.valuation K) (ValuativeRel.valuation L)] in
@@ -2134,9 +2138,11 @@ def chosenNormalBasisPrincipalUnitToLatticeSuccQuotHom (n : Nat)
   map_one' := by
     change chosenNormalBasisPrincipalUnitLatticeClass K L n
       (1 : 𝒪[L]ˣ) (by exact hVn ▸ (1 : Vn).2) = 0
-    rw [chosenNormalBasisPrincipalUnitLatticeClass,
-      chosenNormalBasisLatticeSuccQuotMk_eq_zero_iff]
-    simp
+    rw [chosenNormalBasisPrincipalUnitLatticeClass_eq_zero_iff]
+    change ((((1 : 𝒪[L]ˣ) : 𝒪[L]) - 1 : 𝒪[L]) : L) ∈
+      chosenBaseUniformizerPowSubmodule K L (n + 1) (chosenNormalBasisIntegerLattice K L)
+    rw [Units.val_one, sub_self, ZeroMemClass.coe_zero]
+    exact Submodule.zero_mem _
   map_mul' := by
     intro u v
     have hu : (u : 𝒪[L]ˣ) ∈ chosenNormalBasisPrincipalUnitSet K L n := by

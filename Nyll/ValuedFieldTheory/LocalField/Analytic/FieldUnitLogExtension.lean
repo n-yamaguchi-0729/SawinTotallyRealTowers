@@ -41,7 +41,10 @@ noncomputable def fieldUnitDecompositionLogHomWithUniformizerValue
       Multiplicative A where
   toFun z :=
     φ z.1.2 * Multiplicative.ofAdd (Multiplicative.toAdd z.2 • c)
-  map_one' := by simp
+  map_one' := by
+    change φ 1 * Multiplicative.ofAdd ((0 : ℤ) • c) = 1
+    rw [φ.map_one, zero_smul]
+    exact one_mul 1
   map_mul' z w := by
     apply Multiplicative.toAdd.injective
     change
@@ -78,7 +81,9 @@ Multiplicative ℤ)) = 1`.
     (ζ : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
     fieldUnitDecompositionLogHomWithUniformizerValue F φ c
         ((ζ, 1), (1 : Multiplicative ℤ)) = 1 := by
-  simp
+  change φ 1 * Multiplicative.ofAdd ((0 : ℤ) • c) = 1
+  rw [φ.map_one, zero_smul]
+  exact one_mul 1
 
 /--
 Establishes the identity `fieldUnitDecompositionLogHomWithUniformizerValue F φ c (((1 :
@@ -93,7 +98,9 @@ u`.
     fieldUnitDecompositionLogHomWithUniformizerValue F φ c
         (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F), u),
           (1 : Multiplicative ℤ)) = φ u := by
-  simp
+  change φ u * Multiplicative.ofAdd ((0 : ℤ) • c) = φ u
+  rw [zero_smul]
+  exact mul_one _
 
 /--
 Establishes the identity `fieldUnitDecompositionLogHomWithUniformizerValue F φ c (((1 :
@@ -110,7 +117,8 @@ c)`.
         (((1 : CompleteDVF.higherPrincipalUnitGroup.residueRootsOfUnityGroup F),
             (1 : (CompleteDVF.higherPrincipalUnitGroup F) 1)),
           Multiplicative.ofAdd m) = Multiplicative.ofAdd (m • c) := by
-  simp
+  change φ 1 * Multiplicative.ofAdd (m • c) = Multiplicative.ofAdd (m • c)
+  rw [φ.map_one, one_mul]
 
 /-- Transport the corrected factor logarithm across a chosen the
 uniformizer–residue–principal-unit decomposition
@@ -153,7 +161,7 @@ theorem fieldUnitLogHomWithUniformizerValue_apply_of_decomposition_eq
     fieldUnitLogHomWithUniformizerValue F d φ c x =
       φ z.1.2 * Multiplicative.ofAdd (Multiplicative.toAdd z.2 • c) := by
   subst x
-  simp
+  rw [fieldUnitLogHomWithUniformizerValue_apply, d.symm_apply_apply]
 
 /-- Establishes the identity `fieldUnitLogHomWithUniformizerValue F d φ c x = φ u`. -/
 theorem fieldUnitLogHomWithUniformizerValue_eq_of_principal_decomposition

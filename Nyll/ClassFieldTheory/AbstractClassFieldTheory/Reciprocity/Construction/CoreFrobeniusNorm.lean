@@ -71,7 +71,7 @@ private theorem inertiaCosetToExtensionCoset_injective (D : DegreeData G)
   change (D.degree a.1)⁻¹ * D.degree b.1 = 1
   rw [show D.degree a.1 = 1 from a.2.2,
     show D.degree b.1 = 1 from b.2.2]
-  simp
+  rw [inv_one, one_mul]
 
 /-- Finiteness of `\widetilde L | \widetilde K`, derived from the finite
 Galois extension `L | K`; no separate finiteness assumption is introduced. -/
@@ -137,7 +137,7 @@ private theorem inertiaCosetToDegreeKernel_bijective (D : DegreeData G)
     change (D.degree a.1)⁻¹ * D.degree b.1 = 1
     rw [show D.degree a.1 = 1 from a.2.2,
       show D.degree b.1 = 1 from b.2.2]
-    simp
+    rw [inv_one, one_mul]
   · intro z
     obtain ⟨k, hk⟩ := QuotientGroup.mk'_surjective
       (D.extensionInertiaWithin K.field L hLK) z.1
@@ -242,14 +242,14 @@ private def inertiaConjugationEquiv (D : DegreeData G) (K : ClosedSubgroup G)
     change D.degree (k.1⁻¹ * x.1 * k.1) = 1
     have hx : D.degree x.1 = 1 := x.2.2
     rw [map_mul, map_mul, map_inv, hx]
-    simp⟩⟩
+    simp only [mul_one, inv_mul_cancel]⟩⟩
   invFun x := ⟨k.1 * x.1 * k.1⁻¹, ⟨by
     exact K.toSubgroup.mul_mem
       (K.toSubgroup.mul_mem k.2 x.2.1) (K.toSubgroup.inv_mem k.2), by
     change D.degree (k.1 * x.1 * k.1⁻¹) = 1
     have hx : D.degree x.1 = 1 := x.2.2
     rw [map_mul, map_mul, map_inv, hx]
-    simp⟩⟩
+    simp only [mul_one, mul_inv_cancel]⟩⟩
   left_inv x := by
     apply Subtype.ext
     simp [mul_assoc]
@@ -270,8 +270,7 @@ private theorem conjugate_mem_maximalUnramifiedField (D : DegreeData G)
   · exact hcK
   · change D.degree (k.1⁻¹ * l.1 * k.1) = 1
     have hlDegree : D.degree l.1 = 1 := l.2.2
-    rw [map_mul, map_mul, map_inv, hlDegree]
-    simp
+    rw [map_mul, map_mul, map_inv, hlDegree, mul_one, inv_mul_cancel]
 
 /-- The coset permutation `τ ↦ φ⁻¹τφ` of
 `G(\widetilde L/\widetilde K)`. -/
@@ -564,7 +563,7 @@ private theorem frobeniusClosure_inf_degreeKernel (D : DegreeData G)
         D.frobeniusExponent K L hLK σ • (1 : ZHatMul).toAdd
       rw [D.frobeniusExponent_nsmul_fixedFieldNormalizedDegree]
       rw [hclosure]
-      simp
+      simp only [toAdd_one, nsmul_zero]
     have ha : a = 1 :=
       D.frobeniusFixedField_normalizedDegree_injective K L hLK σ (by
         simpa using hfixed)
@@ -603,8 +602,7 @@ private theorem kernelPowerCosetMap_injective (D : DegreeData G)
   have hdφ : dQ φ.1 =
       Multiplicative.ofAdd (1 : ZHat) := by
     change D.extensionNormalizedDegree K L hLK φ.1 = _
-    rw [D.extensionNormalizedDegree_frobenius_eq_pow K L hLK φ, hφ]
-    simp
+    rw [D.extensionNormalizedDegree_frobenius_eq_pow K L hLK φ, hφ, pow_one]
   have hrel : (φ.1 ^ i.1 * h.1)⁻¹ * (φ.1 ^ j.1 * h'.1) ∈
       (D.frobeniusClosure K L hLK σ).toSubgroup :=
     QuotientGroup.leftRel_apply.mp (Quotient.exact' hij)

@@ -150,7 +150,7 @@ theorem degree_two_subsingleton :
   have hid : 𝟙 H = 0 := by
     rw [← cancel_epi π]
     rw [hπ]
-    simp
+    simp only [Limits.zero_comp]
   constructor
   intro x y
   have hx : x = 0 := by

@@ -97,12 +97,15 @@ theorem H2CocycleExtension.π_eq_zero_of_restriction_of_index_not_dvd
         exact congrArg (fun y => y ^ H.toSubgroup.index) (hφ a)
   have hTadd (a : A p) : (T ⟨a, 1⟩).toAdd =
       (H.toSubgroup.index : ZMod p) * a.down := by
-    rw [hT]
-    simp
+    rw [hT, toAdd_pow]
+    exact nsmul_eq_mul _ _
   let χ : E →ₜ* Multiplicative (ZMod p) :=
     { toFun := fun e => Multiplicative.ofAdd
         ((H.toSubgroup.index : ZMod p)⁻¹ * (T e).toAdd)
-      map_one' := by simp
+      map_one' := by
+        rw [map_one]
+        change Multiplicative.ofAdd ((H.toSubgroup.index : ZMod p)⁻¹ * 0) = 1
+        rw [mul_zero, ofAdd_zero]
       map_mul' := by
         intro x y
         change (H.toSubgroup.index : ZMod p)⁻¹ * (T (x * y)).toAdd = _

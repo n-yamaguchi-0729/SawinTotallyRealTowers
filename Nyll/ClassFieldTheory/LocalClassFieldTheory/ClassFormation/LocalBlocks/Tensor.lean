@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
 import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
 import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
@@ -50,20 +51,8 @@ abbrev LocalTensorAlgebra (vK : AbsoluteValue K ℝ) :=
 noncomputable def localTensorConjugation
     (vK : AbsoluteValue K ℝ) (σ : L ≃ₐ[K] L) :
     LocalTensorAlgebra (L := L) vK ≃ₐ[vK.Completion]
-      LocalTensorAlgebra (L := L) vK := by
-  let f :
-      LocalTensorAlgebra (L := L) vK →ₐ[vK.Completion]
-        LocalTensorAlgebra (L := L) vK :=
-    Algebra.TensorProduct.map
-      (AlgHom.id vK.Completion vK.Completion) σ.toAlgHom
-  let g :
-      LocalTensorAlgebra (L := L) vK →ₐ[vK.Completion]
-        LocalTensorAlgebra (L := L) vK :=
-    Algebra.TensorProduct.map
-      (AlgHom.id vK.Completion vK.Completion) σ.symm.toAlgHom
-  exact AlgEquiv.ofAlgHom f g
-    (by ext x; simp [f, g])
-    (by ext x; simp [f, g])
+      LocalTensorAlgebra (L := L) vK :=
+  scalarTensorConjugation (K := K) (L := L) (A := vK.Completion) σ
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 @[simp]
@@ -78,10 +67,8 @@ omit [FiniteDimensional K L] [IsGalois K L] in
 theorem localTensorConjugation_one
     (vK : AbsoluteValue K ℝ)
     (z : LocalTensorAlgebra (L := L) vK) :
-    localTensorConjugation vK (1 : L ≃ₐ[K] L) z = z := by
-  induction z using TensorProduct.inductionOn with
-  | tmul b x => simp
-  | add x y hx hy => simp [hx, hy]
+    localTensorConjugation vK (1 : L ≃ₐ[K] L) z = z :=
+  scalarTensorConjugation_one (K := K) (L := L) (A := vK.Completion) z
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 theorem localTensorConjugation_mul
@@ -89,10 +76,8 @@ theorem localTensorConjugation_mul
     (z : LocalTensorAlgebra (L := L) vK) :
     localTensorConjugation vK (σ * τ) z =
       localTensorConjugation vK σ
-        (localTensorConjugation vK τ z) := by
-  induction z using TensorProduct.inductionOn with
-  | tmul b x => simp
-  | add x y hx hy => simp [hx, hy]
+        (localTensorConjugation vK τ z) :=
+  scalarTensorConjugation_mul (K := K) (L := L) (A := vK.Completion) σ τ z
 
 /-- The natural Galois action on the unit group of the local tensor
 algebra. -/
@@ -214,8 +199,8 @@ theorem conjugateCompletionRingEquiv_completionMap
   intro x
   have hx : (x : vK.Completion) =
       algebraMap K vK.Completion (WithAbs.equiv vK x) := by
-    rw [← AbsoluteValue.toCompletion_eq_algebraMap]
-    simp
+    rw [← AbsoluteValue.toCompletion_eq_algebraMap,
+      AbsoluteValue.toCompletion_apply, RingEquiv.symm_apply_apply]
   rw [hx]
   simp only [Function.comp_apply]
   rw [AbsoluteValue.completionMap_coe,
@@ -430,14 +415,14 @@ noncomputable def localTensorOrbitHom
       map_one' := by
         apply Subtype.ext
         funext g
-        apply Units.ext
-        simp
+        exact map_one ((Units.map (localTensorEvaluation vK hvK w).toMonoidHom).comp
+          (Units.map (localTensorConjugation vK g).toMonoidHom))
       map_mul' := by
         intro x y
         apply Subtype.ext
         funext g
-        apply Units.ext
-        simp }
+        exact map_mul ((Units.map (localTensorEvaluation vK hvK w).toMonoidHom).comp
+          (Units.map (localTensorConjugation vK g).toMonoidHom)) x y }
 
 /-- Orbit evaluation intertwines natural conjugation on the tensor
 factor with right translation on the induced module. -/

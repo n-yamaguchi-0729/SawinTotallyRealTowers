@@ -42,7 +42,7 @@ theorem valuation_coeff_prod_X_sub_C_le_pow_card
   | empty =>
       cases i <;> simp [Polynomial.coeff_one]
   | @cons α s ih =>
-      have hα : w α ≤ B := hs α (by simp)
+      have hα : w α ≤ B := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β ≤ B := by
         intro β hβ
         exact hs β (by simp [hβ])
@@ -109,9 +109,9 @@ theorem valuation_multiset_prod_eq_pow_card_of_eq
     (hs : ∀ α ∈ s, w α = t) :
     w s.prod = t ^ s.card := by
   induction s using Multiset.induction_on with
-  | empty => simp
+  | empty => simp only [Multiset.prod_zero, map_one, Multiset.card_zero, pow_zero]
   | @cons α s ih =>
-      have hα : w α = t := hs α (by simp)
+      have hα : w α = t := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β = t := by
         intro β hβ
         exact hs β (by simp [hβ])
@@ -154,7 +154,7 @@ theorem valuation_esymm_le_pow
           · exact ih (fun b hb => hs b (by simp [hb])) (n + 1)
           · rw [w.map_mul, pow_succ]
             simpa [mul_comm] using
-              (mul_le_mul' (hs a (by simp))
+              (mul_le_mul' (hs a (Multiset.mem_cons_self a s))
                 (ih (fun b hb => hs b (by simp [hb])) n))
 
 /-- Strict elementary-symmetric bound when every entry is strictly below
@@ -178,7 +178,7 @@ theorem valuation_esymm_lt_pow
       · exact ih (fun b hb => hs b (by simp [hb])) (Nat.succ_pos n)
       · rw [w.map_mul, pow_succ]
         simpa [mul_comm] using
-          (mul_lt_mul_of_nonneg_of_pos (hs a (by simp))
+          (mul_lt_mul_of_nonneg_of_pos (hs a (Multiset.mem_cons_self a s))
             (valuation_esymm_le_pow w t s
               (fun b hb => (hs b (by simp [hb])).le) n)
             (zero_le : 0 ≤ w a) ((zero_lt_iff).2 (pow_ne_zero n ht)))
@@ -197,10 +197,10 @@ theorem valuation_multiset_prod_lt_one_of_mem_lt_one
       (∀ b ∈ u, w b ≤ 1) → w u.prod ≤ 1 := by
     intro u hu
     induction u using Multiset.induction_on with
-    | empty => simp
+    | empty => simp only [Multiset.prod_zero, map_one, le_refl]
     | @cons b u ih =>
         rw [Multiset.prod_cons, w.map_mul]
-        simpa using mul_le_mul' (hu b (by simp))
+        simpa using mul_le_mul' (hu b (Multiset.mem_cons_self b u))
           (ih (fun c hc => hu c (by simp [hc])))
   have htprod : w t.prod ≤ 1 :=
     hprodle t (fun b hb => hs b (by simp [hb]))
@@ -231,14 +231,14 @@ theorem valuation_esymm_eq_pow_card_add_of_eq_of_lt
           simpa using valuation_esymm_lt_pow w t ht slt hslt hn
     | @cons a s ih =>
         intro hs
-        have ha : w a = t := hs a (by simp)
+        have ha : w a = t := hs a (Multiset.mem_cons_self a s)
         have hs' : ∀ b ∈ s, w b = t := by
           intro b hb
           exact hs b (by simp [hb])
         rcases ih hs' with ⟨heq, hlt⟩
         constructor
         · simp only [Multiset.card_cons]
-          rw [show (a ::ₘ s) + slt = a ::ₘ (s + slt) by simp,
+          rw [show (a ::ₘ s) + slt = a ::ₘ (s + slt) from Multiset.cons_add a s slt,
             esymm_cons_succ]
           have hfirst : w ((s + slt).esymm (s.card + 1)) <
               t ^ (s.card + 1) := hlt _ (Nat.lt_succ_self _)
@@ -254,7 +254,7 @@ theorem valuation_esymm_eq_pow_card_add_of_eq_of_lt
             (Nat.ne_of_gt (Nat.zero_lt_of_lt hn))
           simp only [Multiset.card_cons, Nat.succ_eq_add_one] at hn
           change w (((a ::ₘ s) + slt).esymm (m + 1)) < t ^ (m + 1)
-          rw [show (a ::ₘ s) + slt = a ::ₘ (s + slt) by simp,
+          rw [show (a ::ₘ s) + slt = a ::ₘ (s + slt) from Multiset.cons_add a s slt,
             esymm_cons_succ]
           apply w.map_add_lt
           · exact hlt _ (Nat.lt_trans (Nat.lt_succ_self _) hn)
@@ -286,11 +286,12 @@ theorem residue_ne_zero_of_isPrimitive_valuationSubring
     rw [← Ideal.Quotient.eq_zero_iff_mem]
     change IsLocalRing.residue V (p.coeff i) = 0
     rw [← Polynomial.coeff_map, hzero]
-    simp
+    exact Polynomial.coeff_zero i
   have hzeroCoeff : ∀ i : ℕ, (0 : Polynomial V).coeff i ∈
       IsLocalRing.maximalIdeal V := by
     intro i
-    simp
+    rw [Polynomial.coeff_zero]
+    exact Ideal.zero_mem _
   rcases
       henselFactorization_exists_coeff_mem_ideal_dvd_all_two_polynomials
         (I := IsLocalRing.maximalIdeal V) hcoeffMax hzeroCoeff hs with
@@ -311,7 +312,7 @@ theorem valuation_coeff_prod_X_sub_C_lt_coeff_zero_of_one_lt
   | empty =>
       simp [Polynomial.coeff_one, Nat.ne_of_gt hj]
   | @cons α s ih =>
-      have hα : 1 < w α := hs α (by simp)
+      have hα : 1 < w α := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, 1 < w β := by
         intro β hβ
         exact hs β (by simp [hβ])
@@ -334,7 +335,7 @@ theorem valuation_coeff_prod_X_sub_C_lt_coeff_zero_of_one_lt
       have hqzeroPos : 0 < w (q.coeff 0) :=
         (Valuation.pos_iff w).2 hqzero
       cases j with
-      | zero => simp at hj
+      | zero => exact (Nat.lt_irrefl 0 hj).elim
       | succ k =>
           have hfirst :
               w (q.coeff k) < w α * w (q.coeff 0) := by
@@ -353,7 +354,7 @@ theorem valuation_coeff_prod_X_sub_C_lt_coeff_zero_of_one_lt
           rw [Polynomial.coeff_X_sub_C_mul]
           have hadd := w.map_add (q.coeff k) (-α * q.coeff (k + 1))
           have hneg : w (-α * q.coeff (k + 1)) =
-              w (α * q.coeff (k + 1)) := by simp
+              w (α * q.coeff (k + 1)) := by rw [neg_mul, w.map_neg]
           have hcoeff :
               w (q.coeff k - α * q.coeff (k + 1)) <
                 w α * w (q.coeff 0) := by
@@ -386,10 +387,10 @@ theorem residue_root_of_integral_root
             ((Valuation.HasExtension.val_map_le_one_iff
               V.valuation B.valuation (x : K)).2
                 ((V.valuation_le_one_iff (x : K)).2 x.2))⟩
-      map_zero' := by ext; simp
-      map_one' := by ext; simp
-      map_add' := by intro x y; ext; simp
-      map_mul' := by intro x y; ext; simp }
+      map_zero' := Subtype.ext (map_zero (algebraMap K L))
+      map_one' := Subtype.ext (map_one (algebraMap K L))
+      map_add' x y := Subtype.ext (map_add (algebraMap K L) (x : K) (y : K))
+      map_mul' x y := Subtype.ext (map_mul (algebraMap K L) (x : K) (y : K)) }
   let : Algebra V B := ι.toAlgebra
   have halg : algebraMap V B = ι := rfl
   let : IsLocalHom (algebraMap V B) :=
@@ -491,7 +492,7 @@ theorem exists_mixed_residual_minpoly_of_irreducible_roots_unequal
     exact Multiset.card_pos.mpr (by
       intro hzero
       rw [hzero] at this
-      simp at this)
+      exact Multiset.notMem_zero amax this)
   have hrle : r ≤ p.natDegree := by
     rw [← hrootsCard]
     exact Multiset.card_le_card (Multiset.filter_le _ _)
@@ -526,8 +527,8 @@ theorem exists_mixed_residual_minpoly_of_irreducible_roots_unequal
     rw [hcoeffF, ← hleadF]
     field_simp
   have hmapaVal : B.valuation (algebraMap K L a) = t ^ r := by
-    rw [hmapa, B.valuation.map_mul, hboundary]
-    simp
+    rw [hmapa, B.valuation.map_mul, hboundary, map_pow,
+      B.valuation.map_neg, map_one, one_pow, one_mul]
   have hmapa0 : algebraMap K L a ≠ 0 := by
     intro hzero
     have := congrArg B.valuation hzero
@@ -605,8 +606,7 @@ theorem exists_mixed_residual_minpoly_of_irreducible_roots_unequal
             (qroots.map (fun x => Polynomial.X - Polynomial.C x)).prod :=
         hqsplit.eq_prod_roots
       _ = (qroots.map (fun x => Polynomial.X - Polynomial.C x)).prod := by
-        rw [(hqmonic.map (algebraMap K L))]
-        simp
+        rw [(hqmonic.map (algebraMap K L)), Polynomial.C_1, one_mul]
   have hqcoeffTarget : ∀ i : ℕ,
       B.valuation (algebraMap K L (q.coeff i)) ≤ 1 := by
     intro i
@@ -653,8 +653,8 @@ theorem exists_mixed_residual_minpoly_of_irreducible_roots_unequal
             (q.map (algebraMap K L)).leadingCoeff * qroots.prod) := by
         rw [hconst]
       _ = B.valuation qroots.prod := by
-        rw [hlead]
-        simp
+        rw [hlead, mul_one, map_mul, map_pow, B.valuation.map_neg,
+          map_one, one_pow, one_mul]
       _ < 1 := hprodlt
   have hqconstBase : V.valuation (q.coeff 0) < 1 :=
     (Valuation.HasExtension.val_map_lt_one_iff
@@ -787,8 +787,7 @@ theorem not_all_roots_same_valuation_of_primitive_irreducible_endpoints_nonunit
       _ = B.valuation (algebraMap K L (p.leadingCoeff : K)) *
           B.valuation roots.prod := by
         rw [B.valuation.map_mul, B.valuation.map_mul]
-        rw [hleadF]
-        simp
+        rw [hleadF, map_pow, B.valuation.map_neg, map_one, one_pow, one_mul]
       _ = B.valuation (algebraMap K L (p.leadingCoeff : K)) *
           t ^ roots.card := by
         rw [valuation_multiset_prod_eq_pow_card_of_eq B.valuation t roots hroots]
@@ -905,11 +904,10 @@ theorem monicResidualCoprimeFactorLifting_of_henselFactorization
     have hC :
         Polynomial.C H.leadingCoeff * Polynomial.C G.leadingCoeff =
           (1 : Polynomial V) := by
-      rw [← Polynomial.C_mul, mul_comm, hleadProduct]
-      simp
+      rw [← Polynomial.C_mul, mul_comm, hleadProduct, Polynomial.C_1]
     calc
       f = G * H := hGH
-      _ = 1 * (G * H) := by simp
+      _ = 1 * (G * H) := (one_mul (G * H)).symm
       _ = (Polynomial.C H.leadingCoeff * Polynomial.C G.leadingCoeff) *
           (G * H) := by rw [hC]
       _ = G' * H' := by
@@ -1130,16 +1128,15 @@ theorem henselianRing_of_monicResidualCoprimeFactorLifting
       rw [hG.eq_X_add_C hGdegree]
       simp [a]
     have haRoot : f.IsRoot a := by
-      rw [hfactor, hGshape, Polynomial.IsRoot, Polynomial.eval_mul]
-      simp
+      rw [hfactor, hGshape, Polynomial.IsRoot, Polynomial.eval_mul,
+        Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, sub_self, zero_mul]
     have hcoeffmap :
         IsLocalRing.residue V (G.coeff 0) = -abar := by
       have h := congrArg (fun p => p.coeff 0) hGmap
       simpa [lbar, Polynomial.coeff_map] using h
     have haresidue : IsLocalRing.residue V a = abar := by
       dsimp [a]
-      rw [map_neg, hcoeffmap]
-      simp
+      rw [map_neg, hcoeffmap, neg_neg]
     refine ⟨a, haRoot, ?_⟩
     rw [← Ideal.Quotient.eq_zero_iff_mem]
     change IsLocalRing.residue V (a - a0) = 0

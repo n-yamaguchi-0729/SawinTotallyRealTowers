@@ -87,10 +87,10 @@ valuation ring. -/
 def valuationSubringComapMap (A : ValuationSubring Omega) :
     A.comap (algebraMap F Omega) →+* A where
   toFun x := ⟨algebraMap F Omega x, x.property⟩
-  map_one' := by ext; simp
-  map_mul' x y := by ext; simp
-  map_zero' := by ext; simp
-  map_add' x y := by ext; simp
+  map_one' := Subtype.ext (map_one (algebraMap F Omega))
+  map_mul' x y := Subtype.ext (map_mul (algebraMap F Omega) (x : F) (y : F))
+  map_zero' := Subtype.ext (map_zero (algebraMap F Omega))
+  map_add' x y := Subtype.ext (map_add (algebraMap F Omega) (x : F) (y : F))
 
 /-- Pullback along a field embedding gives a local map of valuation rings. -/
 theorem valuationSubringComapMap_isLocalHom (A : ValuationSubring Omega) :

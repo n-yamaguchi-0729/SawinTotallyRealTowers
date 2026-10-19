@@ -395,12 +395,12 @@ theorem quotientMapOfLe_map_quotientKernelOfLe_eq_bot {m n : ℕ}
     have hx' : F.quotientMapOfLe hmn x = 1 :=
       (F.mem_quotientKernelOfLe_iff_quotientMap_eq_one hmn x).1 hx
     rw [← hxq, hx']
-    simp
+    exact Subgroup.one_mem _
   · intro hq
     have hq' : q = 1 := by
       simpa using hq
     subst q
-    exact ⟨1, (F.quotientKernelOfLe hmn).one_mem, by simp⟩
+    exact ⟨1, (F.quotientKernelOfLe hmn).one_mem, map_one _⟩
 
 /-- The level-change map restricted to kernel subgroups:
 `G_l/G_n → G_l/G_m`, for `l ≤ m ≤ n`. -/
@@ -746,7 +746,7 @@ theorem quotientKernelOfLe_refl_eq_bot (n : ℕ) :
     F.quotientKernelOfLe (le_rfl : n ≤ n) = ⊥ := by
   rw [← F.quotientMapOfLe_ker_eq_quotientKernelOfLe (le_rfl : n ≤ n),
     F.quotientMapOfLe_refl n]
-  simp
+  exact MonoidHom.ker_id
 
 end AntitoneNormalSubgroupFiltration
 

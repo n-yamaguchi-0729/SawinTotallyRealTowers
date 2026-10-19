@@ -234,10 +234,10 @@ noncomputable instance localIntegerValuation_isCompleteDiscrete :
         localIntegerValuation_surjective K (WithZero.exp (-1 : ℤ))
       refine ⟨⟨x, ?_, ?_⟩⟩
       · rw [hx]
-        simp
+        exact WithZero.exp_ne_zero
       · rw [hx]
         change WithZero.exp (-1 : ℤ) ≠ WithZero.exp (0 : ℤ)
-        simp
+        exact WithZero.exp_injective.ne (by omega)
     have : IsCyclic (MonoidWithZeroHom.valueGroup v.toMonoidWithZeroHom) :=
       Subgroup.isCyclic_of_le
         (show MonoidWithZeroHom.valueGroup v.toMonoidWithZeroHom ≤ ⊤ from le_top)

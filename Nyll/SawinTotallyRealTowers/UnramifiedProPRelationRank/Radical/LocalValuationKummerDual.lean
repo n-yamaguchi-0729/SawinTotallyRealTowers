@@ -86,7 +86,7 @@ noncomputable def finitePlaceLocalPowerClassValuationMonoidHom
       apply Multiplicative.ofAdd.injective
       change p •
           (LocalClassFieldTheory.valuationModDegreeMulHom L p x).toAdd = 0
-      simp)
+      rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul])
 
 /-- The finite-place local valuation on power classes is surjective. -/
 theorem finitePlaceLocalPowerClassValuationMonoidHom_surjective

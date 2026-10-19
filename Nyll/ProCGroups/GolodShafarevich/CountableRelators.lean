@@ -35,11 +35,14 @@ private theorem range_addCases_prefix
   · rintro ⟨i, rfl⟩
     refine Fin.addCases ?_ ?_ i
     · intro j
-      exact Or.inl ⟨j, by simp⟩
+      exact Or.inl ⟨j, (Fin.addCases_left (motive := fun _ => F)
+        (left := a) (right := fun i : Fin N => f i) j).symm⟩
     · intro j
-      exact Or.inr ⟨j, by simp, by simp⟩
+      exact Or.inr ⟨j, Finset.mem_range.mpr j.isLt,
+        (Fin.addCases_right (motive := fun _ => F)
+          (left := a) (right := fun i : Fin N => f i) j).symm⟩
   · rintro (⟨i, rfl⟩ | ⟨n, hn, rfl⟩)
-    · exact ⟨Fin.castAdd N i, by simp⟩
+    · exact ⟨Fin.castAdd N i, Fin.addCases_left _⟩
     · refine ⟨Fin.natAdd r ⟨n, by simpa using hn⟩, ?_⟩
       exact Fin.addCases_right _
 

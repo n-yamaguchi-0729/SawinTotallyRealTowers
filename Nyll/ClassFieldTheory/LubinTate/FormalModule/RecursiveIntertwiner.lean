@@ -214,7 +214,7 @@ private theorem coeff_defect_correctList_eq_zero_of_mem
     MvPowerSeries.coeff q.1
         (defect e ebar (correctList hpi e ebar hm ds H).1) = 0 := by
   induction ds generalizing H with
-  | nil => simp at hq
+  | nil => cases hq
   | cons d ds ih =>
       have hdnot : d ∉ ds := (List.nodup_cons.mp hds).1
       have hds' : ds.Nodup := (List.nodup_cons.mp hds).2
@@ -654,7 +654,7 @@ private theorem coeff_replaceList_eq_target_of_mem
     MvPowerSeries.coeff q.1 (replaceList hm target ds H).1 =
       MvPowerSeries.coeff q.1 target := by
   induction ds generalizing H with
-  | nil => simp at hq
+  | nil => cases hq
   | cons d ds ih =>
       have hdnot : d ∉ ds := (List.nodup_cons.mp hds).1
       have hds' : ds.Nodup := (List.nodup_cons.mp hds).2
@@ -763,7 +763,7 @@ private theorem coeff_defect_replaceList_of_mem
           (MvPowerSeries.coeff q.1 target -
             MvPowerSeries.coeff q.1 H.1)) := by
   induction ds generalizing H with
-  | nil => simp at hq
+  | nil => cases hq
   | cons d ds ih =>
       have hdnot : d ∉ ds := (List.nodup_cons.mp hds).1
       have hds' : ds.Nodup := (List.nodup_cons.mp hds).2

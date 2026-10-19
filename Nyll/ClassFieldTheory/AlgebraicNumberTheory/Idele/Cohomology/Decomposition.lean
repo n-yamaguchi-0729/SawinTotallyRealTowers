@@ -335,7 +335,7 @@ theorem localTensorFamilyEquivLocalBlockFamily_symm_smul
         ((localTensorFamilyEquivLocalBlockFamily d).symm z) := by
   apply (localTensorFamilyEquivLocalBlockFamily d).injective
   rw [localTensorFamilyEquivLocalBlockFamily_smul]
-  simp
+  simp only [MulEquiv.apply_symm_apply]
 
 end FiniteTensorFamily
 

@@ -62,7 +62,7 @@ private theorem mem_lowerRamificationGroup_iff_ramificationNumber_dvf
       (base := base) (target := target) huniq hgenerator (by
         rw [chosenRamificationGeneratorOfUniqueExtension_adjoin_eq_top
           (base := base) (target := target) huniq]
-        simp)
+        trivial)
 
 private theorem realRamificationExponent_le_iff_add_one_le_dvf
     (s : ℝ) (n : ℕ) :
@@ -291,7 +291,7 @@ private theorem truncate_depth_eq_intrinsic_summand_of_mem
     have hdepth : F.truncatedLowerDepth m sigma = m := by
       rw [AntitoneNormalSubgroupFiltration.truncatedLowerDepth]
       rw [Finset.filter_eq_self.2]
-      · simp
+      · exact Finset.card_range m
       · intro j hj
         apply (hmem (j + 1) (sigma : G)).2
         have hjm : j < m := Finset.mem_range.1 hj
@@ -415,7 +415,8 @@ private theorem sum_lower_zero_truncate_depth_eq_intrinsic_of_mem
           (if (sigma : G) ∈ F.lower (m + 1) then 1 else 0)) = _
   rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
   rw [← Finset.mul_sum, hindicator]
-  simp
+  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one,
+    Nat.card_eq_fintype_card]
 
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration
     (herbrandFunction herbrandFunction_of_nonpos) in
@@ -509,7 +510,7 @@ private theorem truncate_depth_eq_intrinsic_summand
     have hdepth : F.truncatedLowerDepth m tau = m := by
       rw [AntitoneNormalSubgroupFiltration.truncatedLowerDepth]
       rw [Finset.filter_eq_self.2]
-      · simp
+      · exact Finset.card_range m
       · intro j hj
         change ((j + 2 : ℕ) : ℕ∞) ≤ i
         have hjm : j < m := Finset.mem_range.1 hj
@@ -620,7 +621,8 @@ private theorem sum_lower_zero_truncate_depth_eq_intrinsic
         (s - m) * (if (tau : H) ∈ F.lower (m + 1) then 1 else 0)) = _
   rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
   rw [← Finset.mul_sum, hindicator]
-  simp
+  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one,
+    Nat.card_eq_fintype_card]
 
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
   herbrandFunction
@@ -986,7 +988,7 @@ theorem lowerRamificationGroup_quotient
   ext q
   by_cases hq : q = 1
   · subst q
-    simp
+    exact iff_of_true (Subgroup.one_mem _) (Subgroup.one_mem _)
   · obtain ⟨sigma, hsigmaq, hmax⟩ :=
       D.exists_maximal_depth_representative H hq
     subst q

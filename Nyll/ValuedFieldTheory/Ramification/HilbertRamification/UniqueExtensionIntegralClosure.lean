@@ -177,7 +177,8 @@ theorem target_valuationSubring_element_isIntegral_of_uniqueExtension
         (base := base) (target := target) huniq σ a))).eval a = 0
   rw [Polynomial.eval_prod]
   apply Finset.prod_eq_zero (Finset.mem_univ (1 : Gal(L/K)))
-  simp
+  rw [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C,
+    valuationSubringAutOfUniqueExtension_one_apply, sub_self]
 
 /-- The target valuation ring is integral over the base valuation ring under
 the standing unique-extension hypotheses of ramification-number theory. -/

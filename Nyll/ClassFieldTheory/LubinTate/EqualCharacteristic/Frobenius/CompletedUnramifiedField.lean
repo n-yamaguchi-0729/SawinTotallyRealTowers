@@ -62,8 +62,8 @@ theorem valuedInteger_hasBasis_ltIdeal
     (Valued.v : Valuation K Γ) (x : K) <
       ((Units.map (MonoidWithZeroHom.ValueGroup₀.embedding
         (f := ((Valued.v : Valuation K Γ) : K →*₀ Γ))) γ : Γˣ) : Γ)
-  rw [Valuation.restrict_lt_iff_lt_embedding]
-  simp
+  exact (Valuation.restrict_lt_iff_lt_embedding
+      (v := (Valued.v : Valuation K Γ)) (x := (x : K)) (g := γ.1))
 
 /-- The native topology on a valued integer ring is linear: its valuation
 balls are ideals. -/
@@ -271,7 +271,7 @@ theorem equalCharacteristicCompletedUnramifiedFieldCoeff_algebraMap_powerSeries
       PowerSeries.coeff n f := by
   change ((f : (AlgebraicClosure k)⸨X⸩).coeff (Int.ofNat n)) =
     PowerSeries.coeff n f
-  simp
+  exact LaurentSeries.coeff_coe_powerSeries f n
 
 omit [Finite k] in
 /-- A mapped base Laurent series has coefficients embedded into the algebraic closure. -/

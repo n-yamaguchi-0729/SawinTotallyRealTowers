@@ -152,11 +152,11 @@ theorem invariantKernelH1RelatorEval_surjective_of_relationCard_minimal
   ext j
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
   rw [Finset.sum_eq_single j]
-  · simp
+  · rw [Pi.single_eq_same, mul_one]
   · intro i _ hij
-    rw [Pi.single_eq_of_ne (Ne.symm hij)]
-    simp
-  · simp
+    rw [Pi.single_eq_of_ne (Ne.symm hij), mul_zero]
+  · intro hj
+    exact (hj (Finset.mem_univ j)).elim
 
 /-- The displayed relation count is at most the dimension of invariant kernel `H1` when the
 presentation realizes the least relation count. -/

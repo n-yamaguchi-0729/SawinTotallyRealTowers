@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
+import Nyll.ValuedFieldTheory.LocalField.NormUnits
 import Mathlib.RingTheory.Norm.Basic
 
 /-!
@@ -64,14 +65,6 @@ theorem equalCharacteristicLubinTateLevelGenerator_eq_powerBasis_gen
     equalCharacteristicLubinTateLevelField,
     IntermediateField.adjoin.powerBasis_gen]
 
-/-- The norm of a negative element, isolated from the large concrete
-Lubin--Tate level-field expression. -/
-private theorem algebraNorm_neg
-    {R S : Type*} [Field R] [Field S] [Algebra R S] (x : S) :
-    Algebra.norm R (-x) = (-1) ^ Module.finrank R S * Algebra.norm R x := by
-  rw [show -x = algebraMap R S (-1) * x by simp]
-  rw [map_mul, Algebra.norm_algebraMap]
-
 /-- The uniformizer norm identity, uniformizer part: the norm of the negative primitive
 division point is exactly `T`. -/
 theorem equalCharacteristicLubinTate_norm_neg_levelGenerator
@@ -91,14 +84,14 @@ theorem equalCharacteristicLubinTate_norm_neg_levelGenerator
   have hfinrank : Module.finrank F.residueField⸨X⸩
       (equalCharacteristicLubinTateLevelField F n) = pb.dim := by
     simpa [equalCharacteristicLubinTateLevelField, pb] using pb.finrank
-  rw [algebraNorm_neg,
+  rw [LocalFieldTheory.algebraNorm_neg,
     equalCharacteristicLubinTateLevelGenerator_eq_powerBasis_gen,
     Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly,
     hmin, equalCharacteristicLubinTatePrimitivePolynomial_coeff_zero]
   rw [hfinrank]
   simp only [pb, IntermediateField.adjoin.powerBasis_dim]
   rw [← mul_assoc, ← pow_add, ← two_mul, pow_mul]
-  simp
+  simp only [neg_sq, one_pow, one_mul]
 
 end EqualCharacteristic
 end LubinTate

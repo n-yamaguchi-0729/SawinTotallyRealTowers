@@ -169,7 +169,7 @@ theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
             (-(ValuationTheory.DiscreteValuationField.ValuedExtension.ramificationIndex
               base.toDVF target.toDVF : ℤ)) := by
         congr 1
-        simp
+        rw [nsmul_eq_mul, mul_neg, mul_one]
   have hcustom :=
     DiscreteValuationField.LocalField.valuation_residueCharacteristic_eq_exp_neg_ramificationIndex
       ν

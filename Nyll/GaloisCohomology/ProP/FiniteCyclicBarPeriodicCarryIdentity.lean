@@ -59,7 +59,7 @@ omit [Fintype G] in
 theorem leftRegular_single_one (x y : G) :
     (Rep.leftRegular R G).ρ x (MonoidAlgebra.single y 1) =
       MonoidAlgebra.single (x * y) 1 := by
-  simp
+  exact Representation.ofMulAction_single x y (1 : R)
 
 omit [Fintype G] in
 theorem leftRegular_pow_single_one (g : G) (i j : ℕ) :
@@ -112,7 +112,7 @@ theorem leftRegular_prefix_sub (g : G) (m : ℕ) :
         finiteCyclicPrefixNat (R := R) g m =
       MonoidAlgebra.single (g ^ m) 1 - MonoidAlgebra.single 1 1 := by
   induction m with
-  | zero => simp
+  | zero => rw [finiteCyclicPrefixNat_zero, map_zero, sub_self, pow_zero, sub_self]
   | succ m ih =>
       rw [finiteCyclicPrefixNat_succ, map_add]
       have hsingle :

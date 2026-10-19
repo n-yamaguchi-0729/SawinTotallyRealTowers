@@ -59,7 +59,7 @@ theorem dedekindTower_decompositionGroup_orbit_ncard_eq_one
     (P : Ideal B) (G : Type*) [Group G] [MulSemiringAction G B] :
     (MulAction.orbit (decompositionGroup P G) P).ncard = 1 := by
   rw [dedekindTower_decompositionGroup_orbit_eq_singleton (B := B) P G]
-  simp
+  exact Set.ncard_singleton _
 
 /-- A prime-decomposition consequence:
 under the inertia group `I_P`, the orbit of `P` is a singleton. -/
@@ -76,7 +76,7 @@ theorem dedekindRamification_inertiaGroup_orbit_ncard_eq_one
     (P : Ideal B) (G : Type*) [Group G] [MulSemiringAction G B] :
     (MulAction.orbit (inertiaGroup P G) P).ncard = 1 := by
   rw [dedekindRamification_inertiaGroup_orbit_eq_singleton (B := B) P G]
-  simp
+  exact Set.ncard_singleton _
 
 /-- A prime-decomposition consequence:
 when `I_P` itself is viewed as the acting Galois group, every element fixes

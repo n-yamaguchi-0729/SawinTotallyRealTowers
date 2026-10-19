@@ -39,8 +39,7 @@ theorem H2CocycleExtension.π_eq_zero_of_kernelCharacter
     have he : (⟨a, g⟩ : H2CocycleExtension z) = ⟨a, 1⟩ * ⟨0, g⟩ := by
       apply H2CocycleExtension.ext
       · change a = a + 0 + normalizedCocycle z 1 g
-        rw [normalizedCocycle_one_left]
-        simp
+        rw [normalizedCocycle_one_left, add_zero, add_zero]
       · exact (one_mul g).symm
     rw [he, map_mul, hχ]
     rfl

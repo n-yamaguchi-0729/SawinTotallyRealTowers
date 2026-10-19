@@ -55,13 +55,8 @@ noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure
     ⟨normIntegerUnits K L u.1,
       normIntegerUnits_mem_principalUnits_of_unramifiedValuation_of_isIntegralClosure
         K L n u.1 u.2⟩
-  map_one' := by
-    ext
-    simp
-  map_mul' := by
-    intro u v
-    ext
-    simp
+  map_one' := Subtype.ext (map_one (normIntegerUnits K L))
+  map_mul' u v := Subtype.ext (map_mul (normIntegerUnits K L) u.1 v.1)
 
 /-- States the theorem `principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_apply`. -/
 @[simp]

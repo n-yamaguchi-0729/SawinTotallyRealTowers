@@ -78,7 +78,8 @@ theorem sUnitKummerSubgroup_le_finiteKummerRadicalSubgroup
       (KummerTheory.mem_unitNthPowersSubgroup_iff n).mp hx
     exact
       (KummerTheory.mem_finiteKummerRadicalSubgroup_iff n).mpr
-        ⟨Units.map (algebraMap K L).toMonoidHom y, by simp⟩
+        ⟨Units.map (algebraMap K L).toMonoidHom y,
+          (map_pow (Units.map (algebraMap K L).toMonoidHom) y (n : ℕ)).symm⟩
 
 /-- Enlarging the finite set of places enlarges the `S`-unit group. -/
 theorem sUnitGroup_mono

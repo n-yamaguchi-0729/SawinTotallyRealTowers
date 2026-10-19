@@ -42,7 +42,9 @@ private theorem exists_nontrivial_character_of_finite_pGroup
   have hcard : Nat.card Q = p :=
     card_quotient_eq_prime_of_isCoatom_isPGroup hN hM
   let e : Q ≃* Multiplicative (ZMod p) :=
-    mulEquivOfPrimeCardEq hcard (by simp)
+    mulEquivOfPrimeCardEq hcard
+      ((Nat.card_congr (Multiplicative.toAdd : Multiplicative (ZMod p) ≃ ZMod p)).trans
+        (Nat.card_zmod p))
   let χ : N →* Multiplicative (ZMod p) :=
     e.toMonoidHom.comp (QuotientGroup.mk' M)
   refine ⟨χ, ?_⟩

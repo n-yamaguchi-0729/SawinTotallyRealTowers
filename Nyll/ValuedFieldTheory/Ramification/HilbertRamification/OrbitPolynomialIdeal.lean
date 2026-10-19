@@ -36,7 +36,7 @@ theorem prod_X_sub_C_dvd_of_eval_eq_zero_dvf
     (∏ a ∈ s, (Polynomial.X - Polynomial.C a)) ∣ p := by
   classical
   induction s using Finset.induction_on generalizing p with
-  | empty => simp
+  | empty => rw [Finset.prod_empty]; exact one_dvd p
   | @insert a s ha ih =>
       have hroot : p.IsRoot a := hp a (Finset.mem_insert_self a s)
       rcases Polynomial.dvd_iff_isRoot.mpr hroot with ⟨q, hq⟩
@@ -224,7 +224,7 @@ theorem subgroupOrbitPolynomialDVF_eval_self
   simp only [subgroupOrbitPolynomialDVF, Polynomial.eval_prod,
     Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]
   apply Finset.prod_eq_zero (Finset.mem_univ (⟨1, H.one_mem⟩ : H))
-  simp
+  rw [valuationSubringAutOfUniqueExtension_one_apply, sub_self]
 
 omit [IsGalois K L] in
 /-- States the theorem `subgroupOrbitPolynomialDVF_map_eval_eq_sign_mul_cosetProduct`. -/
@@ -325,7 +325,7 @@ theorem cosetGeneratorDisplacementProductDVF_dvd_fixed_displacement
   let aL := fixedFieldValuationSubringDVFToTarget
     (K := K) (target := target) H a
   have ha_adjoin : aL ∈ Algebra.adjoin base.valuationSubring
-      ({z} : Set target.valuationSubring) := by rw [hz]; simp
+      ({z} : Set target.valuationSubring) := by rw [hz]; trivial
   rw [Algebra.adjoin_singleton_eq_range_aeval] at ha_adjoin
   rcases ha_adjoin with ⟨g, hg⟩
   have hg' : Polynomial.aeval z g = aL := by simpa using hg
@@ -495,8 +495,8 @@ theorem cosetGeneratorDisplacementProductDVF_mem_map_fixedFieldDisplacementIdeal
       cosetGeneratorDisplacementProductDVF
         (base := base) (target := target) huniq H sigma z ∈ I := by
     rwa [← hqeval_eq]
-  exact (I.unit_mul_mem_iff_mem (by simp :
-    IsUnit ((-1 : target.valuationSubring) ^ Nat.card H))).mp hsign
+  exact (I.unit_mul_mem_iff_mem
+    (isUnit_neg_one.pow (Nat.card H))).mp hsign
 
 /-- The quotient-depth identity, ideal-level form. -/
 theorem span_cosetGeneratorDisplacementProduct_eq_map_fixedFieldDisplacementIdeal

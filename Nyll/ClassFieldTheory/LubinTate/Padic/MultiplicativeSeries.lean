@@ -41,7 +41,7 @@ noncomputable def padicMultiplicativeLubinTateSeries
         (padicLocalField p).valuationSubring (p : ℤ) -
       1
   constantCoeff_eq_zero := by
-    simp
+    rw [map_sub, PowerSeries.binomialSeries_constantCoeff, map_one, sub_self]
   coeff_one_eq_uniformizer := by
     have hcoeff : PowerSeries.coeff 1
         (PowerSeries.binomialSeries
@@ -50,7 +50,9 @@ noncomputable def padicMultiplicativeLubinTateSeries
       simp only [PowerSeries.binomialSeries_nat, map_sub,
         PowerSeries.coeff_one]
       rw [PowerSeries.coeff_one_pow]
-      simp
+      simp only [map_add, map_one, PowerSeries.coeff_one, PowerSeries.coeff_one_X,
+        PowerSeries.constantCoeff_X, ite_eq_right Nat.one_ne_zero,
+        zero_add, add_zero, one_pow, mul_one, sub_zero]
     exact hcoeff.trans (map_natCast (padicIntEquivValuationSubring p) p).symm
   map_residue_eq_frobenius := by
     let eO : ℤ_[p] ≃+*
@@ -77,8 +79,7 @@ noncomputable def padicMultiplicativeLubinTateSeries
         padicCompleteDVF_residueField_card p
     rw [hcard, PowerSeries.binomialSeries_nat (R := ℤ)]
     simp only [map_sub, map_pow, map_add, map_one, PowerSeries.map_X]
-    rw [add_pow_char]
-    simp
+    rw [add_pow_char, one_pow, add_sub_cancel_left]
 
 namespace LubinTateSeries
 

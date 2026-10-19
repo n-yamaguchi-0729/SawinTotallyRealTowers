@@ -96,8 +96,7 @@ theorem ne_one_of_mem_quotientFiber {q : G ⧸ H} (hq : q ≠ 1)
     (σ : QuotientFiber H q) : (σ : G) ≠ 1 := by
   intro hσ
   apply hq
-  rw [← σ.property, hσ]
-  simp
+  rw [← σ.property, hσ, map_one]
 
 /-- States the theorem `depth_ne_top_of_mem_quotientFiber`. -/
 theorem depth_ne_top_of_mem_quotientFiber {q : G ⧸ H} (hq : q ≠ 1)
@@ -146,14 +145,9 @@ def rightCosetEquivQuotientFiber (σ : G) : H ≃ QuotientFiber H (QuotientGroup
   invFun γ := ⟨σ⁻¹ * γ, by
     apply (QuotientGroup.eq_one_iff (N := H) (x := σ⁻¹ * (γ : G))).1
     change QuotientGroup.mk' H (σ⁻¹ * (γ : G)) = 1
-    rw [map_mul, map_inv, γ.property]
-    simp⟩
-  left_inv τ := by
-    apply Subtype.ext
-    simp
-  right_inv γ := by
-    apply Subtype.ext
-    simp
+    rw [map_mul, map_inv, γ.property, inv_mul_cancel]⟩
+  left_inv τ := Subtype.ext (inv_mul_cancel_left σ τ)
+  right_inv γ := Subtype.ext (mul_inv_cancel_left σ γ)
 
 /-- States the theorem `card_quotientFiber`. -/
 theorem card_quotientFiber [Finite G] (σ : G) :
@@ -173,7 +167,7 @@ theorem sum_quotientFiber_eq_sum_subgroup [Finite G]
     (fun γ : QuotientFiber H (QuotientGroup.mk' H σ) => f (γ : G))
     (fun τ : H => f (σ * τ)) (fun γ => by
       change f (γ : G) = f (σ * (σ⁻¹ * (γ : G)))
-      simp)
+      rw [mul_inv_cancel_left])
 
 /-- Partition a finite sum over `G` into the fibres of the quotient map. -/
 theorem sum_quotientFiber [Finite G]

@@ -268,7 +268,8 @@ theorem padicCompletedChangedUniformizerFrobenius_fixed_mem_adjoin_theta
     · simpa only [Finsupp.single_eq_same] using hi
     · intro j hj hji
       exact Finsupp.single_eq_of_ne hji.symm
-    · simp
+    · intro hi
+      exact False.elim (hi (Finset.mem_univ i))
   change x ∈ S
   rw [← pb.basis.sum_repr x]
   apply S.sum_mem

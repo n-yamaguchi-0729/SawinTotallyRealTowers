@@ -78,8 +78,7 @@ theorem cyclotomicField_finrank_le_totient
         Module.finrank F C := rfl
     _ = Module.finrank F
           (IntermediateField.adjoin F ({ζ} : Set C)) := by
-      rw [htop]
-      simp
+      rw [htop, IntermediateField.finrank_top']
     _ = (minpoly F ζ).natDegree :=
       IntermediateField.adjoin.finrank
         (IsIntegral.of_finite F ζ)

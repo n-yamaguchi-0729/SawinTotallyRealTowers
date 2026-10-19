@@ -400,7 +400,7 @@ noncomputable def relativeIdeleOfLocalData
         (((a.infinite w) * (a.infinite w)⁻¹ :
           (w.Completion ⊗[K] L)ˣ) :
             w.Completion ⊗[K] L) = 1
-      simp
+      simp only [mul_inv_cancel, Units.val_one]
     · intro w
       rw [map_mul,
         relativeAdeleOfLocalData_finiteComponent,
@@ -410,7 +410,7 @@ noncomputable def relativeIdeleOfLocalData
         (((a.finite w) * (a.finite w)⁻¹ :
           (w.adicCompletion K ⊗[K] L)ˣ) :
             w.adicCompletion K ⊗[K] L) = 1
-      simp
+      simp only [mul_inv_cancel, Units.val_one]
   exact Units.mkOfMulEqOne x y hxy
 
 omit [NumberField L] in

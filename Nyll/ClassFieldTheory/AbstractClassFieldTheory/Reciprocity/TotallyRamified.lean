@@ -154,7 +154,7 @@ theorem primeNormClass_eq_zero_exists_unit_norm_eq
           ES₀.toAbstractExtension.relativeResidueDegreeCardinal D =
               ((ES₀.residueDegree D : ℕ) : Cardinal) :=
             ES₀.relativeResidueDegreeCardinal_eq_coe D
-          _ = 1 := by rw [hSigmaResidue]; simp
+          _ = 1 := by rw [hSigmaResidue, Nat.cast_one]
       apply Nat.cast_injective (R := Cardinal)
       unfold FiniteAbstractFieldExtension.residueDegree
       rw [← ES.toFiniteAbstractExtension.relativeResidueDegreeCardinal_eq_coe D]
@@ -436,7 +436,7 @@ theorem abstractReciprocity_totallyRamified_fixedSource
         congrArg Subtype.val hval
       _ = k • (1 : ZHat) := rfl
       _ = Int.castRingHom ZHat (k : ℤ) := by
-        simp
+        simp only [nsmul_one, Int.coe_castRingHom, Int.cast_natCast]
 
 end ValuationData
 

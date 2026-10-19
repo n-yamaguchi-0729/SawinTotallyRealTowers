@@ -68,7 +68,8 @@ theorem coeff_single
     {H : MvPowerSeries σ R} {L : σ → R}
     (hH : HasLinearTerm H L) (i : σ) :
     MvPowerSeries.coeff (Finsupp.single i 1) H = L i := by
-  rw [hH.coeff_eq_linearForm (Finsupp.single i 1) (by simp)]
+  rw [hH.coeff_eq_linearForm (Finsupp.single i 1)
+    (by rw [Finsupp.degree_single]; exact Nat.lt_succ_self 1)]
   classical
   simp [linearForm, MvPowerSeries.coeff_index_single_X]
 
@@ -113,7 +114,7 @@ theorem subst
           (2 : ℕ∞) = 1 * 2 := by norm_num
           _ ≤ (⨅ i, (G i).order) *
               (H - linearForm L).order :=
-            mul_le_mul hinf hH (by simp) (by simp)).trans
+            mul_le_mul hinf hH bot_le bot_le).trans
         (MvPowerSeries.le_order_subst hGsubst
           (H - linearForm L))
   have hsubstLinear :
@@ -124,8 +125,8 @@ theorem subst
       ← MvPowerSeries.substAlgHom_apply hGsubst, map_sum]
     apply Finset.sum_congr rfl
     intro i _
-    rw [map_mul, MvPowerSeries.substAlgHom_X]
-    simp
+    rw [map_mul, MvPowerSeries.substAlgHom_X,
+      MvPowerSeries.substAlgHom_apply, MvPowerSeries.subst_C]
   have hlinearIdentity :
       MvPowerSeries.subst G (linearForm L) -
           linearForm (fun j => ∑ i, L i * M i j) =
@@ -178,8 +179,8 @@ private theorem linearForm_basis (i : σ) :
 theorem hasLinearTerm_X (i : σ) :
     HasLinearTerm (MvPowerSeries.X i : MvPowerSeries σ R)
       (fun j => if j = i then (1 : R) else 0) := by
-  rw [HasLinearTerm, linearForm_basis i, sub_self]
-  simp
+  rw [HasLinearTerm, linearForm_basis i, sub_self, MvPowerSeries.order_zero]
+  exact le_top
 
 /-- Zero has zero linear term. -/
 theorem hasLinearTerm_zero :
@@ -284,7 +285,7 @@ theorem reindex
         (fun i => MvPowerSeries.X (f i)) H) := by
   apply hH.subst hHsubst
     (MvPowerSeries.hasSubst_of_constantCoeff_zero
-      (fun _ => by simp))
+      (fun i => MvPowerSeries.constantCoeff_X (f i)))
   intro i
   exact intertwines_X ebar (f i)
 
@@ -960,7 +961,11 @@ theorem standardLubinTateEndomorphism_map_formalGroup
         (fun _ : Fin 2 => a) := by
     convert hright using 1
     funext j
-    fin_cases j <;> simp
+    by_cases hj : j = 0
+    · have hj1 : j ≠ 1 := by omega
+      simp only [ite_eq_left hj, ite_eq_right hj1, add_zero]
+    · have hj1 : j = 1 := by omega
+      simp only [ite_eq_right hj, ite_eq_left hj1, zero_add]
   have hIright :=
     standardFormalGroupPowerSeries_subst_intertwines
       hπ

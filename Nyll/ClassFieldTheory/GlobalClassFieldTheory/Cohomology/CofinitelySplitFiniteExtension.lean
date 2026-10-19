@@ -94,7 +94,7 @@ theorem finrank_eq_one_of_finite_nonSplittingPlaces
           simpa only [K', p] using
             primeOrderFixedField_card_aut
               (K := K) (L := M) hgt
-        _ = p ^ 1 := by simp
+        _ = p ^ 1 := (pow_one p).symm
     have hinfinite :
         Set.Infinite
           {v : HeightOneSpectrum (𝓞 K') |

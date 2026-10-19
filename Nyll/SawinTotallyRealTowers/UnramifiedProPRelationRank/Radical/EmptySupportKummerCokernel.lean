@@ -44,7 +44,7 @@ theorem finiteValuationDefect_pow_eq_one
   funext v
   apply Multiplicative.ofAdd.injective
   change p • (x v).toAdd = 0
-  simp
+  rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- The product of the mod-`p` finite-valuation defects as a `ZMod p`-module. -/
 noncomputable def FiniteValuationDefectModP : ModuleCat (ZMod p) := by

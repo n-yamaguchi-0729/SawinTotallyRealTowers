@@ -544,11 +544,7 @@ theorem
           ((u⁻¹ : (padicLocalField p).valuationSubringˣ) :
             (padicLocalField p).valuationSubring)).symm
     _ = x := by
-      rw [show
-        (u : (padicLocalField p).valuationSubring) *
-            ((u⁻¹ : (padicLocalField p).valuationSubringˣ) :
-              (padicLocalField p).valuationSubring) = 1 by
-          simp,
+      rw [← Units.val_mul, mul_inv_cancel, Units.val_one,
         padicCompletedMultiplicativeScalarEndomorphismValue_one]
 
 /-- Completed analytic evaluation of the standard-to-multiplicative

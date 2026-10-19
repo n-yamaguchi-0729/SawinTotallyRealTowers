@@ -33,7 +33,7 @@ noncomputable def polynomialCoeffAbsMax
     (Finset.range (f.natDegree + 1)).image fun i => v (f.coeff i)
   T.max' (by
     refine ⟨v (f.coeff 0), ?_⟩
-    exact Finset.mem_image.mpr ⟨0, by simp, rfl⟩)
+    exact Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (Nat.succ_pos _), rfl⟩)
 
 /-- reduction input: a coefficient of absolute value `< 1`
 reduces to the zero coefficient of the residue polynomial. -/
@@ -432,8 +432,7 @@ theorem irreduciblePolynomial_reduction_divByMonic_X_pow_natDegree
           Polynomial.X ^ r).natDegree =
       s - r := by
   rw [Polynomial.natDegree_divByMonic]
-  · rw [hnatDegree]
-    simp
+  · rw [hnatDegree, Polynomial.natDegree_X_pow]
   · exact Polynomial.monic_X_pow r
 
 /-- reduction input: under the endpoint inequalities used in

@@ -52,7 +52,7 @@ theorem MonicResidualCoprimeFactorLifting.leadingCoeff_unit_branch
     apply Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one
     change (((u⁻¹ : Vˣ) : V) * Q.leadingCoeff) = 1
     rw [← hu]
-    simp
+    exact Units.inv_mul u
   have hscalarUnitK : IsUnit (((u⁻¹ : Vˣ) : V) : K) := by
     exact isUnit_iff_ne_zero.mpr
       (V.subtype_injective.ne (Units.ne_zero (u⁻¹ : Vˣ)))
@@ -120,8 +120,7 @@ theorem MonicResidualCoprimeFactorLifting.leadingCoeff_unit_branch
           (Polynomial.C a'.leadingCoeff * b) =
         (Polynomial.C a'.leadingCoeff⁻¹ *
           Polynomial.C a'.leadingCoeff) * (a' * b) by ring]
-    rw [← Polynomial.C_mul, inv_mul_cancel₀ ha'lead0]
-    simp
+    rw [← Polynomial.C_mul, inv_mul_cancel₀ ha'lead0, Polynomial.C_1, one_mul]
   have hCinvUnit : IsUnit (Polynomial.C a'.leadingCoeff⁻¹) :=
     Polynomial.isUnit_C.mpr
       (isUnit_iff_ne_zero.mpr (inv_ne_zero ha'lead0))

@@ -165,7 +165,7 @@ private theorem normalizedValue_eq_withZeroLog_of_surjective
       _ = WithZero.exp (n + n • (-1 : ℤ)) := by
             rw [WithZero.exp_add]
       _ = 1 := by
-            simp
+            rw [zsmul_eq_mul, Int.cast_id, mul_neg, mul_one, add_neg_cancel, WithZero.exp_zero]
   have hyInvν : ν ((y⁻¹ : Fˣ) : F) = 1 := by
     rw [Units.val_inv_eq_inv_val, map_inv₀, hyν, inv_one]
   have hyMem : (y : F) ∈ 𝒪[F] := by
@@ -177,12 +177,8 @@ private theorem normalizedValue_eq_withZeroLog_of_surjective
   let yInteger : 𝒪[F]ˣ :=
     { val := ⟨(y : F), hyMem⟩
       inv := ⟨((y⁻¹ : Fˣ) : F), hyInvMem⟩
-      val_inv := by
-        apply Subtype.ext
-        simp
-      inv_val := by
-        apply Subtype.ext
-        simp }
+      val_inv := Subtype.ext y.val_inv
+      inv_val := Subtype.ext y.inv_val }
   have hyField :
       LocalFieldTheory.IsNonarchimedeanLocalField.integerUnitsToFieldUnits
           F yInteger =
@@ -281,7 +277,7 @@ theorem localOrder_normUnits
     (W : {W : HeightOneSpectrum (𝓞 L) //
       _root_.finitePlaceBelow (K := K) W = v₀})
     (x : (W.1.adicCompletion L)ˣ) :
-    letI : Algebra
+    let _ : Algebra
         (v₀.adicCompletion K) (W.1.adicCompletion L) :=
       (finitePlaceAdicCompletionMap K L v₀ W).toAlgebra
     (localOrder v₀
@@ -289,11 +285,10 @@ theorem localOrder_normUnits
         (v₀.adicCompletion K) (W.1.adicCompletion L) x)).toAdd =
       (W.1.asIdeal.inertiaDeg (𝓞 K) : ℤ) *
         (localOrder W.1 x).toAdd := by
+  intro completionAlgebra
   classical
   let F := v₀.adicCompletion K
   let E := W.1.adicCompletion L
-  let : Algebra F E :=
-    (finitePlaceAdicCompletionMap K L v₀ W).toAlgebra
   let : IsScalarTower K F E :=
     finitePlaceAdicCompletionMap_isScalarTower K L v₀ W
   let : FiniteDimensional F E :=
@@ -328,23 +323,23 @@ theorem localOrder_normUnits
       hνF (WithZero.exp (-1 : ℤ))
     refine ⟨⟨π, ?_, ?_⟩⟩
     · rw [hπ]
-      simp
+      exact WithZero.exp_ne_zero
     · rw [hπ]
       change
         WithZero.exp (-1 : ℤ) ≠
           WithZero.exp (0 : ℤ)
-      simp
+      exact WithZero.exp_injective.ne (by omega)
   let : νE.IsNontrivial := by
     obtain ⟨π, hπ⟩ :=
       hνE (WithZero.exp (-1 : ℤ))
     refine ⟨⟨π, ?_, ?_⟩⟩
     · rw [hπ]
-      simp
+      exact WithZero.exp_ne_zero
     · rw [hπ]
       change
         WithZero.exp (-1 : ℤ) ≠
           WithZero.exp (0 : ℤ)
-      simp
+      exact WithZero.exp_injective.ne (by omega)
   let : ValuativeRel.IsNontrivial F :=
     (ValuativeRel.isNontrivial_iff_isNontrivial νF).2
       inferInstance

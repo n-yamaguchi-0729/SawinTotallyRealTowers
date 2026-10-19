@@ -40,7 +40,7 @@ root in `Lˣ`. -/
 def finiteKummerRadicalSubgroup (n : ℕ+) : Subgroup Kˣ where
   carrier := {a | ∃ β : Lˣ,
     β ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a}
-  one_mem' := ⟨1, by simp⟩
+  one_mem' := ⟨1, by rw [one_pow, map_one]⟩
   mul_mem' := by
     rintro a b ⟨α, hα⟩ ⟨β, hβ⟩
     refine ⟨α * β, ?_⟩

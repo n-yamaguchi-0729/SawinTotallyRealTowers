@@ -40,7 +40,9 @@ downstream files activate it once per section. -/
     Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
   AddCommGroup.zmodModule fun f => by
     ext g
-    simp
+    rw [ContinuousAddMonoidHom.nsmul_apply]
+    change p • f g = 0
+    rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 local instance : Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
   continuousH1ZModModule
@@ -81,7 +83,7 @@ theorem closedPowerCommutator_le_character_ker
       change f (g ^ p) = 1
       rw [map_pow]
       change Multiplicative.ofAdd (p • Multiplicative.toAdd (f g)) = 1
-      simp
+      rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul, ofAdd_zero]
     · rw [commutator_def, Subgroup.commutator_le]
       intro g _ h _
       change f ⁅g, h⁆ = 1

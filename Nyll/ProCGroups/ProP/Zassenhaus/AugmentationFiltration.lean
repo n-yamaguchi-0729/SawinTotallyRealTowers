@@ -55,8 +55,8 @@ theorem modPCompletedGroupAlgebraCharP :
         (CharP.cast_eq_zero_iff (ZMod p) p n).mpr hn
       calc
         (n : ModPCompletedGroupAlgebra p G) =
-            algebraMap (ZMod p) (ModPCompletedGroupAlgebra p G) (n : ZMod p) := by
-              simp
+            algebraMap (ZMod p) (ModPCompletedGroupAlgebra p G) (n : ZMod p) :=
+              (map_natCast (algebraMap (ZMod p) (ModPCompletedGroupAlgebra p G)) n).symm
         _ = 0 := by rw [hnZMod, map_zero]
 
 /-- The canonical augmentation ideal in the mod-`p` completed group algebra. -/

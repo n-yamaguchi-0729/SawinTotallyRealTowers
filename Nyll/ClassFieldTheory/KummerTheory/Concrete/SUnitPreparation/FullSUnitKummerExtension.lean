@@ -82,8 +82,7 @@ theorem exists_sUnitRoot_adjoin_eq_of_mem_fullSUnitKummerRootSet
     dsimp only [cOmega]
     rw [← map_pow, hc]
   have hau : a.1 / z = u := by
-    rw [← huz]
-    simp
+    rw [← huz, mul_div_cancel_right]
   have halphaPow :
       alpha ^ (n : ℕ) =
         Units.map (algebraMap K Omega).toMonoidHom u := by

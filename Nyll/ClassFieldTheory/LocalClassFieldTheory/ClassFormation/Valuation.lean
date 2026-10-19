@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Algebra.Equiv
+import Mathlib.Algebra.Group.Action.Units
 import Mathlib.FieldTheory.Galois.Basic
 import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
@@ -29,30 +31,19 @@ field automorphism to a unit. -/
 @[implicit_reducible]
 def galoisGroupFieldUnitsMulDistribMulAction
     (K L : Type u) [Field K] [Field L] [Algebra K L] :
-    MulDistribMulAction (Gal(L / K)) Lˣ where
-  smul σ x := Units.mapEquiv σ.toMulEquiv x
-  one_smul := by
-    intro x
-    ext
-    rfl
-  mul_smul := by
-    intro σ τ x
-    ext
-    rfl
-  smul_mul := by
-    intro σ x y
-    exact map_mul (Units.mapEquiv σ.toMulEquiv) x y
-  smul_one := by
-    intro σ
-    exact map_one (Units.mapEquiv σ.toMulEquiv)
+    MulDistribMulAction (Gal(L / K)) Lˣ :=
+  inferInstance
 
 /-- States the theorem `galoisGroupFieldUnitsMulDistribMulAction_smul`. -/
 @[simp]
 theorem galoisGroupFieldUnitsMulDistribMulAction_smul
     (K L : Type u) [Field K] [Field L] [Algebra K L]
     (σ : Gal(L/K)) (x : Lˣ) :
-    letI := galoisGroupFieldUnitsMulDistribMulAction K L
-    σ • x = Units.mapEquiv σ.toMulEquiv x :=
+    let _ : MulDistribMulAction (Gal(L / K)) Lˣ :=
+      galoisGroupFieldUnitsMulDistribMulAction K L
+    σ • x = Units.mapEquiv σ.toMulEquiv x := by
+  intro hFieldAction
+  apply Units.ext
   rfl
 
 /-- The actual `Gal(L / K)` action on integer units.  Its source is the
@@ -63,27 +54,10 @@ def galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
-    MulDistribMulAction (Gal(L / K)) 𝒪[L]ˣ where
-  smul σ x := Units.mapEquiv
-    (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ).toMulEquiv x
-  one_smul := by
-    intro x
-    ext
-    rfl
-  mul_smul := by
-    intro σ τ x
-    ext
-    rfl
-  smul_mul := by
-    intro σ x y
-    exact map_mul
-      (Units.mapEquiv
-        (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ).toMulEquiv) x y
-  smul_one := by
-    intro σ
-    exact map_one
-      (Units.mapEquiv
-        (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ).toMulEquiv)
+    MulDistribMulAction (Gal(L / K)) 𝒪[L]ˣ := by
+  let hIntegerAction : MulSemiringAction (Gal(L / K)) 𝒪[L] :=
+    galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+  exact Units.mulDistribMulActionRight
 
 /-- States the theorem `galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure_smul`. -/
 @[simp]
@@ -93,9 +67,12 @@ theorem galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure_smul
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (σ : Gal(L/K)) (x : 𝒪[L]ˣ) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let _ : MulDistribMulAction (Gal(L / K)) 𝒪[L]ˣ :=
+      galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     σ • x = Units.mapEquiv
-      (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ).toMulEquiv x :=
+      (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ).toMulEquiv x := by
+  intro hIntegerAction
+  apply Units.ext
   rfl
 
 /-- The trivial Galois action on the value group `ℤ`, written
@@ -115,8 +92,10 @@ def galoisGroupValueGroupMulDistribMulAction
 theorem galoisGroupValueGroupMulDistribMulAction_smul
     (K L : Type u) [Field K] [Field L] [Algebra K L]
     (σ : Gal(L/K)) (n : Multiplicative Int) :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
-    σ • n = n :=
+    let _ : MulDistribMulAction (Gal(L / K)) (Multiplicative Int) :=
+      galoisGroupValueGroupMulDistribMulAction K L
+    σ • n = n := by
+  intro hValueAction
   rfl
 
 /-- The inclusion `𝒪_Lˣ → Lˣ` is equivariant for the actual actions. -/
@@ -126,12 +105,13 @@ theorem integerUnitsToFieldUnits_galoisGroup_equivariant
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (σ : Gal(L/K)) (x : 𝒪[L]ˣ) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := galoisGroupFieldUnitsMulDistribMulAction K L
+    let _ : MulDistribMulAction (Gal(L / K)) 𝒪[L]ˣ :=
+      galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let _ : MulDistribMulAction (Gal(L / K)) Lˣ :=
+      galoisGroupFieldUnitsMulDistribMulAction K L
     integerUnitsToFieldUnits L (σ • x) =
       σ • integerUnitsToFieldUnits L x := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := galoisGroupFieldUnitsMulDistribMulAction K L
+  intro hIntegerAction hFieldAction
   ext
   rfl
 
@@ -186,8 +166,8 @@ theorem valuationMap_unitsMapEquiv_galoisGroup
         (Units.mapEquiv σ.toMulEquiv (integerUnitsToFieldUnits L u))) = 0 := by
     rw [hmapu]
     exact v_integerUnitsToFieldUnits L σu
-  have hx : integerUnitsToFieldUnits L u * ϖ ^ n = x := by
-    simp [u, n]
+  have hx : integerUnitsToFieldUnits L u * ϖ ^ n = x :=
+    uniformizerUnitFactor_mul_uniformizer_zpow L ϖ hϖ x
   have hxσ :
       Units.mapEquiv σ.toMulEquiv x =
         Units.mapEquiv σ.toMulEquiv (integerUnitsToFieldUnits L u) *
@@ -213,12 +193,13 @@ theorem valuationUnitsMulHom_galoisGroup_equivariant
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (σ : Gal(L/K)) (x : Lˣ) :
-    letI := galoisGroupFieldUnitsMulDistribMulAction K L
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let _ : MulDistribMulAction (Gal(L / K)) Lˣ :=
+      galoisGroupFieldUnitsMulDistribMulAction K L
+    let _ : MulDistribMulAction (Gal(L / K)) (Multiplicative Int) :=
+      galoisGroupValueGroupMulDistribMulAction K L
     valuationUnitsMulHom L (σ • x) =
       σ • valuationUnitsMulHom L x := by
-  let := galoisGroupFieldUnitsMulDistribMulAction K L
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro hFieldAction hValueAction
   exact congrArg Multiplicative.ofAdd
     (valuationMap_unitsMapEquiv_galoisGroup K L σ x)
 

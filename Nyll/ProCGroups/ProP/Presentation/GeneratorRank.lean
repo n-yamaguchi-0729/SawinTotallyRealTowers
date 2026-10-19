@@ -75,7 +75,10 @@ theorem source_topologicalRank_eq_nat
     refine ⟨ULift.{u} (Multiplicative (ZMod p)), inferInstance,
       inferInstance, ?_⟩
     refine ⟨⟨inferInstance, ?_⟩, ?_, inferInstance⟩
-    · exact IsPGroup.of_card (n := 1) (by simp)
+    · exact IsPGroup.of_card (n := 1) (by
+        rw [Nat.card_ulift,
+          Nat.card_congr (Multiplicative.toAdd : Multiplicative (ZMod p) ≃ ZMod p),
+          Nat.card_zmod, pow_one])
     · exact (MulEquiv.ulift (α := Multiplicative (ZMod p))).isCyclic.mpr
         inferInstance
   have hsource :=
@@ -140,7 +143,7 @@ theorem target_topologicalGeneratorRank_eq
     (P : FiniteProPPresentation p d r sourceData G) (hP : P.IsMinimal) :
     topologicalGeneratorRank G = d := by
   rw [topologicalGeneratorRank, P.target_topologicalRank_eq_nat hP]
-  simp
+  exact Cardinal.toNat_natCast d
 
 end FiniteProPPresentation
 

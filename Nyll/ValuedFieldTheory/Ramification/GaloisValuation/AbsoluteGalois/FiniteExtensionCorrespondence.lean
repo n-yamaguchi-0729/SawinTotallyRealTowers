@@ -1492,8 +1492,8 @@ theorem ofFiniteExtensionAbsolute_equivOpenSubgroupOfFiniteExtension_symm
     ofFiniteExtensionAbsolute K i
         ((equivOpenSubgroupOfFiniteExtension K i).symm σ) =
       (σ : Field.absoluteGaloisGroup K) := by
-  rw [ofFiniteExtensionAbsolute_apply]
-  simp
+  rw [ofFiniteExtensionAbsolute_apply,
+    (equivOpenSubgroupOfFiniteExtension K i).apply_symm_apply]
 
 section TwoFiniteExtensionsTower
 

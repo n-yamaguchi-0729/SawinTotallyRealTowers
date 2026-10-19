@@ -93,7 +93,7 @@ theorem
         0
     rw [normalizedCyclotomicZHatIdeleValue_baseIdeleInclusion,
       hs_value]
-    simp
+    exact nsmul_zero _
   refine ⟨⟨a * c, ?_⟩, ?_⟩
   · change IdeleGroup.absoluteNorm (a * c) = 1
     rw [map_mul, hc_absoluteNorm]

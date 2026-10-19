@@ -46,9 +46,7 @@ theorem exists_ringOfIntegers_approximation
   refine ⟨r, ?_⟩
   have hard : a - r * d.1 ∈ v.asIdeal := by
     rw [← Ideal.Quotient.eq_zero_iff_mem]
-    rw [map_sub, map_mul, hr]
-    field_simp
-    simp
+    rw [map_sub, map_mul, hr, div_mul_cancel₀ _ hdmk, sub_self]
   have hvalard :
       v.valuation K (algebraMap (𝓞 K) K (a - r * d.1)) < 1 :=
     (v.valuation_lt_one_iff_mem (K := K) (a - r * d.1)).2 hard
@@ -93,18 +91,12 @@ noncomputable def ringOfIntegersQuotientEquivAdicResidueField
           HeightOneSpectrum.valuedAdicCompletion_eq_valuation
             (v := v) r]
         exact v.valuation_le_one r⟩
-    map_one' := by
-      ext
-      simp
-    map_mul' _ _ := by
-      ext
-      simp
-    map_zero' := by
-      ext
-      simp
-    map_add' _ _ := by
-      ext
-      simp
+    map_one' := Subtype.ext (map_one (algebraMap (𝓞 K) (v.adicCompletion K)))
+    map_mul' x y :=
+      Subtype.ext (map_mul (algebraMap (𝓞 K) (v.adicCompletion K)) x y)
+    map_zero' := Subtype.ext (map_zero (algebraMap (𝓞 K) (v.adicCompletion K)))
+    map_add' x y :=
+      Subtype.ext (map_add (algebraMap (𝓞 K) (v.adicCompletion K)) x y)
   }
   let residueMap :
       𝓞 K →+*

@@ -157,7 +157,7 @@ theorem finsupp_fin_two_single_left_ne_single_right :
     Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single (1 : Fin 2) 1 := by
   intro h
   have hcoord := congrArg (fun e : Fin 2 →₀ ℕ => e (0 : Fin 2)) h
-  simp at hcoord
+  norm_num [Finsupp.single_apply, Finsupp.add_apply] at hcoord
 
 /--
 Establishes the inequality `Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single (0 : Fin 2) 1 +
@@ -169,7 +169,7 @@ theorem finsupp_fin_two_single_left_ne_mixed :
         Finsupp.single (1 : Fin 2) 1 := by
   intro h
   have hcoord := congrArg (fun e : Fin 2 →₀ ℕ => e (1 : Fin 2)) h
-  simp at hcoord
+  norm_num [Finsupp.single_apply, Finsupp.add_apply] at hcoord
 
 /--
 Establishes the inequality `Finsupp.single (1 : Fin 2) 1 ≠ Finsupp.single (0 : Fin 2) 1 +
@@ -181,7 +181,7 @@ theorem finsupp_fin_two_single_right_ne_mixed :
         Finsupp.single (1 : Fin 2) 1 := by
   intro h
   have hcoord := congrArg (fun e : Fin 2 →₀ ℕ => e (0 : Fin 2)) h
-  simp at hcoord
+  norm_num [Finsupp.single_apply, Finsupp.add_apply] at hcoord
 
 /--
 Establishes the identity `MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)

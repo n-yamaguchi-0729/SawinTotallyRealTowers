@@ -283,8 +283,7 @@ theorem exists_unit_mul_target_uniformizer_pow_mul_eq_base_uniformizer_pow_image
       rw [mul_pow]
     _ = ((u ^ n : target.valuationSubringˣ) : target.valuationSubring) *
           π ^ (ramificationIndex base.toDVF target.toDVF * n) := by
-      rw [pow_mul]
-      simp
+      rw [pow_mul, Units.val_pow_eq_pow_val]
 
 /-- The image of a power of a base uniformizer lies in the corresponding
 target maximal-ideal power. -/

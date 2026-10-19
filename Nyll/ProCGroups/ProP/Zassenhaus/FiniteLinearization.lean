@@ -34,11 +34,13 @@ def characterLinearizationMonoidHom (χ : Additive Q →+ ZMod p) :
     TrivSqZeroExt.inl (M := ZMod p) 1 +
       TrivSqZeroExt.inr (R := ZMod p) (χ (Additive.ofMul q))
   map_one' := by
-    apply TrivSqZeroExt.ext <;> simp
+    rw [ofMul_one, map_zero, TrivSqZeroExt.inr_zero, add_zero,
+      TrivSqZeroExt.inl_one]
   map_mul' := by
     intro a b
     apply TrivSqZeroExt.ext
-    · simp
+    · change (1 + 0 : ZMod p) = (1 + 0) * (1 + 0)
+      rw [add_zero, mul_one]
     · simp [add_comm]
 
 /-- The group-algebra map recording augmentation and a character to first order. -/

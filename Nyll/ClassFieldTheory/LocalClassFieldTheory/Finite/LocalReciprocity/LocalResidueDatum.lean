@@ -154,7 +154,7 @@ theorem localSeparableValuationSubring_eq_of_hasExtension
   have hAB : Ares = Bres := hA.symm.trans hB
   let zE : E :=
     ⟨z, IntermediateField.subset_adjoin (F := K)
-      (S := ({z} : Set (SeparableClosure K))) (by simp)⟩
+      (S := ({z} : Set (SeparableClosure K))) (Set.mem_singleton z)⟩
   change zE ∈ Ares ↔ zE ∈ Bres
   rw [hAB]
 

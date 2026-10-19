@@ -131,8 +131,9 @@ theorem residueFieldNatCard_sub_one_cast_ne_zero
       ((Nat.card F.residueField - 1 : ℕ) : F.residueField) ≠ 0 := by
     rw [Nat.cast_sub
       (Nat.le_of_lt
-        (Finite.one_lt_card : 1 < Nat.card F.residueField)), hcard]
-    simp
+        (Finite.one_lt_card : 1 < Nat.card F.residueField)), hcard,
+      Nat.cast_one, zero_sub]
+    exact neg_ne_zero.mpr one_ne_zero
   intro hfield
   have hvaluation :
       ((Nat.card F.residueField - 1 : ℕ) : F.valuationSubring) = 0 := by

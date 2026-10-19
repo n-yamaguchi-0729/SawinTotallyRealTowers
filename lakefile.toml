@@ -21,6 +21,8 @@ rev = "065356127b1dc0016f66b7283ce0ce2c4055aa55"
 # All sources share one library configuration and the package-wide checks.
 [[lean_lib]]
 name = "Nyll"
+# Performance-only compiler threads; excluded from incremental build hashes.
+weakLeanArgs = ["-j1"]
 globs = [
   "Nyll.All",
   "Nyll",

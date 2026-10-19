@@ -79,11 +79,8 @@ theorem nthPowerSubgroup_le_infinitePositiveSubgroup
   · rcases hnEven with ⟨m, hm⟩
     let emb :=
       NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hw
-    have hyne : emb (y : w.Completion) ≠ 0 := by
-      intro hzero
-      apply y.ne_zero
-      apply emb.injective
-      simp at hzero
+    have hyne : emb (y : w.Completion) ≠ 0 :=
+      (map_ne_zero emb).2 y.ne_zero
     change 0 < emb (((y ^ (n : ℕ) : w.Completionˣ) : w.Completion))
     rw [Units.val_pow_eq_pow_val, map_pow, hm, pow_add, ← pow_two]
     exact sq_pos_of_ne_zero (pow_ne_zero m hyne)
@@ -232,10 +229,8 @@ theorem nthPowerSubgroup_eq_top_of_real_odd
       (G := w.Completionˣ)).mpr
   let emb :=
     NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hw
-  have hx0 : emb (x : w.Completion) ≠ 0 := by
-    intro hzero
-    apply x.ne_zero
-    simp at hzero
+  have hx0 : emb (x : w.Completion) ≠ 0 :=
+    (map_ne_zero emb).2 x.ne_zero
   by_cases hxpos : 0 < emb (x : w.Completion)
   · have hxPositive :
         x ∈ RayClass.infinitePositiveSubgroup w := by
@@ -265,7 +260,7 @@ theorem nthPowerSubgroup_eq_top_of_real_odd
         w (n : ℕ) n.pos (-x) hnegPositive
     refine ⟨-y, ?_⟩
     rw [powMonoidHom_apply, hn.neg_pow, hy]
-    simp
+    exact neg_neg x
 
 omit [NumberField K] in
 open scoped Classical in

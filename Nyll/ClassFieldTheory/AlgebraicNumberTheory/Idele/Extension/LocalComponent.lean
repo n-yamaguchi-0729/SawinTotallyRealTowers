@@ -159,9 +159,11 @@ theorem map_norm_tensorProduct_baseChange
     intro i
     induction z using TensorProduct.inductionOn with
     | add x y hx hy =>
-        simp [map_add, hx, hy]
+        simp only [map_add, Finsupp.add_apply, hx, hy]
     | tmul a x =>
-        simp
+        simp only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply,
+          Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply,
+          Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]
   calc
     f (Algebra.norm A z) =
         f

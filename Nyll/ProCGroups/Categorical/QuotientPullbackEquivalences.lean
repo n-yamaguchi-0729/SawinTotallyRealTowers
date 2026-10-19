@@ -381,8 +381,10 @@ theorem quotientInf_isPullback :
     exact quotientInfPullbackEquiv_fst (G := G) U V
   · apply GrpCat.hom_ext
     exact quotientInfPullbackEquiv_snd (G := G) U V
-  · simp
-  · simp
+  · simp only [CategoryTheory.Iso.refl_hom, CategoryTheory.Category.id_comp,
+      CategoryTheory.Category.comp_id]
+  · simp only [CategoryTheory.Iso.refl_hom, CategoryTheory.Category.id_comp,
+      CategoryTheory.Category.comp_id]
 
 section
 

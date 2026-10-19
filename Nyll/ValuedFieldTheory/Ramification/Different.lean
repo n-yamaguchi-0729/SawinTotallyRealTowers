@@ -517,8 +517,8 @@ theorem isUnramifiedAt_of_aeval_derivative_isUnit
             (Polynomial.derivative
               (minpoly base.valuationSubring z)) *
           Polynomial.aeval z Q := by
-    rw [hQ, Polynomial.derivative_mul]
-    simp
+    rw [hQ, Polynomial.derivative_mul, map_add, map_mul, map_mul,
+      minpoly.aeval, zero_mul, add_zero]
   have hminpolyDeriv :
       IsUnit
         (Polynomial.aeval z

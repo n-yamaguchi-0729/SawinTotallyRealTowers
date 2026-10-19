@@ -46,7 +46,8 @@ theorem integersMap_apply (n : ℤ) :
   change Multiplicative.ofAdd ((n : ℤ) : ClassFormation.ZHat) =
     (Multiplicative.ofAdd (1 : ClassFormation.ZHat)) ^ n
   apply Multiplicative.ext
-  simp
+  change (n : ClassFormation.ZHat) = n • (1 : ClassFormation.ZHat)
+  rw [zsmul_eq_mul, mul_one]
 
 /-- The image of the integers is dense in the profinite integers. -/
 theorem denseRange_integersMap : DenseRange integersMap := by
@@ -157,7 +158,8 @@ private theorem hom_from_multiplicativeInt_apply
   have hn :
       Multiplicative.ofAdd n = (Multiplicative.ofAdd (1 : ℤ)) ^ n := by
     apply Multiplicative.ext
-    simp
+    change n = n • (1 : ℤ)
+    rw [zsmul_eq_mul, Int.cast_id, mul_one]
   rw [hn, map_zpow]
 
 private theorem finiteLift_comp_integersMap
@@ -254,7 +256,8 @@ theorem isFreeProfinite :
       cases x
       have h1 := congrArg
         (fun k : Multiplicative ℤ →ₜ* G => k (Multiplicative.ofAdd (1 : ℤ))) hf
-      have hmapOne : integersMap (Multiplicative.ofAdd (1 : ℤ)) = generator := by simp
+      have hmapOne : integersMap (Multiplicative.ofAdd (1 : ℤ)) = generator := by
+        rw [integersMap_apply, zpow_one]
       calc
         f generator = f (integersMap (Multiplicative.ofAdd (1 : ℤ))) := by rw [hmapOne]
         _ = ψ (Multiplicative.ofAdd (1 : ℤ)) := h1

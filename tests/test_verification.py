@@ -175,7 +175,7 @@ class InventoryTests(unittest.TestCase):
                                  old['currentSourceSHA256'])
                 self.assertEqual(source.digest(root/path), old['currentSourceSHA256'])
                 self.assertEqual(verify.historical_body_sha(root, path, old),
-                                 old['historicalBodySHA256'])
+                                 old.get('currentBodySHA256', old['historicalBodySHA256']))
 
     def test_historical_partial_header_must_be_exactly_recognized(self):
         with tempfile.TemporaryDirectory() as directory:

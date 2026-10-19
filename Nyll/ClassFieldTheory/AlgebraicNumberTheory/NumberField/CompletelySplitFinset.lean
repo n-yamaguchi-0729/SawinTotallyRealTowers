@@ -51,8 +51,8 @@ theorem exists_finset_maximalIdeals_of_finitePlaceSplitsCompletely
     change finitePlaceEquiv ℚ F σ W = finitePlaceEquiv ℚ F τ W at h
     have hFix : σ⁻¹ * τ ∈ MulAction.stabilizer (F ≃ₐ[ℚ] F) W := by
       change finitePlaceEquiv ℚ F (σ⁻¹ * τ) W = W
-      rw [finitePlaceEquiv_mul, h.symm, ← finitePlaceEquiv_mul]
-      simp
+      rw [finitePlaceEquiv_mul, h.symm, ← finitePlaceEquiv_mul,
+        inv_mul_cancel, finitePlaceEquiv_one]
     have hOne : σ⁻¹ * τ = 1 := by
       simpa only [hStab, Subgroup.mem_bot] using hFix
     exact inv_mul_eq_one.mp hOne

@@ -106,11 +106,9 @@ theorem ofWithZeroValuation_zeroSubgroup_eq_unitGroup
       v (x : K) = WithZero.exp (WithZero.log (v (x : K))) := by
         rw [WithZero.exp_log hx]
       _ = 1 := by
-        rw [hlog]
-        simp
+        rw [hlog, WithZero.exp_zero]
   · intro h
-    rw [h]
-    simp
+    rw [h, WithZero.log_one, neg_zero]
 
 variable {L : Type u} [Field L] [Algebra K L]
 

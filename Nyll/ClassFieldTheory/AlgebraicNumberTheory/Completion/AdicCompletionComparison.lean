@@ -340,8 +340,7 @@ theorem finitePlaceExtensionAdicCompletionMap_valued
     simp [FinitePlace.norm_def, hzval]
   have hmapznorm :
       ‖finitePlaceExtensionAdicCompletionMap K L w a z‖ = 1 := by
-    rw [finitePlaceExtensionAdicCompletionMap_norm, hznorm]
-    simp
+    rw [finitePlaceExtensionAdicCompletionMap_norm, hznorm, Real.one_rpow]
   have hmapzval :
       Valued.v
         (finitePlaceExtensionAdicCompletionMap K L w a z) = 1 := by

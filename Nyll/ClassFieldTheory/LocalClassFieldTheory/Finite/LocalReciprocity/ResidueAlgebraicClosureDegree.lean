@@ -420,7 +420,7 @@ theorem residueAbsoluteFrobenius_restrictScalars
             ((Module.finrank k E) • (1 : ZHat)) =
           (Multiplicative.ofAdd (1 : ZHat)) ^ Module.finrank k E := by
       apply Multiplicative.ext
-      simp
+      simp only [toAdd_ofAdd, toAdd_pow]
     rw [hscale, map_pow, residueAbsoluteFrobenius_one]
     apply AlgEquiv.ext
     intro x

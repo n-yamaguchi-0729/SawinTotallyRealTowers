@@ -158,7 +158,7 @@ theorem gsPolynomial_pos_of_truncated
         rw [hgeom,
           (weighted_backshift_hasSum A C hC ht0 ht1 1).summable.tsum_mul_left (d : ℝ),
           hshift 1]
-        simp
+        rw [pow_one]
   have hshiftFamily : Summable (fun N : ℕ ↦
       ∑ i : Fin r, (backshift A N (ν i) : ℝ) * t ^ N) :=
     summable_sum (s := (Finset.univ : Finset (Fin r))) fun i _ ↦
@@ -233,7 +233,9 @@ theorem generator_le_relation_of_stable_truncated
     calc
       _ ≤ ∑ _i : Fin r, A N :=
         Finset.sum_le_sum fun i _ ↦ backshift_le_of_monotone hmono N (ν i)
-      _ = r * A N := by simp
+      _ = r * A N := by
+          simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+            nsmul_eq_mul, Nat.cast_id]
   have hmain : 1 + d * A N ≤ A N + r * A N := by
     calc
       1 + d * A N = 1 + d * backshift A N 1 := by rw [hshiftOne, hAN]
@@ -286,7 +288,8 @@ theorem square_generator_lt_four_relations_of_truncated
       calc
         _ ≤ ∑ _i : Fin r, t ^ 2 :=
           Finset.sum_le_sum fun i _ ↦ pow_le_pow_of_le_one ht0 htOne (hdepth i)
-        _ = r * t ^ 2 := by simp
+        _ = r * t ^ 2 := by
+            simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
     have hquad : 0 < 1 - (d : ℝ) * t + (r : ℝ) * t ^ 2 :=
       lt_of_lt_of_le hpoly (by gcongr)
     have hidentity :

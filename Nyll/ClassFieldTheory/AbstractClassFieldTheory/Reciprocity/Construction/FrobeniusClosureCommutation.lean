@@ -115,7 +115,7 @@ theorem conjugate_frobeniusFixedField_eq_of_commutes (D : DegreeData G)
         calc
           q * QuotientGroup.mk t * q⁻¹ =
               (QuotientGroup.mk t * q) * q⁻¹ := by rw [hcomm']
-          _ = QuotientGroup.mk t := by simp
+          _ = QuotientGroup.mk t := mul_inv_cancel_right _ _
       change QuotientGroup.mk xK ∈
         (D.frobeniusClosure K L hLK σ).toSubgroup
       have hxval : xK = k * t * k⁻¹ := by
@@ -150,7 +150,7 @@ theorem conjugate_frobeniusFixedField_eq_of_commutes (D : DegreeData G)
           q⁻¹ * QuotientGroup.mk t * q =
               q⁻¹ * (QuotientGroup.mk t * q) := by simp [mul_assoc]
           _ = q⁻¹ * (q * QuotientGroup.mk t) := by rw [hcomm']
-          _ = QuotientGroup.mk t := by simp
+          _ = QuotientGroup.mk t := inv_mul_cancel_left _ _
       have hyval : yK = k⁻¹ * t * k := by
         apply Subtype.ext
         dsimp [yK]

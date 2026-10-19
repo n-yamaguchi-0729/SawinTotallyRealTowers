@@ -38,7 +38,7 @@ additive valuation. -/
     addVal R (e a) = addVal R a := by
   by_cases ha : a = 0
   · subst a
-    simp
+    rw [map_zero]
   obtain ⟨ϖ, hϖ⟩ := exists_irreducible R
   obtain ⟨n, u, ha_decomp⟩ := eq_unit_mul_pow_irreducible ha hϖ
   have hmapϖ : Irreducible (e ϖ) := hϖ.map e

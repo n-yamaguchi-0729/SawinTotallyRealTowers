@@ -80,7 +80,7 @@ def absoluteMuPHomogeneousZeroCochain (x : AbsoluteMuP K p) :
       (absoluteGaloisGroupContinuousMulEquiv K sigma) • x.toMul.1
     rw [← mul_smul]
     congr 1
-    simp⟩
+    rw [← map_mul, mul_inv_cancel_left]⟩
 
 omit [Fact p.Prime] in
 @[simp]
@@ -293,8 +293,7 @@ noncomputable def absoluteKummerMuPH1LinearMap :
       rw [map_pow]
       apply Multiplicative.toAdd.injective
       change p • absoluteKummerMuPH1Class K p a = 0
-      rw [← Nat.cast_smul_eq_nsmul (ZMod p)]
-      simp
+      rw [← Nat.cast_smul_eq_nsmul (ZMod p), ZMod.natCast_self, zero_smul]
   let f :
       Additive (Kˣ ⧸ (powMonoidHom p : Kˣ →* Kˣ).range) →+
         continuousCohomology 1 (absoluteMuPTopRep K p) :=

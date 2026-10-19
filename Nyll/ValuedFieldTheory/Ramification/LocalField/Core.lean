@@ -246,7 +246,7 @@ theorem localUpperRamificationGroup_map_autCongr
     · rintro ⟨σ, hσ, rfl⟩
       exact (hmem s σ).1 hσ
     · intro hτ
-      refine ⟨φ.symm τ, (hmem s (φ.symm τ)).2 ?_, by simp⟩
+      refine ⟨φ.symm τ, (hmem s (φ.symm τ)).2 ?_, φ.apply_symm_apply τ⟩
       simpa using hτ
   have hcard (n : ℕ) :
       Nat.card
@@ -527,7 +527,7 @@ private theorem fixedFieldUpperRamificationGroup_map_autCongr
     · rintro ⟨σ, hσ, rfl⟩
       exact (hmem s σ).1 hσ
     · intro hτ
-      refine ⟨φ.symm τ, (hmem s (φ.symm τ)).2 ?_, by simp⟩
+      refine ⟨φ.symm τ, (hmem s (φ.symm τ)).2 ?_, φ.apply_symm_apply τ⟩
       simpa using hτ
   have hcard (n : ℕ) :
       Nat.card

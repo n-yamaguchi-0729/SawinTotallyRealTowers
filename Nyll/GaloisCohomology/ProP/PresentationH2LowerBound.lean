@@ -174,11 +174,11 @@ theorem presentation_relationCard_succ_le_finrank_h2
       intro k
       simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
       rw [Finset.sum_eq_single k]
-      · simp
+      · rw [Pi.single_eq_same, mul_one]
       · intro i hi hik
-        rw [Pi.single_eq_of_ne (Ne.symm hik)]
-        simp
-      · simp
+        rw [Pi.single_eq_of_ne (Ne.symm hik), mul_zero]
+      · intro hk
+        exact (hk (Finset.mem_univ k)).elim
     have hevalZero := congrArg (invariantKernelH1RelatorEval P) hetaSumZero
     rw [map_zero] at hevalZero
     have haZero : a = 0 := hevalSum.symm.trans hevalZero

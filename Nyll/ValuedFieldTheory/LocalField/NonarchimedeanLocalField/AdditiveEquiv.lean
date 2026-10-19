@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Module.Equiv.Basic
+import Mathlib.Algebra.Group.Equiv.TypeTags
 /-!
 # Additive recoding of multiplicative equivalences
 
@@ -20,19 +20,8 @@ universe u
 
 /-- Transport a multiplicative equivalence to an additive equivalence. -/
 def additiveEquivOfMulEquiv {A B : Type u} [Group A] [Group B] (e : A ≃* B) :
-    Additive A ≃+ Additive B where
-  toFun := fun a => Additive.ofMul (e (Additive.toMul a))
-  invFun := fun b => Additive.ofMul (e.symm (Additive.toMul b))
-  left_inv := by
-    intro a
-    simp
-  right_inv := by
-    intro b
-    simp
-  map_add' := by
-    intro a b
-    ext
-    exact e.map_mul _ _
+    Additive A ≃+ Additive B :=
+  MulEquiv.toAdditive e
 
 end
 end LocalFieldTheory

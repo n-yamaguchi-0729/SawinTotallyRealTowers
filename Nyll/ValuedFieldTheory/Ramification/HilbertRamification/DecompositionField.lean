@@ -62,10 +62,10 @@ theorem absoluteValueDecompositionGroup_isClosed
       apply hx
       have hgx : g x = x :=
         (IntermediateField.mem_fixingSubgroup_iff E g).mp hg x
-          (IntermediateField.subset_adjoin (F := K) (S := {x}) (by simp))
+          (IntermediateField.subset_adjoin (F := K) (S := {x}) (Set.mem_singleton x))
       simpa [AlgEquiv.mul_apply, hgx] using hmem x
     · exact E.fixingSubgroup_isOpen.smul σ
-    · exact ⟨1, E.fixingSubgroup.one_mem, by simp⟩
+    · exact ⟨1, E.fixingSubgroup.one_mem, mul_one _⟩
 
 /-- For a finite or infinite Galois extension, the decomposition group is the
 subgroup fixing its decomposition field. -/

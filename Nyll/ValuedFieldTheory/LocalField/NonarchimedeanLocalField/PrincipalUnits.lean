@@ -25,7 +25,9 @@ def principalUnits (K : Type u) [Field K] [ValuativeRel K] (n : Nat) :
     Subgroup 𝒪[K]ˣ where
   carrier := {u | ((u : 𝒪[K]) - 1) ∈ (𝓂[K] ^ n : Ideal 𝒪[K])}
   one_mem' := by
-    simp
+    change (1 : 𝒪[K]) - 1 ∈ (𝓂[K] ^ n : Ideal 𝒪[K])
+    rw [sub_self]
+    exact (𝓂[K] ^ n : Ideal 𝒪[K]).zero_mem
   mul_mem' := by
     intro a b ha hb
     change ((a : 𝒪[K]) * (b : 𝒪[K]) - 1) ∈ (𝓂[K] ^ n : Ideal 𝒪[K])
@@ -42,7 +44,7 @@ def principalUnits (K : Type u) [Field K] [ValuativeRel K] (n : Nat) :
         (((a⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) - 1)
             = ((a⁻¹ : 𝒪[K]ˣ) : 𝒪[K])
               - (((a⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) * (a : 𝒪[K])) := by
-                simp
+                rw [Units.inv_mul]
         _ = -(((a⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) * ((a : 𝒪[K]) - 1)) := by
           ring]
     exact (𝓂[K] ^ n : Ideal 𝒪[K]).neg_mem (Ideal.mul_mem_left _ _ ha)

@@ -146,8 +146,8 @@ theorem localAbstractFixedResidueAction_map_eq_fixingSubgroup
     intro x hx
     let T : IntermediateField k Omega :=
       { carrier := {y | rhoK sigma y = y}
-        zero_mem' := by simp
-        one_mem' := by simp
+        zero_mem' := map_zero (rhoK sigma)
+        one_mem' := map_one (rhoK sigma)
         add_mem' := by
           intro y z hy hz
           change rhoK sigma y = y at hy

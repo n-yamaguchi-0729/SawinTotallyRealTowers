@@ -75,7 +75,7 @@ theorem groupLikeDifference_inv (g : G) :
           completedGroupAlgebraOfInClass
             (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G g = 1 := by
     rw [← completedGroupAlgebraOfInClass_mul]
-    simp
+    rw [inv_mul_cancel, completedGroupAlgebraOfInClass_one]
   calc
     completedGroupAlgebraOfInClass
           (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G g⁻¹ - 1 =
@@ -121,14 +121,14 @@ theorem groupLikeDifference_commutator (g h : G) :
           completedGroupAlgebraOfInClass
             (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G g⁻¹ = 1 := by
     rw [← completedGroupAlgebraOfInClass_mul]
-    simp
+    rw [mul_inv_cancel, completedGroupAlgebraOfInClass_one]
   have hhInv :
       completedGroupAlgebraOfInClass
           (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G h *
           completedGroupAlgebraOfInClass
             (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G h⁻¹ = 1 := by
     rw [← completedGroupAlgebraOfInClass_mul]
-    simp
+    rw [mul_inv_cancel, completedGroupAlgebraOfInClass_one]
   simpa only [groupLikeDifference, commutatorElement_def,
     completedGroupAlgebraOfInClass_mul] using
       commutatorDifference_identity
@@ -149,7 +149,7 @@ theorem completedGroupAlgebraOfInClass_pow (g : G) (n : ℕ) :
       completedGroupAlgebraOfInClass
         (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G g ^ n := by
   induction n with
-  | zero => simp
+  | zero => rw [pow_zero, pow_zero, completedGroupAlgebraOfInClass_one]
   | succ n ih =>
       rw [pow_succ, pow_succ, completedGroupAlgebraOfInClass_mul, ih]
 

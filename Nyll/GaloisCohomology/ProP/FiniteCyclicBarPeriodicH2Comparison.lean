@@ -180,7 +180,14 @@ noncomputable def cyclicPeriodicH2ScIso (A : Rep R G) (g : G) :
     (ModuleCat.of R A.V)
     (by ext; simp [Rep.sub_hom])
     (by ext; simp [Rep.sub_hom])
-    (by simp) (by simp) (by simp) (by simp)
+    (fun _ _ => ComplexShape.up_nat_odd_add)
+    (by
+      rw [CochainComplex.prev_nat_succ]
+      exact ComplexShape.up_mk 1 2 rfl)
+    (by
+      rw [CochainComplex.next]
+      exact ComplexShape.up_mk 2 (2 + 1) rfl)
+    ⟨1, rfl⟩
 
 /-- The periodic degree-two homology model occurring in `groupCohomologyIsoEven`. -/
 noncomputable def cyclicPeriodicH2Iso
@@ -409,7 +416,7 @@ theorem cyclicPeriodicH2CyclesMap_groupCohomologyIso_inv
         ((Rep.FiniteCyclicGroup.resolution R g hg).complex.linearYonedaObj R A).homologyπ 2 ≫
         (groupCohomologyIso A 2
           (Rep.FiniteCyclicGroup.resolution R g hg)).inv =
-      Rep.FiniteCyclicGroup.groupCohomologyπEven A g hg 2 (by simp) := by
+      Rep.FiniteCyclicGroup.groupCohomologyπEven A g hg 2 ⟨1, rfl⟩ := by
   change
     cyclicPeriodicH2CyclesMap A g hg ≫
         ((Rep.FiniteCyclicGroup.resolution R g hg).complex.linearYonedaObj R A).homologyπ 2 ≫
@@ -420,8 +427,8 @@ theorem cyclicPeriodicH2CyclesMap_groupCohomologyIso_inv
         ShortComplex.homologyπ
           (Rep.FiniteCyclicGroup.normHomCompSub A g) ≫
         (Rep.FiniteCyclicGroup.groupCohomologyIsoEven
-          A g hg 2 (by simp)).inv
-  rw [show Rep.FiniteCyclicGroup.groupCohomologyIsoEven A g hg 2 (by simp) =
+          A g hg 2 ⟨1, rfl⟩).inv
+  rw [show Rep.FiniteCyclicGroup.groupCohomologyIsoEven A g hg 2 ⟨1, rfl⟩ =
     groupCohomologyIso A 2
         (Rep.FiniteCyclicGroup.resolution R g hg) ≪≫
       cyclicPeriodicH2Iso A g hg by
@@ -471,7 +478,7 @@ theorem cyclicPeriodicH2CyclesMap_groupCohomologyIso_inv_apply
         ((((Rep.FiniteCyclicGroup.resolution R g hg).complex.linearYonedaObj R A).homologyπ 2).hom
           ((cyclicPeriodicH2CyclesMap A g hg).hom a)) =
       (Rep.FiniteCyclicGroup.groupCohomologyπEven
-        A g hg 2 (by simp)).hom a := by
+        A g hg 2 ⟨1, rfl⟩).hom a := by
   exact congrArg (fun f ↦ f.hom a)
     (cyclicPeriodicH2CyclesMap_groupCohomologyIso_inv A g hg)
 
@@ -707,7 +714,7 @@ theorem H2π_finiteCyclicCarryTwoCocycle
     (a : LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap) :
     groupCohomology.H2π A (finiteCyclicCarryTwoCocycle A g hg a) =
       Rep.FiniteCyclicGroup.groupCohomologyπEven
-        A g hg 2 (by simp) a := by
+        A g hg 2 ⟨1, rfl⟩ a := by
   apply (ModuleCat.mono_iff_injective
     ((groupCohomologyIso A 2 (Rep.barResolution R G)).hom)).1
       inferInstance

@@ -67,7 +67,7 @@ theorem adicCompletion_coordinates_surjective
         ∀ n : ℕ,
           Ideal.Quotient.mk (I ^ n) x = AdicCompletion.evalₐ I n z := by
   refine ⟨(adicCompletionAlgEquiv I).symm z, ?_, ?_⟩
-  · simp
+  · exact (adicCompletionAlgEquiv I).apply_symm_apply z
   · intro n
     simp [adicCompletionAlgEquiv,
       AdicCompletion.mk_ofAlgEquiv_symm]
@@ -361,13 +361,13 @@ def adicQuotientInverseLimit_toCompletion
     adicQuotientInverseLimit I → AdicCompletion I R :=
   fun x =>
     ⟨fun n =>
-      let h : (I ^ n • ⊤ : Ideal R) = I ^ n := by ext r; simp
+      let h : (I ^ n • ⊤ : Ideal R) = I ^ n := by rw [Ideal.smul_eq_mul, Ideal.mul_top]
       (Ideal.quotientEquivAlgOfEq R h).symm
         (adicQuotientInverseLimit_eval I n x),
     by
       intro m n hmn
-      let hm : (I ^ m • ⊤ : Ideal R) = I ^ m := by ext r; simp
-      let hn : (I ^ n • ⊤ : Ideal R) = I ^ n := by ext r; simp
+      let hm : (I ^ m • ⊤ : Ideal R) = I ^ m := by rw [Ideal.smul_eq_mul, Ideal.mul_top]
+      let hn : (I ^ n • ⊤ : Ideal R) = I ^ n := by rw [Ideal.smul_eq_mul, Ideal.mul_top]
       apply (Ideal.quotientEquivAlgOfEq R hm).injective
       rw [transitionMap_quotientEquivAlgOfEq I hmn hm hn]
       rw [quotientEquivAlgOfEq_apply_symm]
@@ -381,11 +381,12 @@ theorem adicQuotientInverseLimit_toCompletion_eval
     AdicCompletion.evalₐ I n
         (adicQuotientInverseLimit_toCompletion I x) =
       adicQuotientInverseLimit_eval I n x := by
-  change (Ideal.quotientEquivAlgOfEq R (by ext r; simp))
+  change (Ideal.quotientEquivAlgOfEq R (by rw [Ideal.smul_eq_mul, Ideal.mul_top]))
       ((adicQuotientInverseLimit_toCompletion I x).val n) =
     adicQuotientInverseLimit_eval I n x
-  dsimp [adicQuotientInverseLimit_toCompletion]
-  rw [quotientEquivAlgOfEq_apply_symm]
+  exact (Ideal.quotientEquivAlgOfEq R
+    (show (I ^ n • ⊤ : Ideal R) = I ^ n by rw [Ideal.smul_eq_mul, Ideal.mul_top])).apply_symm_apply
+      (adicQuotientInverseLimit_eval I n x)
 
 /-- Mapping an inverse-limit family to the completion and back recovers the family. -/
 theorem adicQuotientInverseLimit_left_inverse
@@ -422,12 +423,12 @@ def adicCompletion_equiv_quotientInverseLimit
     ext n
     change AdicCompletion.evalₐ I n (x * y) =
       AdicCompletion.evalₐ I n x * AdicCompletion.evalₐ I n y
-    simp
+    exact map_mul (AdicCompletion.evalₐ I n) x y
   map_add' x y := by
     ext n
     change AdicCompletion.evalₐ I n (x + y) =
       AdicCompletion.evalₐ I n x + AdicCompletion.evalₐ I n y
-    simp
+    exact map_add (AdicCompletion.evalₐ I n) x y
 
 /-- The adic inverse-limit equivalence, canonical map from a ring to the explicit projective
 limit of its quotients. -/

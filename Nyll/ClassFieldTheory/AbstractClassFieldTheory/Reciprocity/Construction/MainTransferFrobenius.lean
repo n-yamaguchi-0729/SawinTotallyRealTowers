@@ -541,7 +541,7 @@ theorem transferNormNaturalityTransferFrobeniusLift_closure_map
         have hgen : β.1 ∈
             (closedSubgroupGenerated ({β.1} : Set _) : Subgroup _) :=
           Subgroup.le_topologicalClosure _
-            (Subgroup.subset_closure (by simp))
+            (Subgroup.subset_closure (Set.mem_singleton β.1))
         simpa [Γβ, β, DegreeData.frobeniusClosure] using hgen
       exact ⟨β.1, hβmem, hβu⟩
     · exact hmapClosed
@@ -1131,8 +1131,7 @@ theorem transferNormNaturalityTransferFrobenius_fixedField_isUnramified_conjugat
   have hconjS : tK.1 * x * tK.1⁻¹ ∈ S.toSubgroup := by
     exact (conjugateClosedSubgroup_mem S tK.1 x).1 hxC
   have hconjd : D.degree (tK.1 * x * tK.1⁻¹) = 1 := by
-    rw [map_mul, map_mul, map_inv, hxd]
-    simp
+    rw [map_mul, map_mul, map_inv, hxd, mul_one, mul_inv_cancel]
   have hconjI : tK.1 * x * tK.1⁻¹ ∈
       (D.fieldInertia S).toSubgroup := by
     exact ⟨hconjS, hconjd⟩

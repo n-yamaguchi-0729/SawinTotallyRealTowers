@@ -165,7 +165,7 @@ private theorem infinitePlaceFiber_inertiaDeg_sum
       symm
       apply Finset.sum_subtype
       intro W
-      simp
+      exact Set.mem_toFinset
     _ = Module.finrank K L := by
       exact
         InfinitePlace.sum_inertiaDeg_eq_finrank

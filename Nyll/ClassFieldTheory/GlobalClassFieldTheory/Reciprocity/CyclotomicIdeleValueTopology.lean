@@ -96,8 +96,7 @@ theorem rationalCyclotomicZHatIdeleValueContinuousAdd_isClosed_ker :
       Set (Additive (IdeleGroup ℚ))) =
         rationalCyclotomicZHatIdeleValueContinuousAdd ⁻¹'
           ({0} : Set ZHat) by
-    ext a
-    simp]
+    exact AddMonoidHom.coe_ker _]
   exact
     isClosed_singleton.preimage
       rationalCyclotomicZHatIdeleValueContinuousAdd.continuous_toFun
@@ -165,8 +164,7 @@ theorem rationalCyclotomicZHatIdeleValueReduction_isOpen_ker
       Set (Additive (IdeleGroup ℚ))) =
         rationalCyclotomicZHatIdeleValueReduction n hn ⁻¹'
           ({0} : Set (ZMod n)) by
-    ext a
-    simp]
+    exact AddMonoidHom.coe_ker _]
   exact
     (isOpen_discrete ({0} : Set (ZMod n))).preimage
       (rationalCyclotomicZHatIdeleValueReduction n hn).continuous_toFun

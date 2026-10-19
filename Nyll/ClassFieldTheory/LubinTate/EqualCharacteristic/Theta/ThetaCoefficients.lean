@@ -305,8 +305,9 @@ theorem equalCharacteristicThetaBetaNumerator_constantCoeff
     (b : (AlgebraicClosure k)⟦X⟧) :
     PowerSeries.coeff 0 (equalCharacteristicThetaBetaNumerator b) = 0 := by
   rw [equalCharacteristicThetaBetaNumerator, map_sub,
-    equalCharacteristicPowerSeriesFrobenius_coeff]
-  simp
+    equalCharacteristicPowerSeriesFrobenius_coeff,
+    PowerSeries.coeff_zero_eq_constantCoeff_apply,
+    PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, sub_self]
 
 /-- The quotient
 `beta(b) = (phi(b) - b^q) / T`. -/

@@ -115,8 +115,8 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit_o
       _ = B.valuation (algebraMap K L (Q.leadingCoeff : K)) *
           B.valuation roots.prod := by
         rw [B.valuation.map_mul, B.valuation.map_mul]
-        rw [hleadF]
-        simp
+        rw [hleadF, B.valuation.map_pow, B.valuation.map_neg,
+          B.valuation.map_one, one_pow, one_mul]
       _ = B.valuation (algebraMap K L (Q.leadingCoeff : K)) *
           t ^ roots.card := by
         rw [DiscreteValuationField.valuation_multiset_prod_eq_pow_card_of_eq
@@ -160,7 +160,7 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit_o
   apply Polynomial.eq_C_coeff_zero_iff_natDegree_eq_zero.mp
   ext j
   cases j with
-  | zero => simp
+  | zero => exact Polynomial.coeff_C_zero.symm
   | succ j =>
       rw [Polynomial.coeff_map]
       simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ite_false]

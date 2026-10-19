@@ -131,8 +131,8 @@ private theorem finiteStandardComplexExtendsReal
     (x : ℝ) :
     finiteStandardComplexAbsoluteValue (algebraMap ℝ ℂ x) =
       finiteStandardRealAbsoluteValue x := by
-  change ‖(algebraMap ℝ ℂ x)‖ = ‖x‖
-  simp
+  change ‖(x : ℂ)‖ = ‖x‖
+  exact Complex.norm_real x
 
 
 /-- Completeness is preserved when an absolute value is pulled back along an
@@ -164,7 +164,7 @@ private theorem finiteRealAlgEquivRealUniqueRpowExtension
   ext x
   have hx : x = algebraMap ℝ L (e x) := by
     calc
-      x = e.symm (e x) := by simp
+      x = e.symm (e x) := (e.symm_apply_apply x).symm
       _ = algebraMap ℝ L (e x) := by
         simpa using (AlgEquiv.commutes e.symm (e x))
   rw [hx, hw]
@@ -202,7 +202,7 @@ private theorem finiteRealAlgEquivComplexUniqueRpowExtension
   calc
     w x = ‖y‖ := by
       simp [y, WithAbs.norm_eq_apply_ofAbs]
-    _ = ‖e'.symm (e' y)‖ := by simp
+    _ = ‖e'.symm (e' y)‖ := congrArg norm (e'.symm_apply_apply y).symm
     _ = ‖e' y‖ ^ s :=
       AlgEquiv.norm_symm_apply_eq_norm_rpow
         (F := WithAbs w) (s := s) hs0 hnorm e' (e' y)
@@ -223,7 +223,7 @@ private theorem finiteComplexAlgEquivComplexUniqueRpowExtension
   ext x
   have hx : x = algebraMap ℂ L (e x) := by
     calc
-      x = e.symm (e x) := by simp
+      x = e.symm (e x) := (e.symm_apply_apply x).symm
       _ = algebraMap ℂ L (e x) := by
         simpa using (AlgEquiv.commutes e.symm (e x))
   rw [hx, hw]
@@ -240,8 +240,8 @@ private theorem finiteNormExtension_real_self_normFormulaValue_eq_standard
     finiteExtensionNormFormulaValue (K := ℝ) (L := ℝ)
       finiteStandardRealAbsoluteValue x =
       finiteStandardRealAbsoluteValue x := by
-  rw [finiteExtensionNormFormulaValue, Module.finrank_self ℝ]
-  simp
+  rw [finiteExtensionNormFormulaValue, Module.finrank_self ℝ, Nat.cast_one,
+    div_one, Real.rpow_eq_pow, Real.rpow_one, Algebra.norm_self, MonoidHom.id_apply]
 
 /-- the finite-degree norm construction, archimedean standard branch over `ℂ | ℂ`: the
 construction's
@@ -251,8 +251,8 @@ private theorem finiteNormExtension_complex_self_normFormulaValue_eq_standard
     finiteExtensionNormFormulaValue (K := ℂ) (L := ℂ)
       finiteStandardComplexAbsoluteValue z =
       finiteStandardComplexAbsoluteValue z := by
-  rw [finiteExtensionNormFormulaValue, Module.finrank_self ℂ]
-  simp
+  rw [finiteExtensionNormFormulaValue, Module.finrank_self ℂ, Nat.cast_one,
+    div_one, Real.rpow_eq_pow, Real.rpow_one, Algebra.norm_self, MonoidHom.id_apply]
 
 /-- the finite-degree norm construction, archimedean standard branch over `ℂ | ℝ`: the
 construction's
@@ -625,8 +625,7 @@ private theorem finiteNormExtension_abs_norm_eq_minpoly_coeff_zero_pow_relfinran
       using
         (Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly
           (IntermediateField.adjoin.powerBasis hxint))
-  rw [hgen, v.map_mul, v.map_pow, AbsoluteValue.map_neg]
-  simp
+  rw [hgen, v.map_mul, v.map_pow, AbsoluteValue.map_neg, map_one, one_pow, one_mul]
 
 /-- For a nonnegative real number, taking an `n`th natural power and then the
 reciprocal `m*n` real power cancels the `n` factor. -/
@@ -1100,7 +1099,7 @@ private theorem finiteNormExtension_finite_normFormulaValue_base_ringEquiv
   have : FiniteDimensional E L := FiniteDimensional.trans E K L
   have hfinEK : Module.finrank E K = 1 := by
     rw [e.toLinearEquiv.finrank_eq]
-    simp
+    exact Module.finrank_self E
   have hfin : Module.finrank K L = Module.finrank E L := by
     have hmul := Module.finrank_mul_finrank E K L
     rwa [hfinEK, one_mul] at hmul

@@ -67,12 +67,12 @@ noncomputable def sUnitEquivSupportedPrincipalIdeleSubgroup
       map_one' := by
         apply Subtype.ext
         apply Subtype.ext
-        simp
+        exact map_one (IdeleGroup.principalIdele K)
       map_mul' := by
         intro x y
         apply Subtype.ext
         apply Subtype.ext
-        simp }
+        exact map_mul (IdeleGroup.principalIdele K) (x : Kˣ) (y : Kˣ) }
   apply MulEquiv.ofBijective f
   constructor
   · intro x y hxy
@@ -342,8 +342,9 @@ theorem supportedIdeleToClassPowerQuotient_ker
               (h : IdeleGroup K) *
             QuotientGroup.mk'
               (IdeleGroup.principalSubgroup K)
-              (p : IdeleGroup K) := by
-      simp
+              (p : IdeleGroup K) :=
+      map_mul (QuotientGroup.mk' (IdeleGroup.principalSubgroup K))
+        (h : IdeleGroup K) (p : IdeleGroup K)
     rw [hmul, hpOne]
     exact
       (ideleClassPowerLocalUnitSubgroup (K := K) n S T).mul_mem
@@ -394,7 +395,9 @@ theorem supportedIdeleToClassPowerQuotient_surjective
           (IdeleGroup.principalSubgroup K) p = 1 :=
     (QuotientGroup.eq_one_iff _).mpr hp
   rw [hpOne]
-  simp
+  apply congrArg (QuotientGroup.mk'
+    (ideleClassPowerLocalUnitSubgroup (K := K) n S T))
+  exact (_root_.mul_one (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) u)).symm
 
 /-- Supported realization of the idele-class index quotient. -/
 noncomputable def

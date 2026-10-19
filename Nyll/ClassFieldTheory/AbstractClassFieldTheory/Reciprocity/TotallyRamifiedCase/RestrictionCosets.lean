@@ -139,8 +139,7 @@ theorem abstractReciprocityRestrictionCosetMap_bijective
       rw [map_mul, map_inv]
       change D.degree k.1 * (D.degree e)⁻¹ = 1
       change D.degree e = D.degree k.1 at heDegree
-      rw [heDegree]
-      simp
+      rw [heDegree, mul_inv_cancel]
     have hiS : (QuotientGroup.mk'
         (extensionSubgroup E.base M.field M.below)) i ∈ S :=
       ⟨i, hiI, rfl⟩

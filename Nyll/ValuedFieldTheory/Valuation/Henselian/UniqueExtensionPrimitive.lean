@@ -90,8 +90,8 @@ theorem valuation_algEquiv_eq_of_unique_extension_of_finiteDimensional
       | succ m ih => exact (hstep (m + 1)).trans ih
     obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hn)
     have := hcycle m
-    rw [hσn] at this
-    simp at this
+    rw [hσn, AlgEquiv.one_apply] at this
+    exact (lt_irrefl _ this).elim
   · exact heq
   · have hstep : ∀ m : ℕ,
         W.valuation ((σ ^ m) x) <
@@ -110,8 +110,8 @@ theorem valuation_algEquiv_eq_of_unique_extension_of_finiteDimensional
       | succ m ih => exact ih.trans (hstep (m + 1))
     obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.ne_of_gt hn)
     have := hcycle m
-    rw [hσn] at this
-    simp at this
+    rw [hσn, AlgEquiv.one_apply] at this
+    exact (lt_irrefl _ this).elim
 
 /-- Roots of one irreducible ground-field polynomial have the same canonical
 value in a finite normal splitting field with a unique extension valuation
@@ -250,8 +250,8 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit
       _ = W.valuation (algebraMap K L (Q.leadingCoeff : K)) *
           W.valuation roots.prod := by
         rw [W.valuation.map_mul, W.valuation.map_mul]
-        rw [hleadF]
-        simp
+        rw [hleadF, W.valuation.map_pow, W.valuation.map_neg,
+          W.valuation.map_one, one_pow, one_mul]
       _ = W.valuation (algebraMap K L (Q.leadingCoeff : K)) *
           t ^ roots.card := by
         rw [DiscreteValuationField.valuation_multiset_prod_eq_pow_card_of_eq
@@ -295,7 +295,7 @@ theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit
   apply Polynomial.eq_C_coeff_zero_iff_natDegree_eq_zero.mp
   ext j
   cases j with
-  | zero => simp
+  | zero => exact Polynomial.coeff_C_zero.symm
   | succ j =>
       rw [Polynomial.coeff_map]
       simp only [Polynomial.coeff_C, Nat.succ_ne_zero, ite_false]
@@ -332,7 +332,7 @@ theorem primitiveIrreducibleReductionProperty_of_unique_algebraic_extensions
       apply Polynomial.monic_C_mul_of_mul_leadingCoeff_eq_one
       change (((u⁻¹ : Vˣ) : V) * Q.leadingCoeff) = 1
       rw [← hu]
-      simp
+      exact Units.inv_mul u
     have hscalarUnitK : IsUnit (((u⁻¹ : Vˣ) : V) : K) := by
       exact isUnit_iff_ne_zero.mpr
         (V.subtype_injective.ne (Units.ne_zero (u⁻¹ : Vˣ)))

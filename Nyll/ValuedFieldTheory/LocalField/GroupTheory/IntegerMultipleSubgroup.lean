@@ -79,7 +79,7 @@ theorem integerMultipleSubgroup_le_of_dvd {a b : ℤ} (hab : a ∣ b) :
     integerMultipleSubgroup (1 : ℤ) = ⊤ := by
   ext n
   rw [mem_integerMultipleSubgroup_iff]
-  simp
+  exact iff_of_true (one_dvd _) (Subgroup.mem_top n)
 
 /-- Reduction of multiplicative integers modulo the subgroup of multiples of
 `d`, written as a homomorphism to `Multiplicative (ZMod |d|)`. -/

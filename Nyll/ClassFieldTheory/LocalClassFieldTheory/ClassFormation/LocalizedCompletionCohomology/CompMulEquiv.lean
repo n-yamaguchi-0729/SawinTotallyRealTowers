@@ -51,22 +51,22 @@ variable {H : Type uH} {G : Type uG} {A : Type uA}
     [CommGroup A] [MulDistribMulAction G A]
 
 theorem tateNorm_compMulEquiv (e : H ≃* G) (a : A) :
-    letI := MulDistribMulAction.compHom A e.toMonoidHom
+    let _ : MulDistribMulAction H A := MulDistribMulAction.compHom A e.toMonoidHom
     tateNorm H A a = tateNorm G A a := by
-  let := MulDistribMulAction.compHom A e.toMonoidHom
+  intro hAction
   change (∏ h : H, e h • a) = ∏ g : G, g • a
   exact e.toEquiv.prod_comp fun g ↦ g • a
 
 /-- Transport of the fixed subgroup along an isomorphism of acting groups. -/
 noncomputable def fixedSubgroupCompMulEquiv (e : H ≃* G) :
-    letI := MulDistribMulAction.compHom A e.toMonoidHom
+    let _ : MulDistribMulAction H A := MulDistribMulAction.compHom A e.toMonoidHom
     fixedSubgroup H A ≃* fixedSubgroup G A := by
-  letI := MulDistribMulAction.compHom A e.toMonoidHom
+  intro hAction
   exact
     { toFun := fun x ↦ ⟨x.1, fun g ↦ by
           have hx := x.2 (e.symm g)
           change e (e.symm g) • x.1 = x.1 at hx
-          simpa using hx⟩
+          simpa only [e.apply_symm_apply] using hx⟩
       invFun := fun x ↦ ⟨x.1, fun h ↦ x.2 (e h)⟩
       left_inv := fun _ ↦ rfl
       right_inv := fun _ ↦ rfl
@@ -74,9 +74,9 @@ noncomputable def fixedSubgroupCompMulEquiv (e : H ≃* G) :
 
 /-- Transport of the Tate norm kernel along an isomorphism of acting groups. -/
 noncomputable def normKernelCompMulEquiv (e : H ≃* G) :
-    letI := MulDistribMulAction.compHom A e.toMonoidHom
+    let _ : MulDistribMulAction H A := MulDistribMulAction.compHom A e.toMonoidHom
     normKernelSubgroup H A ≃* normKernelSubgroup G A := by
-  letI := MulDistribMulAction.compHom A e.toMonoidHom
+  intro hAction
   exact
     { toFun := fun x ↦ ⟨x.1, by
           change tateNorm G A x.1 = 1
@@ -93,9 +93,9 @@ noncomputable def normKernelCompMulEquiv (e : H ≃* G) :
 /-- Change of acting group for multiplicative degree-zero Herbrand
 cohomology. -/
 noncomputable def herbrandH0CompMulEquiv (e : H ≃* G) :
-    letI := MulDistribMulAction.compHom A e.toMonoidHom
+    let _ : MulDistribMulAction H A := MulDistribMulAction.compHom A e.toMonoidHom
     HerbrandH0 H A ≃* HerbrandH0 G A := by
-  letI := MulDistribMulAction.compHom A e.toMonoidHom
+  intro hAction
   let f := fixedSubgroupCompMulEquiv (A := A) e
   let N :=
     (tateNormSubgroup H A).subgroupOf (fixedSubgroup H A)
@@ -121,7 +121,7 @@ noncomputable def herbrandH0CompMulEquiv (e : H ≃* G) :
     (fun x hx ↦ by
       have hx1 : x = 1 := by
         apply f.injective
-        simpa [f] using hx
+        exact hx.trans (map_one f).symm
       rw [hx1]
       exact N.one_mem)
 
@@ -129,10 +129,10 @@ noncomputable def herbrandH0CompMulEquiv (e : H ≃* G) :
 cohomology. -/
 noncomputable def herbrandHMinusOneCompMulEquiv
     (e : H ≃* G) (σ : H) :
-    letI := MulDistribMulAction.compHom A e.toMonoidHom
+    let _ : MulDistribMulAction H A := MulDistribMulAction.compHom A e.toMonoidHom
     HerbrandHMinusOne H A σ ≃*
       HerbrandHMinusOne G A (e σ) := by
-  letI := MulDistribMulAction.compHom A e.toMonoidHom
+  intro hAction
   let f := normKernelCompMulEquiv (A := A) e
   let N :=
     (augmentationSubgroup H A σ).subgroupOf
@@ -156,7 +156,7 @@ noncomputable def herbrandHMinusOneCompMulEquiv
     (fun x hx ↦ by
       have hx1 : x = 1 := by
         apply f.injective
-        simpa [f] using hx
+        exact hx.trans (map_one f).symm
       rw [hx1]
       exact N.one_mem)
 

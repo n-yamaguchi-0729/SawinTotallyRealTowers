@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Mathlib.SetTheory.Cardinal.Finite
+import Nyll.ValuedFieldTheory.LocalField.NormUnits
 import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer
 import Mathlib.FieldTheory.IsSepClosed
 
@@ -639,14 +640,6 @@ theorem equalCharacteristicChangedLevelGenerator_eq_powerBasis_gen
     equalCharacteristicChangedLevelField,
     IntermediateField.adjoin.powerBasis_gen]
 
-/-- The norm of a negative element, separated from the changed level field's
-large concrete type. -/
-private theorem changedAlgebraNorm_neg
-    {R S : Type*} [Field R] [Field S] [Algebra R S] (x : S) :
-    Algebra.norm R (-x) = (-1) ^ Module.finrank R S * Algebra.norm R x := by
-  rw [show -x = algebraMap R S (-1) * x by simp]
-  rw [map_mul, Algebra.norm_algebraMap]
-
 /-- The completed theta-intertwining theorem, changed-uniformizer norm identity:
 `N(-λ_{uT,n+1}) = uT`. -/
 theorem equalCharacteristicChanged_norm_neg_levelGenerator
@@ -666,7 +659,7 @@ theorem equalCharacteristicChanged_norm_neg_levelGenerator
       (equalCharacteristicChangedLevelField F a n) = pb.dim := by
     unfold equalCharacteristicChangedLevelField
     exact pb.finrank
-  rw [changedAlgebraNorm_neg,
+  rw [LocalFieldTheory.algebraNorm_neg,
     equalCharacteristicChangedLevelGenerator_eq_powerBasis_gen,
     Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly]
   change (-1) ^ Module.finrank F.residueField⸨X⸩
@@ -678,7 +671,7 @@ theorem equalCharacteristicChanged_norm_neg_levelGenerator
   rw [hfinrank]
   simp only [pb, IntermediateField.adjoin.powerBasis_dim]
   rw [← mul_assoc, ← pow_add, ← two_mul, pow_mul]
-  simp
+  simp only [neg_sq, one_pow, one_mul]
 
 end EqualCharacteristic
 end LubinTate

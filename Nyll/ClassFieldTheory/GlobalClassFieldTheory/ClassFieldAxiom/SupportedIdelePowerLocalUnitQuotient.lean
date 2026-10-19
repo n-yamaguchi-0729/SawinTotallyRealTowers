@@ -106,7 +106,11 @@ def supportedIdelePowerClassMap
       rw [powMonoidHom_apply, one_pow]
       exact (IdeleGroup.infiniteComponent w).map_one.symm
     · funext v
-      simp
+      change QuotientGroup.mk'
+        (powMonoidHom (n : ℕ) :
+          (v.1.adicCompletion K)ˣ →* (v.1.adicCompletion K)ˣ).range
+        (IdeleGroup.finiteComponent v.1 1) = 1
+      rw [map_one, map_one]
   map_mul' a b := by
     apply Prod.ext
     · funext w
@@ -125,7 +129,20 @@ def supportedIdelePowerClassMap
               (IdeleGroup.infiniteComponent w b.1)
       rw [map_mul, map_mul]
     · funext v
-      simp
+      change
+        QuotientGroup.mk'
+            (powMonoidHom (n : ℕ) :
+              (v.1.adicCompletion K)ˣ →* (v.1.adicCompletion K)ˣ).range
+            (IdeleGroup.finiteComponent v.1 (a.1 * b.1)) =
+          QuotientGroup.mk'
+              (powMonoidHom (n : ℕ) :
+                (v.1.adicCompletion K)ˣ →* (v.1.adicCompletion K)ˣ).range
+              (IdeleGroup.finiteComponent v.1 a.1) *
+            QuotientGroup.mk'
+              (powMonoidHom (n : ℕ) :
+                (v.1.adicCompletion K)ˣ →* (v.1.adicCompletion K)ˣ).range
+              (IdeleGroup.finiteComponent v.1 b.1)
+      rw [map_mul, map_mul]
 
 /-- The kernel of the local-power class map is precisely `h(S,T)` inside
 `I_K^{S ∪ T}`. -/

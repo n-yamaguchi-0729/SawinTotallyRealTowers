@@ -157,10 +157,9 @@ theorem frobeniusFixedFieldAction_eq_conjugateStableAction
     D.frobeniusFixedFieldAction A K L hLK σ q hq a =
       conjugateStableAction A (D.frobeniusFixedField K L hLK σ)
         k.1⁻¹ hstable a := by
-  dsimp only
+  intro k hstable
   apply Subtype.ext
-  rw [D.frobeniusFixedFieldAction_coe, conjugateStableAction_coe]
-  simp
+  rw [D.frobeniusFixedFieldAction_coe, conjugateStableAction_coe, inv_inv]
 
 /-- Relative norm in a power-fixed-field tower is equivariant for every
 quotient element commuting with both defining powers. -/

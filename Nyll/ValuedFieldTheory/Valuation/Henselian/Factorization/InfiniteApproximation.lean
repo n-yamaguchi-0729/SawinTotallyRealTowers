@@ -88,18 +88,21 @@ def henselFactorization_initialPrefixState_of_factor
   · intro r hr
     have hr0 : r = 0 := Nat.eq_zero_of_le_zero hr
     subst r
-    exact ⟨f1, by simpa using hfactor0⟩
+    exact ⟨f1, by
+      simpa only [henselFactorization_henselIterate_zero, zero_add, pow_one] using hfactor0⟩
   · intro r
-    simp
+    exact Nat.zero_le m
   · intro r
-    simp
-  · simpa using hfactor0
-  · simp [hg0nat]
-  · simpa using hh0deg
+    exact Nat.zero_le (d - m)
+  · simpa only [henselFactorization_henselIterate_zero, zero_add, pow_one] using hfactor0
+  · rw [henselFactorization_henselIterate_zero, hg0nat]
+  · exact hh0deg
   · intro i
-    simp
+    rw [henselFactorization_henselIterate_zero, sub_self, Polynomial.coeff_zero]
+    exact (IsLocalRing.maximalIdeal R).zero_mem
   · intro i
-    simp
+    rw [henselFactorization_henselIterate_zero, sub_self, Polynomial.coeff_zero]
+    exact (IsLocalRing.maximalIdeal R).zero_mem
 
 /-- Choose an extension of a prefix state by one Hensel correction in the
 displayed-factor form. -/

@@ -684,7 +684,8 @@ theorem rationalPrimeUnitFinitePlaceIntegerUnit_coe
           (rationalPrimeUnit x q : ℚ)) := by
       rw [
         rationalFinitePlaceCompletionRingEquivPadic_algebraMap]
-      simp
+      exact (map_ratCast (algebraMap ℚ ℚ_[q.1])
+        (rationalPrimeUnit x q : ℚ)).symm
 
 /-- The completion field unit underlying the pulled-back rational `q`-unit
 has normalized additive value zero. -/
@@ -726,7 +727,7 @@ theorem rationalPrimeGeneratorUnit_zpow_mul_rationalPrimeUnit
       x := by
   rw [rationalPrimeGeneratorUnit, rationalPrimeUnit,
     ← mul_assoc, ← zpow_add]
-  simp
+  rw [add_neg_cancel, zpow_zero, one_mul]
 
 /-- The source unit in the absolute-value completion represented by the
 finite component of a rational principal idele. -/

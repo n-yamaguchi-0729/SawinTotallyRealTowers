@@ -56,19 +56,12 @@ private def valuationSubringEquivOfComapEq
   invFun y := ⟨e.symm y, by
     rw [h]
     change e (e.symm y) ∈ A
-    simp⟩
-  left_inv x := by
-    ext
-    simp
-  right_inv y := by
-    ext
-    simp
-  map_mul' x y := by
-    ext
-    simp
-  map_add' x y := by
-    ext
-    simp
+    rw [e.apply_symm_apply]
+    exact y.property⟩
+  left_inv x := Subtype.ext (e.symm_apply_apply (x : L))
+  right_inv y := Subtype.ext (e.apply_symm_apply (y : M))
+  map_mul' x y := Subtype.ext (map_mul e (x : L) (y : L))
+  map_add' x y := Subtype.ext (map_add e (x : L) (y : L))
 
 private theorem semilinearConjugate_commutes
     {k k' Omega Omega' : Type}
@@ -611,18 +604,10 @@ theorem localResidueDegree_semilinear_conjugation
     invFun := fun y =>
       ⟨phi.symm (y : F), (hbase (phi.symm (y : F))).2 (by
         simpa only [phi.apply_symm_apply] using y.property)⟩
-    left_inv := fun x => by
-      ext
-      simp
-    right_inv := fun y => by
-      ext
-      simp
-    map_mul' := fun x y => by
-      ext
-      simp
-    map_add' := fun x y => by
-      ext
-      simp }
+    left_inv := fun x => Subtype.ext (phi.symm_apply_apply (x : K))
+    right_inv := fun y => Subtype.ext (phi.apply_symm_apply (y : F))
+    map_mul' := fun x y => Subtype.ext (map_mul phi (x : K) (y : K))
+    map_add' := fun x y => Subtype.ext (map_add phi (x : K) (y : K)) }
   let eBaseResidue : kK ≃+* kF :=
     IsLocalRing.ResidueField.mapEquiv rBase
   let r : AK ≃+* AF :=

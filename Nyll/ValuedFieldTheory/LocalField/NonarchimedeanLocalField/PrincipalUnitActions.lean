@@ -41,7 +41,7 @@ theorem integerRingEquiv_map_maximalIdeal
     exact (integerRingEquiv_mem_maximalIdeal K e x).2 hx
   · intro hy
     refine (Ideal.mem_map_iff_of_surjective e.toRingHom e.surjective).2 ?_
-    refine ⟨e.symm y, ?_, by simp⟩
+    refine ⟨e.symm y, ?_, e.apply_symm_apply y⟩
     have hy' : e (e.symm y) ∈ (𝓂[K] : Ideal 𝒪[K]) := by
       simpa using hy
     exact (integerRingEquiv_mem_maximalIdeal K e (e.symm y)).1 hy'
@@ -81,18 +81,9 @@ def maximalIdealPowMapEquivOfIntegerRingEquiv
   toFun a := ⟨e (a : 𝒪[K]), (integerRingEquiv_mem_maximalIdeal_pow K e n a).2 a.2⟩
   invFun a :=
     ⟨e.symm (a : 𝒪[K]), (integerRingEquiv_mem_maximalIdeal_pow K e.symm n a).2 a.2⟩
-  left_inv := by
-    intro a
-    ext
-    simp
-  right_inv := by
-    intro a
-    ext
-    simp
-  map_add' := by
-    intro a b
-    ext
-    simp
+  left_inv a := Subtype.ext (e.symm_apply_apply (a : 𝒪[K]))
+  right_inv a := Subtype.ext (e.apply_symm_apply (a : 𝒪[K]))
+  map_add' a b := Subtype.ext (map_add e (a : 𝒪[K]) (b : 𝒪[K]))
 
 /-- An integer-ring equivalence transports an element of a maximal-ideal power by applying the
 underlying ring equivalence. -/
@@ -236,18 +227,9 @@ def principalUnitsMapEquivOfIntegerRingEquiv
   invFun u :=
     ⟨Units.mapEquiv e.symm.toMulEquiv u.1,
       principalUnits_integerRingEquiv_mem_self K n e.symm u.1 u.2⟩
-  left_inv := by
-    intro u
-    ext
-    simp
-  right_inv := by
-    intro u
-    ext
-    simp
-  map_mul' := by
-    intro a b
-    ext
-    simp
+  left_inv u := Subtype.ext ((Units.mapEquiv e.toMulEquiv).symm_apply_apply u.1)
+  right_inv u := Subtype.ext ((Units.mapEquiv e.toMulEquiv).apply_symm_apply u.1)
+  map_mul' a b := Subtype.ext (map_mul (Units.mapEquiv e.toMulEquiv) a.1 b.1)
 
 /-- An integer-ring equivalence transports principal units by applying it to their underlying units.
 An integer-ring equivalence transports principal units by applying it to their underlying units. -/

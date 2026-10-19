@@ -210,8 +210,7 @@ theorem mul_frobeniusLiftDifference (D : DegreeData G)
       D.frobeniusExponent K L hLK τ) :
     σ * D.frobeniusLiftDifference K L hLK σ τ hdegree = τ := by
   apply Subtype.ext
-  rw [frobeniusMul_coe, frobeniusLiftDifference_coe]
-  simp
+  rw [frobeniusMul_coe, frobeniusLiftDifference_coe, mul_inv_cancel_left]
 
 /-- If the two lifts have the same restriction, their quotient restricts
 trivially. -/

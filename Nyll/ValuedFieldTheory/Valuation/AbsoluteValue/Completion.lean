@@ -268,7 +268,8 @@ theorem completionAbsoluteValue_isNonarchimedean
       vK.Completion) ≤ 1
   rw [completionAbsoluteValue_coe]
   change vK (n : K) ≤ 1
-  simpa using hvK.apply_natCast_le_one (by simp) (by simp)
+  exact hvK.apply_natCast_le_one
+    (by rw [vK.map_zero, vK.map_one]; exact zero_le_one) vK.map_one
 
 /-- A nonarchimedean absolute value and its completion absolute value have the
 same range. -/
@@ -283,7 +284,7 @@ theorem completionAbsoluteValue_range_eq
   · rintro r ⟨y, rfl⟩
     by_cases hy : y = 0
     · subst y
-      exact ⟨0, by simp⟩
+      exact ⟨0, by rw [vK.map_zero, vC.map_zero]⟩
     · have hypos : 0 < vC y := vC.pos hy
       obtain ⟨x, hx⟩ :=
         (denseRange_toCompletion vK).exists_dist_lt y hypos

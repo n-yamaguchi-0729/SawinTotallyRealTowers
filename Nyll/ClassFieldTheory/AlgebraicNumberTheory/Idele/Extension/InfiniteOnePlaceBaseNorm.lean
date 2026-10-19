@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
 
 /-!
 # Norms of base units supported at one infinite place
@@ -22,6 +23,7 @@ degree power.
 
 open scoped BigOperators NumberField
 open NumberField IsDedekindDomain
+open AlgebraicNumberTheory.Valuations
 
 noncomputable section
 
@@ -145,7 +147,15 @@ theorem norm_infinitePlaceIdele_infinitePlaceBaseUnitExtension
               (K := K) (L := L) W x)
             hUW,
           map_one]
-      · simp
+      · intro h
+        let : Fintype (AbsoluteValueExtension v.1 L) :=
+          completionTensorDecomposition_extensionFintype
+            (K := K) (L := L) v.1 v.isNontrivial
+        let : Fintype {U : InfinitePlace L //
+            _root_.infinitePlaceBelow (K := K) U = v} :=
+          Fintype.ofEquiv (AbsoluteValueExtension v.1 L)
+            (_root_.infinitePlaceAboveEquivExtension (K := K) (L := L) v).symm
+        exact (h (Finset.mem_univ W₀)).elim
     · rw [
         infiniteComponent_norm_eq_prod,
         infinitePlaceIdele_infiniteComponent_of_ne

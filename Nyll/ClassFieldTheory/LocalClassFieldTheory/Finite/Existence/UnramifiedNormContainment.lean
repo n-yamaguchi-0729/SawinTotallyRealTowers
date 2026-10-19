@@ -201,8 +201,7 @@ theorem finiteUnramifiedNormSubgroup_map_le_unramifiedNormSubgroup
             (relativeNorm A K₀ U.field U.below a) : v.valueGroup) : ZHat) := by
       simpa only using congrArg (zHatReduction d hd) hnative.symm
     _ = 0 := by
-      rw [hvaluation, map_nsmul]
-      simp
+      rw [hvaluation, map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- The canonical unramified extension of positive degree supplies a finite
 Galois subextension whose transported norm subgroup consists of elements with

@@ -45,14 +45,16 @@ def higherPrincipalUnitGroup
     Subgroup F.valuationSubringˣ where
   carrier := {u | (u : F.valuationSubring) - 1 ∈ F.maximalIdeal ^ n}
   one_mem' := by
-    simp
+    change (1 : F.valuationSubring) - 1 ∈ F.maximalIdeal ^ n
+    rw [sub_self]
+    exact (F.maximalIdeal ^ n).zero_mem
   mul_mem' := by
     intro x y hx hy
     have hxy :
         ((x * y : F.valuationSubringˣ) : F.valuationSubring) - 1 =
           (x : F.valuationSubring) * ((y : F.valuationSubring) - 1) +
             ((x : F.valuationSubring) - 1) := by
-      simp
+      change (x : F.valuationSubring) * (y : F.valuationSubring) - 1 = _
       ring
     change ((x * y : F.valuationSubringˣ) : F.valuationSubring) - 1 ∈ F.maximalIdeal ^ n
     rw [hxy]
@@ -68,7 +70,7 @@ def higherPrincipalUnitGroup
             ((x⁻¹ : F.valuationSubringˣ) : F.valuationSubring) -
               ((x⁻¹ : F.valuationSubringˣ) : F.valuationSubring) *
                 (x : F.valuationSubring) := by
-          simp
+          rw [Units.inv_mul]
         _ = -(((x⁻¹ : F.valuationSubringˣ) : F.valuationSubring) *
               ((x : F.valuationSubring) - 1)) := by
           ring
@@ -148,8 +150,7 @@ theorem pow_mem_succ_of_natCast_mem_maximalIdeal
     simp [a]
   have hpow :
       ((u ^ p : F.valuationSubringˣ) : F.valuationSubring) =
-        (u : F.valuationSubring) ^ p := by
-    simp
+        (u : F.valuationSubring) ^ p := Units.val_pow_eq_pow_val u p
   rw [hpow, hu_eq]
   exact
     higherPrincipalUnitGroup.one_add_pow_prime_sub_one_mem_pow_succ

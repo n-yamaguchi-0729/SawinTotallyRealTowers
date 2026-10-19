@@ -36,15 +36,17 @@ def absoluteValueExponentialValuation
       add_le_min := ?_ }
   · intro x
     by_cases hx : x = 0
-    · simp [hx]
-    · simp [hx]
+    · rw [ite_eq_left hx]
+      exact iff_of_true rfl hx
+    · rw [ite_eq_right hx]
+      exact iff_of_false WithTop.coe_ne_top hx
   · intro x y
     by_cases hx : x = 0
     · subst x
-      simp
+      rw [zero_mul, ite_eq_left rfl, WithTop.top_add]
     by_cases hy : y = 0
     · subst y
-      simp
+      rw [mul_zero, ite_eq_left rfl, WithTop.add_top]
     have hxy : x * y ≠ 0 := mul_ne_zero hx hy
     simp only [hx, hy, hxy, ite_false, map_mul]
     rw [Real.log_mul (abv.ne_zero hx) (abv.ne_zero hy)]
@@ -52,12 +54,13 @@ def absoluteValueExponentialValuation
   · intro x y
     by_cases hx : x = 0
     · subst x
-      simp
+      rw [zero_add, ite_eq_left rfl, min_top_left]
     by_cases hy : y = 0
     · subst y
-      simp
+      rw [add_zero, ite_eq_left rfl, min_top_right]
     by_cases hxy : x + y = 0
-    · simp [hxy]
+    · rw [ite_eq_left hxy]
+      exact le_top
     simp only [hx, hy, hxy, ite_false]
     apply WithTop.coe_le_coe.mpr
     by_cases hle : abv x ≤ abv y

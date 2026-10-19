@@ -53,7 +53,8 @@ theorem exists_closedFiniteIndexSubgroup_not_mem_of_not_mem_identityComponent
   let U : Set (ideleClassComponentQuotient K) := {q c}ᶜ
   have hUopen : IsOpen U := isClosed_singleton.isOpen_compl
   have hUone : (1 : ideleClassComponentQuotient K) ∈ U := by
-    simpa [U, eq_comm] using hqc
+    change (1 : ideleClassComponentQuotient K) ≠ q c
+    exact Ne.symm hqc
   obtain ⟨V, hVU⟩ :=
     ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one
       hUopen hUone
@@ -88,7 +89,7 @@ theorem exists_closedFiniteIndexSubgroup_not_mem_of_not_mem_identityComponent
     have hqcV : q c ∈ V := hcH
     have : q c ∈ ({q c} : Set (ideleClassComponentQuotient K))ᶜ :=
       hVU hqcV
-    exact this (by simp)
+    exact this (Set.mem_singleton (q c))
   exact ⟨H, hHclosed, hHfinite, hCH, hcH⟩
 
 /-- Replacing a finite abelian extension by its selected finite layer in the
@@ -97,14 +98,12 @@ theorem finiteAbelianExtensionInMaximalAbelianExtension_ideleClassNorm_range
     (L : Type) [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
     let E := finiteAbelianExtensionInMaximalAbelianExtension K L
-    letI : NumberField E := NumberField.of_module_finite K E
+    let _ : NumberField E := NumberField.of_module_finite K E
     (_root_.ideleClassNorm K E).range =
       (_root_.ideleClassNorm K L).range := by
-  let E := finiteAbelianExtensionInMaximalAbelianExtension K L
+  intro E fieldNumber
   let e : L ≃ₐ[K] E :=
     finiteAbelianExtensionEquivInMaximalAbelianExtension K L
-  let hE : NumberField E := NumberField.of_module_finite K E
-  let : NumberField E := hE
   have htransport :=
     ordinaryIdeleClassNorm_range_map_congrOfAlgEquiv
       (K := K) (K' := K) (L := L) (L' := E)
@@ -118,12 +117,12 @@ theorem finiteAbelianExtensionInMaximalAbelianExtension_ideleClassNorm_range
             (AlgEquiv.refl : K ≃ₐ[ℚ] K)).toMonoidHom :=
       htransport.symm
     _ = (_root_.ideleClassNorm K L).range := by
-      ext c
-      constructor
-      · rintro ⟨d, hd, rfl⟩
-        simpa using hd
-      · intro hc
-        exact ⟨c, hc, by simp⟩
+      have hid : (ideleClassCongr (AlgEquiv.refl : K ≃ₐ[ℚ] K)).toMonoidHom =
+          MonoidHom.id (IdeleClassGroup K) := by
+        apply MonoidHom.ext
+        intro c
+        exact ideleClassCongr_refl c
+      rw [hid, Subgroup.map_id]
 
 /-- The kernel of the maximal abelian global Artin map is exactly the
 identity component of the idele class group. -/

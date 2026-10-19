@@ -221,7 +221,7 @@ def transposeCharacterEquiv
     (e : R ≃* (G →* M)) : G →* (R →* M) where
   toFun g :=
     { toFun := fun r => e r g
-      map_one' := by simp
+      map_one' := DFunLike.congr_fun e.map_one g
       map_mul' := by
         intro r s
         exact congrArg (fun χ : G →* M => χ g) (map_mul e r s) }

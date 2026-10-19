@@ -91,7 +91,7 @@ theorem mixedEmbedding_one_mem_integerLattice :
       NumberField.mixedEmbedding.integerLattice K := by
   change _ ∈ LinearMap.range _
   refine ⟨1, ?_⟩
-  simp
+  rfl
 
 /-- A principal idele that is a unit at every finite place has infinite
 component in the Minkowski integer lattice. -/

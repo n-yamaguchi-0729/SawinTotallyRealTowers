@@ -555,10 +555,10 @@ def integralClosureToValuationSubringOfHasExtension
     ⟨(z : L),
       integralClosure_mem_valuationSubring_of_hasExtension
         (L := L) vK vL z⟩
-  map_zero' := by ext; simp
-  map_one' := by ext; simp
-  map_add' z₁ z₂ := by ext; simp
-  map_mul' z₁ z₂ := by ext; simp
+  map_zero' := Subtype.ext rfl
+  map_one' := Subtype.ext rfl
+  map_add' _ _ := Subtype.ext rfl
+  map_mul' _ _ := Subtype.ext rfl
 
 /-- The canonical map from the integral closure to an extending valuation ring is inclusion. -/
 @[simp] theorem integralClosureToValuationSubringOfHasExtension_apply
@@ -632,10 +632,10 @@ def valuationSubringToIntegralClosureOfModuleFinite
     ⟨(z : L),
       valuationSubring_mem_integralClosure_of_moduleFinite
         (L := L) vK vL z⟩
-  map_zero' := by ext; simp
-  map_one' := by ext; simp
-  map_add' z₁ z₂ := by ext; simp
-  map_mul' z₁ z₂ := by ext; simp
+  map_zero' := Subtype.ext rfl
+  map_one' := Subtype.ext rfl
+  map_add' _ _ := Subtype.ext rfl
+  map_mul' _ _ := Subtype.ext rfl
 
 /-- Under module finiteness, a valuation-ring element maps to its integral-closure class. -/
 @[simp] theorem valuationSubringToIntegralClosureOfModuleFinite_apply

@@ -135,8 +135,7 @@ private theorem extensionNormalizedDegree_pow_of_degreeOne (D : DegreeData G)
     D.extensionNormalizedDegree K L hLK (φ.1 ^ n) =
       (Multiplicative.ofAdd (1 : ZHat)) ^ n := by
   rw [map_pow,
-    D.extensionNormalizedDegree_frobenius_eq_pow K L hLK φ, hφ]
-  simp
+    D.extensionNormalizedDegree_frobenius_eq_pow K L hLK φ, hφ, pow_one]
 
 /-- A positive power of a degree-one Frobenius element, with the exponent
 recorded exactly.  These are the elements `σ = φⁿ` and `σⁿ = φⁿ²`. -/
@@ -297,7 +296,7 @@ private theorem frobeniusClosure_power_mul_le (D : DegreeData G)
   let C : ClosedSubgroup Q := closedSubgroupGenerated ({x} : Set Q)
   have hxC : x ∈ C.toSubgroup :=
     Subgroup.le_topologicalClosure _
-      (Subgroup.subset_closure (by simp [x]))
+      (Subgroup.subset_closure (Set.mem_singleton x))
   have hpowC : φ.1 ^ (n * m) ∈ C.toSubgroup := by
     rw [pow_mul]
     exact C.toSubgroup.pow_mem hxC m
@@ -306,9 +305,9 @@ private theorem frobeniusClosure_power_mul_le (D : DegreeData G)
     (closedSubgroupGenerated
       (Set.range (fun _ : Unit => φ.1 ^ n))).toSubgroup
   have hrangeLeft : Set.range (fun _ : Unit => φ.1 ^ (n * m)) =
-      ({φ.1 ^ (n * m)} : Set Q) := by ext q; simp
+      ({φ.1 ^ (n * m)} : Set Q) := Set.range_const
   have hrangeRight : Set.range (fun _ : Unit => φ.1 ^ n) =
-      ({φ.1 ^ n} : Set Q) := by ext q; simp
+      ({φ.1 ^ n} : Set Q) := Set.range_const
   rw [hrangeLeft, hrangeRight]
   apply Subgroup.topologicalClosure_minimal
   · rw [Subgroup.closure_le]
@@ -388,7 +387,7 @@ theorem frobeniusPowerFixedField_normal (D : DegreeData G)
           QuotientGroup.mk tK := by
     exact congrArg Subtype.val (by
       change a * b * a⁻¹ = b
-      simp)
+      rw [mul_comm a b, mul_inv_cancel_right])
   apply (mem_extensionSubgroup_iff S T hTS _).2
   let cK : K.field.toSubgroup := ⟨s.1 * t.1 * s.1⁻¹, by
     exact K.field.toSubgroup.mul_mem

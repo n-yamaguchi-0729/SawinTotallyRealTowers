@@ -98,7 +98,7 @@ def galoisPullback_galoisPullback : (L' ≃ₐ[K'] L') →* (L ≃ₐ[K] L) wher
     ext x
     apply tauL.injective
     rw [galoisPullbackElement_commutes]
-    simp
+    rfl
   map_mul' sigma rho := by
     ext x
     apply tauL.injective

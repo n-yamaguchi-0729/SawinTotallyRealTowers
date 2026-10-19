@@ -491,7 +491,7 @@ theorem fieldNormSubgroup_eq_top_of_finrank_eq_one
   ext u
   constructor
   · intro _
-    simp
+    trivial
   · intro _
     simpa [hfin] using fieldNormSubgroup_pow_finrank_mem K L u
 
@@ -1271,7 +1271,7 @@ theorem fieldNormQuotient_closure_uniformizerClass_eq_top
       (Subgroup.closure
         ({QuotientGroup.mk' (fieldNormSubgroup K L) ϖK} :
           Set (Kˣ ⧸ fieldNormSubgroup K L)))
-      (Subgroup.subset_closure (by simp)) n
+      (Subgroup.subset_closure (Set.mem_singleton _)) n
 
 /-- Establishes the identity `fieldNormSubgroup K L = ⊤`. -/
 theorem fieldNormSubgroup_eq_top_of_residueDegree_eq_one
@@ -1288,7 +1288,7 @@ theorem fieldNormSubgroup_eq_top_of_residueDegree_eq_one
   ext x
   constructor
   · intro _
-    simp
+    trivial
   · intro _
     exact
       fieldNormSubgroup_mem_of_residueDegree_dvd_val_of_zeroSubgroup_le

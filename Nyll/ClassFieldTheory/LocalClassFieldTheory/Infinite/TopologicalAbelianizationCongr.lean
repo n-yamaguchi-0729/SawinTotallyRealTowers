@@ -80,11 +80,13 @@ private def topologicalAbelianizationMulEquiv (e : G ≃ₜ* H) :
   left_inv q := by
     refine q.inductionOn' ?_
     intro x
-    simp
+    rw [topologicalAbelianizationMap_mk, topologicalAbelianizationMap_mk,
+      e.symm_apply_apply]
   right_inv q := by
     refine q.inductionOn' ?_
     intro x
-    simp
+    rw [topologicalAbelianizationMap_mk, topologicalAbelianizationMap_mk,
+      e.apply_symm_apply]
   map_mul' x y := map_mul (topologicalAbelianizationMap e) x y
 
 /-- A continuous multiplicative equivalence induces the canonical

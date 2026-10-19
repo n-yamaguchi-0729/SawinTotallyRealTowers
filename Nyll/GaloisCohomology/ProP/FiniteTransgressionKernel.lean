@@ -41,7 +41,8 @@ noncomputable def quotientSectionResidue (N : Subgroup P) [N.Normal]
     (g : P) : N :=
   ⟨g * (Quotient.out (QuotientGroup.mk' N g : P ⧸ N))⁻¹, by
     rw [← QuotientGroup.eq_one_iff]
-    simp⟩
+    simp only [QuotientGroup.mk_mul, QuotientGroup.mk_inv,
+      Quotient.out_eq', QuotientGroup.mk'_apply, mul_inv_cancel]⟩
 
 @[simp]
 theorem quotientSectionResidue_apply (N : Subgroup P) [N.Normal]
@@ -249,7 +250,7 @@ theorem exists_boundary_of_homologyπ_apply_eq_zero
       (K.toCycles_comp_homologyπ n (n + 1))
   have hS : S.Exact :=
     ShortComplex.exact_of_g_is_cokernel S
-      (K.homologyIsCokernel n (n + 1) (by simp))
+      (K.homologyIsCokernel n (n + 1) (CochainComplex.prev_nat_succ n))
   let F := forget₂ (TopModuleCat (ZMod p)) (ModuleCat (ZMod p))
   have hSM : (S.map F).Exact := hS.map F
   have hz' : (S.map F).g z = 0 := hz

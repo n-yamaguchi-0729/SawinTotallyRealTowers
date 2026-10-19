@@ -121,8 +121,8 @@ theorem equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_map_const
       ← PowerSeries.coeff_zero_eq_constantCoeff_apply,
       PowerSeries.coeff_map]
   rw [hcomp, ← Polynomial.map_map,
-    equalCharacteristicChangedIntegralPrimitivePolynomial_map_constantCoeff]
-  simp
+    equalCharacteristicChangedIntegralPrimitivePolynomial_map_constantCoeff,
+    Polynomial.map_pow, Polynomial.map_X]
 
 /-- The constant coefficient is the mapped unit times `T`, rather than
 merely `T`; this is the point at which the source `u⁻¹T` matters. -/

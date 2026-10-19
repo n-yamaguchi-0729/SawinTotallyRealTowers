@@ -95,25 +95,15 @@ theorem adicCompletionIntegerUnits_le_chosenFinitePlaceLocalNormSubgroup
       exact hval]
     exact norm_le_one_of_mem_adicCompletionIntegers v₀ hx.2
   have hBaseMem (a : vK.Completion) :
-      a ∈ 𝒪[vK.Completion] ↔ ‖a‖ ≤ 1 := by
-    simpa [vK] using
-      (finitePlaceCompletion_mem_integers_iff_norm_le_one
-        vK (HeightOneSpectrum.isNonarchimedean_adicAbv K v₀) a)
+      a ∈ 𝒪[vK.Completion] ↔ ‖a‖ ≤ 1 :=
+    finitePlaceCompletion_mem_integers_iff_norm_le_one
+      vK (HeightOneSpectrum.isNonarchimedean_adicAbv K v₀) a
   let x₀O : 𝒪[vK.Completion]ˣ :=
     { val := ⟨x₀, (hBaseMem (x₀ : vK.Completion)).2 hx₀norm⟩
-      inv :=
-        ⟨x₀⁻¹,
-          by
-            simpa using
-              (hBaseMem
-                ((x₀⁻¹ : vK.Completionˣ) :
-                  vK.Completion)).2 hx₀invnorm⟩
-      val_inv := by
-        apply Subtype.ext
-        simp
-      inv_val := by
-        apply Subtype.ext
-        simp }
+      inv := ⟨((x₀⁻¹ : vK.Completionˣ) : vK.Completion),
+        (hBaseMem ((x₀⁻¹ : vK.Completionˣ) : vK.Completion)).2 hx₀invnorm⟩
+      val_inv := Subtype.ext (congrArg Units.val (mul_inv_cancel x₀))
+      inv_val := Subtype.ext (congrArg Units.val (inv_mul_cancel x₀)) }
   have hx₀O :
       integerUnitsToFieldUnits vK.Completion x₀O = x₀ := by
     apply Units.ext

@@ -80,7 +80,7 @@ private noncomputable def tateHOneIsoHerbrandHMinusOne
   exact
     (TateCohomology.isoGroupCohomology 1).app M ≪≫
       Rep.FiniteCyclicGroup.groupCohomologyIsoOdd
-        M σ hgen 1 (by simp) ≪≫
+        M σ hgen 1 ⟨0, rfl⟩ ≪≫
       (TateCohomology.isoFiniteCyclicNegOne M σ hgen).symm ≪≫
       tateHMinusOneIsoHerbrandHMinusOne σ hgen
 
@@ -95,7 +95,7 @@ private noncomputable def tateHMinusTwoIsoHerbrandH0
   exact
     (TateCohomology.isoGroupHomology (-2) 1 (by norm_num)).app M ≪≫
       Rep.FiniteCyclicGroup.groupHomologyIsoOdd
-        M σ hgen 1 (by simp) ≪≫
+        M σ hgen 1 ⟨0, rfl⟩ ≪≫
       (TateCohomology.isoFiniteCyclicZero M σ hgen).symm ≪≫
       tateH0IsoHerbrandH0
 

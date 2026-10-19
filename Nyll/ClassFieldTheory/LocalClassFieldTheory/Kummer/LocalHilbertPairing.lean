@@ -298,11 +298,11 @@ theorem localHilbertSymbol_neg_self
     have hdiag : B a (-c) = B a a := by
       rw [hd, hmul_right, hinv_right] at hs2'
       exact mul_inv_eq_one.mp hs2'
-    have hc : c = (-1 : Kˣ) * (-c) := by simp
+    have hc : c = (-1 : Kˣ) * (-c) := by rw [neg_one_mul, neg_neg]
     have hneg_diag : B a (-1) * B a a = 1 := by
       rw [hc, hmul_right, hdiag] at hs1
       exact hs1
-    rw [show -a = (-1 : Kˣ) * a by simp, hmul_right]
+    rw [show -a = (-1 : Kˣ) * a from (neg_one_mul a).symm, hmul_right]
     exact hneg_diag
 
 /-- The local Hilbert symbol is skew-symmetric. -/
@@ -330,7 +330,7 @@ theorem localHilbertSymbol_skew
         (B a (-a) * B a b) * (B b (-b) * B b a) := by
     rw [hmul_left]
     congr 1
-    · rw [show -(a * b) = (-a) * b by simp, hmul_right]
+    · rw [show -(a * b) = (-a) * b from (neg_mul a b).symm, hmul_right]
     · rw [show -(a * b) = (-b) * a by simp [mul_comm], hmul_right]
   have hprod : B a b * B b a = 1 := by
     calc

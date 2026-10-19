@@ -74,10 +74,10 @@ def trivialIntFixedToZModHom :
         ((Multiplicative.toAdd
           (x : Multiplicative ℤ) : ℤ) :
             ZMod (Fintype.card G))
-      map_one' := by simp
+      map_one' := congrArg Multiplicative.ofAdd (Int.cast_zero (R := ZMod (Fintype.card G)))
       map_mul' := by
         intro x y
-        simp }
+        exact congrArg Multiplicative.ofAdd (Int.cast_add x.1.toAdd y.1.toAdd) }
 
 theorem trivialIntFixedToZModHom_surjective :
     letI := trivialIntMulDistribMulAction G
@@ -180,7 +180,9 @@ theorem trivialInt_herbrandH0_card :
   rw [Nat.card_congr
       (trivialIntHerbrandH0EquivZMod
         (G := G)).toEquiv]
-  simp
+  exact (Nat.card_congr (Multiplicative.toAdd :
+    Multiplicative (ZMod (Fintype.card G)) ≃ ZMod (Fintype.card G))).trans
+      (Nat.card_zmod _)
 
 /-- The norm kernel of the trivial torsion-free integer module is
 trivial. -/
@@ -292,7 +294,7 @@ theorem trivialInt_herbrandQuotient_eq_card
     trivialInt_herbrandH0_card (G := G),
     trivialInt_herbrandHMinusOne_card_eq_one
       (G := G) σ]
-  simp
+  rw [Nat.cast_one, div_one]
 
 end TrivialInteger
 
@@ -460,7 +462,7 @@ theorem transitivePermutationLattice_herbrandQuotient_eq_stabilizerCard
           (G := H) δ
   rw [herbrandQuotient_eq_card_ratio,
     h0Card, hMinusOneCard]
-  simp
+  rw [Nat.cast_one, div_one]
 
 end TransitivePermutationLattice
 

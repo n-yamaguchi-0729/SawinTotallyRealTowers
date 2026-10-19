@@ -124,10 +124,8 @@ variable [Algebra K L] [Algebra L M]
 /-- The `[M : L]`-power endomorphism on lower-branch units. -/
 noncomputable def finrankPowerUnitsHom : Lˣ →* Lˣ where
   toFun x := x ^ Module.finrank L M
-  map_one' := by
-    simp
-  map_mul' x y := by
-    simpa using mul_pow x y (Module.finrank L M)
+  map_one' := one_pow _
+  map_mul' x y := mul_pow x y (Module.finrank L M)
 
 /-- The subgroup of lower-branch units obtained by taking `[M : L]`-th powers
 of embedded base units. -/

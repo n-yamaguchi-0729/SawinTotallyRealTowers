@@ -108,7 +108,7 @@ theorem continuous_laurentSeries_ofPowerSeries
         ((PowerSeries.coeff n : k⟦X⟧ → k) ⁻¹' ({0} : Set k)) :=
       (isOpen_discrete ({0} : Set k)).preimage
         (PowerSeries.WithPiTopology.continuous_coeff k n)
-    exact hopen.mem_nhds (by simp)
+    exact hopen.mem_nhds (show PowerSeries.coeff n 0 = 0 from map_zero _)
   refine mem_of_superset hU ?_
   intro f hf
   have hcoeff : ∀ n : ℕ, n < N → PowerSeries.coeff n f = 0 := by

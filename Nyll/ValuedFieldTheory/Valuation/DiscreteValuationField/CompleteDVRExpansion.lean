@@ -58,9 +58,11 @@ noncomputable def ofChoice : residueRepresentativeSystemOf O := by
       repr_zero := ?_ }
   · intro a
     by_cases ha : a = 0
-    · simp [ha]
-    · simp [ha, Classical.choose_spec (IsLocalRing.residue_surjective a)]
-  · simp
+    · subst a
+      rw [dite_eq_left rfl, map_zero]
+    · rw [dite_eq_right ha]
+      exact Classical.choose_spec (IsLocalRing.residue_surjective a)
+  · exact dite_eq_left rfl
 
 end residueRepresentativeSystemOf
 

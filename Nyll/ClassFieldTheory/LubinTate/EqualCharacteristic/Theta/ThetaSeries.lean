@@ -165,7 +165,7 @@ theorem equalCharacteristicQAdditiveSeries_map
   rw [PowerSeries.coeff_map,
     equalCharacteristicQAdditiveSeries_coeff,
     equalCharacteristicQAdditiveSeries_coeff]
-  split_ifs <;> simp
+  split_ifs <;> simp only [map_zero]
 
 omit [Field k] [Finite k] in
 /-- Multiplication by a constant acts coefficientwise on a `q`-additive
@@ -179,7 +179,7 @@ theorem equalCharacteristicQAdditiveSeries_C_mul
   rw [PowerSeries.coeff_C_mul,
     equalCharacteristicQAdditiveSeries_coeff,
     equalCharacteristicQAdditiveSeries_coeff]
-  split_ifs <;> simp
+  split_ifs <;> simp only [mul_zero]
 
 omit [Field k] [Finite k] in
 /-- Addition of `q`-additive series is coefficientwise. -/
@@ -193,7 +193,7 @@ theorem equalCharacteristicQAdditiveSeries_add
   rw [map_add, equalCharacteristicQAdditiveSeries_coeff,
     equalCharacteristicQAdditiveSeries_coeff,
     equalCharacteristicQAdditiveSeries_coeff]
-  split_ifs <;> simp
+  split_ifs <;> simp only [add_zero]
 
 section FrobeniusPowers
 
@@ -207,7 +207,7 @@ theorem add_pow_natCard_pow (a b : A) (j : ℕ) :
       a ^ (Nat.card k ^ j) + b ^ (Nat.card k ^ j) := by
   let : Fintype k := Fintype.ofFinite k
   induction j with
-  | zero => simp
+  | zero => simp only [pow_zero, pow_one]
   | succ j ih =>
       rw [pow_succ, pow_mul, pow_mul, pow_mul, ih]
       simpa only [FiniteField.coe_frobeniusAlgHom,
@@ -499,7 +499,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_coeff_eq_zero
       exact hn ⟨j, h.symm⟩
     simp [hnSucc, hnSelf]
   · rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k b d hd]
-    simp
+    exact zero_smul _ _
 
 /-- The linear coefficient after substitution is `b_0 pi`. -/
 theorem equalCharacteristicQAdditiveSeries_subst_coeff_one
@@ -513,7 +513,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_coeff_one
     (equalCharacteristicCompletedLubinTateSeries_hasSubst pi),
     finsum_eq_single _ 1]
   · rw [equalCharacteristicQAdditiveSeries_coeff_one]
-    have hpow : (1 : ℕ) = Nat.card k ^ 0 := by simp
+    have hpow : (1 : ℕ) = Nat.card k ^ 0 := (pow_zero _).symm
     conv_lhs =>
       rhs
       rw [hpow,
@@ -528,7 +528,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_coeff_one
       have hj : j ≠ 0 := by
         intro hj
         subst j
-        simp at hd
+        exact hd (pow_zero _)
       have hSelf : (1 : ℕ) ≠ Nat.card k ^ j := by
         intro h
         exact hj ((natCard_pow_eq_one_iff k j).1 h.symm)
@@ -539,7 +539,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_coeff_one
         omega
       simp [hSelf, hSucc]
     · rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k b d hde]
-      simp
+      exact zero_smul _ _
 
 /-- At the next additive exponent, substitution receives one contribution
 from the preceding `q`-power term and one from the linear term. -/
@@ -578,7 +578,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_coeff_pow_succ
         · simp [hHigh, hLow] at hd
     · dsimp only [F] at hd
       rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k b d hde] at hd
-      simp at hd
+      exact False.elim (hd (zero_smul _ _))
   rw [finsum_eq_sum_of_support_subset F hsupport]
   have hne : Nat.card k ^ r ≠ Nat.card k ^ (r + 1) := by
     intro h
@@ -693,8 +693,7 @@ theorem equalCharacteristicThetaSeries_intertwines
           PowerSeries.map (algebraMap k (AlgebraicClosure k)) (u : k⟦X⟧) *
               PowerSeries.map (algebraMap k (AlgebraicClosure k))
                 ((u⁻¹ : k⟦X⟧ˣ) : k⟦X⟧) = 1 := by
-        rw [← map_mul]
-        simp
+        rw [← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]
       calc
         _ = (PowerSeries.map (algebraMap k (AlgebraicClosure k)) (u : k⟦X⟧) *
               PowerSeries.map (algebraMap k (AlgebraicClosure k))

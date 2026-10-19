@@ -169,7 +169,7 @@ theorem
         vK
         (RayClass.adicAbv_isNontrivial w₀)
         w
-    letI : MulDistribMulAction
+    let _ : MulDistribMulAction
         (Gal(E / vK.Completion)) 𝒪[E]ˣ :=
       galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure
         vK.Completion E
@@ -179,9 +179,7 @@ theorem
         (K := K) (L := L) w₀).smul σ x =
         (MulDistribMulAction.compHom
           𝒪[E]ˣ eLocal.toMonoidHom).smul σ x := by
-  unfold chosenFinitePlaceDecompositionGroupIntegerUnitsAction
-  dsimp
-  intro σ x
+  intro vK w E eLocal localAction σ x
   rfl
 
 omit [NumberField L] in
@@ -200,7 +198,7 @@ theorem chosenFinitePlaceLocalizedIntegerUnits_unramifiedHerbrand_subsingleton
       τ ∈ Subgroup.zpowers g)
     (hunram : ChosenFinitePlaceIsUnramified
       (K := K) (L := L) w₀) :
-    letI : MulDistribMulAction
+    let _ : MulDistribMulAction
         (Gal(
           ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀ /
           ChosenFinitePlaceBaseCompletion (K := K) w₀))
@@ -220,13 +218,14 @@ theorem chosenFinitePlaceLocalizedIntegerUnits_unramifiedHerbrand_subsingleton
             ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀ /
             ChosenFinitePlaceBaseCompletion (K := K) w₀))
           𝒪[ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀]ˣ g) := by
+  intro localAction
   let vK := HeightOneSpectrum.adicAbv K w₀
   let E := ChosenFinitePlaceLocalizedCompletion
     (K := K) (L := L) w₀
   let :
       IsNonarchimedeanLocalField.IsUnramifiedValuedExtension
         vK.Completion E := by
-    simpa [ChosenFinitePlaceIsUnramified] using hunram
+    exact hunram
   exact
     unramifiedLocalIntegerUnitsHerbrand_subsingleton
       vK.Completion E g hg

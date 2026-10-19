@@ -44,7 +44,7 @@ private theorem mem_decompositionGroup_iff_apply_mem
     change (sigma x ∈ sigma • A) = (sigma x ∈ A) at hmem
     rw [_root_.ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem] at hmem
     change (sigma⁻¹ (sigma x) ∈ A) = (sigma x ∈ A) at hmem
-    have hinv : sigma⁻¹ (sigma x) = x := by simp
+    have hinv : sigma⁻¹ (sigma x) = x := sigma.symm_apply_apply x
     rw [hinv] at hmem
     exact hmem.symm.to_iff
   · intro hsigma
@@ -75,10 +75,10 @@ theorem decompositionGroup_isClosed
       apply hx
       have hgx : g x = x :=
         (IntermediateField.mem_fixingSubgroup_iff E g).mp hg x
-          (IntermediateField.subset_adjoin (F := K) (S := {x}) (by simp))
+          (IntermediateField.subset_adjoin (F := K) (S := {x}) (Set.mem_singleton x))
       simpa [AlgEquiv.mul_apply, hgx] using hmem x
     · exact E.fixingSubgroup_isOpen.smul sigma
-    · exact ⟨1, E.fixingSubgroup.one_mem, by simp⟩
+    · exact ⟨1, E.fixingSubgroup.one_mem, mul_one _⟩
 
 /-- The copy of inertia in the ambient Galois group is closed in the Krull
 topology. -/
@@ -103,13 +103,13 @@ theorem inertiaGroupInAut_isClosed
       apply mem_nhds_iff.mpr
       refine ⟨sigma • (E.fixingSubgroup : Set (L ≃ₐ[K] L)), ?_,
         E.fixingSubgroup_isOpen.smul sigma,
-        ⟨1, E.fixingSubgroup.one_mem, by simp⟩⟩
+        ⟨1, E.fixingSubgroup.one_mem, mul_one _⟩⟩
       rintro tau ⟨g, hg, rfl⟩
       rw [Set.mem_compl_iff, SetLike.mem_coe]
       rintro ⟨i, hi, hitau⟩
       have hgx : g (x : L) = (x : L) :=
         (IntermediateField.mem_fixingSubgroup_iff E g).mp hg (x : L)
-          (IntermediateField.subset_adjoin (F := K) (S := {(x : L)}) (by simp))
+          (IntermediateField.subset_adjoin (F := K) (S := {(x : L)}) (Set.mem_singleton (x : L)))
       have hiAction : residueAction K A (i : decompositionGroup K A) = 1 := by
         exact MonoidHom.mem_ker.mp
           ((residueAction_ker (K := K) A).symm ▸ hi)
@@ -161,13 +161,13 @@ theorem ramificationGroupInAut_isClosed
       refine ⟨((delta : L ≃ₐ[K] L) •
           (E.fixingSubgroup : Set (L ≃ₐ[K] L))), ?_,
         E.fixingSubgroup_isOpen.smul _,
-        ⟨1, E.fixingSubgroup.one_mem, by simp⟩⟩
+        ⟨1, E.fixingSubgroup.one_mem, mul_one _⟩⟩
       rintro tau ⟨g, hg, rfl⟩
       rw [Set.mem_compl_iff, SetLike.mem_coe]
       rintro ⟨j, hjR, hjtau⟩
       have hgx : g (x : L) = (x : L) :=
         (IntermediateField.mem_fixingSubgroup_iff E g).mp hg (x : L)
-          (IntermediateField.subset_adjoin (F := K) (S := {(x : L)}) (by simp))
+          (IntermediateField.subset_adjoin (F := K) (S := {(x : L)}) (Set.mem_singleton (x : L)))
       apply hx
       have hjx := (mem_ramificationGroup_iff (K := K) A j).mp hjR x
       have heq := DFunLike.congr_fun hjtau (x : L)

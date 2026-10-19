@@ -346,7 +346,7 @@ noncomputable def principalUnitLeadingCoefficientAddHom
       map_zero' := by
         change Additive.ofMul
             (principalUnitSuccQuotMk F.toCompleteDVF r 1) = 0
-        simp
+        exact congrArg Additive.ofMul (map_one (principalUnitSuccQuotMk F.toCompleteDVF r))
       map_add' := by
         intro x y
         change Additive.ofMul
@@ -404,7 +404,7 @@ theorem padicInt_toZMod_eq_zero_iff_exists_residueCharacteristic_mul
     obtain ⟨b, hb⟩ := hker
     exact ⟨b, by simpa [mul_comm] using hb⟩
   · rintro ⟨b, rfl⟩
-    simp
+    rw [map_mul, map_natCast, ZMod.natCast_self, zero_mul]
 
 /-- A vector lies in `p Z_p^f` exactly when all of its residue coordinates
 vanish. -/
@@ -417,7 +417,8 @@ theorem exists_residueCharacteristic_smul_eq_iff_toZMod_eq_zero
       ∀ i, PadicInt.toZMod (a i) = 0 := by
   constructor
   · rintro ⟨b, rfl⟩ i
-    simp
+    change PadicInt.toZMod ((F.residueCharacteristic : ℤ_[F.residueCharacteristic]) * b i) = 0
+    rw [map_mul, map_natCast, ZMod.natCast_self, zero_mul]
   · intro h
     choose b hb using fun i =>
       (padicInt_toZMod_eq_zero_iff_exists_residueCharacteristic_mul
@@ -538,8 +539,7 @@ theorem pow_residueCharacteristic_pow_mem_higher_mul
       ((x : F.valuationSubringˣ) : F.valuationSubring) ^
           (F.residueCharacteristic ^ s) - 1 = z ^
             (F.residueCharacteristic ^ s)
-    rw [hxz, add_pow_char_pow]
-    simp
+    rw [hxz, add_pow_char_pow, one_pow, add_sub_cancel_left]
   rw [heq]
   exact hapow
 
@@ -593,8 +593,7 @@ theorem principalUnitFrobeniusAtLevel_oneAddUniformizerPow
     (1 + r * pi ^ n) ^ (F.residueCharacteristic ^ s) =
       1 + r ^ (F.residueCharacteristic ^ s) *
         pi ^ (n * F.residueCharacteristic ^ s)
-  rw [add_pow_char_pow, mul_pow, pow_mul]
-  simp
+  rw [add_pow_char_pow, mul_pow, pow_mul, one_pow]
 
 /-- Frobenius raises the leading residue coefficient to its `p^s`-th
 power. -/
@@ -804,7 +803,9 @@ theorem iwasawaGn_mem_higher
   rw [iwasawaGn_apply]
   induction (Finset.univ : Finset (Fin (iwasawaResidueRank F)))
       using Finset.induction_on with
-  | empty => simp
+  | empty =>
+      rw [Finset.sum_empty]
+      exact (higherPrincipalUnitGroup F.toCompleteDVF n).one_mem
   | @insert i s hi ih =>
       rw [Finset.sum_insert hi]
       change
@@ -1728,7 +1729,7 @@ theorem iwasawaDegreeTerm_add
           (fun i => b (⟨n, hn⟩, i)) by rfl,
       map_add]
     rfl
-  · simp
+  · exact (one_mul 1).symm
 
 /-- The product of the Iwasawa factors of degree at most `r`. -/
 noncomputable def iwasawaPartialProduct

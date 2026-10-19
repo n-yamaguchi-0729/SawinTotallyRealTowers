@@ -378,7 +378,8 @@ theorem exists_mem_adjoin_sub_mem_maximalIdeal_pow_dvf
   induction n generalizing z with
   | zero =>
       refine ⟨0, A.zero_mem, ?_⟩
-      simp
+      rw [pow_zero, Ideal.one_eq_top]
+      exact Submodule.mem_top
   | succ n ih =>
       rcases ih z with ⟨y, hyA, hdiff⟩
       have hdiv : pi ^ n ∣ z - y := by

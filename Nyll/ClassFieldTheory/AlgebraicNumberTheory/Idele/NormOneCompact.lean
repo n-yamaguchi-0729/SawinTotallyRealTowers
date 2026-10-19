@@ -722,7 +722,8 @@ theorem exists_integral_normOne_reduction
     a * r⁻¹ * (principalIdele K x)⁻¹ * r * a⁻¹ =
         (a * a⁻¹) * (r⁻¹ * r) * (principalIdele K x)⁻¹ := by
       ac_rfl
-    _ = (principalIdele K x)⁻¹ := by simp
+    _ = (principalIdele K x)⁻¹ := by
+      rw [mul_inv_cancel, inv_mul_cancel, one_mul, one_mul]
 
 /-- A compact set of ideles meeting every norm-one idele class. -/
 def compactNormOneClassCover : Set (IdeleGroup K) :=

@@ -86,7 +86,7 @@ private theorem exists_openNormalSubgroup_not_mem
   intro hxU
   have hxW : x ∈ W := hUW hxU
   change x ∉ ({x} : Set A) at hxW
-  exact hxW (by simp)
+  exact hxW (Set.mem_singleton x)
 
 
 /-- Multiplication by `n` on `ℤ̂`, in the multiplicative presentation. -/
@@ -202,7 +202,7 @@ private theorem injective_of_topologicallyGenerates_zHat_one
     change x ^ m ∈
       (closedSubgroupGenerated ({x ^ m} : Set A) : Subgroup A)
     exact Subgroup.le_topologicalClosure _
-      (Subgroup.subset_closure (by simp))
+      (Subgroup.subset_closure (Set.mem_singleton (x ^ m)))
   have hqHfiniteOrder : IsOfFinOrder (qH x) := by
     rw [← orderOf_pos_iff]
     have hdvd : orderOf (qH x) ∣ m :=
@@ -241,7 +241,7 @@ private theorem injective_of_topologicallyGenerates_zHat_one
     apply Multiplicative.ext
     change zHatReduction m hm (f x).toAdd = 1
     rw [hfx]
-    simp
+    exact zHatReduction_one m hm
   have hHker : H.toSubgroup ≤ r.toMonoidHom.ker := by
     apply Subgroup.topologicalClosure_minimal
     · rw [Subgroup.closure_le]
@@ -251,7 +251,8 @@ private theorem injective_of_topologicallyGenerates_zHat_one
       change r (x ^ m) = 1
       rw [map_pow, hrx]
       apply Multiplicative.ext
-      simp
+      simp only [toAdd_pow, toAdd_ofAdd,
+        toAdd_one, nsmul_one, ZMod.natCast_self]
     · change IsClosed {z : A | r z = 1}
       let : T2Space (Multiplicative (ZMod m)) := by
         change T2Space (ZMod m)
@@ -503,30 +504,20 @@ instance frobeniusClosure_isTopologicalGroup
     [hLnormal : (extensionSubgroup K.field L hLK).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     CommGroup (D.frobeniusClosure K L hLK σ) := by
-  letI : IsClosed
+  have : IsClosed
       (D.extensionInertiaWithin K.field L hLK : Set K.field.toSubgroup) :=
     D.extensionInertiaWithin_isClosed K L hLK
   let Q := K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK
   let s : Subgroup Q :=
     Subgroup.closure (Set.range (fun _ : Unit => σ.1))
-  letI : IsMulCommutative ↑s :=
-    isMulCommutative_iff.mpr (by
-      intro a b
-      have hrange : Set.range (fun _ : Unit => σ.1) = ({σ.1} : Set Q) := by
-        ext y
-        simp
-      have ha : (a : Q) ∈ Subgroup.zpowers σ.1 := by
-        simpa [s, hrange, Subgroup.zpowers_eq_closure] using a.2
-      have hb : (b : Q) ∈ Subgroup.zpowers σ.1 := by
-        simpa [s, hrange, Subgroup.zpowers_eq_closure] using b.2
-      obtain ⟨m, hm⟩ := Subgroup.mem_zpowers_iff.mp ha
-      obtain ⟨n, hn⟩ := Subgroup.mem_zpowers_iff.mp hb
-      apply Subtype.ext
-      change (a : Q) * (b : Q) = (b : Q) * (a : Q)
-      rw [← hm, ← hn, ← zpow_add, add_comm, zpow_add])
+  have hs : s = Subgroup.zpowers (σ.1 : Q) := by
+    change Subgroup.closure (Set.range (fun _ : Unit => σ.1)) = _
+    rw [Set.range_const, Subgroup.zpowers_eq_closure]
+  have : IsMulCommutative ↑s :=
+    hs.symm ▸ Subgroup.zpowers_isMulCommutative (σ.1 : Q)
   let c : CommGroup ↑s.topologicalClosure :=
     open scoped IsMulCommutative in inferInstance
-  letI : IsMulCommutative (D.frobeniusClosure K L hLK σ) :=
+  have : IsMulCommutative (D.frobeniusClosure K L hLK σ) :=
     isMulCommutative_iff.mpr c.mul_comm
   exact open scoped IsMulCommutative in inferInstance
 

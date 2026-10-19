@@ -41,7 +41,7 @@ noncomputable def localPowerClassValuationMonoidHom :
       rw [MonoidHom.mem_ker, powMonoidHom_apply, map_pow]
       apply Multiplicative.ofAdd.injective
       change p • (valuationModDegreeMulHom K p x).toAdd = 0
-      simp)
+      rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul])
 
 /-- The reduced local valuation as a linear functional. -/
 noncomputable def localPowerClassValuation :

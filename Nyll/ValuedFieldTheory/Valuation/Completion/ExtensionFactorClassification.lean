@@ -8,6 +8,7 @@ import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 import Nyll.ValuedFieldTheory.Valuation.Completion.PolynomialFactors
 import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
+import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 
 /-!
 # Classification of extensions of a completed absolute value
@@ -307,9 +308,8 @@ theorem completionExtensionFactor_extensionFactor_mem
   let a : w.1.Completion := ι α
   have hαalg : IsAlgebraic K α := ⟨f, hf.ne_zero, hroot⟩
   have hα : IsIntegral K α := hαalg.isIntegral
-  have haK : IsIntegral K a := by
-      exact IsIntegral.map_of_comp_eq (RingHom.id K) ι.toRingHom
-        (by ext x; simp) hα
+  have haK : IsIntegral K a :=
+    (isIntegral_algHom_iff ι ι.injective).2 hα
   have haKv : IsIntegral vK.Completion a :=
     IsIntegral.tower_top haK
   have hp0 : completionExtensionFactor_completionPolynomial vK f ≠ 0 :=
@@ -376,26 +376,23 @@ theorem completionExtensionFactor_completion_adjoin_eq_top
     (α : L) (hα : IsIntegral K α)
     (hgen : Algebra.adjoin K ({α} : Set L) = ⊤)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     Algebra.adjoin vK.Completion
         ({AbsoluteValue.toCompletionAlgHom (K := K) w.1 α} :
           Set w.1.Completion) = ⊤ := by
+  intro hK hSmul hKv
   let pb : PowerBasis K L := PowerBasis.ofAdjoinEqTop hα hgen
   let : FiniteDimensional K L := pb.finite
   let : Algebra.IsAlgebraic K L := inferInstance
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
   let : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   let ι : L →ₐ[K] w.1.Completion :=
     AbsoluteValue.toCompletionAlgHom (K := K) w.1
   let a : w.1.Completion := ι α
-  have haK : IsIntegral K a := by
-      exact IsIntegral.map_of_comp_eq (RingHom.id K) ι.toRingHom
-        (by ext x; simp) hα
+  have haK : IsIntegral K a :=
+    (isIntegral_algHom_iff ι ι.injective).2 hα
   have haKv : IsIntegral vK.Completion a :=
     IsIntegral.tower_top haK
   have hrange : Set.range
@@ -453,9 +450,8 @@ noncomputable def completionExtensionFactor_adjoinRootEquivCompletion
   let ι : L →ₐ[K] w.1.Completion :=
     AbsoluteValue.toCompletionAlgHom (K := K) w.1
   let a : w.1.Completion := ι α
-  have haK : IsIntegral K a := by
-      exact IsIntegral.map_of_comp_eq (RingHom.id K) ι.toRingHom
-        (by ext x; simp) hα
+  have haK : IsIntegral K a :=
+    (isIntegral_algHom_iff ι ι.injective).2 hα
   have haKv : IsIntegral vK.Completion a :=
     IsIntegral.tower_top haK
   have htop : Algebra.adjoin vK.Completion ({a} : Set w.1.Completion) = ⊤ :=

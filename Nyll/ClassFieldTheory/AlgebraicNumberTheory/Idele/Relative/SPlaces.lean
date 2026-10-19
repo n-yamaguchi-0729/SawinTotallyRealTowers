@@ -202,8 +202,9 @@ theorem relativeBasisIntegralAt_repr_mem
   rw [Finset.sum_eq_single i]
   · simpa only [Finsupp.single_eq_same] using (c i).property
   · intro j _ hji
-    simp [hji]
-  · simp
+    exact Finsupp.single_eq_of_ne hji.symm
+  · intro h
+    exact (h (Finset.mem_univ i)).elim
 
 /-- Extract all local factors from an integrally supported
 relative idele. -/

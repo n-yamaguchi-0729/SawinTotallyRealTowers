@@ -76,15 +76,9 @@ def nthPowerKernelEquivOfMulEquiv (n : ℕ) (e : G ≃* H) :
         (MonoidHom.mem_ker (G := H)).1 y.property
       change (e.symm (y : H)) ^ n = 1
       simpa [map_pow] using congrArg e.symm hy⟩
-  left_inv x := by
-    ext
-    simp
-  right_inv y := by
-    ext
-    simp
-  map_mul' x y := by
-    ext
-    simp
+  left_inv x := Subtype.ext (e.symm_apply_apply (x : G))
+  right_inv y := Subtype.ext (e.apply_symm_apply (y : H))
+  map_mul' x y := Subtype.ext (map_mul e (x : G) (y : G))
 
 /-- A multiplicative equivalence carries the range of the `n`-th power map onto the corresponding
 range. -/
@@ -111,7 +105,7 @@ theorem powMonoidHom_ker_map (n : ℕ) (e : G ≃* H) :
         (MonoidHom.mem_ker (G := H)).1 hy
       change (e.symm y) ^ n = 1
       simpa [map_pow] using congrArg e.symm hypow)
-    · simp
+    · exact e.apply_symm_apply y
 
 /-- An injective multiplicative homomorphism transports finiteness of the
 ambient power kernel to the source power kernel. -/
@@ -474,7 +468,7 @@ theorem card_multiplicativeInt_nthPowerQuotient
   let : NeZero (n : ℤ).natAbs := ⟨hnabs⟩
   have hcard : Nat.card (ZMod ((n : ℤ).natAbs)) = (n : ℤ).natAbs :=
     Nat.card_zmod ((n : ℤ).natAbs)
-  simp at hcard ⊢
+  simpa only [Int.natAbs_natCast] using hcard
 
 /-- For nonzero `n`, the `n`-th power map on multiplicative integers has trivial kernel. -/
 theorem powMonoidHom_ker_multiplicativeInt_eq_bot
@@ -509,7 +503,7 @@ theorem card_multiplicativeInt_nthPowerKernel
     [Finite ((powMonoidHom n : (Multiplicative ℤ) →* (Multiplicative ℤ)).ker)] :
     Nat.card ((powMonoidHom n : (Multiplicative ℤ) →* (Multiplicative ℤ)).ker) = 1 := by
   rw [powMonoidHom_ker_multiplicativeInt_eq_bot (n := n) hn]
-  simp
+  exact Nat.card_unique
 
 /-- If a commutative group splits as `U × Multiplicative ℤ`, its `n`-th-power
 quotient index is `n` times the corresponding quotient index for `U`. -/
@@ -618,7 +612,7 @@ theorem powMonoidHom_range_multiplicative_eq_nsmulAddSubgroup_toSubgroup
   · intro hx
     rw [MonoidHom.mem_range] at hx
     rcases hx with ⟨y, rfl⟩
-    simp
+    exact (mem_nsmulAddSubgroup_iff A).2 ⟨Multiplicative.toAdd y, rfl⟩
   · intro hx
     rw [MonoidHom.mem_range]
     have hxadd : Multiplicative.toAdd x ∈ nsmulAddSubgroup A n := by
@@ -668,7 +662,7 @@ theorem card_multiplicative_nthPowerQuotient_eq_nsmulAddSubgroup_index
   rw [← Subgroup.index_eq_card
     (H := (powMonoidHom n : (Multiplicative A) →* (Multiplicative A)).range)]
   rw [powMonoidHom_range_multiplicative_eq_nsmulAddSubgroup_toSubgroup]
-  simp
+  exact AddSubgroup.index_toSubgroup _
 
 /-- Under logarithmic/additive notation, the `n`-th-power quotient is the
 additive quotient by `n`-fold multiples. -/

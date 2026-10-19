@@ -105,8 +105,7 @@ theorem finitePlaceCyclotomicCompletionH1ValuationDualEmbedding_range
   change phi 1 * x = phi x
   rw [mul_comm]
   change x • phi 1 = phi x
-  rw [← phi.map_smul x 1]
-  simp
+  rw [← phi.map_smul x 1, smul_eq_mul, mul_one]
 
 /-- The transported valuation line remains injectively parametrized by
 `ZMod p`. -/

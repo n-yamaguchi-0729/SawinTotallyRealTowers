@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Mathlib.Algebra.Group.Action.Basic
 import Mathlib.GroupTheory.Index
 import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
 import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
@@ -65,11 +66,8 @@ theorem relativeCosetAction_mk
 
 /-- Left multiplication permutes the cosets of an arbitrary subgroup. -/
 def leftMulCosetEquiv {G : Type*} [Group G]
-    (H : Subgroup G) (g : G) : (G ⧸ H) ≃ (G ⧸ H) where
-  toFun q := g • q
-  invFun q := g⁻¹ • q
-  left_inv q := by simp
-  right_inv q := by simp
+    (H : Subgroup G) (g : G) : (G ⧸ H) ≃ (G ⧸ H) :=
+  MulAction.toPerm g
 
 /-- Left multiplication sends the coset of `x` to the coset of `g * x`. -/
 @[simp] theorem leftMulCosetEquiv_mk {G : Type*} [Group G]

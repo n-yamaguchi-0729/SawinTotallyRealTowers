@@ -61,13 +61,13 @@ noncomputable def fromNumberFieldUnits
       fun v _ =>
         Set.unit_valuation_eq_one
           (∅ : Set (HeightOneSpectrum (𝓞 K))) K
-          ((emptyEquivNumberFieldUnits (K := K)).symm u) (by simp)⟩
-  map_one' := by
-    ext
-    simp
-  map_mul' u v := by
-    ext
-    simp
+          ((emptyEquivNumberFieldUnits (K := K)).symm u) (Set.notMem_empty v)⟩
+  map_one' := Subtype.ext (congrArg
+    (fun z : ((∅ : Set (HeightOneSpectrum (𝓞 K))).unit K) => (z : Kˣ))
+    (map_one (emptyEquivNumberFieldUnits (K := K)).symm))
+  map_mul' u v := Subtype.ext (congrArg
+    (fun z : ((∅ : Set (HeightOneSpectrum (𝓞 K))).unit K) => (z : Kˣ))
+    (map_mul (emptyEquivNumberFieldUnits (K := K)).symm u v))
 
 theorem fromNumberFieldUnits_injective
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
@@ -319,7 +319,7 @@ theorem range_fromNumberFieldUnitsLinearMap_eq_ker_divisorLinearMap :
     exact Set.unit_valuation_eq_one
       (∅ : Set (HeightOneSpectrum (𝓞 K))) K
       ((emptyEquivNumberFieldUnits (K := K)).symm (Additive.toMul u))
-      (by simp)
+      (Set.notMem_empty (v : HeightOneSpectrum (𝓞 K)))
   · intro hx
     let y := kerDivisorToEmptySUnits (K := K) S ⟨x, hx⟩
     let u : (𝓞 K)ˣ := emptyEquivNumberFieldUnits y
@@ -404,8 +404,8 @@ private theorem primePowerGenerator_ne_zero (v : S) :
           NumberField.classNumber K ≠ 0 :=
     pow_ne_zero _ (v : HeightOneSpectrum (𝓞 K)).ne_bot
   apply hv0
-  rw [← span_primePowerGenerator (K := K) S v, hzero]
-  simp
+  rw [← span_primePowerGenerator (K := K) S v, hzero, Ideal.span_singleton_zero]
+  rfl
 
 private theorem spanSingleton_primePowerGenerator (v : S) :
     FractionalIdeal.spanSingleton (𝓞 K)⁰
@@ -443,8 +443,7 @@ private noncomputable def primePowerSUnit (v : S) :
           (v : HeightOneSpectrum (𝓞 K)) ≠ w := by
         intro hvw
         exact hw (hvw ▸ v.property)
-      rw [FractionalIdeal.count_maximal_coprime K w hwv]
-      simp⟩
+      rw [FractionalIdeal.count_maximal_coprime K w hwv, mul_zero]⟩
 
 private noncomputable def classNumberBasisVector (v : S) : S → ℤ := by
   classical
@@ -477,8 +476,7 @@ private theorem divisorCoordinate_primePowerSUnit
       intro h
       exact hwv (Subtype.ext h.symm)
     rw [FractionalIdeal.count_maximal_coprime K
-      (w : HeightOneSpectrum (𝓞 K)) hvw]
-    simp
+      (w : HeightOneSpectrum (𝓞 K)) hvw, mul_zero]
 
 end PrimePowerSources
 
@@ -523,7 +521,8 @@ theorem finrank_divisor_range :
           Module.finrank ℤ (S → ℤ) :=
         Submodule.finrank_le
           (LinearMap.range (divisorLinearMap (K := K) S))
-      _ = S.card := by simp
+      _ = S.card := by
+        rw [Module.finrank_fintype_fun_eq_card, Fintype.card_coe]
   · simpa using
       (divisorRangeVector_linearIndependent (K := K) S).fintype_card_le_finrank
 

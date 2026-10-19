@@ -245,7 +245,7 @@ def padicIntUnitOfRat
   PadicInt.mkUnits (u := (y : ℚ_[p.1])) (by
     rw [Padic.eq_padicNorm,
       padicNorm.eq_zpow_of_nonzero hy, hval]
-    simp)
+    simp only [neg_zero, zpow_zero, Rat.cast_one])
 
 /-- The underlying `p`-adic number of `padicIntUnitOfRat` is the original
 rational number. -/
@@ -269,12 +269,12 @@ theorem padicValRat_rational_num_sign
       rw [Int.sign_eq_sign, sign_neg hneg]
       rfl
     rw [hsign]
-    simp
+    simp only [Int.cast_neg, Int.cast_one, padicValRat.neg, padicValRat.one]
   · have hsign : (x : ℚ).num.sign = 1 := by
       rw [Int.sign_eq_sign, sign_pos hpos]
       rfl
     rw [hsign]
-    simp
+    simp only [Int.cast_one, padicValRat.one]
 
 /-- The actual sign of `x`, regarded as a unit of the `p`-adic integers. -/
 def rationalSignPadicUnit
@@ -320,12 +320,12 @@ theorem rationalSignPadicUnit_sq
       rw [Int.sign_eq_sign, sign_neg hneg]
       rfl
     rw [hsign]
-    simp
+    norm_num
   · have hsign : (x : ℚ).num.sign = 1 := by
       rw [Int.sign_eq_sign, sign_pos hpos]
       rfl
     rw [hsign]
-    simp
+    norm_num
 
 /-- Reduction of the rational sign unit modulo `p ^ k` has the expected
 integer value. -/
@@ -340,8 +340,7 @@ theorem rationalSignPadicUnit_toZModPow_val
     PadicInt.toZModPow k
         (rationalSignPadicUnit x p : ℤ_[p.1]) =
       ((x : ℚ).num.sign : ℤ)
-  rw [rationalSignPadicUnit_val]
-  simp
+  rw [rationalSignPadicUnit_val, map_intCast]
 
 /-- Reduction of the rational sign unit still has square one. -/
 @[simp]
@@ -378,7 +377,9 @@ theorem padicNatUnit_toZModPow
         (padicNatUnit p q h) =
       ZMod.unitOfCoprime q (h.symm.pow_right k) := by
   apply Units.ext
-  simp
+  change (PadicInt.toZModPow k) (padicNatUnit p q h : ℤ_[p.1]) = _
+  rw [padicNatUnit_val, ZMod.coe_unitOfCoprime]
+  exact map_natCast (PadicInt.toZModPow k) q
 
 /-- The successor of `p` is a `p`-adic unit. -/
 theorem padicValRat_rationalPrime_succ
@@ -410,7 +411,7 @@ theorem padicNatUnit_not_isOfFinOrder_of_one_lt
   have hnat : n ^ k = 1 := by
     rw [Units.val_pow_eq_pow_val,
       padicNatUnit_val] at hval
-    simp at hval
+    rw [Units.val_one] at hval
     apply Nat.cast_injective (R := ℤ_[p.1])
     simpa only [Nat.cast_pow, Nat.cast_one] using hval
   exact
@@ -685,7 +686,7 @@ theorem padicIntUnitOfRat_rationalPrimeUnit_mul_inverseFactors_toZModPow
         (rationalSignPadicUnit x p) := by
   rw [padicIntUnitOfRat_rationalPrimeUnit_toZModPow]
   rw [mul_assoc, ← Finset.prod_mul_distrib]
-  simp
+  simp only [zpow_neg, mul_inv_cancel, Finset.prod_const_one, mul_one]
 
 /-- Prime-valued support form of the reduced rational product formula.
 The direct `p`-adic unit factor times all inverse away-from-`p` factors
@@ -770,7 +771,7 @@ theorem padicIntUnitOfRat_rationalPrimeUnit_toZModPow_inv_mul
             padicValRat q.1 (x : ℚ)) =
       1 := by
   rw [← padicIntUnitOfRat_rationalPrimeUnit_toZModPow]
-  simp
+  exact inv_mul_cancel _
 
 end Reciprocity
 end GlobalClassFieldTheory

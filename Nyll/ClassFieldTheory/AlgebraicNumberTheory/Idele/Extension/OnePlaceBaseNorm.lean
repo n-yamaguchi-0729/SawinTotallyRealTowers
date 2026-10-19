@@ -176,7 +176,16 @@ theorem norm_finitePlaceIdele_finitePlaceBaseUnitExtension
               (K := K) (L := L) v x)
             hWv,
           map_one]
-      · simp
+      · intro h
+        let : Fintype (AbsoluteValueExtension (HeightOneSpectrum.adicAbv K q) L) :=
+          completionTensorDecomposition_extensionFintype
+            (K := K) (L := L) (HeightOneSpectrum.adicAbv K q)
+            (RayClass.adicAbv_isNontrivial q)
+        let : Fintype {W : HeightOneSpectrum (𝓞 L) //
+            _root_.finitePlaceBelow (K := K) W = q} :=
+          Fintype.ofEquiv (AbsoluteValueExtension (HeightOneSpectrum.adicAbv K q) L)
+            (finitePlaceExtensionEquivAbove (K := K) (L := L) q)
+        exact (h (Finset.mem_univ W₀)).elim
     · rw [
         finiteComponent_norm_eq_prod,
         finitePlaceIdele_finiteComponent_of_ne
@@ -261,7 +270,16 @@ theorem norm_finitePlaceIdele_eq_finitePlaceIdele_normUnits
         rw [
           finitePlaceIdele_finiteComponent_of_ne W.1 W'.1 y hne,
           map_one]
-      · simp
+      · intro h
+        let : Fintype (AbsoluteValueExtension (HeightOneSpectrum.adicAbv K v) L) :=
+          completionTensorDecomposition_extensionFintype
+            (K := K) (L := L) (HeightOneSpectrum.adicAbv K v)
+            (RayClass.adicAbv_isNontrivial v)
+        let : Fintype {W : HeightOneSpectrum (𝓞 L) //
+            _root_.finitePlaceBelow (K := K) W = v} :=
+          Fintype.ofEquiv (AbsoluteValueExtension (HeightOneSpectrum.adicAbv K v) L)
+            (finitePlaceExtensionEquivAbove (K := K) (L := L) v)
+        exact (h (Finset.mem_univ W)).elim
     · rw [
         finiteComponent_norm_eq_prod,
         finitePlaceIdele_finiteComponent_of_ne

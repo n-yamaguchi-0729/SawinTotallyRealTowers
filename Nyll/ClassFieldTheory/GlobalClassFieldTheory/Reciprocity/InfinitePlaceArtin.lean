@@ -103,9 +103,9 @@ noncomputable def infinitePlaceArtinMonoidHomOfPlace
         map_mul' := by
           intro x y
           rcases Int.units_eq_one_or x with rfl | rfl
-          · simp
+          · simp only [one_mul, ite_true]
           rcases Int.units_eq_one_or y with rfl | rfl
-          · simp
+          · simp only [mul_one, ite_true]
           · simp [
               ramifiedInfinitePlaceConjugation_sq
                 (K := K) w hRamified] }
@@ -376,7 +376,7 @@ theorem infinitePlaceArtinMonoidHomOfPlace_restrict_tower
       simp only [MonoidHom.comp_apply]
       dsimp
       split_ifs with hsign
-      · simp
+      · exact map_one (AlgEquiv.restrictNormalHom E)
       · simpa [sigmaR, sigmaL] using hsigmaR
     · have hEUnramified' :
           ¬ (wL.comap (algebraMap E L)).IsUnramified K := by
@@ -416,7 +416,7 @@ theorem infinitePlaceArtinMonoidHomOfPlace_restrict_tower
       simp only [MonoidHom.comp_apply]
       dsimp
       split_ifs with hsign
-      · simp
+      · exact map_one (AlgEquiv.restrictNormalHom E)
       · simpa [sigmaR, sigmaL, sigmaE] using hsigmaREq
 
 /-- The norm from a complex archimedean completion to a real completion
@@ -585,7 +585,7 @@ theorem infinitePlaceArtinMonoidHomOfPlace_norm_restriction
         simpa only [w] using hLowerUnramified
       unfold infinitePlaceArtinMonoidHomOfPlace
       rw [dite_eq_left hUpperUnramified, dite_eq_left hLowerUnramified']
-      simp
+      exact (MonoidHom.comp_one _).trans (MonoidHom.one_comp _).symm
     · have hLowerUnramified' :
           ¬ (w'.comap (algebraMap L L')).IsUnramified K := by
         simpa only [w] using hLowerUnramified
@@ -1007,7 +1007,7 @@ theorem chosenInfinitePlaceArtinMonoidHom_eq_one_of_real_pos
       else _) =
         1
     rw [hsign']
-    simp
+    exact ite_eq_left rfl
 
 /-- The kernel of the actual Artin homomorphism at an infinite place
 is exactly the determinant-norm image on the corresponding tensor
@@ -1082,9 +1082,9 @@ theorem chosenInfinitePlaceArtinMonoidHom_ker
         map_mul' := by
           intro x y
           rcases Int.units_eq_one_or x with rfl | rfl
-          · simp
+          · simp only [one_mul, ite_true]
           rcases Int.units_eq_one_or y with rfl | rfl
-          · simp
+          · simp only [mul_one, ite_true]
           · simp [hσsq] }
     have hσne : σ ≠ 1 :=
       (NumberField.ComplexEmbedding.isConj_ne_one_iff
@@ -1336,7 +1336,9 @@ theorem infinitePlaceGlobalArtinMonoidHom_norm_eq_prod
           infinitePlaceBelow (K := K) W = v)
         (s := Finset.univ.filter fun W : InfinitePlace M =>
           infinitePlaceBelow (K := K) W = v)
-        (by intro W; simp)]
+        (by
+          intro W
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and])]
       apply Finset.prod_congr rfl
       intro W _
       rcases W with ⟨W, rfl⟩

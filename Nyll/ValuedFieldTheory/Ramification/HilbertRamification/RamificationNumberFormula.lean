@@ -64,7 +64,7 @@ theorem truncateENatAtDVF_eq_right_of_natCast_le
     {i : ℕ∞} {m : ℕ} {r : ℝ} (hr : r ≤ m) (hi : (m : ℕ∞) ≤ i) :
     truncateENatAtDVF i r = r := by
   induction i using ENat.recTopCoe with
-  | top => simp
+  | top => exact truncateENatAtDVF_top r
   | coe n =>
       simp only [truncateENatAtDVF_coe]
       rw [min_eq_right]
@@ -111,7 +111,7 @@ theorem truncate_intrinsicRamificationNumberOfUniqueExtension_eq_intrinsic_summa
     have hdepth : (truncatedLowerDepth F) m sigma = m := by
       rw [truncatedLowerDepth]
       rw [Finset.filter_eq_self.2]
-      · simp
+      · exact Finset.card_range m
       · intro j hj
         exact (mem_lowerRamificationGroup_nat_iff_intrinsicRamificationNumberOfUniqueExtension_ge
           (base := base) (target := target) huniq (j + 1)
@@ -284,7 +284,8 @@ theorem sum_inertia_truncate_intrinsicRamificationNumberOfUniqueExtension_eq_int
   rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
   rw [← Finset.mul_sum]
   rw [hindicator]
-  simp
+  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one,
+    Nat.card_eq_fintype_card]
 
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
   herbrandFunction

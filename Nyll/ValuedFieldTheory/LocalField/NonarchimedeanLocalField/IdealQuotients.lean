@@ -230,7 +230,7 @@ theorem v_integerRingIrreducibleFieldUnit
     rw [hu]
     simpa using valueGroupWithZeroIsoInt_of_integerRing_irreducible K ϖ hϖ
   rw [hunzero]
-  simp
+  rfl
 
 /-- The inverse of a field unit represented by a valuation-ring prime element
 has normalized additive value `1`. -/
@@ -326,7 +326,7 @@ theorem exists_chosenIntegerRingUniformizer_pow_mul_mem_integerRing
           (((chosenIntegerRingUniformizer K : 𝒪[K]) : K) ^ n) *
             ((a : K) / (((u : 𝒪[K]) : K) *
               (((chosenIntegerRingUniformizer K : 𝒪[K]) : K) ^ n))) := by
-            simp
+            congr 2
       _ = (a : K) * (((u : 𝒪[K]) : K))⁻¹ := by
             field_simp [hu_ne, hϖ_pow_ne]
       _ = ((a * ↑u⁻¹ : 𝒪[K]) : K) := by
@@ -334,7 +334,7 @@ theorem exists_chosenIntegerRingUniformizer_pow_mul_mem_integerRing
                 (((↑u⁻¹ : 𝒪[K]) : K)) = (((u : 𝒪[K]) : K))⁻¹ := by
               exact map_units_inv (algebraMap 𝒪[K] K) u
             rw [← hu_inv]
-            simp
+            rfl
   change (((chosenIntegerRingUniformizer K : 𝒪[K]) : K) ^ n) *
       ((a : K) /
         (((u : 𝒪[K]) * chosenIntegerRingUniformizer K ^ n : 𝒪[K]) : K)) ∈ 𝒪[K]

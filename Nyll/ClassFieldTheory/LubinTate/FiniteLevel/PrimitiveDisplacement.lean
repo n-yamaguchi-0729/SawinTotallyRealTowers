@@ -92,7 +92,7 @@ private theorem standardLubinTateFormalGroup_rightDisplacement_dvd
         PowerSeries.X_apply] using
         (MvPowerSeries.constantCoeff_X
           (R := F.valuationSubring) ())
-    · simp
+    · exact map_zero PowerSeries.constantCoeff
   have hsubst :
       MvPowerSeries.subst
           ![(PowerSeries.X : PowerSeries F.valuationSubring), 0] D =
@@ -634,8 +634,8 @@ theorem
     · intro
       exact hmem
     · intro
-      rw [hfix, sub_self]
-      simp
+      rw [hfix, sub_self, IsDiscreteValuationRing.addVal_zero]
+      exact le_top
   · have hsubne :
         (a : F.valuationSubring) - 1 ≠ 0 := by
       intro hzero

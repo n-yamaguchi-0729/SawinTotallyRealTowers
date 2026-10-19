@@ -413,7 +413,9 @@ noncomputable def fullLogLatticeProdIntToExtended
               (y.2 : ℝ)))
     rw [← e.symm.map_add]
     congr 1
-    ext <;> simp
+    apply Prod.ext
+    · rfl
+    · exact Int.cast_add x.2 y.2
   · intro n x
     apply Subtype.ext
     change
@@ -432,7 +434,9 @@ noncomputable def fullLogLatticeProdIntToExtended
               (x.2 : ℝ)))
     rw [← map_zsmul]
     congr 1
-    ext <;> simp
+    apply Prod.ext
+    · rfl
+    · exact map_zsmul (Int.castAddHom ℝ) n x.2
 
 /-- The preceding map is bijective. -/
 theorem fullLogLatticeProdIntToExtended_bijective
@@ -1737,7 +1741,7 @@ theorem logPlace_stabilizer_card_eq_localDegree
           simp only [MulAction.mem_stabilizer_iff]
           change Sum.inl (σ • w) = Sum.inl w ↔
             σ • w = w
-          simp]
+          exact Sum.inl.inj_iff]
       exact
         NumberField.InfinitePlace.card_stabilizer
   | inr v =>
@@ -1752,7 +1756,7 @@ theorem logPlace_stabilizer_card_eq_localDegree
           simp only [MulAction.mem_stabilizer_iff]
           change Sum.inr (σ • v) = Sum.inr v ↔
             σ • v = v
-          simp]
+          exact Sum.inr.inj_iff]
       exact
         stableFinitePlace_stabilizer_card_eq_localDegree
           K L hS v

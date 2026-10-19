@@ -25,7 +25,7 @@
       "isUnsafe": false,
       "sourcePath": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
       "historicalBodySHA256": "60223bc1b61bcd22756749eb2b8e39f14138b4c98e02a9e680005f546acdaeb5",
-      "currentSourceSHA256": "aa24f4d629f3d16bf38465edffb9e20788334ea423cd29d7f3b2efa358c7a254",
+      "currentSourceSHA256": "a355308a290600549155d410d0137cd65713ccfc140ca926e8f5c6bc4621038c",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -119,10 +119,30 @@
       },
       "canonicalSource": {
         "repository": "https://github.com/n-yamaguchi-0729/NYLL",
-        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "commit": "6c4135752d24a1ee3ad147657d725baea5cd8df9",
         "path": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
-        "sourceSHA256": "aa24f4d629f3d16bf38465edffb9e20788334ea423cd29d7f3b2efa358c7a254"
-      }
+        "sourceSHA256": "a355308a290600549155d410d0137cd65713ccfc140ca926e8f5c6bc4621038c"
+      },
+      "reviewedSourceUpdates": [
+        {
+          "previousCanonicalSource": {
+            "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+            "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+            "path": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/Iteration.lean",
+            "sourceSHA256": "aa24f4d629f3d16bf38465edffb9e20788334ea423cd29d7f3b2efa358c7a254"
+          },
+          "previousSourceSHA256": "aa24f4d629f3d16bf38465edffb9e20788334ea423cd29d7f3b2efa358c7a254",
+          "previousBodySHA256": "60223bc1b61bcd22756749eb2b8e39f14138b4c98e02a9e680005f546acdaeb5",
+          "sourceSHA256": "a355308a290600549155d410d0137cd65713ccfc140ca926e8f5c6bc4621038c",
+          "bodySHA256": "5fefd8a8c3131a5b24fb7ec7071b68a2b5a7a5d45840f113445ac6155deceb83",
+          "recursiveParentDeclarationUnchanged": true,
+          "changedProofDeclarations": [
+            "AlgebraicNumberTheory.Valuations.henselFactorization_henselIterate_reduction_of_mem",
+            "AlgebraicNumberTheory.Valuations.henselFactorization_henselIterate_span_singleton"
+          ]
+        }
+      ],
+      "currentBodySHA256": "5fefd8a8c3131a5b24fb7ec7071b68a2b5a7a5d45840f113445ac6155deceb83"
     },
     {
       "name": "AlgebraicNumberTheory.Valuations.henselFactorization_prefixStateSeq_of_mem_span._unsafe_rec",
@@ -146,7 +166,7 @@
       "isUnsafe": false,
       "sourcePath": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
       "historicalBodySHA256": "ebcd51d8e701d68926401fb7c0f1b21216c3d797f11774d6a223a7d769dff319",
-      "currentSourceSHA256": "682e5e16ea115795407b9bd037981a13ff213d51906292d4f335260118c29345",
+      "currentSourceSHA256": "98e8cc1e5d0a38e478ca3f4ba41ced268a8782d2aaaf02f48239f89fdeebb632",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -240,10 +260,29 @@
       },
       "canonicalSource": {
         "repository": "https://github.com/n-yamaguchi-0729/NYLL",
-        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "commit": "6c4135752d24a1ee3ad147657d725baea5cd8df9",
         "path": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
-        "sourceSHA256": "682e5e16ea115795407b9bd037981a13ff213d51906292d4f335260118c29345"
-      }
+        "sourceSHA256": "98e8cc1e5d0a38e478ca3f4ba41ced268a8782d2aaaf02f48239f89fdeebb632"
+      },
+      "reviewedSourceUpdates": [
+        {
+          "previousCanonicalSource": {
+            "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+            "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+            "path": "Nyll/ValuedFieldTheory/Valuation/Henselian/Factorization/InfiniteApproximation.lean",
+            "sourceSHA256": "682e5e16ea115795407b9bd037981a13ff213d51906292d4f335260118c29345"
+          },
+          "previousSourceSHA256": "682e5e16ea115795407b9bd037981a13ff213d51906292d4f335260118c29345",
+          "previousBodySHA256": "ebcd51d8e701d68926401fb7c0f1b21216c3d797f11774d6a223a7d769dff319",
+          "sourceSHA256": "98e8cc1e5d0a38e478ca3f4ba41ced268a8782d2aaaf02f48239f89fdeebb632",
+          "bodySHA256": "8bcbce5885f5fd875723b8dd50a833119638270044843b06d5781545d1f3914f",
+          "recursiveParentDeclarationUnchanged": true,
+          "changedProofDeclarations": [
+            "AlgebraicNumberTheory.Valuations.henselFactorization_initialPrefixState_of_factor"
+          ]
+        }
+      ],
+      "currentBodySHA256": "8bcbce5885f5fd875723b8dd50a833119638270044843b06d5781545d1f3914f"
     },
     {
       "name": "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct._unsafe_rec",
@@ -264,7 +303,7 @@
       "isUnsafe": false,
       "sourcePath": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
       "historicalBodySHA256": "cbb6831fb58faf8efed8db8216cc78bd18c33a043c71fda722b68f2ded94dd91",
-      "currentSourceSHA256": "d22f6c7c5cd2f910acd6fa738f92eb25bcd3c9d21497d62ba867aa66bc6de2fc",
+      "currentSourceSHA256": "2712c4da08b98e9fbdb071e3c57281fc5e33d3f5fcf6b44c8e85fda77c8a9fa2",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -352,10 +391,29 @@
       },
       "canonicalSource": {
         "repository": "https://github.com/n-yamaguchi-0729/NYLL",
-        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "commit": "6c4135752d24a1ee3ad147657d725baea5cd8df9",
         "path": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
-        "sourceSHA256": "d22f6c7c5cd2f910acd6fa738f92eb25bcd3c9d21497d62ba867aa66bc6de2fc"
-      }
+        "sourceSHA256": "2712c4da08b98e9fbdb071e3c57281fc5e33d3f5fcf6b44c8e85fda77c8a9fa2"
+      },
+      "reviewedSourceUpdates": [
+        {
+          "previousCanonicalSource": {
+            "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+            "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+            "path": "Nyll/ClassFieldTheory/LocalClassFieldTheory/ClassFormation/NormalBasisInfiniteProduct.lean",
+            "sourceSHA256": "d22f6c7c5cd2f910acd6fa738f92eb25bcd3c9d21497d62ba867aa66bc6de2fc"
+          },
+          "previousSourceSHA256": "d22f6c7c5cd2f910acd6fa738f92eb25bcd3c9d21497d62ba867aa66bc6de2fc",
+          "previousBodySHA256": "cbb6831fb58faf8efed8db8216cc78bd18c33a043c71fda722b68f2ded94dd91",
+          "sourceSHA256": "2712c4da08b98e9fbdb071e3c57281fc5e33d3f5fcf6b44c8e85fda77c8a9fa2",
+          "bodySHA256": "d90bd28a029e1602dff742e68ef0421e6fe966cb7a6b38833b04db3b08e2df72",
+          "recursiveParentDeclarationUnchanged": true,
+          "changedProofDeclarations": [
+            "LocalClassFieldTheory.chosenNormalBasisPrincipalUnitCorrectionProduct_div_mem"
+          ]
+        }
+      ],
+      "currentBodySHA256": "d90bd28a029e1602dff742e68ef0421e6fe966cb7a6b38833b04db3b08e2df72"
     },
     {
       "name": "LocalClassFieldTheory.filteredCorrectionProduct._unsafe_rec",
@@ -480,7 +538,7 @@
       "isUnsafe": false,
       "sourcePath": "Nyll/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
       "historicalBodySHA256": "994c328ee17e55c6fe62046baf39c4535195400cff866e6a947eaa8c41db4b66",
-      "currentSourceSHA256": "a3c85b005fa3be9a403aa5cf55c4294ea00ea66429197fd68e3fdece8fe333ef",
+      "currentSourceSHA256": "6147c6613cd0176ace8787d7c65a3026d23bd5e23dc3282902d5ea66a0977c83",
       "sourceMatchesHistoricalCommit": false,
       "historicalFinding": {
         "axioms": [
@@ -568,10 +626,36 @@
       },
       "canonicalSource": {
         "repository": "https://github.com/n-yamaguchi-0729/NYLL",
-        "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+        "commit": "6c4135752d24a1ee3ad147657d725baea5cd8df9",
         "path": "Nyll/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
-        "sourceSHA256": "a3c85b005fa3be9a403aa5cf55c4294ea00ea66429197fd68e3fdece8fe333ef"
-      }
+        "sourceSHA256": "6147c6613cd0176ace8787d7c65a3026d23bd5e23dc3282902d5ea66a0977c83"
+      },
+      "reviewedSourceUpdates": [
+        {
+          "previousCanonicalSource": {
+            "repository": "https://github.com/n-yamaguchi-0729/NYLL",
+            "commit": "6db4fce7d047b963611f1f8bc218959ea484c087",
+            "path": "Nyll/ValuedFieldTheory/LocalField/NonarchimedeanLocalField/PrincipalUnitQuotients.lean",
+            "sourceSHA256": "a3c85b005fa3be9a403aa5cf55c4294ea00ea66429197fd68e3fdece8fe333ef"
+          },
+          "previousSourceSHA256": "a3c85b005fa3be9a403aa5cf55c4294ea00ea66429197fd68e3fdece8fe333ef",
+          "previousBodySHA256": "994c328ee17e55c6fe62046baf39c4535195400cff866e6a947eaa8c41db4b66",
+          "sourceSHA256": "6147c6613cd0176ace8787d7c65a3026d23bd5e23dc3282902d5ea66a0977c83",
+          "bodySHA256": "80b836913cb8336d31c2f241c230db7375c6d832946ee739d2642062c4199014",
+          "recursiveParentDeclarationUnchanged": true,
+          "changedProofDeclarations": [
+            "LocalFieldTheory.eventually_div_mem_principalUnits_of_tendsto_units",
+            "LocalFieldTheory.principalUnitsCorrectionProduct_div_mem",
+            "LocalFieldTheory.principalUnitsSuccQuotMk_eq_oneAdd_of_sub_one_sub_mem_succ",
+            "LocalFieldTheory.principalUnitsSuccQuotOfIdealPow_eq_of_sub_mem_succ",
+            "LocalFieldTheory.finset_prod_one_add_sub_one_mem_maximalIdeal_of_mem_pow",
+            "LocalFieldTheory.finset_prod_one_add_sub_one_sub_sum_mem_maximalIdeal_pow_succ",
+            "LocalFieldTheory.principalUnitsSuccQuotOfIdealPow_zero",
+            "LocalFieldTheory.principalUnitsSuccQuotOfIdealPow_add"
+          ]
+        }
+      ],
+      "currentBodySHA256": "80b836913cb8336d31c2f241c230db7375c6d832946ee739d2642062c4199014"
     },
     {
       "name": "ProCGroups.Generation.wordProducts._unsafe_rec",

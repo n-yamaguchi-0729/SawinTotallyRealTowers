@@ -298,8 +298,8 @@ theorem absoluteValueDecompositionGroup_conjugate_eq_of_isMulCommutative
             (ρ * τ) (ρ⁻¹ x) =
               (τ * ρ) (ρ⁻¹ x)
           rw [mul_comm]
-        _ = τ x := by simp
-    have hright : ρ (ρ⁻¹ x) = x := by simp
+        _ = τ x := congrArg τ (ρ.apply_symm_apply x)
+    have hright : ρ (ρ⁻¹ x) = x := ρ.apply_symm_apply x
     rwa [hleft, hright] at hx
   · intro hτ x
     have hx := hτ (ρ x)

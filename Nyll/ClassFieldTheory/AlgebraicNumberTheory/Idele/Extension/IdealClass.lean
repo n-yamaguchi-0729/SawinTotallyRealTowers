@@ -100,8 +100,7 @@ theorem localOrder_finitePlaceAdicCompletionMap
             (x : w.adicCompletion K))) =
       (w.asIdeal.ramificationIdx' W.1.asIdeal : ℤ) *
         -WithZero.log (Valued.v (x : w.adicCompletion K))
-  rw [finitePlaceAdicCompletionMap_valued, WithZero.log_pow]
-  simp
+  rw [finitePlaceAdicCompletionMap_valued, WithZero.log_pow, nsmul_eq_mul, mul_neg]
 
 namespace FractionalIdealGroup
 
@@ -221,7 +220,7 @@ theorem count_extension_factorization
             FractionalIdealGroup L) :
               FractionalIdeal (nonZeroDivisors (𝓞 L)) L) ^
             exps.toAdd v) := by
-    simp
+    simp only [Units.coe_prod, Units.val_zpow_eq_zpow_val]
   rw [hcoe, FractionalIdeal.count_prod]
   · simp only [FractionalIdeal.count_zpow]
     by_cases hbelow :
@@ -234,7 +233,7 @@ theorem count_extension_factorization
         ring
       · intro v hv hne
         rw [count_extension_prime_ne K L v W]
-        · simp
+        · exact mul_zero _
         · exact Ne.symm hne
       · exact fun h => (h hbelow).elim
     · have hzero :
@@ -245,7 +244,7 @@ theorem count_extension_factorization
       apply Finset.sum_eq_zero
       intro v hv
       rw [count_extension_prime_ne K L v W]
-      · simp
+      · exact mul_zero _
       · intro h
         apply hbelow
         simpa [h] using hv
@@ -338,7 +337,7 @@ theorem ideal_map_isPrincipal_of_extendedHom_eq_one
   by_cases hI : I = ⊥
   · subst I
     refine ⟨0, ?_⟩
-    simp
+    rw [Ideal.map_bot, Submodule.span_zero_singleton]
   · let I₀ : (Ideal A)⁰ :=
       ⟨I, mem_nonZeroDivisors_iff_ne_zero.mpr hI⟩
     have hclass :=
@@ -588,7 +587,7 @@ theorem extension_principalIdele (x : Kˣ) :
     rw [RelativeIdeleGroup.infiniteComponent_principalIdele]
     rw [
       _root_.infinitePlaceTensorUnitsEquivAbove_localFieldIdeleInclusion]
-    simp
+    rfl
   · change
       (relativeIdeleBaseChangeMulEquiv
         (K := K) (L := L)

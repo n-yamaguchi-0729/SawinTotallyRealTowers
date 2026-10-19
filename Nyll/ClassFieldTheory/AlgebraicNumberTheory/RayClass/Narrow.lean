@@ -106,10 +106,8 @@ abbrev realSignGroup
 
 /-- Embed an infinite idele as an idele with trivial finite component. -/
 def infiniteToIdele :
-    InfiniteIdeleGroup K →* IdeleGroup K where
-  toFun a := (a, 1)
-  map_one' := rfl
-  map_mul' _ _ := by simp
+    InfiniteIdeleGroup K →* IdeleGroup K :=
+  (MonoidHom.id (InfiniteIdeleGroup K)).prod 1
 
 /-- Map an infinite idele to its narrow ideal class. -/
 def infiniteToNarrow :
@@ -160,7 +158,7 @@ theorem signToNarrow_range_eq_narrowToClassGroup_ker :
     change ClassGroup.mk K
         (FiniteIdeleGroup.fractionalIdeal (1 :
           FiniteIdeleGroup K)) = 1
-    simp
+    rw [map_one, map_one]
   · intro z hz
     obtain ⟨a, rfl⟩ :=
       QuotientGroup.mk'_surjective
@@ -188,8 +186,8 @@ theorem signToNarrow_range_eq_narrowToClassGroup_ker :
         p ∈ narrowDenominator (K := K) :=
       Subgroup.mem_sup_right hp
     have huDecomp :
-        u = (u.1, 1) * (1, u.2) := by
-      ext <;> simp
+        u = (u.1, 1) * (1, u.2) :=
+      Prod.ext (mul_one u.1).symm (one_mul u.2).symm
     have hfiniteQuot :
         QuotientGroup.mk' (narrowDenominator (K := K))
             (1, u.2) = 1 :=
@@ -272,8 +270,7 @@ theorem toPrincipalIdeal_eq_one_iff_mem_integralUnits
     refine ⟨u⁻¹, ?_⟩
     change algebraMap (𝓞 K) K (↑(u⁻¹) : 𝓞 K) *
         algebraMap (𝓞 K) K (u : 𝓞 K) = 1
-    rw [← map_mul]
-    simp
+    rw [← map_mul, Units.inv_mul, map_one]
 
 /-- The archimedean image of a global integral unit. -/
 def integralUnitToInfiniteIdele :
@@ -396,8 +393,8 @@ theorem signToNarrow_integralUnit (u : (𝓞 K)ˣ) :
       p ∈ narrowDenominator (K := K) :=
     Subgroup.mem_sup_right hp
   have hpDecomp :
-      p = (p.1, 1) * (1, p.2) := by
-    ext <;> simp
+      p = (p.1, 1) * (1, p.2) :=
+    Prod.ext (mul_one p.1).symm (one_mul p.2).symm
   have hfiniteQuot :
       QuotientGroup.mk' (narrowDenominator (K := K))
           (1, p.2) = 1 :=
@@ -473,7 +470,7 @@ theorem integralUnitSignToRealSign_range_eq_signToNarrow_ker :
         _ = 1 := by
           change FiniteIdeleGroup.fractionalIdeal
             (1 : FiniteIdeleGroup K) = 1
-          simp
+          exact map_one _
     obtain ⟨u, hu⟩ :=
       (toPrincipalIdeal_eq_one_iff_mem_integralUnits x).mp
         hxIdeal

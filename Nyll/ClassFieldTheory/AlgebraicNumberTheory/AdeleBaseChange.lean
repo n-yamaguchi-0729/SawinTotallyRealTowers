@@ -1092,7 +1092,7 @@ theorem relativeIdeleBaseChangeMulEquiv_principalIdele
     simp only [relativeIdeleToLocalData]
     rw [RelativeIdeleGroup.infiniteComponent_principalIdele,
       infinitePlaceTensorUnitsEquivAbove_localFieldIdeleInclusion]
-    simp
+    rfl
   · rw [relativeIdeleBaseChangeMulEquiv_finite]
     apply RestrictedProduct.ext
     intro W

@@ -44,11 +44,14 @@ def residueRootsTimesPrincipalUnitMulHom
         higherPrincipalUnitGroup F 1 →*
       F.valuationSubringˣ where
   toFun z := (z.1 : F.valuationSubringˣ) * (z.2 : F.valuationSubringˣ)
-  map_one' := by
-    simp
+  map_one' := one_mul 1
   map_mul' := by
     intro x y
-    simp [mul_left_comm, mul_comm]
+    change ((x.1 : F.valuationSubringˣ) * (y.1 : F.valuationSubringˣ)) *
+        ((x.2 : F.valuationSubringˣ) * (y.2 : F.valuationSubringˣ)) =
+      ((x.1 : F.valuationSubringˣ) * (x.2 : F.valuationSubringˣ)) *
+        ((y.1 : F.valuationSubringˣ) * (y.2 : F.valuationSubringˣ))
+    exact mul_mul_mul_comm _ _ _ _
 
 /--
 The specified map is surjective: `Function.Surjective
@@ -71,12 +74,10 @@ theorem residueRootsTimesPrincipalUnitMulHom_surjective
   have hp : p ∈ higherPrincipalUnitGroup F 1 := by
     rw [← higherPrincipalUnitGroup.residueUnitHom_eq_one_iff F p]
     dsimp [p]
-    rw [map_mul, map_inv, hzeta']
-    simp
+    rw [map_mul, map_inv, hzeta', inv_mul_cancel]
   refine ⟨(zeta, ⟨p, hp⟩), ?_⟩
   change (zeta : F.valuationSubringˣ) * p = u
-  dsimp [p]
-  simp
+  exact mul_inv_cancel_left (zeta : F.valuationSubringˣ) u
 
 /--
 The specified map is injective: `Function.Injective
@@ -120,8 +121,8 @@ theorem residueRootsTimesPrincipalUnitMulHom_injective
       (x.2 : F.valuationSubringˣ) =
           (x.1 : F.valuationSubringˣ)⁻¹ *
             ((x.1 : F.valuationSubringˣ) *
-              (x.2 : F.valuationSubringˣ)) := by
-        simp
+              (x.2 : F.valuationSubringˣ)) :=
+        (inv_mul_cancel_left _ _).symm
       _ = (x.1 : F.valuationSubringˣ)⁻¹ *
             ((y.1 : F.valuationSubringˣ) *
               (y.2 : F.valuationSubringˣ)) := by
@@ -130,8 +131,7 @@ theorem residueRootsTimesPrincipalUnitMulHom_injective
             ((y.1 : F.valuationSubringˣ) *
               (y.2 : F.valuationSubringˣ)) := by
         rw [hroot]
-      _ = (y.2 : F.valuationSubringˣ) := by
-        simp
+      _ = (y.2 : F.valuationSubringˣ) := inv_mul_cancel_left _ _
 
 /--
 The specified map is bijective: `Function.Bijective
@@ -414,7 +414,9 @@ noncomputable def rootsPrincipalUnitUniformizerMulHom
         (z.1.2 : F.valuationSubringˣ) *
       ϖ ^ Multiplicative.toAdd z.2
   map_one' := by
-    simp
+    change higherPrincipalUnitGroup.valuationSubringUnitFieldUnitHom F 1 *
+        higherPrincipalUnitGroup.valuationSubringUnitFieldUnitHom F 1 * ϖ ^ (0 : ℤ) = 1
+    rw [map_one, zpow_zero, one_mul, one_mul]
   map_mul' := by
     intro x y
     simp [higherPrincipalUnitGroup.fieldUnitDecompositionFactors,

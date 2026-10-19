@@ -31,18 +31,6 @@ open LocalFieldTheory
 
 variable {K : Type} [Field K]
 
-private theorem normSubgroup_index_eq_finrank_of_isAbelianGalois
-    {B E : Type} [Field B] [Field E] [Algebra B E]
-    (hab : IsAbelianGalois B E)
-    (hfd : FiniteDimensional B E)
-    [ValuativeRel B] [TopologicalSpace B]
-    [IsNonarchimedeanLocalField B] :
-    (localNormSubgroup B E).index = Module.finrank B E := by
-  let : IsAbelianGalois B E := hab
-  let : FiniteDimensional B E := hfd
-  rw [Subgroup.index_eq_card]
-  exact LocalClassFieldTheory.card_normQuotient_eq_finrank_of_isAbelianGalois B E
-
 /-- The norm subgroup of the level-`n+1` Lubin--Tate extension has index
 `(q - 1) q^n`, its extension degree. -/
 theorem equalCharacteristicLubinTateNormSubgroup_index
@@ -59,12 +47,16 @@ theorem equalCharacteristicLubinTateNormSubgroup_index
   let : IsNonarchimedeanLocalField B :=
     equalCharacteristicLaurentIsNonarchimedeanLocalField F
   let : Algebra B E := equalCharacteristicLubinTateLevelAlgebra F n
-  change (localNormSubgroup B E).index = _
+  have hAbelian : IsAbelianGalois B E :=
+    equalCharacteristicLubinTateLevelField_isAbelianGalois F n
+  have hFinite : FiniteDimensional B E :=
+    equalCharacteristicLubinTateLevelField_finiteDimensional F n
+  change (localNormSubgroup B E).index =
+    (Nat.card F.residueField - 1) * Nat.card F.residueField ^ n
   calc
-    (localNormSubgroup B E).index = Module.finrank B E :=
-      normSubgroup_index_eq_finrank_of_isAbelianGalois
-        (equalCharacteristicLubinTateLevelField_isAbelianGalois F n)
-        (equalCharacteristicLubinTateLevelField_finiteDimensional F n)
+    (localNormSubgroup B E).index = Module.finrank B E := by
+      rw [Subgroup.index_eq_card]
+      exact LocalClassFieldTheory.card_normQuotient_eq_finrank_of_isAbelianGalois B E
     _ = (Nat.card F.residueField - 1) *
         Nat.card F.residueField ^ n :=
       equalCharacteristicLubinTateLevelField_finrank F n
