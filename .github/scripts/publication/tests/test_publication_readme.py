@@ -32,18 +32,28 @@ class ReadmeEndpointTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             readme.readme_section(text, 'Missing', 'missing', 'Content', before='Absent')
 
-    def test_function_field_claims_require_all_actual_endpoints(self):
-        base = 'Nyll/ClassFieldTheory/AlgebraicFunctionFieldTheory/'
-        files = {
-            base + 'GlobalClassFields/Classification.lean':
-                b'theorem exists_classField_of_open : True := by trivial\n'
-                b'def finiteAbelianFieldNormSubgroupOrderIso : Unit := ()\n',
-            base + 'Artin/LocalGlobalCompatibility.lean':
-                b'theorem localArtin_eq_abelianFiniteArtin_placeIdele : True := by trivial\n',
-            base + 'Artin/ProfiniteReciprocity.lean': b'def profiniteReciprocity : Unit := ()\n',
-            base + 'Artin/UnramifiedFrobenius.lean':
-                b'theorem localDecompositionArtin_eq_unramifiedFrobenius_zpow : True := by trivial\n',
-            base + 'Fields/Curve.lean': b'theorem isCurveOver : True := by trivial\n'}
+    def test_three_class_field_theories_keep_source_backed_main_results(self):
+        base = 'Nyll/ClassFieldTheory/'
+        endpoints = {
+            'Theorems/LocalClassFieldTheory/FiniteAbelianLocalReciprocity':
+                'finiteAbelianLocalReciprocity',
+            'Theorems/LocalClassFieldTheory/FiniteAbelianLocalExistenceOrderIso':
+                'finiteAbelianLocalExistence_orderIso',
+            'Theorems/LocalClassFieldTheory/ProfiniteLocalReciprocity':
+                'profiniteLocalReciprocity',
+            'Theorems/GlobalClassFieldTheory/FiniteAbelianGlobalReciprocity':
+                'finiteAbelianGlobalReciprocity',
+            'Theorems/ConductorsAndRayClassFields/RayClassSubgroupExistence':
+                'rayClassSubgroup_existence',
+            'Theorems/GlobalClassFieldTheory/TopologicalGlobalReciprocity':
+                'topologicalGlobalReciprocity',
+            'Theorems/FunctionField/FiniteReciprocity':
+                'finiteAbelianGlobalReciprocityQuotient',
+            'Theorems/FunctionField/ClassField': 'existsUnique_classField',
+            'Definitions/FunctionField/ProfiniteReciprocity': 'profiniteReciprocity'}
+        files = {base + path + '.lean':
+                 ('theorem ' + name + ' : True := by trivial\n').encode()
+                 for path, name in endpoints.items()}
         text = ('# CFT\n\n## Scope\n\nNumber fields.\n\n## Main results\n\n'
                 'Old detailed list.\n\n## Incomplete results\n\n'
                 'Global function-field class field theory is not included.\n\n'
@@ -52,7 +62,15 @@ class ReadmeEndpointTests(unittest.TestCase):
         self.assertNotIn('not included', result)
         self.assertNotIn('## Function-field class field theory', result)
         self.assertNotIn('## Incomplete results', result)
-        self.assertNotIn('## Main results', result)
+        self.assertEqual(result.count('## Main results\n'), 1)
+        self.assertNotIn('Old detailed list', result)
+        for heading in ('Local class field theory', 'Global class field theory: number fields',
+                        'Global class field theory: function fields'):
+            self.assertIn('### ' + heading + '\n', result)
+        for path in files:
+            self.assertIn('](' + path + '#L1)', result)
+        self.assertIn('identity component', result)
+        self.assertIn('usual topology', result)
         self.assertIn('local fields, number fields and function fields', result)
         self.assertIn('import Nyll.ClassFieldTheory.All', result)
         self.assertNotIn('Use all public statements', result)

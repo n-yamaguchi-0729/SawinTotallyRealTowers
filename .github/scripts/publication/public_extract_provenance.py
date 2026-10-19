@@ -570,19 +570,71 @@ def current_mathematics_readme(text, files, selected_paths, primary):
             'Local class field theory covers nonarchimedean local fields. Global class field\n'
             'theory covers number fields and function fields over finite fields, including\n'
             'reciprocity, existence, norm subgroups, conductors and ray class fields.')
-        # The README summarizes the three settings together; detailed theorem lists
-        # live in the linked mathematical guide. Keep claims tied to real endpoints.
-        prefix = 'AlgebraicFunctionFieldTheory/'
-        for relative, name in (
-            ('GlobalClassFields/Classification', 'exists_classField_of_open'),
-            ('GlobalClassFields/Classification', 'finiteAbelianFieldNormSubgroupOrderIso'),
-            ('Artin/LocalGlobalCompatibility', 'localArtin_eq_abelianFiniteArtin_placeIdele'),
-            ('Artin/UnramifiedFrobenius', 'localDecompositionArtin_eq_unramifiedFrobenius_zpow'),
-            ('Artin/ProfiniteReciprocity', 'profiniteReciprocity'),
-            ('Fields/Curve', 'isCurveOver')):
-            link('ClassFieldTheory', prefix + relative, name)
-        text = re.sub(r'^## (?:Main results|Function-field class field theory|Incomplete results)\n.*?(?=^## |\Z)',
+        # Keep the three settings at the same level, with source-backed main results.
+        settings = (
+            ('Local class field theory', 'Let K be a nonarchimedean local field.', (
+                ('Finite abelian reciprocity',
+                 'Theorems/LocalClassFieldTheory/FiniteAbelianLocalReciprocity',
+                 'finiteAbelianLocalReciprocity',
+                 'For each finite abelian extension L/K, a continuous surjective Artin map '
+                 'Kˣ → Gal(L/K) has kernel N(Lˣ).'),
+                ('Existence and classification',
+                 'Theorems/LocalClassFieldTheory/FiniteAbelianLocalExistenceOrderIso',
+                 'finiteAbelianLocalExistence_orderIso',
+                 'Finite abelian extensions in a fixed separable closure correspond, '
+                 'with reversed inclusion, to open finite-index subgroups of Kˣ via norms.'),
+                ('Profinite reciprocity',
+                 'Theorems/LocalClassFieldTheory/ProfiniteLocalReciprocity',
+                 'profiniteLocalReciprocity',
+                 'The topological profinite completion of Kˣ is isomorphic '
+                 'to the abelianized absolute Galois group.'))),
+            ('Global class field theory: number fields', 'Let K be a number field.', (
+                ('Finite abelian reciprocity',
+                 'Theorems/GlobalClassFieldTheory/FiniteAbelianGlobalReciprocity',
+                 'finiteAbelianGlobalReciprocity',
+                 'Each finite abelian extension L/K admits a modulus and a surjective '
+                 'ray-class Artin map to Gal(L/K), sending prime classes away from '
+                 'the modulus to arithmetic Frobenius.'),
+                ('Class-field existence',
+                 'Theorems/ConductorsAndRayClassFields/RayClassSubgroupExistence',
+                 'rayClassSubgroup_existence',
+                 'Every subgroup of a ray class group is the kernel of the '
+                 'Frobenius-normalized Artin map of a finite abelian extension.'),
+                ('Topological reciprocity',
+                 'Theorems/GlobalClassFieldTheory/TopologicalGlobalReciprocity',
+                 'topologicalGlobalReciprocity',
+                 'The idèle class group modulo its identity component is isomorphic '
+                 'as a topological group to the abelianized absolute Galois group.'))),
+            ('Global class field theory: function fields',
+             'Let K be a function field in one variable over a finite field k.', (
+                ('Finite abelian reciprocity',
+                 'Theorems/FunctionField/FiniteReciprocity',
+                 'finiteAbelianGlobalReciprocityQuotient',
+                 'For each finite abelian extension L/K, the Artin map identifies '
+                 'C_K / N(C_L) with Gal(L/K), where C denotes the idèle class group.'),
+                ('Class-field existence and uniqueness',
+                 'Theorems/FunctionField/ClassField', 'existsUnique_classField',
+                 'Every open finite-index subgroup of C_K in its usual topology is '
+                 'the norm subgroup of a unique finite abelian extension in a fixed '
+                 'separable closure.'),
+                ('Profinite reciprocity',
+                 'Definitions/FunctionField/ProfiniteReciprocity', 'profiniteReciprocity',
+                 'The topological profinite completion of C_K is isomorphic '
+                 'to the abelianized absolute Galois group.'))))
+        sections = []
+        for heading, hypotheses, rows in settings:
+            table = []
+            for label, relative, name, statement in rows:
+                proof = link('ClassFieldTheory', relative, name).replace(
+                    '[`' + name + '`]', '[' + label + ']')
+                table.append(f'| {proof} | {statement} |')
+            sections.append('### ' + heading + '\n\n' + hypotheses + '\n\n'
+                            '| Result | Mathematical content |\n| --- | --- |\n' + '\n'.join(table))
+        text = re.sub(r'^## (?:Function-field class field theory|Incomplete results)\n.*?(?=^## |\Z)',
                       '', text, flags=re.M | re.S)
+        text = readme_section(text, 'Main results', 'cft-main-results',
+                              '\n\n'.join(sections),
+                              before='Included sources' if '## Included sources\n' in text else 'Public API')
         api = ('Import the complete library for local fields, number fields and function fields:\n\n'
                '```lean\nimport Nyll.ClassFieldTheory.All\n```\n\n'
                'For a smaller dependency set, import an individual result directly, for example:\n\n'
