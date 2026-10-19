@@ -27,10 +27,8 @@ def plan(root, manifest, depth, depths):
         source = root / row["path"]
         if not source.resolve().is_relative_to(root):
             raise ValueError("Source outside the package")
-        clean = generate_manifest.mask_noncode(source.read_text(encoding="utf-8"))
-        graph[name] = {target for line in clean.splitlines()
-                       if (match := generate_manifest.IMPORT.fullmatch(line))
-                       for target in (match.group(1) or "").split() if target in rows}
+        graph[name] = {target for target, _, _ in generate_manifest.header_imports(
+            source.read_text(encoding="utf-8")) if target in rows}
         for target in graph[name]:
             if depths[rows[target]["owner"]] > depths[owner]:
                 raise ValueError("Reverse-depth import: " + name + " -> " + target)

@@ -16,6 +16,7 @@ import json
 import posixpath
 import re
 from urllib.parse import unquote, urlsplit
+from public_readme_presentation import presentation
 
 PI1 = 'Nyll/EtaleFundamentalGroups/Pi1/'
 ANTHROPIC = 'https://github.com/anthropics/fermats-last-theorem/'
@@ -514,7 +515,8 @@ def current_stacks_readme(text, files, selected_paths):
         'sheaf_globalSections_restriction_bijective'), True)
     update('59.91.4', '0A3T', 'degree zero over an affine base; ' +
         ec('Sites/ProperGeometricFiberSections', 'etalePushforwardGeometricFiberSections_bijective'), False)
-    summary = ('Finite étale covers of a proper scheme are invariant under extension\n'
+    summary = ('### Étale fundamental groups\n\n'
+        'Finite étale covers of a proper scheme are invariant under extension\n'
         'of separably closed fields (including transcendental extension): ' +
         efg('FiniteEtale/ProperSeparablyClosedExtension',
             'pullback_isEquivalence_of_isProper_of_isSepClosed_constant_extension') + '.\n'
@@ -529,6 +531,7 @@ def current_stacks_readme(text, files, selected_paths):
         'and [58.9.2](https://stacks.math.columbia.edu/tag/0GS2), and the general\n'
         'specialization maps of [58.16](https://stacks.math.columbia.edu/tag/0BUP) and\n'
         '[58.30](https://stacks.math.columbia.edu/tag/0BUQ), remain unfinished.\n\n'
+        '### Étale cohomology and traces\n\n'
         'The cohomology library proves proper henselian H⁰ comparison and H¹\n'
         'injectivity for arbitrary commutative-ring coefficients: ' +
         ec('Sites/ProperHenselianH0', 'etaleClosedFiber_globalSections_bijective') + ' and ' +
@@ -550,7 +553,9 @@ def current_stacks_readme(text, files, selected_paths):
         'remain open. The Grothendieck–Lefschetz formulas\n'
         '[64.20.4](https://stacks.math.columbia.edu/tag/03V3) and\n'
         '[64.20.5](https://stacks.math.columbia.edu/tag/03V2) are not yet proved.')
-    text = readme_section(text, 'Current endpoints and remaining comparisons',
+    text = text.replace('## Current endpoints and remaining comparisons\n',
+                        '## Current results and open problems\n')
+    text = readme_section(text, 'Current results and open problems',
                           'etale-current-endpoints', summary,
                           before='Use and build' if '## Use and build\n' in text else 'Public API')
     return refresh_stacks_lean_links(text, files, selected_paths)
@@ -565,36 +570,28 @@ def current_mathematics_readme(text, files, selected_paths, primary):
             'Local class field theory covers nonarchimedean local fields. Global class field\n'
             'theory covers number fields and function fields over finite fields, including\n'
             'reciprocity, existence, norm subgroups, conductors and ray class fields.')
-        text = text.replace('## Incomplete results\n', '## Function-field class field theory\n')
+        # The README summarizes the three settings together; detailed theorem lists
+        # live in the linked mathematical guide. Keep claims tied to real endpoints.
         prefix = 'AlgebraicFunctionFieldTheory/'
-        rows = [
-            ('Existence and classification', link('ClassFieldTheory', prefix +
-                'GlobalClassFields/Classification', 'exists_classField_of_open') + ' and ' +
-             link('ClassFieldTheory', prefix + 'GlobalClassFields/Classification',
-                  'finiteAbelianFieldNormSubgroupOrderIso'),
-             'Finite abelian extensions correspond, with reversed inclusion, to open '
-             'finite-index subgroups in the ordinary idèle-class topology, through the actual norm image.'),
-            ('Local–global compatibility', link('ClassFieldTheory', prefix +
-                'Artin/LocalGlobalCompatibility', 'localArtin_eq_abelianFiniteArtin_placeIdele') + ' and ' +
-             link('ClassFieldTheory', prefix + 'Artin/UnramifiedFrobenius',
-                  'localDecompositionArtin_eq_unramifiedFrobenius_zpow'),
-             'The actual local and global Artin maps agree on a one-place idèle. At an unramified '
-             'place, the local value is arithmetic Frobenius to the power of the valuation.'),
-            ('Profinite reciprocity', link('ClassFieldTheory', prefix +
-                'Artin/ProfiniteReciprocity', 'profiniteReciprocity'),
-             'The profinite completion for the ordinary idèle-class topology is isomorphic to the abelianized absolute Galois group.')]
-        content = ('For function fields over a finite constant field, the following endpoints\n'
-                   'use a chosen rational parameter. Their principal-divisor structure '
-                   '(finite support of valuation orders and degree zero) is constructed from '
-                   'the function-field hypotheses by ' + link('ClassFieldTheory', prefix +
-                       'Fields/Curve', 'isCurveOver') + '. No class-field existence input '
-                   'or norm-cofinality hypothesis is supplied.\n\n'
-                   '| Result | Lean endpoint |\n| --- | --- |\n' + '\n'.join(
-                       f'| {title}: {description} | {endpoint} |'
-                       for title, endpoint, description in rows) + '\n\n'
-                   'The development also includes arithmetic Frobenius normalization, conductors,\n'
-                   'ray class fields, prescribed splitting, and the cyclic Hasse norm theorem.')
-        text = readme_section(text, 'Function-field class field theory', 'cft-function-fields', content)
+        for relative, name in (
+            ('GlobalClassFields/Classification', 'exists_classField_of_open'),
+            ('GlobalClassFields/Classification', 'finiteAbelianFieldNormSubgroupOrderIso'),
+            ('Artin/LocalGlobalCompatibility', 'localArtin_eq_abelianFiniteArtin_placeIdele'),
+            ('Artin/UnramifiedFrobenius', 'localDecompositionArtin_eq_unramifiedFrobenius_zpow'),
+            ('Artin/ProfiniteReciprocity', 'profiniteReciprocity'),
+            ('Fields/Curve', 'isCurveOver')):
+            link('ClassFieldTheory', prefix + relative, name)
+        text = re.sub(r'^## (?:Main results|Function-field class field theory|Incomplete results)\n.*?(?=^## |\Z)',
+                      '', text, flags=re.M | re.S)
+        api = ('Import the complete library for local fields, number fields and function fields:\n\n'
+               '```lean\nimport Nyll.ClassFieldTheory.All\n```\n\n'
+               'For a smaller dependency set, import an individual result directly, for example:\n\n'
+               '```lean\nimport Nyll.ClassFieldTheory.Theorems.LocalClassFieldTheory.FiniteAbelianLocalReciprocity\n```\n\n'
+               'The [Definitions](Nyll/ClassFieldTheory/Definitions/All.lean) and '
+               '[Theorems](Nyll/ClassFieldTheory/Theorems/All.lean) facades provide the vocabulary '
+               'and statements collected in those sublibraries; the full entry point above '
+               'includes every maintained part of the development.')
+        text = readme_section(text, 'Public API', 'cft-public-api', api)
     if primary == ['JacobianVarieties']:
         text = text.replace('Nyll/JacobianVarieties/Picard/TorsionCardinality.lean',
                             'Nyll/JacobianVarieties/Picard/Torsion/TorsionCardinality.lean')
@@ -614,9 +611,11 @@ def current_mathematics_readme(text, files, selected_paths, primary):
                    'scheme locally of finite type constructs a modulus with its multiplicities.\n'
                    'The unpointed factorization does not require a rational point, a perfect\n'
                    'base field, or a smooth connected target.\n\n'
-                   '| Result | Lean endpoint |\n| --- | --- |\n' + '\n'.join(
-                       f'| {title} | {link("JacobianVarieties", "Generalized/" + path, name)} |'
-                       for title, path, name in rows) + '\n\n'
+                    '| Result | Mathematical content |\n| --- | --- |\n' + '\n'.join(
+                        f'| {link("JacobianVarieties", "Generalized/" + path, name).replace("[`" + name + "`]", "[" + label + "]")} | {title}. |'
+                        for (title, path, name), label in zip(rows, (
+                            'Existence of a full modulus', 'Unpointed factorization',
+                            'Pointed factorization', 'Least conductor', 'Product conductor'))) + '\n\n'
                    'The pointed form assumes a rational point in the original open sent to the '
                    'identity. Uniqueness is for the factor attached to the constructed modulus.\n'
                    'Over an algebraically closed field in any characteristic, the conductor '
@@ -646,14 +645,18 @@ def current_mathematics_readme(text, files, selected_paths, primary):
         text = text.replace('import Nyll.ShimizuYamaguchi26BranchedCoverings.All\n', '')
         absolute = 'Nyll/Yamaguchi26AbfaithfulGalois/Theorem6Dot6AbsoluteCenter.lean'
         examples = 'Nyll/Yamaguchi26AbfaithfulGalois/Theorem6Dot7FieldSlimExamples.lean'
-        center = readme_lean_link(files, selected_paths, absolute,
-            'absoluteGalois_finiteStepSolvable_centerfree')
-        slim = readme_lean_link(files, selected_paths, absolute,
-            'absoluteGalois_finiteStepSolvable_slim_of_cyclotomic_and_cyclic_extensions')
-        fields = ' ; '.join(readme_lean_link(files, selected_paths, examples, name) for name in (
+        def named(path, name, label):
+            return readme_lean_link(files, selected_paths, path, name).replace(
+                '[`' + name + '`]', '[' + label + ']')
+        center = named(absolute, 'absoluteGalois_finiteStepSolvable_centerfree',
+                       'Theorem 6.6: center-freeness')
+        slim = named(absolute, 'absoluteGalois_finiteStepSolvable_slim_of_cyclotomic_and_cyclic_extensions',
+                     'slimness')
+        fields = '; '.join(named(examples, name, label) for name, label in zip((
             'torallyKummerFaithful_finiteStepSolvable_slim',
             'finitelyGenerated_finiteStepSolvable_slim',
-            'subpadic_finiteStepSolvable_slim', 'higherLocalField_finiteStepSolvable_slim'))
+            'subpadic_finiteStepSolvable_slim', 'higherLocalField_finiteStepSolvable_slim'),
+            ('Toral fields', 'Finitely generated fields', 'Sub-p-adic fields', 'Higher local fields')))
         rows = [
             (absolute, '| ' + center + ' ; ' + slim + ' | For every m ≥ 2, ab-faithfulness '
              'of the absolute Galois group implies center-freeness of its maximal m-step solvable '
@@ -754,6 +757,7 @@ def readme_for_extract(text, files, selected_paths, primary, source_sha=None):
     text = re.sub(r'The class-field-theory modules use Mathlib and the bundled\n.*?foundations\.\n',
                   '', text, flags=re.S)
     text = current_mathematics_readme(text, files, selected_paths, primary)
+    text = presentation(text, primary)
     license_lines = ['Apache License 2.0. See [LICENSE](LICENSE).']
     credits = []
     if pi1:

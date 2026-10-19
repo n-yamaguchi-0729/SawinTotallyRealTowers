@@ -3,16 +3,10 @@
 [![Lean](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml/badge.svg)](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-A Lean 4.35.0-rc2 library centered on Sawin's totally real tower theorem.
-
-[Library overview and selected results](https://n-yamaguchi-0729.github.io/NYLL/libraries/sawin-totally-real-towers/).
-
-This library is extracted from [NYLL](https://github.com/n-yamaguchi-0729/NYLL).
-<!-- nyll-publication:distribution:begin -->
-Only the module-level import closure of `Nyll.SawinTotallyRealTowers.All` is bundled. Dependencies retain their canonical `Nyll` imports.
-
-Supporting modules are included from [ClassFieldTheory](Nyll/ClassFieldTheory/), [GaloisCohomology](Nyll/GaloisCohomology/), [ProCGroups](Nyll/ProCGroups/), [ValuedFieldTheory](Nyll/ValuedFieldTheory/). These dependency libraries are included only to the extent required by the imports.
-<!-- nyll-publication:distribution:end -->
+This Lean component of [NYLL](https://github.com/n-yamaguchi-0729/NYLL) develops Sawin’s theorem on totally real fields
+of unbounded degree and bounded root discriminant, together with Martinet’s
+corollary and Shafarevich’s relation-rank bound. The [mathematical guide](https://n-yamaguchi-0729.github.io/NYLL/libraries/sawin-totally-real-towers/) describes these
+three results and their relationship to the formalized benchmark statements.
 
 ## Scope
 
@@ -174,6 +168,14 @@ See [Naganori Yamaguchi's Lean 4 projects](https://n-yamaguchi-0729.github.io/ho
 for links to these challenge pages and to the related ProCGroups and
 ClassFieldTheory libraries. Mathematical references: [Sawin's paper](https://arxiv.org/abs/2605.20579)
 and the [Remarks paper](https://arxiv.org/abs/2605.20695).
+
+## Included sources
+
+<!-- nyll-publication:distribution:begin -->
+Only the module-level import closure of `Nyll.SawinTotallyRealTowers.All` is bundled. Dependencies retain their canonical `Nyll` imports.
+
+Supporting modules are included from [ClassFieldTheory](Nyll/ClassFieldTheory/), [GaloisCohomology](Nyll/GaloisCohomology/), [ProCGroups](Nyll/ProCGroups/), [ValuedFieldTheory](Nyll/ValuedFieldTheory/). These dependency libraries are included only to the extent required by the imports.
+<!-- nyll-publication:distribution:end -->
 
 ## Public API
 

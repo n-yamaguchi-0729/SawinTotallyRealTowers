@@ -44,16 +44,18 @@ class ReadmeEndpointTests(unittest.TestCase):
             base + 'Artin/UnramifiedFrobenius.lean':
                 b'theorem localDecompositionArtin_eq_unramifiedFrobenius_zpow : True := by trivial\n',
             base + 'Fields/Curve.lean': b'theorem isCurveOver : True := by trivial\n'}
-        text = ('# CFT\n\n## Scope\n\nNumber fields.\n\n## Incomplete results\n\n'
+        text = ('# CFT\n\n## Scope\n\nNumber fields.\n\n## Main results\n\n'
+                'Old detailed list.\n\n## Incomplete results\n\n'
                 'Global function-field class field theory is not included.\n\n'
                 '## Public API\n\nKeep API.\n')
         result = readme.current_mathematics_readme(text, files, set(files), ['ClassFieldTheory'])
         self.assertNotIn('not included', result)
-        self.assertIn('ordinary idèle-class topology', result)
-        self.assertIn('principal-divisor structure', result)
-        self.assertIn('is constructed from', result)
-        self.assertIn('arithmetic Frobenius to the power of the valuation', result)
-        self.assertIn('`isCurveOver`', result)
+        self.assertNotIn('## Function-field class field theory', result)
+        self.assertNotIn('## Incomplete results', result)
+        self.assertNotIn('## Main results', result)
+        self.assertIn('local fields, number fields and function fields', result)
+        self.assertIn('import Nyll.ClassFieldTheory.All', result)
+        self.assertNotIn('Use all public statements', result)
         for path in files:
             with self.subTest(missing=path), self.assertRaises(ValueError):
                 readme.current_mathematics_readme(text, files, set(files) - {path},
