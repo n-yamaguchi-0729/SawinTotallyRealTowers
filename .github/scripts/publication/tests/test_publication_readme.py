@@ -136,15 +136,12 @@ class ReadmeEndpointTests(unittest.TestCase):
         base = 'Nyll/JacobianVarieties/Generalized/'
         declarations = {
             'ExistingJacobianSheafRepresentation': ['groupSheafRepresentation'],
-            'ExistingJacobianGroupScheme': ['sheafGroupSchemeIso'],
             'EmptyOrdinaryComparison': ['zeroDegreeOrdinaryComparison'],
             'ScalarExtensionGroupScheme': ['groupActualScalarExtensionIso'],
-            'GeneralGeometricModulusExistence': ['exists_group_geometricRegularMapHasModulus'],
             'GeneralGroupPicardOneFactorization': ['exists_modulus_unique_picardOneFactor'],
             'GeneralGroupPointedFactorization': ['exists_modulus_unique_pointedGroupFactor'],
             'GeneralGroupLocalSymbolExistence': [
-                'existsUnique_group_regularMap_modulus_classification',
-                'exists_group_regularMap_localSymbol'],
+                'existsUnique_group_regularMap_modulus_classification'],
             'GeneralGroupProductConductor': ['exists_group_regularMap_product_conductors']}
         files = {base + path + '.lean': ''.join(
             'theorem ' + name + ' : True := by trivial\n' for name in names).encode()
@@ -159,9 +156,8 @@ class ReadmeEndpointTests(unittest.TestCase):
         for claim in ('over an arbitrary field', 'algebraically closed field in any characteristic',
                       'extended by the identity outside the open',
                       'coefficientwise maximum', 'pointed form assumes a rational point',
-                      'Its support can be smaller than the original boundary',
                       'Keep ordinary Jacobians.', 'Keep attribution.', 'fppf Picard-zero sheaf',
-                      'tensor-product group law', 'commutes with', 'field extensions',
+                      'commutes with', 'field extensions',
                       'positive-genus Abel–Jacobi closed immersion', 'principal polarization'):
             self.assertIn(claim, result)
         self.assertEqual(result, readme.current_mathematics_readme(result, files, set(files), primary))

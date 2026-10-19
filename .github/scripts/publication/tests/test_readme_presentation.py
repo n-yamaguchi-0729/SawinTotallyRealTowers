@@ -4,10 +4,29 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from public_readme_presentation import INTRODUCTIONS, presentation
+from public_readme_presentation import INTRODUCTIONS, REPOSITORIES, installation, presentation
 
 
 class PresentationTests(unittest.TestCase):
+    def test_installation_uses_each_distribution_and_the_shared_package_identity(self):
+        import re
+        import tomllib
+        files = {'lakefile.toml': b'name = "Nyll"\n',
+                 'lean-toolchain': b'leanprover/lean4:v4.35.0-rc2\n'}
+        text = '# Library\n\n## Public API\n\nOld imports.\n\n## Build\n\nOld commands.\n\n## License\n\nCredits.\n'
+        for primary, repository in REPOSITORIES.items():
+            with self.subTest(repository=repository):
+                result = installation(text, primary, files)
+                snippet = re.search(r'```toml\n(.*?)\n```', result, re.S)[1]
+                dependency = tomllib.loads(snippet)['require'][0]
+                self.assertEqual(dependency['name'], 'Nyll')
+                self.assertEqual(dependency['git'], 'https://github.com/n-yamaguchi-0729/' + repository + '.git')
+                self.assertEqual(re.findall(r'^import (.+)$', result, re.M),
+                                 ['Nyll.' + name + '.All' for name in primary])
+                self.assertIn('commit your generated lake-manifest.json', result)
+                self.assertIn('Credits.', result)
+                self.assertEqual(installation(result, primary, files), result)
+
     def test_all_seven_introductions_are_connected_and_dependency_sections_are_removed(self):
         distribution = ('<!-- nyll-publication:distribution:begin -->\n'
                         'The exact bundled dependency list.\n<!-- nyll-publication:distribution:end -->')

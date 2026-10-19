@@ -16,7 +16,7 @@ import json
 import posixpath
 import re
 from urllib.parse import unquote, urlsplit
-from public_readme_presentation import presentation
+from public_readme_presentation import presentation, installation
 
 PI1 = 'Nyll/EtaleFundamentalGroups/Pi1/'
 ANTHROPIC = 'https://github.com/anthropics/fermats-last-theorem/'
@@ -567,7 +567,7 @@ def current_mathematics_readme(text, files, selected_paths, primary):
         text = readme_section(text, 'Scope', 'cft-scope',
             'Local class field theory covers nonarchimedean local fields. Global class field\n'
             'theory covers number fields and function fields over finite fields, including\n'
-            'reciprocity, existence, norm subgroups, conductors and ray class fields.')
+            'reciprocity, existence, norm subgroups, conductors and ray class fields.', before='Main results')
         # Keep the three settings at the same level, with source-backed main results.
         settings = (
             ('Local class field theory', 'Let K be a nonarchimedean local field.', (
@@ -643,65 +643,46 @@ def current_mathematics_readme(text, files, selected_paths, primary):
                'includes every maintained part of the development.')
         text = readme_section(text, 'Public API', 'cft-public-api', api)
     if primary == ['JacobianVarieties']:
-        text = text.replace('Nyll/JacobianVarieties/Picard/TorsionCardinality.lean',
-                            'Nyll/JacobianVarieties/Picard/Torsion/TorsionCardinality.lean')
-        def jv_link(relative, name, label):
+        def jv(relative, name, label):
             return link('JacobianVarieties', 'Generalized/' + relative, name).replace(
                 '[`' + name + '`]', '[' + label + ']')
-        representation = jv_link('ExistingJacobianSheafRepresentation',
-                                 'groupSheafRepresentation', 'fppf Picard-zero sheaf')
-        group = jv_link('ExistingJacobianGroupScheme', 'sheafGroupSchemeIso',
-                        'tensor-product group law')
-        comparison = jv_link('EmptyOrdinaryComparison', 'zeroDegreeOrdinaryComparison',
-                             'ordinary Jacobian')
-        scalar = jv_link('ScalarExtensionGroupScheme', 'groupActualScalarExtensionIso',
-                         'field extensions')
-        def initial_sheaf(text, block):
-            anchor = 'irreducibility, and dimension equal to the geometric genus.\n'
-            require(text.count(anchor) == 1, 'Missing Jacobian description')
-            return text.replace(anchor, anchor + '\n' + block + '\n')
-        text = managed_block(text, 'jacobian-sheaf',
-            'The same Jacobian represents the ' + representation + ', with its ' + group + '.',
-            initial_sheaf)
+        ordinary = jv('EmptyOrdinaryComparison', 'zeroDegreeOrdinaryComparison', 'Zero modulus')
+        sheaf = jv('ExistingJacobianSheafRepresentation', 'groupSheafRepresentation', 'Picard-zero sheaf')
+        scalar = jv('ScalarExtensionGroupScheme', 'groupActualScalarExtensionIso', 'field extensions')
+        unpointed = jv('GeneralGroupPicardOneFactorization', 'exists_modulus_unique_picardOneFactor',
+                       'Modulus existence and factorization')
+        pointed = jv('GeneralGroupPointedFactorization', 'exists_modulus_unique_pointedGroupFactor',
+                     'pointed form')
+        conductor = jv('GeneralGroupLocalSymbolExistence',
+                       'existsUnique_group_regularMap_modulus_classification', 'Least conductor')
+        product = jv('GeneralGroupProductConductor', 'exists_group_regularMap_product_conductors',
+                     'product formula')
         rows = [
-            ('A full ground-field modulus for the original open complement',
-             'GeneralGeometricModulusExistence', 'exists_group_geometricRegularMapHasModulus'),
-            ('A unique equivariant factor through the intrinsic Picard degree-one torsor',
-             'GeneralGroupPicardOneFactorization', 'exists_modulus_unique_picardOneFactor'),
-            ('A unique pointed group factor',
-             'GeneralGroupPointedFactorization', 'exists_modulus_unique_pointedGroupFactor'),
-            ('Least full conductor classifying all moduli over an algebraically closed field',
-             'GeneralGroupLocalSymbolExistence', 'existsUnique_group_regularMap_modulus_classification'),
-            ('The product conductor is the coefficientwise maximum of the two conductors',
-             'GeneralGroupProductConductor', 'exists_group_regularMap_product_conductors')]
-        content = ('For a smooth proper geometrically integral curve over an arbitrary field,\n'
-                   'a morphism from a nonempty open subset to a separated commutative group\n'
-                    'scheme locally of finite type admits a modulus and factors through\n'
-                    'the associated generalized Jacobian or Picard degree-one torsor.\n\n'
-                    'The empty modulus recovers the ' + comparison + ', and the construction\n'
-                    'commutes with ' + scalar + ' as a group scheme.\n\n'
-                    '| Result | Mathematical content |\n| --- | --- |\n' + '\n'.join(
-                        f'| {link("JacobianVarieties", "Generalized/" + path, name).replace("[`" + name + "`]", "[" + label + "]")} | {title}. |'
-                        for (title, path, name), label in zip(rows, (
-                            'Existence of a full modulus', 'Unpointed factorization',
-                            'Pointed factorization', 'Least conductor', 'Product conductor'))) + '\n\n'
-                   'The pointed form assumes a rational point in the original open sent to the '
-                   'identity. Uniqueness is for the factor attached to the constructed modulus.\n'
-                   'Over an algebraically closed field in any characteristic, the conductor '
-                    'classifies full moduli of the point-value function, extended by the '
-                   'identity outside the open. Its support can be smaller than the original boundary. '
-                   'The map also constructs its reciprocal local symbol: ' +
-                   link('JacobianVarieties', 'Generalized/GeneralGroupLocalSymbolExistence',
-                         'exists_group_regularMap_localSymbol') + '.')
-        text = readme_section(text, 'Generalized Jacobians', 'generalized-jacobians',
-                              content, before='Incomplete results')
+            (ordinary + ' and ' + sheaf,
+             'For a smooth proper geometrically integral curve over an arbitrary field, '
+             'the zero-modulus generalized Jacobian is the ordinary Jacobian representing '
+             'the fppf Picard-zero sheaf. The generalized construction commutes with ' + scalar + '.'),
+            (unpointed + ' and its ' + pointed,
+             'A morphism from a nonempty open of such a curve to a separated commutative '
+             'group scheme locally of finite type admits a modulus and a unique equivariant '
+             'factor through the Picard degree-one torsor for that modulus. The pointed form '
+             'assumes a rational point in the open sent to the identity, and gives a group factor.'),
+            (conductor + ' and ' + product,
+             'Over an algebraically closed field in any characteristic, a least full conductor '
+             'classifies the moduli of the point-value function extended by the identity outside '
+             'the open. The conductor of a product is the coefficientwise maximum.'),
+            ('[Tate-module comparison](Nyll/JacobianVarieties/Kummer/AbelJacobiTate.lean)',
+             'Over an algebraically closed field of characteristic zero, a Picard representation '
+             'and Abel–Jacobi morphism compatible with point line bundles induce a topological '
+             'isomorphism π₁(C)ᵃᵇ ≃ T(J).')]
+        text = re.sub(r'^## Generalized Jacobians\n.*?(?=^## |\Z)', '', text, flags=re.M | re.S)
+        text = readme_section(text, 'Main results', 'jacobian-main-results',
+            '| Result | Mathematical content |\n| --- | --- |\n' + '\n'.join(
+                f'| {label} | {statement} |' for label, statement in rows))
         text = readme_section(text, 'Incomplete results', 'jacobian-remaining',
             'The positive-genus Abel–Jacobi closed immersion and the principal polarization\n'
-            'are not yet formalized. Generalized-Jacobian Lie and differential comparisons,\n'
-            'the nonreduced kernel and its Witt decomposition, symmetric powers, analytic\n'
-            'uniformization, and pinching comparisons also remain open.')
-        text = text.replace('Import the curve library or the Jacobian library with:',
-                            'Import the Jacobian library and its required curve modules with:')
+            'are not yet formalized. Lie/differential and Witt comparisons, symmetric powers,\n'
+            'analytic uniformization and pinching comparisons also remain open.')
         if 'Nyll/AlgebraicCurves/All.lean' not in selected_paths:
             text = text.replace('import Nyll.AlgebraicCurves.All\n', '')
     if primary == ['Yamaguchi26AbfaithfulGalois', 'Yamaguchi26SolvableCoverings']:
@@ -741,6 +722,8 @@ def current_mathematics_readme(text, files, selected_paths, primary):
              'Kummer-faithfulness and ab-faithfulness. Slimness means every open subgroup '
              'has trivial centralizer in the ambient quotient. |')]
         for path, row in rows:
+            if path not in text:
+                continue
             pattern = r'^\| [^\n]*' + re.escape(path) + r'[^\n]*\|$'
             text, count = re.subn(pattern, lambda _: row, text, flags=re.M)
             require(count == 1, 'Expected one research-paper result row: ' + path)
@@ -804,6 +787,7 @@ def readme_for_extract(text, files, selected_paths, primary, source_sha=None):
                   '', text, flags=re.S)
     text = current_mathematics_readme(text, files, selected_paths, primary)
     text = presentation(text, primary)
+    text = installation(text, primary, files)
     license_lines = ['Apache License 2.0. See [LICENSE](LICENSE).']
     credits = []
     if pi1:

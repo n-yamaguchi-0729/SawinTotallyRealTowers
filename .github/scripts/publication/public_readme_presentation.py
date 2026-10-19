@@ -144,4 +144,110 @@ def presentation(text, primary):
                         'the library studies the map of étale fundamental')
     text = text.replace(' Completeness is not required.', '')
     text = re.sub(r'\n{3,}', '\n\n', text)
-    return text
+    return concise_results(text, primary)
+
+# Keep result selection in the common publisher, so scheduled sync preserves it.
+def section(text, title, content=None):
+    pattern = r'^## ' + re.escape(title) + r'\n.*?(?=^## |\Z)'
+    if content is None:
+        return re.sub(pattern, '', text, flags=re.M | re.S)
+    return re.sub(pattern, lambda _: '## ' + title + '\n\n' + content.strip() + '\n\n',
+                  text, flags=re.M | re.S)
+
+
+def result_table(rows):
+    return '| Result | Mathematical content |\n| --- | --- |\n' + '\n'.join(rows)
+
+
+def concise_results(text, primary):
+    key = tuple(primary)
+    if key == ('ProCGroups',) and 'Nyll/ProCGroups/FreeProC/Basic.lean' in text:
+        paths = ('FreeProC/Basic.lean', 'GolodShafarevich/WeightedFiniteCriterion.lean',
+                 'CrowellExactSequence/Profinite/MainTheorem.lean', 'Abelian/ProfiniteBidual.lean')
+        rows = [line for line in text.splitlines() if line.startswith('| [')
+                and any(path in line for path in paths)]
+        if len(rows) != 4:
+            raise ValueError('Expected four principal pro-C results')
+        text = section(section(text, 'Main results', result_table(rows)), 'Scope')
+    elif key == ('ClassFieldTheory',):
+        # Reciprocity and existence are presented equally for all three settings.
+        if 'Nyll/ClassFieldTheory/' in text:
+            text = section(text, 'Scope')
+        text = re.sub(r'^\| \[(?:Profinite reciprocity|Topological reciprocity)\].*\n',
+                      '', text, flags=re.M)
+    elif key == ('SawinTotallyRealTowers',) and 'Nyll/SawinTotallyRealTowers/SawinTotallyRealTower.lean' in text:
+        text = section(text, 'Scope')
+        text = re.sub(r'^### Problem statements and related projects\n.*?(?=^## |\Z)',
+                      '', text, flags=re.M | re.S)
+        text = text.replace('with bounded root discriminant. |',
+                            'with root discriminant at most 255255. |')
+    elif key == ('EtaleFundamentalGroups', 'EtaleCohomology'):
+        text = section(text, 'Current results and open problems')
+        text = text.replace('## Goal and coverage', '## Stacks Project coverage')
+    elif key == ('JacobianVarieties',) and 'nyll-publication:jacobian-main-results' in text:
+        text = section(text, 'Scope')
+    elif key == ('Yamaguchi26AbfaithfulGalois', 'Yamaguchi26SolvableCoverings'):
+        drop = ('Theorem3Dot6MixedCharacteristic', 'Theorem6Dot6AbsoluteCenter',
+                'Theorem6Dot4RelativeCriterion', 'Theorem1Dot1BoundaryQuotient',
+                'Theorem1Dot3BoundaryInvariance', 'Theorem1Dot4FundamentalGroupIntegers')
+        text = '\n'.join(line for line in text.splitlines()
+                         if not (line.startswith('| [') and any(x in line for x in drop))) + '\n'
+        text = re.sub(r'^The formalization includes numbered results.*?(?=^## |\Z)',
+                      '', text, flags=re.M | re.S)
+    elif key == ('AnabelianGeometry',) and 'GenusZeroNakamura.lean' in text:
+        link = re.search(r'\]\((Nyll/AnabelianGeometry/WeightFiltration/GenusZeroNakamura\.lean#L\d+)\)', text)
+        if not link:
+            raise ValueError('Missing source-backed genus-zero theorem')
+        rows = [
+            '| [Grothendieck’s conjecture for genus-zero curves over number fields — weak reconstruction](' +
+            link[1] + ') | For opens in smooth proper geometrically integral genus-zero curves over a number field, '
+            'each with at least three geometric punctures, an isomorphism of pointed arithmetic fundamental '
+            'groups over G_k implies an isomorphism of the curves over k. This does not identify the induced '
+            'group map with the supplied isomorphism. |']
+        rows += [line for line in text.splitlines() if line.startswith('| [')
+                 and any(x in line for x in ('ProperCurveSlim.lean', 'OpenCurveSlim.lean'))]
+        if len(rows) != 3:
+            raise ValueError('Expected reconstruction and two geometric slimness results')
+        text = section(text, 'Main results', result_table(rows) +
+                       '\n\nA profinite group is slim if every open subgroup has trivial centralizer in the ambient group.')
+    return re.sub(r'\n{3,}', '\n\n', text)
+
+
+REPOSITORIES = {
+    ('ProCGroups',): 'ProCGroups',
+    ('ClassFieldTheory',): 'ClassFieldTheory',
+    ('SawinTotallyRealTowers',): 'SawinTotallyRealTowers',
+    ('EtaleFundamentalGroups', 'EtaleCohomology'): 'EtaleFundamentalGroupsAndCohomology',
+    ('JacobianVarieties',): 'JacobianVarieties',
+    ('Yamaguchi26AbfaithfulGalois', 'Yamaguchi26SolvableCoverings'): 'YamaguchiPapersFormalization',
+    ('AnabelianGeometry',): 'AnabelianGeometry',
+}
+
+
+def installation(text, primary, files):
+    """Use the actual package identity and toolchain, with repository-specific imports."""
+    import tomllib
+    package = tomllib.loads(files['lakefile.toml'].decode())['name']
+    if package != 'Nyll':
+        raise ValueError('Review the installation instructions for the new package identity')
+    toolchain = files['lean-toolchain'].decode().strip()
+    imports = '\n'.join('import Nyll.' + name + '.All' for name in primary)
+    repository = REPOSITORIES[tuple(primary)]
+    content = (
+        'Use [' + toolchain + '](lean-toolchain) and the Mathlib revision pinned in\n'
+        '[lake-manifest.json](lake-manifest.json). Add this dependency to your project’s\n'
+        'lakefile.toml:\n\n'
+        '```toml\n[[require]]\nname = "Nyll"\n'
+        'git = "https://github.com/n-yamaguchi-0729/' + repository + '.git"\nrev = "main"\n```\n\n'
+        'Run `lake update Nyll`, then commit your generated lake-manifest.json to retain\n'
+        'the resolved revisions. Import the library in a Lean file:\n\n'
+        '```lean\n' + imports + '\n```\n\n'
+        'The standalone distributions share the package name Nyll. Choose one distribution;\n'
+        'for several libraries together, use [NYLL](https://github.com/n-yamaguchi-0729/NYLL).\n\n'
+        'To build a checkout of this repository, run from its root:\n\n'
+        '```sh\nlake exe cache get\nlake --wfail build\n```')
+    text = section(text, 'Build')
+    text = text.replace('## Use and build\n', '## Public API\n')
+    if '## Public API\n' not in text:
+        raise ValueError('Missing installation section')
+    return section(text, 'Public API', content)
