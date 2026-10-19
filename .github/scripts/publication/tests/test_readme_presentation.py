@@ -8,14 +8,15 @@ from public_readme_presentation import INTRODUCTIONS, presentation
 
 
 class PresentationTests(unittest.TestCase):
-    def test_all_seven_introductions_are_connected_and_dependencies_move_below_results(self):
+    def test_all_seven_introductions_are_connected_and_dependency_sections_are_removed(self):
         distribution = ('<!-- nyll-publication:distribution:begin -->\n'
                         'The exact bundled dependency list.\n<!-- nyll-publication:distribution:end -->')
         for primary in INTRODUCTIONS:
             with self.subTest(primary=primary):
                 text = ('# Library\n\n[![Lean](badge)](workflow)\n\nOld short sentence.\n\n'
                         '[Old guide](https://example.test).\n\n' + distribution + '\n\n'
-                        '## Scope\n\nKeep all hypotheses.\n\n## Public API\n\nKeep imports.\n\n'
+                        '## Scope\n\nKeep all hypotheses.\n\n## Included sources\n\nOld inventory.\n\n'
+                        '## Public API\n\nKeep imports.\n\n'
                         '## License\n\nKeep attribution.\n')
                 result = presentation(text, primary)
                 intro = result.split('## Scope')[0]
@@ -23,10 +24,11 @@ class PresentationTests(unittest.TestCase):
                 self.assertIn('[NYLL](', intro)
                 self.assertIn('[mathematical guide](', intro)
                 self.assertNotIn(distribution, intro)
-                for value in (distribution, 'Keep all hypotheses.', 'Keep imports.', 'Keep attribution.'):
+                for value in ('Keep all hypotheses.', 'Keep imports.', 'Keep attribution.'):
                     self.assertEqual(result.count(value), 1)
-                self.assertLess(result.index('## Scope'), result.index('## Included sources'))
-                self.assertLess(result.index('## Included sources'), result.index('## Public API'))
+                self.assertNotIn('## Included sources', result)
+                self.assertNotIn('nyll-publication:distribution', result)
+                self.assertNotIn('Old inventory.', result)
                 self.assertEqual(presentation(result, primary), result)
 
     def test_arithmetic_and_geometric_results_share_the_main_results_heading(self):

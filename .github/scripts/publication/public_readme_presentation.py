@@ -45,8 +45,8 @@ INTRODUCTIONS = {
         'This Lean component of {nyll} studies the recovery of algebraic curves from\n'
         'their étale fundamental groups, with results on genus-zero reconstruction\n'
         'over number fields, geometric slimness and explicit fundamental-group calculations.\n'
-        'The {guide} explains the proved reconstruction statement and distinguishes it\n'
-        'from the full Grothendieck correspondence, which remains a further goal.')}
+        'The {guide} presents the reconstruction theorems and geometric applications\n'
+        'with links to their formal proofs.')}
 
 
 def presentation(text, primary):
@@ -54,12 +54,8 @@ def presentation(text, primary):
     key = tuple(primary)
     if key not in INTRODUCTIONS:
         return text
-    match = re.search(r'<!-- nyll-publication:distribution:begin -->.*?'
-                      r'<!-- nyll-publication:distribution:end -->', text, re.S)
-    if not match:
-        raise ValueError('Missing distribution block')
-    distribution = match[0]
-    text = text[:match.start()] + text[match.end():]
+    text = re.sub(r'<!-- nyll-publication:distribution:begin -->.*?'
+                  r'<!-- nyll-publication:distribution:end -->\s*', '', text, flags=re.S)
     text = re.sub(r'^## Included sources\n.*?(?=^## |\Z)', '', text, flags=re.M | re.S)
     start = re.search(r'^## ', text, re.M)
     if not start:
@@ -75,10 +71,33 @@ def presentation(text, primary):
                   'whose code is adapted and extended here. The original source credits\n'
                   'are retained in the files and in [NOTICE](NOTICE).')
     text = '\n\n'.join(part for part in (title, badges, intro) if part) + '\n\n' + body
-    anchor = '## Public API\n' if '## Public API\n' in text else '## Use and build\n'
-    if text.count(anchor) != 1:
-        raise ValueError('Missing or ambiguous README API section')
-    text = text.replace(anchor, '## Included sources\n\n' + distribution + '\n\n' + anchor)
+    text = re.sub(r'Elaboration and linter options are shared in `lakefile.toml`:\n'
+                  r'.*?Maintained sources do not override these options\.\n', '', text, flags=re.S)
+    if key in {('ProCGroups',), ('ClassFieldTheory',)}:
+        verification = (
+            '[CI](.github/workflows/lean.yml) checks the import closure, builds with\n'
+            'warnings as errors, audits declarations, and verifies proofs with NanoDa\n'
+            'and the Lean kernel. The [public API contract](.github/verification/main-declarations.json)\n'
+            'checks the named declarations and their source modules.\n\n')
+        text = re.sub(r'(?<=## Verification\n)\n.*?(?=^## |\Z)',
+                      '\n' + verification, text, flags=re.M | re.S)
+    if key == ('SawinTotallyRealTowers',):
+        verification = (
+            'The accepted [Martinet and Shafarevich Lean Eval submissions]\n'
+            '(https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json)\n'
+            'and the [earlier Sawin proof]\n'
+            '(https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/blob/'
+            '3a455e1aa9140dbbe7b7d68f508392a69c86d0f4/Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean#L31)\n'
+            'concern earlier revisions.\n\n'
+            '[CI](.github/workflows/lean.yml) builds the current import closure with warnings\n'
+            'as errors and verifies proofs with NanoDa and the Lean kernel. It checks the\n'
+            'Formal Conjectures and Martinet benchmark statements, and the public\n'
+            'Shafarevich theorem. The latter has a different interface from the accepted\n'
+            'submission. See the [verification notes](.github/verification/README.md)\n'
+            'for the source audit and verification commands.\n\n')
+        verification = verification.replace(']\n(', '](')
+        text = re.sub(r'(?<=## Verification\n)\n.*?(?=^## |\Z)',
+                      '\n' + verification, text, flags=re.M | re.S)
 
     if key == ('ProCGroups',):
         old = re.search(r'^The current library also includes finite and profinite abelian\n'
@@ -106,4 +125,15 @@ def presentation(text, primary):
             heading = '### Grothendieck’s conjecture for genus-zero curves over number fields\n'
             text = text.replace('## Main results\n', '## Main results\n\n' + heading +
                                 arithmetic[1] + '### Geometric fundamental groups\n', 1)
+        text = text.replace('The proofs realize open subgroups by finite étale covers\n'
+                            'and use geometric cohomology and ramification calculations.\n', '')
+        text = text.replace('the ambient group. \n', 'the ambient group.\n\n')
+    text = text.replace('inverse limit of actual torsion subgroups', 'inverse limit of torsion subgroups')
+    text = text.replace('`Jacobian C` over `k` without requiring a rational point.',
+                        '`Jacobian C` over `k`.')
+    text = text.replace('actual étale H¹', 'étale H¹')
+    text = text.replace('the library studies the actual map of étale fundamental',
+                        'the library studies the map of étale fundamental')
+    text = text.replace(' Completeness is not required.', '')
+    text = re.sub(r'\n{3,}', '\n\n', text)
     return text

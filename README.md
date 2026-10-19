@@ -169,14 +169,6 @@ for links to these challenge pages and to the related ProCGroups and
 ClassFieldTheory libraries. Mathematical references: [Sawin's paper](https://arxiv.org/abs/2605.20579)
 and the [Remarks paper](https://arxiv.org/abs/2605.20695).
 
-## Included sources
-
-<!-- nyll-publication:distribution:begin -->
-Only the module-level import closure of `Nyll.SawinTotallyRealTowers.All` is bundled. Dependencies retain their canonical `Nyll` imports.
-
-Supporting modules are included from [ClassFieldTheory](Nyll/ClassFieldTheory/), [GaloisCohomology](Nyll/GaloisCohomology/), [ProCGroups](Nyll/ProCGroups/), [ValuedFieldTheory](Nyll/ValuedFieldTheory/). These dependency libraries are included only to the extent required by the imports.
-<!-- nyll-publication:distribution:end -->
-
 ## Public API
 
 Import the Sawin theorem:
@@ -222,55 +214,18 @@ lake env lean --error=warning tests/Statement.lean
 lake env lean --error=warning tests/MartinetStatement.lean
 ```
 
-Elaboration and linter options are shared in `lakefile.toml`:
-`autoImplicit = false`, unused-variable and missing-documentation checks,
-and the standard linter set. Maintained sources do not override these options.
-
 ## Verification
 
-The earlier [public proof of the Formal Conjectures statement in this repository](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/blob/3a455e1aa9140dbbe7b7d68f508392a69c86d0f4/Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean#L31)
-and the accepted [Martinet and Shafarevich Lean Eval submissions](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json)
-refer to earlier versions of this repository. On 2026-09-08, the Martinet
-submission passed a fresh build of all 1,602 solver files, the official
-Comparator and NanoDa checks, and official Lean 4.33 kernel replay. Its
-[evaluation CI](https://github.com/leanprover/lean-eval-submissions/actions/runs/34192301049)
-passed. Those results predate the expanded Lean 4.34 source bundle.
+The accepted [Martinet and Shafarevich Lean Eval submissions](https://github.com/leanprover/lean-eval-submissions/blob/main/results/n-yamaguchi-0729.json)
+and the [earlier Sawin proof](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/blob/3a455e1aa9140dbbe7b7d68f508392a69c86d0f4/Lean4/SawinTotallyRealTowers/SawinTotallyRealTower.lean#L31)
+concern earlier revisions.
 
-[CI](.github/workflows/lean.yml) is configured to inventory all physical sources,
-check the SHA-pinned import closure, build the complete `Nyll` root with warnings as errors,
-compile the exact Formal Conjectures and Martinet statements, and audit every
-bundled declaration for unexpected axioms, sorry, unsafe code, and new partial
-declarations. It then exports the complete safe declaration union, checks it
-with pinned NanoDa, replays the closure with the official Lean kernel, and
-checks the three named public theorems against the compiled inventory. The
-accepted Shafarevich benchmark uses submission-specific helpers; this CI
-checks its public theorem, not that exact benchmark submission. This full
-pipeline is configured for the current Lean 4.35.0-rc2 bundle; historical
-benchmark results do not certify a newer revision.
-
-The physical inventory and SHA-pinned closure can be checked without a build:
-
-```sh
-python3 -B .github/verification/generate_manifest.py \
-  --root . --config .github/verification/manifest-config.json \
-  --manifest /tmp/sawin-modules.json --report /tmp/sawin-source-audit.json
-python3 -B .github/verification/check_source_closure.py \
-  --generated-manifest /tmp/sawin-modules.json
-```
-
-The complete pipeline requires a clean committed checkout, the dependency
-cache, and the pinned exporter and NanoDa tools. Its commands and artifact
-paths are in [the workflow](.github/workflows/lean.yml) and explained in
-[verification notes](.github/verification/README.md).
-
-CI builds local modules in dependency-depth stages and saves completed project
-compiler outputs after each stage. The cache excludes downloaded dependencies,
-toolchains, and large generated `*.setup.json` inputs. It checks the available
-archive space before saving and validates cached file hashes on restoration;
-a missing or invalid cache falls back to a normal build. A separate verification
-job still runs the complete declaration, NanoDa, and Lean kernel checks on every
-run, including cache hits. Build stages stop after five hours to leave time for
-saving completed outputs and diagnostic receipts before the runner deadline.
+[CI](.github/workflows/lean.yml) builds the current import closure with warnings
+as errors and verifies proofs with NanoDa and the Lean kernel. It checks the
+Formal Conjectures and Martinet benchmark statements, and the public
+Shafarevich theorem. The latter has a different interface from the accepted
+submission. See the [verification notes](.github/verification/README.md)
+for the source audit and verification commands.
 
 ## Authorship
 

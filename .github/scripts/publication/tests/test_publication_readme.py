@@ -135,6 +135,10 @@ class ReadmeEndpointTests(unittest.TestCase):
     def test_jacobian_conductor_domain_is_not_confused_with_arbitrary_field_factorization(self):
         base = 'Nyll/JacobianVarieties/Generalized/'
         declarations = {
+            'ExistingJacobianSheafRepresentation': ['groupSheafRepresentation'],
+            'ExistingJacobianGroupScheme': ['sheafGroupSchemeIso'],
+            'EmptyOrdinaryComparison': ['zeroDegreeOrdinaryComparison'],
+            'ScalarExtensionGroupScheme': ['groupActualScalarExtensionIso'],
             'GeneralGeometricModulusExistence': ['exists_group_geometricRegularMapHasModulus'],
             'GeneralGroupPicardOneFactorization': ['exists_modulus_unique_picardOneFactor'],
             'GeneralGroupPointedFactorization': ['exists_modulus_unique_pointedGroupFactor'],
@@ -146,6 +150,8 @@ class ReadmeEndpointTests(unittest.TestCase):
             'theorem ' + name + ' : True := by trivial\n' for name in names).encode()
                  for path, names in declarations.items()}
         text = ('# JacobianVarieties\n\n## Scope\n\nKeep ordinary Jacobians.\n\n'
+                '## Main results\n\nThe Jacobian has geometric\n'
+                'irreducibility, and dimension equal to the geometric genus.\n\n'
                 '## Incomplete results\n\nKeep remaining comparisons.\n\n'
                 '## Authorship\n\nKeep attribution.\n')
         primary = ['JacobianVarieties']
@@ -154,7 +160,9 @@ class ReadmeEndpointTests(unittest.TestCase):
                       'extended by the identity outside the open',
                       'coefficientwise maximum', 'pointed form assumes a rational point',
                       'Its support can be smaller than the original boundary',
-                      'Keep ordinary Jacobians.', 'Keep remaining comparisons.', 'Keep attribution.'):
+                      'Keep ordinary Jacobians.', 'Keep attribution.', 'fppf Picard-zero sheaf',
+                      'tensor-product group law', 'commutes with', 'field extensions',
+                      'positive-genus Abel–Jacobi closed immersion', 'principal polarization'):
             self.assertIn(claim, result)
         self.assertEqual(result, readme.current_mathematics_readme(result, files, set(files), primary))
         for path in files:
@@ -182,11 +190,12 @@ class ReadmeEndpointTests(unittest.TestCase):
             self.assertIn('`' + name + '`', result)
         for claim in ('geometric genus zero', 'at least\nthree geometric boundary points',
                       'commuting with the maps to G_k', 'are isomorphic over k',
-                      'finite models and their descent are constructed',
                       'Realization of a prescribed arithmetic fundamental-group isomorphism',
-                      'uniqueness in that correspondence', 'positive genus remain unfinished',
+                      'uniqueness in that correspondence', 'positive genus or more general finitely',
                       'Keep geometric results.', 'Keep API.', 'Keep attribution.'):
             self.assertIn(claim, result)
+        self.assertNotIn('No rational point, split compactification', result)
+        self.assertNotIn('finite models and their descent', result)
         self.assertEqual(result, readme.current_mathematics_readme(result, files, set(files), primary))
         with self.assertRaises(ValueError):
             readme.current_mathematics_readme(text, files, {base + 'GenusZeroNakamura.lean'}, primary)
@@ -247,7 +256,7 @@ class ReadmeEndpointTests(unittest.TestCase):
         self.assertIn('Global algebraization', result)
         self.assertIn('the general specialization map is not yet constructed', result)
         self.assertIn('of separably closed fields', result)
-        self.assertIn('actual continuous fundamental-group isomorphism', result)
+        self.assertIn('continuous fundamental-group isomorphism', result)
         self.assertIn('coefficient-linear comparison', result)
         self.assertIn('commutes with arbitrary base change', result)
         for path in ('Nyll/EtaleFundamentalGroups/FiniteEtale/ProperSeparablyClosedExtension.lean',

@@ -520,10 +520,9 @@ def current_stacks_readme(text, files, selected_paths):
         'of separably closed fields (including transcendental extension): ' +
         efg('FiniteEtale/ProperSeparablyClosedExtension',
             'pullback_isEquivalence_of_isProper_of_isSepClosed_constant_extension') + '.\n'
-        'The projection induces the actual continuous fundamental-group isomorphism ' +
+        'The projection induces the continuous fundamental-group isomorphism ' +
         efg('GeometricFiber/ProperConstantExtensionFundamentalGroup',
-            'fundamentalGroupEquivProperConstantExtension') + '. No smoothness, reducedness '
-        'or connectedness assumption on the proper scheme is needed.\n\n'
+             'fundamentalGroupEquivProperConstantExtension') + '.\n\n'
         'For a proper scheme over a henselian local ring, closed-fibre restriction is\n'
         'fully faithful. Affine adic effectivity and compatible closed-projective\n'
         'generators and syzygy comparisons are constructed. Global algebraization\n'
@@ -539,8 +538,7 @@ def current_stacks_readme(text, files, selected_paths):
         '. Finite direct image has no positive higher direct images and gives the\n'
         'coefficient-linear comparison Hⁿ(Y, f_*F) ≃ Hⁿ(X, F) for every n: ' +
         ec('Classical/FinitePushforward', 'etaleCohomologyFinitePushforwardEquiv') + '.\n'
-        'It commutes with arbitrary base change for module sheaves, without a torsion, '
-        'flatness or finite-presentation hypothesis.\n\n'
+        'It commutes with arbitrary base change for module sheaves.\n\n'
         'The trace of an endomorphism of a supplied perfect complex is defined by ' +
         ec('Trace/Perfect', 'perfectComplexTrace') +
         ', with model independence, cyclicity, shift signs and the proved cone formula.\n'
@@ -647,6 +645,24 @@ def current_mathematics_readme(text, files, selected_paths, primary):
     if primary == ['JacobianVarieties']:
         text = text.replace('Nyll/JacobianVarieties/Picard/TorsionCardinality.lean',
                             'Nyll/JacobianVarieties/Picard/Torsion/TorsionCardinality.lean')
+        def jv_link(relative, name, label):
+            return link('JacobianVarieties', 'Generalized/' + relative, name).replace(
+                '[`' + name + '`]', '[' + label + ']')
+        representation = jv_link('ExistingJacobianSheafRepresentation',
+                                 'groupSheafRepresentation', 'fppf Picard-zero sheaf')
+        group = jv_link('ExistingJacobianGroupScheme', 'sheafGroupSchemeIso',
+                        'tensor-product group law')
+        comparison = jv_link('EmptyOrdinaryComparison', 'zeroDegreeOrdinaryComparison',
+                             'ordinary Jacobian')
+        scalar = jv_link('ScalarExtensionGroupScheme', 'groupActualScalarExtensionIso',
+                         'field extensions')
+        def initial_sheaf(text, block):
+            anchor = 'irreducibility, and dimension equal to the geometric genus.\n'
+            require(text.count(anchor) == 1, 'Missing Jacobian description')
+            return text.replace(anchor, anchor + '\n' + block + '\n')
+        text = managed_block(text, 'jacobian-sheaf',
+            'The same Jacobian represents the ' + representation + ', with its ' + group + '.',
+            initial_sheaf)
         rows = [
             ('A full ground-field modulus for the original open complement',
              'GeneralGeometricModulusExistence', 'exists_group_geometricRegularMapHasModulus'),
@@ -660,9 +676,10 @@ def current_mathematics_readme(text, files, selected_paths, primary):
              'GeneralGroupProductConductor', 'exists_group_regularMap_product_conductors')]
         content = ('For a smooth proper geometrically integral curve over an arbitrary field,\n'
                    'a morphism from a nonempty open subset to a separated commutative group\n'
-                   'scheme locally of finite type constructs a modulus with its multiplicities.\n'
-                   'The unpointed factorization does not require a rational point, a perfect\n'
-                   'base field, or a smooth connected target.\n\n'
+                    'scheme locally of finite type admits a modulus and factors through\n'
+                    'the associated generalized Jacobian or Picard degree-one torsor.\n\n'
+                    'The empty modulus recovers the ' + comparison + ', and the construction\n'
+                    'commutes with ' + scalar + ' as a group scheme.\n\n'
                     '| Result | Mathematical content |\n| --- | --- |\n' + '\n'.join(
                         f'| {link("JacobianVarieties", "Generalized/" + path, name).replace("[`" + name + "`]", "[" + label + "]")} | {title}. |'
                         for (title, path, name), label in zip(rows, (
@@ -671,16 +688,18 @@ def current_mathematics_readme(text, files, selected_paths, primary):
                    'The pointed form assumes a rational point in the original open sent to the '
                    'identity. Uniqueness is for the factor attached to the constructed modulus.\n'
                    'Over an algebraically closed field in any characteristic, the conductor '
-                   'classifies full moduli of the actual point-value function, extended by the '
+                    'classifies full moduli of the point-value function, extended by the '
                    'identity outside the open. Its support can be smaller than the original boundary. '
                    'The map also constructs its reciprocal local symbol: ' +
                    link('JacobianVarieties', 'Generalized/GeneralGroupLocalSymbolExistence',
-                        'exists_group_regularMap_localSymbol') + '.\n'
-                   'Lie and differential comparisons, the actual nonreduced kernel and its\n'
-                   'Witt decomposition, symmetric powers, analytic uniformization, and\n'
-                   'pinching comparisons remain unfinished.')
+                         'exists_group_regularMap_localSymbol') + '.')
         text = readme_section(text, 'Generalized Jacobians', 'generalized-jacobians',
                               content, before='Incomplete results')
+        text = readme_section(text, 'Incomplete results', 'jacobian-remaining',
+            'The positive-genus Abel–Jacobi closed immersion and the principal polarization\n'
+            'are not yet formalized. Generalized-Jacobian Lie and differential comparisons,\n'
+            'the nonreduced kernel and its Witt decomposition, symmetric powers, analytic\n'
+            'uniformization, and pinching comparisons also remain open.')
         text = text.replace('Import the curve library or the Jacobian library with:',
                             'Import the Jacobian library and its required curve modules with:')
         if 'Nyll/AlgebraicCurves/All.lean' not in selected_paths:
@@ -714,8 +733,7 @@ def current_mathematics_readme(text, files, selected_paths, primary):
              'of the absolute Galois group implies center-freeness of its maximal m-step solvable '
              'quotient in any characteristic. Slimness additionally assumes infinite p-primary '
              'cyclotomic extensions for p different from the characteristic, and a cyclic '
-             'degree-p extension in characteristic p. Formal Hilbert 90 is constructed from '
-             'the field, not supplied as input. |'),
+              'degree-p extension in characteristic p. |'),
             (examples, '| ' + fields + ' | For every m ≥ 2, slimness is proved directly for '
              'infinite fields finitely generated over their prime field, fields embedding into '
              'a finitely generated extension of Q_p, and positive-dimensional higher local fields. '
@@ -743,18 +761,12 @@ def current_mathematics_readme(text, files, selected_paths, primary):
             'The arithmetic results concern smooth geometrically integral genus-zero curves\n'
             'over number fields with at least three geometric punctures. The geometric\n'
             'slimness and fundamental-group calculations below concern algebraically closed\n'
-            'fields of characteristic zero. All use the actual finite étale fiber functors.\n\n'
-            'The broader target is the Grothendieck correspondence for hyperbolic curves:\n'
-            'curve isomorphisms should correspond to arithmetic fundamental-group\n'
-            'isomorphisms over the absolute Galois group, modulo geometric inner conjugation.')
+            'fields of characteristic zero.')
         content = ('Let k be a number field and let U₁ and U₂ be opens in smooth proper\n'
                    'geometrically integral curves of geometric genus zero, each with at least\n'
                    'three geometric boundary points. A continuous isomorphism of their pointed\n'
                    'arithmetic fundamental groups commuting with the maps to G_k implies that\n'
                    'U₁ and U₂ are isomorphic over k: ' + genus_zero + '.\n\n'
-                   'No rational point, split compactification, rational boundary, supplied\n'
-                   'finite-cover model, or inertia correspondence is required as input.\n'
-                   'The finite models and their descent are constructed in the proof.\n\n'
                    'For complements of finite sets of at least three k-rational points on\n'
                    'the projective line, ' + rational + ' also constructs a projective\n'
                    'linear transformation carrying one puncture set to the other, together\n'
@@ -768,44 +780,26 @@ def current_mathematics_readme(text, files, selected_paths, primary):
         text = readme_section(text, 'Incomplete results', 'anabelian-reconstruction',
             'Realization of a prescribed arithmetic fundamental-group isomorphism by the\n'
             'reconstructed curve map, uniqueness in that correspondence, and reconstruction\n'
-            'for general hyperbolic curves of positive genus remain unfinished.\n'
-            'The selected arithmetic results are over number fields; the general finitely\n'
-            'generated characteristic-zero base-field theorem is not claimed here.')
+            'for general hyperbolic curves of positive genus or more general finitely\n'
+            'generated characteristic-zero fields remain unfinished.')
     if primary == ['EtaleFundamentalGroups', 'EtaleCohomology']:
         text = current_stacks_readme(text, files, selected_paths)
     return text
 
 
 def readme_for_extract(text, files, selected_paths, primary, source_sha=None):
-    """Preserve prose outside reviewed distribution, credit and mathematical blocks.
+    """Preserve prose outside reviewed presentation, credit and mathematical blocks.
 
-    The first migration replaces the known legacy distribution sentence and the
-    license-section body. Later runs replace only those explicit generated blocks.
+    Dependency inventories live in the publication manifest and source notices.
     No commit SHA is embedded: unchanged selected source gives unchanged prose.
     """
     require(source_sha is None or SHA.fullmatch(source_sha), 'Invalid canonical source SHA')
     _, pi1, anthropic, other = selected_records(files, selected_paths)
     text = text.replace('\r\n', '\n')
-    dependencies = sorted({p.split('/')[1] for p in selected_paths
-                           if p.startswith('Nyll/') and len(p.split('/')) > 2} - set(primary))
-    distribution = ('Only the module-level import closure of ' +
-        ', '.join(f'`Nyll.{f}.All`' for f in primary) +
-        ' is bundled. Dependencies retain their canonical `Nyll` imports.')
-    if dependencies:
-        distribution += ('\n\nSupporting modules are included from ' +
-            ', '.join(f'[{f}](Nyll/{f}/)' for f in dependencies) +
-            '. These dependency libraries are included only to the extent required by the imports.')
-    else:
-        distribution += '\n\nThe NYLL sources in this extract use Mathlib without other bundled NYLL libraries.'
-    def initial_distribution(text, block):
-        old = 'Bundled dependencies use the same `Nyll` imports as the complete library.'
-        if text.count(old) == 1:
-            return text.replace(old, block)
-        anchor = 'from [NYLL](https://github.com/n-yamaguchi-0729/NYLL).'
-        require(text.count(old) == 0 and text.count(anchor) == 1,
-                'Expected known extraction sentence for initial migration')
-        return text.replace(anchor, anchor + '\n\n' + block)
-    text = managed_block(text, 'distribution', distribution, initial_distribution)
+    text = re.sub(r'<!-- nyll-publication:distribution:begin -->.*?'
+                  r'<!-- nyll-publication:distribution:end -->\s*', '', text, flags=re.S)
+    text = re.sub(r'^## Included sources\n.*?(?=^## |\Z)', '', text, flags=re.M | re.S)
+    text = text.replace('Bundled dependencies use the same `Nyll` imports as the complete library.', '')
     text = re.sub(r'The class-field-theory modules use Mathlib and the bundled\n.*?foundations\.\n',
                   '', text, flags=re.S)
     text = current_mathematics_readme(text, files, selected_paths, primary)
