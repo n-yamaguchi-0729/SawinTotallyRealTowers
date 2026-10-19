@@ -31,10 +31,11 @@ INTRODUCTIONS = {
         'introduces selected results; the chapter inventory below distinguishes completed\n'
         'statements from partial results and the remaining goals.'),
     ('JacobianVarieties',): ('jacobian-varieties',
-        'This Lean component of {nyll} develops Jacobians and generalized Jacobians\n'
-        'of algebraic curves, including Abel–Jacobi maps, factorization properties,\n'
-        'torsion and cohomological comparisons. The {guide} explains the principal\n'
-        'constructions and results, including their base-field and characteristic hypotheses.'),
+        'This Lean component of {nyll} develops generalized Jacobians of algebraic\n'
+        'curves, with ordinary Jacobians as the zero-modulus case. It includes\n'
+        'Abel–Jacobi maps, unique factorization through generalized Jacobians,\n'
+        'torsion and cohomological comparisons. The {guide} explains the main results\n'
+        'and their hypotheses.'),
     ('Yamaguchi26AbfaithfulGalois', 'Yamaguchi26SolvableCoverings'): ('research-papers',
         'Developed within {nyll}, this Lean library formalizes Naganori Yamaguchi’s\n'
         'papers on ab-faithfulness of absolute Galois groups and extension of solvable\n'
@@ -62,6 +63,8 @@ def presentation(text, primary):
         raise ValueError('Missing README sections')
     prefix, body = text[:start.start()], text[start.start():]
     title = prefix.splitlines()[0]
+    if key == ('JacobianVarieties',):
+        title = re.sub(r'^# JacobianVarieties\b', '# Generalized Jacobians', title)
     badges = '\n'.join(line for line in prefix.splitlines() if line.startswith('[!['))
     slug, prose = INTRODUCTIONS[key]
     intro = prose.format(nyll=NYLL, guide=f'[mathematical guide]({GUIDES}{slug}/)')
@@ -115,8 +118,13 @@ def presentation(text, primary):
                 'constructed as an inverse limit of actual torsion subgroups.\n\n## Main results\n', 1)
     if key == ('JacobianVarieties',):
         text = text.replace('## Main results\n\nFor a smooth',
-                            '## Main results\n\n### Jacobians and curves\n\nFor a smooth')
-        text = re.sub(r'^## Generalized Jacobians\n', '### Generalized Jacobians\n', text, flags=re.M)
+                            '## Main results\n\n### Zero modulus: ordinary Jacobians\n\nFor a smooth')
+        text = text.replace('### Jacobians and curves\n', '### Zero modulus: ordinary Jacobians\n')
+        text = re.sub(r'^#{2,3} Generalized Jacobians\n', '### General moduli and factorization\n', text, flags=re.M)
+        text = text.replace('Import the Jacobian library and its required curve modules with:',
+                            'Import the generalized Jacobian library with:')
+        text = text.replace('For the Jacobian construction and its principal properties:',
+                            'For the ordinary Jacobian construction and its principal properties:')
     if key == ('AnabelianGeometry',):
         arithmetic = re.search(r'^## Genus-zero arithmetic reconstruction\n(.*?)'
                                r'(?=^## |\Z)', text, re.M | re.S)

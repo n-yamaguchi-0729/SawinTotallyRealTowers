@@ -51,7 +51,7 @@ class PresentationTests(unittest.TestCase):
                 '## Generalized Jacobians\n\nRetain the modulus hypotheses.\n\n'
                 '## Public API\n\nImports.\n')
         result = presentation(text, ['JacobianVarieties'])
-        self.assertIn('### Jacobians and curves\n', result)
-        self.assertIn('### Generalized Jacobians\n', result)
+        self.assertIn('### Zero modulus: ordinary Jacobians\n', result)
+        self.assertIn('### General moduli and factorization\n', result)
         self.assertNotIn('#### ', result)
         self.assertEqual(presentation(result, ['JacobianVarieties']), result)

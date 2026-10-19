@@ -3,7 +3,7 @@
   "entryModule": "Nyll.SawinTotallyRealTowers.SawinTotallyRealTower",
   "entryDeclaration": "ClassFieldTower.Sawin.sawin_totally_real_tower",
   "sourceCommit": "6b3d98d9d0cde2c61ba3e34394a6ad6fe4c9c28d",
-  "synchronizedFromCommit": "bcf8275442d635ba8a73f19f15e8283928da75a5",
+  "synchronizedFromCommit": "006a7e28a2558cbba078b4e6931a3c60fdd5e854",
   "leanToolchain": "leanprover/lean4:v4.35.0-rc2",
   "mathlibRevision": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
   "moduleCount": 1695,
