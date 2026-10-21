@@ -149,7 +149,10 @@ def canonical():
     cfg = tomllib.loads(files['lakefile.toml'].decode())
     order = [s.split('.')[1] for s in cfg['lean_lib'][0]['globs'] if s.endswith('.+')]
     require(set(order) == set(DEPTH), 'Canonical library order/depth map differs')
-    lean = {module(p): data for p, data in files.items() if p.endswith('.lean')}
+    # The distributed publication package also contains Lean checker programs.
+    # Only the mathematical library belongs to the import/closure graph.
+    lean = {module(p): data for p, data in files.items()
+            if p.endswith('.lean') and (p == 'Nyll.lean' or p.startswith('Nyll/'))}
     source_imports = {m: [n for n, _, _ in imports(b.decode())] for m, b in lean.items()}
     graph = {m: [d for d in ds if d == 'Nyll' or d.startswith('Nyll.')] for m, ds in source_imports.items()}
     for m, ds in graph.items():

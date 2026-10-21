@@ -3,22 +3,51 @@
   "entryModule": "Nyll.SawinTotallyRealTowers.SawinTotallyRealTower",
   "entryDeclaration": "ClassFieldTower.Sawin.sawin_totally_real_tower",
   "sourceCommit": "6b3d98d9d0cde2c61ba3e34394a6ad6fe4c9c28d",
-  "synchronizedFromCommit": "546123dca6492161540bcbbbbdaae42066b1e4b4",
+  "synchronizedFromCommit": "8c1b16d10afaca09e0dc72753c6575e230d31a55",
   "leanToolchain": "leanprover/lean4:v4.35.0-rc2",
   "mathlibRevision": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
-  "moduleCount": 1695,
+  "moduleCount": 1698,
   "ownerCounts": {
     "ClassFieldTheory": 658,
     "EntryPoint": 2,
     "GaloisCohomology": 161,
     "ProCGroups": 321,
     "SawinTotallyRealTowers": 269,
-    "ValuedFieldTheory": 284
+    "ValuedFieldTheory": 284,
+    "github": 3
   },
   "roots": [
     "Nyll"
   ],
   "moduleRows": {
+    ".github.scripts.publication.verification.ExportSelected": {
+      "owner": "github",
+      "path": ".github/scripts/publication/verification/ExportSelected.lean",
+      "sha256": "ba9a2426c26115a1f2843458de7f8d613225720f592c0c325aab9f555727f71f",
+      "imports": [
+        "Export"
+      ]
+    },
+    ".github.scripts.publication.verification.Inventory": {
+      "owner": "github",
+      "path": ".github/scripts/publication/verification/Inventory.lean",
+      "sha256": "4449213056a1cf1c1cb4b7d175e00539b57be9c2d8f862e04d90e7ad70353fbe",
+      "imports": [
+        "Lean",
+        "Lean.Util.CollectAxioms",
+        "Lean.Util.Sorry"
+      ]
+    },
+    ".github.scripts.publication.verification.ReplayKernel": {
+      "owner": "github",
+      "path": ".github/scripts/publication/verification/ReplayKernel.lean",
+      "sha256": "068090945d168cb21c627a3deeface6c27c4d46ab0901071f8ce36070d41a549",
+      "imports": [
+        "Lean",
+        "Lean.Replay",
+        "Lean.Util.FoldConsts"
+      ]
+    },
     "Nyll": {
       "owner": "EntryPoint",
       "path": "Nyll.lean",

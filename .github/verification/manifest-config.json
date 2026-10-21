@@ -41,7 +41,8 @@
   ],
   "excludedPaths": [
     ".github/verification",
-    "tests"
+    "tests",
+    ".github/scripts/publication"
   ],
   "enforceSourcePolicy": false,
   "orderedLibraries": [

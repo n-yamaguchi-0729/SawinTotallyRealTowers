@@ -1,0 +1,135 @@
+name: NanoDa and Lean kernel replay
+
+on:
+  workflow_call:
+    inputs:
+      config:
+        type: string
+        default: .github/scripts/manifest-config.json
+      partition:
+        type: boolean
+        default: false
+      cache-prefix:
+        type: string
+        default: proof-build-v4
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: plan
+        name: Audit all sources and require complete verification coverage
+        env:
+          SCOPE_CONFIG: ${{ inputs.config }}
+          PARTITION: ${{ inputs.partition }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ "$PARTITION" == true ]]; then args+=(--partition); fi
+          python3 -B .github/scripts/publication/verification/scope.py \
+            --root . --config "$SCOPE_CONFIG" --output "$RUNNER_TEMP/scope" "${args[@]}"
+          echo "matrix=$(cat "$RUNNER_TEMP/scope/matrix.json")" >> "$GITHUB_OUTPUT"
+      - name: Preserve full source coverage evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: proof-scope-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/scope/
+          if-no-files-found: error
+          retention-days: 14
+
+  verify:
+    needs: plan
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    name: Verify ${{ matrix.shard }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      LEAN_NUM_THREADS: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+      SCOPE_CONFIG: ${{ inputs.config }}
+      VERIFY_SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Reserve disk space on the ephemeral Lean runner
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          sudo rm -rf -- /usr/local/lib/android /usr/share/dotnet /usr/local/.ghcup \
+            /usr/share/swift /opt/hostedtoolcache/CodeQL
+          echo "MATHLIB_CACHE_DIR=$RUNNER_TEMP/mathlib-downloads" >> "$GITHUB_ENV"
+          df -h . "$RUNNER_TEMP"
+      - name: Audit the current physical source manifest
+        run: |
+          python3 -B .github/scripts/publication/verification/scope.py \
+            --root . --config "$SCOPE_CONFIG" --output "$RUNNER_TEMP/verification"
+      - name: Install the pinned Lean toolchain
+        uses: leanprover/lean-action@f061402b660e0c34644504b324e830f2991d4865
+        with:
+          auto-config: 'false'
+          build: 'false'
+          test: 'false'
+          lint: 'false'
+          use-mathlib-cache: 'false'
+          use-github-cache: 'false'
+      - name: Obtain pinned Mathlib proof artifacts
+        run: |
+          set -euo pipefail
+          lake --wfail exe cache get Mathlib
+          lake --wfail exe cache clean!
+      - name: Restore the completed incremental build outputs
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: |
+            .lake/build/lib
+            .lake/build/bin
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            .lake/build/ir/**/*.o
+            .lake/build/ir/**/*.o.*
+          key: ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-verification-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.shard }}
+          restore-keys: |
+            ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-
+            ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+      - name: Build pinned lean4export and NanoDa revisions
+        run: |
+          python3 -B .github/scripts/publication/verification/setup_tools.py \
+            --checkouts "$RUNNER_TEMP/verification-tools" \
+            --output "$RUNNER_TEMP/verification/setup"
+      - name: Audit declarations, check NanoDa, and replay the official Lean kernel
+        run: |
+          python3 -u -B .github/scripts/publication/verification/verify.py \
+            --package-root "$GITHUB_WORKSPACE" \
+            --manifest "$RUNNER_TEMP/verification/modules.json" \
+            --config "$SCOPE_CONFIG" --shard "$VERIFY_SHARD" \
+            --output "$RUNNER_TEMP/verification/checks" \
+            --exporter-checkout "$RUNNER_TEMP/verification-tools/lean4export" \
+            --nanoda-checkout "$RUNNER_TEMP/verification-tools/nanoda_lib" \
+            --nanoda-binary "$RUNNER_TEMP/verification-tools/nanoda_lib/target/release/nanoda_bin"
+      - name: Preserve logs and receipts on success or failure
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: proof-check-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/verification/
+            !${{ runner.temp }}/verification/checks/selected.ndjson
+          if-no-files-found: error
+          retention-days: 14

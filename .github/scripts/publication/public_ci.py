@@ -54,6 +54,12 @@ jobs:
     with:
       stage: all
       target: +Nyll.All
+
+  verify:
+    name: NanoDa and Lean kernel replay
+    needs: all
+    if: github.event.repository.private == false
+    uses: ./.github/workflows/proof-check.yml
 """
     return text
 
@@ -94,6 +100,10 @@ def desired_ci(repo, record):
                   leanToolchain=record["lean_toolchain"],
                   mathlibRevision=record["mathlib_revision"],
                   mathlibRepository=record["mathlib_repository"])
+    # Distributed checker wrappers are tooling, never maintained library sources.
+    # This also covers the three older verification configurations on next sync.
+    config["excludedPaths"] = list(dict.fromkeys(config.get("excludedPaths", []) +
+                                                [".github/scripts/publication"]))
     desired = {path: (json.dumps(config, indent=2, ensure_ascii=False) + "\n").encode()}
     for filename in ("generate_manifest.py", "build_stage.py"):
         desired[directory + "/" + filename] = (TEMPLATES / filename).read_bytes()
@@ -101,6 +111,7 @@ def desired_ci(repo, record):
         for filename in ("audit.py", "library-build.sh"):
             desired[directory + "/" + filename] = (TEMPLATES / filename).read_bytes()
         desired[".github/workflows/library-stage.yml"] = (TEMPLATES / "library-stage.yml").read_bytes()
+        desired[".github/workflows/proof-check.yml"] = (TEMPLATES / "proof-check.yml").read_bytes()
         desired[".github/workflows/lean.yml"] = library_workflow(depths.values()).encode()
     return desired
 

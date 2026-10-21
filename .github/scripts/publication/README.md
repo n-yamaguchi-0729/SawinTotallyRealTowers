@@ -44,5 +44,10 @@ python3 -B -m unittest discover -s .github/scripts/publication/tests -v
 Tests mock GitHub writes and Git publication operations. Test scratch files stay under
 `tmp/publication-tests`; `NYLL_PUBLICATION_TEST_TMP` can select another work-local folder.
 
+The [proof-check procedure](verification/README.md) supplies pinned NanoDa and
+official Lean kernel replay for NYLL and the four extracts that previously had
+only source audits and Lean builds. The three existing verification pipelines
+remain in place. Checker tooling is excluded from the mathematical source inventory.
+
 Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729).
 Released under Apache 2.0. Authors: Naganori Yamaguchi (assisted by OpenAI Codex).
