@@ -14,29 +14,176 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-depth1:
+  library-procgroups:
+    name: ProCGroups
     if: github.event.repository.private == false
-    uses: ./.github/workflows/build-depth.yml
+    uses: ./.github/workflows/build-library.yml
     with:
-      depth: 1
+      library: ProCGroups
 
-  build-depth2:
+  library-valuedfieldtheory:
+    name: ValuedFieldTheory
     if: github.event.repository.private == false
-    needs: build-depth1
-    uses: ./.github/workflows/build-depth.yml
+    needs: library-procgroups
+    uses: ./.github/workflows/build-library.yml
     with:
-      depth: 2
+      library: ValuedFieldTheory
 
-  build-depth3:
+  library-galoiscohomology:
+    name: GaloisCohomology
     if: github.event.repository.private == false
-    needs: build-depth2
-    uses: ./.github/workflows/build-depth.yml
+    needs: library-valuedfieldtheory
+    uses: ./.github/workflows/build-library.yml
     with:
-      depth: 3
+      library: GaloisCohomology
+
+  library-schemetheory:
+    name: SchemeTheory
+    if: github.event.repository.private == false
+    needs: library-galoiscohomology
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: SchemeTheory
+
+  library-classfieldtheory-algebra:
+    name: ClassFieldTheory.Algebra
+    if: github.event.repository.private == false
+    needs: library-schemetheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.Algebra
+
+  library-classfieldtheory-abstractclassfieldtheory:
+    name: ClassFieldTheory.AbstractClassFieldTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-algebra
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.AbstractClassFieldTheory
+
+  library-classfieldtheory-localfieldtheory:
+    name: ClassFieldTheory.LocalFieldTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-abstractclassfieldtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.LocalFieldTheory
+
+  library-classfieldtheory-ramificationtheory:
+    name: ClassFieldTheory.RamificationTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-localfieldtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.RamificationTheory
+
+  library-classfieldtheory-lubintate:
+    name: ClassFieldTheory.LubinTate
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-ramificationtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.LubinTate
+
+  library-classfieldtheory-algebraicnumbertheory:
+    name: ClassFieldTheory.AlgebraicNumberTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-lubintate
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.AlgebraicNumberTheory
+
+  library-classfieldtheory-algebraicfunctionfieldtheory:
+    name: ClassFieldTheory.AlgebraicFunctionFieldTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-algebraicnumbertheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.AlgebraicFunctionFieldTheory
+
+  library-classfieldtheory-kummertheory:
+    name: ClassFieldTheory.KummerTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-algebraicfunctionfieldtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.KummerTheory
+
+  library-classfieldtheory-localclassfieldtheory-classformation:
+    name: ClassFieldTheory.LocalClassFieldTheory.ClassFormation
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-kummertheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.LocalClassFieldTheory.ClassFormation
+
+  library-classfieldtheory-localclassfieldtheory-lubintateapplication:
+    name: ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-localclassfieldtheory-classformation
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication
+
+  library-classfieldtheory-localclassfieldtheory-finite:
+    name: ClassFieldTheory.LocalClassFieldTheory.Finite
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-localclassfieldtheory-lubintateapplication
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.LocalClassFieldTheory.Finite
+
+  library-classfieldtheory-localclassfieldtheory:
+    name: ClassFieldTheory.LocalClassFieldTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-localclassfieldtheory-finite
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.LocalClassFieldTheory
+
+  library-classfieldtheory-globalclassfieldtheory:
+    name: ClassFieldTheory.GlobalClassFieldTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-localclassfieldtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.GlobalClassFieldTheory
+
+  library-classfieldtheory-kroneckerweber:
+    name: ClassFieldTheory.KroneckerWeber
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-globalclassfieldtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory.KroneckerWeber
+
+  library-classfieldtheory:
+    name: ClassFieldTheory
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory-kroneckerweber
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: ClassFieldTheory
+
+  library-sawintotallyrealtowers:
+    name: SawinTotallyRealTowers
+    if: github.event.repository.private == false
+    needs: library-classfieldtheory
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: SawinTotallyRealTowers
+
+  library-entrypoint:
+    name: EntryPoint
+    if: github.event.repository.private == false
+    needs: library-sawintotallyrealtowers
+    uses: ./.github/workflows/build-library.yml
+    with:
+      library: EntryPoint
 
   verify:
     if: github.event.repository.private == false
-    needs: build-depth3
+    needs: [library-procgroups, library-valuedfieldtheory, library-galoiscohomology, library-schemetheory, library-classfieldtheory-algebra, library-classfieldtheory-abstractclassfieldtheory, library-classfieldtheory-localfieldtheory, library-classfieldtheory-ramificationtheory, library-classfieldtheory-lubintate, library-classfieldtheory-algebraicnumbertheory, library-classfieldtheory-algebraicfunctionfieldtheory, library-classfieldtheory-kummertheory, library-classfieldtheory-localclassfieldtheory-classformation, library-classfieldtheory-localclassfieldtheory-lubintateapplication, library-classfieldtheory-localclassfieldtheory-finite, library-classfieldtheory-localclassfieldtheory, library-classfieldtheory-globalclassfieldtheory, library-classfieldtheory-kroneckerweber, library-classfieldtheory, library-sawintotallyrealtowers, library-entrypoint]
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
@@ -69,7 +216,7 @@ jobs:
           lint: "false"
           use-mathlib-cache: "true"
           use-github-cache: "false"
-      - name: Restore completed project outputs from the depth jobs
+      - name: Restore completed project outputs from the library jobs
         uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: |
@@ -127,3 +274,13 @@ jobs:
             !${{ runner.temp }}/verification/checks/selected.ndjson
           if-no-files-found: error
           retention-days: 14
+
+  publish-cache:
+    name: Publish verified proof cache
+    needs: verify
+    if: github.event.repository.private == false && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/cache-release.yml
+    with:
+      cache-kind: legacy

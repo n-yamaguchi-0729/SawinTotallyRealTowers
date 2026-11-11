@@ -40,6 +40,24 @@ class BuildStageTests(unittest.TestCase):
         self.assertEqual(build_stage.plan(self.root, self.manifest, 1, self.depths),
                          (['Nyll.Base.Needed'], 1))
 
+    def test_library_selection_uses_only_present_source_frontier(self):
+        self.assertEqual(build_stage.library_plan(self.root, self.manifest, 'Target', self.depths),
+                         (['Nyll.Target.All'], 2))
+        self.assertEqual(build_stage.library_plan(self.root, self.manifest, 'Target.Result', self.depths),
+                         (['Nyll.Target.Result'], 1))
+
+    def test_missing_optional_sublibrary_is_empty_but_unknown_owner_rejected(self):
+        self.assertEqual(build_stage.library_plan(self.root, self.manifest, 'Target.Optional', self.depths),
+                         ([], 0))
+        with self.assertRaisesRegex(ValueError, 'Unknown library selector'):
+            build_stage.library_plan(self.root, self.manifest, 'Missing', self.depths)
+
+    def test_entrypoint_cache_stage_builds_real_root_aggregates(self):
+        (self.root / 'Nyll.lean').write_text('import Nyll.Target.All\n')
+        self.manifest['moduleRows']['Nyll'] = {'path': 'Nyll.lean', 'owner': 'EntryPoint'}
+        self.assertEqual(build_stage.library_plan(self.root, self.manifest, 'EntryPoint', self.depths),
+                         (['Nyll'], 1))
+
     def test_reverse_depth_import_is_rejected(self):
         (self.root / 'Nyll/Base/Needed.lean').write_text('import\n Nyll.Target.Result\n')
         with self.assertRaisesRegex(ValueError, 'Reverse-depth import'):

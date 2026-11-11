@@ -6,6 +6,10 @@ on:
       stage:
         required: true
         type: string
+      library:
+        required: false
+        type: string
+        default: ''
       target:
         required: false
         type: string
@@ -110,9 +114,12 @@ jobs:
         shell: bash
         env:
           LIBRARY_STAGE: ${{ inputs.stage }}
+          LIBRARY_SELECTOR: ${{ inputs.library }}
           LIBRARY_TARGET: ${{ inputs.target }}
         run: |
-          if [[ -n "$LIBRARY_TARGET" ]]; then
+          if [[ -n "$LIBRARY_SELECTOR" ]]; then
+            bash .github/scripts/library-build.sh "$LIBRARY_STAGE" --library "$LIBRARY_SELECTOR"
+          elif [[ -n "$LIBRARY_TARGET" ]]; then
             bash .github/scripts/library-build.sh "$LIBRARY_STAGE" "$LIBRARY_TARGET"
           else
             bash .github/scripts/library-build.sh "$LIBRARY_STAGE"

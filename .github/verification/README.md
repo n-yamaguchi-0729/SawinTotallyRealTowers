@@ -53,7 +53,8 @@ checkout. The workflow keeps its artifacts for 14 days.
 
 ## Incremental build stages
 
-CI builds local modules in dependency-depth stages and saves completed project
+CI builds local modules library by library, subdividing ClassFieldTheory into
+natural sublibraries, and saves completed project
 compiler outputs after each stage. The cache excludes downloaded dependencies,
 toolchains, and large generated `*.setup.json` inputs. It checks the available
 archive space before saving and validates cached file hashes on restoration;

@@ -9,32 +9,37 @@ if [[ "${GITHUB_ACTIONS:-}" != true || "${RUNNER_ENVIRONMENT:-}" != github-hoste
   echo 'This disk-guarded build is restricted to ephemeral GitHub-hosted runners.' >&2
   exit 2
 fi
-if (( $# < 1 )) || [[ ! "$1" =~ ^(depth[123](-[a-z0-9-]+)?|all)$ ]]; then
-  echo 'Usage: library-build.sh depthN | all +Nyll.All' >&2
+if (( $# < 1 )) || [[ ! "$1" =~ ^(depth[123](-[a-z0-9-]+)?|library-[a-z0-9-]+|all)$ ]]; then
+  echo 'Usage: library-build.sh library-name --library Prefix | all +Nyll.All' >&2
   exit 2
 fi
 stage="$1"
 shift
-if [[ "$stage" =~ ^depth([123])$ ]]; then
-  if (( $# != 0 )); then
-    echo 'Depth targets are computed from the audited physical import graph.' >&2
+if [[ "${1:-}" == --library ]]; then
+  if (( $# != 2 )); then
+    echo 'A library stage requires exactly one audited prefix.' >&2
     exit 2
   fi
-  depth="${BASH_REMATCH[1]}"
+  library="$2"
   plan_dir="tmp/ci-libraries/$stage-plan"
-  python3 -B .github/scripts/build_stage.py --root . --depth "$depth" \
+  python3 -B "${LIBRARY_PLANNER:-.github/scripts/build_stage.py}" --root . --library "$library" \
+    --config "${LIBRARY_CONFIG:-.github/scripts/manifest-config.json}" \
     --output "$plan_dir" --plan-only
   python3 -B - "$plan_dir/receipt.json" > "$plan_dir/targets.txt" <<'PY'
 import json
 import sys
 with open(sys.argv[1], encoding="utf-8") as stream:
     plan = json.load(stream)
-if not plan["planOnly"] or plan["exitCode"] != 0 or not plan["frontier"]:
-    raise SystemExit("Invalid or empty audited depth frontier")
+if not plan["planOnly"] or plan["exitCode"] != 0:
+    raise SystemExit("Invalid audited library frontier")
 for module in plan["frontier"]:
     print("+" + module)
 PY
   mapfile -t targets < "$plan_dir/targets.txt"
+  if (( ${#targets[@]} == 0 )); then
+    echo "No included sources in $library; the final owner stage checks all included modules."
+    exit 0
+  fi
   set -- "${targets[@]}"
 fi
 if (( $# == 0 )); then

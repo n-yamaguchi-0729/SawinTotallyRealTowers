@@ -1,0 +1,107 @@
+name: Build one library with incremental cache handoff
+
+on:
+  workflow_call:
+    inputs:
+      library:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: github.event.repository.private == false
+    name: ${{ inputs.library }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      LEAN_NUM_THREADS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Audit the complete physical source manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/verification"
+          python3 -B .github/verification/generate_manifest.py \
+            --root . --config .github/verification/manifest-config.json \
+            --manifest "$RUNNER_TEMP/verification/modules.json" \
+            --report "$RUNNER_TEMP/verification/source-audit.json"
+          if [[ -f .github/verification/check_source_closure.py ]]; then
+            python3 -B .github/verification/check_source_closure.py \
+              --generated-manifest "$RUNNER_TEMP/verification/modules.json" \
+              --output "$RUNNER_TEMP/verification/pinned-closure-audit.json"
+          fi
+      - name: Install pinned Lean and obtain the pinned Mathlib cache
+        id: setup
+        uses: leanprover/lean-action@f061402b660e0c34644504b324e830f2991d4865 # v1.6.1
+        with:
+          auto-config: "false"
+          build: "false"
+          test: "false"
+          lint: "false"
+          use-mathlib-cache: "true"
+          use-github-cache: "false"
+      - name: Restore only project compiler outputs
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .lake/build/lib/lean
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            ${{ runner.temp }}/project-build-cache.json
+          key: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-library-${{ inputs.library }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-
+            lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+      - name: Check cache integrity, falling back to an ordinary build on a miss
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/project_cache.py restore \
+            --metadata "$RUNNER_TEMP/project-build-cache.json" \
+            --report "$RUNNER_TEMP/verification/cache-restore.json"
+      - name: Build this library with the configured diagnostics
+        shell: bash
+        env:
+          LIBRARY_SELECTOR: ${{ inputs.library }}
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/build_stage.py \
+            --library "$LIBRARY_SELECTOR" --output "$RUNNER_TEMP/verification/build"
+      - name: Seal completed outputs and check archive headroom
+        id: cache_seal
+        if: always() && !cancelled() && steps.setup.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B .github/verification/project_cache.py seal \
+            --metadata "$RUNNER_TEMP/project-build-cache.json" \
+            --report "$RUNNER_TEMP/verification/cache-save.json"
+      - name: Save this library before starting the next job
+        if: always() && !cancelled() && steps.cache_seal.outputs.cacheable == 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            .lake/build/lib/lean
+            .lake/build/ir/**/*.c
+            .lake/build/ir/**/*.c.hash
+            .lake/build/ir/**/*.bc
+            .lake/build/ir/**/*.bc.hash
+            ${{ runner.temp }}/project-build-cache.json
+          key: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-library-${{ inputs.library }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Preserve the build and cache receipts
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: build-library-${{ inputs.library }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/verification/
+          if-no-files-found: warn
+          retention-days: 14

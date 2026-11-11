@@ -3,13 +3,15 @@
 
 Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729).
 Released under Apache 2.0. Authors: Naganori Yamaguchi (assisted by OpenAI Codex).
-The existing manifest audit and depth-frontier builder remain the shared owners.
+The existing manifest audit and source-frontier builder remain the shared owners.
 """
 from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
+from legacy_ci import legacy_workflow
 
 TEMPLATES = Path(__file__).resolve().with_name("ci_templates")
 SCRIPT_REPOS = {"AnabelianGeometry", "EtaleFundamentalGroupsAndCohomology",
@@ -17,8 +19,32 @@ SCRIPT_REPOS = {"AnabelianGeometry", "EtaleFundamentalGroupsAndCohomology",
 VERIFICATION_REPOS = {"ClassFieldTheory", "ProCGroups", "SawinTotallyRealTowers"}
 
 
-def library_workflow(depths):
-    """Wait for each actual import depth before the aggregate/default target."""
+# Natural CFT sublibraries prevent a fresh CFT build occupying one five-hour job.
+CFT_SUBLIBRARIES = [
+    "Algebra", "AbstractClassFieldTheory", "LocalFieldTheory", "RamificationTheory",
+    "LubinTate", "AlgebraicNumberTheory", "AlgebraicFunctionFieldTheory", "KummerTheory",
+    "LocalClassFieldTheory.ClassFormation", "LocalClassFieldTheory.LubinTateApplication",
+    "LocalClassFieldTheory.Finite", "LocalClassFieldTheory", "GlobalClassFieldTheory",
+    "KroneckerWeber",
+]
+
+
+def library_stages(ordered):
+    """Stable selectors: new modules in existing libraries need no workflow edits."""
+    if not ordered or len(set(ordered)) != len(ordered) or any(
+            not isinstance(name, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9]*", name)
+            for name in ordered):
+        raise ValueError("Expected distinct canonical library names")
+    stages = []
+    for library in ordered:
+        if library == "ClassFieldTheory":
+            stages.extend("ClassFieldTheory." + suffix for suffix in CFT_SUBLIBRARIES)
+        stages.append(library)
+    return stages
+
+
+def library_workflow(ordered):
+    """One library/sublibrary per job, with a cache handoff between jobs."""
     text = """name: Lean
 
 on:
@@ -37,16 +63,16 @@ concurrency:
 jobs:
 """
     previous = None
-    for depth in sorted(set(depths)):
-        job = f"depth{depth}"
-        text += f"  {job}:\n    name: Import depth {depth}\n"
+    for library in library_stages(ordered):
+        job = "library-" + library.lower().replace(".", "-")
+        text += f"  {job}:\n    name: {library}\n"
         if previous:
             text += f"    needs: {previous}\n"
         text += """    if: github.event.repository.private == false || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/library-stage.yml
     with:
 """
-        text += f"      stage: {job}\n\n"
+        text += f"      stage: {job}\n      library: {library}\n\n"
         previous = job
     text += f"  all:\n    name: Nyll.All and Nyll\n    needs: {previous}\n"
     text += """    if: github.event.repository.private == false || github.event_name == 'workflow_dispatch'
@@ -60,6 +86,17 @@ jobs:
     needs: all
     if: github.event.repository.private == false
     uses: ./.github/workflows/proof-check.yml
+
+  publish-cache:
+    name: Publish verified Lean cache
+    needs: verify
+    if: github.event.repository.private == false && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    uses: ./.github/workflows/cache-release.yml
+    with:
+      cache-kind: modern
+      cache-prefix: proof-build-v4
 """
     return text
 
@@ -112,7 +149,13 @@ def desired_ci(repo, record):
             desired[directory + "/" + filename] = (TEMPLATES / filename).read_bytes()
         desired[".github/workflows/library-stage.yml"] = (TEMPLATES / "library-stage.yml").read_bytes()
         desired[".github/workflows/proof-check.yml"] = (TEMPLATES / "proof-check.yml").read_bytes()
-        desired[".github/workflows/lean.yml"] = library_workflow(depths.values()).encode()
+        desired[".github/workflows/lean.yml"] = library_workflow(ordered).encode()
+    if name in VERIFICATION_REPOS:
+        desired[".github/workflows/build-library.yml"] = (TEMPLATES / "build-library.yml").read_bytes()
+        desired[".github/workflows/lean.yml"] = legacy_workflow(
+            (repo / ".github/workflows/lean.yml").read_text(), library_stages(ordered)).encode()
+    desired[".github/workflows/cache-release.yml"] = (TEMPLATES / "cache-release.yml").read_bytes()
+    desired[".github/scripts/cache-export.py"] = (TEMPLATES / "cache-export.py").read_bytes()
     return desired
 
 

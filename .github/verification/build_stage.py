@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build one actual import-depth frontier; retain completed outputs on failure."""
+"""Build an audited library frontier; retain completed outputs on failure."""
 import argparse
 from datetime import datetime, timezone
 import hashlib
@@ -16,7 +16,7 @@ import generate_manifest
 HERE = Path(__file__).resolve().parent
 
 
-def plan(root, manifest, depth, depths):
+def plan(root, manifest, depth, depths, library=None):
     depths = dict(depths, EntryPoint=max(depths.values()) + 1)
     rows = manifest["moduleRows"]
     graph = {}
@@ -32,9 +32,18 @@ def plan(root, manifest, depth, depths):
         for target in graph[name]:
             if depths[rows[target]["owner"]] > depths[owner]:
                 raise ValueError("Reverse-depth import: " + name + " -> " + target)
-    selected = {name for name, row in rows.items() if depths[row["owner"]] == depth}
-    if not selected:
-        raise ValueError("This package has no modules at the requested depth")
+    if library is not None:
+        prefix = "Nyll." + library
+        if not generate_manifest.valid_name(prefix) or library.split(".")[0] not in depths:
+            raise ValueError("Unknown library selector: " + library)
+        if library == "EntryPoint":
+            selected = {name for name, row in rows.items() if row["owner"] == "EntryPoint"}
+        else:
+            selected = {name for name in rows if generate_manifest.prefix_of(prefix, name)}
+    else:
+        selected = {name for name, row in rows.items() if depths[row["owner"]] == depth}
+        if not selected:
+            raise ValueError("This package has no modules at the requested depth")
     imported = {target for name in selected for target in graph[name] if target in selected}
     frontier = sorted(selected - imported)
     seen, pending = set(), list(frontier)
@@ -48,6 +57,11 @@ def plan(root, manifest, depth, depths):
     return frontier, len(selected)
 
 
+def library_plan(root, manifest, library, depths):
+    """Use included physical sources only; partial extracts need no fake All module."""
+    return plan(root, manifest, None, depths, library=library)
+
+
 def snapshot(root, manifest):
     paths = [row["path"] for row in manifest["moduleRows"].values()]
     paths += ["lean-toolchain", "lakefile.toml", "lake-manifest.json"]
@@ -57,26 +71,29 @@ def snapshot(root, manifest):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=HERE.parents[1])
-    parser.add_argument("--depth", type=int, choices=(1, 2, 3), required=True)
+    selection = parser.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--depth", type=int, choices=(1, 2, 3))
+    selection.add_argument("--library", help="Library or sublibrary prefix below Nyll")
+    parser.add_argument("--config", type=Path, default=HERE / "manifest-config.json")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--plan-only", action="store_true")
     args = parser.parse_args()
     root = args.root.resolve()
-    config = generate_manifest.load_json(HERE / "manifest-config.json")
+    config = generate_manifest.load_json(args.config)
     manifest, audit = generate_manifest.analyze(root, config)
     if not audit["staticPassed"]:
         raise ValueError("Physical source audit failed: " + str(audit["errors"]))
-    frontier, count = plan(root, manifest, args.depth, config["depths"])
+    frontier, count = plan(root, manifest, args.depth, config["depths"], args.library)
     command = ["lake", "--no-ansi", "--rehash", "--wfail", "build",
                *("+" + name for name in frontier)]
     args.output.mkdir(parents=True, exist_ok=False)
     before = snapshot(root, manifest)
-    receipt = {"depth": args.depth, "moduleCount": count, "frontier": frontier,
+    receipt = {"depth": args.depth, "library": args.library, "moduleCount": count, "frontier": frontier,
                "command": command, "sourceConfigSHA256": before, "passed": False,
                "startedUTC": datetime.now(timezone.utc).isoformat(), "planOnly": args.plan_only}
     code, start = 1, time.monotonic()
     try:
-        if args.plan_only:
+        if args.plan_only or not frontier:
             code = 0
         else:
             environment = dict(os.environ, LEAN_NUM_THREADS="1")
@@ -113,7 +130,7 @@ def main():
         receipt.update(exitCode=code, elapsedSeconds=round(time.monotonic() - start, 3))
         (args.output / "receipt.json").write_text(json.dumps(receipt, indent=2) + "\n")
         print(json.dumps({k: receipt[k] for k in
-              ("depth", "moduleCount", "passed", "planOnly", "exitCode", "elapsedSeconds")}))
+              ("depth", "library", "moduleCount", "passed", "planOnly", "exitCode", "elapsedSeconds")}))
     return code
 
 

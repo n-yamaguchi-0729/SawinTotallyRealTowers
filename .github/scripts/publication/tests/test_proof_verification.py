@@ -249,14 +249,17 @@ class WorkflowTests(unittest.TestCase):
                       "primary_roots": ["Nyll.ProCGroups.All"], "depths": {"ProCGroups": 1},
                       "lean_toolchain": verify.LEAN, "mathlib_revision": "a" * 40,
                       "mathlib_repository": "https://github.com/leanprover-community/mathlib4"}
+            workflow = repo / ".github/workflows/lean.yml"
+            workflow.parent.mkdir(parents=True, exist_ok=True)
+            workflow.write_text("name: Lean\njobs:\n  build-depth1:\n    uses: ./.github/workflows/build-depth.yml\n  verify:\n    needs: build-depth1\n    runs-on: ubuntu-latest\n    steps: []\n")
             changes = public_ci.desired_ci(repo, record)
             config = json.loads(changes[".github/verification/manifest-config.json"])
             self.assertIn(".github/scripts/publication", config["excludedPaths"])
-            self.assertFalse(any(path.startswith(".github/workflows/") for path in changes))
+            self.assertIn(".github/workflows/build-library.yml", changes)
 
     def test_four_missing_pipelines_require_both_checkers_after_build(self):
-        for depths in ([1, 2], [1, 2, 3]):
-            workflow = public_ci.library_workflow(depths)
+        for libraries in (["Base", "Target"], ["Base", "ClassFieldTheory", "Target"]):
+            workflow = public_ci.library_workflow(libraries)
             self.assertIn("needs: all\n", workflow)
             self.assertIn("uses: ./.github/workflows/proof-check.yml", workflow)
         template = (PACKAGE / "ci_templates/proof-check.yml").read_text()
