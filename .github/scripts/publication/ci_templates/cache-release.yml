@@ -78,31 +78,8 @@ jobs:
           set -euo pipefail
           tag="cache-${GITHUB_SHA}-linux-x86_64"
           export_dir="$RUNNER_TEMP/cache-release"
-          export CACHE_RELEASE_TAG="$tag"
-          python3 -B - <<'PY'
-          import os
-          from pathlib import Path
-          sha = os.environ['GITHUB_SHA']
-          repo = os.environ['GITHUB_REPOSITORY']
-          tag = os.environ['CACHE_RELEASE_TAG']
-          notes = f'''Compiler outputs from successful Lean and proof-verification jobs for `{sha}`.
-
-          Producer: Linux x86_64. Source, toolchain, dependency and artifact SHA-256 hashes are in `cache-manifest.json`. Native objects, dependencies and temporary setup files are excluded. Cross-platform compatibility is not claimed.
-
-          In a clean checkout of this exact commit, install its pinned Lean and dependency versions, then run:
-
-          ```sh
-          lake exe cache get
-          gh release download {tag} -R {repo} -D tmp/proof-cache-{sha[:12]}
-          python3 -B .github/scripts/cache-export.py restore --directory tmp/proof-cache-{sha[:12]}
-          ```
-
-          `lake exe cache get` obtains the official Mathlib cache for the pinned dependency manifest; do not run `lake update`. Mathlib is not duplicated in these archives.
-
-          Restore validates source/configuration/platform and all archive contents before writing missing files. Different existing outputs are preserved and reported; do not overwrite active build outputs. Run the normal incremental Lake build afterward. No recompilation was performed to create this archive.
-          '''
-          (Path(os.environ['RUNNER_TEMP']) / 'cache-release-notes.md').write_text(notes)
-          PY
+          python3 -B .github/scripts/cache-notes.py render \
+            --output "$RUNNER_TEMP/cache-release-notes.md"
           if gh release view "$tag" --json isDraft,targetCommitish > "$RUNNER_TEMP/existing-release.json" 2>/dev/null; then
             if python3 -c 'import json,sys; sys.exit(json.load(open(sys.argv[1]))["isDraft"])' "$RUNNER_TEMP/existing-release.json"; then
               gh release download "$tag" --pattern cache-manifest.json --dir "$RUNNER_TEMP/existing-cache"
@@ -122,4 +99,5 @@ jobs:
               --notes-file "$RUNNER_TEMP/cache-release-notes.md"
           fi
           gh release upload "$tag" "$export_dir"/* --clobber
-          gh release edit "$tag" --draft=false --latest=false
+          gh release edit "$tag" --draft=false --latest=false \
+            --notes-file "$RUNNER_TEMP/cache-release-notes.md"

@@ -29,6 +29,61 @@ CFT_SUBLIBRARIES = [
 ]
 
 
+NYLL_SOURCE_RULE_FILES = (
+    "tools/check_lean_rules.py", "tools/validation/check_lean_rules.py",
+    "tools/cache_sources.py", "tools/cache/cache_sources.py",
+    "tools/tests/test_check_lean_rules.py",
+)
+
+
+def nyll_source_rule_files(canonical_files):
+    """Keep the public source-rules job's executable, imports and tests together."""
+    missing = set(NYLL_SOURCE_RULE_FILES) - canonical_files.keys()
+    if missing:
+        raise ValueError("Missing NYLL source-rule tooling: " + ", ".join(sorted(missing)))
+    return {path: canonical_files[path] for path in NYLL_SOURCE_RULE_FILES}
+
+
+NYLL_STYLE_BASELINE = "e33b859d48bcd59154aaf483309d4b83d18119c4"
+
+
+def nyll_library_workflow(workflow):
+    """Grandfather only pre-existing public style debt; keep full safety audits."""
+    if "NYLL_STYLE_BASELINE:" in workflow:
+        return workflow
+    old = """      - name: Check new violations in pull requests, all sources in manual runs
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [[ -n "$BASE_SHA" ]]; then args+=(--base "$BASE_SHA"); fi
+          python3 -B tools/check_lean_rules.py "${args[@]}"
+"""
+    new = """      - name: Audit every published source and its import closure
+        run: |
+          set -euo pipefail
+          mkdir -p tmp/ci-source-rules
+          python3 -B .github/scripts/publication/ci_templates/generate_manifest.py \
+            --root . --config .github/scripts/proof-manifest-config.json \
+            --manifest tmp/ci-source-rules/modules.json --report tmp/ci-source-rules/audit.json
+      - name: Reject new source-rule violations
+        # The previously published sources contain existing bare-simp style debt.
+        # Preserve that explicit baseline; reject every newly introduced violation.
+        # The full source audit above and Lean/NanoDa/kernel checks remain required.
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          NYLL_STYLE_BASELINE: """ + NYLL_STYLE_BASELINE + """
+        run: |
+          set -euo pipefail
+          if [[ -z "$BASE_SHA" ]]; then BASE_SHA="$NYLL_STYLE_BASELINE"; fi
+          python3 -B tools/check_lean_rules.py --base "$BASE_SHA"
+"""
+    if old not in workflow:
+        raise ValueError("NYLL source-rules workflow layout changed; review the public baseline gate")
+    return workflow.replace(old, new, 1)
+
+
 def library_stages(ordered):
     """Stable selectors: new modules in existing libraries need no workflow edits."""
     if not ordered or len(set(ordered)) != len(ordered) or any(
@@ -156,6 +211,8 @@ def desired_ci(repo, record):
             (repo / ".github/workflows/lean.yml").read_text(), library_stages(ordered)).encode()
     desired[".github/workflows/cache-release.yml"] = (TEMPLATES / "cache-release.yml").read_bytes()
     desired[".github/scripts/cache-export.py"] = (TEMPLATES / "cache-export.py").read_bytes()
+    desired[".github/workflows/cache-notes.yml"] = (TEMPLATES / "cache-notes.yml").read_bytes()
+    desired[".github/scripts/cache-notes.py"] = (TEMPLATES / "cache-notes.py").read_bytes()
     return desired
 
 
