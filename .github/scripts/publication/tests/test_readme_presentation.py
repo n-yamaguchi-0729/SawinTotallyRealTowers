@@ -8,6 +8,18 @@ from public_readme_presentation import INTRODUCTIONS, REPOSITORIES, installation
 
 
 class PresentationTests(unittest.TestCase):
+    def test_title_and_installation_follow_the_pinned_toolchain(self):
+        text = ('# Example (Lean 4.35.0-rc2)\n\n## Public API\n\nOld instructions.\n'
+                '\n## History\n\nOriginally tested with Lean 4.35.0-rc2.\n')
+        for version in ('4.35.0', '4.36.0-rc1'):
+            files = {'lakefile.toml': b'name = "Nyll"\n',
+                     'lean-toolchain': ('leanprover/lean4:v' + version + '\n').encode()}
+            result = installation(text, ['ProCGroups'], files)
+            self.assertTrue(result.startswith('# Example (Lean ' + version + ')\n'))
+            self.assertIn('[leanprover/lean4:v' + version + '](lean-toolchain)', result)
+            self.assertIn('Originally tested with Lean 4.35.0-rc2.', result)
+            self.assertEqual(installation(result, ['ProCGroups'], files), result)
+
     def test_generalized_jacobian_installation_and_title_use_the_renamed_repository(self):
         files = {'lakefile.toml': b'name = "Nyll"\n',
                  'lean-toolchain': b'leanprover/lean4:v4.35.0-rc2\n'}

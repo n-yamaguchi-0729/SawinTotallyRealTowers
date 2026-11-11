@@ -231,6 +231,9 @@ def installation(text, primary, files):
     if package != 'Nyll':
         raise ValueError('Review the installation instructions for the new package identity')
     toolchain = files['lean-toolchain'].decode().strip()
+    version = toolchain.removeprefix('leanprover/lean4:v')
+    text = re.sub(r'\A(# [^\n]*?) \(Lean [^)\n]+\)(?=\n|$)',
+                  lambda match: match[1] + ' (Lean ' + version + ')', text, count=1)
     imports = '\n'.join('import Nyll.' + name + '.All' for name in primary)
     repository = REPOSITORIES[tuple(primary)]
     content = (

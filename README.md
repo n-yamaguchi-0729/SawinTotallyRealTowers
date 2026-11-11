@@ -1,4 +1,4 @@
-# Sawin's totally real towers (Lean 4.35.0-rc2)
+# Sawin's totally real towers (Lean 4.35.0)
 
 [![Lean](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml/badge.svg)](https://github.com/n-yamaguchi-0729/SawinTotallyRealTowers/actions/workflows/lean.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
