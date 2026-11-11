@@ -23,9 +23,9 @@ LEAN_REV = 'eb6cafb7290e8bd5f2937522d8d804f58f02bafc'
 EXPORT_COMMIT = '5a9a355dc6c5fd82b69058d433e2ae2e8dfbf8fe'
 NANODA_COMMIT = '4c544ed4099c8227f07d5de77ad1e69fb0740a27'
 WRAPPERS = {
-    'Inventory.lean': '7d052d15525b9068aa76c2f69d04ef63b2c5ad9fd1da6ffae534e1f7dc0f3a2e',
+    'Inventory.lean': '604049e984f1810c6a68ecbf253d181d6427e0085699aea18225b4cf356131ea',
     'ExportSelected.lean': '9370f7f59574d5bd10161ca2588ed270f75ad139ae6393ea217f71a27f12177e',
-    'ReplaySix.lean': '0077e49bc5f3f66a583f1a1f4581b8bfe3f7888f99b59fbf020ba2ce79403b29',
+    'ReplaySix.lean': 'ec6749e484029a3a47471d40dcace4fea3922c8f1bb893f102b0c655f7594bf6',
 }
 COPYRIGHT_HEADER = (
     '/-\n'
