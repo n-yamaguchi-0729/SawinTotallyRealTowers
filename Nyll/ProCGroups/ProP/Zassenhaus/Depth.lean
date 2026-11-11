@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.Functoriality
+module
+
+public import Nyll.ProCGroups.ProP.Zassenhaus.Functoriality
 
 /-!
 # Zassenhaus depth predicates
@@ -14,6 +16,8 @@ This avoids assigning an arbitrary finite value to elements lying in every
 filtration layer, and gives the later relation-counting API a decidable
 finite-index predicate without installing new data instances.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

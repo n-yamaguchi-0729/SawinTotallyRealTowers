@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.LinearAlgebra.LinearIndependent.Defs
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
 
 /-!
 # Linearity of finite transgression
@@ -15,6 +17,8 @@ Packages ambient-conjugation-invariant finite characters as a `ZMod p`-module an
 the explicit finite transgression construction is linear.  The kernel extension theorem then gives
 a criterion for linear independence of finite families of transgression classes.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open scoped Topology

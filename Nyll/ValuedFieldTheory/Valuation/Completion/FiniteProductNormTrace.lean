@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Norm.Basic
-import Mathlib.RingTheory.Trace.Basic
-import Mathlib.LinearAlgebra.Dimension.Constructions
+module
+
+public import Mathlib.RingTheory.Norm.Basic
+public import Mathlib.RingTheory.Trace.Basic
+public import Mathlib.LinearAlgebra.Dimension.Constructions
 
 /-!
 # Norms and traces on finite dependent products
@@ -19,6 +21,8 @@ field degrees.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

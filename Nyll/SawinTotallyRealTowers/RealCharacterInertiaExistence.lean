@@ -4,33 +4,36 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
-import Nyll.SawinTotallyRealTowers.NegativeThreeLocalRadical
-import Nyll.SawinTotallyRealTowers.RationalIdealSquareRadical
-import Nyll.SawinTotallyRealTowers.RealCharacterInertiaCorrection
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
-import Nyll.SawinTotallyRealTowers.NegativeThreeCharacter
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummerLinear
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalSelmer
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.LinearAlgebra.Dual.Defs
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
+public import Nyll.SawinTotallyRealTowers.NegativeThreeLocalRadical
+public import Nyll.SawinTotallyRealTowers.RationalIdealSquareRadical
+public import Nyll.SawinTotallyRealTowers.RealCharacterInertiaCorrection
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
+public import Nyll.SawinTotallyRealTowers.NegativeThreeCharacter
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummerLinear
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalSelmer
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 
 /-!
 # Arbitrary finite inertia data with a prescribed real value
@@ -42,6 +45,8 @@ at three therefore corrects any finite local family to annihilate the radical.
 Global reciprocity realizes the corrected family, and the existing real-sign
 correction preserves all inertia outside an allowed set containing three.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField BigOperators

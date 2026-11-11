@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
-import Mathlib.RingTheory.DedekindDomain.SelmerGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
+public import Mathlib.RingTheory.DedekindDomain.SelmerGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 
 /-!
 # The empty-support Selmer interpretation of the ideal-power radical
@@ -13,6 +17,8 @@ import Mathlib.RingTheory.DedekindDomain.SelmerGroup
 This file identifies the ideal-power condition on a principal fractional
 ideal with the empty-support Selmer condition on its Kummer class.
 -/
+
+@[expose] public section
 
 open scoped NumberField nonZeroDivisors WithZero
 open NumberField IsDedekindDomain
@@ -110,7 +116,8 @@ abbrev EmptySupportSelmerGroup (n : ℕ+) :=
     (R := 𝓞 K) (K := K)
     (S := (∅ : Set (HeightOneSpectrum (𝓞 K)))) (n := (n : ℕ))
 
-private noncomputable def idealRadicalRepresentativeToEmptySelmer
+/-- A representative in the ideal-power radical defines its empty-support Selmer class. -/
+noncomputable def idealRadicalRepresentativeToEmptySelmer
     (n : ℕ+) :
     (idealNthPowerRadicalKummerSubgroup K n).1 →*
       EmptySupportSelmerGroup K n where
@@ -152,7 +159,7 @@ noncomputable def idealNthPowerRadicalQuotientToEmptySelmer
   restrictedRadicalQuotientLift n
     (idealNthPowerRadicalKummerSubgroup K n)
     (idealRadicalRepresentativeToEmptySelmer K n)
-    (restrictedNthPowers_le_ker_representativeToEmptySelmer K n)
+    (by exact restrictedNthPowers_le_ker_representativeToEmptySelmer K n)
 
 @[simp]
 theorem idealNthPowerRadicalQuotientToEmptySelmer_mk

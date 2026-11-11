@@ -4,16 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Abelianization.Defs
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityPrimeNorm
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedReciprocity
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+module
+
+public import Mathlib.GroupTheory.Abelianization.Defs
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityPrimeNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedReciprocity
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # Canonical unramified normalization
@@ -24,6 +30,8 @@ Frobenius, both algebraically and in the topological abelianization.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -170,10 +178,6 @@ variable (K L : Type)
   [Valuation.HasExtension (ValuativeRel.valuation K)
     (ValuativeRel.valuation L)]
 
-private noncomputable instance normalizationIntegerRingIsIntegralClosure :
-    IsIntegralClosure 𝒪[L] 𝒪[K] L :=
-  localCompleteDVF_integerRing_isIntegralClosure K L
-
 variable
   [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L]
 
@@ -296,12 +300,12 @@ theorem localArtinMonoidHom_localAbstractPrimeFieldUnit :
     rw [←
       finiteGaloisAbstractUnramifiedFrobenius_eq_arithmeticFrobenius
         K L i]
-    rfl
   rw [hq] at hsymbol
   exact hsymbol
 
 /-! ## Equality with the field-facing unramified reciprocity map -/
 
+omit [IsUniformAddGroup L] in
 /-- On an unramified extension, the inverse of the canonical reciprocity
 isomorphism is exactly the field-facing Frobenius-normalized isomorphism. -/
 theorem abelianizationEquivNormQuotient_symm_eq_unramifiedLocalReciprocityIso :
@@ -355,6 +359,7 @@ theorem abelianizationEquivNormQuotient_symm_eq_unramifiedLocalReciprocityIso :
   obtain ⟨m, rfl⟩ := hpowers z
   rw [map_zpow, map_zpow, hcanonical, hactual]
 
+omit [IsUniformAddGroup L] in
 /-- The canonical local norm-residue symbol is the field-facing unramified
 Artin map. -/
 theorem localArtinMonoidHom_eq_unramifiedLocalArtinMap :
@@ -368,6 +373,7 @@ theorem localArtinMonoidHom_eq_unramifiedLocalArtinMap :
         (normClass K L x)
   rw [abelianizationEquivNormQuotient_symm_eq_unramifiedLocalReciprocityIso K L]
 
+omit [IsUniformAddGroup L] in
 /-- Frobenius normalization on the chosen inverse prime element. -/
 @[simp]
 theorem localArtinMonoidHom_inverseIntegerRingUniformizerFieldUnit :
@@ -386,6 +392,7 @@ theorem localArtinMonoidHom_inverseIntegerRingUniformizerFieldUnit :
     unramifiedLocalReciprocityIso_inverseIntegerRingUniformizerFieldUnit
       K L
 
+omit [IsUniformAddGroup L] in
 /-- Full unramified Artin formula for the canonical local norm-residue symbol. -/
 theorem localArtinMonoidHom_eq_frobenius_zpow (x : Kˣ) :
     localArtinMonoidHom K L x =
@@ -398,6 +405,7 @@ theorem localArtinMonoidHom_eq_frobenius_zpow (x : Kˣ) :
 
 /-! ## Continuous Frobenius normalization -/
 
+omit [IsUniformAddGroup L] in
 /-- The continuous local Artin map sends every field unit to the topological
 class of arithmetic Frobenius raised to its normalized valuation. -/
 theorem localArtinMap_eq_frobenius_zpow (x : Kˣ) :
@@ -439,6 +447,7 @@ theorem localArtinMap_localAbstractPrimeFieldUnit :
   rw [localArtinMap_toMonoidHom]
   exact localArtinMonoidHom_localAbstractPrimeFieldUnit K L
 
+omit [IsUniformAddGroup L] in
 /-- A chosen inverse DVR uniformizer maps to arithmetic Frobenius. -/
 @[simp]
 theorem localArtinMap_uniformizer :
@@ -450,6 +459,7 @@ theorem localArtinMap_uniformizer :
     LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
     v_inverseIntegerRingUniformizerFieldUnit, zpow_one]
 
+omit [IsUniformAddGroup L] in
 /-- Elements of normalized valuation zero lie in the kernel of the
 unramified local Artin map. -/
 theorem localArtinMap_eq_one_of_valuationMap_eq_zero
@@ -462,6 +472,7 @@ theorem localArtinMap_eq_one_of_valuationMap_eq_zero
 open _root_.LocalFieldTheory.IsNonarchimedeanLocalField (
   integerUnitsToFieldUnits
 ) in
+omit [IsUniformAddGroup L] in
 /-- Every valuation-ring unit has trivial unramified Artin symbol. -/
 @[simp]
 theorem localArtinMap_units_unramified (u : 𝒪[K]ˣ) :
@@ -484,6 +495,7 @@ variable (K L : Type)
     (ValuativeRel.valuation L)]
   [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L]
 
+omit [IsUniformAddGroup L] in
 /-- The canonical local Artin map for an abelian unramified extension sends
 each field unit to actual arithmetic Frobenius raised to its normalized valuation. -/
 theorem abelianLocalArtinMonoidHom_eq_frobenius_zpow (x : Kˣ) :

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.FreeCrossedDifferential
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.FreeCrossedDifferential
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
 
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — free group — derivative
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   The completed free-group derivative vector sends a free generator to the corresponding coordinate
   basis vector.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

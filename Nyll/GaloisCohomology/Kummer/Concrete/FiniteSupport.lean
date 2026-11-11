@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FiniteAbelian.Basic
-import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+module
+
+public import Mathlib.GroupTheory.FiniteAbelian.Basic
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
 
 /-!
 # finite radical support
@@ -21,6 +23,8 @@ finite Kummer theory; no finite Kummer endpoint is assumed here.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

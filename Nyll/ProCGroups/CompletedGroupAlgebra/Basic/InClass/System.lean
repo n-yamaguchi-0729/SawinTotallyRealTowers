@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Stage
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Stage
+public import Nyll.ProCGroups.InverseSystems.Basic
 
 /-!
 # Completed Group Algebra / Basic / Within a Class / System
@@ -12,6 +15,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Stage
 This module assembles the \(C\)-indexed stages into a topological inverse system and supplies the
 single `IsRingSystem` witness from which the completed carrier inherits its ring structure.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UniversalNormDescent
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusClosureCommutation
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UniversalNormDescent
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusClosureCommutation
 
 /-!
 # Actions on Frobenius fixed fields
@@ -15,7 +18,9 @@ its compatibility with conjugate-stable actions, relative norms, inclusions,
 and Frobenius power sums.
 -/
 
-universe u
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -31,17 +36,13 @@ open scoped BigOperators
 
 section fixedFieldActions
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe; `IntegralRepGroupType` names that shared boundary.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- The action on a Frobenius fixed field induced by an element commuting
 with its defining generator. -/
-noncomputable def frobeniusFixedFieldAction (D : DegreeData G) (A : Rep ℤ G)
+noncomputable def frobeniusFixedFieldAction (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -85,7 +86,7 @@ noncomputable def frobeniusFixedFieldAction (D : DegreeData G) (A : Rep ℤ G)
 
 /-- The fixed-field action has the expected ambient automorphism after coercion. -/
 @[simp]
-theorem frobeniusFixedFieldAction_coe (D : DegreeData G) (A : Rep ℤ G)
+theorem frobeniusFixedFieldAction_coe (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -101,7 +102,7 @@ theorem frobeniusFixedFieldAction_coe (D : DegreeData G) (A : Rep ℤ G)
   rfl
 
 /-- On a quotient representative, the fixed-field action coerces to the represented action. -/
-theorem frobeniusFixedFieldAction_coe_of_mk (D : DegreeData G) (A : Rep ℤ G)
+theorem frobeniusFixedFieldAction_coe_of_mk (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -139,7 +140,7 @@ theorem frobeniusFixedFieldAction_coe_of_mk (D : DegreeData G) (A : Rep ℤ G)
 
 /-- The fixed-field action coincides with the conjugation-stable action. -/
 theorem frobeniusFixedFieldAction_eq_conjugateStableAction
-    (D : DegreeData G) (A : Rep ℤ G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -163,7 +164,7 @@ theorem frobeniusFixedFieldAction_eq_conjugateStableAction
 
 /-- Relative norm in a power-fixed-field tower is equivariant for every
 quotient element commuting with both defining powers. -/
-theorem relativeNorm_frobeniusFixedFieldAction (D : DegreeData G) (A : Rep ℤ G)
+theorem relativeNorm_frobeniusFixedFieldAction (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -199,7 +200,7 @@ theorem relativeNorm_frobeniusFixedFieldAction (D : DegreeData G) (A : Rep ℤ G
 
 /-- Inclusion of a stabilized Frobenius fixed field intertwines its action
 with the actual quotient action on the maximal unramified field. -/
-theorem frobeniusFixedFieldAction_inclusion (D : DegreeData G) (A : Rep ℤ G)
+theorem frobeniusFixedFieldAction_inclusion (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -238,7 +239,7 @@ theorem frobeniusFixedFieldAction_inclusion (D : DegreeData G) (A : Rep ℤ G)
 
 /-- A Frobenius power sum commutes with the relative norm in a fixed-field
 tower whenever the quotient element stabilizes both fields. -/
-theorem fixedFieldPowerSum_relativeNorm (D : DegreeData G) (A : Rep ℤ G)
+theorem fixedFieldPowerSum_relativeNorm (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -274,7 +275,7 @@ theorem fixedFieldPowerSum_relativeNorm (D : DegreeData G) (A : Rep ℤ G)
 
 /-- The fixed-field power sum becomes the global Frobenius power sum after
 inclusion into the maximal unramified field. -/
-theorem fixedFieldPowerSum_inclusion (D : DegreeData G) (A : Rep ℤ G)
+theorem fixedFieldPowerSum_inclusion (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)

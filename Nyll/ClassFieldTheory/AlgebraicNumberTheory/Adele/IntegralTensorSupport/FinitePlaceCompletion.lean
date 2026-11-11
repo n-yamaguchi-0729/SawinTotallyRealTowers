@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
 
 /-!
 # Finite-place completion maps for relative tensor factors
@@ -14,6 +18,8 @@ places and records how the resulting maps preserve norms and integrality.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain

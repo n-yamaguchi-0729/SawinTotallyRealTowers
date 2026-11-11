@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.RingTheory.Finiteness.Basic
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Topology.Algebra.Group.Quotient
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.FrattiniQuotient
-import Nyll.ProCGroups.ProP.GeneratorRank
+module
+
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.RingTheory.Finiteness.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.FrattiniQuotient
+public import Nyll.ProCGroups.ProP.GeneratorRank
 
 /-!
 # Minimal epimorphisms of finitely generated pro-p groups
@@ -21,6 +23,8 @@ import Nyll.ProCGroups.ProP.GeneratorRank
 Equal generator ranks make the induced epimorphism of finite Frattini quotients
 injective. The original kernel therefore lies in the source Frattini subgroup.
 -/
+
+@[expose] public section
 
 open scoped IsMulCommutative
 

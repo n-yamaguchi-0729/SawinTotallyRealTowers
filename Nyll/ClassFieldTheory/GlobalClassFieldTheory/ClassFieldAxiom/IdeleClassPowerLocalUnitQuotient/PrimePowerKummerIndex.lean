@@ -4,14 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedIdeleIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.NormContainment
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
-import Mathlib.FieldTheory.IsSepClosed
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedIdeleIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.NormContainment
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
+public import Mathlib.FieldTheory.IsSepClosed
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
 
 /-!
 # Prime-power Kummer norm index
@@ -21,6 +27,8 @@ and norm containment to prove the prime-power Kummer norm-index theorem.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
@@ -33,7 +41,11 @@ noncomputable section
 
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+universe u
+
+section PowerIndex
+
+variable {K : Type u} [Field K] [NumberField K]
 
 open scoped Classical in
 /-- The actual exact-sequence product after evaluating the middle local
@@ -68,6 +80,10 @@ theorem card_sUnitPrincipalQuotient_mul_card_ideleClassQuotient_eq_power_two_tot
       (K := K) n S T hLarge,
     card_supportedIdeleQuotient_eq_power_two_totalPlaceCard
       (K := K) n hmu S T hS]
+
+end PowerIndex
+
+variable {K : Type} [Field K] [NumberField K]
 
 open scoped Classical in
 /-- The class-quotient calculation for the Kummer-selected prime set.
@@ -324,13 +340,12 @@ theorem
     (eG :
       Gal(E/K) ≃*
         (Fin 1 → Multiplicative (ZMod (n : ℕ)))) :
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite K E
     (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index =
       Module.finrank K E := by
+  intro sharedOwner1
   classical
-  let _ : NumberField E :=
-    NumberField.of_module_finite K E
   let eCyclic :
       Gal(E/K) ≃* Multiplicative (ZMod (n : ℕ)) :=
     eG.trans
@@ -481,13 +496,12 @@ theorem ideleClassNorm_index_eq_finrank_primePowerKummer
     (eG :
       Gal(E/K) ≃*
         (Fin 1 → Multiplicative (ZMod (n : ℕ)))) :
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite K E
     (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index =
       Module.finrank K E := by
+  intro sharedOwner1
   classical
-  let : NumberField E :=
-    NumberField.of_module_finite K E
   let i : E →ₐ[K] SeparableClosure K :=
     IsSepClosed.lift
   let R : IntermediateField K (SeparableClosure K) :=

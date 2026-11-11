@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PowerIndex
-import Mathlib.NumberTheory.Padics.RingHoms
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PowerIndex
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
 /-!
 # The `n`-fold multiple quotient of `Z_p`
@@ -16,6 +19,8 @@ formula.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -29,15 +34,17 @@ namespace LocalFieldTheory.DiscreteValuationField
 
 variable {p : ℕ} [Fact p.Prime]
 
-/-- The normalized local absolute value of a natural number in a degree-`d`
-mixed-characteristic local field.  Since `d = ef` and `q = p^f`, this is
-exactly `q^(-e v_p(n))`, the normalized factor `|n|_𝔭`. -/
+/-- The algebraic factor used in the local-field power-index formula.
+For a nonzero natural number in a degree-`d` mixed-characteristic local field,
+`d = ef` and `q = p^f` identify it with `q^(-e v_p(n))`, the normalized
+absolute value `|n|_𝔭`. At `n = 0` this total expression is not the absolute value of zero. -/
 def normalizedLocalNatAbs (p d n : ℕ) : ℚ :=
   (p : ℚ) ^ (-(d * padicValNat p n : ℕ) : ℤ)
 
 omit [Fact p.Prime] in
-/-- The reciprocal of the normalized local absolute value is the integral
-defect factor occurring in the local-field power-index formula. -/
+/-- The reciprocal of the algebraic factor is the integral defect factor in the
+local-field power-index formula. This identity holds for every `n`; its absolute-value
+interpretation requires `n ≠ 0`. -/
 theorem one_div_normalizedLocalNatAbs (d n : ℕ) :
     1 / normalizedLocalNatAbs p d n =
       (p ^ (d * padicValNat p n) : ℕ) := by
@@ -57,10 +64,10 @@ theorem nsmulAddSubgroup_padicInt_eq_span (n : ℕ) :
   constructor
   · rintro ⟨y, rfl⟩
     refine ⟨y, ?_⟩
-    simp [nsmul_eq_mul]
+    simp only [nsmul_eq_mul]
   · rintro ⟨y, rfl⟩
     refine ⟨y, ?_⟩
-    simp [nsmul_eq_mul]
+    simp only [nsmul_eq_mul]
 
 /-- The valuation of a nonzero natural number in `Z_p` is `v_p(n)`. -/
 theorem padicInt_valuation_natCast (n : ℕ) :

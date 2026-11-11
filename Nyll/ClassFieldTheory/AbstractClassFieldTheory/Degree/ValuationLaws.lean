@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
 
 /-!
 # normalized degree and Frobenius theory: functoriality of normalized valuations
@@ -13,6 +15,10 @@ import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
 This file proves the two functorial assertions of normalized-valuation functoriality from the
 source norm laws.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -24,9 +30,8 @@ open CyclicCohomology
 
 noncomputable section
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- Conjugating an abstract field does not change its degree image. -/
 theorem DegreeData.fieldImage_conjugate
@@ -46,7 +51,8 @@ theorem DegreeData.fieldImage_conjugate
     have hx : x ∈ conjugateClosedSubgroup K σ := by
       rw [conjugateClosedSubgroup_mem]
       change σ * x * σ⁻¹ ∈ K.toSubgroup
-      simpa [x, mul_assoc] using hk
+      change k ∈ K.toSubgroup at hk
+      simpa only [x, mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one] using hk
     refine ⟨x, hx, ?_⟩
     simp [x, map_mul, mul_assoc, mul_comm]
 
@@ -153,7 +159,7 @@ theorem normalizedValuation_conjugate [ContinuousMul G]
           A.ρ σ⁻¹
             ((normToBase A K.field a :
               ambientFixedAddSubgroup A (baseField G)) : A.V) := by
-                simpa [normToBase] using
+                simpa only [normToBase] using
                   (relativeNorm_absoluteConjugate_apply A K.field σ a)
         _ = ((normToBase A K.field a :
               ambientFixedAddSubgroup A (baseField G)) : A.V) := by
@@ -171,7 +177,7 @@ theorem normalizedValuation_tower (v : ValuationData D A)
         ((v.valuationAt E.field a : v.valueGroup) : ZHat) =
       ((v.valuationAt E.base
         (relativeNorm A E.base.field E.field.field E.below a) : v.valueGroup) : ZHat) := by
-  let ER := E.toFiniteResidueAbstractExtension D
+  intro ER
   apply zHatMulNat_injective (E.base.residueDegree D).property
   change (ER.base.residueDegree : ℕ) •
       ((ER.residueDegree : ℕ) • v.dividedAt E.field a) =

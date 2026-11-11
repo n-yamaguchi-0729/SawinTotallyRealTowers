@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
 
 /-!
 # Valuation transport along field equivalences
@@ -14,6 +16,8 @@ a finite subextension to its image inside a common ambient field.  The
 transport is by comapping the valuation along a field equivalence; no
 valuation-comparison hypothesis is added.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -150,7 +154,7 @@ attached to a comap. -/
     exact
       (valuationSubringRingEquivOfComap_mem_maximalIdeal_iff v e x).2 hx
   · intro hy
-    refine ⟨r.symm y, ?_, by simp [r]⟩
+    refine ⟨r.symm y, ?_, r.apply_symm_apply y⟩
     exact
       (valuationSubringRingEquivOfComap_mem_maximalIdeal_iff v e
         (r.symm y)).1 (by simpa [r] using hy)

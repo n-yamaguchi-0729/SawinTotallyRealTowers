@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
 
 /-!
 # infinite actual-field form
@@ -20,6 +22,8 @@ abstract-operator statement of the Kummer generation theorem.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,18 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Even
-import Mathlib.Algebra.Polynomial.Monic
-import Mathlib.Algebra.Polynomial.Degree.Operations
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.FieldTheory.KummerPolynomial
-import Mathlib.FieldTheory.Minpoly.Field
-import Mathlib.RingTheory.PowerBasis
+module
+
+public import Mathlib.Algebra.Group.Even
+public import Mathlib.Algebra.Polynomial.Monic
+public import Mathlib.Algebra.Polynomial.Degree.Operations
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.FieldTheory.KummerPolynomial
+public import Mathlib.FieldTheory.Minpoly.Field
+public import Mathlib.RingTheory.PowerBasis
 
 /-!
 # Quadratic fields inside the algebraic closure of ℚ
@@ -25,6 +27,8 @@ finite Galois intermediate field of degree two. Its internal generator,
 square relation, and generation theorem let later arithmetic constructions
 supply reality and ramification conditions without assuming an extension.
 -/
+
+@[expose] public section
 
 open Polynomial
 
@@ -69,7 +73,7 @@ noncomputable def quadraticClosure (d : ℚ) (hd : ¬ IsSquare d) :
     FiniteGaloisIntermediateField ℚ (AlgebraicClosure ℚ) where
   toIntermediateField := IntermediateField.adjoin ℚ {quadraticClosureRoot d}
   finiteDimensional := IntermediateField.adjoin.finiteDimensional
-    (quadraticClosureRoot_isIntegral d)
+    (by exact quadraticClosureRoot_isIntegral d)
   isGalois := by
     let : Algebra.IsQuadraticExtension ℚ
         (IntermediateField.adjoin ℚ ({quadraticClosureRoot d} : Set (AlgebraicClosure ℚ))) :=

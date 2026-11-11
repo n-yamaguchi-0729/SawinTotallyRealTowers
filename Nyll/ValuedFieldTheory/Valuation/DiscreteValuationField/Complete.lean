@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport
 
 /-!
 # Complete discretely valued fields
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

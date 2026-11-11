@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLevel
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizer
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLevel
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizer
 
 /-!
 # The completed theta-intertwining theorem: the completed changed-uniformizer level
@@ -23,6 +25,8 @@ The repository's primitive polynomial indexed by `n` cuts out division level
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -45,15 +49,13 @@ noncomputable local instance equalCharacteristicChangedCompletedBaseAlgebra
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   laurentSeriesCoefficientAlgebra
 
-private instance equalCharacteristicChangedCompletedBaseCharP
+/-- The completed unramified base retains the residue characteristic. -/
+theorem equalCharacteristicChangedCompletedBaseCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] :
     CharP (equalCharacteristicCompletedUnramifiedField F.residueField)
       F.residueCharacteristic :=
-  charP_of_injective_algebraMap
-    (algebraMap F.residueField
-      (equalCharacteristicCompletedUnramifiedField F.residueField)).injective
-    F.residueCharacteristic
+  equalCharacteristicCompletedLevelBaseCharP F
 
 noncomputable local instance equalCharacteristicChangedCompletedBaseValuationIsNontrivial
     (k : Type v) [Field k] :
@@ -228,7 +230,8 @@ theorem equalCharacteristicChangedCompletedLevelField_finiteDimensional
       (equalCharacteristicChangedCompletedLevelField F u n) := by
   infer_instance
 
-private theorem equalCharacteristicChangedCompletedPrimitivePolynomial_map_degree_ne_zero
+/-- The changed primitive polynomial retains nonzero degree in its completed splitting field. -/
+theorem equalCharacteristicChangedCompletedPrimitivePolynomial_map_degree_ne_zero
     (F : LocalField.{u, v} K) (u : F.residueField⟦X⟧ˣ) (n : ℕ) :
     ((equalCharacteristicChangedCompletedPrimitivePolynomial F u n).map
       (algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)

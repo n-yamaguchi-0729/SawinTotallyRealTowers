@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.Subgroups.Closed
+module
+
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
 
 /-!
 # Closed subgroups of products of pro-\(C\) groups
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.ProC.Subgroups.Closed
 This file transfers an open-normal quotient basis in \(C\) from a product to a closed subgroup
 when \(C\) is subgroup closed, and specializes the result to subdirect products.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

@@ -4,10 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.TateComparison
 
 /-!
 # The rational idele-class formation
@@ -18,6 +25,8 @@ cohomology calculation to prove the abstract class-field axiom.
 -/
 
 
+
+@[expose] public section
 
 namespace GlobalClassFieldTheory
 
@@ -120,15 +129,11 @@ theorem rationalIdeleClassRepresentation_satisfiesClassFieldAxiom :
   let : Finite (tateCohomology M (-1)) :=
     Finite.of_equiv
       (tateCohomology U (-1)) eTateHm1.symm.toLinearEquiv.toEquiv
-  refine
-    { finiteTateHZero := by
-        change Finite (tateCohomology M 0)
-        infer_instance
-      finiteTateHMinusOne := by
-        change Finite (tateCohomology M (-1))
-        infer_instance
-      tateHZero_card := ?_
-      tateHMinusOne_card := ?_ }
+  refine ClassFieldAxiomCohomologyData.ofOriginal (by
+    change Finite (tateCohomology M 0)
+    infer_instance) (by
+    change Finite (tateCohomology M (-1))
+    infer_instance) ?_ ?_
   · change Nat.card (tateCohomology M 0) =
       ((DegreeData.FiniteAbstractExtension.ofInclusion
         L K hLK).degree : ℕ)

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
 
 /-!
 # Bijectivity criteria for maps out of the open-quotient completion
@@ -18,20 +20,22 @@ local reciprocity from the arithmetic existence theorem.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open CategoryTheory
 
 namespace LocalClassFieldTheory
 
-universe u
+universe u v
 
 variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- Quotienting by the exact pullback of an open normal subgroup gives an
 injective map to the corresponding finite quotient of the target. -/
 theorem topologicalProfiniteCompletionFiniteQuotientMap_injective
-    (P : ProfiniteGrp.{u}) (f : G →ₜ* P) (N : OpenNormalSubgroup P) :
+    (P : ProfiniteGrp.{v}) (f : G →ₜ* P) (N : OpenNormalSubgroup P) :
     Function.Injective
       (topologicalProfiniteCompletionFiniteQuotientMap P f N) := by
   rw [← MonoidHom.ker_eq_bot_iff]
@@ -49,7 +53,7 @@ variable [IsTopologicalGroup G]
 /-- Dense range of the original map implies surjectivity of its canonical
 extension from the open-quotient completion. -/
 theorem topologicalProfiniteCompletionLift_surjective_of_denseRange
-    (P : ProfiniteGrp.{u}) (f : G →ₜ* P) (hf : DenseRange f) :
+    (P : ProfiniteGrp.{v}) (f : G →ₜ* P) (hf : DenseRange f) :
     Function.Surjective (topologicalProfiniteCompletionLift P f) := by
   let F := topologicalProfiniteCompletionLift P f
   have hF_dense : DenseRange F := by
@@ -66,7 +70,7 @@ theorem topologicalProfiniteCompletionLift_surjective_of_denseRange
 /-- Cofinality of pulled-back target quotients implies injectivity of the
 canonical lift from the open-quotient completion. -/
 theorem topologicalProfiniteCompletionLift_injective_of_preimage_cofinal
-    (P : ProfiniteGrp.{u}) (f : G →ₜ* P)
+    (P : ProfiniteGrp.{v}) (f : G →ₜ* P)
     (hcofinal : ∀ H : OpenFiniteIndexNormalSubgroup G,
       ∃ N : OpenNormalSubgroup P,
         topologicalProfiniteCompletionPreimageIndex P f N ≤ H) :

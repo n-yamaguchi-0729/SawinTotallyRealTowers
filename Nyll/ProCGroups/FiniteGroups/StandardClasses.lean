@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Nilpotent
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Nyll.ProCGroups.FiniteGroups.AllFinite
+module
+
+public import Mathlib.GroupTheory.Nilpotent
+public import Mathlib.NumberTheory.Padics.PadicVal.Basic
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Standard classes of finite groups
@@ -16,6 +18,8 @@ This module constructs the cyclic, abelian, solvable, nilpotent, finite \(p\)-gr
 product, extension, formation, and full-formation properties needed later, together with the
 finite-order arithmetic and cyclic witnesses supporting those proofs.
 -/
+
+@[expose] public section
 
 namespace ProCGroups
 

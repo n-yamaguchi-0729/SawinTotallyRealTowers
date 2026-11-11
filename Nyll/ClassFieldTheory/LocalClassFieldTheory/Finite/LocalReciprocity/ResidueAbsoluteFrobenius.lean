@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFrobenius
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFrobenius
 
 /-!
 # Finite local reciprocity: Frobenius on an infinite residue extension
@@ -19,6 +21,8 @@ For an algebraic closure this is the Frobenius map compared with the degree
 map in finite local reciprocity. The construction itself does not require a
 bijectivity hypothesis.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -46,7 +50,7 @@ def finiteResidueFrobeniusIntermediate
 
 /-- The compatible finite Frobenius coordinates attached to one profinite
 integer. -/
-private def residueFrobeniusLimitPoint (z : ZHatMul) :
+def residueFrobeniusLimitPoint (z : ZHatMul) :
     limit (InfiniteGalois.asProfiniteGaloisGroupFunctor k Omega) where
   val := fun E => finiteResidueFrobeniusIntermediate k Omega E.unop z
   property := by

@@ -4,12 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassNormTopology
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassNormTopology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # Class fields from ordinary idele-class norm neighbourhoods
@@ -23,6 +28,10 @@ so its conclusion is an equality of genuine determinant-norm ranges.
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 open scoped NumberField
 
@@ -39,7 +48,7 @@ open Reciprocity
 equivalences to additive homomorphisms. -/
 @[instance_reducible]
 private noncomputable def ordinaryNormClassFieldIdeleClassCommGroup
-    (F : Type) [Field F] [NumberField F] :
+    (F : Type u) [Field F] [NumberField F] :
     CommGroup (IdeleClassGroup F) :=
   QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
@@ -53,7 +62,7 @@ private theorem addSubgroup_map_map_eq_of_comp_eq
   rw [AddSubgroup.map_map, hcomp]
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 

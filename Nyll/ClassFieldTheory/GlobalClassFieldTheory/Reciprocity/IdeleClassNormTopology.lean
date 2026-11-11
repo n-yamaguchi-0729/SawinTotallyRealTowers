@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # The norm topology and the ordinary idele-class topology
@@ -19,6 +24,8 @@ ordinary idele-class topology after transport to the actual fixed field.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -56,16 +63,12 @@ noncomputable def rationalTransportedNormSubgroup
       (KummerTheory.ambientFixedAddSubgroup
         rationalIdeleClassRepresentation K)) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-    letI : FiniteDimensional ℚ F :=
+    let : FiniteDimensional ℚ F :=
       abstractFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K hKfinite
-    letI : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField F := NumberField.of_module_finite ℚ F
     AddSubgroup (Additive (IdeleClassGroup F)) := by
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  letI : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  letI : NumberField F := NumberField.of_module_finite ℚ F
+  intro F sharedOwner2 sharedOwner3
   exact
     H.map
       (rationalAbstractFixedFieldIdeleClassEquivFixed

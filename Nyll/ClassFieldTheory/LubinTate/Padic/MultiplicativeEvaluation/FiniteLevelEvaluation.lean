@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveDisplacement
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeIntertwiner
-import Mathlib.RingTheory.AdicCompletion.Topology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveDisplacement
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeIntertwiner
+public import Mathlib.RingTheory.AdicCompletion.Topology
 
 /-!
 # Finite-level evaluation of the p-adic multiplicative comparison
@@ -18,6 +20,8 @@ comparison identity, and injectivity of the evaluated comparison.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

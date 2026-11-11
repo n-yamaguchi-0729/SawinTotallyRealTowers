@@ -4,9 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Tensor norm images at actual finite places
@@ -27,6 +33,8 @@ in that subgroup, and its corresponding local quotient class is one.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
@@ -38,7 +46,9 @@ open LocalClassFieldTheory
 open AlgebraicNumberTheory.Valuations
 open LocalFieldTheory
 
-variable {K L : Type}
+universe u v
+
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

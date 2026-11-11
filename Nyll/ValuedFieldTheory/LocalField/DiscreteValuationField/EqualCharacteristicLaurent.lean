@@ -4,27 +4,29 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.SeriesValuationEstimates
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuationUniformizer
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.UniformizerIntegerValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuationSubringUnitMap
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.LocalFieldRangeRestriction
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuedExtensionUnitMap
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.CompleteDVRExpansion
-import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.RingTheory.LaurentSeries
-import Mathlib.RingTheory.Localization.Away.Basic
-import Mathlib.RingTheory.PowerSeries.Evaluation
-import Mathlib.Topology.Algebra.LinearTopology
-import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
-import Mathlib.LinearAlgebra.Dimension.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.SeriesValuationEstimates
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuationUniformizer
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.UniformizerIntegerValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuationSubringUnitMap
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.LocalFieldRangeRestriction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuedExtensionUnitMap
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.CompleteDVRExpansion
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
+public import Mathlib.RingTheory.LaurentSeries
+public import Mathlib.RingTheory.Localization.Away.Basic
+public import Mathlib.RingTheory.PowerSeries.Evaluation
+public import Mathlib.Topology.Algebra.LinearTopology
+public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
+public import Mathlib.LinearAlgebra.Dimension.Basic
 
 /-!
 # Equal-characteristic Laurent-series input for the local-field structure classification
@@ -37,6 +39,8 @@ localization description `κ((X)) = κ⟦X⟧[X⁻¹]`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -145,33 +149,33 @@ theorem uniformizer_hasEval_mrangeRestrict
 
 /-- The maximal-ideal adic topology on the valuation ring is linear. -/
 private theorem valuationSubring_isLinearTopology_adic :
-    letI : TopologicalSpace F.valuationSubring := F.maximalIdeal.adicTopology
+    let : TopologicalSpace F.valuationSubring := F.maximalIdeal.adicTopology
     IsLinearTopology F.valuationSubring F.valuationSubring := by
-  let : TopologicalSpace F.valuationSubring := F.maximalIdeal.adicTopology
+  intro sharedOwner1
   exact
     IsLinearTopology.mk_of_hasBasis F.valuationSubring
       (Ideal.hasBasis_nhds_zero_adic F.maximalIdeal)
 
 /-- The `WithIdeal` adic topology on the valuation ring is linear. -/
-private theorem valuationSubring_isLinearTopology_withIdeal :
-    letI : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+theorem valuationSubring_isLinearTopology_withIdeal :
+    let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
     IsLinearTopology F.valuationSubring F.valuationSubring := by
-  let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+  intro sharedOwner1
   exact valuationSubring_isLinearTopology_adic (F := F)
 
 /-- The valuation ring is complete for its maximal-ideal adic topology. -/
-private theorem valuationSubring_completeSpace_withIdeal :
-    letI : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+theorem valuationSubring_completeSpace_withIdeal :
+    let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
     CompleteSpace F.valuationSubring := by
-  let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+  intro sharedOwner1
   have hadic : IsAdic F.maximalIdeal := rfl
   exact (hadic.isAdicComplete_iff.mp F.isAdicComplete).1
 
 /-- The valuation ring is Hausdorff for its maximal-ideal adic topology. -/
-private theorem valuationSubring_t2Space_withIdeal :
-    letI : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+theorem valuationSubring_t2Space_withIdeal :
+    let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
     T2Space F.valuationSubring := by
-  let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+  intro sharedOwner1
   have hadic : IsAdic F.maximalIdeal := rfl
   exact (hadic.isAdicComplete_iff.mp F.isAdicComplete).2
 
@@ -180,9 +184,9 @@ ring for the maximal-ideal adic topology. -/
 theorem uniformizer_hasEval_valuationSubring_withIdeal
     {π : F.valuationSubring}
     (hπ : F.valuation.IsUniformizer (π : K)) :
-    letI : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+    let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
     PowerSeries.HasEval π := by
-  let : WithIdeal F.valuationSubring := { i := F.maximalIdeal }
+  intro sharedOwner1
   change Filter.Tendsto (fun m : ℕ => π ^ m) Filter.atTop
     (nhds (0 : F.valuationSubring))
   refine (F.maximalIdeal.hasBasis_nhds_zero_adic).tendsto_right_iff.2 ?_
@@ -748,7 +752,7 @@ theorem adicLaurentSeriesEvalHom_surjective
   intro x
   by_cases hx : x = 0
   · refine ⟨0, ?_⟩
-    simp [hx]
+    rw [hx, map_zero]
   rcases LubinTate.Valuations.exists_laurent_unit F π hπ hx with
     ⟨m, u, _hu, hx_eq⟩
   rcases adicPowerSeriesEvalSubringHom_surjective
@@ -798,7 +802,7 @@ end CompleteDVF
 /-- If the structure map of an algebra over a field is onto, the algebra is
 one-dimensional as a vector space over the base. -/
 theorem finiteDimensional_of_surjective_algebraMap
-    (E L : Type u) [Field E] [Field L] [Algebra E L]
+    (E : Type u) (L : Type v) [Field E] [Field L] [Algebra E L]
     (hsurj : Function.Surjective (algebraMap E L)) :
     FiniteDimensional E L := by
   exact
@@ -937,16 +941,16 @@ noncomputable def laurentImageSubfield_nontriviallyNormedField
     {n : ℕ+} (hcard : Nat.card F.residueField = p ^ (n : ℕ))
     (π : F.valuationSubring)
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom) :=
       ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))
-    letI : NontriviallyNormedField K :=
+    let : NontriviallyNormedField K :=
       CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF
     NontriviallyNormedField
       (F.laurentImageSubfield p hcard π hπ) := by
   let Γ : Type v :=
     MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom
-  letI : Valued K Γ := ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))
+  intro sharedOwner6
   haveI : (Valued.v : _root_.Valuation K Γ).RankOne := by
     change
       (_root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict
@@ -954,8 +958,7 @@ noncomputable def laurentImageSubfield_nontriviallyNormedField
     exact
       _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_rankOne
         F.toCompleteDVF
-  letI : NontriviallyNormedField K :=
-    CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF
+  intro sharedOwner7
   let piSub : F.laurentImageSubfield p hcard π hπ :=
     F.laurentSeriesEquivLaurentImageSubfield p hcard π hπ
       (algebraMap F.residueField⟦X⟧ F.residueField⸨X⸩
@@ -991,23 +994,18 @@ noncomputable def laurentImageSubfield_normedAlgebra
     {n : ℕ+} (hcard : Nat.card F.residueField = p ^ (n : ℕ))
     (π : F.valuationSubring)
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom) :=
       ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))
-    letI : NontriviallyNormedField K :=
+    let : NontriviallyNormedField K :=
       CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF
-    letI : NontriviallyNormedField
+    let : NontriviallyNormedField
         (F.laurentImageSubfield p hcard π hπ) :=
       F.laurentImageSubfield_nontriviallyNormedField p hcard π hπ
     NormedAlgebra (F.laurentImageSubfield p hcard π hπ) K := by
   let Γ : Type v :=
     MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom
-  letI : Valued K Γ := ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))
-  letI : NontriviallyNormedField K :=
-    CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF
-  letI : NontriviallyNormedField
-      (F.laurentImageSubfield p hcard π hπ) :=
-    F.laurentImageSubfield_nontriviallyNormedField p hcard π hπ
+  intro sharedOwner6 sharedOwner7 sharedOwner8
   exact
     { (inferInstance :
         Algebra (F.laurentImageSubfield p hcard π hπ) K) with
@@ -1022,29 +1020,22 @@ theorem finiteDimensional_over_laurentImageSubfield
     {n : ℕ+} (hcard : Nat.card F.residueField = p ^ (n : ℕ))
     (π : F.valuationSubring)
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom) :=
       ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))
-    letI : NontriviallyNormedField K :=
+    let : NontriviallyNormedField K :=
       CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF
-    letI : NontriviallyNormedField
+    let : NontriviallyNormedField
         (F.laurentImageSubfield p hcard π hπ) :=
       F.laurentImageSubfield_nontriviallyNormedField p hcard π hπ
-    letI : NormedAlgebra
+    let : NormedAlgebra
         (F.laurentImageSubfield p hcard π hπ) K :=
       F.laurentImageSubfield_normedAlgebra p hcard π hπ
     FiniteDimensional (F.laurentImageSubfield p hcard π hπ) K := by
+  intro sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   let Γ : Type v :=
     MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom
-  let : Valued K Γ := ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))
-  let : NontriviallyNormedField K :=
-    CompleteDVF.mrangeRestrict_nontriviallyNormedField F.toCompleteDVF
-  let : NontriviallyNormedField
-      (F.laurentImageSubfield p hcard π hπ) :=
-    F.laurentImageSubfield_nontriviallyNormedField p hcard π hπ
-  let : NormedAlgebra
-      (F.laurentImageSubfield p hcard π hπ) K :=
-    F.laurentImageSubfield_normedAlgebra p hcard π hπ
+  let : Valued K Γ := sharedOwner2
   have htop : F.laurentImageSubfield p hcard π hπ = ⊤ :=
     F.laurentImageSubfield_eq_top p hcard π hπ
   have hsurj :
@@ -1097,11 +1088,10 @@ theorem finiteDimensional_over_laurentSeries
     {n : ℕ+} (hcard : Nat.card F.residueField = p ^ (n : ℕ))
     (π : F.valuationSubring)
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) :
-    letI : Algebra F.residueField⸨X⸩ K :=
+    let : Algebra F.residueField⸨X⸩ K :=
       F.laurentSeriesAlgebra p hcard π hπ
     FiniteDimensional F.residueField⸨X⸩ K := by
-  let : Algebra F.residueField⸨X⸩ K :=
-    F.laurentSeriesAlgebra p hcard π hπ
+  intro sharedOwner1
   let Γ : Type v :=
     MonoidHom.mrange F.toCompleteDVF.valuation.toMonoidWithZeroHom
   let : Valued K Γ := ((CompleteDVF.mrangeRestrictValued F.toCompleteDVF))

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 
 /-!
 # The abstract reciprocity construction: the Frobenius semigroup
@@ -12,6 +14,8 @@ import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 The set `Frob(\widetilde L | K)` from  is closed under multiplication:
 normalized degrees are positive natural numbers and add under products.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Density
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Density
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
 
 /-!
 # Fox differential: completed — free pro-\(C\) — stage approximation
@@ -34,6 +36,8 @@ The principal declarations in this module are:
   N_{\mathrm{stage},j}\) only has to project to the trivial right coordinate at the \(j\)-th finite
   stage; the completed approximant remains the genuine graph point \((D w, \varphi(w))\).
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

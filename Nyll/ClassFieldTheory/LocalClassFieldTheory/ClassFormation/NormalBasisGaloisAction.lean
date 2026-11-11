@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
-import Mathlib.GroupTheory.GroupAction.Quotient
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+public import Mathlib.GroupTheory.GroupAction.Quotient
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction` Lean module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -126,9 +130,9 @@ principal-unit set `V^n = 1 + π_K^n M`. -/
 theorem galoisGroup_smul_mem_chosenNormalBasisPrincipalUnitSet
     (n : Nat) (sigma : Gal(L/K)) {a : 𝒪[L]ˣ}
     (ha : a ∈ chosenNormalBasisPrincipalUnitSet K L n) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     sigma • a ∈ chosenNormalBasisPrincipalUnitSet K L n := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   rw [mem_chosenNormalBasisPrincipalUnitSet_iff] at ha ⊢
   have hstable :=
     galoisGroup_apply_mem_chosenBaseUniformizerPow_chosenNormalBasisIntegerLattice
@@ -170,12 +174,11 @@ theorem chosenNormalBasisPrincipalUnitSubgroup_tateNorm_coe
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
     (a : V) :
-    letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ((tateNorm (Gal(L / K)) V a : V) : 𝒪[L]ˣ) =
       tateNorm (Gal(L / K)) 𝒪[L]ˣ (a : 𝒪[L]ˣ) := by
-  let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1 sharedOwner2
   unfold tateNorm
   change V.subtype (∏ g : Gal(L / K), g • a) =
     ∏ g : Gal(L / K), g • (a : 𝒪[L]ˣ)
@@ -190,12 +193,11 @@ theorem chosenNormalBasisPrincipalUnitSubgroup_sigmaMinusOne_coe
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n)
     (sigma : Gal(L/K)) (a : V) :
-    letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ((sigmaMinusOne (Gal(L / K)) V sigma a : V) : 𝒪[L]ˣ) =
       sigmaMinusOne (Gal(L / K)) 𝒪[L]ˣ sigma (a : 𝒪[L]ˣ) := by
-  let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1 sharedOwner2
   rfl
 
 /-- The quotient action on `𝒪_Lˣ / V^n`, descended from the actual integer-unit

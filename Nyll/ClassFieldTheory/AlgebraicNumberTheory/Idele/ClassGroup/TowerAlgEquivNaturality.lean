@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Naturality of tower base change under number-field equivalences
@@ -24,13 +29,17 @@ local components is introduced.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField
 
 noncomputable section
 
+universe u v w x y z
+
 variable
-    {K K' L L' : Type}
+    {K : Type u} {K' : Type v} {L : Type w} {L' : Type x}
     [Field K] [NumberField K]
     [Field K'] [NumberField K']
     [Field L] [NumberField L] [Algebra K L]
@@ -41,7 +50,7 @@ variable
 section CongrComposition
 
 variable
-    {M N : Type}
+    {M : Type y} {N : Type z}
     [Field M] [NumberField M]
     [Field N] [NumberField N]
 

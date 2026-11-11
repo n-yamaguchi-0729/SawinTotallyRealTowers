@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Equiv.TypeTags
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.Data.Finsupp.Fintype
-import Mathlib.Data.ZMod.Basic
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.RingTheory.LocalRing.Module
+module
+
+public import Mathlib.Algebra.Group.Equiv.TypeTags
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.Data.Finsupp.Fintype
+public import Mathlib.Data.ZMod.Basic
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.RingTheory.LocalRing.Module
 
 /-!
 # Prime-power kernel coordinates
@@ -19,6 +21,8 @@ v)`.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative
 

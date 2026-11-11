@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 
 /-!
 # Local conductor subgroups in the idele class group
@@ -17,6 +20,8 @@ global class field.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 

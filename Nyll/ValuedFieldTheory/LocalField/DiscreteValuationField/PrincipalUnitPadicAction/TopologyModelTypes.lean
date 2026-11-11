@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitCore
-import Nyll.ValuedFieldTheory.Valuation.Topology.Models
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitCore
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
 
 /-!
 # Type-level topology models for principal units
@@ -16,6 +19,8 @@ selection.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -21,6 +21,9 @@ from public_readme_presentation import presentation, installation
 PI1 = 'Nyll/EtaleFundamentalGroups/Pi1/'
 ANTHROPIC = 'https://github.com/anthropics/fermats-last-theorem/'
 ANTHROPIC_REV = 'aa2d8b34692b16c70f699536de0d8e75b9a3e9ef'
+# Both revisions retain identical reviewed NOTICE and ATTRIBUTION Git blobs:
+# 5411679f5f1878e72d1622a88c54b8fbb3f29282 / ac80b9de81c8132d3bccc57f13463b293a340422.
+ANTHROPIC_REVIEWED_REVISIONS = {ANTHROPIC_REV, '6e837e75355538c7f80bab5b956861e86c4eacc2'}
 SHA = re.compile(r'[0-9a-f]{40}')
 FAMILIES = ('SchemeTheory', 'AlgebraicCurves', 'JacobianVarieties')
 METADATA_NAMES = ('LICENSE', 'README.md', 'ATTRIBUTION.md', 'UPSTREAM.json')
@@ -69,7 +72,7 @@ def selected_records(files, selected_paths):
         if any(u.startswith(ANTHROPIC) for u in source_urls):
             owner = path.split('/')[1]
             revisions = re.findall(re.escape(ANTHROPIC) + r'blob/([0-9a-f]{40})/', notice)
-            require(revisions and set(revisions) == {ANTHROPIC_REV},
+            require(revisions and set(revisions) <= ANTHROPIC_REVIEWED_REVISIONS,
                     'Anthropic revision requires a new upstream-notice audit: ' + path)
             base['upstream_sources'] = [u for u in source_urls
                                         if u.startswith(ANTHROPIC) and urlsplit(u).path.endswith('.lean')]
@@ -736,13 +739,13 @@ def current_mathematics_readme(text, files, selected_paths, primary):
             'A Lean 4 library **under development**, aiming to formalize the Grothendieck\n'
             'conjecture for hyperbolic curves. It currently develops geometric étale\n'
             'fundamental groups, their slimness, and explicit genus-zero calculations.',
-            'A Lean 4 library proving genus-zero weak reconstruction over number fields,\n'
+            'A Lean 4 library proving genus-zero weak reconstruction over finitely generated fields of characteristic zero,\n'
             'geometric fundamental-group slimness, and explicit genus-zero calculations.\n'
             'Weak reconstruction establishes a curve isomorphism; realizing the supplied\n'
             'group isomorphism and the full Grothendieck correspondence remain further goals.')
         text = readme_section(text, 'Scope', 'anabelian-scope',
             'The arithmetic results concern smooth geometrically integral genus-zero curves\n'
-            'over number fields with at least three geometric punctures. The geometric\n'
+            'over fields finitely generated over the rationals with at least three geometric punctures. The geometric\n'
             'slimness and fundamental-group calculations below concern algebraically closed\n'
             'fields of characteristic zero.')
         content = ('Let k be a number field and let U₁ and U₂ be opens in smooth proper\n'

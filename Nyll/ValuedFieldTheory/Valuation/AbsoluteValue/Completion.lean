@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
-import Mathlib.Analysis.Normed.Field.Instances
-import Mathlib.Analysis.Normed.Module.Completion
-import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Mathlib.Analysis.Normed.Field.Instances
+public import Mathlib.Analysis.Normed.Module.Completion
+public import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
 
 /-!
 # Completions of absolute-valued fields
@@ -20,6 +22,8 @@ container is introduced.  The base-to-completion algebra instance is the
 canonical one inherited from WithAbs; algebras between different completions
 remain explicit.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -116,7 +120,8 @@ theorem denseRange_toCompletion
       (WithAbs.toAbs_surjective vK).denseRange
       (@UniformSpace.Completion.continuous_coe (WithAbs vK) inferInstance)
 
-private noncomputable def baseToExtensionCompletion
+/-- The base field, equipped with its absolute value, maps into the extension completion. -/
+noncomputable def baseToExtensionCompletion
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ) :
     WithAbs vK →+* wL.Completion :=
@@ -134,7 +139,8 @@ private theorem baseToExtensionCompletion_norm
     WithAbs.norm_eq_apply_ofAbs, WithAbs.ofAbs_algebraMap]
   exact hw x.ofAbs
 
-private theorem baseToExtensionCompletion_isometry
+/-- An exact extension of absolute values makes the base-to-completion map an isometry. -/
+theorem baseToExtensionCompletion_isometry
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) :
@@ -218,9 +224,9 @@ copy of the extension field.  It is deliberately explicit. -/
 noncomputable def toCompletionAlgHom
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (wL : AbsoluteValue L ℝ) :
-    letI := extensionCompletionAlgebra (K := K) wL
+    let : Algebra K wL.Completion := extensionCompletionAlgebra (K := K) wL
     L →ₐ[K] wL.Completion := by
-  letI := extensionCompletionAlgebra (K := K) wL
+  intro sharedAlgebra
   exact
     { __ := toCompletion wL
       commutes' _ := rfl }
@@ -230,13 +236,11 @@ theorem completion_isScalarTower
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) :
-    letI hK := extensionCompletionAlgebra (K := K) wL
-    letI : SMul K wL.Completion := hK.toSMul
-    letI := completionAlgebra vK wL hw
+    let hK := extensionCompletionAlgebra (K := K) wL
+    let : SMul K wL.Completion := hK.toSMul
+    let := completionAlgebra vK wL hw
     IsScalarTower K vK.Completion wL.Completion := by
-  let hK := extensionCompletionAlgebra (K := K) wL
-  let : SMul K wL.Completion := hK.toSMul
-  let := completionAlgebra vK wL hw
+  intro hK sharedOwner2 sharedOwner3
   exact IsScalarTower.of_algebraMap_eq fun x ↦
     (completionMap_coe vK wL hw x).symm
 
@@ -245,10 +249,9 @@ theorem completionAbsoluteValue_extends
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) :
-    letI := completionAlgebra vK wL hw
+    let := completionAlgebra vK wL hw
     Extends (completionAbsoluteValue vK) (completionAbsoluteValue wL) := by
-  let := completionAlgebra vK wL hw
-  intro x
+  intro sharedOwner1 x
   change ‖algebraMap vK.Completion wL.Completion x‖ = ‖x‖
   exact (completionMap_isometry vK wL hw).norm_map_of_map_zero
     (map_zero _) x
@@ -317,7 +320,8 @@ section CompleteTarget
 
 variable {K : Type u} {D : Type w} [Field K] [Field D]
 
-private noncomputable def toCompleteTargetRingHom
+/-- A field homomorphism transported to the carriers equipped with absolute values. -/
+noncomputable def toCompleteTargetRingHom
     (vK : AbsoluteValue K ℝ) (vD : AbsoluteValue D ℝ)
     (i : K →+* D) :
     WithAbs vK →+* WithAbs vD :=
@@ -332,7 +336,8 @@ private theorem toCompleteTargetRingHom_norm
   change vD (i (WithAbs.equiv vK x)) = vK (WithAbs.equiv vK x)
   exact hi _
 
-private theorem toCompleteTargetRingHom_isometry
+/-- A value-preserving field homomorphism is an isometry on the absolute-valued carriers. -/
+theorem toCompleteTargetRingHom_isometry
     (vK : AbsoluteValue K ℝ) (vD : AbsoluteValue D ℝ)
     (i : K →+* D) (hi : ∀ x : K, vD (i x) = vK x) :
     Isometry (toCompleteTargetRingHom vK vD i) :=

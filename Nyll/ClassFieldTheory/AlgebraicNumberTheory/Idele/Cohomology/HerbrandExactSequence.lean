@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Index
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Index
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 
 /-!
 # The final cardinal step in the idele-class Herbrand calculation
@@ -23,10 +26,14 @@ its cardinality, and hence the norm index, is at least `|G| = [L : K]`.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField
 
 noncomputable section
+
+universe u v
 
 open RelativeIdeleGroup.Cohomology
 
@@ -35,7 +42,7 @@ open CyclicCohomology.ProfiniteCohomology.Herbrand
 open CyclicCohomology
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 

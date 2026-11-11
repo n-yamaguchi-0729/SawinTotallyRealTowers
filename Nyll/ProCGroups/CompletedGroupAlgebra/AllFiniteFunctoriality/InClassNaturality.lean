@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Map
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Maps
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Map
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Maps
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
 
 /-!
 # Completed Group Algebra / All Finite Functoriality / Within a Class Naturality
@@ -14,6 +16,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFini
 This module proves that the comparison between the all-finite and \(C\)-indexed completions is
 natural for continuous group homomorphisms, in ring-, algebra-, and equivalence-valued forms.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

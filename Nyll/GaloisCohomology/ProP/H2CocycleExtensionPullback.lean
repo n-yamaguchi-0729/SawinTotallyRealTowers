@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionSplitting
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionSplitting
 
 /-!
 # Pullback and local lifting for degree-two cocycle extensions
@@ -14,6 +16,8 @@ the standard continuous resolution.  The resulting pullback cocycle extension
 maps to the original extension, so vanishing of the restricted class produces
 an honest continuous lift of the restricting group homomorphism.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

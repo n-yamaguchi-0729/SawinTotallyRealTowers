@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.Basic
-import Mathlib.Algebra.Algebra.Rat
-import Mathlib.Algebra.Polynomial.Monic
-import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
-import Mathlib.Tactic.LinearCombination
+module
+
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.Algebra.Algebra.Rat
+public import Mathlib.Algebra.Polynomial.Monic
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
+public import Mathlib.Tactic.LinearCombination
 
 /-!
 # Integral elements expressed using a rational square root
@@ -19,6 +21,8 @@ A square root of an integer is integral. More generally, the element
 constant coefficient of the monic polynomial `X ^ 2 - m * X + k`.
 No degree or squarefreeness assumption is needed for this construction.
 -/
+
+@[expose] public section
 
 open Polynomial
 

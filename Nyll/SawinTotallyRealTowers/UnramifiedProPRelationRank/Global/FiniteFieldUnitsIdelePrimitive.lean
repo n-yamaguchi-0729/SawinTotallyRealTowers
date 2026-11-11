@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteIdeleH2Injection
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteIdeleH2Injection
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 
 /-!
 # Recovering a field-unit primitive from an idele primitive
@@ -16,6 +20,8 @@ a finite Galois p-extension.  An explicit idele primitive of a field-unit
 cocycle consequently supplies a field-unit primitive, the input needed for
 the subsequent Hilbert-90 and Kummer correction.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField
 

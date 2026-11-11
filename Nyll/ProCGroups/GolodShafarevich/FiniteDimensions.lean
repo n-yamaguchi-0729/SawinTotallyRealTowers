@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.GolodShafarevich.GradedPieces
-import Mathlib.LinearAlgebra.Dimension.RankNullity
+module
+
+public import Nyll.ProCGroups.GolodShafarevich.GradedPieces
+public import Mathlib.LinearAlgebra.Dimension.RankNullity
 
 /-!
 # Finite augmentation-dimension sequences
@@ -14,6 +16,8 @@ For a finite target group, the dimensions of the augmentation truncations
 form a bounded monotone sequence and hence eventually stabilize.  The
 degree-zero truncation is the one-dimensional augmentation quotient.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

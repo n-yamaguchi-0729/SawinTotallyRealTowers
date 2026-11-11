@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicLinearOfContinuous
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitFactors
-import Mathlib.Algebra.Module.PID
-import Mathlib.NumberTheory.Padics.ProperSpace
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicLinearOfContinuous
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitFactors
+public import Mathlib.Algebra.Module.PID
+public import Mathlib.NumberTheory.Padics.ProperSpace
 
 /-!
 # Topological structure of a finite p-adic module
@@ -22,6 +24,8 @@ rank `d`, the module is topologically the product of that cyclic factor and
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

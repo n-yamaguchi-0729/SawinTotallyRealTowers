@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedCoefficientEvaluation
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedPrimitivePoint
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedScalarEndomorphism
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelEvaluation
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelPrimitiveRoot
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.CompletedSeries
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.DefectCorrection
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.IntertwinerConstruction
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarCompatibility
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedCoefficientEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedPrimitivePoint
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedScalarEndomorphism
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelPrimitiveRoot
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.CompletedSeries
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.DefectCorrection
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.IntertwinerConstruction
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarCompatibility
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
 
 /-!
 # Changed-uniformizer evaluation on completed p-adic levels
@@ -25,6 +27,8 @@ Lubin--Tate tower.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -579,16 +583,7 @@ theorem padicChangedUniformizerThetaValue_aeval_levelMinpoly
             padicCompletedLevelField p n)
         (minpoly ℚ_[p] (standardLubinTateLevelPowerBasis hπ n).gen) =
       0 := by
-  let hπ :=
-    standardLubinTateChangedUniformizer_isUniformizer
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) u
-  change
-    Polynomial.aeval
-        ((padicChangedUniformizerThetaValue p u n :
-          (padicCompletedLevelCompleteDVF p n).valuationSubring) :
-            padicCompletedLevelField p n)
-        (minpoly ℚ_[p] (standardLubinTateLevelPowerBasis hπ n).gen) =
-      0
+  intro hπ
   rw [standardLubinTateLevelPowerBasis_minpoly hπ n,
     Polynomial.aeval_def]
   simpa only [Polynomial.IsRoot, Polynomial.eval_map] using
@@ -604,9 +599,7 @@ noncomputable def padicChangedUniformizerLevelEmbedding
         (padicMultiplicativeLubinTateSeries_isUniformizer p) u
     standardLubinTateLevelField hπ n →ₐ[ℚ_[p]]
       padicCompletedLevelField p n := by
-  let hπ :=
-    standardLubinTateChangedUniformizer_isUniformizer
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) u
+  intro hπ
   let theta : padicCompletedLevelField p n :=
     ((padicChangedUniformizerThetaValue p u n :
       (padicCompletedLevelCompleteDVF p n).valuationSubring) :
@@ -634,9 +627,7 @@ theorem padicChangedUniformizerLevelEmbedding_apply_gen
       ((padicChangedUniformizerThetaValue p u n :
         (padicCompletedLevelCompleteDVF p n).valuationSubring) :
           padicCompletedLevelField p n) := by
-  let hπ :=
-    standardLubinTateChangedUniformizer_isUniformizer
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) u
+  intro hπ
   let theta : padicCompletedLevelField p n :=
     ((padicChangedUniformizerThetaValue p u n :
       (padicCompletedLevelCompleteDVF p n).valuationSubring) :

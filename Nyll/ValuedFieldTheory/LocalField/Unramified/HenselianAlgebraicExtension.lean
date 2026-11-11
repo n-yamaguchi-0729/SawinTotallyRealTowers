@@ -4,25 +4,37 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Unramified.Definitions
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Unramified.Definitions
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.AlgebraicExtensionHenselian
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.SimpleRootFactorization
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
 
 /-!
 # Henselianity along algebraic valued extensions
 
 The proof of the unramified base-change theorem applies Hensel's lemma after
 base change from `K` to an algebraic extension `K'`.  This file supplies the
-source used there: the unique extension of a Henselian valuation to an
-algebraic field is again Henselian.  The result is derived from the unique
-extension criterion of the unique-extension criterion, rather than added as an assumption to
-the unramified base-change theorem.
+source used there: an algebraic extension of a Henselian valuation is again
+Henselian. The Henselian ring criterion applies to the original valuation
+rings in independent field universes and supplies the full factorization
+property on the target ring.
 -/
+
+@[expose] public section
 
 noncomputable section
 
 namespace AlgebraicNumberTheory
 namespace Valuations
 
-universe u
+universe u v
 
 
 /-- The exponential presentation of a Henselian valuation has a unique
@@ -60,12 +72,12 @@ theorem exponentialValuation_hasUniqueAlgebraicValuationSubringExtensions
 unique extended valuation.
 
 Only the actual exact extension of the two exponential valuations is an
-input.  For a further algebraic extension `M/L`, uniqueness over `K` first
-forces the restriction of its unique valuation ring to be the chosen ring on
-`L`; transitivity then gives uniqueness over `L`, and the unique-extension criterion supplies
-Hensel factorization on the target valuation ring. -/
+input. The original factorization property supplies a Henselian ring;
+Henselianity then extends to the same target valuation ring, even when the
+two fields lie in different universes. The final factorization property uses
+that same ring and the original exact valuation extension. -/
 theorem henselianValuation_of_algebraic_extension
-    {K L : Type u} [Field K] [Field L] [Algebra K L]
+    {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
     (v : LubinTate.Valuations.ExponentialValuation K)
     (w : LubinTate.Valuations.ExponentialValuation L)
@@ -104,60 +116,21 @@ theorem henselianValuation_of_algebraic_extension
     rw [hV, hW]
     exact hVaWa
   let : Vv.valuation.HasExtension Wv.valuation := hVvWv
-  have hUniqueV : HasUniqueAlgebraicValuationSubringExtensions Vv :=
-    exponentialValuation_hasUniqueAlgebraicValuationSubringExtensions
-      v hhens
-  have hUniqueVW : HasUniqueValuationSubringExtension (L := L) Vv :=
-    hUniqueV L
-  have hUniqueW : HasUniqueAlgebraicValuationSubringExtensions Wv := by
-    intro M _fieldM _algLM _algM
-    let : Algebra K M :=
-      ((algebraMap L M).comp (algebraMap K L)).toAlgebra
-    let : IsScalarTower K L M :=
-      IsScalarTower.of_algebraMap_eq (by intro; rfl)
-    let : Algebra.IsAlgebraic K M := Algebra.IsAlgebraic.trans K L M
-    obtain ⟨B, hVB, hBunique⟩ := hUniqueV M
-    let : Vv.valuation.HasExtension B.valuation := hVB
-    let vBL := B.valuation.comap (algebraMap L M)
-    have hVvBL : Vv.valuation.HasExtension vBL :=
-      DiscreteValuationField.Valuation.comap_to_middle_hasExtension_of_top_hasExtension
-        Vv.valuation B.valuation
-    let : Vv.valuation.HasExtension vBL := hVvBL
-    have hVvRestrict :
-        Vv.valuation.HasExtension vBL.valuationSubring.valuation := by
-      apply _root_.Valuation.HasExtension.ofComapInteger
-      ext a
-      simp only [Subring.mem_comap, Valuation.mem_integer_iff,
-        ValuationSubring.valuation_le_one_iff]
-      rw [vBL.mem_valuationSubring_iff]
-      rw [← Vv.valuationSubring_valuation]
-      rw [Vv.valuation.mem_valuationSubring_iff]
-      exact _root_.Valuation.HasExtension.val_map_le_one_iff
-        (vR := Vv.valuation) (vA := vBL) a
-    let : Vv.valuation.HasExtension vBL.valuationSubring.valuation :=
-      hVvRestrict
-    have hrestrict : vBL.valuationSubring = Wv := by
-      obtain ⟨W0, hVW0, hW0unique⟩ := hUniqueVW
-      exact (hW0unique vBL.valuationSubring inferInstance).trans
-        (hW0unique Wv inferInstance).symm
-    have hWB : Wv.valuation.HasExtension B.valuation := by
-      apply _root_.Valuation.HasExtension.ofComapInteger
-      change vBL.valuationSubring.toSubring =
-        Wv.valuation.valuationSubring.toSubring
-      rw [ValuationSubring.valuationSubring_valuation]
-      exact congrArg ValuationSubring.toSubring hrestrict
-    refine ⟨B, hWB, ?_⟩
-    intro C hWC
-    let : Wv.valuation.HasExtension C.valuation := hWC
-    let : Vv.valuation.HasExtension C.valuation :=
-      ValuationTheory.DiscreteValuationField.Valuation.hasExtension_trans
-        Vv.valuation Wv.valuation C.valuation
-    exact hBunique C inferInstance
+  have hfactor : ValuationTheory.DiscreteValuationField.HenselFactorizationProperty Vv := by
+    change ValuationTheory.DiscreteValuationField.HenselFactorizationProperty
+      Vv.valuation.valuationSubring at hhens
+    rw [ValuationSubring.valuationSubring_valuation] at hhens
+    exact @hhens
+  let : HenselianRing Vv (IsLocalRing.maximalIdeal Vv) :=
+    _root_.DiscreteValuationField.henselianRing_of_monicResidualCoprimeFactorLifting
+      (_root_.DiscreteValuationField.monicResidualCoprimeFactorLifting_of_henselFactorization
+        hfactor)
+  let : HenselianRing Wv (IsLocalRing.maximalIdeal Wv) :=
+    ValuationTheory.Henselian.henselianRing_of_algebraic_extension Vv Wv
   change ValuationTheory.DiscreteValuationField.HenselFactorizationProperty
     Wv.valuation.valuationSubring
   rw [ValuationSubring.valuationSubring_valuation]
-  exact henselFactorization_of_unique_algebraic_valuationSubring_extensions
-    Wv hUniqueW
+  exact _root_.DiscreteValuationField.henselFactorization_of_henselianRing Wv
 
 end Valuations
 end AlgebraicNumberTheory

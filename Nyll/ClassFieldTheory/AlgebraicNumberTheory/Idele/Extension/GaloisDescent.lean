@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
-import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
-import Mathlib.Algebra.Group.Action.Basic
-import Mathlib.GroupTheory.GroupAction.Quotient
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
+public import Mathlib.Algebra.Group.Action.Basic
+public import Mathlib.GroupTheory.GroupAction.Quotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Galois descent for idele classes
@@ -20,6 +23,8 @@ the fixed subgroup with the embedded copy of `C_K`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField
@@ -55,7 +60,7 @@ instance principalQuotientAction :
     refine
       ⟨Units.map σ.toRingEquiv.toMonoidHom x, ?_⟩
     rw [← smul_principalIdele K L σ x, hx]
-    simp [smul_def]
+    simp only [smul_def, map_mul, map_inv]
 
 omit [NumberField L] [FiniteDimensional K L] in
 @[simp]

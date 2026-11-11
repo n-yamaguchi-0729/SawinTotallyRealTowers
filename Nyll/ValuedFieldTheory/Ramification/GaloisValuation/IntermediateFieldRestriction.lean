@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.Algebra.Algebra.Equiv
 
 /-!
 # Restriction between normal intermediate fields
@@ -15,6 +18,8 @@ auxiliary algebra and scalar-tower instances.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -47,5 +52,24 @@ theorem intermediateFieldRestrictNormalHom_apply_val
   let : IsScalarTower K E F := IsScalarTower.of_algebraMap_eq' rfl
   have h := AlgEquiv.restrictNormal_commutes sigma E x
   exact congrArg F.val h
+
+/-- Restriction through a field image intertwines the original
+automorphism with the actual inclusion back into its source field. -/
+theorem intermediateFieldRestrictNormalHom_equiv_commutes
+    (E F : IntermediateField K Omega) (hEF : E ≤ F) [Normal K E]
+    {L : Type*} [Field L] [Algebra K L] (e : L ≃ₐ[K] F)
+    (sigma : Gal(L/K)) (x : E) :
+    sigma (e.symm (IntermediateField.inclusion hEF x)) =
+      e.symm (IntermediateField.inclusion hEF
+        (intermediateFieldRestrictNormalHom E F hEF (AlgEquiv.autCongr e sigma) x)) := by
+  have hrestriction : IntermediateField.inclusion hEF
+      (intermediateFieldRestrictNormalHom E F hEF (AlgEquiv.autCongr e sigma) x) =
+        AlgEquiv.autCongr e sigma (IntermediateField.inclusion hEF x) :=
+    Subtype.ext (intermediateFieldRestrictNormalHom_apply_val E F hEF
+      (AlgEquiv.autCongr e sigma) x)
+  rw [hrestriction]
+  change sigma (e.symm (IntermediateField.inclusion hEF x)) =
+    e.symm (e (sigma (e.symm (IntermediateField.inclusion hEF x))))
+  rw [e.symm_apply_apply]
 
 end RamificationTheory

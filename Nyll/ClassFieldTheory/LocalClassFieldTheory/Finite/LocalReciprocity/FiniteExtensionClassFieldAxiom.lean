@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
-import Mathlib.Topology.Algebra.Module.FiniteDimension
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Main
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+public import Mathlib.Topology.Algebra.Module.FiniteDimension
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Main
 
 /-!
 # Finite local reciprocity
@@ -22,6 +24,8 @@ constructs that structure from the spectral norm.  In particular, the target
 valuation ring is proved integral over the base valuation ring; no local-field
 structure on the target is assumed.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 

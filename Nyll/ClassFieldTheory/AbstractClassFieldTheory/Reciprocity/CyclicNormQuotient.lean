@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
+public import Nyll.GaloisCohomology.Cyclic.IntegralCyclicNormComplexes
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
 
 /-!
 # Cyclic norm quotients as degree-zero Tate cohomology
@@ -17,6 +21,10 @@ object used in the class-field axiom.  This is the source comparison needed befo
 cardinality assertion of the class field axiom can be applied to the
 reciprocity map.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -30,13 +38,12 @@ noncomputable section
 
 open CategoryTheory
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The actual fixed group `A_K` is the kernel of `ρ(g)-1` on `A_L`
 when `g` generates `G(L/K)`. -/
 def cyclicFixedCycleEquiv
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -51,7 +58,7 @@ def cyclicFixedCycleEquiv
     let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
-    let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+    let T := IntegralGroupCohomology.Universe.normHomCompSub M g
     ambientFixedAddSubgroup A K ≃+
       T.moduleCatLeftHomologyData.K := by
   intro instNormal instFinite instFintype instCyclic instCommGroup M T
@@ -117,7 +124,7 @@ def cyclicFixedCycleEquiv
 /-- The canonical map from `A_K` to the concrete kernel/range quotient
 computing degree-zero Tate cohomology. -/
 def cyclicNormClassHom
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -132,7 +139,7 @@ def cyclicNormClassHom
     let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
-    let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+    let T := IntegralGroupCohomology.Universe.normHomCompSub M g
     ambientFixedAddSubgroup A K →+
       T.moduleCatLeftHomologyData.H := by
   intro instNormal instFinite instFintype instCyclic instCommGroup M T
@@ -145,7 +152,7 @@ cyclic homology.
 -/
 @[simp]
 theorem cyclicNormClassHom_apply
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -161,7 +168,7 @@ theorem cyclicNormClassHom_apply
     let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
-    let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+    let T := IntegralGroupCohomology.Universe.normHomCompSub M g
     cyclicNormClassHom A K L hLK hnormal hfinite g hg a =
       T.moduleCatLeftHomologyData.π
         (cyclicFixedCycleEquiv A K L hLK hnormal hfinite g hg a) := by
@@ -170,7 +177,7 @@ theorem cyclicNormClassHom_apply
 /-- Under the fixed-cycle equivalence, the actual relative norm is the
 first differential in the cyclic Tate complex. -/
 theorem cyclicFixedCycleEquiv_relativeNorm
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -186,7 +193,7 @@ theorem cyclicFixedCycleEquiv_relativeNorm
     let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
-    let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+    let T := IntegralGroupCohomology.Universe.normHomCompSub M g
     cyclicFixedCycleEquiv A K L hLK hnormal hfinite g hg
         (relativeNorm A K L hLK a) =
       T.moduleCatToCycles
@@ -201,7 +208,7 @@ theorem cyclicFixedCycleEquiv_relativeNorm
 /-- The kernel of the concrete Tate-class map is exactly the actual norm
 subgroup `N_{L/K} A_L`. -/
 theorem cyclicNormClassHom_ker
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -219,7 +226,7 @@ theorem cyclicNormClassHom_ker
       finiteNormSubgroup A K L hLK := by
   intro instNormal instFinite instFintype instCyclic instCommGroup
   let M := extensionFixedRepresentation A K L hLK hnormal
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  let T := IntegralGroupCohomology.Universe.normHomCompSub M g
   let : Module ℤ T.X₁ := T.X₁.isModule
   let : Module ℤ (LinearMap.ker T.g.hom) :=
     (LinearMap.ker T.g.hom).module
@@ -242,7 +249,7 @@ theorem cyclicNormClassHom_ker
     refine ⟨b, ?_⟩
     apply Subtype.ext
     calc
-      (relativeNorm A K L hLK b).1 = (M.norm.hom y).1 :=
+      (relativeNorm A K L hLK b).1 = (M.norm.asHom.hom y).1 :=
         (extensionFixedRepresentation_norm_coe
           A K L hLK hnormal y).symm
       _ = ea.1.1 :=
@@ -267,7 +274,7 @@ theorem cyclicNormClassHom_ker
 /-- Every concrete Tate class has a representative in the actual fixed
 group `A_K`. -/
 theorem cyclicNormClassHom_surjective
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -285,7 +292,7 @@ theorem cyclicNormClassHom_surjective
       (cyclicNormClassHom A K L hLK hnormal hfinite g hg) := by
   intro instNormal instFinite instFintype instCyclic instCommGroup
   let M := extensionFixedRepresentation A K L hLK hnormal
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  let T := IntegralGroupCohomology.Universe.normHomCompSub M g
   let e := cyclicFixedCycleEquiv A K L hLK hnormal hfinite g hg
   have hπ : Function.Surjective T.moduleCatLeftHomologyData.π :=
     (ModuleCat.epi_iff_surjective
@@ -299,7 +306,7 @@ theorem cyclicNormClassHom_surjective
 /-- The actual finite norm quotient is the concrete kernel/range quotient
 which computes degree-zero Tate cohomology. -/
 def cyclicFiniteNormQuotientEquivConcrete
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -314,7 +321,7 @@ def cyclicFiniteNormQuotientEquivConcrete
     let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
-    let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+    let T := IntegralGroupCohomology.Universe.normHomCompSub M g
     FiniteNormQuotient A K L hLK ≃+
       T.moduleCatLeftHomologyData.H := by
   intro instNormal instFinite instFintype instCyclic instCommGroup M T
@@ -330,7 +337,7 @@ def cyclicFiniteNormQuotientEquivConcrete
 /-- The concrete kernel/range quotient is the homology object used in the
 definition of `tateHZero`. -/
 def cyclicConcreteEquivTateHZero
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -345,17 +352,16 @@ def cyclicConcreteEquivTateHZero
     let _ : CommGroup (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       IsCyclic.commGroup
     let M := extensionFixedRepresentation A K L hLK hnormal
-    let T := Rep.FiniteCyclicGroup.normHomCompSub M g
-    T.moduleCatLeftHomologyData.H ≃+ tateCohomology M 0 := by
+    let T := IntegralGroupCohomology.Universe.normHomCompSub M g
+    T.moduleCatLeftHomologyData.H ≃+ IntegralGroupCohomology.Universe.tate M 0 := by
   intro instNormal instFinite instFintype instCyclic instCommGroup M T
-  exact
-    (T.moduleCatHomologyIso.symm ≪≫
-      (TateCohomology.isoFiniteCyclicZero M g hg).symm).toLinearEquiv.toAddEquiv
+  exact T.moduleCatHomologyIso.symm.toLinearEquiv.toAddEquiv.trans
+    (IntegralGroupCohomology.Universe.normHomologyEquivTateZero M g hg)
 
 /-- Canonical identification of the actual norm quotient with
 degree-zero Tate cohomology for a finite cyclic extension. -/
 def cyclicFiniteNormQuotientEquivTateHZero
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -366,7 +372,7 @@ def cyclicFiniteNormQuotientEquivTateHZero
     let _ : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
       Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
     let M := extensionFixedRepresentation A K L hLK hnormal
-    FiniteNormQuotient A K L hLK ≃+ tateCohomology M 0 := by
+    FiniteNormQuotient A K L hLK ≃+ IntegralGroupCohomology.Universe.tate M 0 := by
   intro instNormal instFinite instFintype M
   exact
     (cyclicFiniteNormQuotientEquivConcrete
@@ -377,7 +383,7 @@ def cyclicFiniteNormQuotientEquivTateHZero
 /-- The class-field axiom first gives genuine finiteness of the actual norm
 quotient, transported from finite degree-zero Tate cohomology. -/
 theorem finiteNormQuotientFiniteOfClassFieldAxiom
-    (A : Rep ℤ G) (hcf : SatisfiesClassFieldAxiom A)
+    (A : Rep.{v} ℤ G) (hcf : SatisfiesClassFieldAxiom A)
     (E : DegreeData.FiniteAbstractExtension G)
     [hKfinite : Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) E.base (le_baseField E.base))]
@@ -399,9 +405,10 @@ theorem finiteNormQuotientFiniteOfClassFieldAxiom
       finite := E.finiteQuotient
       generator := g
       generates := hg }
-  let : Finite (tateCohomology (Ecf.fixedRepresentation A) 0) :=
+  let : Finite (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0) :=
     (hcf Kcf Ecf).finiteTateHZero
-  exact Finite.of_equiv (tateCohomology (Ecf.fixedRepresentation A) 0) (by
+  exact Finite.of_equiv
+    (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0) (by
     simpa [Kcf, Ecf, FiniteCyclicSubextension.fixedRepresentation] using
         (cyclicFiniteNormQuotientEquivTateHZero
           A E.base E.field E.below hnormal E.finiteQuotient g hg).symm.toEquiv)
@@ -409,7 +416,7 @@ theorem finiteNormQuotientFiniteOfClassFieldAxiom
 /-- The class-field axiom gives the exact order of the actual norm quotient in the
 cyclic case. -/
 theorem finiteNormQuotient_card_of_classFieldAxiom
-    (A : Rep ℤ G) (hcf : SatisfiesClassFieldAxiom A)
+    (A : Rep.{v} ℤ G) (hcf : SatisfiesClassFieldAxiom A)
     (E : DegreeData.FiniteAbstractExtension G)
     [hKfinite : Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) E.base (le_baseField E.base))]
@@ -432,18 +439,18 @@ theorem finiteNormQuotient_card_of_classFieldAxiom
       finite := E.finiteQuotient
       generator := g
       generates := hg }
-  let : Finite (tateCohomology (Ecf.fixedRepresentation A) 0) :=
+  let : Finite (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0) :=
     (hcf Kcf Ecf).finiteTateHZero
-  let : Finite (tateCohomology M 0) := by
+  let : Finite (IntegralGroupCohomology.Universe.tate M 0) := by
     simpa [M, Kcf, Ecf,
       FiniteCyclicSubextension.fixedRepresentation] using
         (inferInstance :
-          Finite (tateCohomology (Ecf.fixedRepresentation A) 0))
+          Finite (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0))
   let : Finite (FiniteNormQuotient A E.base E.field E.below) :=
     finiteNormQuotientFiniteOfClassFieldAxiom A hcf E hnormal g hg
   calc
     Nat.card (FiniteNormQuotient A E.base E.field E.below) =
-        Nat.card (tateCohomology M 0) :=
+        Nat.card (IntegralGroupCohomology.Universe.tate M 0) :=
       Nat.card_congr
         (cyclicFiniteNormQuotientEquivTateHZero
           A E.base E.field E.below hnormal E.finiteQuotient g hg).toEquiv
@@ -452,7 +459,7 @@ theorem finiteNormQuotient_card_of_classFieldAxiom
         simpa [Kcf, Ecf,
           FiniteCyclicSubextension.fixedRepresentation,
           FiniteCyclicSubextension.toFiniteAbstractExtension] using
-            hcf.tateHZero_card Kcf Ecf
+            hcf.integralTateHZero_card Kcf Ecf
 
 /-- The additive Galois quotient has the extension degree as its order. -/
 theorem additiveExtensionQuotient_card
@@ -485,7 +492,7 @@ theorem additiveExtensionQuotient_card
 /-- Under the class-field axiom, the cyclic Galois quotient and its actual norm
 quotient have the same finite order. -/
 theorem cyclicReciprocity_card_equality
-    (A : Rep ℤ G) (hcf : SatisfiesClassFieldAxiom A)
+    (A : Rep.{v} ℤ G) (hcf : SatisfiesClassFieldAxiom A)
     (E : DegreeData.FiniteAbstractExtension G)
     [Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) E.base (le_baseField E.base))]
@@ -504,7 +511,7 @@ theorem cyclicReciprocity_card_equality
 
 /-- The cyclic norm quotient is finite as an actual type under the class-field axiom. -/
 theorem finiteNormQuotient_finite_of_classFieldAxiom
-    (A : Rep ℤ G) (hcf : SatisfiesClassFieldAxiom A)
+    (A : Rep.{v} ℤ G) (hcf : SatisfiesClassFieldAxiom A)
     (E : DegreeData.FiniteAbstractExtension G)
     [Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) E.base (le_baseField E.base))]

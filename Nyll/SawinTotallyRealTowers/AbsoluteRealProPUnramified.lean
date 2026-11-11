@@ -4,15 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
-import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+module
+
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # Ramification killed by the maximal real pro-p restriction
@@ -21,6 +24,8 @@ Absolute inertia outside the allowed support fixes every admissible finite
 layer, hence their compositum. Real Artin conjugation fixes that compositum
 because every complex embedding of it is real.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

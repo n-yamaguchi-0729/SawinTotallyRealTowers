@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
-import Mathlib.Algebra.Order.Group.Cyclic
-import Mathlib.Algebra.Group.Int.TypeTags
-import Mathlib.Data.Int.WithZero
-import Mathlib.RingTheory.Valuation.Archimedean
-import Mathlib.RingTheory.Valuation.RankOne
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+public import Mathlib.Algebra.Order.Group.Cyclic
+public import Mathlib.Algebra.Group.Int.TypeTags
+public import Mathlib.Data.Int.WithZero
+public import Mathlib.RingTheory.Valuation.Archimedean
+public import Mathlib.RingTheory.Valuation.RankOne
 
 /-!
 # Cyclic value groups and normalized uniformizers
@@ -20,6 +22,8 @@ for `ℤᵐ⁰`-valued valuations.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

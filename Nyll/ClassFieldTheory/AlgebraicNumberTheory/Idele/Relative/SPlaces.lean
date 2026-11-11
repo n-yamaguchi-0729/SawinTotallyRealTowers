@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
 /-!
 # Finite-place support for relative ideles
@@ -25,6 +29,8 @@ relative idele group.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -389,7 +395,7 @@ noncomputable def relativeLocalIdeleDataOfSPlaceFactors
       rw [show f w =
         (x.2.2 ⟨w, hwS⟩ :
           (w.adicCompletion K ⊗[K] L)ˣ) by
-        simp [f, hwS]]
+        exact dite_eq_right hwS]
       exact
         (mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
           (K := K) (L := L) w _).1
@@ -422,7 +428,7 @@ noncomputable def relativeLocalIdeleDataOfSPlaceFactors
       rw [show f w =
         (x.2.2 ⟨w, hwS⟩ :
           (w.adicCompletion K ⊗[K] L)ˣ) by
-        simp [f, hwS]]
+        exact dite_eq_right hwS]
       exact
         (mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
           (K := K) (L := L) w _).1
@@ -753,22 +759,17 @@ theorem relativeIdeleSupportedComponents_smul
     (σ : L ≃ₐ[K] L)
     (z : relativeIdeleLocalTensorDecompositionSupportedSubgroup
       (K := K) (L := L) S) :
-    letI :=
+    let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
-    letI :=
+    let :=
       relativeIdeleSPlaceFactorsAction
         (K := K) (L := L) S
     relativeIdeleSupportedComponents
         (K := K) (L := L) S (σ • z) =
       σ • relativeIdeleSupportedComponents
         (K := K) (L := L) S z := by
-  let :=
-    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
-      (K := K) (L := L) S
-  let :=
-    relativeIdeleSPlaceFactorsAction
-      (K := K) (L := L) S
+  intro sharedOwner1 sharedOwner2
   apply Prod.ext
   · funext w
     let :=

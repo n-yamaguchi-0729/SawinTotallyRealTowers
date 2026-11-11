@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Subgroup.Lattice
-import Mathlib.Algebra.Order.Floor.Ring
-import Mathlib.Algebra.Order.Archimedean.Real.Basic
+module
+
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Mathlib.Algebra.Order.Floor.Ring
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
 
 /-!
 # Natural-ceiling subgroup filtrations
@@ -14,6 +16,8 @@ import Mathlib.Algebra.Order.Archimedean.Real.Basic
 Generic order-theoretic infrastructure for extending a natural-number-indexed
 subgroup filtration to the real line by the natural-number ceiling.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -72,7 +76,7 @@ theorem natCeilStepFiltrationAfter_natCast
     exact le_iSup_of_le s (by
       simp only [natCeilStepFiltration]
       have hs : (s : ℝ) = (n : ℝ) + 1 := by
-        simp [s]
+        simp only [Nat.cast_add, Nat.cast_one, s]
       have hnat : (n : ℝ) + 1 = ((n + 1 : ℕ) : ℝ) := by
         norm_num
       rw [hs, hnat, Nat.ceil_natCast])
@@ -83,8 +87,8 @@ theorem isNatCeilStepFiltrationJump_natCast_iff
     {F : ℕ → Subgroup G} (hF : Antitone F) (n : ℕ) :
     IsNatCeilStepFiltrationJump F (n : ℝ) ↔
       F n ≠ F (n + 1) := by
-  simp [IsNatCeilStepFiltrationJump, natCeilStepFiltration,
-    natCeilStepFiltrationAfter_natCast hF n]
+  simp only [IsNatCeilStepFiltrationJump, natCeilStepFiltration, Nat.ceil_natCast,
+    natCeilStepFiltrationAfter_natCast hF n, ne_eq]
 
 /-- Every jump of an antitone natural-ceiling step filtration is a
 nonnegative rational integer. -/
@@ -111,7 +115,7 @@ theorem isNatCeilStepFiltrationJump_integer
         exact Nat.ceil_mono hts.le
     have hstep :
         natCeilStepFiltration F s = natCeilStepFiltration F t := by
-      simp [natCeilStepFiltration, n, hceil]
+      simp only [natCeilStepFiltration, hceil, n]
     exfalso
     apply ht
     apply le_antisymm

@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipalQuotient
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipalQuotient
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
 /-!
 # LubinTate the explicit norm-subgroup computation: cardinality of the standard Lubin--Tate quotient
@@ -25,6 +28,8 @@ the same cardinality for `K^x / (<T^-1> U^(n+1))`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -144,10 +149,6 @@ private theorem unitQuotientFinite
 `(q - 1) q^n`, where `q` is the residue-field cardinality. -/
 theorem equalCharacteristicLubinTateUnitQuotient_natCard
     (F : LocalField.{u, v} K) (n : ℕ) :
-    letI : Finite
-        (F.residueField⟦X⟧ˣ ⧸
-          equalCharacteristicLubinTateHigherUnitSubgroup F n) :=
-      unitQuotientFinite F n
     Nat.card
         (F.residueField⟦X⟧ˣ ⧸
           equalCharacteristicLubinTateHigherUnitSubgroup F n) =
@@ -253,11 +254,6 @@ theorem equalCharacteristicLubinTateUniformizerPrincipalQuotient_natCard
       equalCharacteristicLaurentValuativeRel F
     letI : IsNonarchimedeanLocalField F.residueField⸨X⸩ :=
       equalCharacteristicLaurentIsNonarchimedeanLocalField F
-    letI : Finite
-        (F.residueField⸨X⸩ˣ ⧸
-          LocalFieldTheory.uniformizerPrincipalSubgroup F.residueField⸨X⸩
-            (equalCharacteristicLaurentUniformizerUnit F)⁻¹ 1 (n + 1)) :=
-      uniformizerPrincipalQuotientFinite F n
     Nat.card
         (F.residueField⸨X⸩ˣ ⧸
           LocalFieldTheory.uniformizerPrincipalSubgroup F.residueField⸨X⸩

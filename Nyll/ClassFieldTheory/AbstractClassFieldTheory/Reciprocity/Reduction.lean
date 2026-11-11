@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
+public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
 
 /-!
 # The abstract reciprocity theorem: actual reduction maps
@@ -22,6 +24,8 @@ lemmas below only construct the actual arrows and prove the algebraic diagram
 chases which will be applied to those homomorphisms.
 -/
 
+@[expose] public section
+
 namespace ClassFormation
 
 open KummerTheory
@@ -32,12 +36,11 @@ open CyclicCohomology
 
 noncomputable section
 
-universe u
+universe u v
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
   [IsTopologicalGroup G]
 
 namespace FiniteGaloisSubextension
@@ -47,7 +50,7 @@ variable {K : ClosedSubgroup G}
 /-- The norm arrow
 `A_M / N_{L/M} A_L → A_K / N_{L/K} A_L` for the actual intermediate
 field cut out by `S ≤ G(L/K)`.  No normality of `M/K` is used. -/
-def intermediateNormMap (A : Rep ℤ G) (L : FiniteGaloisSubextension K)
+def intermediateNormMap (A : Rep.{v} ℤ G) (L : FiniteGaloisSubextension K)
     (S : Subgroup L.extensionQuotient) :
     let M := L.intermediateField S
     let hLM := L.field_le_intermediateField S
@@ -57,8 +60,7 @@ def intermediateNormMap (A : Rep ℤ G) (L : FiniteGaloisSubextension K)
       L.finite
     FiniteNormQuotient A M L.field hLM →+
       FiniteNormQuotient A K L.field L.below := by
-  let M := L.intermediateField S
-  let hLM := L.field_le_intermediateField S
+  intro M hLM
   let hMK := L.intermediateField_le_base S
   letI : Finite (K.toSubgroup ⧸
       extensionSubgroup K L.field L.below) := L.finite
@@ -72,16 +74,16 @@ def intermediateNormMap (A : Rep ℤ G) (L : FiniteGaloisSubextension K)
 
 /-- Representative formula for the nonnormal-intermediate norm arrow. -/
 @[simp]
-theorem intermediateNormMap_finiteNormClass (A : Rep ℤ G)
+theorem intermediateNormMap_finiteNormClass (A : Rep.{v} ℤ G)
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient)
     (a : ambientFixedAddSubgroup A (L.intermediateField S)) :
-    letI : Finite (K.toSubgroup ⧸
+    let : Finite (K.toSubgroup ⧸
         extensionSubgroup K L.field L.below) := L.finite
-    letI : Finite ((L.intermediateField S).toSubgroup ⧸
+    let : Finite ((L.intermediateField S).toSubgroup ⧸
         extensionSubgroup (L.intermediateField S) L.field
           (L.field_le_intermediateField S)) :=
       L.extension_over_intermediate_finite S
-    letI : Finite (K.toSubgroup ⧸ extensionSubgroup K
+    let : Finite (K.toSubgroup ⧸ extensionSubgroup K
         (L.intermediateField S) (L.intermediateField_le_base S)) :=
       L.intermediateField_finite S
     L.intermediateNormMap A S
@@ -90,24 +92,16 @@ theorem intermediateNormMap_finiteNormClass (A : Rep ℤ G)
       finiteNormClass A K L.field L.below
         (relativeNorm A K (L.intermediateField S)
           (L.intermediateField_le_base S) a) := by
-  let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K L.field L.below) := L.finite
-  let : Finite ((L.intermediateField S).toSubgroup ⧸
-      extensionSubgroup (L.intermediateField S) L.field
-        (L.field_le_intermediateField S)) :=
-    L.extension_over_intermediate_finite S
-  let : Finite (K.toSubgroup ⧸ extensionSubgroup K
-      (L.intermediateField S) (L.intermediateField_le_base S)) :=
-    L.intermediateField_finite S
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact finiteReciprocityNaturalityNormMap_finiteNormClass A K
     (L.intermediateField S) L.field L.field L.below
     (L.field_le_intermediateField S) (L.intermediateField_le_base S) le_rfl a
 
 /-- Inclusion of fixed elements, descended to the two actual norm
 quotients.  This is the map `i` in the Sylow argument. -/
-def intermediateNormQuotientInclusion (A : Rep ℤ G)
+def intermediateNormQuotientInclusion (A : Rep.{v} ℤ G)
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    letI : Finite (K.toSubgroup ⧸
+    let : Finite (K.toSubgroup ⧸
         extensionSubgroup K L.field L.below) := L.finite
     letI : Finite ((L.intermediateField S).toSubgroup ⧸
         extensionSubgroup (L.intermediateField S) L.field
@@ -116,8 +110,7 @@ def intermediateNormQuotientInclusion (A : Rep ℤ G)
     FiniteNormQuotient A K L.field L.below →+
       FiniteNormQuotient A (L.intermediateField S) L.field
         (L.field_le_intermediateField S) := by
-  letI : Finite (K.toSubgroup ⧸
-      extensionSubgroup K L.field L.below) := L.finite
+  intro sharedOwner1
   letI : (extensionSubgroup K L.field L.below).Normal := L.normal
   letI : (extensionSubgroup (L.intermediateField S) L.field
       (L.field_le_intermediateField S)).Normal :=
@@ -133,10 +126,10 @@ def intermediateNormQuotientInclusion (A : Rep ℤ G)
 /-- Representative formula for the inclusion used in the Sylow
 reduction. -/
 @[simp]
-theorem intermediateNormQuotientInclusion_finiteNormClass (A : Rep ℤ G)
+theorem intermediateNormQuotientInclusion_finiteNormClass (A : Rep.{v} ℤ G)
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient)
     (a : ambientFixedAddSubgroup A K) :
-    letI : Finite (K.toSubgroup ⧸
+    let : Finite (K.toSubgroup ⧸
         extensionSubgroup K L.field L.below) := L.finite
     letI : Finite ((L.intermediateField S).toSubgroup ⧸
         extensionSubgroup (L.intermediateField S) L.field
@@ -148,8 +141,7 @@ theorem intermediateNormQuotientInclusion_finiteNormClass (A : Rep ℤ G)
         (L.field_le_intermediateField S)
         (fixedFieldInclusion A K (L.intermediateField S)
           (L.intermediateField_le_base S) a) := by
-  let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K L.field L.below) := L.finite
+  intro sharedOwner1
   let : (extensionSubgroup K L.field L.below).Normal := L.normal
   let : (extensionSubgroup (L.intermediateField S) L.field
       (L.field_le_intermediateField S)).Normal :=
@@ -164,9 +156,9 @@ theorem intermediateNormQuotientInclusion_finiteNormClass (A : Rep ℤ G)
 
 /-- The exact identity `N_{M/K} ∘ i = [M:K]`, now for an
 arbitrary (possibly nonnormal) intermediate field. -/
-theorem intermediateNormMap_comp_inclusion (A : Rep ℤ G)
+theorem intermediateNormMap_comp_inclusion (A : Rep.{v} ℤ G)
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    letI : Finite (K.toSubgroup ⧸
+    let : Finite (K.toSubgroup ⧸
         extensionSubgroup K L.field L.below) := L.finite
     ∀ q : FiniteNormQuotient A K L.field L.below,
     letI : Finite ((L.intermediateField S).toSubgroup ⧸
@@ -179,9 +171,7 @@ theorem intermediateNormMap_comp_inclusion (A : Rep ℤ G)
     L.intermediateNormMap A S
         (L.intermediateNormQuotientInclusion A S q) =
       ((L.intermediateFiniteAbstractExtension S).degree : ℕ) • q := by
-  let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K L.field L.below) := L.finite
-  intro q
+  intro sharedOwner1 q
   let : (extensionSubgroup K L.field L.below).Normal := L.normal
   let : (extensionSubgroup (L.intermediateField S) L.field
       (L.field_le_intermediateField S)).Normal :=
@@ -595,8 +585,7 @@ end GroupOnly
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
   [IsTopologicalGroup G]
 
 namespace FiniteGaloisSubextension
@@ -608,7 +597,7 @@ variable {K : ClosedSubgroup G}
 This specializes the actual cardinality proof in the reciprocity reduction exact row to the
 inertia-image intermediate field. -/
 theorem maximalUnramified_normMap_injective
-    (A : Rep ℤ G) (hcf : SatisfiesClassFieldAxiom A)
+    (A : Rep.{v} ℤ G) (hcf : SatisfiesClassFieldAxiom A)
     (D : DegreeData G) (L : FiniteGaloisSubextension K)
     [Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) K (le_baseField K))]

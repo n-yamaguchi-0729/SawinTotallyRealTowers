@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.AdicPadicModule
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.AdicPadicModule
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
 
 /-!
 # Principal-unit topology from a normalized valuation
@@ -16,6 +21,8 @@ continuous on the original principal-unit carrier.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -47,12 +54,11 @@ noncomputable def adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuat
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     [Finite (IsLocalRing.ResidueField v.valuationSubring)] :
     let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     AdicPrincipalUnits F.toCompleteDVF ≃ₜ+
       Additive
         ((higherPrincipalUnitGroup F.toCompleteDVF) 1) := by
-  let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro F sharedOwner1
   letI : ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete
       (Valued.v : _root_.Valuation K
         (WithZero (Multiplicative ℤ))) := by
@@ -162,17 +168,14 @@ preserves `ℤ_p`-scalar multiplication.
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     [Finite (IsLocalRing.ResidueField v.valuationSubring)] :
     let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     ∀ (a : ℤ_[F.residueCharacteristic])
       (x : AdicPrincipalUnits F.toCompleteDVF),
       adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation v
           (a • x) =
         a • adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation
           v x := by
-  let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  dsimp only
-  intro a x
+  intro F sharedOwner2 a x
   exact (AdicPrincipalUnits.linearEquivUnderlying F).map_smul a x
 
 open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
@@ -187,11 +190,10 @@ theorem principalUnitPadicContinuousSMulOfWithZeroValuation
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     [Finite (IsLocalRing.ResidueField v.valuationSubring)] :
     let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     ContinuousSMul ℤ_[F.residueCharacteristic]
       (Additive ((higherPrincipalUnitGroup F.toCompleteDVF) 1)) := by
-  let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro F sharedOwner2
   let e :=
     adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation v
   refine ⟨?_⟩
@@ -213,11 +215,10 @@ theorem principalUnitPadicContinuousAddOfWithZeroValuation
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     [Finite (IsLocalRing.ResidueField v.valuationSubring)] :
     let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     ContinuousAdd (Additive
       ((higherPrincipalUnitGroup F.toCompleteDVF) 1)) := by
-  let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro F sharedOwner2
   let e :=
     adicPrincipalUnitsContinuousAddEquivUnderlyingOfWithZeroValuation v
   refine ⟨?_⟩

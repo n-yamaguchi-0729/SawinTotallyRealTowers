@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Int.TypeTags
-import Mathlib.Data.ZMod.QuotientGroup
-import Lean.Elab.Tactic.Ext
-import Lean.Elab.Tactic.RCases
+module
+
+public import Mathlib.Algebra.Group.Int.TypeTags
+public import Mathlib.Data.ZMod.QuotientGroup
+public import Lean.Elab.Tactic.Ext
+public import Lean.Elab.Tactic.RCases
 
 /-!
 # Integer multiple subgroups
@@ -22,6 +24,8 @@ The declarations retain the established
 group is used by the valuation API; their implementation has no valued-field
 hypotheses.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory.DiscreteValuationField
 

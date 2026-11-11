@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Conductors of finite abelian local extensions
@@ -23,6 +25,10 @@ the principal-unit neighbourhood basis.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -32,7 +38,7 @@ open LocalFieldTheory
 
 /-- The field-level principal-unit filtration is antitone in its exponent. -/
 theorem fieldPrincipalUnits_antitone
-    (K : Type) [Field K] [ValuativeRel K]
+    (K : Type u) [Field K] [ValuativeRel K]
     {m n : ℕ} (hmn : m ≤ n) :
     LocalFieldTheory.fieldPrincipalUnits K n ≤ LocalFieldTheory.fieldPrincipalUnits K m :=
   Subgroup.map_mono (principalUnits_antitone K hmn)
@@ -41,7 +47,7 @@ theorem fieldPrincipalUnits_antitone
 is contained in its norm subgroup. This supplies the least conductor
 exponent. -/
 theorem exists_fieldPrincipalUnits_le_normSubgroup
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -54,7 +60,7 @@ theorem exists_fieldPrincipalUnits_le_normSubgroup
 /-- The least principal-unit depth contained in the norm subgroup of the
 finite abelian extension `L / K`. -/
 def localConductorExponent
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] : ℕ := by
@@ -64,7 +70,7 @@ def localConductorExponent
 /-- The principal-unit group at the conductor exponent is contained in the
 norm subgroup. -/
 theorem localConductorExponent_spec
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -75,7 +81,7 @@ theorem localConductorExponent_spec
 
 /-- Minimality of the conductor exponent. -/
 theorem localConductorExponent_min
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -87,7 +93,7 @@ theorem localConductorExponent_min
 /-- A depth contains the conductor depth exactly when its principal units are
 already norms.  This records both the defining property and its minimality. -/
 theorem localConductorExponent_le_iff
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -103,7 +109,7 @@ theorem localConductorExponent_le_iff
 /-- The conductor ideal `p_K ^ n`, where `n` is the least principal-unit
 depth contained in the norm subgroup. -/
 def localConductorIdeal
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] : Ideal 𝒪[K] :=
@@ -112,7 +118,7 @@ def localConductorIdeal
 /-- The conductor exponent is zero exactly when the whole unit group
 `U_K = U_K^(0)` is contained in the norm subgroup. -/
 theorem localConductorExponent_eq_zero_iff
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -122,7 +128,7 @@ theorem localConductorExponent_eq_zero_iff
 
 /-- The conductor ideal is `1` exactly when its exponent is zero. -/
 theorem localConductorIdeal_eq_one_iff_exponent_eq_zero
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -133,7 +139,7 @@ theorem localConductorIdeal_eq_one_iff_exponent_eq_zero
 /-- The conductor-one criterion stated directly in terms of the norm subgroup
 and `U_K = U_K^(0)`. -/
 theorem localConductorIdeal_eq_one_iff
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :

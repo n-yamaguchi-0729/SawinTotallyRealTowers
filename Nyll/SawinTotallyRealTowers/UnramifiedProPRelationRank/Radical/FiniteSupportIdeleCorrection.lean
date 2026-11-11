@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleFiniteValuationCharacters
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleCharacterGlobalLift
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleFiniteValuationCharacters
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleCharacterGlobalLift
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 
 /-!
 # Global correction of a finite local character family
@@ -17,6 +21,8 @@ corresponding continuous idele character kills all principal ideles. Global reci
 gives an actual maximal abelian character agreeing with the prescribed family on local
 integral units; the valuation correction changes only the unramified part.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology

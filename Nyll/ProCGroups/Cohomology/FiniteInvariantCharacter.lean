@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FinitePGroupMaximal
-import Mathlib.Algebra.Group.Hom.Instances
-import Mathlib.GroupTheory.GroupAction.DomAct.Basic
+module
+
+public import Nyll.ProCGroups.ProP.FinitePGroupMaximal
+public import Mathlib.Algebra.Group.Hom.Instances
+public import Mathlib.GroupTheory.GroupAction.DomAct.Basic
 
 /-!
 # Conjugation-invariant characters of finite p-groups
@@ -18,6 +20,8 @@ subgroups of finite `p`-groups.  Averaging is replaced by the fixed-point theore
 The relative form additionally makes the character vanish on a prescribed proper normal
 subgroup.  It is the finite quotient input for relative pro-`p` Nakayama arguments.
 -/
+
+@[expose] public section
 
 open MulAction
 

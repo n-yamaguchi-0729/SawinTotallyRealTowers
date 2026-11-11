@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
-import Nyll.ProCGroups.Topologies.QuotientMaps
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
+public import Nyll.ProCGroups.Topologies.QuotientMaps
 
 /-!
 # Vanishing of localized unramified degree-two classes
@@ -18,6 +20,8 @@ quotient of the selected decomposition group.  The chosen local comparison
 identifies that quotient with the standard local unramified quotient, whose
 continuous degree-two cohomology with trivial `ZMod p` coefficients vanishes.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NNReal NumberField ValuativeRel

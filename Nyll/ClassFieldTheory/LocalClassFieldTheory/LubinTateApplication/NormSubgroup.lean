@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.StandardSubgroupNorm
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UnitQuotientCard
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormIndex
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.StandardSubgroupNorm
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UnitQuotientCard
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormIndex
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
 /-!
 # Lubin--Tate application: the exact norm subgroup
@@ -19,7 +22,11 @@ index here, in the application layer, so the containment becomes an equality.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w
 
 open scoped LaurentSeries ValuativeRel
 
@@ -32,12 +39,12 @@ open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 /-- The explicit norm-subgroup formula, with repository level `n` representing the canonical
 level `n+1`: the norm subgroup is exactly `(T⁻¹) × U^(n+1)`. -/
 theorem equalCharacteristicLubinTateNormSubgroup_eq_uniformizerPrincipalSubgroup
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
     letI : ValuativeRel F.residueField⸨X⸩ :=

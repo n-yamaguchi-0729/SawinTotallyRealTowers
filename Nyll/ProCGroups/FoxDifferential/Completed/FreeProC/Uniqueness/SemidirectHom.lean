@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
 
 /-!
 # Fox differential: completed — free pro-\(C\) — uniqueness — semidirect hom
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   If a crossed-differential semidirect homomorphism is continuous and has the standard generator
   coordinates, then the corresponding semidirect generator map is continuous.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

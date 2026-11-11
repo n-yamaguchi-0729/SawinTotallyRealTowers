@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
-import Mathlib.Algebra.Polynomial.Lifts
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-import Mathlib.RingTheory.Valuation.LocalSubring
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
+public import Mathlib.Algebra.Polynomial.Lifts
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+public import Mathlib.RingTheory.Valuation.LocalSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Closed unit balls of nonarchimedean absolute values
@@ -16,6 +19,8 @@ This file records the valuation ring attached directly to a multiplicative
 absolute value in the nonarchimedean case.  It is the section-3 object used by
 the finite-degree norm construction before any discrete-valuation-field packaging.
 -/
+
+@[expose] public section
 
 noncomputable section
 

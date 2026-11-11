@@ -4,32 +4,34 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.RamificationSupport
-import Nyll.SawinTotallyRealTowers.RealCompositum
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteDiscreteKernelField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaFixedUnramified
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
-import Nyll.ProCGroups.Topologies.QuotientMaps
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.GroupTheory.PGroup
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
-import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.RamificationSupport
+public import Nyll.SawinTotallyRealTowers.RealCompositum
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteDiscreteKernelField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaFixedUnramified
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Factoring representations through the maximal real pro-p compositum
@@ -40,6 +42,8 @@ kernel field satisfying the defining local conditions. Its inclusion in the
 constructed compositum gives a continuous factorization through restriction.
 The target need not be finite, and the argument does not require p to be odd.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

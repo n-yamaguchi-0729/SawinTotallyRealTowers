@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
 
 /-!
 # The big Hilbert class field over the original number field
@@ -18,6 +21,10 @@ number field, with degree equal to the narrow class number.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped NumberField
 
 noncomputable section
@@ -25,7 +32,7 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
-variable (K : Type) [Field K] [NumberField K]
+variable (K : Type u) [Field K] [NumberField K]
 
 /-- The canonical base fixed field of the big Hilbert realization,
 regarded as an algebra over the original number field. -/

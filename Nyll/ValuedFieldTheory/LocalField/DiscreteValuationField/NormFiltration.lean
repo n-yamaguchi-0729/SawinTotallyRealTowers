@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
 
 /-!
 # Norm compatibility with unit filtrations
@@ -12,6 +14,8 @@ import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
 A compatibility hypothesis for a norm and two unit filtrations immediately
 produces homomorphisms on every filtration level.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -461,7 +465,7 @@ theorem quotientModuloFiltrationPreimageClass_mk_eq_one_iff
     QuotientGroup.mk'
         (N.filtrationPreimageClassInQuotient UG UH targetLevel n) q = 1 ↔
       q ∈ N.filtrationPreimageClassInQuotient UG UH targetLevel n := by
-  simp [QuotientGroup.mk'_apply]
+  exact QuotientGroup.eq_one_iff _
 
 /--
 Characterizes `QuotientGroup.mk' (N.filtrationPreimageClassInQuotient UG UH targetLevel n)
@@ -539,7 +543,7 @@ theorem quotientModuloFiltrationPreimageClass_mk_mk_eq_iff_inv_mul
     N.toHom.map_div,
     UG.principalUnitSubgroup_div_mem_iff_inv_mul_mem (targetLevel n)
       (N.toHom x) (N.toHom y)]
-  simp [N.toHom.map_mul, N.toHom.map_inv]
+  rw [N.toHom.map_mul, N.toHom.map_inv]
 
 /-- First-isomorphism form of the filtration quotient norm map, with codomain
 the actual range when no surjectivity hypothesis is available. -/
@@ -901,7 +905,7 @@ theorem quotientMapOfMapsFiltrationLevels_mk_eq_iff_inv_mul
     N.toHom.map_div,
     UG.principalUnitSubgroup_div_mem_iff_inv_mul_mem (targetLevel n)
       (N.toHom x) (N.toHom y)]
-  simp [N.toHom.map_mul, N.toHom.map_inv]
+  rw [N.toHom.map_mul, N.toHom.map_inv]
 
 /-- Quotient-level surjectivity is equivalent to lifting every target element
 up to the target filtration subgroup. -/

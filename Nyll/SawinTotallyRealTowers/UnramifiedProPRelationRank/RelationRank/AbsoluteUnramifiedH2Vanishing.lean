@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageAbsoluteH2Vanishing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
-import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageAbsoluteH2Vanishing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
+public import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
 
 /-!
 # Vanishing of absolute inflation from unramified pro-p degree two
@@ -20,6 +22,8 @@ for every degree-two class of the maximal everywhere-unramified pro-p
 group over a base containing the supplied primitive root.
 No comparison assumption or new instance is introduced.
 -/
+
+@[expose] public section
 
 open scoped Topology NumberField
 

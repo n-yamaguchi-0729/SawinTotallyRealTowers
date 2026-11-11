@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtension
-import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtension
+public import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
 
 /-!
 # Degree-two classes as nonsplit central extensions
@@ -15,6 +17,8 @@ degree-two class and attaches its explicit central extension.  A continuous
 group-theoretic section of the extension forces the represented cohomology
 class to vanish.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

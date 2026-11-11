@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.IntermediateFieldRestriction
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FiniteGaloisLevelIndependence
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.HerbrandTheorem
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.IntermediateFieldRestriction
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FiniteGaloisLevelIndependence
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.HerbrandTheorem
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
 /-!
 # Upper ramification jumps
@@ -22,24 +25,26 @@ right-limit subgroup and the intrinsic predicate for an upper jump.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open ValuationTheory.DiscreteValuationField
 open ValuationTheory.DiscreteValuationField.ValuedExtension
 open scoped ValuativeRel
 
-universe y
+universe u v w y
 
 namespace LocalFieldTheory
 
 /-- Uniqueness after forgetting completeness, in the form consumed by the
 real lower and upper ramification APIs. -/
 theorem chosenLocalExtensionCompleteDVF_hasUniqueDVFValuationExtension
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
-    RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{0, 0, 0, 0, y}
+    RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, u, v, 0, y}
       (localCompleteDVF K).toDVF
       (chosenLocalExtensionCompleteDVF K L).toDVF :=
   chosenLocalExtensionCompleteDVF_hasUniqueValuationExtension K L
@@ -55,9 +60,9 @@ open RamificationTheory.HilbertRamification.Higher
 
 /-- Pull a complete discrete valuation back along a field equivalence. -/
 private noncomputable def completeDVFComapAlgEquiv
-    {L M : Type} [Field L] [Field M]
-    (target : CompleteDVF.{0, 0} M) (e : L ≃+* M) :
-    CompleteDVF.{0, 0} L where
+    {L : Type v} {M : Type w} [Field L] [Field M]
+    (target : CompleteDVF.{w, 0} M) (e : L ≃+* M) :
+    CompleteDVF.{v, 0} L where
   ValueGroup := target.ValueGroup
   valuation := target.valuation.comap e.toRingHom
   instCompleteDiscrete :=
@@ -66,10 +71,10 @@ private noncomputable def completeDVFComapAlgEquiv
 /-- Pullback along a base-linear equivalence preserves extension of the base
 valuation. -/
 private theorem completeDVFComapAlgEquiv_hasExtension
-    (K L M : Type) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
-    (base : CompleteDVF.{0, 0} K)
-    (target : CompleteDVF.{0, 0} M)
+    (base : CompleteDVF.{u, u} K)
+    (target : CompleteDVF.{w, 0} M)
     [base.valuation.HasExtension target.valuation]
     (e : L ≃ₐ[K] M) :
     base.valuation.HasExtension
@@ -89,7 +94,7 @@ private theorem completeDVFComapAlgEquiv_hasExtension
 extension of nonarchimedean local fields, using its integral-closure
 valuation. -/
 noncomputable def localLowerRamificationGroup
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -102,7 +107,7 @@ noncomputable def localLowerRamificationGroup
 /-- The actual real upper ramification group of an arbitrary finite Galois
 extension of nonarchimedean local fields. -/
 noncomputable def localUpperRamificationGroup
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -115,7 +120,7 @@ noncomputable def localUpperRamificationGroup
 /-- A base-linear field equivalence transports every local upper ramification
 group to the corresponding group of the equivalent extension. -/
 theorem localUpperRamificationGroup_map_autCongr
-    (K L M : Type)
+    (K : Type u) (L : Type v) (M : Type w)
     [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     [FiniteDimensional K L] [FiniteDimensional K M]
@@ -341,7 +346,7 @@ theorem localUpperRamificationGroup_map_autCongr
   exact hpulled
 
 private theorem fixedFieldUpperRamificationGroup_map_autCongr
-    (K L M : Type)
+    (K : Type u) (L : Type v) (M : Type w)
     [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     [FiniteDimensional K L] [FiniteDimensional K M]
@@ -588,7 +593,7 @@ private theorem fixedFieldUpperRamificationGroup_map_autCongr
   exact hlower _
 
 private theorem fixedFieldUpperRamificationGroup_eq_local
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
@@ -608,7 +613,7 @@ private theorem fixedFieldUpperRamificationGroup_eq_local
 /-- Upper ramification groups descend along restriction between finite
 Galois intermediate fields in a common separable closure. -/
 theorem localUpperRamificationGroup_map_restrict
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
@@ -734,7 +739,7 @@ theorem localUpperRamificationGroup_map_restrict
 
 /-- The local upper ramification filtration is antitone. -/
 theorem localUpperRamificationGroup_antitone
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -750,7 +755,7 @@ theorem localUpperRamificationGroup_antitone
 /-- The subgroup immediately after an upper ramification index for an
 arbitrary finite local Galois extension. -/
 def localUpperRamificationGroupAfter
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -759,7 +764,7 @@ def localUpperRamificationGroupAfter
 
 /-- The right-limit upper group lies in the group at the limiting index. -/
 theorem localUpperRamificationGroupAfter_le
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -773,7 +778,7 @@ theorem localUpperRamificationGroupAfter_le
 /-- Intrinsic upper-jump predicate for an arbitrary finite local Galois
 extension. -/
 def IsLocalUpperRamificationJump
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -784,7 +789,7 @@ def IsLocalUpperRamificationJump
 /-- Restriction along a finite Galois tower carries the right-limit of the
 upper filtration onto the corresponding right-limit downstairs. -/
 theorem localUpperRamificationGroupAfter_map_restrict
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
@@ -821,7 +826,7 @@ theorem localUpperRamificationGroupAfter_map_restrict
 upper jump upstairs.  Thus quotienting an extension cannot create new break
 indices. -/
 theorem isLocalUpperRamificationJump_of_map_restrict
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
@@ -844,7 +849,7 @@ theorem isLocalUpperRamificationJump_of_map_restrict
       localUpperRamificationGroupAfter_map_restrict K E F hEF t
 
 private theorem localInverseHerbrandFunction_eq_self_of_nonpos
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -877,7 +882,7 @@ private theorem localInverseHerbrandFunction_eq_self_of_nonpos
 /-- At every nonpositive index the inverse Herbrand function is the identity,
 so upper and lower numbering agree. -/
 theorem localUpperRamificationGroup_eq_localLowerRamificationGroup_of_nonpos
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -892,7 +897,7 @@ theorem localUpperRamificationGroup_eq_localLowerRamificationGroup_of_nonpos
 /-- The lower filtration is constant between the distinguished endpoints `-1` and
 `0`: every such real index imposes exactly the first maximal-ideal power. -/
 theorem localLowerRamificationGroup_eq_zero_of_neg_one_lt_of_nonpos
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -927,7 +932,7 @@ theorem localLowerRamificationGroup_eq_zero_of_neg_one_lt_of_nonpos
 
 /-- The upper filtration is constant on the half-open interval `(-1, 0]`. -/
 theorem localUpperRamificationGroup_eq_zero_of_neg_one_lt_of_nonpos
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -945,7 +950,7 @@ theorem localUpperRamificationGroup_eq_zero_of_neg_one_lt_of_nonpos
 /-- At and below `-1`, the local upper ramification group is the full Galois
 group. -/
 theorem localUpperRamificationGroup_eq_top_of_le_neg_one
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -960,7 +965,7 @@ theorem localUpperRamificationGroup_eq_top_of_le_neg_one
 
 /-- No upper jump occurs strictly below the distinguished endpoint `-1`. -/
 theorem not_isLocalUpperRamificationJump_of_lt_neg_one
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -990,7 +995,7 @@ theorem not_isLocalUpperRamificationJump_of_lt_neg_one
 
 /-- No upper jump occurs strictly between `-1` and `0`. -/
 theorem not_isLocalUpperRamificationJump_of_neg_one_lt_of_lt_zero
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -1028,7 +1033,7 @@ theorem not_isLocalUpperRamificationJump_of_neg_one_lt_of_lt_zero
 /-- Every local upper jump is either the possible endpoint `-1` or a
 nonnegative index. -/
 theorem isLocalUpperRamificationJump_eq_neg_one_or_nonneg
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]

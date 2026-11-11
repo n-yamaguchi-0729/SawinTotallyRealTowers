@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Exact.Basic
+module
+
+public import Mathlib.Algebra.Exact.Basic
 
 /-!
 # Fox differential: common — finite family linear map
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `finiteFamilyLinearMap_single`
   A finite-family linear map sends a coordinate basis vector to the corresponding generator.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

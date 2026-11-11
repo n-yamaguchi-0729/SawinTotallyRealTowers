@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # The local blocks occurring in a relative `S`-idele
@@ -20,6 +23,8 @@ the local tensor decomposition.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
@@ -30,7 +35,11 @@ open AlgebraicNumberTheory.Valuations
 open CyclicCohomology
 open HilbertRamification
 
-variable {K L : Type}
+universe u v
+
+section InfinitePlaceChoice
+
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -51,6 +60,13 @@ theorem chosenInfinitePlaceAbove_comap
         (algebraMap K L) = v :=
   Classical.choose_spec
     (InfinitePlace.comap_surjective (K := L) v)
+
+end InfinitePlaceChoice
+
+variable {K L : Type}
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
 
 /-- Infinite places and the selected finite places form the finite
 unrestricted index family of a relative `S`-idele. -/

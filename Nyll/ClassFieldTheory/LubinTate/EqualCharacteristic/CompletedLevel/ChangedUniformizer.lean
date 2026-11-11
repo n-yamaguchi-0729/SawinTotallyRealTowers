@@ -4,10 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer
-import Mathlib.FieldTheory.IsSepClosed
+module
+
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.Polynomial.Eval.Defs
+public import Mathlib.Algebra.Polynomial.Degree.Defs
+public import Mathlib.Algebra.Polynomial.Derivative
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer
+public import Mathlib.FieldTheory.IsSepClosed
 
 /-!
 # The completed theta-intertwining theorem: changing the equal-characteristic uniformizer
@@ -25,6 +32,8 @@ theorem.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -65,10 +74,8 @@ theorem equalCharacteristicChangedLaurentUniformizer_eq_unit_mul
     equalCharacteristicChangedLaurentUniformizer F a =
       (equalCharacteristicChangedLaurentUnit F a : F.residueField⸨X⸩) *
         equalCharacteristicLaurentUniformizer F := by
-  simp [equalCharacteristicChangedLaurentUniformizer,
-    equalCharacteristicChangedIntegralUniformizer,
-    equalCharacteristicChangedLaurentUnit,
-    equalCharacteristicLaurentUniformizer]
+  exact map_mul (algebraMap F.residueField⟦X⟧ F.residueField⸨X⸩)
+    (a : F.residueField⟦X⟧) PowerSeries.X
 
 /-- Changing the Laurent uniformizer by the unit one leaves it unchanged. -/
 @[simp]
@@ -76,8 +83,8 @@ theorem equalCharacteristicChangedLaurentUniformizer_one
     (F : LocalField.{u, v} K) :
     equalCharacteristicChangedLaurentUniformizer F 1 =
       equalCharacteristicLaurentUniformizer F := by
-  simp [equalCharacteristicChangedLaurentUniformizer_eq_unit_mul,
-    equalCharacteristicChangedLaurentUnit]
+  simp only [equalCharacteristicChangedLaurentUniformizer_eq_unit_mul,
+    equalCharacteristicChangedLaurentUnit, map_one, Units.val_one, one_mul]
 
 /-- A unit multiple of the integral uniformizer is nonzero. -/
 theorem equalCharacteristicChangedIntegralUniformizer_ne_zero
@@ -161,7 +168,7 @@ theorem equalCharacteristicChangedIntegralPiPolynomialIterate_monic
     (F : LocalField.{u, v} K) (a : F.residueField⟦X⟧ˣ) (n : ℕ) :
     (equalCharacteristicChangedIntegralPiPolynomialIterate F a n).Monic := by
   induction n with
-  | zero => simp [equalCharacteristicChangedIntegralPiPolynomialIterate]
+  | zero => exact Polynomial.monic_X
   | succ n ih =>
       rw [equalCharacteristicChangedIntegralPiPolynomialIterate_succ]
       exact (equalCharacteristicChangedIntegralPiPolynomial_monic F a).comp ih
@@ -188,13 +195,17 @@ theorem equalCharacteristicChangedIntegralPiPolynomialIterate_map_constantCoeff
       Polynomial.X ^ (Nat.card F.residueField ^ n) := by
   induction n with
   | zero =>
-      simp [equalCharacteristicChangedIntegralPiPolynomialIterate]
+      change (Polynomial.X : Polynomial F.residueField⟦X⟧).map
+          (PowerSeries.constantCoeff (R := F.residueField)) =
+        Polynomial.X ^ (Nat.card F.residueField ^ 0)
+      simpa only [pow_zero, pow_one] using
+        Polynomial.map_X (PowerSeries.constantCoeff (R := F.residueField))
   | succ n ih =>
       rw [equalCharacteristicChangedIntegralPiPolynomialIterate_succ,
         Polynomial.map_comp,
         equalCharacteristicChangedIntegralPiPolynomial_map_constantCoeff,
         ih]
-      simp [← pow_mul, pow_succ]
+      rw [Polynomial.pow_comp, Polynomial.X_comp, ← pow_mul, pow_succ]
 
 /-- Every changed integral `π`-iterate vanishes at zero. -/
 theorem equalCharacteristicChangedIntegralPiPolynomialIterate_eval_zero
@@ -202,7 +213,7 @@ theorem equalCharacteristicChangedIntegralPiPolynomialIterate_eval_zero
     (equalCharacteristicChangedIntegralPiPolynomialIterate F a n).eval 0 = 0 := by
   induction n with
   | zero =>
-      simp [equalCharacteristicChangedIntegralPiPolynomialIterate]
+      exact Polynomial.eval_X
   | succ n ih =>
       rw [equalCharacteristicChangedIntegralPiPolynomialIterate_succ,
         Polynomial.eval_comp, ih]
@@ -396,8 +407,7 @@ theorem equalCharacteristicChangedIntegralPiPolynomialIterate_map
       equalCharacteristicChangedPiPolynomialIterate F a n := by
   induction n with
   | zero =>
-      simp [equalCharacteristicChangedIntegralPiPolynomialIterate,
-        equalCharacteristicChangedPiPolynomialIterate]
+      exact Polynomial.map_X _
   | succ n ih =>
       rw [equalCharacteristicChangedIntegralPiPolynomialIterate_succ,
         equalCharacteristicChangedPiPolynomialIterate_succ,
@@ -469,12 +479,16 @@ theorem equalCharacteristicChangedPiPolynomialIterate_derivative
     (equalCharacteristicChangedPiPolynomialIterate F a n).derivative =
       Polynomial.C (equalCharacteristicChangedLaurentUniformizer F a ^ n) := by
   induction n with
-  | zero => simp [equalCharacteristicChangedPiPolynomialIterate]
+  | zero =>
+      change (Polynomial.X : Polynomial F.residueField⸨X⸩).derivative =
+        Polynomial.C (equalCharacteristicChangedLaurentUniformizer F a ^ 0)
+      simpa only [pow_zero, map_one] using
+        (Polynomial.derivative_X (R := F.residueField⸨X⸩))
   | succ n ih =>
       rw [equalCharacteristicChangedPiPolynomialIterate_succ,
         Polynomial.derivative_comp, ih,
         equalCharacteristicChangedPiPolynomial_derivative]
-      simp [pow_succ]
+      simp only [Polynomial.C_comp, pow_succ, map_mul]
 
 /-- Every iterate of the changed Laurent `π`-polynomial is separable. -/
 theorem equalCharacteristicChangedPiPolynomialIterate_separable
@@ -635,10 +649,7 @@ theorem equalCharacteristicChangedLevelGenerator_eq_powerBasis_gen
     equalCharacteristicChangedLevelGenerator F a n =
       (IntermediateField.adjoin.powerBasis
         (chosenEqualCharacteristicChangedPrimitiveRoot_isIntegral F a n)).gen := by
-  apply Subtype.ext
-  simp [equalCharacteristicChangedLevelGenerator,
-    equalCharacteristicChangedLevelField,
-    IntermediateField.adjoin.powerBasis_gen]
+  rfl
 
 /-- The completed theta-intertwining theorem, changed-uniformizer norm identity:
 `N(-λ_{uT,n+1}) = uT`. -/

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2FiniteStage
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.Data.Fintype.EquivFin
+module
+
+public import Nyll.GaloisCohomology.ProP.H2FiniteStage
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.Data.Fintype.EquivFin
 
 /-!
 # Common finite-stage realization of degree-two classes
@@ -15,6 +17,8 @@ Finite families of lifted degree-two classes of a pro-`p` group inflate from one
 `p`-group quotient.  In particular, the ranges of finite-stage inflation cover the ambient
 degree-two cohomology.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

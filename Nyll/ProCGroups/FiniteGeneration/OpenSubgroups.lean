@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.ReidemeisterSchreier.Profinite.OpenSubgroups.RankBound
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.SetTheory.Cardinal.ToNat
+module
+
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ReidemeisterSchreier.Profinite.OpenSubgroups.RankBound
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.SetTheory.Cardinal.ToNat
 
 /-!
 # Finite generation of open subgroups
@@ -17,6 +19,8 @@ The existing Schreier bound makes the least generating cardinal of an open
 subgroup finite. A generating set attaining that cardinal then gives an
 actual finite generating set, without a new finite-generation hypothesis.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.FiniteGeneration
 

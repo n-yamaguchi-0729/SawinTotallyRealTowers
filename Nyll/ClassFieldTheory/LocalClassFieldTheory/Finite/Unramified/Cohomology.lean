@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientTower
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientTower
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
 
 /-!
 # Tate cohomology of units in unramified extensions
@@ -22,6 +24,8 @@ The norm statements are the corresponding actual norm surjections.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -97,9 +101,9 @@ private theorem principalUnitsIntegerUnits_shortExact
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] (n : Nat) :
-    letI := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     (∀ (sigma : Gal(L / K)) (a : principalUnits L n),
         principalUnitsIntegerUnitsInclusion L n (sigma • a) =
           sigma • principalUnitsIntegerUnitsInclusion L n a) ∧
@@ -111,9 +115,7 @@ private theorem principalUnitsIntegerUnits_shortExact
           principalUnitsIntegerUnitsInclusion L n v = a) ∧
       Function.Injective (principalUnitsIntegerUnitsInclusion L n) ∧
       Function.Surjective (integerUnitsPrincipalUnitsQuotientMap L n) := by
-  let := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   refine ⟨?_, ?_, ?_, (principalUnits L n).subtype_injective,
     integerUnitsModPrincipalUnitsAtLevelMk_surjective L n⟩
   · intro sigma a
@@ -179,8 +181,8 @@ private theorem exists_integerUnit_map_eq_of_galoisGroup_fixed
   let b : 𝒪[K]ˣ :=
     { val := ⟨y, hy_mem⟩
       inv := ⟨y⁻¹, hy_inv_mem⟩
-      val_inv := by ext; simp [hy0]
-      inv_val := by ext; simp [hy0] }
+      val_inv := Subtype.ext (mul_inv_cancel₀ hy0)
+      inv_val := Subtype.ext (inv_mul_cancel₀ hy0) }
   refine ⟨b, ?_⟩
   apply Units.ext
   apply Subtype.ext
@@ -252,10 +254,10 @@ private theorem unramified_integerUnits_herbrand_subsingleton
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
     [IsUnramifiedValuedExtension K L]
     (g : Gal(L/K)) (hg : ∀ sigma : Gal(L/K), sigma ∈ Subgroup.zpowers g) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     Subsingleton (HerbrandH0 Gal(L / K) 𝒪[L]ˣ) ∧
       Subsingleton (HerbrandHMinusOne Gal(L / K) 𝒪[L]ˣ g) := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   rcases integerUnits_herbrandQuotient_eq_one K L g hg with
     ⟨hU, hUone⟩
   let : Finite (HerbrandH0 Gal(L / K) 𝒪[L]ˣ) := hU.1
@@ -297,11 +299,11 @@ private theorem unramified_principalUnits_herbrand_subsingleton
     [IsUnramifiedValuedExtension K L]
     (n : Nat) (hn : 1 ≤ n) (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
-    letI := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     Subsingleton (HerbrandH0 Gal(L / K) (principalUnits L n)) ∧
       Subsingleton
         (HerbrandHMinusOne Gal(L / K) (principalUnits L n) g) := by
-  let := galoisGroupPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+  intro sharedOwner1
   let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
   let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
     K L n

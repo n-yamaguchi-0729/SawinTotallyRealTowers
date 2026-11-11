@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.ScalarEndomorphisms
 
 /-!
 # Changed-uniformizer scalar compatibility
@@ -14,6 +16,8 @@ endomorphism and identifies its coefficientwise Frobenius twist.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

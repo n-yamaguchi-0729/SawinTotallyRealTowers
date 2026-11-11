@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicNormOneCorrection
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.Continuity
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicNormOneCorrection
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.Continuity
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 
 /-!
 # Topology of the rational cyclotomic idele value
@@ -20,6 +24,8 @@ been proved.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

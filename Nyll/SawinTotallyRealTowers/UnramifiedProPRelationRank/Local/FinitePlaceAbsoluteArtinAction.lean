@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinEmbedding
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinEmbedding
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 
 /-!
 # Absolute Artin action on a global finite abelian extension
@@ -14,6 +18,8 @@ Pulling the valuation back through the actual embedding and extending that
 embedding to its localization relates the two Artin actions.  Independence of
 the place above the base removes the auxiliary pullback place.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -94,8 +100,12 @@ theorem finitePlaceAbsoluteArtin_lift_action
       j (AbsoluteValue.toAlgebraicLocalization vF w.1 w.2 x) = i x :=
     absoluteValueExtension_localizationEmbeddingOfPullback_toLocalization
       vF hv w i rfl x
+  have hrep : (QuotientGroup.mk (show Field.absoluteGaloisGroup C from sigma) :
+      Field.absoluteGaloisGroupAbelianization C) =
+      absoluteLocalArtinMap C (finitePlaceLocalArtinInput v a) := by
+    with_reducible exact hsigma
   have h := absoluteLocalArtinMap_lift_action C E j (finitePlaceLocalArtinInput v a)
-    sigma hsigma (AbsoluteValue.toAlgebraicLocalization vF w.1 w.2 z)
+    sigma hrep (AbsoluteValue.toAlgebraicLocalization vF w.1 w.2 z)
   have haction := (congrArg sigma (hj z)).symm.trans h
   have hlocal := finitePlaceLocalArtinMonoidHom_apply_normalized_at
     (K := F) (L := L) v w a

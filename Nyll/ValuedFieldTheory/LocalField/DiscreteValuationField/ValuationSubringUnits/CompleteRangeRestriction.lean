@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
-import Mathlib.RingTheory.AdicCompletion.Topology
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestriction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CyclicValueGroup
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
+public import Mathlib.RingTheory.AdicCompletion.Topology
 
 /-!
 # Range restriction for complete discretely valued fields
@@ -17,6 +19,8 @@ transports residue finiteness, adic completeness, cyclicity, and discreteness.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -90,7 +94,7 @@ theorem mrangeRestrict_isAdicComplete
           (algebraMap F.valuationSubring
             (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict
               F).valuationSubring a) * e x
-        simp [RingHom.algebraMap_toAlgebra] }
+        exact e.map_mul a x }
   have hcompleteBase : IsAdicComplete F.maximalIdeal F.valuationSubring :=
     F.isAdicComplete
   let : IsAdicComplete F.maximalIdeal F.valuationSubring := hcompleteBase

@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+module
+
+public import Mathlib.Algebra.Group.Units.Equiv
+public import Mathlib.RingTheory.Ideal.Maps
+public import Mathlib.RingTheory.LocalRing.RingHom.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 /-!
 # Principal units
 
@@ -12,11 +17,13 @@ Defines the filtration `U^n = 1 + 𝓂^n`, proves its basic order properties, an
 constructs the quotient of valuation-ring units by the first filtration step.
 -/
 
+@[expose] public section
+
 namespace LocalFieldTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 open scoped ValuativeRel
 
@@ -55,6 +62,28 @@ theorem mem_principalUnits_iff (K : Type u) [Field K] [ValuativeRel K]
     (u : 𝒪[K]ˣ) (n : Nat) :
     u ∈ principalUnits K n ↔ ((u : 𝒪[K]) - 1) ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) :=
   Iff.rfl
+
+/-- An equivalence of the actual integer rings transports every principal-unit group. -/
+theorem principalUnits_map_ringEquiv
+    (K : Type u) (L : Type v) [Field K] [Field L] [ValuativeRel K] [ValuativeRel L]
+    (e : 𝒪[K] ≃+* 𝒪[L]) (n : ℕ) :
+    (principalUnits K n).map (Units.mapEquiv e.toMulEquiv).toMonoidHom =
+      principalUnits L n := by
+  have hpow : (𝓂[K] ^ n : Ideal 𝒪[K]).map e = (𝓂[L] ^ n : Ideal 𝒪[L]) := by
+    rw [Ideal.map_pow, IsLocalRing.map_ringEquiv_maximalIdeal]
+  have hmem (a : 𝒪[K]ˣ) :
+      Units.mapEquiv e.toMulEquiv a ∈ principalUnits L n ↔ a ∈ principalUnits K n := by
+    have h := Ideal.apply_mem_of_equiv_iff
+      (I := (𝓂[K] ^ n : Ideal 𝒪[K])) (f := e) (x := (a : 𝒪[K]) - 1)
+    rw [hpow, map_sub, map_one] at h
+    exact h
+  ext a
+  constructor
+  · rintro ⟨b, hb, rfl⟩
+    exact (hmem b).mpr hb
+  · intro ha
+    obtain ⟨b, rfl⟩ := (Units.mapEquiv e.toMulEquiv).surjective a
+    exact ⟨b, (hmem b).mp ha, rfl⟩
 
 /-- An automorphism of the valuation integer ring preserves the principal-unit
 filtration whenever it preserves the corresponding maximal-ideal power. -/

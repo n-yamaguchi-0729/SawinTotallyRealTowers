@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
-import Mathlib.RingTheory.AdicCompletion.Topology
-import Mathlib.RingTheory.Valuation.Discrete.RankOne
-import Mathlib.GroupTheory.ArchimedeanDensely
-import Mathlib.Topology.Algebra.Valued.ValuedField
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Mathlib.RingTheory.AdicCompletion.Topology
+public import Mathlib.RingTheory.Valuation.Discrete.RankOne
+public import Mathlib.GroupTheory.ArchimedeanDensely
+public import Mathlib.Topology.Algebra.Valued.ValuedField
 
 /-!
 # Adic completeness of complete rank-one discrete valued fields
@@ -19,6 +21,8 @@ rank-one discrete valued field, the
 native topology of the valuation ring is its maximal-ideal adic topology.
 Consequently a complete valued field has an adically complete valuation ring.
 -/
+
+@[expose] public section
 
 universe u v
 

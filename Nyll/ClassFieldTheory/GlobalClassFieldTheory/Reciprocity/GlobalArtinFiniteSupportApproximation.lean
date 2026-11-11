@@ -4,9 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.HasseNormPrinciple
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteLocalFamily
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtin
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.HasseNormPrinciple
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteLocalFamily
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtin
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitNormContainment
 
 /-!
 # Finite-support reduction for the global Artin map
@@ -27,25 +35,29 @@ approximation.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct BigOperators
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
 /-- Supply the canonical commutativity used by the finite-support norm quotient. -/
-private theorem artinFiniteSupportIdeleClassIsMulCommutative
-    {F : Type} [Field F] [NumberField F] :
+theorem artinFiniteSupportIdeleClassIsMulCommutative
+    {F : Type u} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 attribute [local instance] artinFiniteSupportIdeleClassIsMulCommutative
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [IsAbelianGalois K L]

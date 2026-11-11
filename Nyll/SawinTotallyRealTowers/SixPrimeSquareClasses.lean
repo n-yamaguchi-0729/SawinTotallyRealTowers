@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.BigOperators.ModEq
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Finset.Powerset
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Tactic.NormNum
+module
+
+public import Mathlib.Algebra.BigOperators.ModEq
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Data.Finset.Powerset
+public import Mathlib.Data.Int.Basic
+public import Mathlib.Data.Nat.Squarefree
+public import Mathlib.Tactic.NormNum
 
 /-!
 # Five generators for the permitted rational square classes
@@ -20,6 +22,8 @@ of `3, 7, 11` contributes `1`, `21`, `33`, or `77`. The last contribution
 is `21 * 33 / 3²`. This constructs an explicit rational square factor
 and a product of a subset of the five radicands `5, 13, 17, 21, 33`.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

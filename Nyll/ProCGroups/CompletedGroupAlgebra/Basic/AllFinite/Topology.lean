@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Projections
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Projections
 
 /-!
 # Completed Group Algebra / Basic / All Finite / Topology
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Projections
 This module transports the finite-stage topological ring and scalar-action structures through the
 single all-finite inverse limit, and records its compactness and separation properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -29,15 +33,8 @@ universe u v
 variable (G : Type v) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable (R : Type u) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
-local instance (U : CompletedGroupAlgebraIndex G) :
-    Ring ((completedGroupAlgebraSystem R G).X U) := by
-  change Ring (CompletedGroupAlgebraStage R G U)
-  infer_instance
-
-local instance (U : CompletedGroupAlgebraIndex G) :
-    Module R ((completedGroupAlgebraSystem R G).X U) := by
-  change Module R (CompletedGroupAlgebraStage R G U)
-  infer_instance
+attribute [local instance] instRingCompletedGroupAlgebraSystemStage
+  instModuleCompletedGroupAlgebraSystemStage
 
 /-- Each finite stage \(R[G/U]\) is a topological ring for its product topology. -/
 theorem completedGroupAlgebraStage_isTopologicalRing (U : CompletedGroupAlgebraIndex G) :

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteIntermediateFieldCompositum
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteIntermediateFieldCompositum
 
 /-!
 # Frobenius power fixed fields
@@ -13,6 +15,8 @@ This module constructs the fixed fields of powers of a Frobenius element and
 proves their inclusion, exponent, normality, unramifiedness, finiteness,
 degree, quotient-cardinality, and generator properties.
 -/
+
+@[expose] public section
 
 universe u
 
@@ -68,7 +72,9 @@ theorem extensionInertia_commutes_of_mem_extensionSubgroup (D : DegreeData G)
     have hconj : k⁻¹ * t * k ∈ D.fieldInertiaWithin K.field := by
       simpa using (inferInstance : (D.fieldInertiaWithin K.field).Normal).conj_mem
         t htI k⁻¹
-    simp [mul_assoc]
+    simpa only [mul_inv_rev, mul_assoc] using
+      (D.fieldInertiaWithin K.field).mul_mem
+        ((D.fieldInertiaWithin K.field).inv_mem htI) hconj
 
 /-- Let `P/K` be a finite Galois subextension of `\widetilde L/K`
 containing `L`.  The `|G(P/K)|`-th power of every element of
@@ -125,7 +131,9 @@ theorem quotientPower_card_commutes_degreeZero (D : DegreeData G)
     K L hLK k hkL τ hτ
   simpa [Q, n, hkq] using hcomm
 
-private theorem extensionNormalizedDegree_pow_of_degreeOne (D : DegreeData G)
+/-- The normalized degree of a power of a degree-one Frobenius is
+the same power of the generator. -/
+theorem extensionNormalizedDegree_pow_of_degreeOne (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
     [hLnormal : (extensionSubgroup K.field L hLK).Normal]
@@ -352,12 +360,7 @@ theorem frobeniusPowerFixedField_normal (D : DegreeData G)
     let T := D.frobeniusFixedField K L hLK σm
     (extensionSubgroup S T
       (D.frobeniusPowerFixedField_le K L hLK φ hφ n m hn hm)).Normal := by
-  dsimp only
-  let σ := D.frobeniusPowerOfDegreeOne K L hLK φ hφ n hn
-  let σm := D.frobeniusPowerOfDegreeOne K L hLK φ hφ (n * m)
-    (Nat.mul_pos hn hm)
-  let S := D.frobeniusFixedField K L hLK σ
-  let T := D.frobeniusFixedField K L hLK σm
+  intro σ σm S T
   let hSK := D.frobeniusFixedField_le K L hLK σ
   let hTK := D.frobeniusFixedField_le K L hLK σm
   let hTS := D.frobeniusPowerFixedField_le K L hLK φ hφ n m hn hm
@@ -418,13 +421,7 @@ theorem frobeniusPowerFixedField_isUnramified (D : DegreeData G)
     let T := D.frobeniusFixedField K L hLK σm
     let hTS := D.frobeniusPowerFixedField_le K L hLK φ hφ n m hn hm
     (DegreeData.AbstractExtension.mk T S hTS).IsUnramified D := by
-  dsimp only
-  let σ := D.frobeniusPowerOfDegreeOne K L hLK φ hφ n hn
-  let σm := D.frobeniusPowerOfDegreeOne K L hLK φ hφ (n * m)
-    (Nat.mul_pos hn hm)
-  let S := D.frobeniusFixedField K L hLK σ
-  let T := D.frobeniusFixedField K L hLK σm
-  let hTS := D.frobeniusPowerFixedField_le K L hLK φ hφ n m hn hm
+  intro σ σm S T hTS
   rw [(DegreeData.AbstractExtension.mk T S hTS).isUnramified_iff_inertia_le D]
   intro x hx
   have hxI : x ∈ D.fieldInertia S := ⟨hx.1, hx.2⟩
@@ -484,12 +481,7 @@ private theorem frobeniusPowerFixedField_relIndex (D : DegreeData G)
     let S := D.frobeniusFixedField K L hLK σ
     let T := D.frobeniusFixedField K L hLK σm
     T.toSubgroup.relIndex S.toSubgroup = m := by
-  dsimp only
-  let σ := D.frobeniusPowerOfDegreeOne K L hLK φ hφ n hn
-  let σm := D.frobeniusPowerOfDegreeOne K L hLK φ hφ
-    (n * m) (Nat.mul_pos hn hm)
-  let S := D.frobeniusFixedField K L hLK σ
-  let T := D.frobeniusFixedField K L hLK σm
+  intro σ σm S T
   let hTS := D.frobeniusPowerFixedField_le
     K L hLK φ hφ n m hn hm
   have hTSunramified : (DegreeData.AbstractExtension.mk T S hTS).IsUnramified D :=
@@ -556,14 +548,7 @@ theorem frobeniusPowerFixedField_quotientFinite (D : DegreeData G)
     let hTS := D.frobeniusPowerFixedField_le
       K L hLK φ hφ n m hn hm
     Finite (S.toSubgroup ⧸ extensionSubgroup S T hTS) := by
-  dsimp only
-  let σ := D.frobeniusPowerOfDegreeOne K L hLK φ hφ n hn
-  let σm := D.frobeniusPowerOfDegreeOne K L hLK φ hφ
-    (n * m) (Nat.mul_pos hn hm)
-  let S := D.frobeniusFixedField K L hLK σ
-  let T := D.frobeniusFixedField K L hLK σm
-  let hTS := D.frobeniusPowerFixedField_le
-    K L hLK φ hφ n m hn hm
+  intro σ σm S T hTS
   apply (Subgroup.index_ne_zero_iff_finite).mp
   change T.toSubgroup.relIndex S.toSubgroup ≠ 0
   rw [D.frobeniusPowerFixedField_relIndex
@@ -588,14 +573,7 @@ theorem frobeniusPowerFixedField_quotientCard (D : DegreeData G)
     let hTS := D.frobeniusPowerFixedField_le
       K L hLK φ hφ n m hn hm
     Nat.card (S.toSubgroup ⧸ extensionSubgroup S T hTS) = m := by
-  dsimp only
-  let σ := D.frobeniusPowerOfDegreeOne K L hLK φ hφ n hn
-  let σm := D.frobeniusPowerOfDegreeOne K L hLK φ hφ
-    (n * m) (Nat.mul_pos hn hm)
-  let S := D.frobeniusFixedField K L hLK σ
-  let T := D.frobeniusFixedField K L hLK σm
-  let hTS := D.frobeniusPowerFixedField_le
-    K L hLK φ hφ n m hn hm
+  intro σ σm S T hTS
   let : Finite (S.toSubgroup ⧸ extensionSubgroup S T hTS) :=
     D.frobeniusPowerFixedField_quotientFinite
       K L hLK φ hφ n m hn hm
@@ -631,7 +609,7 @@ theorem frobeniusPowerFixedField_generator (D : DegreeData G)
     let hTS := D.frobeniusPowerFixedField_le K L hLK φ hφ n m hn hm
     let hTSnormal : (extensionSubgroup S T hTS).Normal :=
       D.frobeniusPowerFixedField_normal K L hLK φ hφ n m hn hm
-    letI := hTSnormal
+    let := hTSnormal
     ∃ s : S.toSubgroup,
       D.frobeniusFixedFieldToClosure K L hLK σ s =
           D.frobeniusInClosure K L hLK σ ∧
@@ -639,16 +617,7 @@ theorem frobeniusPowerFixedField_generator (D : DegreeData G)
         Multiplicative.ofAdd (1 : ZHat) ∧
       ∀ x : S.toSubgroup ⧸ extensionSubgroup S T hTS,
         x ∈ Subgroup.zpowers (QuotientGroup.mk s) := by
-  dsimp only
-  let σ := D.frobeniusPowerOfDegreeOne K L hLK φ hφ n hn
-  let σm := D.frobeniusPowerOfDegreeOne K L hLK φ hφ (n * m)
-    (Nat.mul_pos hn hm)
-  let S := D.frobeniusFixedField K L hLK σ
-  let T := D.frobeniusFixedField K L hLK σm
-  let hTS := D.frobeniusPowerFixedField_le K L hLK φ hφ n m hn hm
-  let hTSnormal : (extensionSubgroup S T hTS).Normal :=
-    D.frobeniusPowerFixedField_normal K L hLK φ hφ n m hn hm
-  let := hTSnormal
+  intro σ σm S T hTS hTSnormal reusedStructure7
   let k : K.field.toSubgroup := Quotient.out σ.1
   have hkσ :
       (QuotientGroup.mk k :

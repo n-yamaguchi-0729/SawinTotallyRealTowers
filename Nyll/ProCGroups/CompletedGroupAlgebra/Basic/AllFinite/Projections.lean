@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Ring
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Ring
 
 /-!
 # Completed Group Algebra / Basic / All Finite / Projections
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Ring
 This module bundles the canonical all-finite stage projections and proves continuity of the
 coefficient map through the inverse-limit lifting property.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -71,11 +75,10 @@ def completedGroupAlgebraProjectionLinearMap (R : Type u) (G : Type v) [CommRing
 def completedGroupAlgebraProjectionContinuousLinearMap (R : Type u) (G : Type v)
     [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (U : CompletedGroupAlgebraIndex G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
       (completedGroupAlgebraSystem R G).topologicalSpace U
     CompletedGroupAlgebraCarrier R G →L[R] CompletedGroupAlgebraStage R G U := by
-  letI : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
-    (completedGroupAlgebraSystem R G).topologicalSpace U
+  intro sharedOwner1
   exact
     { toLinearMap := completedGroupAlgebraProjectionLinearMap R G U
       cont := (completedGroupAlgebraSystem R G).continuous_projection U }

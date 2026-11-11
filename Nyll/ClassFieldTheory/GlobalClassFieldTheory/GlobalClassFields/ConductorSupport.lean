@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLocalComparison
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLocalComparison
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.LocalConductor
 
 /-!
 # Support of the narrow finite conductor
@@ -31,16 +36,20 @@ corollary.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
 open NumberField IsDedekindDomain
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 namespace ConductorialSubgroup
 
@@ -72,7 +81,7 @@ end ConductorialSubgroup
 /-- At an unramified chosen completion, the zeroth local higher-unit
 class subgroup consists of global idele-class norms. -/
 theorem localHigherUnitClassSubgroup_zero_le_ideleClassNorm_range_of_chosenUnramified
-    {L : Type}
+    {L : Type v}
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     (v : HeightOneSpectrum (𝓞 K))
@@ -94,7 +103,7 @@ theorem localHigherUnitClassSubgroup_zero_le_ideleClassNorm_range_of_chosenUnram
 /-- Algebraic unramifiedness at a finite prime forces the zeroth local
 higher-unit class subgroup into the global norm subgroup. -/
 theorem localHigherUnitClassSubgroup_zero_le_ideleClassNorm_range_of_isUnramifiedAt
-    {L : Type}
+    {L : Type v}
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     (v : HeightOneSpectrum (𝓞 K))
@@ -113,7 +122,7 @@ theorem localHigherUnitClassSubgroup_zero_le_ideleClassNorm_range_of_isUnramifie
 /-- Complete splitting at a finite prime puts the whole one-place idele
 class image inside the global norm subgroup. -/
 theorem finitePlaceIdeleClass_range_le_ideleClassNorm_range_of_splitsCompletely
-    {L : Type}
+    {L : Type v}
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     (v : HeightOneSpectrum (𝓞 K))

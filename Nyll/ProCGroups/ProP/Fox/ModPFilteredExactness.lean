@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.CompletedFiltration
-import Nyll.ProCGroups.ProP.Fox.ModPDensityExactness
-import Nyll.ProCGroups.ProP.Fox.ModPTailExactness
+module
+
+public import Nyll.ProCGroups.ProP.Fox.CompletedFiltration
+public import Nyll.ProCGroups.ProP.Fox.ModPDensityExactness
+public import Nyll.ProCGroups.ProP.Fox.ModPTailExactness
 
 /-!
 # Filtered packaging for the mod-p Fox complex
@@ -21,6 +23,8 @@ The final theorem packages these filtration bounds with the underlying
 unfiltered exactness and the identification of the boundary range.  It does
 not assert strictness of either filtered map.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

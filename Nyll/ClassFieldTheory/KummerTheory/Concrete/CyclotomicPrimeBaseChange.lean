@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.TensorProduct
-import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.TensorProduct
+public import Mathlib.NumberTheory.Cyclotomic.PrimitiveRoots
 
 /-!
 # Prime cyclotomic base change
@@ -21,6 +23,8 @@ is an actual field, Galois of degree `p` over `K(μ_p)`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField
@@ -163,13 +167,12 @@ noncomputable def primeCyclotomicPushoutAlgebra
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
     letI : NeZero p := ⟨hp.ne_zero⟩
-    letI : Field (PrimeCyclotomicPushout K L p) :=
+    let : Field (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutField K L p hp hdegree
     Algebra
       (PrimeCyclotomicBase K p)
       (PrimeCyclotomicPushout K L p) := by
-  letI : Field (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutField K L p hp hdegree
+  intro sharedOwner5
   exact Algebra.TensorProduct.leftAlgebra
 
 omit [IsGalois K L] in
@@ -177,10 +180,10 @@ omit [IsGalois K L] in
 theorem primeCyclotomicPushout_finrank
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
-    letI : NeZero p := ⟨hp.ne_zero⟩
-    letI : Field (PrimeCyclotomicPushout K L p) :=
+    let : NeZero p := ⟨hp.ne_zero⟩
+    let : Field (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutField K L p hp hdegree
-    letI : Algebra
+    let : Algebra
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutAlgebra K L p hp hdegree
@@ -188,36 +191,24 @@ theorem primeCyclotomicPushout_finrank
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) =
       p := by
-  let : NeZero p := ⟨hp.ne_zero⟩
-  let : Field (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutField K L p hp hdegree
-  let : Algebra
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutAlgebra K L p hp hdegree
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   rw [Module.finrank_baseChange, hdegree]
 
 /-- The prime cyclotomic pushout is Galois over `K(μ_p)`. -/
 theorem primeCyclotomicPushout_isGalois
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
-    letI : NeZero p := ⟨hp.ne_zero⟩
-    letI : Field (PrimeCyclotomicPushout K L p) :=
+    let : NeZero p := ⟨hp.ne_zero⟩
+    let : Field (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutField K L p hp hdegree
-    letI : Algebra
+    let : Algebra
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutAlgebra K L p hp hdegree
     IsGalois
       (PrimeCyclotomicBase K p)
       (PrimeCyclotomicPushout K L p) := by
-  let : NeZero p := ⟨hp.ne_zero⟩
-  let : Field (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutField K L p hp hdegree
-  let : Algebra
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutAlgebra K L p hp hdegree
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact
     tensorProduct_isGalois_of_finrank_coprime
       K (PrimeCyclotomicBase K p) L
@@ -229,21 +220,15 @@ omit [IsGalois K L] in
 theorem primeCyclotomicPushout_numberField
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
-    letI : NeZero p := ⟨hp.ne_zero⟩
-    letI : Field (PrimeCyclotomicPushout K L p) :=
+    let : NeZero p := ⟨hp.ne_zero⟩
+    let : Field (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutField K L p hp hdegree
-    letI : Algebra
+    let : Algebra
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutAlgebra K L p hp hdegree
     NumberField (PrimeCyclotomicPushout K L p) := by
-  let : NeZero p := ⟨hp.ne_zero⟩
-  let : Field (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutField K L p hp hdegree
-  let : Algebra
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutAlgebra K L p hp hdegree
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact
     NumberField.of_module_finite
       (PrimeCyclotomicBase K p)
@@ -264,14 +249,14 @@ order. -/
 theorem primeCyclotomicPushout_isCyclic
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
-    letI : NeZero p := ⟨hp.ne_zero⟩
-    letI : Field (PrimeCyclotomicPushout K L p) :=
+    let : NeZero p := ⟨hp.ne_zero⟩
+    let : Field (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutField K L p hp hdegree
-    letI : Algebra
+    let : Algebra
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutAlgebra K L p hp hdegree
-    letI : IsGalois
+    let : IsGalois
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushout_isGalois
@@ -280,18 +265,7 @@ theorem primeCyclotomicPushout_isCyclic
       (PrimeCyclotomicPushout K L p ≃ₐ[
         PrimeCyclotomicBase K p]
         PrimeCyclotomicPushout K L p) := by
-  let : NeZero p := ⟨hp.ne_zero⟩
-  let : Field (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutField K L p hp hdegree
-  let : Algebra
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutAlgebra K L p hp hdegree
-  let : IsGalois
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushout_isGalois
-      K L p hp hdegree
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4
   let : Fact p.Prime := ⟨hp⟩
   exact
     isCyclic_of_prime_card (p := p) (by
@@ -304,14 +278,14 @@ in the exact one-coordinate form used by the prime-degree Kummer coordinate cons
 noncomputable def primeCyclotomicPushoutGalEquivPiZMod
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
-    letI : NeZero p := ⟨hp.ne_zero⟩
-    letI : Field (PrimeCyclotomicPushout K L p) :=
+    let : NeZero p := ⟨hp.ne_zero⟩
+    let : Field (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutField K L p hp hdegree
-    letI : Algebra
+    let : Algebra
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushoutAlgebra K L p hp hdegree
-    letI : IsGalois
+    let : IsGalois
         (PrimeCyclotomicBase K p)
         (PrimeCyclotomicPushout K L p) :=
       primeCyclotomicPushout_isGalois
@@ -320,18 +294,7 @@ noncomputable def primeCyclotomicPushoutGalEquivPiZMod
         PrimeCyclotomicBase K p]
         PrimeCyclotomicPushout K L p) ≃*
       (Fin 1 → Multiplicative (ZMod p)) := by
-  letI : NeZero p := ⟨hp.ne_zero⟩
-  letI : Field (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutField K L p hp hdegree
-  letI : Algebra
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushoutAlgebra K L p hp hdegree
-  letI : IsGalois
-      (PrimeCyclotomicBase K p)
-      (PrimeCyclotomicPushout K L p) :=
-    primeCyclotomicPushout_isGalois
-      K L p hp hdegree
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4
   let G :=
     PrimeCyclotomicPushout K L p ≃ₐ[
       PrimeCyclotomicBase K p]

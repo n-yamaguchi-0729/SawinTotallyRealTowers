@@ -4,8 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.TowerRestriction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.TowerRestriction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # Cross-base restriction of finite-place Artin homomorphisms
@@ -15,6 +22,8 @@ and transports restriction through the corresponding decomposition groups.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
@@ -29,13 +38,15 @@ open HilbertRamification
 open LocalClassFieldTheory
 open LocalFieldTheory
 
-variable {K L : Type}
+universe uK uL uKp uLp uF uM uC uD uE uEp
+
+variable {K : Type uK} {L : Type uL}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
 
 private theorem finitePlaceArtinLocalizedCompletion_algebraMap
-    {F M : Type}
+    {F : Type uF} {M : Type uM}
     [Field F] [NumberField F]
     [Field M] [NumberField M]
     [Algebra F M] [FiniteDimensional F M]
@@ -46,11 +57,11 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let hvF : vF.IsNontrivial :=
       RayClass.adicAbv_isNontrivial v
-    letI hMF :=
+    let hMF :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := F) w.1
-    letI : SMul F w.1.Completion := hMF.toSMul
-    letI : Algebra vF.Completion w.1.Completion :=
+    let : SMul F w.1.Completion := hMF.toSMul
+    let : Algebra vF.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vF w.1 w.2
     let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vF w
     let U := finitePlaceExtensionEquivAbove
@@ -67,27 +78,7 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
     eE (algebraMap vF.Completion E x) =
       finitePlaceAdicCompletionMap
         F M v U (eF x) := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvF : vF.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
-  let hMF :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := F) w.1
-  let : SMul F w.1.Completion := hMF.toSMul
-  let : Algebra vF.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vF w.1 w.2
-  let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vF w
-  let U := finitePlaceExtensionEquivAbove
-    (K := F) (L := M) v w
-  let eF :
-      vF.Completion ≃+* v.adicCompletion F :=
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
-  let eE :
-      E ≃+* U.1.adicCompletion M :=
-    (AlgebraicNumberTheory.Valuations.localizedCompletionEquivCompletion
-        vF hvF w).toRingEquiv.trans
-      (finitePlaceExtensionAdicCompletionRingEquiv
-        (K := F) (L := M) v w)
+  intro vF hvF hMF sharedOwner4 sharedOwner5 E U eF eE
   change
     finitePlaceExtensionAdicCompletionRingEquiv
         (K := F) (L := M) v w
@@ -118,7 +109,7 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
 /-- The continuous ring homomorphism between base completions attached to a finite place lying above
 another. -/
 noncomputable def finitePlaceArtinRelativeCompletionRingHom
-    {K' : Type} [Field K'] [NumberField K']
+    {K' : Type uKp} [Field K'] [NumberField K']
     [Algebra K K']
     (v : HeightOneSpectrum (𝓞 K))
     (W : HeightOneSpectrum (𝓞 K'))
@@ -135,7 +126,7 @@ noncomputable def finitePlaceArtinRelativeCompletionRingHom
 
 /-- The finite-place map between the relative base completions is continuous. -/
 theorem finitePlaceArtinRelativeCompletionRingHom_continuous
-    {K' : Type} [Field K'] [NumberField K']
+    {K' : Type uKp} [Field K'] [NumberField K']
     [Algebra K K']
     (v : HeightOneSpectrum (𝓞 K))
     (W : HeightOneSpectrum (𝓞 K'))
@@ -157,11 +148,11 @@ theorem finitePlaceArtinRelativeCompletionRingHom_continuous
 /-- The localized completion at a finite place, with its completion-algebra
 tower hidden behind one named type. -/
 noncomputable abbrev finitePlaceArtinLocalizedCompletion
-    (F M : Type) [Field F] [NumberField F]
+    (F : Type uF) (M : Type uM) [Field F] [NumberField F]
     [Field M] [NumberField M] [Algebra F M]
     (v : HeightOneSpectrum (𝓞 F))
     (w : AbsoluteValueExtension
-      (NumberField.HeightOneSpectrum.adicAbv F v) M) : Type :=
+      (NumberField.HeightOneSpectrum.adicAbv F v) M) : Type uM :=
   let vF := NumberField.HeightOneSpectrum.adicAbv F v
   let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vF w
   letI : Algebra vF.Completion E :=
@@ -171,7 +162,7 @@ noncomputable abbrev finitePlaceArtinLocalizedCompletion
 /-- The canonical map from the base completion into the localized completion,
 with its construction tower confined to the definition body. -/
 noncomputable def finitePlaceArtinLocalizedCompletionBaseRingHom
-    (F M : Type) [Field F] [NumberField F]
+    (F : Type uF) (M : Type uM) [Field F] [NumberField F]
     [Field M] [NumberField M] [Algebra F M]
     (v : HeightOneSpectrum (𝓞 F))
     (w : AbsoluteValueExtension
@@ -190,7 +181,7 @@ noncomputable def finitePlaceArtinLocalizedCompletionBaseRingHom
 
 /-- The ring homomorphism between localized completions in a finite-place scalar tower. -/
 noncomputable def finitePlaceArtinLocalizedCompletionRingHom
-    {K' L' : Type}
+    {K' : Type uKp} {L' : Type uLp}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [NumberField L]
@@ -262,7 +253,7 @@ noncomputable def finitePlaceArtinLocalizedCompletionRingHom
 omit [IsAbelianGalois K L] in
 /-- The localized-completion map agrees with the scalar-tower embedding on global elements. -/
 theorem finitePlaceArtinLocalizedCompletion_towerPoint
-    {K' L' : Type}
+    {K' : Type uKp} {L' : Type uLp}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [NumberField L]
@@ -424,7 +415,7 @@ theorem finitePlaceArtinLocalizedCompletion_towerPoint
 
 omit [IsAbelianGalois K L] in
 private theorem finitePlaceArtinLocalizedCompletion_globalEmbedding
-    {K' L' : Type}
+    {K' : Type uKp} {L' : Type uLp}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [NumberField L]
@@ -469,8 +460,7 @@ private theorem finitePlaceArtinLocalizedCompletion_globalEmbedding
           vK w.1 w.2 x) =
       AbsoluteValue.toAlgebraicLocalization
         vK' w'.1 w'.2 (algebraMap L L' x) := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let vK' := NumberField.HeightOneSpectrum.adicAbv K' W
+  intro vK vK'
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v
   let hvK' : vK'.IsNontrivial :=
@@ -592,21 +582,82 @@ private theorem finitePlaceArtinLocalizedCompletion_globalEmbedding
 /-- Localized automorphisms with the completion tower hidden behind one named
 type. -/
 noncomputable abbrev finitePlaceArtinLocalizedAutomorphism
-    (F M : Type) [Field F] [NumberField F]
+    (F : Type uF) (M : Type uM) [Field F] [NumberField F]
     [Field M] [NumberField M] [Algebra F M]
     (v : HeightOneSpectrum (𝓞 F))
     (w : AbsoluteValueExtension
-      (NumberField.HeightOneSpectrum.adicAbv F v) M) : Type :=
+      (NumberField.HeightOneSpectrum.adicAbv F v) M) : Type uM :=
   let vF := NumberField.HeightOneSpectrum.adicAbv F v
   let E := finitePlaceArtinLocalizedCompletion F M v w
   letI : Algebra vF.Completion E :=
     finitePlaceLocalArtinLocalizedAlgebra (K := F) (L := M) v w
   E ≃ₐ[vF.Completion] E
 
+/-- Local restriction together with its commutation law on the specified
+embedding of completions. -/
+noncomputable def finitePlaceCrossLocalRestrictionWithAction
+    {K' : Type uKp} {L' : Type uLp}
+    [Field K'] [NumberField K']
+    [Field L'] [NumberField L']
+    [NumberField L]
+    [Algebra K K'] [Algebra K' L'] [Algebra K L']
+    [IsScalarTower K K' L']
+    [Algebra L L'] [IsScalarTower K L L']
+    [IsAbelianGalois K' L']
+    (v : HeightOneSpectrum (𝓞 K))
+    (W : HeightOneSpectrum (𝓞 K'))
+    (hW : finitePlaceBelow (K := K) W = v)
+    (w : AbsoluteValueExtension
+      (NumberField.HeightOneSpectrum.adicAbv K v) L)
+    (w' : AbsoluteValueExtension
+      (NumberField.HeightOneSpectrum.adicAbv K' W) L')
+    (hcentres :
+      finitePlaceBelow (K := L)
+          (finitePlaceExtensionCentre
+            (K := K') (L := L') W w') =
+        finitePlaceExtensionCentre
+          (K := K) (L := L) v w) :
+    { f : finitePlaceArtinLocalizedAutomorphism K' L' W w' →*
+        finitePlaceArtinLocalizedAutomorphism K L v w //
+      ∀ (τ : finitePlaceArtinLocalizedAutomorphism K' L' W w')
+        (x : finitePlaceArtinLocalizedCompletion K L v w),
+        finitePlaceArtinLocalizedCompletionRingHom v W w w' hcentres (f τ x) =
+          τ (finitePlaceArtinLocalizedCompletionRingHom v W w w' hcentres x) } := by
+  let vK := NumberField.HeightOneSpectrum.adicAbv K v
+  let vK' := NumberField.HeightOneSpectrum.adicAbv K' W
+  let C := vK.Completion
+  let D := vK'.Completion
+  let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
+  let E' := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK' w'
+  let : Algebra C E := finitePlaceLocalArtinLocalizedAlgebra v w
+  let : Algebra D E' := finitePlaceLocalArtinLocalizedAlgebra W w'
+  let : Algebra C D :=
+    (finitePlaceArtinRelativeCompletionRingHom
+      (K := K) (K' := K') v W hW).toAlgebra
+  let : Algebra E E' :=
+    (finitePlaceArtinLocalizedCompletionRingHom
+      (K := K) (L := L) (K' := K') (L' := L') v W w w' hcentres).toAlgebra
+  let : Algebra C E' :=
+    ((finitePlaceArtinLocalizedCompletionBaseRingHom K' L' W w').comp
+      (finitePlaceArtinRelativeCompletionRingHom v W hW)).toAlgebra
+  let : IsScalarTower C D E' := IsScalarTower.of_algebraMap_eq' rfl
+  let : IsScalarTower C E E' :=
+    IsScalarTower.of_algebraMap_eq' <| by
+      apply RingHom.ext
+      intro x
+      exact finitePlaceArtinLocalizedCompletion_towerPoint v W hW w w' hcentres x
+  let : FiniteDimensional C E := finitePlaceLocalArtinFiniteDimensional v w
+  let : IsAbelianGalois C E := finitePlaceLocalArtinIsAbelianGalois v w
+    (inferInstance : FiniteDimensional K L)
+  let : Normal C E := (inferInstance : IsAbelianGalois C E).toIsGalois.to_normal
+  refine ⟨(AlgEquiv.restrictNormalHom E).comp (AlgEquiv.restrictScalarsHom C), ?_⟩
+  intro τ x
+  exact AlgEquiv.restrictNormal_commutes ((AlgEquiv.restrictScalarsHom C) τ) E x
+
 /-- Restriction of localized automorphisms across a finite-place square with
 different base fields. -/
 noncomputable def finitePlaceCrossLocalRestrictionMonoidHom
-    {K' L' : Type}
+    {K' : Type uKp} {L' : Type uLp}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [NumberField L]
@@ -628,62 +679,42 @@ noncomputable def finitePlaceCrossLocalRestrictionMonoidHom
         finitePlaceExtensionCentre
           (K := K) (L := L) v w) :
     finitePlaceArtinLocalizedAutomorphism K' L' W w' →*
-      finitePlaceArtinLocalizedAutomorphism K L v w := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let vK' := NumberField.HeightOneSpectrum.adicAbv K' W
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
-  let C := vK.Completion
-  let D := vK'.Completion
-  let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let E' := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK' w'
-  letI : Algebra C E :=
-    finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := L) v w
-  letI : Algebra D E' :=
-    finitePlaceLocalArtinLocalizedAlgebra (K := K') (L := L') W w'
-  let lowerGlobalAlgebra : Algebra K E :=
-    LocalClassFieldTheory.localizedCompletionGlobalAlgebra vK w
-  let upperGlobalAlgebra : Algebra K' E' :=
-    LocalClassFieldTheory.localizedCompletionGlobalAlgebra vK' w'
-  letI : Algebra C D :=
-    (finitePlaceArtinRelativeCompletionRingHom
-      (K := K) (K' := K') v W hW).toAlgebra
-  let derivedStructures :
-      PProd (Algebra E E') (Normal C E) := by
-    letI : Algebra K E := lowerGlobalAlgebra
-    letI : Algebra K' E' := upperGlobalAlgebra
-    let upperAlgebra : Algebra E E' :=
-      (finitePlaceArtinLocalizedCompletionRingHom
-        (K := K) (L := L) (K' := K') (L' := L')
-        v W w w' hcentres).toAlgebra
-    letI : FiniteDimensional C E :=
-      finitePlaceLocalArtinFiniteDimensional (K := K) (L := L) v w
-    letI : IsAbelianGalois C E :=
-      finitePlaceLocalArtinIsAbelianGalois (K := K) (L := L) v w
-        (inferInstance : FiniteDimensional K L)
-    letI hGaloisE : IsGalois C E :=
-      (inferInstance : IsAbelianGalois C E).toIsGalois
-    exact ⟨upperAlgebra, hGaloisE.to_normal⟩
-  letI : Algebra E E' := derivedStructures.fst
-  letI : Algebra C E' :=
-    ((algebraMap D E').comp (algebraMap C D)).toAlgebra
-  letI : IsScalarTower C D E' :=
-    IsScalarTower.of_algebraMap_eq' rfl
-  letI : IsScalarTower C E E' :=
-    IsScalarTower.of_algebraMap_eq' <| by
-      apply RingHom.ext
-      intro x
-      exact
-        finitePlaceArtinLocalizedCompletion_towerPoint
-          (K := K) (L := L) (K' := K') (L' := L')
-          v W hW w w' hcentres x
-  letI : Normal C E := derivedStructures.snd
-  exact
-    (AlgEquiv.restrictNormalHom E).comp
-      (AlgEquiv.restrictScalarsHom C)
+      finitePlaceArtinLocalizedAutomorphism K L v w :=
+  (finitePlaceCrossLocalRestrictionWithAction v W hW w w' hcentres).val
+
+/-- The localized restriction commutes with the specified embedding of the
+lower completion into the upper completion. -/
+theorem finitePlaceCrossLocalRestrictionMonoidHom_commutes
+    {K' : Type uKp} {L' : Type uLp}
+    [Field K'] [NumberField K']
+    [Field L'] [NumberField L']
+    [NumberField L]
+    [Algebra K K'] [Algebra K' L'] [Algebra K L']
+    [IsScalarTower K K' L']
+    [Algebra L L'] [IsScalarTower K L L']
+    [IsAbelianGalois K' L']
+    (v : HeightOneSpectrum (𝓞 K))
+    (W : HeightOneSpectrum (𝓞 K'))
+    (hW : finitePlaceBelow (K := K) W = v)
+    (w : AbsoluteValueExtension
+      (NumberField.HeightOneSpectrum.adicAbv K v) L)
+    (w' : AbsoluteValueExtension
+      (NumberField.HeightOneSpectrum.adicAbv K' W) L')
+    (hcentres :
+      finitePlaceBelow (K := L)
+          (finitePlaceExtensionCentre
+            (K := K') (L := L') W w') =
+        finitePlaceExtensionCentre
+          (K := K) (L := L) v w)
+    (τ : finitePlaceArtinLocalizedAutomorphism K' L' W w')
+    (x : finitePlaceArtinLocalizedCompletion K L v w) :
+    finitePlaceArtinLocalizedCompletionRingHom v W w w' hcentres
+        (finitePlaceCrossLocalRestrictionMonoidHom v W hW w w' hcentres τ x) =
+      τ (finitePlaceArtinLocalizedCompletionRingHom v W w w' hcentres x) := by
+  exact (finitePlaceCrossLocalRestrictionWithAction v W hW w w' hcentres).property τ x
 
 private theorem finitePlaceDecompositionEquiv_symm_action
-    {F M : Type}
+    {F : Type uF} {M : Type uM}
     [Field F] [Field M] [Algebra F M] [IsGalois F M]
     (vF : AbsoluteValue F ℝ)
     (hvF : vF.IsNontrivial)
@@ -699,11 +730,11 @@ private theorem finitePlaceDecompositionEquiv_symm_action
         AlgebraicNumberTheory.Valuations.LocalizedCompletion vF wF
       E ≃ₐ[vF.Completion] E)
     (z : M) :
-    letI hwF :=
+    let hwF :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := F) wF.1
-    letI : SMul F wF.1.Completion := hwF.toSMul
-    letI : Algebra vF.Completion wF.1.Completion :=
+    let : SMul F wF.1.Completion := hwF.toSMul
+    let : Algebra vF.Completion wF.1.Completion :=
       AbsoluteValue.completionAlgebra vF wF.1 wF.2
     let E :=
       AlgebraicNumberTheory.Valuations.LocalizedCompletion vF wF
@@ -716,21 +747,7 @@ private theorem finitePlaceDecompositionEquiv_symm_action
       AbsoluteValue.toAlgebraicLocalization vF wF.1 wF.2
     embedding (((e.symm tau).1 : M ≃ₐ[F] M) z) =
       tau (embedding z) := by
-  let hwF :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := F) wF.1
-  let : SMul F wF.1.Completion := hwF.toSMul
-  let : Algebra vF.Completion wF.1.Completion :=
-    AbsoluteValue.completionAlgebra vF wF.1 wF.2
-  let E :=
-    AlgebraicNumberTheory.Valuations.LocalizedCompletion vF wF
-  let e :
-      absoluteValueDecompositionGroup F wF.1 ≃*
-        (E ≃ₐ[vF.Completion] E) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vF hvF wF
-  let embedding : M →+* E :=
-    AbsoluteValue.toAlgebraicLocalization vF wF.1 wF.2
+  intro hwF sharedOwner2 sharedOwner3 E e embedding
   calc
     embedding (((e.symm tau).1 : M ≃ₐ[F] M) z) =
         e (e.symm tau) (embedding z) := by
@@ -740,7 +757,8 @@ private theorem finitePlaceDecompositionEquiv_symm_action
       rw [e.apply_symm_apply]
 
 private theorem finitePlaceCrossDecompositionTransport_core
-    {K K' L L' C D E E' : Type}
+    {K : Type uK} {K' : Type uKp} {L : Type uL} {L' : Type uLp}
+    {C : Type uC} {D : Type uD} {E : Type uE} {E' : Type uEp}
     [Field K] [Field K'] [Field L] [Field L']
     [Field C] [Field D] [Field E] [Field E']
     [Algebra K K'] [Algebra K' L'] [Algebra K L']
@@ -811,7 +829,7 @@ private theorem finitePlaceCrossDecompositionTransport_core
 /-- Restriction through the completed local square agrees with restriction of
 the corresponding global decomposition-group automorphisms. -/
 theorem finitePlaceCrossDecompositionTransport
-    {K' L' : Type}
+    {K' : Type uKp} {L' : Type uLp}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [NumberField L]

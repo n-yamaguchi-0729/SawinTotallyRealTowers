@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.PrimeUnitDifferences
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.PrimeUnitDifferences
 
 /-!
 # Finite-stage correction terms for reciprocity multiplicativity
@@ -15,7 +17,9 @@ of the three-term correction identity are genuine finite-stage units.
 
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -26,7 +30,7 @@ noncomputable section
 
 open CategoryTheory
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -34,7 +38,7 @@ namespace DegreeData
 finite-stage unit. Splitting the long sum into two blocks expresses it as
 power sums of differences of prime elements. -/
 theorem frobeniusPowerSum_alternating_mem_infiniteUnitAddSubgroup
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -179,7 +183,7 @@ identity is a finite-stage unit.  In the left-action translation the
 product is `τ₄τ₁`, so the third coefficient is `p₃-τ₁p₃`; it is
 acted on by `τ₄` in `frobeniusMultiplicativityCorrectionAction`. -/
 theorem frobeniusCorrectionTerms_mem_infiniteUnitAddSubgroup
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 
 /-!
 # Root-of-unity coefficients are integral at every finite place
@@ -15,6 +18,8 @@ principal relative idele therefore lies in the actual empty-support
 subgroup. This gives the supported coefficient map needed to apply the
 unramified local-to-global primitive construction.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField

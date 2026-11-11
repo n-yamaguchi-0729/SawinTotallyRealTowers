@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.FreeBasis
-import Nyll.ProCGroups.GroupTheory.Subgroups
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.FreeBasis
+public import Nyll.ProCGroups.GroupTheory.Subgroups
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ReidemeisterSchreier.Schreier
 
 /-!
 # Cardinal and finite-rank Schreier bounds
@@ -17,6 +21,8 @@ infinite simplifications, and bounds the topological rank of an open subgroup
 of a compact Hausdorff totally disconnected group by the classical finite
 rank transform.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

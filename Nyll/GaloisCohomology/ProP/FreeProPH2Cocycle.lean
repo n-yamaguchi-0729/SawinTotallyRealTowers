@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
-import Nyll.GaloisCohomology.Topology.TrivialDegreeTwoCocycles
+module
+
+public import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
+public import Nyll.GaloisCohomology.Topology.TrivialDegreeTwoCocycles
 
 /-!
 # Normalized cocycles and primitives for free pro-p degree-two cohomology
@@ -13,6 +15,8 @@ import Nyll.GaloisCohomology.Topology.TrivialDegreeTwoCocycles
 The lifted trivial mod-p API reuses the coefficient-independent continuous
 normalization and primitive construction.
 -/
+
+@[expose] public section
 
 open scoped Topology
 namespace ClassFieldTower.ProP

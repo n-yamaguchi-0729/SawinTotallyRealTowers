@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 
 /-!
 # A prime-degree intermediate field of a finite cyclic extension
@@ -19,9 +21,13 @@ the remaining extension has degree `[L : K] / p`.
 
 
 
+@[expose] public section
+
 noncomputable section
 
-variable {K L : Type}
+universe u v
+
+variable {K : Type u} {L : Type v}
     [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [IsCyclic (L ≃ₐ[K] L)]

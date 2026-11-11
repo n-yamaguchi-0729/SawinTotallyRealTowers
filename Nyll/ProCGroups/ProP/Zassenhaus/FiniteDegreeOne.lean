@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FiniteFrattini
-import Nyll.ProCGroups.ProP.Zassenhaus.FiniteAugmentationSquare
-import Mathlib.LinearAlgebra.Dual.Lemmas
+module
+
+public import Nyll.ProCGroups.ProP.FiniteFrattini
+public import Nyll.ProCGroups.ProP.Zassenhaus.FiniteAugmentationSquare
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # Degree-one augmentation criterion for finite `p`-groups
@@ -16,6 +18,8 @@ nonzero class.  Combined with dual-number linearization, this proves that
 `[q]-1 ∈ I²` forces `q` into the closed power--commutator subgroup.  In a
 finite `p`-group, P03 identifies that subgroup with Frattini.
 -/
+
+@[expose] public section
 
 open scoped IsMulCommutative
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyCardinality
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyCardinality
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
 
 /-!
 # Transport from local blocks to unrestricted factors
@@ -15,6 +17,8 @@ unrestricted relative S-idele factors.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -33,34 +37,6 @@ variable {K L : Type}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-
-/-!
-## Canonical factor-transport action providers
--/
-
-omit [NumberField L] in
-@[reducible]
-private noncomputable def
-    relativeUnrestrictedSPlaceFactorsActionProvider
-    (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    MulDistribMulAction (L ≃ₐ[K] L)
-      (RelativeUnrestrictedSPlaceFactors
-        (K := K) (L := L) S) :=
-  relativeUnrestrictedSPlaceFactorsAction
-    (K := K) (L := L) S
-
-omit [NumberField L] in
-@[reducible]
-private noncomputable def
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-    (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    MulDistribMulAction (L ≃ₐ[K] L)
-      (LocalBlockFamily
-        (relativeUnrestrictedSPlaceDatum
-          (K := K) (L := L) S)) :=
-  localBlockFamilyAction
-    (relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S)
 
 omit [NumberField L] in
 /-- The equivariant realization by local blocks identifies degree-zero
@@ -87,11 +63,10 @@ noncomputable def
     relativeUnrestrictedSPlaceDatum
       (K := K) (L := L) S
   letI sourceAction :=
-    relativeUnrestrictedSPlaceFactorsActionProvider
+    relativeUnrestrictedSPlaceFactorsAction
       (K := K) (L := L) S
   letI targetAction :=
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-      (K := K) (L := L) S
+    localBlockFamilyAction d
   exact
     herbrandH0EquivariantMulEquiv
       (relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily
@@ -125,11 +100,10 @@ noncomputable def
     relativeUnrestrictedSPlaceDatum
       (K := K) (L := L) S
   letI sourceAction :=
-    relativeUnrestrictedSPlaceFactorsActionProvider
+    relativeUnrestrictedSPlaceFactorsAction
       (K := K) (L := L) S
   letI targetAction :=
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-      (K := K) (L := L) S
+    localBlockFamilyAction d
   exact
     herbrandHMinusOneEquivariantMulEquiv
       (relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily
@@ -145,9 +119,9 @@ theorem relativeUnrestrictedSPlaceFactorsHerbrandH0Finite
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
-      relativeUnrestrictedSPlaceFactorsAction
-        (K := K) (L := L) S
+    let : MulDistribMulAction (L ≃ₐ[K] L)
+        (RelativeUnrestrictedSPlaceFactors (K := K) (L := L) S) :=
+      relativeUnrestrictedSPlaceFactorsAction (K := K) (L := L) S
     Finite
       (HerbrandH0 (L ≃ₐ[K] L)
         (RelativeUnrestrictedSPlaceFactors
@@ -155,12 +129,9 @@ theorem relativeUnrestrictedSPlaceFactorsHerbrandH0Finite
   let d :=
     relativeUnrestrictedSPlaceDatum
       (K := K) (L := L) S
-  let sourceAction :=
-    relativeUnrestrictedSPlaceFactorsActionProvider
-      (K := K) (L := L) S
+  intro sourceAction
   let targetAction :=
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-      (K := K) (L := L) S
+    localBlockFamilyAction d
   let targetFinite : Finite
       (HerbrandH0 (L ≃ₐ[K] L)
         (LocalBlockFamily d)) :=
@@ -181,9 +152,9 @@ theorem relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneFinite
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
-      relativeUnrestrictedSPlaceFactorsAction
-        (K := K) (L := L) S
+    let : MulDistribMulAction (L ≃ₐ[K] L)
+        (RelativeUnrestrictedSPlaceFactors (K := K) (L := L) S) :=
+      relativeUnrestrictedSPlaceFactorsAction (K := K) (L := L) S
     Finite
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (RelativeUnrestrictedSPlaceFactors
@@ -191,12 +162,9 @@ theorem relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneFinite
   let d :=
     relativeUnrestrictedSPlaceDatum
       (K := K) (L := L) S
-  let sourceAction :=
-    relativeUnrestrictedSPlaceFactorsActionProvider
-      (K := K) (L := L) S
+  intro sourceAction
   let targetAction :=
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-      (K := K) (L := L) S
+    localBlockFamilyAction d
   let targetFinite : Finite
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (LocalBlockFamily d) σ) :=
@@ -238,11 +206,10 @@ theorem
     relativeUnrestrictedSPlaceDatum
       (K := K) (L := L) S
   let sourceAction :=
-    relativeUnrestrictedSPlaceFactorsActionProvider
+    relativeUnrestrictedSPlaceFactorsAction
       (K := K) (L := L) S
   let targetAction :=
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-      (K := K) (L := L) S
+    localBlockFamilyAction d
   let sourceFinite : Finite
       (HerbrandH0 (L ≃ₐ[K] L)
         (RelativeUnrestrictedSPlaceFactors
@@ -297,11 +264,10 @@ theorem
     relativeUnrestrictedSPlaceDatum
       (K := K) (L := L) S
   let sourceAction :=
-    relativeUnrestrictedSPlaceFactorsActionProvider
+    relativeUnrestrictedSPlaceFactorsAction
       (K := K) (L := L) S
   let targetAction :=
-    relativeUnrestrictedSPlaceLocalBlockFamilyActionProvider
-      (K := K) (L := L) S
+    localBlockFamilyAction d
   let sourceFinite : Finite
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (RelativeUnrestrictedSPlaceFactors
@@ -335,16 +301,16 @@ theorem relativeUnrestrictedSPlaceFactors_herbrandQuotient
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let :=
       relativeUnrestrictedSPlaceFactorsAction
         (K := K) (L := L) S
-    letI : Finite
+    let : Finite
         (HerbrandH0 (L ≃ₐ[K] L)
           (RelativeUnrestrictedSPlaceFactors
             (K := K) (L := L) S)) :=
       relativeUnrestrictedSPlaceFactorsHerbrandH0Finite
         S σ hgen
-    letI : Finite
+    let : Finite
         (HerbrandHMinusOne (L ≃ₐ[K] L)
           (RelativeUnrestrictedSPlaceFactors
             (K := K) (L := L) S) σ) :=
@@ -357,21 +323,7 @@ theorem relativeUnrestrictedSPlaceFactors_herbrandQuotient
       ∏ i,
         (relativeUnrestrictedSPlaceLocalDegree
           (K := K) (L := L) S i : ℚ) := by
-  let :=
-    relativeUnrestrictedSPlaceFactorsAction
-      (K := K) (L := L) S
-  let : Finite
-      (HerbrandH0 (L ≃ₐ[K] L)
-        (RelativeUnrestrictedSPlaceFactors
-          (K := K) (L := L) S)) :=
-    relativeUnrestrictedSPlaceFactorsHerbrandH0Finite
-      S σ hgen
-  let : Finite
-      (HerbrandHMinusOne (L ≃ₐ[K] L)
-        (RelativeUnrestrictedSPlaceFactors
-          (K := K) (L := L) S) σ) :=
-    relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneFinite
-      S σ hgen
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   rw [herbrandQuotient_eq_card_ratio,
     relativeUnrestrictedSPlaceFactorsHerbrandH0_card_eq_product
       S σ hgen,

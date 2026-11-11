@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicAbsoluteH2Vanishing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2LocalRamificationCharacter
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicAbsoluteH2Vanishing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2LocalRamificationCharacter
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
 
 /-!
 # Actual global lifts and their finite ramification defect
@@ -22,6 +24,8 @@ set are explicit chosen objects with proved projection and support laws.
 Only one local compactness proof is introduced; all algebra structures
 and finite-stage certificates are inherited from the existing sources.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

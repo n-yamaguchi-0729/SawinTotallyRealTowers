@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgression
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Continuous.Basic
-import Mathlib.RepresentationTheory.Continuous.TopRep
-import Mathlib.Topology.ContinuousMap.Algebra
-import Mathlib.Topology.ContinuousMap.Basic
-import Mathlib.Topology.ContinuousMap.Defs
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgression
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Continuous.Basic
+public import Mathlib.RepresentationTheory.Continuous.TopRep
+public import Mathlib.Topology.ContinuousMap.Algebra
+public import Mathlib.Topology.ContinuousMap.Basic
+public import Mathlib.Topology.ContinuousMap.Defs
 
 /-!
 # Primitives for inflated finite-stage transgression
@@ -20,6 +22,8 @@ boundary.  This file extracts a degree-one primitive and records its normalized 
 identity.  The residue correction and continuous kernel extension are built in the downstream
 kernel module.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open scoped Topology

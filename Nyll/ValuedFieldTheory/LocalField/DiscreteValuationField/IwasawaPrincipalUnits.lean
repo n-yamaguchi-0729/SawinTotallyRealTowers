@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.ZMod
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaIndexing
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitInverseLimitSurjectivity
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.EqualCharacteristicLaurent
-import Mathlib.LinearAlgebra.Finsupp.LinearCombination
-import Mathlib.LinearAlgebra.Finsupp.VectorSpace
-import Mathlib.NumberTheory.Padics.ProperSpace
+module
+
+public import Mathlib.Algebra.Algebra.ZMod
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaIndexing
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitInverseLimitSurjectivity
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.EqualCharacteristicLaurent
+public import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+public import Mathlib.LinearAlgebra.Finsupp.VectorSpace
+public import Mathlib.NumberTheory.Padics.ProperSpace
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
 
 /-!
 # The convergent Iwasawa product for principal units
@@ -39,6 +43,8 @@ constructs each finite-level factor `g_n`, proves its filtration properties,
 and establishes its algebraic injectivity.  The convergent global product is
 assembled in `IwasawaPrincipalUnits`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -1236,7 +1242,7 @@ theorem forall_exists_iwasawaGn_eq_pow_smul_of_eq_zero
     intro r
     induction r with
     | zero =>
-        exact ⟨a, by simp [ha]⟩
+        exact ⟨a, by rw [pow_zero, one_smul], ha⟩
     | succ r ih =>
         obtain ⟨b, hab, hb⟩ := ih
         have hscaledMem :
@@ -1345,7 +1351,7 @@ theorem exists_pow_smul_iwasawaPrimitive_of_ne_zero
     intro hr
     apply hrSpec
     refine ⟨a, ?_⟩
-    simp [hr]
+    rw [hr, pow_zero, one_smul]
   let s : ℕ := r - 1
   have hsr : s + 1 = r := by
     omega
@@ -2198,14 +2204,12 @@ theorem Internal.continuous_iwasawaPartialProduct
     (F : LocalField.{u, v} K)
     {pi : F.valuationSubring}
     (hpi : F.valuation.IsUniformizer (pi : K)) (r : ℕ) :
-    letI : TopologicalSpace F.valuationSubring :=
+    let : TopologicalSpace F.valuationSubring :=
       (LubinTate.Valuations.uniformizerPowerIdeal
         (chosenPrincipalUnitPadicUniformizer F.toCompleteDVF) 1).adicTopology
     Continuous fun a : iwasawaDomain F =>
       iwasawaPartialProduct F hpi a r := by
-  let : TopologicalSpace F.valuationSubring :=
-    (LubinTate.Valuations.uniformizerPowerIdeal
-      (chosenPrincipalUnitPadicUniformizer F.toCompleteDVF) 1).adicTopology
+  intro sharedOwner1
   let e := Internal.adicPrincipalUnitsHomeomorphUnderlying F.toCompleteDVF
   have h := e.continuous.comp
     (continuous_adicIwasawaPartialProduct F hpi r)

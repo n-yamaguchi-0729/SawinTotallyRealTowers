@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
+module
+
+public import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
 
 /-!
 # Reidemeister Schreier / Free Group / Automorphisms
@@ -13,6 +15,8 @@ This module constructs the free-group automorphism that inverts every
 generator, transports free bases along it, and proves the resulting
 automorphism is involutive.
 -/
+
+@[expose] public section
 
 universe u
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation
 
 /-!
 # Integral-unit triviality detects unramified local characters
@@ -15,6 +17,8 @@ The roots-of-unity-free reciprocity range theorem and pairing injectivity
 then identify it with the intrinsic unramified H¹ submodule. Neither
 characteristic zero nor a primitive root in the local field is assumed.
 -/
+
+@[expose] public section
 
 open scoped Topology ValuativeRel
 
@@ -70,7 +74,6 @@ theorem localReciprocityH1PowerClassPairing_eq_valuation_of_integerUnits
           congrArg f hu.symm
         _ = _ := by
           rw [map_mul, hchi, one_mul, map_zpow]
-          rfl
     calc
       _ = (f a).toAdd := localReciprocityH1PowerClassPairing_mk K (n : ℕ) chi a
       _ = _ := by rw [hf, toAdd_zpow, zsmul_eq_mul, hc, mul_comm]

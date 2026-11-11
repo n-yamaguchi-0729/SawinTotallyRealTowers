@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisDescent
 
 /-!
 # Principal ideles and their Galois module structure
@@ -19,7 +24,11 @@ cohomology across that identification.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v
 
 open RelativeIdeleGroup.Cohomology
 
@@ -29,7 +38,7 @@ open CyclicCohomology.ProfiniteCohomology.Herbrand
 open CyclicCohomology
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
@@ -60,20 +69,15 @@ omit [NumberField L] [FiniteDimensional K L] [IsGalois K L] in
 for the genuine Galois actions. -/
 theorem fieldUnitsEquivPrincipalIdeles_smul
     (σ : L ≃ₐ[K] L) (x : Lˣ) :
-    letI :=
+    let :=
       galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       relativeIdeleMulDistribMulAction K L
-    letI :=
+    let :=
       principalIdeleMulDistribMulAction K L
     fieldUnitsEquivPrincipalIdeles K L (σ • x) =
       σ • fieldUnitsEquivPrincipalIdeles K L x := by
-  let _ :=
-    galoisGroupFieldUnitsMulDistribMulAction K L
-  let _ :=
-    relativeIdeleMulDistribMulAction K L
-  let _ :=
-    principalIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   apply Subtype.ext
   change
     RelativeIdeleGroup.principalIdele K L
@@ -86,21 +90,16 @@ theorem fieldUnitsEquivPrincipalIdeles_smul
 /-- Degree-zero Tate cohomology of principal ideles is the actual
 degree-zero cohomology of `Lˣ`. -/
 noncomputable def fieldUnitsHerbrandH0EquivPrincipalIdeles :
-    letI :=
+    let :=
       galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       relativeIdeleMulDistribMulAction K L
-    letI :=
+    let :=
       principalIdeleMulDistribMulAction K L
     HerbrandH0 (L ≃ₐ[K] L) Lˣ ≃*
       HerbrandH0 (L ≃ₐ[K] L)
         (RelativeIdeleGroup.principalSubgroup K L) := by
-  letI :=
-    galoisGroupFieldUnitsMulDistribMulAction K L
-  letI :=
-    relativeIdeleMulDistribMulAction K L
-  letI :=
-    principalIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact
     herbrandH0EquivariantMulEquiv
       (fieldUnitsEquivPrincipalIdeles K L)
@@ -110,21 +109,16 @@ noncomputable def fieldUnitsHerbrandH0EquivPrincipalIdeles :
 degree-minus-one cohomology of `Lˣ`. -/
 noncomputable def fieldUnitsHerbrandHMinusOneEquivPrincipalIdeles
     (σ : L ≃ₐ[K] L) :
-    letI :=
+    let :=
       galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       relativeIdeleMulDistribMulAction K L
-    letI :=
+    let :=
       principalIdeleMulDistribMulAction K L
     HerbrandHMinusOne (L ≃ₐ[K] L) Lˣ σ ≃*
       HerbrandHMinusOne (L ≃ₐ[K] L)
         (RelativeIdeleGroup.principalSubgroup K L) σ := by
-  letI :=
-    galoisGroupFieldUnitsMulDistribMulAction K L
-  letI :=
-    relativeIdeleMulDistribMulAction K L
-  letI :=
-    principalIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact
     herbrandHMinusOneEquivariantMulEquiv
       (fieldUnitsEquivPrincipalIdeles K L)

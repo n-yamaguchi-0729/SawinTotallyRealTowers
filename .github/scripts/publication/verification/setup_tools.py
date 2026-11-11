@@ -11,7 +11,7 @@ import time
 
 TOOLS = {
     "lean4export": ("https://github.com/leanprover/lean4export.git",
-                    "6cea97789dc088ea47fcea15692db85685aedac5"),
+                    "5a9a355dc6c5fd82b69058d433e2ae2e8dfbf8fe"),
     "nanoda_lib": ("https://github.com/ammkrn/nanoda_lib.git",
                    "4c544ed4099c8227f07d5de77ad1e69fb0740a27"),
 }

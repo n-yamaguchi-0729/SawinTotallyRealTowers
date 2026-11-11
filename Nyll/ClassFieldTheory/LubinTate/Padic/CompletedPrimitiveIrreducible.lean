@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedLevel
-import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedLevel
+public import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 
 /-!
 # Irreducibility of the completed p-adic primitive polynomial
@@ -17,6 +19,8 @@ irreducible over the completed-unramified fraction field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

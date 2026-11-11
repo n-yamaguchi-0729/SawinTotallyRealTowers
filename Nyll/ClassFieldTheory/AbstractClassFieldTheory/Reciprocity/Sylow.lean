@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
-import Mathlib.GroupTheory.Nilpotent
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
+public import Mathlib.GroupTheory.Nilpotent
 
 /-!
 # The abstract reciprocity theorem: the Sylow step in the first reduction
@@ -26,6 +28,8 @@ subgroups are finite.  This avoids using the desired reciprocity
 surjectivity to prove finiteness.  No reciprocity surjectivity or
 the finite reciprocity equivalence comparison is assumed here.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 

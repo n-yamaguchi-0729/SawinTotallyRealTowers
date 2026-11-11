@@ -4,14 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
-import Nyll.GaloisCohomology.GroupTheory.QuotientTower
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
+public import Nyll.GaloisCohomology.GroupTheory.QuotientTower
 
 /-!
 # Laws for relative norms
 
 This file proves the structural laws for the coset-sum norm constructed in `Norm.lean`.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -25,8 +31,7 @@ noncomputable section
 
 open scoped BigOperators Pointwise
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The subgroup corresponding to the conjugate abstract field `K^σ`.
 
@@ -59,7 +64,7 @@ theorem conjugateClosedSubgroup_mem {G : Type*} [Group G] [TopologicalSpace G]
 
 /-- The right-conjugate `a^σ`, expressed through the left action of `G`. -/
 def conjugateFixedElement [ContinuousMul G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (σ : G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G) (σ : G)
     (a : ambientFixedAddSubgroup A K) :
     ambientFixedAddSubgroup A (conjugateClosedSubgroup K σ) := by
   refine ⟨A.ρ σ⁻¹ a.1, ?_⟩
@@ -82,14 +87,15 @@ Establishes the identity `((conjugateFixedElement A K σ a : ambientFixedAddSubg
 -/
 @[simp]
 theorem conjugateFixedElement_coe [ContinuousMul G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (σ : G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G) (σ : G)
     (a : ambientFixedAddSubgroup A K) :
     ((conjugateFixedElement A K σ a :
       ambientFixedAddSubgroup A (conjugateClosedSubgroup K σ)) : A.V) =
       A.ρ σ⁻¹ a.1 :=
   rfl
 
-private def absoluteConjugationEquiv {G : Type*} [Group G] [TopologicalSpace G]
+/-- Conjugation as an equivalence of the absolute Galois subgroup carrier. -/
+def absoluteConjugationEquiv {G : Type*} [Group G] [TopologicalSpace G]
     (σ : G) :
     (baseField G).toSubgroup ≃
       (baseField G).toSubgroup where
@@ -97,12 +103,15 @@ private def absoluteConjugationEquiv {G : Type*} [Group G] [TopologicalSpace G]
   invFun x := ⟨σ⁻¹ * x.1 * σ, trivial⟩
   left_inv x := by
     apply Subtype.ext
-    simp [mul_assoc]
+    change σ⁻¹ * (σ * x.1 * σ⁻¹) * σ = x.1
+    rw [mul_assoc σ x.1 σ⁻¹, inv_mul_cancel_left, inv_mul_cancel_right]
   right_inv x := by
     apply Subtype.ext
-    simp [mul_assoc]
+    change σ * (σ⁻¹ * x.1 * σ) * σ⁻¹ = x.1
+    rw [mul_assoc σ⁻¹ x.1 σ, mul_inv_cancel_left, mul_inv_cancel_right]
 
-private theorem mem_absoluteExtension {G : Type*} [Group G] [TopologicalSpace G]
+/-- Membership in an extension of the absolute base field is membership in its subgroup. -/
+theorem mem_absoluteExtension {G : Type*} [Group G] [TopologicalSpace G]
     (K : ClosedSubgroup G)
     (x : (baseField G).toSubgroup) :
     x ∈ extensionSubgroup (baseField G) K
@@ -127,7 +136,7 @@ noncomputable def absoluteConjugateCosetEquiv
       conjugateClosedSubgroup_mem]
     change σ * (x.1⁻¹ * y.1) * σ⁻¹ ∈ K.toSubgroup ↔
       (σ * x.1 * σ⁻¹)⁻¹ * (σ * y.1 * σ⁻¹) ∈ K.toSubgroup
-    simp [mul_assoc])
+    simp only [mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left])
 
 /--
 Establishes the identity `absoluteConjugateCosetEquiv K σ (QuotientGroup.mk x) = QuotientGroup.mk
@@ -143,7 +152,7 @@ theorem absoluteConjugateCosetEquiv_mk
   rfl
 
 private theorem relativeCosetAction_absoluteConjugate [ContinuousMul G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (σ : G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G) (σ : G)
     (a : ambientFixedAddSubgroup A K)
     (q : (baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G)
@@ -165,7 +174,7 @@ private theorem relativeCosetAction_absoluteConjugate [ContinuousMul G]
     A.ρ x.1 (A.ρ σ⁻¹ a.1) = A.ρ (x.1 * σ⁻¹) a.1 := by
       rw [map_mul]
       rfl
-    _ = A.ρ (σ⁻¹ * (σ * x.1 * σ⁻¹)) a.1 := by simp [mul_assoc]
+    _ = A.ρ (σ⁻¹ * (σ * x.1 * σ⁻¹)) a.1 := by simp only [mul_assoc, inv_mul_cancel_left]
     _ = A.ρ σ⁻¹ (A.ρ (σ * x.1 * σ⁻¹) a.1) := by
       rw [map_mul]
       rfl
@@ -175,7 +184,7 @@ private theorem relativeCosetAction_absoluteConjugate [ContinuousMul G]
 The construction writes the action on fields and elements on the right.  Thus the
 left action used by `Rep` realizes `a^σ` as `ρ(σ⁻¹)a`. -/
 theorem relativeNorm_absoluteConjugate_apply [ContinuousMul G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (σ : G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G) (σ : G)
     [Finite
       ((baseField G).toSubgroup ⧸
         extensionSubgroup (baseField G) K
@@ -248,7 +257,7 @@ theorem relativeNorm_absoluteConjugate_apply [ContinuousMul G]
 
 Normality is used only to prove that the translate is still fixed by `G_L`. -/
 def normalExtensionAction
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (k : K.toSubgroup) (a : ambientFixedAddSubgroup A L) :
@@ -273,7 +282,7 @@ A L) : A.V) = A.ρ k.1 a.1`.
 -/
 @[simp]
 theorem normalExtensionAction_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (k : K.toSubgroup) (a : ambientFixedAddSubgroup A L) :
@@ -284,7 +293,7 @@ theorem normalExtensionAction_coe
 /-- For a finite Galois abstract extension, the relative norm is invariant under
 the `G_K`-conjugacy action on `A_L`. -/
 theorem relativeNorm_normalExtensionAction
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
@@ -347,7 +356,7 @@ instance totalQuotientFinite :
 end DegreeData.FiniteTower
 
 private theorem relativeCosetAction_towerProductEquiv
-    (A : Rep ℤ G) (K L M : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L M : ClosedSubgroup G)
     (hML : M.toSubgroup ≤ L.toSubgroup)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (a : ambientFixedAddSubgroup A M)
@@ -368,7 +377,7 @@ private theorem relativeCosetAction_towerProductEquiv
   rfl
 
 private theorem finiteTowerNormTransApplyAux
-    (A : Rep ℤ G) (K L M : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L M : ClosedSubgroup G)
     (hML : M.toSubgroup ≤ L.toSubgroup)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
@@ -436,7 +445,7 @@ variable (T : DegreeData.FiniteTower G)
 
 /-- Relative norms are transitive along a finite tower.  All containments and
 finite quotient witnesses are obtained from `T`. -/
-theorem norm_trans_apply (A : Rep ℤ G)
+theorem norm_trans_apply (A : Rep.{v} ℤ G)
     (a : ambientFixedAddSubgroup A T.top) :
     relativeNorm A T.base T.middle T.middle_le_base
         (relativeNorm A T.middle T.top T.top_le_middle a) =
@@ -446,7 +455,7 @@ theorem norm_trans_apply (A : Rep ℤ G)
     T.top_le_middle T.middle_le_base a
 
 /-- Homomorphism form of norm transitivity along a finite tower. -/
-theorem norm_trans (A : Rep ℤ G) :
+theorem norm_trans (A : Rep.{v} ℤ G) :
     (relativeNorm A T.base T.middle T.middle_le_base).comp
         (relativeNorm A T.middle T.top T.top_le_middle) =
       relativeNorm A T.base T.top

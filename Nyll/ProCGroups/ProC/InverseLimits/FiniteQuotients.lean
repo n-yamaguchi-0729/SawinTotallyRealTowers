@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+module
+
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Finite quotient objects for pro-\(C\) inverse limits
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 This file bundles finite discrete groups and quotients by open normal subgroups as profinite
 objects. It records the induced pro-\(C\) structures and the corresponding product construction.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

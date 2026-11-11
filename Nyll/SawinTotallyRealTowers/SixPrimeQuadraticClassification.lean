@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticClosureClassification
-import Nyll.SawinTotallyRealTowers.QuadraticCompositum
-import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticCompositum
-import Nyll.SawinTotallyRealTowers.SixPrimeSquareClasses
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticClosureClassification
+public import Nyll.SawinTotallyRealTowers.QuadraticCompositum
+public import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticCompositum
+public import Nyll.SawinTotallyRealTowers.SixPrimeSquareClasses
 
 /-!
 # Exhausting the quadratic layers of the six-prime real tower
@@ -17,6 +19,8 @@ squarefree radicand for every quadratic layer. Its explicit square-class
 factorization then places that layer inside the compositum of the five
 chosen quadratic fields.
 -/
+
+@[expose] public section
 
 open scoped NumberField BigOperators
 open NumberField IsDedekindDomain

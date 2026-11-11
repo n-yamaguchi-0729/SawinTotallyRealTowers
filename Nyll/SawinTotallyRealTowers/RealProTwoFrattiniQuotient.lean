@@ -4,22 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProTwoFrattiniField
-import Nyll.SawinTotallyRealTowers.FiveQuadraticDegree
-import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
-import Nyll.ProCGroups.ProP.ProfiniteFrattini
-import Nyll.ProCGroups.ProP.FrattiniQuotient
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticCompositum
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Mathlib.Algebra.Algebra.Equiv
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProTwoFrattiniField
+public import Nyll.SawinTotallyRealTowers.FiveQuadraticDegree
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
+public import Nyll.ProCGroups.ProP.ProfiniteFrattini
+public import Nyll.ProCGroups.ProP.FrattiniQuotient
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticCompositum
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
 /-!
 # The actual finite Frattini quotient of the initial real tower
@@ -30,17 +32,13 @@ layers. Its cardinality is therefore thirty-two. No finite-generation,
 quotient-finiteness, or rank hypothesis enters the construction.
 -/
 
+@[expose] public section
+
 namespace ClassFieldTower.Sawin
 
 open ClassFieldTower.ProP
 
-private local instance powerCommutatorNormal :
-    (closedPowerCommutator 2
-      (maximalRealProPOutside 2 sawinRationalPrimeSupport ≃ₐ[ℚ]
-        maximalRealProPOutside 2 sawinRationalPrimeSupport)).Normal :=
-  closedPowerCommutator_normal 2
-    (maximalRealProPOutside 2 sawinRationalPrimeSupport ≃ₐ[ℚ]
-      maximalRealProPOutside 2 sawinRationalPrimeSupport)
+attribute [local instance] closedPowerCommutator_normal
 
 /-- The canonical power--commutator quotient acts as the full Galois group
 of the actual five-generator multiquadratic field. -/
@@ -56,6 +54,7 @@ noncomputable def maximalRealProTwo_powerCommutatorQuotientEquiv :
   let N : ClosedSubgroup (M ≃ₐ[ℚ] M) :=
     ⟨closedPowerCommutator 2 (M ≃ₐ[ℚ] M),
       isClosed_closedPowerCommutator 2 (M ≃ₐ[ℚ] M)⟩
+  letI : N.toSubgroup.Normal := closedPowerCommutator_normal 2 (M ≃ₐ[ℚ] M)
   let L : IntermediateField ℚ M := IntermediateField.fixedField N.toSubgroup
   have hFrattini : profiniteFrattini (M ≃ₐ[ℚ] M) =
       closedPowerCommutator 2 (M ≃ₐ[ℚ] M) :=

@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ArchimedeanNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ArchimedeanNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The ordinary norm on idele classes
@@ -16,6 +19,8 @@ the norm-one idele-class subgroups.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField

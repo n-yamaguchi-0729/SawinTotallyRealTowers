@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Shared completion spine for integral local induction
@@ -17,6 +20,8 @@ structures used by every integral local-induction leaf.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain

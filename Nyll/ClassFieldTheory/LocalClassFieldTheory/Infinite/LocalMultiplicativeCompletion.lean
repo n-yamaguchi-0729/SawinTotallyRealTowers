@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.MultiplicativeDecomposition
-import Mathlib.Data.ZMod.Basic
-import Batteries.Tactic.Init
-import Lean.Elab.Tactic.Omega
-import Lean.Elab.Tactic.RCases
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.MultiplicativeDecomposition
+public import Mathlib.Data.ZMod.Basic
+public import Batteries.Tactic.Init
+public import Lean.Elab.Tactic.Omega
+public import Lean.Elab.Tactic.RCases
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ProfiniteUnits
 
 /-!
 # The profinite completion of a local multiplicative group
@@ -22,6 +25,8 @@ finite quotients is injective.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

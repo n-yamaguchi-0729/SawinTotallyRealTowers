@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.Reduction
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.Reduction
 
 /-!
 # Recursive coefficients for Lubin--Tate intertwiners
@@ -17,6 +19,8 @@ total degree `m ≥ 2`, the remaining scalar equation has factor
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

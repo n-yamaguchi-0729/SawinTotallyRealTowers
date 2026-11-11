@@ -15,6 +15,8 @@ python3 -B .github/scripts/publication/public7_sync.py \
 
 Add `--repository ClassFieldTheory` to select one repository. Add `--apply` to write
 the reviewed source/configuration changes; this command does not commit, push or build.
+The generalized Jacobian distribution is `GeneralizedJacobianVarieties`; its Lean
+module namespace remains `Nyll.JacobianVarieties`.
 Each target must be clean, on `main`, with its exact configured GitHub origin and
 `HEAD == origin/main`. Review the plan, commit its explicit paths, and use a normal push.
 Local Lean validation always uses the canonical NYLL root and its existing `.lake/build`.

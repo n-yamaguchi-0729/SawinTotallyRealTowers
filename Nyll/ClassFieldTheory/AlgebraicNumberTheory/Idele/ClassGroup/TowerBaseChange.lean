@@ -4,8 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The fixed-bottom tower model and the actual intermediate-field model
@@ -18,6 +25,8 @@ the ordinary ideles of `L`.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
@@ -25,10 +34,10 @@ noncomputable section
 
 open AlgebraicNumberTheory.Valuations
 
-universe u
+universe u v w
 
 variable
-    (K M L : Type u)
+    (K : Type u) (M : Type v) (L : Type w)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -40,14 +49,14 @@ variable
 -- module; retain them here for the quotient-group instances.
 local instance
     towerBaseChange_towerRelativeIdeleGroupIsMulCommutative
-    (A B C : Type u) [Field A] [NumberField A]
+    (A : Type u) (B : Type v) (C : Type w) [Field A] [NumberField A]
     [Field B] [Field C] [Algebra A B] [Algebra B C] :
     IsMulCommutative (TowerRelativeIdeleGroup A B C) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 local instance
     towerBaseChange_relativeIdeleClassGroupIsMulCommutative
-    (A B : Type u) [Field A] [NumberField A]
+    (A : Type u) (B : Type v) [Field A] [NumberField A]
     [Field B] [Algebra A B] :
     IsMulCommutative (RelativeIdeleGroup.ClassGroup A B) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
@@ -691,7 +700,7 @@ theorem towerRelativeIdeleBaseChangeMulEquiv_finiteComponent
         (a : TowerRelativeAdeleRing K M L)
   induction (a : TowerRelativeAdeleRing K M L) using
       TensorProduct.inductionOn with
-  | add x y hx hy => simp [hx, hy]
+  | add x y hx hy => simp only [map_add, hx, hy]
   | tmul b x =>
       simp [towerActualRelativeAdeleRingEquiv_tmul,
         relativeAdeleFiniteComponent_tmul]
@@ -722,7 +731,7 @@ theorem towerRelativeIdeleBaseChangeMulEquiv_infiniteComponent
         (a : TowerRelativeAdeleRing K M L)
   induction (a : TowerRelativeAdeleRing K M L) using
       TensorProduct.inductionOn with
-  | add x y hx hy => simp [hx, hy]
+  | add x y hx hy => simp only [map_add, hx, hy]
   | tmul b x =>
       simp [towerActualRelativeAdeleRingEquiv_tmul,
         relativeAdeleInfiniteComponent_tmul]

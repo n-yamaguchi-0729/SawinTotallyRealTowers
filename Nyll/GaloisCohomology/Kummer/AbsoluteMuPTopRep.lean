@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
-import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
-import Nyll.GaloisCohomology.ProP.FiniteTransgression
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.Topology.LocallyConstant.Basic
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+public import Nyll.GaloisCohomology.ProP.FiniteTransgression
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.Topology.LocallyConstant.Basic
+public import Mathlib.Topology.Instances.ZMod
 
 /-!
 # The natural absolute-Galois representation on `mu_p`
@@ -20,6 +22,8 @@ This file constructs that coefficient `TopRep` without assuming that the base fi
 the roots of unity.  It also constructs the usual root quotient attached to a base-field unit
 as a continuous twisted one-cocycle for this action.
 -/
+
+@[expose] public section
 
 open scoped Pointwise Topology
 
@@ -138,16 +142,13 @@ def absoluteMuPTopRep :
 
 variable [CharZero K]
 
-private abbrev primePNat : ℕ+ :=
-  (p.toPNat (Fact.out : p.Prime).pos)
-
-private abbrev AbsoluteRadicalDatum :=
-  chosenFiniteKummerRadicalDatum
-    (K := K) (L := AlgebraicClosure K) (primePNat p)
+/-- A prime exponent as a positive natural number. -/
+abbrev primePNat : ℕ+ :=
+  p.toPNat (Fact.out : p.Prime).pos
 
 /-- The chosen algebraic-closure root used to form the Kummer cocycle of a base-field unit. -/
 def absoluteKummerChosenRoot (a : Kˣ) : (AlgebraicClosure K)ˣ :=
-  (AbsoluteRadicalDatum K p).root
+  (AbsoluteRadicalDatum K (primePNat p)).root
     (unitsEquivAbsoluteRadicalCarrier K (primePNat p) a)
 
 omit [CharZero K] in
@@ -157,10 +158,10 @@ theorem absoluteKummerChosenRoot_pow (a : Kˣ) :
     absoluteKummerChosenRoot K p a ^ p =
       Units.map (algebraMap K (AlgebraicClosure K)).toMonoidHom a := by
   rw [absoluteKummerChosenRoot]
-  change (AbsoluteRadicalDatum K p).root
+  change (AbsoluteRadicalDatum K (primePNat p)).root
       (unitsEquivAbsoluteRadicalCarrier K (primePNat p) a) ^
         (primePNat p : ℕ) = _
-  rw [(AbsoluteRadicalDatum K p).root_pow_eq_map]
+  rw [(AbsoluteRadicalDatum K (primePNat p)).root_pow_eq_map]
   congr 1
 
 /-- The usual quotient `sigma(beta) / beta`, valued in the natural Galois module `mu_p`.
@@ -169,9 +170,9 @@ def absoluteKummerMuPRootCocycle (a : Kˣ)
     (sigma : Field.absoluteGaloisGroup K) : AbsoluteMuP K p :=
   let a' := unitsEquivAbsoluteRadicalCarrier K (primePNat p) a
   Additive.ofMul
-    ⟨(AbsoluteRadicalDatum K p).rootCocycle a'
+    ⟨(AbsoluteRadicalDatum K (primePNat p)).rootCocycle a'
         (absoluteGaloisGroupContinuousMulEquiv K sigma),
-      (AbsoluteRadicalDatum K p).rootCocycle_mem_nthRootsSubgroup a'
+      (AbsoluteRadicalDatum K (primePNat p)).rootCocycle_mem_nthRootsSubgroup a'
         (absoluteGaloisGroupContinuousMulEquiv K sigma)⟩
 
 omit [CharZero K] in
@@ -196,7 +197,7 @@ theorem absoluteKummerMuPRootCocycle_mul
         absoluteKummerMuPRootCocycle K p a sigma := by
   apply Additive.toMul.injective
   apply Subtype.ext
-  exact (AbsoluteRadicalDatum K p).rootCocycle_mul
+  exact (AbsoluteRadicalDatum K (primePNat p)).rootCocycle_mul
     (unitsEquivAbsoluteRadicalCarrier K (primePNat p) a)
       (absoluteGaloisGroupContinuousMulEquiv K sigma)
       (absoluteGaloisGroupContinuousMulEquiv K tau)

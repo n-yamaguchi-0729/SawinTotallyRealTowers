@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.OrbitPolynomialIdeal
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamificationIndex
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.OrbitPolynomialIdeal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamificationIndex
 
 /-!
 # quotient-depth identity over a general DVF
@@ -17,6 +19,8 @@ the intrinsic value of its displacement ideal.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

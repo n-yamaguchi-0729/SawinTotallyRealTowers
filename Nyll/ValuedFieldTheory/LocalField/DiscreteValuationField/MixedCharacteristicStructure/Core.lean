@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.DeepPrincipalUnits
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.IntegralLattice
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.DeepPrincipalUnits
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.IntegralLattice
 
 /-!
 # First principal units in mixed characteristic
@@ -16,6 +18,8 @@ the first principal-unit group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -281,7 +285,7 @@ theorem mixed_principalUnitSuccKernelData
     let d := Module.finrank ℚ_[p] K
     FiniteFreeSubmoduleData R M
       (F.principalUnitSuccPadicSubmodule n) d := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let p : ℕ := F.residueCharacteristic
   let R := ℤ_[p]
   let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
@@ -340,32 +344,21 @@ noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
     let p := F.residueCharacteristic
     let R := ℤ_[p]
     let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
-    letI : MixedQPadicContext F := mixedQPadicContext F
-    letI : Module R M :=
+    let : MixedQPadicContext F := mixedQPadicContext F
+    let : Module R M :=
       CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
     let d := Module.finrank ℚ_[p] K
     let q :=
       CompleteDVF.higherPrincipalUnitGroup.DiscretePrincipalUnitQuotient
         F.toCompleteDVF n
-    letI : Module R q :=
+    let : Module R q :=
       CompleteDVF.higherPrincipalUnitGroup.discretePrincipalUnitQuotientPadicModule F n
     FiniteQuotientSetup R M q d := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  let p : ℕ := F.residueCharacteristic
-  let R := ℤ_[p]
-  let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
-  letI : MixedQPadicContext F := mixedQPadicContext F
-  letI : Module R M :=
-    CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
-  let d : ℕ := Module.finrank ℚ_[p] K
+  intro F p R M sharedOwner3 sharedOwner4 d
   let higher := F.principalUnitSuccPadicSubmodule n
   let kernelData := mixed_principalUnitSuccKernelData
     v hv n hlevel
-  let q :=
-    CompleteDVF.higherPrincipalUnitGroup.DiscretePrincipalUnitQuotient
-      F.toCompleteDVF n
-  letI : Module R q :=
-    CompleteDVF.higherPrincipalUnitGroup.discretePrincipalUnitQuotientPadicModule F n
+  intro q sharedOwner5
   letI : Finite q := inferInstance
   letI : Module.Finite R q := Module.Finite.of_finite
   let projection : M →ₗ[R] q := F.principalUnitQuotientProjectionLinear n
@@ -423,19 +416,12 @@ noncomputable def chosenMixed_firstPrincipalUnitAlgebraicData
     let p := F.residueCharacteristic
     let R := ℤ_[p]
     let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
-    letI : MixedQPadicContext F := mixedQPadicContext F
-    letI : Module R M :=
+    let : MixedQPadicContext F := mixedQPadicContext F
+    let : Module R M :=
       CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
     let d := Module.finrank ℚ_[p] K
     FirstPrincipalUnitAlgebraicData R M p d := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  let p : ℕ := F.residueCharacteristic
-  let R := ℤ_[p]
-  let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
-  letI : MixedQPadicContext F := mixedQPadicContext F
-  letI : Module R M :=
-    CompleteDVF.higherPrincipalUnitGroup.principalUnitPadicModule F
-  let d : ℕ := Module.finrank ℚ_[p] K
+  intro F p R M sharedOwner3 sharedOwner4 d
   let q :=
     CompleteDVF.higherPrincipalUnitGroup.DiscretePrincipalUnitQuotient
       F.toCompleteDVF n
@@ -507,23 +493,20 @@ noncomputable def mixed_firstPrincipalUnitStructure
           (((ofWithZeroValuation v).residueCharacteristic : ℚ) - 1) <
         (n : ℚ)) :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : MixedWithZeroValuationContext v :=
+    let : MixedWithZeroValuationContext v :=
       mixedWithZeroValuationContext v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] K
     Σ a : ℕ,
       Multiplicative
           (ZMod (F.residueCharacteristic ^ a) ×
             (Fin d → ℤ_[F.residueCharacteristic])) ≃ₜ*
         CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1 := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let p : ℕ := F.residueCharacteristic
   let R := ℤ_[p]
   let M := Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1)
-  letI : MixedWithZeroValuationContext v :=
-    mixedWithZeroValuationContext v
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let d : ℕ := Module.finrank ℚ_[p] K
+  intro sharedOwner1 sharedOwner2 d
   let T := Submodule.torsion R M
   letI : AddCommGroup T := Submodule.addCommGroup T
   letI : Module R T := Submodule.module T
@@ -563,7 +546,7 @@ noncomputable def chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
           (ZMod (F.residueCharacteristic ^ a) ×
             (Fin d → ℤ_[F.residueCharacteristic])) ≃ₜ*
         CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1 := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let hex := exists_nat_gt
     ((ramificationIndexOfWithZeroValuation v : ℚ) /
       ((F.residueCharacteristic : ℚ) - 1))

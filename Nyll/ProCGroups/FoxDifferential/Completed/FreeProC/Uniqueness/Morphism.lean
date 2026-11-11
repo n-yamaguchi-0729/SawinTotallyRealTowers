@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
+public import Nyll.ProCGroups.ProC.Category.Basic
 
 /-!
 # Fox differential: completed — free pro-\(C\) — uniqueness — morphism
@@ -24,6 +27,8 @@ The principal declarations in this module are:
   Componentwise existence and uniqueness of the categorical completed Fox semidirect morphism from a
   free pro-\(C\) source.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

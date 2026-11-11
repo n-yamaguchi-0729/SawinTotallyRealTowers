@@ -4,11 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Mathlib.NumberTheory.RamificationInertia.Valuation
-import Mathlib.RingTheory.ClassGroup.ExtendedHom
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Mathlib.NumberTheory.RamificationInertia.Valuation
+public import Mathlib.RingTheory.ClassGroup.ExtendedHom
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Extension of ideles and ideal classes
@@ -21,6 +27,8 @@ ideal classes.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct nonZeroDivisors
 open NumberField IsDedekindDomain
@@ -418,7 +426,7 @@ theorem extension_infiniteComponent
   rw [ContinuousMulEquiv.piUnits.apply_symm_apply]
   dsimp only [f]
   rw [_root_.relativeInfiniteTensorPiMulEquiv_apply]
-  simp only [_root_.relativeIdeleToLocalData]
+  rw [_root_.relativeIdeleToLocalData_infinite]
   rw [RelativeIdeleGroup.infiniteComponent_inclusion]
   rw [_root_.infinitePlaceTensorUnitsEquivAbove_apply]
   simp only [Units.coe_map]
@@ -469,7 +477,7 @@ theorem extension_finiteComponent
             (_root_.finitePlaceBelow (K := K) W))
         ⟨W, rfl⟩ =
       _
-  simp only [_root_.relativeIdeleToLocalData]
+  rw [_root_.relativeIdeleToLocalData_finite]
   rw [RelativeIdeleGroup.finiteComponent_inclusion,
     _root_.finitePlaceTensorUnitsEquivAboveAdic_localIdeleInclusion]
 
@@ -583,7 +591,7 @@ theorem extension_principalIdele (x : Kˣ) :
           ⟨W, rfl⟩ =
         algebraMap L W.Completion
           (algebraMap K L (x : K))
-    simp only [_root_.relativeIdeleToLocalData]
+    rw [_root_.relativeIdeleToLocalData_infinite]
     rw [RelativeIdeleGroup.infiniteComponent_principalIdele]
     rw [
       _root_.infinitePlaceTensorUnitsEquivAbove_localFieldIdeleInclusion]
@@ -612,7 +620,7 @@ theorem extension_principalIdele (x : Kˣ) :
           ⟨W, rfl⟩ =
         Units.map (FinitePlace.embedding (K := L) W)
           (Units.map (algebraMap K L).toMonoidHom x)
-    simp only [_root_.relativeIdeleToLocalData]
+    rw [_root_.relativeIdeleToLocalData_finite]
     rw [RelativeIdeleGroup.finiteComponent_principalIdele]
     rw [
       _root_.finitePlaceTensorUnitsEquivAboveAdic_localFieldIdeleInclusion]

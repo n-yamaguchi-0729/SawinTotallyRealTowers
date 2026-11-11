@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.ProfiniteSpace
-import Nyll.ProCGroups.InverseSystems.CompatibilityAndSurjectivity
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
+module
+
+public import Nyll.ProCGroups.InverseSystems.ProfiniteSpace
+public import Nyll.ProCGroups.InverseSystems.CompatibilityAndSurjectivity
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
 
 /-!
 # Presenting pro-\(C\) groups as inverse limits
@@ -17,6 +19,8 @@ The canonical map to the inverse limit of all finite open-normal quotients is id
 stage and shown to be a multiplicative equivalence. An exact quotient-basis condition then yields
 the Hausdorff, totally disconnected, and pro-\(C\) structures.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.ProC
 
@@ -175,7 +179,7 @@ theorem isomorphic_to_inverseLimit_finiteGroupsInClass
     let S := openNormalSubgroupInClassSystem C G
     (∀ U : OrderDual (OpenNormalSubgroupInClass C G), C (S.X U) ∧ Finite (S.X U)) ∧
       Nonempty (G ≃ₜ* S.inverseLimit) := by
-  let S := openNormalSubgroupInClassSystem C G
+  intro S
   refine ⟨?_, ⟨openNormalSubgroupInClassMulEquivInverseLimit (C := C) (G := G) hForm hG⟩⟩
   intro U
   dsimp [S, openNormalSubgroupInClassSystem]

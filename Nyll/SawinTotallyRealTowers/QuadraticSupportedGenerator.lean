@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticFieldDiscriminant
-import Nyll.SawinTotallyRealTowers.QuadraticReality
-import Nyll.SawinTotallyRealTowers.QuadraticSquarefreeGenerator
-import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
-import Mathlib.Algebra.Order.Ring.Cast
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticFieldDiscriminant
+public import Nyll.SawinTotallyRealTowers.QuadraticReality
+public import Nyll.SawinTotallyRealTowers.QuadraticSquarefreeGenerator
+public import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
+public import Mathlib.Algebra.Order.Ring.Cast
 
 /-!
 # Positive squarefree generators with prescribed ramification support
@@ -19,6 +21,8 @@ discriminant formula forces the radicand to be one modulo four. The
 discriminant is then the radicand itself, so every prime divisor belongs
 to the prescribed support.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

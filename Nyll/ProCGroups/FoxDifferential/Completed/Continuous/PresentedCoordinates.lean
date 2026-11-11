@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.FiniteFamilyLinearMap
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.NaturalTopology
-import Nyll.ProCGroups.FoxDifferential.Common.Jacobian
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.FiniteFamilyLinearMap
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.NaturalTopology
+public import Nyll.ProCGroups.FoxDifferential.Common.Jacobian
 
 /-!
 # Fox differential: completed — continuous — presented coordinates
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The separated finite-family map sends the \(i\)-th standard coordinate vector to the separated
   differential of \(\mathrm{family}\ i\).
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 

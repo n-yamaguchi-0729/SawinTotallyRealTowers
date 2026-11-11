@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H1NormalSubgroupDescent
-import Nyll.ProCGroups.ProP.FinitePGroupMaximal
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
+module
+
+public import Nyll.GaloisCohomology.ProP.H1NormalSubgroupDescent
+public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.ProCGroups.ProP.FinitePGroupMaximal
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
 
 /-!
 # Degree-one vanishing for finite p-extensions of a class formation
@@ -21,6 +25,8 @@ subtracting a primitive on a maximal subgroup, the cocycle descends to the
 cyclic quotient.  This avoids introducing intermediate-field representation
 comparisons or assuming a higher-degree class-formation theorem.
 -/
+
+@[expose] public section
 
 open CategoryTheory groupCohomology
 
@@ -60,19 +66,31 @@ theorem cyclicClassFormationH1Primitive
       finite := L.finite
       generator := g
       generates := hg }
-  let d := descendedH1Cocycle (Rep.res K.field.toSubgroup.subtype A)
+  let M := E.fixedRepresentation A
+  let d : cocycles₁ M := descendedH1Cocycle (Rep.res K.field.toSubgroup.subtype A)
     (extensionSubgroup K.field L.field L.below) z hz
-  have hT := hcf.tateHMinusOne_isZero K E
-  have hH : Limits.IsZero (H1 (E.fixedRepresentation A)) :=
-    hT.of_iso (finiteCyclicH1IsoTateHMinusOne (E.fixedRepresentation A) g hg)
-  have hd : H1π (E.fixedRepresentation A) d = 0 :=
+  let B := (IntegralGroupCohomology.Universe.nativeFunctor
+    (K.field.toSubgroup ⧸ extensionSubgroup K.field L.field L.below)).obj M
+  let dB : cocycles₁ B :=
+    ⟨fun q => ULift.up (d q.down), (mem_cocycles₁_iff _).mpr fun q r => by
+      apply ULift.down_injective
+      exact (mem_cocycles₁_iff d).mp d.2 q.down r.down⟩
+  let : Subsingleton (tateCohomology B (-1)) := ModuleCat.subsingleton_of_isZero
+    (M := IntegralGroupCohomology.Universe.tate M (-1)) (hcf.integralTateHMinusOne_isZero K E)
+  have hT : Limits.IsZero (tateCohomology B (-1)) := ModuleCat.isZero_of_subsingleton _
+  have hH : Limits.IsZero (H1 B) := hT.of_iso (finiteCyclicH1IsoTateHMinusOne
+    B (ULift.up g) (IntegralGroupCohomology.Universe.ulift_generator g hg))
+  have hd : H1π B dB = 0 :=
     @Subsingleton.elim _ (ModuleCat.subsingleton_of_isZero hH) _ _
-  obtain ⟨a, ha⟩ := (H1π_eq_zero_iff d).mp hd
+  obtain ⟨b, hb⟩ := (H1π_eq_zero_iff dB).mp hd
+  let a : M := b.down
   refine ⟨a.1, ?_, ?_⟩
   · intro l
     exact a.2 ⟨⟨l.1, L.below l.2⟩, l.2⟩
   · intro k
-    exact congrArg Subtype.val (congrFun ha (QuotientGroup.mk' _ k))
+    have hk := congrArg (fun x : B => x.down)
+      (congrFun hb (ULift.up (QuotientGroup.mk' _ k)))
+    exact congrArg Subtype.val hk
 
 omit hcf in
 /-- A proper subgroup of a finite group has strictly smaller order. -/

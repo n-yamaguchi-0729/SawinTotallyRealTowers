@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.Equiv
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.GroupTheory.PGroup
+module
+
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # Galois p-groups in binary composita
@@ -20,6 +22,8 @@ p-group automorphism groups are preserved by composita. This applies in
 particular to finite Galois extensions; neither finiteness nor primality of
 `p` is needed for the group-theoretic argument.
 -/
+
+@[expose] public section
 
 universe u v w
 

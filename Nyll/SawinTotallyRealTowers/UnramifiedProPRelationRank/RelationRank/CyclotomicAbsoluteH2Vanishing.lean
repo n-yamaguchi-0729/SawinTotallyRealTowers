@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStageRestriction
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteIntermediateAbsoluteClosure
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FiniteUnramifiedAbsoluteH2Vanishing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FiniteExtensionAbsoluteH2Restriction
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Vanishing
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStageRestriction
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteIntermediateAbsoluteClosure
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FiniteUnramifiedAbsoluteH2Vanishing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FiniteExtensionAbsoluteH2Restriction
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Vanishing
 
 /-!
 # Absolute inflation vanishes over every number field
@@ -25,6 +27,8 @@ unramified pro-p group vanishes on the absolute Galois group, for odd p.
 Only two local proposition-valued instances name the finite cyclotomic
 base and its number-field certificate; no comparison assumption is used.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,11 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
-import Mathlib.RingTheory.Norm.Basic
-import Mathlib.RingTheory.TensorProduct.Maps
-import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Mathlib.RingTheory.Norm.Basic
+public import Mathlib.RingTheory.TensorProduct.Maps
+public import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.EmbeddingNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Relative idele classes under an isomorphic realization
@@ -29,6 +40,8 @@ model of relative adeles or of the idele-class norm is introduced.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField
 open IsDedekindDomain
@@ -38,7 +51,7 @@ noncomputable section
 open RelativeIdeleGroup.Cohomology
 
 
-universe u v w
+universe u v w x
 
 variable
     {K : Type u} {L : Type v} {M : Type w}
@@ -399,7 +412,8 @@ theorem finitePlaceCongr_asIdeal
   ext x
   exact Ideal.symm_apply_mem_of_equiv_iff
 
-private theorem finitePlaceBelow_eq_finitePlaceCongr_symm
+/-- Restriction along a field equivalence is the inverse transport of finite places. -/
+theorem finitePlaceBelow_eq_finitePlaceCongr_symm
     (e : K ≃ₐ[ℚ] M)
     (W : HeightOneSpectrum (𝓞 M)) :
     letI : Algebra K M := e.toRingHom.toAlgebra
@@ -609,10 +623,10 @@ omit [NumberField K] in
 private theorem finitePlaceCongr_ramificationIdx
     (e : K ≃ₐ[ℚ] M)
     (W : HeightOneSpectrum (𝓞 M)) :
-    letI : Algebra K M := e.toRingHom.toAlgebra
+    let : Algebra K M := e.toRingHom.toAlgebra
     ((finitePlaceCongr e).symm W).asIdeal.ramificationIdx'
         W.asIdeal = 1 := by
-  let : Algebra K M := e.toRingHom.toAlgebra
+  intro sharedOwner1
   let w : HeightOneSpectrum (𝓞 K) :=
     (finitePlaceCongr e).symm W
   have hmap :
@@ -847,7 +861,7 @@ theorem
 
 section GaloisBaseChangeNaturality
 
-variable {E : Type} [Field E] [NumberField E] [Algebra ℚ E]
+variable {E : Type x} [Field E] [NumberField E] [Algebra ℚ E]
 
 local instance :
     MulDistribMulAction (E ≃ₐ[ℚ] E)
@@ -1034,7 +1048,7 @@ theorem rationalIdeleClassExtension_eq_ideleClassCongr
 section RelativeTowerCongr
 
 variable
-    {K L K' L' : Type}
+    {K : Type u} {L : Type v} {K' : Type w} {L' : Type x}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [Field K'] [NumberField K']
@@ -1044,7 +1058,7 @@ variable
 fields in a finite extension.  The coefficient-ring equivalence is kept
 explicit so the inverse uses that exact equivalence rather than a second
 choice. -/
-private noncomputable def relativeAdeleMapOfCompatibleEquiv
+noncomputable def relativeAdeleMapOfCompatibleEquiv
     (eK : K ≃ₐ[ℚ] K')
     (eA :
       NumberField.AdeleRing (𝓞 K) K ≃+*
@@ -1505,7 +1519,7 @@ theorem ordinaryIdeleClassNorm_range_map_congrOfAlgEquiv
 
 -- Fix the canonical commutativity proof used by the norm-range quotients.
 local instance normIdeleClassGroup_isMulCommutative
-    (F : Type) [Field F] [NumberField F] :
+    (F : Type u) [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   IsMulCommutative.of_comm (fun a b => mul_comm a b)
 

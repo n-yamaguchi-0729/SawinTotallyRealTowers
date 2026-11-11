@@ -4,20 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Triviality of localized degree-minus-one Herbrand cohomology
 -/
 
 
+
+@[expose] public section
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

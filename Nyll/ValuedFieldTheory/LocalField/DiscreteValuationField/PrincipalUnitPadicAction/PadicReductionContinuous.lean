@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.Padics.RingHoms
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.MetricSpace.Ultra.Basic
+module
+
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.MetricSpace.Ultra.Basic
 
 /-!
 # Continuity of reduction of p-adic integers
@@ -16,6 +18,8 @@ topology on the quotient. This source has no local-field dependencies.
 -/
 
 
+
+@[expose] public section
 
 namespace LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
 

@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
-import Mathlib.RingTheory.Etale.Finite
-import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
-import Mathlib.RingTheory.Flat.TorsionFree
-import Mathlib.RingTheory.Smooth.Fiber
-import Mathlib.RingTheory.Unramified.Locus
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
+public import Mathlib.RingTheory.Etale.Finite
+public import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
+public import Mathlib.RingTheory.Flat.TorsionFree
+public import Mathlib.RingTheory.Smooth.Fiber
+public import Mathlib.RingTheory.Unramified.Locus
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
 
 /-!
 # Explicit everywhere-unramified benchmark bridge
@@ -20,6 +23,8 @@ unramifiedness in the exact explicit form used by the Shafarevich benchmark.
 It also connects finite-place unramifiedness to formal unramifiedness and to
 finite étale algebras of rings of integers.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

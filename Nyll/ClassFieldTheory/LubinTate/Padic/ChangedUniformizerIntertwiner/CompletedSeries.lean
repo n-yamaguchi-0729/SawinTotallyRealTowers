@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardSeries
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardSeries
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
 
 /-!
 # Completed p-adic Lubin--Tate series
@@ -17,6 +19,8 @@ unramified Witt ring and records their coefficients and residue reductions.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

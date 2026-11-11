@@ -4,13 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.NormalBasis
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
+module
+
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Group.Basic
+public import Mathlib.Algebra.Ring.Hom.Defs
+public import Mathlib.FieldTheory.Galois.NormalBasis
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
 
 /-! Provides the public normal-basis lattice declarations used in Herbrand computations. -/
 
 
+
+@[expose] public section
 
 namespace CyclicCohomology
 
@@ -18,12 +26,12 @@ open LocalFieldTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 open scoped ValuativeRel
 open Filter
 
-variable (K L : Type u) [Field K] [Field L] [Algebra K L]
+variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
 
 /-- The `Gal(L/K)` orbit of Mathlib's normal-basis generator spans `L` over `K`. -/
@@ -131,7 +139,8 @@ def baseIntegerScalarMulLinearMap (a : 𝒪[K]) : L →ₗ[𝒪[K]] L where
     rw [mul_add]
   map_smul' := by
     intro r x
-    simp [Algebra.smul_def, mul_comm, mul_left_comm]
+    simpa only [RingHom.id_apply, Algebra.smul_def] using
+      (mul_left_comm (algebraMap 𝒪[K] L a) (algebraMap 𝒪[K] L r) x)
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Evaluates the linear map given by scalar multiplication from the base integer ring. -/
@@ -218,9 +227,9 @@ theorem chosenBaseUniformizerPowSubmodule_antitone
   rcases Nat.exists_eq_add_of_le hmn with ⟨d, hd⟩
   refine (mem_chosenBaseUniformizerPowSubmodule_iff (K := K) (L := L) m N _).2 ?_
   refine ⟨algebraMap 𝒪[K] L (chosenIntegerRingUniformizer K ^ d) * y, ?_, ?_⟩
-  · simpa [Algebra.smul_def, mul_assoc] using
+  · simpa only [Algebra.smul_def] using
       N.smul_mem (chosenIntegerRingUniformizer K ^ d) hyN
-  · simp [hd, pow_add, map_mul, mul_comm, mul_left_comm]
+  · rw [hd, pow_add, map_mul, mul_assoc]
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Successive chosen uniformizer-power submodules form a descending chain. -/
@@ -473,7 +482,7 @@ theorem exists_chosenBaseUniformizerPowSubmodule_mul_mul_mem_self_of_fg_of_field
   refine (mem_chosenBaseUniformizerPowSubmodule_iff (K := K) (L := L) n M _).2 ?_
   refine ⟨algebraMap 𝒪[K] L (chosenIntegerRingUniformizer K ^ n) * (x0 * y0),
     hprod, ?_⟩
-  simp [mul_assoc, mul_comm, mul_left_comm]
+  exact (mul_assoc _ _ _).symm.trans (mul_mul_mul_comm _ _ _ _)
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- For sufficiently large `n`, products of two elements of `π_K^n M` land in
@@ -552,10 +561,11 @@ theorem submodule_pow_succ_mem_of_mul_closed
   intro m
   induction m with
   | zero =>
-      simpa using hx
+      simpa only [Nat.zero_add, pow_one] using hx
   | succ m ih =>
       have hmul_mem : x ^ (m + 1) * x ∈ E := hmul (x ^ (m + 1)) ih x hx
-      simpa [pow_add, mul_assoc, mul_comm, mul_left_comm] using hmul_mem
+      rw [pow_succ]
+      exact hmul_mem
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- The finite inverse-correction sum
@@ -571,14 +581,14 @@ omit [FiniteDimensional K L] [IsGalois K L] in
 @[simp]
 theorem inverseCorrectionPartialSum_zero (x : L) :
     inverseCorrectionPartialSum (L := L) x 0 = 0 := by
-  simp [inverseCorrectionPartialSum]
+  exact Finset.sum_range_zero (fun i : ℕ => (-x) ^ (i + 1))
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Expands the inverse-correction partial sum at a successor index. -/
 theorem inverseCorrectionPartialSum_succ (x : L) (d : Nat) :
     inverseCorrectionPartialSum (L := L) x (d + 1) =
       inverseCorrectionPartialSum (L := L) x d + (-x) ^ (d + 1) := by
-  simp [inverseCorrectionPartialSum, Finset.sum_range_succ]
+  exact Finset.sum_range_succ (fun i : ℕ => (-x) ^ (i + 1)) d
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Adding `1` turns the inverse-correction sum into the usual finite
@@ -586,12 +596,9 @@ geometric sum with ratio `-x`. -/
 theorem one_add_inverseCorrectionPartialSum_eq_geom_sum (x : L) (d : Nat) :
     1 + inverseCorrectionPartialSum (L := L) x d =
       (Finset.range (d + 1)).sum fun i => (-x) ^ i := by
-  induction d with
-  | zero =>
-      simp [inverseCorrectionPartialSum]
-  | succ d ih =>
-      rw [inverseCorrectionPartialSum_succ, Finset.sum_range_succ, ← ih]
-      simp [add_assoc]
+  dsimp only [inverseCorrectionPartialSum]
+  rw [Finset.sum_range_succ', pow_zero]
+  exact add_comm _ _
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Finite geometric inverse identity for the approximants to `(1+x)⁻¹`. -/
@@ -609,7 +616,7 @@ theorem one_add_mul_one_add_inverseCorrectionPartialSum_sub_one
     (1 + x) * (1 + inverseCorrectionPartialSum (L := L) x d) - 1 =
       -((-x) ^ (d + 1)) := by
   rw [one_add_mul_one_add_inverseCorrectionPartialSum]
-  simp [sub_eq_add_neg, add_assoc]
+  exact sub_sub_cancel_left 1 ((-x) ^ (d + 1))
 
 omit [FiniteDimensional K L] [IsGalois K L]
   [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
@@ -773,9 +780,8 @@ theorem exists_chosenBaseUniformizerPow_mul_mem_integerRing_of_valuationExtensio
                       (((chosenIntegerRingUniformizer L : 𝒪[L]) : L) ^ m))) =
                 (c : L) * (((ub : 𝒪[L]) : L))⁻¹ * (a : L)
             field_simp [hub_ne, hϖL_pow_ne]
-      _ = ((c * ↑ub⁻¹ * a : 𝒪[L]) : L) := by
-            rw [← hub_inv]
-            simp [mul_assoc]
+      _ = ((c * ↑ub⁻¹ * a : 𝒪[L]) : L) :=
+            congrArg (fun z : L => (c : L) * z * (a : L)) hub_inv.symm
   rw [hclear]
   exact (c * ↑ub⁻¹ * a : 𝒪[L]).2
 
@@ -856,7 +862,7 @@ theorem chosenBaseUniformizerPow_integerRingFieldSubmodule_mem_nhds_zero
     have hval :
         ValuativeRel.valuation L (a⁻¹ * x) =
           (ValuativeRel.valuation L a)⁻¹ * ValuativeRel.valuation L x := by
-      simp [map_mul]
+      rw [map_mul, map_inv₀]
     rw [hval]
     exact (inv_mul_le_one₀ ha_val_pos).2 hxle
   · change a * (a⁻¹ * x) = x
@@ -990,7 +996,8 @@ theorem chosenBaseUniformizerPowSubmodule_add_le_chosenBaseUniformizerPowSubmodu
   refine ⟨algebraMap 𝒪[K] L (chosenIntegerRingUniformizer K ^ a) * y, ?_, ?_⟩
   · exact h ((mem_chosenBaseUniformizerPowSubmodule_iff (K := K) (L := L) a N _).2
       ⟨y, hyN, rfl⟩)
-  · simp [pow_add, map_mul, mul_assoc, mul_comm]
+  · rw [pow_add, map_mul, mul_assoc]
+    exact mul_left_comm _ _ _
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- If `π_K^b N` is integral, then `π_K^(b+1) N` lands in the maximal ideal of
@@ -1027,7 +1034,7 @@ chosenBaseUniformizerPowSubmodule_succ_le_maximalIdealFieldSubmodule_of_le_integ
   change algebraMap 𝒪[K] L (chosenIntegerRingUniformizer K) *
       (algebraMap 𝒪[K] L (chosenIntegerRingUniformizer K ^ b) * y) =
     algebraMap 𝒪[K] L (chosenIntegerRingUniformizer K ^ (b + 1)) * y
-  simp [pow_add, map_mul, mul_comm, mul_left_comm]
+  rw [pow_succ', map_mul, mul_assoc]
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- A finitely generated submodule has a sufficiently deep uniformizer multiple
@@ -1240,8 +1247,10 @@ theorem chosenNormalBasisPrincipalUnitSet_inverseCorrectionPartialProductError_m
     inverseCorrectionPartialProductError_mem_of_mul_closed
       (K := K) (L := L) hmul hx d
   have hu_eq : 1 + x = (((u : 𝒪[L]ˣ) : 𝒪[L]) : L) := by
-    simp [x]
-  simpa [E, x, hu_eq] using herror
+    change 1 + ((((u : 𝒪[L]) : L) - 1)) = ((u : 𝒪[L]) : L)
+    rw [add_comm, sub_add_cancel]
+  rw [hu_eq] at herror
+  exact herror
 
 omit [Valuation.HasExtension
   (ValuativeRel.valuation K) (ValuativeRel.valuation L)] in
@@ -1278,7 +1287,7 @@ theorem chosenNormalBasisPrincipalUnitSet_neg_sub_one_pow_succ_tendsto_zero
     (mem_principalUnits_iff L u 1).1 hu_one
   have hmax :
       (((u : 𝒪[L]ˣ) : 𝒪[L]) - 1) ∈ (𝓂[L] : Ideal 𝒪[L]) := by
-    simpa [pow_one] using hpow
+    simpa only [pow_one] using hpow
   exact tendsto_neg_pow_succ_of_mem_maximalIdeal L hmax
 
 /-- A suitable normal-basis principal-unit set has powers of the negative
@@ -1321,9 +1330,8 @@ theorem chosenNormalBasisPrincipalUnitSet_inverseCorrectionProduct_tendsto_one
   let x : L := (x𝒪 : L)
   have hres𝒪 :
       Tendsto (fun d : Nat => (-x𝒪) ^ (d + 1)) atTop (nhds (0 : 𝒪[L])) := by
-    simpa [x𝒪] using
-      chosenNormalBasisPrincipalUnitSet_neg_sub_one_pow_succ_tendsto_zero
-        (K := K) (L := L) hle hu
+    exact chosenNormalBasisPrincipalUnitSet_neg_sub_one_pow_succ_tendsto_zero
+      (K := K) (L := L) hle hu
   have hresL :
       Tendsto (fun d : Nat => ((((-x𝒪) ^ (d + 1) : 𝒪[L]) : L)))
         atTop (nhds (0 : L)) :=
@@ -1331,7 +1339,7 @@ theorem chosenNormalBasisPrincipalUnitSet_inverseCorrectionProduct_tendsto_one
   have htarget :
       Tendsto (fun d : Nat => (1 : L) - ((((-x𝒪) ^ (d + 1) : 𝒪[L]) : L)))
         atTop (nhds (1 : L)) := by
-    simpa using (tendsto_const_nhds (x := (1 : L))).sub hresL
+    simpa only [sub_zero] using (tendsto_const_nhds (x := (1 : L))).sub hresL
   refine htarget.congr' (Eventually.of_forall ?_)
   intro d
   have hgeom :
@@ -1339,8 +1347,10 @@ theorem chosenNormalBasisPrincipalUnitSet_inverseCorrectionProduct_tendsto_one
         1 - (-x) ^ (d + 1) :=
     one_add_mul_one_add_inverseCorrectionPartialSum (L := L) x d
   have hu_eq : 1 + x = (((u : 𝒪[L]ˣ) : 𝒪[L]) : L) := by
-    simp [x, x𝒪]
-  simpa [x, x𝒪, hu_eq] using hgeom.symm
+    change 1 + ((((u : 𝒪[L]) : L) - 1)) = ((u : 𝒪[L]) : L)
+    rw [add_comm, sub_add_cancel]
+  rw [hu_eq] at hgeom
+  exact hgeom.symm
 
 /-- One plus the inverse correction converges to the multiplicative inverse. -/
 theorem chosenNormalBasisPrincipalUnitSet_one_add_inverseCorrection_tendsto_inv
@@ -1623,7 +1633,7 @@ theorem exists_chosenNormalBasisPrincipalUnitSubgroup
 end
 end CyclicCohomology
 
-universe u
+universe u v
 
 namespace CyclicCohomology
 
@@ -1634,7 +1644,7 @@ noncomputable section
 open scoped ValuativeRel
 open Filter
 
-variable (K L : Type u) [Field K] [Field L] [Algebra K L]
+variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L] [ValuativeRel K]
   [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel L]
   [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
@@ -1662,7 +1672,7 @@ def chosenNormalBasisLatticeSuccSubmodule (n : Nat) :
         (chosenNormalBasisIntegerLattice K L))
 
 /-- The additive quotient `π_K^nM / π_K^(n+1)M` used in the local class-field calculation. -/
-def chosenNormalBasisLatticeSuccQuot (n : Nat) : Type u :=
+def chosenNormalBasisLatticeSuccQuot (n : Nat) : Type v :=
   (chosenBaseUniformizerPowSubmodule K L n (chosenNormalBasisIntegerLattice K L)) ⧸
     chosenNormalBasisLatticeSuccSubmodule K L n
 
@@ -2009,7 +2019,7 @@ theorem mem_chosenNormalBasisPrincipalUnitSuccSubgroup_iff
 /-- The multiplicative successive quotient `Vn / Vsucc`, for an actual inclusion
 `Vsucc ≤ Vn`. -/
 def chosenNormalBasisPrincipalUnitSuccQuot
-    {Vn Vsucc : Subgroup 𝒪[L]ˣ} (hV : Vsucc ≤ Vn) : Type u :=
+    {Vn Vsucc : Subgroup 𝒪[L]ˣ} (hV : Vsucc ≤ Vn) : Type v :=
   Vn ⧸ chosenNormalBasisPrincipalUnitSuccSubgroup (L := L) hV
 
 /-- The quotient by the next normal-basis principal-unit subgroup is a commutative group. -/

@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ProductArgument
+module
+
+public import Mathlib.Basic.Logic.Basic
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ProductArgument
 
 /-!
 # Basic factors in the formal logarithm product argument
@@ -14,6 +17,8 @@ finite choice spaces.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -75,8 +80,8 @@ Establishes the identity `formalLogOnePlusProductArgumentBasicFactorLabel (Finsu
 -/
 @[simp] theorem formalLogOnePlusProductArgumentBasicFactorLabel_left :
     formalLogOnePlusProductArgumentBasicFactorLabel
-        (Finsupp.single (0 : Fin 2) 1) = 0 := by
-  simp [formalLogOnePlusProductArgumentBasicFactorLabel]
+        (Finsupp.single (0 : Fin 2) 1) = 0 :=
+  ite_eq_left rfl
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentBasicFactorLabel (Finsupp.single (1 : Fin
@@ -84,9 +89,8 @@ Establishes the identity `formalLogOnePlusProductArgumentBasicFactorLabel (Finsu
 -/
 @[simp] theorem formalLogOnePlusProductArgumentBasicFactorLabel_right :
     formalLogOnePlusProductArgumentBasicFactorLabel
-        (Finsupp.single (1 : Fin 2) 1) = 1 := by
-  simp [formalLogOnePlusProductArgumentBasicFactorLabel,
-    finsupp_fin_two_single_left_ne_single_right.symm]
+        (Finsupp.single (1 : Fin 2) 1) = 1 :=
+  (ite_eq_right finsupp_fin_two_single_left_ne_single_right.symm).trans (ite_eq_left rfl)
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentBasicFactorLabel (Finsupp.single (0 : Fin
@@ -95,10 +99,9 @@ Establishes the identity `formalLogOnePlusProductArgumentBasicFactorLabel (Finsu
 @[simp] theorem formalLogOnePlusProductArgumentBasicFactorLabel_mixed :
     formalLogOnePlusProductArgumentBasicFactorLabel
         (Finsupp.single (0 : Fin 2) 1 +
-          Finsupp.single (1 : Fin 2) 1) = 2 := by
-  simp [formalLogOnePlusProductArgumentBasicFactorLabel,
-    finsupp_fin_two_single_left_ne_mixed.symm,
-    finsupp_fin_two_single_right_ne_mixed.symm]
+          Finsupp.single (1 : Fin 2) 1) = 2 :=
+  (ite_eq_right finsupp_fin_two_single_left_ne_mixed.symm).trans
+    (ite_eq_right finsupp_fin_two_single_right_ne_mixed.symm)
 
 /--
 Characterizes `formalLogOnePlusProductArgumentBasicFactorLabel m = (0 : Fin 3)` by the equivalent
@@ -110,10 +113,13 @@ theorem formalLogOnePlusProductArgumentBasicFactorLabel_eq_zero
       m = Finsupp.single (0 : Fin 2) 1 := by
   unfold formalLogOnePlusProductArgumentBasicFactorLabel
   by_cases hleft : m = Finsupp.single (0 : Fin 2) 1
-  · simp [hleft]
+  · rw [ite_eq_left hleft]
+    exact iff_of_true rfl hleft
   · by_cases hright : m = Finsupp.single (1 : Fin 2) 1
-    · simp [hright]
-    · simp [hleft, hright]
+    · rw [ite_eq_right hleft, ite_eq_left hright]
+      exact iff_of_false (by decide) hleft
+    · rw [ite_eq_right hleft, ite_eq_right hright]
+      exact iff_of_false (by decide) hleft
 
 /--
 Characterizes `formalLogOnePlusProductArgumentBasicFactorLabel m = (1 : Fin 3)` by the equivalent
@@ -125,14 +131,14 @@ theorem formalLogOnePlusProductArgumentBasicFactorLabel_eq_one
       m = Finsupp.single (1 : Fin 2) 1 := by
   unfold formalLogOnePlusProductArgumentBasicFactorLabel
   by_cases hleft : m = Finsupp.single (0 : Fin 2) 1
-  · simp [hleft, finsupp_fin_two_single_left_ne_single_right]
+  · rw [ite_eq_left hleft]
+    exact iff_of_false (by decide)
+      (fun h => finsupp_fin_two_single_left_ne_single_right (hleft.symm.trans h))
   · by_cases hright : m = Finsupp.single (1 : Fin 2) 1
-    · have hrightLeft :
-          Finsupp.single (1 : Fin 2) 1 ≠
-            Finsupp.single (0 : Fin 2) 1 :=
-        finsupp_fin_two_single_left_ne_single_right.symm
-      simp [hright, hrightLeft]
-    · simp [hleft, hright]
+    · rw [ite_eq_right hleft, ite_eq_left hright]
+      exact iff_of_true rfl hright
+    · rw [ite_eq_right hleft, ite_eq_right hright]
+      exact iff_of_false (by decide) hright
 
 /-- Finitely supported sequences of `q` basic factors. -/
 noncomputable def formalLogOnePlusProductArgumentBasicFactorProductChoices
@@ -264,15 +270,8 @@ theorem formalLogOnePlusProductArgument_leftChoiceCount_eq_labelCount_zero
     formalLogOnePlusProductArgumentBasicFactorLabelCount]
   apply Finset.sum_congr rfl
   intro i _hi
-  by_cases hleft : l i = Finsupp.single (0 : Fin 2) 1
-  · simp [hleft]
-  · have hlabel :
-        formalLogOnePlusProductArgumentBasicFactorLabel (l i) ≠
-          (0 : Fin 3) := by
-      intro hzero
-      exact hleft
-        (formalLogOnePlusProductArgumentBasicFactorLabel_eq_zero.1 hzero)
-    simp [hleft, hlabel]
+  exact if_congr
+    (formalLogOnePlusProductArgumentBasicFactorLabel_eq_zero (m := l i)).symm rfl rfl
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentRightChoiceCount q l =
@@ -287,15 +286,8 @@ theorem formalLogOnePlusProductArgument_rightChoiceCount_eq_labelCount_one
     formalLogOnePlusProductArgumentBasicFactorLabelCount]
   apply Finset.sum_congr rfl
   intro i _hi
-  by_cases hright : l i = Finsupp.single (1 : Fin 2) 1
-  · simp [hright]
-  · have hlabel :
-        formalLogOnePlusProductArgumentBasicFactorLabel (l i) ≠
-          (1 : Fin 3) := by
-      intro hone
-      exact hright
-        (formalLogOnePlusProductArgumentBasicFactorLabel_eq_one.1 hone)
-    simp [hright, hlabel]
+  exact if_congr
+    (formalLogOnePlusProductArgumentBasicFactorLabel_eq_one (m := l i)).symm rfl rfl
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentMixedChoiceCount q l =

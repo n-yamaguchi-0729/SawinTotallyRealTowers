@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAbelian
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.UnramifiedConductor
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAbelian
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.UnramifiedConductor
 
 /-!
 # Lubin--Tate application: index of the explicit level norm subgroup
@@ -19,7 +21,11 @@ field theory application layer, not to the reusable Lubin--Tate library.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w
 
 open scoped LaurentSeries ValuativeRel
 
@@ -29,12 +35,12 @@ namespace EqualCharacteristic
 open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 /-- The norm subgroup of the level-`n+1` Lubin--Tate extension has index
 `(q - 1) q^n`, its extension degree. -/
 theorem equalCharacteristicLubinTateNormSubgroup_index
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
     letI : ValuativeRel F.residueField⸨X⸩ :=

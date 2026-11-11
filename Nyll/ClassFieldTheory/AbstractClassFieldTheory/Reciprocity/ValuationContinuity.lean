@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
 
 /-!
 # Continuity of the normalized valuation
@@ -19,6 +21,8 @@ sends its norm subgroup into the prescribed neighbourhood.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped Topology
@@ -27,7 +31,7 @@ namespace ClassFormation
 
 open ClassFormation CyclicCohomology KummerTheory
 
-universe u
+universe u v
 
 section DegreeOnly
 
@@ -311,12 +315,11 @@ end DegreeOnly
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- Every neighbourhood of zero in the value group contains all `f`-fold
 multiples for some `f > 0`.  This is the subspace-topology form of the

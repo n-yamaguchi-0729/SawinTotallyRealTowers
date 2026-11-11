@@ -4,23 +4,25 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProTwoInitialPresentation
-import Nyll.SawinTotallyRealTowers.RealProTwoDeepFrobenius
-import Nyll.SawinTotallyRealTowers.RealProPFrobenius
-import Nyll.SawinTotallyRealTowers.RealProPFrobeniusCut
-import Nyll.SawinTotallyRealTowers.FrobeniusWeightBudget
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.ProCGroups.ProP.Presentation.FiniteGeneration
-import Nyll.ProCGroups.ProP.Presentation.RelatorDepth
-import Nyll.ProCGroups.GolodShafarevich.CountableRelatorTarget
-import Nyll.ProCGroups.Presentations.Profinite
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.Order.Preorder.Finite
-import Mathlib.Data.Finset.Range
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Mathlib.Tactic.Choose
-import Mathlib.Tactic.NormNum
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProTwoInitialPresentation
+public import Nyll.SawinTotallyRealTowers.RealProTwoDeepFrobenius
+public import Nyll.SawinTotallyRealTowers.RealProPFrobenius
+public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusCut
+public import Nyll.SawinTotallyRealTowers.FrobeniusWeightBudget
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.ProCGroups.ProP.Presentation.FiniteGeneration
+public import Nyll.ProCGroups.ProP.Presentation.RelatorDepth
+public import Nyll.ProCGroups.GolodShafarevich.CountableRelatorTarget
+public import Nyll.ProCGroups.Presentations.Profinite
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.Order.Preorder.Finite
+public import Mathlib.Data.Finset.Range
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Mathlib.Tactic.Choose
+public import Mathlib.Tactic.NormNum
 
 /-!
 # An infinite Frobenius quotient of the initial real pro-two group
@@ -29,6 +31,8 @@ Choose genuine primes and source lifts at depths n + 5 in the actual
 minimal presentation from S1. The prescribed finite-prefix budget allows
 all these Frobenius relations to be imposed while the quotient stays infinite.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -39,9 +43,7 @@ open ProCGroups ProCGroups.Presentations ClassFieldTower.ProP
 
 private local instance frobeniusSequencePrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
-private local instance frobeniusSequenceIsGalois :
-    IsGalois ℚ (maximalRealProPOutside 2 sawinRationalPrimeSupport) :=
-  maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
+attribute [local instance] maximalRealProPOutside_isGalois
 
 /-- The same actual minimal presentation admits a sequence of deep source
 lifts of arithmetic Frobenius at primes escaping every initial interval. -/

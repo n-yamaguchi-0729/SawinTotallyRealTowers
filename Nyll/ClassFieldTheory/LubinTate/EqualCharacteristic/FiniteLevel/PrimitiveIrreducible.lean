@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.DivisionPolynomial
-import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
-import Mathlib.RingTheory.PowerSeries.Ideal
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.DivisionPolynomial
+public import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+public import Mathlib.RingTheory.PowerSeries.Ideal
 
 /-!
 # The uniformizer norm identity: irreducibility of the equal-characteristic primitive polynomial
@@ -19,6 +21,8 @@ its constant coefficient is exactly `T`.  It is therefore Eisenstein at
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

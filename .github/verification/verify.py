@@ -19,8 +19,8 @@ HERE = Path(__file__).resolve().parent
 ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
 ALLOWED_PARTS = {(('str', 'propext'),), (('str', 'Classical'), ('str', 'choice')),
                  (('str', 'Quot'), ('str', 'sound'))}
-LEAN_REV = '11acb17ec6b07a8f9e9173e6845197929540936b'
-EXPORT_COMMIT = '6cea97789dc088ea47fcea15692db85685aedac5'
+LEAN_REV = 'eb6cafb7290e8bd5f2937522d8d804f58f02bafc'
+EXPORT_COMMIT = '5a9a355dc6c5fd82b69058d433e2ae2e8dfbf8fe'
 NANODA_COMMIT = '4c544ed4099c8227f07d5de77ad1e69fb0740a27'
 WRAPPERS = {
     'Inventory.lean': '7d052d15525b9068aa76c2f69d04ef63b2c5ad9fd1da6ffae534e1f7dc0f3a2e',
@@ -185,7 +185,7 @@ def validate_replay(path, manifest):
     results = [r for r in records if r.get('phase') == 'replay']
     require(len(inventories) == len(results) == 1, 'Missing/duplicate replay records')
     inv = inventories[0]; result = results[0]
-    require(result['result'] == 'PASS' and result['kernel'] == 'official Lean 4.35.0-rc2',
+    require(result['result'] == 'PASS' and result['kernel'] == 'official Lean 4.35.0',
             'Official replay did not pass')
     require(inv['roots'] == manifest['roots'], 'Replay root mismatch')
     loaded = inv['loaded_modules']
@@ -392,7 +392,7 @@ class Runner:
         require(result['allSelectedPresent'] and not result['unexpectedAxiomNameParts'],
                 'Export omitted a safe root or introduced an unpermitted axiom')
         lean = result['metadata']['lean']
-        require(lean['version'] == '4.35.0-rc2' and lean['githash'] == LEAN_REV,
+        require(lean['version'] == '4.35.0' and lean['githash'] == LEAN_REV,
                 'Exporter Lean identity mismatch')
         self.seal(self.output / 'coverage-report.json')
         return {'completeSafeUnion': True, 'selectedRootCount': len(self.selectors),
@@ -428,7 +428,7 @@ class Runner:
                                               'tests/MartinetStatement.lean'])
             require(self.snapshots(self.project_paths()) == project, 'Input changed during build')
             version = self.stage('lean-version', [self.lake,'env','lean','--version'], True)
-            require('version 4.35.0-rc2' in version and LEAN_REV in version, 'Lean identity mismatch')
+            require('version 4.35.0,' in version and LEAN_REV in version, 'Lean identity mismatch')
             prefix = self.stage('lean-prefix', [self.lake,'env','lean','--print-prefix'], True)
             search = self.stage('lean-search-path', [self.lake,'env','printenv','LEAN_PATH'], True)
             ident = {'version': version, 'prefix': prefix, 'searchPath': search,

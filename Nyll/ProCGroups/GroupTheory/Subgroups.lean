@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.Topology.Algebra.OpenSubgroup
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.Topology.Algebra.OpenSubgroup
 
 /-!
 # Quotients by kernels
@@ -13,6 +15,8 @@ import Mathlib.Topology.Algebra.OpenSubgroup
 This module realizes the quotient by the kernel of a homomorphism as an injective homomorphism
 into the target and records its value on quotient representatives.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.GroupTheory
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.Padics.RingHoms
-import Mathlib.Topology.Algebra.OpenSubgroup
+module
+
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Mathlib.Topology.Algebra.OpenSubgroup
 
 /-!
 # Closed additive subgroups of the p-adic integers
@@ -16,6 +18,8 @@ such a subgroup is open.
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2AdditionDifference
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportDecompositionRadicalPairing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedRadicalPairing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2AdditionDifference
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportDecompositionRadicalPairing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedRadicalPairing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Linearity of the actual arithmetic-stage radical obstruction
@@ -19,6 +21,8 @@ radical, while unramified local changes do not affect the pairing. Thus
 the chosen lifts give an additive obstruction. Additivity over the prime
 field supplies scalar compatibility without any additional choices.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology BigOperators

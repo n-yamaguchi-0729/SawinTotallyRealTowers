@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct` Lean module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology
@@ -140,13 +144,13 @@ theorem tendsto_galoisGroupIntegerUnits_tateNorm_of_tendsto
     (f : Nat → 𝒪[L]ˣ) (x : 𝒪[L]ˣ)
     (hf : Tendsto (fun d : Nat => ((f d : 𝒪[L]ˣ) : 𝒪[L])) atTop
       (nhds ((x : 𝒪[L]ˣ) : 𝒪[L]))) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     Tendsto
       (fun d : Nat =>
         ((tateNorm (Gal(L / K)) 𝒪[L]ˣ (f d) : 𝒪[L]ˣ) : 𝒪[L]))
       atTop
       (nhds ((tateNorm (Gal(L / K)) 𝒪[L]ˣ x : 𝒪[L]ˣ) : 𝒪[L])) := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   have hσ (sigma : Gal(L / K)) : Tendsto
       (fun d : Nat => ((sigma • f d : 𝒪[L]ˣ) : 𝒪[L])) atTop
       (nhds ((sigma • x : 𝒪[L]ˣ) : 𝒪[L])) := by
@@ -180,13 +184,13 @@ theorem tendsto_galoisGroupIntegerUnits_sigmaMinusOne_of_tendsto
     (g : Gal(L/K)) (f : Nat → 𝒪[L]ˣ) (x : 𝒪[L]ˣ)
     (hf : Tendsto (fun d : Nat => ((f d : 𝒪[L]ˣ) : 𝒪[L])) atTop
       (nhds ((x : 𝒪[L]ˣ) : 𝒪[L]))) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     Tendsto
       (fun d : Nat =>
         ((sigmaMinusOne (Gal(L / K)) 𝒪[L]ˣ g (f d) : 𝒪[L]ˣ) : 𝒪[L]))
       atTop
       (nhds ((sigmaMinusOne (Gal(L / K)) 𝒪[L]ˣ g x : 𝒪[L]ˣ) : 𝒪[L])) := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   have hgO : Tendsto
       (fun d : Nat => ((g • f d : 𝒪[L]ˣ) : 𝒪[L])) atTop
       (nhds ((g • x : 𝒪[L]ˣ) : 𝒪[L])) := by

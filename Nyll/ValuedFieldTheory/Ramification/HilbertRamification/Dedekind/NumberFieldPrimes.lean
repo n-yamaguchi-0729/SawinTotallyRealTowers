@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.RamificationInertia.Unramified
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.TowerInvariants
+module
+
+public import Mathlib.NumberTheory.RamificationInertia.Unramified
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.TowerInvariants
 
 /-!
 # Hilbert ramification theory: number-field prime ideals in the fixed fields
@@ -18,6 +20,8 @@ the decomposition and inertia fixed-field tower.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

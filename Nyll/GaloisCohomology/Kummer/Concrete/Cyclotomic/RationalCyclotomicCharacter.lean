@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
-import Mathlib.NumberTheory.Cyclotomic.CyclotomicCharacter
-import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
+public import Mathlib.NumberTheory.Cyclotomic.CyclotomicCharacter
+public import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 
 /-!
 # The cyclotomic character of the rational cyclotomic field
@@ -23,6 +25,8 @@ introduced here.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

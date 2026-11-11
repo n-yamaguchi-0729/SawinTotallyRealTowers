@@ -4,9 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFiniteLevel
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFiniteLevel
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisDescent
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 
 /-!
 # Descent of fixed rational idele classes
@@ -18,6 +24,8 @@ of the intermediate field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -44,7 +52,7 @@ theorem rationalTowerRelativeIdeleClass_fixed_of_directLimit_fixed
       z = (⟦⟨U, d⟩⟧ : rationalIdeleClassDirectLimit))
     (hz_fixed :
       ∀ σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ,
-        σ ∈ K.fixingSubgroup → σ • z = z) :
+        σ ∈ K.fixingSubgroup → rationalIdeleClassDirectLimitSMul.smul σ z = z) :
     towerRelativeIdeleClassBaseChangeMulEquiv ℚ K U
           ((TowerRelativeIdeleGroup.classGroupEquiv
             ℚ K U).symm d) ∈
@@ -80,10 +88,18 @@ theorem rationalTowerRelativeIdeleClass_fixed_of_directLimit_fixed
       _ = y :=
         h_algebraMap yK
   have hzσ := hz_fixed σ hσK
-  rw [hzU, DirectLimit.smul_def] at hzσ
+  rw [hzU] at hzσ
+  have hlimit : rationalIdeleClassDirectLimitSMul.smul σ
+      (rationalRelativeIdeleClassToDirectLimit U d) =
+        rationalRelativeIdeleClassToDirectLimit U
+          ((AlgEquiv.restrictNormalHom U σ) • d) :=
+    DirectLimit.smul_def
+      (G := fun E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ) =>
+        RelativeIdeleGroup.ClassGroup ℚ E)
+      (f := fun _ _ h => rationalRelativeIdeleClassTransition h) U d σ
   have hdQ :
       (AlgEquiv.restrictNormalHom U σ) • d = d :=
-    (rationalRelativeIdeleClassToDirectLimit_injective U) hzσ
+    (rationalRelativeIdeleClassToDirectLimit_injective U) (hlimit.symm.trans hzσ)
   have hdτ : τ • d = d := by
     rw [← hσU]
     exact hdQ

@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Cohomology.ContinuousMapFiniteStage
-import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
-import Nyll.GaloisCohomology.ProP.FiniteTransgression
-import Mathlib.Tactic.FinCases
+module
+
+public import Nyll.ProCGroups.Cohomology.ContinuousMapFiniteStage
+public import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
+public import Nyll.GaloisCohomology.ProP.FiniteTransgression
+public import Mathlib.Tactic.FinCases
 
 /-!
 # Finite-stage realization of continuous degree-two classes
 -/
+
+@[expose] public section
 
 open scoped Topology
 

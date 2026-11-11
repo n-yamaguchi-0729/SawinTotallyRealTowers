@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalProduct
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.InfiniteOnePlaceBaseNorm
-import Mathlib.NumberTheory.NumberField.CMField
-import Mathlib.RingTheory.RootsOfUnity.Complex
+module
+
+public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalProduct
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.InfiniteOnePlaceBaseNorm
+public import Mathlib.NumberTheory.NumberField.CMField
+public import Mathlib.RingTheory.RootsOfUnity.Complex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 
 /-!
 # The rational cyclotomic complexification
@@ -18,9 +24,13 @@ cyclotomic field and proves the rational principal-idele Artin formula.
 
 
 
+@[expose] public section
+
 open scoped BigOperators IsMulCommutative NumberField
 open NumberField IsDedekindDomain
 open IdeleGroup
+
+open scoped NumberField.LiesOver
 
 noncomputable section
 
@@ -279,7 +289,9 @@ theorem
   rw [infiniteTensorNormSubgroup_eq_localNormSubgroup
     (K := ℚ) (L := E) v w hw] at hnorm
   obtain ⟨z, hz⟩ := hnorm
-  have hpositive :=
+  have hpositive :
+      0 < InfinitePlace.Completion.ringEquivRealOfIsReal Rat.isReal_infinitePlace
+        (LocalFieldTheory.normUnits v.Completion w.Completion z : v.Completion) :=
     infinitePlace_normUnits_real_complex_pos
       (K := ℚ) v w hw
       Rat.isReal_infinitePlace

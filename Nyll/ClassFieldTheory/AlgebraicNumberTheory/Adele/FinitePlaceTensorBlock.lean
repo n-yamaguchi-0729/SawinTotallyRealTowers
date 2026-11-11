@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # Finite-place tensor factors as induced local blocks
@@ -20,10 +25,14 @@ conjugation on the second tensor factor.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v
 
 open LocalClassFieldTheory
 
@@ -31,7 +40,7 @@ open LocalClassFieldTheory
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -57,7 +66,7 @@ theorem finitePlaceLocalTensorAlgEquiv_conjugation
           (K := K) (L := L) v z) := by
   induction z using TensorProduct.inductionOn with
   | tmul a x => rfl
-  | add x y hx hy => simp [hx, hy]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 omit [NumberField L] [FiniteDimensional K L] [IsGalois K L] in
 /-- The finite-completion comparison on tensor units is equivariant. -/
@@ -67,11 +76,11 @@ theorem finitePlaceLocalTensorUnitsEquiv_smul
     (z :
       (LocalTensorAlgebra (L := L)
         (HeightOneSpectrum.adicAbv K v))ˣ) :
-    letI :=
+    let :=
       localTensorUnitsAction
         (K := K) (L := L)
         (HeightOneSpectrum.adicAbv K v)
-    letI :=
+    let :=
       scalarTensorUnitsAction
         (K := K) (L := L)
         (A := v.adicCompletion K)
@@ -79,14 +88,7 @@ theorem finitePlaceLocalTensorUnitsEquiv_smul
         (K := K) (L := L) v (σ • z) =
       σ • finitePlaceLocalTensorUnitsEquiv
         (K := K) (L := L) v z := by
-  let :=
-    localTensorUnitsAction
-      (K := K) (L := L)
-      (HeightOneSpectrum.adicAbv K v)
-  let :=
-    scalarTensorUnitsAction
-      (K := K) (L := L)
-      (A := v.adicCompletion K)
+  intro sharedOwner1 sharedOwner2
   apply Units.ext
   exact finitePlaceLocalTensorAlgEquiv_conjugation
     (K := K) (L := L) v σ
@@ -100,11 +102,11 @@ theorem finitePlaceLocalTensorUnitsEquiv_symm_smul
     (v : HeightOneSpectrum (𝓞 K))
     (σ : L ≃ₐ[K] L)
     (z : (v.adicCompletion K ⊗[K] L)ˣ) :
-    letI :=
+    let :=
       localTensorUnitsAction
         (K := K) (L := L)
         (HeightOneSpectrum.adicAbv K v)
-    letI :=
+    let :=
       scalarTensorUnitsAction
         (K := K) (L := L)
         (A := v.adicCompletion K)
@@ -113,14 +115,7 @@ theorem finitePlaceLocalTensorUnitsEquiv_symm_smul
       σ •
         (finitePlaceLocalTensorUnitsEquiv
           (K := K) (L := L) v).symm z := by
-  let :=
-    localTensorUnitsAction
-      (K := K) (L := L)
-      (HeightOneSpectrum.adicAbv K v)
-  let :=
-    scalarTensorUnitsAction
-      (K := K) (L := L)
-      (A := v.adicCompletion K)
+  intro sharedOwner1 sharedOwner2
   apply
     (finitePlaceLocalTensorUnitsEquiv
       (K := K) (L := L) v).injective

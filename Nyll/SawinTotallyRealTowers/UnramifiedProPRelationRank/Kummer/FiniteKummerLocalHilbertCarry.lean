@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicBaseUnitCarry
 import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
+import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
 
 /-!
 # Finite Kummer carry classes and the local Hilbert symbol
@@ -42,10 +44,10 @@ theorem localHilbertSymbolFromNormQuotient_carry_baseUnit
     let : IsAbelianGalois K E :=
       KummerTheory.chosenSimpleKummerExtension_isAbelianGalois
         K p hpK hmu b
-    letI := AlgEquiv.fintype K E
+    let := AlgEquiv.fintype K E
     let : IsCyclic (Gal(E / K)) :=
       CyclicCohomology.isCyclic_of_generator g hg
-    letI : CommGroup (Gal(E / K)) := IsCyclic.commGroup
+    let : CommGroup (Gal(E / K)) := IsCyclic.commGroup
     LocalClassFieldTheory.Kummer.localHilbertSymbolFromNormQuotient
         K p hpK hmu b
         (Additive.toMul
@@ -55,17 +57,7 @@ theorem localHilbertSymbolFromNormQuotient_carry_baseUnit
                 (Rep.ofAlgebraAutOnUnits K E) g hg
                 (finiteCyclicBaseUnitFixed K E g a))))) =
       LocalClassFieldTheory.Kummer.localHilbertSymbol K p hpK hmu a b := by
-  dsimp only
-  let E := KummerTheory.chosenSimpleKummerExtension K p hpK b
-  let : FiniteDimensional K E :=
-    KummerTheory.chosenSimpleKummerExtension_finiteDimensional K p hpK b
-  let : IsAbelianGalois K E :=
-    KummerTheory.chosenSimpleKummerExtension_isAbelianGalois
-      K p hpK hmu b
-  let := AlgEquiv.fintype K E
-  let : IsCyclic (Gal(E / K)) :=
-    CyclicCohomology.isCyclic_of_generator g hg
-  let : CommGroup (Gal(E / K)) := IsCyclic.commGroup
+  intro E reusedStructure2 reusedStructure3 reusedStructure4 reusedStructure5 reusedStructure6
   rw [finiteCyclicUnitsH2IsoNormQuotient_carry_baseUnit]
   exact
     LocalClassFieldTheory.Kummer.localHilbertSymbolFromNormQuotient_normClass

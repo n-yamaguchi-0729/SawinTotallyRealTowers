@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ThetaAtCompletedLevel
-import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ThetaAtCompletedLevel
+public import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 
 /-!
 # The completed theta-intertwining theorem: local injectivity of theta
@@ -16,6 +18,8 @@ isometry on the maximal ideal.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

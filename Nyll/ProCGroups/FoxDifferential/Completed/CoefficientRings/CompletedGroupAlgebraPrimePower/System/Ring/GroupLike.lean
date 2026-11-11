@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.System.Ring.Multiplicative
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.System.Ring.Multiplicative
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Fox differential: prime-power completed group algebra — system — ring — group like
@@ -22,6 +26,8 @@ The principal declarations in this module are:
   The prime-power completed group-algebra projection sends a group-like element to its finite-stage
   group-like class.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.MonoidAlgebra.MapDomain
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+module
+
+public import Mathlib.Algebra.MonoidAlgebra.MapDomain
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Fox differential: completed — coefficient rings — completed group algebra
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `completedGroupAlgebraTransitionInClass_comp`
   Composition lemma completedGroupAlgebraTransitionInClass_comp.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

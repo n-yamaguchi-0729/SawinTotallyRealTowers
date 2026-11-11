@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 
 /-!
 # Uniformizers detected in an ambient complete discrete valuation field
@@ -15,6 +17,8 @@ valuation transports that recognition back to the chosen valuation.
 -/
 
 
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -243,7 +247,7 @@ theorem isUniformizer_of_ambient_image_isUniformizer
       have hπ_ne : π ≠ 0 := by
         intro hzero
         apply hπ.ne_zero
-        simp [hzero]
+        rw [hzero, map_zero]
       have hc_eq :
           (c : M) = ι (π⁻¹ * (a : L)) := by
         apply mul_left_cancel₀ hπ.ne_zero

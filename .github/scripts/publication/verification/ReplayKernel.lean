@@ -41,7 +41,7 @@ private def reportInventory (env : Environment) (roots : Array String) : IO Unit
 
 /--
 Read existing oleans once at private level, then use the unchanged official
-Lean 4.35.0-rc2 kernel replay in a fresh trust-level-zero environment.
+Lean 4.35.0 kernel replay in a fresh trust-level-zero environment.
 No imported initializers or environment extensions are executed.
 -/
 unsafe def main (args : List String) : IO UInt32 := do
@@ -57,14 +57,14 @@ unsafe def main (args : List String) : IO UInt32 := do
     (loadExts := false) (level := .private)
   try
     reportInventory env args.toArray
-    IO.println "REPLAY_START official_Lean_4_35_0_rc2_Environment_replay trustLevel=0"
+    IO.println "REPLAY_START official_Lean_4_35_0_Environment_replay trustLevel=0"
     (← IO.getStdout).flush
     discard <| Lean.Environment.replay env.constants.map₁
       (← mkEmptyEnvironment (trustLevel := 0))
     IO.println <| Json.compress <| Json.mkObj [
       ("phase", toJson "replay"),
       ("result", toJson "PASS"),
-      ("kernel", toJson "official Lean 4.35.0-rc2"),
+      ("kernel", toJson "official Lean 4.35.0"),
       ("axiom_policy_enforced", toJson false)
     ]
     return 0

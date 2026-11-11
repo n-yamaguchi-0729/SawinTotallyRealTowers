@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Functoriality
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Functoriality
 
 /-!
 # Algebraic group-algebra augmentation
@@ -13,6 +15,8 @@ This file defines augmentation of an abstract group algebra, its linear form and
 and the resulting short exact sequences. It also proves that the differences \(g-1\) generate the
 augmentation ideal.
 -/
+
+@[expose] public section
 
 open scoped Topology
 open ProCGroups
@@ -342,10 +346,10 @@ theorem groupAlgebraAugmentationGeneratorSubtype_span_eq_top
 theorem finiteGroupAlgebra_augmentation_apply_eq_sum
     (R : Type u) (G : Type v) [CommRing R] [Group G] [Finite G]
     (x : MonoidAlgebra R G) :
-    letI : Fintype G := Fintype.ofFinite G
+    let : Fintype G := Fintype.ofFinite G
     groupAlgebraAugmentation R G x = ∑ g : G, x.coeff g := by
   classical
-  let : Fintype G := Fintype.ofFinite G
+  intro sharedOwner1
   calc
     groupAlgebraAugmentation R G x = x.coeff.sum (fun _ r => r) := by
       simp only [groupAlgebraAugmentation, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
@@ -361,11 +365,11 @@ topology.
 theorem finiteGroupAlgebra_algebraMap_continuous
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R]
     [Group G] [Finite G] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     Continuous (algebraMap R (MonoidAlgebra R G)) := by
   classical
+  intro sharedOwner2
   let : Fintype G := Fintype.ofFinite G
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
   let e : MonoidAlgebra R G ≃ (G → R) :=
     (MonoidAlgebra.coeffEquiv (R := R) (M := G)).trans Finsupp.equivFunOnFinite
   have he : Topology.IsInducing (e : MonoidAlgebra R G → G → R) :=
@@ -389,11 +393,11 @@ theorem finiteGroupAlgebra_algebraMap_continuous
 theorem finiteGroupAlgebra_augmentation_continuous
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [Group G] [Finite G] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     Continuous (groupAlgebraAugmentation R G) := by
   classical
+  intro sharedOwner2
   let : Fintype G := Fintype.ofFinite G
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
   change Continuous (fun x : MonoidAlgebra R G => groupAlgebraAugmentation R G x)
   rw [show (fun x : MonoidAlgebra R G => groupAlgebraAugmentation R G x) =
       (fun x : MonoidAlgebra R G => ∑ g : G, x.coeff g) from by

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceRamifiedCharacterQuotient
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceRamifiedCharacterQuotient
 
 /-!
 # Self-dual empty-support cohomological H¹ cokernel
@@ -19,6 +21,8 @@ trivial `F_p` is `μ_p`, so identifying this object with the arithmetic `B_∅` 
 the cyclotomic coefficient comparison and local Tate duality.  No such identification is asserted
 in this file.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

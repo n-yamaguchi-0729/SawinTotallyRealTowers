@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStage
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStage
 
 /-!
 # The cyclotomic stage in a synchronized algebraic closure
@@ -19,6 +21,8 @@ The mapped field is named separately from its arithmetic bundle so that
 the coefficient and embedding interfaces do not unfold the bundle's
 finite-dimensionality and unramifiedness proofs during type synthesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 

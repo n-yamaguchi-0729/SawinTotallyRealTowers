@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
-import Mathlib.RingTheory.Polynomial.GaussLemma
-import Mathlib.RingTheory.Polynomial.ContentIdeal
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
+public import Mathlib.RingTheory.Polynomial.GaussLemma
+public import Mathlib.RingTheory.Polynomial.ContentIdeal
 
 /-!
 # Primitive polynomials detected by reduction
@@ -15,6 +17,8 @@ The construction calls a polynomial over a valuation ring primitive when its
 reduction modulo the maximal ideal is nonzero.  The lemma below identifies
 that condition with the divisibility notion used by mathlib's Gauss lemma.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -37,7 +41,7 @@ theorem polynomial_isPrimitive_of_residue_ne_zero
   rcases hr with ⟨q, hq⟩
   apply hf
   rw [hq, Polynomial.map_mul]
-  simp [hrzero]
+  rw [Polynomial.map_C, hrzero, map_zero, zero_mul]
 
 /-- A primitive polynomial over a valuation subring has a unit coefficient.
 The proof chooses a coefficient of maximal valuation; it divides every other
@@ -56,7 +60,8 @@ theorem exists_isUnit_coeff_of_isPrimitive
   rw [Polynomial.C_dvd_iff_dvd_coeff]
   intro n
   by_cases hnzero : f.coeff n = 0
-  · simp [hnzero]
+  · rw [hnzero]
+    exact dvd_zero _
   · have hn : n ∈ f.support :=
       Polynomial.mem_support_iff.mpr hnzero
     obtain ⟨z, hz⟩ :=
@@ -95,7 +100,7 @@ theorem associated_multiset_map_prod_of_forall
   | cons i s ih =>
       simp only [Multiset.map_cons, Multiset.prod_cons]
       exact (h i (Multiset.mem_cons_self i s)).mul_mul
-        (ih (fun j hj => h j (by simp [hj])))
+        (ih (fun j hj => h j (Multiset.mem_cons_of_mem hj)))
 
 /-- Gauss association descends through a valuation subring: primitive
 polynomials that become associated over the fraction field are already
@@ -198,7 +203,7 @@ theorem isPrimitive_multiset_prod_of_valuationSubring
       rw [Multiset.prod_cons]
       exact isPrimitive_mul_of_valuationSubring V
         (hs f (Multiset.mem_cons_self f s))
-        (ih (fun g hg => hs g (by simp [hg])))
+        (ih (fun g hg => hs g (Multiset.mem_cons_of_mem hg)))
 
 /-- Every irreducible polynomial over the fraction field of a valuation
 subring is associated to the image of a primitive irreducible polynomial
@@ -268,7 +273,7 @@ theorem exists_primitive_irreducible_lift_of_irreducible
     rw [Polynomial.coeff_map]
     change ((q.coeff n : V) : K) = _
     rw [hqcoeff]
-    simp [div_eq_mul_inv, mul_comm]
+    rw [Polynomial.coeff_C_mul, div_eq_mul_inv, mul_comm]
   have hunitC : IsUnit (Polynomial.C a⁻¹) :=
     Polynomial.isUnit_C.mpr (isUnit_iff_ne_zero.mpr (inv_ne_zero ha))
   have hqassoc : Associated (q.map V.subtype) p :=

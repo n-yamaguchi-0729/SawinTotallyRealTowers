@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.MultiplicativeInducedShapiro
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
+module
+
+public import Nyll.GaloisCohomology.ProP.MultiplicativeInducedShapiro
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 
 /-!
 # H² of an unramified infinite-place idele block
@@ -15,6 +17,8 @@ cohomology therefore vanishes, and the proved Shapiro and tensor-block
 comparisons transfer this to the actual archimedean idele factor. No
 cyclicity of the global Galois group is assumed.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField
 open scoped NumberField TensorProduct

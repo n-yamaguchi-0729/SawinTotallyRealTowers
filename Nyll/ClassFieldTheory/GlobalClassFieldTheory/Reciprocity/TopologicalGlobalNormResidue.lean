@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
-import Mathlib.FieldTheory.KrullTopology
-import Mathlib.Topology.Algebra.Group.Quotient
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.UniverseNormConductor
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Mathlib.FieldTheory.KrullTopology
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Topological global norm-residue reciprocity
@@ -25,32 +28,23 @@ recovers the previously constructed actual global norm-residue symbol.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField
 open NumberField
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-/-- Fix the canonical class-group dictionary before bundling norm-quotient maps. -/
-@[instance_reducible]
-private noncomputable def topologicalNormResidueIdeleClassCommGroup
-    (F : Type) [Field F] [NumberField F] :
-    CommGroup (IdeleClassGroup F) :=
-  QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
-
-attribute [local instance] topologicalNormResidueIdeleClassCommGroup
-
-private theorem topologicalNormResidueIdeleClassIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  IsMulCommutative.of_comm (fun a b => mul_comm a b)
-
-attribute [local instance] topologicalNormResidueIdeleClassIsMulCommutative
+attribute [local instance]
+  globalNormResidueIdeleClassCommGroup globalNormResidueIdeleClassIsMulCommutative
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
 
@@ -63,8 +57,7 @@ theorem ideleClassNormQuotient_discreteTopology :
         (_root_.ideleClassNorm K L).range) := by
   apply QuotientGroup.discreteTopology
   exact
-    GlobalClassFields.ideleClassNorm_range_isOpen
-      (K := K) (L := L)
+    GlobalClassFields.ideleClassNorm_range_isOpen_universe K L
 
 /-- Global norm-residue reciprocity as a homeomorphic multiplicative
 equivalence between the native norm quotient and the finite Krull

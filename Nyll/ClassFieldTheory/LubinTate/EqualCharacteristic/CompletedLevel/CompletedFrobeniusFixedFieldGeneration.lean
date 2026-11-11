@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldCoefficientDescent
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldCoefficientDescent
 
 /-!
 # The completed theta-intertwining theorem: generation of the completed Frobenius fixed field
@@ -15,6 +17,8 @@ extension.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

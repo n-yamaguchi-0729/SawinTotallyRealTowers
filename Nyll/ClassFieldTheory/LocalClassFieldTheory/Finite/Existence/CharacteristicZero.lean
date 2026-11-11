@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CyclotomicKummerDescent
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupSurjectivity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CyclotomicKummerDescent
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupSurjectivity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
 /-!
 # Local existence theorem in characteristic zero
@@ -18,6 +20,8 @@ isomorphism.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

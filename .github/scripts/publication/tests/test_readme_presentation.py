@@ -8,6 +8,20 @@ from public_readme_presentation import INTRODUCTIONS, REPOSITORIES, installation
 
 
 class PresentationTests(unittest.TestCase):
+    def test_generalized_jacobian_installation_and_title_use_the_renamed_repository(self):
+        files = {'lakefile.toml': b'name = "Nyll"\n',
+                 'lean-toolchain': b'leanprover/lean4:v4.35.0-rc2\n'}
+        primary = ['JacobianVarieties']
+        self.assertEqual(REPOSITORIES[tuple(primary)], 'GeneralizedJacobianVarieties')
+        for heading in ('JacobianVarieties', 'GeneralizedJacobianVarieties'):
+            result = presentation('# ' + heading + '\n\n## Public API\n\nOld imports.\n\n'
+                                  '## License\n\nCredits.\n', primary)
+            self.assertTrue(result.startswith('# Generalized Jacobians\n'))
+            result = installation(result, primary, files)
+            self.assertIn('https://github.com/n-yamaguchi-0729/GeneralizedJacobianVarieties.git', result)
+            self.assertNotIn('github.com/n-yamaguchi-0729/JacobianVarieties', result)
+            self.assertIn('import Nyll.JacobianVarieties.All', result)
+
     def test_installation_uses_each_distribution_and_the_shared_package_identity(self):
         import re
         import tomllib
@@ -57,7 +71,7 @@ class PresentationTests(unittest.TestCase):
                 '## Main results\n\nKeep geometric assumptions.\n\n## Public API\n\nImports.\n')
         result = presentation(text, ['AnabelianGeometry'])
         self.assertEqual(result.count('## Main results\n'), 1)
-        self.assertIn('### Grothendieck’s conjecture for genus-zero curves over number fields', result)
+        self.assertIn('### Grothendieck’s conjecture for genus-zero curves over finitely generated fields', result)
         self.assertIn('### Geometric fundamental groups', result)
         self.assertIn('Keep number-field assumptions.', result)
         self.assertIn('Keep geometric assumptions.', result)

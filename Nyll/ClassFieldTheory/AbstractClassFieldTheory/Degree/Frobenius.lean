@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 
 /-!
 # normalized degree and Frobenius theory: normalized degree maps and Frobenius
@@ -13,6 +15,8 @@ For a field of finite residue degree, this file constructs the map
 `d_K = (1 / f_K) d`; division is performed only after proving that
 `d(G_K) = f_K ℤ̂`.  The Frobenius is then the unique class mapping to `1`.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -159,7 +163,8 @@ theorem normalizedDegree_ker (D : DegreeData G)
     rw [show D.degree k.1 = 1 from hk]
     simp only [toAdd_one, nsmul_zero]
 
-private theorem fieldInertiaWithin_le_normalizedDegree_ker
+/-- Inertia lies in the kernel of the normalized degree map. -/
+theorem fieldInertiaWithin_le_normalizedDegree_ker
     (D : DegreeData G) (K : FiniteResidueAbstractField D) :
     D.fieldInertiaWithin K.field ≤ (D.normalizedDegree K).toMonoidHom.ker := by
   rw [D.normalizedDegree_ker K]
@@ -275,7 +280,8 @@ theorem frobeniusRestrictionNaturality_normalizedDegree (D : DegreeData G)
     E.residueDegree_mul_absoluteResidueDegree D,
     D.residueDegree_nsmul_normalizedDegree E.field]
 
-private theorem fieldInertiaWithin_le_comap_inclusion
+/-- Inclusion of fields carries inertia into the inertia subgroup of the base. -/
+theorem fieldInertiaWithin_le_comap_inclusion
     (D : DegreeData G) {L K : ClosedSubgroup G}
     (hLK : L.toSubgroup ≤ K.toSubgroup) :
     D.fieldInertiaWithin L ≤

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateEndomorphism
-import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateEndomorphism
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 
 /-!
 # Equal-characteristic Lubin--Tate action
@@ -16,6 +18,8 @@ from `EqualCharacteristicLubinTateEnd` into the action of
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveCoefficient
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.DegreeStabilization
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveCoefficient
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.DegreeStabilization
 
 /-!
 # Recursive monomial corrections for Lubin--Tate intertwiners
@@ -16,6 +18,8 @@ term and cancels the defect coefficient in precisely that total degree.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

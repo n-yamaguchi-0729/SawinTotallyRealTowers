@@ -35,7 +35,8 @@ theorem exists_finsetSup
   classical
   induction s using Finset.induction_on with
   | empty =>
-      exact ⟨bot, by simp [bot]⟩
+      exact ⟨bot, (iSup_eq_bot.mpr fun i =>
+        iSup_eq_bot.mpr fun hi => (Finset.notMem_empty i hi).elim).symm⟩
   | @insert a s ha ih =>
       obtain ⟨C, hC⟩ := ih
       refine ⟨sup hpOdd (E a) C, ?_⟩

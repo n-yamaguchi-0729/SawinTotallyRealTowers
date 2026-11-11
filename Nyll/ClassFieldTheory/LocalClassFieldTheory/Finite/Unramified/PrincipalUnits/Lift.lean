@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Lift` Lean module. -/
 
 
+@[expose] public section
+
 noncomputable section
 
-universe u
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -24,7 +28,7 @@ open Filter
 /-- States the theorem
 `principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_lift_mod_succ`. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_lift_mod_succ
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -49,7 +53,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_lift_mod_succ
 after dividing the target by the chosen norm lies in the next principal-unit
 filtration step. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_div_lift_mem_succ
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -73,7 +77,7 @@ matched by the norm of an element of `U_L^n` up to an error in `U_K^(n+d)`.
 
 This is the finite approximation stage of principal-unit norm surjectivity. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_approx_mem_add
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -129,7 +133,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_approx_mem_ad
 /-- Actual integral-closure correction term selected from the current finite
 approximation error. -/
 noncomputable def chosenPrincipalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxCorrection
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -152,7 +156,7 @@ noncomputable def chosenPrincipalUnitsNormOfUnramifiedValuationOfIsIntegralClosu
 /-- Actual integral-closure coherent update step for finite principal-unit
 norm approximations. -/
 noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxStep
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -205,7 +209,7 @@ noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureAppr
 /-- The quotient between successive actual integral-closure approximation
 states lies in the expected depth. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxStep_div_mem
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -231,7 +235,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxStep_div
 /-- Actual integral-closure coherent finite principal-unit norm
 approximations. -/
 noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -258,7 +262,7 @@ noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureAppr
 /-- Consecutive actual integral-closure approximation states differ by a
 correction term in the expected depth. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_succ_div_mem
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -287,7 +291,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_su
 coherent approximation states. -/
 noncomputable def
   chosenPrincipalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxCorrectionSeq
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -308,7 +312,7 @@ noncomputable def
 /-- The finite product of the actual integral-closure correction sequence is
 the corresponding coherent approximation state. -/
 theorem principalUnitsCorrectionProduct_approxCorrectionSeqOfIsIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -343,7 +347,7 @@ theorem principalUnitsCorrectionProduct_approxCorrectionSeqOfIsIntegralClosure
 principal-unit limit.  This is the unramified infinite-product step specialized
 to the actual correction terms generated above. -/
 theorem exists_tendsto_principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]
@@ -379,7 +383,7 @@ theorem exists_tendsto_principalUnitsNormOfUnramifiedValuationOfIsIntegralClosur
 /-- The actual integral-closure coherent approximation state has the
 advertised finite-depth error bound. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_error_mem
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -400,7 +404,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_er
 It is derived from multiplicativity of the integer-unit norm and
 the actual proof that the unramified norm preserves principal-unit levels. -/
 theorem eventually_normIntegerUnits_div_mem_principalUnits_of_tendsto_units_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]
@@ -425,7 +429,7 @@ theorem eventually_normIntegerUnits_div_mem_principalUnits_of_tendsto_units_of_i
 preserves all finite-depth error bounds. -/
 theorem
   principalUnitsNormOfUnramifiedValuationOfIsIntegralClosureApproxState_limit_error_mem_add_all
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]
@@ -490,7 +494,7 @@ theorem
 principal-unit norm lift lies in every deeper principal-unit subgroup, the
 candidate is exact. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_eq_of_error_mem_add_all
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -513,7 +517,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_eq_of_error_m
 unramified valuation extension, the integer-unit norm is
 surjective on every `U^n`, `n ≥ 1`. -/
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_surjective
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]

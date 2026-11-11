@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAlgebraicallyClosed
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAlgebraicallyClosed
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Finite local reciprocity: the residue datum and its finite indices
@@ -19,6 +21,10 @@ degree.  This is the finite-coordinate comparison needed in the local-field
 specialization.
 -/
 
+@[expose] public section
+
+universe u v
+
 namespace LocalClassFieldTheory
 open RamificationTheory
 
@@ -28,7 +34,7 @@ open ClassFormation
 
 noncomputable section
 
-variable (k Omega : Type)
+variable (k : Type u) (Omega : Type v)
   [Field k] [Fintype k] [Field Omega] [Algebra k Omega]
   [Algebra.IsAlgebraic k Omega] [IsAlgClosed Omega]
 
@@ -82,10 +88,16 @@ theorem residueDatumIn_fieldImage_closedFixingSubgroup
     have hrestrict : AlgEquiv.restrictNormalHom E sigma.1 = 1 :=
       (mem_fixingSubgroup_iff_restrictNormalHom_eq_one
         k Omega E sigma.1).1 sigma.2
-    have hcoordinate :=
+    have hcoordinate :
+        (finiteResidueFrobeniusExponentEquiv k E).symm
+            (AlgEquiv.restrictNormalHom E sigma.1) =
+          Multiplicative.ofAdd
+            (zHatReduction (Module.finrank k E) Module.finrank_pos
+              (residueAbsoluteDegreeIn k Omega sigma.1).toAdd) :=
       finiteResidueFrobeniusExponentEquiv_symm_restrict_in
         k Omega sigma.1 E
-    rw [hrestrict, map_one] at hcoordinate
+    rw [hrestrict,
+      MulEquiv.map_one (finiteResidueFrobeniusExponentEquiv k E).symm] at hcoordinate
     exact congrArg Multiplicative.toAdd hcoordinate |>.symm
   · intro hz
     change z.toAdd ∈

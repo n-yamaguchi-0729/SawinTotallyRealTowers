@@ -4,8 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
-import Nyll.ProCGroups.ProC.Subgroups.Closed
+module
+
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # The category of pro-\(C\) groups
@@ -15,6 +21,8 @@ import Nyll.ProCGroups.ProC.Subgroups.Closed
 compact, Hausdorff, and totally disconnected structures; the class-restricted open-normal basis is
 the only additional property.
 -/
+
+@[expose] public section
 
 open CategoryTheory Topology
 

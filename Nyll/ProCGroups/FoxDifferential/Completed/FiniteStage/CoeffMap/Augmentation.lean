@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Source
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Source
 
 /-!
 # Fox differential: completed — finite stage — coeff map — augmentation
@@ -14,6 +16,8 @@ The principal declarations in this module are:
 - `foxCommutatorPowerSourceGAAugmentation_powerSourceGAMap`
   Source augmentation commutes with finite-stage coefficient/source reduction.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldDegree
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldDegree
 
 /-!
 # The completed theta-intertwining theorem: the fixed-field prime element and its norm
@@ -18,6 +20,8 @@ primitive Eisenstein polynomial, and the chosen sign convention gives
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

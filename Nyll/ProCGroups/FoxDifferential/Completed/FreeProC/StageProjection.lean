@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.RelationSubmoduleApproximation
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.QuotientKernelBasis
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.RelationSubmoduleApproximation
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.QuotientKernelBasis
 
 /-!
 # Fox differential: completed — free pro-\(C\) — stage projection
@@ -28,6 +30,8 @@ The principal declarations in this module are:
   Membership in the kernel of the completed Fox semidirect stage map is equivalent to vanishing of
   the corresponding finite-stage coordinate.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldTower
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusClosureCommutation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldAction
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldTower
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusClosureCommutation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldAction
 
 /-!
 # Finite-field unit maps
@@ -15,6 +17,8 @@ This module proves valuation invariance on Frobenius fixed fields and
 constructs the induced actions, inclusions, and relative norms on the
 corresponding finite unit groups.
 -/
+
+@[expose] public section
 
 universe u v
 
@@ -30,7 +34,7 @@ noncomputable section
 open CategoryTheory
 open scoped BigOperators
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace FiniteAbstractField
 
@@ -59,7 +63,7 @@ end FiniteAbstractField
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 private theorem ambientFixedAddSubgroup_transport_coe
     (K L : FiniteAbstractField G) (h : K = L)

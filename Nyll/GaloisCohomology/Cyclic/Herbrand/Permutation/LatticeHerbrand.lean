@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Lattice
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Module
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Lattice
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Module
 
 /-!
 # Herbrand quotients of complete permutation sublattices
@@ -15,6 +17,8 @@ orbit-stabilizer Herbrand quotient calculation.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -329,11 +333,11 @@ theorem
     [IsZLattice ℝ L]
     (hL : ∀ (g : G) (x : ι → ℝ), x ∈ L →
       permutationRepresentation ρ g x ∈ L) :
-    letI _ambientAction :
+    let _ambientAction :
         DistribMulAction G L :=
       completePermutationLatticeDistribMulAction
         ρ L hL
-    letI _multiplicativeAction :
+    let _multiplicativeAction :
         MulDistribMulAction G
           (Multiplicative L) :=
       multiplicativeDistribMulAction
@@ -344,15 +348,7 @@ theorem
         g • x ∈
           permutationSublatticeMultiplicativeSubgroup
             ρ L hL := by
-  let ambientAction :
-      DistribMulAction G L :=
-    completePermutationLatticeDistribMulAction
-      ρ L hL
-  let multiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative L) :=
-    multiplicativeDistribMulAction
-  intro g x hx
+  intro ambientAction multiplicativeAction g x hx
   change
     permutationRepresentation ρ g
         ((Multiplicative.toAdd x : L) : ι → ℝ) ∈
@@ -415,15 +411,15 @@ theorem
     [IsZLattice ℝ L]
     (hL : ∀ (g : G) (x : ι → ℝ), x ∈ L →
       permutationRepresentation ρ g x ∈ L) :
-    letI _ambientAction :
+    let _ambientAction :
         DistribMulAction G L :=
       completePermutationLatticeDistribMulAction
         ρ L hL
-    letI _ambientMultiplicativeAction :
+    let _ambientMultiplicativeAction :
         MulDistribMulAction G
           (Multiplicative L) :=
       multiplicativeDistribMulAction
-    letI _subgroupAction :
+    let _subgroupAction :
         MulDistribMulAction G
           (permutationSublatticeMultiplicativeSubgroup
             ρ L hL) :=
@@ -432,11 +428,11 @@ theorem
           ρ L hL)
         (permutationSublatticeMultiplicativeSubgroup_stable
           ρ L hL)
-    letI _sublatticeAction :
+    let _sublatticeAction :
         DistribMulAction G
           (permutationSublattice ρ L hL) :=
       permutationSublatticeDistribMulAction ρ L hL
-    letI _sublatticeMultiplicativeAction :
+    let _sublatticeMultiplicativeAction :
         MulDistribMulAction G
           (Multiplicative
             (permutationSublattice ρ L hL)) :=
@@ -450,33 +446,8 @@ theorem
         g •
           permutationSublatticeSubgroupMulEquiv
             ρ L hL x := by
-  let ambientAction :
-      DistribMulAction G L :=
-    completePermutationLatticeDistribMulAction
-      ρ L hL
-  let ambientMultiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative L) :=
-    multiplicativeDistribMulAction
-  let subgroupAction :
-      MulDistribMulAction G
-        (permutationSublatticeMultiplicativeSubgroup
-          ρ L hL) :=
-    stableSubgroupMulDistribMulAction
-      (permutationSublatticeMultiplicativeSubgroup
-        ρ L hL)
-      (permutationSublatticeMultiplicativeSubgroup_stable
-        ρ L hL)
-  let sublatticeAction :
-      DistribMulAction G
-        (permutationSublattice ρ L hL) :=
-    permutationSublatticeDistribMulAction ρ L hL
-  let sublatticeMultiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative
-          (permutationSublattice ρ L hL)) :=
-    multiplicativeDistribMulAction
-  intro g x
+  intro ambientAction ambientMultiplicativeAction subgroupAction sublatticeAction
+      sublatticeMultiplicativeAction g x
   rfl
 
 /-- The integral-linear automorphisms underlying the action on the
@@ -531,18 +502,18 @@ theorem permutationSublatticeBasisMulEquivFunctions_equivariant
     [IsZLattice ℝ L]
     (hL : ∀ (g : G) (x : ι → ℝ), x ∈ L →
       permutationRepresentation ρ g x ∈ L) :
-    letI _indexAction : MulAction G ι :=
+    let _indexAction : MulAction G ι :=
       permutationMulAction ρ
-    letI _sublatticeAction :
+    let _sublatticeAction :
         DistribMulAction G
           (permutationSublattice ρ L hL) :=
       permutationSublatticeDistribMulAction ρ L hL
-    letI _multiplicativeAction :
+    let _multiplicativeAction :
         MulDistribMulAction G
           (Multiplicative
             (permutationSublattice ρ L hL)) :=
       multiplicativeDistribMulAction
-    letI _functionAction :
+    let _functionAction :
         MulDistribMulAction G
           (ι → Multiplicative ℤ) :=
       permutationFunctionMulDistribMulAction
@@ -553,22 +524,7 @@ theorem permutationSublatticeBasisMulEquivFunctions_equivariant
           ρ L hL (g • x) =
         g • permutationSublatticeBasisMulEquivFunctions
           ρ L hL x := by
-  let indexAction : MulAction G ι :=
-    permutationMulAction ρ
-  let sublatticeAction :
-      DistribMulAction G
-        (permutationSublattice ρ L hL) :=
-    permutationSublatticeDistribMulAction ρ L hL
-  let multiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative
-          (permutationSublattice ρ L hL)) :=
-    multiplicativeDistribMulAction
-  let functionAction :
-      MulDistribMulAction G
-        (ι → Multiplicative ℤ) :=
-    permutationFunctionMulDistribMulAction
-  intro g x
+  intro indexAction sublatticeAction multiplicativeAction functionAction g x
   let b :=
     permutationSublatticeBasis ρ L hL
   ext i
@@ -614,13 +570,13 @@ theorem permutationSublatticeHerbrandH0Finite
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :
-    letI _indexAction : MulAction G ι :=
+    let _indexAction : MulAction G ι :=
       permutationMulAction ρ
-    letI _sublatticeAction :
+    let _sublatticeAction :
         DistribMulAction G
           (permutationSublattice ρ L hL) :=
       permutationSublatticeDistribMulAction ρ L hL
-    letI _multiplicativeAction :
+    let _multiplicativeAction :
         MulDistribMulAction G
           (Multiplicative
             (permutationSublattice ρ L hL)) :=
@@ -629,17 +585,7 @@ theorem permutationSublatticeHerbrandH0Finite
       (HerbrandH0 G
         (Multiplicative
           (permutationSublattice ρ L hL))) := by
-  let indexAction : MulAction G ι :=
-    permutationMulAction ρ
-  let sublatticeAction :
-      DistribMulAction G
-        (permutationSublattice ρ L hL) :=
-    permutationSublatticeDistribMulAction ρ L hL
-  let multiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative
-          (permutationSublattice ρ L hL)) :=
-    multiplicativeDistribMulAction
+  intro indexAction sublatticeAction multiplicativeAction
   let functionAction :
       MulDistribMulAction G
         (ι → Multiplicative ℤ) :=
@@ -670,13 +616,13 @@ theorem permutationSublatticeHerbrandHMinusOneFinite
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :
-    letI _indexAction : MulAction G ι :=
+    let _indexAction : MulAction G ι :=
       permutationMulAction ρ
-    letI _sublatticeAction :
+    let _sublatticeAction :
         DistribMulAction G
           (permutationSublattice ρ L hL) :=
       permutationSublatticeDistribMulAction ρ L hL
-    letI _multiplicativeAction :
+    let _multiplicativeAction :
         MulDistribMulAction G
           (Multiplicative
             (permutationSublattice ρ L hL)) :=
@@ -685,17 +631,7 @@ theorem permutationSublatticeHerbrandHMinusOneFinite
       (HerbrandHMinusOne G
         (Multiplicative
           (permutationSublattice ρ L hL)) σ) := by
-  let indexAction : MulAction G ι :=
-    permutationMulAction ρ
-  let sublatticeAction :
-      DistribMulAction G
-        (permutationSublattice ρ L hL) :=
-    permutationSublatticeDistribMulAction ρ L hL
-  let multiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative
-          (permutationSublattice ρ L hL)) :=
-    multiplicativeDistribMulAction
+  intro indexAction sublatticeAction multiplicativeAction
   let functionAction :
       MulDistribMulAction G
         (ι → Multiplicative ℤ) :=
@@ -728,32 +664,32 @@ theorem
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :
-    letI _indexAction : MulAction G ι :=
+    let _indexAction : MulAction G ι :=
       permutationMulAction ρ
-    letI _sublatticeAction :
+    let _sublatticeAction :
         DistribMulAction G
           (permutationSublattice ρ L hL) :=
       permutationSublatticeDistribMulAction ρ L hL
-    letI _multiplicativeAction :
+    let _multiplicativeAction :
         MulDistribMulAction G
           (Multiplicative
             (permutationSublattice ρ L hL)) :=
       multiplicativeDistribMulAction
-    letI _orbitFintype :
+    let _orbitFintype :
         Fintype (MulAction.orbitRel.Quotient G ι) :=
       Fintype.ofFinite _
-    letI _stabilizerFintype :
+    let _stabilizerFintype :
         ∀ ω : MulAction.orbitRel.Quotient G ι,
           Fintype (permutationOrbitStabilizer ω) :=
       fun _ => Fintype.ofFinite _
-    letI _sublatticeH0Finite :
+    let _sublatticeH0Finite :
         Finite
           (HerbrandH0 G
             (Multiplicative
               (permutationSublattice ρ L hL))) :=
       permutationSublatticeHerbrandH0Finite
         ρ L hL σ hgen
-    letI _sublatticeHMinusOneFinite :
+    let _sublatticeHMinusOneFinite :
         Finite
           (HerbrandHMinusOne G
             (Multiplicative
@@ -767,42 +703,12 @@ theorem
       ∏ ω : MulAction.orbitRel.Quotient G ι,
         (Fintype.card
           (permutationOrbitStabilizer ω) : ℚ) := by
-  let indexAction : MulAction G ι :=
-    permutationMulAction ρ
-  let sublatticeAction :
-      DistribMulAction G
-        (permutationSublattice ρ L hL) :=
-    permutationSublatticeDistribMulAction ρ L hL
-  let multiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative
-          (permutationSublattice ρ L hL)) :=
-    multiplicativeDistribMulAction
+  intro indexAction sublatticeAction multiplicativeAction orbitFintype stabilizerFintype
+      sublatticeH0Finite sublatticeHMinusOneFinite
   let functionAction :
       MulDistribMulAction G
         (ι → Multiplicative ℤ) :=
     permutationFunctionMulDistribMulAction
-  let orbitFintype :
-      Fintype (MulAction.orbitRel.Quotient G ι) :=
-    Fintype.ofFinite _
-  let stabilizerFintype :
-      ∀ ω : MulAction.orbitRel.Quotient G ι,
-        Fintype (permutationOrbitStabilizer ω) :=
-    fun _ => Fintype.ofFinite _
-  let sublatticeH0Finite :
-      Finite
-        (HerbrandH0 G
-          (Multiplicative
-            (permutationSublattice ρ L hL))) :=
-    permutationSublatticeHerbrandH0Finite
-      ρ L hL σ hgen
-  let sublatticeHMinusOneFinite :
-      Finite
-        (HerbrandHMinusOne G
-          (Multiplicative
-            (permutationSublattice ρ L hL)) σ) :=
-    permutationSublatticeHerbrandHMinusOneFinite
-      ρ L hL σ hgen
   let functionH0Finite :
       Finite
         (HerbrandH0 G
@@ -841,7 +747,7 @@ the ambient Herbrand quotient as the product of orbit-stabilizer
 orders. -/
 theorem
     completePermutationLattice_herbrandQuotient_eq_stabilizerProduct
-    {G ι : Type}
+    {G : Type uG} {ι : Type uι}
     [Fintype G] [Group G] [Fintype ι]
     (ρ : G →* Equiv.Perm ι)
     (L : Submodule ℤ (ι → ℝ)) [DiscreteTopology L]
@@ -851,20 +757,20 @@ theorem
     (σ : G)
     (hgen : ∀ g : G,
       g ∈ Subgroup.zpowers σ) :
-    letI _indexAction : MulAction G ι :=
+    let _indexAction : MulAction G ι :=
       permutationMulAction ρ
-    letI _ambientAction :
+    let _ambientAction :
         DistribMulAction G L :=
       completePermutationLatticeDistribMulAction
         ρ L hL
-    letI _ambientMultiplicativeAction :
+    let _ambientMultiplicativeAction :
         MulDistribMulAction G
           (Multiplicative L) :=
       multiplicativeDistribMulAction
-    letI _orbitFintype :
+    let _orbitFintype :
         Fintype (MulAction.orbitRel.Quotient G ι) :=
       Fintype.ofFinite _
-    letI _stabilizerFintype :
+    let _stabilizerFintype :
         ∀ ω : MulAction.orbitRel.Quotient G ι,
           Fintype (permutationOrbitStabilizer ω) :=
       fun _ => Fintype.ofFinite _
@@ -877,24 +783,8 @@ theorem
         ∏ ω : MulAction.orbitRel.Quotient G ι,
           (Fintype.card
             (permutationOrbitStabilizer ω) : ℚ) := by
+  intro indexAction ambientAction ambientMultiplicativeAction orbitFintype stabilizerFintype
   classical
-  let indexAction : MulAction G ι :=
-    permutationMulAction ρ
-  let ambientAction :
-      DistribMulAction G L :=
-    completePermutationLatticeDistribMulAction
-      ρ L hL
-  let ambientMultiplicativeAction :
-      MulDistribMulAction G
-        (Multiplicative L) :=
-    multiplicativeDistribMulAction
-  let orbitFintype :
-      Fintype (MulAction.orbitRel.Quotient G ι) :=
-    Fintype.ofFinite _
-  let stabilizerFintype :
-      ∀ ω : MulAction.orbitRel.Quotient G ι,
-        Fintype (permutationOrbitStabilizer ω) :=
-    fun _ => Fintype.ofFinite _
   let B :=
     permutationSublatticeMultiplicativeSubgroup
       ρ L hL

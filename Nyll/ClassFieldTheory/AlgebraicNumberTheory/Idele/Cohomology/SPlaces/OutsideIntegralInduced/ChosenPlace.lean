@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # Integral induced blocks at the chosen finite place
@@ -17,6 +20,8 @@ cohomology consequences.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -108,46 +113,6 @@ private theorem apply_of_zpowers_generator_map
       (∀ y : H, y ∈ Subgroup.zpowers h) → P h) :
     P (e g) :=
   hP (e g) (zpowers_generator_map e g hg)
-
-private theorem herbrandH0_subsingleton_of_action_and_group_equiv
-    {G H A X : Type*}
-    [Group G] [Fintype G] [Group H] [Fintype H]
-    [CommGroup A] [MulDistribMulAction H A] [Mul X]
-    (eGroup : G ≃* H)
-    (eAction :
-      X ≃*
-        letI : MulDistribMulAction G A :=
-          MulDistribMulAction.compHom A eGroup.toMonoidHom
-        HerbrandH0 G A)
-    (hH : Subsingleton (HerbrandH0 H A)) :
-    Subsingleton X := by
-  let : MulDistribMulAction G A :=
-    MulDistribMulAction.compHom A eGroup.toMonoidHom
-  let eChange :=
-    herbrandH0CompMulEquiv (A := A) eGroup
-  exact subsingleton_of_equiv_of_equiv
-    eAction.toEquiv eChange.toEquiv hH
-
-private theorem herbrandHMinusOne_subsingleton_of_action_and_group_equiv
-    {G H A X : Type*}
-    [Group G] [Fintype G] [Group H] [Fintype H]
-    [CommGroup A] [MulDistribMulAction H A] [Mul X]
-    (eGroup : G ≃* H) (g : G)
-    (eAction :
-      X ≃*
-        letI : MulDistribMulAction G A :=
-          MulDistribMulAction.compHom A eGroup.toMonoidHom
-        HerbrandHMinusOne G A g)
-    (hH : Subsingleton
-      (HerbrandHMinusOne H A (eGroup g))) :
-    Subsingleton X := by
-  let : MulDistribMulAction G A :=
-    MulDistribMulAction.compHom A eGroup.toMonoidHom
-  let eChange :=
-    herbrandHMinusOneCompMulEquiv
-      (A := A) eGroup g
-  exact subsingleton_of_equiv_of_equiv
-    eAction.toEquiv eChange.toEquiv hH
 
 omit [NumberField L] in
 private theorem
@@ -243,16 +208,14 @@ theorem
     (hσ : ∀ τ : L ≃ₐ[K] L, τ ∈ Subgroup.zpowers σ)
     (hunram : ChosenFinitePlaceIsUnramified
       (K := K) (L := L) w₀) :
-    letI :=
+    let :=
       relativeLocalTensorDecompositionIntegralUnitSubgroupAction
         (K := K) (L := L) w₀
     Subsingleton
       (HerbrandH0 (L ≃ₐ[K] L)
         (relativeLocalTensorDecompositionIntegralUnitSubgroup
           (K := K) (L := L) w₀)) := by
-  let :=
-    relativeLocalTensorDecompositionIntegralUnitSubgroupAction
-      (K := K) (L := L) w₀
+  intro sharedOwner1
   let E := ChosenFinitePlaceLocalizedCompletion
     (K := K) (L := L) w₀
   let H := absoluteValueDecompositionGroup K
@@ -287,16 +250,14 @@ theorem
     (hσ : ∀ τ : L ≃ₐ[K] L, τ ∈ Subgroup.zpowers σ)
     (hunram : ChosenFinitePlaceIsUnramified
       (K := K) (L := L) w₀) :
-    letI :=
+    let :=
       relativeLocalTensorDecompositionIntegralUnitSubgroupAction
         (K := K) (L := L) w₀
     Subsingleton
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (relativeLocalTensorDecompositionIntegralUnitSubgroup
           (K := K) (L := L) w₀) σ) := by
-  let :=
-    relativeLocalTensorDecompositionIntegralUnitSubgroupAction
-      (K := K) (L := L) w₀
+  intro sharedOwner1
   let E := ChosenFinitePlaceLocalizedCompletion
     (K := K) (L := L) w₀
   let H := absoluteValueDecompositionGroup K

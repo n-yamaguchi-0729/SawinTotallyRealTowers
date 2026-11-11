@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.Topology.Instances.ZMod
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+module
+
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
 
 /-!
 # Continuous degree-one `ZMod p` classes
@@ -18,6 +20,8 @@ also proves that every such character kills the closed power--commutator
 subgroup.  No general cohomology package is imported: that dependency is much
 larger than the degree-one statement needed by the tower argument.
 -/
+
+@[expose] public section
 
 open scoped Topology commutatorElement
 

@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.PrincipalUnitLog
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.PrincipalUnitLog
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
 
 /-!
 Packages the convergent logarithm and exponential series as additive and multiplicative
 homomorphisms on their natural nonarchimedean domains.
 -/
 
+
+@[expose] public section
 
 open Filter
 open Polynomial
@@ -445,7 +450,7 @@ theorem hasSum_principalUnitLogSeries_mul_argument_ofWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         signedLogSeriesTermField
@@ -454,7 +459,7 @@ theorem hasSum_principalUnitLogSeries_mul_argument_ofWithZeroValuation
               principalUnitSubOneOfWithZeroValuation v u *
                 principalUnitSubOneOfWithZeroValuation v w) hnK n)
       (principalUnitLogSeriesOfWithZeroValuation v (u * w) hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hvu :
       v (principalUnitSubOneOfWithZeroValuation v u) <
         (1 : WithZero (Multiplicative ℤ)) :=
@@ -486,7 +491,7 @@ theorem tendsto_principalUnitLogPartialSum_mul_argument_ofWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun N : ℕ =>
         logOnePlusPartialSumField
@@ -495,7 +500,7 @@ theorem tendsto_principalUnitLogPartialSum_mul_argument_ofWithZeroValuation
               principalUnitSubOneOfWithZeroValuation v u *
                 principalUnitSubOneOfWithZeroValuation v w) hnK N)
       atTop (𝓝 (principalUnitLogSeriesOfWithZeroValuation v (u * w) hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_principalUnitLogSeries_mul_argument_ofWithZeroValuation
       (v := v) (p := p) u w hnK hnval hcomplete
@@ -515,13 +520,13 @@ theorem hasSum_principalUnitLogSeries_ofWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         signedLogSeriesTermField
           (principalUnitSubOneOfWithZeroValuation v u) hnK n)
       (principalUnitLogSeriesOfWithZeroValuation v u hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hvx :
       v (principalUnitSubOneOfWithZeroValuation v u) <
         (1 : WithZero (Multiplicative ℤ)) :=
@@ -545,12 +550,12 @@ theorem tendsto_principalUnitLogPartialSum_ofWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun N : ℕ =>
         principalUnitLogPartialSumOfWithZeroValuation v u hnK N)
       atTop (𝓝 (principalUnitLogSeriesOfWithZeroValuation v u hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hvx :
       v (principalUnitSubOneOfWithZeroValuation v u) <
         (1 : WithZero (Multiplicative ℤ)) :=
@@ -575,7 +580,7 @@ theorem hasSum_principalUnitLogSeries_add_ofWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         signedLogSeriesTermField
@@ -584,7 +589,7 @@ theorem hasSum_principalUnitLogSeries_add_ofWithZeroValuation
             (principalUnitSubOneOfWithZeroValuation v w) hnK n)
       (principalUnitLogSeriesOfWithZeroValuation v u hnK +
         principalUnitLogSeriesOfWithZeroValuation v w hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   exact
     (hasSum_principalUnitLogSeries_ofWithZeroValuation
       (v := v) (p := p) u hnK hnval hcomplete).add
@@ -623,7 +628,7 @@ theorem tendsto_principalUnitLogPartialSum_add_ofWithZeroValuation
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun N : ℕ =>
         principalUnitLogPartialSumOfWithZeroValuation v u hnK N +
@@ -631,7 +636,7 @@ theorem tendsto_principalUnitLogPartialSum_add_ofWithZeroValuation
       atTop
       (𝓝 (principalUnitLogSeriesOfWithZeroValuation v u hnK +
         principalUnitLogSeriesOfWithZeroValuation v w hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hu :=
     tendsto_principalUnitLogPartialSum_ofWithZeroValuation
       (v := v) (p := p) u hnK hnval hcomplete

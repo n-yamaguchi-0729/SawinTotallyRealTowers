@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FreeProPH2Cocycle
+module
+
+public import Nyll.GaloisCohomology.ProP.FreeProPH2Cocycle
 
 /-!
 # The central extension attached to a degree-two cocycle
@@ -14,6 +16,8 @@ defines a twisted central extension of `Q`. This file packages that construction
 including its product topology, quotient projection, coefficient kernel, and the
 finite `p`-group property needed for finite central embedding problems.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -49,7 +53,9 @@ theorem ext {x y : H2CocycleExtension z}
     (hleft : x.left = y.left) (hright : x.right = y.right) : x = y := by
   cases x
   cases y
-  simp_all
+  cases hleft
+  cases hright
+  rfl
 
 @[reducible]
 instance instGroup : Group (H2CocycleExtension z) where
@@ -214,7 +220,7 @@ theorem kernel_le_center : (projection z).ker ≤ Subgroup.center (H2CocycleExte
       y.left + x.left + normalizedCocycle z y.right x.right =
         x.left + y.left + normalizedCocycle z x.right y.right
     rw [hx, normalizedCocycle_one_left, normalizedCocycle_one_right]
-    simp [add_comm]
+    simp only [add_zero, add_comm]
   · change y.right * x.right = x.right * y.right
     rw [hx, mul_one, one_mul]
 

@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ExtensionBehavior
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
-import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ExtensionBehavior
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
+public import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 
 /-!
 # Norm-one correction for the normalized cyclotomic idele value
@@ -19,6 +23,8 @@ value is trivial, so the normalized value is unchanged.
 -/
 
 
+
+@[expose] public section
 
 open scoped NNReal NumberField
 open NumberField
@@ -97,7 +103,7 @@ theorem
   refine ⟨⟨a * c, ?_⟩, ?_⟩
   · change IdeleGroup.absoluteNorm (a * c) = 1
     rw [map_mul, hc_absoluteNorm]
-    simp [r]
+    exact mul_inv_cancel _
   · change
       normalizedCyclotomicZHatIdeleValue K
           (Additive.ofMul a + Additive.ofMul c) =

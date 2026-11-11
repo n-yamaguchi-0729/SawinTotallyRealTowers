@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.SquarefreeIntegralCoordinates
-import Nyll.SawinTotallyRealTowers.QuadraticBasis
-import Nyll.SawinTotallyRealTowers.QuadraticTrace
-import Mathlib.Data.Int.Lemmas
+module
+
+public import Nyll.SawinTotallyRealTowers.SquarefreeIntegralCoordinates
+public import Nyll.SawinTotallyRealTowers.QuadraticBasis
+public import Nyll.SawinTotallyRealTowers.QuadraticTrace
+public import Mathlib.Data.Int.Lemmas
 
 /-!
 # Uniqueness of squarefree quadratic radicands
@@ -17,6 +19,8 @@ Taking traces in a quadratic field shows that any two square-root generators
 have squares in the same rational square class. Thus the normalized radicand
 of a quadratic field is unique, including its sign.
 -/
+
+@[expose] public section
 
 universe u
 

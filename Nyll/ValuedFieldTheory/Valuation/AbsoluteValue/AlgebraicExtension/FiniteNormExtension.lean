@@ -4,12 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
-import Mathlib.RingTheory.Norm.Transitivity
-import Mathlib.RingTheory.Complex
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+public import Mathlib.RingTheory.Norm.Transitivity
+public import Mathlib.RingTheory.Complex
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Finite-extension norm formula for complete valuations
@@ -18,6 +24,8 @@ The nonarchimedean branch uses mathlib's spectral norm.  The archimedean branch
 uses the completed Ostrowski theorem, reducing the statement to the
 standard `ℝ` and `ℂ` absolute values.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -104,26 +112,6 @@ private theorem finiteStandardRealComplete :
 private theorem finiteStandardComplexComplete :
     IsCompleteForAbsoluteValue finiteStandardComplexAbsoluteValue :=
   finiteStandardComplete ℂ
-
-/-- The `s`-power of the standard real absolute value is complete. -/
-private theorem finiteStandardRealRpowComplete
-    (s : ℝ) (hs0 : 0 < s) (hs1 : s ≤ 1) :
-    IsCompleteForAbsoluteValue
-      (AbsoluteValue.rpow
-        finiteStandardRealAbsoluteValue s hs0 hs1) :=
-  (finiteRpowCompleteIff
-    finiteStandardRealAbsoluteValue s hs0 hs1).2
-    finiteStandardRealComplete
-
-/-- The `s`-power of the standard complex absolute value is complete. -/
-private theorem finiteStandardComplexRpowComplete
-    (s : ℝ) (hs0 : 0 < s) (hs1 : s ≤ 1) :
-    IsCompleteForAbsoluteValue
-      (AbsoluteValue.rpow
-        finiteStandardComplexAbsoluteValue s hs0 hs1) :=
-  (finiteRpowCompleteIff
-    finiteStandardComplexAbsoluteValue s hs0 hs1).2
-    finiteStandardComplexComplete
 
 /-- the finite-degree norm construction, archimedean standard branch: the usual complex absolute
 value extends the usual real absolute value. -/
@@ -344,23 +332,15 @@ nonarchimedean spectral branch this supplies the corresponding mathlib
 @[reducible] private def finiteWithAbsNontriviallyNormedField
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) (hv : v.IsNontrivial) :
     NontriviallyNormedField (WithAbs v) :=
-  NontriviallyNormedField.ofNormNeOne
-    (by
-      rcases hv with ⟨x, hx0, hx1⟩
-      refine ⟨WithAbs.toAbs v x, ?_, ?_⟩
-      · intro hx
-        apply hx0
-        simpa using congrArg (WithAbs.equiv v) hx
-      · simpa [WithAbs.norm_eq_apply_ofAbs] using hx1)
+  AbsoluteValue.spectral_withAbsNontriviallyNormedField v hv
 
 /-- `WithAbs` is only a type synonym, so algebraicity is transported from the
 original base field without adding data. -/
-private instance finiteWithAbsAlgebraIsAlgebraic
+private theorem finiteWithAbsAlgebraIsAlgebraic
     {K L : Type*} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] (v : AbsoluteValue K ℝ) :
-    Algebra.IsAlgebraic (WithAbs v) L := by
-  exact Algebra.IsAlgebraic.tower_top
-    (K := K) (L := WithAbs v) (A := L)
+    Algebra.IsAlgebraic (WithAbs v) L :=
+  AbsoluteValue.withAbsAlgebra_isAlgebraic v
 
 /-- the real absolute-value classification, translated to the `WithAbs` normed-field structure. -/
 private theorem finiteWithAbsIsUltrametricDist
@@ -372,19 +352,6 @@ private theorem finiteWithAbsIsUltrametricDist
   simpa [WithAbs.norm_eq_apply_ofAbs] using
     (LubinTate.Valuations.strong_triangle_of_nonarchimedean v hnonarch
       (WithAbs.equiv v x) (WithAbs.equiv v y))
-
-/-- the finite-degree norm construction, existence branch: the spectral extension restricts to the
-given chosen valuation on the base field. -/
-private theorem finiteSpectralNormExtendsBase
-    {K L : Type*} [Field K] [Field L] [Algebra K L]
-    [Algebra.IsAlgebraic K L]
-    (v : AbsoluteValue K ℝ) (x : K) :
-    _root_.spectralNorm (WithAbs v) L (algebraMap K L x) = v x := by
-  let : Algebra.IsAlgebraic (WithAbs v) L :=
-    finiteWithAbsAlgebraIsAlgebraic v
-  simpa [WithAbs.algebraMap_left_apply, WithAbs.norm_eq_apply_ofAbs] using
-    (_root_.spectralNorm_extends
-      (K := WithAbs v) (L := L) ((WithAbs.equiv v).symm x))
 
 /-- the finite-degree norm construction, existence branch: the spectral extension satisfies the
 strong triangle inequality in the nonarchimedean case. -/
@@ -402,49 +369,6 @@ private theorem finiteSpectralNormStrongTriangle
     finiteWithAbsAlgebraIsAlgebraic v
   exact _root_.isNonarchimedean_spectralNorm
     (K := WithAbs v) (L := L) x y
-
-/-- the finite-degree norm construction, existence branch: the spectral extension vanishes exactly
-at zero. -/
-private theorem finiteSpectralNormEqZeroIff
-    {K L : Type*} [Field K] [Field L] [Algebra K L]
-    [Algebra.IsAlgebraic K L]
-    (v : AbsoluteValue K ℝ) (x : L) :
-    _root_.spectralNorm (WithAbs v) L x = 0 ↔ x = 0 := by
-  let : Algebra.IsAlgebraic (WithAbs v) L :=
-    finiteWithAbsAlgebraIsAlgebraic v
-  constructor
-  · intro hx
-    exact _root_.eq_zero_of_map_spectralNorm_eq_zero
-      (K := WithAbs v) (L := L) hx
-      (Algebra.IsAlgebraic.isAlgebraic x)
-  · intro hx
-    rw [hx]
-    exact _root_.spectralNorm_zero (K := WithAbs v) (L := L)
-
-/-- the finite-degree norm construction, existence branch: multiplicativity of the spectral
-extension over an algebraic extension. -/
-private theorem finiteSpectralNormMul
-    {K L : Type*} [Field K] [Field L] [Algebra K L]
-    [Algebra.IsAlgebraic K L]
-    (v : AbsoluteValue K ℝ)
-    (hcomplete : IsCompleteForAbsoluteValue v)
-    (hnonarch : LubinTate.Valuations.NonarchimedeanAbsoluteValue v)
-    (hv : v.IsNontrivial) (x y : L) :
-    _root_.spectralNorm (WithAbs v) L (x * y) =
-      _root_.spectralNorm (WithAbs v) L x *
-        _root_.spectralNorm (WithAbs v) L y := by
-  let : NontriviallyNormedField (WithAbs v) :=
-    finiteWithAbsNontriviallyNormedField v hv
-  let : Algebra (WithAbs v) L :=
-    WithAbs.algebraLeft L v
-  let : CompleteSpace (WithAbs v) :=
-    completeSpace_withAbs_of_isCompleteForAbsoluteValue v hcomplete
-  let : IsUltrametricDist (WithAbs v) :=
-    finiteWithAbsIsUltrametricDist v hnonarch
-  let : Algebra.IsAlgebraic (WithAbs v) L :=
-    finiteWithAbsAlgebraIsAlgebraic v
-  simpa [_root_.spectralAlgNorm_def] using
-    (_root_.spectralAlgNorm_mul (K := WithAbs v) (L := L) x y)
 
 private theorem finiteBaseIsNonarchimedean
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
@@ -487,27 +411,18 @@ private theorem finiteSpectralNormCompleteSpace
     (hcomplete : IsCompleteForAbsoluteValue v)
     (hnonarch : LubinTate.Valuations.NonarchimedeanAbsoluteValue v)
     (hv : v.IsNontrivial) :
-    letI : NontriviallyNormedField (WithAbs v) :=
+    let : NontriviallyNormedField (WithAbs v) :=
       finiteWithAbsNontriviallyNormedField v hv
-    letI : Algebra (WithAbs v) L :=
+    let : Algebra (WithAbs v) L :=
       WithAbs.algebraLeft L v
-    letI : CompleteSpace (WithAbs v) :=
+    let : CompleteSpace (WithAbs v) :=
       completeSpace_withAbs_of_isCompleteForAbsoluteValue v hcomplete
-    letI : IsUltrametricDist (WithAbs v) :=
+    let : IsUltrametricDist (WithAbs v) :=
       finiteWithAbsIsUltrametricDist v hnonarch
-    letI : Algebra.IsAlgebraic (WithAbs v) L :=
+    let : Algebra.IsAlgebraic (WithAbs v) L :=
       finiteWithAbsAlgebraIsAlgebraic v
     @CompleteSpace L (_root_.spectralNorm.uniformSpace (WithAbs v) L) := by
-  let : NontriviallyNormedField (WithAbs v) :=
-    finiteWithAbsNontriviallyNormedField v hv
-  let : Algebra (WithAbs v) L :=
-    WithAbs.algebraLeft L v
-  let : CompleteSpace (WithAbs v) :=
-    completeSpace_withAbs_of_isCompleteForAbsoluteValue v hcomplete
-  let : IsUltrametricDist (WithAbs v) :=
-    finiteWithAbsIsUltrametricDist v hnonarch
-  let : Algebra.IsAlgebraic (WithAbs v) L :=
-    finiteWithAbsAlgebraIsAlgebraic v
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   infer_instance
 
 /-- the finite-degree norm construction, finite-extension completeness for the constructed
@@ -649,14 +564,6 @@ private theorem finiteNatPowRpowInvMulCancel
     congr 1
     field_simp [hm_ne, hn_ne]
     norm_num [Nat.cast_mul, mul_comm]
-
-/-- Symmetric form of `finiteNatPowRpowInvMulCancel`, cancelling the left
-natural-power factor. -/
-private theorem finiteNatPowRpowInvMulCancelLeft
-    {a : ℝ} (ha : 0 ≤ a) {m n : ℕ} (hm : 0 < m) (hn : 0 < n) :
-    (a ^ m) ^ (1 / ((m * n : ℕ) : ℝ)) = a ^ (1 / (n : ℝ)) := by
-  simpa [Nat.mul_comm] using
-    (finiteNatPowRpowInvMulCancel (a := a) ha (m := n) (n := m) hn hm)
 
 /-- the finite-degree norm construction, finite case: the norm formula agrees with the
 constructed spectral absolute-value extension. -/
@@ -1033,21 +940,11 @@ equivalence. -/
 private theorem finiteIsAlgebraicOfBaseRingEquiv
     {K E L : Type*} [Field K] [Field E] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] (σ : K ≃+* E) :
-    letI : Algebra E K := RingHom.toAlgebra σ.symm.toRingHom
-    letI : Algebra E L :=
+    let : Algebra E K := RingHom.toAlgebra σ.symm.toRingHom
+    let : Algebra E L :=
       RingHom.toAlgebra ((algebraMap K L).comp σ.symm.toRingHom)
-    Algebra.IsAlgebraic E L := by
-  let : Algebra E K := RingHom.toAlgebra σ.symm.toRingHom
-  let : Algebra E L :=
-    RingHom.toAlgebra ((algebraMap K L).comp σ.symm.toRingHom)
-  have : IsScalarTower E K L :=
-    IsScalarTower.of_algebraMap_eq (fun r => by
-      simp [RingHom.algebraMap_toAlgebra])
-  let e : K ≃ₐ[E] E := AlgEquiv.ofRingEquiv (f := σ) (by
-    intro r
-    simp [RingHom.algebraMap_toAlgebra])
-  have : Algebra.IsAlgebraic E K := e.symm.isAlgebraic
-  exact Algebra.IsAlgebraic.trans E K L
+    Algebra.IsAlgebraic E L :=
+  AbsoluteValue.algebraicExtension_isAlgebraic_of_base_ringEquiv σ
 
 /-- Finite-dimensionality is preserved when the base field is replaced by an
 equivalent field and the top algebra structure is transported along the same
@@ -1055,18 +952,17 @@ equivalence. -/
 private theorem finiteNormExtension_finiteDimensional_of_base_ringEquiv
     {K E L : Type*} [Field K] [Field E] [Field L] [Algebra K L]
     [FiniteDimensional K L] (σ : K ≃+* E) :
-    letI : Algebra E L :=
+    let : Algebra E L :=
       RingHom.toAlgebra ((algebraMap K L).comp σ.symm.toRingHom)
     FiniteDimensional E L := by
+  intro baseAlgebra
   let : Algebra E K := RingHom.toAlgebra σ.symm.toRingHom
-  let : Algebra E L :=
-    RingHom.toAlgebra ((algebraMap K L).comp σ.symm.toRingHom)
   have : IsScalarTower E K L :=
     IsScalarTower.of_algebraMap_eq (fun r => by
-      simp [RingHom.algebraMap_toAlgebra])
+      rfl)
   let e : K ≃ₐ[E] E := AlgEquiv.ofRingEquiv (f := σ) (by
     intro r
-    simp [RingHom.algebraMap_toAlgebra])
+    exact σ.apply_symm_apply r)
   have : Module.Finite E K := Module.Finite.equiv e.symm.toLinearEquiv
   exact FiniteDimensional.trans E K L
 
@@ -1079,24 +975,22 @@ private theorem finiteNormExtension_finite_normFormulaValue_base_ringEquiv
     (vK : AbsoluteValue K ℝ) (vE : AbsoluteValue E ℝ)
     (hvσ : ∀ x : K, vE (σ x) = vK x)
     (x : L) :
-    letI : Algebra E L :=
+    let : Algebra E L :=
       RingHom.toAlgebra ((algebraMap K L).comp σ.symm.toRingHom)
-    letI : FiniteDimensional E L :=
+    let : FiniteDimensional E L :=
       finiteNormExtension_finiteDimensional_of_base_ringEquiv (K := K)
         (E := E) (L := L) σ
     finiteExtensionNormFormulaValue (K := E) (L := L) vE x =
       finiteExtensionNormFormulaValue (K := K) (L := L) vK x := by
+  intro baseAlgebra finiteDimension
   let : Algebra E K := RingHom.toAlgebra σ.symm.toRingHom
-  let : Algebra E L :=
-    RingHom.toAlgebra ((algebraMap K L).comp σ.symm.toRingHom)
   have : IsScalarTower E K L :=
     IsScalarTower.of_algebraMap_eq (fun r => by
-      simp [RingHom.algebraMap_toAlgebra])
+      rfl)
   let e : K ≃ₐ[E] E := AlgEquiv.ofRingEquiv (f := σ) (by
     intro r
-    simp [RingHom.algebraMap_toAlgebra])
+    exact σ.apply_symm_apply r)
   have : Module.Finite E K := Module.Finite.equiv e.symm.toLinearEquiv
-  have : FiniteDimensional E L := FiniteDimensional.trans E K L
   have hfinEK : Module.finrank E K = 1 := by
     rw [e.toLinearEquiv.finrank_eq]
     exact Module.finrank_self E
@@ -1105,7 +999,7 @@ private theorem finiteNormExtension_finite_normFormulaValue_base_ringEquiv
     rwa [hfinEK, one_mul] at hmul
   have he : (algebraMap E L).comp σ.toRingHom = algebraMap K L := by
     ext x
-    simp [RingHom.algebraMap_toAlgebra]
+    exact congrArg (algebraMap K L) (σ.symm_apply_apply x)
   have hnorm : Algebra.norm E x = σ (Algebra.norm K x) :=
     (Algebra.norm_eq_of_ringEquiv σ he x).symm
   rw [finiteExtensionNormFormulaValue, finiteExtensionNormFormulaValue]
@@ -1138,7 +1032,7 @@ private noncomputable def finiteNormExtension_finiteExtensionResult_base_ringEqu
         have hbase := R.extends_base (σ x)
         have hmap :
             algebraMap E L (σ x) = algebraMap K L x := by
-          simp [RingHom.algebraMap_toAlgebra]
+          exact congrArg (algebraMap K L) (σ.symm_apply_apply x)
         calc
           R.extension (algebraMap K L x)
               = R.extension (algebraMap E L (σ x)) := by rw [hmap]
@@ -1150,7 +1044,7 @@ private noncomputable def finiteNormExtension_finiteExtensionResult_base_ringEqu
         intro z
         have hmap :
             algebraMap E L z = algebraMap K L (σ.symm z) := by
-          simp [RingHom.algebraMap_toAlgebra]
+          rfl
         calc
           w (algebraMap E L z)
               = w (algebraMap K L (σ.symm z)) := by rw [hmap]

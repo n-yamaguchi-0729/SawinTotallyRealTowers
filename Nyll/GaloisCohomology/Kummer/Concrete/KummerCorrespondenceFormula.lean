@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Profinite
-import Nyll.GaloisCohomology.Kummer.Concrete.ExtensionRoundTrip
-import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteInverse
-import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteContinuity
+module
+
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.GaloisCohomology.Kummer.Concrete.ExtensionRoundTrip
+public import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteInverse
+public import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteContinuity
 
 /-!
 # the Kummer pairing formula
@@ -28,6 +30,8 @@ then supplies one automorphism solving all coordinates simultaneously.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

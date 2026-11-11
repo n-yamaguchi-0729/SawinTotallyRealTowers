@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
-import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
-import Mathlib.Tactic.Abel
+module
+
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
+public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+public import Mathlib.Tactic.Abel
 
 /-! # Representatives and boundaries in continuous cohomology
 
@@ -14,6 +16,8 @@ The cocycle projection is surjective as a function, and its kernel consists
 of boundaries. These are statements about the actual topological homology
 objects, with no exactness assumptions on a coefficient sequence.
 -/
+
+@[expose] public section
 
 open CategoryTheory CategoryTheory.Limits
 

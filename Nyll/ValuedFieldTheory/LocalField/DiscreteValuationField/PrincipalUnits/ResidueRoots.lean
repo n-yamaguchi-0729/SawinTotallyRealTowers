@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
-import Nyll.ValuedFieldTheory.Valuation.HenselLemma
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.FieldTheory.Finite.Basic
-import Mathlib.RingTheory.RootsOfUnity.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.Valuation.HenselLemma
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.FieldTheory.Finite.Basic
+public import Mathlib.RingTheory.RootsOfUnity.Basic
 
 /-!
 # Residue roots of unity
@@ -16,6 +18,8 @@ import Mathlib.RingTheory.RootsOfUnity.Basic
 Hensel lifting identifies the finite residue-field unit group with the lifted roots of
 unity in the valuation ring.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -61,7 +65,7 @@ theorem residueRootPolynomial_derivative_eval_ne_zero
       simpa using
         (FiniteField.card_cast_subgroup_card_ne_zero
           (K := F.residueField) (⊤ : Subgroup F.residueFieldˣ))
-    simpa [Nat.card_eq_fintype_card, Fintype.card_units] using hunitcard
+    simpa only [Nat.card_eq_fintype_card, Fintype.card_units] using hunitcard
   have hy :
       (y : F.residueField) ^ ((Nat.card F.residueField - 1) - 1) ≠ 0 :=
     pow_ne_zero _ y.ne_zero
@@ -91,7 +95,7 @@ theorem exists_residueRootsOfUnity_lift
     let := Fintype.ofFinite F.residueField
     have hunitpos : 0 < Fintype.card F.residueFieldˣ :=
       Fintype.card_pos_iff.mpr ⟨1⟩
-    simpa [n, Nat.card_eq_fintype_card, Fintype.card_units] using hunitpos
+    simpa only [n, Nat.card_eq_fintype_card, Fintype.card_units] using hunitpos
   have hf : f.Monic := by
     dsimp [f, n]
     simpa using

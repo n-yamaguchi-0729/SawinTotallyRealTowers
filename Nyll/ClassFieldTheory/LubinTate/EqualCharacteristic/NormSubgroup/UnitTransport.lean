@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizerNormalization
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnitTopology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedUniformizerNormalization
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnitTopology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # LubinTate the explicit norm-subgroup computation: power-series units as Laurent field units
@@ -24,6 +28,8 @@ Laurent unit multiplying `T` in the changed uniformizer of the completed theta-i
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -65,6 +71,76 @@ theorem equalCharacteristicPowerSeriesUnitToLaurentFieldUnit_apply
   apply Units.ext
   rfl
 
+/-- The actual power-series unit factor of a Laurent field unit. The
+normalized parameter is `T⁻¹`, so its exponent is the existing valuation map. -/
+noncomputable def equalCharacteristicLaurentPowerSeriesUnitPart
+    (F : LocalField.{u, v} K) (x : F.residueField⸨X⸩ˣ) :
+    F.residueField⟦X⟧ˣ := by
+  let : ValuativeRel F.residueField⸨X⸩ := equalCharacteristicLaurentValuativeRel F
+  let : IsNonarchimedeanLocalField F.residueField⸨X⸩ :=
+    equalCharacteristicLaurentIsNonarchimedeanLocalField F
+  exact (equalCharacteristicPowerSeriesUnitsEquivLaurentInteger F.residueField).symm
+    (uniformizerUnitFactor F.residueField⸨X⸩ (equalCharacteristicLaurentUniformizerUnit F)⁻¹
+      (equalCharacteristicLaurentUniformizerUnit_inv_valuationMap F) x)
+
+/-- Including the extracted power-series unit gives exactly the original
+unit divided by its normalized uniformizer power. -/
+theorem equalCharacteristicLaurentPowerSeriesUnitPart_include
+    (F : LocalField.{u, v} K) (x : F.residueField⸨X⸩ˣ) :
+    let : ValuativeRel F.residueField⸨X⸩ := equalCharacteristicLaurentValuativeRel F
+    let : IsNonarchimedeanLocalField F.residueField⸨X⸩ :=
+      equalCharacteristicLaurentIsNonarchimedeanLocalField F
+    equalCharacteristicPowerSeriesUnitToLaurentFieldUnit F
+        (equalCharacteristicLaurentPowerSeriesUnitPart F x) =
+      x / (equalCharacteristicLaurentUniformizerUnit F)⁻¹ ^
+        valuationMap F.residueField⸨X⸩ (Additive.ofMul x) := by
+  intro valuationOwner localFieldOwner
+  change integerUnitsToFieldUnits F.residueField⸨X⸩
+      ((equalCharacteristicPowerSeriesUnitsEquivLaurentInteger F.residueField)
+        ((equalCharacteristicPowerSeriesUnitsEquivLaurentInteger F.residueField).symm
+          (uniformizerUnitFactor F.residueField⸨X⸩
+            (equalCharacteristicLaurentUniformizerUnit F)⁻¹
+            (equalCharacteristicLaurentUniformizerUnit_inv_valuationMap F) x))) = _
+  rw [MulEquiv.apply_symm_apply, integerUnitsToFieldUnits_uniformizerUnitFactor]
+
+/-- The extracted power-series unit and normalized uniformizer power
+recover the original Laurent field unit, on the actual unit group. -/
+theorem equalCharacteristicLaurentPowerSeriesUnitPart_mul_uniformizer_zpow
+    (F : LocalField.{u, v} K) (x : F.residueField⸨X⸩ˣ) :
+    let : ValuativeRel F.residueField⸨X⸩ := equalCharacteristicLaurentValuativeRel F
+    let : IsNonarchimedeanLocalField F.residueField⸨X⸩ :=
+      equalCharacteristicLaurentIsNonarchimedeanLocalField F
+    equalCharacteristicPowerSeriesUnitToLaurentFieldUnit F
+        (equalCharacteristicLaurentPowerSeriesUnitPart F x) *
+        (equalCharacteristicLaurentUniformizerUnit F)⁻¹ ^
+          valuationMap F.residueField⸨X⸩ (Additive.ofMul x) = x := by
+  intro valuationOwner localFieldOwner
+  rw [equalCharacteristicLaurentPowerSeriesUnitPart_include, div_mul_cancel]
+
+/-- Extraction recovers every original power-series unit. In particular it
+does not replace the explicit parameter by a chosen representative. -/
+theorem equalCharacteristicLaurentPowerSeriesUnitPart_of_powerSeriesUnit
+    (F : LocalField.{u, v} K) (a : F.residueField⟦X⟧ˣ) :
+    equalCharacteristicLaurentPowerSeriesUnitPart F
+        (equalCharacteristicPowerSeriesUnitToLaurentFieldUnit F a) = a := by
+  let : ValuativeRel F.residueField⸨X⸩ := equalCharacteristicLaurentValuativeRel F
+  let : IsNonarchimedeanLocalField F.residueField⸨X⸩ :=
+    equalCharacteristicLaurentIsNonarchimedeanLocalField F
+  let e := equalCharacteristicPowerSeriesUnitsEquivLaurentInteger F.residueField
+  apply e.injective
+  change e (e.symm (uniformizerUnitFactor F.residueField⸨X⸩
+      (equalCharacteristicLaurentUniformizerUnit F)⁻¹
+      (equalCharacteristicLaurentUniformizerUnit_inv_valuationMap F)
+      (equalCharacteristicPowerSeriesUnitToLaurentFieldUnit F a))) = e a
+  rw [MulEquiv.apply_symm_apply]
+  apply integerUnitsToFieldUnits_injective F.residueField⸨X⸩
+  rw [integerUnitsToFieldUnits_uniformizerUnitFactor]
+  change integerUnitsToFieldUnits F.residueField⸨X⸩ (e a) /
+      (equalCharacteristicLaurentUniformizerUnit F)⁻¹ ^
+        valuationMap F.residueField⸨X⸩
+          (Additive.ofMul (integerUnitsToFieldUnits F.residueField⸨X⸩ (e a))) = _
+  rw [valuationMap_apply, v_integerUnitsToFieldUnits, zpow_zero, div_one]
+
 /-- In the field unit group, the changed uniformizer is the product of its
 power-series unit factor and `T`. -/
 theorem equalCharacteristicChangedLaurentUniformizerUnit_eq_unit_mul
@@ -80,8 +156,8 @@ level, because both `T⁻¹` and `T` are already norms.  Thus the prime norm
 `uT` used in the completed theta-intertwining theorem detects exactly whether the unit `u` is a
 norm. -/
 theorem equalCharacteristicChangedLaurentUniformizerUnit_mem_normSubgroup_iff
-    {K₀ : Type} [Field K₀]
-    (F : LocalField K₀)
+    {K₀ : Type u} [Field K₀]
+    (F : LocalField.{u, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) (a : F.residueField⟦X⟧ˣ) :
     equalCharacteristicChangedLaurentUniformizerUnit F a ∈
@@ -109,8 +185,8 @@ theorem equalCharacteristicChangedLaurentUniformizerUnit_mem_normSubgroup_iff
 /-- The positive-valuation inverse prime norm used by the normalized
 normalized additive valuation has the same norm-membership test. -/
 theorem equalCharacteristicChangedLaurentUniformizerUnit_inv_mem_normSubgroup_iff
-    {K₀ : Type} [Field K₀]
-    (F : LocalField K₀)
+    {K₀ : Type u} [Field K₀]
+    (F : LocalField.{u, v} K₀)
     [CharP K₀ F.residueCharacteristic]
     (n : ℕ) (a : F.residueField⟦X⟧ˣ) :
     (equalCharacteristicChangedLaurentUniformizerUnit F a)⁻¹ ∈
@@ -133,12 +209,11 @@ theorem equalCharacteristicChangedLaurentUniformizerUnit_inv_mem_normSubgroup_if
 from a power-series unit under the canonical inclusion. -/
 theorem equalCharacteristicPowerSeriesUnitToLaurentFieldUnit_range
     (F : LocalField.{u, v} K) :
-    letI : ValuativeRel F.residueField⸨X⸩ :=
+    let : ValuativeRel F.residueField⸨X⸩ :=
       equalCharacteristicLaurentValuativeRel F
     MonoidHom.range (equalCharacteristicPowerSeriesUnitToLaurentFieldUnit F) =
       LocalFieldTheory.localBaseUnitSubgroup F.residueField⸨X⸩ := by
-  let : ValuativeRel F.residueField⸨X⸩ :=
-    equalCharacteristicLaurentValuativeRel F
+  intro sharedOwner1
   let e := equalCharacteristicPowerSeriesUnitsEquivLaurentInteger
     F.residueField
   change MonoidHom.range
@@ -150,19 +225,18 @@ theorem equalCharacteristicPowerSeriesUnitToLaurentFieldUnit_range
     exact ⟨e a, rfl⟩
   · rintro ⟨b, rfl⟩
     refine ⟨e.symm b, ?_⟩
-    simp [e]
+    exact congrArg (integerUnitsToFieldUnits F.residueField⸨X⸩) (e.apply_symm_apply b)
 
 /-- The explicit Lubin--Tate higher-unit kernel maps to the canonical field
 principal-unit group `U^(n+1)` in one step. -/
 theorem equalCharacteristicLubinTateHigherUnitSubgroup_map_toLaurentField_eq
     (F : LocalField.{u, v} K) (n : ℕ) :
-    letI : ValuativeRel F.residueField⸨X⸩ :=
+    let : ValuativeRel F.residueField⸨X⸩ :=
       equalCharacteristicLaurentValuativeRel F
     (equalCharacteristicLubinTateHigherUnitSubgroup F n).map
         (equalCharacteristicPowerSeriesUnitToLaurentFieldUnit F) =
       LocalFieldTheory.fieldPrincipalUnits F.residueField⸨X⸩ (n + 1) := by
-  let : ValuativeRel F.residueField⸨X⸩ :=
-    equalCharacteristicLaurentValuativeRel F
+  intro sharedOwner1
   simpa only [equalCharacteristicPowerSeriesUnitToLaurentFieldUnit,
     Subgroup.map_map] using
     (equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_fieldPrincipalUnits

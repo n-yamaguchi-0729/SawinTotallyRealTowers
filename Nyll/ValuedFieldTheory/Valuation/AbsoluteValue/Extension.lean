@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.Basic
-import Mathlib.Basic.Real.Basic
-import Mathlib.Topology.UniformSpace.AbsoluteValue
+module
+
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.Basic.Real.Basic
+public import Mathlib.Topology.UniformSpace.AbsoluteValue
 
 /-!
 # Extensions of absolute values
 
 A reusable predicate for exact extension along an algebra map.
 -/
+
+@[expose] public section
 
 namespace AbsoluteValue
 /-- The target absolute value agrees with the base absolute value along the algebra map. -/

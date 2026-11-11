@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.Augmentation
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.AugmentationIdeal.Basic
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.RingTheory.Ideal.Maps
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.Augmentation
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.AugmentationIdeal.Basic
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.RingTheory.Ideal.Maps
 
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — augmentation
@@ -24,6 +26,8 @@ The principal declarations in this module are:
 - `zcCompletedGroupAlgebraAugmentationFamily_compatible`
   The finite coefficient coordinates of the completed augmentation are compatible.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryCycles
 
 /-!
 # Fox differential: completed — finite stage — relation module
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageQuotientCoefficient_relation_eq_one`
   Every finite-stage relation group element has quotient coefficient equal to \(1\).
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

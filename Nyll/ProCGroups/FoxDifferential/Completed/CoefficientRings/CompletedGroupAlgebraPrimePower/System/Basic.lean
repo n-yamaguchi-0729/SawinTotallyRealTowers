@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Basic.Augmentation
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Basic.StageCoeffMap.Coeff
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Basic.Augmentation
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Basic.StageCoeffMap.Coeff
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Fox differential: coefficient rings — prime-power completed group algebra — system — basic
@@ -23,6 +26,8 @@ The principal declarations in this module are:
   The transition map for the prime-power completed group algebra commutes with the finite-stage
   coordinate maps.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -152,6 +157,9 @@ theorem primePowerCompletedGroupAlgebraTransition_comp
     (primePowerCompletedGroupAlgebraTransition (ℓ := ℓ) (G := G) hij).comp
         (primePowerCompletedGroupAlgebraTransition (ℓ := ℓ) (G := G) hjk) =
       primePowerCompletedGroupAlgebraTransition (ℓ := ℓ) (G := G) (hij.trans hjk) := by
+  let transition : ModNCompletedGroupAlgebraStage (ℓ ^ i.1) G k.2 →+*
+      ModNCompletedGroupAlgebraStage (ℓ ^ i.1) G i.2 :=
+    (modNCompletedGroupAlgebraTransition (ℓ ^ i.1) G (hij.2.trans hjk.2))
   calc
     (primePowerCompletedGroupAlgebraTransition (ℓ := ℓ) (G := G) hij).comp
         (primePowerCompletedGroupAlgebraTransition (ℓ := ℓ) (G := G) hjk)
@@ -197,7 +205,7 @@ theorem primePowerCompletedGroupAlgebraTransition_comp
         (primePow_dvd_primePow (ℓ := ℓ) hjk.1)) := by
           rw [← RingHom.comp_assoc]
     _ =
-    ((modNCompletedGroupAlgebraTransition (ℓ ^ i.1) G (hij.2.trans hjk.2)).comp
+    (transition.comp
         (modNCompletedGroupAlgebraStageCoeffMap
           (n := ℓ ^ i.1) (m := ℓ ^ j.1) (G := G) k.2
           (primePow_dvd_primePow (ℓ := ℓ) hij.1))).comp
@@ -209,7 +217,7 @@ theorem primePowerCompletedGroupAlgebraTransition_comp
             (U := i.2) (V := k.2) (hUV := hij.2.trans hjk.2)
             (hnm := primePow_dvd_primePow (ℓ := ℓ) hij.1)]
     _ =
-    (modNCompletedGroupAlgebraTransition (ℓ ^ i.1) G (hij.2.trans hjk.2)).comp
+    transition.comp
       ((modNCompletedGroupAlgebraStageCoeffMap
           (n := ℓ ^ i.1) (m := ℓ ^ j.1) (G := G) k.2
           (primePow_dvd_primePow (ℓ := ℓ) hij.1)).comp
@@ -218,7 +226,7 @@ theorem primePowerCompletedGroupAlgebraTransition_comp
           (primePow_dvd_primePow (ℓ := ℓ) hjk.1))) := by
           rw [RingHom.comp_assoc]
     _ =
-    (modNCompletedGroupAlgebraTransition (ℓ ^ i.1) G (hij.2.trans hjk.2)).comp
+    transition.comp
       (modNCompletedGroupAlgebraStageCoeffMap
         (n := ℓ ^ i.1) (m := ℓ ^ k.1) (G := G) k.2
         (primePow_dvd_primePow (ℓ := ℓ) (hij.trans hjk).1)) := by

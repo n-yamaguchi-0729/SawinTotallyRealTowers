@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.ContinuousCharacters
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
-import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteContinuity
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.ContinuousCharacters
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+public import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteContinuity
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
 
 /-!
 # Infinite Kummer character equivalence
@@ -15,6 +18,8 @@ Continuous characters of an infinite Galois group factor through finite
 Galois stages.  Finite Kummer surjectivity at such a stage then supplies a
 radical representative in the ambient extension.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -46,23 +51,6 @@ private theorem intermediateNthRootsEquiv_apply_val
   apply Units.ext
   exact (val_rootsOfUnityEquivOfPrimitiveRoots_apply_coe
     (algebraMap E Ω).injective (primitiveRoots_intermediate_nonempty n hmu E) u).symm
-
-private theorem rootQuotient_map_intermediate
-    (E : IntermediateField K Ω) [Normal K E]
-    (β : Eˣ) (σ : Gal(Ω/K)) :
-    rootQuotient (K := K) (L := Ω)
-        (Units.map (algebraMap E Ω).toMonoidHom β) σ =
-      Units.map (algebraMap E Ω).toMonoidHom
-        (rootQuotient (K := K) (L := E) β
-          (AlgEquiv.restrictNormalHom E σ)) := by
-  apply Units.ext
-  simp only [rootQuotient, Units.val_div_eq_div_val, Units.coe_map]
-  change σ (algebraMap E Ω (β : E)) / algebraMap E Ω (β : E) =
-    algebraMap E Ω
-      ((AlgEquiv.restrictNormalHom E σ) (β : E) / (β : E))
-  rw [map_div₀]
-  exact congrArg (fun x : Ω => x / algebraMap E Ω (β : E))
-    (AlgEquiv.restrictNormal_commutes σ E (β : E)).symm
 
 private def finiteRadicalToAmbient
     (n : ℕ+) (E : IntermediateField K Ω)
@@ -140,7 +128,7 @@ theorem infiniteKummerContinuousQuotientCharacter_surjective_of_primitiveRoots
   rw [← DΩ.rootCharacter_eq_of_same_pow
     (nthRootsOfUnity_fixed (K := K) (L := Ω) n hbaseΩ) aΩ
       (finiteRadicalToAmbient_mapped_root_pow n E.toIntermediateField a) σ]
-  rw [rootQuotient_map_intermediate E.toIntermediateField
+  rw [rootQuotient_map_restrictNormal
     ((chosenFiniteKummerRadicalDatum (K := K) (L := E) n).root a) σ]
   change Units.map (algebraMap E.toIntermediateField Ω).toMonoidHom
       ((DE.rootCharacterToMuWithoutSection a hfixedE τ :

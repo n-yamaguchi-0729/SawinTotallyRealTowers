@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtension
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerFree
-import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
-import Nyll.ProCGroups.ProC.Subgroups.Closed
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtension
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerFree
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 
 /-!
 # Degree-two cohomology of the profinite integers
@@ -17,6 +20,8 @@ attached to every continuous homogeneous two-cocycle.  The section supplies an e
 degree-one primitive, so continuous degree-two cohomology with trivial lifted `ZMod p`
 coefficients vanishes.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

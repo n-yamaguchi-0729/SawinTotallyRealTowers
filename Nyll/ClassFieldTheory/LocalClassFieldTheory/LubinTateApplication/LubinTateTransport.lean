@@ -4,12 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.CharP.Subring
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormSubgroup
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
-import Nyll.ValuedFieldTheory.Ramification.LocalField.BaseChange
+module
+
+public import Mathlib.Algebra.CharP.Subring
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.NormSubgroup
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.BaseChange
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
 
 /-!
 # Lubin--Tate application: transport to an equal-characteristic local field
@@ -24,7 +31,11 @@ transports both the finite Galois structure and the actual field-norm subgroup.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w
 
 open scoped LaurentSeries PowerSeries ValuativeRel
 
@@ -37,7 +48,7 @@ open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
@@ -45,7 +56,7 @@ open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalU
 /-- The positive residue-field degree used by the equal-characteristic
 Laurent-series model. -/
 noncomputable def equalCharacteristicResidueRank
-    {L : Type} [Field L] (F : LocalField L) : ℕ+ :=
+    {L : Type v} [Field L] (F : LocalField.{v, w} L) : ℕ+ :=
   ⟨CompleteDVF.higherPrincipalUnitGroup.iwasawaResidueRank F,
     Nat.pos_of_ne_zero fun hrank => by
       have hcard :=
@@ -58,7 +69,7 @@ noncomputable def equalCharacteristicResidueRank
 open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
   (residueField_card_eq_residueCharacteristic_pow_iwasawaResidueRank) in
 theorem equalCharacteristicResidueCard
-    {L : Type} [Field L] (F : LocalField L) :
+    {L : Type v} [Field L] (F : LocalField.{v, w} L) :
     Nat.card F.residueField =
       F.residueCharacteristic ^
         (equalCharacteristicResidueRank F : ℕ) := by
@@ -134,7 +145,8 @@ theorem equalCharacteristicTargetResidueCharacteristicCharP
   rw [hres]
   infer_instance
 
-private theorem equalCharacteristicUniformizerRatio_valuationMap
+/-- The ratio of two positive uniformizers has valuation zero. -/
+theorem equalCharacteristicUniformizerRatio_valuationMap
     (ϖ : Kˣ)
     (hϖ : valuationMap K (Additive.ofMul ϖ) = 1) :
     valuationMap K
@@ -441,19 +453,12 @@ theorem equalCharacteristicTargetLaurent_fieldPrincipalUnits_map_le
     (m : ℕ) :
     let F := equalCharacteristicTargetLocalField K
     let B := F.residueField⸨X⸩
-    letI : ValuativeRel B := equalCharacteristicLaurentValuativeRel F
+    let : ValuativeRel B := equalCharacteristicLaurentValuativeRel F
     (LocalFieldTheory.fieldPrincipalUnits B (m + 1)).map
         (equalCharacteristicTargetLaurentUnitsEquiv
           K p ϖ hϖ).toMonoidHom ≤
       LocalFieldTheory.fieldPrincipalUnits K (m + 1) := by
-  let F := equalCharacteristicTargetLocalField K
-  let B := F.residueField⸨X⸩
-  let : ValuativeRel B := equalCharacteristicLaurentValuativeRel F
-  change
-    (LocalFieldTheory.fieldPrincipalUnits B (m + 1)).map
-        (equalCharacteristicTargetLaurentUnitsEquiv
-          K p ϖ hϖ).toMonoidHom ≤
-      LocalFieldTheory.fieldPrincipalUnits K (m + 1)
+  intro F B sharedOwner3
   rw [←
     equalCharacteristicLubinTateHigherUnitSubgroup_map_toLaurentField_eq
       F m]
@@ -471,23 +476,14 @@ theorem equalCharacteristicTargetLaurent_uniformizerPrincipalSubgroup_map_le
     (m : ℕ) :
     let F := equalCharacteristicTargetLocalField K
     let B := F.residueField⸨X⸩
-    letI : ValuativeRel B := equalCharacteristicLaurentValuativeRel F
+    let : ValuativeRel B := equalCharacteristicLaurentValuativeRel F
     (LocalFieldTheory.uniformizerPrincipalSubgroup B
         (equalCharacteristicLaurentUniformizerUnit F)⁻¹
         1 (m + 1)).map
         (equalCharacteristicTargetLaurentUnitsEquiv
           K p ϖ hϖ).toMonoidHom ≤
       LocalFieldTheory.uniformizerPrincipalSubgroup K ϖ 1 (m + 1) := by
-  let F := equalCharacteristicTargetLocalField K
-  let B := F.residueField⸨X⸩
-  let : ValuativeRel B := equalCharacteristicLaurentValuativeRel F
-  change
-    (LocalFieldTheory.uniformizerPrincipalSubgroup B
-        (equalCharacteristicLaurentUniformizerUnit F)⁻¹
-        1 (m + 1)).map
-        (equalCharacteristicTargetLaurentUnitsEquiv
-          K p ϖ hϖ).toMonoidHom ≤
-      LocalFieldTheory.uniformizerPrincipalSubgroup K ϖ 1 (m + 1)
+  intro F B sharedOwner3
   unfold LocalFieldTheory.uniformizerPrincipalSubgroup
   rw [Subgroup.map_sup, MonoidHom.map_zpowers]
   apply sup_le_sup
@@ -517,7 +513,7 @@ noncomputable def equalCharacteristicTransportedLubinTateLevelAlgebra
     letI : CharP K F.residueCharacteristic :=
       equalCharacteristicTargetResidueCharacteristicCharP K p
     Algebra K (equalCharacteristicLubinTateLevelField F m) := by
-  let F := equalCharacteristicTargetLocalField K
+  intro F
   let B := F.residueField⸨X⸩
   letI : CharP K F.residueCharacteristic :=
     equalCharacteristicTargetResidueCharacteristicCharP K p
@@ -536,26 +532,18 @@ theorem equalCharacteristicTransportedLubinTateLevelAlgebra_comp
     (m : ℕ) :
     let F := equalCharacteristicTargetLocalField K
     let B := F.residueField⸨X⸩
-    letI : CharP K F.residueCharacteristic :=
+    let : CharP K F.residueCharacteristic :=
       equalCharacteristicTargetResidueCharacteristicCharP K p
     let E := equalCharacteristicLubinTateLevelField F m
-    letI : Algebra B E :=
+    let : Algebra B E :=
       equalCharacteristicLubinTateLevelAlgebra F m
-    letI : CharP K p := hKp
-    letI : Algebra K E :=
+    let : CharP K p := hKp
+    let : Algebra K E :=
       equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
     (algebraMap K E).comp
         (equalCharacteristicTargetLaurentRingEquiv K p ϖ hϖ).toRingHom =
       (RingEquiv.refl E).toRingHom.comp (algebraMap B E) := by
-  let F := equalCharacteristicTargetLocalField K
-  let B := F.residueField⸨X⸩
-  let : CharP K F.residueCharacteristic :=
-    equalCharacteristicTargetResidueCharacteristicCharP K p
-  let E := equalCharacteristicLubinTateLevelField F m
-  let : Algebra B E := equalCharacteristicLubinTateLevelAlgebra F m
-  let : CharP K p := hKp
-  let : Algebra K E :=
-    equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
+  intro F B sharedOwner3 E sharedOwner5 sharedOwner6 sharedOwner7
   apply RingHom.ext
   intro x
   change
@@ -580,7 +568,7 @@ theorem equalCharacteristicTransportedLubinTateLevel_finiteDimensional
       equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
     letI : Module K E := Algebra.toModule
     Module.Finite K E := by
-  let F := equalCharacteristicTargetLocalField K
+  intro F
   let B := F.residueField⸨X⸩
   let : CharP K F.residueCharacteristic :=
     equalCharacteristicTargetResidueCharacteristicCharP K p
@@ -615,7 +603,7 @@ theorem equalCharacteristicTransportedLubinTateLevel_isGalois
     letI : Algebra K E :=
       equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
     IsGalois K E := by
-  let F := equalCharacteristicTargetLocalField K
+  intro F
   let B := F.residueField⸨X⸩
   let : CharP K F.residueCharacteristic :=
     equalCharacteristicTargetResidueCharacteristicCharP K p
@@ -699,7 +687,7 @@ private theorem equalCharacteristicTransported_normUnits
       (equalCharacteristicLubinTateLevelField F m)ˣ) :
     let F := equalCharacteristicTargetLocalField K
     let B := F.residueField⸨X⸩
-    letI : CharP K F.residueCharacteristic :=
+    let : CharP K F.residueCharacteristic :=
       equalCharacteristicTargetResidueCharacteristicCharP K p
     let E := equalCharacteristicLubinTateLevelField F m
     letI : Algebra B E := equalCharacteristicLubinTateLevelAlgebra F m
@@ -709,11 +697,7 @@ private theorem equalCharacteristicTransported_normUnits
     equalCharacteristicTargetLaurentUnitsEquiv K p ϖ hϖ
         (LocalFieldTheory.normUnits B E x) =
       LocalFieldTheory.normUnits K E x := by
-  let F := equalCharacteristicTargetLocalField K
-  let B := F.residueField⸨X⸩
-  let : CharP K F.residueCharacteristic :=
-    equalCharacteristicTargetResidueCharacteristicCharP K p
-  let E := equalCharacteristicLubinTateLevelField F m
+  intro F B sharedOwner3 E
   change Eˣ at x
   let : Algebra B E := equalCharacteristicLubinTateLevelAlgebra F m
   let : CharP K p := hKp
@@ -751,7 +735,7 @@ theorem equalCharacteristicLubinTateNormSubgroup_map_eq_transported
     N.map
         (equalCharacteristicTargetLaurentUnitsEquiv K p ϖ hϖ).toMonoidHom =
       equalCharacteristicTransportedLubinTateNormSubgroup K p ϖ hϖ m := by
-  let F := equalCharacteristicTargetLocalField K
+  intro F
   let B := F.residueField⸨X⸩
   let : CharP K F.residueCharacteristic :=
     equalCharacteristicTargetResidueCharacteristicCharP K p

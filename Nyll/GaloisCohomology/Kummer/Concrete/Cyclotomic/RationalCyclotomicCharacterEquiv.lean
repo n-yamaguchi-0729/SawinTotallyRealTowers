@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacter
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacter
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # The rational cyclotomic character equivalence
@@ -17,6 +19,8 @@ of the restriction maps to those levels.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

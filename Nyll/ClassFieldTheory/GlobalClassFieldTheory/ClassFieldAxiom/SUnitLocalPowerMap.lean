@@ -4,18 +4,29 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.FinitePlaceDecomposition
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.RestrictionKernel
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.BasePlaceSelection
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.CoordinatePlaces
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.PrimeSet
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.DecompositionFields
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.Conclusion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
-import Mathlib.Algebra.Group.Subgroup.Finite
-import Mathlib.GroupTheory.Index
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.FinitePlaceDecomposition
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.RestrictionKernel
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.BasePlaceSelection
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.CoordinatePlaces
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.PrimeSet
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.DecompositionFields
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.Conclusion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
+public import Mathlib.Algebra.Group.Subgroup.Finite
+public import Mathlib.GroupTheory.Index
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
 /-!
 # S-unit localization modulo local powers
@@ -26,6 +37,8 @@ surjectivity properties for the Kummer prime set.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
@@ -271,19 +284,8 @@ theorem sUnitLocalUnitPowerMap_sUnitKummerPrimeSet_surjective
         p v hp hv hn r eG S).symm
     Function.Surjective
       (sUnitLocalUnitPowerMap (K := K) n S' T hST) := by
+  intro S' T hST
   classical
-  dsimp only
-  let S' :=
-    enlargeByFiniteKummerRadicalSupport
-      (K := K) (L := E) n hmu S
-  let T :=
-    sUnitKummerPrimeSet
-      (K := K) (Omega := Omega) E n hmu
-      p v hp hv hn r eG S
-  let hST : Disjoint S' T :=
-    (sUnitKummerPrimeSet_disjoint_enlargeByFiniteKummerRadicalSupport
-      (K := K) (Omega := Omega) E n hmu
-      p v hp hv hn r eG S).symm
   let LocalPowerTarget : Type :=
     ∀ w : T,
       (w.1.adicCompletionIntegers K)ˣ ⧸

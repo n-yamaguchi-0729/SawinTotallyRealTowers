@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
-import Nyll.ProCGroups.Abelian.TopologicalAbelianization
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
+public import Nyll.ProCGroups.Abelian.TopologicalAbelianization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
 # Global reciprocity for an absolute finite character
@@ -15,6 +19,8 @@ An absolute character factors through the actual maximal abelian subextension.
 Pulling that character back by global Artin gives a principal-trivial idele
 character. This direction is used to compare choices of global central lifts.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 noncomputable section

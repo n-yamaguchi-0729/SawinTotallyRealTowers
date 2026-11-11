@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
-import Mathlib.Algebra.Group.Equiv.Basic
-import Mathlib.Basic.Sign.Basic
-import Mathlib.NumberTheory.NumberField.ProductFormula
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
+public import Mathlib.Algebra.Group.Equiv.Basic
+public import Mathlib.Basic.Sign.Basic
+public import Mathlib.NumberTheory.NumberField.ProductFormula
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
 
 /-!
 # Archimedean power indices in idele class quotients
@@ -19,15 +23,19 @@ conditions and computes its archimedean local indices.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 open KummerTheory
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The subgroup `C_K(S,T) = h(S,T)Kˣ/Kˣ` inside the idele class
 group. -/

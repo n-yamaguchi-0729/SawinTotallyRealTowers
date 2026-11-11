@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # Finite-place ramification of natural `mu_p` Kummer classes
@@ -16,6 +18,8 @@ group restricts further to absolute inertia.  This file packages the induced
 map on continuous `H¹`, its unramified kernel, and the family of inertia
 restrictions of natural-coefficient Kummer classes over all finite places.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField

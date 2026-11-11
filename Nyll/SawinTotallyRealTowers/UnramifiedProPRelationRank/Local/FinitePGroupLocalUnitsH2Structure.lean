@@ -4,21 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.UnitsCohomologyCongr
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2Cyclic
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedCommonExtension
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
-import Mathlib.Algebra.Algebra.Tower
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.GroupTheory.PGroup
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.GaloisCohomology.Kummer.UnitsCohomologyCongr
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2Cyclic
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedCommonExtension
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Cyclic unit H² of finite local Galois p-extensions
@@ -29,6 +31,8 @@ equal to the ramification index. The resulting cyclicity proof transports
 from an actual intermediate field in the separable closure to any finite
 Galois p-extension.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
@@ -47,20 +51,6 @@ private theorem standardUnramified_isCyclic (d : ℕ) (hd : 0 < d) :
   have : Module.Finite 𝒪[K] 𝒪[M] := localCompleteDVF_integerRing_moduleFinite K M
   exact isCyclic_galoisGroup_of_unramifiedValuation K M
 
-private theorem cyclic_generator_order
-    (M : IntermediateField K (SeparableClosure K))
-    [FiniteDimensional K M] [IsGalois K M] [IsCyclic Gal(M/K)] :
-    ∃ c : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2,
-      addOrderOf c = Module.finrank K M := by
-  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := Gal(M/K))
-  let e : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2 ≃+ Additive Gal(M/K) :=
-    finiteCyclicLocalUnitsH2AddEquivGalois K M g hg
-  let c : groupCohomology (Rep.ofAlgebraAutOnUnits K M) 2 := e.symm (Additive.ofMul g)
-  refine ⟨c, ?_⟩
-  exact (e.symm.addOrderOf_eq (Additive.ofMul g)).trans
-    ((addOrderOf_ofMul_eq_orderOf g).trans
-      ((orderOf_eq_card_of_forall_mem_zpowers hg).trans
-        (IsGalois.card_aut_eq_finrank K M)))
 private theorem intermediateFieldUnitsH2_isAddCyclic
     (F : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K F] [IsGalois K F]

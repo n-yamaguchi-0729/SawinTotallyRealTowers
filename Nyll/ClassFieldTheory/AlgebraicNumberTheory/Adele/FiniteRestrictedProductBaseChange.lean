@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # Finite restricted products under scalar extension
@@ -23,6 +27,8 @@ of `L`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain
@@ -401,7 +407,8 @@ theorem RelativeFiniteIdeleData.ext
     a = b := by
   cases a
   cases b
-  simp_all
+  cases hfinite
+  rfl
 
 /-- Adjoin the trivial infinite family, so that the established relative
 idele support theorem can be applied to finite restricted data. -/

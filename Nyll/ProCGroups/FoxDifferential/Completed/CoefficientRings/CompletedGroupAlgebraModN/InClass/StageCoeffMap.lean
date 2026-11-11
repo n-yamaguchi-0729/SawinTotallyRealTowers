@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
 
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — in class — stage
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The class-indexed stage coefficient map for reflexive divisibility is the identity ring
   homomorphism.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

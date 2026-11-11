@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientNormResidue
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeNormTransport
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientNormResidue
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeNormTransport
 
 /-!
 # Ambient prime witnesses
@@ -17,6 +19,8 @@ ambient Frobenius target.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -183,23 +187,9 @@ noncomputable def ambientEmbeddedPrimeWitness
       H J₀ hJH sigmaH
   let LH :=
     abstractRelativeFixedField K (SeparableClosure K) hSHH
-  let iLH : F →ₐ[K] LH :=
-    i.codRestrict (LH.restrictScalars K).toSubalgebra (fun x => by
-      change i x ∈ IntermediateField.fixedField SH.toSubgroup
-      rw [IntermediateField.mem_fixedField_iff]
-      intro rho hrho
-      have hrhoH : rho ∈ H₀.toSubgroup :=
-        hSHH hrho
-      change rho (i x) = i x
-      change
-        rho ∈ (AlgHom.fieldRange i).fixingSubgroup at hrhoH
-      rw [IntermediateField.mem_fixingSubgroup_iff] at hrhoH
-      exact hrhoH (i x) ⟨x, rfl⟩)
-  let phi : LF ≃+* LH := by
-    letI : Algebra F LH := iLH.toRingHom.toAlgebra
-    exact
-      (intrinsicFrobeniusFixedFieldEquivAmbientEmbeddedField
-        K F E j e sigma).toRingEquiv
+  let phi : LF ≃+* LH :=
+    @AlgEquiv.toRingEquiv F LF LH (_) (_) (_) (_) (_)
+      (intrinsicFrobeniusFixedFieldEquivAmbientEmbeddedField K F E j e sigma)
   have hphi (x : LF) :
       ((phi x : LH) : SeparableClosure K) =
         e (x : SeparableClosure F) := by

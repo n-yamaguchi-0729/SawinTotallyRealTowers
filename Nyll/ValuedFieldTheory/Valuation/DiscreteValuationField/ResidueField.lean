@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+module
+
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 
 /-!
 # Residue-field API for local maps
@@ -14,6 +16,8 @@ Henselian and unramified parts of the DVF library.  It keeps mathlib's
 `IsLocalRing.ResidueField.map` and `IsLocalRing.residue` as the primary
 objects.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -60,7 +64,7 @@ theorem lift_eq_of_comp_residue_eq
   ext x
   obtain ⟨r, rfl⟩ := IsLocalRing.residue_surjective x
   have hr := congr_arg (fun h : R →+* S => h r) hg
-  simpa [RingHom.comp_apply, IsLocalRing.ResidueField.lift_residue_apply] using hr
+  simpa only [RingHom.comp_apply, IsLocalRing.ResidueField.lift_residue_apply] using hr
 
 end FieldLift
 
@@ -97,7 +101,7 @@ theorem map_eq_zero_iff (x : IsLocalRing.ResidueField R) :
     IsLocalRing.ResidueField.map f x = 0 ↔ x = 0 := by
   constructor
   · intro hx
-    exact map_injective f (by simpa using hx)
+    exact map_injective f (hx.trans (map_zero _).symm)
   · intro hx
     rw [hx, map_zero]
 
@@ -139,7 +143,7 @@ theorem residue_map_eq_zero_iff (x : R) :
 theorem residue_map_eq_iff (x y : R) :
     IsLocalRing.residue S (f x) = IsLocalRing.residue S (f y) ↔
       IsLocalRing.residue R x = IsLocalRing.residue R y := by
-  simpa [IsLocalRing.ResidueField.map_residue f] using
+  simpa only [IsLocalRing.ResidueField.map_residue f] using
     map_eq_map_iff f (IsLocalRing.residue R x) (IsLocalRing.residue R y)
 
 /-- A mapped residue class equals a target residue class exactly when their
@@ -148,7 +152,7 @@ theorem map_residue_eq_residue_iff_sub_mem_maximalIdeal (x : R) (y : S) :
     IsLocalRing.ResidueField.map f (IsLocalRing.residue R x) =
         IsLocalRing.residue S y ↔
       f x - y ∈ IsLocalRing.maximalIdeal S := by
-  simpa [IsLocalRing.ResidueField.map_residue f x] using
+  simpa only [IsLocalRing.ResidueField.map_residue f x] using
     residue_eq_residue_iff_sub_mem_maximalIdeal (R := S) (f x) y
 
 /-- Target residue equality with a mapped residue class, in the opposite
@@ -157,7 +161,7 @@ theorem residue_eq_map_residue_iff_sub_mem_maximalIdeal (y : S) (x : R) :
     IsLocalRing.residue S y =
         IsLocalRing.ResidueField.map f (IsLocalRing.residue R x) ↔
       y - f x ∈ IsLocalRing.maximalIdeal S := by
-  simpa [IsLocalRing.ResidueField.map_residue f x] using
+  simpa only [IsLocalRing.ResidueField.map_residue f x] using
     residue_eq_residue_iff_sub_mem_maximalIdeal (R := S) y (f x)
 
 end LocalHom
@@ -175,7 +179,7 @@ theorem algebraMap_eq_map_algebraMap :
       IsLocalRing.ResidueField.map (algebraMap R S) := by
   ext x
   obtain ⟨r, rfl⟩ := IsLocalRing.residue_surjective x
-  simp [IsLocalRing.ResidueField.map_residue,
+  rw [IsLocalRing.ResidueField.map_residue,
     IsLocalRing.ResidueField.algebraMap_residue]
 
 /-- The residue-field map induced by a local algebra map is injective. -/
@@ -238,8 +242,9 @@ noncomputable def algEquivOfAlgEquiv
       commutes' := by
         intro x
         obtain ⟨t, rfl⟩ := IsLocalRing.residue_surjective x
-        simp [IsLocalRing.ResidueField.algebraMap_residue,
-          IsLocalRing.ResidueField.map_residue, e.commutes t] }
+        change IsLocalRing.residue S (e (algebraMap T R t)) =
+          IsLocalRing.residue S (algebraMap T S t)
+        exact congrArg (IsLocalRing.residue S) (e.commutes t) }
 
 /-- The residue-field equivalence induced by an algebra equivalence acts through
 residue representatives. -/
@@ -310,7 +315,7 @@ theorem algEquivOfAlgEquiv_refl :
         IsLocalRing.ResidueField R ≃ₐ[IsLocalRing.ResidueField T]
           IsLocalRing.ResidueField R) := by
   ext x
-  simp [algEquivOfAlgEquiv]
+  exact IsLocalRing.ResidueField.map_id_apply x
 
 /-- Residue-field equivalences respect composition of algebra equivalences. -/
 @[simp]

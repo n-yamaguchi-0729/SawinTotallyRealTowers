@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2FiniteStageFamily
-import Mathlib.LinearAlgebra.Dimension.Finite
+module
+
+public import Nyll.GaloisCohomology.ProP.H2FiniteStageFamily
+public import Mathlib.LinearAlgebra.Dimension.Finite
 
 /-!
 # Bounding degree two from finite-stage inflation ranges
@@ -14,6 +16,8 @@ If every finite-stage inflation range embeds in one fixed finite-dimensional tar
 families of ambient classes descending to a common stage force the whole ambient degree-two
 cohomology to have the same dimension bound.  The stage embeddings need not be compatible.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

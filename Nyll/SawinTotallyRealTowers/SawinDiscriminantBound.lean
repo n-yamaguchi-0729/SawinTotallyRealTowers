@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.SupportedDiscriminantBound
-import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.SawinTotallyRealTowers.RamificationSupport
-import Mathlib.GroupTheory.PGroup
-import Mathlib.FieldTheory.Galois.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.SupportedDiscriminantBound
+public import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.SawinTotallyRealTowers.RamificationSupport
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # A uniform discriminant bound for the initial Sawin tower
@@ -19,6 +21,8 @@ ramified rational primes belong to {3,5,7,11,13,17}, whose product is
 255255. The prime-to-degree different bound gives the same root scale
 255255 for every such finite Galois layer.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField

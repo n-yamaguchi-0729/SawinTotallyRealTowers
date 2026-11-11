@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.Topology.Algebra.Group.Quotient
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Mathlib.Topology.Algebra.Group.Quotient
 
 /-!
 # Quotient inflation followed by subgroup restriction
@@ -13,6 +15,8 @@ import Mathlib.Topology.Algebra.Group.Quotient
 Defines the continuous quotient projection and subgroup inclusion and
 identifies their composite cochain and cohomology maps with the constant-one map.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

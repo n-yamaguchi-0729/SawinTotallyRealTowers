@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
-import Mathlib.NumberTheory.RamificationInertia.Unramified
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
+public import Mathlib.NumberTheory.RamificationInertia.Unramified
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
 
 /-!
 # Finite ramification support in number-field towers
@@ -15,6 +18,8 @@ at specified finite places. This predicate retains the existing local
 unramifiedness condition outside that set. Its tower lemmas work also for
 extensions of even degree; real places are a separate condition.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

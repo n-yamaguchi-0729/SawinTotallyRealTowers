@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueQuotient
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerDecomposition
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueQuotient
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerDecomposition
 
 /-!
 # The standard Lubin--Tate action on primitive division points
@@ -26,6 +28,8 @@ action from valuation-ring units to the standard finite unit parameters.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -100,37 +104,12 @@ section AnalyticAction
 
 variable {F : LocalField.{u, v} K} {π : F.valuationSubring}
 
-private noncomputable local instance
-    standardLubinTatePrimitiveActionCoefficientUniformSpace :
-    UniformSpace F.valuationSubring :=
-  ⊥
+attribute [local instance] standardLubinTateLevelCoefficientUniformSpace
+  standardLubinTateLevelTargetWithIdeal standardLubinTateLevelTargetCompleteSpace
+  standardLubinTateLevelTargetT2Space
 
-private noncomputable local instance
-    standardLubinTatePrimitiveActionTargetWithIdeal
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    WithIdeal
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring where
-  i := (standardLubinTateLevelCompleteDVF hπ n).maximalIdeal
-
-private noncomputable local instance
-    standardLubinTatePrimitiveActionTargetCompleteSpace
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    CompleteSpace
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring := by
-  let target := standardLubinTateLevelCompleteDVF hπ n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
-
-private noncomputable local instance
-    standardLubinTatePrimitiveActionTargetT2Space
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    T2Space
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring := by
-  let target := standardLubinTateLevelCompleteDVF hπ n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).2
-
-private noncomputable local instance
+/-- The primitive level valuation ring is an algebra through its coefficient map. -/
+noncomputable local instance
     standardLubinTatePrimitiveActionAlgebra
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
     Algebra F.valuationSubring
@@ -575,7 +554,7 @@ theorem
           standardLubinTatePrimitivePointIntegerAction hπ n
             (w⁻¹ * u) := by
               congr 1
-              simp [div_eq_mul_inv, mul_comm]
+              rw [div_eq_mul_inv, mul_comm u w⁻¹]
       _ =
           standardLubinTateEndomorphismEvalAt hπ n
             (standardLubinTatePrimitivePointIntegerAction hπ n u)
@@ -606,7 +585,7 @@ theorem
           standardLubinTatePrimitivePointIntegerAction hπ n
             (w * (u / w)) := by
               congr 1
-              simp [div_eq_mul_inv, mul_left_comm]
+              exact (mul_div_cancel w u).symm
       _ =
           standardLubinTateEndomorphismEvalAt hπ n
             (standardLubinTatePrimitivePointIntegerAction hπ n (u / w))

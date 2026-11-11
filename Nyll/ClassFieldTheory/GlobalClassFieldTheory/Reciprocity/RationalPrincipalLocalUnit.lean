@@ -4,19 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrimeFactorization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrimeFactorization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.NormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.UniformizerIntegerValuation
 
 /-!
 # The ramified local unit of a rational principal idele
@@ -29,6 +36,8 @@ used by the multiplicative Lubin--Tate construction.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Transversals
+module
+
+public import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Transversals
 
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Generators
@@ -13,6 +15,8 @@ From a right Schreier transversal, this module constructs canonical
 representatives and Schreier generators, identifies the nontrivial
 representative-generator pairs, and proves their basic action identities.
 -/
+
+@[expose] public section
 
 universe u
 

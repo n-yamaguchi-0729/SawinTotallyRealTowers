@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Completed Group Algebra / All Finite Functoriality / Comap
@@ -13,6 +16,8 @@ This module constructs the inverse-image finite quotient attached to a continuou
 homomorphism and the induced quotient homomorphism. It is the index-level input for all-finite
 functoriality and has no dependency on augmentation theory.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

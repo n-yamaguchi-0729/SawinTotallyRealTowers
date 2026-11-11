@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.AdicCompletion.Basic
+module
+
+public import Mathlib.RingTheory.AdicCompletion.Basic
 
 /-!
 # Fixed points of adically contracting additive maps
@@ -20,6 +22,8 @@ uniquely.  The proof uses the successive approximations
 -/
 
 
+
+@[expose] public section
 
 namespace IsAdicComplete
 

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.LocalComponents
-import Mathlib.Algebra.Group.TransferInstance
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.LocalComponents
+public import Mathlib.Algebra.Group.TransferInstance
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
 /-!
 # The restricted local product of a relative adele algebra
@@ -21,6 +24,8 @@ chosen-basis lattice with the product of local integer rings.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -68,7 +73,9 @@ theorem RelativeLocalAdeleData.ext
     a = b := by
   cases a
   cases b
-  simp_all
+  cases hinfinite
+  cases hfinite
+  rfl
 
 /-- The `i`-th base-adele coefficient assembled from local tensor
 coordinates. -/
@@ -314,7 +321,9 @@ theorem RelativeLocalIdeleData.ext
     a = b := by
   cases a
   cases b
-  simp_all
+  cases hinfinite
+  cases hfinite
+  rfl
 
 /-- Forget local invertibility while retaining the value family. -/
 noncomputable def RelativeLocalIdeleData.value
@@ -378,6 +387,24 @@ noncomputable def relativeIdeleToLocalData
           RelativeAdeleRing K L) i).2.1 w ∈
           w.adicCompletionIntegers K at hw ⊢
     exact hw
+
+omit [NumberField L] in
+/-- Extracting local idele data preserves its infinite component. -/
+@[simp]
+theorem relativeIdeleToLocalData_infinite
+    (z : RelativeIdeleGroup K L) (w : InfinitePlace K) :
+    (relativeIdeleToLocalData (K := K) (L := L) z).infinite w =
+      RelativeIdeleGroup.infiniteComponent (K := K) (L := L) w z :=
+  rfl
+
+omit [NumberField L] in
+/-- Extracting local idele data preserves its finite component. -/
+@[simp]
+theorem relativeIdeleToLocalData_finite
+    (z : RelativeIdeleGroup K L) (w : HeightOneSpectrum (𝓞 K)) :
+    (relativeIdeleToLocalData (K := K) (L := L) z).finite w =
+      RelativeIdeleGroup.finiteComponent (K := K) (L := L) w z :=
+  rfl
 
 /-- Assemble a restricted local-unit family into a relative idele. -/
 noncomputable def relativeIdeleOfLocalData

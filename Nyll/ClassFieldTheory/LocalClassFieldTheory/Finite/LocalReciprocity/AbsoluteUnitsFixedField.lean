@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
-import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
-import Mathlib.RepresentationTheory.Rep.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
+public import Mathlib.RepresentationTheory.Rep.Basic
 
 /-!
 # Finite local reciprocity: Galois units and fixed fields
@@ -22,6 +24,8 @@ closure is essential in positive characteristic: the fixed field of
 `Aut(K^alg/K)` inside `K^alg` need not be `K` when `K` is imperfect.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 
 open RamificationTheory KummerTheory CyclicCohomology
@@ -30,11 +34,13 @@ open RamificationTheory KummerTheory CyclicCohomology
 
 noncomputable section
 
-variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
+universe u v w
+
+variable (K : Type u) (Ω : Type v) [Field K] [Field Ω] [Algebra K Ω]
 
 /-- The actual Galois representation on `Ωˣ`, written additively for the
 group-cohomology API. -/
-abbrev galoisAmbientUnitsRep : Rep ℤ (Gal(Ω / K)) :=
+abbrev galoisAmbientUnitsRep : Rep.{v} ℤ (Gal(Ω / K)) :=
   Rep.ofAlgebraAutOnUnits K Ω
 
 /-- Inclusion of the units of an intermediate field into the units of the
@@ -174,7 +180,7 @@ theorem intermediateFieldUnitsEquivGaloisFixed_coe
 needed when an abstract finite extension is realized inside a separable
 closure. -/
 def embeddedFieldUnitsEquivGaloisFixed
-    (L : Type) [Field L] [Algebra K L]
+    (L : Type w) [Field L] [Algebra K L]
     (i : L →ₐ[K] Ω) :
     Additive Lˣ ≃+ ambientFixedAddSubgroup (galoisAmbientUnitsRep K Ω)
       (closedFixingSubgroup K Ω (AlgHom.fieldRange i)) :=
@@ -185,7 +191,7 @@ def embeddedFieldUnitsEquivGaloisFixed
 /-- States the theorem `embeddedFieldUnitsEquivGaloisFixed_coe`. -/
 @[simp]
 theorem embeddedFieldUnitsEquivGaloisFixed_coe
-    (L : Type) [Field L] [Algebra K L]
+    (L : Type w) [Field L] [Algebra K L]
     (i : L →ₐ[K] Ω) (x : Lˣ) :
     (embeddedFieldUnitsEquivGaloisFixed K Ω L i (Additive.ofMul x)).1 =
       Additive.ofMul (Units.map i.toRingHom.toMonoidHom x) :=

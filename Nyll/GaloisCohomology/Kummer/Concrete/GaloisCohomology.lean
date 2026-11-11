@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+module
+
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 
 /-!
 # Galois cohomology for Kummer theory
@@ -13,6 +15,8 @@ Hilbert 90 and multiplicative cocycle statements used by the concrete Kummer cor
 -/
 
 
+
+@[expose] public section
 
 namespace KummerTheory
 

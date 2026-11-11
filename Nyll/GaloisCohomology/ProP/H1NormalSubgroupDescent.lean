@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Invariants
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Invariants
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Degree-one descent along a normal subgroup
@@ -17,6 +19,8 @@ subgroup gives the degree-one vanishing induction step for arbitrary
 coefficients.  The construction is used to propagate cyclic class-formation
 vanishing to finite solvable extensions.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

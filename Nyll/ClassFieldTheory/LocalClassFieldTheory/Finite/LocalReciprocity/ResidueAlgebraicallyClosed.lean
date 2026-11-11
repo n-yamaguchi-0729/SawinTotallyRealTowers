@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAlgebraicClosureDegree
-import Mathlib.FieldTheory.PurelyInseparable.Basic
-import Mathlib.RingTheory.Valuation.Integral
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAlgebraicClosureDegree
+public import Mathlib.FieldTheory.PurelyInseparable.Basic
+public import Mathlib.RingTheory.Valuation.Integral
+public import Mathlib.RingTheory.Valuation.ValuationSubring
 
 /-!
 # Residues of algebraically closed valued fields
@@ -17,6 +19,8 @@ algebraically closed.  This is the missing source needed to apply the
 intrinsic finite-field degree map to the residue of an algebraic closure of a
 local field.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -123,8 +127,8 @@ theorem valuationSubringComapMap_isLocalHom (A : ValuationSubring Omega) :
   let xu : (A.comap (algebraMap F Omega))ˣ :=
     { val := x
       inv := xinv
-      val_inv := by apply Subtype.ext; simp [xinv, hx0]
-      inv_val := by apply Subtype.ext; simp [xinv, hx0] }
+      val_inv := Subtype.ext (mul_inv_cancel₀ hx0)
+      inv_val := Subtype.ext (inv_mul_cancel₀ hx0) }
   exact ⟨xu, rfl⟩
 
 /-- The residue-field embedding induced by pullback of a valuation ring. -/

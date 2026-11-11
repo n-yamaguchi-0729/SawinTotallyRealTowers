@@ -4,14 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.Topology.Algebra.Nonarchimedean.Basic
-import Mathlib.Topology.Instances.ZMod
-import Nyll.ProCGroups.Completion.UniversalProperty
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
-import Nyll.ProCGroups.FiniteGeneration.CharacteristicChainsAndIndices
-import Nyll.ProCGroups.ProC.Category.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
+module
+
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.Topology.Algebra.Nonarchimedean.Basic
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ProCGroups.Completion.UniversalProperty
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.FiniteGeneration.CharacteristicChainsAndIndices
+public import Nyll.ProCGroups.ProC.Category.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
 
 /-!
 # Pro C Groups / Free pro-C / Basic
@@ -20,6 +26,8 @@ This module defines the free and pointed free pro-\(C\) universal properties,
 their converging-set form, and the bundled canonical source data used by later
 constructions.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology

@@ -4,7 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitAbstractFixedField
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitAbstractFixedField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Finite extensions in the rational idele-class representation
@@ -15,6 +26,8 @@ the relative idele class group of its two actual fixed fields.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace GlobalClassFieldTheory
@@ -24,7 +37,11 @@ open ClassFormation
 open LocalClassFieldTheory
 open CyclicCohomology
 
-private noncomputable instance
+attribute [local instance]
+  rationalAbstractFixedFieldFiniteDimensional rationalIdeleClassDirectLimitSMul
+
+/-- The tower idele class quotient carries its canonical commutative group structure. -/
+noncomputable local instance
     rationalAbstractTowerClassGroupCommGroup
     (F E : Type)
     [Field F] [NumberField F]
@@ -38,28 +55,6 @@ private noncomputable instance
   exact
     QuotientGroup.Quotient.commGroup
       (TowerRelativeIdeleGroup.principalSubgroup ℚ F E)
-
-private noncomputable instance
-    rationalAbstractTowerClassGroupMul
-    (F E : Type)
-    [Field F] [NumberField F]
-    [Field E] [NumberField E]
-    [Algebra ℚ F] [Algebra F E] [Algebra ℚ E]
-    [IsScalarTower ℚ F E]
-    [FiniteDimensional ℚ F] [FiniteDimensional F E] :
-    Mul (TowerRelativeIdeleGroup.ClassGroup ℚ F E) :=
-  (rationalAbstractTowerClassGroupCommGroup F E).toMul
-
-private noncomputable instance
-    rationalAbstractTowerClassGroupMulOneClass
-    (F E : Type)
-    [Field F] [NumberField F]
-    [Field E] [NumberField E]
-    [Algebra ℚ F] [Algebra F E] [Algebra ℚ E]
-    [IsScalarTower ℚ F E]
-    [FiniteDimensional ℚ F] [FiniteDimensional F E] :
-    MulOneClass (TowerRelativeIdeleGroup.ClassGroup ℚ F E) :=
-  (rationalAbstractTowerClassGroupCommGroup F E).toMulOneClass
 
 private noncomputable instance
     rationalAbstractRelativeClassGroupCommGroup
@@ -116,41 +111,24 @@ noncomputable def rationalAbstractExtensionIdeleClassEquiv
     let E :=
       LocalClassFieldTheory.abstractRelativeFixedField
         ℚ (SeparableClosure ℚ) hLK
-    letI := hnormal
-    letI : FiniteDimensional ℚ F :=
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
       LocalClassFieldTheory.abstractFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K hKfinite
-    letI : FiniteDimensional F E :=
+    let : FiniteDimensional F E :=
       LocalClassFieldTheory.abstractRelativeFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-    letI : IsScalarTower ℚ F E :=
+    let : IsScalarTower ℚ F E :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional ℚ E :=
+    let : FiniteDimensional ℚ E :=
       FiniteDimensional.trans ℚ F E
-    letI : NumberField F := NumberField.of_module_finite ℚ F
-    letI : NumberField E := NumberField.of_module_finite ℚ E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
     (extensionFixedRepresentation rationalIdeleClassRepresentation
       K L hLK hnormal).V ≃+
       Additive (RelativeIdeleGroup.ClassGroup F E) := by
-  let F :=
-    LocalClassFieldTheory.abstractFixedField
-      ℚ (SeparableClosure ℚ) K
-  let E :=
-    LocalClassFieldTheory.abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) hLK
-  letI := hnormal
-  letI : FiniteDimensional ℚ F :=
-    LocalClassFieldTheory.abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  letI : FiniteDimensional F E :=
-    LocalClassFieldTheory.abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  letI : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  letI : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  letI : NumberField F := NumberField.of_module_finite ℚ F
-  letI : NumberField E := NumberField.of_module_finite ℚ E
+  intro F E sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7 sharedOwner8
+    sharedOwner9
   let eFixed :
       Additive (IdeleClassGroup E) ≃+
         KummerTheory.ambientFixedAddSubgroup
@@ -212,6 +190,11 @@ theorem rationalIdeleClassEquivFixed_relativeCosetAction_coe
         (rationalNormalClosure K)
         (RelativeIdeleGroup.classEmbedding
           (rationalBaseFixingCosetEquivNormalClosure K q) c)) := by
+  let absoluteLevelSMul :
+      (E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ)) →
+        SMul (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
+          (RelativeIdeleGroup.ClassGroup ℚ E) :=
+    fun E => (rationalAbsoluteGaloisIdeleClassAction E).toSMul
   let hKN :
       K ≤ (rationalNormalClosure K :
         IntermediateField ℚ (SeparableClosure ℚ)) :=
@@ -266,7 +249,11 @@ theorem rationalIdeleClassEquivFixed_relativeCosetAction_coe
               (K := ℚ) (L := K) c)⟩⟧ :
           rationalIdeleClassDirectLimit)
     from rfl,
-    DirectLimit.smul_def]
+    DirectLimit.smul_def
+      (R := SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
+      (G := fun E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ) =>
+        RelativeIdeleGroup.ClassGroup ℚ E)
+      (f := fun _ _ h => rationalRelativeIdeleClassTransition h)]
   apply congrArg Additive.ofMul
   apply congrArg
     (fun d :

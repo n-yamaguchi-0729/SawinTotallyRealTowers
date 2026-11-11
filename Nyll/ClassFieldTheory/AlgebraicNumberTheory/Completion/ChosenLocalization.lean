@@ -4,8 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # The chosen localization at a finite place
@@ -17,6 +24,8 @@ unramifiedness for that actual completed extension.
 
 
 
+@[expose] public section
+
 open scoped NumberField ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
@@ -26,8 +35,10 @@ open AlgebraicNumberTheory.Valuations
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
+universe u v
+
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

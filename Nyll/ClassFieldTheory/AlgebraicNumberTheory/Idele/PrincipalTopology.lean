@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
-import Mathlib.Topology.Algebra.IsUniformGroup.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Mathlib.Topology.Algebra.IsUniformGroup.Basic
 
 /-!
 # The topology of the principal ideles
@@ -21,6 +23,8 @@ whose topology is discrete.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

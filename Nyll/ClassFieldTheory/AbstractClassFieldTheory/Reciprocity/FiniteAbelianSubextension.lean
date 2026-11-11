@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
-import Mathlib.Algebra.Group.Subgroup.Pointwise
-import Mathlib.Topology.Algebra.Group.Pointwise
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
+public import Mathlib.Algebra.Group.Subgroup.Pointwise
+public import Mathlib.Topology.Algebra.Group.Pointwise
 
 /-!
 # Finite abelian extensions in abstract reciprocity
@@ -27,13 +29,15 @@ bijection itself, require the abstract reciprocity theorem and are deliberately 
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace ClassFormation
 
 open CyclicCohomology KummerTheory
 
-universe u
+universe u v
 
 section GroupOnly
 
@@ -403,8 +407,7 @@ end GroupOnly
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace FiniteAbelianSubextension
 
@@ -412,7 +415,7 @@ variable {K : ClosedSubgroup G}
 
 /-- The norm subgroup assigned to a finite abelian extension,
 `N_L = N_{L/K} A_L` in the finite abelian class-field classification. -/
-def normSubgroup (A : Rep ℤ G) (L : FiniteAbelianSubextension K) :
+def normSubgroup (A : Rep.{v} ℤ G) (L : FiniteAbelianSubextension K) :
     AddSubgroup (ambientFixedAddSubgroup A K) := by
   letI : Finite (K.toSubgroup ⧸
       extensionSubgroup K L.field L.below) := L.finite
@@ -420,7 +423,7 @@ def normSubgroup (A : Rep ℤ G) (L : FiniteAbelianSubextension K) :
 
 /-- The source-level implication in the order formula:
 an inclusion of fields gives the reverse inclusion of norm subgroups. -/
-theorem normSubgroup_antitone (A : Rep ℤ G)
+theorem normSubgroup_antitone (A : Rep.{v} ℤ G)
     {L₁ L₂ : FiniteAbelianSubextension K} (h : L₁ ≤ L₂) :
     normSubgroup A L₂ ≤ normSubgroup A L₁ := by
   let : Finite (K.toSubgroup ⧸
@@ -450,7 +453,7 @@ theorem normSubgroup_antitone (A : Rep ℤ G)
 
 /-- The unconditional half of
 `N_{L₁L₂} = N_{L₁} ∩ N_{L₂}` in the finite abelian class-field classification. -/
-theorem normSubgroup_compositum_le_inf (A : Rep ℤ G)
+theorem normSubgroup_compositum_le_inf (A : Rep.{v} ℤ G)
     (L₁ L₂ : FiniteAbelianSubextension K) :
     normSubgroup A (L₁.compositum L₂) ≤
       normSubgroup A L₁ ⊓ normSubgroup A L₂ := by
@@ -462,7 +465,7 @@ theorem normSubgroup_compositum_le_inf (A : Rep ℤ G)
 `N_{L₁∩L₂} = N_{L₁}N_{L₂}` in additive notation. -/
 theorem sup_normSubgroup_le_intersection
     [IsTopologicalGroup G] [CompactSpace G]
-    (A : Rep ℤ G) (L₁ L₂ : FiniteAbelianSubextension K) :
+    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteAbelianSubextension K) :
     normSubgroup A L₁ ⊔ normSubgroup A L₂ ≤
       normSubgroup A (L₁.intersection L₂) := by
   apply sup_le

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
 
 /-!
 # Finite local reciprocity: finite abstract fields inside a separable closure
@@ -19,6 +21,8 @@ field.  It is the field-theoretic input needed before the local class-field-axio
 applied.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 open RamificationTheory KummerTheory CyclicCohomology
 
@@ -28,7 +32,9 @@ open ClassFormation
 
 noncomputable section
 
-variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
+universe u v
+
+variable (k : Type u) (Ω : Type v) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
 
 /-- The concrete fixed field represented by an abstract closed subgroup. -/
 abbrev abstractFixedField (H : ClosedSubgroup (Gal(Ω/k))) :
@@ -260,12 +266,12 @@ def abstractExtensionQuotientEquivAmbient
     (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
-    letI := hnormal
+    let := hnormal
     letI := abstractRelativeFixingSubgroup_normal k Ω K L hLK hnormal
     K.toSubgroup ⧸ extensionSubgroup K L hLK ≃*
       Gal(Ω/abstractFixedField k Ω K) ⧸
         (abstractRelativeFixedField k Ω hLK).fixingSubgroup := by
-  letI := hnormal
+  intro sharedOwner1
   letI : (abstractRelativeFixedField k Ω hLK).fixingSubgroup.Normal :=
     abstractRelativeFixingSubgroup_normal k Ω K L hLK hnormal
   exact (QuotientGroup.quotientMulEquivOfEq
@@ -282,10 +288,10 @@ def abstractExtensionQuotientEquivGaloisGroup
     (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
-    letI := hnormal
+    let := hnormal
     K.toSubgroup ⧸ extensionSubgroup K L hLK ≃*
       Gal(abstractRelativeFixedField k Ω hLK/abstractFixedField k Ω K) := by
-  letI := hnormal
+  intro sharedOwner1
   letI : (abstractRelativeFixedField k Ω hLK).fixingSubgroup.Normal :=
     abstractRelativeFixingSubgroup_normal k Ω K L hLK hnormal
   let H : ClosedSubgroup (Gal(Ω/abstractFixedField k Ω K)) :=
@@ -310,14 +316,12 @@ theorem abstractFixedField_relativeFiniteDimensional
       extensionSubgroup (baseField (Gal(Ω/k))) K (le_baseField K)))
     (hLKfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)) :
-    letI : Algebra (abstractFixedField k Ω K) (abstractFixedField k Ω L) :=
+    let : Algebra (abstractFixedField k Ω K) (abstractFixedField k Ω L) :=
       RingHom.toAlgebra
         (IntermediateField.inclusion (abstractFixedField_le k Ω hLK))
     FiniteDimensional (abstractFixedField k Ω K)
       (abstractFixedField k Ω L) := by
-  let : Algebra (abstractFixedField k Ω K) (abstractFixedField k Ω L) :=
-    RingHom.toAlgebra
-      (IntermediateField.inclusion (abstractFixedField_le k Ω hLK))
+  intro sharedOwner1
   let : IsScalarTower k (abstractFixedField k Ω K)
       (abstractFixedField k Ω L) :=
     IsScalarTower.of_algebraMap_eq' rfl

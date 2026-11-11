@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.DiscreteGenerators
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Rules
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.DiscreteGenerators
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Rules
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
 
 /-!
 # Fox differential: completed — continuous — universal — basic
@@ -25,9 +27,11 @@ The principal declarations in this module are:
 - `continuous_zcUniversalDifferential_universalTopology`
   The universal crossed differential is continuous for the final universal topology.
 - `continuous_zcCompletedDifferentialModuleLift_universalTopology_iff`
-  The completed differential-module criterion is equivalent to the corresponding finite-stage
-  coordinate condition.
+  For the topology coinduced by the universal differential, the representing linear lift is
+  continuous exactly when the crossed differential is continuous.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -66,8 +70,8 @@ variable {A : Type*} [AddCommGroup A] [Module (ZCCompletedGroupAlgebra C H) A]
 variable [TopologicalSpace A]
 
 /--
-The completed differential-module criterion is equivalent to the corresponding finite-stage
-coordinate condition.
+For the topology coinduced by the universal differential, the representing linear lift is
+continuous exactly when the crossed differential is continuous.
 -/
 theorem continuous_zcCompletedDifferentialModuleLift_universalTopology_iff
     {ψ : G →* H}
@@ -96,7 +100,8 @@ section ContinuousLinearMapPackaging
 
 variable (ψ : G →* H)
 
-/-- The completed differential module carries the universal finite-stage topology. -/
+/-- The algebraic differential quotient carries the final topology coinduced by the universal
+crossed differential. This is not the finite-stage induced topology. -/
 instance zcCompletedDifferentialModuleUniversalTopologyInst :
     TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
   zcUniversalDifferentialFinalTopology C ψ
@@ -429,8 +434,9 @@ section ContinuousLinearMapPackaging
 variable (ψ : FreeGroup X →* H)
 
 /--
-The free completed differential pre-module carries the finite-stage topology used before
-quotienting by crossed-differential relations.
+The algebraic differential quotient carries the topology induced by its completed free Fox
+coordinates. The crossed-differential relations have already been imposed. This declaration
+does not identify the coordinate topology with the universal final topology.
 -/
 @[reducible] def zcCompletedDifferentialModuleFreeTopologyInst :
     TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Boundary
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Relators
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Quotient.Fundamental
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Boundary
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Relators
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Quotient.Fundamental
 
 /-!
 # Fox differential: finite stage — stage — fundamental — derivative
@@ -24,6 +26,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageGroupAlgebraDerivative_one`
   The finite-stage group-algebra derivative sends the unit to zero.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

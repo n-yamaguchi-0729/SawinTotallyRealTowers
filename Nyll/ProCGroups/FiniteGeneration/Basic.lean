@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FreeGroup.Basic
-import Nyll.ProCGroups.Generation.QuotientGeneratorConvergingPairs
+module
+
+public import Mathlib.GroupTheory.FreeGroup.Basic
+public import Nyll.ProCGroups.Generation.QuotientGeneratorConvergingPairs
+public import Nyll.ProCGroups.InverseSystems.Basic
+public import Nyll.ProCGroups.InverseSystems.CompatibilityAndSurjectivity
 
 /-!
 # Basic results on topological finite generation
@@ -13,6 +17,8 @@ import Nyll.ProCGroups.Generation.QuotientGeneratorConvergingPairs
 This module defines topological finite generation and topologically characteristic subgroups,
 then relates finite generating sets to free-group maps and generator-converging families.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

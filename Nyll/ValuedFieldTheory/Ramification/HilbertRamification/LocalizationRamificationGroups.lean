@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationDensity
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationDensity
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Localization of inertia and ramification groups
@@ -18,6 +22,8 @@ ramification groups.  The difficult global-to-local implications use density
 of `L` in the algebraic localization, proved in
 `RamificationTheory.HilbertRamification.LocalizationDensity`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -68,7 +74,8 @@ abbrev algebraicLocalizationValuationSubring :
 include hvK
 
 omit [IsGalois K L] in
-private theorem mem_extensionValuationSubring_smul
+/-- The absolute-value decomposition group preserves its valuation subring. -/
+theorem mem_extensionValuationSubring_smul
     (sigma : absoluteValueDecompositionGroup K w.1) :
     (sigma : L ≃ₐ[K] L) •
         absoluteValueExtensionValuationSubring vK w hw =
@@ -138,7 +145,8 @@ def localizationRamificationGroups_absoluteValueDecompositionGroupEquiv :
     apply Subtype.ext
     rfl
 
-private theorem local_mem_localizationValuationSubring_smul
+/-- Every automorphism over the completed base preserves the localization valuation subring. -/
+theorem local_mem_localizationValuationSubring_smul
     (tau : localizationRamificationGroups_localization vK w ≃ₐ[vK.Completion]
       localizationRamificationGroups_localization vK w) :
     tau • algebraicLocalizationValuationSubring vK w hw =

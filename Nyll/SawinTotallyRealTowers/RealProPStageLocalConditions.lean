@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+module
+
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 
 /-!
 # Local conditions of actual finite real p-layers
@@ -14,6 +16,8 @@ import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparis
 The global ramification certificates on an admissible finite layer imply
 the actual chosen-completion conditions used by finite H² localization.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
 
 /-!
 # Hilbert 90 and negative Tate cohomology of field units
@@ -14,6 +16,8 @@ For a finite field extension with a chosen generator of its automorphism group,
 the cyclic comparison between first group cohomology and negative Tate cohomology
 transports Hilbert 90 to the statement that the latter group has cardinality one.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 

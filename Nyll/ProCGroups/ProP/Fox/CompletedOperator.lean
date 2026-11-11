@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPGroupDerivative
-import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.ProfiniteModule
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Comparison
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPGroupDerivative
+public import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.ProfiniteModule
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Comparison
 
 /-!
 # Completed mod-p Fox operators
@@ -16,6 +18,8 @@ to its completed group algebra.  The resulting continuous linear map is then
 transported from the all-finite completion to the `p`-group-indexed model used
 by the Zassenhaus filtration.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

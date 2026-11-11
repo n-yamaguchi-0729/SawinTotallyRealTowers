@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
-import Mathlib.NumberTheory.NumberField.ProductFormula
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+public import Mathlib.NumberTheory.NumberField.ProductFormula
 
 /-!
 # The absolute norm of an idele
@@ -18,6 +20,8 @@ norm.  This is the convention for which principal ideles have norm one.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct NNReal
 open NumberField IsDedekindDomain

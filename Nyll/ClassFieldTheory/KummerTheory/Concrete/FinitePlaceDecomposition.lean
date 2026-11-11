@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
-import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
-import Mathlib.Algebra.Group.Hom.Basic
-import Mathlib.Algebra.Group.Subgroup.Ker
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
+public import Mathlib.Algebra.Group.Hom.Basic
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Kummer radicals and finite-place decomposition fields
@@ -24,6 +29,8 @@ two roots with the same `n`-th power differ by an `n`-th root of unity.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
@@ -32,9 +39,11 @@ open LocalClassFieldTheory
 
 noncomputable section
 
+universe u v w
+
 namespace KummerTheory
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

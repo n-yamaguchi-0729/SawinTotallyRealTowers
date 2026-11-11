@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Rat.Cast.Defs
+module
+
+public import Mathlib.Data.Nat.Squarefree
+public import Mathlib.Data.Rat.Cast.Defs
 
 /-!
 # Integral rational coordinates after multiplication by a squarefree integer
@@ -14,6 +16,8 @@ If a signed squarefree integer times the square of a rational number is
 integral, the denominator squared divides the squarefree integer. Coprimality
 of the rational numerator and denominator then forces the denominator to be one.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.Algebra.Group.Units.Equiv
-import Mathlib.Algebra.Group.Subgroup.Map
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.RingTheory.Valuation.RamificationGroup
+module
+
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.Algebra.Group.Units.Equiv
+public import Mathlib.Algebra.Group.Subgroup.Map
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.RingTheory.Valuation.RamificationGroup
 
 /-!
 # Hilbert ramification theory: valuation-subring layer
@@ -19,6 +21,8 @@ sequence.  For an arbitrary valuation subring the residue action need not be
 onto the full residue automorphism group; the canonical theorem is the exact
 sequence with target equal to the range of the residue action.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 

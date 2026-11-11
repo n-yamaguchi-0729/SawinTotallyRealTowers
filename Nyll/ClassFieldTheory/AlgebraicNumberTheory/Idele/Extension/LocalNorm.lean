@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
-import Nyll.ValuedFieldTheory.Valuation.Completion.DegreeNormTrace
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ValuedFieldTheory.Valuation.Completion.DegreeNormTrace
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Local components of the idele norm
@@ -18,6 +21,8 @@ this calculation to the canonical completion decomposition.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators TensorProduct
 
@@ -44,10 +49,10 @@ theorem localNorm_eq_prod
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (z : vK.Completion ⊗[K] L) :
-    letI :=
+    let :=
       completionTensorDecomposition_extensionFintype
         (K := K) (L := L) vK hvK
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let : ∀ w : AbsoluteValueExtension vK L,
         Algebra vK.Completion w.1.Completion :=
       fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
     letI : ∀ w : AbsoluteValueExtension vK L,
@@ -58,13 +63,8 @@ theorem localNorm_eq_prod
         _root_.Algebra.norm vK.Completion
           (completionTensorDecomposition_left
             (K := K) (L := L) vK hvK z w) := by
+  intro sharedOwner1 sharedOwner2
   classical
-  let :=
-    completionTensorDecomposition_extensionFintype
-      (K := K) (L := L) vK hvK
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Algebra vK.Completion w.1.Completion :=
-    fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
   let : ∀ w : AbsoluteValueExtension vK L,
       Module.Free vK.Completion w.1.Completion :=
     fun w ↦ Module.Free.of_divisionRing

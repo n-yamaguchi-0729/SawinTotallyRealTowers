@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
 
 /-!
 # normalized degree and Frobenius theory: lifting finite Galois automorphisms
@@ -13,6 +15,8 @@ This file defines the Frobenius semigroup in `G(\widetilde L|K)` and proves
 the lifting statement of the finite degree-quotient decomposition.  Positivity is explicit, so the
 convention `0 ∉ ℕ` is not lost in Lean's natural numbers.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -69,7 +73,8 @@ instance extensionInertiaWithin_normal (D : DegreeData G)
   rw [extensionInertiaWithin]
   infer_instance
 
-private theorem extensionInertiaWithin_le_normalizedDegree_ker
+/-- Relative inertia is killed by the normalized degree map of the base field. -/
+theorem extensionInertiaWithin_le_normalizedDegree_ker
     (D : DegreeData G) (K : FiniteResidueAbstractField D)
     (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup) :

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
 
 /-!
 # Finite-separable comparison of restricted valuation rings
@@ -17,6 +20,8 @@ other extension valuation ring on the finite field.  This is the
 valuation-ring comparison used in the finite local reciprocity construction before comparing residue
 degrees.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 

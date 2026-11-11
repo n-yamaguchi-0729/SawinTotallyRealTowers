@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Mathlib.RingTheory.WittVector.Compare
-import Mathlib.RingTheory.WittVector.Complete
-import Mathlib.RingTheory.WittVector.FrobeniusFractionField
-import Nyll.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Mathlib.RingTheory.WittVector.Compare
+public import Mathlib.RingTheory.WittVector.Complete
+public import Mathlib.RingTheory.WittVector.FrobeniusFractionField
+public import Nyll.ValuedFieldTheory.Valuation.Topology.AdicContractingFixedPoint
 
 /-!
 # The coefficient source for the p-adic changed-uniformizer intertwiner
@@ -29,6 +31,8 @@ uses mathlib's equivalence `W(ZMod p) ≃+* ℤ_[p]`, and `φ` is
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -116,7 +120,8 @@ noncomputable def padicValuationUnitToCompletedUnramifiedWittUnit
   Units.map
     (padicValuationSubringToCompletedUnramifiedWittRing p).toMonoidHom
 
-private theorem completedUnramifiedWittUnit_coeff_zero_ne_zero
+/-- A unit in the completed unramified Witt ring has nonzero constant coefficient. -/
+theorem completedUnramifiedWittUnit_coeff_zero_ne_zero
     (p : ℕ) [Fact p.Prime]
     (u : (padicCompletedUnramifiedWittRing p)ˣ) :
     ((u : padicCompletedUnramifiedWittRing p).coeff 0) ≠ 0 := by
@@ -127,7 +132,8 @@ private theorem completedUnramifiedWittUnit_coeff_zero_ne_zero
     u.isUnit.map WittVector.constantCoeff
   simpa only [WittVector.constantCoeff_apply] using hu.ne_zero
 
-private theorem padicChangedUniformizerRotation_coeff_zero_ne_zero
+/-- The Frobenius rotation for a changed uniformizer has nonzero constant coefficient. -/
+theorem padicChangedUniformizerRotation_coeff_zero_ne_zero
     (p : ℕ) [Fact p.Prime]
     (u : (padicLocalField p).valuationSubringˣ) :
     (WittVector.frobeniusRotation p

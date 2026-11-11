@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
-import Mathlib.NumberTheory.Padics.ProperSpace
-import Mathlib.NumberTheory.Padics.ValuativeRel
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Mathlib.NumberTheory.Padics.ProperSpace
+public import Mathlib.NumberTheory.Padics.ValuativeRel
 
 /-!
 # The p-adic field as a nonarchimedean local field
@@ -16,6 +18,8 @@ the topology-first local-field interface used by this library.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -32,7 +36,7 @@ theorem mulValuation_le_one_iff_norm_le_one
     Padic.mulValuation (p := p) x ≤ 1 ↔ ‖x‖ ≤ 1 := by
   classical
   by_cases hx : x = 0
-  · simp [hx]
+  · simp only [hx, Padic.mulValuation_toFun, ↓reduceIte, zero_le, norm_zero, zero_le_one]
   · rw [Padic.norm_le_one_iff_val_nonneg]
     change (if x = 0 then 0 else WithZero.exp (-x.valuation)) ≤ 1 ↔
       0 ≤ x.valuation
@@ -59,9 +63,10 @@ theorem normedFieldValuation_compatible_padic :
   rw [← NNReal.coe_le_coe]
   change Padic.mulValuation x ≤ Padic.mulValuation y ↔ ‖x‖ ≤ ‖y‖
   by_cases hx : x = 0
-  · simp [hx]
+  · simp only [hx, Padic.mulValuation_toFun, ↓reduceIte, zero_le, norm_zero, norm_nonneg]
   by_cases hy : y = 0
-  · simp [hy, hx]
+  · simp only [Padic.mulValuation_toFun, hx, ↓reduceIte, hy, nonpos_iff_eq_zero,
+    WithZero.exp_ne_zero, norm_zero, norm_le_zero_iff]
   rw [Padic.norm_eq_zpow_neg_valuation hx,
     Padic.norm_eq_zpow_neg_valuation hy]
   change (if x = 0 then 0 else WithZero.exp (-x.valuation)) ≤

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Valuation.ValuationRing
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
+module
+
+public import Mathlib.RingTheory.Valuation.ValuationRing
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
 
 /-!
 # the finite minimum coefficient
@@ -16,6 +18,8 @@ valuation and calls it `π`.  In a valuation ring this is the same algebraic
 input as choosing one coefficient that divides all coefficients in the finite
 set.
 -/
+
+@[expose] public section
 
 noncomputable section
 

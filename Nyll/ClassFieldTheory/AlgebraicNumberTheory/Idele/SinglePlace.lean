@@ -4,11 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Pi.Lemmas
-import Mathlib.Order.Filter.Cofinite
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+module
+
+public import Mathlib.Algebra.Group.Pi.Lemmas
+public import Mathlib.Order.Filter.Cofinite
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Ideles supported at one place
@@ -20,6 +25,8 @@ relative idele.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -33,7 +40,7 @@ variable {K : Type*} [Field K] [NumberField K]
 open scoped Classical in
 /-- The dependent archimedean value which is `x` at `v` and `1`
 elsewhere. -/
-private def infinitePlaceValue
+def infinitePlaceValue
     (v : InfinitePlace K)
     (x : v.Completionˣ) :
     (w : InfinitePlace K) → w.Completionˣ :=
@@ -184,7 +191,7 @@ def infinitePlaceIdeleClass
 
 open scoped Classical in
 /-- The dependent local value which is `x` at `v` and `1` elsewhere. -/
-private def finitePlaceValue
+def finitePlaceValue
     (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ)
     (w : HeightOneSpectrum (𝓞 K)) :
@@ -295,7 +302,7 @@ variable
 open scoped Classical in
 /-- The dependent archimedean tensor value which is `z` at `v` and
 `1` elsewhere. -/
-private def relativeInfinitePlaceValue
+def relativeInfinitePlaceValue
     (v : InfinitePlace K)
     (z : (v.Completion ⊗[K] L)ˣ)
     (w : InfinitePlace K) :
@@ -320,7 +327,7 @@ private theorem relativeInfinitePlaceValue_of_ne
   simp [relativeInfinitePlaceValue, h]
 
 /-- Restricted local tensor data supported at one archimedean place. -/
-private noncomputable def relativeInfinitePlaceData
+noncomputable def relativeInfinitePlaceData
     (v : InfinitePlace K)
     (z : (v.Completion ⊗[K] L)ˣ) :
     RelativeLocalIdeleData (K := K) (L := L) where
@@ -420,7 +427,7 @@ theorem relativeInfinitePlaceIdele_finiteComponent
 open scoped Classical in
 /-- The dependent local tensor value which is `z` at `v` and `1`
 elsewhere. -/
-private def relativeFinitePlaceValue
+def relativeFinitePlaceValue
     (v : HeightOneSpectrum (𝓞 K))
     (z : (v.adicCompletion K ⊗[K] L)ˣ)
     (w : HeightOneSpectrum (𝓞 K)) :
@@ -437,7 +444,7 @@ private theorem relativeFinitePlaceValue_same
 
 omit [NumberField L] [FiniteDimensional K L] in
 @[simp]
-private theorem relativeFinitePlaceValue_of_ne
+theorem relativeFinitePlaceValue_of_ne
     (v w : HeightOneSpectrum (𝓞 K))
     (z : (v.adicCompletion K ⊗[K] L)ˣ)
     (h : w ≠ v) :
@@ -445,7 +452,7 @@ private theorem relativeFinitePlaceValue_of_ne
   simp [relativeFinitePlaceValue, h]
 
 /-- Restricted local data supported at one finite place. -/
-private noncomputable def relativeFinitePlaceData
+noncomputable def relativeFinitePlaceData
     (v : HeightOneSpectrum (𝓞 K))
     (z : (v.adicCompletion K ⊗[K] L)ˣ) :
     RelativeLocalIdeleData (K := K) (L := L) where

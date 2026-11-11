@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # The prime-degree subextension of a cyclic prime-power extension
@@ -24,6 +27,10 @@ there ascends to `L`.
 
 
 
+@[expose] public section
+
+universe u v
+
 open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
 
@@ -34,7 +41,7 @@ open HilbertRamification
 
 section ValuationRestriction
 
-variable {F E : Type}
+variable {F : Type u} {E : Type v}
     [Field F] [Field E] [Algebra F E]
 
 /-- Restrict an actual extension of an absolute value to an
@@ -327,9 +334,10 @@ theorem absoluteValueDecompositionGroup_eq_of_exactExtensions_of_isMulCommutativ
 
 end DecompositionGroupChoice
 
+
 section ValuationRestriction
 
-variable {F E : Type}
+variable {F : Type u} {E : Type v}
     [Field F] [Field E] [Algebra F E]
 
 /-- Triviality of a decomposition group is preserved when the chosen
@@ -387,7 +395,7 @@ theorem absoluteValueDecompositionGroup_eq_bot_independent_extension
 
 end ValuationRestriction
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L]
     [Algebra K L]

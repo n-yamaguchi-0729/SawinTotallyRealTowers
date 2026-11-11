@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
 
 /-!
 # Comparing the standard and multiplicative Lubin--Tate series over `ℚ_p`
@@ -21,6 +23,8 @@ it does not identify the two actions from equality of their kernels.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

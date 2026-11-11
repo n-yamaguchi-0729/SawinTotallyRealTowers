@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 
 /-!
 # Finite Galois extensions above an abstract field
@@ -13,6 +15,8 @@ The norm topology is indexed by the actual finite Galois extensions
 of a fixed abstract field.  This file packages those extensions and their
 composita contravariantly as intersections of closed subgroups.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -24,7 +28,7 @@ open CyclicCohomology
 
 noncomputable section
 
-universe u
+universe u v
 
 section GroupOnly
 
@@ -44,6 +48,15 @@ structure FiniteGaloisSubextension (K : ClosedSubgroup G) where
 namespace FiniteGaloisSubextension
 
 variable {K : ClosedSubgroup G}
+
+/-- A finite Galois subextension is determined by its closed subgroup. -/
+@[ext]
+theorem ext {L₁ L₂ : FiniteGaloisSubextension K}
+    (h : L₁.field = L₂.field) : L₁ = L₂ := by
+  cases L₁
+  cases L₂
+  cases h
+  rfl
 
 /-- Forget only finiteness from a finite Galois subextension. -/
 def toGaloisSubextension (L : FiniteGaloisSubextension K) :
@@ -397,6 +410,12 @@ def compositum (L₁ L₂ : FiniteGaloisSubextension K) :
     rw [heq]
     exact Subgroup.finite_quotient_of_finiteIndex
 
+/-- Swapping the two factors does not change the finite Galois compositum. -/
+theorem compositum_comm (L₁ L₂ : FiniteGaloisSubextension K) :
+    L₁.compositum L₂ = L₂.compositum L₁ := by
+  apply ext
+  exact inf_comm L₁.field L₂.field
+
 /-- The constructed Galois compositum satisfies the left comparison bound. -/
 theorem compositum_le_left (L₁ L₂ : FiniteGaloisSubextension K) :
     (L₁.compositum L₂).field.toSubgroup ≤ L₁.field.toSubgroup :=
@@ -413,8 +432,7 @@ end GroupOnly
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace FiniteGaloisSubextension
 
@@ -423,18 +441,17 @@ variable {K : ClosedSubgroup G}
 /-- The norm group from a compositum is contained in the norm group from
 its first factor. -/
 theorem finiteNormSubgroup_compositum_le_left
-    (A : Rep ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
-    letI := (L₁.compositum L₂).finite
-    letI := L₁.finite
+    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
+    let : Finite (K.toSubgroup ⧸
+        extensionSubgroup K (L₁.compositum L₂).field (L₁.compositum L₂).below) :=
+      (L₁.compositum L₂).finite
+    let : Finite (K.toSubgroup ⧸ extensionSubgroup K L₁.field L₁.below) := L₁.finite
     finiteNormSubgroup A K (L₁.compositum L₂).field
         (L₁.compositum L₂).below ≤
       finiteNormSubgroup A K L₁.field L₁.below := by
+  intro compositumFinite leftFinite
   let P := L₁.compositum L₂
   let hPL₁ := L₁.compositum_le_left L₂
-  let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K P.field P.below) := P.finite
-  let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K L₁.field L₁.below) := L₁.finite
   have hPKindex : P.field.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
     rw [Subgroup.relIndex]
     exact Subgroup.index_ne_zero_of_finite
@@ -448,7 +465,7 @@ theorem finiteNormSubgroup_compositum_le_left
       extensionSubgroup L₁.field P.field hPL₁) := by
     apply Nat.finite_of_card_ne_zero
     change (extensionSubgroup L₁.field P.field hPL₁).index ≠ 0
-    simpa [Subgroup.relIndex] using hPLindex
+    simpa only [Subgroup.relIndex] using hPLindex
   let T : DegreeData.FiniteTower G := {
     top := P.field
     middle := L₁.field
@@ -463,13 +480,13 @@ theorem finiteNormSubgroup_compositum_le_left
 
 /-- The symmetric norm-group containment for the second factor. -/
 theorem finiteNormSubgroup_compositum_le_right
-    (A : Rep ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
+    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
     letI := (L₁.compositum L₂).finite
     letI := L₂.finite
     finiteNormSubgroup A K (L₁.compositum L₂).field
         (L₁.compositum L₂).below ≤
       finiteNormSubgroup A K L₂.field L₂.below := by
-  simpa [compositum, inf_comm] using
+  simpa only [compositum_comm L₂ L₁] using
     finiteNormSubgroup_compositum_le_left A L₂ L₁
 
 end FiniteGaloisSubextension

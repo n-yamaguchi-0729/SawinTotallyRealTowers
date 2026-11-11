@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RamificationSupport
-import Mathlib.NumberTheory.NumberField.Discriminant.Different
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.RingTheory.Unramified.Locus
+module
+
+public import Nyll.SawinTotallyRealTowers.RamificationSupport
+public import Mathlib.NumberTheory.NumberField.Discriminant.Different
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.RingTheory.Unramified.Locus
 
 /-!
 # Rational primes in the finite ramification support
@@ -17,6 +19,8 @@ local unramifiedness conditions. Under the equivalence between finite places
 of ℚ and positive rational primes, the allowed ramification support therefore
 contains exactly the prime divisors required by the absolute discriminant.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

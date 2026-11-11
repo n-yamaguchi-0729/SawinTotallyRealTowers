@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
-import Mathlib.Topology.Algebra.Group.Quotient
-import Mathlib.Topology.DenseEmbedding
-import Mathlib.Topology.Order
-import Nyll.ProCGroups.Completion.UniversalProperty
-import Nyll.ProCGroups.ProC.Category.Basic
-import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualCore
-import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualQuotient
-import Nyll.ProCGroups.ProC.MaximalQuotients.UniversalProperty
-import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
+module
+
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Completion
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.DenseEmbedding
+public import Mathlib.Topology.Order
+public import Nyll.ProCGroups.Completion.UniversalProperty
+public import Nyll.ProCGroups.ProC.Category.Basic
+public import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualCore
+public import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualQuotient
+public import Nyll.ProCGroups.ProC.MaximalQuotients.UniversalProperty
+public import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
 
 /-!
 # Constructing pro-C completions
@@ -21,6 +23,8 @@ import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
 The pro-C completion is the quotient of the profinite completion by its pro-C
 residual core. Its universal property follows from the two actual quotient maps.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.Completion
 

@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
-import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
-import Mathlib.GroupTheory.OrderOfElement
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
+public import Mathlib.GroupTheory.OrderOfElement
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveFactorization
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveReduction
 
 /-!
 # primitive irreducible reductions
@@ -19,6 +23,8 @@ irreducible polynomial has either full-degree reduction or constant
 reduction; in the full-degree case the monic normalization has no coprime
 nonconstant residual factorization.
 -/
+
+@[expose] public section
 
 noncomputable section
 

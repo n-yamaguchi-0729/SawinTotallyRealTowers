@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAbsoluteDegree
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+module
+
+public import Nyll.SchemeTheory.RingTheory.FieldExtensions.FiniteFrobeniusFixed
+public import Nyll.SchemeTheory.RingTheory.FieldExtensions.FiniteIntermediateFieldDegree
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAbsoluteDegree
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
 # Finite local reciprocity: degree coordinates on any residue algebraic closure
@@ -20,6 +24,8 @@ setting.  The resulting map is the inverse of the canonical arithmetic
 Frobenius homomorphism itself; no equivalence with a chosen algebraic closure
 and no generator of a finite cyclic group enters its definition.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -40,74 +46,19 @@ variable (k : Type u) [Field k] [Fintype k]
 variable (Omega : Type v) [Field Omega] [Algebra k Omega]
   [Algebra.IsAlgebraic k Omega] [IsAlgClosed Omega]
 
-omit [Fintype k] in
-private instance finiteResidueBaseRingCharPrime [Finite k] : Fact (ringChar k).Prime :=
-  ⟨CharP.char_is_prime k (ringChar k)⟩
-
-private instance residueAlgebraicClosureIsAlgClosure : IsAlgClosure k Omega :=
+/-- An algebraic, algebraically closed extension is an algebraic closure. -/
+instance residueAlgebraicClosureIsAlgClosure : IsAlgClosure k Omega :=
   ⟨inferInstance, inferInstance⟩
 
 omit [Fintype k] in
-private instance residueAlgebraicClosureIsGalois [Finite k] : IsGalois k Omega := by
+/-- An algebraic closure of a finite field is a Galois extension. -/
+instance residueAlgebraicClosureIsGalois [Finite k] : IsGalois k Omega := by
   infer_instance
 
-private instance residueAlgebraicClosureGaloisT2 :
+/-- The Galois group of the residue algebraic closure is Hausdorff. -/
+instance residueAlgebraicClosureGaloisT2 :
     T2Space (Omega ≃ₐ[k] Omega) := by
   infer_instance
-
-/-- Embed the degree-`n` finite extension of `k` into the given residue
-algebraic closure.  This choice is used only to prove that all profinite
-coordinates are detected. -/
-noncomputable def finiteResidueExtensionEmbeddingInto
-    (n : ℕ) [NeZero n] :
-    FiniteField.Extension k (ringChar k) n →ₐ[k] Omega := by
-  letI : Module.IsTorsionFree k Omega :=
-    Module.isTorsionFree_iff_algebraMap_injective.mpr
-      (algebraMap k Omega).injective
-  exact IsAlgClosed.lift (R := k)
-    (S := FiniteField.Extension k (ringChar k) n) (M := Omega)
-
-/-- The image of the degree-`n` finite extension in the given residue
-algebraic closure. -/
-noncomputable def finiteResidueIntermediateFieldIn
-    (n : ℕ) [NeZero n] : IntermediateField k Omega :=
-  (⊤ : IntermediateField k
-      (FiniteField.Extension k (ringChar k) n)).map
-    (finiteResidueExtensionEmbeddingInto k Omega n)
-
-/-- The model finite field is canonically isomorphic to its embedded image. -/
-noncomputable def finiteResidueExtensionEquivIntermediateIn
-    (n : ℕ) [NeZero n] :
-    FiniteField.Extension k (ringChar k) n ≃ₐ[k]
-      finiteResidueIntermediateFieldIn k Omega n :=
-  IntermediateField.topEquiv.symm.trans
-    (IntermediateField.equivMap ⊤
-      (finiteResidueExtensionEmbeddingInto k Omega n))
-
-/-- An actual degree-`n` finite Galois intermediate field in any residue
-algebraic closure. -/
-noncomputable def finiteResidueGaloisIntermediateFieldIn
-    (n : ℕ) [NeZero n] : FiniteGaloisIntermediateField k Omega where
-  toIntermediateField := finiteResidueIntermediateFieldIn k Omega n
-  finiteDimensional := Module.Finite.equiv
-    (finiteResidueExtensionEquivIntermediateIn k Omega n).toLinearEquiv
-  isGalois := IsGalois.of_algEquiv
-    (finiteResidueExtensionEquivIntermediateIn k Omega n)
-
-omit [Algebra.IsAlgebraic k Omega] in
-/-- States the theorem `finrank_finiteResidueGaloisIntermediateFieldIn`. -/
-@[simp]
-theorem finrank_finiteResidueGaloisIntermediateFieldIn
-    (n : ℕ) [NeZero n] :
-    Module.finrank k
-        (finiteResidueGaloisIntermediateFieldIn k Omega n) = n := by
-  calc
-    Module.finrank k
-        (finiteResidueGaloisIntermediateFieldIn k Omega n) =
-        Module.finrank k
-          (FiniteField.Extension k (ringChar k) n) :=
-      (finiteResidueExtensionEquivIntermediateIn k Omega n).toLinearEquiv.finrank_eq.symm
-    _ = n := FiniteField.finrank_extension k (ringChar k) n
 
 /-- Finite subextensions of every positive degree detect every coordinate of
 the canonical Frobenius homomorphism on an arbitrary residue algebraic
@@ -141,33 +92,6 @@ theorem residueAbsoluteFrobenius_isAlgClosure_injective :
   rw [zHatReduction_transition hn Module.finrank_pos hdiv z.toAdd,
     zHatReduction_transition hn Module.finrank_pos hdiv w.toAdd] at hcast
   exact hcast
-
-omit [IsAlgClosed Omega] in
-/-- In any algebraic closure of a finite field, the fixed points of arithmetic
-Frobenius are exactly the base field. -/
-theorem mem_range_algebraMap_iff_frobenius_fixed_in
-    (x : Omega) :
-    x ∈ Set.range (algebraMap k Omega) ↔
-      FiniteField.frobeniusAlgEquivOfAlgebraic k Omega x = x := by
-  constructor
-  · rintro ⟨a, rfl⟩
-    simp only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic]
-    rw [← map_pow, FiniteField.pow_card]
-  · intro hx
-    have hxpow : x ^ Fintype.card k = x := by
-      simpa only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic] using hx
-    let p : k[X] := X ^ Fintype.card k - X
-    have hpne : p ≠ 0 :=
-      FiniteField.X_pow_card_sub_X_ne_zero k Fintype.one_lt_card
-    have hxroot : x ∈ p.rootSet Omega := by
-      rw [Polynomial.mem_rootSet_of_ne hpne]
-      simp [p, hxpow]
-    have hsplits : (p.map (algebraMap k k)).Splits := by
-      simpa only [p] using (FiniteField.isSplittingField_sub k k).splits
-    have himage := hsplits.image_rootSet (Algebra.ofId k Omega)
-    rw [← himage] at hxroot
-    rcases hxroot with ⟨a, _ha, hax⟩
-    exact ⟨a, hax⟩
 
 /-- The compact image of the intrinsic Frobenius homomorphism. -/
 noncomputable def residueAbsoluteFrobeniusRangeIn :
@@ -243,12 +167,36 @@ noncomputable def residueAbsoluteDegreeIn :
   ContinuousMonoidHom.toContinuousMonoidHom
     (residueAbsoluteFrobeniusEquivIn k Omega).symm
 
+/-- Residue degree one specifies the arithmetic Frobenius automorphism itself,
+not merely the cyclic subgroup that it generates. -/
+theorem eq_frobeniusAlgEquivOfAlgebraic_of_residueAbsoluteDegreeIn
+    (sigma : Omega ≃ₐ[k] Omega)
+    (hdegree : residueAbsoluteDegreeIn k Omega sigma =
+      Multiplicative.ofAdd (1 : ZHat)) :
+    sigma = FiniteField.frobeniusAlgEquivOfAlgebraic k Omega := by
+  have h := congrArg (residueAbsoluteFrobeniusEquivIn k Omega) hdegree
+  change (residueAbsoluteFrobeniusEquivIn k Omega)
+    ((residueAbsoluteFrobeniusEquivIn k Omega).symm sigma) =
+    residueAbsoluteFrobenius k Omega (Multiplicative.ofAdd (1 : ZHat)) at h
+  rw [ContinuousMulEquiv.apply_symm_apply, residueAbsoluteFrobenius_one] at h
+  exact h
+
+/-- On every element, residue degree one acts by the cardinality power of the
+actual residue base field. This distinguishes Frobenius from its inverse. -/
+theorem apply_eq_pow_card_of_residueAbsoluteDegreeIn
+    (sigma : Omega ≃ₐ[k] Omega)
+    (hdegree : residueAbsoluteDegreeIn k Omega sigma =
+      Multiplicative.ofAdd (1 : ZHat)) (x : Omega) :
+    sigma x = x ^ Fintype.card k := by
+  rw [eq_frobeniusAlgEquivOfAlgebraic_of_residueAbsoluteDegreeIn k Omega sigma hdegree]
+  exact congrFun (FiniteField.coe_frobeniusAlgEquivOfAlgebraic k Omega) x
+
 /-- Intrinsic residue degree is unchanged by simultaneous semilinear
 equivalence of the finite residue base and its algebraic closure.  The
 conjugate automorphism is written locally in the statement, so no parallel
 restriction or automorphism-conjugation API is introduced. -/
 theorem residueAbsoluteDegreeIn_semilinear_conjugation
-    {k' : Type u} {Omega' : Type v}
+    {k' : Type*} {Omega' : Type*}
     [Field k'] [Fintype k']
     [Field Omega'] [Algebra k' Omega']
     [Algebra.IsAlgebraic k' Omega'] [IsAlgClosed Omega']
@@ -381,14 +329,13 @@ base from `k` to a finite intermediate field `E`: after forgetting the
 theorem residueAbsoluteFrobenius_restrictScalars
     (E : IntermediateField k Omega) [FiniteDimensional k E]
     (z : ZHatMul) :
-    letI : Finite E := Module.finite_of_finite k
-    letI : Fintype E := Fintype.ofFinite E
+    let : Finite E := Module.finite_of_finite k
+    let : Fintype E := Fintype.ofFinite E
     (residueAbsoluteFrobenius E Omega z).restrictScalars k =
       residueAbsoluteFrobenius k Omega
         (Multiplicative.ofAdd
           ((Module.finrank k E) • z.toAdd)) := by
-  let : Finite E := Module.finite_of_finite k
-  let : Fintype E := Fintype.ofFinite E
+  intro sharedOwner1 sharedOwner2
   let scaleHom : ZHatMul →* ZHatMul :=
     AddMonoidHom.toMultiplicative
       (zHatMulNat (Module.finrank k E)).toAddMonoidHom
@@ -469,14 +416,13 @@ finite-base-change formula. -/
 theorem residueAbsoluteDegreeIn_restrictScalars
     (E : IntermediateField k Omega) [FiniteDimensional k E]
     (sigma : Omega ≃ₐ[E] Omega) :
-    letI : Finite E := Module.finite_of_finite k
-    letI : Fintype E := Fintype.ofFinite E
+    let : Finite E := Module.finite_of_finite k
+    let : Fintype E := Fintype.ofFinite E
     residueAbsoluteDegreeIn k Omega (sigma.restrictScalars k) =
       Multiplicative.ofAdd
         ((Module.finrank k E) •
           (residueAbsoluteDegreeIn E Omega sigma).toAdd) := by
-  let : Finite E := Module.finite_of_finite k
-  let : Fintype E := Fintype.ofFinite E
+  intro sharedOwner1 sharedOwner2
   apply (residueAbsoluteFrobeniusEquivIn k Omega).injective
   change
     (residueAbsoluteFrobeniusEquivIn k Omega)
@@ -515,13 +461,13 @@ theorem residueAbsoluteDegreeIn_frobenius :
 theorem finiteResidueFrobeniusExponentEquiv_symm_restrict_in
     (sigma : Omega ≃ₐ[k] Omega)
     (E : FiniteGaloisIntermediateField k Omega) :
-    letI : Finite E := Module.finite_of_finite k
+    let : Finite E := Module.finite_of_finite k
     (finiteResidueFrobeniusExponentEquiv k E).symm
         (AlgEquiv.restrictNormalHom E sigma) =
       Multiplicative.ofAdd
         (zHatReduction (Module.finrank k E) Module.finrank_pos
           (residueAbsoluteDegreeIn k Omega sigma).toAdd) := by
-  let : Finite E := Module.finite_of_finite k
+  intro sharedOwner1
   apply (finiteResidueFrobeniusExponentEquiv k E).injective
   rw [(finiteResidueFrobeniusExponentEquiv k E).apply_symm_apply]
   change AlgEquiv.restrictNormalHom E sigma =

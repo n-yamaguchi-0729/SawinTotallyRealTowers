@@ -4,7 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtension
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # Galois actions on rational fixed-field idele classes
@@ -15,6 +21,8 @@ finite-extension Galois action.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace GlobalClassFieldTheory
@@ -23,6 +31,10 @@ namespace Reciprocity
 open ClassFormation
 open LocalClassFieldTheory
 open CyclicCohomology
+
+attribute [local instance]
+  rationalIdeleClassDirectLimitSMul rationalAbstractFixedFieldFiniteDimensional
+  rationalAbstractTowerClassGroupCommGroup
 
 /-- The fixed-part comparison intertwines an automorphism of a finite
 rational intermediate field with any lift to the rational absolute
@@ -214,14 +226,7 @@ private theorem
         (eRelative
           (Additive.ofMul
             (τ₀ • Additive.toMul c)))).1 := by
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let eFixed :=
-    rationalAbstractRelativeFixedFieldIdeleClassEquivFixedOfFiniteDimensional
-      K L hLK
-  let eRelative :=
-    MulEquiv.toAdditive
-      (_root_.relativeIdeleClassBaseChangeMulEquiv
-        (K := ℚ) (L := E))
+  intro E eFixed eRelative
   let E₀ := E.restrictScalars ℚ
   let τQ : E₀ ≃ₐ[ℚ] E₀ := τ₀
   let cRelQ : RelativeIdeleGroup.ClassGroup ℚ E₀ :=
@@ -325,19 +330,19 @@ private theorem
       K L hLK hnormal).V) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-    letI := hnormal
-    letI : FiniteDimensional ℚ F :=
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
       abstractFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K hKfinite
-    letI : FiniteDimensional F E :=
+    let : FiniteDimensional F E :=
       abstractRelativeFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-    letI : IsScalarTower ℚ F E :=
+    let : IsScalarTower ℚ F E :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional ℚ E :=
+    let : FiniteDimensional ℚ E :=
       FiniteDimensional.trans ℚ F E
-    letI : NumberField F := NumberField.of_module_finite ℚ F
-    letI : NumberField E := NumberField.of_module_finite ℚ E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
     let M :=
       extensionFixedRepresentation rationalIdeleClassRepresentation
         K L hLK hnormal
@@ -364,21 +369,8 @@ private theorem
       eFixed
         (eRelative
           (Additive.ofMul (τ₀ • Additive.toMul c))) := by
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let := hnormal
-  let : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  let : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  let : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  let : NumberField F := NumberField.of_module_finite ℚ F
-  let : NumberField E := NumberField.of_module_finite ℚ E
+  intro F E sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7 sharedOwner8
+    sharedOwner9
   let : FiniteDimensional ℚ (E.restrictScalars ℚ) := by
     change FiniteDimensional ℚ
       (abstractFixedField ℚ (SeparableClosure ℚ) L)
@@ -485,15 +477,7 @@ private theorem rationalTowerRelativeIdeleClassBaseChangeAddEquiv_smul
           ((τ.restrictScalars ℚ) • Additive.toMul c)) =
       Additive.ofMul
         (τ • Additive.toMul (eTower c)) := by
-  let eTower :
-      Additive (RelativeIdeleGroup.ClassGroup ℚ E) ≃+
-        Additive (RelativeIdeleGroup.ClassGroup F E) :=
-    (MulEquiv.toAdditive
-      (TowerRelativeIdeleGroup.classGroupEquiv
-        ℚ F E).symm).trans
-      (MulEquiv.toAdditive
-        (towerRelativeIdeleClassBaseChangeMulEquiv
-          ℚ F E))
+  intro eTower
   apply Additive.toMul.injective
   change
     towerRelativeIdeleClassBaseChangeMulEquiv ℚ F E
@@ -539,19 +523,19 @@ private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
       K L hLK hnormal).V) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-    letI := hnormal
-    letI : FiniteDimensional ℚ F :=
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
       abstractFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K hKfinite
-    letI : FiniteDimensional F E :=
+    let : FiniteDimensional F E :=
       abstractRelativeFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-    letI : IsScalarTower ℚ F E :=
+    let : IsScalarTower ℚ F E :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional ℚ E :=
+    let : FiniteDimensional ℚ E :=
       FiniteDimensional.trans ℚ F E
-    letI : NumberField F := NumberField.of_module_finite ℚ F
-    letI : NumberField E := NumberField.of_module_finite ℚ E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
     letI : IsGalois F E :=
       abstractRelativeFixedField_isGalois
         ℚ (SeparableClosure ℚ) K L hLK hnormal
@@ -571,21 +555,8 @@ private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
               (extensionSubgroup K L hLK) σ))
           (rationalAbstractExtensionIdeleClassEquiv
             K L hLK hnormal x) := by
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let := hnormal
-  let : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  let : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  let : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  let : NumberField F := NumberField.of_module_finite ℚ F
-  let : NumberField E := NumberField.of_module_finite ℚ E
+  intro F E sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7 sharedOwner8
+    sharedOwner9
   let : FiniteDimensional ℚ (E.restrictScalars ℚ) := by
     change FiniteDimensional ℚ
       (abstractFixedField ℚ (SeparableClosure ℚ) L)
@@ -673,19 +644,19 @@ theorem rationalAbstractExtensionIdeleClassEquiv_action
       K L hLK hnormal).V) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-    letI := hnormal
-    letI : FiniteDimensional ℚ F :=
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
       abstractFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K hKfinite
-    letI : FiniteDimensional F E :=
+    let : FiniteDimensional F E :=
       abstractRelativeFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-    letI : IsScalarTower ℚ F E :=
+    let : IsScalarTower ℚ F E :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional ℚ E :=
+    let : FiniteDimensional ℚ E :=
       FiniteDimensional.trans ℚ F E
-    letI : NumberField F := NumberField.of_module_finite ℚ F
-    letI : NumberField E := NumberField.of_module_finite ℚ E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
     letI : IsGalois F E :=
       abstractRelativeFixedField_isGalois
         ℚ (SeparableClosure ℚ) K L hLK hnormal
@@ -701,21 +672,8 @@ theorem rationalAbstractExtensionIdeleClassEquiv_action
             ℚ (SeparableClosure ℚ) K L hLK hnormal q)
           (rationalAbstractExtensionIdeleClassEquiv
             K L hLK hnormal x) := by
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let := hnormal
-  let : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  let : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  let : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  let : NumberField F := NumberField.of_module_finite ℚ F
-  let : NumberField E := NumberField.of_module_finite ℚ E
+  intro F E sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7 sharedOwner8
+    sharedOwner9
   let : FiniteDimensional ℚ (E.restrictScalars ℚ) := by
     change FiniteDimensional ℚ
       (abstractFixedField ℚ (SeparableClosure ℚ) L)

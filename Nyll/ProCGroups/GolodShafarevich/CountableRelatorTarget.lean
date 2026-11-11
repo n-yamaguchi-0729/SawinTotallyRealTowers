@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.GolodShafarevich.CountableRelators
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
-import Mathlib.Topology.Separation.Hausdorff
+module
+
+public import Nyll.ProCGroups.GolodShafarevich.CountableRelators
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+public import Mathlib.Topology.Separation.Hausdorff
 
 /-!
 # The countable GS quotient of the presented group
@@ -15,6 +17,8 @@ The quotient of the free source factors continuously through the original
 presentation. Killing the images of the added relators therefore still
 surjects onto the infinite source quotient.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP.FiniteProPPresentation
 

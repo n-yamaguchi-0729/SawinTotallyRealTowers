@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityIndependence
+module
+
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityIndependence
 
 /-!
 # The abstract reciprocity construction, the unramified norm-quotient equivalence: the
@@ -18,7 +21,9 @@ correction: the unit-cohomology axiom (`H⁰ = 0`) makes every unit of `K` the n
 of a unit of `L`.
 -/
 
-universe u
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -151,9 +156,8 @@ end unramifiedFrobenius
 
 section valuationQuotient
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 namespace ValuationData
 
@@ -180,7 +184,8 @@ private theorem valueModulo_eq_zero_iff
         ((QuotientAddGroup.mk' (nsmulWithin v.valueGroup n)) (n • w)) = 0
     rw [hq, map_zero]
 
-private def unramifiedValuationHom
+/-- Normalized valuation reduced modulo the degree of the finite extension. -/
+def unramifiedValuationHom
     (v : ValuationData D A) (K : FiniteAbstractField G)
     (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -192,7 +197,8 @@ private def unramifiedValuationHom
       (FiniteAbstractFieldExtension.ofInclusion L K hLK).degree.property).comp
     (v.valuationAt K)
 
-private theorem finiteNormSubgroup_le_unramifiedValuationHom_ker
+/-- Norms in an unramified extension vanish under valuation reduced modulo its degree. -/
+theorem finiteNormSubgroup_le_unramifiedValuationHom_ker
     (v : ValuationData D A)
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -348,9 +354,9 @@ theorem unramifiedNormQuotientValuation_injective
         unramified := hUnramified }
     have hzero :
         CategoryTheory.Limits.IsZero
-            (tateCohomology (Euc.unitRepresentation v) 0) ∧
+            (IntegralGroupCohomology.Universe.tate (Euc.unitRepresentation v) 0) ∧
           CategoryTheory.Limits.IsZero
-            (tateCohomology (Euc.unitRepresentation v) (-1)) :=
+            (IntegralGroupCohomology.Universe.tate (Euc.unitRepresentation v) (-1)) :=
       hAxiom K Euc
     obtain ⟨ε, hε⟩ :=
       v.exists_unit_relativeNorm_eq_of_tateHZero_isZero
@@ -451,7 +457,7 @@ theorem primeClass_addOrderOf
     have hmzero : (m : ZMod n) = 0 := by
       have hmzero' : m • (1 : ZMod n) = 0 := by
         rw [← hred']
-        simp [nsmul_eq_mul]
+        rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
       simpa using hmzero'
     exact (ZMod.natCast_eq_zero_iff m n).1 hmzero
   apply Nat.dvd_antisymm

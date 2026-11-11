@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
-import Mathlib.Data.Int.ModEq
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Quotients
+public import Mathlib.Data.Int.ModEq
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
 
 /-!
 # Integer value-group images
@@ -14,6 +17,8 @@ This file contains the integer value-group subgroup-image lemmas used by the nor
 ramification-image arguments.  The results are purely about
 integer-valued multiplicative valuations and integer lcm divisibility.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

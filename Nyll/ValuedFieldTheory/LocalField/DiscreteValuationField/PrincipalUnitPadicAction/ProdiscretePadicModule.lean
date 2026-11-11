@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Module.MinimalAxioms
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.FiniteQuotientPadicModule
+module
+
+public import Mathlib.Algebra.Module.MinimalAxioms
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.FiniteQuotientPadicModule
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
 
 /-!
 # The p-adic module on the prodiscrete principal-unit limit
@@ -15,6 +18,8 @@ module over the p-adic integers.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -214,13 +219,12 @@ noncomputable def PrincipalUnitProdiscreteLimit.coordinateLinear
 limit of discrete finite quotients. -/
 theorem Internal.continuous_principalUnitInverseLimitCarrierPadic_smul
     (F : LocalField.{u, v} K) :
-    letI : (n : ℕ) → TopologicalSpace
+    let : (n : ℕ) → TopologicalSpace
         (Internal.principalUnitQuotientCarrier F.toCompleteDVF n) := fun _ => ⊥
     Continuous fun z : ℤ_[F.residueCharacteristic] ×
         Additive (Internal.principalUnitInverseLimitCarrier F.toCompleteDVF) =>
       z.1 • z.2 := by
-  let : (n : ℕ) → TopologicalSpace
-      (Internal.principalUnitQuotientCarrier F.toCompleteDVF n) := fun _ => ⊥
+  intro sharedOwner1
   let : (n : ℕ) → DiscreteTopology
       (Internal.principalUnitQuotientCarrier F.toCompleteDVF n) := fun _ => ⟨rfl⟩
   have hmul : Continuous fun z : ℤ_[F.residueCharacteristic] ×

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerH2
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
+module
+
+public import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerH2
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
 
 /-!
 # Vanishing of local unramified degree-two cohomology
@@ -16,6 +18,8 @@ integers.  Its kernel is the kernel of the residue action, and the corresponding
 therefore continuously equivalent to `ZHatMul`.  Continuous degree-two cohomology of this
 unramified quotient with trivial `ZMod p` coefficients vanishes.
 -/
+
+@[expose] public section
 
 open CategoryTheory LocalFieldTheory
 open scoped Topology
@@ -90,6 +94,15 @@ noncomputable def localUnramifiedQuotientContinuousMulEquiv :
         obtain ⟨sigma, hsigma⟩ := localResidueDegree_surjective K z
         exact ⟨⟨q sigma, ⟨sigma, rfl⟩⟩, hsigma⟩⟩
   exact (ContinuousMonoidHom.quotientKerContinuousMulEquivRange q).trans er
+
+/-- The unramified quotient coordinates retain the degree of the original
+Galois automorphism. -/
+@[simp] theorem localUnramifiedQuotientContinuousMulEquiv_mk
+    (sigma : Gal(SeparableClosure K/K)) :
+    localUnramifiedQuotientContinuousMulEquiv K
+      (QuotientGroup.mk' (MonoidHom.ker (localResidueDegree K).toMonoidHom) sigma) =
+      localResidueDegree K sigma :=
+  rfl
 
 variable (p : ℕ) [Fact p.Prime]
 

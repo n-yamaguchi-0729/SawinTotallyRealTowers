@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.ProP.ContinuousH1
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Continuous degree-one cohomology bridge
@@ -16,6 +18,8 @@ small-universe coefficient API and the universe-polymorphic API whose coefficien
 `ULift (ZMod p)`.  The construction is explicit: a character `χ` is sent to the homogeneous
 cocycle `(g, h) ↦ χ(g⁻¹h)`, and the inverse evaluates a homogeneous cocycle at `(1, g)`.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open ClassFieldTower.ProP
@@ -268,13 +272,20 @@ def h1OfCocycleLifted
       ULift.{u} (ZMod p) ≃L[ZMod p] ZMod p).continuous).comp
     ((homogeneousOneCochainOfCocycleLifted z).1 1 |>.continuous)
 
+/-- The recovered character evaluates the original cocycle at the identity. -/
+theorem h1OfCocycleLifted_apply
+    (z : ClassFieldTower.Cohomology.trivialZModPCocyclesLifted p G 1)
+    (g : Additive G) :
+    h1OfCocycleLifted z g =
+      ((homogeneousOneCochainOfCocycleLifted z).1 1 g.toMul).down :=
+  rfl
+
 theorem h1OfCocycleLifted_cocycleOfH1Lifted
     (χ : ContinuousH1ZMod (p := p) (G := G)) :
     h1OfCocycleLifted (cocycleOfH1Lifted χ) = χ := by
   ext g
-  simp only [h1OfCocycleLifted]
-  change ((homogeneousOneCochainOfCocycleLifted (cocycleOfH1Lifted χ)).1 1 g.toMul).down = χ g
-  rw [homogeneousOneCochainOfCocycleLifted_cocycleOfH1Lifted,
+  rw [h1OfCocycleLifted_apply,
+    homogeneousOneCochainOfCocycleLifted_cocycleOfH1Lifted,
     homogeneousOneCochainOfH1Lifted_apply]
   rw [inv_one, one_mul, ofMul_toMul]
 
@@ -288,9 +299,7 @@ theorem cocycleOfH1Lifted_h1OfCocycleLifted
   rw [homogeneousOneCochainOfCocycleLifted_cocycleOfH1Lifted]
   apply Subtype.ext
   ext g h
-  simp only [h1OfCocycleLifted]
-  change ULift.up (((homogeneousOneCochainOfCocycleLifted z).1 1 (g⁻¹ * h)).down) =
-    (homogeneousOneCochainOfCocycleLifted z).1 g h
+  rw [homogeneousOneCochainOfH1Lifted_apply, h1OfCocycleLifted_apply]
   apply ULift.ext
   have hz := homogeneousOneCochainOfCocycleLifted_invariant_down z g g h
   simpa using hz

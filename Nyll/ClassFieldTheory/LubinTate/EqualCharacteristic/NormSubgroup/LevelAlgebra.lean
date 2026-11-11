@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.NormUniformizer
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
 /-!
 # LubinTate the explicit norm-subgroup computation: canonical algebra and norm subgroup at a
@@ -18,6 +20,10 @@ typeclass searches.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 
@@ -28,7 +34,7 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 attribute [local instance]
   equalCharacteristicLubinTateLevelFieldAlgebra
@@ -37,7 +43,7 @@ attribute [local instance]
 
 /-- The canonical base algebra on the explicit Lubin--Tate level field. -/
 @[reducible] noncomputable def equalCharacteristicLubinTateLevelAlgebra
-    (F : LocalField K) [CharP K F.residueCharacteristic] (n : ℕ) :
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic] (n : ℕ) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicLubinTateLevelField F n) :=
   equalCharacteristicLubinTateLevelFieldAlgebra F n
@@ -45,7 +51,7 @@ attribute [local instance]
 /-- The norm subgroup of the explicit Lubin--Tate level, with the canonical
 base algebra fixed once for downstream statements. -/
 noncomputable def equalCharacteristicLubinTateNormSubgroup
-    (F : LocalField K) [CharP K F.residueCharacteristic] (n : ℕ) :
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic] (n : ℕ) :
     Subgroup F.residueField⸨X⸩ˣ := by
   letI : Algebra F.residueField⸨X⸩
       (equalCharacteristicLubinTateLevelField F n) :=

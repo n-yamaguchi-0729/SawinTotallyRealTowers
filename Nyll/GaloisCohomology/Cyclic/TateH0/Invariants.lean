@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Invariants
-import Mathlib.FieldTheory.Galois.Basic
+module
+
+public import Mathlib.RepresentationTheory.Invariants
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # Invariant units
@@ -14,16 +17,21 @@ The actual invariant submodule of the unit representation, together with its
 arithmetic identification with the units of the base field.
 -/
 
+@[expose] public section
+
 namespace CyclicCohomology
 
 noncomputable section
 
+universe u v
+
 /-- The actual invariant submodule of the unit representation `Lˣ` under `Gal(L/K)`. -/
-def unitsInvariantSubmodule (K L : Type) [Field K] [Field L] [Algebra K L] :
+def unitsInvariantSubmodule (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] :
     Submodule ℤ (Additive Lˣ) :=
   (Rep.ofAlgebraAutOnUnits K L).ρ.invariants
 
-private noncomputable def invariantUnitToBaseUnit (K L : Type)
+/-- An invariant unit of a finite Galois extension descends to a unit of the base field. -/
+noncomputable def invariantUnitToBaseUnit (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
     (x : unitsInvariantSubmodule K L) : Kˣ := by
   classical
@@ -46,9 +54,10 @@ private noncomputable def invariantUnitToBaseUnit (K L : Type)
   have ha0 : a ≠ 0 := by
     intro hzero
     exact y.ne_zero (by rw [← ha, hzero, map_zero])
-  exact ⟨a, a⁻¹, by simp [ha0], by simp [ha0]⟩
+  exact ⟨a, a⁻¹, mul_inv_cancel₀ ha0, inv_mul_cancel₀ ha0⟩
 
-private lemma invariantUnitToBaseUnit_spec (K L : Type)
+/-- Embedding the descended unit recovers the original invariant unit. -/
+lemma invariantUnitToBaseUnit_spec (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
     (x : unitsInvariantSubmodule K L) :
     algebraMap K L (invariantUnitToBaseUnit K L x : K) =
@@ -71,7 +80,8 @@ private lemma invariantUnitToBaseUnit_spec (K L : Type)
   change algebraMap K L (Classical.choose hmem) = (y : L)
   exact Classical.choose_spec hmem
 
-private noncomputable def baseUnitToInvariantUnit (K L : Type)
+/-- A base-field unit defines an invariant unit of the extension field. -/
+noncomputable def baseUnitToInvariantUnit (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x : Kˣ) : unitsInvariantSubmodule K L where
   val := Additive.ofMul (Units.map (algebraMap K L).toMonoidHom x)
   property := by
@@ -84,7 +94,8 @@ private noncomputable def baseUnitToInvariantUnit (K L : Type)
     apply Units.ext
     exact σ.commutes (x : K)
 
-private lemma invariantUnitToBaseUnit_baseUnitToInvariantUnit (K L : Type)
+/-- Descending an embedded base-field unit returns that unit. -/
+lemma invariantUnitToBaseUnit_baseUnitToInvariantUnit (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
     (x : Kˣ) :
     invariantUnitToBaseUnit K L (baseUnitToInvariantUnit K L x) = x := by
@@ -93,7 +104,8 @@ private lemma invariantUnitToBaseUnit_baseUnitToInvariantUnit (K L : Type)
   rw [invariantUnitToBaseUnit_spec]
   rfl
 
-private lemma baseUnitToInvariantUnit_invariantUnitToBaseUnit (K L : Type)
+/-- Embedding the descent of an invariant unit returns that invariant unit. -/
+lemma baseUnitToInvariantUnit_invariantUnitToBaseUnit (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
     (x : unitsInvariantSubmodule K L) :
     baseUnitToInvariantUnit K L (invariantUnitToBaseUnit K L x) = x := by
@@ -103,7 +115,7 @@ private lemma baseUnitToInvariantUnit_invariantUnitToBaseUnit (K L : Type)
   exact invariantUnitToBaseUnit_spec K L x
 
 /-- The canonical additive equivalence `(Lˣ)^Gal(L/K) ≃ Kˣ` for finite Galois extensions. -/
-noncomputable def invariantsUnitsAddEquivBaseUnits (K L : Type)
+noncomputable def invariantsUnitsAddEquivBaseUnits (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L] :
     unitsInvariantSubmodule K L ≃+ Additive Kˣ where
   toFun := fun x => Additive.ofMul (invariantUnitToBaseUnit K L x)
@@ -131,14 +143,14 @@ noncomputable def invariantsUnitsAddEquivBaseUnits (K L : Type)
     rfl
 
 /-- The canonical linear equivalence `(Lˣ)^Gal(L/K) ≃ Kˣ` for finite Galois extensions. -/
-noncomputable def invariantsUnitsEquivBaseUnits (K L : Type)
+noncomputable def invariantsUnitsEquivBaseUnits (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L] :
     unitsInvariantSubmodule K L ≃ₗ[ℤ] Additive Kˣ :=
   (invariantsUnitsAddEquivBaseUnits K L).toIntLinearEquiv
 
 /-- Restricting an invariant unit and re-embedding its value recovers the
 underlying extension-field unit. -/
-lemma invariantsUnitsAddEquivBaseUnits_spec (K L : Type)
+lemma invariantsUnitsAddEquivBaseUnits_spec (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [IsGalois K L] [FiniteDimensional K L]
     (x : unitsInvariantSubmodule K L) :
     algebraMap K L

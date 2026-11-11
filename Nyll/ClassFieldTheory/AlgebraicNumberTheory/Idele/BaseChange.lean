@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteRestrictedProductBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteRestrictedProductBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Scalar extension from relative to ordinary ideles
@@ -19,6 +24,8 @@ closure to the Galois valuation-extension comparison.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain
@@ -80,23 +87,17 @@ extension is the identity map. -/
 theorem infinitePlaceCompletionMap_self_apply
     (W : InfinitePlace K)
     (x : W.Completion) :
-    letI : W.1.LiesOver W.1 :=
+    let : W.1.LiesOver W.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1)
         (infinitePlaceBelow_self (K := K) W)⟩
     NumberField.LiesOver.completionMap
         (v := W) (w := W) x = x := by
-  let : W.1.LiesOver W.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1)
-      (infinitePlaceBelow_self (K := K) W)⟩
+  intro sharedOwner1
   refine InfinitePlace.Completion.induction_on W x ?_ ?_
   · exact isClosed_eq
-      NumberField.LiesOver.continuous_completionMap
+      (NumberField.LiesOver.continuous_completionMap W W)
       continuous_id
   · intro y
-    change
-      NumberField.LiesOver.completionMap
-          (y : W.Completion) =
-        (y : W.Completion)
     rw [NumberField.LiesOver.completionMap_coe
       (v := W) (w := W) y]
     have hy :
@@ -126,29 +127,19 @@ theorem infinitePlaceCompletionMap_comp_apply
       infinitePlaceBelow (K := M) W
     let v :=
       infinitePlaceBelow (K := K) W
-    letI : V.1.LiesOver v.1 :=
+    let : V.1.LiesOver v.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1)
         (infinitePlaceBelow_infinitePlaceBelow
           (K := K) (M := M) (L := L) W)⟩
-    letI : W.1.LiesOver V.1 := ⟨rfl⟩
-    letI : W.1.LiesOver v.1 := ⟨rfl⟩
+    let : W.1.LiesOver V.1 := ⟨rfl⟩
+    let : W.1.LiesOver v.1 := ⟨rfl⟩
     NumberField.LiesOver.completionMap
         (v := V) (w := W)
         (NumberField.LiesOver.completionMap
           (v := v) (w := V) x) =
       NumberField.LiesOver.completionMap
         (v := v) (w := W) x := by
-  dsimp only
-  let V :=
-    infinitePlaceBelow (K := M) W
-  let v :=
-    infinitePlaceBelow (K := K) W
-  let : V.1.LiesOver v.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1)
-      (infinitePlaceBelow_infinitePlaceBelow
-        (K := K) (M := M) (L := L) W)⟩
-  let : W.1.LiesOver V.1 := ⟨rfl⟩
-  let : W.1.LiesOver v.1 := ⟨rfl⟩
+  intro V v reusedStructure3 reusedStructure4 reusedStructure5
   refine InfinitePlace.Completion.induction_on v x ?_ ?_
   · exact isClosed_eq
       ((NumberField.LiesOver.continuous_completionMap

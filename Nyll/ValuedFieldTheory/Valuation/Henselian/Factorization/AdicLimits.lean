@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
-import Mathlib.RingTheory.AdicCompletion.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
+public import Mathlib.RingTheory.AdicCompletion.Basic
 
 /-!
 # coefficientwise limit preparation
@@ -14,6 +16,8 @@ This file records the coefficientwise Cauchy form of the infinite Hensel
 approximants.  It is the input needed for the adic-completeness step in
 the coefficientwise proof of Hensel's lemma.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -104,7 +108,7 @@ theorem henselFactorization_polyOfLimitCoeffs_coeff_eq_zero_of_lt
     intro hbn
     have hn_le : n ≤ N := Nat.lt_succ_iff.mp (by simpa [hbn] using hb)
     exact (Nat.not_lt_of_ge hn_le) hn
-  simp [Polynomial.coeff_monomial, hbn]
+  rw [Polynomial.coeff_monomial, ite_eq_right hbn]
 
 /-- the polynomial assembled from finitely many coefficient
 limits has the stated degree bound. -/
@@ -146,7 +150,8 @@ theorem henselFactorization_exists_limitPolynomial_of_bounded_coeffLimits
         (lt_of_le_of_lt (hdeg n) hlt)
     have hP : P.coeff i = 0 :=
       henselFactorization_polyOfLimitCoeffs_coeff_eq_zero_of_lt (c := L) hlt
-    simp [Polynomial.coeff_sub, hseq, hP]
+    rw [Polynomial.coeff_sub, hseq, hP, sub_self]
+    exact (I ^ n).zero_mem
 
 /-- if all coefficients of the left factor lie in an ideal,
 then all coefficients of its product with any polynomial lie in the same

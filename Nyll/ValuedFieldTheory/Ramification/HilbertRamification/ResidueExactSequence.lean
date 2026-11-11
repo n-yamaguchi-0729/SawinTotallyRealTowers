@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.ClosedSubgroups
-import Nyll.ValuedFieldTheory.Ramification.ProfiniteInvariant
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.ClosedSubgroups
+public import Nyll.ValuedFieldTheory.Ramification.ProfiniteInvariant
 
 /-!
 # The residue-action exact sequence
@@ -22,6 +24,8 @@ ideal.  This fixed subring is exactly the valuation ring on the decomposition
 field.  The profinite surjectivity proof is the compact inverse-limit argument
 used in this construction, supplied by `Ideal.Quotient.stabilizerHom_surjective_of_profinite`.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 
@@ -127,9 +131,9 @@ private theorem decompositionGroup_action_locallyConstant
 
 private theorem decompositionGroup_continuousSMul
     (A : _root_.ValuationSubring L) :
-    letI : TopologicalSpace A := ⊥
+    let : TopologicalSpace A := ⊥
     ContinuousSMul (decompositionGroup K A) A := by
-  let : TopologicalSpace A := ⊥
+  intro sharedOwner1
   let : DiscreteTopology A := ⟨rfl⟩
   constructor
   rw [continuous_prod_of_discrete_right]

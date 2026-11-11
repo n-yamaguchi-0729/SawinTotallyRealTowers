@@ -4,12 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.RingTheory.DiscreteValuationRing.Basic
-import Mathlib.RingTheory.Henselian
-import Mathlib.RingTheory.Ideal.IsPrincipalPowQuotient
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
+public import Mathlib.RingTheory.Henselian
+public import Mathlib.RingTheory.Ideal.IsPrincipalPowQuotient
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Mathlib.Algebra.Module.Submodule.Lattice
+public import Mathlib.Algebra.Order.AbsoluteValue.Basic
+public import Mathlib.Order.WithBot
 
 /-!
 # Exponential valuations and associated absolute values
@@ -18,6 +23,8 @@ This file develops additive valuations with values in `WithTop ℝ`, their equiv
 under positive scaling, and the associated absolute values and valuation rings.
 For discrete valuations it describes prime elements and the ideals of the valuation ring.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -92,7 +99,7 @@ theorem exponentialValuation_one {K : Type*} [Field K]
   have hmul_real : r = r + r :=
     WithTop.coe_eq_coe.mp (by simpa [WithTop.coe_add] using hmul)
   have hr0 : r = 0 := by linarith
-  simp [hr, hr0]
+  exact hr.trans (congrArg (fun r : ℝ => (r : WithTop ℝ)) hr0)
 
 /-- The value of `-1` is `0` for a exponential valuation. -/
 @[simp]
@@ -108,7 +115,7 @@ theorem exponentialValuation_neg_one {K : Type*} [Field K]
   have hmul_real : (0 : ℝ) = r + r :=
     WithTop.coe_eq_coe.mp (by simpa [WithTop.coe_add] using hmul)
   have hr0 : r = 0 := by linarith
-  simp [hr, hr0]
+  exact hr.trans (congrArg (fun r : ℝ => (r : WithTop ℝ)) hr0)
 
 /-- Negation does not change a exponential valuation. -/
 @[simp]
@@ -145,10 +152,10 @@ theorem exponentialValuation_inv_value {K : Type*} [Field K]
   have hmul := v.map_mul x x⁻¹
   rw [mul_inv_cancel₀ hx, exponentialValuation_one v, hval, hs] at hmul
   have hmul_real : (0 : ℝ) = r + s :=
-    WithTop.coe_eq_coe.mp (by simpa [WithTop.coe_add] using hmul)
+    WithTop.coe_eq_coe.mp (by simpa only [WithTop.coe_add, WithTop.coe_zero] using hmul)
   have hs_eq : s = -r := by
     linarith
-  simp [hs, hs_eq]
+  rw [hs, hs_eq]
 
 /-- The set `{x | 0 ≤ v x}` is a subring. -/
 def exponentialValuationSubring {K : Type*} [Field K]
@@ -248,31 +255,31 @@ theorem equivalentExponentialValuations_value_nonneg_iff
   rcases hequiv with ⟨s, hs_pos, hscale⟩
   by_cases hx : x = 0
   · subst x
-    simp [(v.eq_top_iff 0).mpr rfl, (w.eq_top_iff 0).mpr rfl]
+    rw [(v.eq_top_iff 0).mpr rfl, (w.eq_top_iff 0).mpr rfl]
   · rcases hscale x hx with ⟨r, hw, hv⟩
     constructor
     · intro hv_nonneg
       have hsr_nonneg : 0 ≤ s * r := by
         have hwt :
             ((0 : ℝ) : WithTop ℝ) ≤ ((s * r : ℝ) : WithTop ℝ) := by
-          simpa [hv] using hv_nonneg
+          simpa only [hv, WithTop.coe_zero] using hv_nonneg
         exact WithTop.coe_le_coe.mp hwt
       have hr_nonneg : 0 ≤ r :=
-        nonneg_of_mul_nonneg_left (by simpa [mul_comm] using hsr_nonneg) hs_pos
+        nonneg_of_mul_nonneg_left (by simpa only [mul_comm] using hsr_nonneg) hs_pos
       have hwt : ((0 : ℝ) : WithTop ℝ) ≤ (r : WithTop ℝ) :=
         WithTop.coe_le_coe.mpr hr_nonneg
-      simpa [hw] using hwt
+      simpa only [hw, WithTop.coe_zero] using hwt
     · intro hw_nonneg
       have hr_nonneg : 0 ≤ r := by
         have hwt : ((0 : ℝ) : WithTop ℝ) ≤ (r : WithTop ℝ) := by
-          simpa [hw] using hw_nonneg
+          simpa only [hw, WithTop.coe_zero] using hw_nonneg
         exact WithTop.coe_le_coe.mp hwt
       have hsr_nonneg : 0 ≤ s * r :=
         mul_nonneg (le_of_lt hs_pos) hr_nonneg
       have hwt :
           ((0 : ℝ) : WithTop ℝ) ≤ ((s * r : ℝ) : WithTop ℝ) :=
         WithTop.coe_le_coe.mpr hsr_nonneg
-      simpa [hv] using hwt
+      simpa only [hv, WithTop.coe_zero] using hwt
 
 /-- Equivalent exponential valuations have the same value-zero elements. -/
 theorem equivalentExponentialValuations_value_eq_zero_iff
@@ -282,19 +289,20 @@ theorem equivalentExponentialValuations_value_eq_zero_iff
   rcases hequiv with ⟨s, hs_pos, hscale⟩
   by_cases hx : x = 0
   · subst x
-    simp [(v.eq_top_iff 0).mpr rfl, (w.eq_top_iff 0).mpr rfl]
+    rw [(v.eq_top_iff 0).mpr rfl, (w.eq_top_iff 0).mpr rfl]
   · rcases hscale x hx with ⟨r, hw, hv⟩
     constructor
     · intro hv_zero
       have hsr_zero : s * r = 0 := by
-        exact WithTop.coe_eq_coe.mp (by simpa [hv] using hv_zero)
+        exact WithTop.coe_eq_coe.mp (by simpa only [hv, WithTop.coe_zero] using hv_zero)
       have hr_zero : r = 0 :=
         (mul_eq_zero.mp hsr_zero).resolve_left hs_pos.ne'
-      simp [hw, hr_zero]
+      exact hw.trans (congrArg (fun r : ℝ => (r : WithTop ℝ)) hr_zero)
     · intro hw_zero
       have hr_zero : r = 0 := by
-        exact WithTop.coe_eq_coe.mp (by simpa [hw] using hw_zero)
-      simp [hv, hr_zero]
+        exact WithTop.coe_eq_coe.mp (by simpa only [hw, WithTop.coe_zero] using hw_zero)
+      exact hv.trans (congrArg (fun r : ℝ => (r : WithTop ℝ))
+        (by rw [hr_zero, mul_zero]))
 
 /-- Equivalent exponential valuations have the same positive-value elements. -/
 theorem equivalentExponentialValuations_value_pos_iff
@@ -462,14 +470,14 @@ theorem associatedAbsoluteValue_eq_one_iff
     have hle : abv x ≤ 1 :=
       (associatedAbsoluteValue_le_one_iff
         (v := v) (q := q) (abv := abv) hassoc hx).mpr
-        (by simp [hvzero])
+        hvzero.symm.le
     have hnlt : ¬ abv x < 1 := by
       intro habv_lt
       have hvpos :
           (0 : WithTop ℝ) < v x :=
         (associatedAbsoluteValue_lt_one_iff
           (v := v) (q := q) (abv := abv) hassoc hx).mp habv_lt
-      simp [hvzero] at hvpos
+      exact (not_lt_of_ge hvzero.le) hvpos
     exact le_antisymm hle (le_of_not_gt hnlt)
 
 /-- The valuation ring of an exponential valuation is the closed unit ball for
@@ -482,10 +490,11 @@ theorem associatedAbsoluteValue_ring_eq_closed_unit_ball
   ext x
   by_cases hx : x = 0
   · subst x
-    simp [exponentialValuationRing, (v.eq_top_iff 0).mpr rfl]
-  · simpa [exponentialValuationRing] using
-      (associatedAbsoluteValue_le_one_iff
-        (v := v) (q := q) (abv := abv) hassoc hx).symm
+    change (0 : WithTop ℝ) ≤ v 0 ↔ abv 0 ≤ 1
+    rw [(v.eq_top_iff 0).mpr rfl, abv.map_zero]
+    exact iff_of_true le_top zero_le_one
+  · exact (associatedAbsoluteValue_le_one_iff
+      (v := v) (q := q) (abv := abv) hassoc hx).symm
 
 /-- The zero-value unit set `{x | v x = 0}` is the unit sphere for any associated
 multiplicative absolute value. -/
@@ -497,10 +506,11 @@ theorem associatedAbsoluteValue_unitSet_eq_unit_sphere
   ext x
   by_cases hx : x = 0
   · subst x
-    simp [exponentialUnitSet, (v.eq_top_iff 0).mpr rfl]
-  · simpa [exponentialUnitSet] using
-      (associatedAbsoluteValue_eq_one_iff
-        (v := v) (q := q) (abv := abv) hassoc hx).symm
+    change v 0 = 0 ↔ abv 0 = 1
+    rw [(v.eq_top_iff 0).mpr rfl, abv.map_zero]
+    exact iff_of_false WithTop.top_ne_coe zero_ne_one
+  · exact (associatedAbsoluteValue_eq_one_iff
+      (v := v) (q := q) (abv := abv) hassoc hx).symm
 
 /-- The positive-value ideal of an exponential valuation is the open unit ball
 for any associated multiplicative absolute value. -/
@@ -512,10 +522,11 @@ theorem associatedAbsoluteValue_maxIdealSet_eq_open_unit_ball
   ext x
   by_cases hx : x = 0
   · subst x
-    simp [exponentialMaxIdealSet, (v.eq_top_iff 0).mpr rfl]
-  · simpa [exponentialMaxIdealSet] using
-      (associatedAbsoluteValue_lt_one_iff
-        (v := v) (q := q) (abv := abv) hassoc hx).symm
+    change (0 : WithTop ℝ) < v 0 ↔ abv 0 < 1
+    rw [(v.eq_top_iff 0).mpr rfl, abv.map_zero]
+    exact iff_of_true (WithTop.coe_lt_top 0) zero_lt_one
+  · exact (associatedAbsoluteValue_lt_one_iff
+      (v := v) (q := q) (abv := abv) hassoc hx).symm
 
 /-- Elements of value zero lie in the valuation subring. -/
 theorem exponentialUnitSet_subset_ring {K : Type*} [Field K]
@@ -583,7 +594,7 @@ theorem not_mem_exponentialMaxIdeal_iff_value_eq_zero {K : Type*} [Field K]
     exact le_antisymm (le_of_not_gt hx) x.property
   · intro hx
     change ¬ (0 : WithTop ℝ) < v (x : K)
-    simp [hx]
+    exact not_lt_of_ge hx.le
 
 /-- Value-zero elements of the valuation ring are units of that ring. -/
 theorem isUnit_of_exponentialValuation_eq_zero {K : Type*} [Field K]
@@ -594,7 +605,7 @@ theorem isUnit_of_exponentialValuation_eq_zero {K : Type*} [Field K]
   constructor
   · exact exponentialValuation_ne_zero_of_value_eq_zero v hx
   · change (0 : WithTop ℝ) ≤ v ((x : K)⁻¹)
-    simp [exponentialValuation_inv_of_value_eq_zero v hx]
+    rw [exponentialValuation_inv_of_value_eq_zero v hx]
 
 /-- Units of the valuation ring have value zero. -/
 theorem exponentialValuation_eq_zero_of_isUnit {K : Type*} [Field K]
@@ -630,7 +641,7 @@ theorem not_mem_exponentialMaxIdeal_of_isUnit {K : Type*} [Field K]
   have hzero : v (x : K) = 0 :=
     exponentialValuation_eq_zero_of_isUnit v hx
   change ¬ (0 : WithTop ℝ) < v (x : K)
-  simp [hzero]
+  exact not_lt_of_ge hzero.le
 
 /-- In the valuation ring, the units are exactly the complement of the
 positive-value ideal. -/
@@ -662,7 +673,7 @@ theorem associatedAbsoluteValue_isUnit_iff_eq_one
     have hx0 : (x : K) ≠ 0 := by
       intro hx_zero
       have hzero : abv (x : K) = 0 := by
-        simp [hx_zero]
+        rw [hx_zero, map_zero]
       rw [hzero] at habv_one
       norm_num at habv_one
     have hvzero : v (x : K) = 0 :=
@@ -802,15 +813,7 @@ theorem primeElementFor_inv_value {K : Type*} [Field K]
     (v : ExponentialValuation K) {π : K}
     (hπ : PrimeElementFor v π) :
     v π⁻¹ = ((-1 : ℝ) : WithTop ℝ) := by
-  obtain ⟨s, hs⟩ :=
-    exponentialValuation_exists_real_of_ne_zero v (inv_ne_zero hπ.1)
-  have hmul := v.map_mul π π⁻¹
-  rw [mul_inv_cancel₀ hπ.1, exponentialValuation_one v, hπ.2, hs] at hmul
-  have hmul_real : (0 : ℝ) = 1 + s :=
-    WithTop.coe_eq_coe.mp (by simpa [WithTop.coe_add] using hmul)
-  have hs_eq : s = -1 := by
-    linarith
-  simp [hs, hs_eq]
+  exact exponentialValuation_inv_value v hπ.1 hπ.2
 
 /-- Powers of a normalized prime element have the expected normalized value. -/
 theorem primeElementFor_pow_value {K : Type*} [Field K]
@@ -1007,7 +1010,7 @@ theorem exponentialMaxIdeal_eq_span_primeElement_of_normalized
       have hy_val :
           v ((x : K) * π⁻¹) = (((m : ℝ) - 1 : ℝ) : WithTop ℝ) := by
         rw [v.map_mul, hm, hπinv]
-        simp [sub_eq_add_neg, add_comm]
+        rw [← WithTop.coe_add, sub_eq_add_neg]
       have hy_mem : (x : K) * π⁻¹ ∈ exponentialValuationSubring v := by
         change (0 : WithTop ℝ) ≤ v ((x : K) * π⁻¹)
         rw [hy_val]
@@ -1149,7 +1152,9 @@ theorem uniformizerPowerIdeal_mem_iff_value_ge_of_pow_value
           v aK = (((r - (n : ℝ) * s) : ℝ) : WithTop ℝ) := by
         dsimp [aK]
         rw [v.map_mul, hr, hinv_val]
-        simp [sub_eq_add_neg, add_comm]
+        exact (WithTop.coe_add r (-((n : ℝ) * s))).symm.trans
+          (congrArg (fun t : ℝ => (t : WithTop ℝ))
+            (sub_eq_add_neg r ((n : ℝ) * s)).symm)
       have ha_mem : aK ∈ exponentialValuationSubring v := by
         change (0 : WithTop ℝ) ≤ v aK
         rw [ha_val]
@@ -1222,14 +1227,8 @@ theorem ideal_exists_min_value_of_nat_indexed_values
       x ∈ I ∧ x ≠ 0 ∧ value x = weight n ∧
         ∀ y : O, y ∈ I → y ≠ 0 → weight n ≤ value y := by
   classical
-  have hnonzero : ∃ x : O, x ∈ I ∧ x ≠ 0 := by
-    by_contra h
-    push Not at h
-    apply hI
-    apply le_antisymm
-    · intro x hx
-      simp [h x hx]
-    · exact bot_le
+  have hnonzero : ∃ x : O, x ∈ I ∧ x ≠ 0 :=
+    Submodule.exists_mem_ne_zero_of_ne_bot hI
   let P : ℕ → Prop := fun n => ∃ x : O, x ∈ I ∧ x ≠ 0 ∧ value x = weight n
   have hP : ∃ n : ℕ, P n := by
     rcases hnonzero with ⟨x, hxI, hx0⟩
@@ -1394,7 +1393,8 @@ theorem normalizedExponentialValuationSubring_isDiscreteValuationRing
     simpa using hπ_bot
   exact primeElementInValuationSubring_ne_zero v hπ hπ_zero
 
-/-- A field element of positive discrete value, viewed inside the valuation ring. -/
+/-- An element of nonnegative finite value, viewed inside the valuation ring.
+No discreteness or strict positivity is required; value zero is allowed. -/
 def discretePrimeElementInValuationSubring
     {K : Type*} [Field K] (v : ExponentialValuation K)
     {π : K} {s : ℝ} (hs : 0 ≤ s) (hπ : v π = (s : WithTop ℝ)) :
@@ -1404,7 +1404,7 @@ def discretePrimeElementInValuationSubring
     rw [hπ]
     exact WithTop.coe_le_coe.mpr hs⟩
 
-/-- A finite positive value forces the chosen discrete prime element to be nonzero. -/
+/-- An element with a finite value is nonzero; no sign condition on the value is needed. -/
 theorem discretePrimeElement_ne_zero_of_value
     {K : Type*} [Field K] (v : ExponentialValuation K)
     {π : K} {s : ℝ} (hπ : v π = (s : WithTop ℝ)) :
@@ -1414,7 +1414,7 @@ theorem discretePrimeElement_ne_zero_of_value
   rw [hπ] at htop
   exact WithTop.coe_ne_top htop
 
-/-- Powers of a discrete prime element have the expected scaled value. -/
+/-- Powers of an element with a given finite value have the corresponding scaled value. -/
 theorem discretePrimeElement_pow_value
     {K : Type*} [Field K] (v : ExponentialValuation K)
     {π : K} {s : ℝ} (hπ : v π = (s : WithTop ℝ)) (n : ℕ) :

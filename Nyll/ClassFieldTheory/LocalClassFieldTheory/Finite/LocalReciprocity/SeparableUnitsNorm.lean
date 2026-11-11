@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Norm.Transitivity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
-import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+module
+
+public import Mathlib.RingTheory.Norm.Transitivity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
 
 /-!
 # Finite local reciprocity: the abstract norm on separable-closure units
@@ -20,6 +22,8 @@ is proved first for an arbitrary (possibly infinite) Galois ambient field, so
 it does not require the ground field to be perfect.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 open RamificationTheory KummerTheory
 
@@ -31,9 +35,11 @@ open ClassFormation CyclicCohomology
 
 noncomputable section
 
+universe u v w
+
 open scoped BigOperators
 
-variable (K : Type) (Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
+variable (K : Type u) (Ω : Type v) [Field K] [Field Ω] [Algebra K Ω]
   [IsGalois K Ω]
 
 /-- Canonical identification of `Kˣ` with the coefficient group fixed by the
@@ -341,7 +347,7 @@ end FiniteGaloisIntermediate
 
 section EmbeddedFiniteGaloisExtension
 
-variable (L : Type) [Field L] [Algebra K L]
+variable (L : Type w) [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
   (i : L →ₐ[K] Ω)
 

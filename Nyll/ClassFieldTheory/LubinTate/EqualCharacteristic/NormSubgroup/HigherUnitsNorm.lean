@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormSubgroupFunctoriality
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UnitTransport
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldEquiv
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedNorm
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormSubgroupFunctoriality
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UnitTransport
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldEquiv
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedNorm
 
 /-!
 # LubinTate the explicit norm-subgroup computation: higher units are norms from the standard level
@@ -19,6 +21,10 @@ then puts every level-`n+1` higher unit in the standard norm subgroup.
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 noncomputable section
 
@@ -32,7 +38,7 @@ open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory
 open LocalFieldTheory
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 attribute [local instance]
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra
@@ -46,7 +52,7 @@ attribute [local instance]
 /-- The sharp higher-unit inclusion in LubinTate the explicit norm-subgroup computation. -/
 theorem
     equalCharacteristicPowerSeriesUnitToLaurentFieldUnit_mem_normSubgroup_of_mem_higherUnit
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) (a : F.residueField⟦X⟧ˣ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n) :

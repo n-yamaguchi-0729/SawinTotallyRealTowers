@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2FiniteStageCochain
+module
+
+public import Nyll.GaloisCohomology.ProP.H2FiniteStageCochain
 
 /-!
 # Finite-stage realization of continuous degree-two classes
 
 Every lifted degree-two class of a pro-`p` group is inflated from a finite `p`-group quotient.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

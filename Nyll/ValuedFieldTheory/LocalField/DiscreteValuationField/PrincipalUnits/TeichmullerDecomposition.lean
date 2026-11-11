@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerLift
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerLift
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
 
 /-!
 # Teichmuller and principal-unit decompositions
@@ -13,6 +15,8 @@ import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
 Decomposes valuation-ring units and field units into residue roots, first principal units,
 and a uniformizer factor.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

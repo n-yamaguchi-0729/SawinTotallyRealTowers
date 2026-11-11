@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.SchurPrimeDivisors
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.IntegralPrimitiveElement
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
-import Mathlib.NumberTheory.NumberField.Ideal.KummerDedekind
-import Mathlib.NumberTheory.Divisors
-import Mathlib.Data.ZMod.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.SchurPrimeDivisors
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.IntegralPrimitiveElement
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
+public import Mathlib.NumberTheory.NumberField.Ideal.KummerDedekind
+public import Mathlib.NumberTheory.Divisors
+public import Mathlib.Data.ZMod.Basic
 
 /-!
 # Degree-one primes of number fields
@@ -18,6 +20,8 @@ Good prime divisors of primitive polynomial values give prime ideals
 of residue degree one. Every number field admits an unramified
 degree-one prime outside any specified finite set of rational primes.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain Polynomial

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
-import Mathlib.Analysis.Normed.Algebra.GelfandMazur
-import Mathlib.NumberTheory.Ostrowski
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Mathlib.Analysis.Normed.Algebra.GelfandMazur
+public import Mathlib.NumberTheory.Ostrowski
 
 /-!
 # Ostrowski classification for complete valued fields
@@ -15,6 +17,8 @@ A complete field with an archimedean real-valued absolute value is isomorphic
 to ℝ or ℂ, with the absolute value obtained from the standard norm by a
 positive exponent at most one.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -540,12 +544,10 @@ private theorem ostrowski_realAlgebra_norm_algebraMap_of_real_rpow
     (hnorm : ∀ q : ℚ,
       ostrowski_restrictRatAbsoluteValue (K := K) v q =
         Rat.AbsoluteValue.real q ^ s) :
-    letI : Algebra ℝ (WithAbs v) :=
+    let : Algebra ℝ (WithAbs v) :=
       ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
     ∀ r : ℝ, ‖algebraMap ℝ (WithAbs v) r‖ = ‖r‖ ^ s := by
-  let : Algebra ℝ (WithAbs v) :=
-    ostrowski_realAlgebra_of_real_rpow (K := K) v hcomplete s hs hnorm
-  intro r
+  intro sharedOwner1 r
   change ‖ostrowski_realEmbedding_of_real_rpow
     (K := K) v hcomplete s hs hnorm r‖ = ‖r‖ ^ s
   exact ostrowski_realEmbedding_norm_eq_of_real_rpow
@@ -660,7 +662,9 @@ private theorem ostrowski_le_aeval_of_isMonicOfDegree_real_rpow
     {p : ℝ[X]} {n : ℕ} (hp : IsMonicOfDegree p (2 * n)) :
     M ^ n ≤ ‖aeval x p‖ := by
   induction n generalizing p with
-  | zero => simp_all
+  | zero =>
+      have hpone : p = 1 := isMonicOfDegree_zero_iff.mp hp
+      simp only [hpone, map_one, norm_one, pow_zero, le_refl]
   | succ n ih =>
       rw [mul_add, mul_one] at hp
       obtain ⟨f₁, f₂, hf₁, hf₂, H⟩ :=
@@ -1029,7 +1033,8 @@ private theorem norm_symm_eq_one_of_norm_eq_one
       hs hnorm e hz
   have hz0 : z ≠ 0 := by
     intro h
-    simp [h] at hz
+    rw [h, norm_zero] at hz
+    exact zero_ne_one hz
   have hle_inv : ‖e.symm z⁻¹‖ ≤ 1 := by
     exact norm_symm_le_one_of_norm_eq_one
       hs hnorm e (by simp [norm_inv, hz])
@@ -1128,11 +1133,11 @@ theorem ostrowski_of_complete
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ)
     (hcomplete : CompleteSpace (WithAbs v))
     (harch : ¬ IsNonarchimedean (v : K → ℝ)) :
-    letI : CharZero K := charZero_of_not_isNonarchimedean v harch
+    let : CharZero K := charZero_of_not_isNonarchimedean v harch
     ∃ s : ℝ, 0 < s ∧ s ≤ 1 ∧
       ((∃ σ : K ≃+* ℝ, ∀ a : K, v a = ‖σ a‖ ^ s) ∨
         (∃ σ : K ≃+* ℂ, ∀ a : K, v a = ‖σ a‖ ^ s)) := by
-  let : CharZero K := charZero_of_not_isNonarchimedean v harch
+  intro sharedOwner1
   obtain ⟨s, hs, hs_le, hnorm⟩ :=
     ostrowski_restrictRat_exists_real_rpow_eq_of_not_isNonarchimedean
       (K := K) v harch

@@ -8,6 +8,8 @@ import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1RamificationLocalization
 import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitKummerUnramified
+import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
 
 /-!
 # Tame unramifiedness of finite-place natural `mu_p` Kummer classes

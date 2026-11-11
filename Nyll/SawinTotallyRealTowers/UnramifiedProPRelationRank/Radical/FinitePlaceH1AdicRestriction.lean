@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceDecompositionAdicEquiv
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceDecompositionAdicEquiv
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
 
 /-!
 # Actual absolute-character restriction to the adic completion
@@ -13,6 +15,8 @@ import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlace
 The inverse of the decomposition--adic equivalence transports the already
 constructed decomposition-group restriction to intrinsic local `H¹`.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 

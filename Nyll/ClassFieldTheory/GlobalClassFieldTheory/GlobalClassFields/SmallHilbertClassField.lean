@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
+public import Mathlib.NumberTheory.NumberField.ClassNumber
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
 /-!
 # The small Hilbert class field
@@ -19,6 +25,8 @@ order is the class number.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative
 

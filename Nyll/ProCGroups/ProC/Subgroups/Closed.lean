@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.InverseLimits.Limits
+module
+
+public import Nyll.ProCGroups.ProC.InverseLimits.Limits
 
 /-!
 # Closed subgroups, ranges, and extensions of pro-\(C\) groups
@@ -13,6 +15,8 @@ The pro-\(C\) basis passes to closed subgroups when \(C\) is subgroup-closed,
 to Hausdorff continuous quotients when \(C\) is a formation, and across a
 closed normal extension when \(C\) is extension-closed.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

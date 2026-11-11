@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferentialModule
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.StageCoeffMap
-import Nyll.ProCGroups.Completion.ProCInteger
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferentialModule
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.StageCoeffMap
+public import Nyll.ProCGroups.Completion.ProCInteger
 
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — core
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The transition map \(R[G/V] \to R[G/U]\) sends a singleton supported at a class of \(G/V\) to the
   singleton supported at its image in \(G/U\), with the same coefficient.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

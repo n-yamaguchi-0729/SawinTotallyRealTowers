@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FiniteGroups.AllFinite
-import Nyll.ProCGroups.InverseSystems.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+module
+
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.InverseSystems.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
 
 /-!
 # Open-normal quotient bases in a finite-group class
@@ -22,6 +24,8 @@ category `ProCGrp C`.
 The module also packages the class-indexed open normal subgroups, their quotient projections and
 transition maps, and the separation consequences of a Hausdorff open-normal basis.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.ProC
 

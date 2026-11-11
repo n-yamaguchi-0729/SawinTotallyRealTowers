@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
-import Mathlib.FieldTheory.Galois.NormalBasis
-import Mathlib.LinearAlgebra.Quotient.Pi
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Mathlib.FieldTheory.Galois.NormalBasis
+public import Mathlib.LinearAlgebra.Quotient.Pi
 
 /-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.NormalBasis`
 Lean module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -264,7 +268,7 @@ theorem chosenNormalBasisIntegerLatticeUniformizerSubmodule_map_equivFun :
       Ideal.mem_span_singleton']
     refine ⟨(chosenNormalBasisIntegerLatticeBasis K L).equivFun zM σ, ?_⟩
     rw [hx_eq]
-    simp [mul_comm]
+    rw [map_smul, Pi.smul_apply, smul_eq_mul, mul_comm, LinearEquiv.coe_coe]
   · intro hf
     have hf' : ∀ σ : Gal(L / K),
         ∃ c : 𝒪[K], c * chosenIntegerRingUniformizer K = f σ := by
@@ -471,7 +475,7 @@ theorem chosenNormalBasisIntegerLatticeBasis_equivFun_galoisGroup
     ext ρ
     rw [Module.Basis.map_apply, Module.Basis.reindex_apply]
     have he : e.symm ρ = τ * ρ := by
-      simp [e]
+      exact congrArg (· * ρ) (inv_inv τ)
     rw [he]
     simp only [f, b, galoisGroupChosenNormalBasisIntegerLatticeLinearEquiv_apply_coe,
       chosenNormalBasisIntegerLatticeBasis_apply]
@@ -485,7 +489,7 @@ theorem chosenNormalBasisIntegerLatticeBasis_equivFun_galoisGroup
           (b.reindex e).equivFun (f x) ρ := by
             rw [Module.Basis.equivFun_apply, Module.Basis.equivFun_apply,
               Module.Basis.repr_reindex_apply]
-            simp [e]
+            rw [show e.symm ρ = τ * ρ from congrArg (· * ρ) (inv_inv τ)]
       _ = (b.map f).equivFun (f x) ρ := by rw [hbmap]
       _ = b.equivFun x ρ := by
         rw [Module.Basis.map_equivFun]
@@ -687,10 +691,10 @@ action with the pointwise right-regular action. -/
 theorem chosenNormalBasisLatticeSuccQuotRightRegularAddEquiv_commutes
     (n : Nat) (τ : Gal(L/K))
     (q : chosenNormalBasisLatticeSuccQuot K L n) (σ : Gal(L/K)) :
-    letI := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+    let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
     chosenNormalBasisLatticeSuccQuotRightRegularAddEquiv K L n (τ • q) σ =
       chosenNormalBasisLatticeSuccQuotRightRegularAddEquiv K L n q (σ * τ) := by
-  let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+  intro sharedOwner1
   refine chosenNormalBasisLatticeSuccQuot.inductionOn K L n
     (motive := fun q =>
       chosenNormalBasisLatticeSuccQuotRightRegularAddEquiv K L n (τ • q) σ =
@@ -711,14 +715,14 @@ theorem chosenNormalBasisLatticeSuccQuotRightRegularAddEquiv_commutes
 /-- Herbrand `H⁰` vanishes on every additive normal-basis lattice graded
 piece. -/
 theorem chosenNormalBasisLatticeSuccQuot_herbrandH0_subsingleton (n : Nat) :
-    letI := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+    let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
     letI :=
       (open CyclicCohomology.ProfiniteCohomology.Herbrand in
         multiplicativeMulDistribMulActionOfDistribMulAction)
         Gal(L / K) (chosenNormalBasisLatticeSuccQuot K L n)
     Subsingleton (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
       Gal(L / K) (Multiplicative (chosenNormalBasisLatticeSuccQuot K L n))) := by
-  let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+  intro sharedOwner1
   exact
     (open CyclicCohomology.ProfiniteCohomology.Herbrand in
       herbrandH0_subsingleton_of_addEquiv_rightRegularFunction
@@ -731,14 +735,14 @@ graded piece. -/
 theorem chosenNormalBasisLatticeSuccQuot_herbrandHMinusOne_subsingleton
     (n : Nat) (τ : Gal(L/K))
     (hgen : ∀ g : Gal(L / K), g ∈ Subgroup.zpowers τ) :
-    letI := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+    let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
     letI :=
       (open CyclicCohomology.ProfiniteCohomology.Herbrand in
         multiplicativeMulDistribMulActionOfDistribMulAction)
         Gal(L / K) (chosenNormalBasisLatticeSuccQuot K L n)
     Subsingleton (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
       Gal(L / K) (Multiplicative (chosenNormalBasisLatticeSuccQuot K L n)) τ) := by
-  let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+  intro sharedOwner1
   exact
     (open CyclicCohomology.ProfiniteCohomology.Herbrand in
       herbrandHMinusOne_subsingleton_of_addEquiv_rightRegularFunction

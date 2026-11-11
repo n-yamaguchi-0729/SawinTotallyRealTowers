@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Algebra.Group.Quotient
+module
+
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Compactness.Compact
 
 /-!
 # Continuous group homomorphisms
@@ -14,6 +17,8 @@ This file provides standard continuous homomorphisms involving subgroups and quo
 open-mapping criterion for compact-to-Hausdorff surjections, and develops range restrictions.
 Kernels and ranges are shown closed under the expected separation hypotheses.
 -/
+
+@[expose] public section
 
 namespace ProCGroups
 
@@ -165,6 +170,11 @@ theorem isClosed_ker [T1Space H] (f : G →ₜ* H) :
     simp only [Set.mem_singleton_iff]
   rw [hker]
   exact (isClosed_singleton (x := (1 : H))).preimage f.continuous_toFun
+
+/-- The kernel of a continuous homomorphism from a compact group to a `T₁` group is compact. -/
+instance compactSpace_ker [CompactSpace G] [T1Space H] (f : G →ₜ* H) :
+    CompactSpace f.toMonoidHom.ker :=
+  (isClosed_ker f).isClosedEmbedding_subtypeVal.compactSpace
 
 /-- The range of a continuous homomorphism from a compact space to a Hausdorff space is closed. -/
 theorem isClosed_range [CompactSpace G] [T2Space H] (f : G →ₜ* H) :

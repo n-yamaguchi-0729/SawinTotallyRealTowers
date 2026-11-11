@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.PrimitiveElement
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.PrimitiveElement
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
 
 /-!
 # Relative norms on actual fixed fields
@@ -20,6 +22,8 @@ field, and both norms are then the same product of conjugates.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -87,7 +91,8 @@ theorem abstractFixedFieldCosetToAlgHom_mk
         (abstractRelativeFixedField k Ω hLK).val :=
   rfl
 
-private theorem abstractFixedFieldCosetToAlgHom_surjective
+/-- Every relative fixed-field embedding is induced by a Galois coset. -/
+theorem abstractFixedFieldCosetToAlgHom_surjective
     (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     [FiniteDimensional (abstractFixedField k Ω K)
@@ -126,7 +131,8 @@ private theorem abstractFixedFieldCosetToAlgHom_surjective
   exact hx
 
 omit [IsSepClosed Ω] in
-private theorem abstractFixedFieldCosetToAlgHom_injective
+/-- Distinct relative Galois cosets induce distinct fixed-field embeddings. -/
+theorem abstractFixedFieldCosetToAlgHom_injective
     (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup) :
     Function.Injective

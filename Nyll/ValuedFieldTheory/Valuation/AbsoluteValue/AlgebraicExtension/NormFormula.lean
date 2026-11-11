@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
-import Mathlib.RingTheory.Norm.Transitivity
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
+public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
+public import Mathlib.RingTheory.Norm.Transitivity
+public import Mathlib.RingTheory.Valuation.Extension
 
 /-!
 # the finite norm-formula theorem
@@ -16,6 +19,8 @@ Algebraic facts about the finite norm formula used in the explicit proof of
 The algebraic-extension norm formula, together with restriction of a valued field tower to an
 intermediate field.
 -/
+
+@[expose] public section
 
 noncomputable section
 

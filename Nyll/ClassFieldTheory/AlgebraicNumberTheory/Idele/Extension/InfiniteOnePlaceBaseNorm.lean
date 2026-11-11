@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
-import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Norms of base units supported at one infinite place
@@ -20,6 +23,8 @@ degree power.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NumberField
 open NumberField IsDedekindDomain

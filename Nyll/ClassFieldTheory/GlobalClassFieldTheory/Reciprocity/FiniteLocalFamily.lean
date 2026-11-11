@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.NormQuotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.NormQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
 
 /-!
 # Finite local families of ideles
@@ -17,6 +21,8 @@ and therefore kills principal ideles.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField BigOperators
 open NumberField IsDedekindDomain

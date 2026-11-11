@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Generation.QuotientCriteria
-import Nyll.ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
+module
+
+public import Nyll.ProCGroups.Generation.QuotientCriteria
+public import Nyll.ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
 
 /-!
 # Partial converging generators modulo a closed normal subgroup
@@ -15,6 +17,8 @@ and generate together with that subgroup.  The refinement preorder is developed 
 construct upper bounds for chains and to extract finite generating data after passage to an open
 normal quotient.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

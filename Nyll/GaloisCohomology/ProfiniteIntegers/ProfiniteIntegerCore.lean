@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.ZMod.Basic
-import Mathlib.Topology.Instances.ZMod
-import Mathlib.Topology.Algebra.Ring.Basic
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
-import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
+module
+
+public import Mathlib.Data.ZMod.Basic
+public import Mathlib.Topology.Instances.ZMod
+public import Mathlib.Topology.Algebra.Ring.Basic
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
+public import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
 
 /-!
 # Profinite completion of the integers
@@ -19,26 +21,34 @@ the canonical reduction maps and the dense integer embedding directly in
 Mathlib.
 -/
 
+@[expose] public section
+
 namespace ClassFormation
 
 
 
 open scoped Topology
 
-private structure ZHatIndex where
+/-- A positive modulus indexing the cyclic quotients of the integers. -/
+structure ZHatIndex where
+  /-- The modulus of the cyclic quotient. -/
   modulus : ℕ
+  /-- Positivity excludes the infinite quotient modulo zero. -/
   positive : 0 < modulus
 
-private instance (i : ZHatIndex) : NeZero i.modulus :=
+instance (i : ZHatIndex) : NeZero i.modulus :=
   ⟨Nat.ne_of_gt i.positive⟩
 
-private def zHatIndex (n : ℕ) (hn : 0 < n) : ZHatIndex :=
+/-- The index associated with a positive modulus. -/
+def zHatIndex (n : ℕ) (hn : 0 < n) : ZHatIndex :=
   ⟨n, hn⟩
 
-private abbrev ZHatAmbient : Type 0 :=
+/-- The product of the finite cyclic quotients over all positive moduli. -/
+abbrev ZHatAmbient : Type 0 :=
   ∀ i : ZHatIndex, ZMod i.modulus
 
-private def zHatDiagonal : ℤ →+* ZHatAmbient where
+/-- The simultaneous residue map from the integers to all positive cyclic quotients. -/
+def zHatDiagonal : ℤ →+* ZHatAmbient where
   toFun a i := (a : ZMod i.modulus)
   map_zero' := by
     funext i
@@ -53,10 +63,12 @@ private def zHatDiagonal : ℤ →+* ZHatAmbient where
     funext i
     exact Int.cast_mul a b
 
-private def zHatIntegerSubring : Subring ZHatAmbient :=
+/-- The image of the integers in the product of their finite cyclic quotients. -/
+def zHatIntegerSubring : Subring ZHatAmbient :=
   zHatDiagonal.range
 
-private abbrev ZHatClosureModel : Type 0 :=
+/-- The closure of the integer image in the product of finite cyclic quotients. -/
+abbrev ZHatClosureModel : Type 0 :=
   zHatIntegerSubring.topologicalClosure
 
 /-- The profinite completion `ℤ̂ = lim ℤ/nℤ` over all positive moduli.

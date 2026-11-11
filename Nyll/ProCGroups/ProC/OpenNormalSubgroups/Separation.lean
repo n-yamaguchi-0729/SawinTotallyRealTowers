@@ -4,12 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Categorical.QuotientPullbackEquivalences
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
-import Nyll.ProCGroups.GroupTheory.CentralizerNormalizerCommensurator
-import Nyll.ProCGroups.Profinite.Basic
+module
+
+public import Nyll.ProCGroups.Categorical.QuotientPullbackEquivalences
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
+public import Nyll.ProCGroups.GroupTheory.CentralizerNormalizerCommensurator
+public import Nyll.ProCGroups.Profinite.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Separation by open normal quotients
@@ -18,6 +22,8 @@ This file detects equality and closed-subgroup membership in all open normal quo
 develops refinements avoiding a chosen coset, cyclic-containment consequences, and extensionality
 of continuous homomorphisms from their finite quotient maps.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

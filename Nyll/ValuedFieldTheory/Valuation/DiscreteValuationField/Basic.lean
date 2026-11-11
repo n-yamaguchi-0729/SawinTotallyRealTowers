@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.CharP.Subring
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-import Mathlib.RingTheory.Valuation.Discrete.Basic
-import Mathlib.RingTheory.Valuation.LocalSubring
+module
+
+public import Mathlib.Algebra.CharP.Subring
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+public import Mathlib.RingTheory.Valuation.Discrete.Basic
+public import Mathlib.RingTheory.Valuation.LocalSubring
 
 /-!
 # Discretely valued fields
@@ -15,6 +17,8 @@ import Mathlib.RingTheory.Valuation.LocalSubring
 This is the basic one-dimensional API for fields equipped with a chosen
 rank-one discrete valuation.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -237,7 +241,7 @@ theorem isUniformizer_of_mem_maximalIdeal_of_not_mem_maximalIdeal_sq
     F.valuation.IsUniformizer (x : K) := by
   have hx_ne : x ≠ 0 := by
     intro hzero
-    exact hx_sq (by simp [hzero])
+    exact hx_sq (by rw [hzero]; exact zero_mem _)
   have hspan_ne : Ideal.span ({x} : Set F.valuationSubring) ≠ ⊥ := by
     intro hspan
     have hx_bot : x ∈ (⊥ : Ideal F.valuationSubring) := by
@@ -521,12 +525,8 @@ def maximalIdealPowMulUniformizerPowMap (F : DVF.{u, v} K)
     F.valuationSubring →ₗ[F.valuationSubring]
       ((F.maximalIdeal ^ n : Ideal F.valuationSubring) : Type u) where
   toFun r := ⟨r * pi ^ n, F.mul_uniformizer_pow_mem_maximalIdeal_pow hpi n r⟩
-  map_add' r s := by
-    ext
-    simp [add_mul]
-  map_smul' a r := by
-    ext
-    simp [mul_assoc]
+  map_add' r s := Subtype.ext (add_mul r s (pi ^ n))
+  map_smul' a r := Subtype.ext (mul_assoc a r (pi ^ n))
 
 /-- After multiplying by a uniformizer power, next-level membership is equivalent
 to maximal-ideal membership. -/

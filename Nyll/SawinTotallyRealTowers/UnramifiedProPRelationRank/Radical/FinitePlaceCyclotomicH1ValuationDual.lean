@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
-import Mathlib.LinearAlgebra.Dual.Lemmas
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # The cyclotomic local H¹ valuation line
@@ -14,6 +16,8 @@ At a finite place of the cyclotomic base, transport the normalized valuation
 functional from local power classes to intrinsic continuous `H¹`.  Its image
 is exactly the annihilator of the valuation-zero subspace.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology

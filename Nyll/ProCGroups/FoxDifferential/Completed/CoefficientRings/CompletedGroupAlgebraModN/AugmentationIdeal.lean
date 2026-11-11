@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.Augmentation
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.Augmentation
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
 
 /-!
 # Fox differential: completed — coefficient rings — mod-\(n\) completed group algebra —
@@ -23,6 +26,8 @@ The principal declarations in this module are:
   Membership in the relevant augmentation kernel or augmentation ideal is equivalent to the
   corresponding vanishing condition.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

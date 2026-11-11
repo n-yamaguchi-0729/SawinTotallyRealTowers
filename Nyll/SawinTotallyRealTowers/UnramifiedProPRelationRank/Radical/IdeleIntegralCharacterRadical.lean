@@ -4,11 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
-import Mathlib.Topology.Algebra.InfiniteSum.Constructions
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
+public import Mathlib.Topology.Algebra.InfiniteSum.Constructions
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
 
 /-!
 # Integral idele characters annihilate the ideal-power radical
@@ -24,6 +30,8 @@ kernel. Lifting the ideal root of a radical element therefore writes its
 principal idele as a p-th power times an integral idele. The character
 annihilates it. No global reciprocity comparison is an extra hypothesis.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology BigOperators

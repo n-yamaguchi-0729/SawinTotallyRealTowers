@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
-import Mathlib.Algebra.Group.Units.Equiv
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Mathlib.Algebra.Group.Units.Equiv
 
 /-!
 # Automorphism transport for principal units
@@ -13,6 +15,8 @@ import Mathlib.Algebra.Group.Units.Equiv
 A field automorphism preserving the chosen valuation ring acts on the valuation ring,
 its residue field, its units, and every principal-unit quotient.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -160,8 +164,8 @@ theorem residueUnitHom_valuationSubringUnitEquivOfPreserves
         (valuationSubringResidueFieldEquivOfPreserves F e hmem).toMonoidHom
         (higherPrincipalUnitGroup.residueUnitHom F u) := by
   apply Units.ext
-  simp [higherPrincipalUnitGroup.residueUnitHom,
-    valuationSubringUnitEquivOfPreserves_apply]
+  exact (valuationSubringResidueFieldEquivOfPreserves_apply_residue
+    F e hmem (u : F.valuationSubring)).symm
 
 /-- The induced automorphism on valuation-ring units preserves every concrete
 principal-unit level `U^n`. -/
@@ -181,7 +185,7 @@ theorem valuationSubringUnitEquivOfPreserves_mem_principalUnit_iff
           F.valuationSubringˣ) : F.valuationSubring) - 1 =
         valuationSubringRingEquivOfPreserves F e hmem
           ((u : F.valuationSubring) - 1) := by
-    simp [valuationSubringUnitEquivOfPreserves_apply]
+    rw [valuationSubringUnitEquivOfPreserves_apply, map_sub, map_one]
   rw [hsub]
   exact valuationSubringRingEquivOfPreserves_mem_maximalIdeal_pow_iff F e hmem
     n ((u : F.valuationSubring) - 1)
@@ -206,7 +210,7 @@ theorem higherPrincipalUnitGroup_map_valuationSubringUnitEquivOfPreserves
     exact (valuationSubringUnitEquivOfPreserves_mem_principalUnit_iff
       F e hmem n v).2 hv
   · intro hu
-    refine ⟨ueq.symm u, ?_, by simp [ueq]⟩
+    refine ⟨ueq.symm u, ?_, ueq.apply_symm_apply u⟩
     exact (valuationSubringUnitEquivOfPreserves_mem_principalUnit_iff
       F e hmem n (ueq.symm u)).1 (by simpa [ueq] using hu)
 

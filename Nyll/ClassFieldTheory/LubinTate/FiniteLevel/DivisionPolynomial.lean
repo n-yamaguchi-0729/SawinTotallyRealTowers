@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardSeries
-import Mathlib.Algebra.Polynomial.Monic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardSeries
+public import Mathlib.Algebra.Polynomial.Monic
 
 /-!
 # Standard Lubin--Tate division polynomials
@@ -33,6 +35,8 @@ Lubin--Tate extensions is made here.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -70,7 +74,8 @@ theorem standardLubinTatePolynomial_eval
     (x : F.valuationSubring) :
     (standardLubinTatePolynomial F π).eval x =
       x ^ Nat.card F.residueField + π * x := by
-  simp [standardLubinTatePolynomial]
+  simp only [standardLubinTatePolynomial, Polynomial.eval_add, Polynomial.eval_pow,
+    Polynomial.eval_X, Polynomial.eval_mul, Polynomial.eval_C]
 
 /-- Coercing the standard polynomial to a power series gives the standard
 Lubin--Tate power series. -/
@@ -81,8 +86,8 @@ theorem standardLubinTatePolynomial_toPowerSeries
         Polynomial F.valuationSubring) :
       PowerSeries F.valuationSubring) =
         standardLubinTatePowerSeries F π := by
-  simp [standardLubinTatePolynomial, standardLubinTatePowerSeries,
-    add_comm]
+  simp only [standardLubinTatePolynomial, Polynomial.coe_add, Polynomial.coe_pow, Polynomial.coe_X,
+    Polynomial.coe_mul, Polynomial.coe_C, standardLubinTatePowerSeries, add_comm]
 
 /-- For a uniformizer, coercing the standard polynomial gives the underlying
 series of the bundled standard Lubin--Tate input. -/
@@ -139,7 +144,7 @@ noncomputable def standardLubinTatePolynomialIterate
 theorem standardLubinTatePolynomialIterate_zero
     (F : LocalField.{u, v} K) (π : F.valuationSubring) :
     standardLubinTatePolynomialIterate F π 0 = Polynomial.X := by
-  simp [standardLubinTatePolynomialIterate]
+  simp only [standardLubinTatePolynomialIterate, Function.iterate_zero, id_eq]
 
 /-- A successor iterate is obtained by one further composition with the
 standard polynomial. -/
@@ -168,7 +173,8 @@ theorem standardLubinTatePolynomialIterate_monic
     (standardLubinTatePolynomialIterate F π n).Monic := by
   induction n with
   | zero =>
-      simp [standardLubinTatePolynomialIterate]
+      simp only [standardLubinTatePolynomialIterate, Function.iterate_zero, id_eq,
+        Polynomial.monic_X]
   | succ n ih =>
       rw [standardLubinTatePolynomialIterate_succ]
       exact (standardLubinTatePolynomial_monic F π).comp ih
@@ -186,14 +192,15 @@ theorem standardLubinTatePolynomialIterate_eval_zero
     (standardLubinTatePolynomialIterate F π n).eval 0 = 0 := by
   induction n with
   | zero =>
-      simp [standardLubinTatePolynomialIterate]
+      simp only [standardLubinTatePolynomialIterate, Function.iterate_zero, id_eq,
+        Polynomial.eval_X]
   | succ n ih =>
       rw [standardLubinTatePolynomialIterate_succ,
         Polynomial.eval_comp, ih]
-      simp [standardLubinTatePolynomial,
-        ne_of_gt
-          (Nat.zero_lt_one.trans
-            (Finite.one_lt_card : 1 < Nat.card F.residueField))]
+      simp only [standardLubinTatePolynomial, Polynomial.eval_add, Polynomial.eval_pow,
+        Polynomial.eval_X, ne_eq,
+        ne_of_gt (Nat.zero_lt_one.trans (Finite.one_lt_card : 1 < Nat.card F.residueField)),
+        not_false_eq_true, zero_pow, Polynomial.eval_mul, Polynomial.eval_C, mul_zero, add_zero]
 
 /-- The primitive quotient polynomial at level `n + 1`. -/
 noncomputable def standardLubinTatePrimitivePolynomial
@@ -264,11 +271,10 @@ theorem standardLubinTatePrimitivePolynomial_coeff_zero
     (F : LocalField.{u, v} K) (π : F.valuationSubring) (n : ℕ) :
     (standardLubinTatePrimitivePolynomial F π n).coeff 0 = π := by
   rw [Polynomial.coeff_zero_eq_eval_zero]
-  simp [standardLubinTatePrimitivePolynomial,
-    standardLubinTatePolynomialIterate_eval_zero,
-    ne_of_gt
-      (Nat.sub_pos_of_lt
-        (Finite.one_lt_card : 1 < Nat.card F.residueField))]
+  simp only [standardLubinTatePrimitivePolynomial, Polynomial.eval_add, Polynomial.eval_pow,
+    standardLubinTatePolynomialIterate_eval_zero, ne_eq,
+    ne_of_gt (Nat.sub_pos_of_lt (Finite.one_lt_card : 1 < Nat.card F.residueField)),
+    not_false_eq_true, zero_pow, Polynomial.eval_C, zero_add]
 
 /-- The next compositional iterate is the current iterate times its primitive
 quotient polynomial. -/

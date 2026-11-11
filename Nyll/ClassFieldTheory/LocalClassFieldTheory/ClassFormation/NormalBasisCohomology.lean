@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisRecursiveLifting
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisRecursiveLifting
 
 /-!
 # Low-degree cohomology of a deep normal-basis unit subgroup
@@ -12,6 +14,8 @@ import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisRec
 The recursive norm and coboundary constructions are converted here into the
 actual quotient statements `H⁰(G,V)=H⁻¹(G,V)=1` used in the local class-field-axiom theorem.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology
@@ -44,8 +48,8 @@ theorem exists_chosenNormalBasisPrincipalUnit_herbrand_subsingleton
     ∃ c : Nat, ∀ n : Nat, c ≤ n →
       ∀ (V : Subgroup 𝒪[L]ˣ)
         (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n),
-        letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction
-          K L n V hV
+        let : MulDistribMulAction (Gal(L / K)) V :=
+          chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
         Subsingleton (HerbrandH0 (Gal(L / K)) V) ∧
           Subsingleton (HerbrandHMinusOne (Gal(L / K)) V g) := by
   rcases exists_chosenNormalBasisPrincipalUnit_fixed_is_tateNorm
@@ -53,11 +57,9 @@ theorem exists_chosenNormalBasisPrincipalUnit_herbrand_subsingleton
   rcases exists_chosenNormalBasisPrincipalUnit_normOne_is_sigmaMinusOne
       (K := K) (L := L) g hgen with ⟨cm, hcm⟩
   refine ⟨max c0 cm, ?_⟩
-  intro n hn V hV
+  intro n hn V hV subgroupAction
   have hc0n : c0 ≤ n := le_trans (le_max_left c0 cm) hn
   have hcmn : cm ≤ n := le_trans (le_max_right c0 cm) hn
-  let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction
-    K L n V hV
   have hfixed : fixedSubgroup (Gal(L / K)) V ≤
       tateNormSubgroup (Gal(L / K)) V := by
     intro a ha

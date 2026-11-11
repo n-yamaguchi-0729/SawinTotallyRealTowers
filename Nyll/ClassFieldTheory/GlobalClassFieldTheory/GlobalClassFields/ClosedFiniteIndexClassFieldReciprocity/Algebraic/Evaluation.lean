@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
 
 /-!
 # Evaluation of algebraic closed finite-index reciprocity
@@ -16,6 +18,10 @@ is inherited without reconstructing the selected class-field instance tower.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -23,7 +29,7 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- Evaluation of the direct non-topological reciprocity equivalence. -/
 @[simp]

@@ -8,6 +8,8 @@ import Nyll.GaloisCohomology.ProP.H2CocycleExtensionSplitting
 import Nyll.GaloisCohomology.ProP.QuotientRestriction
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
 import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+import Nyll.GaloisCohomology.ProP.H2CocycleExtension
 
 /-!
 # Finite-place splitting defects of arithmetic-stage H² embedding problems

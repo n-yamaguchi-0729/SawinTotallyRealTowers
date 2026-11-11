@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 
 /-!
 # Supported idele power-local-unit quotient
@@ -17,6 +21,8 @@ product of its archimedean and finite local power-class groups.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open KummerTheory
@@ -27,7 +33,8 @@ namespace GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type*} [Field K] [NumberField K]
 
-private noncomputable def quotientEquivOfSurjectiveWithKernel
+/-- A surjective homomorphism identifies the quotient by its specified kernel. -/
+noncomputable def supportedIdeleQuotientEquivOfSurjectiveWithKernel
     {G H : Type*} [Group G] [Group H]
     (f : G →* H)
     (N : Subgroup G) [N.Normal]
@@ -275,7 +282,7 @@ noncomputable def supportedIdeleQuotientEquivLocalPowerClasses
             (powMonoidHom (n : ℕ) :
               (v.1.adicCompletion K)ˣ →*
                 (v.1.adicCompletion K)ˣ).range)) :=
-  quotientEquivOfSurjectiveWithKernel
+  supportedIdeleQuotientEquivOfSurjectiveWithKernel
     (H :=
       ((
         ∀ w : InfinitePlace K,

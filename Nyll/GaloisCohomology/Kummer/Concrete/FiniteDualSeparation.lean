@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
 
 /-!
 # finite Kummer dual separation
@@ -19,6 +21,8 @@ No lattice correspondence or infinite Kummer endpoint is asserted here.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

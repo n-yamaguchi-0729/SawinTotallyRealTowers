@@ -4,19 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
-import Mathlib.Algebra.Group.Hom.Defs
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.FieldTheory.Fixed
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.LinearAlgebra.FiniteDimensional.Defs
-import Mathlib.NumberTheory.LocalField.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Data.Fintype.Card
+public import Mathlib.FieldTheory.Fixed
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Torsion in finite cyclic local unit cohomology
@@ -25,6 +27,8 @@ Finite local reciprocity identifies the actual unit-coefficient H² with the
 cyclic Galois group. Its n-torsion therefore has at most n elements for every
 positive integer n, including n = 2 and every prime n.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Martinet.Shafarevich
 

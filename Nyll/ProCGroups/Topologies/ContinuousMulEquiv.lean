@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.End
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+module
+
+public import Mathlib.Algebra.Group.End
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
 
 /-!
 # Continuous multiplicative equivalences
@@ -16,6 +18,8 @@ This file constructs continuous multiplicative equivalences from inverse homomor
 compact-to-Hausdorff bijections. It also gives the topological first-isomorphism equivalence from
 a quotient by the kernel to the range of a continuous homomorphism.
 -/
+
+@[expose] public section
 
 namespace ProCGroups
 

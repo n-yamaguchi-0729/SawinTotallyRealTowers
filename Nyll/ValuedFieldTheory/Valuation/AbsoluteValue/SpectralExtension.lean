@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
-import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
 
 /-!
 # Spectral extensions of nonarchimedean absolute values
@@ -15,11 +17,14 @@ The spectral norm gives the unique extension of a complete nonarchimedean
 absolute value to an algebraic field extension.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 namespace AbsoluteValue
 
-@[reducible] private def spectral_withAbsNontriviallyNormedField
+/-- The original normed-field structure on `WithAbs v`, with nontriviality from `hv`. -/
+@[reducible] def spectral_withAbsNontriviallyNormedField
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) (hv : v.IsNontrivial) :
     NontriviallyNormedField (WithAbs v) :=
   NontriviallyNormedField.ofNormNeOne
@@ -33,7 +38,7 @@ namespace AbsoluteValue
 
 /-- Algebraicity is transported across the canonical `WithAbs` base-field
 equivalence. -/
-private instance withAbsAlgebra_isAlgebraic
+theorem withAbsAlgebra_isAlgebraic
     {K L : Type*} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L] (v : AbsoluteValue K ℝ) :
     Algebra.IsAlgebraic (WithAbs v) L := by
@@ -82,7 +87,7 @@ private theorem spectral_spectralNorm_strong_triangle
 
 /-- existence branch: the spectral extension vanishes exactly
 at zero. -/
-private theorem spectral_spectralNorm_eq_zero_iff
+theorem spectral_spectralNorm_eq_zero_iff
     {K L : Type*} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
     (v : AbsoluteValue K ℝ) (x : L) :
@@ -100,7 +105,7 @@ private theorem spectral_spectralNorm_eq_zero_iff
 
 /-- existence branch: multiplicativity of the spectral
 extension over an algebraic extension. -/
-private theorem spectral_spectralNorm_mul
+theorem spectral_spectralNorm_mul
     {K L : Type*} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
     (v : AbsoluteValue K ℝ)

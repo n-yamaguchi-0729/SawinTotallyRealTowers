@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.GroupLike
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.GroupLike
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
 
 /-!
 # Completed Group Algebra / Universal Property / Basic
@@ -15,6 +17,8 @@ This module packages canonical completed-group-algebra models by their finite-st
 inverse-limit universal property, derives comparison equivalences, and develops the continuous
 group-like map and its spanning properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -65,11 +69,10 @@ variable {algebraicMap : CompletedGroupAlgebraNaturalSource R G →+* RG}
 theorem stageProjection_continuous
     (h : CanonicalCompletedGroupAlgebraModel R G RG algebraicMap)
     (U : CompletedGroupAlgebraIndex G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
       (completedGroupAlgebraSystem R G).topologicalSpace U
     Continuous (h.stageProjection U) := by
-  let : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
-    (completedGroupAlgebraSystem R G).topologicalSpace U
+  intro sharedOwner1
   exact h.isInverseLimit.continuous_proj U
 
 /-- Model projections commute with finite-stage transition ring homomorphisms. -/

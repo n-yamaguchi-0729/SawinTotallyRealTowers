@@ -4,8 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPointDescent
-import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPointDescent
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.EmbeddingNorm
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Fixed points of the rational idele-class direct limit
@@ -16,10 +25,25 @@ identified with the corresponding fixed subgroup of the direct limit.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
+
+attribute [local instance] rationalIdeleClassDirectLimitSMul
+
+private theorem rationalRelativeIdeleClassToDirectLimit_smul
+    (U : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ))
+    (σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
+    (d : RelativeIdeleGroup.ClassGroup ℚ U) :
+    σ • rationalRelativeIdeleClassToDirectLimit U d =
+      rationalRelativeIdeleClassToDirectLimit U (σ • d) := by
+  exact DirectLimit.smul_def
+    (G := fun E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ) =>
+      RelativeIdeleGroup.ClassGroup ℚ E)
+    (f := fun _ _ h => rationalRelativeIdeleClassTransition h) U d σ
 
 /-- Scalar extension of a rational relative adele is fixed by every
 absolute Galois element fixing the source field. -/
@@ -138,7 +162,7 @@ theorem rationalIntermediateIdeleClassToDirectLimit_conjugation
       σ • rationalRelativeIdeleClassToDirectLimit N d =
         rationalRelativeIdeleClassToDirectLimit N
           (σ • d) := by
-    exact DirectLimit.smul_def _ _ _
+    exact rationalRelativeIdeleClassToDirectLimit_smul N σ d
   calc
     σ • rationalIntermediateIdeleClassToDirectLimit E
         (_root_.relativeIdeleClassBaseChangeMulEquiv
@@ -358,7 +382,9 @@ theorem rationalIntermediateIdeleClassToDirectLimit_ambientAlgEquiv
         rationalRelativeIdeleClassToDirectLimit U
           (σ • RelativeIdeleGroup.classEmbedding (K := ℚ) (L := E) (M := U)
             (IntermediateField.inclusion hEU) cE) := by
-    exact DirectLimit.smul_def _ _ _
+    exact rationalRelativeIdeleClassToDirectLimit_smul U σ
+      (RelativeIdeleGroup.classEmbedding (K := ℚ) (L := E) (M := U)
+        (IntermediateField.inclusion hEU) cE)
   calc
     σ • rationalIntermediateIdeleClassToDirectLimit E c =
       σ • rationalRelativeIdeleClassToDirectLimit U
@@ -419,7 +445,9 @@ theorem rationalIntermediateIdeleClassToDirectLimit_fixed
         rationalRelativeIdeleClassToDirectLimit N
           (σ • RelativeIdeleGroup.classEmbedding (K := ℚ) (L := K) (M := N)
             (IntermediateField.inclusion hKN) d) := by
-    exact DirectLimit.smul_def _ _ _
+    exact rationalRelativeIdeleClassToDirectLimit_smul N σ
+      (RelativeIdeleGroup.classEmbedding (K := ℚ) (L := K) (M := N)
+        (IntermediateField.inclusion hKN) d)
   calc
     σ • rationalIntermediateIdeleClassToDirectLimit K c =
       σ • rationalIntermediateIdeleClassToDirectLimit K

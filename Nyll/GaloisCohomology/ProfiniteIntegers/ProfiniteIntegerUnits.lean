@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerPrimeProduct
-import Mathlib.Topology.Algebra.Group.Units
+module
+
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerPrimeProduct
+public import Mathlib.Topology.Algebra.Group.Units
 
 /-!
 # Units of the profinite integers
@@ -15,6 +17,8 @@ This file upgrades the prime-product Chinese-remainder equivalence for
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 

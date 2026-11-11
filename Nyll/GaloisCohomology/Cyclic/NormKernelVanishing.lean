@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
-import Mathlib.RepresentationTheory.Invariants
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
-import Nyll.GaloisCohomology.Cyclic.TateComparison
+module
+
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Subgroup
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+public import Mathlib.RepresentationTheory.Invariants
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Nyll.GaloisCohomology.Cyclic.TateComparison
 
 /-!
 # The cyclic-cohomology vanishing condition
@@ -17,11 +21,14 @@ axiom, and
 the finite-cyclic cohomology calculation using the actual finite-cyclic group-cohomology
 computation.
 
-The construction writes multiplicative modules with a right action.  Here an abelian
-group is represented additively as a `ℤ`-linear left representation; passing
+The construction writes multiplicative modules with a right action.  An abelian
+group is represented additively as a `ℤ`-linear left representation. The same
+calculations below work over any commutative coefficient ring; passing
 between the two conventions replaces a generator by its inverse and does not
 change either quotient below.
 -/
+
+@[expose] public section
 
 namespace CyclicCohomology
 
@@ -29,20 +36,14 @@ noncomputable section
 
 open CategoryTheory
 
-universe u
+universe u v w
 
 /-- A specified generator supplies the `IsCyclic` instance used throughout
 the cyclic cohomology constructions. -/
-theorem isCyclic_of_generator {G : Type} [Group G] (g : G)
-    (hg : ∀ x : G, x ∈ Subgroup.zpowers g) : IsCyclic G := by
-  rw [isCyclic_iff_exists_zpowers_eq_top]
-  refine ⟨g, ?_⟩
-  ext x
-  constructor
-  · intro _
-    exact Subgroup.mem_top x
-  · intro _
-    exact hg x
+theorem isCyclic_of_generator {G : Type u} [Group G] (g : G)
+    (hg : ∀ x : G, x ∈ Subgroup.zpowers g) : IsCyclic G :=
+  isCyclic_iff_exists_zpowers_eq_top.mpr
+    ⟨g, (Subgroup.eq_top_iff' (Subgroup.zpowers g)).mpr hg⟩
 
 /-- If the abstract field `L` extends `K`, this is exactly `G_L` regarded as
 a subgroup of `G_K`.  The standard `Subgroup.subgroupOf` construction is the
@@ -58,11 +59,11 @@ abbrev extensionSubgroup {G : Type u} [Group G] [TopologicalSpace G]
 vectors, and descend the action to `G_K / G_L`.
 
 The subgroup occurring in the quotient is `G_L` viewed inside `G_K`. -/
-noncomputable def extensionFixedRepresentation {G : Type} [Group G]
-    [TopologicalSpace G] (A : Rep.{0} ℤ G) (K L : ClosedSubgroup G)
+noncomputable def extensionFixedRepresentation {R : Type w} {G : Type u} [CommRing R]
+    [Group G] [TopologicalSpace G] (A : Rep.{v} R G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
-    Rep ℤ (K.toSubgroup ⧸ extensionSubgroup K L hLK) := by
+    Rep.{v} R (K.toSubgroup ⧸ extensionSubgroup K L hLK) := by
   exact Rep.quotientToInvariants
     (Rep.res K.toSubgroup.subtype A)
     (extensionSubgroup K L hLK)
@@ -70,8 +71,8 @@ noncomputable def extensionFixedRepresentation {G : Type} [Group G]
 /-- Continuity of the action on the coefficient module when its carrier has
 the discrete topology, exactly as in this construction's definition of a continuous
 `G`-module. -/
-def IsContinuousDiscreteRepresentation {G : Type} [Group G] [TopologicalSpace G]
-    (A : Rep.{0} ℤ G) : Prop :=
+def IsContinuousDiscreteRepresentation {R : Type w} {G : Type u} [CommRing R]
+    [Group G] [TopologicalSpace G] (A : Rep.{v} R G) : Prop :=
   -- Mathlib orders topologies by reverse inclusion, so `⊥` is discrete.
   letI : TopologicalSpace A.V := ⊥
   Continuous fun p : G × A.V => A.ρ p.1 p.2
@@ -87,8 +88,8 @@ therefore records only
 the numbered vanishing condition.  `hLK` expresses `G_L ≤ G_K`, `hnormal`
 that the extension is Galois, `hfinite` that it is finite, and `g, hg` that
 its Galois group is cyclic. -/
-def SatisfiesCyclicNormKernelVanishing {G : Type} [Group G] [TopologicalSpace G]
-    (A : Rep.{0} ℤ G) : Prop :=
+def SatisfiesCyclicNormKernelVanishing {R G : Type u} [CommRing R] [Group G]
+    [TopologicalSpace G] (A : Rep.{u} R G) : Prop :=
   ∀ (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK))
@@ -106,8 +107,8 @@ def SatisfiesCyclicNormKernelVanishing {G : Type} [Group G] [TopologicalSpace G]
 
 The right-hand side is the actual homology object
 `ker(N_G) / im(ρ(g) - 1)`, not a compatibility placeholder. -/
-noncomputable def finiteCyclicH1IsoTateHMinusOne {G : Type} [Group G] [Fintype G]
-    (A : Rep.{0} ℤ G) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g) :
+noncomputable def finiteCyclicH1IsoTateHMinusOne {R G : Type u} [CommRing R]
+    [Group G] [Fintype G] (A : Rep.{u} R G) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g) :
     groupCohomology.H1 A ≅ tateCohomology A (-1) := by
   letI : IsCyclic G := isCyclic_of_generator g hg
   letI : CommGroup G := IsCyclic.commGroup (α := G)
@@ -124,10 +125,10 @@ norm-zero element is in the image of `ρ(g) - 1`.  This is the source used in
 the cyclic step of abstract Kummer theory; the conclusion is extracted from
 the actual homology object rather than assumed separately. -/
 theorem normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
-    {G : Type} [Group G] [Fintype G]
-    (A : Rep.{0} ℤ G) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g)
+    {R G : Type u} [CommRing R] [Group G] [Fintype G]
+    (A : Rep.{u} R G) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (hzero : Limits.IsZero (tateCohomology A (-1))) :
-    ∀ x : A.V, A.norm.hom x = 0 →
+    ∀ x : A.V, A.norm.asHom.hom x = 0 →
       ∃ y : A.V, A.ρ g y - y = x := by
   let : IsCyclic G := isCyclic_of_generator g hg
   let : CommGroup G := IsCyclic.commGroup (α := G)
@@ -136,8 +137,8 @@ theorem normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
   let : Subsingleton (groupCohomology.H1 A) :=
     ModuleCat.subsingleton_of_isZero hH1
   intro x hx
-  let : Module ℤ A.V := A.hV2
-  let x' : LinearMap.ker A.norm.hom.toLinearMap := ⟨x, hx⟩
+  let : Module R A.V := A.hV2
+  let x' : LinearMap.ker A.norm.asHom.hom.toLinearMap := ⟨x, hx⟩
   have hclass :
       Rep.FiniteCyclicGroup.groupCohomologyπOdd A g hg 1 ⟨0, rfl⟩ x' = 0 :=
     Subsingleton.elim _ _

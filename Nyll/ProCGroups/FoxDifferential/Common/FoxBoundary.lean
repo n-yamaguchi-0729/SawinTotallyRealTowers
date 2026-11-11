@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.FreeCrossedDifferential
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.FreeCrossedDifferential
 
 /-!
 # Fox differential: common — fox boundary
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `coefficientFoxBoundary_mul`
   Product rule for the coefficient Fox boundary \(g \mapsto \operatorname{coeff}(g)-1\).
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

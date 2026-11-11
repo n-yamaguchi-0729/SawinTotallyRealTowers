@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SupportedIdelePowerLocalUnitQuotient
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SupportedIdelePowerLocalUnitQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 
 /-!
 # Supported idele power quotient
@@ -17,6 +20,8 @@ archimedean and finite-place power indices and evaluates its cardinality.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
@@ -26,9 +31,11 @@ open LocalFieldTheory.IsNonarchimedeanLocalField
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 open scoped Classical in
 /-- The middle term in the supported exact sequence, evaluated as the

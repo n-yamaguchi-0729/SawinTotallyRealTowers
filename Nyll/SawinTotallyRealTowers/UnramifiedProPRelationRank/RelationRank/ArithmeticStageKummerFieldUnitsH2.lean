@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageChosenUnramified
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageChosenUnramified
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
 
 /-!
 # Field-unit primitives for Kummer classes at the arithmetic stage
@@ -15,6 +17,8 @@ every place. The proved supported-idele construction and field-unit H²
 injection therefore kill its Kummer H² classes and produce field-unit
 primitives, ready for the Hilbert-90 and Kummer correction.
 -/
+
+@[expose] public section
 
 noncomputable section
 

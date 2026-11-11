@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.PGroup
-import Nyll.ProCGroups.FreeProC.Basic
-import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
+module
+
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.Topology.Separation.Hausdorff
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Presentations of profinite and pro-`C` groups
@@ -14,6 +18,8 @@ import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 This module defines closed normal closures of relators and free pro-`C` presentations, together
 with their basic kernel and universal-property consequences.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -64,14 +70,16 @@ theorem closedNormalClosure_le_closed_normal
 
 end ClosedNormalClosure
 
-/-- A relator presentation whose source is a chosen free pro-`C` group. -/
+/-- A relator presentation of a Hausdorff topological group by a chosen free pro-`C` group.
+The compact source makes the chosen continuous surjection a quotient map; its kernel is the
+closed normal closure of the displayed relators. -/
 def IsFreePresentationOf
     (C : ProCGroups.FiniteGroupClass.{u})
     {X F G : Type u} [TopologicalSpace X]
     [Group F] [Group G]
     [TopologicalSpace F] [TopologicalSpace G]
     [IsTopologicalGroup F] [IsTopologicalGroup G]
-    [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F]
+    [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F] [T2Space G]
     (ι : X → F) (R : Set F) : Prop :=
   ProCGroups.FreeProC.IsFreeProCGroup (C := C) ι ∧
     ProCGroups.ProC.HasOpenNormalBasisInClass C G ∧
@@ -84,7 +92,7 @@ variable {X F G : Type u} [TopologicalSpace X]
 variable [Group F] [Group G]
 variable [TopologicalSpace F] [TopologicalSpace G]
 variable [IsTopologicalGroup F] [IsTopologicalGroup G]
-variable [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F]
+variable [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F] [T2Space G]
 variable {ι : X → F} {R : Set F}
 
 /-- The chosen quotient map recorded by a free pro-`C` presentation. -/
@@ -96,7 +104,7 @@ theorem freeSource (h : IsFreePresentationOf (G := G) C ι R) :
     ProCGroups.FreeProC.IsFreeProCGroup (C := C) ι :=
   h.1
 
-/-- The target of a free presentation is pro-`C`. -/
+/-- The target has the recorded pro-`C` open-normal basis. -/
 theorem targetProC (h : IsFreePresentationOf (G := G) C ι R) :
     ProCGroups.ProC.HasOpenNormalBasisInClass C G :=
   h.2.1
@@ -105,6 +113,11 @@ theorem targetProC (h : IsFreePresentationOf (G := G) C ι R) :
 theorem π_surjective (h : IsFreePresentationOf (G := G) C ι R) :
     Function.Surjective h.π :=
   (Classical.choose_spec h.2.2).1
+
+/-- The target topology is the quotient topology for the chosen presentation map. -/
+theorem π_isQuotientMap (h : IsFreePresentationOf (G := G) C ι R) :
+    Topology.IsQuotientMap h.π :=
+  Topology.IsQuotientMap.of_surjective_continuous h.π_surjective h.π.continuous
 
 /-- The kernel of the chosen quotient map is the closed normal closure of the relators. -/
 theorem kernel_eq_closedNormalClosure (h : IsFreePresentationOf (G := G) C ι R) :

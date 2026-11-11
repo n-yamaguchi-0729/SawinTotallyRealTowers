@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+public import Mathlib.NumberTheory.Padics.PadicVal.Basic
 
 /-!
 # Valuations of natural-number denominators
@@ -17,6 +19,8 @@ the natural-number valuation formula used in the logarithm and exponential theor
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -207,7 +211,7 @@ theorem valuation_natCast_eq_exp_neg_ramificationIndex_mul_padicValNat
       rw [WithZero.exp_nsmul]
     _ = WithZero.exp (-((e : ℤ) * (k : ℤ))) := by
       congr 1
-      simp [mul_comm]
+      rw [nsmul_eq_mul, mul_neg, mul_comm]
     _ = WithZero.exp
         (-((ramificationIndexOfWithZeroValuation v : ℤ) *
           (padicValNat (ofWithZeroValuation v).residueCharacteristic m : ℤ))) := by

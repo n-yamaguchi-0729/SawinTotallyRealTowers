@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldMembership
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldAlgebra
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldMembership
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldAlgebra
 
 /-!
 # LubinTate the explicit norm-subgroup computation: the standard level embedded in the
@@ -18,6 +20,10 @@ codomain restriction for the finite-dimensional comparison.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 
@@ -28,7 +34,7 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 attribute [local instance]
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra
@@ -44,7 +50,7 @@ a higher unit, regarded as a ring homomorphism.  This lightweight helper
 keeps the codomain restriction independent of algebra-instance search. -/
 noncomputable def
     equalCharacteristicLubinTateLevelFieldToFixedFieldOfHigherUnitRingHom
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n) :
@@ -58,7 +64,7 @@ noncomputable def
 /-- The canonical standard-level algebra embedding into the fixed field
 attached to a higher unit. -/
 noncomputable def equalCharacteristicLubinTateLevelFieldToFixedFieldOfHigherUnit
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n) :

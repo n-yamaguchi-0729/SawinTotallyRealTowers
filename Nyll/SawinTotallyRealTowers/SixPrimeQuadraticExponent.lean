@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticCompositum
-import Mathlib.Algebra.Algebra.Equiv
-import Mathlib.Algebra.Group.Subgroup.Lattice
-import Mathlib.Data.Finset.Lattice.Fold
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.GroupTheory.OrderOfElement
+module
+
+public import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticCompositum
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Mathlib.Data.Finset.Lattice.Fold
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.GroupTheory.OrderOfElement
 
 /-!
 # Exponent two in the five-field quadratic compositum
@@ -23,6 +25,8 @@ compositum. Each of the five chosen quadratic fields has Galois group
 of order two, so every automorphism of their finite compositum squares
 to the identity. Its degree is not used in this argument.
 -/
+
+@[expose] public section
 
 universe u v
 

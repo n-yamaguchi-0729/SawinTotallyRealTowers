@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.DefectCorrection
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.DefectCorrection
 
 /-!
 # Changed-uniformizer intertwiner construction
@@ -15,6 +17,8 @@ intertwiner, proves its functional equation, and establishes uniqueness.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LubinTate
@@ -23,18 +27,23 @@ open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory.DiscreteValuationField.Examples.Qp
 open SameUniformizer
 
-private structure PadicChangedUniformizerApproximation
+/-- A finite-order intertwiner approximation with prescribed constant and linear coefficients. -/
+structure PadicChangedUniformizerApproximation
     (p : ℕ) [Fact p.Prime]
     (u : (padicLocalField p).valuationSubringˣ) where
+  /-- The current power-series approximation. -/
   series : PowerSeries (padicCompletedUnramifiedWittRing p)
+  /-- Every approximation has zero constant term. -/
   constantCoeff_eq_zero :
     PowerSeries.constantCoeff series = 0
+  /-- Every approximation has the prescribed linear coefficient. -/
   coeff_one_eq :
     PowerSeries.coeff 1 series =
       (padicChangedUniformizerLinearCoefficient p u :
         padicCompletedUnramifiedWittRing p)
 
-private noncomputable def padicChangedUniformizerApproximation
+/-- Successive coefficient corrections construct normalized intertwiner approximations. -/
+noncomputable def padicChangedUniformizerApproximation
     (p : ℕ) [Fact p.Prime]
     (u : (padicLocalField p).valuationSubringˣ) :
     ℕ → PadicChangedUniformizerApproximation p u

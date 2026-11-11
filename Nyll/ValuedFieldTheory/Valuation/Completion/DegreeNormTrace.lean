@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
-import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
-import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductProductFormulas
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
+public import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductProductFormulas
 
 /-!
 # Compatibility of local degree, norm, and trace
@@ -18,6 +20,8 @@ norm and trace lie in `K`, their Lean statements are mapped into `K_v`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -54,23 +58,17 @@ theorem completionDegreeNormTrace_degree
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial) :
-    letI := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
+    let : ∀ w : AbsoluteValueExtension vK L,
         Algebra vK.Completion w.1.Completion :=
       fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let : ∀ w : AbsoluteValueExtension vK L,
         Module.Finite vK.Completion w.1.Completion :=
       fun w ↦ completionModuleFinite vK hvK w
     Module.finrank K L =
       ∑ w : AbsoluteValueExtension vK L,
         Module.finrank vK.Completion w.1.Completion := by
-  let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Algebra vK.Completion w.1.Completion :=
-    fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Module.Finite vK.Completion w.1.Completion :=
-    fun w ↦ completionModuleFinite vK hvK w
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact baseChange_pi_finrank_eq_sum
     (fun w : AbsoluteValueExtension vK L ↦ w.1.Completion)
     (completionTensorDecomposition_left vK hvK)
@@ -80,24 +78,18 @@ theorem completionDegreeNormTrace_norm
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial) (x : L) :
-    letI := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
+    let : ∀ w : AbsoluteValueExtension vK L,
         Algebra vK.Completion w.1.Completion :=
       fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let : ∀ w : AbsoluteValueExtension vK L,
         Module.Finite vK.Completion w.1.Completion :=
       fun w ↦ completionModuleFinite vK hvK w
     algebraMap K vK.Completion (Algebra.norm K x) =
       ∏ w : AbsoluteValueExtension vK L,
         Algebra.norm vK.Completion
           (AbsoluteValue.toCompletionAlgHom (K := K) w.1 x) := by
-  let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Algebra vK.Completion w.1.Completion :=
-    fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Module.Finite vK.Completion w.1.Completion :=
-    fun w ↦ completionModuleFinite vK hvK w
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   simpa using baseChange_pi_norm_eq_prod
     (fun w : AbsoluteValueExtension vK L ↦ w.1.Completion)
     (completionTensorDecomposition_left vK hvK) x
@@ -107,24 +99,18 @@ theorem completionDegreeNormTrace_trace
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial) (x : L) :
-    letI := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
+    let : ∀ w : AbsoluteValueExtension vK L,
         Algebra vK.Completion w.1.Completion :=
       fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let : ∀ w : AbsoluteValueExtension vK L,
         Module.Finite vK.Completion w.1.Completion :=
       fun w ↦ completionModuleFinite vK hvK w
     algebraMap K vK.Completion (Algebra.trace K L x) =
       ∑ w : AbsoluteValueExtension vK L,
         Algebra.trace vK.Completion w.1.Completion
           (AbsoluteValue.toCompletionAlgHom (K := K) w.1 x) := by
-  let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Algebra vK.Completion w.1.Completion :=
-    fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Module.Finite vK.Completion w.1.Completion :=
-    fun w ↦ completionModuleFinite vK hvK w
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   simpa using baseChange_pi_trace_eq_sum
     (fun w : AbsoluteValueExtension vK L ↦ w.1.Completion)
     (completionTensorDecomposition_left vK hvK) x
@@ -135,11 +121,11 @@ theorem completionDegreeNormTrace
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial) :
-    letI := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
+    let : ∀ w : AbsoluteValueExtension vK L,
         Algebra vK.Completion w.1.Completion :=
       fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI : ∀ w : AbsoluteValueExtension vK L,
+    let : ∀ w : AbsoluteValueExtension vK L,
         Module.Finite vK.Completion w.1.Completion :=
       fun w ↦ completionModuleFinite vK hvK w
     (Module.finrank K L =
@@ -155,13 +141,7 @@ theorem completionDegreeNormTrace
         ∑ w : AbsoluteValueExtension vK L,
           Algebra.trace vK.Completion w.1.Completion
             (AbsoluteValue.toCompletionAlgHom (K := K) w.1 x)) := by
-  let := completionTensorDecomposition_extensionFintype (K := K) (L := L) vK hvK
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Algebra vK.Completion w.1.Completion :=
-    fun w ↦ AbsoluteValue.completionAlgebra vK w.1 w.2
-  let : ∀ w : AbsoluteValueExtension vK L,
-      Module.Finite vK.Completion w.1.Completion :=
-    fun w ↦ completionModuleFinite vK hvK w
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact ⟨completionDegreeNormTrace_degree (K := K) (L := L) vK hvK,
     fun x ↦ completionDegreeNormTrace_norm (K := K) (L := L) vK hvK x,
     fun x ↦ completionDegreeNormTrace_trace (K := K) (L := L) vK hvK x⟩

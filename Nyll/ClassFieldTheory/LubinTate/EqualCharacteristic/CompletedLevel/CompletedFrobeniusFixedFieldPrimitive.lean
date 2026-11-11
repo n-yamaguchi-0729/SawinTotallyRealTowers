@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedCompletedPrimitiveAction
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedCompletedPrimitiveAction
 
 /-!
 # The completed theta-intertwining theorem: the fixed-field primitive point over the completed base
@@ -17,6 +19,8 @@ Comparing degrees shows that this point generates the whole completed level.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -39,16 +43,13 @@ noncomputable local instance
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   laurentSeriesCoefficientAlgebra
 
-/-- Provides the instance `equalCharacteristicCompletedFrobeniusIdentificationLevelCharP`. -/
-instance equalCharacteristicCompletedFrobeniusIdentificationLevelCharP
+/-- The completed Frobenius identification level retains the residue characteristic. -/
+theorem equalCharacteristicCompletedFrobeniusIdentificationLevelCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] (n : ℕ) :
     CharP (equalCharacteristicCompletedLevelField F n)
       F.residueCharacteristic :=
-  charP_of_injective_algebraMap
-    (algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)
-      (equalCharacteristicCompletedLevelField F n)).injective
-    F.residueCharacteristic
+  equalCharacteristicCompletedLevelCharP F n
 
 private theorem equalCharacteristicDirectTargetCompletedPrimitivePolynomial_eq
     (F : LocalField.{u, v} K)
@@ -92,7 +93,9 @@ theorem
     equalCharacteristicDirectThetaAtCompletedPrimitiveRoot_isRoot_targetCompleted
       F a n
 
-private theorem
+/-- The actual direct theta value has the changed primitive polynomial as
+its minimal polynomial over the completed coefficient field. -/
+theorem
     equalCharacteristicDirectThetaAtCompletedPrimitiveRoot_minpoly_completedBase
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]

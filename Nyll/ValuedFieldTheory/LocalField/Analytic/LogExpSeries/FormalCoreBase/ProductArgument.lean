@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.PowerSeriesComposition
-import Mathlib.Algebra.BigOperators.Ring.Finset
-import Mathlib.Data.Finset.Finsupp
+module
+
+public import Mathlib.RingTheory.MvPowerSeries.Basic
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.PowerSeriesComposition
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Mathlib.Data.Finset.Finsupp
 
 /-!
 # The two-variable formal logarithm product argument
@@ -16,6 +19,8 @@ support description needed for the formal product formula.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -45,8 +50,9 @@ theorem formalLogOnePlusProductArgument_eq_coe_polynomial
     formalLogOnePlusProductArgument A =
       (formalLogOnePlusProductArgumentPolynomial A :
         MvPowerSeries (Fin 2) A) := by
-  simp [formalLogOnePlusProductArgument,
-    formalLogOnePlusProductArgumentPolynomial]
+  simp only [formalLogOnePlusProductArgument,
+    formalLogOnePlusProductArgumentPolynomial, MvPolynomial.coe_add,
+    MvPolynomial.coe_mul, MvPolynomial.coe_X]
 
 /-- Evaluating the polynomial product argument at `(x,y)` gives
 `x + y + xy`. -/
@@ -88,7 +94,8 @@ theorem formalLogOnePlusProductArgument_constantCoeff
     (A : Type*) [CommRing A] :
     MvPowerSeries.constantCoeff (formalLogOnePlusProductArgument A) = 0 := by
   rw [formalLogOnePlusProductArgument_eq_mul_sub_one]
-  simp [MvPowerSeries.constantCoeff_X]
+  simp only [map_sub, map_mul, map_add, map_one,
+    MvPowerSeries.constantCoeff_X, add_zero, mul_one, sub_self]
 
 /--
 The formal product argument has zero constant coefficient, so it admits substitution into the
@@ -120,7 +127,7 @@ theorem formalLogOnePlusProductArgument_mulVariables_coeff
         Finsupp.single (0 : Fin 2) 1 + Finsupp.single (1 : Fin 2) 1
     then 1 else 0
   rw [MvPowerSeries.monomial_mul_monomial]
-  simp [MvPowerSeries.coeff_monomial]
+  simp only [MvPowerSeries.coeff_monomial, mul_one]
 
 /--
 Establishes the identity `MvPowerSeries.coeff e (formalLogOnePlusProductArgument A) = (if e =
@@ -136,7 +143,7 @@ theorem formalLogOnePlusProductArgument_coeff
               Finsupp.single (0 : Fin 2) 1 +
                 Finsupp.single (1 : Fin 2) 1
             then 1 else 0) := by
-  simp [formalLogOnePlusProductArgument, MvPowerSeries.coeff_X,
+  simp only [formalLogOnePlusProductArgument, map_add, MvPowerSeries.coeff_X,
     formalLogOnePlusProductArgument_mulVariables_coeff]
 
 /-- Establishes the identity `MvPowerSeries.coeff e (formalLogOnePlusProductArgument A) = 0`. -/
@@ -150,7 +157,7 @@ theorem formalLogOnePlusProductArgument_coeff_eq_zero_of_not_basic
           Finsupp.single (1 : Fin 2) 1) :
     MvPowerSeries.coeff e (formalLogOnePlusProductArgument A) = 0 := by
   rw [formalLogOnePlusProductArgument_coeff]
-  simp [hleft, hright, hmixed]
+  rw [ite_eq_right hleft, ite_eq_right hright, ite_eq_right hmixed, add_zero, add_zero]
 
 /-- Establishes the inequality `Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single (1 : Fin 2) 1`. -/
 theorem finsupp_fin_two_single_left_ne_single_right :
@@ -192,7 +199,8 @@ Establishes the identity `MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)
     MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)
         (formalLogOnePlusProductArgument A) = 1 := by
   rw [formalLogOnePlusProductArgument_coeff]
-  simp [finsupp_fin_two_single_left_ne_single_right]
+  rw [ite_eq_left rfl, ite_eq_right finsupp_fin_two_single_left_ne_single_right,
+    ite_eq_right finsupp_fin_two_single_left_ne_mixed, add_zero, add_zero]
 
 /--
 Establishes the identity `MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1)
@@ -207,7 +215,8 @@ Establishes the identity `MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1)
       Finsupp.single (1 : Fin 2) 1 ≠
         Finsupp.single (0 : Fin 2) 1 :=
     finsupp_fin_two_single_left_ne_single_right.symm
-  simp [hrightLeft]
+  rw [ite_eq_right hrightLeft, ite_eq_left rfl,
+    ite_eq_right finsupp_fin_two_single_right_ne_mixed, zero_add, add_zero]
 
 /--
 Establishes the identity `MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1 + Finsupp.single (1 :
@@ -230,7 +239,7 @@ Fin 2) 1) (formalLogOnePlusProductArgument A) = 1`.
           Finsupp.single (1 : Fin 2) 1 ≠
         Finsupp.single (1 : Fin 2) 1 :=
     finsupp_fin_two_single_right_ne_mixed.symm
-  simp [hmixedLeft, hmixedRight]
+  rw [ite_eq_right hmixedLeft, ite_eq_right hmixedRight, ite_eq_left rfl, add_zero, zero_add]
 
 /-- Proves the bound `e (0 : Fin 2) ≤ 1`. -/
 theorem formalLogOnePlusProductArgument_coeff_ne_zero_left_coord_le_one

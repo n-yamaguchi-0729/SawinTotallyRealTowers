@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Local
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Local
 
 /-!
 # Finite unrestricted local-block families
@@ -14,6 +16,8 @@ unrestricted places.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -70,9 +74,7 @@ theorem relativeUnrestrictedLocalBlockFamilyHerbrandH0Finite
     Finite
       (HerbrandH0 (L ≃ₐ[K] L)
         (LocalBlockFamily d)) := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
+  intro d
   let localAction :=
     localBlockFamilyLocalAction d
   let blockAction :=
@@ -138,9 +140,7 @@ theorem relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOneFinite
     Finite
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (LocalBlockFamily d) σ) := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
+  intro d
   let localAction :=
     localBlockFamilyLocalAction d
   let blockAction :=

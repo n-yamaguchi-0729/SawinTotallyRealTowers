@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
 
 /-!
 # The abstract reciprocity construction: the field fixed by a Frobenius lift
@@ -13,6 +15,8 @@ This file passes from the group-dual `Γ` of the Frobenius fixed-field theorem t
 abstract field `Σ`.  Thus `G_Σ` is the inverse image of `Γ` under
 `G_K → G_K / I_L`, embedded back into the ambient profinite group.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 

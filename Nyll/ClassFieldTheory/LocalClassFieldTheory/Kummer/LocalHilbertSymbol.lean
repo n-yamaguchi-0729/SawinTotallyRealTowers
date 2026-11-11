@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
 /-!
 # Local Hilbert symbols
@@ -22,6 +25,8 @@ automorphism, transported back to `μₙ(K)`.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -30,7 +35,9 @@ namespace Kummer
 open CyclicCohomology KummerTheory ClassFormation
 open LocalFieldTheory LocalClassFieldTheory
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 
 variable [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
@@ -45,7 +52,24 @@ noncomputable def chosenSimpleKummerNormResidueAutomorphism
     chosenSimpleKummerExtension_finiteDimensional K n hnK b
   letI : IsAbelianGalois K E :=
     chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-  exact abelianLocalArtinMonoidHom K E
+  exact Universe.abelianLocalArtinMonoidHom K E
+
+/-- On small fields the automorphism used by the general construction is
+exactly the original native Artin automorphism, with the same chosen radical. -/
+theorem chosenSimpleKummerNormResidueAutomorphism_eq_native
+    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    [IsNonarchimedeanLocalField K]
+    (n : ℕ+) (hnK : ((n : ℕ) : K) ≠ 0)
+    (hmu : (primitiveRoots (n : ℕ) K).Nonempty) (b : Kˣ) :
+    let E := chosenSimpleKummerExtension K n hnK b
+    let : FiniteDimensional K E :=
+      chosenSimpleKummerExtension_finiteDimensional K n hnK b
+    let : IsAbelianGalois K E :=
+      chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
+    chosenSimpleKummerNormResidueAutomorphism K n hnK hmu b =
+      LocalClassFieldTheory.abelianLocalArtinMonoidHom K E := by
+  intro E sharedFinite sharedGalois
+  exact Universe.abelianLocalArtinMonoidHom_eq_native K E
 
 /-- The local Hilbert symbol `(a,b)ₙ`, valued in the actual subgroup
 `μₙ(K)`. -/
@@ -57,6 +81,26 @@ noncomputable def localHilbertSymbol
     K (chosenSimpleKummerExtension K n hnK b) n hmu).symm
       (chosenSimpleKummerRootCharacter K n hnK hmu b
         (chosenSimpleKummerNormResidueAutomorphism K n hnK hmu b a))
+
+/-- The value on a Type 0 local field is the old native root-character
+value, not merely another pairing with the same kernel. -/
+theorem localHilbertSymbol_eq_native
+    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    [IsNonarchimedeanLocalField K]
+    (n : ℕ+) (hnK : ((n : ℕ) : K) ≠ 0)
+    (hmu : (primitiveRoots (n : ℕ) K).Nonempty) (a b : Kˣ) :
+    let E := chosenSimpleKummerExtension K n hnK b
+    let : FiniteDimensional K E :=
+      chosenSimpleKummerExtension_finiteDimensional K n hnK b
+    let : IsAbelianGalois K E :=
+      chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
+    localHilbertSymbol K n hnK hmu a b =
+      (nthRootsSubgroupEquivOfPrimitiveRoots K E n hmu).symm
+        (chosenSimpleKummerRootCharacter K n hnK hmu b
+          (LocalClassFieldTheory.abelianLocalArtinMonoidHom K E a)) := by
+  intro E sharedFinite sharedGalois
+  unfold localHilbertSymbol
+  rw [chosenSimpleKummerNormResidueAutomorphism_eq_native]
 
 /-- For fixed `b`, the local Hilbert symbol is a homomorphism in its first
 argument. -/
@@ -115,13 +159,7 @@ theorem normResidueAutomorphism_map_rootUnit_eq_hilbertSymbol_mul
     Units.map sigma beta =
       Units.map (algebraMap K E).toMonoidHom
           (localHilbertSymbol K n hnK hmu a b).1 * beta := by
-  let E := chosenSimpleKummerExtension K n hnK b
-  let sigma : Gal(E/K) :=
-    chosenSimpleKummerNormResidueAutomorphism K n hnK hmu b a
-  let beta : Eˣ := chosenSimpleKummerRootUnit K n hnK b
-  change Units.map sigma beta =
-    Units.map (algebraMap K E).toMonoidHom
-      (localHilbertSymbol K n hnK hmu a b).1 * beta
+  intro E sigma beta
   have hmap0 := congrArg Subtype.val
     (localHilbertSymbol_map_eq_rootQuotient K n hnK hmu a b)
   have hmap :
@@ -150,7 +188,7 @@ theorem normResidueAutomorphism_apply_root_eq_hilbertSymbol_mul
     let beta : E := (chosenSimpleKummerRootUnit K n hnK b : Eˣ)
     chosenSimpleKummerNormResidueAutomorphism K n hnK hmu b a beta =
       algebraMap K E ((localHilbertSymbol K n hnK hmu a b).1 : K) * beta := by
-  let E := chosenSimpleKummerExtension K n hnK b
+  intro E
   let betaUnit : Eˣ := chosenSimpleKummerRootUnit K n hnK b
   have hunit :
       Units.map
@@ -175,9 +213,9 @@ theorem chosenSimpleKummerNormResidueAutomorphism_ker
     chosenSimpleKummerExtension_finiteDimensional K n hnK b
   let : IsAbelianGalois K E :=
     chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-  change (abelianLocalArtinMonoidHom K E).ker =
+  change (Universe.abelianLocalArtinMonoidHom K E).ker =
     LocalFieldTheory.localNormSubgroup K E
-  exact abelianLocalArtinMonoidHom_ker K E
+  exact Universe.abelianLocalArtinMonoidHom_ker K E
 
 /-- Every norm from `K(ⁿ√b)` is killed by the Hilbert-symbol character. -/
 theorem localNormSubgroup_le_localHilbertSymbolHom_ker

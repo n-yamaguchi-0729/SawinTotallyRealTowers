@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
+module
+
+public import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
 
 /-!
 # Reidemeister Schreier / Groupoid
@@ -13,6 +15,8 @@ This module rebuilds the spanning-tree loop construction using public conversion
 mathlib's vertex type synonyms.  No private-root declaration or backward elaboration option enters
 the public API.
 -/
+
+@[expose] public section
 
 open CategoryTheory CategoryTheory.SingleObj Quiver
 
@@ -97,8 +101,8 @@ noncomputable def rootLoopOfHom
     {G : Type u} [Groupoid.{u} G] [IsFreeGroupoid G]
     (T : WideSubquiver (Symmetrify <| IsFreeGroupoid.Generators G)) [Quiver.Arborescence T]
     {a b : G} (p : a ⟶ b) : End (rootObject T) :=
-  rootTreeHom T (treeVertexOfObject T a) ≫ p ≫
-    inv (rootTreeHom T (treeVertexOfObject T b))
+  .of (rootTreeHom T (treeVertexOfObject T a) ≫ p ≫
+    inv (rootTreeHom T (treeVertexOfObject T b)))
 
 /-- A tree edge gives the identity explicit-root loop. -/
 @[simp] theorem rootLoopOfHom_eq_id
@@ -106,7 +110,10 @@ noncomputable def rootLoopOfHom
     (T : WideSubquiver (Symmetrify <| IsFreeGroupoid.Generators G)) [Quiver.Arborescence T]
     {a b : IsFreeGroupoid.Generators G} (e : a ⟶ b)
     (h : e ∈ Quiver.wideSubquiverSymmetrify T a b) :
-    rootLoopOfHom T (generatorHom e) = 𝟙 (rootObject T) := by
+    rootLoopOfHom T (generatorHom e) = 1 := by
+  apply End.ext
+  change rootTreeHom T (treeVertexOfObject T (generatorObject a)) ≫ generatorHom e ≫
+    inv (rootTreeHom T (treeVertexOfObject T (generatorObject b))) = 𝟙 _
   rcases h with h | h
   · have htb :
         rootTreeHom T (treeVertexOfObject T (generatorObject b)) =
@@ -118,7 +125,6 @@ noncomputable def rootLoopOfHom
       exact (rootTreeHom_eq T (p.cons edge)).trans
         (congrArg (fun q : rootObject T ⟶ generatorObject a => q ≫ generatorHom e)
           (rootTreeHom_eq T p).symm)
-    unfold rootLoopOfHom
     rw [← Category.assoc, ← htb, IsIso.hom_inv_id]
   · have hta :
         rootTreeHom T (treeVertexOfObject T (generatorObject a)) =
@@ -130,7 +136,6 @@ noncomputable def rootLoopOfHom
       exact (rootTreeHom_eq T (p.cons edge)).trans
         (congrArg (fun q : rootObject T ⟶ generatorObject b => q ≫ inv (generatorHom e))
           (rootTreeHom_eq T p).symm)
-    unfold rootLoopOfHom
     rw [hta]
     simp only [Category.assoc, IsIso.inv_hom_id_assoc, IsIso.hom_inv_id]
 
@@ -145,11 +150,14 @@ noncomputable def rootFunctorOfMonoidHom
   map_id := by
     intro a
     dsimp only [rootLoopOfHom]
-    rw [Category.id_comp, IsIso.hom_inv_id, ← End.one_def, f.map_one, id_as_one]
+    rw [Category.id_comp, IsIso.hom_inv_id]
+    exact f.map_one
   map_comp := by
     intros
     rw [CategoryTheory.SingleObj.comp_as_mul, ← f.map_mul]
-    simp only [IsIso.inv_hom_id_assoc, rootLoopOfHom, End.mul_def, Category.assoc]
+    congr 1
+    apply End.ext
+    simp only [rootLoopOfHom, End.mul_asHom, Category.assoc, IsIso.inv_hom_id_assoc]
 
 /--
 The explicit-root induced functor applies the supplied homomorphism to the explicit-root loop.
@@ -165,7 +173,8 @@ The explicit-root induced functor applies the supplied homomorphism to the expli
 @[simp] theorem rootLoopOfHom_end
     {G : Type u} [Groupoid.{u} G] [IsFreeGroupoid G]
     (T : WideSubquiver (Symmetrify <| IsFreeGroupoid.Generators G)) [Quiver.Arborescence T]
-    (p : End (rootObject T)) : rootLoopOfHom T p = p := by
+    (p : End (rootObject T)) : rootLoopOfHom T p.asHom = p := by
+  apply End.ext
   simp only [rootLoopOfHom, treeVertexOfObject, rootObject, rootTreeHom_root,
     IsIso.inv_id, Category.id_comp, Category.comp_id]
 
@@ -176,7 +185,7 @@ lemma map_loopOfHom_eq_map
     {X : Type u} [Group X] (F : G ⥤ CategoryTheory.SingleObj X)
     (hTree : ∀ {a b : IsFreeGroupoid.Generators G} (e : a ⟶ b),
       e ∈ Quiver.wideSubquiverSymmetrify T a b → F.map (generatorHom e) = 1) :
-    ∀ {a b} (q : a ⟶ b), F.map (rootLoopOfHom T q) = (F.map q : X) := by
+    ∀ {a b} (q : a ⟶ b), F.map (rootLoopOfHom T q).asHom = (F.map q : X) := by
   suffices
       ∀ {a : T} (p : Quiver.Path (Quiver.root T) a),
         F.map (rootHomOfPath T p) = 1 by
@@ -210,27 +219,28 @@ noncomputable def endBasis
   let f' : Quiver.Labelling (IsFreeGroupoid.Generators G) X := fun a b e =>
     if h : e ∈ Quiver.wideSubquiverSymmetrify T a b then 1 else f ⟨⟨a, b, e⟩, h⟩
   rcases IsFreeGroupoid.unique_lift f' with ⟨F', hF', uF'⟩
-  refine ⟨F'.mapEnd _, ?_, ?_⟩
+  refine ⟨(SingleObj.toEnd X).symm.toMonoidHom.comp (F'.mapEnd _), ?_, ?_⟩
   · have hloop :
-        ∀ {a b} (q : a ⟶ b), F'.map (rootLoopOfHom T q) = (F'.map q : X) :=
+        ∀ {a b} (q : a ⟶ b), F'.map (rootLoopOfHom T q).asHom = (F'.map q : X) :=
       map_loopOfHom_eq_map T F' (by
         intro a b e he
         rw [hF']
         simp only [f', he, ↓reduceDIte])
     rintro ⟨⟨a, b, e⟩, h⟩
-    simp only [Functor.mapEnd, DFunLike.coe, hloop, hF']
+    change F'.map (rootLoopOfHom T (generatorHom e)).asHom = _
+    rw [hloop, hF']
     exact dite_eq_right h
   · intro E hE
     ext x
-    change E x = (F'.map x : X)
-    suffices (rootFunctorOfMonoidHom T E).map x = F'.map x by
+    change E x = (F'.map x.asHom : X)
+    suffices (rootFunctorOfMonoidHom T E).map x.asHom = F'.map x.asHom by
       simpa only [rootFunctorOfMonoidHom_map, rootLoopOfHom_end] using this
     congr
     apply uF'
     intro a b e
     have hEval : E (rootLoopOfHom T (generatorHom e)) = f' e := by
       by_cases h : e ∈ Quiver.wideSubquiverSymmetrify T a b
-      · rw [rootLoopOfHom_eq_id T e h, ← End.one_def, E.map_one]
+      · rw [rootLoopOfHom_eq_id T e h, E.map_one]
         simp only [f', dite_eq_left h]
       · simpa only [f', dite_eq_right h] using hE ⟨⟨a, b, e⟩, h⟩
     exact (rootFunctorOfMonoidHom_map T E (generatorHom e)).trans hEval

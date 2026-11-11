@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Uniqueness.SemidirectHom
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Uniqueness.SemidirectHom
 
 /-!
 # Fox differential: completed — free pro-\(C\) — uniqueness — derivative
@@ -25,6 +27,8 @@ The principal declarations in this module are:
   The coefficient homomorphism of a continuous completed crossed differential agrees with the right
   component of the canonical free pro-\(C\) semidirect lift.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

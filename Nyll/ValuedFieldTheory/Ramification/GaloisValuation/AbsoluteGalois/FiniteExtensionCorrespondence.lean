@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-! Provides the public declarations in the
 `RamificationTheory.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence` Lean module.
 -/
 
+
+@[expose] public section
 
 namespace RamificationTheory
 
@@ -761,7 +765,7 @@ theorem quotientOpenSubgroupEquivGalOfNormalFiniteExtension_mk'
 
 /-- Rebase automorphisms over an embedded finite extension from `L` to its
 field range `i(L)`. -/
-private def automorphismsOverFieldRangeEquiv
+def automorphismsOverFieldRangeEquiv
     (i : L →ₐ[K] AlgebraicClosure K) [Algebra L (AlgebraicClosure K)]
     (hmap : ∀ x, algebraMap L (AlgebraicClosure K) x = i x) :
     (AlgebraicClosure K ≃ₐ[L] AlgebraicClosure K) ≃*
@@ -981,7 +985,7 @@ def equivGalFieldRangeOfFiniteExtension [FiniteDimensional K L]
   letI : Algebra L (AlgebraicClosure K) := i.toRingHom.toAlgebra
   have hmap : ∀ x, algebraMap L (AlgebraicClosure K) x = i x := fun _ => rfl
   haveI : IsScalarTower K L (AlgebraicClosure K) := .of_algebraMap_eq fun x => by
-    simp [RingHom.algebraMap_toAlgebra]
+    exact (i.commutes x).symm
   haveI : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.of_finite K L
   haveI : Algebra.IsAlgebraic L (AlgebraicClosure K) :=
     Algebra.IsAlgebraic.tower_top (K := K) (L := L) (A := AlgebraicClosure K)
@@ -1001,7 +1005,7 @@ theorem equivGalFieldRangeOfFiniteExtension_continuous
   let : Algebra L (AlgebraicClosure K) := i.toRingHom.toAlgebra
   have hmap : ∀ x, algebraMap L (AlgebraicClosure K) x = i x := fun _ => rfl
   have : IsScalarTower K L (AlgebraicClosure K) := .of_algebraMap_eq fun x => by
-    simp [RingHom.algebraMap_toAlgebra]
+    exact (i.commutes x).symm
   have : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.of_finite K L
   have : Algebra.IsAlgebraic L (AlgebraicClosure K) :=
     Algebra.IsAlgebraic.tower_top (K := K) (L := L) (A := AlgebraicClosure K)
@@ -1026,7 +1030,7 @@ theorem equivGalFieldRangeOfFiniteExtension_symm_continuous
   let : Algebra L (AlgebraicClosure K) := i.toRingHom.toAlgebra
   have hmap : ∀ x, algebraMap L (AlgebraicClosure K) x = i x := fun _ => rfl
   have : IsScalarTower K L (AlgebraicClosure K) := .of_algebraMap_eq fun x => by
-    simp [RingHom.algebraMap_toAlgebra]
+    exact (i.commutes x).symm
   have : Algebra.IsAlgebraic K L := Algebra.IsAlgebraic.of_finite K L
   have : Algebra.IsAlgebraic L (AlgebraicClosure K) :=
     Algebra.IsAlgebraic.tower_top (K := K) (L := L) (A := AlgebraicClosure K)

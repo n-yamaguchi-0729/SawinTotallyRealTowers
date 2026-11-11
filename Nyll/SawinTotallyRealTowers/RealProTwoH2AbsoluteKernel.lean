@@ -4,26 +4,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiniteKummerContinuousKernel
-import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
-import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
-import Nyll.SawinTotallyRealTowers.RealCentralLiftCorrection
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPFactor
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPUnramified
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.GaloisCohomology.ProP.H2CocycleExtension
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
-import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.GroupTheory.PGroup
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.SawinTotallyRealTowers.FiniteKummerContinuousKernel
+public import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
+public import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
+public import Nyll.SawinTotallyRealTowers.RealCentralLiftCorrection
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPFactor
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPUnramified
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtension
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # Descending absolute degree-two vanishing to the actual real pro-two group
@@ -34,6 +36,8 @@ real two-extension, so the corrected lift factors through the constructed
 maximal real pro-two compositum. Thus vanishing after absolute inflation
 already implies vanishing after inflation into this maximal group.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 open NumberField IsDedekindDomain
@@ -99,6 +103,8 @@ theorem maximalRealProTwo_H2_eq_zero_of_absolute_inflation_eq_zero
     (continuousCohomologyZModPMapLifted 2 q 2).hom x = 0 := by
   let : IsGalois ℚ (maximalRealProPOutside 2 T) :=
     maximalRealProPOutside_isGalois 2 T
+  have : LocallyCompactSpace (Field.absoluteGaloisGroup ℚ) :=
+    inferInstanceAs (LocallyCompactSpace (AlgebraicClosure ℚ ≃ₐ[ℚ] AlgebraicClosure ℚ))
   let z := degreeTwoCocycleRepresentative x
   obtain ⟨s, hs⟩ := H2CocycleExtension.exists_lift_of_restriction_eq_zero
     (q.comp (absoluteToMaximalRealProPOutside 2 T)) z

@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.Algebra.Group.TypeTags.Basic
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.Algebra.Group.TypeTags.Basic
 
 /-!
 # Coordinate evaluation of multiplicative H²
@@ -18,6 +20,8 @@ import Mathlib.Algebra.Group.TypeTags.Basic
 Constructs the two coordinate maps for a product of multiplicative
 representations and proves their combined degree-two evaluation is injective.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Cohomology
 open CategoryTheory groupCohomology
@@ -27,11 +31,13 @@ variable {G : Type} [Group G]
 variable (M N : Type) [CommGroup M] [CommGroup N]
 variable [MulDistribMulAction G M] [MulDistribMulAction G N]
 
-private def firstRepHom :
+/-- The first coordinate as an equivariant map of multiplicative representations. -/
+def firstRepHom :
     Rep.ofMulDistribMulAction G (M × N) ⟶ Rep.ofMulDistribMulAction G M :=
   equivariantRepHom (MonoidHom.fst M N) (fun _ _ => rfl)
 
-private def secondRepHom :
+/-- The second coordinate as an equivariant map of multiplicative representations. -/
+def secondRepHom :
     Rep.ofMulDistribMulAction G (M × N) ⟶ Rep.ofMulDistribMulAction G N :=
   equivariantRepHom (MonoidHom.snd M N) (fun _ _ => rfl)
 

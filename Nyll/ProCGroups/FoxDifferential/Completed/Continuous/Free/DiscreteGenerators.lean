@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.CanonicalFormula
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Uniqueness.Existence
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.CanonicalFormula
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Uniqueness.Existence
 
 /-!
 # Fox differential: completed — continuous — free — discrete generators
@@ -25,6 +27,8 @@ The principal declarations in this module are:
   Componentwise continuous completed Fox semidirect lifts from a free pro-\(C\) source are unique
   for discrete generators, without a separate generator-continuity hypothesis.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -1,99 +1,137 @@
 /-
-Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729). All rights reserved.
+Copyright (c) 2026 Naganori Yamaguchi (https://github.com/n-yamaguchi-0729).
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+module
+
+public import Mathlib.Algebra.Homology.AlternatingConst
+public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
+public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+public import Mathlib.Algebra.Module.Equiv.Basic
+public import Nyll.GaloisCohomology.Cyclic.IntegralCyclicNormComplexes
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.IntegralTateComparison
 
 /-!
-# Cardinality identity from the standard Tate exact sequence
+# Finiteness and cardinality of the original periodic norm complex
 
-For a short exact sequence of finite cyclic modules, this module applies
-mathlib's homology long exact sequence to the standard two-periodic cyclic
-complex.  The resulting cardinality identity is transported to the
-arithmetic `H⁰` and `H⁻¹` presentations.
+The coefficient modules share a working universe, independently of the finite acting group.
+Every differential is the original integer norm or the original generator minus the identity.
+The existing arithmetic Herbrand comparisons identify the same cycles and boundaries. This
+module remains the canonical owner of the six-term cardinality argument and its pure module
+helpers. It also supplies finiteness transfer from the same exact periodic sequence.
 -/
 
-namespace CyclicCohomology
+@[expose] public section
 
 noncomputable section
 
-namespace ProfiniteCohomology
-namespace Herbrand
+universe u v uG uA
 
-open CategoryTheory
+open CategoryTheory IntegralGroupCohomology.Universe
 
-variable {G A B C : Type}
+namespace CyclicCohomology.ProfiniteCohomology.Herbrand
 
-section
+variable {G : Type u} {A B C : Type v}
+    [Group G] [Fintype G] [CommGroup A] [CommGroup B] [CommGroup C]
+    [MulDistribMulAction G A] [MulDistribMulAction G B] [MulDistribMulAction G C]
 
-variable [CommGroup G] [Fintype G]
-variable [CommGroup A] [CommGroup B] [CommGroup C]
-variable [MulDistribMulAction G A] [MulDistribMulAction G B]
-  [MulDistribMulAction G C]
+/-- The condition that the Herbrand quotient of `A` is defined. -/
+def HerbrandQuotientDefined (G : Type uG) (A : Type uA)
+    [Group G] [Fintype G] [CommGroup A] [MulDistribMulAction G A]
+    (σ : G) : Prop :=
+  Finite (HerbrandH0 G A) ∧ Finite (HerbrandHMinusOne G A σ)
 
-private noncomputable def subCompNormMap
+private def coefficientMap (f : A →* B) :
+    ModuleCat.of ℤ (Additive A) ⟶ ModuleCat.of ℤ (Additive B) :=
+  ModuleCat.ofHom (MonoidHom.toAdditive f).toIntLinearMap
+
+private def periodicChainComplex (σ : G) : ChainComplex (ModuleCat.{v} ℤ) ℕ :=
+  HomologicalComplex.alternatingConst (ModuleCat.of ℤ (Additive A))
+    (normHomCompSub (Rep.ofMulDistribMulAction G A) σ).zero
+    (subCompNormHom (Rep.ofMulDistribMulAction G A) σ).zero
+    (fun _ _ => ComplexShape.down_nat_odd_add)
+
+private def subCompNormMap
     (σ : G) (f : A →* B)
     (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) :
-    Rep.FiniteCyclicGroup.subCompNormHom
-        (Rep.ofMulDistribMulAction G A) σ ⟶
-      Rep.FiniteCyclicGroup.subCompNormHom
-        (Rep.ofMulDistribMulAction G B) σ where
-  τ₁ := (equivariantRepHom f hf).toModuleCatHom
-  τ₂ := (equivariantRepHom f hf).toModuleCatHom
-  τ₃ := (equivariantRepHom f hf).toModuleCatHom
+    subCompNormHom (Rep.ofMulDistribMulAction G A) σ ⟶
+      subCompNormHom (Rep.ofMulDistribMulAction G B) σ where
+  τ₁ := coefficientMap (A := A) (B := B) f
+  τ₂ := coefficientMap (A := A) (B := B) f
+  τ₃ := coefficientMap (A := A) (B := B) f
   comm₁₂ := by
-    ext a
-    change Additive A at a
-    change
-      Additive.ofMul ((σ • f a.toMul) / f a.toMul) =
-        Additive.ofMul (f ((σ • a.toMul) / a.toMul))
+    apply ModuleCat.hom_ext
+    refine LinearMap.ext fun (a : Additive A) => ?_
+    change Additive.ofMul ((σ • f a.toMul) / f a.toMul) =
+      Additive.ofMul (f ((σ • a.toMul) / a.toMul))
     exact congrArg Additive.ofMul (by rw [map_div, hf])
   comm₂₃ := by
-    ext a
-    apply Additive.ofMul.injective
-    simp [Rep.FiniteCyclicGroup.subCompNormHom, Rep.norm,
-      Representation.norm, Rep.hom_comm_apply]
+    apply ModuleCat.hom_ext
+    refine LinearMap.ext fun (a : Additive A) => ?_
+    apply Additive.toMul.injective
+    exact (repNorm_toMul (G := G) (A := B) (Additive.ofMul (f a.toMul))).trans
+      ((map_tateNorm f hf a.toMul).symm.trans
+        (congrArg f (repNorm_toMul (G := G) (A := A) a)).symm)
 
-private noncomputable def periodicChainMap
+private theorem alternatingConst_d_naturality
+    {X Y : ModuleCat.{v} ℤ} {φX ψX : X ⟶ X} {φY ψY : Y ⟶ Y}
+    (hX : φX ≫ ψX = 0) (hX' : ψX ≫ φX = 0)
+    (hY : φY ≫ ψY = 0) (hY' : ψY ≫ φY = 0)
+    (f : X ⟶ Y) (hφ : f ≫ φY = φX ≫ f) (hψ : f ≫ ψY = ψX ≫ f)
+    (i j : ℕ) (hij : (ComplexShape.down ℕ).Rel i j) :
+    f ≫ (HomologicalComplex.alternatingConst Y hY hY'
+      (fun _ _ => ComplexShape.down_nat_odd_add)).d i j =
+      (HomologicalComplex.alternatingConst X hX hX'
+        (fun _ _ => ComplexShape.down_nat_odd_add)).d i j ≫ f := by
+  change f ≫ (if (ComplexShape.down ℕ).Rel i j then
+      if Even i then φY else ψY else 0) =
+    (if (ComplexShape.down ℕ).Rel i j then if Even i then φX else ψX else 0) ≫ f
+  rw [ite_eq_left hij, ite_eq_left hij]
+  by_cases hi : Even i
+  · rw [ite_eq_left hi, ite_eq_left hi]
+    exact hφ
+  · rw [ite_eq_right hi, ite_eq_right hi]
+    exact hψ
+
+private def periodicChainMap
     (σ : G) (f : A →* B)
     (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) :
-    Rep.FiniteCyclicGroup.moduleCatChainComplex
-        (Rep.ofMulDistribMulAction G A) σ ⟶
-      Rep.FiniteCyclicGroup.moduleCatChainComplex
-        (Rep.ofMulDistribMulAction G B) σ where
-  f _ := (equivariantRepHom f hf).toModuleCatHom
+    periodicChainComplex (A := A) σ ⟶ periodicChainComplex (A := B) σ where
+  f _ := coefficientMap (A := A) (B := B) f
   comm' := by
-    rintro i j ⟨rfl⟩
-    have hrel : (ComplexShape.down ℕ).Rel (j + 1) j := rfl
-    by_cases hj : Even (j + 1)
-    · simp only [Rep.FiniteCyclicGroup.moduleCatChainComplex,
-        HomologicalComplex.alternatingConst, dite_eq_ite, hrel, hj, ↓reduceIte]
-      exact (subCompNormMap σ f hf).comm₂₃
-    · simp only [Rep.FiniteCyclicGroup.moduleCatChainComplex,
-        HomologicalComplex.alternatingConst, dite_eq_ite, hrel, hj, ↓reduceIte]
-      exact (subCompNormMap σ f hf).comm₁₂
+    intro i j hij
+    exact alternatingConst_d_naturality
+      (X := ModuleCat.of ℤ (Additive A)) (Y := ModuleCat.of ℤ (Additive B))
+      (normHomCompSub (Rep.ofMulDistribMulAction G A) σ).zero
+      (subCompNormHom (Rep.ofMulDistribMulAction G A) σ).zero
+      (normHomCompSub (Rep.ofMulDistribMulAction G B) σ).zero
+      (subCompNormHom (Rep.ofMulDistribMulAction G B) σ).zero
+      (coefficientMap (A := A) (B := B) f)
+      (subCompNormMap (A := A) (B := B) σ f hf).comm₂₃
+      (subCompNormMap (A := A) (B := B) σ f hf).comm₁₂ i j hij
 
-private noncomputable def periodicShortComplex
-    (σ : G)
-    (i : A →* B) (j : B →* C)
+private def periodicShortComplex
+    (σ : G) (i : A →* B) (j : B →* C)
     (hi : ∀ (g : G) (a : A), i (g • a) = g • i a)
     (hj : ∀ (g : G) (b : B), j (g • b) = g • j b)
     (hker : ∀ b : B, j b = 1 ↔ ∃ a : A, i a = b) :
-    ShortComplex (ChainComplex (ModuleCat ℤ) ℕ) :=
+    ShortComplex (ChainComplex (ModuleCat.{v} ℤ) ℕ) :=
   ShortComplex.mk (periodicChainMap σ i hi) (periodicChainMap σ j hj) <| by
     apply HomologicalComplex.hom_ext
     intro n
-    ext a
+    apply ModuleCat.hom_ext
+    apply LinearMap.ext
+    intro a
     change Additive.ofMul (j (i a.toMul)) = 0
     apply Additive.ofMul.injective
     exact (hker (i a.toMul)).2 ⟨a.toMul, rfl⟩
 
 private theorem periodicShortComplex_shortExact
-    (σ : G)
-    (i : A →* B) (j : B →* C)
+    (σ : G) (i : A →* B) (j : B →* C)
     (hi : ∀ (g : G) (a : A), i (g • a) = g • i a)
     (hj : ∀ (g : G) (b : B), j (g • b) = g • j b)
     (hker : ∀ b : B, j b = 1 ↔ ∃ a : A, i a = b)
@@ -123,16 +161,13 @@ private theorem periodicShortComplex_shortExact
     apply Additive.toMul.injective
     exact hb
 
-private noncomputable def periodicScIsoEven
-    {R H : Type} [CommRing R] [CommGroup H] [Fintype H]
-    (M : Rep R H) (τ : H)
-    {n : ℕ} [h₀ : NeZero n] (hn : Even n) :
-    (Rep.FiniteCyclicGroup.moduleCatChainComplex M τ).sc n ≅
-      Rep.FiniteCyclicGroup.subCompNormHom M τ :=
-  HomologicalComplex.alternatingConstScIsoEven
-    (ModuleCat.of R M.V)
-    (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
-    (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
+private def periodicScIsoEven
+    (σ : G) {n : ℕ} [h₀ : NeZero n] (hn : Even n) :
+    (periodicChainComplex (A := A) σ).sc n ≅
+      subCompNormHom (Rep.ofMulDistribMulAction G A) σ :=
+  HomologicalComplex.alternatingConstScIsoEven (ModuleCat.of ℤ (Additive A))
+    (normHomCompSub (Rep.ofMulDistribMulAction G A) σ).zero
+    (subCompNormHom (Rep.ofMulDistribMulAction G A) σ).zero
     (fun _ _ => ComplexShape.down_nat_odd_add)
     (by
       change n + 1 = (ComplexShape.down ℕ).prev n
@@ -142,18 +177,15 @@ private noncomputable def periodicScIsoEven
       | zero => exact (NeZero.ne 0 rfl).elim
       | succ n _ =>
           change (ComplexShape.down ℕ).next (n + 1) + 1 = n + 1
-          rw [ChainComplex.next_nat_succ])
-    hn
+          rw [ChainComplex.next_nat_succ]) hn
 
-private noncomputable def periodicScIsoOdd
-    {R H : Type} [CommRing R] [CommGroup H] [Fintype H]
-    (M : Rep R H) (τ : H) {n : ℕ} (hn : Odd n) :
-    (Rep.FiniteCyclicGroup.moduleCatChainComplex M τ).sc n ≅
-      Rep.FiniteCyclicGroup.normHomCompSub M τ :=
-  HomologicalComplex.alternatingConstScIsoOdd
-    (ModuleCat.of R M.V)
-    (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
-    (by ext; simp [Rep.sub_hom, Rep.applyAsHom, Rep.norm])
+private def periodicScIsoOdd
+    (σ : G) {n : ℕ} (hn : Odd n) :
+    (periodicChainComplex (A := A) σ).sc n ≅
+      normHomCompSub (Rep.ofMulDistribMulAction G A) σ :=
+  HomologicalComplex.alternatingConstScIsoOdd (ModuleCat.of ℤ (Additive A))
+    (normHomCompSub (Rep.ofMulDistribMulAction G A) σ).zero
+    (subCompNormHom (Rep.ofMulDistribMulAction G A) σ).zero
     (fun _ _ => ComplexShape.down_nat_odd_add)
     (by
       change n + 1 = (ComplexShape.down ℕ).prev n
@@ -161,80 +193,60 @@ private noncomputable def periodicScIsoOdd
     (by
       rcases hn with ⟨m, rfl⟩
       change (ComplexShape.down ℕ).next (2 * m + 1) + 1 = 2 * m + 1
-      rw [ChainComplex.next_nat_succ])
-    hn
+      rw [ChainComplex.next_nat_succ]) hn
 
-private noncomputable def periodicHomologyIsoEven
-    {R H : Type} [CommRing R] [CommGroup H] [Fintype H]
-    (M : Rep R H) (τ : H)
-    {n : ℕ} [NeZero n] (hn : Even n) :
-    (Rep.FiniteCyclicGroup.moduleCatChainComplex M τ).homology n ≅
-      (Rep.FiniteCyclicGroup.subCompNormHom M τ).homology :=
-  ShortComplex.homologyMapIso (periodicScIsoEven M τ hn)
+private def periodicHomologyIsoEven
+    (σ : G) {n : ℕ} [NeZero n] (hn : Even n) :
+    (periodicChainComplex (A := A) σ).homology n ≅
+      (subCompNormHom (Rep.ofMulDistribMulAction G A) σ).homology :=
+  ShortComplex.homologyMapIso (periodicScIsoEven σ hn)
 
-private noncomputable def periodicHomologyIsoOdd
-    {R H : Type} [CommRing R] [CommGroup H] [Fintype H]
-    (M : Rep R H) (τ : H) {n : ℕ} (hn : Odd n) :
-    (Rep.FiniteCyclicGroup.moduleCatChainComplex M τ).homology n ≅
-      (Rep.FiniteCyclicGroup.normHomCompSub M τ).homology :=
-  ShortComplex.homologyMapIso (periodicScIsoOdd M τ hn)
+private def periodicHomologyIsoOdd
+    (σ : G) {n : ℕ} (hn : Odd n) :
+    (periodicChainComplex (A := A) σ).homology n ≅
+      (normHomCompSub (Rep.ofMulDistribMulAction G A) σ).homology :=
+  ShortComplex.homologyMapIso (periodicScIsoOdd σ hn)
 
-private noncomputable def periodicEvenHerbrandHMinusOneIso
-    (σ : G) (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ)
-    {n : ℕ} [NeZero n] (hn : Even n) :
-    (Rep.FiniteCyclicGroup.moduleCatChainComplex
-        (Rep.ofMulDistribMulAction G A) σ).homology n ≅
+private def periodicEvenHerbrandHMinusOneIso
+    (σ : G) {n : ℕ} [NeZero n] (hn : Even n) :
+    (periodicChainComplex (A := A) σ).homology n ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G A σ)) :=
-  periodicHomologyIsoEven (Rep.ofMulDistribMulAction G A) σ hn ≪≫
-    (TateCohomology.isoFiniteCyclicNegOne
-      (Rep.ofMulDistribMulAction G A) σ hgen).symm ≪≫
-    tateHMinusOneIsoHerbrandHMinusOne σ hgen
+  periodicHomologyIsoEven σ hn ≪≫
+    (subNormHomologyEquivHerbrandHMinusOne σ).toIntLinearEquiv.toModuleIso
 
-private noncomputable def periodicOddHerbrandHZeroIso
-    (σ : G) (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ)
-    {n : ℕ} (hn : Odd n) :
-    (Rep.FiniteCyclicGroup.moduleCatChainComplex
-        (Rep.ofMulDistribMulAction G A) σ).homology n ≅
+private def periodicOddHerbrandHZeroIso
+    (σ : G) (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ) {n : ℕ} (hn : Odd n) :
+    (periodicChainComplex (A := A) σ).homology n ≅
       ModuleCat.of ℤ (Additive (HerbrandH0 G A)) :=
-  periodicHomologyIsoOdd (Rep.ofMulDistribMulAction G A) σ hn ≪≫
-    (TateCohomology.isoFiniteCyclicZero
-      (Rep.ofMulDistribMulAction G A) σ hgen).symm ≪≫
-    tateH0IsoHerbrandH0
+  periodicHomologyIsoOdd σ hn ≪≫
+    (normHomologyEquivHerbrandH0 σ hgen).toIntLinearEquiv.toModuleIso
 
 private theorem periodicScIsoEven_naturality
     (σ : G) {n : ℕ} [NeZero n] (hn : Even n)
-    (f : A →* B)
-    (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) :
-    ShortComplex.homologyMap
-          (periodicScIsoEven
-            (Rep.ofMulDistribMulAction G A) σ hn).inv ≫
+    (f : A →* B) (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) :
+    ShortComplex.homologyMap (periodicScIsoEven (A := A) σ hn).inv ≫
         ShortComplex.homologyMap
           ((HomologicalComplex.shortComplexFunctor
-            (ModuleCat ℤ) (ComplexShape.down ℕ) n).map
+            (ModuleCat.{v} ℤ) (ComplexShape.down ℕ) n).map
               (periodicChainMap σ f hf)) ≫
-        ShortComplex.homologyMap
-          (periodicScIsoEven
-            (Rep.ofMulDistribMulAction G B) σ hn).hom =
+        ShortComplex.homologyMap (periodicScIsoEven (A := B) σ hn).hom =
       ShortComplex.homologyMap (subCompNormMap σ f hf) := by
   rw [← ShortComplex.homologyMap_comp, ← ShortComplex.homologyMap_comp]
   congr 1
 
 private theorem periodicHomologyIsoEven_naturality
     (σ : G) {n : ℕ} [NeZero n] (hn : Even n)
-    (f : A →* B)
-    (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) :
-    (periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G A) σ hn).inv ≫
+    (f : A →* B) (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) :
+    (periodicHomologyIsoEven (A := A) σ hn).inv ≫
         HomologicalComplex.homologyMap (periodicChainMap σ f hf) n ≫
-        (periodicHomologyIsoEven
-          (Rep.ofMulDistribMulAction G B) σ hn).hom =
+        (periodicHomologyIsoEven (A := B) σ hn).hom =
       ShortComplex.homologyMap (subCompNormMap σ f hf) :=
   periodicScIsoEven_naturality σ hn f hf
 
 /-- Conjugating a `ModuleCat ℤ` morphism by isomorphisms identifies the
 ranges of the associated multiplicatively tagged homomorphisms. -/
 noncomputable def moduleCatRangeEquivOfConjugate
-    {X Y X' Y' : ModuleCat.{0} ℤ}
+    {X Y X' Y' : ModuleCat.{v} ℤ}
     (f : X ⟶ Y) (g : X' ⟶ Y')
     (eX : X ≅ X') (eY : Y ≅ Y')
     (h : eX.inv ≫ f ≫ eY.hom = g) :
@@ -279,7 +291,7 @@ noncomputable def moduleCatRangeEquivOfConjugate
 /-- Conjugate `ModuleCat ℤ` morphisms have ranges of the same cardinality
 after multiplicatively tagging their underlying additive groups. -/
 theorem moduleCatRangeCard_eq_of_conjugate
-    {X Y X' Y' : ModuleCat.{0} ℤ}
+    {X Y X' Y' : ModuleCat.{v} ℤ}
     (f : X ⟶ Y) (g : X' ⟶ Y')
     (eX : X ≅ X') (eY : Y ≅ Y')
     (h : eX.inv ≫ f ≫ eY.hom = g) :
@@ -292,7 +304,7 @@ theorem moduleCatRangeCard_eq_of_conjugate
 /-- Function exactness of morphisms in `ModuleCat ℤ` gives multiplicative
 exactness after tagging the underlying additive groups as multiplicative. -/
 theorem mulExact_of_moduleCat_exact
-    {X Y Z : ModuleCat.{0} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
+    {X Y Z : ModuleCat.{v} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
     (hexact : Function.Exact f g) :
     Function.MulExact
       f.hom.toAddMonoidHom.toMultiplicative
@@ -312,7 +324,7 @@ theorem mulExact_of_moduleCat_exact
 /-- Exactness of a short complex in `ModuleCat ℤ` gives multiplicative
 exactness of its two underlying homomorphisms. -/
 theorem mulExact_of_moduleCat_shortComplex_exact
-    {X Y Z : ModuleCat.{0} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
+    {X Y Z : ModuleCat.{v} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
     (hzero : f ≫ g = 0)
     (hexact : (ShortComplex.mk f g hzero).Exact) :
     Function.MulExact
@@ -325,7 +337,7 @@ theorem mulExact_of_moduleCat_shortComplex_exact
 the cardinality of the middle term is the product of the two range
 cardinalities. -/
 theorem moduleCat_card_eq_card_range_mul_card_range_of_exact
-    {X Y Z : ModuleCat.{0} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
+    {X Y Z : ModuleCat.{v} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
     (hexact : Function.Exact f g) [Finite Y] :
     Nat.card Y =
       Nat.card (MonoidHom.range
@@ -341,7 +353,7 @@ theorem moduleCat_card_eq_card_range_mul_card_range_of_exact
 /-- Finiteness transports from the target to the source of a
 `ModuleCat ℤ` isomorphism. -/
 theorem finite_source_of_moduleIso
-    {X Y : ModuleCat.{0} ℤ} (e : X ≅ Y) [Finite Y] :
+    {X Y : ModuleCat.{v} ℤ} (e : X ≅ Y) [Finite Y] :
     Finite X := by
   let e' : X ≃ Y := ((forget (ModuleCat ℤ)).mapIso e).toEquiv
   exact Finite.of_injective e' e'.injective
@@ -349,7 +361,7 @@ theorem finite_source_of_moduleIso
 /-- Finiteness transports from the source to the target of a
 `ModuleCat ℤ` isomorphism. -/
 theorem finite_target_of_moduleIso
-    {X Y : ModuleCat.{0} ℤ} (e : X ≅ Y) [Finite X] :
+    {X Y : ModuleCat.{v} ℤ} (e : X ≅ Y) [Finite X] :
     Finite Y := by
   let e' : Y ≃ X := ((forget (ModuleCat ℤ)).mapIso e.symm).toEquiv
   exact Finite.of_injective e' e'.injective
@@ -357,20 +369,126 @@ theorem finite_target_of_moduleIso
 /-- A `ModuleCat ℤ` isomorphism with the additive form of a commutative
 group identifies their cardinalities. -/
 theorem moduleCat_card_eq_of_iso
-    {X : ModuleCat.{0} ℤ} {T : Type} [CommGroup T]
+    {X : ModuleCat.{v} ℤ} {T : Type v} [CommGroup T]
     (e : X ≅ ModuleCat.of ℤ (Additive T)) :
     Nat.card X = Nat.card T :=
   Nat.card_congr ((forget (ModuleCat ℤ)).mapIso e).toEquiv
 
-end
 
-/-- The finite-cardinality identity supplied directly by mathlib's standard
-two-periodic Tate exact sequence for a finite cyclic group. -/
+/-- In an exact pair `X → Y → Z`, finiteness of `X` and `Z` forces
+finiteness of `Y`. -/
+theorem finite_middle_of_exact
+    {X Y Z : Type*}
+    [Group X] [Group Y] [Group Z]
+    (f : X →* Y) (g : Y →* Z) (hexact : MonoidHom.range f = MonoidHom.ker g)
+    [Finite X] [Finite Z] :
+    Finite Y := by
+  apply g.finite_iff_finite_ker_range.mpr
+  constructor
+  · let : Finite (MonoidHom.range f) :=
+      Finite.of_surjective f.rangeRestrict f.rangeRestrict_surjective
+    rw [← hexact]
+    infer_instance
+  · infer_instance
+
+/-- Finiteness of the outer integer modules in an exact pair forces the middle module finite. -/
+theorem finite_middle_of_moduleCat_exact
+    {X Y Z : ModuleCat.{v} ℤ} (f : X ⟶ Y) (g : Y ⟶ Z)
+    (hexact : Function.Exact f g)
+    [Finite X] [Finite Z] :
+    Finite Y := by
+  let fm : Multiplicative X →* Multiplicative Y :=
+    f.hom.toAddMonoidHom.toMultiplicative
+  let gm : Multiplicative Y →* Multiplicative Z :=
+    g.hom.toAddMonoidHom.toMultiplicative
+  exact finite_middle_of_exact
+    (X := Multiplicative X) (Y := Multiplicative Y)
+    (Z := Multiplicative Z) fm gm
+    (mulExact_of_moduleCat_exact f g hexact).monoidHom_ker_eq.symm
+
+private theorem finite_even_of_defined (σ : G) (hA : HerbrandQuotientDefined G A σ)
+    {n : ℕ} [NeZero n] (hn : Even n) :
+    Finite ((periodicChainComplex (A := A) σ).homology n) := by
+  let : Finite (HerbrandHMinusOne G A σ) := hA.2
+  exact finite_source_of_moduleIso (periodicEvenHerbrandHMinusOneIso σ hn)
+
+private theorem finite_odd_of_defined (σ : G) (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ)
+    (hA : HerbrandQuotientDefined G A σ) {n : ℕ} (hn : Odd n) :
+    Finite ((periodicChainComplex (A := A) σ).homology n) := by
+  let : Finite (HerbrandH0 G A) := hA.1
+  exact finite_source_of_moduleIso (periodicOddHerbrandHZeroIso σ hgen hn)
+
+private theorem defined_of_finite_periodic (σ : G)
+    (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ)
+    [Finite ((periodicChainComplex (A := A) σ).homology 3)]
+    [Finite ((periodicChainComplex (A := A) σ).homology 4)] :
+    HerbrandQuotientDefined G A σ := by
+  exact ⟨finite_target_of_moduleIso (periodicOddHerbrandHZeroIso σ hgen ⟨1, rfl⟩),
+    finite_target_of_moduleIso (periodicEvenHerbrandHMinusOneIso σ ⟨2, rfl⟩)⟩
+
+/-- Any two defined arithmetic Herbrand quotients force the third to be defined,
+using exactness of the original periodic norm complex. -/
+theorem herbrandQuotientDefined_anyTwo_of_periodic
+    (i : A →* B) (j : B →* C)
+    (hi : ∀ (g : G) (a : A), i (g • a) = g • i a)
+    (hj : ∀ (g : G) (b : B), j (g • b) = g • j b)
+    (hker : ∀ b : B, j b = 1 ↔ ∃ a : A, i a = b)
+    (hinj : Function.Injective i) (hsurj : Function.Surjective j)
+    (σ : G) (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ) :
+    (HerbrandQuotientDefined G A σ ∧ HerbrandQuotientDefined G B σ →
+        HerbrandQuotientDefined G C σ) ∧
+      (HerbrandQuotientDefined G A σ ∧ HerbrandQuotientDefined G C σ →
+        HerbrandQuotientDefined G B σ) ∧
+      (HerbrandQuotientDefined G B σ ∧ HerbrandQuotientDefined G C σ →
+        HerbrandQuotientDefined G A σ) := by
+  let S := periodicShortComplex σ i j hi hj hker
+  have hS : S.ShortExact := periodicShortComplex_shortExact σ i j hi hj hker hinj hsurj
+  refine ⟨?_, ?_, ?_⟩
+  · rintro ⟨hA, hB⟩
+    let : Finite (S.X₂.homology 4) := finite_even_of_defined σ hB ⟨2, rfl⟩
+    let : Finite (S.X₁.homology 3) := finite_odd_of_defined σ hgen hA ⟨1, rfl⟩
+    let : Finite (S.X₂.homology 3) := finite_odd_of_defined σ hgen hB ⟨1, rfl⟩
+    let : Finite (S.X₁.homology 2) := finite_even_of_defined σ hA ⟨1, rfl⟩
+    have hC4 : Finite (S.X₃.homology 4) := finite_middle_of_moduleCat_exact
+      (HomologicalComplex.homologyMap S.g 4) (hS.δ 4 3 (by decide))
+      ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
+        (hS.homology_exact₃ 4 3 (by decide)))
+    have hC3 : Finite (S.X₃.homology 3) := finite_middle_of_moduleCat_exact
+      (HomologicalComplex.homologyMap S.g 3) (hS.δ 3 2 (by decide))
+      ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
+        (hS.homology_exact₃ 3 2 (by decide)))
+    exact @defined_of_finite_periodic G C _ _ _ _ σ hgen hC3 hC4
+  · rintro ⟨hA, hC⟩
+    let : Finite (S.X₁.homology 3) := finite_odd_of_defined σ hgen hA ⟨1, rfl⟩
+    let : Finite (S.X₃.homology 3) := finite_odd_of_defined σ hgen hC ⟨1, rfl⟩
+    let : Finite (S.X₁.homology 4) := finite_even_of_defined σ hA ⟨2, rfl⟩
+    let : Finite (S.X₃.homology 4) := finite_even_of_defined σ hC ⟨2, rfl⟩
+    have hB3 : Finite (S.X₂.homology 3) := finite_middle_of_moduleCat_exact
+      (HomologicalComplex.homologyMap S.f 3) (HomologicalComplex.homologyMap S.g 3)
+      ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
+        (hS.homology_exact₂ 3))
+    have hB4 : Finite (S.X₂.homology 4) := finite_middle_of_moduleCat_exact
+      (HomologicalComplex.homologyMap S.f 4) (HomologicalComplex.homologyMap S.g 4)
+      ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
+        (hS.homology_exact₂ 4))
+    exact @defined_of_finite_periodic G B _ _ _ _ σ hgen hB3 hB4
+  · rintro ⟨hB, hC⟩
+    let : Finite (S.X₃.homology 4) := finite_even_of_defined σ hC ⟨2, rfl⟩
+    let : Finite (S.X₂.homology 3) := finite_odd_of_defined σ hgen hB ⟨1, rfl⟩
+    let : Finite (S.X₃.homology 5) := finite_odd_of_defined σ hgen hC ⟨2, rfl⟩
+    let : Finite (S.X₂.homology 4) := finite_even_of_defined σ hB ⟨2, rfl⟩
+    have hA3 : Finite (S.X₁.homology 3) := finite_middle_of_moduleCat_exact
+      (hS.δ 4 3 (by decide)) (HomologicalComplex.homologyMap S.f 3)
+      ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
+        (hS.homology_exact₁ 4 3 (by decide)))
+    have hA4 : Finite (S.X₁.homology 4) := finite_middle_of_moduleCat_exact
+      (hS.δ 5 4 (by decide)) (HomologicalComplex.homologyMap S.f 4)
+      ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
+        (hS.homology_exact₁ 5 4 (by decide)))
+    exact @defined_of_finite_periodic G A _ _ _ _ σ hgen hA3 hA4
+
+/-- The original exact periodic norm sequence gives its six-term cardinality identity. -/
 theorem herbrand_exact_cardinality_identity
-    [Group G] [Fintype G]
-    [CommGroup A] [CommGroup B] [CommGroup C]
-    [MulDistribMulAction G A] [MulDistribMulAction G B]
-    [MulDistribMulAction G C]
     (i : A →* B) (j : B →* C)
     (hi : ∀ (g : G) (a : A), i (g • a) = g • i a)
     (hj : ∀ (g : G) (b : B), j (g • b) = g • j b)
@@ -387,23 +505,21 @@ theorem herbrand_exact_cardinality_identity
       Nat.card (HerbrandH0 G A) *
         Nat.card (HerbrandH0 G C) *
         Nat.card (HerbrandHMinusOne G B σ) := by
-  let : IsCyclic G := ⟨⟨σ, hgen⟩⟩
-  let : CommGroup G := IsCyclic.commGroup
   let S := periodicShortComplex σ i j hi hj hker
   have hS : S.ShortExact :=
     periodicShortComplex_shortExact σ i j hi hj hker hinj hsurj
   let eA4 : S.X₁.homology 4 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G A σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := A) (n := 4) σ hgen (⟨2, rfl⟩ : Even 4)
+      (G := G) (A := A) (n := 4) σ (⟨2, rfl⟩ : Even 4)
   let eB4 : S.X₂.homology 4 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G B σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := B) (n := 4) σ hgen (⟨2, rfl⟩ : Even 4)
+      (G := G) (A := B) (n := 4) σ (⟨2, rfl⟩ : Even 4)
   let eC4 : S.X₃.homology 4 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G C σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := C) (n := 4) σ hgen (⟨2, rfl⟩ : Even 4)
+      (G := G) (A := C) (n := 4) σ (⟨2, rfl⟩ : Even 4)
   let eA3 : S.X₁.homology 3 ≅
       ModuleCat.of ℤ (Additive (HerbrandH0 G A)) := by
     exact periodicOddHerbrandHZeroIso
@@ -419,31 +535,31 @@ theorem herbrand_exact_cardinality_identity
   let eA2 : S.X₁.homology 2 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G A σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := A) (n := 2) σ hgen (⟨1, rfl⟩ : Even 2)
+      (G := G) (A := A) (n := 2) σ (⟨1, rfl⟩ : Even 2)
   let eB2 : S.X₂.homology 2 ≅
       ModuleCat.of ℤ (Additive (HerbrandHMinusOne G B σ)) := by
     exact periodicEvenHerbrandHMinusOneIso
-      (G := G) (A := B) (n := 2) σ hgen (⟨1, rfl⟩ : Even 2)
+      (G := G) (A := B) (n := 2) σ (⟨1, rfl⟩ : Even 2)
   let pA4 : S.X₁.homology 4 ≅
-      (Rep.FiniteCyclicGroup.subCompNormHom
+      (subCompNormHom
         (Rep.ofMulDistribMulAction G A) σ).homology := by
     exact periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G A) σ (⟨2, rfl⟩ : Even 4)
+      (G := G) (A := A) σ (⟨2, rfl⟩ : Even 4)
   let pB4 : S.X₂.homology 4 ≅
-      (Rep.FiniteCyclicGroup.subCompNormHom
+      (subCompNormHom
         (Rep.ofMulDistribMulAction G B) σ).homology := by
     exact periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G B) σ (⟨2, rfl⟩ : Even 4)
+      (G := G) (A := B) σ (⟨2, rfl⟩ : Even 4)
   let pA2 : S.X₁.homology 2 ≅
-      (Rep.FiniteCyclicGroup.subCompNormHom
+      (subCompNormHom
         (Rep.ofMulDistribMulAction G A) σ).homology := by
     exact periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G A) σ (⟨1, rfl⟩ : Even 2)
+      (G := G) (A := A) σ (⟨1, rfl⟩ : Even 2)
   let pB2 : S.X₂.homology 2 ≅
-      (Rep.FiniteCyclicGroup.subCompNormHom
+      (subCompNormHom
         (Rep.ofMulDistribMulAction G B) σ).homology := by
     exact periodicHomologyIsoEven
-      (Rep.ofMulDistribMulAction G B) σ (⟨1, rfl⟩ : Even 2)
+      (G := G) (A := B) σ (⟨1, rfl⟩ : Even 2)
   let : Finite (S.X₁.homology 4) := finite_source_of_moduleIso eA4
   let : Finite (S.X₂.homology 4) := finite_source_of_moduleIso eB4
   let : Finite (S.X₃.homology 4) := finite_source_of_moduleIso eC4
@@ -537,8 +653,5 @@ theorem herbrand_exact_cardinality_identity
     _ = _ := by
       rw [hcA3, hcC3, hcB4]
 
-end Herbrand
-end ProfiniteCohomology
 
-end
-end CyclicCohomology
+end CyclicCohomology.ProfiniteCohomology.Herbrand

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPBoundary
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPBoundary
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
 
 /-!
 # Tail exactness of the mod-p Fox boundary
@@ -14,6 +16,8 @@ The completed mod-`p` Fox boundary has closed range.  Density of the
 algebraic group algebra, together with the presentation fundamental formula,
 identifies that range with the canonical augmentation ideal.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
-import Nyll.GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
-import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
+public import Nyll.GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+public import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+public import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
 
 /-!
 # Power quotients of S-unit groups
@@ -17,6 +21,8 @@ coordinates.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain

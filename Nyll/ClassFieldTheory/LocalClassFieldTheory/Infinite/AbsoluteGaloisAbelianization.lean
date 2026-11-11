@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
 /-!
 # Compatibility names for the absolute abelianization
@@ -17,11 +19,15 @@ the established local names as definitional wrappers for downstream users.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 
 /-- Compatibility name for the absolute commutator closure. -/
 abbrev localAbsoluteCommutatorClosure :

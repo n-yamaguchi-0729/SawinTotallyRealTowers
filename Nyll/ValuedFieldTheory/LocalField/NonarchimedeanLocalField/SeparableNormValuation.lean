@@ -4,12 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.SeparableClosure
-import Mathlib.RingTheory.Ideal.Norm.RelNorm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+module
+
+public import Mathlib.Algebra.GroupWithZero.Torsion
+public import Mathlib.FieldTheory.SeparableClosure
+public import Mathlib.RingTheory.Ideal.Norm.RelNorm
+public import Mathlib.RingTheory.NormalClosure
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
 
 /-!
 # Finite local reciprocity: normalized valuation of field norms
@@ -19,6 +23,8 @@ class-formation framework is specialized to separable-closure units.  All
 ramification and residue degrees below are the actual invariants of the
 valuation-ring extension; no packaged norm-valuation hypothesis is assumed.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -98,10 +104,7 @@ private theorem ringNormalClosure_isFractionRing :
       change Algebra (integralClosure S E) E
       infer_instance
     IsFractionRing T E := by
-  let K := FractionRing R
-  let L := FractionRing S
-  let A := AlgebraicClosure L
-  let E := IntermediateField.normalClosure K L A
+  intro K L A E
   let : Algebra L E := normalClosure.algebra K L A
   let T := Ring.NormalClosure R S
   let : Algebra S E := ((algebraMap L E).comp (algebraMap S L)).toAlgebra
@@ -324,7 +327,7 @@ attribute [local instance] FractionRing.liftAlgebra
 the power of the upstairs maximal ideal given by the actual Dedekind
 ramification index. -/
 theorem maximalIdeal_map_eq_maximalIdeal_pow_ramificationIdx
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -352,7 +355,7 @@ theorem maximalIdeal_map_eq_maximalIdeal_pow_ramificationIdx
 /-- Integral closure and separability produce the finite valuation-ring
 module needed by the preceding ideal factorization. -/
 theorem maximalIdeal_map_eq_maximalIdeal_pow_ramificationIdx_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -539,7 +542,7 @@ theorem v_normUnits_eq_residue_finrank_mul_of_isSeparable
 /-- The image of the chosen base prime element has upstairs normalized value
 the negative of the actual ramification index. -/
 theorem v_mapBaseUnitsToExtensionUnits_integerRingUniformizerFieldUnit
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -594,7 +597,7 @@ theorem v_mapBaseUnitsToExtensionUnits_integerRingUniformizerFieldUnit
 /-- Integral closure and separability produce the module-finiteness used in
 the uniformizer scaling calculation. -/
 theorem v_mapBaseUnitsToExtensionUnits_integerRingUniformizerFieldUnit_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -615,7 +618,7 @@ theorem v_mapBaseUnitsToExtensionUnits_integerRingUniformizerFieldUnit_of_isInte
 /-- Base extension commutes with the two canonical inclusions of valuation
 integer units into field units. -/
 theorem mapBaseUnitsToExtensionUnits_integerUnitsToFieldUnits
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K]
     [Field L] [ValuativeRel L]
     [Algebra K L]
@@ -631,7 +634,7 @@ theorem mapBaseUnitsToExtensionUnits_integerUnitsToFieldUnits
 /-- The positive generator (the inverse chosen prime element) scales by the
 actual ramification index under base extension. -/
 theorem v_mapBaseUnitsToExtensionUnits_inverseIntegerRingUniformizerFieldUnit_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -652,7 +655,7 @@ theorem v_mapBaseUnitsToExtensionUnits_inverseIntegerRingUniformizerFieldUnit_of
 /-- Normalized valuations in a finite separable local-field extension scale
 under the base embedding by the actual ramification index. -/
 theorem v_mapBaseUnitsToExtensionUnits_eq_ramificationIdx_mul
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -701,7 +704,7 @@ theorem v_mapBaseUnitsToExtensionUnits_eq_ramificationIdx_mul
 /-- The Galois specialization of the finite-separable normalized norm
 calculation in the finite local reciprocity construction. -/
 theorem v_normUnits_eq_residue_finrank_mul_of_isGalois
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -720,7 +723,7 @@ theorem v_normUnits_eq_residue_finrank_mul_of_isGalois
 local-field extension.  Surjectivity of the upstairs normalized valuation
 turns the pointwise norm formula into the exact subgroup `fℤ`. -/
 theorem valuationMap_comp_normUnits_range_eq_zmultiples_of_isSeparable
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -764,7 +767,7 @@ theorem valuationMap_comp_normUnits_range_eq_zmultiples_of_isSeparable
 /-- The Galois specialization of the finite-separable norm-range theorem in
 the finite local reciprocity construction. -/
 theorem valuationMap_comp_normUnits_range_eq_zmultiples_of_isGalois
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]

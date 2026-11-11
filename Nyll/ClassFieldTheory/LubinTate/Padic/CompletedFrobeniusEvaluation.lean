@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift
-import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedCoefficientEvaluation
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
 /-!
 # Semilinear evaluation for completed p-adic Frobenius lifts
@@ -22,6 +25,8 @@ actual multiplicative unit translate.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LubinTate
@@ -31,36 +36,11 @@ open LocalFieldTheory.DiscreteValuationField.CompleteDVF
 open LocalFieldTheory.DiscreteValuationField.Examples.Qp
 open ValuationTheory.DiscreteValuationField
 
-private noncomputable local instance (priority := 50)
-    padicCompletedFrobeniusEvaluationWittUniformSpace
-    (p : ℕ) [Fact p.Prime] :
-    UniformSpace (padicCompletedUnramifiedWittRing p) :=
-  ⊥
-
-private noncomputable local instance
-    padicCompletedFrobeniusEvaluationTargetWithIdeal
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    WithIdeal
-      (padicCompletedLevelCompleteDVF p n).valuationSubring where
-  i := (padicCompletedLevelCompleteDVF p n).maximalIdeal
-
-private noncomputable local instance
-    padicCompletedFrobeniusEvaluationTargetCompleteSpace
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    CompleteSpace
-      (padicCompletedLevelCompleteDVF p n).valuationSubring := by
-  let target := padicCompletedLevelCompleteDVF p n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
-
-private noncomputable local instance
-    padicCompletedFrobeniusEvaluationTargetT2Space
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    T2Space
-      (padicCompletedLevelCompleteDVF p n).valuationSubring := by
-  let target := padicCompletedLevelCompleteDVF p n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).2
+attribute [local instance]
+  padicCompletedMultiplicativeWittUniformSpace
+  padicCompletedMultiplicativeTargetWithIdeal
+  padicCompletedMultiplicativeTargetCompleteSpace
+  padicCompletedMultiplicativeTargetT2Space
 
 /-- Arithmetic Frobenius restricted to the valuation ring of the completed
 maximal-unramified p-adic field. -/

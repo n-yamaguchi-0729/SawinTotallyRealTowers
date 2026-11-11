@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferential
-import Nyll.ProCGroups.FoxDifferential.Common.Jacobian
-import Mathlib.GroupTheory.FreeGroup.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferential
+public import Nyll.ProCGroups.FoxDifferential.Common.Jacobian
+public import Mathlib.GroupTheory.FreeGroup.Basic
 
 /-!
 # Fox differential: common — free crossed differential
@@ -25,6 +27,8 @@ The principal declarations in this module are:
 - `freeCrossedHomForAction_of`
   The free crossed homomorphism takes each free generator to its prescribed basis value.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

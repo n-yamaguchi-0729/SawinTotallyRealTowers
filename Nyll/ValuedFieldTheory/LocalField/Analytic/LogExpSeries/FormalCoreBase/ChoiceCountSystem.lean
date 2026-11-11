@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.BasicFactors
+module
+
+public import Mathlib.Data.Finset.Filter
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.BasicFactors
 
 /-!
 # Coordinate equations for basic-factor choices
@@ -14,6 +17,8 @@ a choice of the basic factors in `X + Y + XY`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -54,7 +59,7 @@ theorem mem_formalLogOnePlusProductArgumentBasicFactorLabelCountChoices
             formalLogOnePlusProductArgumentBasicFactorLabelCount q l 2 =
               e (0 : Fin 2) + e (1 : Fin 2) - q := by
   classical
-  simp [formalLogOnePlusProductArgumentBasicFactorLabelCountChoices]
+  exact Finset.mem_filter
 
 /--
 Establishes the identity `m (0 : Fin 2) = (if m = Finsupp.single (0 : Fin 2) 1 then 1 else 0) +

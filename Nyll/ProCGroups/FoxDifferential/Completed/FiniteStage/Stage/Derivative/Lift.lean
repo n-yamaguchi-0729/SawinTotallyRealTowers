@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Semidirect
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Semidirect
 
 /-!
 # Fox differential: finite stage — stage — derivative — lift
@@ -20,6 +22,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageCoefficient_apply`
   The finite Fox-stage coefficient map is evaluated by applying the selected coefficient projection.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

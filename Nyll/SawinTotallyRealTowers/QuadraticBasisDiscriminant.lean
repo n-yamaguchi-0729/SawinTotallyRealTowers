@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticBasis
-import Nyll.SawinTotallyRealTowers.QuadraticTrace
-import Mathlib.RingTheory.Discriminant
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticBasis
+public import Nyll.SawinTotallyRealTowers.QuadraticTrace
+public import Mathlib.RingTheory.Discriminant
 
 /-!
 # Discriminant of a quadratic square-root basis
@@ -15,6 +17,8 @@ The actual rational basis `1, α`, where `α² = d`, has diagonal trace
 matrix with entries `2` and `2d`. Its discriminant is therefore `4d`.
 No integrality or squarefreeness assumption is needed.
 -/
+
+@[expose] public section
 
 universe u
 

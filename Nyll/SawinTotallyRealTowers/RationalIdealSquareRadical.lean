@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
-import Mathlib.Algebra.Ring.Int.Units
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Algebra.Group.Units.Equiv
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.Data.Fintype.Card
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
+public import Mathlib.Algebra.Ring.Int.Units
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Algebra.Group.Units.Equiv
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.NumberTheory.NumberField.ClassNumber
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.Data.Fintype.Card
 
 /-!
 # The ideal-square radical over the rationals
@@ -22,6 +24,8 @@ The integral units of the rationals are ±1, so these two representatives
 exhaust the ideal-square radical. This identifies its unique possible
 obstruction coordinate without assuming a dimension bound or a comparison.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

@@ -4,19 +4,27 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Core
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.Continuity
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
-import Mathlib.Algebra.BigOperators.Finprod
+module
+
+public import Nyll.ClassFieldTheory.Algebra.FinprodFibers
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.Continuity
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # The finite-place product of local Artin homomorphisms
@@ -29,11 +37,15 @@ Galois group.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 
 noncomputable section
+
+universe u v w x
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
@@ -41,53 +53,15 @@ namespace Reciprocity
 open AlgebraicNumberTheory.Valuations
 open Function
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [IsAbelianGalois K L]
 
-/-- A finitely supported product may be regrouped over the fibers of an
-arbitrary indexing map. -/
-theorem finprod_fibers_eq_sigma
-    {α β G : Type*} [CommMonoid G]
-    (g : α → β) (f : α → G)
-    (hf : HasFiniteMulSupport f) :
-    (∏ᶠ b : β,
-        ∏ᶠ x : {x : α // g x = b}, f x.1) =
-      ∏ᶠ x : α, f x := by
-  classical
-  let s := hf.toFinset
-  have hFiber (b : β) :
-      (∏ᶠ x : {x : α // g x = b}, f x.1) =
-        ∏ x ∈ s with g x = b, f x := by
-    rw [finprod_eq_prod_of_mulSupport_subset
-      (fun x : {x : α // g x = b} => f x.1)
-      (s := s.subtype fun x => g x = b)]
-    · simp only [Finset.prod_subtype_eq_prod_filter]
-    · intro x hx
-      change x ∈ s.subtype (fun x => g x = b)
-      change f x.1 ≠ 1 at hx
-      exact Finset.mem_subtype.mpr (hf.mem_toFinset.2 hx)
-  calc
-    (∏ᶠ b : β,
-        ∏ᶠ x : {x : α // g x = b}, f x.1) =
-        ∏ᶠ b : β,
-          ∏ x ∈ s with g x = b, f x :=
-      finprod_congr hFiber
-    _ = ∏ x ∈ s, f x := by
-      rw [finprod_eq_prod_of_mulSupport_subset _
-        (s.mulSupport_of_fiberwise_prod_subset_image f g)]
-      exact
-        Finset.prod_fiberwise_of_maps_to
-          (t := s.image g)
-          (fun x hx => Finset.mem_image_of_mem g hx) f
-    _ = ∏ᶠ x : α, f x :=
-      (finprod_eq_prod f hf).symm
-
 /-- A local norm of an integral unit at a finite place is again an
 integral unit at the place below. -/
 theorem normUnits_mem_finitePlaceIntegerUnits
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M] [Algebra K M]
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
@@ -99,7 +73,7 @@ theorem normUnits_mem_finitePlaceIntegerUnits
       x ∈
         ((finitePlaceExtensionCentre
           (K := K) (L := M) v w).adicCompletionIntegers M).units) :
-    letI : Algebra (v.adicCompletion K)
+    let : Algebra (v.adicCompletion K)
         ((finitePlaceExtensionCentre
           (K := K) (L := M) v w).adicCompletion M) :=
       (finitePlaceAdicCompletionMap K M v
@@ -111,15 +85,12 @@ theorem normUnits_mem_finitePlaceIntegerUnits
         ((finitePlaceExtensionCentre
           (K := K) (L := M) v w).adicCompletion M) x ∈
       (v.adicCompletionIntegers K).units := by
+  intro completionAlgebra
   let W : {W : HeightOneSpectrum (𝓞 M) //
       _root_.finitePlaceBelow (K := K) W = v} :=
     ⟨finitePlaceExtensionCentre (K := K) (L := M) v w,
       finitePlaceBelow_finitePlaceExtensionCentre
         (K := K) (L := M) v w⟩
-  let : Algebra (v.adicCompletion K)
-      ((finitePlaceExtensionCentre
-        (K := K) (L := M) v w).adicCompletion M) :=
-    (finitePlaceAdicCompletionMap K M v W).toAlgebra
   let z : (W.1.adicCompletionIntegers M).units := ⟨x, hx⟩
   simpa only [W, z, Subgroup.coe_subtype] using
     IdeleGroup.finitePlace_normUnits_mem_integerUnits
@@ -362,10 +333,10 @@ theorem finitePlaceGlobalArtinMonoidHom_continuous :
 base finite places, of the products of the corresponding local norm
 factors at all finite places upstairs. -/
 theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod_fibers
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M] [Algebra K M]
     (a : IdeleGroup M) :
-    letI : ∀ v : HeightOneSpectrum (𝓞 K),
+    let : ∀ v : HeightOneSpectrum (𝓞 K),
         Fintype {W : HeightOneSpectrum (𝓞 M) //
           finitePlaceBelow (K := K) W = v} :=
       fun v => by
@@ -379,7 +350,7 @@ theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod_fibers
           Fintype.ofEquiv (AbsoluteValueExtension vK M)
             (finitePlaceExtensionEquivAbove
               (K := K) (L := M) v)
-    letI : ∀ v : HeightOneSpectrum (𝓞 K),
+    let : ∀ v : HeightOneSpectrum (𝓞 K),
         ∀ W : {W : HeightOneSpectrum (𝓞 M) //
           finitePlaceBelow (K := K) W = v},
           Algebra (v.adicCompletion K)
@@ -399,29 +370,8 @@ theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod_fibers
               (v.adicCompletion K)
               (W.1.adicCompletion M)
               (IdeleGroup.finiteComponent W.1 a)) := by
+  intro sharedOwner1 sharedOwner2
   classical
-  let : ∀ v : HeightOneSpectrum (𝓞 K),
-      Fintype {W : HeightOneSpectrum (𝓞 M) //
-        finitePlaceBelow (K := K) W = v} :=
-    fun v => by
-      let vK := HeightOneSpectrum.adicAbv K v
-      let hvK : vK.IsNontrivial :=
-        RayClass.adicAbv_isNontrivial v
-      letI :=
-        completionTensorDecomposition_extensionFintype
-          (K := K) (L := M) vK hvK
-      exact
-        Fintype.ofEquiv (AbsoluteValueExtension vK M)
-          (finitePlaceExtensionEquivAbove
-            (K := K) (L := M) v)
-  let : ∀ v : HeightOneSpectrum (𝓞 K),
-      ∀ W : {W : HeightOneSpectrum (𝓞 M) //
-        finitePlaceBelow (K := K) W = v},
-        Algebra (v.adicCompletion K)
-          (W.1.adicCompletion M) :=
-    fun v W =>
-      (finitePlaceAdicCompletionMap
-        K M v W).toAlgebra
   rw [finitePlaceGlobalArtinMonoidHom]
   apply finprod_congr
   intro v
@@ -429,7 +379,7 @@ theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod_fibers
   rw [map_prod]
 
 private theorem finitePlaceNormArtinFactor_eq_one_of_component_unit_of_unramified
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M] [Algebra K M]
     (a : IdeleGroup M)
     (W : HeightOneSpectrum (𝓞 M))
@@ -447,7 +397,7 @@ private theorem finitePlaceNormArtinFactor_eq_one_of_component_unit_of_unramifie
           (v.adicCompletion K)
           (W.adicCompletion M)
           (IdeleGroup.finiteComponent W a)) = 1 := by
-  let v := finitePlaceBelow (K := K) W
+  intro v
   let Wv :
       {Q : HeightOneSpectrum (𝓞 M) //
         finitePlaceBelow (K := K) Q = v} :=
@@ -476,7 +426,7 @@ private theorem finitePlaceNormArtinFactor_eq_one_of_component_unit_of_unramifie
 /-- The local Artin factors obtained after an idele norm have finite
 multiplicative support. -/
 theorem finitePlaceNormArtinFactors_hasFiniteMulSupport
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M] [Algebra K M]
     (a : IdeleGroup M) :
     HasFiniteMulSupport
@@ -552,10 +502,10 @@ theorem finitePlaceNormArtinFactors_hasFiniteMulSupport
 the actual finite places upstairs.  This is the flattened finite-place
 form of the local norm--restriction identity used in the global square. -/
 theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M] [Algebra K M]
     (a : IdeleGroup M) :
-    letI : ∀ W : HeightOneSpectrum (𝓞 M),
+    let : ∀ W : HeightOneSpectrum (𝓞 M),
         Algebra
           ((finitePlaceBelow
             (K := K) W).adicCompletion K)
@@ -577,17 +527,8 @@ theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod
               (K := K) W).adicCompletion K)
             (W.adicCompletion M)
             (IdeleGroup.finiteComponent W a)) := by
+  intro sharedOwner1
   classical
-  let : ∀ W : HeightOneSpectrum (𝓞 M),
-      Algebra
-        ((finitePlaceBelow
-          (K := K) W).adicCompletion K)
-        (W.adicCompletion M) :=
-    fun W =>
-      (finitePlaceAdicCompletionMap
-        K M
-        (finitePlaceBelow (K := K) W)
-        ⟨W, rfl⟩).toAlgebra
   let : ∀ v : HeightOneSpectrum (𝓞 K),
       Fintype {W : HeightOneSpectrum (𝓞 M) //
         finitePlaceBelow (K := K) W = v} :=
@@ -674,7 +615,7 @@ theorem finitePlaceGlobalArtinMonoidHom_norm_eq_finprod
 Restriction of the upper finite Artin product is the lower finite Artin product
 after the ordinary idele norm. -/
 theorem finitePlaceGlobalArtinMonoidHom_norm_restriction
-    {K' L' : Type}
+    {K' : Type w} {L' : Type x}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [Algebra K K'] [Algebra K' L'] [Algebra K L']

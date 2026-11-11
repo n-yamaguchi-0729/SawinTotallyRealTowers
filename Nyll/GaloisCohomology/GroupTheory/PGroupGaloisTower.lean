@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Order.GroupWithZero.Basic
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.PGroup
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.GroupTheory.Subgroup.Center
-import Mathlib.GroupTheory.Sylow
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.Free
+module
+
+public import Mathlib.Algebra.Order.GroupWithZero.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.GroupTheory.Subgroup.Center
+public import Mathlib.GroupTheory.Sylow
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # A central prime-degree step in a finite Galois p-extension
@@ -21,6 +23,8 @@ field gives a smaller Galois p-extension of the base, with a cyclic
 prime-degree extension on top. This constructs the intermediate field
 needed for induction without imposing any cohomological hypotheses.
 -/
+
+@[expose] public section
 
 open Module
 

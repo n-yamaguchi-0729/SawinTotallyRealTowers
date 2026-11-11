@@ -4,26 +4,29 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.NegativeThreeCharacter
-import Nyll.SawinTotallyRealTowers.InfiniteArtinCompatibility
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportGlobalReciprocity
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Analysis.Normed.Ring.WithAbs
-import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
-import Mathlib.RingTheory.DedekindDomain.AdicValuation
-import Mathlib.Topology.Algebra.GroupCompletion
-import Mathlib.Topology.Algebra.UniformRing
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.NegativeThreeCharacter
+public import Nyll.SawinTotallyRealTowers.InfiniteArtinCompatibility
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportGlobalReciprocity
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Analysis.Normed.Ring.WithAbs
+public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation
+public import Mathlib.Topology.Algebra.GroupCompletion
+public import Mathlib.Topology.Algebra.UniformRing
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 
 /-!
 # The local value at three of the negative-three character
@@ -33,6 +36,8 @@ its local value at three with its nontrivial real sign. All other finite
 components disappear by the proved unramifiedness of the actual quadratic
 character. No Hilbert-symbol or norm-pairing comparison is assumed.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

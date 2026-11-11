@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Abelianization.Defs
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Mathlib.GroupTheory.Abelianization.Defs
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
+public import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # The actual abelian local Artin map
@@ -18,6 +20,8 @@ the native topologies.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

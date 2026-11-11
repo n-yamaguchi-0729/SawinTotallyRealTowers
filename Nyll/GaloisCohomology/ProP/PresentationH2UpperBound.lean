@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.PresentationH2KernelCharacter
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Continuous.Basic
-import Mathlib.RepresentationTheory.Continuous.TopRep
-import Mathlib.Topology.ContinuousMap.Algebra
-import Mathlib.Topology.ContinuousMap.Basic
-import Mathlib.Topology.ContinuousMap.Defs
+module
+
+public import Nyll.GaloisCohomology.ProP.PresentationH2KernelCharacter
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Continuous.Basic
+public import Mathlib.RepresentationTheory.Continuous.TopRep
+public import Mathlib.Topology.ContinuousMap.Algebra
+public import Mathlib.Topology.ContinuousMap.Basic
+public import Mathlib.Topology.ContinuousMap.Defs
 
 /-!
 # The presentation upper bound for degree-two continuous cohomology
@@ -19,6 +21,8 @@ If the extracted kernel character vanishes, the normalized free-source primitive
 the presentation quotient.  Its homogeneous lift is a target primitive, proving injectivity into
 the invariant kernel character space and hence the displayed relation-cardinality bound.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

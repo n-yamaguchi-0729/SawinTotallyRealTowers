@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.StageMap
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.StageMap
 
 /-!
 # Completed Group Algebra / All Finite Functoriality / Map
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.StageMap
 This module lifts the functorial finite-stage maps to the named all-finite completed carrier and
 proves their algebraic, topological, and dense-subalgebra characterizations.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

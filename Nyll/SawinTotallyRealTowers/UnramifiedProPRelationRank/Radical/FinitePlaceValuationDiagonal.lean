@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
-import Mathlib.GroupTheory.ArchimedeanDensely
-import Mathlib.RingTheory.Valuation.Discrete.RankOne
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
+public import Mathlib.GroupTheory.ArchimedeanDensely
+public import Mathlib.RingTheory.Valuation.Discrete.RankOne
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # Compatibility of finite-place normalized valuations with the diagonal
@@ -21,6 +26,8 @@ compatibility of the distinguished valuation is introduced inside a proof; no ne
 instance or additional arithmetic hypothesis is needed.
 -/
 
+@[expose] public section
+
 open scoped NumberField ValuativeRel WithZero
 
 noncomputable section
@@ -33,7 +40,8 @@ private theorem orderMonoidIso_withZeroInt_apply
     WithZero.unitsWithZeroEquiv.symm.trans
       ((Units.mapEquiv e.toMulEquiv).trans WithZero.unitsWithZeroEquiv)
   have heu (a : Multiplicative ℤ) : (eu a : ℤᵐ⁰) = e (a : ℤᵐ⁰) := by
-    simp [eu]
+    exact WithZero.coe_unitsWithZeroEquiv_eq_units_val
+      ((Units.mapEquiv e.toMulEquiv) (WithZero.unitsWithZeroEquiv.symm a))
   let ez : ℤ ≃+o ℤ :=
     { __ := eu.toAdditive
       map_le_map_iff' := by

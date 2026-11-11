@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.AdicCompletion.Functoriality
+module
+
+public import Mathlib.RingTheory.AdicCompletion.Functoriality
 
 /-!
 # Adic completeness and positive powers of an ideal
@@ -12,6 +14,8 @@ import Mathlib.RingTheory.AdicCompletion.Functoriality
 This file contains small generic source lemmas used to pass from completeness
 for a positive power `I ^ n` back to completeness for `I`.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

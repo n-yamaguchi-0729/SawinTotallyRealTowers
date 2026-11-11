@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.EverywhereUnramifiedSupportedIdeleH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.EverywhereUnramifiedSupportedIdeleH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
 
 /-!
 # Kummer H² dies in field units at an unramified p-extension
@@ -18,6 +20,8 @@ construction. Injectivity of field-unit H² into idele H² then supplies an
 actual field-unit primitive. Neither an idele primitive nor a comparison
 of coefficient maps is an additional hypothesis.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField

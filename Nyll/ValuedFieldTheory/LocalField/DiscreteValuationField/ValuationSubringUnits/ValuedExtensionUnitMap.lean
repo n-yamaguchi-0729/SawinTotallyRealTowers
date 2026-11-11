@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuationSubringUnitMap
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNormBase
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.ValuationSubringUnitMap
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNormBase
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 
 /-!
 # Valuation-subring units in complete-DVF extensions
@@ -17,6 +19,8 @@ index.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

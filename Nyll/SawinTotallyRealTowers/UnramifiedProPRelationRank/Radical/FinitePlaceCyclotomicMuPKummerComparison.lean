@@ -4,15 +4,25 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceMuPH1Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Finite-place comparison of natural and intrinsic-local Kummer H¹
@@ -22,6 +32,8 @@ finite-place decomposition group with intrinsic Kummer theory over the adic
 completion.  The coefficient map uses the actual algebraic-localization
 embedding selected by the decomposition--completion equivalence.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology
@@ -124,13 +136,14 @@ private theorem fieldAlgebra_isTorsionFree_forCyclotomicComparison
     · exact Or.inl ((algebraMap K L).injective (by simpa using hr))
     · exact Or.inr hx
 
-private noncomputable def absoluteGaloisSemilinearCongrContinuousMonoidHom
+/-- Continuous conjugation of absolute Galois groups through a base-field equivalence. -/
+noncomputable def absoluteGaloisSemilinearCongrContinuousMonoidHom
     (K K' : Type) [Field K] [Field K'] (c : K ≃+* K') :
     Field.absoluteGaloisGroup K →ₜ* Field.absoluteGaloisGroup K' := by
-  letI : Module.IsTorsionFree K (AlgebraicClosure K) :=
-    fieldAlgebra_isTorsionFree_forCyclotomicComparison
-  letI : Module.IsTorsionFree K' (AlgebraicClosure K') :=
-    fieldAlgebra_isTorsionFree_forCyclotomicComparison
+  letI : Module.IsTorsionFree K (AlgebraicClosure K) := by
+    exact fieldAlgebra_isTorsionFree_forCyclotomicComparison
+  letI : Module.IsTorsionFree K' (AlgebraicClosure K') := by
+    exact fieldAlgebra_isTorsionFree_forCyclotomicComparison
   let e : AlgebraicClosure K ≃+* AlgebraicClosure K' :=
     IsAlgClosure.equivOfEquiv _ _ c
   let conjugate (sigma : Gal(AlgebraicClosure K / K)) :
@@ -190,23 +203,28 @@ noncomputable def finitePlaceDecompositionToAdicAbsoluteGaloisGroup
         (finitePlaceDecompositionGroupContinuousMulEquivAbsoluteGaloisGroup
           K v).continuous }
 
-private structure FinitePlaceAlgebraicClosureEmbeddingData
+/-- A global-to-local algebraic-closure embedding with its proved compatibilities. -/
+structure FinitePlaceAlgebraicClosureEmbeddingData
     (K : Type) [Field K] [NumberField K]
     (v : HeightOneSpectrum (NumberField.RingOfIntegers K)) where
+  /-- The selected global-to-local field embedding. -/
   embedding : AlgebraicClosure K →+* AlgebraicClosure (v.adicCompletion K)
+  /-- Equivariance for the original decomposition-group action. -/
   action : ∀ (sigma : finitePlaceAbsoluteDecompositionGroup K v)
       (x : AlgebraicClosure K),
     absoluteGaloisGroupContinuousMulEquiv
         (v.adicCompletion K)
         (finitePlaceDecompositionToAdicAbsoluteGaloisGroup K v sigma)
         (embedding x) = embedding (sigma.1 x)
+  /-- Compatibility with the original number-field inclusion. -/
   algebraMap : ∀ x : K,
     embedding (algebraMap K (AlgebraicClosure K) x) =
       algebraMap (v.adicCompletion K)
         (AlgebraicClosure (v.adicCompletion K))
         (algebraMap K (v.adicCompletion K) x)
 
-private noncomputable def finitePlaceAlgebraicClosureEmbeddingData
+/-- The concrete algebraic-localization construction of the compatible closure embedding. -/
+noncomputable def finitePlaceAlgebraicClosureEmbeddingData
     (K : Type) [Field K] [NumberField K]
     (v : HeightOneSpectrum (NumberField.RingOfIntegers K)) :
     FinitePlaceAlgebraicClosureEmbeddingData K v := by
@@ -217,11 +235,11 @@ private noncomputable def finitePlaceAlgebraicClosureEmbeddingData
   letI := AbsoluteValue.completionAlgebra vK w.1 w.2
   let c := relativeFinitePlaceCompletionAlgEquiv v
   letI : Module.IsTorsionFree vK.Completion
-      (AlgebraicClosure vK.Completion) :=
-    fieldAlgebra_isTorsionFree_forCyclotomicComparison
+      (AlgebraicClosure vK.Completion) := by
+    exact fieldAlgebra_isTorsionFree_forCyclotomicComparison
   letI : Module.IsTorsionFree (v.adicCompletion K)
-      (AlgebraicClosure (v.adicCompletion K)) :=
-    fieldAlgebra_isTorsionFree_forCyclotomicComparison
+      (AlgebraicClosure (v.adicCompletion K)) := by
+    exact fieldAlgebra_isTorsionFree_forCyclotomicComparison
   let e0 := absoluteValueAlgebraicLocalizationAlgEquivAlgebraicClosure vK
     (RayClass.adicAbv_isNontrivial v)
     (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv K v) w
@@ -291,28 +309,6 @@ theorem finitePlaceAlgebraicClosureEmbedding_algebraMap
         (AlgebraicClosure (v.adicCompletion K))
         (algebraMap K (v.adicCompletion K) x) := by
   exact (finitePlaceAlgebraicClosureEmbeddingData K v).algebraMap x
-
-private theorem rootQuotient_eq_of_same_pow_of_primitiveRoots_forComparison
-    {K L : Type} [Field K] [Field L] [Algebra K L]
-    (n : ℕ+) (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
-    (a : Kˣ) (u u' : Lˣ)
-    (hu : u ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a)
-    (hu' : u' ^ (n : ℕ) = Units.map (algebraMap K L).toMonoidHom a)
-    (sigma : Gal(L/K)) :
-    rootQuotient (K := K) (L := L) u sigma =
-      rootQuotient (K := K) (L := L) u' sigma := by
-  let D := chosenFiniteKummerRadicalDatum (K := K) (L := L) n
-  let delta : D.carrier := ⟨a, u, hu⟩
-  let hfixed :=
-    nthRootsOfUnity_fixed (K := K) (L := L) n
-      (nthRootsOfUnityInBase_of_primitiveRoots
-        (K := K) (L := L) n hmu)
-  calc
-    rootQuotient (K := K) (L := L) u sigma =
-        D.rootCharacter delta hfixed sigma :=
-      D.rootCharacter_eq_of_same_pow hfixed delta hu sigma
-    _ = rootQuotient (K := K) (L := L) u' sigma :=
-      (D.rootCharacter_eq_of_same_pow hfixed delta hu' sigma).symm
 
 /-- Roots of unity transported through the selected global-to-adic
 algebraic-closure embedding. -/
@@ -535,8 +531,8 @@ theorem finitePlaceAbsoluteMuPAdicCoordinate_rootCocycle
       rootQuotient (K := C) (L := AlgebraicClosure C) betaC tau =
         rootQuotient (K := C) (L := AlgebraicClosure C)
           (absoluteKummerChosenRoot C p aC) tau :=
-    rootQuotient_eq_of_same_pow_of_primitiveRoots_forComparison
-      (p.toPNat (Fact.out : p.Prime).pos) hmu aC betaC
+    KummerTheory.rootQuotient_eq_of_same_pow_of_primitiveRoots
+      C (L := AlgebraicClosure C) (p.toPNat (Fact.out : p.Prime).pos) hmu aC betaC
         (absoluteKummerChosenRoot C p aC) hbetaCpow
         (absoluteKummerChosenRoot_pow C p aC) tau
   have hcocycle :

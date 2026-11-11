@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Presentation.Basic
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.NaturalTopology
+module
+
+public import Nyll.ProCGroups.ProP.Presentation.Basic
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.NaturalTopology
 
 /-!
 # Completed Fox derivatives of finite pro-p presentations
@@ -15,6 +17,8 @@ the concrete quotient map carried by a finite pro-`p` presentation.  The
 formation and closed-target hypotheses are derived from the presentation; they
 are not additional assumptions.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

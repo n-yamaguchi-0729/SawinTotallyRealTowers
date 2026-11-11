@@ -4,11 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHenselianValuation
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport
+module
+
+public import
+  Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHenselianValuation
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationTransport
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
+public import Nyll.ValuedFieldTheory.Valuation.UniqueRing
 
 /-!
 # Canonical local data on finite fixed fields
@@ -21,6 +27,8 @@ canonical spectral extension of the topology on the original local field.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -29,7 +37,8 @@ open scoped NNReal Pointwise ValuativeRel
 open ClassFormation LocalFieldTheory RamificationTheory CyclicCohomology
 open RamificationTheory.HilbertRamification.ValuationSubring
 
-private abbrev finiteFixedField
+/-- The concrete fixed field of a finite abstract local extension. -/
+abbrev finiteFixedField
     (K : Type) [Field K]
     (H : FiniteAbstractField (Gal(SeparableClosure K/K))) :
     Type :=
@@ -82,6 +91,7 @@ private theorem semilinearConjugate_commutes
     rw [e.apply_symm_apply, he, tau.apply_symm_apply]
   rw [hpre, sigma.commutes, he, tau.apply_symm_apply]
 
+attribute [local instance] fixedFieldNormResidueModule in
 /-- On a finite fixed field, the normalized valuation induced by the local
 class formation is the ordinary normalized local-field valuation. -/
 theorem localHenselianValuation_valuationAt_abstractFixedField
@@ -170,14 +180,15 @@ theorem localHenselianValuation_valuationAt_abstractFixedField
       f • Int.castRingHom ZHat
         (IsNonarchimedeanLocalField.valuationMap F
           (Additive.ofMul x))
-    have hnormInt :=
-      @v_normUnits_eq_residue_finrank_mul_of_isSeparable
-        K F _ _ _ _ _ _ _ _ _ _ _ _ hIntegralClosure x
-    change IsNonarchimedeanLocalField.valuationMap K
+    have hnormInt : IsNonarchimedeanLocalField.valuationMap K
         (Additive.ofMul (normUnits K F x)) =
       (f : Int) *
         IsNonarchimedeanLocalField.valuationMap F
-          (Additive.ofMul x) at hnormInt
+          (Additive.ofMul x) := by
+      simpa only [f, fixedFieldNormResidueModule,
+        IsNonarchimedeanLocalField.valuationMap_apply] using
+        (@v_normUnits_eq_residue_finrank_mul_of_isSeparable
+          K F _ _ _ _ _ _ _ _ _ _ _ _ hIntegralClosure x)
     rw [hnormInt, ← map_nsmul]
     rfl
   have hnorm' :
@@ -218,24 +229,17 @@ theorem localSeparableValuationSubring_eq_comap_finiteExtensionEquiv
     [Valuation.HasExtension
       (ValuativeRel.valuation K) (ValuativeRel.valuation F)]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
-    letI : Algebra.IsSeparable F (SeparableClosure K) :=
+    let : Algebra.IsSeparable F (SeparableClosure K) :=
       Algebra.isSeparable_tower_top_of_isSeparable
         K F (SeparableClosure K)
-    letI : IsSepClosure F (SeparableClosure K) :=
+    let : IsSepClosure F (SeparableClosure K) :=
       ⟨inferInstance, inferInstance⟩
     ∀ e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       localSeparableValuationSubring F =
         (localSeparableValuationSubring K).comap e.toRingHom := by
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  let : Algebra.IsSeparable F (SeparableClosure K) :=
-    Algebra.isSeparable_tower_top_of_isSeparable
-      K F (SeparableClosure K)
-  let : IsSepClosure F (SeparableClosure K) :=
-    ⟨inferInstance, inferInstance⟩
-  intro e
+  intro sharedOwner1 sharedOwner2 sharedOwner3 e
   let A := localSeparableValuationSubring K
   let B := A.comap e.toRingHom
   have hcomap :
@@ -270,23 +274,16 @@ theorem localSeparableDecompositionGroup_eq_top_finiteExtensionEquiv
     [Valuation.HasExtension
       (ValuativeRel.valuation K) (ValuativeRel.valuation F)]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
-    letI : Algebra.IsSeparable F (SeparableClosure K) :=
+    let : Algebra.IsSeparable F (SeparableClosure K) :=
       Algebra.isSeparable_tower_top_of_isSeparable
         K F (SeparableClosure K)
-    letI : IsSepClosure F (SeparableClosure K) :=
+    let : IsSepClosure F (SeparableClosure K) :=
       ⟨inferInstance, inferInstance⟩
     ∀ _e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       decompositionGroup F (localSeparableValuationSubring K) = ⊤ := by
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  let : Algebra.IsSeparable F (SeparableClosure K) :=
-    Algebra.isSeparable_tower_top_of_isSeparable
-      K F (SeparableClosure K)
-  let : IsSepClosure F (SeparableClosure K) :=
-    ⟨inferInstance, inferInstance⟩
-  intro e
+  intro sharedOwner1 sharedOwner2 sharedOwner3 e
   let A := localSeparableValuationSubring K
   let AF := localSeparableValuationSubring F
   have hAF :
@@ -325,8 +322,9 @@ theorem localSeparableDecompositionGroup_eq_top_finiteExtensionEquiv
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem] at hx
   simpa [sigmaF, AlgEquiv.autCongr_apply] using hx.to_iff
 
+/-- A finite type structure on the decomposition residue field of a finite extension. -/
 @[implicit_reducible]
-private noncomputable def finiteExtensionDecompositionResidueFintype
+noncomputable def finiteExtensionDecompositionResidueFintype
     (K F : Type)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -336,24 +334,17 @@ private noncomputable def finiteExtensionDecompositionResidueFintype
     [Valuation.HasExtension
       (ValuativeRel.valuation K) (ValuativeRel.valuation F)]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
-    letI : Algebra.IsSeparable F (SeparableClosure K) :=
+    let : Algebra.IsSeparable F (SeparableClosure K) :=
       Algebra.isSeparable_tower_top_of_isSeparable
         K F (SeparableClosure K)
-    letI : IsSepClosure F (SeparableClosure K) :=
+    let : IsSepClosure F (SeparableClosure K) :=
       ⟨inferInstance, inferInstance⟩
     ∀ _e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       Fintype (decompositionResidueField F
         (localSeparableValuationSubring K)) := by
-  letI : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  letI : Algebra.IsSeparable F (SeparableClosure K) :=
-    Algebra.isSeparable_tower_top_of_isSeparable
-      K F (SeparableClosure K)
-  letI : IsSepClosure F (SeparableClosure K) :=
-    ⟨inferInstance, inferInstance⟩
-  intro _e
+  intro sharedOwner1 sharedOwner2 sharedOwner3 _e
   let A := localSeparableValuationSubring K
   let C := (ValuativeRel.valuation F).valuationSubring
   have hcomap :
@@ -389,12 +380,12 @@ theorem
     [Valuation.HasExtension
       (ValuativeRel.valuation K) (ValuativeRel.valuation F)]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
-    letI : Algebra.IsSeparable F (SeparableClosure K) :=
+    let : Algebra.IsSeparable F (SeparableClosure K) :=
       Algebra.isSeparable_tower_top_of_isSeparable
         K F (SeparableClosure K)
-    letI : IsSepClosure F (SeparableClosure K) :=
+    let : IsSepClosure F (SeparableClosure K) :=
       ⟨inferInstance, inferInstance⟩
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (sigma : Gal(SeparableClosure F / F)),
@@ -412,14 +403,7 @@ theorem
             (localSeparableDecompositionGroup_eq_top_finiteExtensionEquiv
               K F i e)
             (AlgEquiv.autCongr e sigma)) := by
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  let : Algebra.IsSeparable F (SeparableClosure K) :=
-    Algebra.isSeparable_tower_top_of_isSeparable
-      K F (SeparableClosure K)
-  let : IsSepClosure F (SeparableClosure K) :=
-    ⟨inferInstance, inferInstance⟩
-  intro e sigma
+  intro sharedOwner1 sharedOwner2 sharedOwner3 e sigma
   let : Fintype (decompositionResidueField F
       (localSeparableValuationSubring K)) :=
     finiteExtensionDecompositionResidueFintype K F i e
@@ -1119,14 +1103,14 @@ theorem
     [Valuation.HasExtension
       (ValuativeRel.valuation K) (ValuativeRel.valuation F)]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (sigma : Gal(SeparableClosure F / F)),
       let H₀ :=
         closedFixingSubgroup K (SeparableClosure K)
           (AlgHom.fieldRange i)
-      letI hHabsolute : Finite
+      let hHabsolute : Finite
           ((baseField
             (Gal(SeparableClosure K / K))).toSubgroup ⧸
             extensionSubgroup
@@ -1210,56 +1194,7 @@ theorem
           ((abstractSubgroupEquivGaloisGroup
             K (SeparableClosure K) H₀).symm
               rho) := by
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e sigma
-  dsimp only
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let hHabsolute : Finite
-      ((baseField
-        (Gal(SeparableClosure K / K))).toSubgroup ⧸
-        extensionSubgroup
-          (baseField (Gal(SeparableClosure K / K)))
-          H₀ (le_baseField H₀)) := by
-    let : FiniteDimensional K (AlgHom.fieldRange i) :=
-      (AlgEquiv.ofInjectiveField i).toLinearEquiv.finiteDimensional
-    let G := Gal(SeparableClosure K / K)
-    let Bases := { B : ClosedSubgroup G //
-      H₀.toSubgroup ≤ B.toSubgroup }
-    let Bfix : Bases :=
-      ⟨closedFixingSubgroup K (SeparableClosure K)
-          (⊥ : IntermediateField K (SeparableClosure K)),
-        fixingSubgroupLeBase K (SeparableClosure K)
-          (AlgHom.fieldRange i)⟩
-    let Bbase : Bases :=
-      ⟨baseField G, le_baseField H₀⟩
-    let Q : Bases → Type := fun B =>
-      B.1.toSubgroup ⧸ extensionSubgroup B.1 H₀ B.2
-    have hBase : Bfix = Bbase := by
-      apply Subtype.ext
-      exact closedFixingSubgroup_bot_eq_baseField
-        K (SeparableClosure K)
-    let : Finite (Q Bfix) := by
-      change Finite
-        ((closedFixingSubgroup K (SeparableClosure K)
-            (⊥ : IntermediateField K (SeparableClosure K))).toSubgroup ⧸
-          extensionSubgroup
-            (closedFixingSubgroup K (SeparableClosure K)
-              (⊥ : IntermediateField K (SeparableClosure K)))
-            H₀
-            (fixingSubgroupLeBase K (SeparableClosure K)
-              (AlgHom.fieldRange i)))
-      infer_instance
-    change Finite (Q Bbase)
-    exact Finite.of_equiv (Q Bfix)
-      (Equiv.cast (congrArg Q hBase))
-  let H : FiniteAbstractField
-      (Gal(SeparableClosure K / K)) :=
-    ⟨H₀, hHabsolute⟩
-  let F₀ :=
-    abstractFixedField K (SeparableClosure K) H₀
+  intro sharedOwner1 e sigma H₀ hHabsolute H F₀ hfixed phi rho
   let : FiniteDimensional K F₀ :=
     abstractFixedField_finiteDimensional
       K (SeparableClosure K) H₀ hHabsolute
@@ -1279,14 +1214,6 @@ theorem
   let e₀ : SeparableClosure F₀ ≃ₐ[F₀] SeparableClosure K :=
     IsSepClosure.equiv F₀
       (SeparableClosure F₀) (SeparableClosure K)
-  have hfixed :
-      F₀ = AlgHom.fieldRange i :=
-    InfiniteGalois.fixedField_fixingSubgroup
-      (AlgHom.fieldRange i)
-  let phiAlg : F ≃ₐ[K] F₀ :=
-    (i.equivFieldRange).trans
-      (IntermediateField.equivOfEq hfixed.symm)
-  let phi : F ≃+* F₀ := phiAlg.toRingEquiv
   let c : SeparableClosure F ≃+* SeparableClosure F₀ :=
     e.toRingEquiv.trans e₀.symm.toRingEquiv
   have hc (x : F) :
@@ -1330,33 +1257,6 @@ theorem
           apply c.injective
           rw [c.apply_symm_apply, hc, phi.apply_symm_apply]
         rw [hc', sigma.commutes, hc, phi.apply_symm_apply] }
-  let rho : Gal(SeparableClosure K / F₀) :=
-    { e.symm.toRingEquiv.trans
-        (sigma.toRingEquiv.trans e.toRingEquiv) with
-      commutes' := fun x => by
-        change e (sigma (e.symm
-          (algebraMap F₀ (SeparableClosure K) x))) =
-            algebraMap F₀ (SeparableClosure K) x
-        have hpre :
-            e.symm
-                (algebraMap F₀ (SeparableClosure K) x) =
-              algebraMap F (SeparableClosure F) (phi.symm x) := by
-          apply e.injective
-          rw [e.apply_symm_apply, e.commutes]
-          change (x : SeparableClosure K) =
-            i (phi.symm x)
-          rw [← show
-            ((phi (phi.symm x) : F₀) :
-                SeparableClosure K) =
-              i (phi.symm x) by rfl,
-            phi.apply_symm_apply]
-        rw [hpre, sigma.commutes, e.commutes]
-        change i (phi.symm x) = (x : SeparableClosure K)
-        rw [← show
-          ((phi (phi.symm x) : F₀) :
-              SeparableClosure K) =
-            i (phi.symm x) by rfl,
-          phi.apply_symm_apply] }
   have hrho :
       AlgEquiv.autCongr e₀ sigma₀ = rho := by
     apply AlgEquiv.ext

@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleArtin
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceCyclotomicFrobeniusLift
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PadicCyclicClosure
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleArtin
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceCyclotomicFrobeniusLift
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PadicCyclicClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedExtensionQuotient
+public import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 
 /-!
 # Separable-closure p-adic lifts for local-global Artin compatibility
@@ -17,6 +23,8 @@ the positive p-adic cyclotomic lifts used in the local-global comparison.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open AlgebraicNumberTheory IsDedekindDomain NumberField
@@ -29,8 +37,10 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
+universe u v w x
+
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
@@ -166,8 +176,7 @@ noncomputable def automorphismCyclicFixedPlace
     (σ : Gal(L/K)) :
     let M := automorphismCyclicFixedField σ
     HeightOneSpectrum (𝓞 M) := by
-  dsimp only
-  let M := automorphismCyclicFixedField σ
+  intro M
   exact
     finitePlaceExtensionCentre
       (K := K) (L := M) v
@@ -206,8 +215,7 @@ theorem finitePlaceBelow_chosenExtensionCentre_eq_automorphismCyclicFixedPlace
           (K := K) (L := L) v
           (chosenFinitePlaceExtension (L := L) v)) =
       automorphismCyclicFixedPlace v σ := by
-  dsimp only
-  let M := automorphismCyclicFixedField σ
+  intro M
   let w :=
     chosenFinitePlaceExtension (L := L) v
   let wM :=
@@ -237,8 +245,7 @@ noncomputable def automorphismCyclicFixedTopExtension
     AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv M
         (automorphismCyclicFixedPlace v σ)) L := by
-  dsimp only
-  let M := automorphismCyclicFixedField σ
+  intro M
   let W :=
     automorphismCyclicFixedPlace v σ
   let V :
@@ -267,8 +274,7 @@ theorem automorphismCyclicFixedTopExtension_centre
       finitePlaceExtensionCentre
         (K := K) (L := L) v
         (chosenFinitePlaceExtension (L := L) v) := by
-  dsimp only
-  let M := automorphismCyclicFixedField σ
+  intro M
   let W :=
     automorphismCyclicFixedPlace v σ
   let V :
@@ -302,9 +308,7 @@ theorem automorphismOverCyclicFixedField_mem_chosenFinitePlaceDecompositionGroup
       absoluteValueDecompositionGroup M
         (chosenFinitePlaceExtension
           (L := L) (automorphismCyclicFixedPlace v σ.1)).1 := by
-  dsimp only
-  let M :=
-    automorphismCyclicFixedField σ.1
+  intro M
   let W :=
     automorphismCyclicFixedPlace v σ.1
   let wK :=
@@ -388,11 +392,11 @@ The codomain is transported along the proved equality between the
 restricted ambient absolute value and the supplied exact extension. -/
 noncomputable def finitePlaceSeparableClosureDecompositionRestriction
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     let wL :=
       chosenFinitePlaceExtension (L := L) v
@@ -401,27 +405,12 @@ noncomputable def finitePlaceSeparableClosureDecompositionRestriction
         K L v wL
     absoluteValueDecompositionGroup K wΩ.1 →*
       absoluteValueDecompositionGroup K wL.1 := by
-  letI : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  letI : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  letI : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  dsimp only
-  let wL :=
-    chosenFinitePlaceExtension (L := L) v
-  let wΩ :=
-    numberFieldTowerFinitePlaceExtensionToSeparableClosure
-      K L v wL
+  intro baseAlgebra topAlgebra scalarTower wL wΩ
   exact
     { toFun := fun τ =>
         ⟨AlgEquiv.restrictNormalHom L τ.1,
           by
             intro x
-            change
-              wL.1
-                  ((AlgEquiv.restrictNormalHom L τ.1) x) < 1 ↔
-                wL.1 x < 1
             rw [
               ←
                 numberFieldTowerFinitePlaceExtensionToSeparableClosure_algebraMap
@@ -458,11 +447,11 @@ restriction is the ordinary normal-field restriction. -/
 @[simp]
 theorem finitePlaceSeparableClosureDecompositionRestriction_coe
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     ∀ (τ :
       let wΩ :=
@@ -473,13 +462,7 @@ theorem finitePlaceSeparableClosureDecompositionRestriction_coe
         (K := K) (L := L) v) τ :
       Gal(L / K)) =
       AlgEquiv.restrictNormalHom L τ.1 := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  intro τ
+  intro baseAlgebra topAlgebra scalarTower τ
   rfl
 
 omit [FiniteDimensional K L] in
@@ -487,22 +470,16 @@ omit [FiniteDimensional K L] in
 decomposition group at the chosen finite place. -/
 theorem finitePlaceSeparableClosureDecompositionRestriction_surjective
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     Function.Surjective
       (finitePlaceSeparableClosureDecompositionRestriction
         (K := K) (L := L) v) := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  dsimp only
+  intro baseAlgebra topAlgebra scalarTower
   let separableClosurePadicLiftBaseIsGalois :
       IsGalois K (SeparableClosure ℚ) :=
     numberFieldTowerSeparableClosure_isGalois K L
@@ -553,27 +530,18 @@ the compatible decomposition group over `K`. -/
 noncomputable def
     finitePlaceSeparableClosureTopDecompositionInclusion
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     let wΩ :=
       numberFieldTowerFinitePlaceExtensionToSeparableClosure
         K L v (chosenFinitePlaceExtension (L := L) v)
     absoluteValueDecompositionGroup L wΩ.1 →*
       absoluteValueDecompositionGroup K wΩ.1 := by
-  letI : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  letI : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  letI : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  dsimp only
-  let wΩ :=
-    numberFieldTowerFinitePlaceExtensionToSeparableClosure
-      K L v (chosenFinitePlaceExtension (L := L) v)
+  intro sharedOwner1 sharedOwner2 sharedOwner3 wΩ
   exact
     { toFun := fun τ =>
         ⟨RamificationTheory.HilbertRamification.ValuationSubring.restrictAutomorphismScalars
@@ -595,22 +563,17 @@ of `L`. -/
 theorem
     finitePlaceSeparableClosureTopDecompositionInclusion_range
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     (finitePlaceSeparableClosureTopDecompositionInclusion
         (K := K) (L := L) v).range =
       (finitePlaceSeparableClosureDecompositionRestriction
         (K := K) (L := L) v).ker := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   let wL :=
     chosenFinitePlaceExtension (L := L) v
   let wΩ :=
@@ -684,24 +647,16 @@ exact extension of the chosen absolute value on the top number
 field. -/
 noncomputable def finitePlaceSeparableClosureTopExtension
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     let wL :=
       chosenFinitePlaceExtension (L := L) v
     AbsoluteValueExtension wL.1 (SeparableClosure ℚ) := by
-  letI : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  letI : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  letI : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  dsimp only
-  let wL :=
-    chosenFinitePlaceExtension (L := L) v
+  intro sharedOwner1 sharedOwner2 sharedOwner3 wL
   let wΩ :=
     numberFieldTowerFinitePlaceExtensionToSeparableClosure
       K L v wL
@@ -729,11 +684,9 @@ noncomputable def finitePlaceCyclotomicCompositumExtension
       (numberFieldCyclotomicZHatCompositum L)
       (SeparableClosure ℚ) :=
     numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
   let C :=
     numberFieldCyclotomicZHatCompositum L
-  let wL :=
-    chosenFinitePlaceExtension (L := L) v
+  intro wL
   let wΩL :=
     finitePlaceSeparableClosureTopExtension
       (K := K) (L := L) v
@@ -770,14 +723,9 @@ theorem finitePlaceCyclotomicCompositumExtension_base_isEquiv
       (NumberField.HeightOneSpectrum.adicAbv L
         (finitePlaceExtensionCentre
           (K := K) (L := L) v wL)) := by
-  dsimp only
+  intro wL wC
   let C :=
     numberFieldCyclotomicZHatCompositum L
-  let wL :=
-    chosenFinitePlaceExtension (L := L) v
-  let wC :=
-    finitePlaceCyclotomicCompositumExtension
-      (K := K) (L := L) v
   have hrestrict :
       wC.1.comp
           (f := algebraMap L C)
@@ -803,9 +751,9 @@ cyclotomic `ZHat`-compositum. -/
 noncomputable def
     finitePlaceSeparableClosureTopCyclotomicRestriction
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -817,21 +765,9 @@ noncomputable def
         (K := K) (L := L) v
     absoluteValueDecompositionGroup L wΩL.1 →*
       absoluteValueDecompositionGroup L wC.1 := by
-  letI : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  letI : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
+  intro sharedOwner1 sharedOwner2 wΩL wC
   let C :=
     numberFieldCyclotomicZHatCompositum L
-  let wΩL :=
-    finitePlaceSeparableClosureTopExtension
-      (K := K) (L := L) v
-  let wC :=
-    finitePlaceCyclotomicCompositumExtension
-      (K := K) (L := L) v
   have hwC :
       wΩL.1.comp
           (f := algebraMap C (SeparableClosure ℚ))
@@ -861,22 +797,16 @@ place. -/
 theorem
     finitePlaceSeparableClosureTopCyclotomicRestriction_surjective
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
     Function.Surjective
       (finitePlaceSeparableClosureTopCyclotomicRestriction
         (K := K) (L := L) v) := by
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
+  intro sharedOwner1 sharedOwner2
   let C :=
     numberFieldCyclotomicZHatCompositum L
   let separableClosurePadicLiftTopIsGalois :
@@ -931,13 +861,13 @@ theorem
 group to the actual rational cyclotomic `ZHat`-field. -/
 noncomputable def finitePlaceSeparableClosureCyclotomicRestriction
     (v : HeightOneSpectrum (𝓞 K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
     let wΩ :=
       numberFieldTowerFinitePlaceExtensionToSeparableClosure
@@ -945,14 +875,7 @@ noncomputable def finitePlaceSeparableClosureCyclotomicRestriction
     absoluteValueDecompositionGroup K wΩ.1 →*
       Gal(rationalCyclotomicZHatField / ℚ) :=
   by
-    letI : Algebra K (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureBaseScalarTower K L
+    intro reusedStructure1 reusedStructure2 reusedStructure3 reusedStructure4
     letI : Normal ℚ rationalCyclotomicZHatField :=
       rationalCyclotomicZHatField_normal
     exact
@@ -969,13 +892,13 @@ separable-closure decomposition group. -/
 noncomputable def finitePlaceSeparableClosurePadicCyclotomicDegree
     (v : HeightOneSpectrum (𝓞 K))
     (p : Nat.Primes) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
     let wΩ :=
       numberFieldTowerFinitePlaceExtensionToSeparableClosure
@@ -983,14 +906,7 @@ noncomputable def finitePlaceSeparableClosurePadicCyclotomicDegree
     absoluteValueDecompositionGroup K wΩ.1 →*
       Multiplicative ℤ_[p.1] :=
   by
-    letI : Algebra K (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-      numberFieldTowerSeparableClosureBaseScalarTower K L
+    intro reusedStructure1 reusedStructure2 reusedStructure3 reusedStructure4
     exact
       (rationalCyclotomicPadicCoordinate p).toMonoidHom.comp
         (finitePlaceSeparableClosureCyclotomicRestriction
@@ -1004,15 +920,15 @@ theorem
     finitePlaceSeparableClosureTopCyclotomicRestriction_padicDegree
     (v : HeightOneSpectrum (𝓞 K))
     (p : Nat.Primes) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -1025,18 +941,7 @@ theorem
           (K := K) (L := L) v).1 p).toMonoidHom.comp
         (finitePlaceSeparableClosureTopCyclotomicRestriction
           (K := K) (L := L) v) := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   let C :=
     numberFieldCyclotomicZHatCompositum L
   let T :=
@@ -1118,15 +1023,15 @@ theorem
     finitePlaceSeparableClosureTop_padicDegree_range
     (v : HeightOneSpectrum (𝓞 K))
     (p : Nat.Primes) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -1137,18 +1042,7 @@ theorem
       (numberFieldCyclotomicPadicDecompositionCoordinate L
         (finitePlaceCyclotomicCompositumExtension
           (K := K) (L := L) v).1 p).toMonoidHom.range := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   rw [
     finitePlaceSeparableClosureTopCyclotomicRestriction_padicDegree
       (K := K) (L := L) v p]
@@ -1177,15 +1071,15 @@ theorem
     finitePlaceSeparableClosureRestrictionKernel_padicDegree_range
     (v : HeightOneSpectrum (𝓞 K))
     (p : Nat.Primes) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -1200,28 +1094,8 @@ theorem
         (K := K) (L := L) v p
     (restriction.ker.map degree).toAddSubgroup' =
       (degree.comp inclusion).range.toAddSubgroup' := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
-  let restriction :=
-    finitePlaceSeparableClosureDecompositionRestriction
-      (K := K) (L := L) v
-  let inclusion :=
-    finitePlaceSeparableClosureTopDecompositionInclusion
-      (K := K) (L := L) v
-  let degree :=
-    finitePlaceSeparableClosurePadicCyclotomicDegree
-      (K := K) (L := L) v p
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
+    restriction inclusion degree
   rw [
     ←
       finitePlaceSeparableClosureTopDecompositionInclusion_range
@@ -1236,15 +1110,15 @@ theorem
     finitePlaceSeparableClosureRestrictionKernel_padicDegree_isClosed
     (v : HeightOneSpectrum (𝓞 K))
     (p : Nat.Primes) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -1258,19 +1132,7 @@ theorem
       ((((restriction.ker.map degree).toAddSubgroup' :
           AddSubgroup ℤ_[p.1]) :
         Set ℤ_[p.1])) := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 restriction degree
   rw [
     finitePlaceSeparableClosureRestrictionKernel_padicDegree_range
       (K := K) (L := L) v p,
@@ -1302,15 +1164,15 @@ theorem
     finitePlaceSeparableClosureRestrictionKernel_padicDegree_isOpen
     (v : HeightOneSpectrum (𝓞 K))
     (p : Nat.Primes) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -1324,23 +1186,14 @@ theorem
       ((((restriction.ker.map degree).toAddSubgroup' :
           AddSubgroup ℤ_[p.1]) :
         Set ℤ_[p.1])) := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
-  have hclosed :=
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 restriction degree
+  have hclosed :
+      IsClosed
+        ((((restriction.ker.map degree).toAddSubgroup' :
+            AddSubgroup ℤ_[p.1]) :
+          Set ℤ_[p.1])) :=
     finitePlaceSeparableClosureRestrictionKernel_padicDegree_isClosed
       (K := K) (L := L) v p
-  dsimp only at hclosed
   rw [
     finitePlaceSeparableClosureRestrictionKernel_padicDegree_range
       (K := K) (L := L) v p,
@@ -1374,7 +1227,7 @@ The initial lift is corrected inside the genuine restriction kernel.
 Density of the positive natural numbers in `ℤ_[p]` supplies the
 required correction without changing its prescribed restriction. -/
 theorem exists_positivePadicDegree_lift_of_surjective
-    {D A : Type} [Group D] [Group A]
+    {D : Type w} {A : Type x} [Group D] [Group A]
     (p : ℕ) [Fact p.Prime]
     (restriction : D →* A)
     (hrestriction : Function.Surjective restriction)
@@ -1441,15 +1294,15 @@ theorem
     (σ :
       absoluteValueDecompositionGroup K
         (chosenFinitePlaceExtension (L := L) v).1) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI : IsScalarTower ℚ K (SeparableClosure ℚ) :=
+    let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseScalarTower K L
-    letI : IsScalarTower L
+    let : IsScalarTower L
         (numberFieldCyclotomicZHatCompositum L)
         (SeparableClosure ℚ) :=
       numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
@@ -1464,19 +1317,7 @@ theorem
         finitePlaceSeparableClosurePadicCyclotomicDegree
             (K := K) (L := L) v p τ =
           (Multiplicative.ofAdd (1 : ℤ_[p.1])) ^ n := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
-  let : IsScalarTower L
-      (numberFieldCyclotomicZHatCompositum L)
-      (SeparableClosure ℚ) :=
-    numberFieldCyclotomicZHatCompositumSeparableClosureScalarTower L
-  dsimp only
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 wΩ
   exact
     exists_positivePadicDegree_lift_of_surjective
       p

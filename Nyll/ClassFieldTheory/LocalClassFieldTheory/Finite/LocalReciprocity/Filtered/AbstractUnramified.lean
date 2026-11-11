@@ -4,27 +4,29 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Unramified
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Core
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
-import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
-import Nyll.ValuedFieldTheory.Ramification.LocalField.Unramified
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Unramified
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Core
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.Unramified
 
 /-!
 # Abstract unramified fixed fields and ramification groups
@@ -35,6 +37,8 @@ fixed field.  It is the bridge from the canonical abstract unramified
 extensions used in finite local reciprocity to the upper ramification groups
 used in the Hasse--Arf development.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -122,40 +126,6 @@ private theorem ramificationIdx_mul_residue_finrank_eq_finrank_compatible
 
 universe u
 
-private theorem baseFixingExtensionSubgroup_index_eq_finrank
-    (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsGalois K Ω]
-    (E : IntermediateField K Ω) [FiniteDimensional K E] [IsGalois K E] :
-    (extensionSubgroup
-      (closedFixingSubgroup K Ω (⊥ : IntermediateField K Ω))
-      (closedFixingSubgroup K Ω E)
-      (fixingSubgroupLeBase K Ω E)).index =
-        Module.finrank K E := by
-  let : Finite
-      ((closedFixingSubgroup K Ω
-          (⊥ : IntermediateField K Ω)).toSubgroup ⧸
-        extensionSubgroup
-          (closedFixingSubgroup K Ω
-            (⊥ : IntermediateField K Ω))
-          (closedFixingSubgroup K Ω E)
-          (fixingSubgroupLeBase K Ω E)) :=
-    Finite.of_equiv (Gal(E/K))
-      (baseFixingExtensionQuotientEquivGaloisGroup K Ω E).symm.toEquiv
-  calc
-    _ = Nat.card
-        ((closedFixingSubgroup K Ω
-            (⊥ : IntermediateField K Ω)).toSubgroup ⧸
-          extensionSubgroup
-            (closedFixingSubgroup K Ω
-              (⊥ : IntermediateField K Ω))
-            (closedFixingSubgroup K Ω E)
-            (fixingSubgroupLeBase K Ω E)) :=
-      Subgroup.index_eq_card _
-    _ = Nat.card (Gal(E/K)) :=
-      Nat.card_congr
-        (baseFixingExtensionQuotientEquivGaloisGroup K Ω E).toEquiv
-    _ = Module.finrank K E :=
-      IsGalois.card_aut_eq_finrank K E
-
 /-- For a field finite over the distinguished abstract base, the absolute
 residue degree agrees with its relative residue degree over that base. -/
 theorem finiteAbstractField_residueDegree_eq_relativeResidueDegree
@@ -199,20 +169,14 @@ theorem finiteAbstractField_degree_eq_abstractFixedField_finrank
         (le_baseField H.field)).Normal) :
     let E :=
       abstractFixedField K (SeparableClosure K) H.field
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       abstractFixedField_finiteDimensional
         K (SeparableClosure K) H.field H.finite
-    letI : IsGalois K E :=
+    let : IsGalois K E :=
       abstractFixedField_isGalois_of_base_normal K H.field hnormal
     (H.toFiniteAbstractExtension.degree : ℕ) =
       Module.finrank K E := by
-  let E :=
-    abstractFixedField K (SeparableClosure K) H.field
-  let : FiniteDimensional K E :=
-    abstractFixedField_finiteDimensional
-      K (SeparableClosure K) H.field H.finite
-  let : IsGalois K E :=
-    abstractFixedField_isGalois_of_base_normal K H.field hnormal
+  intro E sharedOwner2 sharedOwner3
   calc
     (H.toFiniteAbstractExtension.degree : ℕ) =
         (extensionSubgroup
@@ -245,56 +209,33 @@ theorem abstractFixedField_isUnramifiedValuedExtension
         (localResidueDatum K)) :
     let E :=
       abstractFixedField K (SeparableClosure K) H.field
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       abstractFixedField_finiteDimensional
         K (SeparableClosure K) H.field H.finite
-    letI : IsGalois K E :=
+    let : IsGalois K E :=
       abstractFixedField_isGalois_of_base_normal K H.field hnormal
-    letI : NontriviallyNormedField K :=
+    let : NontriviallyNormedField K :=
       localFieldNontriviallyNormedField K
-    letI : IsUltrametricDist K :=
+    let : IsUltrametricDist K :=
       localFieldIsUltrametricDist K
-    letI : CompleteSpace K := inferInstance
-    letI : NontriviallyNormedField E :=
+    let : CompleteSpace K := inferInstance
+    let : NontriviallyNormedField E :=
       finiteExtensionSpectralNormedField K E
-    letI : ValuativeRel E :=
+    let : ValuativeRel E :=
       finiteExtensionSpectralValuativeRel K E
-    letI : IsNonarchimedeanLocalField E :=
+    let : IsNonarchimedeanLocalField E :=
       finiteExtensionSpectralIsNonarchimedeanLocalField K E
-    letI : Valuation.HasExtension
+    let : Valuation.HasExtension
         (ValuativeRel.valuation K) (ValuativeRel.valuation E) :=
       finiteExtensionSpectralValuation_hasExtension K E
-    letI : IsIntegralClosure 𝒪[E] 𝒪[K] E :=
+    let : IsIntegralClosure 𝒪[E] 𝒪[K] E :=
       localCompleteDVF_integerRing_isIntegralClosure K E
-    letI : Module.Finite 𝒪[K] 𝒪[E] :=
+    let : Module.Finite 𝒪[K] 𝒪[E] :=
       localCompleteDVF_integerRing_moduleFinite K E
     LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension
       K E := by
-  let E :=
-    abstractFixedField K (SeparableClosure K) H.field
-  let : FiniteDimensional K E :=
-    abstractFixedField_finiteDimensional
-      K (SeparableClosure K) H.field H.finite
-  let : IsGalois K E :=
-    abstractFixedField_isGalois_of_base_normal K H.field hnormal
-  let : NontriviallyNormedField K :=
-    localFieldNontriviallyNormedField K
-  let : IsUltrametricDist K :=
-    localFieldIsUltrametricDist K
-  let : CompleteSpace K := inferInstance
-  let : NontriviallyNormedField E :=
-    finiteExtensionSpectralNormedField K E
-  let : ValuativeRel E :=
-    finiteExtensionSpectralValuativeRel K E
-  let : IsNonarchimedeanLocalField E :=
-    finiteExtensionSpectralIsNonarchimedeanLocalField K E
-  let : Valuation.HasExtension
-      (ValuativeRel.valuation K) (ValuativeRel.valuation E) :=
-    finiteExtensionSpectralValuation_hasExtension K E
-  let : IsIntegralClosure 𝒪[E] 𝒪[K] E :=
-    localCompleteDVF_integerRing_isIntegralClosure K E
-  let : Module.Finite 𝒪[K] 𝒪[E] :=
-    localCompleteDVF_integerRing_moduleFinite K E
+  intro E sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7
+    sharedOwner8 sharedOwner9 sharedOwner10 sharedOwner11 sharedOwner12
   let f : ℕ :=
     @Module.finrank 𝓀[K] 𝓀[E] _ _
       (IsLocalRing.ResidueField.instModule
@@ -351,19 +292,13 @@ theorem localUpperRamificationGroup_abstractFixedField_eq_bot
     (t : ℝ) (ht : 0 ≤ t) :
     let E :=
       abstractFixedField K (SeparableClosure K) H.field
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       abstractFixedField_finiteDimensional
         K (SeparableClosure K) H.field H.finite
-    letI : IsGalois K E :=
+    let : IsGalois K E :=
       abstractFixedField_isGalois_of_base_normal K H.field hnormal
     localUpperRamificationGroup K E t = ⊥ := by
-  let E :=
-    abstractFixedField K (SeparableClosure K) H.field
-  let : FiniteDimensional K E :=
-    abstractFixedField_finiteDimensional
-      K (SeparableClosure K) H.field H.finite
-  let : IsGalois K E :=
-    abstractFixedField_isGalois_of_base_normal K H.field hnormal
+  intro E sharedOwner2 sharedOwner3
   let : NontriviallyNormedField K :=
     localFieldNontriviallyNormedField K
   let : IsUltrametricDist K :=
@@ -502,28 +437,17 @@ theorem
     let H := localFiniteUnramifiedAbstractField K d hd
     let E :=
       abstractFixedField K (SeparableClosure K) H.field
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       abstractFixedField_finiteDimensional
         K (SeparableClosure K) H.field H.finite
-    letI : IsAbelianGalois K E := by
+    let : IsAbelianGalois K E := by
       change IsAbelianGalois K
         (abstractFixedField K (SeparableClosure K)
           (localFiniteUnramifiedAbelianSubextension K d hd).field)
       exact finiteAbelianSubextension_fixedField_isAbelianGalois K
         (localFiniteUnramifiedAbelianSubextension K d hd)
     artinPrincipalUnitStepGroup K E t = ⊥ := by
-  let H := localFiniteUnramifiedAbstractField K d hd
-  let E :=
-    abstractFixedField K (SeparableClosure K) H.field
-  let : FiniteDimensional K E :=
-    abstractFixedField_finiteDimensional
-      K (SeparableClosure K) H.field H.finite
-  let : IsAbelianGalois K E := by
-    change IsAbelianGalois K
-      (abstractFixedField K (SeparableClosure K)
-        (localFiniteUnramifiedAbelianSubextension K d hd).field)
-    exact finiteAbelianSubextension_fixedField_isAbelianGalois K
-      (localFiniteUnramifiedAbelianSubextension K d hd)
+  intro H E sharedOwner3 sharedOwner4
   let : NontriviallyNormedField K :=
     localFieldNontriviallyNormedField K
   let : IsUltrametricDist K :=

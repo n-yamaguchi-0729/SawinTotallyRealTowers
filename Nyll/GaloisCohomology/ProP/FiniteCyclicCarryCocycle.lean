@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+module
+
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 
 /-!
 # Generator coordinates and the cyclic carry cocycle
@@ -19,6 +21,8 @@ a coefficient fixed by the chosen generator; cyclicity makes it invariant.
 The comparison with the periodic resolution is deliberately left to the next
 gate; this file only constructs the explicit bar representative.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Cohomology
 
@@ -41,14 +45,15 @@ theorem finiteCyclicGeneratorCoordinate_one
     {G : Type u} [Group G] [Fintype G]
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
     finiteCyclicGeneratorCoordinate g hg 1 = 0 := by
-  simp [finiteCyclicGeneratorCoordinate]
+  simp only [finiteCyclicGeneratorCoordinate, map_one, toAdd_one]
 
 @[simp]
 theorem finiteCyclicGeneratorCoordinate_generator
     {G : Type u} [Group G] [Fintype G]
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
     finiteCyclicGeneratorCoordinate g hg g = 1 := by
-  simp [finiteCyclicGeneratorCoordinate]
+  simp only [finiteCyclicGeneratorCoordinate, zmodMulEquivOfGenerator_symm_apply_generator,
+    toAdd_ofAdd]
 
 @[simp]
 theorem finiteCyclicGeneratorCoordinate_mul
@@ -57,7 +62,7 @@ theorem finiteCyclicGeneratorCoordinate_mul
     finiteCyclicGeneratorCoordinate g hg (x * y) =
       finiteCyclicGeneratorCoordinate g hg x +
         finiteCyclicGeneratorCoordinate g hg y := by
-  simp [finiteCyclicGeneratorCoordinate]
+  simp only [finiteCyclicGeneratorCoordinate, map_mul, toAdd_mul]
 
 @[simp]
 theorem finiteCyclicGeneratorCoordinate_zpow
@@ -65,7 +70,7 @@ theorem finiteCyclicGeneratorCoordinate_zpow
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (i : ℤ) :
     finiteCyclicGeneratorCoordinate g hg (g ^ i) =
       (i : ZMod (Nat.card G)) := by
-  simp [finiteCyclicGeneratorCoordinate]
+  simp only [finiteCyclicGeneratorCoordinate, zmodMulEquivOfGenerator_symm_apply_zpow, toAdd_ofAdd]
 
 @[simp]
 theorem finiteCyclicGeneratorCoordinate_pow
@@ -93,30 +98,64 @@ theorem finiteCyclicGenerator_zpow_coordinate
   apply finiteCyclicGeneratorCoordinate_injective g hg
   rw [finiteCyclicGeneratorCoordinate_pow, ZMod.natCast_zmod_val]
 
+/-- Powers of a specified cyclic generator enumerate the group. -/
+noncomputable def finiteCyclicGeneratorPowEquiv
+    {G : Type u} [Group G] [Fintype G]
+    (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) : Fin (Nat.card G) ≃ G where
+  toFun i := g ^ i.val
+  invFun x := ⟨(finiteCyclicGeneratorCoordinate g hg x).val, ZMod.val_lt _⟩
+  left_inv i := by
+    apply Fin.ext
+    change (finiteCyclicGeneratorCoordinate g hg (g ^ i.val)).val = i.val
+    rw [finiteCyclicGeneratorCoordinate_pow]
+    exact ZMod.val_natCast_of_lt i.isLt
+  right_inv x := finiteCyclicGenerator_zpow_coordinate g hg x
+
 /-- The `0`/`1` carry in the sum of the standard representatives of two
 elements of `ZMod n`. -/
 def zmodCarry {n : ℕ} [NeZero n] (x y : ZMod n) : ℕ :=
   if n ≤ x.val + y.val then 1 else 0
 
+/-- Scaling both standard coordinates and their modulus by the same
+positive integer preserves the carry. This includes characters whose
+order is smaller than the original coefficient exponent. -/
+theorem zmodCarry_eq_of_scaled_values
+    {m n : ℕ} [NeZero m] [NeZero n] (k : ℕ) (hk : 0 < k)
+    (hn : n = k * m) (x y : ZMod m) (x' y' : ZMod n)
+    (hx : x'.val = k * x.val) (hy : y'.val = k * y.val) :
+    zmodCarry x' y' = zmodCarry x y := by
+  unfold zmodCarry
+  rw [hx, hy, hn, ← Nat.mul_add]
+  have hle : k * m ≤ k * (x.val + y.val) ↔ m ≤ x.val + y.val := by
+    constructor
+    · intro h
+      by_contra hnot
+      exact (Nat.not_lt.mpr h)
+        (Nat.mul_lt_mul_of_pos_left (Nat.lt_of_not_ge hnot) hk)
+    · exact Nat.mul_le_mul_left k
+  simp only [hle]
+
 @[simp]
 theorem zmodCarry_eq_one_iff {n : ℕ} [NeZero n] (x y : ZMod n) :
     zmodCarry x y = 1 ↔ n ≤ x.val + y.val := by
-  simp [zmodCarry]
+  simp only [zmodCarry, ite_eq_left_iff, not_le, zero_ne_one, imp_false, not_lt]
 
 @[simp]
 theorem zmodCarry_eq_zero_iff {n : ℕ} [NeZero n] (x y : ZMod n) :
     zmodCarry x y = 0 ↔ x.val + y.val < n := by
-  simp [zmodCarry]
+  simp only [zmodCarry, ite_eq_right_iff, one_ne_zero, imp_false, not_le]
 
 @[simp]
 theorem zmodCarry_zero_left {n : ℕ} [NeZero n] (x : ZMod n) :
     zmodCarry 0 x = 0 := by
-  simp [zmodCarry, ZMod.val_lt x]
+  simp only [zmodCarry, ZMod.val_zero, zero_add, ite_eq_right_iff, one_ne_zero, imp_false, not_le,
+    ZMod.val_lt x]
 
 @[simp]
 theorem zmodCarry_zero_right {n : ℕ} [NeZero n] (x : ZMod n) :
     zmodCarry x 0 = 0 := by
-  simp [zmodCarry, ZMod.val_lt x]
+  simp only [zmodCarry, ZMod.val_zero, add_zero, ite_eq_right_iff, one_ne_zero, imp_false, not_le,
+    ZMod.val_lt x]
 
 /-- Carries satisfy the inhomogeneous two-cocycle equation on `ZMod n`. -/
 theorem zmodCarry_cocycle {n : ℕ} [NeZero n] (x y z : ZMod n) :
@@ -155,7 +194,7 @@ theorem finiteCyclicCarry_one_left
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (x : G) :
     finiteCyclicCarry g hg 1 x = 0 := by
   let _ : NeZero (Nat.card G) := ⟨Nat.card_pos.ne'⟩
-  simp [finiteCyclicCarry]
+  simp only [finiteCyclicCarry, finiteCyclicGeneratorCoordinate_one, zmodCarry_zero_left]
 
 @[simp]
 theorem finiteCyclicCarry_one_right
@@ -163,7 +202,7 @@ theorem finiteCyclicCarry_one_right
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (x : G) :
     finiteCyclicCarry g hg x 1 = 0 := by
   let _ : NeZero (Nat.card G) := ⟨Nat.card_pos.ne'⟩
-  simp [finiteCyclicCarry]
+  simp only [finiteCyclicCarry, finiteCyclicGeneratorCoordinate_one, zmodCarry_zero_right]
 
 /-- The carry on a finite cyclic group satisfies the two-cocycle equation. -/
 theorem finiteCyclicCarry_cocycle
@@ -185,7 +224,8 @@ theorem finiteCyclicCarry_zpow_val
     (i j : ZMod (Nat.card G)) :
     finiteCyclicCarry g hg (g ^ i.val) (g ^ j.val) = zmodCarry i j := by
   let _ : NeZero (Nat.card G) := ⟨Nat.card_pos.ne'⟩
-  simp [finiteCyclicCarry]
+  simp only [finiteCyclicCarry, finiteCyclicGeneratorCoordinate_pow, ZMod.natCast_val,
+    ZMod.cast_id', id_eq]
 
 /-- The normalized inhomogeneous carry cocycle attached to an element fixed
 by the chosen generator. -/

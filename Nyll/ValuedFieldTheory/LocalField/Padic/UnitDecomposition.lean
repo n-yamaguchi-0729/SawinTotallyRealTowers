@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
-import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.NumberTheory.Padics.ValuativeRel
-import Mathlib.NumberTheory.Padics.ProperSpace
-import Mathlib.GroupTheory.Torsion
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
+public import Mathlib.Topology.Algebra.Group.Units
+public import Mathlib.NumberTheory.Padics.ValuativeRel
+public import Mathlib.NumberTheory.Padics.ProperSpace
+public import Mathlib.GroupTheory.Torsion
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
 
 /-!
 # Unit decomposition of the p-adic integers
@@ -20,6 +23,8 @@ This file constructs the reusable topological decomposition of
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 
@@ -38,7 +43,7 @@ theorem padicDVRValuation_surjective
     Function.Surjective (padicDVRValuation p) := by
   intro y
   by_cases hy : y = 0
-  · exact ⟨0, by simp [hy]⟩
+  · exact ⟨0, by rw [hy, map_zero]⟩
   let π :=
     valuation_exists_uniformizer ℚ_[p]
       (IsDiscreteValuationRing.maximalIdeal ℤ_[p]) |>.choose
@@ -123,14 +128,10 @@ theorem padic_finrank_eq_one
     (p : ℕ) [Fact p.Prime] :
     let v := padicDVRValuation p
     let F := LocalField.ofWithZeroValuation v
-    letI : LocalField.MixedWithZeroValuationContext v :=
+    let : LocalField.MixedWithZeroValuationContext v :=
       LocalField.mixedWithZeroValuationContext v
     Module.finrank ℚ_[F.residueCharacteristic] ℚ_[p] = 1 := by
-  let v := padicDVRValuation p
-  let F := LocalField.ofWithZeroValuation v
-  let : LocalField.MixedWithZeroValuationContext v :=
-    LocalField.mixedWithZeroValuationContext v
-  dsimp only
+  intro v F sharedOwner3
   apply Algebra.finrank_eq_one_iff_bijective_algebraMap.mpr
   refine ⟨RingHom.injective _, ?_⟩
   let direct : Valued ℚ_[p] (WithZero (Multiplicative ℤ)) :=
@@ -380,9 +381,9 @@ noncomputable def padicPrincipalDataDirect
     (p : ℕ) [Fact p.Prime] :
     let v := padicDVRValuation p
     let F := LocalField.ofWithZeroValuation v
-    letI : LocalField.MixedWithZeroValuationContext v :=
+    let : LocalField.MixedWithZeroValuationContext v :=
       LocalField.mixedWithZeroValuationContext v
-    letI : Valued ℚ_[p] (WithZero (Multiplicative ℤ)) :=
+    let : Valued ℚ_[p] (WithZero (Multiplicative ℤ)) :=
       Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] ℚ_[p]
     Σ a : ℕ,
@@ -390,12 +391,7 @@ noncomputable def padicPrincipalDataDirect
           (ZMod (F.residueCharacteristic ^ a) ×
             (Fin d → ℤ_[F.residueCharacteristic])) ≃ₜ*
         CompleteDVF.higherPrincipalUnitGroup F.toCompleteDVF 1 := by
-  let v := padicDVRValuation p
-  let F := LocalField.ofWithZeroValuation v
-  letI : LocalField.MixedWithZeroValuationContext v :=
-    LocalField.mixedWithZeroValuationContext v
-  letI : Valued ℚ_[p] (WithZero (Multiplicative ℤ)) :=
-    Valued.mk' v
+  intro v F sharedOwner1 sharedOwner2
   exact LocalField.chosenMixed_firstPrincipalUnitStructure_ofWithZeroValuation
     v (padicDVRValuation_surjective p)
 
@@ -457,7 +453,7 @@ noncomputable def padicPrincipalData
     rfl
   have htop : directTopology = standardTopology :=
     hdirect.trans (padicPrincipalUnitDirectTopology_eq_standard p)
-  let P := fun T : TopologicalSpace U => by
+  let P : TopologicalSpace U → Type := fun T => by
     letI : TopologicalSpace U := T
     exact Σ a : ℕ,
       Multiplicative

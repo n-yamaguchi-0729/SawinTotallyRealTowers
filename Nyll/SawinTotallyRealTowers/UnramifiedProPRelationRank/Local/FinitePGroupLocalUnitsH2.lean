@@ -4,24 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
-import Nyll.GaloisCohomology.GroupTheory.PGroupGaloisTower
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.Algebra.Group.Hom.Defs
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Algebra.Group.TypeTags.Finite
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.Index
-import Mathlib.GroupTheory.PGroup
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.NumberTheory.LocalField.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
+public import Nyll.GaloisCohomology.GroupTheory.PGroupGaloisTower
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Algebra.Group.TypeTags.Finite
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.Index
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Finite unit cohomology in local Galois p-extensions
@@ -32,6 +34,8 @@ reciprocity computes its unit H². The lower extension has smaller degree.
 Middle exactness then bounds the cardinality by the product of these two
 degrees and proves finiteness at the same time.
 -/
+
+@[expose] public section
 
 open CategoryTheory Module
 

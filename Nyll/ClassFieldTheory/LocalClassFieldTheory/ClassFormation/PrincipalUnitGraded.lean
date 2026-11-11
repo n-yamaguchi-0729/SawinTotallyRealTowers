@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.NormalBasisLattice
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
 /-!
 # Successive principal-unit quotients of normal-basis lattices
@@ -15,6 +17,8 @@ principal-unit quotients with the corresponding lattice quotients. The file prov
 injectivity and constructs this comparison at sufficiently deep uniformizer levels.
 -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 

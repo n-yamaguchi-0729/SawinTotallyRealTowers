@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
 
 /-!
 # Fox differential: completed — free pro-\(C\) — density
@@ -25,6 +27,8 @@ The principal declarations in this module are:
 - `HasLeftOpenNormalSubgroupNeighbourhoodBasis.to_subgroup_basis`
   The normal-subgroup basis implies the subgroup basis.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

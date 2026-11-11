@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormProperties
-import Mathlib.Algebra.Module.LinearMap.Polynomial
-import Mathlib.LinearAlgebra.Charpoly.BaseChange
-import Mathlib.RingTheory.TensorProduct.MvPolynomial
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormProperties
+public import Mathlib.Algebra.Module.LinearMap.Polynomial
+public import Mathlib.Algebra.MvPolynomial.Funext
+public import Mathlib.LinearAlgebra.Charpoly.BaseChange
+public import Mathlib.RingTheory.TensorProduct.MvPolynomial
 
 /-!
 # The Galois product formula for the relative idele norm
@@ -16,6 +19,8 @@ This file proves that, in the tensor-product presentation
 `𝔸_L = 𝔸_K ⊗_K L`, extension of the determinant norm back to `𝔸_L`
 is the product of all Galois conjugates.
 -/
+
+@[expose] public section
 
 open scoped BigOperators TensorProduct
 open NumberField
@@ -77,7 +82,7 @@ theorem eval_conjugatePolynomial
         ∑ i, σ ((b.repr x i) • b i) := by
       apply Finset.sum_congr rfl
       intro i hi
-      simp [Algebra.smul_def]
+      simp only [Algebra.smul_def, map_mul, AlgEquiv.commutes]
     _ = σ (∑ i, (b.repr x i) • b i) := by
       rw [map_sum]
     _ = σ x := by rw [b.sum_repr]
@@ -98,7 +103,7 @@ theorem eval_galoisProductPolynomial
         (fun i ↦ algebraMap K L (b.repr x i))
         (galoisProductPolynomial b) =
       ∏ σ : L ≃ₐ[K] L, σ x := by
-  simp [galoisProductPolynomial]
+  simp only [galoisProductPolynomial, map_prod, eval_conjugatePolynomial]
 
 /-- The universal determinant norm polynomial becomes the product of the
 universal Galois conjugates after extending its coefficients to `L`. -/
@@ -122,7 +127,8 @@ theorem map_normPolynomial_eq_galoisProductPolynomial
       funext i
       calc
         c i = algebraMap K L (d i) := (hd i).symm
-        _ = algebraMap K L (b.repr x i) := by simp [x]
+        _ = algebraMap K L (b.repr x i) := by simp only [Module.Basis.repr_symm_apply,
+          Module.Basis.repr_linearCombination, Finsupp.equivFunOnFinite_symm_apply_apply, x]
     rw [hcoords, eval_galoisProductPolynomial]
     rw [MvPolynomial.eval_map]
     change MvPolynomial.eval₂ (algebraMap K L)
@@ -153,9 +159,14 @@ theorem baseChangedLmul_eq
       | add y₁ y₂ hy₁ hy₂ =>
           rw [map_add, map_add, hy₁, hy₂]
       | tmul b t =>
-          simp [LinearMap.tensorProduct,
-            Algebra.TensorProduct.tmul_mul_tmul,
-            Algebra.smul_def, mul_comm]
+          simp only [LinearMap.tensorProduct, LinearMap.coe_comp, Function.comp_apply,
+            LinearMap.baseChange_tmul, AlgHom.toLinearMap_apply, Algebra.coe_lmul_eq_mul,
+            TensorProduct.AlgebraTensorModule.lift_apply, TensorProduct.lift.tmul,
+            LinearMap.coe_restrictScalars, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.smul_apply,
+            LinearMap.baseChangeHom_apply, Algebra.smul_def, Module.End.mul_apply,
+            LinearMap.mul_apply_apply, Module.algebraMap_end_apply,
+            Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply,
+            Algebra.TensorProduct.tmul_mul_tmul, mul_comm, mul_one]
 
 /-- Evaluation of the universal norm polynomial after arbitrary scalar
 extension is the determinant norm on the scalar-extended algebra. -/
@@ -235,9 +246,11 @@ theorem eval₂_conjugatePolynomial_baseChange
             Algebra.TensorProduct.basis A b i) := by
       apply Finset.sum_congr rfl
       intro i hi
-      simp [scalarConjugation, Algebra.TensorProduct.basis_apply,
-        Algebra.TensorProduct.tmul_mul_tmul,
-        Algebra.smul_def]
+      simp only [Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.includeRight_apply,
+        Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, scalarConjugation,
+        Algebra.TensorProduct.basis_apply, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply,
+        Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.map_tmul, AlgHom.coe_id,
+        id_eq, AlgEquiv.coe_toAlgHom]
     _ = scalarConjugation (K := K) (L := L) A σ
           (∑ i, ((Algebra.TensorProduct.basis A b).repr z i) •
             Algebra.TensorProduct.basis A b i) := by
@@ -271,7 +284,8 @@ theorem includeLeft_norm_eq_prod_scalarConjugations
       iL.comp (algebraMap K A) =
         iR.comp (algebraMap K L) := by
     ext x
-    simp [iL, iR]
+    simp only [AlgHom.toRingHom_eq_coe, AlgHom.comp_algebraMap_of_tower,
+      Algebra.TensorProduct.algebraMap_apply, iL, iR]
   have hleft :
       MvPolynomial.eval₂ iR (fun i ↦ iL (c i))
           (MvPolynomial.map (algebraMap K L)

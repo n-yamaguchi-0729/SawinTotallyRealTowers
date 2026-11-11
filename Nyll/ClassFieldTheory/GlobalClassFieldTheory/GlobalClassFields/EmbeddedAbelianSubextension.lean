@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
+public import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Embedded finite abelian subextensions
@@ -19,6 +21,10 @@ needed by concrete class-field realizations.
 -/
 
 
+
+@[expose] public section
+
+universe u v w
 
 open scoped NumberField
 
@@ -34,7 +40,7 @@ open Reciprocity
 closure, represented as a finite abelian subextension of a selected base
 subgroup equal to the fixing subgroup of the embedded base field. -/
 noncomputable def numberFieldEmbeddedAbelianSubextension
-    (K E : Type)
+    (K : Type u) (E : Type v)
     [Field K] [NumberField K]
     [Field E] [NumberField E]
     [Algebra K E] [FiniteDimensional K E]
@@ -68,7 +74,7 @@ noncomputable def numberFieldEmbeddedAbelianSubextension
 subgroup of the embedded top field. -/
 @[simp]
 theorem numberFieldEmbeddedAbelianSubextension_field
-    (K E : Type)
+    (K : Type u) (E : Type v)
     [Field K] [NumberField K]
     [Field E] [NumberField E]
     [Algebra K E] [FiniteDimensional K E]

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.AutomorphismTransport
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.AutomorphismTransport
 
 /-!
 # The first principal-unit quotient
@@ -12,6 +14,8 @@ import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.A
 Identifies valuation-ring units modulo first principal units with residue-field units and
 records compatibility with valuation-preserving automorphisms.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

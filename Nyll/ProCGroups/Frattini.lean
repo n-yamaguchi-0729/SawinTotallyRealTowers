@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Frattini
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+module
+
+public import Mathlib.GroupTheory.Frattini
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
 /-!
 # Pro C Groups / Frattini
 
 This module formalizes Frattini-type constructions for profinite groups.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise
@@ -117,17 +121,15 @@ variable {G : Type u} [Group G]
 def frattiniWithin (H : Subgroup G) : Subgroup G :=
   (frattini H).map H.subtype
 
-/-- The Frattini subgroup within a class is contained in every subgroup from that class. -/
+/-- The image of the Frattini subgroup of `H` in the ambient group is contained in `H`. -/
 theorem frattiniWithin_le (H : Subgroup G) :
     frattiniWithin (G := G) H ≤ H := by
   intro x hx
   rcases hx with ⟨y, hy, rfl⟩
   exact y.2
 
-/--
-Membership in the Frattini subgroup within a class means membership in every subgroup from that
-class.
--/
+/-- The image of `x : H` belongs to `frattiniWithin H` exactly when `x` belongs to the abstract
+Frattini subgroup of `H`. -/
 @[simp] theorem mem_frattiniWithin {H : Subgroup G} {x : H} :
     (x : G) ∈ frattiniWithin (G := G) H ↔ x ∈ frattini H := by
   constructor

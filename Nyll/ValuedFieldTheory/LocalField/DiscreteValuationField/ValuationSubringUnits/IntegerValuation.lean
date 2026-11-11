@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.Arithmetic
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
-import Mathlib.Data.Int.WithZero
-import Mathlib.RingTheory.Valuation.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.Arithmetic
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
+public import Mathlib.Data.Int.WithZero
+public import Mathlib.RingTheory.Valuation.Basic
 
 /-!
 # Integer valuations induced by `ℤᵐ⁰`-valued valuations
@@ -17,6 +19,8 @@ proves the elementary formulas for powers and natural-number denominators.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

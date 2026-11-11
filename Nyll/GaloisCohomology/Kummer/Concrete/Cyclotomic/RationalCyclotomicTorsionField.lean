@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.GroupTheory.Torsion
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.GroupTheory.Torsion
 
 /-!
 # The torsion fixed field in the rational cyclotomic extension
@@ -18,6 +20,8 @@ and fixed field.  No copy of the Galois group is replaced definitionally by
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

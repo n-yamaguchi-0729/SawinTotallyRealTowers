@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.PGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.PGroup
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # Unramified composita over a changed base
@@ -19,6 +22,8 @@ unramified. The same injection preserves the p-group condition, and odd
 p supplies the infinite-place condition. The generating-range equality
 is supplied by the concrete compositum construction at the application.
 -/
+
+@[expose] public section
 
 open NumberField
 open scoped NumberField

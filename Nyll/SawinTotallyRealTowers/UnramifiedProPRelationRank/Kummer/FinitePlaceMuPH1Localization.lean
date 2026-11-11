@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerLinear
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerLinear
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
 
 /-!
 # Finite-place restriction of natural `mu_p` Kummer classes
@@ -15,6 +17,8 @@ The natural `mu_p` representation of the absolute Galois group restricts to each
 finite-place decomposition subgroup.  This file packages the induced map on continuous `H¹`
 and composes it with the linear Kummer map from global power classes.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField

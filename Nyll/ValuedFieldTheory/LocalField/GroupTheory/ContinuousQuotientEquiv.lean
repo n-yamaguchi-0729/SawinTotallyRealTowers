@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Group.Quotient
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Continuous equivalences of quotient groups
@@ -16,6 +18,8 @@ layer and does not depend on the separate pro-\(C\) groups library.
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 

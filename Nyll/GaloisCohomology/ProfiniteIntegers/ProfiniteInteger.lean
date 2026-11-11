@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Topology.Neighborhoods
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.GroupTheory.Index
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Topology.Neighborhoods
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.GroupTheory.Index
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
 
 /-!
 # normalized degree and Frobenius theory: the profinite integers
@@ -18,6 +20,8 @@ surjection in the opening datum of abstract valuation theory.  In particular,
 multiplication by a positive integer identifies `ℤ̂` with the closed subgroup
 `n ℤ̂`, which is the kernel of reduction modulo `n`.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -33,7 +37,7 @@ theorem proCIntegerOne_pow_nat_injective :
       (Multiplicative.ofAdd (1 : ZHat)) ^ n) := by
   intro a b hab
   let m := a + b + 1
-  have hm : 0 < m := by simp [m]
+  have hm : 0 < m := by simp only [lt_add_iff_pos_left, Order.lt_add_one_iff, zero_le, m]
   have ha : a < m := by omega
   have hb : b < m := by omega
   have habAdd := congrArg Multiplicative.toAdd hab
@@ -64,17 +68,17 @@ theorem zHatMulNat_apply (n : ℕ) (x : ZHat) :
 private theorem zmod_cast_eq_of_nsmul_eq
     {n m : ℕ} (hn : 0 < n) {a b : ZMod (n * m)}
     (h : n • a = n • b) :
-    ZMod.castHom (show m ∣ n * m from ⟨n, by simp [Nat.mul_comm]⟩) (ZMod m) a =
-      ZMod.castHom (show m ∣ n * m from ⟨n, by simp [Nat.mul_comm]⟩) (ZMod m) b := by
+    ZMod.castHom (show m ∣ n * m from ⟨n, by simp only [Nat.mul_comm]⟩) (ZMod m) a =
+      ZMod.castHom (show m ∣ n * m from ⟨n, by simp only [Nat.mul_comm]⟩) (ZMod m) b := by
   rcases ZMod.intCast_surjective a with ⟨a, rfl⟩
   rcases ZMod.intCast_surjective b with ⟨b, rfl⟩
   rw [ZMod.castHom_apply, ZMod.castHom_apply]
   rw [ZMod.cast_intCast
       (R := ZMod m) (n := n * m) (m := m)
-      (show m ∣ n * m from ⟨n, by simp [Nat.mul_comm]⟩) a,
+      (show m ∣ n * m from ⟨n, by simp only [Nat.mul_comm]⟩) a,
     ZMod.cast_intCast
       (R := ZMod m) (n := n * m) (m := m)
-      (show m ∣ n * m from ⟨n, by simp [Nat.mul_comm]⟩) b]
+      (show m ∣ n * m from ⟨n, by simp only [Nat.mul_comm]⟩) b]
   rw [← sub_eq_zero, ← Int.cast_sub, ZMod.intCast_zmod_eq_zero_iff_dvd]
   have hzero : (n • ((a - b : ℤ) : ZMod (n * m))) = 0 := by
     rw [Int.cast_sub, nsmul_sub, h, sub_self]
@@ -92,7 +96,7 @@ theorem zHatMulNat_injective {n : ℕ} (hn : 0 < n) :
   apply ZHat.ext
   intro m hm
   have hnm : 0 < n * m := Nat.mul_pos hn hm
-  have hdiv : m ∣ n * m := ⟨n, by simp [Nat.mul_comm]⟩
+  have hdiv : m ∣ n * m := ⟨n, by simp only [Nat.mul_comm]⟩
   have hj : n • zHatReduction (n * m) hnm x =
       n • zHatReduction (n * m) hnm y := by
     simpa only [zHatMulNat_apply, map_nsmul] using
@@ -133,7 +137,7 @@ theorem zHatMulNat_int (n : ℕ) (a : ℤ) :
   apply ZHat.ext
   intro m hm
   change n • (a : ZMod m) = (((n : ℤ) * a : ℤ) : ZMod m)
-  simp [nsmul_eq_mul]
+  simp only [nsmul_eq_mul, Int.cast_mul, Int.cast_natCast]
 
 /-- The subgroup `n ℤ̂` is exactly the kernel of reduction modulo `n`. -/
 theorem zHatMulNat_range_eq_ker_reduction (n : ℕ) (hn : 0 < n) :
@@ -145,7 +149,7 @@ theorem zHatMulNat_range_eq_ker_reduction (n : ℕ) (hn : 0 < n) :
   · rintro ⟨x, rfl⟩
     change zHatReduction n hn (zHatMulNat n x) = 0
     change n • zHatReduction n hn x = 0
-    simp [nsmul_eq_mul]
+    simp only [nsmul_eq_mul, CharP.cast_eq_zero, zero_mul]
   · intro hy
     let K : Set ZHat :=
       ((zHatReduction n hn).toAddMonoidHom.ker : Set ZHat)

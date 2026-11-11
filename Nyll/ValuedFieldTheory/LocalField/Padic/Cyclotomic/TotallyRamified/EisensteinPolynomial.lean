@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Mathlib.NumberTheory.Cyclotomic.Gal
-import Mathlib.NumberTheory.Cyclotomic.Discriminant
-import Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral
-import Mathlib.RingTheory.IsAdjoinRoot
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Mathlib.NumberTheory.Cyclotomic.Gal
+public import Mathlib.NumberTheory.Cyclotomic.Discriminant
+public import Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral
+public import Mathlib.RingTheory.IsAdjoinRoot
 
 /-!
 # The Eisenstein polynomial of the `p`-power cyclotomic extension
@@ -27,6 +29,8 @@ conclusion is assumed.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

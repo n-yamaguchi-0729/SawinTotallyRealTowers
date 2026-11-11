@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.BinaryProduct
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
-import Mathlib.Algebra.GroupWithZero.Action.Prod
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.BinaryProduct
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+public import Mathlib.Algebra.GroupWithZero.Action.Prod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
 
 /-!
 # Reassociation of supported relative-idele factors
@@ -19,6 +22,8 @@ actions.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -206,10 +211,10 @@ factorization. -/
 noncomputable def
     relativeIdeleSupportedHerbrandH0EquivUnrestrictedProdOutside
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    letI :=
+    let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
-    letI :=
+    let :=
       relativeUnrestrictedProdOutsideAction
         (K := K) (L := L) S
     HerbrandH0 (L ≃ₐ[K] L)
@@ -220,12 +225,7 @@ noncomputable def
             (K := K) (L := L) S ×
           RelativeOutsideSPlaceFactors
             (K := K) (L := L) S) := by
-  letI :=
-    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
-      (K := K) (L := L) S
-  letI :=
-    relativeUnrestrictedProdOutsideAction
-      (K := K) (L := L) S
+  intro sharedOwner1 sharedOwner2
   exact
     herbrandH0EquivariantMulEquiv
       (relativeIdeleSupportedEquivUnrestrictedProdOutside
@@ -240,10 +240,10 @@ noncomputable def
     relativeIdeleSupportedHerbrandHMinusOneEquivUnrestrictedProdOutside
     (S : Finset (HeightOneSpectrum (𝓞 K)))
     (σ : L ≃ₐ[K] L) :
-    letI :=
+    let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
-    letI :=
+    let :=
       relativeUnrestrictedProdOutsideAction
         (K := K) (L := L) S
     HerbrandHMinusOne (L ≃ₐ[K] L)
@@ -254,12 +254,7 @@ noncomputable def
             (K := K) (L := L) S ×
           RelativeOutsideSPlaceFactors
             (K := K) (L := L) S) σ := by
-  letI :=
-    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
-      (K := K) (L := L) S
-  letI :=
-    relativeUnrestrictedProdOutsideAction
-      (K := K) (L := L) S
+  intro sharedOwner1 sharedOwner2
   exact
     herbrandHMinusOneEquivariantMulEquiv
       (relativeIdeleSupportedEquivUnrestrictedProdOutside

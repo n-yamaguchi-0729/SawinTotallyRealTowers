@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.Normal.Defs
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.Normal.Defs
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # Absolute decomposition at a completely split finite place
@@ -19,6 +22,8 @@ An absolute decomposition automorphism preserves this restricted valuation
 class. Complete splitting makes its decomposition group trivial, independently
 of the chosen exact extension of the base absolute value.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

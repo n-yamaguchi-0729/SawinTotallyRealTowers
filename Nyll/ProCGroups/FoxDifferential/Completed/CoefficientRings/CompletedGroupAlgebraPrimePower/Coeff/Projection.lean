@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.Ring
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.Ring
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
 
 /-!
 # Fox differential: coefficient rings — prime-power completed group algebra — coeff — projection
@@ -20,6 +23,8 @@ The principal declarations in this module are:
 - `primePowerCompletedCoeffProjection_intCast`
   The finite-stage projection preserves integer casts.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

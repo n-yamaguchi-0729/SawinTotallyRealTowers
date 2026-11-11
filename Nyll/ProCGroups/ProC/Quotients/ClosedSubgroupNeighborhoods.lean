@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
-import Nyll.ProCGroups.ProC.Quotients.LeftQuotientMaps
+module
+
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.ProC.Quotients.LeftQuotientMaps
 
 /-!
 # Open-normal neighborhoods of closed subgroups
@@ -15,6 +17,8 @@ Given an open neighborhood of a closed subgroup, this file finds an open normal 
 intersection with the closed subgroup lies in that neighborhood, including a version whose finite
 quotient belongs to a prescribed class.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationIdeal
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryQuotient
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationIdeal
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryQuotient
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
 
 /-!
 # Fox differential: completed — finite stage — source boundary
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The finite-stage source-to-target coordinate map is evaluated by applying the target quotient map
   to the chosen coordinate.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

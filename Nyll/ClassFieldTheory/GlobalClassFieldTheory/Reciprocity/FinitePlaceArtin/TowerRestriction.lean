@@ -4,7 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # Restriction in a finite-place Artin tower
@@ -14,6 +24,8 @@ naturality for the corresponding global Artin homomorphisms.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
@@ -28,7 +40,9 @@ open HilbertRamification
 open LocalClassFieldTheory
 open LocalFieldTheory
 
-variable {K L : Type}
+universe uK uL uE
+
+variable {K : Type uK} {L : Type uL}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
@@ -36,7 +50,7 @@ variable {K L : Type}
 /-- Restrict an extension of a finite place through an intermediate
 field in a scalar tower. -/
 def restrictFinitePlaceExtension
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     (v : HeightOneSpectrum (𝓞 K))
@@ -59,7 +73,7 @@ omit [NumberField K] [FiniteDimensional K L]
 /-- Completion maps compose along a scalar tower when the three
 absolute values extend one another. -/
 theorem absoluteValueCompletionMap_comp_of_isScalarTower
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     (vK : AbsoluteValue K ℝ)
@@ -111,7 +125,7 @@ theorem absoluteValueCompletionMap_comp_of_isScalarTower
 /-- The completion map in a number-field tower restricts to the
 corresponding algebraic localizations. -/
 noncomputable def finitePlaceRestrictedLocalizedCompletionAlgHom
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsGalois K E]
@@ -129,7 +143,7 @@ noncomputable def finitePlaceRestrictedLocalizedCompletionAlgHom
     letI : Algebra vK.Completion LL :=
       finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := L) v wL
     EL →ₐ[vK.Completion] LL := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
+  intro vK
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v
   let wE :=
@@ -193,7 +207,7 @@ omit [IsAbelianGalois K L] in
 /-- The restricted-localization map agrees with the original
 number-field embedding on the intermediate field. -/
 theorem finitePlaceRestrictedLocalizedCompletionAlgHom_toAlgebraicLocalization
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsGalois K E]
@@ -217,7 +231,7 @@ theorem finitePlaceRestrictedLocalizedCompletionAlgHom_toAlgebraicLocalization
           vK wE.1 wE.2 x) =
       AbsoluteValue.toAlgebraicLocalization
         vK wL.1 wL.2 (algebraMap E L x) := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
+  intro vK
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v
   let wE :=
@@ -259,7 +273,7 @@ omit [NumberField K] [FiniteDimensional K L] in
 restriction of decomposition-group elements to restriction of the
 corresponding local automorphisms. -/
 theorem decompositionGroupEquivAlgebraicLocalizationAut_restrict_of_commutes
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]
@@ -267,33 +281,33 @@ theorem decompositionGroupEquivAlgebraicLocalizationAut_restrict_of_commutes
     (hvK : vK.IsNontrivial)
     (wE : AbsoluteValueExtension vK E)
     (wL : AbsoluteValueExtension vK L) :
-    letI hEK :=
+    let hEK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) wE.1
-    letI : SMul K wE.1.Completion := hEK.toSMul
-    letI : Algebra vK.Completion wE.1.Completion :=
+    let : SMul K wE.1.Completion := hEK.toSMul
+    let : Algebra vK.Completion wE.1.Completion :=
       AbsoluteValue.completionAlgebra vK wE.1 wE.2
-    letI hLK :=
+    let hLK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) wL.1
-    letI : SMul K wL.1.Completion := hLK.toSMul
-    letI : Algebra vK.Completion wL.1.Completion :=
+    let : SMul K wL.1.Completion := hLK.toSMul
+    let : Algebra vK.Completion wL.1.Completion :=
       AbsoluteValue.completionAlgebra vK wL.1 wL.2
     let EL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wE
     let LL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wL
     ∀ (localizationEmbedding : EL →ₐ[vK.Completion] LL),
-      letI hELL : Algebra EL LL :=
+      let hELL : Algebra EL LL :=
         localizationEmbedding.toRingHom.toAlgebra
-      letI : SMul EL LL := hELL.toSMul
-      letI : IsScalarTower vK.Completion EL LL :=
+      let : SMul EL LL := hELL.toSMul
+      let : IsScalarTower vK.Completion EL LL :=
         IsScalarTower.of_algebraMap_eq' (by
           apply RingHom.ext
           intro x
           exact (localizationEmbedding.commutes x).symm)
-      letI : FiniteDimensional vK.Completion EL :=
+      let : FiniteDimensional vK.Completion EL :=
         AlgebraicNumberTheory.Valuations.localizedCompletionModuleFinite
           vK hvK wE
-      letI : IsAbelianGalois vK.Completion EL :=
+      let : IsAbelianGalois vK.Completion EL :=
         LocalClassFieldTheory.localizedCompletion_isAbelianGalois
           vK hvK wE
       let eDE :
@@ -318,56 +332,8 @@ theorem decompositionGroupEquivAlgebraicLocalizationAut_restrict_of_commutes
             ((eDE.symm
               (AlgEquiv.restrictNormalHom EL tauL)).1 :
                 E ≃ₐ[K] E) := by
-  let hEK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) wE.1
-  let : SMul K wE.1.Completion := hEK.toSMul
-  let : Algebra vK.Completion wE.1.Completion :=
-    AbsoluteValue.completionAlgebra vK wE.1 wE.2
-  let hLK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) wL.1
-  let : SMul K wL.1.Completion := hLK.toSMul
-  let : Algebra vK.Completion wL.1.Completion :=
-    AbsoluteValue.completionAlgebra vK wL.1 wL.2
-  let EL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wE
-  let LL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wL
-  change
-    ∀ localizationEmbedding : EL →ₐ[vK.Completion] LL, _
-  intro localizationEmbedding
-  let hELL : Algebra EL LL :=
-    localizationEmbedding.toRingHom.toAlgebra
-  let : SMul EL LL := hELL.toSMul
-  let : IsScalarTower vK.Completion EL LL :=
-    IsScalarTower.of_algebraMap_eq' (by
-      apply RingHom.ext
-      intro x
-      exact (localizationEmbedding.commutes x).symm)
-  let : FiniteDimensional vK.Completion EL :=
-    AlgebraicNumberTheory.Valuations.localizedCompletionModuleFinite
-      vK hvK wE
-  let : IsAbelianGalois vK.Completion EL :=
-    LocalClassFieldTheory.localizedCompletion_isAbelianGalois
-      vK hvK wE
-  let eDE :
-      absoluteValueDecompositionGroup K wE.1 ≃*
-        (EL ≃ₐ[vK.Completion] EL) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vK hvK wE
-  let eDL :
-      absoluteValueDecompositionGroup K wL.1 ≃*
-        (LL ≃ₐ[vK.Completion] LL) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vK hvK wL
-  change
-    (∀ z : E,
-      localizationEmbedding
-          (AbsoluteValue.toAlgebraicLocalization
-            vK wE.1 wE.2 z) =
-        AbsoluteValue.toAlgebraicLocalization
-          vK wL.1 wL.2 (algebraMap E L z)) →
-      ∀ tauL : LL ≃ₐ[vK.Completion] LL, _
-  intro hlocalization tauL
+  intro hEK sharedOwner2 sharedOwner3 hLK sharedOwner5 sharedOwner6 EL LL localizationEmbedding
+    hELL smulELL towerELL finiteEL abelianEL eDE eDL hlocalization tauL
   let rhoL : absoluteValueDecompositionGroup K wL.1 :=
     eDL.symm tauL
   let tauE := AlgEquiv.restrictNormalHom EL tauL
@@ -447,8 +413,9 @@ theorem decompositionGroupEquivAlgebraicLocalizationAut_restrict_of_commutes
           ((rhoE.1 : E ≃ₐ[K] E) z)) := by
             rw [hlocalization]
 
-private noncomputable def finitePlaceLocalRestrictionMonoidHom
-    {E : Type}
+/-- Restrict local automorphisms through an abelian intermediate field. -/
+noncomputable def finitePlaceLocalRestrictionMonoidHom
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]
@@ -461,22 +428,13 @@ private noncomputable def finitePlaceLocalRestrictionMonoidHom
         (K := K) (L := L) (E := E) v wL
     let EL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wE
     let LL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wL
-    letI : Algebra vK.Completion EL :=
+    let : Algebra vK.Completion EL :=
       finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := E) v wE
-    letI : Algebra vK.Completion LL :=
+    let : Algebra vK.Completion LL :=
       finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := L) v wL
     (LL ≃ₐ[vK.Completion] LL) →*
       (EL ≃ₐ[vK.Completion] EL) := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let wE :=
-    restrictFinitePlaceExtension
-      (K := K) (L := L) (E := E) v wL
-  let EL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wE
-  let LL := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wL
-  letI : Algebra vK.Completion EL :=
-    finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := E) v wE
-  letI : Algebra vK.Completion LL :=
-    finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := L) v wL
+  intro vK wE EL LL sharedOwner5 sharedOwner6
   let localizationAlgHom :=
     finitePlaceRestrictedLocalizedCompletionAlgHom
       (K := K) (L := L) (E := E) v wL
@@ -504,7 +462,7 @@ private noncomputable def finitePlaceLocalRestrictionMonoidHom
 restriction of the corresponding automorphisms of algebraic
 localizations, pointwise on local automorphisms. -/
 theorem finitePlaceDecompositionTransport_restrict_tower_apply
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]
@@ -572,7 +530,7 @@ theorem finitePlaceDecompositionTransport_restrict_tower_apply
 restriction of the corresponding automorphisms of algebraic
 localizations. -/
 theorem finitePlaceDecompositionTransport_restrict_tower
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]
@@ -632,7 +590,7 @@ theorem finitePlaceDecompositionTransport_restrict_tower
 /-- Local Artin maps on localized completions commute with restriction
 through an abelian intermediate field. -/
 theorem finitePlaceLocalArtinMonoidHom_restrict_tower
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]
@@ -692,15 +650,15 @@ theorem finitePlaceLocalArtinMonoidHom_restrict_tower
     finitePlaceCompletionUnitsContinuousMulEquiv v
   change
     (AlgEquiv.restrictNormalHom EL).comp
-        ((LocalClassFieldTheory.abelianLocalArtinMonoidHom
+        ((LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
           vK.Completion LL).comp eK.symm.toMonoidHom) =
-      (LocalClassFieldTheory.abelianLocalArtinMonoidHom
+      (LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
         vK.Completion EL).comp eK.symm.toMonoidHom
   apply MonoidHom.ext
   intro x
   exact
     DFunLike.congr_fun
-      (LocalClassFieldTheory.abelianLocalArtinMonoidHom_restrict_tower
+      (LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_restrict_tower
         vK.Completion EL LL)
       (eK.symm x)
 
@@ -708,7 +666,7 @@ theorem finitePlaceLocalArtinMonoidHom_restrict_tower
 /-- Finite-place Artin homomorphisms attached to specified place
 extensions commute with restriction through an abelian tower. -/
 theorem finitePlaceArtinMonoidHomOfExtension_restrict_tower
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]
@@ -785,7 +743,7 @@ theorem finitePlaceArtinMonoidHomOfExtension_restrict_tower
 /-- Finite local factors commute with restriction in an abelian
 number-field tower. -/
 theorem chosenFinitePlaceArtinMonoidHom_restrict_tower
-    {E : Type}
+    {E : Type uE}
     [Field E] [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
     [FiniteDimensional K E] [IsAbelianGalois K E]

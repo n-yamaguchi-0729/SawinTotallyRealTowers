@@ -4,14 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
-import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientReps
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientReps
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 
 /-! Provides the public declarations in the
 `CyclicCohomology.Herbrand.PrincipalUnits.QuotientTower` Lean module. -/
 
+
+@[expose] public section
 
 namespace CyclicCohomology
 
@@ -19,7 +24,7 @@ open LocalFieldTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 open scoped ValuativeRel
 
@@ -270,7 +275,7 @@ theorem integerUnitsModPrincipalUnitsSuccMap_eq_one_iff_exists
 /-- Integral-closure Galois action on the finite quotient
 `𝒪_Lˣ/U_L^n`. -/
 def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -283,7 +288,7 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure
 /-- The Galois-induced quotient equivalence acts on a class through its representative. -/
 @[simp]
 theorem galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure_mk
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -299,7 +304,7 @@ theorem galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure_mk
 /-- Integral-closure Galois action on finite principal-unit
 quotients as a group homomorphism. -/
 def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -348,7 +353,7 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure
 quotients, packaged for low-degree Herbrand quotients. -/
 @[implicit_reducible]
 def galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -383,7 +388,7 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosu
 
 /-- The Galois action on integer units modulo principal units is induced on representatives. -/
 theorem galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure_smul
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -396,21 +401,19 @@ theorem galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralC
 /-- The successive finite-principal-unit quotient map is equivariant for the
 integral-closure Galois actions. -/
 theorem integerUnitsModPrincipalUnitsSuccMap_galoisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) (σ : Gal(L/K))
     (x : IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) :
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L (n + 1)
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L n
     integerUnitsModPrincipalUnitsSuccMap L n (σ • x) =
       σ • integerUnitsModPrincipalUnitsSuccMap L n x := by
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
-    K L (n + 1)
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+  intro sharedOwner1 sharedOwner2
   refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn (n + 1)
     (motive := fun x =>
       integerUnitsModPrincipalUnitsSuccMap L n (σ • x) =
@@ -427,19 +430,17 @@ theorem integerUnitsModPrincipalUnitsSuccMap_galoisGroup_of_isIntegralClosure
 /-- The kernel-source map `U_L^n/U_L^(n+1) → 𝒪_Lˣ/U_L^(n+1)` is equivariant
 for the integral-closure Galois actions. -/
 theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_galoisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) (σ : Gal(L/K)) (x : PrincipalUnitsSuccQuot L n) :
-    letI := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
+    let := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L (n + 1)
     principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc L n (σ • x) =
       σ • principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc L n x := by
-  let := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
-    K L (n + 1)
+  intro sharedOwner1 sharedOwner2
   refine PrincipalUnitsSuccQuot.inductionOn n
     (motive := fun x =>
       principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc L n (σ • x) =
@@ -519,30 +520,30 @@ theorem integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalFiel
 
 /-- Actual `H⁰` finiteness for the finite quotient `𝒪_Lˣ/U_L^n`. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_herbrandH0_finite_of_isNonarchimedeanLocalField
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     [Fintype (Gal(L/K))] (n : Nat) :
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
       (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := by
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+  intro sharedOwner1
   let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
     integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
   infer_instance
 
 /-- Actual `H^{-1}` finiteness for the finite quotient `𝒪_Lˣ/U_L^n`. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_herbrandHMinusOne_finite_of_isNonarchimedeanLocalField
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     [Fintype (Gal(L/K))] (n : Nat) (σ : Gal(L/K)) :
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
       (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := by
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+  intro sharedOwner1
   let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
     integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
   infer_instance
@@ -550,20 +551,18 @@ theorem integerUnitsModPrincipalUnitsAtLevel_herbrandHMinusOne_finite_of_isNonar
 /-- Actual finite-cyclic-module endpoint for the finite quotient
 `𝒪_Lˣ/U_L^n`. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_herbrandQuotient_eq_one_of_isNonarchimedeanLocalField
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     [Fintype (Gal(L/K))] (n : Nat) (σ : Gal(L/K))
     (hgen : ∀ g : Gal(L / K), g ∈ Subgroup.zpowers σ) :
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-    letI : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
       integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
     CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
       (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ = 1 := by
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-  let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
-    integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
+  intro sharedOwner1 sharedOwner2
   exact CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient_finite_module_eq_one
     (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ hgen
 
@@ -571,7 +570,7 @@ theorem integerUnitsModPrincipalUnitsAtLevel_herbrandQuotient_eq_one_of_isNonarc
 quotient tower
 `U_L^n/U_L^(n+1) → 𝒪_Lˣ/U_L^(n+1) → 𝒪_Lˣ/U_L^n`. -/
 theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_of_isIntegralClosure
-    (K L : Type) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -605,21 +604,21 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_
         K L n
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
         (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ)) :
-    letI := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
+    let := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L (n + 1)
-    letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-    letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
+    let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
+    let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
         (Gal(L / K)) (PrincipalUnitsSuccQuot L n)) := hA0
-    letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
+    let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
         (Gal(L / K)) (PrincipalUnitsSuccQuot L n) σ) := hAm
-    letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
+    let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
         (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))) := hB0
-    letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
+    let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
         (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ) := hBm
-    letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
+    let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
         (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := hC0
-    letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
+    let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
         (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := hCm
     CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
         (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ =
@@ -627,22 +626,8 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_
           (G := Gal(L / K)) (A := PrincipalUnitsSuccQuot L n) σ *
         CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
           (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ := by
-  let := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
-    K L (n + 1)
-  let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-  let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-      (Gal(L / K)) (PrincipalUnitsSuccQuot L n)) := hA0
-  let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-      (Gal(L / K)) (PrincipalUnitsSuccQuot L n) σ) := hAm
-  let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))) := hB0
-  let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ) := hBm
-  let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := hC0
-  let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := hCm
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6
+    sharedOwner7 sharedOwner8 sharedOwner9
   exact CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient_exact_multiplicative
     (G := Gal(L / K))
     (A := PrincipalUnitsSuccQuot L n)
@@ -668,7 +653,7 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_
 /-- If the graded quotient and the previous finite quotient both have Herbrand
 quotient `1`, the next finite quotient has Herbrand quotient `1`. -/
 theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_eq_one_of_isIntegralClosure
-    (K L : Type) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.CofinalityAndDensity
+module
+
+public import Nyll.ProCGroups.InverseSystems.CofinalityAndDensity
 
 /-!
 # Inverse systems formed from projection images
@@ -14,6 +16,8 @@ This module constructs the comparison lift, proves reconstruction for closed sub
 Hausdorff systems, and derives closure and equality criteria from stagewise images.  It also
 handles systems whose transition maps are surjective by identifying their projection images.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology

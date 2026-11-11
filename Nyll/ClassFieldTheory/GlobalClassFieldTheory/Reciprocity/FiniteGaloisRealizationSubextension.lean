@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationCore
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationCore
 
 /-!
 # The finite Galois subextension attached to a number-field tower
@@ -16,6 +18,10 @@ normality, and finite-index data for abstract reciprocity.
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 open scoped NumberField
 open NumberField
@@ -32,7 +38,7 @@ open LocalClassFieldTheory
 open RamificationTheory
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
@@ -174,31 +180,24 @@ theorem
       letI : Algebra K (SeparableClosure ℚ) :=
         numberFieldTowerSeparableClosureBaseAlgebra K L
       Gal(SeparableClosure ℚ / K)) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
-    letI :=
+    let :=
       numberFieldTowerExtensionSubgroup_normal K L
     numberFieldTowerExtensionQuotientEquivGaloisGroup K L
         (QuotientGroup.mk
           (numberFieldTowerSeparableClosureEquivBaseSubgroup
             K L σ)) =
       AlgEquiv.restrictNormalHom L σ := by
+  intro baseClosureAlgebra topClosureAlgebra closureScalarTower extensionNormal
   let j :=
     numberFieldSeparableClosureEmbedding L
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
   let e :=
     numberFieldTowerSeparableClosureEquiv K L
-  let :=
-    numberFieldTowerExtensionSubgroup_normal K L
   apply AlgEquiv.ext
   intro x
   apply j.injective
@@ -231,7 +230,7 @@ namespace Reciprocity
 open ClassFormation
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L]
 

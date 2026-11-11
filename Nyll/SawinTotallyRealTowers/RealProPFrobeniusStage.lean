@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProPFrobenius
-import Nyll.SawinTotallyRealTowers.FinitePlaceFrobenius
-import Nyll.SawinTotallyRealTowers.FinitePlaceDecompositionSplit
-import Nyll.SawinTotallyRealTowers.RealProPDepthStage
-import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
-import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
-import Nyll.ProCGroups.ProP.Zassenhaus.Depth
-import Nyll.ProCGroups.FiniteGeneration.Basic
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProPFrobenius
+public import Nyll.SawinTotallyRealTowers.FinitePlaceFrobenius
+public import Nyll.SawinTotallyRealTowers.FinitePlaceDecompositionSplit
+public import Nyll.SawinTotallyRealTowers.RealProPDepthStage
+public import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
+public import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
+public import Nyll.ProCGroups.ProP.Zassenhaus.Depth
+public import Nyll.ProCGroups.FiniteGeneration.Basic
 
 /-!
 # Split finite stages and deep arithmetic Frobenius lifts
@@ -21,6 +23,8 @@ The actual arithmetic Frobenius is represented by an absolute decomposition
 element. Complete splitting makes its finite-stage restriction trivial,
 so the constructed depth-detecting stage supplies a deep source lift.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

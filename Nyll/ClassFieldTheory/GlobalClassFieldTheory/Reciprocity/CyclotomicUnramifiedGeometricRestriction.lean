@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedRestriction
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedRestriction
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # Geometric restriction from the cyclotomic unramified field
@@ -21,6 +26,8 @@ infinite global Artin map is the ordinary finite global Artin map.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NumberField
 
@@ -200,16 +207,7 @@ noncomputable def
         ℚ (SeparableClosure ℚ)
         (rationalCyclotomicFieldInertia_le H.field)
     E →ₐ[F] U := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
-  let U :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ)
-      (rationalCyclotomicFieldInertia_le H.field)
+  intro F E U
   let j : E →ₐ[ℚ] U :=
     IntermediateField.inclusion
       (abstractFixedFieldCyclotomicFiniteUnramifiedField_le
@@ -287,29 +285,14 @@ theorem
       abstractRelativeFixedField
         ℚ (SeparableClosure ℚ)
         (rationalCyclotomicFieldInertia_le H.field)
-    letI _ : Algebra E U :=
+    let _ : Algebra E U :=
       abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
         H L hUnramified
-    letI _ : SMul E U :=
+    let _ : SMul E U :=
       abstractFixedFieldCyclotomicFiniteUnramifiedInclusionSMul
         H L hUnramified
     IsScalarTower F E U := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
-  let U :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ)
-      (rationalCyclotomicFieldInertia_le H.field)
-  let _ : Algebra E U :=
-    abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
-      H L hUnramified
-  let _ : SMul E U :=
-    abstractFixedFieldCyclotomicFiniteUnramifiedInclusionSMul
-      H L hUnramified
+  intro F E U reusedStructure4 reusedStructure5
   exact IsScalarTower.of_algHom
     (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
       H L hUnramified)
@@ -472,10 +455,10 @@ private theorem cyclotomicUnramifiedGeometricRestriction_mk
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) L.below
     let U := abstractRelativeFixedField ℚ (SeparableClosure ℚ)
       (rationalCyclotomicFieldInertia_le H.field)
-    letI _ : Algebra E U :=
+    let _ : Algebra E U :=
       abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
         H L hUnramified
-    letI _ : @IsScalarTower F E U
+    let _ : @IsScalarTower F E U
         Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
       IsScalarTower.of_algHom
         (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
@@ -490,19 +473,8 @@ private theorem cyclotomicUnramifiedGeometricRestriction_mk
       AlgEquiv.restrictNormalHom E
         ((cyclotomicUnramifiedGeometricMaxQuotientEquiv H)
           (QuotientGroup.mk τ)) := by
-  dsimp only
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) L.below
+  intro F E U inclusionAlgebra inclusionTower
   let hI := rationalCyclotomicFieldInertia_le H.field
-  let U := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hI
-  let _ : Algebra E U :=
-    abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
-      H L hUnramified
-  let _ : @IsScalarTower F E U
-      Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
-    IsScalarTower.of_algHom
-      (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
-        H L hUnramified)
   let qMax := cyclotomicUnramifiedGeometricMaxQuotientEquiv H
   let qInertia := cyclotomicUnramifiedGeometricInertiaQuotientEquiv H
   let qFinite := cyclotomicUnramifiedGeometricFiniteQuotientEquiv H L
@@ -654,201 +626,21 @@ theorem
       H L hUnramified
       ((cyclotomicUnramifiedGeometricMaxQuotientEquiv H).symm σ))
 
-/-- Restriction of the infinite Artin map along a finite abelian embedding.
-
-The field-range coordinate is constructed only over abstract type variables.
-This keeps concrete fixed-field terms out of definitional equality while the
-two existing finite-coordinate compatibility theorems are composed. -/
-private theorem
-    restrictNormalHom_infiniteGlobalArtinMonoidHom_of_tower
+/-- Compose an already proved finite restriction computation with Artin
+compatibility while all three fields remain abstract. -/
+private theorem finiteRestriction_infiniteGlobalArtinMonoidHom_of_tower
     (K E Ω : Type) [Field K] [NumberField K]
     [Field E] [NumberField E] [Algebra K E]
     [IsAbelianGalois K E]
     [Field Ω] [Algebra K Ω] [Algebra E Ω]
     [IsScalarTower K E Ω] [IsAbelianGalois K Ω]
+    (r : (Ω ≃ₐ[K] Ω) →* (E ≃ₐ[K] E))
+    (hr : r = AlgEquiv.restrictNormalHom E)
     (a : IdeleGroup K) :
-    AlgEquiv.restrictNormalHom E
-        (infiniteGlobalArtinMonoidHom K Ω a) =
-      globalArtinMonoidHom (K := K) (L := E) a := by
-  let j : E →ₐ[K] Ω := IsScalarTower.toAlgHom K E Ω
-  let G : FiniteGaloisIntermediateField K Ω :=
-    { toIntermediateField := j.fieldRange
-      finiteDimensional :=
-        j.equivFieldRange.toLinearEquiv.finiteDimensional
-      isGalois := IsGalois.of_algEquiv j.equivFieldRange }
-  let _ : FiniteDimensional K G := G.finiteDimensional
-  let _ : NumberField G :=
-    NumberField.of_module_finite K G
-  let _ : IsAbelianGalois K G :=
-    IsAbelianGalois.of_algHom G.toIntermediateField.val
-  let _ : Algebra E G :=
-    j.equivFieldRange.toRingHom.toAlgebra
-  let _ : SMul E G := Algebra.toSMul
-  let _ : IsScalarTower K E G :=
-    IsScalarTower.of_algHom j.equivFieldRange.toAlgHom
-  let _ : IsScalarTower K G Ω :=
-    IntermediateField.isScalarTower_mid G.toIntermediateField
-  let _ : IsScalarTower E G Ω :=
-    IsScalarTower.of_algebraMap_eq fun _ => rfl
-  have hProjection :
-      AlgEquiv.restrictNormalHom G
-          (infiniteGlobalArtinMonoidHom K Ω a) =
-        globalArtinMonoidHom (K := K) (L := G) a :=
-    restrictNormalHom_infiniteGlobalArtinMonoidHom K Ω a G
-  calc
-    AlgEquiv.restrictNormalHom E
-          (infiniteGlobalArtinMonoidHom K Ω a) =
-        AlgEquiv.restrictNormalHom E
-          (AlgEquiv.restrictNormalHom G
-            (infiniteGlobalArtinMonoidHom K Ω a)) :=
-      IsScalarTower.AlgEquiv.restrictNormalHom_comp_apply E G
-        (infiniteGlobalArtinMonoidHom K Ω a)
-    _ = AlgEquiv.restrictNormalHom E
-          (globalArtinMonoidHom (K := K) (L := G) a) :=
-      congrArg (AlgEquiv.restrictNormalHom E) hProjection
-    _ = globalArtinMonoidHom (K := K) (L := E) a :=
-      DFunLike.congr_fun
-        (globalArtinMonoidHom_restrict_tower
-          (K := K) (L := G) (E := E)) a
-
-/-- Pointwise form of restriction compatibility for the infinite Artin map.
-This hides the equality of large automorphism structures before specializing
-to concrete fixed fields. -/
-private theorem
-    restrictNormalHom_infiniteGlobalArtinMonoidHom_apply_of_tower
-    (K E Ω : Type) [Field K] [NumberField K]
-    [Field E] [NumberField E] [Algebra K E]
-    [IsAbelianGalois K E]
-    [Field Ω] [Algebra K Ω] [Algebra E Ω]
-    [IsScalarTower K E Ω] [IsAbelianGalois K Ω]
-    (a : IdeleGroup K) (x : E) :
-    AlgEquiv.restrictNormalHom E
-        (infiniteGlobalArtinMonoidHom K Ω a) x =
-      globalArtinMonoidHom (K := K) (L := E) a x := by
-  exact DFunLike.congr_fun
-    (restrictNormalHom_infiniteGlobalArtinMonoidHom_of_tower K E Ω a) x
-
-/-- After embedding the finite field into the overfield, pointwise restriction
-compatibility is an equality in the common ambient field. -/
-private theorem
-    algebraMap_restrictNormalHom_infiniteGlobalArtinMonoidHom_apply_of_tower
-    (K E Ω : Type) [Field K] [NumberField K]
-    [Field E] [NumberField E] [Algebra K E]
-    [IsAbelianGalois K E]
-    [Field Ω] [Algebra K Ω] [Algebra E Ω]
-    [IsScalarTower K E Ω] [IsAbelianGalois K Ω]
-    (a : IdeleGroup K) (x : E) :
-    algebraMap E Ω
-        (AlgEquiv.restrictNormalHom E
-          (infiniteGlobalArtinMonoidHom K Ω a) x) =
-      algebraMap E Ω
-        (globalArtinMonoidHom (K := K) (L := E) a x) := by
-  exact congrArg (algebraMap E Ω)
-    (restrictNormalHom_infiniteGlobalArtinMonoidHom_apply_of_tower
-      K E Ω a x)
-
-/-- Genuine restriction from the cyclotomic unramified overfield carries the
-infinite Artin symbol to the finite Artin symbol. -/
-private theorem
-    abstractFixedFieldCyclotomicRestrictNormalHom_infiniteGlobalArtinMonoidHom
-    (H : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension H.field)
-    (hUnramified :
-      L.toFiniteGaloisExtension.IsUnramified
-        rationalCyclotomicDegreeData)
-    (a : IdeleGroup
-      (abstractFixedField ℚ (SeparableClosure ℚ) H.field)) :
-    let F :=
-      abstractFixedField ℚ (SeparableClosure ℚ) H.field
-    let E :=
-      abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below
-    let U :=
-      abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ)
-        (rationalCyclotomicFieldInertia_le H.field)
-    letI _ : NumberField F :=
-      cyclotomicUnramifiedGeometricBaseNumberField H
-    letI _ : NumberField E :=
-      cyclotomicUnramifiedGeometricRelativeNumberField H L
-    letI _ : Algebra F E := E.algebra'
-    letI _ : Algebra F U := U.algebra'
-    letI _ : IsAbelianGalois F E :=
-      cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-    letI _ : IsAbelianGalois F U :=
-      cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-    letI _ : Algebra E U :=
-      abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
-        H L hUnramified
-    letI _ : @IsScalarTower F E U
-        Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
-      IsScalarTower.of_algHom
-        (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
-          H L hUnramified)
-    AlgEquiv.restrictNormalHom E
-        (infiniteGlobalArtinMonoidHom F U a) =
-      globalArtinMonoidHom (K := F) (L := E) a := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
-  let U :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ)
-      (rationalCyclotomicFieldInertia_le H.field)
-  let fNumberField : NumberField F :=
-    cyclotomicUnramifiedGeometricBaseNumberField H
-  let eNumberField : NumberField E :=
-    cyclotomicUnramifiedGeometricRelativeNumberField H L
-  let fEAlgebra : Algebra F E := E.algebra'
-  let fUAlgebra : Algebra F U := U.algebra'
-  let fEIsAbelianGalois : IsAbelianGalois F E :=
-    cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-  let fUIsAbelianGalois : IsAbelianGalois F U :=
-    cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-  let eUAlgebra : Algebra E U :=
-    abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
-      H L hUnramified
-  let fEUTower : @IsScalarTower F E U
-      Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
-    IsScalarTower.of_algHom
-      (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
-        H L hUnramified)
-  apply AlgEquiv.ext
-  intro x
-  apply Subtype.ext
-  have hAmbient :=
-    @algebraMap_restrictNormalHom_infiniteGlobalArtinMonoidHom_apply_of_tower
-      F E U
-      (inferInstance : Field F) fNumberField
-      (inferInstance : Field E) eNumberField fEAlgebra
-      fEIsAbelianGalois
-      (inferInstance : Field U) fUAlgebra eUAlgebra
-      fEUTower fUIsAbelianGalois
-      a x
-  have hAmbientVal := congrArg
-    (fun y : U => (y : SeparableClosure ℚ))
-    hAmbient
-  have hLeft :
-      ((algebraMap E U
-          ((AlgEquiv.restrictNormalHom E
-            (infiniteGlobalArtinMonoidHom F U a)) x) : U) :
-        SeparableClosure ℚ) =
-        (((AlgEquiv.restrictNormalHom E
-          (infiniteGlobalArtinMonoidHom F U a)) x : E) :
-          SeparableClosure ℚ) := by
-    rfl
-  have hRight :
-      ((algebraMap E U
-          ((globalArtinMonoidHom (K := F) (L := E) a) x) : U) :
-        SeparableClosure ℚ) =
-        (((globalArtinMonoidHom (K := F) (L := E) a) x : E) :
-          SeparableClosure ℚ) := by
-    rfl
-  rw [← hLeft, hAmbientVal, hRight]
+    r (infiniteGlobalArtinMonoidHom K Ω a) =
+      globalArtinMonoidHom (K := K) (L := E) a :=
+  (DFunLike.congr_fun hr (infiniteGlobalArtinMonoidHom K Ω a)).trans
+    (restrictNormalHom_infiniteGlobalArtinMonoidHom_of_scalarTower K E Ω a)
 
 /-- Applying the geometric finite restriction to the infinite global
 Artin symbol gives the ordinary finite global Artin symbol. -/
@@ -871,20 +663,23 @@ theorem
       abstractRelativeFixedField
         ℚ (SeparableClosure ℚ)
         (rationalCyclotomicFieldInertia_le H.field)
-    letI _ : NumberField F :=
+    let : Field F := IntermediateField.toField F
+    let : Field E := IntermediateField.toField E
+    let : Field U := IntermediateField.toField U
+    let _ : NumberField F :=
       cyclotomicUnramifiedGeometricBaseNumberField H
-    letI _ : NumberField E :=
+    let _ : NumberField E :=
       cyclotomicUnramifiedGeometricRelativeNumberField H L
-    letI _ : Algebra F E := E.algebra'
-    letI _ : Algebra F U := U.algebra'
-    letI _ : IsAbelianGalois F E :=
+    let _ : Algebra F E := E.algebra'
+    let _ : Algebra F U := U.algebra'
+    let _ : IsAbelianGalois F E :=
       cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-    letI _ : IsAbelianGalois F U :=
+    let _ : IsAbelianGalois F U :=
       cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-    letI _ : Algebra E U :=
+    let _ : Algebra E U :=
       abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
         H L hUnramified
-    letI _ : @IsScalarTower F E U
+    let _ : @IsScalarTower F E U
         Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
       IsScalarTower.of_algHom
         (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
@@ -893,51 +688,19 @@ theorem
         H L hUnramified
         (infiniteGlobalArtinMonoidHom F U a) =
       globalArtinMonoidHom (K := F) (L := E) a := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
-  let U :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ)
-      (rationalCyclotomicFieldInertia_le H.field)
-  let fNumberField : NumberField F :=
-    cyclotomicUnramifiedGeometricBaseNumberField H
-  let eNumberField : NumberField E :=
-    cyclotomicUnramifiedGeometricRelativeNumberField H L
-  let fEAlgebra : Algebra F E := E.algebra'
-  let fUAlgebra : Algebra F U := U.algebra'
-  let fEIsAbelianGalois : IsAbelianGalois F E :=
-    cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-  let fUIsAbelianGalois : IsAbelianGalois F U :=
-    cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-  let eUAlgebra : Algebra E U :=
-    abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
+  intro F E U fField eField uField fNumberField eNumberField fEAlgebra fUAlgebra
+    fEIsAbelianGalois fUIsAbelianGalois eUAlgebra fEUTower
+  let restriction : (U ≃ₐ[F] U) →* (E ≃ₐ[F] E) :=
+    abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom H L hUnramified
+  have restriction_eq : restriction = AlgEquiv.restrictNormalHom E :=
+    abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom_eq_restrictNormalHom
       H L hUnramified
-  let fEUTower : @IsScalarTower F E U
-      Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
-    IsScalarTower.of_algHom
-      (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
-        H L hUnramified)
-  apply AlgEquiv.ext
-  intro x
-  have hRestrictionValue := DFunLike.congr_fun
-    (DFunLike.congr_fun
-      (abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom_eq_restrictNormalHom
-        H L hUnramified)
-      (infiniteGlobalArtinMonoidHom
-        (abstractFixedField ℚ (SeparableClosure ℚ) H.field)
-        (abstractRelativeFixedField ℚ (SeparableClosure ℚ)
-          (rationalCyclotomicFieldInertia_le H.field))
-        a))
-    x
-  have hArtinValue := DFunLike.congr_fun
-    (abstractFixedFieldCyclotomicRestrictNormalHom_infiniteGlobalArtinMonoidHom
-      H L hUnramified a)
-    x
-  exact hRestrictionValue.trans hArtinValue
+  exact @finiteRestriction_infiniteGlobalArtinMonoidHom_of_tower
+    F E U
+    fField fNumberField
+    eField eNumberField fEAlgebra fEIsAbelianGalois
+    uField fUAlgebra eUAlgebra fEUTower fUIsAbelianGalois
+    restriction restriction_eq a
 
 end Reciprocity
 end GlobalClassFieldTheory

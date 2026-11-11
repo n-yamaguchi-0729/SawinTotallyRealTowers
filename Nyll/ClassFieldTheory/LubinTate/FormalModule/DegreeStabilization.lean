@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveCoefficient
-import Mathlib.RingTheory.MvPowerSeries.Trunc
+module
+
+public import Mathlib.RingTheory.MvPowerSeries.Basic
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveCoefficient
+public import Mathlib.RingTheory.MvPowerSeries.Trunc
 
 /-!
 # Finite-degree stabilization for Lubin--Tate intertwining defects
@@ -24,6 +27,8 @@ truncation of the outer series.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -199,7 +204,8 @@ private theorem degree_le_order_monomial_stabilization
     (d.degree : ℕ∞) ≤ (MvPowerSeries.monomial d c).order := by
   classical
   by_cases hc : c = 0
-  · simp [hc]
+  · rw [hc, map_zero, MvPowerSeries.order_zero]
+    exact le_top
   · rw [MvPowerSeries.order_monomial_of_ne_zero hc]
 
 private theorem natCast_le_order_pow_of_one_le_order_stabilization
@@ -540,8 +546,7 @@ private theorem coeff_subst_linearInVariableStabilization_monomial
             σ → MvPowerSeries σ F.valuationSubring)) =
         linearInVariableStabilization (σ := σ) π := by
     funext i
-    simp [linearInVariableStabilization, Pi.smul_apply',
-      MvPowerSeries.smul_eq_C_mul]
+    exact MvPowerSeries.smul_eq_C_mul _ _
   rw [← hlinear, ← MvPowerSeries.rescale_eq_subst,
     MvPowerSeries.coeff_rescale]
   by_cases hqd : q = d
@@ -640,7 +645,7 @@ private theorem coeff_pow_add_monomial_sub_pow_of_degree_le
         constantCoeff_monomial_eq_zero_stabilization hd0 c
       have hAconstant :
           MvPowerSeries.constantCoeff A = 0 := by
-        simp [A, hH, hMconstant]
+        simp only [A, map_add, hH, hMconstant, add_zero]
       have hHorder : (1 : ℕ∞) ≤ H.order :=
         MvPowerSeries.one_le_order_iff_constCoeff_eq_zero.mpr hH
       have hAorder : (1 : ℕ∞) ≤ A.order :=
@@ -722,7 +727,7 @@ private theorem coeff_subst_lubinTateSeries_add_monomial_of_degree_le
       PowerSeries.HasSubst
         (H + MvPowerSeries.monomial d c) :=
     PowerSeries.HasSubst.of_constantCoeff_zero (by
-      simp [hH, hMconstant])
+      simp only [map_add, hH, hMconstant, add_zero])
   have hHsubst : PowerSeries.HasSubst H :=
     PowerSeries.HasSubst.of_constantCoeff_zero hH
   let oldTerm : ℕ → F.valuationSubring := fun n =>
@@ -742,7 +747,7 @@ private theorem coeff_subst_lubinTateSeries_add_monomial_of_degree_le
     simp only [Set.mem_singleton_iff]
     by_contra hne
     apply hn
-    simp [deltaTerm, hne]
+    simp only [deltaTerm, ite_eq_right hne, smul_zero]
   rw [
     PowerSeries.coeff_subst hnewSubst e.toPowerSeries q,
     PowerSeries.coeff_subst hHsubst e.toPowerSeries q]
@@ -764,9 +769,12 @@ private theorem coeff_subst_lubinTateSeries_add_monomial_of_degree_le
           (if q = d then c else 0) := by
       congr 1
       rw [finsum_eq_single _ 1]
-      · simp [deltaTerm, smul_eq_mul]
+      · change
+          PowerSeries.coeff 1 e.toPowerSeries • (if q = d then c else 0) =
+            PowerSeries.coeff 1 e.toPowerSeries * (if q = d then c else 0)
+        exact smul_eq_mul (PowerSeries.coeff 1 e.toPowerSeries) (if q = d then c else 0)
       · intro n hn
-        simp [deltaTerm, hn]
+        simp only [deltaTerm, ite_eq_right hn, smul_zero]
     _ = (∑ᶠ n : ℕ, oldTerm n) +
         π * (if q = d then c else 0) := by
       rw [LubinTateSeries.coeff_one_eq_uniformizer]
@@ -806,7 +814,7 @@ private theorem coeff_defect_add_monomial_eq_of_degree_le_constantCoeff [Finite 
           rw [pow_succ, mul_comm]
     rw [hpow]
     ring
-  · simp [hqd]
+  · simp only [ite_eq_right hqd, mul_zero, add_zero]
 
 /-- Adding a monomial of degree `d.degree` changes no defect coefficient in
 lower total degree and changes the same-degree block only in the `d`
@@ -863,7 +871,7 @@ private theorem coeff_defect_sum_linear_monomials_eq_zero [Finite σ]
             (0 : MvPowerSeries σ F.valuationSubring) = 0 := by
         rw [← MvPowerSeries.substAlgHom_apply
           (inVariable_hasSubst ebar), map_zero]
-      simp [defect, hleft, hright]
+      simp only [defect, hleft, hright, sub_self, map_zero]
   | @insert i s hi ih =>
       rw [Finset.sum_insert hi, add_comm]
       have hconstant :

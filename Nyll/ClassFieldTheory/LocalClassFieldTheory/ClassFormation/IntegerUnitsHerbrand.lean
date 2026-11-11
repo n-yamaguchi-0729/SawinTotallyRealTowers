@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient
 
 /-!
 # The Herbrand quotient of the integer-unit group
@@ -21,6 +23,8 @@ has the actual `Gal(L / K)` actions.  Vanishing of the two low-degree
 Herbrand groups of `V`, together with finiteness of the quotient, gives
 `h(G, 𝒪_Lˣ) = 1` by the Herbrand-quotient multiplicativity theorem.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -48,9 +52,9 @@ the actual actions used in the local class-field-axiom argument. -/
 theorem chosenNormalBasisIntegerUnitsHerbrand_shortExact
     (n : Nat) (V : Subgroup 𝒪[L]ˣ)
     (hV : (V : Set 𝒪[L]ˣ) = chosenNormalBasisPrincipalUnitSet K L n) :
-    letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
+    let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
     (∀ (sigma : Gal(L / K)) (a : V),
         chosenNormalBasisPrincipalUnitSubgroupInclusion (L := L) V (sigma • a) =
           sigma • chosenNormalBasisPrincipalUnitSubgroupInclusion (L := L) V a) ∧
@@ -65,9 +69,7 @@ theorem chosenNormalBasisIntegerUnitsHerbrand_shortExact
         (chosenNormalBasisPrincipalUnitSubgroupInclusion (L := L) V) ∧
       Function.Surjective
         (chosenNormalBasisIntegerUnitsQuotientMap (L := L) V) := by
-  let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   refine ⟨chosenNormalBasisPrincipalUnitSubgroupInclusion_equivariant K L n V hV,
     chosenNormalBasisIntegerUnitsQuotientMap_equivariant K L n V hV, ?_,
     chosenNormalBasisPrincipalUnitSubgroupInclusion_injective (L := L) V,
@@ -107,16 +109,14 @@ theorem integerUnits_herbrandQuotient_eq_one_of_chosenNormalBasis
     (hHminusOne :
       letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
       Subsingleton (HerbrandHMinusOne (Gal(L / K)) V g)) :
-    letI := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
+    let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
     ∃ hU : HerbrandQuotientDefined (Gal(L / K)) 𝒪[L]ˣ g,
       @herbrandQuotient (Gal(L / K)) 𝒪[L]ˣ _ _ _
         (galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L)
         g hU.1 hU.2 = 1 := by
-  let := chosenNormalBasisPrincipalUnitSubgroupMulDistribMulAction K L n V hV
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := chosenNormalBasisIntegerUnitsQuotMulDistribMulAction K L n V hV
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   let : Finite (𝒪[L]ˣ ⧸ V) := hfinite
   let : Subsingleton (HerbrandH0 (Gal(L / K)) V) := hH0
   let : Subsingleton (HerbrandHMinusOne (Gal(L / K)) V g) := hHminusOne

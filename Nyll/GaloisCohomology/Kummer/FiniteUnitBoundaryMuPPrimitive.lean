@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.AbsoluteMuPTopRep
-import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
+module
+
+public import Nyll.GaloisCohomology.Kummer.AbsoluteMuPTopRep
+public import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
+public import Nyll.GaloisCohomology.Topology.AlgebraicGaloisOrbits
 
 /-!
 # Correcting finite unit boundaries to absolute roots-of-unity boundaries
@@ -19,22 +22,26 @@ The resulting absolute primitive is continuous: both finite restriction
 and the orbit map of the chosen algebraic root are locally constant.
 The statement uses the natural Galois action and does not assume that
 the base contains `mu_p` or that the finite Galois group is a `p`-group.
-No new instances are introduced.
+The algebraic orbit supplier applies in every characteristic.
 -/
+
+@[expose] public section
 
 open scoped Pointwise Topology
 
 noncomputable section
 
+universe u
+
 namespace ClassFieldTower.Martinet.Shafarevich
 
 open KummerTheory groupCohomology
 
-variable (K : Type) [Field K] [CharZero K]
+variable (K : Type u) [Field K]
 variable (p : ℕ) [Fact p.Prime]
 variable (E : FiniteGaloisIntermediateField K (AlgebraicClosure K))
 
-omit [CharZero K] [Fact p.Prime] in
+omit [Fact p.Prime] in
 private theorem finiteBoundary_power_isMulCocycle
     (c : Gal(E/K) → Gal(E/K) → nthRootsSubgroup E p)
     (b : Gal(E/K) → Eˣ)
@@ -48,27 +55,6 @@ private theorem finiteBoundary_power_isMulCocycle
   rw [smul_pow', AlgEquiv.smul_units_def]
   exact (div_eq_one.mp h).symm
 
-private theorem absoluteUnit_orbit_isLocallyConstant (u : (AlgebraicClosure K)ˣ) :
-    IsLocallyConstant (fun sigma : Gal(AlgebraicClosure K/K) => sigma • u) := by
-  rw [IsLocallyConstant.iff_exists_open]
-  intro sigma
-  let D := FiniteGaloisIntermediateField.adjoin K {(u : AlgebraicClosure K)}
-  let H : Set Gal(AlgebraicClosure K/K) := D.fixingSubgroup
-  refine ⟨sigma • H, (IntermediateField.fixingSubgroup_isOpen
-    D.toIntermediateField).leftCoset sigma, ?_, ?_⟩
-  · exact ⟨1, D.fixingSubgroup.one_mem, mul_one sigma⟩
-  · intro tau htau
-    rcases htau with ⟨h, hh, htau⟩
-    have hfix : h • u = u := by
-      apply Units.ext
-      exact ((IntermediateField.mem_fixingSubgroup_iff D.toIntermediateField h).mp hh)
-        (u : AlgebraicClosure K)
-        (FiniteGaloisIntermediateField.subset_adjoin K {(u : AlgebraicClosure K)}
-          (Set.mem_singleton _))
-    change sigma * h = tau at htau
-    rw [← htau, mul_smul, hfix]
-
-omit [CharZero K] in
 private theorem finiteUnitInclusion_restriction_smul
     (sigma : Gal(AlgebraicClosure K/K)) (u : Eˣ) :
     Units.map E.val.toMonoidHom
@@ -77,7 +63,6 @@ private theorem finiteUnitInclusion_restriction_smul
   apply Units.ext
   exact AlgEquiv.restrictNormal_commutes sigma E.toIntermediateField (u : E)
 
-omit [CharZero K] in
 private theorem exists_absoluteUnit_root (u : Eˣ) :
     ∃ v : (AlgebraicClosure K)ˣ,
       v ^ p = Units.map E.val.toMonoidHom u := by
@@ -136,7 +121,7 @@ theorem exists_absoluteMuP_primitive_of_finiteUnit_boundary
     (IsLocallyConstant.of_discrete (fun t : Gal(E/K) => i (b t))).comp_continuous
       (InfiniteGalois.restrictNormalHom_continuous E.toIntermediateField)
   have hqLC : IsLocallyConstant q :=
-    hbLC.div ((absoluteUnit_orbit_isLocallyConstant K v).div
+    hbLC.div ((GaloisCohomology.isLocallyConstant_galois_units (K := K) v).div
       (IsLocallyConstant.const v))
   have haLC : IsLocallyConstant a :=
     IsLocallyConstant.desc a (fun x : AbsoluteMuP K p => x.toMul.1)

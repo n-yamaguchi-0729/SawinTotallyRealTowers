@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
 /-!
 # Exact narrow finite conductor ray-class presentations
@@ -18,16 +21,20 @@ conductor ray-class presentations are maximal.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
+
+universe u
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
 open NumberField
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- Fix the canonical commutative structure used to infer normality of
 subgroups of the idèle class group in this module. -/

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.IntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianValuationExtension
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Defectless
-import Mathlib.RingTheory.RamificationInertia.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.IntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianValuationExtension
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Defectless
+public import Mathlib.RingTheory.RamificationInertia.Basic
 
 /-!
 # Finite valued extension consequences
@@ -18,6 +20,8 @@ canonical local-Dedekind degree formulas, uniqueness criteria for extended
 valuations, and the algebra equivalence identifying an actual integral-closure
 valuation ring with mathlib's `integralClosure`.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -178,12 +182,7 @@ theorem idealOfLE_comap_integralClosureValuationSubringIntegerMap_eq_maximalIdea
         (integralClosureValuationSubringIntegerMapOfMemOrInv
           (K := K) (L := L) base hval) =
       base.maximalIdeal := by
-  let B :=
-    integralClosureValuationSubringOfMemOrInv
-      (L := L) base.valuation hval
-  let hvL_le : B ≤ vL.valuationSubring :=
-    integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
-      (L := L) base.valuation vL hval
+  intro B hvL_le
   let i : base.valuationSubring →+* B :=
     integralClosureValuationSubringIntegerMapOfMemOrInv
       (K := K) (L := L) base hval
@@ -271,7 +270,7 @@ theorem prime_eq_maximalIdeal_of_comap_integralClosureValuationSubringIntegerMap
     obtain ⟨a, ha_max, ha_not_bot⟩ := Set.not_subset.mp hnot_le_bot
     have ha_ne_zero : a ≠ 0 := by
       intro ha
-      exact ha_not_bot (by simp [ha])
+      exact ha_not_bot (Ideal.mem_bot.mpr ha)
     intro hPbot
     have ha_comap : a ∈ P.comap i := by
       simpa [B, i, hcomap] using ha_max

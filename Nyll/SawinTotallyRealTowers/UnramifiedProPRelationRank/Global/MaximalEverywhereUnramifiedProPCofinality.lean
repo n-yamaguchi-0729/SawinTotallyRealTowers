@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPFiniteSupport
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPFiniteSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 
 /-!
 # Cofinality of finite everywhere-unramified pro-p extensions
@@ -13,6 +16,8 @@ For odd `p`, the bundled finite extensions are directed under binary
 compositum.  Compactness therefore upgrades finite support in the maximal
 compositum to containment in one bundled extension.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

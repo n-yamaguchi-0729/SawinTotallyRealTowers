@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualCore
-import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
-import Nyll.ProCGroups.ProC.Subgroups.Closed
-import Nyll.ProCGroups.Topologies.QuotientMaps
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualCore
+public import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ProCGroups.Topologies.QuotientMaps
 
 /-!
 # The pro-\(C\) residual quotient
@@ -18,6 +20,8 @@ pro-\(C\) targets kill the residual core and therefore factor uniquely through
 the residual quotient.  The file also proves functoriality of the core and its
 behaviour under continuous epimorphisms for full formations.
 -/
+
+@[expose] public section
 
 open Set
 

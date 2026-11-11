@@ -4,40 +4,43 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.QuadraticClosure
-import Nyll.SawinTotallyRealTowers.QuadraticFieldDiscriminant
-import Nyll.SawinTotallyRealTowers.RamificationSupport
-import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
-import Mathlib.Algebra.Algebra.Rat
-import Mathlib.Algebra.Group.Even
-import Mathlib.Data.Int.Basic
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Rat.Cast.Order
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.FieldTheory.KrullTopology
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
-import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Tactic.NormNum
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Order
+module
+
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.QuadraticClosure
+public import Nyll.SawinTotallyRealTowers.QuadraticFieldDiscriminant
+public import Nyll.SawinTotallyRealTowers.RamificationSupport
+public import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
+public import Mathlib.Algebra.Algebra.Rat
+public import Mathlib.Algebra.Group.Even
+public import Mathlib.Data.Int.Basic
+public import Mathlib.Data.Nat.Prime.Defs
+public import Mathlib.Data.Nat.Squarefree
+public import Mathlib.Data.Rat.Cast.Order
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.FieldTheory.KrullTopology
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Order
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # The quadratic character of negative three
@@ -48,6 +51,8 @@ Its discriminant proves that it kills finite inertia away from three. Its
 imaginary generator proves that its real Artin value is nontrivial. These
 properties provide a sign correction without changing inertia away from three.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -61,7 +66,8 @@ open GlobalClassFieldTheory.Reciprocity AlgebraicNumberTheory.Valuations
 
 -- Keep the canonical intermediate-field scalar structure generic until
 -- restriction and its finite cyclic coordinate have both been constructed.
-private def quadraticCharacterCoordinate (F : Type) [Field F]
+/-- The finite quadratic Galois group in the standard order-two coordinate. -/
+def quadraticCharacterCoordinate (F : Type) [Field F]
     (E : FiniteGaloisIntermediateField F (AlgebraicClosure F))
     (hd : Module.finrank F E = 2) :
     Gal(E/F) ≃* Multiplicative (ZMod 2) := by
@@ -70,7 +76,8 @@ private def quadraticCharacterCoordinate (F : Type) [Field F]
   · change Nat.card (ZMod 2) = 2
     exact Nat.card_zmod 2
 
-private def quadraticAbsoluteCharacter (F : Type) [Field F]
+/-- The continuous absolute character supplied by a quadratic intermediate field. -/
+def quadraticAbsoluteCharacter (F : Type) [Field F]
     (E : FiniteGaloisIntermediateField F (AlgebraicClosure F))
     (hd : Module.finrank F E = 2) :
     Field.absoluteGaloisGroup F →ₜ* Multiplicative (ZMod 2) := by
@@ -173,13 +180,14 @@ private theorem negativeThree_nonsquare : ¬ IsSquare (-3 : ℚ) := by
   have hNonneg := h.nonneg
   norm_num at hNonneg
 
-private abbrev negativeThreeField : FiniteGaloisIntermediateField ℚ (AlgebraicClosure ℚ) :=
-  quadraticClosure (-3 : ℚ) negativeThree_nonsquare
+/-- The actual quadratic intermediate field generated by a square root of negative three. -/
+abbrev negativeThreeField : FiniteGaloisIntermediateField ℚ (AlgebraicClosure ℚ) :=
+  quadraticClosure (-3 : ℚ) (by exact negativeThree_nonsquare)
 
 /-- The continuous quadratic character cut out by the actual field ℚ(√−3). -/
 def negativeThreeCharacter : Field.absoluteGaloisGroup ℚ →ₜ* Multiplicative (ZMod 2) :=
   quadraticAbsoluteCharacter ℚ negativeThreeField
-    (quadraticClosure_finrank (-3 : ℚ) negativeThree_nonsquare)
+    (by exact quadraticClosure_finrank (-3 : ℚ) negativeThree_nonsquare)
 
 /-- The character of negative three kills absolute inertia at every finite
 place other than the rational prime three, including the prime two. -/

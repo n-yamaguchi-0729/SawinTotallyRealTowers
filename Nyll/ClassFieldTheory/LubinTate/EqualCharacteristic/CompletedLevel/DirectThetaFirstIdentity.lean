@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaSeries
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaSeries
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
 
 /-!
 # First theta identity for the completed change of parameter
@@ -23,6 +25,8 @@ recursion.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -71,8 +75,8 @@ theorem equalCharacteristicDirectThetaAfterBracketCoefficient_zero
   rw [equalCharacteristicDirectThetaCoefficient_zero]
   simpa [equalCharacteristicDirectThetaAfterBracketCoefficient,
     equalCharacteristicQAdditiveCompositionCoefficient,
-    equalCharacteristicCompletedDirectBracketCoefficient,
-    mul_comm] using hsemi.symm
+    equalCharacteristicCompletedDirectBracketCoefficient] using
+    (mul_comm _ _).trans hsemi.symm
 
 /-- Since `[u]` is Frobenius-fixed and commutes with `e_T`, the composite
 `theta ∘ [u]` satisfies theta's direct Frobenius-intertwining equation. -/

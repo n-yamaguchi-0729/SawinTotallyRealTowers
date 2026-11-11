@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
 
 /-!
 # The maximal local Kummer pairing
@@ -18,6 +20,8 @@ the simple-extension definition of the local Hilbert symbol remains separate.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -25,7 +29,9 @@ namespace Kummer
 
 open KummerTheory LocalFieldTheory RamificationTheory
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 variable [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
@@ -49,9 +55,10 @@ noncomputable def maximalLocalKummerNormResidueAutomorphism
   letI : IsAbelianGalois K E :=
     kummerRadicalExtension_isAbelianGalois
       (K := K) (Omega := SeparableClosure K) n hmu Delta.1
-  exact abelianLocalArtinMonoidHom K E
+  exact Universe.abelianLocalArtinMonoidHom K E
 
-private noncomputable def maximalLocalKummerPairingSource
+/-- Evaluate the maximal Kummer character at a local Artin automorphism. -/
+noncomputable def maximalLocalKummerPairingSource
     (n : ℕ+) (hnK : ((n : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty) (a : Kˣ) :
     Kˣ →* nthRootsSubgroup (maximalLocalKummerExtension K n) (n : ℕ) := by

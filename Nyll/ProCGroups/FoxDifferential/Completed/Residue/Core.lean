@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferentialModule
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.CompletionMap
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferentialModule
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.CompletionMap
 
 /-!
 # Fox differential: completed — residue — core
@@ -23,6 +25,8 @@ The principal declarations in this module are:
 - `residueGroupRingBoundary_one`
   The residue Fox boundary vanishes at the identity.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

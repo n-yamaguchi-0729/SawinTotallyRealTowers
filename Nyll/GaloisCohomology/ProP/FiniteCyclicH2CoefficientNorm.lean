@@ -4,17 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCoefficientNorm
-import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.Algebra.Category.ModuleCat.EpiMono
-import Mathlib.Algebra.Group.Hom.Defs
-import Mathlib.Algebra.Homology.ShortComplex.Homology
-import Mathlib.Algebra.Module.Submodule.Ker
-import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.RepresentationTheory.Rep.Basic
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCoefficientNorm
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Category.ModuleCat.EpiMono
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.Homology.ShortComplex.Homology
+public import Mathlib.Algebra.Module.Submodule.Ker
+public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.RepresentationTheory.Rep.Basic
 
 /-!
 # Norm preimages kill a cyclic H² coefficient map
@@ -23,6 +25,8 @@ Every even cyclic cohomology class has a generator-fixed representative.
 If the coefficient image of every such representative has an actual norm
 preimage, the entire induced degree-two map vanishes.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 
@@ -60,7 +64,7 @@ theorem finiteCyclicH2_coefficientMap_eq_zero_of_norm
     (A B : Rep R G) (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (φ : A ⟶ B)
     (hNorm : ∀ a : LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap,
-      ∃ b : B, B.norm.hom b = φ.hom a.1) :
+      ∃ b : B, B.norm.asHom.hom b = φ.hom a.1) :
     groupCohomology.map (MonoidHom.id G) φ 2 = 0 := by
   ext x
   obtain ⟨a, rfl⟩ := finiteCyclicGroupH2_piEven_surjective A g hg x

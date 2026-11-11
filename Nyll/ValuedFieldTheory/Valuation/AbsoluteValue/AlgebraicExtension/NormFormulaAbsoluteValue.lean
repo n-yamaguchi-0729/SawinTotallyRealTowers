@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # the finite norm-formula absolute value
@@ -14,6 +17,8 @@ finite norm-formula value equal to the integral elements over the base
 valuation ring.  This supplies the strong triangle inequality and hence the
 absolute value without completeness or separatedness assumptions.
 -/
+
+@[expose] public section
 
 noncomputable section
 

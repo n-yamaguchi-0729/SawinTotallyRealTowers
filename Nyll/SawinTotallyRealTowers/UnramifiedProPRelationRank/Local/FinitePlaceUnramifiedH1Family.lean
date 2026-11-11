@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # The family of finite-place unramified H¹ spaces
@@ -14,6 +16,8 @@ The unramified continuous degree-one subspaces at every finite place are assembl
 dependent product module.  Coordinatewise subtype inclusion embeds it in the corresponding
 product of local decomposition-group `H¹` spaces.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 

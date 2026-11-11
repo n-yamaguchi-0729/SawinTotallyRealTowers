@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity
-import Nyll.ProCGroups.Topologies.QuotientMaps
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.Defs
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity
+public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.Defs
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
 
 /-!
 # Local reciprocity pairing without coefficient roots of unity
@@ -22,6 +26,8 @@ map.  The resulting functional descends to actual multiplicative power
 classes.  Dense image of the Artin map makes the pairing faithful in the
 character variable.  No primitive root or Kummer trivialization is used.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

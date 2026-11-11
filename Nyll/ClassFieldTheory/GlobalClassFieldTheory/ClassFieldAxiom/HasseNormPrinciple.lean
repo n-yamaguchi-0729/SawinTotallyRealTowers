@@ -4,15 +4,33 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitNormContainment
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormProperties
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Cardinality
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
-import Nyll.GaloisCohomology.Cyclic.TateH0.Main
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitNormContainment
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormProperties
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Cardinality
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Main
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.LocalNormTransport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.SmallModel
+public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
+public import Nyll.ClassFieldTheory.Theorems.NormTheorems.GlobalNormIsEverywhereLocalNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
+public import Nyll.GaloisCohomology.Cyclic.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
 /-!
 # The Hasse norm principle: the concrete local-global map
@@ -36,10 +54,14 @@ follows from degree-minus-one Tate-cohomology vanishing.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
@@ -81,7 +103,7 @@ private noncomputable def tateH0FixedCycle
     (tateComplex (Rep.ofMulDistribMulAction G A)).cycles 0 := by
   let M := Rep.ofMulDistribMulAction G A
   let S : ShortComplex (ModuleCat ℤ) :=
-    ShortComplex.mk M.norm.toModuleCatHom (groupCohomology.d₀₁ M)
+    ShortComplex.mk M.norm.asHom.toModuleCatHom (groupCohomology.d₀₁ M)
       (Rep.norm_comp_d_eq_zero M)
   let eS : (tateComplex M).sc' (-1) 0 1 ≅ S :=
     ShortComplex.isoMk
@@ -90,7 +112,7 @@ private noncomputable def tateH0FixedCycle
       (groupCohomology.cochainsIso₁ M)
       (by
         change
-          (groupHomology.chainsIso₀ M).hom ≫ M.norm.toModuleCatHom =
+          (groupHomology.chainsIso₀ M).hom ≫ M.norm.asHom.toModuleCatHom =
             M.tateNorm ≫ (groupCohomology.cochainsIso₀ M).hom
         simp only [Rep.tateNorm, Category.assoc, Iso.inv_hom_id,
           Category.comp_id])
@@ -123,7 +145,7 @@ private theorem tateH0FixedCycle_iCycles
           exact Additive.ofMul a.1) := by
   intro M
   let S : ShortComplex (ModuleCat ℤ) :=
-    ShortComplex.mk M.norm.toModuleCatHom (groupCohomology.d₀₁ M)
+    ShortComplex.mk M.norm.asHom.toModuleCatHom (groupCohomology.d₀₁ M)
       (Rep.norm_comp_d_eq_zero M)
   let eS : (tateComplex M).sc' (-1) 0 1 ≅ S :=
     ShortComplex.isoMk
@@ -132,7 +154,7 @@ private theorem tateH0FixedCycle_iCycles
       (groupCohomology.cochainsIso₁ M)
       (by
         change
-          (groupHomology.chainsIso₀ M).hom ≫ M.norm.toModuleCatHom =
+          (groupHomology.chainsIso₀ M).hom ≫ M.norm.asHom.toModuleCatHom =
             M.tateNorm ≫ (groupCohomology.cochainsIso₀ M).hom
         simp only [Rep.tateNorm, Category.assoc, Iso.inv_hom_id,
           Category.comp_id])
@@ -232,7 +254,7 @@ private theorem isoZeroBoundary_fixedCycle
     (a : fixedSubgroup G A) :
     let M := Rep.ofMulDistribMulAction G A
     let S : ShortComplex (ModuleCat ℤ) :=
-      ShortComplex.mk M.norm.toModuleCatHom (groupCohomology.d₀₁ M)
+      ShortComplex.mk M.norm.asHom.toModuleCatHom (groupCohomology.d₀₁ M)
         (Rep.norm_comp_d_eq_zero M)
     (TateCohomology.isoZeroBoundary M).hom
         ((tateComplex M).homologyπ 0 (tateH0FixedCycle a)) =
@@ -260,7 +282,7 @@ private theorem isoZeroBoundary_fixedCycle
       (groupCohomology.cochainsIso₁ M)
       (by
         change
-          (groupHomology.chainsIso₀ M).hom ≫ M.norm.toModuleCatHom =
+          (groupHomology.chainsIso₀ M).hom ≫ M.norm.asHom.toModuleCatHom =
             M.tateNorm ≫ (groupCohomology.cochainsIso₀ M).hom
         simp only [Rep.tateNorm, Category.assoc, Iso.inv_hom_id,
           Category.comp_id])
@@ -341,7 +363,7 @@ private theorem tateH0IsoHerbrandH0_fixedCycle
       Additive.ofMul (HerbrandH0.mk a) := by
   let M := Rep.ofMulDistribMulAction G A
   let S : ShortComplex (ModuleCat ℤ) :=
-    ShortComplex.mk M.norm.toModuleCatHom (groupCohomology.d₀₁ M)
+    ShortComplex.mk M.norm.asHom.toModuleCatHom (groupCohomology.d₀₁ M)
       (Rep.norm_comp_d_eq_zero M)
   let x : S.moduleCatLeftHomologyData.K := by
     change LinearMap.ker
@@ -401,7 +423,7 @@ private theorem tateH0IsoHerbrandH0_fixedCycle
 the determinant norm on the corresponding archimedean local tensor
 algebra. -/
 def allInfinitePlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
   [FiniteDimensional K L] :
@@ -415,7 +437,7 @@ def allInfinitePlaceLocalNormCondition
 /-- The simultaneous determinant-norm condition at every finite and
 infinite place. -/
 def allPlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -426,7 +448,7 @@ def allPlaceLocalNormCondition
 /-- Every global relative-idele norm is a local determinant norm at every
 place. -/
 theorem relativeIdeleNorm_range_le_allPlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -450,7 +472,7 @@ finite and infinite components is a determinant norm.  The nontrivial
 reverse inclusion uses the restricted-product preimage construction:
 integral local preimages are chosen at almost every finite place. -/
 theorem relativeIdeleNorm_range_eq_allPlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -494,7 +516,7 @@ theorem relativeIdeleNorm_range_eq_allPlaceLocalNormCondition
 
 /-- The actual global field-norm subgroup `N_{L/K}(Lˣ)` of `Kˣ`. -/
 def globalFieldNormSubgroup
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] :
     Subgroup Kˣ :=
@@ -503,7 +525,7 @@ def globalFieldNormSubgroup
 
 /-- Base-field units that are determinant norms at every completion. -/
 def everywhereLocalFieldNormSubgroup
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -511,46 +533,148 @@ def everywhereLocalFieldNormSubgroup
   (allPlaceLocalNormCondition (K := K) (L := L)).comap
     (IdeleGroup.principalIdele K)
 
-/-- A global field norm is a local norm at every place.  This is the
-unconditional direction of the Hasse norm principle. -/
-theorem globalFieldNormSubgroup_le_everywhereLocalFieldNormSubgroup
-    {K L : Type}
+theorem isFieldNorm_iff_mem_globalFieldNormSubgroup
+    (K : Type u) (L : Type v)
+    [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
+    (x : Kˣ) :
+    ClassFieldTheory.IsFieldNorm K L x ↔
+      x ∈ GlobalClassFieldTheory.ClassFieldAxiom.globalFieldNormSubgroup K L := by
+  change x ∈ (ClassFieldTheory.fieldNormHom K L).range ↔
+    x ∈ (Units.map (Algebra.norm K)).range
+  rfl
+
+theorem isNormAtFinitePlace_iff
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
-    [FiniteDimensional K L] [IsGalois K L] :
-    globalFieldNormSubgroup K L ≤
-      everywhereLocalFieldNormSubgroup K L := by
-  rintro x ⟨y, rfl⟩
-  change
-    IdeleGroup.principalIdele K
+    [FiniteDimensional K L] [IsGalois K L]
+    (w : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) (x : Kˣ) :
+    ClassFieldTheory.IsNormAtFinitePlace K L w x ↔
+      IdeleGroup.finiteComponent w (IdeleGroup.principalIdele K x) ∈
+        chosenFinitePlaceLocalNormSubgroup (K := K) (L := L) w := by
+  rw [← finitePlaceLocalTensorNorm_range_eq_chosenLocalNormSubgroup
+    (K := K) (L := L) w]
+  constructor
+  · rintro ⟨y, hy⟩
+    refine ⟨y, ?_⟩
+    apply Units.ext
+    calc
+      Algebra.norm (w.adicCompletion K)
+          (y : w.adicCompletion K ⊗[K] L) =
+          algebraMap K (w.adicCompletion K) (x : K) := hy
+      _ = (IdeleGroup.finiteComponent w
+          (IdeleGroup.principalIdele K x) : w.adicCompletion K) :=
+        (IdeleGroup.finiteComponent_principalIdele x w).symm
+  · rintro ⟨y, hy⟩
+    refine ⟨y, ?_⟩
+    calc
+      Algebra.norm (w.adicCompletion K)
+          (y : w.adicCompletion K ⊗[K] L) =
+          (IdeleGroup.finiteComponent w
+            (IdeleGroup.principalIdele K x) : w.adicCompletion K) :=
+        congrArg Units.val hy
+      _ = algebraMap K (w.adicCompletion K) (x : K) :=
+        IdeleGroup.finiteComponent_principalIdele x w
+
+theorem isNormAtInfinitePlace_iff
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L]
+    (w : InfinitePlace K) (x : Kˣ) :
+    ClassFieldTheory.IsNormAtInfinitePlace K L w x ↔
+      IdeleGroup.infiniteComponent w (IdeleGroup.principalIdele K x) ∈
         (Units.map
-          (Algebra.norm K : L →* K) y) ∈
-      allPlaceLocalNormCondition (K := K) (L := L)
-  rw [← RelativeIdeleGroup.norm_principalIdele K L y]
-  exact
-    relativeIdeleNorm_range_le_allPlaceLocalNormCondition
-      (K := K) (L := L) ⟨_, rfl⟩
+          (Algebra.norm w.Completion :
+            (w.Completion ⊗[K] L) →* w.Completion)).range := by
+  constructor
+  · rintro ⟨y, hy⟩
+    refine ⟨y, ?_⟩
+    apply Units.ext
+    calc
+      Algebra.norm w.Completion (y : w.Completion ⊗[K] L) =
+          algebraMap K w.Completion (x : K) := hy
+      _ = (IdeleGroup.infiniteComponent w
+          (IdeleGroup.principalIdele K x) : w.Completion) :=
+        (IdeleGroup.infiniteComponent_principalIdele x w).symm
+  · rintro ⟨y, hy⟩
+    refine ⟨y, ?_⟩
+    calc
+      Algebra.norm w.Completion (y : w.Completion ⊗[K] L) =
+          (IdeleGroup.infiniteComponent w
+            (IdeleGroup.principalIdele K x) : w.Completion) :=
+        congrArg Units.val hy
+      _ = algebraMap K w.Completion (x : K) :=
+        IdeleGroup.infiniteComponent_principalIdele x w
+
+theorem isEverywhereLocalNorm_iff_mem_everywhereLocalFieldNormSubgroup
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
+    (x : Kˣ) :
+    ClassFieldTheory.IsEverywhereLocalNorm K L x ↔
+      x ∈ GlobalClassFieldTheory.ClassFieldAxiom.everywhereLocalFieldNormSubgroup K L := by
+  constructor
+  · rintro ⟨hfinite, hinfinite⟩
+    change IdeleGroup.principalIdele K x ∈
+      GlobalClassFieldTheory.ClassFieldAxiom.allPlaceLocalNormCondition
+        (K := K) (L := L)
+    constructor
+    · rw [GlobalClassFieldTheory.ClassFieldAxiom.allFinitePlaceLocalNormCondition]
+      apply Subgroup.mem_iInf.mpr
+      intro w
+      exact (isNormAtFinitePlace_iff K L w x).mp (hfinite w)
+    · rw [GlobalClassFieldTheory.ClassFieldAxiom.allInfinitePlaceLocalNormCondition]
+      apply Subgroup.mem_iInf.mpr
+      intro w
+      exact (isNormAtInfinitePlace_iff K L w x).mp (hinfinite w)
+  · intro hx
+    change IdeleGroup.principalIdele K x ∈
+      GlobalClassFieldTheory.ClassFieldAxiom.allPlaceLocalNormCondition
+        (K := K) (L := L) at hx
+    constructor
+    · intro w
+      apply (isNormAtFinitePlace_iff K L w x).mpr
+      exact Subgroup.mem_iInf.mp
+        (show IdeleGroup.principalIdele K x ∈
+          GlobalClassFieldTheory.ClassFieldAxiom.allFinitePlaceLocalNormCondition
+            (K := K) (L := L) from hx.1) w
+    · intro w
+      apply (isNormAtInfinitePlace_iff K L w x).mpr
+      exact Subgroup.mem_iInf.mp
+        (show IdeleGroup.principalIdele K x ∈
+          GlobalClassFieldTheory.ClassFieldAxiom.allInfinitePlaceLocalNormCondition
+            (K := K) (L := L) from hx.2) w
+
+/-- A global field norm remains the same determinant norm at every completion. -/
+theorem globalFieldNormSubgroup_le_everywhereLocalFieldNormSubgroup
+    {K : Type u} {L : Type v}
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    globalFieldNormSubgroup K L ≤ everywhereLocalFieldNormSubgroup K L := by
+  intro x hx
+  exact (isEverywhereLocalNorm_iff_mem_everywhereLocalFieldNormSubgroup K L x).mp
+    (ClassFieldTheory.globalNorm_isEverywhereLocalNorm K L x
+      ((isFieldNorm_iff_mem_globalFieldNormSubgroup K L x).mpr hx))
 
 /-- The map
 `H⁰(G, P_L) → H⁰(G, I_L)` induced by the actual inclusion of principal
 relative ideles. -/
-noncomputable def principalIdeleHerbrandH0Map
+noncomputable def principalIdeleHerbrandH0Map_native
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
     HerbrandH0 (L ≃ₐ[K] L)
         (RelativeIdeleGroup.principalSubgroup K L) →*
       HerbrandH0 (L ≃ₐ[K] L)
         (RelativeIdeleGroup K L) := by
-  letI :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
-  letI :=
-    RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2
   let f :=
     equivariantRepHom
       (RelativeIdeleGroup.principalSubgroup K L).subtype
@@ -569,29 +693,25 @@ noncomputable def principalIdeleHerbrandH0Map
     ((tateCohomologyFunctor 0).map f).hom.toAddMonoidHom.toMultiplicative.comp
       eP.symm.toMonoidHom
 
-private theorem principalIdeleHerbrandH0Map_mk
+private theorem principalIdeleHerbrandH0Map_native_mk
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
     ∀ a : fixedSubgroup (L ≃ₐ[K] L)
         (RelativeIdeleGroup.principalSubgroup K L),
-      principalIdeleHerbrandH0Map K L (HerbrandH0.mk a) =
+      principalIdeleHerbrandH0Map_native K L (HerbrandH0.mk a) =
         HerbrandH0.mk
           (⟨(RelativeIdeleGroup.principalSubgroup K L).subtype a,
             fun σ ↦ by
               rw [← RelativeIdeleGroup.Cohomology.principalIdeleSubtype_equivariant
                 K L σ a, a.2 σ]⟩ :
             fixedSubgroup (L ≃ₐ[K] L) (RelativeIdeleGroup K L)) := by
-  let :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
-  let :=
-    RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
-  intro a
+  intro sharedOwner1 sharedOwner2 a
   let aI :
       fixedSubgroup (L ≃ₐ[K] L) (RelativeIdeleGroup K L) :=
     ⟨(RelativeIdeleGroup.principalSubgroup K L).subtype a, fun σ ↦ by
@@ -713,6 +833,69 @@ private theorem principalIdeleHerbrandH0Map_mk
                   (RelativeIdeleGroup.principalSubgroup K L)))))) =
       HerbrandH0.mk aI
   exact congrArg Additive.toMul hadd
+
+/-- Inclusion of the actual principal ideles induces a map on the fixed
+point quotients in independent universes. -/
+noncomputable def principalIdeleHerbrandH0Map
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    let := RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+    let := RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
+    HerbrandH0 (L ≃ₐ[K] L) (RelativeIdeleGroup.principalSubgroup K L) →*
+      HerbrandH0 (L ≃ₐ[K] L) (RelativeIdeleGroup K L) := by
+  intro hI hP
+  let P := RelativeIdeleGroup.principalSubgroup K L
+  let f : fixedSubgroup (L ≃ₐ[K] L) P →*
+      fixedSubgroup (L ≃ₐ[K] L) (RelativeIdeleGroup K L) :=
+    { toFun := fun a => ⟨P.subtype a, fun σ => by
+        rw [← RelativeIdeleGroup.Cohomology.principalIdeleSubtype_equivariant
+          K L σ a, a.2 σ]⟩
+      map_one' := Subtype.ext rfl
+      map_mul' := fun _ _ => Subtype.ext rfl }
+  refine HerbrandH0.lift (HerbrandH0.mk.comp f) ?_
+  intro a ha
+  change HerbrandH0.mk (f a) = 1
+  apply (HerbrandH0.mk_eq_one_iff (f a)).mpr
+  obtain ⟨z, hz⟩ := ha
+  refine ⟨P.subtype z, ?_⟩
+  change tateNorm (L ≃ₐ[K] L) (RelativeIdeleGroup K L) (P.subtype z) = P.subtype a
+  exact (map_tateNorm P.subtype
+    (RelativeIdeleGroup.Cohomology.principalIdeleSubtype_equivariant K L) z).symm.trans
+      (congrArg P.subtype hz)
+
+/-- The quotient map retains the original principal-idele inclusion on every representative. -/
+theorem principalIdeleHerbrandH0Map_mk
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    let := RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+    let := RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
+    ∀ a : fixedSubgroup (L ≃ₐ[K] L) (RelativeIdeleGroup.principalSubgroup K L),
+      principalIdeleHerbrandH0Map K L (HerbrandH0.mk a) =
+        HerbrandH0.mk
+          (⟨(RelativeIdeleGroup.principalSubgroup K L).subtype a, fun σ => by
+            rw [← RelativeIdeleGroup.Cohomology.principalIdeleSubtype_equivariant
+              K L σ a, a.2 σ]⟩ :
+            fixedSubgroup (L ≃ₐ[K] L) (RelativeIdeleGroup K L)) := by
+  intro hI hP a
+  rfl
+
+/-- The original native Tate map is precisely the map on actual fixed
+point quotient classes, so its connecting-map exactness is retained. -/
+theorem principalIdeleHerbrandH0Map_eq_native
+    (K L : Type)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    let := RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+    let := RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
+    principalIdeleHerbrandH0Map K L = principalIdeleHerbrandH0Map_native K L := by
+  intro hI hP
+  apply MonoidHom.ext
+  intro q
+  obtain ⟨a, rfl⟩ := HerbrandH0.mk_surjective q
+  exact (principalIdeleHerbrandH0Map_mk K L a).trans
+    (principalIdeleHerbrandH0Map_native_mk K L a).symm
 
 section IdeleClassConnecting
 
@@ -873,6 +1056,7 @@ theorem ideleClassToPrincipalConnecting_range_eq_ker
   have htarget : Function.MulExact connecting principal := by
     exact
       mulExact_transport_mulEquiv δm fm eP eI hbase
+  rw [principalIdeleHerbrandH0Map_eq_native]
   change MonoidHom.range connecting = MonoidHom.ker principal
   exact htarget.monoidHom_ker_eq.symm
 
@@ -881,58 +1065,49 @@ end IdeleClassConnecting
 /-- Degree-zero Tate cohomology of the actual field-unit action is the
 concrete global norm quotient `Kˣ / N_{L/K}(Lˣ)`. -/
 noncomputable def fieldUnitsHerbrandH0EquivGlobalNormQuotient
-    (K L : Type)
-    [Field K] [NumberField K]
-    [Field L] [NumberField L] [Algebra K L]
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
-    letI :=
-      LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    HerbrandH0 (L ≃ₐ[K] L) Lˣ ≃*
-      Kˣ ⧸ globalFieldNormSubgroup K L := by
-  letI :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  let eTate :
-      (CyclicCohomology.unitsInvariantSubmodule K L ⧸
-        CyclicCohomology.unitsTateH0NormSubmodule K L) ≃+
-        tateCohomology
-          (Rep.ofAlgebraAutOnUnits K L) 0 :=
-    (CyclicCohomology.tateUnitsH0IsoInvariantsQuotient
-      K L).symm.toLinearEquiv.toAddEquiv
-  let e₀ :=
-    (LocalClassFieldTheory.herbrandH0MulEquivInvariantsNormQuotient
-      K L).trans eTate.toMultiplicative
-  let e₁ :
-      tateCohomology
-          (Rep.ofAlgebraAutOnUnits K L) 0 ≃+
-        Additive (LocalFieldTheory.NormQuotient K L) :=
-    (CyclicCohomology.H0TateUnitsIsoNormQuotient
-      K L).toLinearEquiv.toAddEquiv
-  exact
-    e₀.trans <|
-      e₁.toMultiplicative.trans <|
-        (MulEquiv.multiplicativeAdditive
-          (LocalFieldTheory.NormQuotient K L)).trans <|
-            LocalFieldTheory.normQuotientEquivOfSubgroupEq
-              K L (globalFieldNormSubgroup K L) rfl
+    let := LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
+    HerbrandH0 (L ≃ₐ[K] L) Lˣ ≃* Kˣ ⧸ globalFieldNormSubgroup K L := by
+  intro sharedOwner
+  exact (LocalClassFieldTheory.herbrandH0MulEquivInvariantsNormQuotient K L).trans
+    ((CyclicCohomology.invariantsQuotientAddEquivNormQuotient K L).toMultiplicative.trans
+      ((MulEquiv.multiplicativeAdditive (LocalFieldTheory.NormQuotient K L)).trans
+        (LocalFieldTheory.normQuotientEquivOfSubgroupEq
+          K L (globalFieldNormSubgroup K L) rfl)))
+
+/-- The comparison sends an actual fixed unit to the original norm class
+of its descended base-field unit. -/
+theorem fieldUnitsHerbrandH0EquivGlobalNormQuotient_mk
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    let := LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
+    ∀ a : fixedSubgroup (L ≃ₐ[K] L) Lˣ,
+      fieldUnitsHerbrandH0EquivGlobalNormQuotient K L (HerbrandH0.mk a) =
+        QuotientGroup.mk' (globalFieldNormSubgroup K L)
+          (Additive.toMul (CyclicCohomology.invariantsUnitsAddEquivBaseUnits K L
+            (LocalClassFieldTheory.additiveFixedUnitsEquivInvariants K L
+              (Additive.ofMul a)))) := by
+  intro hAction a
+  rfl
 
 /-- The map on degree-zero Tate cohomology induced by the actual diagonal
 embedding `Lˣ → I_L`. -/
 noncomputable def fieldUnitsToRelativeIdeleHerbrandH0
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
     HerbrandH0 (L ≃ₐ[K] L) Lˣ →*
       HerbrandH0 (L ≃ₐ[K] L)
         (RelativeIdeleGroup K L) := by
-  letI :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  letI :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2
   letI :=
     RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
   exact
@@ -943,7 +1118,7 @@ noncomputable def fieldUnitsToRelativeIdeleHerbrandH0
 /-- A base-field unit, regarded as a Galois-fixed unit of the extension
 field. -/
 noncomputable def baseFieldUnitAsFixedUnit
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -963,7 +1138,7 @@ noncomputable def baseFieldUnitAsFixedUnit
 idele norm, its field-unit Tate class maps trivially to relative-idele
 Tate cohomology. -/
 theorem fieldUnitsHerbrandH0_map_baseFieldUnit_eq_one_of_mem_norm
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -971,16 +1146,13 @@ theorem fieldUnitsHerbrandH0_map_baseFieldUnit_eq_one_of_mem_norm
     (hx :
       IdeleGroup.principalIdele K x ∈
         (RelativeIdeleGroup.norm K L).range) :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
     fieldUnitsToRelativeIdeleHerbrandH0 K L
         (HerbrandH0.mk (baseFieldUnitAsFixedUnit K L x)) = 1 := by
-  let :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  let :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2
   let :=
     RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
   let aP :
@@ -1040,9 +1212,9 @@ noncomputable def ideleClassToFieldUnitsConnecting
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
     letI :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
@@ -1051,10 +1223,7 @@ noncomputable def ideleClassToFieldUnitsConnecting
           (Rep.ofMulDistribMulAction (L ≃ₐ[K] L)
             (RelativeIdeleGroup.ClassGroup K L)) (-1)) →*
       HerbrandH0 (L ≃ₐ[K] L) Lˣ := by
-  letI :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  letI :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2
   letI :=
     RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
   letI :=
@@ -1071,9 +1240,9 @@ theorem ideleClassToFieldUnitsConnecting_range_eq_ker
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
     letI :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
@@ -1081,10 +1250,7 @@ theorem ideleClassToFieldUnitsConnecting_range_eq_ker
         (ideleClassToFieldUnitsConnecting K L) =
       MonoidHom.ker
         (fieldUnitsToRelativeIdeleHerbrandH0 K L) := by
-  let :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  let :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2
   let :=
     RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
   let :=
@@ -1132,16 +1298,13 @@ theorem fieldUnitsToRelativeIdeleHerbrandH0_injective_of_subsingleton
         (tateCohomology
           (Rep.ofMulDistribMulAction (L ≃ₐ[K] L)
             (RelativeIdeleGroup.ClassGroup K L)) (-1)))] :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
     Function.Injective
       (fieldUnitsToRelativeIdeleHerbrandH0 K L) := by
-  let :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  let :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2
   let :=
     RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
   rw [← MonoidHom.ker_eq_bot_iff]
@@ -1230,7 +1393,7 @@ theorem everywhereLocalFieldNormSubgroup_le_global_of_subsingleton
 quotient, while its target kills precisely those ideles satisfying every
 local norm condition. -/
 noncomputable def hasseNormDiagonal
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -1246,7 +1409,7 @@ noncomputable def hasseNormDiagonal
 of its principal idele. -/
 @[simp]
 theorem hasseNormDiagonal_mk
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -1261,7 +1424,7 @@ theorem hasseNormDiagonal_mk
 /-- Injectivity of the concrete diagonal is exactly the missing
 local-to-global inclusion. -/
 theorem hasseNormDiagonal_injective_iff
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -1302,7 +1465,7 @@ theorem hasseNormDiagonal_injective_iff
 
 /-- Equivalent subgroup formulation of the Hasse norm principle. -/
 theorem hasseNormDiagonal_injective_iff_subgroup_eq
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -1357,7 +1520,7 @@ theorem hasseNormPrinciple_of_subsingleton
 field-norm quotient to the simultaneous local norm quotient is injective.
 The cyclic idele-class calculation supplies the required degree-minus-one
 Tate-cohomology vanishing. -/
-theorem hasseNormDiagonal_injective_cyclic
+theorem hasseNormDiagonal_injective_cyclic_native
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
@@ -1380,7 +1543,7 @@ theorem hasseNormDiagonal_injective_cyclic
 
 /-- Hasse's norm theorem for a finite cyclic extension: an element of
 `Kˣ` is a global norm from `L` exactly when it is a norm at every place. -/
-theorem hasseNormPrinciple_cyclic
+theorem hasseNormPrinciple_cyclic_native
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
@@ -1389,6 +1552,48 @@ theorem hasseNormPrinciple_cyclic
     globalFieldNormSubgroup K L =
       everywhereLocalFieldNormSubgroup K L :=
   hasseNormDiagonal_injective_iff_subgroup_eq.mp
-    (hasseNormDiagonal_injective_cyclic K L)
+    (hasseNormDiagonal_injective_cyclic_native K L)
+
+/-- The native Tate proof applies to the actual extension in independent
+universes: compatible small models transport every completion tensor norm
+and the original global norm witness. -/
+theorem hasseNormPrinciple_cyclic
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] [IsCyclic (L ≃ₐ[K] L)] :
+    globalFieldNormSubgroup K L = everywhereLocalFieldNormSubgroup K L := by
+  let : Small.{0} K := ClassFieldTheory.numberField_small K
+  let : Small.{0} L := ClassFieldTheory.numberField_small L
+  let : NumberField (Shrink.{0} K) := ClassFieldTheory.numberField_shrink K
+  let : NumberField (Shrink.{0} L) := ClassFieldTheory.numberField_shrink L
+  let : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
+  let : FiniteDimensional (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_finiteDimensional K L
+  let : IsGalois (Shrink.{0} K) (Shrink.{0} L) :=
+    IsGalois.of_equiv_equiv (f := (Shrink.ringEquiv K).symm)
+      (g := (Shrink.ringEquiv L).symm) (HasseArf.shrinkAlgebra_commutes K L)
+  let : IsCyclic (Shrink.{0} L ≃ₐ[Shrink.{0} K] Shrink.{0} L) :=
+    (HasseArf.shrinkGalMulEquiv K L).isCyclic.mpr inferInstance
+  let eK : K ≃ₐ[ℚ] Shrink.{0} K := (Shrink.ringEquiv K).symm.toRatAlgEquiv
+  let eL : L ≃+* Shrink.{0} L := (Shrink.ringEquiv L).symm
+  have hcomm (a : K) : eL (algebraMap K L a) =
+      algebraMap (Shrink.{0} K) (Shrink.{0} L) (eK a) :=
+    (DFunLike.congr_fun (HasseArf.shrinkAlgebra_commutes K L) a).symm
+  ext x
+  rw [← isFieldNorm_iff_mem_globalFieldNormSubgroup,
+    ← isEverywhereLocalNorm_iff_mem_everywhereLocalFieldNormSubgroup]
+  rw [ClassFieldTheory.isFieldNorm_congr eK.toRingEquiv eL hcomm x,
+    ClassFieldTheory.isEverywhereLocalNorm_congr eK eL hcomm x]
+  rw [isFieldNorm_iff_mem_globalFieldNormSubgroup,
+    isEverywhereLocalNorm_iff_mem_everywhereLocalFieldNormSubgroup,
+    hasseNormPrinciple_cyclic_native (Shrink.{0} K) (Shrink.{0} L)]
+
+/-- The original principal-idele diagonal is injective in independent universes. -/
+theorem hasseNormDiagonal_injective_cyclic
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] [IsCyclic (L ≃ₐ[K] L)] :
+    Function.Injective (hasseNormDiagonal K L) :=
+  hasseNormDiagonal_injective_iff_subgroup_eq.mpr (hasseNormPrinciple_cyclic K L)
 
 end GlobalClassFieldTheory.ClassFieldAxiom

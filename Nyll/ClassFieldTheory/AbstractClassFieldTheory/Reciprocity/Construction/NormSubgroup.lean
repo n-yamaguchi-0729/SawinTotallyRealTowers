@@ -4,8 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
 
 /-!
 # The abstract reciprocity construction: norm subgroups for infinite extensions
@@ -15,7 +16,9 @@ For an infinite abstract extension `E | K`, the abstract class-field constructio
 intermediate fields.  This file records that definition literally.
 -/
 
-universe u
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -69,12 +72,11 @@ end finiteIntermediateFields
 
 section infiniteNorms
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The norm image from a finite intermediate field `M` to `K`. -/
 def finiteIntermediateNormRange
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     (M : FiniteIntermediateField E K) :
     AddSubgroup (ambientFixedAddSubgroup A K) := by
   letI := M.finite
@@ -84,7 +86,7 @@ def finiteIntermediateNormRange
 `N_{E|K} A_E = ⋂_M N_{M|K} A_M`, where `M` runs through the finite
 intermediate fields. -/
 def infiniteNormSubgroup
-    (A : Rep ℤ G) (E K : ClosedSubgroup G) :
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G) :
     AddSubgroup (ambientFixedAddSubgroup A K) :=
   ⨅ M : FiniteIntermediateField E K,
     finiteIntermediateNormRange A E K M
@@ -92,7 +94,7 @@ def infiniteNormSubgroup
 /-- Membership in the infinite norm subgroup is characterized by norms from every finite level. -/
 @[simp]
 theorem mem_infiniteNormSubgroup_iff
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     (a : ambientFixedAddSubgroup A K) :
     a ∈ infiniteNormSubgroup A E K ↔
       ∀ M : FiniteIntermediateField E K,
@@ -105,19 +107,19 @@ This public object is opaque: clients use `infiniteNormClass`,
 `InfiniteNormQuotient.induction_on`, or `infiniteNormQuotientLift` instead of
 depending on the concrete quotient representation. -/
 def InfiniteNormQuotient
-    (A : Rep ℤ G) (E K : ClosedSubgroup G) :=
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G) :=
   ambientFixedAddSubgroup A K ⧸ infiniteNormSubgroup A E K
 
 /-- The additive group structure on the infinite norm quotient. -/
 instance infiniteNormQuotientAddCommGroup
-    (A : Rep ℤ G) (E K : ClosedSubgroup G) :
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G) :
     AddCommGroup (InfiniteNormQuotient A E K) := by
   unfold InfiniteNormQuotient
   infer_instance
 
 /-- The explicit boundary to the concrete quotient implementation. -/
 def infiniteNormQuotientConcreteEquiv
-    (A : Rep ℤ G) (E K : ClosedSubgroup G) :
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G) :
     InfiniteNormQuotient A E K ≃+
       ambientFixedAddSubgroup A K ⧸ infiniteNormSubgroup A E K := by
   unfold InfiniteNormQuotient
@@ -125,7 +127,7 @@ def infiniteNormQuotientConcreteEquiv
 
 /-- The canonical class map into the infinite norm quotient. -/
 def infiniteNormClass
-    (A : Rep ℤ G) (E K : ClosedSubgroup G) :
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G) :
     ambientFixedAddSubgroup A K →+
       InfiniteNormQuotient A E K := by
   unfold InfiniteNormQuotient
@@ -135,7 +137,7 @@ def infiniteNormClass
 canonical quotient class. -/
 @[simp]
 theorem infiniteNormQuotientConcreteEquiv_infiniteNormClass
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     (a : ambientFixedAddSubgroup A K) :
     infiniteNormQuotientConcreteEquiv A E K (infiniteNormClass A E K a) =
       QuotientAddGroup.mk' (infiniteNormSubgroup A E K) a := by
@@ -144,7 +146,7 @@ theorem infiniteNormQuotientConcreteEquiv_infiniteNormClass
 /-- An infinite norm class vanishes exactly when its representative lies in the norm subgroup. -/
 @[simp]
 theorem infiniteNormClass_eq_zero_iff
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     (a : ambientFixedAddSubgroup A K) :
     infiniteNormClass A E K a = 0 ↔
       a ∈ infiniteNormSubgroup A E K := by
@@ -153,7 +155,7 @@ theorem infiniteNormClass_eq_zero_iff
 
 /-- Every infinite norm-quotient class has an ambient representative. -/
 theorem infiniteNormClass_surjective
-    (A : Rep ℤ G) (E K : ClosedSubgroup G) :
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G) :
     Function.Surjective (infiniteNormClass A E K) := by
   intro q
   change ambientFixedAddSubgroup A K ⧸ infiniteNormSubgroup A E K at q
@@ -164,7 +166,7 @@ theorem infiniteNormClass_surjective
 /-- Eliminate an infinite norm-quotient class through an ambient representative. -/
 @[elab_as_elim]
 theorem InfiniteNormQuotient.induction_on
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     {motive : InfiniteNormQuotient A E K → Prop}
     (q : InfiniteNormQuotient A E K)
     (h : ∀ a, motive (infiniteNormClass A E K a)) : motive q := by
@@ -174,7 +176,7 @@ theorem InfiniteNormQuotient.induction_on
 /-- Descend an additive homomorphism that kills the infinite norm subgroup. -/
 def infiniteNormQuotientLift
     {B : Type*} [AddCommGroup B]
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     (f : ambientFixedAddSubgroup A K →+ B)
     (hf : infiniteNormSubgroup A E K ≤ f.ker) :
     InfiniteNormQuotient A E K →+ B := by
@@ -186,7 +188,7 @@ concrete quotient. -/
 @[simp]
 theorem infiniteNormQuotientLift_infiniteNormClass
     {B : Type*} [AddCommGroup B]
-    (A : Rep ℤ G) (E K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (E K : ClosedSubgroup G)
     (f : ambientFixedAddSubgroup A K →+ B)
     (hf : infiniteNormSubgroup A E K ≤ f.ker)
     (a : ambientFixedAddSubgroup A K) :
@@ -284,13 +286,12 @@ end maximalUnramifiedFields
 
 section maximalUnramifiedNorms
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- `N_{\widetilde L|K} A_{\widetilde L}` in the reciprocity construction. -/
-def maximalUnramifiedNormSubgroup (D : DegreeData G) (A : Rep ℤ G)
+def maximalUnramifiedNormSubgroup (D : DegreeData G) (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) :
     AddSubgroup (ambientFixedAddSubgroup A K) :=
   infiniteNormSubgroup A (D.maximalUnramifiedField L) K
@@ -298,7 +299,7 @@ def maximalUnramifiedNormSubgroup (D : DegreeData G) (A : Rep ℤ G)
 /-- The maximal-unramified norm subgroup is the infinite norm subgroup for
 the maximal unramified field. -/
 theorem maximalUnramifiedNormSubgroup_eq_infiniteNormSubgroup
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G) :
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G) :
     D.maximalUnramifiedNormSubgroup A K L =
       infiniteNormSubgroup A (D.maximalUnramifiedField L) K := by
   rfl
@@ -306,7 +307,7 @@ theorem maximalUnramifiedNormSubgroup_eq_infiniteNormSubgroup
 /-- Membership in the maximal unramified norm subgroup is characterized levelwise. -/
 @[simp]
 theorem mem_maximalUnramifiedNormSubgroup_iff
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (a : ambientFixedAddSubgroup A K) :
     a ∈ D.maximalUnramifiedNormSubgroup A K L ↔
       a ∈ infiniteNormSubgroup A (D.maximalUnramifiedField L) K := by
@@ -316,20 +317,20 @@ theorem mem_maximalUnramifiedNormSubgroup_iff
 
 This is an opaque public object, not a reducible alias for the infinite norm
 quotient. -/
-def MaximalUnramifiedNormQuotient (D : DegreeData G) (A : Rep ℤ G)
+def MaximalUnramifiedNormQuotient (D : DegreeData G) (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G) :=
   InfiniteNormQuotient A (D.maximalUnramifiedField L) K
 
 /-- The additive group structure on the maximal-unramified norm quotient. -/
 instance maximalUnramifiedNormQuotientAddCommGroup
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G) :
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G) :
     AddCommGroup (D.MaximalUnramifiedNormQuotient A K L) := by
   unfold MaximalUnramifiedNormQuotient
   infer_instance
 
 /-- The explicit boundary to the corresponding infinite norm quotient. -/
 def maximalUnramifiedNormQuotientInfiniteEquiv
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G) :
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G) :
     D.MaximalUnramifiedNormQuotient A K L ≃+
       InfiniteNormQuotient A (D.maximalUnramifiedField L) K := by
   unfold MaximalUnramifiedNormQuotient
@@ -337,7 +338,7 @@ def maximalUnramifiedNormQuotientInfiniteEquiv
 
 /-- The canonical class map into the maximal-unramified norm quotient. -/
 def maximalUnramifiedNormClass
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G) :
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G) :
     ambientFixedAddSubgroup A K →+
       D.MaximalUnramifiedNormQuotient A K L := by
   unfold MaximalUnramifiedNormQuotient
@@ -346,7 +347,7 @@ def maximalUnramifiedNormClass
 /-- The infinite quotient equivalence preserves the canonical maximal-unramified norm class. -/
 @[simp]
 theorem maximalUnramifiedNormQuotientInfiniteEquiv_maximalUnramifiedNormClass
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (a : ambientFixedAddSubgroup A K) :
     D.maximalUnramifiedNormQuotientInfiniteEquiv A K L
         (D.maximalUnramifiedNormClass A K L a) =
@@ -356,7 +357,7 @@ theorem maximalUnramifiedNormQuotientInfiniteEquiv_maximalUnramifiedNormClass
 /-- A maximal-unramified norm class vanishes exactly on its defining norm subgroup. -/
 @[simp]
 theorem maximalUnramifiedNormClass_eq_zero_iff
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (a : ambientFixedAddSubgroup A K) :
     D.maximalUnramifiedNormClass A K L a = 0 ↔
       a ∈ D.maximalUnramifiedNormSubgroup A K L := by
@@ -365,7 +366,7 @@ theorem maximalUnramifiedNormClass_eq_zero_iff
 
 /-- Every maximal-unramified norm class has an ambient representative. -/
 theorem maximalUnramifiedNormClass_surjective
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G) :
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G) :
     Function.Surjective (D.maximalUnramifiedNormClass A K L) := by
   intro q
   change InfiniteNormQuotient A (D.maximalUnramifiedField L) K at q
@@ -376,7 +377,7 @@ theorem maximalUnramifiedNormClass_surjective
 /-- Eliminate a maximal-unramified norm class through an ambient representative. -/
 @[elab_as_elim]
 theorem MaximalUnramifiedNormQuotient.induction_on
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     {motive : D.MaximalUnramifiedNormQuotient A K L → Prop}
     (q : D.MaximalUnramifiedNormQuotient A K L)
     (h : ∀ a, motive (D.maximalUnramifiedNormClass A K L a)) : motive q := by
@@ -386,7 +387,7 @@ theorem MaximalUnramifiedNormQuotient.induction_on
 /-- Descend an additive homomorphism that kills the maximal-unramified norm subgroup. -/
 def maximalUnramifiedNormQuotientLift
     {B : Type*} [AddCommGroup B]
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (f : ambientFixedAddSubgroup A K →+ B)
     (hf : D.maximalUnramifiedNormSubgroup A K L ≤ f.ker) :
     D.MaximalUnramifiedNormQuotient A K L →+ B := by
@@ -399,7 +400,7 @@ def maximalUnramifiedNormQuotientLift
 @[simp]
 theorem maximalUnramifiedNormQuotientLift_maximalUnramifiedNormClass
     {B : Type*} [AddCommGroup B]
-    (D : DegreeData G) (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (f : ambientFixedAddSubgroup A K →+ B)
     (hf : D.maximalUnramifiedNormSubgroup A K L ≤ f.ker)
     (a : ambientFixedAddSubgroup A K) :

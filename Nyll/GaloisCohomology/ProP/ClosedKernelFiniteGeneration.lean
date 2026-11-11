@@ -4,18 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.ClosedKernelH2FiniteFamily
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.Cohomology.RelativeNakayama
-import Nyll.ProCGroups.Presentations.Profinite
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Data.Fin.Tuple.Basic
-import Mathlib.LinearAlgebra.Dimension.Finite
-import Mathlib.LinearAlgebra.LinearIndependent.Defs
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.ClosedKernelH2FiniteFamily
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.Cohomology.RelativeNakayama
+public import Nyll.ProCGroups.Presentations.Profinite
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Data.Fin.Tuple.Basic
+public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Mathlib.Topology.Instances.ZMod
 
 /-!
 # Finite normal generation from finite-dimensional H²
@@ -25,6 +27,8 @@ relative Nakayama constructs a new detecting invariant character whenever the ch
 do not normally generate.  Their triangular evaluation matrix forces independent H² classes.
 Thus the H² dimension bounds an actual finite closed normal generating family.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

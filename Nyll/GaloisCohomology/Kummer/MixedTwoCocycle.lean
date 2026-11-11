@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.RelativeTwoCocycle
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.GroupTheory.QuotientGroup.Defs
-import Mathlib.Tactic.Abel
+module
+
+public import Nyll.GaloisCohomology.Kummer.RelativeTwoCocycle
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.GroupTheory.QuotientGroup.Defs
+public import Mathlib.Tactic.Abel
 
 /-!
 # Killing mixed subgroup entries of a two-cocycle
@@ -18,6 +20,8 @@ cocycles of a relative representative. A coset section then turns these
 primitives into one global cochain.
 -/
 
+@[expose] public section
+
 open CategoryTheory
 open Rep
 open groupCohomology
@@ -26,7 +30,9 @@ namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
-variable {k G : Type} [CommRing k] [Group G]
+universe u
+
+variable {k G : Type u} [CommRing k] [Group G]
 
 private theorem exists_conjugation_primitive
     (A : Rep k G) (S : Subgroup G) [S.Normal]

@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.LaurentSeriesFrobenius
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.ContractingEquation
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateAction
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobenius
-import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.RingTheory.PowerSeries.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.LaurentSeriesFrobenius
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.ContractingEquation
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateAction
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobenius
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Mathlib.RingTheory.PowerSeries.Basic
 
 /-!
 # LubinTate the equal-characteristic theta construction: equal-characteristic theta coefficients
@@ -31,6 +33,8 @@ by `theta^phi o e_bar = e o theta` when `pi = u * bar_pi`.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 
@@ -43,7 +47,8 @@ namespace EqualCharacteristic
 
 variable (k : Type u) [Field k] [Finite k]
 
-private theorem exists_frobenius_eq_mul_add
+/-- The affine Frobenius equation has a solution in the algebraic closure. -/
+theorem exists_frobenius_eq_mul_add
     (a c : AlgebraicClosure k) :
     ∃ x : AlgebraicClosure k,
       x ^ Nat.card k = a * x + c := by
@@ -62,11 +67,13 @@ private theorem exists_frobenius_eq_mul_add
     rw [max_lt_iff]
     constructor
     · by_cases ha : a = 0
-      · simp [ha]
+      · rw [ha, map_zero, zero_mul, Polynomial.degree_zero]
+        exact WithBot.bot_lt_coe _
       · rw [Polynomial.degree_C_mul_X ha]
         exact_mod_cast hq
     · by_cases hc : c = 0
-      · simp [hc]
+      · rw [hc, map_zero, Polynomial.degree_zero]
+        exact WithBot.bot_lt_coe _
       · rw [Polynomial.degree_C hc]
         exact_mod_cast Nat.zero_lt_one.trans hq
   have hPdegree : P.degree = (q : WithBot ℕ) := by

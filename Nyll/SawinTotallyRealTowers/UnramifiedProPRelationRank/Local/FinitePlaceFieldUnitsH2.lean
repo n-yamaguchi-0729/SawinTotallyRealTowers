@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2Structure
-import Nyll.GaloisCohomology.ProP.MultiplicativeInducedShapiro
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2Structure
+public import Nyll.GaloisCohomology.ProP.MultiplicativeInducedShapiro
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # H² of finite-place field-unit blocks
@@ -17,6 +20,8 @@ chosen decomposition-group equivalence identify its cohomology with the
 local field-unit cohomology. Finite Galois p-extensions therefore have
 cyclic H² on every finite tensor block, with at most n elements of n-torsion.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField TensorProduct ValuativeRel
@@ -50,7 +55,8 @@ local instance fieldH2TensorAction (v : HeightOneSpectrum (𝓞 K)) :
     MulDistribMulAction Gal(L / K) (v.adicCompletion K ⊗[K] L)ˣ :=
   scalarTensorUnitsAction (K := K) (L := L) (A := v.adicCompletion K)
 
-private noncomputable def finiteTensorRepIsoInduced
+/-- The tensor-unit representation is the actual induced local-place representation. -/
+noncomputable def finiteTensorRepIsoInduced
     (v : HeightOneSpectrum (𝓞 K)) :
     Rep.ofMulDistribMulAction Gal(L / K) (v.adicCompletion K ⊗[K] L)ˣ ≅
       Rep.ofMulDistribMulAction Gal(L / K)
@@ -68,7 +74,8 @@ private noncomputable def finiteTensorRepIsoInduced
         (finitePlaceTensorUnitsEquivLocalPlaceBlock_smul (K := K) (L := L) v
           (chosenFinitePlaceExtension (L := L) v) g x.toMul)))
 
-private noncomputable def chosenFieldCohomologyIso
+/-- Transport cohomology along the chosen local decomposition-group equivalence. -/
+noncomputable def chosenFieldCohomologyIso
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     groupCohomology (Rep.ofMulDistribMulAction
       (ChosenFinitePlaceDecompositionGroup (K := K) (L := L) v)
@@ -93,7 +100,8 @@ private noncomputable def chosenFieldCohomologyIso
       rfl) n
   exact j
 
-private noncomputable def tensorCohomologyIsoInduced
+/-- The tensor-unit comparison induces an isomorphism on group cohomology. -/
+noncomputable def tensorCohomologyIsoInduced
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
       (v.adicCompletion K ⊗[K] L)ˣ) n ≅
@@ -101,7 +109,8 @@ private noncomputable def tensorCohomologyIsoInduced
       (ChosenFinitePlaceLocalPlaceBlock (K := K) (L := L) v)) n :=
   (groupCohomology.functor ℤ Gal(L / K) n).mapIso (finiteTensorRepIsoInduced K L v)
 
-private noncomputable def chosenInducedCohomologyIso
+/-- Shapiro identifies the induced local-place cohomology with that of its stabilizer. -/
+noncomputable def chosenInducedCohomologyIso
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
     groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
       (ChosenFinitePlaceLocalPlaceBlock (K := K) (L := L) v)) n ≅

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProfiniteIntegers.CyclotomicTorsionQuotient
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
-import Nyll.ValuedFieldTheory.LocalField.Padic.UnitDecomposition
-import Mathlib.GroupTheory.Torsion
+module
+
+public import Nyll.GaloisCohomology.ProfiniteIntegers.CyclotomicTorsionQuotient
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerUnits
+public import Nyll.ValuedFieldTheory.LocalField.Padic.UnitDecomposition
+public import Mathlib.GroupTheory.Torsion
 
 /-!
 # Basic topological product equivalences for profinite units
@@ -17,6 +19,8 @@ the compiled stages of the profinite-unit decomposition.
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 

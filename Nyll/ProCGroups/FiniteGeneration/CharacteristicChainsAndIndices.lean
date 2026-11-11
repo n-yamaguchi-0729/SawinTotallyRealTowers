@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.Data.Fintype.Perm
-import Mathlib.Topology.Algebra.Group.ContinuousInv
+module
+
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.Data.Fintype.Perm
+public import Mathlib.Topology.Algebra.Group.ContinuousInv
 
 /-!
 # Characteristic chains from bounded-index intersections
@@ -18,6 +20,8 @@ all open subgroups of index at most \(n\) is open and topologically
 characteristic.  These intersections form a descending countable basis at the
 identity.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

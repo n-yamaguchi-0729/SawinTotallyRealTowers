@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
 
 /-!
 # Multiplicative-range restriction for local fields
@@ -14,6 +16,8 @@ properness and completeness of the resulting topology.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

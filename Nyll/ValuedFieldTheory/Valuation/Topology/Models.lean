@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Homeomorph.Defs
-import Mathlib.Topology.WithTopology
+module
+
+public import Mathlib.Topology.Homeomorph.Defs
+public import Mathlib.Topology.WithTopology
 
 /-!
 # Topological API for `WithTopology`
@@ -17,6 +19,8 @@ copy's owner rather than globally in the root `WithTopology` namespace.
 -/
 
 
+
+@[expose] public section
 
 universe u v
 

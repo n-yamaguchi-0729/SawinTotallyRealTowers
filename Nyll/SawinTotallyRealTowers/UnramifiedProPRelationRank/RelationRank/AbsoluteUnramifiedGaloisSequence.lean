@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGalois
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.Topology.Algebra.Group.Quotient
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGalois
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.Topology.Algebra.Group.Quotient
 
 /-!
 # The absolute-to-unramified Galois sequence
@@ -20,6 +22,8 @@ Galois group.
 The construction is valid for every prime `p`; no oddness assumption is needed for this Galois-
 theoretic step.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -34,9 +38,8 @@ open ClassFieldTower.Martinet
 variable (F : Type u) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-private abbrev M := maximalEverywhereUnramifiedProP F p
-
-private noncomputable instance absoluteGaloisGroup_compactSpace :
+/-- The absolute Galois group carries its canonical compact Krull topology. -/
+local instance absoluteGaloisGroup_compactSpace :
     CompactSpace (Field.absoluteGaloisGroup F) :=
   inferInstanceAs
     (CompactSpace (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F))
@@ -46,8 +49,9 @@ extension. -/
 noncomputable def absoluteToMaxEverywhereUnramifiedProP :
     Field.absoluteGaloisGroup F →ₜ*
       MaxEverywhereUnramifiedProPGaloisGroup F p where
-  toMonoidHom := AlgEquiv.restrictNormalHom (M F p)
-  continuous_toFun := InfiniteGalois.restrictNormalHom_continuous (M F p)
+  toMonoidHom := AlgEquiv.restrictNormalHom (maximalEverywhereUnramifiedProP F p)
+  continuous_toFun :=
+    InfiniteGalois.restrictNormalHom_continuous (maximalEverywhereUnramifiedProP F p)
 
 /-- Absolute restriction onto the maximal everywhere-unramified pro-`p` Galois group is
 surjective. -/
@@ -58,21 +62,21 @@ theorem absoluteToMaxEverywhereUnramifiedProP_surjective :
 /-- The closed subgroup of the absolute Galois group fixing the maximal everywhere-unramified
 pro-`p` extension. -/
 def absoluteUnramifiedKernel : ClosedSubgroup (Field.absoluteGaloisGroup F) where
-  toSubgroup := (M F p).fixingSubgroup
-  isClosed' := InfiniteGalois.fixingSubgroup_isClosed (M F p)
+  toSubgroup := (maximalEverywhereUnramifiedProP F p).fixingSubgroup
+  isClosed' := InfiniteGalois.fixingSubgroup_isClosed (maximalEverywhereUnramifiedProP F p)
 
 /-- The kernel of absolute restriction is exactly the fixing subgroup of the maximal
 everywhere-unramified pro-`p` extension. -/
 theorem absoluteToMaxEverywhereUnramifiedProP_ker :
     (absoluteToMaxEverywhereUnramifiedProP F p).toMonoidHom.ker =
       (absoluteUnramifiedKernel F p).toSubgroup := by
-  exact IntermediateField.restrictNormalHom_ker (M F p)
+  exact IntermediateField.restrictNormalHom_ker (maximalEverywhereUnramifiedProP F p)
 
 /-- The absolute unramified kernel is normal. -/
 instance absoluteUnramifiedKernel_normal :
     (absoluteUnramifiedKernel F p).Normal := by
-  change (M F p).fixingSubgroup.Normal
-  rw [← IntermediateField.restrictNormalHom_ker (M F p)]
+  change (maximalEverywhereUnramifiedProP F p).fixingSubgroup.Normal
+  rw [← IntermediateField.restrictNormalHom_ker (maximalEverywhereUnramifiedProP F p)]
   exact MonoidHom.normal_ker _
 
 /-- Continuous inclusion of the absolute unramified kernel. -/

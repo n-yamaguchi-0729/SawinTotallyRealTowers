@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Decomposition-group restriction law
@@ -16,6 +19,8 @@ absolute values, including the archimedean case.  The inertia and ramification
 statements use valuation subrings and therefore cover the nonarchimedean case
 in which those groups are defined.
 -/
+
+@[expose] public section
 
 noncomputable section
 

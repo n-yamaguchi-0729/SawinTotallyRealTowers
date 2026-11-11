@@ -4,7 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFiniteLevelCore
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFiniteLevelCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.EmbeddingNorm
 
 /-!
 # Tensor comparison and injectivity at finite rational levels
@@ -15,6 +22,8 @@ their tower compatibility live in the reusable core leaf.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField
@@ -40,39 +49,34 @@ theorem rationalRelativeAdeleEmbedding_unflatten
     [FiniteDimensional ℚ K] [FiniteDimensional ℚ N]
     (hKN : K ≤ N)
     (a : RelativeAdeleRing ℚ K) :
-    letI : Algebra K N :=
+    let : Algebra K N :=
       (IntermediateField.inclusion hKN).toRingHom.toAlgebra
-    letI : IsScalarTower ℚ K N :=
+    let : IsScalarTower ℚ K N :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional K N :=
+    let : FiniteDimensional K N :=
       FiniteDimensional.right ℚ K N
     towerRelativeAdeleUnflatten ℚ K N
         (RelativeIdeleGroup.adeleEmbedding (K := ℚ) (L := K) (M := N)
           (IntermediateField.inclusion hKN) a) =
       a ⊗ₜ[K] (1 : N) := by
-  let : Algebra K N :=
-    (IntermediateField.inclusion hKN).toRingHom.toAlgebra
-  let : IsScalarTower ℚ K N :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let : FiniteDimensional K N :=
-    FiniteDimensional.right ℚ K N
+  intro sharedOwner1 sharedOwner2 sharedOwner3
+  let embeddedAdele : RelativeAdeleRing ℚ N :=
+    (RelativeIdeleGroup.adeleEmbedding (K := ℚ) (L := K) (M := N) (IntermediateField.inclusion
+    hKN) a)
   have hflatten :
       towerRelativeAdeleFlatten ℚ K N
           (towerRelativeAdeleUnflatten ℚ K N
-            (RelativeIdeleGroup.adeleEmbedding (K := ℚ) (L := K) (M := N)
-              (IntermediateField.inclusion hKN) a)) =
+            embeddedAdele) =
         RelativeIdeleGroup.adeleEmbedding (K := ℚ) (L := K) (M := N)
           (IntermediateField.inclusion hKN) a :=
     (towerRelativeAdeleRingEquiv ℚ K N).apply_symm_apply
-      (RelativeIdeleGroup.adeleEmbedding (K := ℚ) (L := K) (M := N)
-        (IntermediateField.inclusion hKN) a)
+      embeddedAdele
   apply
     (towerRelativeAdeleRingEquiv ℚ K N).injective
   change
     towerRelativeAdeleFlatten ℚ K N
         (towerRelativeAdeleUnflatten ℚ K N
-          (RelativeIdeleGroup.adeleEmbedding (K := ℚ) (L := K) (M := N)
-            (IntermediateField.inclusion hKN) a)) =
+          embeddedAdele) =
       towerRelativeAdeleFlatten ℚ K N
         (a ⊗ₜ[K] (1 : N))
   rw [hflatten]
@@ -87,13 +91,13 @@ theorem rationalRelativeIdeleEmbedding_unflatten
     [FiniteDimensional ℚ K] [FiniteDimensional ℚ N]
     (hKN : K ≤ N)
     (a : RelativeIdeleGroup ℚ K) :
-    letI : Algebra K N :=
+    let : Algebra K N :=
       (IntermediateField.inclusion hKN).toRingHom.toAlgebra
-    letI : IsScalarTower ℚ K N :=
+    let : IsScalarTower ℚ K N :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional K N :=
+    let : FiniteDimensional K N :=
       FiniteDimensional.right ℚ K N
-    letI : Algebra K (RelativeAdeleRing ℚ K) :=
+    let : Algebra K (RelativeAdeleRing ℚ K) :=
       relativeAdeleRingIntermediateAlgebra ℚ K
     (towerRelativeIdeleEquiv ℚ K N).symm
         (RelativeIdeleGroup.ideleEmbedding (K := ℚ) (L := K) (M := N)
@@ -109,14 +113,7 @@ theorem rationalRelativeIdeleEmbedding_unflatten
           (relativeAdeleRingIntermediateAlgebra ℚ K)
           (smulCommClass_self K (RelativeAdeleRing ℚ K))).toRingHom a :
         TowerRelativeIdeleGroup ℚ K N) := by
-  let : Algebra K N :=
-    (IntermediateField.inclusion hKN).toRingHom.toAlgebra
-  let : IsScalarTower ℚ K N :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let : FiniteDimensional K N :=
-    FiniteDimensional.right ℚ K N
-  let : Algebra K (RelativeAdeleRing ℚ K) :=
-    relativeAdeleRingIntermediateAlgebra ℚ K
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4
   apply Units.ext
   exact
     rationalRelativeAdeleEmbedding_unflatten
@@ -130,11 +127,11 @@ theorem
     [FiniteDimensional ℚ K] [FiniteDimensional ℚ N]
     (hKN : K ≤ N)
     (c : RelativeIdeleGroup.ClassGroup ℚ K) :
-    letI : Algebra K N :=
+    let : Algebra K N :=
       (IntermediateField.inclusion hKN).toRingHom.toAlgebra
-    letI : IsScalarTower ℚ K N :=
+    let : IsScalarTower ℚ K N :=
       IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-    letI : FiniteDimensional K N :=
+    let : FiniteDimensional K N :=
       FiniteDimensional.right ℚ K N
     towerRelativeIdeleClassBaseChangeMulEquiv ℚ K N
         ((TowerRelativeIdeleGroup.classGroupEquiv ℚ K N).symm
@@ -143,12 +140,7 @@ theorem
       RelativeIdeleGroup.classInclusion K N
         (_root_.relativeIdeleClassBaseChangeMulEquiv
           (K := ℚ) (L := K) c) := by
-  let : Algebra K N :=
-    (IntermediateField.inclusion hKN).toRingHom.toAlgebra
-  let : IsScalarTower ℚ K N :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let : FiniteDimensional K N :=
-    FiniteDimensional.right ℚ K N
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   refine QuotientGroup.induction_on c ?_
   intro a
   change

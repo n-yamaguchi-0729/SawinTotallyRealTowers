@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # The inertia character of an arithmetic-stage local lift
@@ -17,6 +19,8 @@ vanishing of unramified local `H²`.  Their difference is a continuous
 to inertia records the given solution's ramification, independently of the
 chosen unramified reference solution.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField Topology

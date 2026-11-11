@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.OpenIdeals
-import Mathlib.GroupTheory.FiniteAbelian.Basic
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.OpenIdeals
+public import Mathlib.GroupTheory.FiniteAbelian.Basic
 
 /-!
 # Topology and universal maps for finite group algebras
@@ -14,6 +16,8 @@ A finite group algebra over a profinite coefficient ring is identified with a fi
 coefficients and given its profinite ring topology. This file proves continuity of its operations
 and constructs continuous linear lifts from basis data.
 -/
+
+@[expose] public section
 
 open scoped Topology
 open ProCGroups
@@ -36,7 +40,8 @@ noncomputable def finiteGroupAlgebraTopology
       Finsupp.equivFunOnFinite : MonoidAlgebra R G ≃ (G → R))
     inferInstance
 
-private noncomputable def finiteGroupAlgebraHomeomorphCore
+/-- The coefficient homeomorphism for a topology identified with the transported one. -/
+noncomputable def finiteGroupAlgebraHomeomorphCore
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [topology : TopologicalSpace (MonoidAlgebra R G)]
     (htopology : topology = finiteGroupAlgebraTopology R G) :
@@ -47,7 +52,8 @@ private noncomputable def finiteGroupAlgebraHomeomorphCore
   rw [htopology]
   exact Topology.IsInducing.induced e
 
-private noncomputable def finiteGroupAlgebraContinuousLinearEquivPiCore
+/-- The coefficient linear homeomorphism with the given topology identification. -/
+noncomputable def finiteGroupAlgebraContinuousLinearEquivPiCore
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [topology : TopologicalSpace (MonoidAlgebra R G)]
     (htopology : topology = finiteGroupAlgebraTopology R G) :
@@ -96,19 +102,18 @@ topology.
 -/
 theorem finiteGroupAlgebra_coordinate_continuous
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     ∀ g : G, Continuous fun x : MonoidAlgebra R G => x.coeff g := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
-  intro g
+  intro finiteStageTopology g
   exact (continuous_apply g).comp (finiteGroupAlgebraHomeomorph R G).continuous
 
 /-- Addition is continuous for the finite-stage group algebra topology. -/
 theorem finiteGroupAlgebra_continuousAdd
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [IsTopologicalRing R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     ContinuousAdd (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   exact continuousAdd_induced
     ((MonoidAlgebra.coeffLinearEquiv R).trans
       (Finsupp.linearEquivFunOnFinite R R G))
@@ -117,9 +122,9 @@ theorem finiteGroupAlgebra_continuousAdd
 theorem finiteGroupAlgebra_continuousNeg
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [IsTopologicalRing R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     ContinuousNeg (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   let e : MonoidAlgebra R G ≃ₗ[R] (G → R) :=
     (MonoidAlgebra.coeffLinearEquiv R).trans (Finsupp.linearEquivFunOnFinite R R G)
   exact (finiteGroupAlgebraHomeomorph R G).isInducing.continuousNeg
@@ -132,11 +137,11 @@ is the finite convolution sum over pairs (g1,g2) with \(g1*g2 = g\).
 theorem finiteGroupAlgebra_continuousMul
     (R : Type u) (G : Type v) [CommRing R] [Group G] [Finite G] [TopologicalSpace R]
     [IsTopologicalRing R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     ContinuousMul (MonoidAlgebra R G) := by
   classical
   let : Fintype G := Fintype.ofFinite G
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   have hcoord := finiteGroupAlgebra_coordinate_continuous R G
   refine ⟨?_⟩
   apply (finiteGroupAlgebraHomeomorph R G).isInducing.continuous_iff.mpr
@@ -157,9 +162,9 @@ topology.
 theorem finiteGroupAlgebra_continuousSMul
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [IsTopologicalRing R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     ContinuousSMul R (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   exact continuousSMul_induced
     ((MonoidAlgebra.coeffLinearEquiv R).trans
       (Finsupp.linearEquivFunOnFinite R R G))
@@ -168,9 +173,9 @@ theorem finiteGroupAlgebra_continuousSMul
 theorem finiteGroupAlgebra_isTopologicalRing
     (R : Type u) (G : Type v) [CommRing R] [Group G] [Finite G] [TopologicalSpace R]
     [IsTopologicalRing R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     IsTopologicalRing (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   exact
     { toIsTopologicalSemiring :=
         { toContinuousAdd := finiteGroupAlgebra_continuousAdd R G
@@ -181,34 +186,34 @@ theorem finiteGroupAlgebra_isTopologicalRing
 theorem finiteGroupAlgebra_compactSpace
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [CompactSpace R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     CompactSpace (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   exact Homeomorph.compactSpace (finiteGroupAlgebraHomeomorph R G).symm
 
 /-- The Hausdorff property of the coefficient ring passes to a finite-stage group algebra. -/
 theorem finiteGroupAlgebra_t2Space
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [T2Space R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     T2Space (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   exact Homeomorph.t2Space (finiteGroupAlgebraHomeomorph R G).symm
 
 /-- Total disconnectedness of the coefficient ring passes to a finite-stage group algebra. -/
 theorem finiteGroupAlgebra_totallyDisconnectedSpace
     (R : Type u) (G : Type v) [CommRing R] [Finite G] [TopologicalSpace R]
     [TotallyDisconnectedSpace R] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     TotallyDisconnectedSpace (MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   exact Homeomorph.totallyDisconnectedSpace (finiteGroupAlgebraHomeomorph R G).symm
 
 /--
 The finite function-space lift sends a coefficient function to the finite sum of its
 coefficients acting on the prescribed values.
 -/
-private noncomputable def finiteGroupAlgebraPiLift
+noncomputable def finiteGroupAlgebraPiLift
     (R : Type u) (G : Type v) (N : Type w)
     [Ring R] [TopologicalSpace R] [Fintype G]
     [AddCommGroup N] [TopologicalSpace N] [Module R N] [ContinuousAdd N] [ContinuousSMul R N]
@@ -240,7 +245,8 @@ private theorem finiteGroupAlgebraPiLift_apply_basis
     Pi.single_apply, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ,
     ↓reduceIte]
 
-private noncomputable def finiteGroupAlgebraLiftCore
+/-- The finite group algebra lift with the given topology identification. -/
+noncomputable def finiteGroupAlgebraLiftCore
     (R : Type u) (G : Type v) (N : Type w) [CommRing R] [Finite G]
     [TopologicalSpace R] [AddCommGroup N] [TopologicalSpace N] [Module R N]
     [ContinuousAdd N] [ContinuousSMul R N]
@@ -271,11 +277,11 @@ theorem finiteGroupAlgebraLift_apply_of
     (R : Type u) (G : Type v) (N : Type w) [CommRing R] [Group G] [Finite G]
     [TopologicalSpace R] [AddCommGroup N] [TopologicalSpace N] [Module R N]
     [ContinuousAdd N] [ContinuousSMul R N] (f : G → N) (g : G) :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     finiteGroupAlgebraLift R G N f (MonoidAlgebra.of R G g) = f g := by
   classical
   let : Fintype G := Fintype.ofFinite G
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro finiteStageTopology
   rw [show MonoidAlgebra.of R G g =
     (MonoidAlgebra.single g 1 : MonoidAlgebra R G) by rfl]
   unfold finiteGroupAlgebraLift finiteGroupAlgebraLiftCore

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedStandardCompositum
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedStandardCompositum
 
 /-!
 # Fixed field of the finite changed-uniformizer Artin candidate
@@ -16,6 +18,8 @@ precisely the powers of the finite Artin candidate.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

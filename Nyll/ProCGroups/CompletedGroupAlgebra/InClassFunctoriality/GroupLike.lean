@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Maps
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Maps
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Completed Group Algebra / Functoriality Within a Class / Group-Like
@@ -12,6 +15,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Maps
 This module constructs the \(C\)-indexed completed group-like map through the canonical dense map,
 and characterizes it by finite-stage projections, multiplication, and continuity.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -92,14 +97,13 @@ theorem completedGroupAlgebraOfInClass_mul
 theorem continuous_completedGroupAlgebraStageMapInClass_of
     (C : ProCGroups.FiniteGroupClass.{v})
     (U : CompletedGroupAlgebraIndexInClass G C) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
       (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
     Continuous fun g : G => completedGroupAlgebraStageMapInClass C R G U
       (MonoidAlgebra.of R G g) := by
+  intro sharedOwner1
   let : Finite (CompletedGroupAlgebraQuotientInClass G C U) :=
     finite_completedGroupAlgebraQuotientInClass G C U
-  let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
-    (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
   let : DiscreteTopology (CompletedGroupAlgebraQuotientInClass G C U) :=
     QuotientGroup.discreteTopology
       (ProCGroups.openNormalSubgroup_isOpen (G := G) ((OrderDual.ofDual U).1 :

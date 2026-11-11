@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.PowerCongruenceCore
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.CyclotomicKummerNormDescent
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.PowerCongruenceCore
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.CyclotomicKummerNormDescent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 
 /-!
 # Class fields of closed finite-index idele-class subgroups
@@ -27,9 +30,13 @@ field, as an exact determinant-norm subgroup.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
@@ -37,7 +44,7 @@ namespace GlobalClassFields
 open NumberField IsDedekindDomain
 open GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 open scoped Classical in
 /-- The Kummer exponent attached to a closed finite-index idele-class
@@ -104,7 +111,7 @@ noncomputable def closedFiniteIndexNormSeed
 /-- The cyclotomic layer used by the finite-index norm construction. -/
 noncomputable abbrev closedFiniteIndexNormCyclotomicField
     (H : Subgroup (IdeleClassGroup K))
-    [H.FiniteIndex] : Type :=
+    [H.FiniteIndex] : Type u :=
   CyclotomicField
     (closedFiniteIndexNormExponent (K := K) H : ℕ) K
 
@@ -154,7 +161,7 @@ construction. -/
 noncomputable abbrev closedFiniteIndexNormKummerField
     (H : Subgroup (IdeleClassGroup K))
     (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
-    [H.FiniteIndex] : Type :=
+    [H.FiniteIndex] : Type u :=
   cyclotomicFullSUnitKummerExtension
     (K := K) (closedFiniteIndexNormExponent (K := K) H)
     (closedFiniteIndexNormSeed (K := K) H hclosed)
@@ -249,7 +256,7 @@ neighbourhood attached to `H`. -/
 noncomputable abbrev closedFiniteIndexNormAmbient
     (H : Subgroup (IdeleClassGroup K))
     (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
-    [H.FiniteIndex] : Type :=
+    [H.FiniteIndex] : Type u :=
   finiteNormalClosure K
     (closedFiniteIndexNormKummerField (K := K) H hclosed)
 

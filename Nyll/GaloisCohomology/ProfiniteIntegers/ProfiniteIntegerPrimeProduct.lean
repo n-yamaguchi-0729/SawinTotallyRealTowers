@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
-import Mathlib.Data.ZMod.QuotientRing
-import Mathlib.NumberTheory.Padics.RingHoms
+module
+
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
+public import Mathlib.Data.ZMod.QuotientRing
+public import Mathlib.NumberTheory.Padics.RingHoms
 
 /-!
 # Prime decomposition of the profinite integers
@@ -16,6 +18,8 @@ This file constructs the canonical map
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 

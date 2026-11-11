@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.GaloisCohomology.Kummer.AbsoluteMuPTopRep
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.GaloisCohomology.Kummer.AbsoluteMuPTopRep
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
 
 /-!
 # Trivializing natural `mu_p` coefficients over a cyclotomic base
@@ -16,6 +18,8 @@ absolute-Galois action on `mu_p` is trivial.  A chosen primitive root gives a
 continuous `ZMod p`-linear equivalence with the standard trivial coefficient
 line and hence an isomorphism of topological representations.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 open scoped Topology
@@ -27,7 +31,11 @@ namespace ClassFieldTower.Martinet.Shafarevich
 open ClassFieldTower.Cohomology
 open ContRepresentation KummerTheory TopRep
 
-variable (K : Type) [Field K]
+universe u
+
+section General
+
+variable (K : Type u) [Field K]
 variable (p : ℕ) [Fact p.Prime]
 
 /-- The natural Galois action on `mu_p` is trivial when the base field already
@@ -95,14 +103,18 @@ noncomputable def absoluteMuPContinuousLinearEquivZMod
     continuous_invFun := continuous_of_discreteTopology }
 
 /-- Over a field containing `mu_p`, the natural coefficient representation is
-isomorphic to the standard trivial `ZMod p` representation. -/
-noncomputable def absoluteMuPTopRepTrivialIso
+isomorphic to the same trivial coefficient line lifted to the universe of `K`. -/
+noncomputable def absoluteMuPTopRepTrivialIsoLifted
     (hmu : (primitiveRoots p K).Nonempty) :
     absoluteMuPTopRep K p ≅
-      trivialZModP p (Field.absoluteGaloisGroup K) := by
-  let e := absoluteMuPContinuousLinearEquivZMod K p hmu
+      trivialZModPLifted p (Field.absoluteGaloisGroup K) := by
+  letI : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) :=
+    ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+  let e : AbsoluteMuP K p ≃L[ZMod p] ULift.{u} (ZMod p) :=
+    (absoluteMuPContinuousLinearEquivZMod K p hmu).trans
+      (ContinuousLinearEquiv.ulift : ULift.{u} (ZMod p) ≃L[ZMod p] ZMod p).symm
   let hom : absoluteMuPTopRep K p ⟶
-      trivialZModP p (Field.absoluteGaloisGroup K) := by
+      trivialZModPLifted p (Field.absoluteGaloisGroup K) := by
     apply TopRep.ofHom
     exact
       { toContinuousLinearMap := e.toContinuousLinearMap
@@ -112,7 +124,7 @@ noncomputable def absoluteMuPTopRepTrivialIso
           intro x
           change e (absoluteMuPActionContinuousLinearMap K p sigma x) = e x
           rw [absoluteMuPAction_eq_self_of_primitiveRoots K p hmu] }
-  let inv : trivialZModP p (Field.absoluteGaloisGroup K) ⟶
+  let inv : trivialZModPLifted p (Field.absoluteGaloisGroup K) ⟶
       absoluteMuPTopRep K p := by
     apply TopRep.ofHom
     exact
@@ -139,5 +151,47 @@ noncomputable def absoluteMuPTopRepTrivialIso
         apply ContinuousLinearMap.ext
         intro x
         exact e.apply_symm_apply x }
+
+
+/-- The lifted trivialization uses the original chosen-root coefficient value. -/
+theorem absoluteMuPTopRepTrivialIsoLifted_hom_apply
+    (hmu : (primitiveRoots p K).Nonempty) (x : AbsoluteMuP K p) :
+    (absoluteMuPTopRepTrivialIsoLifted K p hmu).hom x =
+      ULift.up.{u} (absoluteMuPLinearEquivZMod K p hmu x) := rfl
+
+/-- The inverse removes the explicit lift before applying the same coefficient inverse. -/
+theorem absoluteMuPTopRepTrivialIsoLifted_inv_apply
+    (hmu : (primitiveRoots p K).Nonempty) (z : ULift.{u} (ZMod p)) :
+    (absoluteMuPTopRepTrivialIsoLifted K p hmu).inv z =
+      (absoluteMuPLinearEquivZMod K p hmu).symm z.down := rfl
+
+end General
+
+section Small
+
+variable (K : Type) [Field K]
+variable (p : ℕ) [Fact p.Prime]
+
+/-- The original small coefficient isomorphism, obtained by removing the explicit lift. -/
+noncomputable def absoluteMuPTopRepTrivialIso
+    (hmu : (primitiveRoots p K).Nonempty) :
+    absoluteMuPTopRep K p ≅
+      trivialZModP p (Field.absoluteGaloisGroup K) :=
+  absoluteMuPTopRepTrivialIsoLifted K p hmu ≪≫
+    trivialZModPLiftedSmallIso p (Field.absoluteGaloisGroup K)
+
+/-- The old small forward map retains exactly its chosen-root value. -/
+theorem absoluteMuPTopRepTrivialIso_hom_apply
+    (hmu : (primitiveRoots p K).Nonempty) (x : AbsoluteMuP K p) :
+    (absoluteMuPTopRepTrivialIso K p hmu).hom x =
+      absoluteMuPLinearEquivZMod K p hmu x := rfl
+
+/-- The old small inverse retains exactly its chosen-root value. -/
+theorem absoluteMuPTopRepTrivialIso_inv_apply
+    (hmu : (primitiveRoots p K).Nonempty) (z : ZMod p) :
+    (absoluteMuPTopRepTrivialIso K p hmu).inv z =
+      (absoluteMuPLinearEquivZMod K p hmu).symm z := rfl
+
+end Small
 
 end ClassFieldTower.Martinet.Shafarevich

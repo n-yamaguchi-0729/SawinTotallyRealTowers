@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
-import Nyll.ProCGroups.InducedFunctions
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
+public import Nyll.ProCGroups.InducedFunctions
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 
 /-!
 # Local blocks of the idele group
@@ -20,6 +22,8 @@ The local field is expressed as the canonical algebraic localization.
 For finite extensions this is the entire metric completion by
 `absoluteValueExtension_finiteLocalization_eq_top`.
 -/
+
+@[expose] public section
 
 open scoped TensorProduct
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Units
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.IntegerMultipleSubgroup
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Units
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.IntegerMultipleSubgroup
 
 /-!
 # Integer-valued norm data
@@ -14,6 +16,8 @@ This file contains the norm-subgroup lemmas used in local CFT from an abstract
 integer-valued multiplicative valuation and a norm homomorphism satisfying the
 standard valuation formula.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -167,7 +171,7 @@ theorem val_eq_zero_of_zpow_eq_one (x : G) {n : ℤ}
 /-- Elements of valuation zero. -/
 def zeroSubgroup : Subgroup G where
   carrier := {x | V.val x = 0}
-  one_mem' := by simp [V.map_one]
+  one_mem' := V.val_one
   mul_mem' := by
     intro x y hx hy
     change V.val (x * y) = 0
@@ -513,8 +517,7 @@ def canonicalUnitUniformizerDecomposition {ϖ : G}
     V.UnitUniformizerDecomposition ϖ x where
   unitPart := x * ϖ ^ (-(V.val x))
   unit_mem := by
-    rw [V.mem_zeroSubgroup_iff, V.val_mul, V.val_zpow, hϖ]
-    ring
+    rw [V.mem_zeroSubgroup_iff, V.val_mul, V.val_zpow, hϖ, mul_one, add_neg_cancel]
   exponent := V.val x
   eq_unit_mul_zpow := by
     calc
@@ -570,8 +573,7 @@ theorem val_eq_iff_exists_zeroSubgroup_mul_uniformizer_zpow {ϖ : G}
   · intro hx
     refine ⟨x * (ϖ ^ n)⁻¹, ?_, ?_⟩
     · rw [V.mem_zeroSubgroup_iff, V.val_mul, V.val_inv,
-        V.val_uniformizer_zpow hϖ n, hx]
-      ring
+        V.val_uniformizer_zpow hϖ n, hx, add_neg_cancel]
     · rw [mul_assoc, inv_mul_cancel, mul_one]
   · rintro ⟨u, hu, hux⟩
     rw [← hux, V.val_mul, (V.mem_zeroSubgroup_iff u).1 hu,
@@ -591,8 +593,7 @@ theorem val_eq_iff_exists_eq_zeroSubgroup_mul_uniformizer_zpow {ϖ : G}
     exact ⟨u, hu, hux.symm⟩
   · rintro ⟨u, hu, hx⟩
     rw [hx, V.val_mul, (V.mem_zeroSubgroup_iff u).1 hu,
-      V.val_uniformizer_zpow hϖ n]
-    ring
+      V.val_uniformizer_zpow hϖ n, zero_add]
 
 namespace UnitUniformizerDecomposition
 
@@ -852,7 +853,7 @@ theorem div_mem_zeroSubgroup_iff_exists_zeroSubgroup_mul_eq (x y : G) :
       ∃ u : G, u ∈ V.zeroSubgroup ∧ u * y = x := by
   constructor
   · intro hxy
-    exact ⟨x / y, hxy, by simp [div_eq_mul_inv, mul_assoc]⟩
+    exact ⟨x / y, hxy, div_mul_cancel x y⟩
   · rintro ⟨u, hu, hux⟩
     have hu_eq : u = x / y := by
       have h := congrArg (fun t : G => t * y⁻¹) hux

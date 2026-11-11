@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ProperAction.Basic
-import Nyll.ProCGroups.ProC.Quotients.ClosedSubgroupNeighborhoods
+module
+
+public import Mathlib.Topology.Algebra.ProperAction.Basic
+public import Nyll.ProCGroups.ProC.Quotients.ClosedSubgroupNeighborhoods
 
 /-!
 # Sections for quotients by open subgroups
@@ -14,6 +16,8 @@ Finite quotients by open subgroups admit normalized choice sections, which are c
 the quotient is discrete. This file records their right-inverse property and derives sections of
 left-quotient projections with an open lower subgroup.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

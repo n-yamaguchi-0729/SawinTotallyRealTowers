@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Analysis.AbsoluteValue.Equivalence
-import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
-import Mathlib.Algebra.Order.Ring.IsNonarchimedean
-import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+module
+
+public import Mathlib.Analysis.AbsoluteValue.Equivalence
+public import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+public import Mathlib.Algebra.Order.Ring.IsNonarchimedean
+public import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 
 /-!
 # Nonarchimedean absolute values
@@ -16,6 +18,8 @@ The strong triangle inequality is equivalent to boundedness on natural numbers
 for real-valued absolute values.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 open Filter
@@ -23,16 +27,17 @@ open scoped Topology
 
 namespace AbsoluteValue
 
-private theorem nat_bound_ge_one
+/-- Any bound for the values of natural numbers under an absolute value is at least one. -/
+theorem nat_bound_ge_one
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
     (hC : ∀ n : ℕ, v (n : K) ≤ C) :
     1 ≤ C := by
-  simpa using hC 1
+  simpa only [Nat.cast_one, map_one] using hC 1
 
 /-- The binomial-estimate step in the proof of the nonarchimedean criterion: boundedness
 of the values of natural numbers gives a polynomial factor in the estimate for
 `(x + y)^n`. -/
-private theorem add_pow_le_of_bounded_nat
+theorem add_pow_le_of_bounded_nat
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
     (hC : ∀ n : ℕ, v (n : K) ≤ C) (x y : K) (n : ℕ) :
     v ((x + y) ^ n) ≤
@@ -88,11 +93,11 @@ private theorem add_pow_le_of_bounded_nat
     _ ≤ (Finset.range (n + 1)).sum (fun _m => C * M ^ n) :=
           Finset.sum_le_sum hterm
     _ = ((n + 1 : ℕ) : ℝ) * C * M ^ n := by
-          simp [Finset.sum_const, nsmul_eq_mul, mul_assoc]
+          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_assoc]
 
 /-- The real-variable limit used at the end of the nonarchimedean criterion: after taking
 `n`-th roots, the polynomial factor `(n+1)C` disappears. -/
-private theorem tendsto_linear_bound_rpow_inv
+theorem tendsto_linear_bound_rpow_inv
     {C : ℝ} (hC : 0 < C) :
     Tendsto
       (fun n : ℕ => ((((n + 1 : ℕ) : ℝ) * C) ^ ((n : ℝ)⁻¹)))
@@ -105,7 +110,7 @@ private theorem tendsto_linear_bound_rpow_inv
       tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
     have hroot := hcont.tendsto.comp hzero
     change Tendsto (fun n : ℕ => C ^ ((n : ℝ)⁻¹)) atTop (𝓝 (C ^ (0 : ℝ))) at hroot
-    simpa [Real.rpow_zero] using hroot
+    simpa only [Real.rpow_zero] using hroot
   have hshiftReal :
       Tendsto (fun x : ℝ => x ^ ((1 : ℝ) / (1 * x + (-1)))) atTop (𝓝 1) :=
     tendsto_rpow_div_mul_add 1 1 (-1) zero_ne_one
@@ -116,7 +121,8 @@ private theorem tendsto_linear_bound_rpow_inv
       tendsto_atTop_add_const_right atTop 1 tendsto_natCast_atTop_atTop
     refine (hshiftReal.comp hnatshift).congr' ?_
     exact Eventually.of_forall fun n => by
-      simp [Nat.cast_add, Nat.cast_one, one_div, add_assoc]
+      simp only [Function.comp_apply, Nat.cast_add, Nat.cast_one, one_div, one_mul,
+        add_neg_cancel_right]
   have htarget :
       Tendsto
         (fun n : ℕ => ((((n + 1 : ℕ) : ℝ) * C) ^ ((n : ℝ)⁻¹)))
@@ -126,11 +132,11 @@ private theorem tendsto_linear_bound_rpow_inv
       have hn_nonneg : 0 ≤ ((n + 1 : ℕ) : ℝ) := by positivity
       have hmul :=
         (Real.mul_rpow (z := ((n : ℝ)⁻¹)) hn_nonneg (le_of_lt hC)).symm
-      simpa [mul_comm, mul_left_comm, mul_assoc] using hmul
-  simpa using htarget
+      exact hmul
+  simpa only [mul_one] using htarget
 
 /-- The root form of the binomial estimate in the nonarchimedean criterion. -/
-private theorem add_le_root_bound_of_bounded_nat
+theorem add_le_root_bound_of_bounded_nat
     {K : Type*} [Field K] (v : AbsoluteValue K ℝ) {C : ℝ}
     (hC : ∀ n : ℕ, v (n : K) ≤ C) (x y : K)
     {n : ℕ} (hn : n ≠ 0) :
@@ -145,15 +151,15 @@ private theorem add_le_root_bound_of_bounded_nat
     (v.nonneg x).trans (le_max_left (v x) (v y))
   by_cases hMzero : M = 0
   · have hx_le_zero : v x ≤ 0 := by
-      simpa [M, hMzero] using (le_max_left (v x) (v y))
+      exact (le_max_left (v x) (v y)).trans_eq hMzero
     have hy_le_zero : v y ≤ 0 := by
-      simpa [M, hMzero] using (le_max_right (v x) (v y))
+      exact (le_max_right (v x) (v y)).trans_eq hMzero
     have hxzero : x = 0 := (v.eq_zero).mp (le_antisymm hx_le_zero (v.nonneg x))
     have hyzero : y = 0 := (v.eq_zero).mp (le_antisymm hy_le_zero (v.nonneg y))
-    simp [hxzero, hyzero]
+    simp only [hxzero, hyzero, add_zero, map_zero, max_self, mul_zero, le_refl]
   · have hpow :
         (v (x + y)) ^ n ≤ ((n + 1 : ℕ) : ℝ) * C * M ^ n := by
-      simpa [map_pow, M] using
+      simpa only [map_pow] using
         add_pow_le_of_bounded_nat v hC x y n
     have hright_nonneg :
         0 ≤ ((n + 1 : ℕ) : ℝ) * C * M ^ n := by
@@ -165,7 +171,7 @@ private theorem add_le_root_bound_of_bounded_nat
         v (x + y) ≤
           (((n + 1 : ℕ) : ℝ) * C * M ^ n) ^ ((n : ℝ)⁻¹) := by
       rw [Real.le_rpow_inv_iff_of_pos (v.nonneg (x + y)) hright_nonneg hn_pos]
-      simpa [Real.rpow_natCast] using hpow
+      simpa only [Real.rpow_natCast] using hpow
     calc
       v (x + y)
           ≤ (((n + 1 : ℕ) : ℝ) * C * M ^ n) ^ ((n : ℝ)⁻¹) := hroot
@@ -193,7 +199,7 @@ private theorem isNonarchimedean_of_bounded_nat
         (fun n : ℕ =>
           ((((n + 1 : ℕ) : ℝ) * C) ^ ((n : ℝ)⁻¹)) * M)
         atTop (𝓝 M) := by
-    simpa using
+    simpa only [one_mul] using
       (tendsto_linear_bound_rpow_inv hC_pos).mul
         (tendsto_const_nhds (x := M))
   have heventually :
@@ -207,7 +213,7 @@ private theorem isNonarchimedean_of_bounded_nat
   have hle :
       v (x + y) ≤ M :=
     le_of_tendsto_of_tendsto tendsto_const_nhds hlim heventually
-  simpa [M] using hle
+  exact hle
 
 /-- A real-valued absolute value is nonarchimedean exactly when its values on
 the natural numbers are bounded. -/

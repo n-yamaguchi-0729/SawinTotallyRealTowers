@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.HilbertElementaryLayer
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 
 /-!
 # The elementary Hilbert layer inside the maximal unramified pro-p extension
@@ -139,7 +140,7 @@ theorem hilbertElementaryLayerInMaximal_galois_pow_eq_one
 /-- The Galois rank of the copy is the ordinary `p`-class rank. -/
 theorem finrank_hilbertElementaryLayerInMaximal_galois_eq_pClassRank
     (p : ℕ) [Fact p.Prime] :
-    letI : Module (ZMod p)
+    let : Module (ZMod p)
         (Additive Gal((hilbertElementaryLayerInMaximal K p) / K)) :=
       AddCommGroup.zmodModule (fun x => by
         change (Additive.toMul x) ^ p = 1
@@ -148,17 +149,12 @@ theorem finrank_hilbertElementaryLayerInMaximal_galois_eq_pClassRank
     Module.finrank (ZMod p)
         (Additive Gal((hilbertElementaryLayerInMaximal K p) / K)) =
       pClassRank K p := by
+  intro galoisModule
   let : Module (ZMod p)
       (Additive Gal((hilbertElementaryLayer K p) / K)) :=
     AddCommGroup.zmodModule (fun x => by
       change (Additive.toMul x) ^ p = 1
       exact hilbertElementaryGalois_pow_eq_one K p (Additive.toMul x))
-  let : Module (ZMod p)
-      (Additive Gal((hilbertElementaryLayerInMaximal K p) / K)) :=
-    AddCommGroup.zmodModule (fun x => by
-      change (Additive.toMul x) ^ p = 1
-      exact hilbertElementaryLayerInMaximal_galois_pow_eq_one
-        K p (Additive.toMul x))
   let e : Additive Gal((hilbertElementaryLayer K p) / K) ≃+
       Additive Gal((hilbertElementaryLayerInMaximal K p) / K) :=
     (AlgEquiv.autCongr

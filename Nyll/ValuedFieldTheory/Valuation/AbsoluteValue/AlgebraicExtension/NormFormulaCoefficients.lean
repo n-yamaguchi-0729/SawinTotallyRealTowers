@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialLifting
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialLifting
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # coefficient bound from primitive Hensel factorization
@@ -16,6 +18,8 @@ factorization form of Hensel's lemma in the primitive factorization definition, 
 or
 separatedness hypothesis is needed.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -89,7 +93,7 @@ theorem normFormula_normalized_scale_not_irreducible_of_henselFactorization
     (hlead : v f.leadingCoeff < m) :
     let g : K[X] := Polynomial.C (f.coeff n)⁻¹ * f
     ¬ Irreducible g := by
-  let g : K[X] := Polynomial.C (f.coeff n)⁻¹ * f
+  intro g
   rcases irreduciblePolynomial_normalized_scale_hensel_reduction_factor_input
       v hnonarch hmpos hnmax hbound hconst hlead with
     ⟨F, r, hFmap, hFdegree, hrpos, hrlt, hfactor, hnatDegree, hcoprime, hQ0⟩

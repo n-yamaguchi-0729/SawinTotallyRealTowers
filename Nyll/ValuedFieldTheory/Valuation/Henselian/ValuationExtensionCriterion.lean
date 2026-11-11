@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.NonmonicReduction
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.NonmonicReduction
 
 /-!
 # the factor-lifting criterion
@@ -14,6 +16,8 @@ factorization form of Hensel's lemma from the primitive factorization definition
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

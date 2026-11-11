@@ -4,14 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.NormContainment
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedIdeleIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.NormContainment
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedIdeleIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 
 /-!
 # The full S-unit Kummer norm core
@@ -29,9 +41,13 @@ argument.
 
 
 
+@[expose] public section
+
 open scoped NumberField BigOperators
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
@@ -40,7 +56,7 @@ open NumberField IsDedekindDomain
 open GlobalClassFieldTheory.ClassFieldAxiom
 open KummerTheory
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- If `K` contains the `n`-th roots of unity and `n > 1`, then either
 `n` is even or `K` has no real infinite places.  This is exactly the
@@ -346,17 +362,15 @@ theorem
         (mul_one
           (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) u :
             IdeleClassGroup K)).symm
-    let : IsCyclic (M ≃ₐ[K] M) := by
-      simpa only [M] using
-        KummerTheory.chosenSimpleKummerExtension_isCyclic
-          K n hnK hmu b
-    obtain ⟨sigma, hsigma⟩ :=
-      IsCyclic.exists_generator (α := M ≃ₐ[K] M)
     have hLower :
         Module.finrank K M ≤
           (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index :=
-      Cohomology.finrank_le_ideleClassNorm_index
-        (K := K) (L := M) sigma hsigma
+      le_of_eq (by
+        have hrange : (_root_.ideleClassNorm K M).range =
+            (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range :=
+          ordinaryIdeleClassNorm_range_eq_relative
+        rw [← hrange]
+        exact (Reciprocity.ideleClassNorm_index_eq_finrank_abelian K M).symm)
     have hDegreeLe :
         Module.finrank K M ≤ 1 := by
       simpa only [hNormTop, Subgroup.index_top] using hLower
@@ -417,14 +431,8 @@ theorem card_ideleClassPowerLocalUnitQuotient_on_kummerNormSupport
         (IdeleClassPowerLocalUnitQuotient
           (K := K) n S' ∅) =
       (n : ℕ) ^ totalPlaceCard (K := K) S' := by
+  intro S'
   classical
-  dsimp only
-  let S' := sUnitKummerNormSupport (K := K) n S
-  change
-    Nat.card
-        (IdeleClassPowerLocalUnitQuotient
-          (K := K) n S' ∅) =
-      (n : ℕ) ^ totalPlaceCard (K := K) S'
   have hPrincipal :
       principalIdelePowerLocalUnitSubgroup
           (K := K) n S' ∅ =
@@ -484,7 +492,7 @@ theorem card_ideleClassPowerLocalUnitQuotient_on_kummerNormSupport
 as the degree of the full `S`-unit Kummer extension. -/
 theorem
     card_ideleClassPowerLocalUnitQuotient_eq_finrank_fullSUnitKummerExtension
-    {Omega : Type} [Field Omega] [Algebra K Omega]
+    {Omega : Type v} [Field Omega] [Algebra K Omega]
     [IsSepClosure K Omega]
     (n : ℕ+)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)

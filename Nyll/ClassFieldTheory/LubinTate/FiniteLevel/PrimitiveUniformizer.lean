@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveTorsion
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Mathlib.RingTheory.Finiteness.Cardinality
-import Mathlib.RingTheory.Discriminant
-import Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveTorsion
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Mathlib.RingTheory.Finiteness.Cardinality
+public import Mathlib.RingTheory.Discriminant
+public import Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral
 
 /-!
 # Uniformizers in standard Lubin--Tate level fields
@@ -29,6 +31,8 @@ one.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -209,7 +213,8 @@ local instance standardLubinTateLevelField_isSeparableInstance
     (Algebra.IsSeparable.isSeparable K
       (chosenStandardLubinTatePrimitiveRoot hπ n))
 
-private theorem standardLubinTateLevelCompleteDVFData_exists
+/-- The standard level field has its extending complete valuation and fundamental identity. -/
+theorem standardLubinTateLevelCompleteDVFData_exists
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
     ∃ target : CompleteDVF.{u, 0} (standardLubinTateLevelField hπ n),

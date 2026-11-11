@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.LaurentSeriesFrobenius
-import Mathlib.RingTheory.PowerSeries.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.LaurentSeriesFrobenius
+public import Mathlib.RingTheory.PowerSeries.Basic
 
 /-!
 # The equal-characteristic completed-unramified construction: equal-characteristic Frobenius on
@@ -25,6 +27,8 @@ general.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

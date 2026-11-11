@@ -4,14 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueAlgebraicExtensions
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.Algebra.Order.WithTop.Untop0
-import Mathlib.GroupTheory.Index
-import Mathlib.Data.ZMod.QuotientGroup
-import Mathlib.Algebra.Algebra.Tower
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueAlgebraicExtensions
+public import Mathlib.LinearAlgebra.Dimension.Finrank
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.Algebra.Order.WithTop.Untop0
+public import Mathlib.GroupTheory.Index
+public import Mathlib.Data.ZMod.QuotientGroup
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Group.Int.Defs
+public import Mathlib.Algebra.Order.AbsoluteValue.Basic
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Data.Int.Cast.Basic
+public import Mathlib.Data.Int.Cast.Lemmas
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # the fundamental inequality and identity
@@ -24,6 +36,8 @@ finite separable extension, the finite norm-formula theorem identifies the targe
 with the integral closure, so the local Dedekind ramification identity applies
 without completeness.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -86,12 +100,8 @@ private theorem exponentialValuation_finset_sum_ne_zero_of_value_ne
   have hvalue :=
     ramificationAddValuation_finset_sum_eq_of_unique_min
       v T f j hjT (LubinTate.Valuations.exponentialValuation_ne_top_of_ne_zero v hfj) hmin
-  have hsum : (∑ i ∈ T, f i) = ∑ i ∈ s, f i := by
-    dsimp [T]
-    rw [Finset.sum_filter]
-    apply Finset.sum_congr rfl
-    intro i hi
-    by_cases hfi : f i = 0 <;> simp [hfi]
+  have hsum : (∑ i ∈ T, f i) = ∑ i ∈ s, f i :=
+    Finset.sum_filter_ne_zero (f := f) s
   rw [hsum] at hvalue
   intro hzero
   rw [hzero, (v.eq_top_iff 0).mpr rfl] at hvalue
@@ -215,7 +225,8 @@ private theorem exponentialValuation_div_nonneg_of_le
     {a b : K} (hb : b ≠ 0) (hba : v b ≤ v a) :
     (0 : WithTop ℝ) ≤ v (a / b) := by
   by_cases ha : a = 0
-  · simp [ha, (v.eq_top_iff 0).mpr rfl]
+  · rw [ha, zero_div, (v.eq_top_iff 0).mpr rfl]
+    exact le_top
   · obtain ⟨ra, hra⟩ :=
       LubinTate.Valuations.exponentialValuation_exists_real_of_ne_zero v ha
     obtain ⟨rb, hrb⟩ :=
@@ -263,14 +274,15 @@ private theorem exponentialValuation_residueCombination_value_in_base
   let c : J → LubinTate.Valuations.exponentialValuationSubring v := fun j ↦
     ⟨a j / a j₀, by
       by_cases hj : a j = 0
-      · simp [hj]
+      · rw [hj, zero_div]
+        exact (LubinTate.Valuations.exponentialValuationSubring v).zero_mem
       · apply exponentialValuation_div_nonneg_of_le v hj₀
         exact hj₀min j (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj⟩)⟩
   have hcj₀ : IsLocalRing.residue
       (LubinTate.Valuations.exponentialValuationSubring v) (c j₀) ≠ 0 := by
     have hcj₀eq : c j₀ = 1 := by
-      ext
-      simp [c, hj₀]
+      apply Subtype.ext
+      exact div_self hj₀
     rw [hcj₀eq, map_one]
     exact one_ne_zero
   have hcvalue :=
@@ -430,7 +442,8 @@ private theorem maximalIdeal_eq_span_discretePrimeElement
   · intro x hx
     by_cases hx0 : (x : K) = 0
     · have : x = 0 := Subtype.ext hx0
-      simp [this]
+      rw [this]
+      exact Ideal.zero_mem _
     · obtain ⟨n, hn⟩ :=
         LubinTate.Valuations.discreteExponentialValuation_subring_exists_nat_value
           hs hvalues hx0
@@ -485,9 +498,7 @@ private theorem exists_valueGroup_generators_scaled_by_ramificationIdx
       exponentialValueSubgroup v = AddSubgroup.zmultiples s ∧
       exponentialValueSubgroup w = AddSubgroup.zmultiples t ∧
       s = (e : ℝ) * t := by
-  let V := LubinTate.Valuations.exponentialValuationSubring v
-  let W := LubinTate.Valuations.exponentialValuationSubring w
-  let i := exponentialValuationRingMap v w hExt
+  intro V W i
   let : IsLocalHom i :=
     exponentialValuationRingMap_isLocalHom v w hExt
   let : Algebra V W := i.toAlgebra
@@ -594,7 +605,8 @@ private theorem exponentialRamificationIndex_eq_of_cyclic_valueSubgroups
     obtain ⟨n, hn⟩ := AddSubgroup.mem_zmultiples_iff.mp hz
     refine ⟨n, ?_⟩
     apply Subtype.ext
-    simpa [phi, g] using hn
+    change n • t = (z : ℝ)
+    exact hn
   have hcomap : H.comap phi = AddSubgroup.zmultiples (e : ℤ) := by
     ext n
     constructor
@@ -603,7 +615,8 @@ private theorem exponentialRamificationIndex_eq_of_cyclic_valueSubgroups
       change (((phi n : Gamma) : ℝ)) ∈
         exponentialValueSubgroup v at hn
       have hn' : ((n : ℝ) * t) ∈ exponentialValueSubgroup v := by
-        simpa [phi, g, zsmul_eq_mul] using hn
+        change n • t ∈ exponentialValueSubgroup v at hn
+        simpa only [zsmul_eq_mul] using hn
       rw [hvgroup, hscale, AddSubgroup.mem_zmultiples_iff] at hn'
       obtain ⟨m, hm⟩ := hn'
       rw [AddSubgroup.mem_zmultiples_iff]
@@ -611,9 +624,9 @@ private theorem exponentialRamificationIndex_eq_of_cyclic_valueSubgroups
       have hreal : (m * (e : ℤ) : ℤ) = n := by
         have hcast : (((m * (e : ℤ) : ℤ) : ℝ)) = (n : ℝ) := by
           apply mul_right_cancel₀ ht
-          simpa [zsmul_eq_mul, mul_assoc, mul_comm, mul_left_comm] using hm
+          simpa only [zsmul_eq_mul, Int.cast_mul, Int.cast_natCast, mul_assoc] using hm
         exact_mod_cast hcast
-      simp [hreal]
+      exact (Int.zsmul_eq_mul m (e : ℤ)).trans hreal
     · intro hn
       rw [AddSubgroup.mem_zmultiples_iff] at hn
       obtain ⟨m, rfl⟩ := hn
@@ -622,8 +635,8 @@ private theorem exponentialRamificationIndex_eq_of_cyclic_valueSubgroups
         exponentialValueSubgroup v
       rw [hvgroup, hscale, AddSubgroup.mem_zmultiples_iff]
       refine ⟨m, ?_⟩
-      simp [phi, g, zsmul_eq_mul]
-      ring
+      change m • ((e : ℝ) * t) = (m * (e : ℤ)) • t
+      simp only [zsmul_eq_mul, Int.cast_mul, Int.cast_natCast, mul_assoc]
   change Nat.card (Gamma ⧸ H) = e
   calc
     Nat.card (Gamma ⧸ H) = H.index := rfl
@@ -652,9 +665,7 @@ theorem exponentialRamificationIndex_eq_ideal_ramificationIdx
     exponentialRamificationIndex v w =
       Ideal.ramificationIdx'
         (IsLocalRing.maximalIdeal V) (IsLocalRing.maximalIdeal W) := by
-  let V := LubinTate.Valuations.exponentialValuationSubring v
-  let W := LubinTate.Valuations.exponentialValuationSubring w
-  let i := exponentialValuationRingMap v w hExt
+  intro V W i
   let : IsLocalHom i :=
     exponentialValuationRingMap_isLocalHom v w hExt
   let : Algebra V W := i.toAlgebra
@@ -695,22 +706,15 @@ theorem exponentialResidueDegree_eq_ideal_inertiaDeg
     let V := LubinTate.Valuations.exponentialValuationSubring v
     let W := LubinTate.Valuations.exponentialValuationSubring w
     let i := exponentialValuationRingMap v w hExt
-    letI : IsLocalHom i :=
+    let : IsLocalHom i :=
       exponentialValuationRingMap_isLocalHom v w hExt
-    letI : Algebra V W := i.toAlgebra
+    let : Algebra V W := i.toAlgebra
     exponentialResidueDegree v w hExt =
       (IsLocalRing.maximalIdeal W).inertiaDeg V := by
-  let V := LubinTate.Valuations.exponentialValuationSubring v
-  let W := LubinTate.Valuations.exponentialValuationSubring w
-  let i := exponentialValuationRingMap v w hExt
-  let : IsLocalHom i :=
-    exponentialValuationRingMap_isLocalHom v w hExt
-  let : Algebra V W := i.toAlgebra
+  intro V W i sharedOwner4 sharedOwner5
   let Amap : Algebra (IsLocalRing.ResidueField V)
       (IsLocalRing.ResidueField W) :=
     (IsLocalRing.ResidueField.map i).toAlgebra
-  let : Algebra (IsLocalRing.ResidueField V)
-      (IsLocalRing.ResidueField W) := Amap
   let : (IsLocalRing.maximalIdeal W).LiesOver
       (IsLocalRing.maximalIdeal V) :=
     ⟨(ValuationTheory.DiscreteValuationField.ResidueField.comap_maximalIdeal_eq i).symm⟩
@@ -780,12 +784,15 @@ noncomputable def exponentialAssociatedAbsoluteValue
     rw [hreal, neg_add, Real.exp_add]
   · intro x
     by_cases hx : x = 0
-    · simp [hx]
-    · simp [hx, Real.exp_nonneg]
+    · rw [ite_eq_left hx]
+    · rw [ite_eq_right hx]
+      exact Real.exp_nonneg _
   · intro x
     by_cases hx : x = 0
-    · simp [hx]
-    · simp [hx, Real.exp_ne_zero]
+    · rw [ite_eq_left hx]
+      exact iff_of_true rfl hx
+    · rw [ite_eq_right hx]
+      exact iff_of_false (Real.exp_ne_zero _) hx
   · intro x y
     by_cases hx : x = 0
     · subst x
@@ -827,12 +834,15 @@ theorem exponentialAssociatedAbsoluteValue_associated
     {K : Type*} [Field K] (v : LubinTate.Valuations.ExponentialValuation K) :
     LubinTate.Valuations.AssociatedAbsoluteValue v (Real.exp 1)
       (exponentialAssociatedAbsoluteValue v) := by
+  classical
   refine ⟨Real.one_lt_exp_iff.mpr zero_lt_one, ?_⟩
   intro x hx
   refine ⟨(v x).untop₀, ?_, ?_⟩
   · exact (WithTop.coe_untop₀_of_ne_top
       (LubinTate.Valuations.exponentialValuation_ne_top_of_ne_zero v hx)).symm
-  · simp [exponentialAssociatedAbsoluteValue, hx, Real.exp_one_rpow]
+  · change (if x = 0 then 0 else Real.exp (-(v x).untop₀)) =
+        Real.exp 1 ^ (-(v x).untop₀)
+    rw [ite_eq_right hx, Real.exp_one_rpow]
 
 /-- An absolute value associated to a exponential valuation is
 nonarchimedean; the strong triangle inequality is the exponential
@@ -855,7 +865,8 @@ theorem associatedAbsoluteValue_nonarchimedean
     rw [add_zero]
     exact le_max_left _ _
   by_cases hxy : x + y = 0
-  · simp [hxy]
+  · rw [hxy, abv.map_zero]
+    exact (abv.nonneg x).trans (le_max_left _ _)
   obtain ⟨r, hvr, habvr⟩ := hassoc.2 x hx
   obtain ⟨s, hvs, habvs⟩ := hassoc.2 y hy
   obtain ⟨t, hvt, habvt⟩ := hassoc.2 (x + y) hxy
@@ -890,7 +901,8 @@ theorem associatedAbsoluteValue_valuationSubring_eq
     mem_absoluteValueValuationSubring_iff]
   by_cases hx : x = 0
   · subst x
-    simp [(v.eq_top_iff 0).mpr rfl]
+    rw [(v.eq_top_iff 0).mpr rfl, abv.map_zero]
+    exact iff_of_true le_top zero_le_one
   · exact (LubinTate.Valuations.associatedAbsoluteValue_le_one_iff hassoc hx).symm
 
 /-- Exact extension of associated exponential valuations gives exact
@@ -1028,7 +1040,8 @@ private theorem exponentialValueCoset_units_surjective
   unfold exponentialValueCoset
   apply congrArg QuotientAddGroup.mk
   apply Subtype.ext
-  simp [hvalue]
+  change (w x).untop₀ = (gamma : ℝ)
+  exact congrArg WithTop.untop₀ hvalue
 
 /-- Equality after cross-multiplying by nonzero base elements forces equality
 of the corresponding value-group quotient classes. -/
@@ -1154,7 +1167,10 @@ theorem ramificationInvariants_valueCosets_mul_residueLifts_linearIndependent
       by_contra hnone
       push Not at hnone
       apply hsi
-      simp [s, hnone]
+      change (∑ j, algebraMap K L (a (i, j)) * (omega j : L)) = 0
+      apply Finset.sum_eq_zero
+      intro j _hj
+      rw [hnone j, map_zero, zero_mul]
     exact exponentialValuation_residueCombination_value_in_base
       v w hExt omega homega (fun j ↦ a (i, j)) hai
   have hpvalue :=
@@ -1175,10 +1191,10 @@ theorem ramificationInvariants_valueCosets_mul_residueLifts_linearIndependent
     · intro i hi j hj hij hterm_i hterm_j
       have hsi : s i ≠ 0 := by
         intro hzero
-        exact hterm_i (by simp [hzero])
+        exact hterm_i (by rw [hzero, zero_mul])
       have hsj : s j ≠ 0 := by
         intro hzero
-        exact hterm_j (by simp [hzero])
+        exact hterm_j (by rw [hzero, zero_mul])
       obtain ⟨ai, hai, hvi⟩ := hinner i hsi
       obtain ⟨aj, haj, hvj⟩ := hinner j hsj
       have hwi :
@@ -1456,7 +1472,7 @@ theorem ramificationInvariants_fundamental_inequality
     exact beta.linearIndependent
   let piOne : Unit → L := fun _ ↦ 1
   have hpiOne : DistinctExponentialValueCosetRepresentatives v w piOne := by
-    refine ⟨by intro; simp [piOne], ?_⟩
+    refine ⟨fun _ ↦ one_ne_zero, ?_⟩
     intro a b hab
     exact (hab (Subsingleton.elim a b)).elim
   have hprodJ :=
@@ -1498,10 +1514,8 @@ theorem ramificationInvariants_fundamental_identity_of_discrete_of_separable
   let : IsLocalHom i :=
     exponentialValuationRingMap_isLocalHom v w hExt
   let algVW : Algebra V W := i.toAlgebra
-  let : Algebra V W := algVW
   let : SMul V W := algVW.toSMul
   let algVL : Algebra V L := ((algebraMap K L).comp V.subtype).toAlgebra
-  let : Algebra V L := algVL
   let : SMul V L := algVL.toSMul
   let : SMul W L := (inferInstance : Algebra W L).toSMul
   let : SMul V K := (inferInstance : Algebra V K).toSMul

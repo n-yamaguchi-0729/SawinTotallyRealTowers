@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ClopenNhdofOne
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Algebra.Nonarchimedean.Basic
+module
+
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Algebra.Nonarchimedean.Basic
 
 /-!
 # Topological generation and convergent generating sets
@@ -16,6 +18,8 @@ ranks, and the finite word-product filtration of a set.  It develops extensional
 closed-generated-subgroup, image, quotient, and continuous-equivalence lemmas that form the
 basic API for generator arguments in profinite groups.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise
@@ -662,6 +666,33 @@ theorem topologicallyGenerates_continuousMulEquiv_image_iff
         exact ⟨e x, ⟨x, hx, rfl⟩, by simp only [ContinuousMulEquiv.symm_apply_apply]⟩
     simpa [hset] using hpre
   · exact topologicallyGenerates_continuousMulEquiv_image (G := G) (H := H) e
+
+/-- Topological rank is invariant under continuous multiplicative equivalence. -/
+theorem topologicalRank_eq_of_continuousMulEquiv
+    {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    (e : G ≃ₜ* H) :
+    topologicalRank G = topologicalRank H := by
+  apply le_antisymm
+  · rcases exists_topologicallyGenerates_card_eq_topologicalRank (G := H) with
+      ⟨Ymin, hYmin, hYcard⟩
+    calc
+      topologicalRank G ≤ Cardinal.mk (e.symm '' Ymin) := by
+        exact topologicalRank_le_mk_of_topologicallyGenerates
+          (G := G)
+          (topologicallyGenerates_continuousMulEquiv_image
+            (G := H) e.symm hYmin)
+      _ ≤ Cardinal.mk Ymin := Cardinal.mk_image_le
+      _ = topologicalRank H := hYcard
+  · rcases exists_topologicallyGenerates_card_eq_topologicalRank (G := G) with
+      ⟨Xmin, hXmin, hXcard⟩
+    calc
+      topologicalRank H ≤ Cardinal.mk (e '' Xmin) := by
+        exact topologicalRank_le_mk_of_topologicallyGenerates
+          (G := H)
+          (topologicallyGenerates_continuousMulEquiv_image
+            (G := G) e hXmin)
+      _ ≤ Cardinal.mk Xmin := Cardinal.mk_image_le
+      _ = topologicalRank G := hXcard
 
 end
 

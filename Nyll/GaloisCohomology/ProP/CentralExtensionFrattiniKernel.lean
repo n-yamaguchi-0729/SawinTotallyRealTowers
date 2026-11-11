@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
-import Mathlib.GroupTheory.Frattini
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+public import Mathlib.GroupTheory.Frattini
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 
 /-!
 # Prime central extensions and the Frattini subgroup
@@ -16,6 +18,8 @@ contained in the Frattini subgroup.  Applied to the cocycle extension of a
 nonzero degree-two class, this identifies the coefficient kernel as a cyclic
 Frattini obstruction.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

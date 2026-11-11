@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldCorrespondenceTopology
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteIndexNormClassField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.OrdinaryNormClassField
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldCorrespondenceTopology
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteIndexNormClassField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.OrdinaryNormClassField
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
 
 /-!
 # Construction of a closed finite-index class field
@@ -19,6 +23,10 @@ leaves so their elaboration environments do not remain resident here.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -28,14 +36,14 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The concrete finite Galois norm neighbourhood used to construct
 the class field of `H`. -/
 noncomputable abbrev closedFiniteIndexClassFieldNormAmbient
     (H : Subgroup (IdeleClassGroup K))
     (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
-    [H.FiniteIndex] : Type :=
+    [H.FiniteIndex] : Type u :=
   closedFiniteIndexNormAmbient (K := K) H hclosed
 
 /-- The named norm-neighbourhood containment used by the selected

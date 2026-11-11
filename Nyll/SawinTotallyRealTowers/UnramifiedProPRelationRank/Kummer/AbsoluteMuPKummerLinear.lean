@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
 
 /-!
 # Linear Kummer classes with natural `mu_p` coefficients
@@ -13,6 +15,8 @@ import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKum
 This file descends the continuous absolute Kummer class with its natural
 Galois action from field units to `p`-power classes.
 -/
+
+@[expose] public section
 
 open scoped Pointwise Topology
 
@@ -96,8 +100,6 @@ theorem absoluteMuPHomogeneousZeroCochain_boundary_apply
       (absoluteMuPHomogeneousZeroCochain K p x)
   have hdh := congrArg (fun tau ↦ tau g h) hd
   rw [hdh]
-  simp [TopRep.d_succ, TopRep.d_zero, TopRep.hom_sub,
-    absoluteMuPHomogeneousZeroCochain]
   rfl
 
 /-- The root-of-unity correction comparing the chosen root of a product with
@@ -151,7 +153,7 @@ theorem absoluteKummerMuPRootCocycle_mul_sub
           absoluteKummerChosenRoot K p b))
       (absoluteGaloisGroupContinuousMulEquiv K sigma)
   rw [rootQuotient_div, rootQuotient_mul_root]
-  simp [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+  rw [div_div]
 
 /-- At the homogeneous-cochain level, the product discrepancy is the
 boundary of the root-of-unity correction. -/
@@ -319,7 +321,6 @@ theorem absoluteKummerMuPH1LinearMap_mk (a : Kˣ) :
           (QuotientGroup.mk'
             (powMonoidHom p : Kˣ →* Kˣ).range a)) =
       absoluteKummerMuPH1Class K p a := by
-  simp [absoluteKummerMuPH1LinearMap]
   rfl
 
 end ClassFieldTower.Martinet.Shafarevich

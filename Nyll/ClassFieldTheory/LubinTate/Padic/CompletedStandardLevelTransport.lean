@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift
-import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusLift
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedCoefficientEvaluation
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
 /-!
 # Transporting a finite p-adic Lubin--Tate level to the completed level
@@ -22,6 +26,8 @@ used in the changed-uniformizer norm argument.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped PowerSeries
@@ -33,86 +39,45 @@ open LocalFieldTheory.DiscreteValuationField.Examples.Qp
 open ValuationTheory.DiscreteValuationField
 open SameUniformizer
 
-private noncomputable local instance
-    padicStandardLevelTransportCoefficientUniformSpace
-    (p : ℕ) [Fact p.Prime] :
-    UniformSpace (padicLocalField p).valuationSubring :=
-  ⊥
+attribute [local instance]
+  standardLubinTateLevelCoefficientUniformSpace
+  padicCompletedMultiplicativeWittUniformSpace
+  padicCompletedMultiplicativeTargetWithIdeal
+  padicCompletedMultiplicativeTargetCompleteSpace
+  padicCompletedMultiplicativeTargetT2Space
 
-private noncomputable local instance
-    padicStandardLevelTransportCoefficientTopologicalSpace
+/-- Coefficient topology comes from the canonical discrete evaluation uniformity. -/
+noncomputable local instance padicStandardLevelTransportCoefficientTopologicalSpace
     (p : ℕ) [Fact p.Prime] :
     TopologicalSpace (padicLocalField p).valuationSubring :=
-  ⊥
+  (standardLubinTateLevelCoefficientUniformSpace (padicLocalField p)).toTopologicalSpace
 
-private noncomputable local instance (priority := 50)
-    padicStandardLevelTransportWittUniformSpace
-    (p : ℕ) [Fact p.Prime] :
-    UniformSpace (padicCompletedUnramifiedWittRing p) :=
-  ⊥
-
-private noncomputable local instance
-    padicStandardLevelTransportSourceWithIdeal
+/-- The standard p-adic level uses its canonical maximal-ideal adic structure. -/
+noncomputable local instance padicStandardLevelTransportSourceWithIdeal
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    WithIdeal
-      (standardLubinTateLevelCompleteDVF
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-      ).valuationSubring where
-  i :=
-    (standardLubinTateLevelCompleteDVF
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-    ).maximalIdeal
+    WithIdeal (standardLubinTateLevelCompleteDVF
+      (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring :=
+  standardLubinTateLevelTargetWithIdeal
+    (F := padicLocalField p) (π := padicIntEquivValuationSubring p (p : ℤ_[p]))
+    (padicMultiplicativeLubinTateSeries_isUniformizer p) n
 
-private noncomputable local instance
-    padicStandardLevelTransportTargetWithIdeal
+/-- Completeness uses the canonical standard-level adic uniformity. -/
+noncomputable local instance padicStandardLevelTransportSourceCompleteSpace
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    WithIdeal
-      (padicCompletedLevelCompleteDVF p n).valuationSubring where
-  i := (padicCompletedLevelCompleteDVF p n).maximalIdeal
+    CompleteSpace (standardLubinTateLevelCompleteDVF
+      (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring :=
+  standardLubinTateLevelTargetCompleteSpace
+    (F := padicLocalField p) (π := padicIntEquivValuationSubring p (p : ℤ_[p]))
+    (padicMultiplicativeLubinTateSeries_isUniformizer p) n
 
-private noncomputable local instance
-    padicStandardLevelTransportSourceCompleteSpace
+/-- Separatedness uses the canonical standard-level adic topology. -/
+noncomputable local instance padicStandardLevelTransportSourceT2Space
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    CompleteSpace
-      (standardLubinTateLevelCompleteDVF
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-      ).valuationSubring := by
-  let source :=
-    standardLubinTateLevelCompleteDVF
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-  have hadic : IsAdic source.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp source.isAdicComplete).1
-
-private noncomputable local instance
-    padicStandardLevelTransportSourceT2Space
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    T2Space
-      (standardLubinTateLevelCompleteDVF
-        (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-      ).valuationSubring := by
-  let source :=
-    standardLubinTateLevelCompleteDVF
-      (padicMultiplicativeLubinTateSeries_isUniformizer p) n
-  have hadic : IsAdic source.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp source.isAdicComplete).2
-
-private noncomputable local instance
-    padicStandardLevelTransportTargetCompleteSpace
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    CompleteSpace
-      (padicCompletedLevelCompleteDVF p n).valuationSubring := by
-  let target := padicCompletedLevelCompleteDVF p n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
-
-private noncomputable local instance
-    padicStandardLevelTransportTargetT2Space
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    T2Space
-      (padicCompletedLevelCompleteDVF p n).valuationSubring := by
-  let target := padicCompletedLevelCompleteDVF p n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).2
+    T2Space (standardLubinTateLevelCompleteDVF
+      (padicMultiplicativeLubinTateSeries_isUniformizer p) n).valuationSubring :=
+  standardLubinTateLevelTargetT2Space
+    (F := padicLocalField p) (π := padicIntEquivValuationSubring p (p : ℤ_[p]))
+    (padicMultiplicativeLubinTateSeries_isUniformizer p) n
 
 /-- The standard finite-level embedding restricted to the actual valuation
 rings. -/
@@ -222,7 +187,7 @@ theorem padicStandardLevelIntegerEmbedding_apply_primitivePoint
     padicStandardLevelIntegerEmbedding p n
         (standardLubinTatePrimitivePointInteger hπ n) =
       padicCompletedPrimitiveRootInteger p n := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   apply Subtype.ext
   rw [padicStandardLevelIntegerEmbedding_coe,
     padicCompletedPrimitiveRootInteger_coe]
@@ -266,7 +231,7 @@ theorem padicStandardLevelIntegerEmbedding_comp_coefficientHom
     (padicStandardLevelIntegerEmbedding p n).comp
         (standardLubinTateLevelCoefficientHom hπ n) =
       padicCompletedLevelPadicIntegerCoefficientHom p n := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   let L := standardLubinTateLevelField hπ n
   let E := padicCompletedLevelField p n
   ext a
@@ -372,7 +337,7 @@ theorem
     padicStandardLevelIntegerEmbedding p n
         (standardLubinTatePrimitivePointIntegerAction hπ n u) =
       padicCompletedStandardPrimitivePointUnitAction p n u := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   have h :=
     padicStandardLevelIntegerEmbedding_powerSeriesEval p n
       (standardLubinTatePrimitivePointInteger hπ n)
@@ -398,8 +363,7 @@ theorem padicStandardUnitParameterLevelRoot_class
     standardLubinTateUnitParameterLevelRoot F hπ n
         (standardLubinTateUnitParameterClass F n u) =
       standardLubinTatePrimitiveLevelAction hπ n u := by
-  let F := padicLocalField p
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro F hπ
   apply Subtype.ext
   exact (standardLubinTateUnitParameterLevelRoot_coe F hπ n
     (standardLubinTateUnitParameterClass F n u)).trans

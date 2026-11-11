@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransferFrobeniusGeometry
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransferFrobeniusGeometry
 
 /-!
 # The abstract reciprocity construction, transfer--norm naturality: Frobenius fibers
@@ -14,7 +16,9 @@ norm-orbit representatives, fiber calculations, fixed-field arithmetic, and
 the final Frobenius transfer formula.
 -/
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -86,80 +90,9 @@ end transferFrobeniusGeometry
 
 section transferOrbitNorms
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : Type 0`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace Internal
-
-/-- The relative norm from the Frobenius fixed field is the sum over
-the norm double cosets corresponding to the classical transfer orbits.
-The representative of the orbit paired with `q` is the inverse of the
-transfer representative selected by `Quotient.out`. -/
-private theorem transferNormNaturalityNorm_eq_sum_transferOrbitRepresentatives
-    (D : DegreeData G) (A : Rep ℤ G)
-    [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
-    (E : DegreeData.FiniteResidueAbstractExtension D) (L : ClosedSubgroup G)
-    (hL : L.toSubgroup ≤ E.field.field.toSubgroup)
-    [hLnormal :
-      (extensionSubgroup E.base.field L (hL.trans E.below)).Normal]
-    [hL'normal : (extensionSubgroup E.field.field L hL).Normal]
-    [hLfinite : Finite (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field L (hL.trans E.below))]
-    (σ : D.FrobeniusElements E.base L (hL.trans E.below))
-    (π : ambientFixedAddSubgroup A
-      (D.frobeniusFixedField E.base L (hL.trans E.below) σ)) :
-    let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-    let hSK := D.frobeniusFixedField_le E.base L (hL.trans E.below) σ
-    let M := extensionSubgroup E.base.field E.field.field E.below
-    let Ω := Quotient (orbitRel M
-      (E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK))
-    let φ : Ω → E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK :=
-      Internal.chosenTransferNormNaturalityNormOrbitRepresentative
-        D E L hL σ
-    letI : Finite (E.base.field.toSubgroup ⧸
-        extensionSubgroup E.base.field S hSK) :=
-      D.frobeniusFixedField_finite E.base L (hL.trans E.below) σ
-    letI : Fintype Ω := Fintype.ofFinite _
-    letI (q : Ω) : Fintype (M ⧸ stabilizer M (φ q)) := by
-      letI : Finite (orbit M (φ q)) :=
-        Finite.of_injective Subtype.val Subtype.val_injective
-      letI := Fintype.ofFinite (orbit M (φ q))
-      exact Fintype.ofEquiv (orbit M (φ q))
-        (orbitEquivQuotientStabilizer M (φ q))
-    ((relativeNorm A E.base.field S hSK π :
-      ambientFixedAddSubgroup A E.base.field) : A.V) =
-      ∑ q : Ω, ∑ r : M ⧸ stabilizer M (φ q),
-        relativeCosetAction A E.base.field S hSK π (r.out • φ q) := by
-  dsimp only
-  let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-  let hSK := D.frobeniusFixedField_le E.base L (hL.trans E.below) σ
-  let M := extensionSubgroup E.base.field E.field.field E.below
-  let Ω := Quotient (orbitRel M
-    (E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK))
-  let φ : Ω → E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK :=
-    Internal.chosenTransferNormNaturalityNormOrbitRepresentative
-      D E L hL σ
-  let : Finite (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field S hSK) :=
-    D.frobeniusFixedField_finite E.base L (hL.trans E.below) σ
-  let : Fintype Ω := Fintype.ofFinite _
-  let (q : Ω) : Fintype (M ⧸ stabilizer M (φ q)) := by
-    letI : Finite (orbit M (φ q)) :=
-      Finite.of_injective Subtype.val Subtype.val_injective
-    letI := Fintype.ofFinite (orbit M (φ q))
-    exact Fintype.ofEquiv (orbit M (φ q))
-      (orbitEquivQuotientStabilizer M (φ q))
-  rw [relativeNorm_eq_sum_chosenOrbit_of_fintype A E.base.field S hSK M
-    (Internal.chosenTransferNormNaturalityNormOrbitRepresentative_spec
-      D E L hL σ) π]
-  apply Fintype.sum_congr
-  intro q
-  apply Fintype.sum_congr
-  intro r
-  rw [chosenOrbitClassEquiv_symm_apply]
 
 end Internal
 
@@ -336,7 +269,7 @@ theorem transferNormNaturalityFrobeniusTransferTermPreimage_degree
     change D.extensionNormalizedDegree E.base L (hL.trans E.below)
         (q.out.out⁻¹ * σ.1 ^ m * q.out.out) = _
     rw [map_mul, map_mul, map_inv]
-    simp [mul_comm]
+    exact inv_mul_cancel_comm _ _
   have hdegree : f •
       (D.extensionNormalizedDegree E.field L hL u).toAdd =
         N • (1 : ZHat) := by
@@ -625,7 +558,7 @@ theorem transferNormNaturalityTransferFrobeniusLift_mem_fixedSubgroup_iff_stabil
         H hHclosed σ.1 q.out
   have hcu : c u = σ.1 ^ m := by
     change t * (t⁻¹ * σ.1 ^ m * t) * t⁻¹ = σ.1 ^ m
-    simp [mul_assoc]
+    rw [mul_assoc t⁻¹ (σ.1 ^ m) t, mul_inv_cancel_left, mul_inv_cancel_right]
   have hcig : ci (σ.1 ^ m) = u := by
     rw [hci_apply]
     rfl
@@ -663,7 +596,7 @@ theorem transferNormNaturalityTransferFrobeniusLift_mem_fixedSubgroup_iff_stabil
       rw [hcig] at hcix
       have hif : ci (c (f x)) = f x := by
         rw [hci_apply, hc_apply]
-        simp [mul_assoc]
+        rw [mul_assoc t (f x) t⁻¹, inv_mul_cancel_left, inv_mul_cancel_right]
       rw [hif] at hcix
       have hmap : f x ∈ Γβ.toSubgroup.map f := by
         rw [hclosureMap]
@@ -728,12 +661,9 @@ theorem transferNormNaturalityTransferFrobeniusLift_fixedSubgroup_map
           E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S
             (D.frobeniusFixedField_le E.base L
               (hL.trans E.below) σ)) := by
-  dsimp only
-  let e := transferNormNaturalityIntermediateAbsoluteEquiv
-    E.base.field E.field.field E.below
+  intro β S tK e
   ext kM
   obtain ⟨k', rfl⟩ := e.surjective kM
-  change e k' ∈ Subgroup.map e.toMonoidHom _ ↔ _
   have hmem : e k' ∈ Subgroup.map e.toMonoidHom
       (extensionSubgroup E.field.field
         (D.frobeniusFixedField E.field L hL
@@ -830,18 +760,14 @@ end transferFrobeniusFibers
 
 section transferNormFibers
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : Type 0`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace Internal
 
 /-- Under the fiber equivalence, a summand in the double-coset norm is
 literally the corresponding summand in `N_{Σₜ/K'}`. -/
 private theorem transferNormNaturalityTransferNormFiber_term
-    (D : DegreeData G) (A : Rep ℤ G)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (E : DegreeData.FiniteResidueAbstractExtension D) (L : ClosedSubgroup G)
     (hL : L.toSubgroup ≤ E.field.field.toSubgroup)
@@ -876,15 +802,7 @@ private theorem transferNormNaturalityTransferNormFiber_term
         relativeCosetAction A E.field.field Sβ hSβK'
           (fixedFieldInclusion A C Sβ hSβC
             (conjugateFixedElement A S tK.1 π)) kq := by
-  dsimp only
-  let β := D.transferNormNaturalityTransferFrobeniusLift E L hL σ q
-  let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-  let hSK := D.frobeniusFixedField_le E.base L (hL.trans E.below) σ
-  let tK : E.base.field.toSubgroup := Quotient.out q.out.out
-  let C := conjugateClosedSubgroup S tK.1
-  let Sβ := D.frobeniusFixedField E.field L hL β
-  let hSβK' := D.frobeniusFixedField_le E.field L hL β
-  intro hSβC kq
+  intro β S hSK tK C Sβ hSβK' hSβC kq
   refine QuotientGroup.induction_on kq ?_
   intro k'
   let M := extensionSubgroup E.base.field E.field.field E.below
@@ -917,104 +835,6 @@ private theorem transferNormNaturalityTransferNormFiber_term
   change A.ρ (k'.1 * tK.1⁻¹) π.1 = A.ρ k'.1 (A.ρ tK.1⁻¹ π.1)
   rw [map_mul]
   rfl
-
-/-- The inner double-coset sum for a transfer orbit is the relative norm
-`N_{Σₜ/K'}(π^t)` appearing. -/
-private theorem transferNormNaturalityTransferNormFiber_sum
-    (D : DegreeData G) (A : Rep ℤ G)
-    [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
-    (E : DegreeData.FiniteResidueAbstractExtension D) (L : ClosedSubgroup G)
-    (hL : L.toSubgroup ≤ E.field.field.toSubgroup)
-    [hLnormal :
-      (extensionSubgroup E.base.field L (hL.trans E.below)).Normal]
-    [hL'normal : (extensionSubgroup E.field.field L hL).Normal]
-    [hL'finite : Finite
-      (E.field.field.toSubgroup ⧸ extensionSubgroup E.field.field L hL)]
-    (σ : D.FrobeniusElements E.base L (hL.trans E.below))
-    (q : Quotient (orbitRel (Subgroup.zpowers σ.1)
-      ((E.base.field.toSubgroup ⧸ D.extensionInertiaWithin E.base.field L
-        (hL.trans E.below)) ⧸
-          D.transferNormNaturalityFrobeniusIntermediateSubgroup
-            E L hL)))
-    (π : ambientFixedAddSubgroup A
-      (D.frobeniusFixedField E.base L (hL.trans E.below) σ))
-    (hSβC :
-      let β := D.transferNormNaturalityTransferFrobeniusLift
-        E L hL σ q
-      let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-      let tK : E.base.field.toSubgroup := Quotient.out q.out.out
-      (D.frobeniusFixedField E.field L hL β).toSubgroup ≤
-        (conjugateClosedSubgroup S tK.1).toSubgroup) :
-    let β := D.transferNormNaturalityTransferFrobeniusLift
-      E L hL σ q
-    let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-    let hSK := D.frobeniusFixedField_le E.base L (hL.trans E.below) σ
-    let tK : E.base.field.toSubgroup := Quotient.out q.out.out
-    let C := conjugateClosedSubgroup S tK.1
-    let Sβ := D.frobeniusFixedField E.field L hL β
-    let hSβK' := D.frobeniusFixedField_le E.field L hL β
-    let M := extensionSubgroup E.base.field E.field.field E.below
-    let φ : E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK :=
-      QuotientGroup.mk tK⁻¹
-    letI : Finite (E.field.field.toSubgroup ⧸
-        extensionSubgroup E.field.field Sβ hSβK') :=
-      D.frobeniusFixedField_finite E.field L hL β
-    letI : Fintype (E.field.field.toSubgroup ⧸
-        extensionSubgroup E.field.field Sβ hSβK') := Fintype.ofFinite _
-    let fiberEquiv := Internal.chosenTransferNormNaturalityTransferNormFiberEquiv
-      D E L hL σ q
-    letI : Fintype (M ⧸ stabilizer M φ) :=
-      Fintype.ofEquiv
-        (E.field.field.toSubgroup ⧸
-          extensionSubgroup E.field.field Sβ hSβK') fiberEquiv
-    ∑ r : M ⧸ stabilizer M φ,
-        relativeCosetAction A E.base.field S hSK π (r.out • φ) =
-      ((relativeNorm A E.field.field Sβ hSβK'
-        (fixedFieldInclusion A C Sβ hSβC
-          (conjugateFixedElement A S tK.1 π)) :
-            ambientFixedAddSubgroup A E.field.field) : A.V) := by
-  dsimp only
-  let β := D.transferNormNaturalityTransferFrobeniusLift E L hL σ q
-  let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-  let hSK := D.frobeniusFixedField_le E.base L (hL.trans E.below) σ
-  let tK : E.base.field.toSubgroup := Quotient.out q.out.out
-  let C := conjugateClosedSubgroup S tK.1
-  let Sβ := D.frobeniusFixedField E.field L hL β
-  let hSβK' := D.frobeniusFixedField_le E.field L hL β
-  let M := extensionSubgroup E.base.field E.field.field E.below
-  let φ : E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK :=
-    QuotientGroup.mk tK⁻¹
-  let : Finite (E.field.field.toSubgroup ⧸
-      extensionSubgroup E.field.field Sβ hSβK') :=
-    D.frobeniusFixedField_finite E.field L hL β
-  let : Fintype (E.field.field.toSubgroup ⧸
-      extensionSubgroup E.field.field Sβ hSβK') := Fintype.ofFinite _
-  let fiberEquiv := Internal.chosenTransferNormNaturalityTransferNormFiberEquiv
-    D E L hL σ q
-  let : Fintype (M ⧸ stabilizer M φ) :=
-    Fintype.ofEquiv
-      (E.field.field.toSubgroup ⧸
-        extensionSubgroup E.field.field Sβ hSβK') fiberEquiv
-  rw [relativeNorm_apply_coe, relativeNormValue]
-  calc
-    (∑ r : M ⧸ stabilizer M φ,
-        relativeCosetAction A E.base.field S hSK π (r.out • φ)) =
-      ∑ kq : E.field.field.toSubgroup ⧸
-          extensionSubgroup E.field.field Sβ hSβK',
-        relativeCosetAction A E.base.field S hSK π
-          ((fiberEquiv kq).out • φ) :=
-      (fiberEquiv.sum_comp
-        (fun r => relativeCosetAction A E.base.field S hSK π
-          (r.out • φ))).symm
-    _ = ∑ kq : E.field.field.toSubgroup ⧸
-          extensionSubgroup E.field.field Sβ hSβK',
-        relativeCosetAction A E.field.field Sβ hSβK'
-          (fixedFieldInclusion A C Sβ hSβC
-            (conjugateFixedElement A S tK.1 π)) kq := by
-      apply Fintype.sum_congr
-      intro kq
-      exact Internal.transferNormNaturalityTransferNormFiber_term
-        D A E L hL σ q π hSβC kq
 
 end Internal
 
@@ -1176,18 +996,14 @@ end transferredFixedFields
 
 section transferNormArithmetic
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : Type 0`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- If `π` is prime in `Σ`, its conjugate `π^t`, included into the
 unramified extension `Σₜ`, remains prime. -/
 theorem transferNormNaturalityTransferFrobenius_conjugatePrime_isPrime
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (F : FiniteAbstractFieldExtension G) (L : ClosedSubgroup G)
@@ -1261,12 +1077,12 @@ theorem transferNormNaturalityTransferFrobenius_conjugatePrime_isPrime
           F.base L (hL.trans F.below) σ }
       v.IsPrimeElement Sfinite π) :
     let E := F.toFiniteResidueAbstractExtension D
-    letI hLnormalE :
+    let _ :
         (extensionSubgroup E.base.field L (hL.trans E.below)).Normal := by
       change (extensionSubgroup F.base.field L
         (hL.trans F.below)).Normal
       exact hLnormal
-    letI hL'normalE : (extensionSubgroup E.field.field L hL).Normal := by
+    let _ : (extensionSubgroup E.field.field L hL).Normal := by
       change (extensionSubgroup F.field.field L hL).Normal
       exact hL'normal
     let T : FiniteTower G := {
@@ -1277,7 +1093,7 @@ theorem transferNormNaturalityTransferFrobenius_conjugatePrime_isPrime
       middle_le_base := F.below
       finiteTopQuotient := hLfinite
       finiteBaseQuotient := F.finiteQuotient }
-    letI : Finite (F.base.field.toSubgroup ⧸
+    let : Finite (F.base.field.toSubgroup ⧸
         extensionSubgroup F.base.field L (hL.trans F.below)) :=
       T.totalQuotientFinite
     let β := D.transferNormNaturalityTransferFrobeniusLift
@@ -1309,53 +1125,7 @@ theorem transferNormNaturalityTransferFrobenius_conjugatePrime_isPrime
     v.IsPrimeElement Sβfinite
       (fixedFieldInclusion A Cfinite.field Sβfinite.field hSβC
         (conjugateFixedElement A S tK.1 π)) := by
-  dsimp only
-  let E := F.toFiniteResidueAbstractExtension D
-  let hLnormalE :
-      (extensionSubgroup E.base.field L (hL.trans E.below)).Normal := by
-    change (extensionSubgroup F.base.field L
-      (hL.trans F.below)).Normal
-    exact hLnormal
-  let hL'normalE : (extensionSubgroup E.field.field L hL).Normal := by
-    change (extensionSubgroup F.field.field L hL).Normal
-    exact hL'normal
-  let T : FiniteTower G := {
-    top := L
-    middle := F.field.field
-    base := F.base.field
-    top_le_middle := hL
-    middle_le_base := F.below
-    finiteTopQuotient := hLfinite
-    finiteBaseQuotient := F.finiteQuotient }
-  let hLbaseFinite : Finite (F.base.field.toSubgroup ⧸
-      extensionSubgroup F.base.field L (hL.trans F.below)) :=
-    T.totalQuotientFinite
-  let β := D.transferNormNaturalityTransferFrobeniusLift
-    E L hL σ q
-  let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-  let Sfinite : FiniteAbstractField G := {
-    field := S
-    finite := by
-      simpa [E, S,
-        FiniteAbstractFieldExtension.toFiniteResidueAbstractExtension,
-        FiniteAbstractField.toFiniteResidueAbstractField] using
-        D.frobeniusFixedField_absoluteFinite
-        F.base L (hL.trans F.below) σ }
-  let tK : E.base.field.toSubgroup := Quotient.out q.out.out
-  let Cfinite := Sfinite.conjugate tK.1
-  let Sβ := D.frobeniusFixedField E.field L hL β
-  let Sβfinite : FiniteAbstractField G := {
-    field := Sβ
-    finite := by
-      simpa [E, Sβ,
-        FiniteAbstractFieldExtension.toFiniteResidueAbstractExtension,
-        FiniteAbstractField.toFiniteResidueAbstractField] using
-        D.frobeniusFixedField_absoluteFinite F.field L hL β }
-  let hSβC : Sβfinite.field.toSubgroup ≤ Cfinite.field.toSubgroup := by
-    change Sβ.toSubgroup ≤
-      (conjugateClosedSubgroup S tK.1).toSubgroup
-    exact D.transferNormNaturalityTransferFrobenius_fixedField_le_conjugate
-      E L hL σ q
+  intro E hLnormalE hL'normalE T hLbaseFinite β S Sfinite tK Cfinite Sβ Sβfinite hSβC
   let hSβabsolute : Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) Sβfinite.field
         (le_baseField Sβfinite.field)) :=
@@ -1387,7 +1157,7 @@ theorem transferNormNaturalityTransferFrobenius_conjugatePrime_isPrime
 `N_{Σ/K}(π)` is the sum, over transfer double cosets, of
 `N_{Σₜ/K'}(π^t)`.  The construction writes this identity multiplicatively. -/
 theorem transferNormNaturalityNorm_eq_sum_transferNorms
-    (D : DegreeData G) (A : Rep ℤ G)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (F : FiniteAbstractFieldExtension G) (L : ClosedSubgroup G)
     (hL : L.toSubgroup ≤ F.field.field.toSubgroup)
@@ -1409,7 +1179,7 @@ theorem transferNormNaturalityNorm_eq_sum_transferNorms
             (hL.trans F.below)).Normal
           exact hLnormal) σ)) :
     let E := F.toFiniteResidueAbstractExtension D
-    letI hLnormalE :
+    let :
         (extensionSubgroup E.base.field L (hL.trans E.below)).Normal := by
       change (extensionSubgroup F.base.field L
         (hL.trans F.below)).Normal
@@ -1422,17 +1192,17 @@ theorem transferNormNaturalityNorm_eq_sum_transferNorms
       middle_le_base := F.below
       finiteTopQuotient := hLfinite
       finiteBaseQuotient := F.finiteQuotient }
-    letI : Finite (E.base.field.toSubgroup ⧸
+    let : Finite (E.base.field.toSubgroup ⧸
         extensionSubgroup E.base.field L (hL.trans E.below)) := by
       change Finite (F.base.field.toSubgroup ⧸
         extensionSubgroup F.base.field L (hL.trans F.below))
       exact T.totalQuotientFinite
-    letI : Finite (E.field.field.toSubgroup ⧸
+    let : Finite (E.field.field.toSubgroup ⧸
         extensionSubgroup E.field.field L hL) := by
       change Finite (F.field.field.toSubgroup ⧸
         extensionSubgroup F.field.field L hL)
       exact hLfinite
-    letI : (extensionSubgroup E.field.field L hL).Normal :=
+    let : (extensionSubgroup E.field.field L hL).Normal :=
       transferNormNaturality_intermediateExtension_normal
         E.base.field E.field.field L hL E.below
     let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
@@ -1440,10 +1210,10 @@ theorem transferNormNaturalityNorm_eq_sum_transferNorms
     let M := extensionSubgroup E.base.field E.field.field E.below
     let ΩN := Quotient (orbitRel M
       (E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK))
-    letI : Finite (E.base.field.toSubgroup ⧸
+    let : Finite (E.base.field.toSubgroup ⧸
         extensionSubgroup E.base.field S hSK) :=
       D.frobeniusFixedField_finite E.base L (hL.trans E.below) σ
-    letI : Fintype ΩN := Fintype.ofFinite _
+    let : Fintype ΩN := Fintype.ofFinite _
     ((fixedFieldInclusion A E.base.field E.field.field E.below
       (relativeNorm A E.base.field S hSK π) :
         ambientFixedAddSubgroup A E.field.field) : A.V) =
@@ -1466,47 +1236,11 @@ theorem transferNormNaturalityNorm_eq_sum_transferNorms
           (fixedFieldInclusion A C Sβ hSβC
             (conjugateFixedElement A S tK.1 π)) :
               ambientFixedAddSubgroup A E.field.field) : A.V) := by
-  dsimp only
-  let E := F.toFiniteResidueAbstractExtension D
-  let hLnormalE :
-      (extensionSubgroup E.base.field L (hL.trans E.below)).Normal := by
-    change (extensionSubgroup F.base.field L
-      (hL.trans F.below)).Normal
-    exact hLnormal
-  let T : FiniteTower G := {
-    top := L
-    middle := F.field.field
-    base := F.base.field
-    top_le_middle := hL
-    middle_le_base := F.below
-    finiteTopQuotient := hLfinite
-    finiteBaseQuotient := F.finiteQuotient }
-  let hLbaseFinite : Finite (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field L (hL.trans E.below)) := by
-    change Finite (F.base.field.toSubgroup ⧸
-      extensionSubgroup F.base.field L (hL.trans F.below))
-    exact T.totalQuotientFinite
-  let hLfieldFinite : Finite (E.field.field.toSubgroup ⧸
-      extensionSubgroup E.field.field L hL) := by
-    change Finite (F.field.field.toSubgroup ⧸
-      extensionSubgroup F.field.field L hL)
-    exact hLfinite
-  let hL'normal : (extensionSubgroup E.field.field L hL).Normal :=
-    transferNormNaturality_intermediateExtension_normal
-      E.base.field E.field.field L hL E.below
-  let S := D.frobeniusFixedField E.base L (hL.trans E.below) σ
-  let hSK := D.frobeniusFixedField_le E.base L (hL.trans E.below) σ
-  let M := extensionSubgroup E.base.field E.field.field E.below
-  let ΩN := Quotient (orbitRel M
-    (E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK))
+  intro E hLnormalE T hLbaseFinite hLfieldFinite hL'normal S hSK M ΩN sharedOwner1 sharedOwner2
   let φ : ΩN →
       E.base.field.toSubgroup ⧸ extensionSubgroup E.base.field S hSK :=
     Internal.chosenTransferNormNaturalityNormOrbitRepresentative
       D E L hL σ
-  let : Finite (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field S hSK) :=
-    D.frobeniusFixedField_finite E.base L (hL.trans E.below) σ
-  let : Fintype ΩN := Fintype.ofFinite _
   let (qN : ΩN) : Fintype (M ⧸ stabilizer M (φ qN)) := by
     letI : Finite (orbit M (φ qN)) :=
       Finite.of_injective Subtype.val Subtype.val_injective

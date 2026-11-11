@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveEisenstein
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.RingTheory.Polynomial.GaussLemma
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveEisenstein
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.RingTheory.Polynomial.GaussLemma
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Primitive roots and standard Lubin--Tate level fields
@@ -28,6 +30,8 @@ in the base field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -66,7 +70,7 @@ theorem standardLubinTatePolynomialIterate_derivative_eval_zero
         Polynomial.eval_comp,
         standardLubinTatePolynomialIterate_eval_zero,
         standardLubinTatePolynomial_derivative_eval_zero]
-      simp [pow_succ]
+      exact (pow_succ π n).symm
 
 /-- The primitive division polynomial after extending coefficients from the
 valuation ring to the base field. -/

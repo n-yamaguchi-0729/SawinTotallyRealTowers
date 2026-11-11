@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Ring.Ideal
-import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.Functoriality
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
+module
+
+public import Mathlib.Topology.Algebra.Ring.Ideal
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.Functoriality
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
 
 /-!
 # The closed augmentation filtration over `ZMod p`
@@ -17,6 +20,8 @@ powers of its canonical augmentation ideal.  The elementary multiplicative
 lemmas are stated once here so later Zassenhaus files need no repeated
 two-sided-ideal instances.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

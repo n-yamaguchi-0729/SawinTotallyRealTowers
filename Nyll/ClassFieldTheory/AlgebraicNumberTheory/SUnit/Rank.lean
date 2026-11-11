@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.LinearAlgebra.Dimension.Torsion.Finite
-import Mathlib.LinearAlgebra.StdBasis
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.NumberTheory.NumberField.Units.Regulator
-import Mathlib.RingTheory.DedekindDomain.Factorization
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.LinearAlgebra.Dimension.Torsion.Basic
+public import Mathlib.LinearAlgebra.Dimension.Torsion.Finite
+public import Mathlib.LinearAlgebra.StdBasis
+public import Mathlib.NumberTheory.NumberField.ClassNumber
+public import Mathlib.NumberTheory.NumberField.Units.Regulator
+public import Mathlib.RingTheory.DedekindDomain.Factorization
 
 /-!
 # Torsion and rank sources for `S`-units
@@ -21,6 +24,8 @@ understood to be present.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -151,7 +156,7 @@ theorem valuation_mk'_eq_exp_neg_count
             ((algebraMap (𝓞 K) K) (d : 𝓞 K))⁻¹ *
           ↑(Ideal.span {n} : Ideal (𝓞 K)) := by
     rw [FractionalIdeal.coeIdeal_span_singleton,
-      FractionalIdeal.spanSingleton_mul_spanSingleton]
+      ← map_mul (FractionalIdeal.spanSingleton (𝓞 K)⁰)]
     apply congr_arg
     rw [IsFractionRing.mk'_eq_div, div_eq_mul_inv, mul_comm]
   have hx :
@@ -209,7 +214,7 @@ theorem valuation_eq_one_iff_count_eq_zero
   · intro h
     exact neg_eq_zero.mp (WithZero.exp_eq_one.mp h)
   · intro h
-    simp [h]
+    exact WithZero.exp_eq_one.mpr (neg_eq_zero.mpr h)
 
 theorem divisorCoordinate_eq_zero_iff
     (x : SUnitGroup (K := K) S) (v : S) :
@@ -231,7 +236,7 @@ theorem divisorCoordinate_mul
           (FractionalIdeal.spanSingleton (𝓞 K)⁰ ((x : Kˣ) : K)) +
         FractionalIdeal.count K (v : HeightOneSpectrum (𝓞 K))
           (FractionalIdeal.spanSingleton (𝓞 K)⁰ ((y : Kˣ) : K))
-  rw [← FractionalIdeal.spanSingleton_mul_spanSingleton,
+  rw [map_mul (FractionalIdeal.spanSingleton (𝓞 K)⁰),
     FractionalIdeal.count_mul]
   · exact FractionalIdeal.spanSingleton_ne_zero_iff.mpr
       (Units.ne_zero (x : Kˣ))

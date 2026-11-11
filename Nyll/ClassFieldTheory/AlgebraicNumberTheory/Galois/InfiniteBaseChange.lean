@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.FieldTheory.SeparableClosure
+module
+
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.FieldTheory.SeparableClosure
 
 /-!
 # Infinite Galois base change from finite layers
@@ -18,6 +20,8 @@ compositum.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

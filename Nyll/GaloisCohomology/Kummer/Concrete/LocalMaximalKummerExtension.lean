@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PowerClassFiniteness
-import Nyll.GaloisCohomology.Kummer.Concrete.MaximalKummerSubgroup
-import Nyll.GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PowerClassFiniteness
+public import Nyll.GaloisCohomology.Kummer.Concrete.MaximalKummerSubgroup
+public import Nyll.GaloisCohomology.Kummer.Concrete.KummerCorrespondenceFormula
 
 /-!
 # Maximal finite Kummer extensions of local fields
@@ -17,13 +19,15 @@ the Kummer extension obtained by adjoining all `n`-th roots is finite.
 
 
 
+@[expose] public section
+
 noncomputable section
 
-universe v
+universe u v
 
 namespace KummerTheory
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- The maximal restricted radical quotient is finite when the exponent is

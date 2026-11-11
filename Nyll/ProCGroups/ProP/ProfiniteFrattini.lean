@@ -4,22 +4,30 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FiniteFrattini
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Separation
+module
+
+public import Nyll.ProCGroups.ProP.FiniteFrattini
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Separation
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # The Frattini subgroup of a pro-p group
 
 This file defines the profinite Frattini subgroup by detection in every open
-normal finite quotient.  For a group with an open-normal finite `p`-group
-basis, it proves the pro-`p` formula
+normal quotient. These quotients are finite for compact topological groups;
+an open-normal finite `p`-group basis also makes every such quotient a finite
+`p`-group. For a group with this basis, it proves the pro-`p` formula
 
 `profiniteFrattini G = closedPowerCommutator p G`.
 
 The proof reuses the finite Burnside--Frattini formula quotient by quotient.
 No commutative-group or module structure is exported from this file.
 -/
+
+@[expose] public section
 
 open Set
 
@@ -83,7 +91,8 @@ theorem closedPowerCommutator_map_eq_of_surjective_finite
   le_antisymm (closedPowerCommutator_map_le p G f)
     (closedPowerCommutator_le_map_of_surjective_finite f hf)
 
-/-- The profinite Frattini subgroup, detected in every open normal finite quotient. -/
+/-- The intersection of the pullbacks of the abstract Frattini subgroups over all open normal
+quotients. For compact topological groups, these quotients are finite. -/
 def profiniteFrattini
     (G : Type u) [TopologicalSpace G] [Group G] : Subgroup G :=
   ⨅ U : OpenNormalSubgroup G,

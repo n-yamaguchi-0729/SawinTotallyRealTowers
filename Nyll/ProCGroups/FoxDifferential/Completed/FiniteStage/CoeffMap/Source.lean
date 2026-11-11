@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Target
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Target
 
 /-!
 # Fox differential: completed — finite stage — coeff map — source
@@ -20,6 +22,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStagePowerSourceQuotientMap_mk`
   Evaluation of the source quotient transition on a representative.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

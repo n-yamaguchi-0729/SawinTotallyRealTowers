@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.LimitEquiv
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.LimitEquiv
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power augmentation ideal — augmentation
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   A prime-power completed group-algebra element lies in the augmentation ideal iff its prime-power
   augmentation is zero.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

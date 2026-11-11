@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
-import Nyll.GaloisCohomology.Cyclic.TateComparison
+module
+
+public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
+public import Nyll.GaloisCohomology.Cyclic.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # The abstract reciprocity construction: the unit-cohomology axiom
@@ -14,6 +19,8 @@ The coefficient group in the unit-cohomology axiom is the actual unit subgroup `
 the action of the actual quotient `G_K / G_L`.  The two Tate groups are the
 homology objects of the finite-cyclic norm complexes.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -27,7 +34,7 @@ noncomputable section
 
 open CategoryTheory
 
-universe u
+universe u v
 
 section Generic
 
@@ -98,13 +105,19 @@ noncomputable instance (E : FiniteCyclicSubextension K) :
     Fintype (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
   Fintype.ofFinite _
 
+/-- The fixed coefficient representation attached to a bundled cyclic
+extension. -/
+noncomputable def fixedRepresentation (E : FiniteCyclicSubextension K)
+    (A : Rep.{v} ℤ G) :
+    Rep.{v} ℤ (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
+  extensionFixedRepresentation A K.field E.field E.below E.normal
+
 end FiniteCyclicSubextension
 
 end Generic
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- A finite cyclic extension together with the assertion that it is
 unramified for the fixed degree datum. -/
@@ -157,39 +170,15 @@ noncomputable instance (E : FiniteUnramifiedCyclicExtension D K) :
 
 end FiniteUnramifiedCyclicExtension
 
-namespace FiniteCyclicSubextension
-
-variable {K : FiniteAbstractField G}
-
-/-- The fixed coefficient representation attached to a bundled cyclic
-extension. -/
-noncomputable def fixedRepresentation (E : FiniteCyclicSubextension K)
-    (A : Rep ℤ G) :
-    Rep ℤ (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
-  extensionFixedRepresentation A K.field E.field E.below E.normal
-
-end FiniteCyclicSubextension
-
-/-- Elementwise content of `H⁰(Q,M)=0`: every element fixed by a cyclic
-generator is an actual norm. -/
+/-- The original universe-zero integer Tate API gives the same norm witnesses as the
+independent-universe integral owner. -/
 theorem exists_norm_eq_of_tateHZero_isZero
-    {Q : IntegralRepGroupType} [Group Q] [Fintype Q]
-    (M : Rep ℤ Q) (g : Q) (hg : ∀ x, x ∈ Subgroup.zpowers g)
+    {Q : Type} [Group Q] [Fintype Q]
+    (M : Rep.{0} ℤ Q) (g : Q) (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (hzero : Limits.IsZero (tateCohomology M 0)) :
-    ∀ x : M.V, M.ρ g x = x → ∃ y : M.V, M.norm.hom y = x := by
-  let : IsCyclic Q := isCyclic_of_generator g hg
-  let : CommGroup Q := IsCyclic.commGroup (α := Q)
-  let S := Rep.FiniteCyclicGroup.normHomCompSub M g
-  have hSzero : Limits.IsZero S.homology := by
-    exact Limits.IsZero.of_iso hzero
-      (TateCohomology.isoFiniteCyclicZero M g hg).symm
-  have hS : S.Exact := (S.exact_iff_isZero_homology).2 hSzero
-  intro x hx
-  have hxker : S.g x = 0 := by
-    change M.ρ g x - x = 0
-    exact sub_eq_zero.mpr hx
-  rcases (S.moduleCat_exact_iff.mp hS x hxker) with ⟨y, hy⟩
-  exact ⟨y, hy⟩
+    ∀ x : M.V, M.ρ g x = x → ∃ y : M.V, M.norm.asHom.hom y = x :=
+  IntegralGroupCohomology.Universe.exists_norm_eq_of_tate_isZero M g hg
+    ((IntegralGroupCohomology.Universe.isZero_tate_iff_original M 0).mpr hzero)
 
 namespace ValuationData
 
@@ -280,7 +269,7 @@ noncomputable def unitActionLinearMap
 noncomputable def unitRepresentationOverK
     (v : ValuationData D A) (E : FiniteAbstractFieldExtension G)
     (hnormal : (extensionSubgroup E.base.field E.field.field E.below).Normal) :
-    Rep ℤ E.base.field.toSubgroup :=
+    Rep.{v} ℤ E.base.field.toSubgroup :=
   Rep.of
     { toFun := fun k => v.unitActionLinearMap E hnormal k
       map_one' := by
@@ -295,7 +284,8 @@ noncomputable def unitRepresentationOverK
         rw [map_mul]
         rfl }
 
-private theorem unitRepresentationOverK_isTrivialOnExtension
+/-- The extension subgroup fixes the original unit representation. -/
+theorem unitRepresentationOverK_isTrivialOnExtension
     (v : ValuationData D A) (E : FiniteAbstractFieldExtension G)
     (hnormal : (extensionSubgroup E.base.field E.field.field E.below).Normal) :
     Representation.IsTrivial
@@ -314,7 +304,7 @@ private theorem unitRepresentationOverK_isTrivialOnExtension
 noncomputable def unitRepresentation
     (v : ValuationData D A) (E : FiniteAbstractFieldExtension G)
     (hnormal : (extensionSubgroup E.base.field E.field.field E.below).Normal) :
-    Rep ℤ (E.base.field.toSubgroup ⧸
+    Rep.{v} ℤ (E.base.field.toSubgroup ⧸
       extensionSubgroup E.base.field E.field.field E.below) := by
   letI := hnormal
   letI : Representation.IsTrivial
@@ -334,7 +324,7 @@ variable {K : FiniteAbstractField G}
 extension. -/
 noncomputable def unitRepresentation
     (E : FiniteUnramifiedCyclicExtension D K) (v : ValuationData D A) :
-    Rep ℤ (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
+    Rep.{v} ℤ (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
   v.unitRepresentation E.toFiniteAbstractFieldExtension E.normal
 
 end FiniteUnramifiedCyclicExtension
@@ -391,16 +381,14 @@ theorem unitRepresentation_norm_coe
     (v : ValuationData D A) (E : FiniteAbstractFieldExtension G)
     (hnormal : (extensionSubgroup E.base.field E.field.field E.below).Normal)
     (u : v.unitAddSubgroup E.field) :
-    letI := Fintype.ofFinite
+    let := Fintype.ofFinite
       (E.base.field.toSubgroup ⧸
         extensionSubgroup E.base.field E.field.field E.below)
-    ((((v.unitRepresentation E hnormal).norm.hom u).1 :
+    ((((v.unitRepresentation E hnormal).norm.asHom.hom u).1 :
         ambientFixedAddSubgroup A E.field.field) : A.V) =
       ((relativeNorm A E.base.field E.field.field E.below u.1 :
         ambientFixedAddSubgroup A E.base.field) : A.V) := by
-  let := Fintype.ofFinite
-    (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field E.field.field E.below)
+  intro sharedOwner1
   rw [relativeNorm_apply_coe]
   change
     (((Representation.norm (v.unitRepresentation E hnormal).ρ) u).1 :
@@ -431,17 +419,14 @@ theorem exists_unit_relativeNorm_eq_of_tateHZero_isZero
     (g : E.base.field.toSubgroup ⧸
       extensionSubgroup E.base.field E.field.field E.below)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := Fintype.ofFinite
+    let := Fintype.ofFinite
       (E.base.field.toSubgroup ⧸
         extensionSubgroup E.base.field E.field.field E.below)
     Limits.IsZero
-        (tateCohomology (v.unitRepresentation E hnormal) 0) →
+        (IntegralGroupCohomology.Universe.tate (v.unitRepresentation E hnormal) 0) →
       ∀ u : v.unitAddSubgroup E.base, ∃ ε : v.unitAddSubgroup E.field,
         relativeNorm A E.base.field E.field.field E.below ε.1 = u.1 := by
-  let := Fintype.ofFinite
-    (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field E.field.field E.below)
-  intro hzero u
+  intro sharedOwner1 hzero u
   let U := v.unitRepresentation E hnormal
   let uL := v.unitInclusion E hUnramified u
   have hfixed : U.ρ g uL = uL := by
@@ -451,14 +436,14 @@ theorem exists_unit_relativeNorm_eq_of_tateHZero_isZero
     apply Subtype.ext
     change A.ρ k.1 u.1.1 = u.1.1
     exact u.1.2 k
-  obtain ⟨ε, hε⟩ := exists_norm_eq_of_tateHZero_isZero
+  obtain ⟨ε, hε⟩ := IntegralGroupCohomology.Universe.exists_norm_eq_of_tate_isZero
     U g hg hzero uL hfixed
   refine ⟨ε, ?_⟩
   apply Subtype.ext
   calc
     ((relativeNorm A E.base.field E.field.field E.below ε.1 :
         ambientFixedAddSubgroup A E.base.field) : A.V) =
-        ((((v.unitRepresentation E hnormal).norm.hom ε).1 :
+        ((((v.unitRepresentation E hnormal).norm.asHom.hom ε).1 :
           ambientFixedAddSubgroup A E.field.field) : A.V) :=
       (v.unitRepresentation_norm_coe E hnormal ε).symm
     _ = ((uL.1 : ambientFixedAddSubgroup A E.field.field) : A.V) :=
@@ -475,21 +460,18 @@ theorem exists_unit_sigma_sub_eq_of_tateHMinusOne_isZero
     (g : E.base.field.toSubgroup ⧸
       extensionSubgroup E.base.field E.field.field E.below)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) :
-    letI := Fintype.ofFinite
+    let := Fintype.ofFinite
       (E.base.field.toSubgroup ⧸
         extensionSubgroup E.base.field E.field.field E.below)
     Limits.IsZero
-        (tateCohomology (v.unitRepresentation E hnormal) (-1)) →
+        (IntegralGroupCohomology.Universe.tate (v.unitRepresentation E hnormal) (-1)) →
       ∀ u : (v.unitRepresentation E hnormal).V,
-        (v.unitRepresentation E hnormal).norm.hom u = 0 →
+        (v.unitRepresentation E hnormal).norm.asHom.hom u = 0 →
         ∃ ε : (v.unitRepresentation E hnormal).V,
           (v.unitRepresentation E hnormal).ρ g ε - ε = u := by
-  let := Fintype.ofFinite
-    (E.base.field.toSubgroup ⧸
-      extensionSubgroup E.base.field E.field.field E.below)
-  intro hzero u hu
+  intro sharedOwner1 hzero u hu
   let U := v.unitRepresentation E hnormal
-  exact CyclicCohomology.normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
+  exact IntegralGroupCohomology.Universe.normKernel_of_tate_isZero
     U g hg hzero u hu
 
 /-- **the unit-cohomology axiom.** For every finite unramified Galois extension `L/K`,
@@ -502,8 +484,28 @@ def SatisfiesUnramifiedUnitCohomology
     (D : DegreeData G) (v : ValuationData D A) : Prop :=
   ∀ (K : FiniteAbstractField G)
     (E : FiniteUnramifiedCyclicExtension D K),
-    Limits.IsZero (tateCohomology (E.unitRepresentation v) 0) ∧
-      Limits.IsZero (tateCohomology (E.unitRepresentation v) (-1))
+    Limits.IsZero (IntegralGroupCohomology.Universe.tate (E.unitRepresentation v) 0) ∧
+      Limits.IsZero (IntegralGroupCohomology.Universe.tate (E.unitRepresentation v) (-1))
+
+/-- In universe zero the unit-cohomology axiom is exactly its original literal Tate condition. -/
+theorem satisfiesUnramifiedUnitCohomology_iff_original
+    {H : Type} [Group H] [TopologicalSpace H]
+    {D₀ : DegreeData H} {A₀ : Rep.{0} ℤ H} (v : ValuationData D₀ A₀) :
+    SatisfiesUnramifiedUnitCohomology D₀ v ↔
+      ∀ (K : FiniteAbstractField H) (E : FiniteUnramifiedCyclicExtension D₀ K),
+        Limits.IsZero (tateCohomology (E.unitRepresentation v) 0) ∧
+          Limits.IsZero (tateCohomology (E.unitRepresentation v) (-1)) := by
+  constructor
+  · intro h K E
+    exact ⟨(IntegralGroupCohomology.Universe.isZero_tate_iff_original
+      (E.unitRepresentation v) 0).mp (h K E).1,
+      (IntegralGroupCohomology.Universe.isZero_tate_iff_original
+        (E.unitRepresentation v) (-1)).mp (h K E).2⟩
+  · intro h K E
+    exact ⟨(IntegralGroupCohomology.Universe.isZero_tate_iff_original
+      (E.unitRepresentation v) 0).mpr (h K E).1,
+      (IntegralGroupCohomology.Universe.isZero_tate_iff_original
+        (E.unitRepresentation v) (-1)).mpr (h K E).2⟩
 
 end ValuationData
 

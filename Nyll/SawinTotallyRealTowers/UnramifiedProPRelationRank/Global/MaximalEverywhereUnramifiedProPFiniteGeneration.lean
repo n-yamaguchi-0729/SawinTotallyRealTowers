@@ -5,6 +5,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FrattiniClassField
+import Nyll.ProCGroups.ProC.InverseLimits.Predicates
 
 /-!
 # Finite generation of the maximal everywhere-unramified pro-p Galois group
@@ -58,7 +59,7 @@ theorem maxEverywhereUnramifiedProPGaloisGroup_topologicallyFinitelyGenerated
     apply Set.eq_univ_of_forall
     intro z
     refine ⟨liftQ z, ?_, ?_⟩
-    · simp [s]
+    · exact Finset.mem_image.mpr ⟨z, Finset.mem_univ z, rfl⟩
     · exact Function.surjInv_eq
         (powerCommutatorQuotientMk_surjective p G) z
   rw [himage]

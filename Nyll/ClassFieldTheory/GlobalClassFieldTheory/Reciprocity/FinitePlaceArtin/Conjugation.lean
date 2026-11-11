@@ -4,9 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseSemilinearNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # Conjugation of finite-place Artin homomorphisms
@@ -16,6 +24,8 @@ conjugation invariance of the resulting finite-place Artin map.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NNReal NumberField
 open NumberField IsDedekindDomain
@@ -30,7 +40,9 @@ open HilbertRamification
 open LocalClassFieldTheory
 open LocalFieldTheory
 
-variable {K L : Type}
+universe uK uL
+
+variable {K : Type uK} {L : Type uL}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
@@ -51,8 +63,7 @@ noncomputable def finitePlaceConjugateLocalizedCompletionAlgEquiv
     letI : Algebra vK.Completion Ewc :=
       finitePlaceLocalArtinLocalizedAlgebra v wc
     Ewc ≃ₐ[vK.Completion] Ew := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let wc := absoluteValueExtensionConjugate vK w g
+  intro vK wc
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v
   letI hwK :=
@@ -106,8 +117,7 @@ theorem finitePlaceConjugateLocalizedCompletionAlgEquiv_toAlgebraicLocalization
           vK wc.1 wc.2 x) =
       AbsoluteValue.toAlgebraicLocalization
         vK w.1 w.2 (g x) := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let wc := absoluteValueExtensionConjugate vK w g
+  intro vK wc
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v
   let hwK :=
@@ -157,8 +167,7 @@ theorem
           vK w.1 w.2 x) =
       AbsoluteValue.toAlgebraicLocalization
         vK wc.1 wc.2 (g.symm x) := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let wc := absoluteValueExtensionConjugate vK w g
+  intro vK wc
   let hwK :=
     AbsoluteValue.extensionCompletionAlgebra
       (K := K) w.1
@@ -214,10 +223,7 @@ theorem finitePlaceDecompositionTransport_conjugate_apply
           (eDwc.symm tauC) =
         (absoluteValueDecompositionGroup K w.1).subtype
           (eDw.symm (AlgEquiv.autCongr e tauC)) := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let wc := absoluteValueExtensionConjugate vK w g
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
+  intro vK wc hvK
   let hwK :=
     AbsoluteValue.extensionCompletionAlgebra
       (K := K) w.1
@@ -381,9 +387,9 @@ theorem finitePlaceLocalArtinMonoidHom_conjugate
     let wc := absoluteValueExtensionConjugate vK w g
     let Ew := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
     let Ewc := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wc
-    letI : Algebra vK.Completion Ew :=
+    let : Algebra vK.Completion Ew :=
       finitePlaceLocalArtinLocalizedAlgebra v w
-    letI : Algebra vK.Completion Ewc :=
+    let : Algebra vK.Completion Ewc :=
       finitePlaceLocalArtinLocalizedAlgebra v wc
     let e :=
       finitePlaceConjugateLocalizedCompletionAlgEquiv
@@ -393,14 +399,7 @@ theorem finitePlaceLocalArtinMonoidHom_conjugate
           (K := K) (L := L) v wc) =
       finitePlaceLocalArtinMonoidHom
         (K := K) (L := L) v w := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
-  let wc := absoluteValueExtensionConjugate vK w g
-  let Ew := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let Ewc := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wc
-  let : Algebra vK.Completion Ew :=
-    finitePlaceLocalArtinLocalizedAlgebra v w
-  let : Algebra vK.Completion Ewc :=
-    finitePlaceLocalArtinLocalizedAlgebra v wc
+  intro vK wc Ew Ewc sharedOwner5 sharedOwner6
   let : FiniteDimensional vK.Completion Ew :=
     finitePlaceLocalArtinFiniteDimensional v w
   let : FiniteDimensional vK.Completion Ewc :=
@@ -418,19 +417,23 @@ theorem finitePlaceLocalArtinMonoidHom_conjugate
   let e :=
     finitePlaceConjugateLocalizedCompletionAlgEquiv
       (K := K) (L := L) v w g
-  let eK :
-      vK.Completionˣ ≃* (v.adicCompletion K)ˣ :=
-    finitePlaceCompletionUnitsContinuousMulEquiv v
-  change
-    (AlgEquiv.autCongr e).toMonoidHom.comp
-        ((LocalClassFieldTheory.abelianLocalArtinMonoidHom
-          vK.Completion Ewc).comp eK.symm.toMonoidHom) =
-      (LocalClassFieldTheory.abelianLocalArtinMonoidHom
-        vK.Completion Ew).comp eK.symm.toMonoidHom
-  exact
-    congrArg (fun f => f.comp eK.symm.toMonoidHom)
-      (LocalClassFieldTheory.abelianLocalArtinMonoidHom_autCongr
-        vK.Completion Ewc Ew e)
+  let input := finitePlaceLocalArtinInputMonoidHom v
+  let source := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom vK.Completion Ewc
+  let target := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom vK.Completion Ew
+  let conjugate := (AlgEquiv.autCongr e).toMonoidHom
+  have hsource : finitePlaceLocalArtinMonoidHom v wc = source.comp input := by
+    unfold finitePlaceLocalArtinMonoidHom
+    with_reducible rfl
+  have htarget : finitePlaceLocalArtinMonoidHom v w = target.comp input := by
+    unfold finitePlaceLocalArtinMonoidHom
+    with_reducible rfl
+  have h := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_autCongr
+    vK.Completion Ewc Ew e
+  calc
+    _ = conjugate.comp (source.comp input) := congrArg conjugate.comp hsource
+    _ = (conjugate.comp source).comp input := (MonoidHom.comp_assoc _ _ _).symm
+    _ = target.comp input := congrArg (fun f => f.comp input) h
+    _ = _ := htarget.symm
 
 /-- Conjugating the chosen extension of a finite place does not change
 its Artin homomorphism when the global extension is abelian. -/

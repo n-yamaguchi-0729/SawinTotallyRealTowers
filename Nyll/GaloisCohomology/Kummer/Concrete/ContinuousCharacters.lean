@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Finite-stage factorization of continuous Galois characters
@@ -14,6 +16,8 @@ import Mathlib.Topology.Algebra.ContinuousMonoidHom
 A continuous character from an infinite Galois group to a discrete group
 factors through the Galois group of a finite Galois intermediate field.
 -/
+
+@[expose] public section
 
 noncomputable section
 

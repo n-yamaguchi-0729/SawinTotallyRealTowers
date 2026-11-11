@@ -4,9 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Instances.ZMod
-import Nyll.ProCGroups.ProC.InverseLimits.Limits
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+module
+
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ProCGroups.ProC.InverseLimits.Limits
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.InverseSystems.Basic
+public import Nyll.ProCGroups.InverseSystems.CofinalityAndDensity
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # `ProCGroups.Completion.ProCInteger`
@@ -15,6 +22,8 @@ This module constructs the inverse limit of cyclic integer quotients indexed by 
 admitted by a finite group class, equips it with its topological ring structure, and proves its
 profinite multiplicative and density properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -41,7 +50,7 @@ namespace ProCIntegerIndex
 
 /-- Internal bridge from native membership of a universe lift to the universe-independent
 public membership predicate. -/
-private theorem memAcrossUniverses_of_ulift_mem
+theorem memAcrossUniverses_of_ulift_mem
     {C : FiniteGroupClass.{u}} {G : Type} [Group G]
     (hG : C (ULift.{u} G)) : C.MemAcrossUniverses G :=
   (C.memAcrossUniverses_ulift_iff G).1 (C.memAcrossUniverses_of_mem hG)

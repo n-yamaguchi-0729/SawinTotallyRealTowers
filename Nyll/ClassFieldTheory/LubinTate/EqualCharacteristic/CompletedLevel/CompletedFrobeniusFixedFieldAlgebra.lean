@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
 
 /-!
 # The completed theta-intertwining theorem: the canonical base algebra on the fixed field
@@ -16,32 +18,36 @@ generic scalar-action instances in later norm calculations.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 
 open scoped LaurentSeries PowerSeries
+
+universe u v
 
 namespace LubinTate
 namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 noncomputable local instance equalCharacteristicFixedFieldAlgebraBaseAlgebra
-    (F : LocalField K) :
+    (F : LocalField.{u, v} K) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra F
 
 noncomputable local instance equalCharacteristicFixedFieldAlgebraLevelAlgebra
-    (F : LocalField K) (n : ℕ) :
+    (F : LocalField.{u, v} K) (n : ℕ) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedLevelField F n) :=
   equalCharacteristicCompletedFrobeniusFixedLevelAlgebra F n
 
 local instance equalCharacteristicFixedFieldAlgebraScalarTower
-    (F : LocalField K) (n : ℕ) :
+    (F : LocalField.{u, v} K) (n : ℕ) :
     IsScalarTower F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField)
       (equalCharacteristicCompletedLevelField F n) :=
@@ -51,7 +57,7 @@ local instance equalCharacteristicFixedFieldAlgebraScalarTower
 completed level.  This lightweight projection lets ring-homomorphism
 consumers avoid reconstructing the ambient Laurent-base algebra. -/
 noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldSubring
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ) :
     Subring (equalCharacteristicCompletedLevelField F n) :=
@@ -61,7 +67,7 @@ noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldSubring
 field. -/
 @[reducible]
 noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldAlgebra
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ) :
     Algebra F.residueField⸨X⸩
@@ -74,7 +80,7 @@ the completed Frobenius fixed field.  Naming it lets downstream files reuse
 the same structure without asking typeclass search to unfold the fixed field. -/
 @[reducible]
 noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldSMul
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ) :
     SMul F.residueField⸨X⸩
@@ -86,7 +92,7 @@ noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldSMul
 on the completed Frobenius fixed field. -/
 @[reducible]
 noncomputable def equalCharacteristicCompletedFrobeniusFixedFieldModule
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ) :
     Module F.residueField⸨X⸩

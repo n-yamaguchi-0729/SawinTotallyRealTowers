@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.RamificationInertia.Galois
-import Mathlib.NumberTheory.RamificationInertia.Inertia
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.RingTheory.DedekindDomain.Factorization
+module
+
+public import Mathlib.NumberTheory.RamificationInertia.Galois
+public import Mathlib.NumberTheory.RamificationInertia.Inertia
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.RingTheory.DedekindDomain.Factorization
 
 /-!
 # Hilbert ramification theory: Dedekind-domain layer
@@ -22,6 +24,8 @@ normality of inertia in the decomposition group, exactness, and quotient form.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

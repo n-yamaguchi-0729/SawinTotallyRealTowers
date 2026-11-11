@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.FieldTheory.Galois.IsGaloisGroup
-import Mathlib.GroupTheory.GroupAction.Quotient
-import Mathlib.RingTheory.Invariant.Basic
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
+module
+
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.FieldTheory.Galois.IsGaloisGroup
+public import Mathlib.GroupTheory.GroupAction.Quotient
+public import Mathlib.RingTheory.Invariant.Basic
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # Decomposition and inertia for finite extensions of complete DVFs
@@ -28,6 +31,8 @@ complete-DVF specialization and the finite-Galois surjectivity theorem.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

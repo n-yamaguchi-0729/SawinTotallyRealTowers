@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.Derivative
+module
+
+public import Nyll.ProCGroups.ProP.Fox.Derivative
+public import Nyll.ProCGroups.Presentations.Profinite
 
 /-!
 # Completed Fox rows of displayed relators
@@ -13,6 +16,8 @@ The displayed finite relation family and the whole presentation kernel are
 mapped into the same completed Fox-coordinate module.  The closed coefficient
 span below is the finite relation module used by the filtered construction.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

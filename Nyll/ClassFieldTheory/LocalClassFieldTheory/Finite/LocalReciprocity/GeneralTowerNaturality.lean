@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Abelianization.Defs
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
+module
+
+public import Mathlib.GroupTheory.Abelianization.Defs
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
 
 /-!
 # Restriction naturality in an arbitrary finite abelian tower
@@ -22,6 +25,8 @@ naturality then becomes the actual restriction homomorphism
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -30,18 +35,8 @@ open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation LocalClassFieldTheory
 open scoped IsMulCommutative
 
-private abbrev towerAbsoluteGalois (K : Type) [Field K] :=
-  intrinsicAbsoluteGalois K
-
-private abbrev towerAbsoluteUnits (K : Type) [Field K] :
-    Rep ℤ (towerAbsoluteGalois K) :=
-  intrinsicAbsoluteUnits K
-
-private abbrev towerAbstractBase (K : Type) [Field K] :
-    ClosedSubgroup (towerAbsoluteGalois K) :=
-  intrinsicAbstractBase K
-
-private def towerLowerEmbedding
+/-- Restrict the chosen top-field embedding to the intermediate field. -/
+def towerLowerEmbedding
     (K E L : Type)
     [Field K] [Field E] [Field L]
     [Algebra K E] [Algebra E L] [Algebra K L]
@@ -54,10 +49,10 @@ private def towerEmbeddedBaseNormClass
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     (i : L →ₐ[K] SeparableClosure K) (a : Kˣ) :
-    FiniteNormQuotient (towerAbsoluteUnits K) (towerAbstractBase K)
+    FiniteNormQuotient (intrinsicAbsoluteUnits K) (intrinsicAbstractBase K)
       (finiteGaloisAbstractExtensionOfEmbedding K L i).field
       (finiteGaloisAbstractExtensionOfEmbedding K L i).below :=
-  finiteNormClass (towerAbsoluteUnits K) (towerAbstractBase K)
+  finiteNormClass (intrinsicAbsoluteUnits K) (intrinsicAbstractBase K)
     (finiteGaloisAbstractExtensionOfEmbedding K L i).field
     (finiteGaloisAbstractExtensionOfEmbedding K L i).below
     (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)
@@ -106,7 +101,7 @@ private theorem towerRestrict_abstractQuotient_mk
     [FiniteDimensional K E] [FiniteDimensional K L]
     [IsGalois K E] [IsGalois K L]
     (iL : L →ₐ[K] SeparableClosure K)
-    (sigma : (towerAbstractBase K).toSubgroup) :
+    (sigma : (intrinsicAbstractBase K).toSubgroup) :
     AlgEquiv.restrictNormalHom E
         (finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
           K L iL (QuotientGroup.mk sigma)) =
@@ -165,7 +160,7 @@ private theorem towerRestrict_abstractAbelianization
         ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
           K E (towerLowerEmbedding K E L iL)).abelianizationCongr
           (normResidueNaturalityAbelianizedRestriction
-            (towerAbstractBase K) (towerAbstractBase K)
+            (intrinsicAbstractBase K) (intrinsicAbstractBase K)
             (finiteGaloisAbstractExtensionOfEmbedding
               K E (towerLowerEmbedding K E L iL)).field
             (finiteGaloisAbstractExtensionOfEmbedding K L iL).field
@@ -173,7 +168,7 @@ private theorem towerRestrict_abstractAbelianization
               K E (towerLowerEmbedding K E L iL)).below
             (finiteGaloisAbstractExtensionOfEmbedding K L iL).below
             le_rfl (towerEmbeddedAbstractExtension_field_le K E L iL) z)) := by
-  let B := towerAbstractBase K
+  let B := intrinsicAbstractBase K
   let EE :=
     finiteGaloisAbstractExtensionOfEmbedding K E
       (towerLowerEmbedding K E L iL)
@@ -234,9 +229,9 @@ theorem concreteNormResidueAutomorphism_restrict_tower
     [FiniteDimensional K E] [FiniteDimensional K L]
     [IsAbelianGalois K E] [IsAbelianGalois K L]
     (iL : L →ₐ[K] SeparableClosure K)
-    (D : DegreeData (towerAbsoluteGalois K))
-    (v : ValuationData D (towerAbsoluteUnits K))
-    (hcf : SatisfiesClassFieldAxiom (towerAbsoluteUnits K))
+    (D : DegreeData (intrinsicAbsoluteGalois K))
+    (v : ValuationData D (intrinsicAbsoluteUnits K))
+    (hcf : SatisfiesClassFieldAxiom (intrinsicAbsoluteUnits K))
     (a : Kˣ) :
     AlgEquiv.restrictNormalHom E
         ((Abelianization.equivOfComm (H := Gal(L / K))).symm
@@ -245,7 +240,7 @@ theorem concreteNormResidueAutomorphism_restrict_tower
       (Abelianization.equivOfComm (H := Gal(E / K))).symm
         (concreteNormResidueSymbolOfEmbedding
           K E (towerLowerEmbedding K E L iL) D v hcf a) := by
-  let B := towerAbstractBase K
+  let B := intrinsicAbstractBase K
   let BF := intrinsicFiniteAbstractBase K
   let EE :=
     finiteGaloisAbstractExtensionOfEmbedding K E
@@ -283,7 +278,7 @@ theorem concreteNormResidueAutomorphism_restrict_tower
         exact sigma.2
     rw [htop]
     infer_instance
-  let T : FiniteAbstractFieldExtension (towerAbsoluteGalois K) := {
+  let T : FiniteAbstractFieldExtension (intrinsicAbsoluteGalois K) := {
     field := BF
     base := BF
     below := le_rfl
@@ -304,24 +299,24 @@ theorem concreteNormResidueAutomorphism_restrict_tower
         extensionSubgroup T.field.field EL.field EL.below) := by
     change Finite (B.toSubgroup ⧸ extensionSubgroup B EL.field EL.below)
     exact hELFinite
-  have hnorm : finiteReciprocityNaturalityNormMap (towerAbsoluteUnits K)
+  have hnorm : finiteReciprocityNaturalityNormMap (intrinsicAbsoluteUnits K)
         B B EE.field EL.field EE.below EL.below le_rfl hLE xL = xE := by
     dsimp only [xL, xE, towerEmbeddedBaseNormClass]
     rw [finiteReciprocityNaturalityNormMap_finiteNormClass,
       relativeNorm_self]
   have hraw := D.normResidueNaturality_norm_restriction
-    (towerAbsoluteUnits K) v hcf
+    (intrinsicAbsoluteUnits K) v hcf
     T EE.field EL.field EE.below EL.below hLE
   have hrawa := DFunLike.congr_fun hraw xL
   change _ =
-    D.normResidueSymbol (towerAbsoluteUnits K) v hcf BF EE
-      (finiteReciprocityNaturalityNormMap (towerAbsoluteUnits K)
+    D.normResidueSymbol (intrinsicAbsoluteUnits K) v hcf BF EE
+      (finiteReciprocityNaturalityNormMap (intrinsicAbsoluteUnits K)
         B B EE.field EL.field EE.below EL.below le_rfl hLE xL) at hrawa
   rw [hnorm] at hrawa
   let zL :=
-    D.normResidueSymbol (towerAbsoluteUnits K) v hcf BF EL xL
+    D.normResidueSymbol (intrinsicAbsoluteUnits K) v hcf BF EL xL
   let zE :=
-    D.normResidueSymbol (towerAbsoluteUnits K) v hcf BF EE xE
+    D.normResidueSymbol (intrinsicAbsoluteUnits K) v hcf BF EE xE
   have hz : normResidueNaturalityAbelianizedRestriction
         B B EE.field EL.field EE.below EL.below le_rfl hLE
         (Additive.toMul zL) = Additive.toMul zE := by
@@ -408,8 +403,8 @@ theorem restrictNormalHom_eq_autCongr
     [Algebra K L] [Algebra K M]
     [Normal K M]
     (e : L ≃ₐ[K] M) :
-    letI : Algebra M L := e.symm.toRingHom.toAlgebra
-    letI : IsScalarTower K M L :=
+    let : Algebra M L := e.symm.toRingHom.toAlgebra
+    let : IsScalarTower K M L :=
       IsScalarTower.of_algebraMap_eq' (by
         apply RingHom.ext
         intro x
@@ -417,12 +412,7 @@ theorem restrictNormalHom_eq_autCongr
     (AlgEquiv.restrictNormalHom M :
         Gal(L / K) →* Gal(M / K)) =
       (AlgEquiv.autCongr e).toMonoidHom := by
-  let : Algebra M L := e.symm.toRingHom.toAlgebra
-  let : IsScalarTower K M L :=
-    IsScalarTower.of_algebraMap_eq' (by
-      apply RingHom.ext
-      intro x
-      exact (e.symm.commutes x).symm)
+  intro sharedOwner1 sharedOwner2
   apply MonoidHom.ext
   intro sigma
   apply AlgEquiv.ext

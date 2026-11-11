@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Algebra.BigOperators.Field
-import Mathlib.Tactic.Linarith
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Positivity
-import Mathlib.Tactic.Ring
+module
+
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.Algebra.BigOperators.Field
+public import Mathlib.Tactic.Linarith
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.Ring
 
 /-!
 # Numerical Golod--Shafarevich criterion
@@ -26,6 +28,8 @@ monotone bounded dimension sequence, the truncated inequalities, relator
 depths, and positivity of the generator count.
 -/
 
+@[expose] public section
+
 open scoped BigOperators
 
 namespace ClassFieldTower.ProP
@@ -38,11 +42,11 @@ def backshift (A : ℕ → ℕ) (N k : ℕ) : ℕ :=
 @[simp]
 theorem backshift_add (A : ℕ → ℕ) (n k : ℕ) :
     backshift A (n + k) k = A n := by
-  simp [backshift]
+  simp only [backshift, le_add_iff_nonneg_left, zero_le, ↓reduceIte, add_tsub_cancel_right]
 
 theorem backshift_lt (A : ℕ → ℕ) {n k : ℕ} (h : n < k) :
     backshift A n k = 0 := by
-  simp [backshift, Nat.not_le.mpr h]
+  simp only [backshift, Nat.not_le.mpr h, ↓reduceIte]
 
 section Abel
 
@@ -69,7 +73,8 @@ theorem weighted_backshift_hasSum
   have hprefix : ∑ i ∈ Finset.range k, f i = 0 := by
     apply Finset.sum_eq_zero
     intro i hi
-    simp [f, backshift, Nat.not_le.mpr (Finset.mem_range.mp hi)]
+    simp only [backshift, Nat.cast_ite, Nat.cast_zero, ite_mul, zero_mul,
+      Nat.not_le.mpr (Finset.mem_range.mp hi), ↓reduceIte, f]
   rw [← hasSum_nat_add_iff' k]
   rw [hprefix, sub_zero]
   have hsum :=
@@ -222,10 +227,10 @@ theorem generator_le_relation_of_stable_truncated
     d ≤ r := by
   obtain ⟨M, hM⟩ := hstable
   let N := M + 1
-  have hMN : M ≤ N := by simp [N]
+  have hMN : M ≤ N := by simp only [le_add_iff_nonneg_right, zero_le, N]
   have hAN : A N = A M := hM N hMN
   have hshiftOne : backshift A N 1 = A M := by
-    simp [N, backshift]
+    simp only [backshift, le_add_iff_nonneg_left, zero_le, ↓reduceIte, add_tsub_cancel_right, N]
   have hANpos : 0 < A N := by
     rw [hAN]
     exact lt_of_lt_of_le hA0 (hmono (Nat.zero_le M))
@@ -245,7 +250,7 @@ theorem generator_le_relation_of_stable_truncated
     calc
       d * A N < 1 + d * A N := by omega
       _ ≤ A N + r * A N := hmain
-      _ = (r + 1) * A N := by simp [Nat.add_mul, Nat.add_comm]
+      _ = (r + 1) * A N := by simp only [Nat.add_mul, one_mul, Nat.add_comm]
   exact Nat.lt_succ_iff.mp (Nat.lt_of_mul_lt_mul_right hlt)
 
 /-- Assumption-level numerical endpoint for the truncated

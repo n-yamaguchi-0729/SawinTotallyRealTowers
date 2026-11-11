@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
-import Nyll.GaloisCohomology.Topology.TotallyDisconnectedQuotients
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
+public import Nyll.GaloisCohomology.Topology.TotallyDisconnectedQuotients
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
 
 /-!
 # The identity component of the idele class group
@@ -17,6 +22,8 @@ class group as a closed normal subgroup and names the corresponding quotient.
 -/
 
 
+
+@[expose] public section
 
 open scoped NNReal NumberField Topology
 

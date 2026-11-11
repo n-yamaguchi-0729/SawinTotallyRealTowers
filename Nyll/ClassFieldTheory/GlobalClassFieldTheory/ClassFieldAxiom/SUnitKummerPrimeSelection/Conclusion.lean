@@ -4,8 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.DecompositionFields
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.DecompositionFields
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 
 /-!
 # The conclusion of S-unit Kummer prime selection
@@ -16,6 +23,8 @@ used by the global reciprocity argument.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
@@ -63,15 +72,8 @@ theorem
       (sUnitFiniteKummerRadical
         (K := K) (L := E) n S').comap
           (SUnitGroup (K := K) S').subtype := by
+  intro S' T
   classical
-  dsimp only
-  let S' :=
-    enlargeByFiniteKummerRadicalSupport
-      (K := K) (L := E) n hmu S
-  let T :=
-    sUnitKummerPrimeSet
-      (K := K) (Omega := Omega) E n hmu
-      p v hp hv hn r eG S
   let N :=
     fullSUnitKummerExtension
       (K := K) (Omega := Omega) n S'

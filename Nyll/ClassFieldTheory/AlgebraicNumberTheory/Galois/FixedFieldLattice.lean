@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # Fixed fields and subgroup lattice operations
@@ -15,6 +17,8 @@ infrastructure rather than a concrete reciprocity construction.
 -/
 
 
+
+@[expose] public section
 
 namespace IntermediateField
 

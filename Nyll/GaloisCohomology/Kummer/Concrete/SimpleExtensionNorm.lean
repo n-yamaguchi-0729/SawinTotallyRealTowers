@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
-import Mathlib.GroupTheory.Coset.Card
-import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+public import Mathlib.GroupTheory.Coset.Card
+public import Mathlib.RingTheory.Polynomial.Cyclotomic.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Norm witnesses in simple Kummer extensions
@@ -20,13 +23,17 @@ not require the defining power polynomial to be irreducible.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace KummerTheory
 
 open scoped BigOperators
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 
 /-- If both `a` and `1 - a` are nonzero, then `a` is a norm from the simple
 Kummer extension obtained by adjoining an `n`-th root of `1 - a`. -/

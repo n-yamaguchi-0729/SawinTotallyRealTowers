@@ -4,12 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.AbsoluteRamification
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.AbsoluteRamification
 
 /-! Provides the public declarations in the
 `RamificationTheory.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence` Lean module. -/
 
+
+@[expose] public section
 
 namespace RamificationTheory
 
@@ -80,7 +84,7 @@ private theorem finiteDimensional_comap_algEquiv
       map_smul' a x := Subtype.ext (e.toLinearEquiv.map_smul a x.1) }
   exact Module.Finite.equiv eLin.symm
 
-private theorem finiteDimensional_map_algEquiv
+theorem finiteDimensional_map_algEquiv
     {F : Type u} {A : Type v} {B : Type w} [Field F] [Field A] [Field B]
     [Algebra F A] [Algebra F B]
     (e : A ≃ₐ[F] B) (E : IntermediateField F A)

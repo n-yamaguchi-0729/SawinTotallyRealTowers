@@ -4,8 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.FinitePadicAuxiliaryField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.FinitePadicAuxiliaryField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Factorization of the global Artin map through local Artin maps
@@ -17,6 +23,8 @@ finite-place local-global compatibility theorem.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField
 open NumberField
 open AlgebraicNumberTheory.Valuations
@@ -27,6 +35,8 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
+universe u v w x
+
 open ClassFormation
 open CyclicCohomology
 open KummerTheory
@@ -35,7 +45,7 @@ attribute [local instance]
   finitePadicAuxiliaryExtensionQuotientIsMulCommutative
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
@@ -315,7 +325,7 @@ theorem finitePlaceGlobalNormResidueFactor_comp_rangeRestrict
 /-- Pointwise norm/restriction naturality, with the coercion from the
 homomorphism equality normalized once outside the descent construction. -/
 private theorem globalNormResidueMonoidHomOfEmbedding_norm_restriction_apply
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type w) (L : Type v) (L' : Type x)
     [Field K] [NumberField K]
     [Field K'] [NumberField K']
     [Field L] [NumberField L]
@@ -344,7 +354,7 @@ transports both its chosen local Artin value and its global norm-residue
 value.  All fields and places are explicit here, so no constructed
 fixed-field tower occurs in the declaration type. -/
 private opaque exists_finitePlaceNormDescent_localGlobalRepresentative
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M]
     [Algebra K M] [FiniteDimensional K M] [IsGalois K M]
     [Algebra M L] [FiniteDimensional M L] [IsAbelianGalois M L]
@@ -471,7 +481,7 @@ by the auxiliary construction and then normed through an explicit base
 change.  This short bridge keeps the auxiliary witness out of the
 cyclic-fixed-field construction. -/
 private opaque exists_finitePlacePrimaryNormDescent_localGlobalRepresentative
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M]
     [Algebra K M] [FiniteDimensional K M] [IsGalois K M]
     [Algebra M L] [FiniteDimensional M L] [IsAbelianGalois M L]

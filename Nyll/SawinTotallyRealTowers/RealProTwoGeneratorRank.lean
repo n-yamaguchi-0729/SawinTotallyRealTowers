@@ -4,25 +4,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProTwoFrattiniQuotient
-import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
-import Nyll.ProCGroups.ProP.BurnsideBasis
-import Nyll.ProCGroups.ProP.ElementaryAbelianRank
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Mathlib.FieldTheory.Finiteness
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Algebra.Module.ZMod
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.FrattiniQuotient
-import Mathlib.Data.Nat.Basic
-import Mathlib.Logic.Function.Basic
-import Mathlib.RingTheory.Finiteness.Basic
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProTwoFrattiniQuotient
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
+public import Nyll.ProCGroups.ProP.BurnsideBasis
+public import Nyll.ProCGroups.ProP.ElementaryAbelianRank
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Mathlib.FieldTheory.Finiteness
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Algebra.Module.ZMod
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.FrattiniQuotient
+public import Mathlib.Data.Nat.Basic
+public import Mathlib.Logic.Function.Basic
+public import Mathlib.RingTheory.Finiteness.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
 
 /-!
 # Five generators for the initial real pro-two group
@@ -31,6 +34,8 @@ The computed power--commutator quotient has order 32. Its vector-space basis
 lifts to a finite generating set of the actual Galois group by the pro-p
 Burnside criterion. The quotient dimension also proves minimality.
 -/
+
+@[expose] public section
 
 open scoped IsMulCommutative
 

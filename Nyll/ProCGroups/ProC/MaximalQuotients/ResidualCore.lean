@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Group.Quotient
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+module
+
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Closed kernels and the pro-\(C\) residual core
@@ -15,6 +17,8 @@ quotient-in-\(C\) basis on its quotient. The residual core is their intersection
 normality therefore follow directly from the stored kernel data, without reconstructing separation
 axioms from the basis property.
 -/
+
+@[expose] public section
 
 open Set
 

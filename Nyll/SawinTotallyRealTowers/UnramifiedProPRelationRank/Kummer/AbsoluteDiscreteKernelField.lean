@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
-import Mathlib.GroupTheory.PGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # The finite Galois field detected by a discrete absolute representation
@@ -16,6 +18,8 @@ Galois, and its Galois group embeds in the target through the quotient by
 that kernel. In particular a `p`-group target produces a `p`-extension;
 the target itself need not be finite. No new instances are installed.
 -/
+
+@[expose] public section
 
 noncomputable section
 

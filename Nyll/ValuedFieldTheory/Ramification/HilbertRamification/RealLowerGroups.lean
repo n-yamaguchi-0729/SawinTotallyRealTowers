@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
-import Mathlib.Algebra.Order.Archimedean.Real.Basic
-import Mathlib.RingTheory.Valuation.Extension
-import Mathlib.FieldTheory.Galois.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
+public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # Real lower ramification groups
@@ -25,6 +27,8 @@ and is the full Galois group for `s <= -1`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -266,7 +270,7 @@ theorem valuationSubringAutOfUniqueExtension_mem_maximalIdeal_pow_iff
         (valuationSubringAutOfUniqueExtension_mem_maximalIdeal_iff
           (base := base) (target := target) huniq σ b).2 hb
     · intro ha
-      refine ⟨e.symm a, ?_, by simp [e]⟩
+      refine ⟨e.symm a, ?_, e.apply_symm_apply a⟩
       exact
         (valuationSubringAutOfUniqueExtension_mem_maximalIdeal_iff
           (base := base) (target := target) huniq σ (e.symm a)).1

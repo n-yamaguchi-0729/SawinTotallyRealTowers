@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Data.Rat.Cast.Defs
+module
+
+public import Mathlib.Data.Nat.Squarefree
+public import Mathlib.Data.Rat.Cast.Defs
 
 /-!
 # Signed squarefree representatives of rational square classes
@@ -14,6 +16,8 @@ Apply the natural-number squarefree decomposition to the product of the
 absolute numerator and denominator. The numerator's sign then gives an
 integer representative without introducing a square root in an extension.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

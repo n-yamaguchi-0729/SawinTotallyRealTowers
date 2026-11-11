@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
-import Mathlib.FieldTheory.SplittingField.Construction
-import Mathlib.RingTheory.AdicCompletion.Topology
-import Mathlib.RingTheory.PowerSeries.Evaluation
-import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeSeries
+public import Mathlib.FieldTheory.SplittingField.Construction
+public import Mathlib.RingTheory.AdicCompletion.Topology
+public import Mathlib.RingTheory.PowerSeries.Evaluation
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
 /-!
 # Completed p-adic Lubin--Tate levels
@@ -31,6 +33,8 @@ completion is introduced.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -218,7 +222,8 @@ theorem padicCompletedPrimitivePolynomial_adjoin_rootSet
   Polynomial.SplittingField.adjoin_rootSet
     (padicCompletedPrimitivePolynomial p n)
 
-private theorem padicCompletedPrimitivePolynomial_map_degree_ne_zero
+/-- The completed primitive polynomial has nonzero degree over its splitting field. -/
+theorem padicCompletedPrimitivePolynomial_map_degree_ne_zero
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     ((padicCompletedPrimitivePolynomial p n).map
       (algebraMap (padicCompletedUnramifiedField p)
@@ -296,7 +301,8 @@ theorem padicCompletedPrimitiveRoot_isIntegral
     padicCompletedPrimitivePolynomialInteger_monic p n,
     padicCompletedPrimitiveRoot_aeval_integerPolynomial p n⟩
 
-private theorem padicCompletedLevelCompleteDVFData_exists
+/-- The completed primitive level has its integral-closure complete discrete valuation. -/
+theorem padicCompletedLevelCompleteDVFData_exists
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     ∃ target : CompleteDVF.{0, 0} (padicCompletedLevelField p n),
       ∃ hExt :
@@ -466,20 +472,23 @@ theorem padicCompletedPrimitiveRootInteger_mem_maximalIdeal
     (IsLocalRing.maximalIdeal.isMaximal
       target.valuationSubring).isPrime.mem_of_pow_mem _ hlambdaPow'
 
-private noncomputable local instance (priority := 50)
+/-- The Witt coefficient ring is discrete for power-series evaluation. -/
+noncomputable local instance (priority := 50)
     padicCompletedLevelWittUniformSpace
     (p : ℕ) [Fact p.Prime] :
     UniformSpace (padicCompletedUnramifiedWittRing p) :=
   ⊥
 
-private noncomputable local instance
+/-- The completed level valuation ring carries its maximal-ideal topology. -/
+noncomputable local instance
     padicCompletedLevelTargetWithIdeal
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     WithIdeal
       (padicCompletedLevelCompleteDVF p n).valuationSubring where
   i := (padicCompletedLevelCompleteDVF p n).maximalIdeal
 
-private noncomputable local instance
+/-- The completed level valuation ring is complete in its maximal-ideal topology. -/
+noncomputable local instance
     padicCompletedLevelTargetCompleteSpace
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     CompleteSpace
@@ -488,7 +497,8 @@ private noncomputable local instance
   have hadic : IsAdic target.maximalIdeal := rfl
   exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
 
-private noncomputable local instance
+/-- The maximal-ideal topology on the completed level valuation ring is Hausdorff. -/
+noncomputable local instance
     padicCompletedLevelTargetT2Space
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     T2Space
@@ -538,7 +548,8 @@ theorem padicCompletedLevelWittCoefficientHom_continuous
     Continuous (padicCompletedLevelWittCoefficientHom p n) :=
   continuous_of_discreteTopology
 
-private noncomputable local instance
+/-- The completed level valuation ring is an algebra through its Witt coefficient map. -/
+noncomputable local instance
     padicCompletedLevelWittAlgebra
     (p : ℕ) [Fact p.Prime] (n : ℕ) :
     Algebra (padicCompletedUnramifiedWittRing p)

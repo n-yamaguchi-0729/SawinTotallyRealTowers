@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
 
 /-!
 # Equivariance of the integral tensor block
@@ -15,6 +17,8 @@ restricted global Galois action.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -45,7 +49,7 @@ theorem
     (τ : L ≃ₐ[K] L)
     (x : relativeLocalTensorDecompositionIntegralUnitSubgroup
       (K := K) (L := L) w₀) :
-    letI :=
+    let :=
       relativeLocalTensorDecompositionIntegralUnitSubgroupAction
         (K := K) (L := L) w₀
     finitePlaceTensorUnitsEquivLocalPlaceBlock
@@ -60,9 +64,7 @@ theorem
           (K := K) (L := L) w₀
           (chosenFinitePlaceExtension (L := L) w₀)
           (x : (w₀.adicCompletion K ⊗[K] L)ˣ) := by
-  let :=
-    relativeLocalTensorDecompositionIntegralUnitSubgroupAction
-      (K := K) (L := L) w₀
+  intro sharedOwner1
   let tensorUnitsAction :=
     scalarTensorUnitsAction
       (K := K) (L := L) (A := w₀.adicCompletion K)

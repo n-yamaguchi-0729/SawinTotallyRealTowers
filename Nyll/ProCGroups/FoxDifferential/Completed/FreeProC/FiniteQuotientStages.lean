@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageRightProjection
-import Nyll.ProCGroups.FiniteGeneration.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageRightProjection
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Fox differential: completed — free pro-\(C\) — finite quotient stages
@@ -22,6 +26,8 @@ The principal declarations in this module are:
 - `freeProCFiniteQuotientStageHom_eq_comp`
   The free quotient-stage map is the quotient projection after the original free-group map.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

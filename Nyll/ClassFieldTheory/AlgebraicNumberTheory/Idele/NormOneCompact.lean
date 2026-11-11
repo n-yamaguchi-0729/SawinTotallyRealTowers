@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
-import Mathlib.Algebra.Module.ZLattice.Basic
-import Mathlib.Analysis.Normed.Field.ProperSpace
-import Mathlib.NumberTheory.NumberField.ClassNumber
-import Mathlib.NumberTheory.NumberField.Units.DirichletTheorem
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
+public import Mathlib.Algebra.Module.ZLattice.Basic
+public import Mathlib.Analysis.Normed.Field.ProperSpace
+public import Mathlib.NumberTheory.NumberField.ClassNumber
+public import Mathlib.NumberTheory.NumberField.Units.DirichletTheorem
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Compactness of norm-one idele classes
@@ -21,6 +26,8 @@ the idele class group.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField Pointwise RestrictedProduct NNReal
 open NumberField IsDedekindDomain
@@ -404,7 +411,7 @@ theorem mem_annulus_of_logNorm_le
 
 open scoped Classical in
 /-- A real basis obtained from the full unit lattice. -/
-private def unitLatticeRealBasis :
+def unitLatticeRealBasis :
     Module.Basis
       (Module.Free.ChooseBasisIndex ℤ
         (NumberField.Units.unitLattice K))
@@ -617,7 +624,7 @@ theorem exists_compactIntegralNormOneSet_representative
 open scoped Classical in
 /-- For every ordinary ideal class which occurs on a norm-one idele, choose
 one such representative; use `1` for the (irrelevant) remaining classes. -/
-private def normOneIdealClassRepresentative
+def normOneIdealClassRepresentative
     (c : ClassGroup (𝓞 K)) : IdeleGroup K :=
   if h : ∃ a : IdeleGroup K,
       a ∈ normOneSubgroup (K := K) ∧ idealClass a = c then
@@ -744,8 +751,10 @@ theorem compactIntegralNormOneSet_subset_normOne :
   rw [mem_compactIntegralNormOneSet_iff] at ha
   have hfin :=
     finite_absoluteNorm_eq_one_of_integral a.2 ha.2.1
-  change absoluteNorm a = 1
-  rw [absoluteNorm_apply, hfin, ha.2.2, inv_one, mul_one]
+  change FiniteIdeleGroup.absoluteNorm a.2 *
+    (InfiniteIdeleGroup.archimedeanNorm a.1)⁻¹ = 1
+  exact (congrArg₂ (· * ·) hfin (congrArg Inv.inv ha.2.2)).trans
+    (by rw [inv_one, mul_one])
 
 theorem compactNormOneClassCover_subset_normOne :
     compactNormOneClassCover (K := K) ⊆

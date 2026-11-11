@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
-import Mathlib.RingTheory.Valuation.Extension
-import Mathlib.Topology.Algebra.Valued.ValuativeRel
+module
+
+public import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
+public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.Topology.Algebra.Valued.ValuativeRel
 /-!
 # Valuative extensions
 
 Records when the valuation ring of an extension field is integral over the
 base valuation ring, the hypothesis needed to restrict field norms integrally.
 -/
+
+@[expose] public section
 
 namespace Valuation
 

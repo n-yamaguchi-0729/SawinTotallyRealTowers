@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Additive
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Additive
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power augmentation ideal — module
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   ring.
 -/
 
+@[expose] public section
+
 namespace FoxDifferential
 
 noncomputable section
@@ -39,21 +43,8 @@ variable (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 attribute [local instance] instAddCommGroupPrimePowerCompletedCoeffStage
 attribute [local instance] instAddCommGroupPrimePowerCompletedCoeffFamily
 
-@[reducible] private def addCommGroupAugmentationIdealStage
-    (i : PrimePowerCompletedGroupAlgebraIndex G) :
-    AddCommGroup ((primePowerCompletedGroupAlgebraAugmentationIdealSystem ℓ G).X i) := by
-  dsimp [primePowerCompletedGroupAlgebraAugmentationIdealSystem]
-  infer_instance
-
-attribute [local instance] addCommGroupAugmentationIdealStage
-
-@[reducible] private def addCommGroupAugmentationIdealFamily :
-    AddCommGroup
-      ((i : PrimePowerCompletedGroupAlgebraIndex G) →
-        (primePowerCompletedGroupAlgebraAugmentationIdealSystem ℓ G).X i) :=
-  inferInstance
-
-attribute [local instance] addCommGroupAugmentationIdealFamily
+attribute [local instance] instAddCommGroupPrimePowerCompletedGroupAlgebraAugmentationIdealStage
+attribute [local instance] instAddCommGroupPrimePowerCompletedGroupAlgebraAugmentationIdealFamily
 
 omit [Fact (0 < ℓ)] in
 /--

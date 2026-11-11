@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Abelianization.Defs
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeComparison
+module
+
+public import Mathlib.GroupTheory.Abelianization.Defs
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.AmbientPrimeComparison
 
 /-!
 # Norm--restriction for local Artin maps
@@ -14,6 +16,8 @@ This module proves norm--restriction naturality for actual finite abelian local 
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -732,11 +736,10 @@ theorem abelianLocalArtinMonoidHom_norm_restriction
   let iUpper : K' →ₐ[K] SeparableClosure K :=
     j.comp (IsScalarTower.toAlgHom K K' L')
   let eUpper :
-      letI : Algebra K' (SeparableClosure K) :=
+      let : Algebra K' (SeparableClosure K) :=
         iUpper.toRingHom.toAlgebra
       SeparableClosure K' ≃ₐ[K'] SeparableClosure K := by
-    letI : Algebra K' (SeparableClosure K) :=
-      iUpper.toRingHom.toAlgebra
+    intro embeddedClosureAlgebra
     letI : Algebra.IsSeparable K' (SeparableClosure K) :=
       Algebra.isSeparable_tower_top_of_isSeparable
         K K' (SeparableClosure K)

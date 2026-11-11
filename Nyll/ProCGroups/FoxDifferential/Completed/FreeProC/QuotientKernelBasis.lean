@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageApproximation
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageApproximation
 
 /-!
 # Fox differential: completed — free pro-\(C\) — quotient kernel basis
@@ -23,6 +25,8 @@ The principal declarations in this module are:
 - `subset_closure_of_identityQuotientKernel_stage_exact`
   The closure criterion with identity-neighborhood quotient kernels can be checked at finite stages.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

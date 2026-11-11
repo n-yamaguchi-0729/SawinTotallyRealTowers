@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
-import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticClassification
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.GroupTheory.Index
-import Mathlib.GroupTheory.IndexNormal
-import Mathlib.Topology.Algebra.OpenSubgroup
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
+public import Nyll.SawinTotallyRealTowers.SixPrimeQuadraticClassification
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.GroupTheory.Index
+public import Mathlib.GroupTheory.IndexNormal
+public import Mathlib.Topology.Algebra.OpenSubgroup
 
 /-!
 # Index-two fixed fields of the real pro-two extension
@@ -21,6 +23,8 @@ normal subgroups. Restricting and then lifting recovers the original
 ambient field. The index-degree equality identifies its quadratic layers,
 whose compositum has already been determined arithmetically.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

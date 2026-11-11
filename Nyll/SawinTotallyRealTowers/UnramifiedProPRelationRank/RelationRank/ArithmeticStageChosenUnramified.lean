@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 
 /-!
 # Chosen finite-place completions of an unramified arithmetic stage
@@ -14,6 +16,8 @@ The stage's everywhere-unramified certificate applies at the actual global centr
 of the chosen finite-place extension. The ideal-to-completion comparison therefore
 supplies unramifiedness for the chosen local completion, without a new local hypothesis.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

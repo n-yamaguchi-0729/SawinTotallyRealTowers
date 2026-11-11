@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.ProP.Presentation.Basic
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.ProP.Presentation.Basic
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 
 /-!
 # Cohomology across a presentation quotient
@@ -15,6 +17,8 @@ Continuous group equivalences induce linear equivalences on continuous cohomolog
 pro-`p` presentation supplies the required topological first-isomorphism equivalence between the
 quotient of its free source by the presentation kernel and its target.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 open scoped Topology

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 
 /-!
 # The closure equivalence underlying finite-extension absolute restriction
@@ -15,6 +17,8 @@ equivalence is exactly the choice used by the existing absolute Galois
 inclusion. This evaluation identity lets finite base changes use the same
 closure without an additional comparison hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 

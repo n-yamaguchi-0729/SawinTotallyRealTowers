@@ -4,36 +4,42 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.H0
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInclusion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
-import Nyll.GaloisCohomology.Kummer.Concrete.LocalUnitKummerUnramified
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.FinitePlaceDecomposition
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.H0
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInclusion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
+public import Nyll.GaloisCohomology.Kummer.Concrete.LocalUnitKummerUnramified
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Unramified finite places in simple Kummer extensions
@@ -49,6 +55,8 @@ Kummer extension or alternative notion of unramifiedness is introduced.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal TensorProduct ValuativeRel
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
@@ -58,12 +66,14 @@ open LocalClassFieldTheory
 
 noncomputable section
 
+universe u v w
+
 namespace KummerTheory
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 private theorem valuativeRelExtension_isNontrivial
-    {C F : Type}
+    {C : Type v} {F : Type w}
     [Field C] [Field F] [Algebra C F]
     [ValuativeRel C] [ValuativeRel F]
     [Valuation.HasExtension
@@ -103,7 +113,7 @@ actual localized completion, proves that the chosen root generates it,
 and applies the derivative/different criterion to `X ^ n - b`. -/
 theorem
     kummerGeneratedExtension_chosenFinitePlaceIsUnramified_of_valuation_eq_one
-    {L : Type}
+    {L : Type v}
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     (n : ℕ+)
@@ -315,21 +325,15 @@ theorem
     (hb : v.valuation K (b : K) = 1)
     (hn : v.valuation K ((n : ℕ) : K) = 1) :
     let L := chosenSimpleKummerExtension K n hnK b
-    letI : FiniteDimensional K L :=
+    let : FiniteDimensional K L :=
       chosenSimpleKummerExtension_finiteDimensional K n hnK b
-    letI : IsAbelianGalois K L :=
+    let : IsAbelianGalois K L :=
       chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-    letI : NumberField L :=
+    let : NumberField L :=
       NumberField.of_module_finite K L
     ChosenFinitePlaceIsUnramified
       (K := K) (L := L) v := by
-  let L := chosenSimpleKummerExtension K n hnK b
-  let : FiniteDimensional K L :=
-    chosenSimpleKummerExtension_finiteDimensional K n hnK b
-  let : IsAbelianGalois K L :=
-    chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-  let : NumberField L :=
-    NumberField.of_module_finite K L
+  intro L sharedOwner2 sharedOwner3 sharedOwner4
   let beta : Lˣ :=
     chosenSimpleKummerRootUnit K n hnK b
   apply
@@ -356,22 +360,16 @@ theorem
     (hb : v.valuation K (b : K) = 1)
     (hn : v.valuation K ((n : ℕ) : K) = 1) :
     let L := chosenSimpleKummerExtension K n hnK b
-    letI : FiniteDimensional K L :=
+    let : FiniteDimensional K L :=
       chosenSimpleKummerExtension_finiteDimensional K n hnK b
-    letI : IsAbelianGalois K L :=
+    let : IsAbelianGalois K L :=
       chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-    letI : NumberField L :=
+    let : NumberField L :=
       NumberField.of_module_finite K L
     ∀ P : HeightOneSpectrum (𝓞 L),
       finitePlaceBelow (K := K) P = v →
         Algebra.IsUnramifiedAt (𝓞 K) P.asIdeal := by
-  let L := chosenSimpleKummerExtension K n hnK b
-  let _ : FiniteDimensional K L :=
-    chosenSimpleKummerExtension_finiteDimensional K n hnK b
-  let _ : IsAbelianGalois K L :=
-    chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-  let _ : NumberField L :=
-    NumberField.of_module_finite K L
+  intro L sharedOwner2 sharedOwner3 sharedOwner4
   have hunram :
       ChosenFinitePlaceIsUnramified
         (K := K) (L := L) v := by
@@ -405,17 +403,13 @@ theorem
           (v.adicCompletion K)ˣ →*
             (v.adicCompletion K)ˣ).range) :
     let E := chosenSimpleKummerExtension K n hnK b
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       chosenSimpleKummerExtension_finiteDimensional K n hnK b
-    letI : IsAbelianGalois K E :=
+    let : IsAbelianGalois K E :=
       chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
     FinitePlaceSplitsCompletely
       (K := K) (L := E) v := by
-  let E := chosenSimpleKummerExtension K n hnK b
-  let : FiniteDimensional K E :=
-    chosenSimpleKummerExtension_finiteDimensional K n hnK b
-  let : IsAbelianGalois K E :=
-    chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
+  intro E sharedOwner2 sharedOwner3
   let beta : Eˣ :=
     chosenSimpleKummerRootUnit K n hnK b
   have hbeta :
@@ -470,16 +464,12 @@ private theorem simpleKummer_localTensorNormSubgroup_eq_top
         (powMonoidHom (n : ℕ) :
           w.Completionˣ →* w.Completionˣ).range) :
     let E := chosenSimpleKummerExtension K n hnK b
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       chosenSimpleKummerExtension_finiteDimensional K n hnK b
-    letI : IsAbelianGalois K E :=
+    let : IsAbelianGalois K E :=
       chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
     localTensorNormSubgroup (K := K) (L := E) w.1 = ⊤ := by
-  let E := chosenSimpleKummerExtension K n hnK b
-  let : FiniteDimensional K E :=
-    chosenSimpleKummerExtension_finiteDimensional K n hnK b
-  let : IsAbelianGalois K E :=
-    chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
+  intro E sharedOwner2 sharedOwner3
   let vK : AbsoluteValue K ℝ := w.1
   let hvK : vK.IsNontrivial := w.isNontrivial
   let u : AbsoluteValueExtension vK E :=
@@ -629,17 +619,13 @@ theorem
         (powMonoidHom (n : ℕ) :
           w.Completionˣ →* w.Completionˣ).range) :
     let E := chosenSimpleKummerExtension K n hnK b
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       chosenSimpleKummerExtension_finiteDimensional K n hnK b
-    letI : IsAbelianGalois K E :=
+    let : IsAbelianGalois K E :=
       chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
     infiniteTensorNormSubgroup
       (K := K) (L := E) w = ⊤ := by
-  let E := chosenSimpleKummerExtension K n hnK b
-  let : FiniteDimensional K E :=
-    chosenSimpleKummerExtension_finiteDimensional K n hnK b
-  let : IsAbelianGalois K E :=
-    chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
+  intro E sharedOwner2 sharedOwner3
   let vK : AbsoluteValue K ℝ := w.1
   let C := vK.Completion
   let eK : w.Completion ≃+* C :=

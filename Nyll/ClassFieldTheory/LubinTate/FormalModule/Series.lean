@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
-import Mathlib.RingTheory.PowerSeries.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+public import Mathlib.RingTheory.PowerSeries.Basic
 
 /-!
 # Lubin--Tate power series
@@ -18,6 +20,8 @@ in the structure itself, so the coefficient package can be reused independently.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

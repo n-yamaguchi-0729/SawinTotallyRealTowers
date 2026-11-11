@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.ValuationLaws
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.ValuationLaws
 
 /-!
 # normalized degree and Frobenius theory: prime elements and units
@@ -12,6 +14,10 @@ import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.ValuationLaws
 This file formalizes the prime-element definition and its two immediate consequences for
 unramified and totally ramified extensions.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -23,12 +29,11 @@ open CyclicCohomology
 
 noncomputable section
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- Inclusion `A_K → A_L` for an extension `L | K`. -/
-def fixedFieldInclusion (A : Rep ℤ G) (K L : ClosedSubgroup G)
+def fixedFieldInclusion (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) :
     ambientFixedAddSubgroup A K →+ ambientFixedAddSubgroup A L where
   toFun a := ⟨a.1, fun l => a.2 ⟨l.1, hLK l.2⟩⟩
@@ -40,7 +45,7 @@ Establishes the identity `((fixedFieldInclusion A K L hLK a : ambientFixedAddSub
 = a.1`.
 -/
 @[simp]
-theorem fixedFieldInclusion_coe (A : Rep ℤ G) (K L : ClosedSubgroup G)
+theorem fixedFieldInclusion_coe (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (a : ambientFixedAddSubgroup A K) :
     ((fixedFieldInclusion A K L hLK a : ambientFixedAddSubgroup A L) : A.V) = a.1 :=
@@ -48,7 +53,7 @@ theorem fixedFieldInclusion_coe (A : Rep ℤ G) (K L : ClosedSubgroup G)
 
 /-- The norm of an element already fixed over `K` is its `[L:K]`-fold sum. -/
 theorem relativeNorm_fixedFieldInclusion
-    (A : Rep ℤ G) (E : DegreeData.FiniteAbstractExtension G)
+    (A : Rep.{v} ℤ G) (E : DegreeData.FiniteAbstractExtension G)
     (a : ambientFixedAddSubgroup A E.base) :
     relativeNorm A E.base E.field E.below
         (fixedFieldInclusion A E.base E.field E.below a) =
@@ -77,7 +82,7 @@ theorem relativeNorm_fixedFieldInclusion
 /-- The norm of the trivial extension is the identity. -/
 @[simp]
 theorem relativeNorm_self
-    (A : Rep ℤ G) (K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K K le_rfl)]
     (a : ambientFixedAddSubgroup A K) :
     relativeNorm A K K le_rfl a = a := by

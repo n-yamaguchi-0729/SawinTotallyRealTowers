@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaUniqueness
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaUniqueness
 
 /-!
 # The Lubin–Tate endomorphism commutation law: the first theta identity in equal characteristic
@@ -23,6 +25,8 @@ unique contracting solutions forced by commutation with
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -470,7 +474,7 @@ theorem equalCharacteristicQAdditiveSeries_subst_qAdditiveSeries
       have hzero := equalCharacteristicQAdditiveSeries_coeff_eq_zero
         k (fun m ↦ if i ≤ m then a (m - i) ^ (Nat.card k ^ i) else 0)
         n hn
-      simp [hzero]
+      rw [hzero, smul_zero]
     · rw [equalCharacteristicQAdditiveSeries_coeff_eq_zero k b d hde]
       exact zero_smul _ _
 
@@ -513,8 +517,8 @@ theorem equalCharacteristicThetaAfterBracketCoefficient_zero
   rw [equalCharacteristicThetaCoefficient_zero]
   simpa [equalCharacteristicThetaAfterBracketCoefficient,
     equalCharacteristicQAdditiveCompositionCoefficient,
-    equalCharacteristicCompletedSourceBracketCoefficient,
-    mul_comm] using hsemi.symm
+    equalCharacteristicCompletedSourceBracketCoefficient] using
+    (mul_comm _ _).trans hsemi.symm
 
 /-- The first-identity candidate `theta o [u]` satisfies the same
 Frobenius-intertwining equation as `theta^phi`.  This is the formal-series

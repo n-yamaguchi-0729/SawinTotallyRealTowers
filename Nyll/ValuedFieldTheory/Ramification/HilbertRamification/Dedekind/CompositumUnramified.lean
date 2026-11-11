@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFields
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.NumberFieldPrimes
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
+module
+
+public import Mathlib.LinearAlgebra.FreeModule.IdealQuotient
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFields
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.NumberFieldPrimes
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.OrbitCardinality
 
 /-!
 # Unramifiedness in a compositum
@@ -18,6 +20,8 @@ field compositum is unramified from the inertia groups of its two factors.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

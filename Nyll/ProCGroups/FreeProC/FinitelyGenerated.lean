@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FreeProC.Basic
+module
+
+public import Nyll.ProCGroups.FreeProC.Basic
 
 /-!
 # Pro C Groups / Free pro-C / Finitely Generated
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.FreeProC.Basic
 This module turns a finite discrete converging-set basis into the usual
 free pro-C universal property.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

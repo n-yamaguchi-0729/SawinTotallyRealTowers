@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Core
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.Core
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # Artin filtrations of unramified local extensions
@@ -17,6 +19,8 @@ import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExact
 The Artin map kills valuation-ring units in an unramified finite extension,
 so every positive principal-unit image is trivial.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -69,6 +73,7 @@ theorem artinPrincipalUnitGroup_eq_bot_of_unramifiedValuation
     [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L]
     (n : ℕ) :
     artinPrincipalUnitGroup K L n = ⊥ := by
+  rw [artinPrincipalUnitGroup_eq_nativeArtinImage]
   apply le_antisymm
   · intro σ hσ
     rcases hσ with ⟨x, hx, rfl⟩

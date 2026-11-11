@@ -4,14 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.DiscreteH2CochainComparison
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Continuous.Basic
-import Mathlib.RepresentationTheory.Continuous.TopRep
-import Mathlib.Topology.ContinuousMap.Algebra
-import Mathlib.Topology.ContinuousMap.Basic
-import Mathlib.Topology.ContinuousMap.Defs
+module
+
+public import Nyll.GaloisCohomology.ProP.DiscreteH2CochainComparison
+public import Nyll.GaloisCohomology.Cyclic.IntegralCoefficientCohomology
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Continuous.Basic
+public import Mathlib.RepresentationTheory.Continuous.TopRep
+public import Mathlib.Topology.ContinuousMap.Algebra
+public import Mathlib.Topology.ContinuousMap.Basic
+public import Mathlib.Topology.ContinuousMap.Defs
 
 /-!
 # The degree-two short complex for a discrete group
@@ -19,8 +22,12 @@ import Mathlib.Topology.ContinuousMap.Defs
 The explicit homogeneous/inhomogeneous cochain equivalences commute with
 the two differentials surrounding degree two.  We package them as an
 isomorphism of short complexes after forgetting topology and restricting
-scalars from `ZMod p` to `Int`.
+scalars to the underlying additive groups. The ordinary coefficient ring and
+acting group share an arbitrary universe; the original integer comparison is
+the specialization to universe zero.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 
@@ -28,14 +35,43 @@ namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
+universe u
+
 variable {p : ℕ}
-variable {Q : Type} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
+variable {R : Type u} [CommRing R] [Module R (ULift.{u} (ZMod p))]
+variable {Q : Type u} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
 variable [DiscreteTopology Q]
 
 /-- The ordinary trivial representation matching the lifted continuous
 coefficient carrier. -/
-abbrev ordinaryTrivialZModPLifted : Rep ℤ Q :=
-  Rep.trivial ℤ Q (ULift (ZMod p))
+abbrev ordinaryTrivialZModPLifted : Rep.{u} R Q :=
+  Rep.trivial R Q (ULift.{u} (ZMod p))
+
+/-- With lifted integer scalars this is the actual integral coefficient
+transport of the original integer representation, through identity maps. -/
+def ordinaryTrivialZModPLiftedIntegralIso :
+    ordinaryTrivialZModPLifted (R := ULift.{u} ℤ) (p := p) (Q := Q) ≅
+      (IntegralGroupCohomology.coefficientFunctor Q).obj
+        (Rep.trivial ℤ Q (ULift.{u} (ZMod p))) where
+  hom := Rep.ofHom
+    { toLinearMap :=
+        { toFun := fun x => x
+          map_add' := fun _ _ => rfl
+          map_smul' := fun _ _ => rfl }
+      isIntertwining' := fun _ => rfl }
+  inv := Rep.ofHom
+    { toLinearMap :=
+        { toFun := fun x => x
+          map_add' := fun _ _ => rfl
+          map_smul' := fun _ _ => rfl }
+      isIntertwining' := fun _ => rfl }
+  hom_inv_id := by ext x; rfl
+  inv_hom_id := by ext x; rfl
+
+omit [TopologicalSpace Q] [IsTopologicalGroup Q] [DiscreteTopology Q] in
+/-- The integral representation comparison keeps every coefficient value. -/
+theorem ordinaryTrivialZModPLiftedIntegralIso_hom_apply (x : ULift.{u} (ZMod p)) :
+    (ordinaryTrivialZModPLiftedIntegralIso (p := p) (Q := Q)).hom x = x := rfl
 
 omit [DiscreteTopology Q] in
 /-- Dehomogenization intertwines the degree-one differentials. -/
@@ -43,7 +79,7 @@ theorem dehomogenizeOne_d
     (c : (trivialZModPCochainsLifted p Q).X 1) :
     dehomogenizeTwo
         ((trivialZModPCochainsLifted p Q).d 1 2 c) =
-      groupCohomology.d₁₂ (ordinaryTrivialZModPLifted (p := p) (Q := Q))
+      groupCohomology.d₁₂ (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))
         (dehomogenizeOne c) := by
   funext x
   rcases x with ⟨g, h⟩
@@ -65,7 +101,7 @@ theorem dehomogenizeOne_d
     ContinuousMap.coe_mk]
   have hc := congrArg (fun t ↦ t g (g * h)) (c.2 g)
   change c.1 (g⁻¹ * g) (g⁻¹ * (g * h)) = c.1 g (g * h) at hc
-  have hc' : c.1 1 h = c.1 g (g * h) := by simpa using hc
+  have hc' : c.1 1 h = c.1 g (g * h) := by simpa only [inv_mul_cancel, inv_mul_cancel_left] using hc
   rw [← hc']
   abel
 
@@ -75,7 +111,7 @@ theorem dehomogenizeTwo_d
     (c : (trivialZModPCochainsLifted p Q).X 2) :
     dehomogenizeThree
         ((trivialZModPCochainsLifted p Q).d 2 3 c) =
-      groupCohomology.d₂₃ (ordinaryTrivialZModPLifted (p := p) (Q := Q))
+      groupCohomology.d₂₃ (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))
         (dehomogenizeTwo c) := by
   funext x
   rcases x with ⟨g, h, k⟩
@@ -100,7 +136,7 @@ theorem dehomogenizeTwo_d
   change c.1 (g⁻¹ * g) (g⁻¹ * (g * h))
       (g⁻¹ * (g * h * k)) = c.1 g (g * h) (g * h * k) at hc
   have hc' : c.1 1 h (h * k) = c.1 g (g * h) (g * h * k) := by
-    simpa [mul_assoc] using hc
+    simpa only [mul_assoc, inv_mul_cancel, inv_mul_cancel_left] using hc
   rw [← hc']
   rw [show g * h * k = g * (h * k) by group]
   abel
@@ -108,36 +144,37 @@ theorem dehomogenizeTwo_d
 /-- Forget topology and the `ZMod p`-linear structure, retaining the
 underlying additive group. -/
 abbrev continuousCochainsToAddCommGrp (p : ℕ) :
-    TopModuleCat (ZMod p) ⥤ AddCommGrpCat :=
-  forget₂ (TopModuleCat (ZMod p)) (ModuleCat (ZMod p)) ⋙
-    forget₂ (ModuleCat (ZMod p)) AddCommGrpCat
+    TopModuleCat.{u} (ZMod p) ⥤ AddCommGrpCat.{u} :=
+  forget₂ (TopModuleCat.{u} (ZMod p)) (ModuleCat.{u} (ZMod p)) ⋙
+    forget₂ (ModuleCat.{u} (ZMod p)) AddCommGrpCat.{u}
 
-/-- Forget the `Int`-linear structure on ordinary group cochains. -/
-abbrev ordinaryCochainsToAddCommGrp : ModuleCat ℤ ⥤ AddCommGrpCat :=
-  forget₂ (ModuleCat ℤ) AddCommGrpCat
+/-- Forget the scalar action on ordinary group cochains. -/
+abbrev ordinaryCochainsToAddCommGrp (R : Type u) [CommRing R] :
+    ModuleCat.{u} R ⥤ AddCommGrpCat.{u} :=
+  forget₂ (ModuleCat.{u} R) AddCommGrpCat.{u}
 
 /-- The degree-one cochain equivalence as an additive-group isomorphism. -/
 noncomputable def homogeneousOneCochainAddCommGrpIso :
     (continuousCochainsToAddCommGrp p).obj
         ((trivialZModPCochainsLifted p Q).X 1) ≅
-      (ordinaryCochainsToAddCommGrp).obj
-        (ModuleCat.of ℤ (Q → ULift (ZMod p))) :=
+      (ordinaryCochainsToAddCommGrp R).obj
+        (ModuleCat.of R (Q → ULift.{u} (ZMod p))) :=
   homogeneousOneCochainAddEquiv.toAddCommGrpIso
 
 /-- The degree-two cochain equivalence as an additive-group isomorphism. -/
 noncomputable def homogeneousTwoCochainAddCommGrpIso :
     (continuousCochainsToAddCommGrp p).obj
         ((trivialZModPCochainsLifted p Q).X 2) ≅
-      (ordinaryCochainsToAddCommGrp).obj
-        (ModuleCat.of ℤ (Q × Q → ULift (ZMod p))) :=
+      (ordinaryCochainsToAddCommGrp R).obj
+        (ModuleCat.of R (Q × Q → ULift.{u} (ZMod p))) :=
   homogeneousTwoCochainAddEquiv.toAddCommGrpIso
 
 /-- The degree-three cochain equivalence as an additive-group isomorphism. -/
 noncomputable def homogeneousThreeCochainAddCommGrpIso :
     (continuousCochainsToAddCommGrp p).obj
         ((trivialZModPCochainsLifted p Q).X 3) ≅
-      (ordinaryCochainsToAddCommGrp).obj
-        (ModuleCat.of ℤ (Q × Q × Q → ULift (ZMod p))) :=
+      (ordinaryCochainsToAddCommGrp R).obj
+        (ModuleCat.of R (Q × Q × Q → ULift.{u} (ZMod p))) :=
   homogeneousThreeCochainAddEquiv.toAddCommGrpIso
 
 /-- For a discrete group, the homogeneous continuous degree-two short
@@ -146,16 +183,16 @@ noncomputable def discreteH2ShortComplexIso :
     ((trivialZModPCochainsLifted p Q).sc' 1 2 3).map
         (continuousCochainsToAddCommGrp p) ≅
       (groupCohomology.shortComplexH2
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).map
-        ordinaryCochainsToAddCommGrp := by
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).map
+        (ordinaryCochainsToAddCommGrp R) := by
   refine ShortComplex.isoMk
-    (homogeneousOneCochainAddCommGrpIso (p := p) (Q := Q))
-    (homogeneousTwoCochainAddCommGrpIso (p := p) (Q := Q))
-    (homogeneousThreeCochainAddCommGrpIso (p := p) (Q := Q)) ?_ ?_
+    (homogeneousOneCochainAddCommGrpIso (R := R) (p := p) (Q := Q))
+    (homogeneousTwoCochainAddCommGrpIso (R := R) (p := p) (Q := Q))
+    (homogeneousThreeCochainAddCommGrpIso (R := R) (p := p) (Q := Q)) ?_ ?_
   · ext c
-    exact (dehomogenizeOne_d (p := p) (Q := Q) c).symm
+    exact (dehomogenizeOne_d (R := R) (p := p) (Q := Q) c).symm
   · ext c
-    exact (dehomogenizeTwo_d (p := p) (Q := Q) c).symm
+    exact (dehomogenizeTwo_d (R := R) (p := p) (Q := Q) c).symm
 
 end
 

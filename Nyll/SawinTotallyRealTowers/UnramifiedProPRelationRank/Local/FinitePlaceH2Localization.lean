@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.QuotientRestriction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
-import Nyll.ValuedFieldTheory.Valuation.Completion.ExtensionFactorClassification
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
+module
+
+public import Nyll.GaloisCohomology.ProP.QuotientRestriction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+public import Nyll.ValuedFieldTheory.Valuation.Completion.ExtensionFactorClassification
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
 
 /-!
 # Degree-two localization at a finite place
@@ -21,6 +23,8 @@ This file deliberately stops at the decomposition-group target.  Identifying tha
 absolute Galois group of the completed field requires a topological local--global Galois comparison
 which is not presently available in the imported libraries.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField

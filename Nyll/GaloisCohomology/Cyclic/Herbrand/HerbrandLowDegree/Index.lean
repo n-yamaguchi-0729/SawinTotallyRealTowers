@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
 
 /-!
 # Cardinal consequences of a Herbrand quotient
@@ -17,6 +19,8 @@ cardinality is at least `n`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

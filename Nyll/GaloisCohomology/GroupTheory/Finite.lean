@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.DoubleCoset
-import Mathlib.GroupTheory.Sylow
+module
+
+public import Mathlib.GroupTheory.DoubleCoset
+public import Mathlib.GroupTheory.Sylow
 
 /-!
 # Finite group theory for the splitting corollaries
@@ -27,6 +29,8 @@ is contained in the normal core of `H`; therefore it is trivial when
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

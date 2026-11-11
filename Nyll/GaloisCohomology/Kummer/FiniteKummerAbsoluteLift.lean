@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteUnitBoundaryMuPPrimitive
-import Nyll.GaloisCohomology.Kummer.FiniteKummerMuPCoefficients
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteUnitBoundaryMuPPrimitive
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerMuPCoefficients
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
 
 /-!
 # Absolute lifts of finite Kummer cocycle extensions
@@ -24,19 +26,24 @@ unproved comparison or existence hypothesis is introduced.
 No new instances are introduced.
 -/
 
+@[expose] public section
+
 open scoped Topology
 
 noncomputable section
+
+universe u
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
 open KummerTheory ClassFieldTower.ProP FreeProPH2Cocycle
 
-variable (K : Type) [Field K] [CharZero K]
+section Universal
+
+variable (K : Type u) [Field K]
 variable (p : ℕ+) [Fact (p : ℕ).Prime]
 variable (E : FiniteGaloisIntermediateField K (AlgebraicClosure K))
 
-omit [CharZero K] in
 /-- Continuous restriction from the absolute Galois group to an actual
 finite Galois intermediate field. -/
 def absoluteFiniteGaloisRestriction :
@@ -51,12 +58,12 @@ def absoluteFiniteGaloisRestriction :
 when the base contains the supplied primitive root. -/
 theorem exists_absoluteZModP_primitive_of_finiteKummerUnit_boundary
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (c : Gal(E/K) → Gal(E/K) → ULift.{0} (ZMod (p : ℕ)))
+    (c : Gal(E/K) → Gal(E/K) → ULift.{u} (ZMod (p : ℕ)))
     (b : Gal(E/K) → Eˣ)
     (hb : ∀ s t : Gal(E/K),
       Units.map s (b t) * b s / b (s * t) =
         (finiteKummerCoefficientAddHom K E p hmu (c s t)).toMul) :
-    ∃ a : C(Field.absoluteGaloisGroup K, ULift.{0} (ZMod (p : ℕ))),
+    ∃ a : C(Field.absoluteGaloisGroup K, ULift.{u} (ZMod (p : ℕ))),
       ∀ s t, a t + a s - a (s * t) =
         c (absoluteFiniteGaloisRestriction K E s)
           (absoluteFiniteGaloisRestriction K E t) := by
@@ -66,9 +73,9 @@ theorem exists_absoluteZModP_primitive_of_finiteKummerUnit_boundary
   obtain ⟨a, ha⟩ := exists_absoluteMuP_primitive_of_finiteUnit_boundary
     K (p : ℕ) E cm b hb
   let e := absoluteMuPContinuousLinearEquivZMod K (p : ℕ) hmu
-  let f : C(Field.absoluteGaloisGroup K, ULift.{0} (ZMod (p : ℕ))) :=
+  let f : C(Field.absoluteGaloisGroup K, ULift.{u} (ZMod (p : ℕ))) :=
     ⟨fun s => ULift.up (e (a s)),
-      (show Continuous (fun z : ZMod (p : ℕ) => ULift.up.{0} z) from
+      (show Continuous (fun z : ZMod (p : ℕ) => ULift.up.{u} z) from
         continuous_of_discreteTopology).comp
           (e.continuous.comp a.continuous)⟩
   refine ⟨f, ?_⟩
@@ -134,7 +141,14 @@ theorem exists_absoluteLift_of_finiteKummerUnit_boundary
         exact a.continuous.neg.prodMk r.continuous_toFun }
   exact ⟨s, rfl⟩
 
-omit [CharZero K] in
+end Universal
+
+section Original
+
+variable (K : Type) [Field K]
+variable (p : ℕ+) [Fact (p : ℕ).Prime]
+variable (E : FiniteGaloisIntermediateField K (AlgebraicClosure K))
+
 /-- The normalized continuous cocycle, viewed in the ordinary pair-shaped
 degree-two cochain model used by finite Kummer coefficient change. -/
 def normalizedFiniteKummerTwoCocycle
@@ -169,5 +183,7 @@ theorem exists_absoluteLift_of_finiteKummerTwoCocycle_boundary
   change Units.map s (b t).toMul / (b (s * t)).toMul * (b s).toMul =
     (finiteKummerCoefficientAddHom K E p hmu (normalizedCocycle z s t)).toMul at h
   simpa only [div_mul_eq_mul_div] using h
+
+end Original
 
 end ClassFieldTower.Martinet.Shafarevich

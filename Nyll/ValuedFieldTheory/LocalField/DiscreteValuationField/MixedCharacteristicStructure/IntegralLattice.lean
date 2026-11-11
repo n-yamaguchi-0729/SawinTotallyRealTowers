@@ -4,16 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicQp
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogEquiv
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.Core
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicModuleStructure
-import Mathlib.RingTheory.DedekindDomain.IntegralClosure
-import Mathlib.LinearAlgebra.Dimension.Torsion.Finite
-import Mathlib.Topology.Algebra.Module.Compact
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicQp
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogEquiv
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.Core
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicModuleStructure
+public import Mathlib.RingTheory.DedekindDomain.IntegralClosure
+public import Mathlib.LinearAlgebra.Dimension.Torsion.Finite
+public import Mathlib.Topology.Algebra.Module.Compact
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.IntegralClosure
 
 /-!
 # The integral lattice of a mixed-characteristic local field
@@ -27,6 +32,8 @@ constructed in the local-field structure classification, not for a separately as
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -53,12 +60,6 @@ class MixedQPadicContext (F : LocalField.{u, v} K) : Prop where
 theorem mixedQPadicContext (F : LocalField.{u, v} K) :
     MixedQPadicContext F :=
   ⟨F.residueCharacteristic_prime⟩
-
-/-- Registers the mathematical fact `Fact F.residueCharacteristic.Prime` for typeclass inference. -/
-instance mixedQPadicContextFact
-    (F : LocalField.{u, v} K) [ctx : MixedQPadicContext F] :
-    Fact F.residueCharacteristic.Prime :=
-  ⟨ctx.residueCharacteristic_prime⟩
 
 /--
 Equips the target with its canonical `Algebra` structure, namely `Algebra
@@ -429,18 +430,14 @@ noncomputable def padicIntFieldAlgebra
 `Z_p → O_K → K`. -/
 theorem padicIntValuationSubring_isScalarTower
     (F : LocalField.{u, v} K) [CharZero K] :
-    letI : Algebra ℤ_[F.residueCharacteristic]
+    let : Algebra ℤ_[F.residueCharacteristic]
         F.toCompleteDVF.valuationSubring :=
       F.padicIntValuationSubringAlgebra
-    letI : Algebra ℤ_[F.residueCharacteristic] K :=
+    let : Algebra ℤ_[F.residueCharacteristic] K :=
       F.padicIntFieldAlgebra
     IsScalarTower ℤ_[F.residueCharacteristic]
       F.toCompleteDVF.valuationSubring K := by
-  let : Algebra ℤ_[F.residueCharacteristic]
-      F.toCompleteDVF.valuationSubring :=
-    F.padicIntValuationSubringAlgebra
-  let : Algebra ℤ_[F.residueCharacteristic] K :=
-    F.padicIntFieldAlgebra
+  intro sharedOwner1 sharedOwner2
   exact IsScalarTower.of_algebraMap_eq (by intro z; rfl)
 
 /-- The coherent canonical `Z_p → O_K → K` algebra model.  The bundle
@@ -724,11 +721,10 @@ class MixedMaximalIdealPowContext
 /-- The canonical maximal-ideal-power context. -/
 theorem mixedMaximalIdealPowContext
     (F : LocalField.{u, v} K) [CharZero K] (n : ℕ) :
-    letI : MixedIntegralLatticeContext F :=
+    let : MixedIntegralLatticeContext F :=
       mixedIntegralLatticeContext F
     MixedMaximalIdealPowContext F n := by
-  let : MixedIntegralLatticeContext F :=
-    mixedIntegralLatticeContext F
+  intro sharedOwner1
   exact
     ⟨F.mixed_maximalIdealPow_moduleFinite n,
       F.mixed_maximalIdealPow_moduleFree n⟩
@@ -916,14 +912,12 @@ noncomputable def higherPrincipalUnitPadicModule
 theorem higherPrincipalUnitPadic_natCast_smul
     (F : LocalField.{u, v} K) {r : ℕ} (hr : 1 ≤ r)
     (m : ℕ) (x : CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r) :
-    letI : Module ℤ_[F.residueCharacteristic]
+    let : Module ℤ_[F.residueCharacteristic]
         (Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r)) :=
       F.higherPrincipalUnitPadicModule hr
     (m : ℤ_[F.residueCharacteristic]) • Additive.ofMul x =
       Additive.ofMul (x ^ m) := by
-  let : Module ℤ_[F.residueCharacteristic]
-      (Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r)) :=
-    F.higherPrincipalUnitPadicModule hr
+  intro sharedOwner1
   apply F.higherPrincipalUnitAddToFirst_injective hr
   rw [F.higherPrincipalUnitAddToFirst_smul]
   exact
@@ -934,15 +928,13 @@ theorem higherPrincipalUnitPadic_natCast_smul
 `Z_p`-actions. -/
 noncomputable def higherPrincipalUnitLinearToFirst
     (F : LocalField.{u, v} K) {r : ℕ} (hr : 1 ≤ r) :
-    letI : Module ℤ_[F.residueCharacteristic]
+    let : Module ℤ_[F.residueCharacteristic]
         (Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r)) :=
       F.higherPrincipalUnitPadicModule hr
     Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r) →ₗ[
         ℤ_[F.residueCharacteristic]]
       Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1) := by
-  letI : Module ℤ_[F.residueCharacteristic]
-      (Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r)) :=
-    F.higherPrincipalUnitPadicModule hr
+  intro sharedOwner3
   exact
     { F.higherPrincipalUnitAddToFirst hr with
       map_smul' := fun a x => F.higherPrincipalUnitAddToFirst_smul hr a x }
@@ -978,14 +970,12 @@ noncomputable def higherPrincipalUnitPadicSubmodule
 proof of the mixed-characteristic field-unit structure theorem. -/
 noncomputable def higherPrincipalUnitLinearEquivPadicSubmodule
     (F : LocalField.{u, v} K) {r : ℕ} (hr : 1 ≤ r) :
-    letI : Module ℤ_[F.residueCharacteristic]
+    let : Module ℤ_[F.residueCharacteristic]
         (Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r)) :=
       F.higherPrincipalUnitPadicModule hr
     Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r) ≃ₗ[
         ℤ_[F.residueCharacteristic]] F.higherPrincipalUnitPadicSubmodule hr := by
-  letI : Module ℤ_[F.residueCharacteristic]
-      (Additive (CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) r)) :=
-    F.higherPrincipalUnitPadicModule hr
+  intro sharedOwner3
   exact
     { toFun := fun x => ⟨F.higherPrincipalUnitAddToFirst hr x,
         (Additive.toMul x).property⟩

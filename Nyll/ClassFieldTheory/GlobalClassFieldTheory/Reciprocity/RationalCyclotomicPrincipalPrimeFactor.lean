@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalAwayProduct
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalAwayProduct
 
 /-!
 # The ramified prime factor of a rational cyclotomic principal idele
@@ -16,6 +18,8 @@ proved in `RationalCyclotomicFinitePlaceArtin`.
 
 
 
+
+@[expose] public section
 
 noncomputable section
 

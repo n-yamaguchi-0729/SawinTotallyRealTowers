@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Basic
 
 /-!
 # Fox differential: completed — continuous — closed generated coordinates — equiv
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The separated finite family map is a left inverse to the separated closed-generated coordinate
   lift.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 

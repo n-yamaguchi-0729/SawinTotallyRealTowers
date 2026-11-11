@@ -4,15 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
-import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogEquiv
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipalQuotient
-import Nyll.ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
-import Mathlib.NumberTheory.Padics.ValuativeRel
-import Mathlib.NumberTheory.Padics.ProperSpace
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogEquiv
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipalQuotient
+public import Nyll.ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
+public import Mathlib.NumberTheory.Padics.ValuativeRel
+public import Mathlib.NumberTheory.Padics.ProperSpace
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Principal units of the p-adic field
@@ -23,6 +30,8 @@ power formulas used by local cyclotomic norm calculations.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -479,13 +488,7 @@ theorem padicDVR_higherPrincipalUnit_degree_is_power_odd
       ∃ r : LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F 1,
         (r : F.valuationSubringˣ) ^ ((p - 1) * p ^ k) =
           (u : F.valuationSubringˣ) := by
-  let v := LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicDVRValuation p
-  let F :=
-    DiscreteValuationField.MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-  change ∀ u : DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F (k + 1),
-    ∃ r : LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F 1,
-      (r : F.valuationSubringˣ) ^ ((p - 1) * p ^ k) =
-        (u : F.valuationSubringˣ)
+  intro v F
   have hv : Function.Surjective v :=
     (IsDiscreteValuationRing.maximalIdeal ℤ_[p]).valuation_surjective ℚ_[p]
   let E1 := expLogMulEquivOfWithZeroValuation v hv 1

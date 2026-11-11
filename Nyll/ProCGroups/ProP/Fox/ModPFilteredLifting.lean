@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPFilteredExactness
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPFilteredExactness
 
 /-!
 # Strict filtered lifting for the mod-p Fox boundary
@@ -20,6 +22,8 @@ Combining this result with unfiltered relation--boundary exactness gives the
 source-level lifting statement needed for exactness after passing to the
 shifted filtration quotients.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

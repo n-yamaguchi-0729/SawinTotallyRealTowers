@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveUniformizer
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
 
 /-!
 # Residue Frobenius on completed p-adic Lubin--Tate levels
@@ -18,6 +20,8 @@ field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

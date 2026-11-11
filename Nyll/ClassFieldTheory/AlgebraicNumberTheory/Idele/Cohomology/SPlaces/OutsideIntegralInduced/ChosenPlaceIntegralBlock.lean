@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
 
 /-!
 # Equivariance facade for the integral induced block
@@ -16,6 +18,8 @@ lemmas into the transport used by the cohomology layer.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -46,10 +50,10 @@ theorem
     (τ : L ≃ₐ[K] L)
     (x : relativeLocalTensorDecompositionIntegralUnitSubgroup
       (K := K) (L := L) w₀) :
-    letI :=
+    let :=
       relativeLocalTensorDecompositionIntegralUnitSubgroupAction
         (K := K) (L := L) w₀
-    letI :=
+    let :=
       chosenFinitePlaceInducedIntegerUnitsAction
         (K := K) (L := L) w₀
     relativeLocalTensorDecompositionIntegralUnitSubgroupEquivInducedIntegerUnits
@@ -57,12 +61,7 @@ theorem
       τ •
         (relativeLocalTensorDecompositionIntegralUnitSubgroupEquivInducedIntegerUnits
           (K := K) (L := L) w₀ x) := by
-  let :=
-    relativeLocalTensorDecompositionIntegralUnitSubgroupAction
-      (K := K) (L := L) w₀
-  let :=
-    chosenFinitePlaceInducedIntegerUnitsAction
-      (K := K) (L := L) w₀
+  intro sharedOwner1 sharedOwner2
   let :=
     chosenFinitePlaceLocalPlaceBlockAction
       (K := K) (L := L) w₀

@@ -75,7 +75,7 @@ theorem idealRadicalCyclotomicDualDescent_ker
     apply idealRadicalCyclotomicDualInjection_injective F p
     simpa using hx
   · intro hx
-    simp [hx]
+    rw [hx, map_zero]
 
 /-- A map into the cyclotomic radical dual is injective exactly when its
 canonical descent to the base-field radical dual is injective. -/

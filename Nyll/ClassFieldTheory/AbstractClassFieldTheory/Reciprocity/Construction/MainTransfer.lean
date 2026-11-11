@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransferFrobenius
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.TransferNaturality
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransferFrobenius
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.TransferNaturality
 
 /-!
 Constructs the transfer map for intermediate Galois quotients and relates it to Frobenius
@@ -13,7 +15,9 @@ restriction and norm naturality.
 -/
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -343,13 +347,13 @@ theorem transferNormNaturalityTransfer_frobenius_product
     (σ : D.FrobeniusElements E.base L (hL.trans E.below)) :
     let H := D.transferNormNaturalityFrobeniusIntermediateSubgroup
       E L hL
-    letI : H.FiniteIndex :=
+    let : H.FiniteIndex :=
       D.transferNormNaturalityFrobeniusIntermediateFiniteIndex
         E L hL
     let Ω := Quotient (orbitRel (Subgroup.zpowers σ.1)
       ((E.base.field.toSubgroup ⧸ D.extensionInertiaWithin E.base.field L
         (hL.trans E.below)) ⧸ H))
-    letI : Fintype Ω := Fintype.ofFinite _
+    let : Fintype Ω := Fintype.ofFinite _
     transferNormNaturalityTransfer E.base.field E.field.field L hL E.below
         (Abelianization.of
           (D.frobeniusRestriction E.base L (hL.trans E.below) σ)) =
@@ -357,16 +361,7 @@ theorem transferNormNaturalityTransfer_frobenius_product
         (D.frobeniusRestriction E.field L hL
           (D.transferNormNaturalityTransferFrobeniusLift
             E L hL σ q)) := by
-  dsimp only
-  let H := D.transferNormNaturalityFrobeniusIntermediateSubgroup
-    E L hL
-  let : H.FiniteIndex :=
-    D.transferNormNaturalityFrobeniusIntermediateFiniteIndex
-      E L hL
-  let Ω := Quotient (orbitRel (Subgroup.zpowers σ.1)
-    ((E.base.field.toSubgroup ⧸ D.extensionInertiaWithin E.base.field L
-      (hL.trans E.below)) ⧸ H))
-  let : Fintype Ω := Fintype.ofFinite _
+  intro H reusedStructure2 Ω reusedStructure4
   have hnat := D.transferNormNaturalityTransfer_restriction_natural
     E L hL
   have hnatσ := DFunLike.congr_fun hnat (Abelianization.of σ.1)
@@ -406,15 +401,14 @@ end GroupOnly
 
 section Representation
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- The finite reciprocity equivalence factored through the maximal abelian quotient.  This
 is the horizontal reciprocity arrow in transfer--norm naturality. -/
 noncomputable def transferNormNaturalityAbelianizedReciprocity
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -438,7 +432,7 @@ q)`.
 -/
 @[simp]
 theorem transferNormNaturalityAbelianizedReciprocity_of
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -475,11 +469,11 @@ theorem transferNormNaturality_transfer_doubleCoset_formula
       extensionSubgroup K L (hLK'.trans hK'K))]
     (σ : K.toSubgroup ⧸
       extensionSubgroup K L (hLK'.trans hK'K)) :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
     let H := transferNormNaturalityIntermediateSubgroup K K' L hLK' hK'K
-    letI : H.FiniteIndex := Subgroup.finiteIndex_of_finite
-    letI : Fintype (Quotient (orbitRel (Subgroup.zpowers σ)
+    let : H.FiniteIndex := Subgroup.finiteIndex_of_finite
+    let : Fintype (Quotient (orbitRel (Subgroup.zpowers σ)
         ((K.toSubgroup ⧸
           extensionSubgroup K L (hLK'.trans hK'K)) ⧸ H))) :=
       Fintype.ofFinite _
@@ -492,15 +486,7 @@ theorem transferNormNaturality_transfer_doubleCoset_formula
             ⟨q.out.out⁻¹ * σ ^ Function.minimalPeriod (σ • ·) q.out *
                 q.out.out,
               QuotientGroup.out_conj_pow_minimalPeriod_mem H σ q.out⟩) := by
-  let hL'normal : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  dsimp only
-  let H := transferNormNaturalityIntermediateSubgroup K K' L hLK' hK'K
-  let : H.FiniteIndex := Subgroup.finiteIndex_of_finite
-  let := Fintype.ofFinite
-    (Quotient (orbitRel (Subgroup.zpowers σ)
-      ((K.toSubgroup ⧸
-        extensionSubgroup K L (hLK'.trans hK'K)) ⧸ H)))
+  intro hL'normal H finiteIndexH orbitFintype
   rw [transferNormNaturalityTransfer]
   simp only [MonoidHom.comp_apply, Abelianization.lift_apply_of]
   rw [MonoidHom.transfer_eq_prod_quotient_orbitRel_zpowers_quot]
@@ -514,13 +500,12 @@ end GroupOnly
 
 section Representation
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The invariant carrier used by `extensionFixedRepresentation` is
 canonically the ambient fixed subgroup `A_L`. -/
 def transferNormNaturalityExtensionFixedEquiv
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
     (extensionFixedRepresentation A K L hLK hnormal).V ≃+
@@ -543,7 +528,7 @@ ambientFixedAddSubgroup A L) : A.V) = a.1`.
 -/
 @[simp]
 theorem transferNormNaturalityExtensionFixedEquiv_apply_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (a : (extensionFixedRepresentation A K L hLK hnormal).V) :
@@ -557,7 +542,7 @@ Establishes the identity `((transferNormNaturalityExtensionFixedEquiv A K L hLK 
 -/
 @[simp]
 theorem transferNormNaturalityExtensionFixedEquiv_symm_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (a : ambientFixedAddSubgroup A L) :
@@ -573,7 +558,7 @@ variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- A fixed choice of right-coset representatives for the intermediate
 subgroup in `G(L/K)`. -/
-private noncomputable def chosenTransferNormNaturalityRightTransversal
+noncomputable def chosenTransferNormNaturalityRightTransversal
     (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -619,13 +604,12 @@ end GroupOnly
 
 section Representation
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The quotient action on the invariant carrier agrees with the relative
 coset action used to define the norm. -/
 private theorem transferNormNaturality_relativeCosetAction_eq_extensionAction
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (a : (extensionFixedRepresentation A K L hLK hnormal).V)
@@ -646,7 +630,7 @@ private theorem transferNormNaturality_relativeCosetAction_eq_extensionAction
 /-- Restricting the quotient action to `G(L/K')` agrees with the relative
 coset action for `L | K'`. -/
 private theorem transferNormNaturality_relativeCosetAction_intermediate
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal : (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
@@ -673,7 +657,7 @@ private theorem transferNormNaturality_relativeCosetAction_intermediate
 right transversal for `G(L/K')` in `G(L/K)`.  Its `L | K'` norm is the
 `L | K` norm of the original element. -/
 noncomputable def transferNormNaturalityNormWitness
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal : (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
@@ -695,7 +679,7 @@ noncomputable def transferNormNaturalityNormWitness
   exact eA (∑ t : (T : Set _), E.ρ t.1 (eA.symm a))
 
 private theorem transferNormNaturality_extensionAction_product
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal : (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
@@ -720,16 +704,16 @@ private theorem transferNormNaturality_extensionAction_product
 /-- The norm identity underlying the right vertical arrow of transfer--norm naturality.  It is the
 additive form of the product calculation. -/
 theorem transferNormNaturality_norm_doubleCoset_formula
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal : (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
     [Finite (K.toSubgroup ⧸
       extensionSubgroup K L (hLK'.trans hK'K))]
     (a : ambientFixedAddSubgroup A L) :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-    letI : Finite (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
+    let : Finite (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       Finite.of_injective
         (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
         (transferNormNaturalityIntermediateInclusion_injective
@@ -738,14 +722,7 @@ theorem transferNormNaturality_norm_doubleCoset_formula
         (relativeNorm A K L (hLK'.trans hK'K) a) =
       relativeNorm A K' L hLK'
         (transferNormNaturalityNormWitness A K K' L hLK' hK'K a) := by
-  let hL'normal : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  let hL'finite : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
-      (transferNormNaturalityIntermediateInclusion_injective
-        K K' L hLK' hK'K)
+  intro hL'normal hL'finite
   let : Fintype (K.toSubgroup ⧸
       extensionSubgroup K L (hLK'.trans hK'K)) := Fintype.ofFinite _
   let : Fintype (K'.toSubgroup ⧸
@@ -865,26 +842,21 @@ theorem transferNormNaturality_norm_doubleCoset_formula
 /-- The right vertical arrow of transfer--norm naturality: inclusion `A_K → A_{K'}`
 descended to the actual finite norm quotients. -/
 def transferNormNaturalityNormQuotientInclusion
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal : (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
     [hL'normal : (extensionSubgroup K' L hLK').Normal]
     [Finite (K.toSubgroup ⧸
       extensionSubgroup K L (hLK'.trans hK'K))] :
-    letI : Finite (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
+    let : Finite (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       Finite.of_injective
         (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
         (transferNormNaturalityIntermediateInclusion_injective
           K K' L hLK' hK'K)
     FiniteNormQuotient A K L (hLK'.trans hK'K) →+
       FiniteNormQuotient A K' L hLK' := by
-  letI hL'finite : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
-      (transferNormNaturalityIntermediateInclusion_injective
-        K K' L hLK' hK'K)
+  intro hL'finite
   let targetClass : ambientFixedAddSubgroup A K →+
       FiniteNormQuotient A K' L hLK' :=
     (finiteNormClassHom A K' L hLK').comp
@@ -899,16 +871,16 @@ def transferNormNaturalityNormQuotientInclusion
 /-- The transfer-side map sends a finite norm class to the class of its fixed-field inclusion. -/
 @[simp]
 theorem transferNormNaturality_normQuotientInclusion_finiteNormClass
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal : (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
     [Finite (K.toSubgroup ⧸
       extensionSubgroup K L (hLK'.trans hK'K))]
     (x : ambientFixedAddSubgroup A K) :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-    letI : Finite (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
+    let : Finite (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       Finite.of_injective
         (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
         (transferNormNaturalityIntermediateInclusion_injective
@@ -917,14 +889,7 @@ theorem transferNormNaturality_normQuotientInclusion_finiteNormClass
         (finiteNormClass A K L (hLK'.trans hK'K) x) =
       finiteNormClass A K' L hLK'
         (fixedFieldInclusion A K K' hK'K x) := by
-  let hL'normal : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  let hL'finite : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
-      (transferNormNaturalityIntermediateInclusion_injective
-        K K' L hLK' hK'K)
+  intro hL'normal hL'finite
   unfold transferNormNaturalityNormQuotientInclusion
   rw [finiteNormQuotientLift_finiteNormClass]
   rfl
@@ -936,7 +901,7 @@ over double cosets, the finite reciprocity equivalence
 evaluates every positive Frobenius factor, and the resulting prime norms
 are identified by `transferNormNaturalityNorm_eq_sum_transferNorms`. -/
 theorem transferNormNaturality_generator_square
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -952,10 +917,10 @@ theorem transferNormNaturality_generator_square
         change (extensionSubgroup F.base.field L
           (hL.trans F.below)).Normal
         exact hLnormal)) :
-    letI : (extensionSubgroup F.field.field L hL).Normal :=
+    let : (extensionSubgroup F.field.field L hL).Normal :=
       transferNormNaturality_intermediateExtension_normal
         F.base.field F.field.field L hL F.below
-    letI : Finite
+    let : Finite
         (F.field.field.toSubgroup ⧸
           extensionSubgroup F.field.field L hL) :=
       Finite.of_injective
@@ -981,17 +946,7 @@ theorem transferNormNaturality_generator_square
               (D.frobeniusRestriction
                 (F.base.toFiniteResidueAbstractField D) L
                 (hL.trans F.below) σ)))) := by
-  let hL'normal : (extensionSubgroup F.field.field L hL).Normal :=
-    transferNormNaturality_intermediateExtension_normal
-      F.base.field F.field.field L hL F.below
-  let hL'finite : Finite
-      (F.field.field.toSubgroup ⧸
-        extensionSubgroup F.field.field L hL) :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion
-        F.base.field F.field.field L hL F.below)
-      (transferNormNaturalityIntermediateInclusion_injective
-        F.base.field F.field.field L hL F.below)
+  intro hL'normal hL'finite
   let E := F.toFiniteResidueAbstractExtension D
   let hLnormalE :
       (extensionSubgroup E.base.field L (hL.trans E.below)).Normal := by
@@ -1233,7 +1188,7 @@ theorem transferNormNaturality_generator_square
 `L | K` and an intermediate field `K'`, reciprocity commutes with transfer:
 `r_{L/K'} ∘ Ver = inclusion ∘ r_{L/K}`. -/
 theorem transferNormNaturality
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -1243,10 +1198,10 @@ theorem transferNormNaturality
       (extensionSubgroup F.base.field L (hL.trans F.below)).Normal]
     [hLbasefinite : Finite (F.base.field.toSubgroup ⧸
       extensionSubgroup F.base.field L (hL.trans F.below))] :
-    letI : (extensionSubgroup F.field.field L hL).Normal :=
+    let : (extensionSubgroup F.field.field L hL).Normal :=
       transferNormNaturality_intermediateExtension_normal
         F.base.field F.field.field L hL F.below
-    letI : Finite
+    let : Finite
         (F.field.field.toSubgroup ⧸
           extensionSubgroup F.field.field L hL) :=
       Finite.of_injective
@@ -1263,16 +1218,7 @@ theorem transferNormNaturality
         F.base.field F.field.field L hL F.below).comp
         (D.transferNormNaturalityAbelianizedReciprocity A v hAxiom
           F.base L (hL.trans F.below)) := by
-  let hL'normal : (extensionSubgroup F.field.field L hL).Normal :=
-    transferNormNaturality_intermediateExtension_normal
-      F.base.field F.field.field L hL F.below
-  let : Finite
-      (F.field.field.toSubgroup ⧸ extensionSubgroup F.field.field L hL) :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion
-        F.base.field F.field.field L hL F.below)
-      (transferNormNaturalityIntermediateInclusion_injective
-        F.base.field F.field.field L hL F.below)
+  intro hL'normal sharedOwner2
   apply AddMonoidHom.ext
   intro x
   change D.transferNormNaturalityAbelianizedReciprocity A v hAxiom

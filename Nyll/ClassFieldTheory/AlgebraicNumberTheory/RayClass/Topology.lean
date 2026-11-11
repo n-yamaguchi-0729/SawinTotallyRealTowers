@@ -4,13 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
-import Mathlib.Analysis.Complex.Convex
-import Mathlib.Basic.Sign.Basic
-import Mathlib.Topology.Algebra.Ring.Compact
-import Mathlib.Topology.Connected.Clopen
-import Mathlib.Topology.Instances.Sign
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
+public import Mathlib.Analysis.Complex.Convex
+public import Mathlib.Basic.Sign.Basic
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Mathlib.Topology.Algebra.Ring.Compact
+public import Mathlib.Topology.Connected.Clopen
+public import Mathlib.Topology.Instances.Sign
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The congruence topology on the idele class group
@@ -22,6 +29,8 @@ of the idele class group.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct WithZero
 open NumberField IsDedekindDomain
@@ -357,8 +366,8 @@ theorem localHigherUnit_norm_sub_one_le
         @LE.le ℤᵐ⁰ WithZero.instPreorder.toLE a b →
           a ≤ b := by
     intro a b hab
-    cases a <;> cases b <;>
-      simp_all
+    change (a : WithBot (Multiplicative ℤ)) ≤ b at hab ⊢
+    exact hab
   exact withZeroPreorder_le _ _ hyVal'
 
 /-- An irreducible element of the valuation ring of a finite completion

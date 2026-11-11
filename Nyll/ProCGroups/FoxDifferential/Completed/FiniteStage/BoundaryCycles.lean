@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Quotient.Fundamental
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Quotient.Fundamental
 
 /-!
 # Fox differential: completed — finite stage — boundary cycles
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   A word lying in the normal subgroup \(N\) has finite-stage coefficient equal to \(1\) in the
   quotient by \(N\).
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

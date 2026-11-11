@@ -4,24 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiniteKummerAbsoluteKernel
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Nyll.GaloisCohomology.ProP.DiscreteH2Representatives
-import Nyll.GaloisCohomology.ProP.DiscreteH2Comparison
-import Nyll.GaloisCohomology.ProP.DiscreteH2ShortComplexComparison
-import Nyll.GaloisCohomology.ProP.DiscreteH2CochainComparison
-import Nyll.GaloisCohomology.ProP.FreeProPH2Cocycle
-import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.Tactic.Abel
+module
+
+public import Nyll.SawinTotallyRealTowers.FiniteKummerAbsoluteKernel
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Nyll.GaloisCohomology.ProP.DiscreteH2Representatives
+public import Nyll.GaloisCohomology.ProP.DiscreteH2Comparison
+public import Nyll.GaloisCohomology.ProP.DiscreteH2ShortComplexComparison
+public import Nyll.GaloisCohomology.ProP.DiscreteH2CochainComparison
+public import Nyll.GaloisCohomology.ProP.FreeProPH2Cocycle
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.Tactic.Abel
 
 /-!
 # The finite Kummer coefficient kernel lies in the absolute inflation kernel
@@ -32,6 +34,8 @@ by the boundary of a constant one-cochain. The representative-level
 Hilbert-90 result therefore proves kernel containment for every finite
 continuous H² class, with no assumption about a chosen representative.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 
@@ -49,9 +53,9 @@ theorem normalizedFiniteKummerTwoCocycle_H2π
     groupCohomology.H2π
       (Rep.trivial ℤ Gal(E/K) (ULift.{0} (ZMod (p : ℕ))))
       (normalizedFiniteKummerTwoCocycle K p E z) =
-    discreteContinuousH2AddEquiv
+    discreteContinuousH2AddEquiv (R := ℤ)
       (ContinuousCohomology.π (trivialZModPLifted (p : ℕ) Gal(E/K)) 2 z) := by
-  rw [discreteContinuousH2AddEquiv_π]
+  rw [discreteContinuousH2AddEquiv_π (R := ℤ)]
   apply (groupCohomology.H2π_eq_iff _ _).mpr
   let a : ULift.{0} (ZMod (p : ℕ)) :=
     (((trivialZModPCochainsLifted (p : ℕ) Gal(E/K)).iCycles 2).hom z).1 1 1 1
@@ -72,7 +76,7 @@ def finiteKummerContinuousH2Map
     continuousCohomologyZModPLifted (p : ℕ) Gal(E/K) 2 →+
       groupCohomology (Rep.ofAlgebraAutOnUnits K E) 2 :=
   (finiteKummerCoefficientH2Map K E p hmu).hom.toAddMonoidHom.comp
-    (discreteContinuousH2AddEquiv (p := (p : ℕ)) (Q := Gal(E/K))).toAddMonoidHom
+    (discreteContinuousH2AddEquiv (R := ℤ) (p := (p : ℕ)) (Q := Gal(E/K))).toAddMonoidHom
 
 /-- The kernel of finite Kummer coefficient change is contained in the
 kernel of actual absolute inflation, for every finite continuous H² class. -/

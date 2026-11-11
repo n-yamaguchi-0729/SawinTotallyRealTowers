@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Lift
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Lift
 
 /-!
 # Fox differential: finite stage — stage — derivative — relators
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   In the finite-stage semidirect product, commutators of elements with trivial right component are
   trivial.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

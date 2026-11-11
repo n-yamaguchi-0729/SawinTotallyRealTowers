@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
 /-!
 # Representatives of integer units modulo principal units
@@ -13,6 +15,8 @@ This file defines the integer-unit quotient by a principal-unit subgroup and
 compares it with the concrete quotient used in the normal-basis calculations.
 -/
 
+
+@[expose] public section
 
 namespace CyclicCohomology
 

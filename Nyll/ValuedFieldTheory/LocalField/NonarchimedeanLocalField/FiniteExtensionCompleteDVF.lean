@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
-import Mathlib.Algebra.Order.Hom.Units
-import Mathlib.NumberTheory.LocalField.Basic
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Mathlib.Algebra.Order.Hom.Units
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
 
 /-!
 # Complete-DVF packages for local fields and their finite extensions
@@ -18,6 +20,8 @@ and an integral-closure valuation chosen on each finite separable extension.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -111,12 +115,14 @@ theorem localCompleteDVF_integerRing_moduleFinite
 
 /-! ## Chosen ramification data for an arbitrary finite local extension -/
 
-private theorem chosenLocalExtensionCompleteDVF_exists
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+/-- A finite separable local extension admits a complete discrete valuation extending
+the base valuation, whose valuation ring is the integral closure of the base ring. -/
+theorem chosenLocalExtensionCompleteDVF_exists
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
-    ∃ target : CompleteDVF.{0, 0} L,
+    ∃ target : CompleteDVF.{v, 0} L,
       ∃ hExt : (localCompleteDVF K).valuation.HasExtension target.valuation,
         letI : (localCompleteDVF K).valuation.HasExtension target.valuation :=
           hExt
@@ -130,17 +136,17 @@ private theorem chosenLocalExtensionCompleteDVF_exists
 /-- A complete discrete valuation on an arbitrary finite separable extension
 of a nonarchimedean local field, chosen from its actual integral closure. -/
 noncomputable def chosenLocalExtensionCompleteDVF
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
-    CompleteDVF.{0, 0} L :=
+    CompleteDVF.{v, 0} L :=
   Classical.choose (chosenLocalExtensionCompleteDVF_exists K L)
 
 /-- The chosen valuation on a finite local extension extends the canonical
 valuation of its base field. -/
 theorem chosenLocalExtensionCompleteDVF_hasExtension
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -152,7 +158,7 @@ theorem chosenLocalExtensionCompleteDVF_hasExtension
 /-- Supplies the valuation-extension instance for the chosen finite local
 extension target. -/
 noncomputable instance chosenLocalExtensionCompleteDVF.instHasExtension
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -163,7 +169,7 @@ noncomputable instance chosenLocalExtensionCompleteDVF.instHasExtension
 /-- The chosen valuation ring is the actual integral closure of the
 canonical valuation ring of the base local field. -/
 theorem chosenLocalExtensionCompleteDVF_isIntegralClosure
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -176,7 +182,7 @@ theorem chosenLocalExtensionCompleteDVF_isIntegralClosure
 /-- The chosen valuation ring of a finite separable local extension is a
 finite module over the canonical base valuation ring. -/
 theorem chosenLocalExtensionCompleteDVF_valuationSubring_moduleFinite
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -193,11 +199,11 @@ theorem chosenLocalExtensionCompleteDVF_valuationSubring_moduleFinite
 
 /-- Completeness of the base makes the chosen valuation extension unique. -/
 theorem chosenLocalExtensionCompleteDVF_hasUniqueValuationExtension
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
-    ValuedExtension.HasUniqueValuationExtension.{0, 0, 0, 0, y}
+    ValuedExtension.HasUniqueValuationExtension.{u, u, v, 0, y}
       (base := localCompleteDVF K)
       (target := chosenLocalExtensionCompleteDVF K L) :=
   hasUniqueValuationExtension_of_finite_separable

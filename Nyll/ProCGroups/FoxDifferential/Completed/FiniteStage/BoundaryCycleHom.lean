@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryCycles
 
 /-!
 # Fox differential: completed — finite stage — boundary cycle hom
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   The range of the additive source-kernel derivative map is exactly the source-kernel derivative
   additive subgroup already used in the finite-stage density target.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

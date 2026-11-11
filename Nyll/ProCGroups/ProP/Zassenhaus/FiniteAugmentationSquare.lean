@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.Zassenhaus.FiniteLinearization
-import Mathlib.Algebra.CharP.Algebra
-import Mathlib.Tactic.Abel
+module
+
+public import Nyll.ProCGroups.GroupTheory.CommutatorDifference
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.Zassenhaus.FiniteLinearization
+public import Mathlib.Algebra.CharP.Algebra
+public import Mathlib.Tactic.Abel
 
 /-!
 # The augmentation-square subgroup at a finite stage
@@ -16,6 +19,8 @@ This file packages the ordinary group elements for which `[q]-1` belongs to
 the square of the mod-`p` augmentation ideal.  Direct group-algebra identities
 show that this subgroup contains all `p`-th powers and commutators.
 -/
+
+@[expose] public section
 
 open scoped commutatorElement
 
@@ -155,13 +160,8 @@ private theorem groupAlgebraCommutatorDifference_identity
     {R : Type*} [Ring R] (a b ai bi : R)
     (hai : a * ai = 1) (hbi : b * bi = 1) :
     a * b * ai * bi - 1 =
-      ((a - 1) * (b - 1) - (b - 1) * (a - 1)) * ai * bi := by
-  have hdiff : (a - 1) * (b - 1) - (b - 1) * (a - 1) = a * b - b * a := by
-    simp only [sub_mul, mul_sub, mul_one, one_mul]
-    abel
-  rw [hdiff]
-  simp only [sub_mul]
-  rw [mul_assoc b a ai, hai, mul_one, hbi]
+      ((a - 1) * (b - 1) - (b - 1) * (a - 1)) * ai * bi :=
+  commutatorDifference_identity a b ai bi hai hbi
 
 /-- A group commutator has augmentation generator in the square ideal. -/
 theorem groupAlgebraAugmentationGenerator_commutator (a b : Q) :

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # Closed fixing subgroups
@@ -15,6 +17,8 @@ the Krull topology.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

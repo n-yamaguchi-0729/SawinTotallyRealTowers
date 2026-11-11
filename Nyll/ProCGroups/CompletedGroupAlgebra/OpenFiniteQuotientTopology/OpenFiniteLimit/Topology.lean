@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteLimit.System
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteLimit.System
 
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Open Finite Limit / Topology
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFini
 This module transports the discrete topological-ring structures of the open-finite quotient stages
 through the single two-parameter inverse limit, and records compactness and separation results.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -39,11 +43,10 @@ theorem completedGroupAlgebraOpenFiniteQuotientStage_isTopologicalRing
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G]
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
+    let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
       completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
     IsTopologicalRing (CompletedGroupAlgebraOpenQuotientStage R G K) := by
-  let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
-    completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
+  intro sharedOwner1
   have : DiscreteTopology (CompletedGroupAlgebraOpenQuotientStage R G K) :=
     completedGroupAlgebraOpenFiniteQuotientStage_discrete R G K
   infer_instance

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.FieldTheory.SeparableClosure
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.FieldTheory.SeparableClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
 
 /-!
 # Finite local reciprocity: realizing finite Galois extensions in a separable closure
@@ -22,6 +24,8 @@ No perfectness hypothesis is imposed; this includes equal-characteristic
 local fields such as finite extensions of `𝔽_q((t))`.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 open RamificationTheory CyclicCohomology KummerTheory
 
@@ -29,7 +33,9 @@ open RamificationTheory CyclicCohomology KummerTheory
 
 noncomputable section
 
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
+universe u v
+
+variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
 
 /-! ## Realization relative to an explicit embedding -/

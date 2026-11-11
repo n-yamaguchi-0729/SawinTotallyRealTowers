@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Profinite
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
+module
+
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.HerbrandFunction
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.RamificationQuotients
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
 /-!
 # Chosen integral-closure ramification filtrations at finite Galois levels
@@ -22,6 +26,8 @@ filtration. Choice independence is proved in the companion module.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 universe u v y
@@ -34,7 +40,9 @@ open ValuationTheory.DiscreteValuationField.ValuedExtension
 
 variable {K : Type u} [Field K]
 
-private theorem chosenIntegralClosureData_exists
+/-- A finite Galois level admits an integral-closure valuation
+satisfying the fundamental equality. -/
+theorem chosenIntegralClosureData_exists
     (base : CompleteDVF.{u, v} K)
     (E : FiniteGaloisIntermediateField K (AlgebraicClosure K)) :
     ∃ target : CompleteDVF.{u, 0} E,

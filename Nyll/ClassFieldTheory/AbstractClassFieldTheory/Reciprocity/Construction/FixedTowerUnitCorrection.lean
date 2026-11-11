@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteFieldUnitMaps
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteFieldUnitMaps
 
 /-!
 # Fixed-tower unit correction
@@ -13,7 +15,9 @@ This module constructs the unit-valued correction term on a Frobenius
 fixed-field tower and proves its coefficient and relative-norm identities.
 -/
 
-universe u v
+@[expose] public section
+
+universe uG uA v
 
 namespace ClassFormation
 
@@ -27,11 +31,11 @@ noncomputable section
 open CategoryTheory
 open scoped BigOperators
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type uG} [Group G] [TopologicalSpace G]
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{uA} ℤ G}
 
 /-- The unit-valued correction term on the upper Frobenius fixed field.
 This is the additive form of the right-hand side of the corrected equation. -/

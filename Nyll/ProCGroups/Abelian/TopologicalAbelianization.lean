@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
-import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
+module
+
+public import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
+public import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 
 /-!
 # Topological abelianization
@@ -13,6 +15,8 @@ import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 This module develops the canonical quotient by the closed commutator subgroup, its universal
 property for continuous maps to Hausdorff commutative groups, and the induced quotient topology.
 -/
+
+@[expose] public section
 
 open scoped Topology commutatorElement
 

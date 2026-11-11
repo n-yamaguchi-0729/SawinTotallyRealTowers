@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.FieldTheory.Galois.Abelian
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+module
+
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
 
 /-!
 # the radical-extension construction
@@ -23,6 +25,8 @@ abelian of exponent dividing `n`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

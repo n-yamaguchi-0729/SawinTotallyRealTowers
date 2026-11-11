@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CharacteristicZero
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.EqualCharacteristic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.CharacteristicZero
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.EqualCharacteristic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
 /-!
 # Classification by open finite-index norm subgroups
@@ -18,6 +20,8 @@ multiplicative group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

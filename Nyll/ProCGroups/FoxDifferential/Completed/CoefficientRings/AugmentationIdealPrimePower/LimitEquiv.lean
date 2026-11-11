@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Module
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Module
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power augmentation ideal — limit equiv
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `primePowerCompletedGroupAlgebraAugmentationIdealProjection_add`
   The finite-stage augmentation-ideal projection is compatible with addition.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

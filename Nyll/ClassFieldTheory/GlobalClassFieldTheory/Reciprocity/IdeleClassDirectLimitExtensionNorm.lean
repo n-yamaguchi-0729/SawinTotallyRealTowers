@@ -4,7 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtensionAction
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtensionAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # Norms on rational fixed-field idele classes
@@ -15,6 +22,8 @@ idele-class extension attached to the abstract subgroup tower.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace GlobalClassFieldTheory
@@ -23,6 +32,10 @@ namespace Reciprocity
 open ClassFormation
 open LocalClassFieldTheory
 open CyclicCohomology
+
+attribute [local instance]
+  rationalIdeleClassDirectLimitSMul rationalAbstractFixedFieldFiniteDimensional
+  rationalAbstractTowerClassGroupCommGroup
 
 private theorem fourStepAddEquiv_apply_eq
     {V A B C D : Type*}
@@ -87,93 +100,6 @@ private noncomputable def includedRelativeIdeleClassNormAdditiveValue
     (RelativeIdeleGroup.classInclusion F E
       (RelativeIdeleGroup.Cohomology.ideleClassNorm F E
         (Additive.toMul c)))
-
-private noncomputable def rationalFixedFieldInclusionComparison
-    (K L : ClosedSubgroup
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (hLK : L.toSubgroup ≤ K.toSubgroup)
-    (hnormal : (extensionSubgroup K L hLK).Normal)
-    [hKfinite : Finite
-      ((baseField
-        (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)).toSubgroup ⧸
-        extensionSubgroup
-          (baseField
-            (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-          K (le_baseField K))]
-    [hfinite : Finite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
-    (c : RelativeIdeleGroup.ClassGroup ℚ
-      (abstractFixedField ℚ (SeparableClosure ℚ) K)) :=
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  letI := hnormal
-  letI : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  letI : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  letI : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  letI : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  letI : NumberField F := NumberField.of_module_finite ℚ F
-  letI : NumberField E := NumberField.of_module_finite ℚ E
-  (rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
-      ((extensionFixedRepresentationEquiv
-        rationalIdeleClassRepresentation K L hLK hnormal).symm
-        (fixedFieldInclusion rationalIdeleClassRepresentation
-          K L hLK
-          (rationalAbstractFixedFieldIdeleClassEquivFixed K
-            (Additive.ofMul
-              (_root_.relativeIdeleClassBaseChangeMulEquiv
-                (K := ℚ) (L := F) c))))),
-    Additive.ofMul
-      (RelativeIdeleGroup.classInclusion F E
-        (_root_.relativeIdeleClassBaseChangeMulEquiv
-          (K := ℚ) (L := F) c)))
-
-private noncomputable def rationalExtensionNormComparison
-    (K L : ClosedSubgroup
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (hLK : L.toSubgroup ≤ K.toSubgroup)
-    (hnormal : (extensionSubgroup K L hLK).Normal)
-    [Finite
-      ((baseField
-        (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)).toSubgroup ⧸
-        extensionSubgroup
-          (baseField
-            (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-          K (le_baseField K))]
-    [Finite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
-    (x : (extensionFixedRepresentation rationalIdeleClassRepresentation
-      K L hLK hnormal).V) :=
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  letI := hnormal
-  letI : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K inferInstance
-  letI : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK inferInstance inferInstance
-  letI : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  letI : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  letI : NumberField F := NumberField.of_module_finite ℚ F
-  letI : NumberField E := NumberField.of_module_finite ℚ E
-  letI : IsGalois F E :=
-    abstractRelativeFixedField_isGalois
-      ℚ (SeparableClosure ℚ) K L hLK hnormal
-  let M :=
-    extensionFixedRepresentation rationalIdeleClassRepresentation
-      K L hLK hnormal
-  let e :=
-    rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
-  (e (M.norm.hom x),
-    includedRelativeIdeleClassNormAdditiveValue F E (e x))
 
 private noncomputable def rationalRelativeNormComparison
     (K L : ClosedSubgroup
@@ -365,24 +291,36 @@ theorem
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (c : RelativeIdeleGroup.ClassGroup ℚ
       (abstractFixedField ℚ (SeparableClosure ℚ) K)) :
-    let comparison :=
-      rationalFixedFieldInclusionComparison K L hLK hnormal c
-    comparison.1 = comparison.2 := by
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let _ := hnormal
-  let _ : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
-  let _ : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  let _ : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let _ : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  let _ : NumberField F := NumberField.of_module_finite ℚ F
-  let _ : NumberField E := NumberField.of_module_finite ℚ E
+    let F := abstractFixedField ℚ (SeparableClosure ℚ) K
+    let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
+      abstractFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K hKfinite
+    let : FiniteDimensional F E :=
+      abstractRelativeFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
+    let : IsScalarTower ℚ F E :=
+      IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
+    let : FiniteDimensional ℚ E :=
+      FiniteDimensional.trans ℚ F E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
+    rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
+        ((extensionFixedRepresentationEquiv
+          rationalIdeleClassRepresentation K L hLK hnormal).symm
+          (fixedFieldInclusion rationalIdeleClassRepresentation
+            K L hLK
+            (rationalAbstractFixedFieldIdeleClassEquivFixed K
+              (Additive.ofMul
+                (_root_.relativeIdeleClassBaseChangeMulEquiv
+                  (K := ℚ) (L := F) c))))) =
+      Additive.ofMul
+        (RelativeIdeleGroup.classInclusion F E
+          (_root_.relativeIdeleClassBaseChangeMulEquiv
+            (K := ℚ) (L := F) c)) := by
+  intro F E hnormalInstance hFfinite hFEfinite htower hEfinite
+    hFnumberField hEnumberField
   let _ : FiniteDimensional ℚ (E.restrictScalars ℚ) := by
     change FiniteDimensional ℚ
       (abstractFixedField ℚ (SeparableClosure ℚ) L)
@@ -526,43 +464,47 @@ theorem rationalAbstractExtensionIdeleClassEquiv_norm
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (x : (extensionFixedRepresentation rationalIdeleClassRepresentation
       K L hLK hnormal).V) :
-    let comparison :=
-      rationalExtensionNormComparison K L hLK hnormal x
-    comparison.1 = comparison.2 := by
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let _ := hnormal
-  let _ : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K inferInstance
-  let _ : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK inferInstance inferInstance
-  let _ : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-  let _ : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  let _ : NumberField F := NumberField.of_module_finite ℚ F
-  let _ : NumberField E := NumberField.of_module_finite ℚ E
-  let _ : IsGalois F E :=
-    abstractRelativeFixedField_isGalois
-      ℚ (SeparableClosure ℚ) K L hLK hnormal
+    let F := abstractFixedField ℚ (SeparableClosure ℚ) K
+    let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
+      abstractFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K inferInstance
+    let : FiniteDimensional F E :=
+      abstractRelativeFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K L hLK inferInstance inferInstance
+    let : IsScalarTower ℚ F E :=
+      IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
+    let : FiniteDimensional ℚ E :=
+      FiniteDimensional.trans ℚ F E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
+    let : IsGalois F E :=
+      abstractRelativeFixedField_isGalois
+        ℚ (SeparableClosure ℚ) K L hLK hnormal
+    let M :=
+      extensionFixedRepresentation rationalIdeleClassRepresentation
+        K L hLK hnormal
+    let e :=
+      rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
+    e (M.norm.asHom.hom x) =
+      Additive.ofMul
+        (RelativeIdeleGroup.classInclusion F E
+          (RelativeIdeleGroup.Cohomology.ideleClassNorm F E
+            (Additive.toMul (e x)))) := by
+  intro F E hnormalInstance hFfinite hFEfinite htower hEfinite
+    hFnumberField hEnumberField hGalois M e
   let _ : MulDistribMulAction (E ≃ₐ[F] E)
       (RelativeIdeleGroup.ClassGroup F E) :=
     RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction F E
   let Q := K.toSubgroup ⧸ extensionSubgroup K L hLK
   let _ : Fintype Q := Fintype.ofFinite Q
-  let M :=
-    extensionFixedRepresentation rationalIdeleClassRepresentation
-      K L hLK hnormal
-  let e :=
-    rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
   let eQ :=
     abstractExtensionQuotientEquivGaloisGroup
       ℚ (SeparableClosure ℚ) K L hLK hnormal
   let c : RelativeIdeleGroup.ClassGroup F E :=
     Additive.toMul (e x)
-  change e (M.norm.hom x) =
+  change e (M.norm.asHom.hom x) =
     includedRelativeIdeleClassNormAdditiveValue F E (e x)
   apply Additive.toMul.injective
   simp only [Rep.norm, Representation.norm]
@@ -607,34 +549,29 @@ private theorem rationalRelativeNorm_representation_norm
     let eAmbient :=
       extensionFixedRepresentationEquiv
         rationalIdeleClassRepresentation K L hLK hnormal
-    M.norm.hom (eAmbient.symm a) =
+    M.norm.asHom.hom (eAmbient.symm a) =
       eAmbient.symm
         (fixedFieldInclusion rationalIdeleClassRepresentation
           K L hLK
           (relativeNorm rationalIdeleClassRepresentation
             K L hLK a)) := by
-  let M :=
-    extensionFixedRepresentation rationalIdeleClassRepresentation
-      K L hLK hnormal
-  let eAmbient :=
-    extensionFixedRepresentationEquiv
-      rationalIdeleClassRepresentation K L hLK hnormal
+  intro M eAmbient
   let x := eAmbient.symm a
   let n :=
     relativeNorm rationalIdeleClassRepresentation K L hLK a
   change
-    M.norm.hom x =
+    M.norm.asHom.hom x =
       eAmbient.symm
         (fixedFieldInclusion rationalIdeleClassRepresentation
           K L hLK n)
   apply Subtype.ext
-  change (M.norm.hom x).1 = n.1
+  change (M.norm.asHom.hom x).1 = n.1
   have hNormCoe :=
     extensionFixedRepresentation_norm_coe
       rationalIdeleClassRepresentation
       K L hLK hnormal x
   change
-    (M.norm.hom x).1 =
+    (M.norm.asHom.hom x).1 =
       (relativeNorm rationalIdeleClassRepresentation
         K L hLK (eAmbient x)).1 at hNormCoe
   have hxa : eAmbient x = a :=
@@ -722,7 +659,7 @@ private theorem rationalRelativeNormClassNorm_eq
     change eK (eK.symm n) = n
     exact eK.apply_symm_apply n
   have hMnorm :
-      M.norm.hom x =
+      M.norm.asHom.hom x =
         eAmbient.symm
           (fixedFieldInclusion rationalIdeleClassRepresentation
             K L hLK n) := by
@@ -735,7 +672,7 @@ private theorem rationalRelativeNormClassNorm_eq
     rationalAbstractExtensionIdeleClassEquiv_fixedFieldInclusion
       K L hLK hnormal cK
   change
-    e (M.norm.hom x) =
+    e (M.norm.asHom.hom x) =
       Additive.ofMul
         (RelativeIdeleGroup.classInclusion F E q) at hNorm
   change
@@ -797,12 +734,38 @@ theorem
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (a : KummerTheory.ambientFixedAddSubgroup
       rationalIdeleClassRepresentation L) :
-    rationalRelativeNormSource
-        (hKfinite := hKfinite) (hfinite := hfinite)
-        K L hLK hnormal a =
-      rationalRelativeNormTarget
-        (hKfinite := hKfinite) (hfinite := hfinite)
-        K L hLK hnormal a := by
+    let F := abstractFixedField ℚ (SeparableClosure ℚ) K
+    let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
+      abstractFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K hKfinite
+    let : FiniteDimensional F E :=
+      abstractRelativeFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
+    let : IsScalarTower ℚ F E :=
+      IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
+    let : FiniteDimensional ℚ E :=
+      FiniteDimensional.trans ℚ F E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
+    let : IsGalois F E :=
+      abstractRelativeFixedField_isGalois
+        ℚ (SeparableClosure ℚ) K L hLK hnormal
+    let eAmbient :=
+      extensionFixedRepresentationEquiv
+        rationalIdeleClassRepresentation K L hLK hnormal
+    let eK := rationalAbstractFixedFieldIdeleClassEquivFixed K
+    let e :=
+      rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
+    eK.symm
+        (relativeNorm rationalIdeleClassRepresentation
+          K L hLK a) =
+      Additive.ofMul
+        (RelativeIdeleGroup.Cohomology.ideleClassNorm F E
+          (Additive.toMul (e (eAmbient.symm a)))) := by
+  intro F E hnormalInstance hFfinite hFEfinite htower hEfinite
+    hFnumberField hEnumberField hGalois eAmbient eK e
   have h := congrArg Additive.ofMul
     (rationalRelativeNormClassNorm_eq
       (hKfinite := hKfinite) (hfinite := hfinite)

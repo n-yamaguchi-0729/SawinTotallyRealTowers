@@ -4,9 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
-import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionPrimitive
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionPrimitive
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveFactorization
 
 /-!
 # unique extension criterion
@@ -15,6 +21,8 @@ Valuations are regarded valuations up to equivalence.  Accordingly, uniqueness o
 an algebraic extension is stated as literal uniqueness of its valuation
 subring.  This is the same endpoint used in the finite norm-formula theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

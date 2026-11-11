@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Low-degree Tate cohomology under equivariant equivalences
@@ -22,6 +24,8 @@ introducing comparison assumptions.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

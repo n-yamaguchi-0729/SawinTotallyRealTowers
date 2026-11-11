@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProPFrobeniusStage
-import Nyll.SawinTotallyRealTowers.RealProPFrobenius
-import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitPrimesModFour
-import Nyll.ProCGroups.ProP.Zassenhaus.Depth
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Mathlib.Data.Finset.Union
-import Mathlib.NumberTheory.NumberField.Basic
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusStage
+public import Nyll.SawinTotallyRealTowers.RealProPFrobenius
+public import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitPrimesModFour
+public import Nyll.ProCGroups.ProP.Zassenhaus.Depth
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Mathlib.Data.Finset.Union
+public import Mathlib.NumberTheory.NumberField.Basic
 
 /-!
 # New rational primes with deep Frobenius lifts
@@ -23,6 +25,8 @@ primes congruent to one modulo four outside any finite set. Excluding also
 the six allowed ramified primes gives an actual new unramified Frobenius
 with a source lift of the prescribed depth.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusDescent
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Universal
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.TransferOrbitClosure
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusDescent
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Universal
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.TransferOrbitClosure
 
 /-!
 # Frobenius action remainders
@@ -17,7 +19,9 @@ action-remainder identities used by reciprocity-map multiplicativity.
 
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -72,18 +76,14 @@ end frobeniusAlgebra
 
 section frobeniusQuotientActions
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : IntegralRepGroupType`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- A Frobenius element fixes the elements of its actual fixed field,
 viewed inside `A_{\widetilde L}`. -/
 theorem frobeniusQuotientAction_fixedFieldInclusion (D : DegreeData G)
-    (A : Rep ℤ G) [IsTopologicalGroup G]
+    (A : Rep.{uA} ℤ G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
     [hLnormal : (extensionSubgroup K.field L hLK).Normal]
@@ -206,7 +206,7 @@ theorem frobeniusExponent_actionConjugate (D : DegreeData G)
       rw [frobeniusActionConjugate_coe, map_mul, map_mul, map_pow, map_pow,
         map_inv,
         D.extensionNormalizedDegree_frobenius_eq_pow K L hLK σ]
-      simp [mul_assoc]
+      rw [inv_pow, mul_inv_cancel_comm]
 
 /-- The fixed field of the left-action conjugate
 `φᵐσφ⁻ᵐ` is the corresponding conjugate of the fixed field of
@@ -224,9 +224,7 @@ theorem conjugate_frobeniusFixedField_actionConjugate
         (D.frobeniusFixedField K L hLK σ) k.1⁻¹ =
       D.frobeniusFixedField K L hLK
         (D.frobeniusActionConjugate K L hLK φ σ m) := by
-  dsimp only
-  let q := φ.1 ^ m
-  let k : K.field.toSubgroup := Quotient.out q
+  intro q k
   let σ' := D.frobeniusActionConjugate K L hLK φ σ m
   have hkq :
       (QuotientGroup.mk k :
@@ -248,7 +246,7 @@ theorem conjugate_frobeniusFixedField_actionConjugate
       have hxval : x = k.1 * t.1 * k.1⁻¹ := by
         calc
           x = k.1 * (k.1⁻¹ * x * k.1) * k.1⁻¹ := by
-            simp [mul_assoc]
+            rw [mul_assoc k.1⁻¹ x k.1, mul_inv_cancel_left, mul_inv_cancel_right]
           _ = k.1 * t.1 * k.1⁻¹ := by rw [htxval]
       rw [hxval]
       exact K.field.toSubgroup.mul_mem
@@ -271,7 +269,7 @@ theorem conjugate_frobeniusFixedField_actionConjugate
         have htxval : t.1 = k.1⁻¹ * x * k.1 := by simpa using htx
         calc
           x = k.1 * (k.1⁻¹ * x * k.1) * k.1⁻¹ := by
-            simp [mul_assoc]
+            rw [mul_assoc k.1⁻¹ x k.1, mul_inv_cancel_left, mul_inv_cancel_right]
           _ = k.1 * t.1 * k.1⁻¹ := by rw [htxval]
       rw [hxK]
       change (QuotientGroup.mk k :
@@ -364,18 +362,14 @@ end actionRemainderMultiplication
 
 section fixedFieldRemainderActions
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : IntegralRepGroupType`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- On the fixed field of `σ`, the left-action remainder acts exactly as
 the `n`-th power of `φ`. -/
 theorem frobeniusActionRemainder_apply_fixedField (D : DegreeData G)
-    (A : Rep ℤ G) [IsTopologicalGroup G]
+    (A : Rep.{uA} ℤ G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
     [hLnormal : (extensionSubgroup K.field L hLK).Normal]

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntermediateFieldNormResidueNaturality
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntermediateFieldNormResidueNaturality
 
 /-!
 # Restriction naturality of the actual abelian local Artin map
@@ -16,6 +18,8 @@ between finite abelian intermediate fields of the fixed separable closure.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -23,9 +27,7 @@ namespace LocalClassFieldTheory
 open LocalFieldTheory
 open RamificationTheory
 
-variable (K : Type) [Field K]
-  [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-
+variable (K : Type*) [Field K] in
 /-- Restriction between the actual Galois groups of two finite intermediate
 fields, bundled as a continuous homomorphism for their finite Krull
 topologies. -/
@@ -36,6 +38,9 @@ noncomputable def intermediateFieldRestrictContinuous
     Gal(F / K) →ₜ* Gal(E / K) :=
   { intermediateFieldRestrictNormalHom E F hEF with
     continuous_toFun := continuous_of_discreteTopology }
+
+variable (K : Type) [Field K]
+  [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /-- Finite Artin homomorphisms commute with restriction along a
 tower of finite abelian intermediate fields. -/

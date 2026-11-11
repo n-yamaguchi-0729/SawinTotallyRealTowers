@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 
 /-!
 # Finite projections detect maximal-abelian Artin values
@@ -15,6 +18,8 @@ On the Artin side, projection at a finite one-place idele is the actual
 chosen finite-place Artin symbol. These two interfaces close the finite
 part of local-global Artin comparison without a new comparison assumption.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField
@@ -46,7 +51,7 @@ theorem maximalAbelianGlobalArtin_finitePlace_finiteProjection
     AlgEquiv.restrictNormalHom E
       (maximalAbelianGlobalArtin F (IdeleGroup.finitePlaceIdeleClass v a)) =
       chosenFinitePlaceArtinMonoidHom (K := F) (L := E) v a := by
-  let : NumberField E := NumberField.of_module_finite F E
+  intro sharedOwner1
   exact (maximalAbelianGlobalArtin_finiteProjection F (IdeleGroup.finitePlaceIdele v a) E).trans
     (globalArtinMonoidHom_finitePlaceIdele (K := F) (L := E) v a)
 

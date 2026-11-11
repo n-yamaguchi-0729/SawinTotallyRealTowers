@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # uniqueness from the integral-closure valuation ring
@@ -14,6 +16,8 @@ valuative dichotomy, it is contained in every extension valuation ring.  Its
 integrality over the base then forces the center of every such overring to be
 the unique maximal ideal, so the overring is the integral closure itself.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationAction
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationAction
 
 /-!
 # Fox differential: completed — finite stage — relation submodule
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageRelationBoundaryAddMonoidHom_mem_relationBoundarySubmodule`
   A relation boundary of a finite-stage relation lies in the generated submodule.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

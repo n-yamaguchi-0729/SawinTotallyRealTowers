@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 
 /-!
 # Absolute H² vanishing from any embedded unramified p-extension
@@ -17,6 +19,8 @@ actual finite everywhere-unramified p-extension, independently of how it
 was obtained as a finite stage. This form also applies to the mapped
 cyclotomic base change. No primitive or comparison assumption is added.
 -/
+
+@[expose] public section
 
 noncomputable section
 

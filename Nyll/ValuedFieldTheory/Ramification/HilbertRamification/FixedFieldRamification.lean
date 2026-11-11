@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldValuationRing
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldValuationRing
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
 /-!
 # Canonical ramification numbers on an actual fixed field
@@ -20,6 +22,8 @@ monogenic generator.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

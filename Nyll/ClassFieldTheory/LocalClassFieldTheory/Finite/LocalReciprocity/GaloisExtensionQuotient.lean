@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbsoluteUnitsFixedField
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbsoluteUnitsFixedField
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
 
 /-!
 # Finite local reciprocity: abstract extension quotients and actual Galois groups
@@ -17,6 +19,8 @@ that the resulting abstract class-formation quotient is canonically the actual g
 `Gal(E/K)`.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 open RamificationTheory CyclicCohomology
 
@@ -26,7 +30,9 @@ open ClassFormation
 
 noncomputable section
 
-variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsGalois K Ω]
+universe u v
+
+variable (K : Type u) (Ω : Type v) [Field K] [Field Ω] [Algebra K Ω] [IsGalois K Ω]
 
 /-- The subgroup fixing the bottom intermediate field is the distinguished
 base field of the class formation. -/

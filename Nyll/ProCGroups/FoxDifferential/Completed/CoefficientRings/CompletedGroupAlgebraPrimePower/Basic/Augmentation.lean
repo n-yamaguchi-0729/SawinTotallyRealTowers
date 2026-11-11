@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.AugmentationIdeal
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Basic.StageCoeffMap.AllFinite
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.AugmentationIdeal
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Basic.StageCoeffMap.AllFinite
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
 
 /-!
 # Fox differential: coefficient rings — prime-power completed group algebra — basic — augmentation
@@ -22,6 +25,8 @@ The principal declarations in this module are:
 - `modNCompletedGroupAlgebraStageAugmentation_comp_coeffMap`
   Finite-stage augmentation commutes with coefficient reduction.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

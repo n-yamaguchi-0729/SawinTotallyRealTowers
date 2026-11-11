@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
-import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
 
 /-!
 # Linear absolute Kummer characters
@@ -13,6 +15,8 @@ import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCo
 For a prime `p`, the absolute Kummer equivalence is linear after giving both power classes and
 continuous mod-`p` characters their canonical exponent-`p` `ZMod p`-module structures.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProTwoInitialGroup
-import Nyll.SawinTotallyRealTowers.RealProTwoGeneratorRank
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
-import Nyll.ProCGroups.ProP.Presentation.GeneratorRank
-import Nyll.ProCGroups.ProP.Presentation.FiniteGeneration
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProTwoInitialGroup
+public import Nyll.SawinTotallyRealTowers.RealProTwoGeneratorRank
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
+public import Nyll.ProCGroups.ProP.Presentation.GeneratorRank
+public import Nyll.ProCGroups.ProP.Presentation.FiniteGeneration
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # A five-generator minimal presentation of the actual initial group
@@ -21,15 +23,15 @@ Minimality identifies its displayed generator count with the actual rank five.
 The same presentation, including its free source and relators, is retained.
 -/
 
+@[expose] public section
+
 namespace ClassFieldTower.Sawin
 
 open ProCGroups ClassFieldTower.ProP
 
 private local instance initialPresentationPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
-private local instance initialPresentationIsGalois :
-    IsGalois ℚ (maximalRealProPOutside 2 sawinRationalPrimeSupport) :=
-  maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
+attribute [local instance] maximalRealProPOutside_isGalois
 
 /-- The initial arithmetic group has an actual minimal presentation on five
 generators and at most six relators. The chosen relator count attains the

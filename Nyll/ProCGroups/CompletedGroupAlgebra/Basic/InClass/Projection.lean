@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.LimitAlgebra
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.LimitAlgebra
 
 /-!
 # Completed Group Algebra / Basic / Within a Class / Projection
@@ -13,6 +15,8 @@ This module bundles the canonical \(C\)-indexed finite-stage projection as ring,
 and continuous linear maps. The underlying projection and compatibility theorem are defined with
 the opaque carrier in `LimitAlgebra`.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -94,11 +98,10 @@ theorem completedGroupAlgebraTransitionInClass_comp_projection
 theorem continuous_completedGroupAlgebraProjectionInClass
     (C : ProCGroups.FiniteGroupClass.{v})
     (U : CompletedGroupAlgebraIndexInClass G C) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
       (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
     Continuous (completedGroupAlgebraProjectionInClass C R G U) := by
-  let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
-    (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
+  intro sharedOwner1
   exact (completedGroupAlgebraSystemInClass C R G).continuous_projection U
 
 /--
@@ -110,11 +113,10 @@ def completedGroupAlgebraProjectionContinuousLinearMapInClass
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (U : CompletedGroupAlgebraIndexInClass G C) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
       (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
     CompletedGroupAlgebraInClass C R G →L[R] CompletedGroupAlgebraStageInClass C R G U := by
-  letI : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
-    (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
+  intro sharedOwner2
   exact
     { toLinearMap := completedGroupAlgebraProjectionLinearMapInClass C R G U
       cont := (completedGroupAlgebraSystemInClass C R G).continuous_projection U }

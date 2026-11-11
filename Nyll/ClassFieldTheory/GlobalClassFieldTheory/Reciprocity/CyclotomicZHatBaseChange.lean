@@ -4,17 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicTorsionFixedField
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.InfiniteBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Mathlib.FieldTheory.Galois.Abelian
-import Mathlib.FieldTheory.IntermediateField.Algebraic
-import Mathlib.FieldTheory.Normal.Closure
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.FieldTheory.SeparableClosure
-import Mathlib.GroupTheory.Index
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicTorsionFixedField
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.InfiniteBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Mathlib.FieldTheory.IntermediateField.Algebraic
+public import Mathlib.FieldTheory.Normal.Closure
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.FieldTheory.SeparableClosure
+public import Mathlib.GroupTheory.Index
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Decomposition
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicTorsionField
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Base change of the rational cyclotomic `ZHat`-extension
@@ -32,6 +39,8 @@ Galois group is introduced.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -728,24 +737,16 @@ theorem
     let F :=
       LocalClassFieldTheory.abstractFixedField
         ℚ (SeparableClosure ℚ) H.field
-    letI : FiniteDimensional ℚ F :=
+    let : FiniteDimensional ℚ F :=
       LocalClassFieldTheory.abstractFixedField_finiteDimensional
         ℚ (SeparableClosure ℚ) H.field H.finite
-    letI : NumberField F :=
+    let : NumberField F :=
       NumberField.of_module_finite ℚ F
     cyclotomicZHatIntersectionDegree F =
       Module.finrank ℚ
         ((F ⊓ rationalCyclotomicZHatField :
           IntermediateField ℚ (SeparableClosure ℚ))) := by
-  dsimp only
-  let F :=
-    LocalClassFieldTheory.abstractFixedField
-      ℚ (SeparableClosure ℚ) H.field
-  let : FiniteDimensional ℚ F :=
-    LocalClassFieldTheory.abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) H.field H.finite
-  let : NumberField F :=
-    NumberField.of_module_finite ℚ F
+  intro F reusedStructure2 reusedStructure3
   change
     Module.finrank ℚ
         (numberFieldCyclotomicZHatIntersection F) =
@@ -1207,15 +1208,13 @@ theorem
     (E :
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField) :
-    letI : Normal ℚ E := E.isGalois.to_normal
+    let : Normal ℚ E := E.isGalois.to_normal
     let C :=
       numberFieldCyclotomicZHatFiniteCompositum K E
     (IntermediateField.restrictRestrictAlgEquivMapHom
         ℚ E K C).range =
       (numberFieldCyclotomicZHatFiniteIntersection K E).fixingSubgroup := by
-  let : Normal ℚ E := E.isGalois.to_normal
-  let C :=
-    numberFieldCyclotomicZHatFiniteCompositum K E
+  intro sharedOwner1 C
   let : Algebra ℚ C := C.algebra'
   let : Algebra K C :=
     numberFieldCyclotomicZHatFiniteCompositum_algebra K E
@@ -1816,20 +1815,20 @@ theorem
         ℚ rationalCyclotomicZHatField)
     (σ :
       Gal((numberFieldCyclotomicZHatCompositum K)/K)) :
-    letI : Algebra ℚ (numberFieldCyclotomicZHatCompositum K) :=
+    let : Algebra ℚ (numberFieldCyclotomicZHatCompositum K) :=
       (numberFieldCyclotomicZHatCompositum K).algebra'
-    letI : Algebra K (numberFieldCyclotomicZHatCompositum K) :=
+    let : Algebra K (numberFieldCyclotomicZHatCompositum K) :=
       numberFieldCyclotomicZHatCompositum_algebra K
-    letI : IsScalarTower ℚ K (numberFieldCyclotomicZHatCompositum K) :=
+    let : IsScalarTower ℚ K (numberFieldCyclotomicZHatCompositum K) :=
       numberFieldCyclotomicZHatCompositum_scalarTower K
-    letI : Normal ℚ E := E.isGalois.to_normal
-    letI : Normal K
+    let : Normal ℚ E := E.isGalois.to_normal
+    let : Normal K
         (numberFieldCyclotomicZHatFiniteLayerInCompositum K E) := by
       let : IsAbelianGalois K
           (numberFieldCyclotomicZHatFiniteLayerInCompositum K E) :=
         numberFieldCyclotomicZHatFiniteLayerInCompositum_isAbelianGalois K E
       exact IsGalois.to_normal
-    letI : IsScalarTower K
+    let : IsScalarTower K
         (numberFieldCyclotomicZHatFiniteLayerInCompositum K E)
         (numberFieldCyclotomicZHatCompositum K) := by
       exact IntermediateField.isScalarTower_mid
@@ -1842,24 +1841,8 @@ theorem
         (AlgEquiv.restrictNormalHom
           (numberFieldCyclotomicZHatFiniteLayerInCompositum K E)
           σ) := by
-  let : Normal ℚ E := E.isGalois.to_normal
-  let : Algebra ℚ (numberFieldCyclotomicZHatCompositum K) :=
-    (numberFieldCyclotomicZHatCompositum K).algebra'
-  let : Algebra K (numberFieldCyclotomicZHatCompositum K) :=
-    numberFieldCyclotomicZHatCompositum_algebra K
-  let : IsScalarTower ℚ K (numberFieldCyclotomicZHatCompositum K) :=
-    numberFieldCyclotomicZHatCompositum_scalarTower K
-  let : Normal K
-      (numberFieldCyclotomicZHatFiniteLayerInCompositum K E) := by
-    let : IsAbelianGalois K
-        (numberFieldCyclotomicZHatFiniteLayerInCompositum K E) :=
-      numberFieldCyclotomicZHatFiniteLayerInCompositum_isAbelianGalois K E
-    exact IsGalois.to_normal
-  let : IsScalarTower K
-      (numberFieldCyclotomicZHatFiniteLayerInCompositum K E)
-      (numberFieldCyclotomicZHatCompositum K) := by
-    exact IntermediateField.isScalarTower_mid
-      (numberFieldCyclotomicZHatFiniteLayerInCompositum K E)
+  intro rationalAlgebra baseAlgebra baseScalarTower rationalNormal finiteLayerNormal
+    finiteLayerTower
   let C := numberFieldCyclotomicZHatCompositum K
   let T := rationalCyclotomicZHatField
   let P : IntermediateField K C :=

@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # The coefficient norm of an irreducible polynomial
@@ -18,6 +22,8 @@ forces all conjugate roots of an irreducible polynomial to have one common
 absolute value.  Vieta's factorization and the strong triangle inequality
 then bound every coefficient by the larger endpoint coefficient.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -99,7 +105,7 @@ theorem abs_coeff_prod_X_sub_C_le_pow_card
       have hα : w α ≤ B := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β ≤ B := by
         intro β hβ
-        exact hs β (by simp [hβ])
+        exact hs β (Multiset.mem_cons_of_mem hβ)
       have hB0 : 0 ≤ B := zero_le_one.trans hB
       have hpow_step : B ^ s.card ≤ B ^ (s.card + 1) := by
         rw [pow_succ]
@@ -157,7 +163,7 @@ theorem abs_multiset_prod_eq_pow_card_of_eq
       have hα : w α = t := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β = t := by
         intro β hβ
-        exact hs β (by simp [hβ])
+        exact hs β (Multiset.mem_cons_of_mem hβ)
       simp only [Multiset.prod_cons, Multiset.card_cons, w.map_mul, hα, ih hs', pow_succ]
       ac_rfl
 

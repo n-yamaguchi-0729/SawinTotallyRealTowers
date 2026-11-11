@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFinitePlaceIntegralBlockH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+module
+
+public import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFinitePlaceIntegralBlockH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 
 /-!
 # H² of the everywhere-integral relative idele subgroup
@@ -23,6 +25,8 @@ three factor families and their products. The seventh action is the
 supported-idele subgroup action. Each canonical action is fixed once,
 with no alternative tower or repeated statement/proof setup.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField TensorProduct

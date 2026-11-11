@@ -4,9 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Nyll.ProCGroups.ProP.Zassenhaus.Basic
-import Nyll.ProCGroups.ProP.Zassenhaus.FiniteDegreeOne
+module
+
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Nyll.ProCGroups.ProP.Zassenhaus.Basic
+public import Nyll.ProCGroups.ProP.Zassenhaus.FiniteDegreeOne
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # The second Zassenhaus subgroup
@@ -17,6 +23,8 @@ quotient detects a degree-two completed augmentation relation.  The finite
 degree-one criterion then gives the reverse inclusion to the elementary
 power--commutator subgroup, complementing the inclusion proved in `Basic`.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,22 +4,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
-import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
-import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
-import Nyll.GaloisCohomology.Cyclic.TateH0.Main
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Main
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Low-degree Herbrand equivalences for a localized completion
 -/
 
 
+
+@[expose] public section
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

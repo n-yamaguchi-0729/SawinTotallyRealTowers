@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.KummerExtension
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.PrimitiveRootCoordinates
+public import Mathlib.FieldTheory.KummerExtension
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # Finite Kummer coefficients in degree-two group cohomology
@@ -21,13 +24,19 @@ group cohomology with the continuous lifted cup-product model, nor identify
 the resulting unit class with a Hilbert symbol.
 -/
 
+@[expose] public section
+
 open CategoryTheory
+
+universe u v
 
 noncomputable section
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
+section Coefficients
+
+variable (K : Type v) (L : Type u) [Field K] [Field L] [Algebra K L]
 variable (p : ℕ+)
 
 /-- The chosen primitive root, mapped to the extension field and regarded as
@@ -59,12 +68,12 @@ theorem finiteKummerCoefficientRootUnit_isPrimitiveRoot
 the extension's unit group. -/
 noncomputable def finiteKummerCoefficientAddHom
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) :
-    ULift (ZMod (p : ℕ)) →+ Additive Lˣ := by
+    ULift.{u} (ZMod (p : ℕ)) →+ Additive Lˣ := by
   let u := finiteKummerCoefficientRootUnit K L p hmu
   let hu : IsPrimitiveRoot u (p : ℕ) :=
     finiteKummerCoefficientRootUnit_isPrimitiveRoot K L p hmu
-  exact ((Subgroup.subtype (Subgroup.zpowers u)).toAdditive.comp
-    hu.zmodEquivZPowers.toAddMonoidHom).comp AddEquiv.ulift.toAddMonoidHom
+  exact (KummerTheory.primitiveRootCoordinateAddHom hu).comp
+    AddEquiv.ulift.toAddMonoidHom
 
 @[simp]
 theorem finiteKummerCoefficientAddHom_intCast
@@ -81,10 +90,30 @@ theorem finiteKummerCoefficientAddHom_intCast
   rw [hu.zmodEquivZPowers_apply_coe_int]
   rfl
 
+/-- The chosen-root coefficient homomorphism commutes with field embeddings. -/
+theorem finiteKummerCoefficientAddHom_map
+    {L M : Type u} [Field L] [Field M] [Algebra K L] [Algebra K M]
+    (f : L →ₐ[K] M) (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
+    (z : ULift.{u} (ZMod (p : ℕ))) :
+    Units.map f (finiteKummerCoefficientAddHom K L p hmu z).toMul =
+      (finiteKummerCoefficientAddHom K M p hmu z).toMul := by
+  rcases z with ⟨z⟩
+  obtain ⟨i, rfl⟩ := ZMod.intCast_surjective z
+  rw [finiteKummerCoefficientAddHom_intCast K L p hmu i,
+    finiteKummerCoefficientAddHom_intCast K M p hmu i]
+  change Units.map f (finiteKummerCoefficientRootUnit K L p hmu ^ i) =
+    finiteKummerCoefficientRootUnit K M p hmu ^ i
+  rw [map_zpow]
+  congr 1
+  apply Units.ext
+  change f (algebraMap K L hmu.choose) = algebraMap K M hmu.choose
+  exact f.commutes hmu.choose
+
+
 /-- Every finite Kummer coefficient is killed by the exponent of its root of unity. -/
 theorem finiteKummerCoefficientAddHom_pow_eq_one
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (z : ULift (ZMod (p : ℕ))) :
+    (z : ULift.{u} (ZMod (p : ℕ))) :
     (finiteKummerCoefficientAddHom K L p hmu z).toMul ^ (p : ℕ) = 1 := by
   rcases z with ⟨z⟩
   obtain ⟨i, rfl⟩ := ZMod.intCast_surjective z
@@ -102,7 +131,7 @@ theorem finiteKummerCoefficientAddHom_pow_eq_one
 base field. -/
 theorem finiteKummerCoefficientAddHom_fixed
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
-    (sigma : Gal(L/K)) (z : ULift (ZMod (p : ℕ))) :
+    (sigma : Gal(L/K)) (z : ULift.{u} (ZMod (p : ℕ))) :
     (Rep.ofAlgebraAutOnUnits K L).ρ sigma
         (finiteKummerCoefficientAddHom K L p hmu z) =
       finiteKummerCoefficientAddHom K L p hmu z := by
@@ -124,7 +153,7 @@ theorem finiteKummerCoefficientAddHom_fixed
 `ZMod p` representation to the extension-unit representation. -/
 noncomputable def finiteKummerCoefficientRepHom
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty) :
-    Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ))) ⟶
+    Rep.trivial ℤ (Gal(L/K)) (ULift.{u} (ZMod (p : ℕ))) ⟶
       Rep.ofAlgebraAutOnUnits K L := by
   apply Rep.ofHom
   refine ⟨(finiteKummerCoefficientAddHom K L p hmu).toIntLinearMap, ?_⟩
@@ -135,6 +164,11 @@ noncomputable def finiteKummerCoefficientRepHom
     (Rep.ofAlgebraAutOnUnits K L).ρ sigma
       (finiteKummerCoefficientAddHom K L p hmu z)
   exact (finiteKummerCoefficientAddHom_fixed K L p hmu sigma z).symm
+
+end Coefficients
+
+variable (K L : Type) [Field K] [Field L] [Algebra K L]
+variable (p : ℕ+)
 
 /-- Change coefficients from trivial mod-`p` coefficients to extension units
 in ordinary degree-two group cohomology. -/

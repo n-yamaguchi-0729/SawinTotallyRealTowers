@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
-import Mathlib.RingTheory.DedekindDomain.SInteger
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
+public import Mathlib.RingTheory.DedekindDomain.SInteger
 
 /-!
 # Ideles and units with finite support
@@ -17,6 +19,8 @@ archimedean place is always included, a finite set
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct
 open NumberField IsDedekindDomain

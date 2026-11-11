@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLevel
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaFirstIdentity
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaEvaluation
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedLevel
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaFirstIdentity
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaEvaluation
 
 /-!
 # The completed theta-intertwining theorem: theta at a completed Lubin--Tate level
@@ -17,6 +19,8 @@ division point in the completed level field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -144,16 +148,19 @@ noncomputable def equalCharacteristicCompletedLevelCoefficientHom
     (powerSeriesEquivLaurentInteger
       (AlgebraicClosure F.residueField)).toRingHom
 
-private noncomputable local instance equalCharacteristicThetaCoefficientUniformSpace
+/-- Theta coefficients carry the discrete uniformity for power-series evaluation. -/
+noncomputable local instance equalCharacteristicThetaCoefficientUniformSpace
     (F : LocalField.{u, v} K) :
     UniformSpace ((AlgebraicClosure F.residueField)⟦X⟧) := ⊥
 
-private theorem equalCharacteristicCompletedLevelCoefficientHom_continuous
+/-- The coefficient map from discrete theta coefficients is continuous. -/
+theorem equalCharacteristicCompletedLevelCoefficientHom_continuous
     (F : LocalField.{u, v} K) (n : ℕ) :
     Continuous (equalCharacteristicCompletedLevelCoefficientHom F n) :=
   continuous_of_discreteTopology
 
-private noncomputable local instance equalCharacteristicThetaAtLevelCoefficientAlgebra
+/-- The completed level integer ring is an algebra through the theta coefficient map. -/
+noncomputable local instance equalCharacteristicThetaAtLevelCoefficientAlgebra
     (F : LocalField.{u, v} K) (n : ℕ) :
     Algebra ((AlgebraicClosure F.residueField)⟦X⟧)
       (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
@@ -191,6 +198,61 @@ theorem equalCharacteristicCompletedLevelEvaluation_C
       equalCharacteristicCompletedLevelCoefficientHom F n f := by
   rw [equalCharacteristicCompletedLevelEvaluation,
     PowerSeries.coe_eval₂Hom, PowerSeries.eval₂_C]
+
+/-- Evaluation of a formally substitutable series is again an admissible point. -/
+theorem equalCharacteristicCompletedLevelEvaluation_hasEval_of_hasSubst
+    (F : LocalField.{u, v} K) (n : ℕ)
+    (x : Valued.integer (equalCharacteristicCompletedLevelField F n))
+    (hx : PowerSeries.HasEval x)
+    (a : ((AlgebraicClosure F.residueField)⟦X⟧)⟦X⟧)
+    (ha : PowerSeries.HasSubst a) :
+    PowerSeries.HasEval
+      (equalCharacteristicCompletedLevelEvaluation F n x hx a) := by
+  exact ha.hasEval.map
+    (φ := equalCharacteristicCompletedLevelEvaluation F n x hx)
+    (by
+      rw [equalCharacteristicCompletedLevelEvaluation,
+        PowerSeries.coe_eval₂Hom]
+      exact PowerSeries.continuous_eval₂
+        (equalCharacteristicCompletedLevelCoefficientHom_continuous F n) hx)
+
+/-- Evaluation at any admissible completed-level point commutes with substitution. -/
+theorem equalCharacteristicCompletedLevelEvaluation_subst_at
+    (F : LocalField.{u, v} K) (n : ℕ)
+    (x : Valued.integer (equalCharacteristicCompletedLevelField F n))
+    (hx : PowerSeries.HasEval x)
+    (a f : ((AlgebraicClosure F.residueField)⟦X⟧)⟦X⟧)
+    (ha : PowerSeries.HasSubst a)
+    (haEval : PowerSeries.HasEval
+      (equalCharacteristicCompletedLevelEvaluation F n x hx a)) :
+    equalCharacteristicCompletedLevelEvaluation F n x hx
+        (PowerSeries.subst a f) =
+      equalCharacteristicCompletedLevelEvaluation F n
+        (equalCharacteristicCompletedLevelEvaluation F n x hx a) haEval f := by
+  let R := (AlgebraicClosure F.residueField)⟦X⟧
+  let S := Valued.integer (equalCharacteristicCompletedLevelField F n)
+  simp only [equalCharacteristicCompletedLevelEvaluation,
+    PowerSeries.coe_eval₂Hom]
+  change PowerSeries.eval₂ (algebraMap R S) x (PowerSeries.subst a f) =
+    PowerSeries.eval₂ (algebraMap R S)
+      (PowerSeries.eval₂ (algebraMap R S) x a) f
+  simpa only [PowerSeries.eval₂, PowerSeries.subst, Function.const_apply]
+    using
+      (MvPowerSeries.eval₂_subst
+        (R := R) (S := R) (T := S)
+        (a := fun _ : Unit ↦ a) ha.const
+        (PowerSeries.hasEval hx) f)
+
+/-- The same point gives the same evaluation map, independently of its admissibility proof. -/
+theorem equalCharacteristicCompletedLevelEvaluation_congr
+    (F : LocalField.{u, v} K) (n : ℕ)
+    (x y : Valued.integer (equalCharacteristicCompletedLevelField F n))
+    (hx : PowerSeries.HasEval x) (hy : PowerSeries.HasEval y)
+    (hxy : x = y) :
+    equalCharacteristicCompletedLevelEvaluation F n x hx =
+      equalCharacteristicCompletedLevelEvaluation F n y hy := by
+  subst y
+  rfl
 
 /-- The image of `T` in the valuation ring of the completed level field. -/
 noncomputable def equalCharacteristicCompletedLevelUniformizerInteger
@@ -237,19 +299,10 @@ private theorem equalCharacteristicCompletedEvaluation_hasEval_of_hasSubst
     PowerSeries.HasEval
       (equalCharacteristicCompletedLevelEvaluation F n
         (equalCharacteristicCompletedPrimitiveRootInteger F n)
-        (equalCharacteristicCompletedPrimitiveRootInteger_hasEval F n) a) := by
-  let hcoeff :=
-    equalCharacteristicCompletedLevelCoefficientHom_continuous F n
-  let hroot :=
-    equalCharacteristicCompletedPrimitiveRootInteger_hasEval F n
-  have hformal : PowerSeries.HasEval a := ha.hasEval
-  exact hformal.map
-    (φ := equalCharacteristicCompletedLevelEvaluation F n
-      (equalCharacteristicCompletedPrimitiveRootInteger F n) hroot)
-    (by
-      rw [equalCharacteristicCompletedLevelEvaluation,
-        PowerSeries.coe_eval₂Hom]
-      exact PowerSeries.continuous_eval₂ hcoeff hroot)
+        (equalCharacteristicCompletedPrimitiveRootInteger_hasEval F n) a) :=
+  equalCharacteristicCompletedLevelEvaluation_hasEval_of_hasSubst F n
+    (equalCharacteristicCompletedPrimitiveRootInteger F n)
+    (equalCharacteristicCompletedPrimitiveRootInteger_hasEval F n) a ha
 
 /-- The theta value is itself topologically nilpotent. -/
 theorem equalCharacteristicThetaAtCompletedPrimitiveRoot_hasEval
@@ -306,23 +359,9 @@ private theorem equalCharacteristicCompletedLevelEvaluation_subst
       equalCharacteristicCompletedLevelEvaluation F n
         (equalCharacteristicCompletedLevelEvaluation F n
           (equalCharacteristicCompletedPrimitiveRootInteger F n) hroot a)
-        haEval f := by
-  let R := (AlgebraicClosure F.residueField)⟦X⟧
-  let S := Valued.integer (equalCharacteristicCompletedLevelField F n)
-  simp only [equalCharacteristicCompletedLevelEvaluation,
-    PowerSeries.coe_eval₂Hom]
-  change PowerSeries.eval₂ (algebraMap R S)
-      (equalCharacteristicCompletedPrimitiveRootInteger F n)
-      (PowerSeries.subst a f) =
-    PowerSeries.eval₂ (algebraMap R S)
-      (PowerSeries.eval₂ (algebraMap R S)
-        (equalCharacteristicCompletedPrimitiveRootInteger F n) a) f
-  simpa only [PowerSeries.eval₂, PowerSeries.subst, Function.const_apply]
-    using
-      (MvPowerSeries.eval₂_subst
-        (R := R) (S := R) (T := S)
-        (a := fun _ : Unit ↦ a) ha.const
-        (PowerSeries.hasEval hroot) f)
+        haEval f :=
+  equalCharacteristicCompletedLevelEvaluation_subst_at F n
+    (equalCharacteristicCompletedPrimitiveRootInteger F n) hroot a f ha haEval
 
 /-- The left side `theta^phi(lambda_(n+1))` of the first theta identity. -/
 noncomputable def equalCharacteristicThetaFrobeniusAtCompletedPrimitiveRoot

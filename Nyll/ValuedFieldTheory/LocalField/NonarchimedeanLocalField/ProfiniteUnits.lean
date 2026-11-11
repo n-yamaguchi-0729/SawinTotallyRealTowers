@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
-import Mathlib.Topology.Algebra.ClopenNhdofOne
-import Mathlib.Topology.Algebra.Group.Units
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
+public import Mathlib.Topology.Algebra.Group.Units
 
 /-!
 # Profinite valuation-ring units
@@ -19,6 +21,8 @@ profinite group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -38,8 +42,10 @@ theorem localFieldT2Space
   refine ⟨{y : K | (ValuativeRel.valuation K).restrict y < r}, ?_, ?_⟩
   · exact ((ValuativeRel.valuation K).isOpen_ball r).mem_nhds
       (by
-        simpa [r, zero_lt_iff, ValuativeRel.valuation_eq_zero_iff] using hx)
-  · simp [r]
+        change (ValuativeRel.valuation K).restrict 0 < (ValuativeRel.valuation K).restrict x
+        rw [map_zero, zero_lt_iff]
+        exact (Valuation.ne_zero_iff (ValuativeRel.valuation K).restrict).2 hx)
+  · exact lt_irrefl r
 
 /-- Distinct points of a nonarchimedean local field are separated by a clopen valuation ball. -/
 theorem localFieldTotallySeparatedSpace
@@ -55,8 +61,11 @@ theorem localFieldTotallySeparatedSpace
     exact ((ValuativeRel.valuation K).isClopen_ball r).preimage
       (continuous_id.sub continuous_const)
   · have hyx : y - x ≠ 0 := sub_ne_zero.mpr hxy.symm
-    simpa [r, zero_lt_iff, ValuativeRel.valuation_eq_zero_iff] using hyx
-  · simp [r]
+    change (ValuativeRel.valuation K).restrict (x - x) <
+      (ValuativeRel.valuation K).restrict (y - x)
+    rw [sub_self, map_zero, zero_lt_iff]
+    exact (Valuation.ne_zero_iff (ValuativeRel.valuation K).restrict).2 hyx
+  · exact lt_irrefl r
 
 /-- A nonarchimedean local field is totally disconnected for its valuative topology. -/
 theorem localFieldTotallyDisconnectedSpace

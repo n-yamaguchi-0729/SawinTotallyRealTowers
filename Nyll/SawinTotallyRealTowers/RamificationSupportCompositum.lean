@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RamificationSupportTransport
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
-import Mathlib.FieldTheory.Galois.GaloisClosure
+module
+
+public import Nyll.SawinTotallyRealTowers.RamificationSupportTransport
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # Composita with prescribed finite ramification support
@@ -15,6 +18,8 @@ Inertia at a prime outside the permitted support is trivial on each factor.
 The restrictions to the factors jointly detect automorphisms of their
 compositum. This argument does not require an odd extension degree.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -25,7 +30,8 @@ universe u v
 
 namespace ClassFieldTower.Sawin
 
-private local instance finiteIntermediateFieldNumberField
+/-- A finite intermediate extension inherits the original number-field structure. -/
+local instance finiteIntermediateFieldNumberField
     {K : Type u} {Omega : Type v}
     [Field K] [NumberField K] [Field Omega] [Algebra K Omega]
     (E : IntermediateField K Omega) [FiniteDimensional K E] : NumberField E :=

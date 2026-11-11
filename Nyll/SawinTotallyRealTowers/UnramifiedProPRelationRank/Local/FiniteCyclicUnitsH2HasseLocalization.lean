@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicBaseUnitCarry
 import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.HasseNormPrinciple
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Hasse localization of finite-cyclic unit H²
@@ -78,10 +79,10 @@ theorem finiteCyclicUnitsH2HasseLocalization_carry_baseUnit
     (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g)
     (a : Kˣ) :
-    letI := AlgEquiv.fintype K L
+    let := AlgEquiv.fintype K L
     let : IsCyclic (Gal(L / K)) :=
       isCyclic_of_generator g hg
-    letI : CommGroup (Gal(L / K)) := IsCyclic.commGroup
+    let : CommGroup (Gal(L / K)) := IsCyclic.commGroup
     finiteCyclicUnitsH2HasseLocalization K L g hg
         (groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K L)
           (finiteCyclicCarryTwoCocycle (Rep.ofAlgebraAutOnUnits K L)
@@ -90,11 +91,7 @@ theorem finiteCyclicUnitsH2HasseLocalization_carry_baseUnit
         (QuotientGroup.mk'
           (allPlaceLocalNormCondition (K := K) (L := L))
           (IdeleGroup.principalIdele K a)) := by
-  dsimp only
-  let := AlgEquiv.fintype K L
-  let : IsCyclic (Gal(L / K)) :=
-    isCyclic_of_generator g hg
-  let : CommGroup (Gal(L / K)) := IsCyclic.commGroup
+  intro reusedStructure1 reusedStructure2 reusedStructure3
   apply Additive.toMul.injective
   change
     hasseNormDiagonal K L

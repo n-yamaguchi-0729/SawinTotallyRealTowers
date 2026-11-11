@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.SmallActual
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldOverOriginalBase
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.SmallActual
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldOverOriginalBase
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Small Hilbert reciprocity over the original number field
@@ -15,6 +19,10 @@ specialization and reuses the shared reciprocity transport provider.
 -/
 
 
+
+@[expose] public section
+
+universe u
 
 open scoped IsMulCommutative NumberField
 
@@ -26,11 +34,11 @@ namespace GlobalClassFields
 open NumberField
 open Reciprocity
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 local instance
     smallHilbertClassFieldReciprocityOverOriginalIsMulCommutative
-    {F : Type} [Field F] [NumberField F] :
+    {F : Type*} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
@@ -73,7 +81,7 @@ theorem smallHilbertClassField_ideleClassNorm_range_over_original :
 /-- Global reciprocity for the selected small Hilbert class field over
 the original number field gives the ordinary ideal class group
 directly. -/
-private noncomputable def
+noncomputable def
     smallHilbertClassFieldReciprocityOverOriginalData :
     {e : Gal((smallHilbertClassField K) / K) ≃*
         ClassGroup (𝓞 K) //

@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityCanonical
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ConcreteReciprocityCanonical
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ResidueExactSequence
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # Abstract and concrete unramified Frobenius
@@ -20,6 +24,10 @@ Frobenius.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -30,22 +38,19 @@ open ClassFormation
 open RamificationTheory.HilbertRamification.ValuationSubring
 
 
-private abbrev absoluteGalois (K : Type) [Field K] :=
-  intrinsicAbsoluteGalois K
-
-private abbrev abstractBase (K : Type) [Field K] :
-    ClosedSubgroup (absoluteGalois K) :=
-  intrinsicAbstractBase K
-
-private noncomputable def finiteResidueAbstractBase
+/-- The selected residue extension is algebraic by its canonical normality. -/
+local instance unramifiedComparisonResidueIsAlgebraic
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
-    DegreeData.FiniteResidueAbstractField (localResidueDatum K) :=
-  (intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K)
+    Algebra.IsAlgebraic
+      (decompositionResidueField K (localSeparableValuationSubring K))
+      (selectedResidueField (localSeparableValuationSubring K)) :=
+  (decompositionResidueExtension_normal
+    (K := K) (localSeparableValuationSubring K)).toIsAlgebraic
 
 section BaseResidueDegree
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- The intrinsic finite abstract base has residue degree one for the local
@@ -57,7 +62,8 @@ theorem intrinsicFiniteAbstractBase_residueDegree_eq_one :
   rfl
 
 private theorem finiteResidueAbstractBase_residueDegree_eq_one :
-    ((finiteResidueAbstractBase K).residueDegree : ℕ) = 1 := by
+    (((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField
+      (localResidueDatum K)).residueDegree : ℕ) = 1 := by
   change ((intrinsicFiniteAbstractBase K).residueDegree (localResidueDatum K) : ℕ) = 1
   exact intrinsicFiniteAbstractBase_residueDegree_eq_one K
 
@@ -70,20 +76,20 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
 
 /-- The chosen degree-one lift used in the abstract unramified Frobenius. -/
 private noncomputable def abstractBaseFrobeniusLift :
-    (abstractBase K).toSubgroup :=
+    (intrinsicAbstractBase K).toSubgroup :=
   Classical.choose
     ((localResidueDatum K).normalizedDegree_surjective
-      (finiteResidueAbstractBase K)
+      ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
       (Multiplicative.ofAdd (1 : ZHat)))
 
 private theorem abstractBaseFrobeniusLift_normalizedDegree :
     (localResidueDatum K).normalizedDegree
-        (finiteResidueAbstractBase K)
+        ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
         (abstractBaseFrobeniusLift K) =
       Multiplicative.ofAdd (1 : ZHat) :=
   Classical.choose_spec
     ((localResidueDatum K).normalizedDegree_surjective
-      (finiteResidueAbstractBase K)
+      ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
       (Multiplicative.ofAdd (1 : ZHat)))
 
 private theorem abstractBaseFrobeniusLift_degree :
@@ -92,7 +98,7 @@ private theorem abstractBaseFrobeniusLift_degree :
   apply Multiplicative.ext
   have h :=
     (localResidueDatum K).residueDegree_nsmul_normalizedDegree
-      (finiteResidueAbstractBase K)
+      ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
       (abstractBaseFrobeniusLift K)
   rw [finiteResidueAbstractBase_residueDegree_eq_one K, one_nsmul,
     abstractBaseFrobeniusLift_normalizedDegree K] at h
@@ -126,7 +132,8 @@ end BaseFrobeniusLift
 
 section
 
-variable (K L : Type)
+
+variable (K : Type u) (L : Type v)
   [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -135,7 +142,9 @@ variable (K L : Type)
   [Valuation.HasExtension (ValuativeRel.valuation K)
     (ValuativeRel.valuation L)]
 
-private noncomputable instance comparisonIntegerRingIsIntegralClosure :
+/-- The chosen valuation extension identifies the target integer ring as the
+integral closure for a finite Galois local-field extension. -/
+noncomputable instance finiteGaloisLocalField_integerRing_isIntegralClosure :
     IsIntegralClosure 𝒪[L] 𝒪[K] L :=
   localCompleteDVF_integerRing_isIntegralClosure K L
 
@@ -145,6 +154,19 @@ from the chosen valuation extension, rather than exposed as an assumption. -/
 noncomputable instance finiteGaloisLocalField_integerRing_moduleFinite :
     Module.Finite 𝒪[K] 𝒪[L] :=
   localCompleteDVF_integerRing_moduleFinite K L
+
+end
+
+section
+
+variable (K L : Type)
+  [Field K] [ValuativeRel K] [TopologicalSpace K]
+  [IsNonarchimedeanLocalField K]
+  [Field L] [ValuativeRel L] [TopologicalSpace L]
+  [IsNonarchimedeanLocalField L]
+  [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
+  [Valuation.HasExtension (ValuativeRel.valuation K)
+    (ValuativeRel.valuation L)]
 
 variable
   [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L]
@@ -241,7 +263,7 @@ omit [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K 
 /-- The concrete residue action is the restriction of the selected absolute
 residue action along the chosen finite Galois embedding. -/
 theorem finiteGaloisResidueEmbeddingOfEmbedding_equivariant
-    (τ : (abstractBase K).toSubgroup) (x : 𝓀[L]) :
+    (τ : (intrinsicAbstractBase K).toSubgroup) (x : 𝓀[L]) :
     finiteGaloisResidueEmbeddingOfEmbedding K L i
         (galoisGroupResidueAlgEquivOfIsIntegralClosure K L
           (finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
@@ -307,7 +329,7 @@ theorem finiteGaloisAbstractExtensionOfEmbedding_isUnramified :
   let A := localSeparableValuationSubring K
   let k := decompositionResidueField K A
   let Omega := selectedResidueField A
-  let τ : (abstractBase K).toSubgroup := ⟨g, hg.1⟩
+  let τ : (intrinsicAbstractBase K).toSubgroup := ⟨g, hg.1⟩
   let q : Gal(L / K) :=
     finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
       (QuotientGroup.mk τ)
@@ -362,8 +384,10 @@ section AbstractUnramifiedFrobenius
 omit [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
   [LocalFieldTheory.IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K L] in
-private theorem finiteGaloisResidueBaseExtension_normal :
-    (extensionSubgroup (finiteResidueAbstractBase K).field
+/-- The finite Galois extension is normal over the canonical residue base. -/
+theorem finiteGaloisResidueBaseExtension_normal :
+    (extensionSubgroup
+      ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K)).field
       (finiteGaloisAbstractExtensionOfEmbedding K L i).field
       (finiteGaloisAbstractExtensionOfEmbedding K L i).below).Normal :=
   (finiteGaloisAbstractExtensionOfEmbedding K L i).normal
@@ -376,7 +400,7 @@ valuation extension. -/
 theorem finiteGaloisAbstractUnramifiedFrobenius_eq_arithmeticFrobenius :
     finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
         ((localResidueDatum K).unramifiedFrobenius
-          (finiteResidueAbstractBase K)
+          ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
           (finiteGaloisAbstractExtensionOfEmbedding K L i).field
           (finiteGaloisAbstractExtensionOfEmbedding K L i).below) =
       arithmeticFrobeniusOfUnramifiedValuation K L := by

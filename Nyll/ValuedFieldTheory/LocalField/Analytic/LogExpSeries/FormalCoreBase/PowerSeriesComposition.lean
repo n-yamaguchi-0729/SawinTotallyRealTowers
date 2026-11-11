@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.PowerSeries.Log
-import Mathlib.RingTheory.PowerSeries.WellKnown
+module
+
+public import Mathlib.Algebra.Group.Torsion
+public import Mathlib.RingTheory.PowerSeries.Log
+public import Mathlib.RingTheory.PowerSeries.WellKnown
 
 /-!
 # Formal logarithm and exponential composition
@@ -16,6 +19,8 @@ logarithm and exponential.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -35,7 +40,7 @@ theorem alternating_mul_one_add_X
       PowerSeries.evalNegHom (PowerSeries.mk (1 : ℕ → A)) =
         PowerSeries.mk fun n : ℕ => (-1 : A) ^ n := by
     ext n
-    simp [PowerSeries.evalNegHom, PowerSeries.rescale_mk]
+    simp only [evalNegHom, rescale_mk, Pi.one_apply, mul_one, coeff_mk]
   simpa [hmk', sub_eq_add_neg] using h
 
 /-- A torsion-free power series with zero constant coefficient satisfying
@@ -81,9 +86,8 @@ theorem eq_zero_of_derivative_mul_one_add_X_eq_self
                   ((Nat.succ (n + 1) : ℕ) : A) = 0 := by
             simpa using hcoeff
           rw [mul_comm, ← nsmul_eq_mul] at hzero
-          simpa using
-            (smul_right_inj (Nat.succ_ne_zero (n + 1))).mp
-              (by simpa using hzero)
+          simpa only [map_zero] using
+            (nsmul_eq_zero_iff_right (Nat.succ_ne_zero (n + 1))).mp hzero
 
 /-- A torsion-free power series with constant coefficient one satisfying
 `f' * (1 + X) = f` is `1 + X`. -/
@@ -106,7 +110,7 @@ theorem eq_one_add_X_of_derivative_mul_one_add_X_eq_self
   have hczero :
       PowerSeries.constantCoeff
           (f - (1 + PowerSeries.X : PowerSeries A)) = 0 := by
-    simp [hc]
+    simp only [map_sub, hc, map_add, constantCoeff_one, constantCoeff_X, add_zero, sub_self]
   have h := eq_zero_of_derivative_mul_one_add_X_eq_self
     A hzero hczero
   exact sub_eq_zero.mp h
@@ -117,9 +121,13 @@ theorem eq_X_of_derivative_eq_one
     (hD : PowerSeries.derivative f = 1)
     (hc : PowerSeries.constantCoeff f = 0) :
     f = PowerSeries.X := by
+  have : HasUniqueDiv A := {
+    nsmul_right_injective := by
+      intro n hn a b hab
+      exact eq_of_nsmul_eq_nsmul_of_addCommute hn (AddCommute.all a b) hab }
   apply PowerSeries.derivative.ext
   · rw [hD, PowerSeries.derivative_X]
-  · simp [hc]
+  · simp only [hc, constantCoeff_X]
 
 /-- Substituting Mathlib's formal logarithm into its exponential yields
 `1 + X`. -/
@@ -171,13 +179,13 @@ theorem log_subst_exp_sub_one_eq_X
       (PowerSeries.X : PowerSeries A) := by
   let e : PowerSeries A := PowerSeries.exp A - 1
   have he0 : PowerSeries.constantCoeff e = 0 := by
-    simp [e]
+    simp only [map_sub, constantCoeff_exp, constantCoeff_one, sub_self, e]
   have he : PowerSeries.HasSubst e :=
     PowerSeries.HasSubst.of_constantCoeff_zero' he0
   let l : PowerSeries A := PowerSeries.log A
   let f : PowerSeries A := PowerSeries.subst e l
   have hde : PowerSeries.derivative e = PowerSeries.exp A := by
-    simp [e, PowerSeries.derivative_exp]
+    simp only [map_sub, derivative_exp, Derivation.map_one_eq_zero, sub_zero, e]
   have hsubst_deriv_mul_exp :
       PowerSeries.subst e (PowerSeries.derivative l) *
           PowerSeries.exp A = 1 := by

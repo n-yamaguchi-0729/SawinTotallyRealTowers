@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Submonoid.Units
-import Mathlib.Algebra.Order.GroupWithZero.Canonical
-import Mathlib.Data.Finsupp.Basic
-import Mathlib.Topology.Algebra.RestrictedProduct.Basic
-import Mathlib.Topology.Algebra.Valued.ValuedField
+module
+
+public import Mathlib.Algebra.Group.Submonoid.Units
+public import Mathlib.Algebra.Order.GroupWithZero.Canonical
+public import Mathlib.Data.Finsupp.Basic
+public import Mathlib.Topology.Algebra.RestrictedProduct.Basic
+public import Mathlib.Topology.Algebra.Valued.ValuedField
 
 /-!
 # Valuation vectors of restricted products
@@ -22,6 +24,8 @@ of every finitely supported vector.
 This is the common valuation-vector construction for finite number-field ideles
 and all-place function-field ideles.
 -/
+
+@[expose] public section
 
 open scoped RestrictedProduct WithZero
 

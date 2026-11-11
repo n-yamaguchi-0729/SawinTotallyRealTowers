@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Semidirect
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Boundary
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Semidirect
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Boundary
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
 
 /-!
 # Fox differential: completed — finite stage — coeff map — boundary cycles
@@ -24,6 +26,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageSemidirectCoeffMap_comp`
   Coefficient reductions compose on finite-stage semidirect targets.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

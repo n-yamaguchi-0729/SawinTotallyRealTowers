@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
-import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
-import Mathlib.RingTheory.AdicCompletion.Topology
-import Mathlib.Topology.Algebra.Valued.LocallyCompact
-import Mathlib.Topology.Algebra.Valued.NormedValued
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
+public import Mathlib.RingTheory.AdicCompletion.Topology
+public import Mathlib.Topology.Algebra.Valued.LocallyCompact
+public import Mathlib.Topology.Algebra.Valued.NormedValued
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Topology of range-restricted complete discretely valued fields
@@ -19,6 +22,8 @@ and completeness.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -42,8 +47,9 @@ noncomputable def mrangeRestrictValued
     Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
   Valued.mk' (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict F)
 
+/-- The range-restricted valuation retains its rank-one structure. -/
 @[instance_reducible]
-private noncomputable def mrangeRestrictValued_rankOne
+noncomputable def mrangeRestrictValued_rankOne
     (F : CompleteDVF.{u, v} K) :
     (@Valued.v K _
       (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) _
@@ -215,18 +221,17 @@ def mrangeRestrictCompleteDVF (F : CompleteDVF.{u, v} K) :
 valuation ring has its maximal-ideal adic topology. -/
 theorem mrangeRestrict_integer_isAdic
     (F : CompleteDVF.{u, v} K) :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
-    letI : NontriviallyNormedField K :=
+    let : NontriviallyNormedField K :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F)
     IsAdic (𝓂[K]) := by
+  intro sharedOwner2 sharedOwner3
   let Γ : Type v :=
     MonoidHom.mrange F.valuation.toMonoidWithZeroHom
   let : Valued K Γ :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
-  let : NontriviallyNormedField K :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F)
+    sharedOwner2
   have : IsCyclic Γˣ := by
     simpa [Γ] using
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_units_isCyclic F)
@@ -287,15 +292,13 @@ field is compact.  This is the compactness input in the local-field structure th
 the local compactness criterion. -/
 theorem mrangeRestrict_integer_compactSpace_of_residueField_finite
     (F : CompleteDVF.{u, v} K) [Finite F.residueField] :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
     letI : NontriviallyNormedField K :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F)
     CompactSpace 𝒪[K] := by
-  let : Valued K
-      (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
+  intro sharedOwner1
   have :
       (Valued.v :
         _root_.Valuation K
@@ -341,15 +344,13 @@ theorem mrangeRestrict_integer_compactSpace_of_residueField_finite
 the associated normed-field topology. -/
 theorem mrangeRestrict_properSpace_of_residueField_finite
     (F : CompleteDVF.{u, v} K) [Finite F.residueField] :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
     letI : NontriviallyNormedField K :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F)
     ProperSpace K := by
-  let : Valued K
-      (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
+  intro sharedOwner1
   have :
       (Valued.v :
         _root_.Valuation K
@@ -380,17 +381,16 @@ theorem mrangeRestrict_properSpace_of_residueField_finite
 the associated normed-field topology. -/
 theorem mrangeRestrict_completeSpace_of_residueField_finite
     (F : CompleteDVF.{u, v} K) [Finite F.residueField] :
-    letI : Valued K
+    let : Valued K
         (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
-    letI : NontriviallyNormedField K :=
+    let : NontriviallyNormedField K :=
       (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F)
     CompleteSpace K := by
+  intro sharedOwner2 sharedOwner3
   let Γ : Type v :=
     MonoidHom.mrange F.valuation.toMonoidWithZeroHom
-  let : Valued K Γ := (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F)
-  let : NontriviallyNormedField K :=
-    (LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrict_nontriviallyNormedField F)
+  let : Valued K Γ := sharedOwner2
   have : ProperSpace K :=
     ((open LocalFieldTheory.DiscreteValuationField.CompleteDVF in
       mrangeRestrict_properSpace_of_residueField_finite) F)

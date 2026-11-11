@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Index
+module
+
+public import Mathlib.GroupTheory.Index
 
 /-!
 # Quotients in subgroup towers
@@ -16,6 +18,8 @@ when cardinal-valued indices must also cover infinite towers.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

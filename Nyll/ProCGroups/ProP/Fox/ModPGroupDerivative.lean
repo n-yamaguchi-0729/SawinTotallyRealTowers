@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.CoefficientReductionCompatibility
-import Nyll.ProCGroups.ProP.Fox.Derivative
+module
+
+public import Nyll.ProCGroups.ProP.Fox.CoefficientReductionCompatibility
+public import Nyll.ProCGroups.ProP.Fox.Derivative
 
 /-!
 # Mod-p Fox derivatives on finite pro-p presentation groups
@@ -15,6 +17,8 @@ gives a continuous crossed homomorphism into the mod-`p` completed group
 algebra coordinates.  Its coefficient is the completed group-like element of
 the presentation quotient.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

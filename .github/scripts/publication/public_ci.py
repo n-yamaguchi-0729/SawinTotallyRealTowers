@@ -13,7 +13,7 @@ from pathlib import Path
 
 TEMPLATES = Path(__file__).resolve().with_name("ci_templates")
 SCRIPT_REPOS = {"AnabelianGeometry", "EtaleFundamentalGroupsAndCohomology",
-                "JacobianVarieties", "YamaguchiPapersFormalization"}
+                "GeneralizedJacobianVarieties", "YamaguchiPapersFormalization"}
 VERIFICATION_REPOS = {"ClassFieldTheory", "ProCGroups", "SawinTotallyRealTowers"}
 
 

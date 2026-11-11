@@ -4,8 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Semidirect
-import Nyll.ProCGroups.FreeProC.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Semidirect
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProC.Category.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
 
 /-!
 # Fox differential: completed — free pro-\(C\) — semidirect lift
@@ -22,6 +28,8 @@ The principal declarations in this module are:
 - `freeProCZCCompletedFoxSemidirectGenerator_right`
   The generator map has the expected right coordinate.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

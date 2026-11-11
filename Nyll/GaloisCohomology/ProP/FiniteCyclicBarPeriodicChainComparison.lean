@@ -4,20 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicCarryIdentity
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
-import Mathlib.RepresentationTheory.Equiv
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Algebra.Group.Action.Defs
-import Mathlib.Algebra.Group.Basic
-import Mathlib.Algebra.Group.Hom.Defs
-import Mathlib.Algebra.Group.Monoid
-import Mathlib.Algebra.Module.Defs
-import Mathlib.Algebra.MonoidAlgebra.Defs
-import Mathlib.Algebra.Ring.Defs
-import Mathlib.Algebra.Ring.Commute
-import Mathlib.RepresentationTheory.Basic
-import Mathlib.RepresentationTheory.Rep.Basic
+module
+
+public import Nyll.GaloisCohomology.GroupTheory.BarResolutionNaturality
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicCarryIdentity
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+public import Mathlib.RepresentationTheory.Equiv
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Algebra.Group.Action.Defs
+public import Mathlib.Algebra.Group.Basic
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.Group.Monoid
+public import Mathlib.Algebra.Module.Defs
+public import Mathlib.Algebra.Module.LinearMap.End
+public import Mathlib.Algebra.MonoidAlgebra.Defs
+public import Mathlib.Algebra.Ring.Defs
+public import Mathlib.Algebra.Ring.Commute
+public import Mathlib.RepresentationTheory.Basic
+public import Mathlib.RepresentationTheory.Rep.Basic
 
 /-!
 # Low-degree bar--periodic chain comparison for finite cyclic groups
@@ -28,6 +32,8 @@ verifies the chain squares through degree three and extends those components to
 a full chain map.
 -/
 
+@[expose] public section
+
 namespace ClassFieldTower.Cohomology
 
 noncomputable section
@@ -37,35 +43,6 @@ open CategoryTheory Representation
 universe u
 
 variable {R G : Type u} [CommRing R] [CommGroup G] [Fintype G]
-
-/-- Powers of a specified cyclic generator enumerate the group. -/
-noncomputable def finiteCyclicGeneratorPowEquiv
-    (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) : Fin (Nat.card G) ≃ G where
-  toFun i := g ^ i.val
-  invFun x := ⟨(finiteCyclicGeneratorCoordinate g hg x).val, ZMod.val_lt _⟩
-  left_inv i := by
-    apply Fin.ext
-    change (finiteCyclicGeneratorCoordinate g hg (g ^ i.val)).val = i.val
-    rw [finiteCyclicGeneratorCoordinate_pow]
-    exact ZMod.val_natCast_of_lt i.isLt
-  right_inv x := finiteCyclicGenerator_zpow_coordinate g hg x
-
-/-- The full generator prefix is the norm of the unit basis vector. -/
-theorem finiteCyclicPrefixNat_card_eq_norm_one
-    (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
-    finiteCyclicPrefixNat (R := R) g (Nat.card G) =
-      (Rep.leftRegular R G).norm.hom (MonoidAlgebra.single 1 1) := by
-  rw [finiteCyclicPrefixNat, ← Fin.sum_univ_eq_sum_range]
-  calc
-    ∑ i : Fin (Nat.card G), MonoidAlgebra.single (g ^ i.val) (1 : R) =
-        ∑ x : G, MonoidAlgebra.single x (1 : R) :=
-      Equiv.sum_comp (finiteCyclicGeneratorPowEquiv g hg)
-        (fun x : G ↦ MonoidAlgebra.single x (1 : R))
-    _ = _ := by
-      rw [Rep.norm_apply, Representation.norm, LinearMap.sum_apply]
-      apply Finset.sum_congr rfl
-      intro x _
-      rw [leftRegular_single_one, mul_one]
 
 omit [Fintype G] in
 /-- Degree zero of the explicit map from the bar resolution to the periodic resolution. -/
@@ -103,7 +80,10 @@ theorem finiteCyclicBarToPeriodicZero_generator (x : Fin 0 → G) :
     (finiteCyclicBarToPeriodicZero (R := R) (G := G)).hom
         (Finsupp.single x (MonoidAlgebra.single 1 1)) =
       MonoidAlgebra.single 1 1 := by
-  simp [finiteCyclicBarToPeriodicZero]
+  change Representation.freeLift (Rep.leftRegular R G).ρ
+      (fun _ : Fin 0 → G => MonoidAlgebra.single (1 : G) (1 : R))
+        (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
+  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
 
 @[simp]
 theorem finiteCyclicBarToPeriodicOne_generator
@@ -111,7 +91,10 @@ theorem finiteCyclicBarToPeriodicOne_generator
     (finiteCyclicBarToPeriodicOne (R := R) g hg).hom
         (Finsupp.single x (MonoidAlgebra.single 1 1)) =
       finiteCyclicGeneratorPrefix (R := R) g hg (x 0) := by
-  simp [finiteCyclicBarToPeriodicOne]
+  change Representation.freeLift (Rep.leftRegular R G).ρ
+      (fun y : Fin 1 → G => finiteCyclicGeneratorPrefix (R := R) g hg (y 0))
+        (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
+  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
 
 @[simp]
 theorem finiteCyclicBarToPeriodicTwo_generator
@@ -119,7 +102,11 @@ theorem finiteCyclicBarToPeriodicTwo_generator
     (finiteCyclicBarToPeriodicTwo (R := R) g hg).hom
         (Finsupp.single x (MonoidAlgebra.single 1 1)) =
       finiteCyclicCarry g hg (x 0) (x 1) • MonoidAlgebra.single 1 1 := by
-  simp [finiteCyclicBarToPeriodicTwo]
+  change Representation.freeLift (Rep.leftRegular R G).ρ
+      (fun y : Fin 2 → G => finiteCyclicCarry g hg (y 0) (y 1) •
+        MonoidAlgebra.single (1 : G) (1 : R))
+        (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
+  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
 
 @[simp]
 theorem finiteCyclicBarToPeriodicThree_generator
@@ -128,7 +115,11 @@ theorem finiteCyclicBarToPeriodicThree_generator
         (Finsupp.single x (MonoidAlgebra.single 1 1)) =
       finiteCyclicCarry g hg (x 1) (x 2) •
         finiteCyclicGeneratorPrefix (R := R) g hg (x 0) := by
-  simp [finiteCyclicBarToPeriodicThree]
+  change Representation.freeLift (Rep.leftRegular R G).ρ
+      (fun y : Fin 3 → G => finiteCyclicCarry g hg (y 1) (y 2) •
+        finiteCyclicGeneratorPrefix (R := R) g hg (y 0))
+        (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
+  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
 
 /-- The degree-one comparison square. -/
 theorem finiteCyclicBarToPeriodicOne_comm
@@ -145,12 +136,18 @@ theorem finiteCyclicBarToPeriodicOne_comm
           (finiteCyclicGeneratorPrefix (R := R) g hg (x 0)) -
         finiteCyclicGeneratorPrefix (R := R) g hg (x 0) = _
   rw [finiteCyclicGeneratorPrefix_sub]
-  simp [finiteCyclicBarToPeriodicZero, sub_eq_add_neg]
+  change _ = Representation.freeLift (Rep.leftRegular R G).ρ
+    (fun _ : Fin 0 → G => MonoidAlgebra.single (1 : G) (1 : R)) _
+  rw [Fin.sum_univ_one, map_add, Representation.freeLift_single_single,
+    Representation.freeLift_single_single]
+  rw [Representation.ofMulAction_single, Representation.ofMulAction_single]
+  simp only [Fin.val_zero, Nat.zero_add, pow_one, smul_eq_mul, mul_one, one_smul,
+    neg_one_smul, sub_eq_add_neg]
 
 /-- The degree-two comparison square; the carry has positive sign. -/
 theorem finiteCyclicBarToPeriodicTwo_comm
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
-    finiteCyclicBarToPeriodicTwo (R := R) g hg ≫ (Rep.leftRegular R G).norm =
+    finiteCyclicBarToPeriodicTwo (R := R) g hg ≫ (Rep.leftRegular R G).norm.asHom =
       Rep.barComplex.d R G 1 ≫ finiteCyclicBarToPeriodicOne (R := R) g hg := by
   apply Rep.free_ext R G (Rep.leftRegular R G)
   intro x
@@ -297,46 +294,15 @@ noncomputable def finiteCyclicBarToPeriodicResolutionHom
   hom_f_zero_comp_π_f_zero := by
     apply Rep.free_ext R G (Rep.trivial R G R)
     intro x
-    let h : G := 1
-    have H :
-        (Rep.diagonalSuccIsoFree R G 0).inv.hom
-            (Finsupp.single x (MonoidAlgebra.single h 1)) =
-          MonoidAlgebra.single (h • Fin.partialProd x) (1 : R) := by
-      simp only [Rep.diagonalSuccIsoFree, Rep.diagonalSuccIsoTensorTrivial,
-        Iso.trans_inv, Rep.hom_comp,
-        Representation.IntertwiningMap.comp_apply]
-      have step1 :
-          (Rep.Hom.hom
-              (Rep.leftRegularTensorTrivialIsoFree R G (Fin 0 → G)).inv)
-              (Finsupp.single x (MonoidAlgebra.single h 1)) =
-            MonoidAlgebra.single h 1 ⊗ₜ[R] MonoidAlgebra.single x 1 :=
-        Representation.leftRegularTensorTrivialIsoFree_symm_apply_single_single
-          x h 1
-      rw [step1]
-      have key₁ := Representation.linearizeMap_single (k := R)
-        (Action.diagonalSuccIsoTensorTrivial G 0).inv (h, x)
-          ((1 : R) * 1)
-      have key₂ :=
-        Representation.LinearizeMonoidal.μ_apply_single_single (k := R)
-          (X := Action.leftRegular G)
-          (Y := Action.trivial G (Fin 0 → G)) h x 1 1
-      exact ((congrArg (fun z ↦
-        Representation.linearizeMap
-          (Action.diagonalSuccIsoTensorTrivial G 0).inv z) key₂).trans
-            key₁).trans (by
-              congr 1
-              · exact Action.diagonalSuccIsoTensorTrivial_inv_hom_apply h x
-              · exact mul_one (1 : R))
     change
       ((Rep.trivial R G R).leftRegularHom 1).hom
           ((finiteCyclicBarToPeriodicZero (R := R) (G := G)).hom
             (Finsupp.single x (MonoidAlgebra.single 1 1))) =
-        (Rep.standardComplex.ε R G).hom
-          ((Rep.diagonalSuccIsoFree R G 0).inv.hom
-            (Finsupp.single x (MonoidAlgebra.single 1 1)))
-    rw [finiteCyclicBarToPeriodicZero_generator]
-    rw [show (1 : G) = h by simp [h], H]
-    simp [Rep.standardComplex.ε, h]
+        ((Rep.barResolution R G).π.f 0).hom
+          (Finsupp.single x (MonoidAlgebra.single 1 1))
+    rw [finiteCyclicBarToPeriodicZero_generator,
+      Rep.barResolution_π_f_zero_generator, Rep.leftRegularHom_hom_single,
+      Rep.trivial_ρ_apply, one_smul]
 
 end
 

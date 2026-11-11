@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairing
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MaximalKummerNorm
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairing
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MaximalKummerNorm
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
 
 /-!
 # Nondegeneracy of the local Hilbert pairing
@@ -18,6 +21,8 @@ group.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -25,7 +30,9 @@ namespace Kummer
 
 open KummerTheory LocalFieldTheory
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 variable [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
@@ -103,7 +110,7 @@ theorem localHilbertSymbol_left_kernel
       change 1 = e.symm 1
       exact (map_one e.symm).symm
     have haNorm : a ∈ localNormSubgroup K E := by
-      rw [← abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker]
+      rw [← Universe.abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker]
       change sigma = 1
       exact hsigma
     have hmax := maximalKummerNormSubgroup_eq_powMonoidHom_range
@@ -137,7 +144,8 @@ theorem localHilbertSymbol_right_kernel
   · intro h a
     rw [localHilbertSymbol_skew K n hnK hmu a b, h a, inv_one]
 
-private noncomputable def localHilbertRightPowerClassHom
+/-- The local Hilbert character descends to power classes in its right variable. -/
+noncomputable def localHilbertRightPowerClassHom
     (n : ℕ+) (hnK : ((n : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty) (a : Kˣ) :
     (Kˣ ⧸ (powMonoidHom (n : ℕ) : Kˣ →* Kˣ).range) →*
@@ -166,7 +174,8 @@ private theorem localHilbertRightPowerClassHom_mk
       maximalLocalKummerPairingRightHom K n hnK hmu a b :=
   rfl
 
-private noncomputable def localHilbertPowerClassLeftHom
+/-- The local Hilbert pairing is multiplicative in its left field-unit variable. -/
+noncomputable def localHilbertPowerClassLeftHom
     (n : ℕ+) (hnK : ((n : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     Kˣ →*
@@ -196,7 +205,8 @@ private noncomputable def localHilbertPowerClassLeftHom
       maximalLocalKummerPairingRightHom_eq_localHilbertSymbolHom]
     exact map_mul (localHilbertSymbolHom K n hnK hmu b) a c
 
-private theorem powMonoidHom_range_le_localHilbertPowerClassLeftHom_ker
+/-- Powers lie in the kernel of the left local Hilbert character homomorphism. -/
+theorem powMonoidHom_range_le_localHilbertPowerClassLeftHom_ker
     (n : ℕ+) (hnK : ((n : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     (powMonoidHom (n : ℕ) : Kˣ →* Kˣ).range ≤

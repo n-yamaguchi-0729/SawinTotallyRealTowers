@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Completion.BaseChangeNormTrace
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Completion.BaseChangeNormTrace
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteProductNormTrace
 
 /-!
 # Degree, norm, and trace through a tensor-product decomposition
@@ -18,6 +20,8 @@ here.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

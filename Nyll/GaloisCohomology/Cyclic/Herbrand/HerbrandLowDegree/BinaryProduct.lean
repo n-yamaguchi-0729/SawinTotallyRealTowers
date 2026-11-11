@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
-import Mathlib.Algebra.GroupWithZero.Action.Prod
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.EquivariantEquiv
+public import Mathlib.Algebra.GroupWithZero.Action.Prod
 
 /-!
 # Low-degree Tate cohomology of binary products
@@ -17,6 +19,8 @@ integral parts of a supported idele group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -36,10 +40,14 @@ abbrev BinaryCoefficientFamily : Bool → Type uA
   | false => A
   | true => B
 
-private instance binaryCoefficientFamilyCommGroup :
+/-- The commutative group structure on each member of the binary coefficient family. -/
+@[instance_reducible]
+def binaryCoefficientFamilyCommGroup :
     ∀ i, CommGroup (BinaryCoefficientFamily A B i)
   | false => inferInstance
   | true => inferInstance
+
+attribute [local instance] binaryCoefficientFamilyCommGroup
 
 /-- The componentwise `G`-action on the binary coefficient family. -/
 @[reducible]
@@ -49,11 +57,7 @@ noncomputable def binaryCoefficientFamilyAction :
   | false => inferInstance
   | true => inferInstance
 
-private noncomputable instance
-    (i : Bool) :
-    MulDistribMulAction G
-      (BinaryCoefficientFamily A B i) :=
-  binaryCoefficientFamilyAction A B i
+attribute [local instance] binaryCoefficientFamilyAction
 
 /-- Reindex a binary product as a dependent family over `Bool`. -/
 noncomputable def prodEquivBinaryCoefficientFamily :
@@ -87,7 +91,8 @@ theorem prodEquivBinaryCoefficientFamily_smul
   funext i
   cases i <;> rfl
 
-private noncomputable def piHerbrandH0EquivProd :
+/-- Reindex the two degree-zero Tate cohomology groups as a binary product. -/
+noncomputable def piHerbrandH0EquivProd :
     (∀ i, HerbrandH0 G
       (BinaryCoefficientFamily A B i)) ≃*
         HerbrandH0 G A × HerbrandH0 G B where
@@ -101,7 +106,8 @@ private noncomputable def piHerbrandH0EquivProd :
   right_inv _ := rfl
   map_mul' _ _ := rfl
 
-private noncomputable def piHerbrandHMinusOneEquivProd
+/-- Reindex the two degree-minus-one Tate cohomology groups as a binary product. -/
+noncomputable def piHerbrandHMinusOneEquivProd
     (σ : G) :
     (∀ i, HerbrandHMinusOne G
       (BinaryCoefficientFamily A B i) σ) ≃*
@@ -212,17 +218,14 @@ theorem herbrandQuotient_prod
     [Finite (HerbrandHMinusOne G A σ)]
     [Finite (HerbrandH0 G B)]
     [Finite (HerbrandHMinusOne G B σ)] :
-    letI : Finite (HerbrandH0 G (A × B)) :=
+    let : Finite (HerbrandH0 G (A × B)) :=
       herbrandH0ProdFinite A B
-    letI : Finite (HerbrandHMinusOne G (A × B) σ) :=
+    let : Finite (HerbrandHMinusOne G (A × B) σ) :=
       herbrandHMinusOneProdFinite A B σ
     herbrandQuotient (G := G) (A := A × B) σ =
       herbrandQuotient (G := G) (A := A) σ *
         herbrandQuotient (G := G) (A := B) σ := by
-  let : Finite (HerbrandH0 G (A × B)) :=
-    herbrandH0ProdFinite A B
-  let : Finite (HerbrandHMinusOne G (A × B) σ) :=
-    herbrandHMinusOneProdFinite A B σ
+  intro sharedOwner1 sharedOwner2
   rw [herbrandQuotient_eq_card_ratio,
     herbrandQuotient_eq_card_ratio,
     herbrandQuotient_eq_card_ratio,

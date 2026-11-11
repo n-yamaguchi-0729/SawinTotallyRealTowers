@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
-import Mathlib.RingTheory.Valuation.Extension
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
+public import Mathlib.RingTheory.Valuation.Extension
 
 /-!
 # Valuation-extension API for Henselian discretely valued fields
@@ -14,6 +16,8 @@ This file keeps the valuation-extension uniqueness interface separate from the
 lightweight Henselian-DVF core.  The core file is used by Hensel lifting and
 does not need to import mathlib's full `Valuation.HasExtension` API.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

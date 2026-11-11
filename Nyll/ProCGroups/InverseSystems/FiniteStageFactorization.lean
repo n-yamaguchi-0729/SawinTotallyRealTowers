@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.ProfiniteSpace
+module
+
+public import Nyll.ProCGroups.InverseSystems.ProfiniteSpace
 
 /-!
 # Factorization through finite stages
@@ -14,6 +16,8 @@ results show that continuous maps from a compact inverse limit to a finite discr
 depend on one stage; specialized versions produce factorizations by group homomorphisms and
 additive monoid homomorphisms.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology
@@ -121,8 +125,8 @@ theorem InverseSystem.factors_through_projection_finite
   have hUy_clopen : ∀ y, IsClopen (Uy y) := by
     intro y
     refine ⟨?_, ?_⟩
-    · simpa [Uy] using (isClosed_discrete ({y} : Set Y)).preimage hρ
-    · simpa [Uy] using (isOpen_discrete ({y} : Set Y)).preimage hρ
+    · exact (isClosed_discrete ({y} : Set Y)).preimage hρ
+    · exact (isOpen_discrete ({y} : Set Y)).preimage hρ
   have hlocal :
       ∀ y (x : S.inverseLimit), x ∈ Uy y →
         ∃ i, ∃ V : Set (S.X i), IsClopen V ∧ S.projection i x ∈ V ∧ S.projection i ⁻¹' V ⊆ Uy y
@@ -164,10 +168,10 @@ theorem InverseSystem.factors_through_projection_finite
   have hBclopen : ∀ y, IsClopen (B y) := by
     intro y
     refine ⟨?_, ?_⟩
-    · simpa [B] using
+    · exact
         isClosed_biUnion_finset (s := (Finset.univ : Finset ↥(t y))) fun x hx =>
           (hVclopen y x.1.1 x.1.2).1.preimage (S.continuous_map (hix_le_k y x.1 x.2))
-    · simpa [B] using
+    · exact
         isOpen_biUnion (s := (((Finset.univ : Finset ↥(t y)) : Set ↥(t y)))) fun x hx =>
           (hVclopen y x.1.1 x.1.2).2.preimage (S.continuous_map (hix_le_k y x.1 x.2))
   have hUy_eq : ∀ y, Uy y = S.projection k ⁻¹' B y := by
@@ -192,7 +196,7 @@ theorem InverseSystem.factors_through_projection_finite
         change S.map (hix_le_k y x.1 x.2) (S.projection k z) ∈ V y x.1.1 x.1.2 at hzV
         rw [S.projection_compatible z (ix y x.1.1 x.1.2) k (hix_le_k y x.1 x.2)] at hzV
         exact hzV
-      exact hVsub y x.1.1 x.1.2 (by simpa using hzV')
+      exact hVsub y x.1.1 x.1.2 hzV'
   have hRangeClosed : IsClosed (Set.range (S.projection k)) := by
     exact (isCompact_range (S.continuous_projection k)).isClosed
   let Z : Y → Set (S.X k) := fun y => B y ∩ Set.range (S.projection k)
@@ -211,8 +215,8 @@ theorem InverseSystem.factors_through_projection_finite
     have hx' : x ∈ Uy y' := by
       rw [hUy_eq y']
       exact hz'.1
-    have hxy : ρ x = y := by simpa [Uy] using hx
-    have hxy' : ρ x = y' := by simpa [Uy] using hx'
+    have hxy : ρ x = y := hx
+    have hxy' : ρ x = y' := hx'
     exact hyy' (hxy.symm.trans hxy')
   rcases exists_clopen_partition_of_clopen_cover
     (X := S.X k) (I := Y)

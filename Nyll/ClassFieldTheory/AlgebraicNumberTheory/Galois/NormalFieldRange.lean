@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Normal.Basic
+module
+
+public import Mathlib.FieldTheory.Normal.Basic
 
 /-!
 # Ranges of embeddings of normal extensions
@@ -15,6 +17,8 @@ range.
 -/
 
 
+
+@[expose] public section
 
 namespace AlgHom
 

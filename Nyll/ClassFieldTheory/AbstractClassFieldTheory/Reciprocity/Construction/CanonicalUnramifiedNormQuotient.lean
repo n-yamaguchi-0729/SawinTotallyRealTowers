@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnramifiedNormQuotient
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnramifiedNormQuotient
 
 /-!
 # The abstract reciprocity construction: the canonical unramified valuation quotient
@@ -17,6 +19,10 @@ proves directly that it induces the unramified norm-quotient isomorphism
 used in the unramified norm-quotient equivalence.
 -/
 
+@[expose] public section
+
+universe u v
+
 namespace ClassFormation
 
 open KummerTheory
@@ -27,9 +33,8 @@ open CyclicCohomology
 
 noncomputable section
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 namespace ValuationData
 
@@ -40,7 +45,7 @@ def canonicalValueReduction
     v.valueGroup →+ ZMod n :=
   v.valueModulo n hn
 
-/-- The canonical value reduction sends the unit element to zero. -/
+/-- The canonical value reduction sends the distinguished value to one. -/
 @[simp]
 theorem canonicalValueReduction_one
     (v : ValuationData D A) (n : ℕ) (hn : 0 < n) :
@@ -89,7 +94,8 @@ def canonicalUnramifiedValuationHom
   (v.canonicalValueReduction (E.degree : ℕ) E.degree.property).comp
     (v.valuationAt E.base)
 
-private theorem finiteNormSubgroup_le_canonicalUnramifiedValuationHom_ker
+/-- Norms in an unramified extension have zero canonical valuation modulo its degree. -/
+theorem finiteNormSubgroup_le_canonicalUnramifiedValuationHom_ker
     (v : ValuationData D A) (E : FiniteAbstractFieldExtension G)
     (hUnramified : E.IsUnramified D) :
     finiteNormSubgroup A E.base.field E.field.field E.below ≤
@@ -238,9 +244,9 @@ theorem canonicalUnramifiedNormQuotientValuation_injective
           exact hUnramified }
     have hzero :
         CategoryTheory.Limits.IsZero
-            (tateCohomology (Euc.unitRepresentation v) 0) ∧
+            (IntegralGroupCohomology.Universe.tate (Euc.unitRepresentation v) 0) ∧
           CategoryTheory.Limits.IsZero
-            (tateCohomology (Euc.unitRepresentation v) (-1)) :=
+            (IntegralGroupCohomology.Universe.tate (Euc.unitRepresentation v) (-1)) :=
       hAxiom E.base Euc
     obtain ⟨ε, hε⟩ :=
       v.exists_unit_relativeNorm_eq_of_tateHZero_isZero

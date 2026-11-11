@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 
 /-!
 # Finite families of local idele blocks
@@ -15,6 +17,8 @@ family of places. It is the finite-support part of the localized class formation
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

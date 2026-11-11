@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
 
 /-!
 # Linear operations and character corrections on cocycle lifts
@@ -14,6 +16,8 @@ respect addition and scalar multiplication. These identities construct actual su
 scalar multiples of lifts, while subtracting a continuous coefficient character corrects
 a lift without changing its projection.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

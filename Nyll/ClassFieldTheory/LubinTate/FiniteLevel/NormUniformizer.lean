@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Mathlib.RingTheory.Norm.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Mathlib.RingTheory.Norm.Basic
 
 /-!
 # Norm of a primitive standard Lubin--Tate point
@@ -18,6 +20,8 @@ uniformizer.  The power-basis norm formula therefore gives
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

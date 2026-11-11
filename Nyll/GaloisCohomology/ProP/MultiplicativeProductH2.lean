@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 
 /-!
 # Degree-two vanishing for products of multiplicative representations
@@ -14,6 +16,8 @@ Primitives are selected coordinatewise and assembled into an actual
 one-cochain. The local vanishing input is supplied by the proved local
 integer-unit and archimedean block theorems at the idele application.
 -/
+
+@[expose] public section
 
 noncomputable section
 

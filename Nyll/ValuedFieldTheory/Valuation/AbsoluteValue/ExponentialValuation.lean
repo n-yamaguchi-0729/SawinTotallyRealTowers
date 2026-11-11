@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Unramified.HenselianAlgebraicExtension
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Unramified.HenselianAlgebraicExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
 
 /-!
 # Canonical exponential valuation attached to an absolute value
@@ -15,6 +19,8 @@ unramified predicates of the unramified-extension construction use additive expo
 This file
 supplies the canonical conversion `v(x) = -log |x|`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -80,12 +86,19 @@ def absoluteValueExponentialValuation
         (((LubinTate.Valuations.strong_triangle_of_nonarchimedean abv hnonarch)
           x y).trans (max_eq_left hyx).le)
 
+/-- The canonical exponential valuation sends zero to infinity. -/
+@[simp] theorem absoluteValueExponentialValuation_apply_zero
+    (abv : AbsoluteValue K ℝ) (hnonarch : LubinTate.Valuations.NonarchimedeanAbsoluteValue abv) :
+    absoluteValueExponentialValuation abv hnonarch 0 = ⊤ :=
+  ((absoluteValueExponentialValuation abv hnonarch).eq_top_iff 0).mpr rfl
+
 @[simp] theorem absoluteValueExponentialValuation_apply_ne_zero
     (abv : AbsoluteValue K ℝ) (hnonarch : LubinTate.Valuations.NonarchimedeanAbsoluteValue abv)
     {x : K} (hx : x ≠ 0) :
     absoluteValueExponentialValuation abv hnonarch x =
       ((-Real.log (abv x) : ℝ) : WithTop ℝ) := by
-  simp [absoluteValueExponentialValuation, hx]
+  simp only [absoluteValueExponentialValuation, WithTop.LinearOrderedAddCommGroup.coe_neg, hx,
+    ↓reduceIte]
 
 /-- The original absolute value is associated to its canonical exponential
 valuation, with base `e`. -/
@@ -97,7 +110,7 @@ theorem absoluteValueExponentialValuation_associated
   refine ⟨Real.one_lt_exp_iff.mpr zero_lt_one, ?_⟩
   intro x hx
   refine ⟨-Real.log (abv x), ?_, ?_⟩
-  · simp [absoluteValueExponentialValuation, hx]
+  · exact absoluteValueExponentialValuation_apply_ne_zero abv hnonarch hx
   · simp only [neg_neg]
     exact (Real.exp_log (abv.pos hx)).symm.trans
       (Real.exp_one_rpow (Real.log (abv x))).symm
@@ -126,12 +139,12 @@ theorem absoluteValueExponentialValuation_associated_eq
   intro x
   by_cases hx : x = 0
   · subst x
-    simp [absoluteValueExponentialValuation,
-      exponentialAssociatedAbsoluteValue, (v.eq_top_iff 0).mpr rfl]
+    rw [absoluteValueExponentialValuation_apply_zero, (v.eq_top_iff 0).mpr rfl]
   · rw [absoluteValueExponentialValuation_apply_ne_zero _ _ hx]
-    simp [exponentialAssociatedAbsoluteValue, hx, Real.log_exp,
+    simp only [exponentialAssociatedAbsoluteValue, AbsoluteValue.coe_mk, MulHom.coe_mk, hx,
+      ↓reduceIte, Real.log_exp, neg_neg,
       WithTop.coe_untop₀_of_ne_top
-        (LubinTate.Valuations.exponentialValuation_ne_top_of_ne_zero v hx)]
+          (LubinTate.Valuations.exponentialValuation_ne_top_of_ne_zero v hx)]
 
 /-- Exact extension of nonarchimedean absolute values gives exact extension
 of their canonical exponential valuations. -/
@@ -147,9 +160,10 @@ theorem absoluteValueExponentialValuation_extends
   intro x
   by_cases hx : x = 0
   · subst x
-    simp [absoluteValueExponentialValuation]
+    simp only [map_zero, absoluteValueExponentialValuation_apply_zero]
   · have hmx : algebraMap K L x ≠ 0 := (map_ne_zero _).mpr hx
-    simp [absoluteValueExponentialValuation, hx, hmx, hExt]
+    rw [absoluteValueExponentialValuation_apply_ne_zero aw haw hmx,
+      absoluteValueExponentialValuation_apply_ne_zero av hav hx, hExt]
 
 end Valuations
 end AlgebraicNumberTheory

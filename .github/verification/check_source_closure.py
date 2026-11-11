@@ -21,9 +21,9 @@ REQUIRED_DECLARATIONS = [
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
     {'name': SHAFAREVICH_MAIN, 'originModule': SHAFAREVICH_ENTRY, 'kind': 'theorem'},
 ]
-OWNERS = {'ClassFieldTheory': 658, 'EntryPoint': 2, 'GaloisCohomology': 161, 'ProCGroups': 321, 'SawinTotallyRealTowers': 269, 'ValuedFieldTheory': 284, 'github': 3}
-MATHLIB = '065356127b1dc0016f66b7283ce0ce2c4055aa55'
-TOOLCHAIN = 'leanprover/lean4:v4.35.0-rc2'
+OWNERS = {'ClassFieldTheory': 702, 'EntryPoint': 2, 'GaloisCohomology': 191, 'ProCGroups': 324, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 3, 'ValuedFieldTheory': 294, 'github': 3}
+MATHLIB = '56a005855ea17e0b0958f73ec801ae140b0a1679'
+TOOLCHAIN = 'leanprover/lean4:v4.35.0'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
 
 def require(ok, message):
@@ -128,7 +128,7 @@ def audit(root, manifest):
     require(config['name'] == 'Nyll' and config['defaultTargets'] == ['Nyll'],
             'Lake package/default target changed')
     libraries = config['lean_lib']
-    ordered = ['ProCGroups', 'ValuedFieldTheory', 'GaloisCohomology', 'ClassFieldTheory', 'SawinTotallyRealTowers']
+    ordered = ['ProCGroups', 'ValuedFieldTheory', 'GaloisCohomology', 'SchemeTheory', 'ClassFieldTheory', 'SawinTotallyRealTowers']
     expected_globs = ['Nyll.All', 'Nyll'] + ['Nyll.' + owner + '.+' for owner in ordered]
     require(len(libraries) == 1 and libraries[0]['name'] == 'Nyll' and
             libraries[0].get('srcDir', '.') == '.' and

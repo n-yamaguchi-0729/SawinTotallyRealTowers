@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Completion.UniversalProperty
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
+module
+
+public import Nyll.ProCGroups.Completion.UniversalProperty
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
+public import Nyll.ProCGroups.InverseSystems.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Pro C Groups / Completion / Finite Quotient Lifts
@@ -14,6 +18,8 @@ import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
 This module proves that unique lifting against finite discrete \(C\)-quotients,
 together with density, implies the full pro-\(C\) completion universal property.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

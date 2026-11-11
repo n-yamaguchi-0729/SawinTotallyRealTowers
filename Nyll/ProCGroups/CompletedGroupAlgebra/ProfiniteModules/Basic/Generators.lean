@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.FiniteQuotients
-import Nyll.ProCGroups.Generation.QuotientGeneratorConvergingPairs
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.FiniteQuotients
+public import Nyll.ProCGroups.Generation.QuotientGeneratorConvergingPairs
+public import Nyll.ProCGroups.Generation.Basic
 
 /-!
 # Generating sets converging to zero
@@ -14,6 +17,8 @@ This file defines sets and maps converging to zero through open submodules and r
 one-point extensions and dense additive generation. Every profinite module is shown to admit an
 appropriate generating set.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

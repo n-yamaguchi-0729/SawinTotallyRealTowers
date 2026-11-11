@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RamificationSupport
+module
+
+public import Nyll.SawinTotallyRealTowers.RamificationSupport
 
 /-!
 # Ramification support under an equivalence of top fields
 
 An algebra equivalence preserves the permitted finite places on the base.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

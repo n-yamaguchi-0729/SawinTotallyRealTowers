@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Construction
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Construction
 
 /-!
 # Named value of closed finite-index reciprocity
@@ -17,6 +19,10 @@ equivalent to the historical formula.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -26,15 +32,11 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-/-- Canonical class-group commutativity supplies normality for norm-range transport. -/
-private theorem closedFiniteIndexEvaluationValueClassGroupIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  IsMulCommutative.of_comm (fun a b => mul_comm a b)
+attribute [local instance]
+  globalNormResidueIdeleClassCommGroup
+  globalNormResidueIdeleClassIsMulCommutative
 
-attribute [local instance] closedFiniteIndexEvaluationValueClassGroupIsMulCommutative
-
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The quotient value prescribed by inverse global norm-residue reciprocity
 for a Galois element of the selected closed finite-index class field. -/

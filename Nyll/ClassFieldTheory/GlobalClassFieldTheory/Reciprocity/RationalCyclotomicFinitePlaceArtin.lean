@@ -4,29 +4,44 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicFinitePlace
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicLocalization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrimeFactorization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrincipalLocalUnit
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.PadicMultiplicativeArtinComparison
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicValuationComparison
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
-import Nyll.ValuedFieldTheory.LocalField.Padic.Cyclotomic.TotallyRamified.EisensteinPolynomial
-import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicFinitePlace
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicLocalization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrimeFactorization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalPrincipalLocalUnit
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.PadicMultiplicativeArtinComparison
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicValuationComparison
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Nyll.ValuedFieldTheory.LocalField.Padic.Cyclotomic.TotallyRamified.EisensteinPolynomial
+public import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
+public import Mathlib.Tactic.Convert
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Finite-place Artin symbols in rational cyclotomic levels
@@ -39,6 +54,8 @@ Frobenius under the global cyclotomic character with the residue prime.
 -/
 
 
+
+@[expose] public section
 
 open scoped NNReal NumberField ValuativeRel
 open NumberField IsDedekindDomain
@@ -673,7 +690,9 @@ theorem rationalPrimeUnitFinitePlaceIntegerUnit_coe
         (padicValRat_rationalPrimeUnit x q) :
           ℤ_[q.1]) : ℚ_[q.1]) := by
       rw [rationalPrimeUnitFinitePlaceIntegerUnit]
-      simp [PadicInt.algebraMap_apply]
+      simp only [Units.coe_map, PadicInt.algebraMap_apply]
+      exact congrArg (fun z : ℤ_[q.1] => (z : ℚ_[q.1]))
+        ((rationalFinitePlaceCompletionIntegerRingEquivPadicInt q).apply_symm_apply _)
     _ = ((rationalPrimeUnit x q : ℚ) : ℚ_[q.1]) := by
       rw [padicIntUnitOfRat_coe]
     _ =
@@ -930,7 +949,7 @@ private abbrev rationalCyclotomicArtinPlace (q : Nat.Primes) :
 
 private abbrev rationalCyclotomicArtinBaseAbv (q : Nat.Primes) :
     AbsoluteValue ℚ ℝ :=
-  HeightOneSpectrum.adicAbv ℚ (rationalCyclotomicArtinPlace q)
+  rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)
 
 private abbrev rationalCyclotomicArtinLevel (m : ℕ+) :=
   KummerTheory.rationalCyclotomicLevel m
@@ -940,72 +959,68 @@ private abbrev rationalCyclotomicArtinExtension
     AbsoluteValueExtension
       (rationalCyclotomicArtinBaseAbv q)
       (rationalCyclotomicArtinLevel m) :=
-  chosenFinitePlaceExtension
-    (L := rationalCyclotomicArtinLevel m)
-    (rationalCyclotomicArtinPlace q)
+  rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)
 
 private abbrev rationalCyclotomicArtinLocalizedField
     (m : ℕ+) (q : Nat.Primes) :=
-  AlgebraicNumberTheory.Valuations.LocalizedCompletion
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+  rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)
 
 @[reducible]
 noncomputable local instance rationalCyclotomicArtinExtensionAlgebra
     (m : ℕ+) (q : Nat.Primes) :
     Algebra ℚ
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
   AbsoluteValue.extensionCompletionAlgebra
-    (K := ℚ) (rationalCyclotomicArtinExtension m q).1
+    (K := ℚ) (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1
 
 @[reducible]
 noncomputable local instance rationalCyclotomicArtinExtensionSMul
     (m : ℕ+) (q : Nat.Primes) :
     SMul ℚ
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
   (rationalCyclotomicArtinExtensionAlgebra m q).toSMul
 
 @[reducible]
 noncomputable local instance
     rationalCyclotomicArtinCompletionAlgebra
     (m : ℕ+) (q : Nat.Primes) :
-    Algebra (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
+    Algebra (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
   AbsoluteValue.completionAlgebra
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q).1
-    (rationalCyclotomicArtinExtension m q).2
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).2
 
 @[reducible]
 noncomputable local instance rationalCyclotomicArtinLocalizedAlgebra
     (m : ℕ+) (q : Nat.Primes) :
-    Algebra (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinLocalizedField m q) :=
+    Algebra (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   finitePlaceLocalArtinLocalizedAlgebra
-    (K := ℚ) (L := rationalCyclotomicArtinLevel m)
-    (rationalCyclotomicArtinPlace q)
-    (rationalCyclotomicArtinExtension m q)
+    (K := ℚ) (L := (KummerTheory.rationalCyclotomicLevel m))
+    (RayClass.rationalPrime q)
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedGlobalAlgebra
     (m : ℕ+) (q : Nat.Primes) :
-    Algebra ℚ (rationalCyclotomicArtinLocalizedField m q) :=
+    Algebra ℚ (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   LocalClassFieldTheory.localizedCompletionGlobalAlgebra
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedGlobalSMul
     (m : ℕ+) (q : Nat.Primes) :
-    SMul ℚ (rationalCyclotomicArtinLocalizedField m q) :=
+    SMul ℚ (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   (rationalCyclotomicArtinLocalizedGlobalAlgebra m q).toSMul
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedScalarTower
     (m : ℕ+) (q : Nat.Primes) :
     IsScalarTower ℚ
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinLocalizedField m q) := by
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) := by
   constructor
   intro r x y
   simp only [Algebra.smul_def, map_mul, eq_ratCast,
@@ -1015,134 +1030,127 @@ noncomputable local instance
     rationalCyclotomicArtinLocalizedFiniteDimensional
     (m : ℕ+) (q : Nat.Primes) :
     FiniteDimensional
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   finitePlaceLocalArtinFiniteDimensional
-    (K := ℚ) (L := rationalCyclotomicArtinLevel m)
-    (rationalCyclotomicArtinPlace q)
-    (rationalCyclotomicArtinExtension m q)
+    (K := ℚ) (L := (KummerTheory.rationalCyclotomicLevel m))
+    (RayClass.rationalPrime q)
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsAbelianGalois
     (m : ℕ+) (q : Nat.Primes) :
     IsAbelianGalois
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   finitePlaceLocalArtinIsAbelianGalois
-    (K := ℚ) (L := rationalCyclotomicArtinLevel m)
-    (rationalCyclotomicArtinPlace q)
-    (rationalCyclotomicArtinExtension m q)
+    (K := ℚ) (L := (KummerTheory.rationalCyclotomicLevel m))
+    (RayClass.rationalPrime q)
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
     (inferInstance :
-      FiniteDimensional ℚ (rationalCyclotomicArtinLevel m))
+      FiniteDimensional ℚ (KummerTheory.rationalCyclotomicLevel m))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsSeparable
     (m : ℕ+) (q : Nat.Primes) :
     Algebra.IsSeparable
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   (rationalCyclotomicArtinLocalizedIsAbelianGalois m q).toIsGalois.to_isSeparable
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsCyclotomic
     (m : ℕ+) (q : Nat.Primes) :
     IsCyclotomicExtension {(m : ℕ)}
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   rationalCyclotomicLevel_localizedCompletion_isCyclotomicExtension
-    m (rationalCyclotomicArtinPlace q)
+    m (RayClass.rationalPrime q)
 
 noncomputable local instance
     rationalCyclotomicArtinExtensionFiniteDimensional
     (m : ℕ+) (q : Nat.Primes) :
     FiniteDimensional
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
   completionModuleFinite
-    (rationalCyclotomicArtinBaseAbv q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
     (RayClass.adicAbv_isNontrivial
-      (rationalCyclotomicArtinPlace q))
-    (rationalCyclotomicArtinExtension m q)
+      (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinExtensionContinuousSMul
     (m : ℕ+) (q : Nat.Primes) :
     ContinuousSMul
-      (rationalCyclotomicArtinBaseAbv q).Completion
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
   continuousSMul_of_algebraMap _ _
     (AbsoluteValue.completionMap_isometry
-      (rationalCyclotomicArtinBaseAbv q)
-      (rationalCyclotomicArtinExtension m q).1
-      (rationalCyclotomicArtinExtension m q).2).continuous
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).2).continuous
 
 noncomputable local instance
     rationalCyclotomicArtinExtensionLocallyCompact
     (m : ℕ+) (q : Nat.Primes) :
     LocallyCompactSpace
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
   LocallyCompactSpace.of_finiteDimensional_of_complete
-    (rationalCyclotomicArtinBaseAbv q).Completion
-    (rationalCyclotomicArtinExtension m q).1.Completion
-
-private noncomputable def
-    rationalCyclotomicArtinLocalizedEquivCompletion
-    (m : ℕ+) (q : Nat.Primes) :
-    rationalCyclotomicArtinLocalizedField m q ≃ᵢ
-      (rationalCyclotomicArtinExtension m q).1.Completion :=
-  { toEquiv :=
-      (localizedCompletionEquivCompletion
-        (rationalCyclotomicArtinBaseAbv q)
-        (RayClass.adicAbv_isNontrivial
-          (rationalCyclotomicArtinPlace q))
-        (rationalCyclotomicArtinExtension m q)).toEquiv
-    isometry_toFun :=
-      Isometry.of_dist_eq fun _ _ => rfl }
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedLocallyCompact
     (m : ℕ+) (q : Nat.Primes) :
     LocallyCompactSpace
-      (rationalCyclotomicArtinLocalizedField m q) :=
-  ((rationalCyclotomicArtinLocalizedEquivCompletion m q).toHomeomorph.locallyCompactSpace_iff).2
-    inferInstance
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) := by
+  let e : (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) ≃ᵢ
+      (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q)).1.Completion :=
+    { toEquiv :=
+        (localizedCompletionEquivCompletion
+          (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+          (RayClass.adicAbv_isNontrivial (RayClass.rationalPrime q))
+          (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))).toEquiv
+      isometry_toFun := Isometry.of_dist_eq fun _ _ => rfl }
+  exact e.toHomeomorph.locallyCompactSpace_iff.mpr inferInstance
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsUltrametricDist
     (m : ℕ+) (q : Nat.Primes) :
     IsUltrametricDist
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   localizedCompletionIsUltrametricDist
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
     (HeightOneSpectrum.isNonarchimedean_adicAbv
-      ℚ (rationalCyclotomicArtinPlace q))
+      ℚ (RayClass.rationalPrime q))
 
 noncomputable local instance rationalCyclotomicArtinLocalizedValued
     (m : ℕ+) (q : Nat.Primes) :
-    Valued (rationalCyclotomicArtinLocalizedField m q) ℝ≥0 :=
+    Valued (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) ℝ≥0 :=
   localizedCompletionFinitePlaceValued
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
     (HeightOneSpectrum.isNonarchimedean_adicAbv
-      ℚ (rationalCyclotomicArtinPlace q))
+      ℚ (RayClass.rationalPrime q))
 
 @[reducible]
 noncomputable local instance
     rationalCyclotomicArtinLocalizedValuativeRel
     (m : ℕ+) (q : Nat.Primes) :
-    ValuativeRel (rationalCyclotomicArtinLocalizedField m q) :=
+    ValuativeRel (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   localizedCompletionFinitePlaceValuativeRel
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
     (HeightOneSpectrum.isNonarchimedean_adicAbv
-      ℚ (rationalCyclotomicArtinPlace q))
+      ℚ (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedValuationCompatible
     (m : ℕ+) (q : Nat.Primes) :
     (Valued.v : Valuation
-      (rationalCyclotomicArtinLocalizedField m q) ℝ≥0).Compatible :=
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) ℝ≥0).Compatible :=
   Valuation.Compatible.ofValuation _
 
 noncomputable local instance
@@ -1150,48 +1158,48 @@ noncomputable local instance
     (m : ℕ+) (q : Nat.Primes) :
     Valuation.HasExtension
       (ValuativeRel.valuation
-        (rationalCyclotomicArtinBaseAbv q).Completion)
+        (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion)
       (ValuativeRel.valuation
-        (rationalCyclotomicArtinLocalizedField m q)) :=
+        (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q))) :=
   localizedCompletionValuationHasExtension
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
     (HeightOneSpectrum.isNonarchimedean_adicAbv
-      ℚ (rationalCyclotomicArtinPlace q))
+      ℚ (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedValuationIsNontrivial
     (m : ℕ+) (q : Nat.Primes) :
     (ValuativeRel.valuation
-      (rationalCyclotomicArtinLocalizedField m q)).IsNontrivial :=
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q))).IsNontrivial :=
   Valuation.IsNontrivial.of_hasExtension
     (ValuativeRel.valuation
-      (rationalCyclotomicArtinBaseAbv q).Completion)
+      (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion)
     (ValuativeRel.valuation
-      (rationalCyclotomicArtinLocalizedField m q))
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedValuativeRelIsNontrivial
     (m : ℕ+) (q : Nat.Primes) :
     ValuativeRel.IsNontrivial
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   (ValuativeRel.isNontrivial_iff_isNontrivial
     (ValuativeRel.valuation
-      (rationalCyclotomicArtinLocalizedField m q))).2 inferInstance
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)))).2 inferInstance
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsValuativeTopology
     (m : ℕ+) (q : Nat.Primes) :
     IsValuativeTopology
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   isValuativeTopology_of_valued_ofValuation
-    (rationalCyclotomicArtinLocalizedField m q) ℝ≥0
+    (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) ℝ≥0
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsNonarchimedeanLocalField
     (m : ℕ+) (q : Nat.Primes) :
     IsNonarchimedeanLocalField
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   { toIsValuativeTopology := inferInstance
     toLocallyCompactSpace := inferInstance
     toIsNontrivial := inferInstance }
@@ -1200,35 +1208,35 @@ noncomputable local instance
     rationalCyclotomicArtinLocalizedIntegerAlgebra
     (m : ℕ+) (q : Nat.Primes) :
     Algebra
-      𝒪[(rationalCyclotomicArtinBaseAbv q).Completion]
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      𝒪[(rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion]
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   Algebra.ofSubsemiring
-    𝒪[(rationalCyclotomicArtinBaseAbv q).Completion]
+    𝒪[(rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion]
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIsIntegralClosure
     (m : ℕ+) (q : Nat.Primes) :
     IsIntegralClosure
-      𝒪[rationalCyclotomicArtinLocalizedField m q]
-      𝒪[(rationalCyclotomicArtinBaseAbv q).Completion]
-      (rationalCyclotomicArtinLocalizedField m q) :=
+      𝒪[(rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q))]
+      𝒪[(rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion]
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q)) :=
   localizedCompletionIsIntegralClosureWithExtension
-    (rationalCyclotomicArtinBaseAbv q)
-    (rationalCyclotomicArtinExtension m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q))
+    (rationalCyclotomicChosenFinitePlaceExtension m (RayClass.rationalPrime q))
     (RayClass.adicAbv_isNontrivial
-      (rationalCyclotomicArtinPlace q))
+      (RayClass.rationalPrime q))
     (HeightOneSpectrum.isNonarchimedean_adicAbv
-      ℚ (rationalCyclotomicArtinPlace q))
+      ℚ (RayClass.rationalPrime q))
 
 noncomputable local instance
     rationalCyclotomicArtinLocalizedIntegerModuleFinite
     (m : ℕ+) (q : Nat.Primes) :
     Module.Finite
-      𝒪[(rationalCyclotomicArtinBaseAbv q).Completion]
-      𝒪[rationalCyclotomicArtinLocalizedField m q] :=
+      𝒪[(rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion]
+      𝒪[(rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q))] :=
   integerRing_moduleFinite_of_isIntegralClosure
-    (rationalCyclotomicArtinBaseAbv q).Completion
-    (rationalCyclotomicArtinLocalizedField m q)
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+    (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime q))
 
 section RationalCyclotomicPrincipalPrime
 
@@ -1252,17 +1260,9 @@ noncomputable local instance
     KummerTheory.rationalCyclotomicLevel_isCyclotomicExtension
       (rationalCyclotomicPrincipalPrimeModulus p n)
 
-private abbrev rationalCyclotomicPrincipalPrimePlace
-    (p : Nat.Primes) : HeightOneSpectrum (𝓞 ℚ) :=
-  rationalCyclotomicArtinPlace p
-
 private abbrev rationalCyclotomicPrincipalPrimeLevel
     (m : ℕ+) :=
   rationalCyclotomicArtinLevel m
-
-private abbrev rationalCyclotomicPrincipalPrimeExtension
-    (m : ℕ+) (p : Nat.Primes) :=
-  rationalCyclotomicArtinExtension m p
 
 /-- The `ℚ_[p]`-algebra structure on the localized cyclotomic completion,
 transported through the canonical comparison with the `p`-adic completion. -/
@@ -1284,7 +1284,7 @@ noncomputable def
 noncomputable local instance
     rationalCyclotomicArtinLocalizedPadicAlgebra
     (m : ℕ+) (p : Nat.Primes) :
-    Algebra ℚ_[p.1] (rationalCyclotomicArtinLocalizedField m p) :=
+    Algebra ℚ_[p.1] (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime p)) :=
   rationalCyclotomicPrincipalPrimeLocalizedPadicAlgebra m p
 
 private noncomputable def rationalFinitePlaceCompletionAlgEquivPadic
@@ -1298,7 +1298,7 @@ noncomputable local instance
     rationalCyclotomicArtinLocalizedPadicScalarTower
     (m : ℕ+) (p : Nat.Primes) :
     IsScalarTower ℚ ℚ_[p.1]
-      (rationalCyclotomicArtinLocalizedField m p) := by
+      (rationalCyclotomicLocalizedCompletion m (RayClass.rationalPrime p)) := by
   constructor
   intro r x y
   simp only [Algebra.smul_def, map_mul, eq_ratCast,
@@ -1433,8 +1433,7 @@ theorem padicMultiplicativePrimitiveRoot_adjoin_eq_top
     Algebra.adjoin ℚ_[p]
         ({padicMultiplicativePrimitiveRoot p n} : Set T) =
       ⊤ := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
-  let T := standardLubinTateLevelField hπ n
+  intro hπ T
   let ζ : T := padicMultiplicativePrimitiveRoot p n
   let m := p ^ (n + 1)
   let : NeZero m :=
@@ -1461,11 +1460,10 @@ theorem padicMultiplicativePrimitiveRoot_adjoin_eq_top
     rw [standardLubinTateLevelField_finrank hπ n]
     have hcard :
         Nat.card (padicLocalField p).residueField = p := by
-      simpa [padicLocalField] using
-        padicCompleteDVF_residueField_card p
+      exact padicCompleteDVF_residueField_card p
     rw [hcard, Nat.totient_prime_pow
       (Fact.out : Nat.Prime p) (Nat.succ_pos n)]
-    simp [Nat.mul_comm]
+    exact Nat.mul_comm (p - 1) (p ^ n)
   have hAeq : A = ⊤ := by
     apply IntermediateField.eq_of_le_of_finrank_eq le_top
     simpa using hAfin.trans hTfin.symm
@@ -1485,8 +1483,7 @@ theorem padicMultiplicativeLevel_isCyclotomicExtension
     let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
     let T := standardLubinTateLevelField hπ n
     IsCyclotomicExtension {p ^ (n + 1)} ℚ_[p] T := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
-  let T := standardLubinTateLevelField hπ n
+  intro hπ T
   exact
     padic_isCyclotomicExtension_of_primitiveRoot_adjoin_eq_top
       (padicMultiplicativePrimitiveRoot p n)
@@ -1527,17 +1524,18 @@ private theorem
       (rationalCyclotomicArtin_padicAlgebraAdjoin_restrict_eq_top
         (rationalCyclotomicPrincipalPrimeModulus p n) p)
 
-private theorem
+/-- The localized prime-power cyclotomic level is cyclotomic over the
+standard p-adic field through the canonical completion comparison. -/
+theorem
     rationalCyclotomicPrincipalPrimeLocalizedLevel_isCyclotomicExtension
     (p : Nat.Primes) (n : ℕ) :
     IsCyclotomicExtension {p.1 ^ (n + 1)} ℚ_[p.1]
-      (rationalCyclotomicArtinLocalizedField
-        (rationalCyclotomicPrincipalPrimeModulus p n) p) := by
+      (RationalCyclotomicPrincipalPrimeLocalizedLevel p n) := by
   exact
     padic_isCyclotomicExtension_of_primitiveRoot_adjoin_eq_top
       (rationalCyclotomicLocalizedPrimitiveRoot
         (rationalCyclotomicPrincipalPrimeModulus p n)
-        (rationalCyclotomicArtinPlace p))
+        (RayClass.rationalPrime p))
       (rationalCyclotomicPrincipalPrimeLocalizedPrimitiveRoot_isPrimitiveRoot
         p n)
       (rationalCyclotomicPrincipalPrimeLocalizedPrimitiveRoot_adjoin_eq_top
@@ -1547,21 +1545,18 @@ private theorem
 completion equivalence, is the standard multiplicative Lubin--Tate level. -/
 noncomputable def rationalCyclotomicLocalizedCompletionPadicAlgEquiv
     (p : Nat.Primes) (n : ℕ) :
-    rationalCyclotomicArtinLocalizedField
-        (rationalCyclotomicPrincipalPrimeModulus p n) p ≃ₐ[ℚ_[p.1]]
+    RationalCyclotomicPrincipalPrimeLocalizedLevel p n ≃ₐ[ℚ_[p.1]]
       RationalCyclotomicPrincipalPrimePadicLevel p n := by
-  letI : IsCyclotomicExtension {p.1 ^ (n + 1)} ℚ_[p.1]
-      (rationalCyclotomicArtinLocalizedField
-        (rationalCyclotomicPrincipalPrimeModulus p n) p) :=
+  let : IsCyclotomicExtension {p.1 ^ (n + 1)} ℚ_[p.1]
+      (RationalCyclotomicPrincipalPrimeLocalizedLevel p n) :=
     rationalCyclotomicPrincipalPrimeLocalizedLevel_isCyclotomicExtension p n
-  letI : IsCyclotomicExtension {p.1 ^ (n + 1)} ℚ_[p.1]
+  let : IsCyclotomicExtension {p.1 ^ (n + 1)} ℚ_[p.1]
       (RationalCyclotomicPrincipalPrimePadicLevel p n) :=
     padicMultiplicativeLevel_isCyclotomicExtension p.1 n
   exact
     IsCyclotomicExtension.algEquiv
       {p.1 ^ (n + 1)} ℚ_[p.1]
-      (rationalCyclotomicArtinLocalizedField
-        (rationalCyclotomicPrincipalPrimeModulus p n) p)
+      (RationalCyclotomicPrincipalPrimeLocalizedLevel p n)
       (RationalCyclotomicPrincipalPrimePadicLevel p n)
 
 /-! ## The ramified principal finite-place factor -/
@@ -1655,28 +1650,6 @@ theorem chosenFinitePlaceArtinMonoidHom_apply_factor_of_extension_eq
       (finitePlaceArtinMonoidHomOfExtension_factor
         (K := K) (L := L) v
         (chosenFinitePlaceExtension (L := L) v))
-
-private theorem
-    chosenFinitePlaceArtinMonoidHom_apply_factor_of_extension_eq_at
-    {K L : Type}
-    [Field K] [NumberField K]
-    [Field L] [Algebra K L]
-    [FiniteDimensional K L] [IsAbelianGalois K L]
-    (v : HeightOneSpectrum (𝓞 K))
-    (w : AbsoluteValueExtension
-      (HeightOneSpectrum.adicAbv K v) L)
-    (hw : chosenFinitePlaceExtension (L := L) v = w)
-    (x : (v.adicCompletion K)ˣ) (z : L) :
-    chosenFinitePlaceArtinMonoidHom
-        (K := K) (L := L) v x z =
-      finitePlaceLocalToGlobalMonoidHom
-        (K := K) (L := L) v w
-        (finitePlaceLocalArtinMonoidHom
-          (K := K) (L := L) v w x) z := by
-  exact
-    congrArg (fun sigma : Gal(L / K) => sigma z)
-      (chosenFinitePlaceArtinMonoidHom_apply_factor_of_extension_eq
-        (K := K) (L := L) v w hw x)
 
 private theorem finitePlaceLocalToGlobalMonoidHom_apply_pow_of_localized_action
     {K L : Type}
@@ -2338,9 +2311,7 @@ private theorem rationalCyclotomicArtinUnramified
     IsNonarchimedeanLocalField.IsUnramifiedValuedExtension
       (rationalCyclotomicArtinBaseAbv q).Completion
       (rationalCyclotomicArtinLocalizedField m q) := by
-  simpa [ChosenFinitePlaceIsUnramified] using
-    (rationalCyclotomicLevel_chosenFinitePlaceIsUnramified
-      m q hq)
+  exact rationalCyclotomicLevel_chosenFinitePlaceIsUnramified m q hq
 
 private noncomputable def rationalCyclotomicArtinLocalFrobeniusOf
     (m : ℕ+) (q : Nat.Primes)
@@ -2439,8 +2410,9 @@ noncomputable def rationalCyclotomicArtinLocalExponent
     (q : Nat.Primes)
     (x : ((RayClass.rationalPrime q).adicCompletion ℚ)ˣ) : ℤ :=
   IsNonarchimedeanLocalField.valuationMap
-    (rationalCyclotomicArtinBaseAbv q).Completion
-    (Additive.ofMul (rationalCyclotomicArtinLocalInput q x))
+    (rationalCyclotomicAdicAbsoluteValue (RayClass.rationalPrime q)).Completion
+    (Additive.ofMul
+      (finitePlaceLocalArtinInput (K := ℚ) (RayClass.rationalPrime q) x))
 
 /-- The chosen finite-place Artin value in a rational cyclotomic level, with
 the completion and Galois instance arguments frozen at the provider boundary. -/
@@ -2486,7 +2458,18 @@ private theorem rationalCyclotomicArtinLocalArtin_eq
             (rationalCyclotomicArtinLevel m)))
         (finitePlaceLocalArtinInput
           (K := ℚ) (rationalCyclotomicArtinPlace q) x) := by
-  rfl
+  apply AlgEquiv.ext
+  intro z
+  have normalized := finitePlaceLocalArtinMonoidHom_apply_normalized_at
+    (K := ℚ) (L := rationalCyclotomicArtinLevel m)
+    (rationalCyclotomicArtinPlace q)
+    (rationalCyclotomicArtinExtension m q) x z
+  dsimp only [rationalCyclotomicArtinBaseAbv,
+    rationalCyclotomicArtinLocalizedField, rationalCyclotomicArtinLevel,
+    rationalCyclotomicArtinExtension, rationalCyclotomicArtinPlace,
+    rationalCyclotomicAdicAbsoluteValue, rationalCyclotomicLocalizedCompletion]
+    at normalized ⊢
+  convert normalized using 1
 
 private theorem rationalCyclotomicChosenArithmeticFrobenius_eq_lift
     (m : ℕ+) (q : Nat.Primes)
@@ -2630,10 +2613,11 @@ private theorem
 private theorem rationalCyclotomicArtinResidueFieldCard
     (q : Nat.Primes) :
     Nat.card 𝓀[(rationalCyclotomicArtinBaseAbv q).Completion] = q.1 := by
-  simpa [rationalCyclotomicArtinPlace,
-    rationalCyclotomicArtinBaseAbv] using
-    rationalFinitePlaceCompletion_residueField_card
-      (rationalCyclotomicArtinPlace q)
+  exact
+    (rationalFinitePlaceCompletion_residueField_card
+      (rationalCyclotomicArtinPlace q)).trans
+      (congrArg Subtype.val
+        ((Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).apply_symm_apply q))
 
 private theorem rationalCyclotomicArtinLocalFrobenius_apply_root
     (m : ℕ+) (q : Nat.Primes)

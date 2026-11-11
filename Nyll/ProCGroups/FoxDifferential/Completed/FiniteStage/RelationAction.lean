@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationModule
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationModule
 
 /-!
 # Fox differential: completed — finite stage — relation action
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageRelationBoundary_conjBySource`
   Relation-boundary equivariance for conjugation by a source-quotient element.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

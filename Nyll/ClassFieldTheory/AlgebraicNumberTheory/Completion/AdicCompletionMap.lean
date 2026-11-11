@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
-import Mathlib.NumberTheory.RamificationInertia.Valuation
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Mathlib.NumberTheory.RamificationInertia.Valuation
 
 /-!
 # The canonical map between adic completions
@@ -16,6 +18,8 @@ completions.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

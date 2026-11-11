@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 
 /-!
 # The idele topology
@@ -13,6 +15,8 @@ The idele group `I_K` carries the restricted-product topology. This file records
 the topological-group structure and the continuity of every local
 component map.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

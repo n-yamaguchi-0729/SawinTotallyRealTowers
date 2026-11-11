@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.Basic
-import Mathlib.Algebra.Algebra.ZMod
-import Mathlib.Algebra.MonoidAlgebra.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.Basic
+public import Mathlib.Algebra.Algebra.ZMod
+public import Mathlib.Algebra.MonoidAlgebra.Basic
 
 /-!
 # Fox differential: completed — coefficient rings — mod-\(n\) completed group algebra — coeff map
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   Coefficient change is performed stagewise: supports are unchanged and coefficients are transported
   by the given ring homomorphism.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

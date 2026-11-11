@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.BinaryUnramifiedCompositum
-import Mathlib.FieldTheory.Galois.GaloisClosure
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.BinaryUnramifiedCompositum
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 
 /-!
 # Finite everywhere-unramified pro-p composita
@@ -15,6 +18,8 @@ This file bundles the finite Galois everywhere-unramified `p`-extensions
 inside the chosen algebraic closure. For odd `p`, the bundle is closed under
 binary composita.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -80,13 +85,14 @@ private theorem isPGroup_prod
   obtain ⟨a, ha⟩ := hG g
   obtain ⟨b, hb⟩ := hH h
   refine ⟨a + b, Prod.ext ?_ ?_⟩
-  · simp [pow_add, pow_mul, ha]
+  · change g ^ p ^ (a + b) = 1
+    rw [pow_add, pow_mul, ha, one_pow]
   · change h ^ p ^ (a + b) = 1
     rw [Nat.add_comm, pow_add, pow_mul, hb, one_pow]
 
 /-- The Galois group of a binary compositum embeds into the product of the
 Galois groups of its two factors, so it is a `p`-group. -/
-private theorem isPGroup_sup
+theorem isPGroup_sup
     (E₁ E₂ : FiniteEverywhereUnramifiedProPExtension F p) :
     IsPGroup p
       (↥(E₁.field ⊔ E₂.field) ≃ₐ[F]

@@ -4,13 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.InverseEstimates
+module
+
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.InverseEstimates
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
 
 /-!
 Restricts the exponential series to deep additive ideals and shows that its values lie in the
 corresponding principal-unit subgroups.
 -/
 
+
+@[expose] public section
 
 open Filter
 open Polynomial
@@ -452,11 +458,8 @@ theorem principalUnitExpSeries_val_valuation_eq_one_ofWithZeroValuation
           (CompleteDVF.higherPrincipalUnitGroup F) 1) : F.valuationSubringˣ) :
           F.valuationSubring) : K) =
       (1 : WithZero (Multiplicative ℤ)) := by
-  have hval :=
-    principalUnitExpSeries_val_ofWithZeroValuation
-      (v := v) (p := p) x hnK hnval hvx hcomplete
-  dsimp at hval ⊢
-  rw [hval]
+  intro F
+  rw [principalUnitExpSeries_val_ofWithZeroValuation]
   exact
     valuation_expSeriesField_eq_one_ofWithZeroValuation_of_lt_exp_neg_one
       (v := v) (p := p) x hnK hnval hvx hcomplete
@@ -779,7 +782,7 @@ theorem principalUnitExpSeriesHom_eq_one_iff_ofWithZeroValuation
     apply Multiplicative.ext
     simpa using hxSub
   · intro hx
-    simp [hx]
+    rw [hx, _root_.map_one]
 
 /-- The principal-unit exponential homomorphism has trivial kernel on the
 normalized convergence ball. -/
@@ -970,10 +973,10 @@ theorem principalUnitSubOne_isTopologicallyNilpotent_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     (u : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     IsTopologicallyNilpotent
       (principalUnitSubOneOfWithZeroValuation v u) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   exact
     isTopologicallyNilpotent_ofWithZeroValuation_lt_one
       (v := v) (principalUnitSubOne_val_lt_one_ofWithZeroValuation v u)
@@ -984,12 +987,12 @@ theorem principalUnitSubOne_pair_hasEval_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
     (u w : (CompleteDVF.higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) 1) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     MvPowerSeries.HasEval
       (fun i : Fin 2 =>
         if i = 0 then principalUnitSubOneOfWithZeroValuation v u
         else principalUnitSubOneOfWithZeroValuation v w) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   exact
     mvPowerSeries_hasEval_fin_two
       (principalUnitSubOne_isTopologicallyNilpotent_ofWithZeroValuation v u)

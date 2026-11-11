@@ -4,10 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
-import Mathlib.Algebra.Colimit.DirectLimit
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Mathlib.Algebra.Colimit.DirectLimit
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.EmbeddingNorm
 
 /-!
 # The rational absolute idele-class direct limit
@@ -17,6 +24,8 @@ maps, and the induced absolute Galois representation.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField
@@ -106,25 +115,6 @@ noncomputable instance rationalFiniteGaloisIdeleClassMulDistribMulAction
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
       (RelativeIdeleGroup.ClassGroup ℚ E) :=
   rationalAbsoluteGaloisIdeleClassAction E
-
-private instance
-    (E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ)) :
-    Monoid (RelativeIdeleGroup.ClassGroup ℚ E) :=
-  inferInstance
-
-private noncomputable instance :
-    ∀ E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ),
-      MulDistribMulAction
-        (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
-        (RelativeIdeleGroup.ClassGroup ℚ E) :=
-  fun E => rationalAbsoluteGaloisIdeleClassAction E
-
-private noncomputable instance :
-    ∀ E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ),
-      SMul
-        (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
-        (RelativeIdeleGroup.ClassGroup ℚ E) :=
-  fun E => (rationalAbsoluteGaloisIdeleClassAction E).toSMul
 
 @[simp]
 theorem rationalAbsoluteGaloisIdeleClass_smul_mk
@@ -366,7 +356,8 @@ theorem rationalRelativeIdeleClassEmbedding_comp
       (rationalRelativeAdeleEmbedding_comp hEF hFH
         (a : RelativeAdeleRing ℚ E)))
 
-private noncomputable instance :
+/-- The finite-level scalar-extension maps form a directed system. -/
+noncomputable instance rationalRelativeIdeleClassDirectedSystem :
     DirectedSystem
       (fun E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ) =>
         RelativeIdeleGroup.ClassGroup ℚ E)
@@ -391,9 +382,9 @@ noncomputable abbrev rationalIdeleClassDirectLimit :=
 
 /-- The multiplicative structure on the rational absolute idele-class
 direct limit supplied by Mathlib's directed-limit construction. -/
-noncomputable instance rationalIdeleClassDirectLimitMonoid :
+noncomputable abbrev rationalIdeleClassDirectLimitMonoid :
     Monoid rationalIdeleClassDirectLimit :=
-  DirectLimit.instMonoid
+  inferInstance
 
 theorem rationalIdeleClassDirectLimit_mk_apply
     {E F : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ)}
@@ -443,12 +434,34 @@ noncomputable instance
     rationalIdeleClassDirectLimitMulDistribMulAction :
     MulDistribMulAction
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
-      rationalIdeleClassDirectLimit :=
-  DirectLimit.instMulDistribMulActionOfMulActionHomClass
+      rationalIdeleClassDirectLimit := by
+  let transitionMonoidHom
+      (E F : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ)) :
+      MonoidHomClass
+        (MulDistribMulActionHom
+          (MonoidHom.id (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
+          (RelativeIdeleGroup.ClassGroup ℚ E) (RelativeIdeleGroup.ClassGroup ℚ F))
+        (RelativeIdeleGroup.ClassGroup ℚ E) (RelativeIdeleGroup.ClassGroup ℚ F) :=
+    inferInstance
+  let transitionActionHom
+      (E F : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ)) :
+      MulActionHomClass
+        (MulDistribMulActionHom
+          (MonoidHom.id (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
+          (RelativeIdeleGroup.ClassGroup ℚ E) (RelativeIdeleGroup.ClassGroup ℚ F))
+        (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
+        (RelativeIdeleGroup.ClassGroup ℚ E) (RelativeIdeleGroup.ClassGroup ℚ F) :=
+    inferInstance
+  exact inferInstanceAs (MulDistribMulAction
+    (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
+    (DirectLimit
+      (fun E : FiniteGaloisIntermediateField ℚ (SeparableClosure ℚ) =>
+        RelativeIdeleGroup.ClassGroup ℚ E)
+      (fun _ _ h => rationalRelativeIdeleClassTransition h)))
 
 /-- The scalar action underlying the canonical absolute Galois action on
 the rational idele-class direct limit. -/
-noncomputable instance rationalIdeleClassDirectLimitSMul :
+noncomputable abbrev rationalIdeleClassDirectLimitSMul :
     SMul
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)
       rationalIdeleClassDirectLimit :=

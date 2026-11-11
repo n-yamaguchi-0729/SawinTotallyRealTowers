@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferential
-import Mathlib.Algebra.MonoidAlgebra.Basic
-import Mathlib.LinearAlgebra.Finsupp.LinearCombination
-import Mathlib.LinearAlgebra.Quotient.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferential
+public import Mathlib.Algebra.MonoidAlgebra.Basic
+public import Mathlib.LinearAlgebra.Finsupp.LinearCombination
+public import Mathlib.LinearAlgebra.Quotient.Basic
 
 /-!
 # Fox differential: common — crossed differential module
@@ -24,6 +26,8 @@ The principal declarations in this module are:
 - `universalCrossedDifferential_mul`
   The universal crossed differential satisfies the crossed product rule.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

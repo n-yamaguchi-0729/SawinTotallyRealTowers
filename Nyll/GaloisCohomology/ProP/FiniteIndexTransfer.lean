@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Transfer
-import Mathlib.Topology.Algebra.OpenSubgroup
-import Mathlib.Topology.Algebra.Group.Quotient
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Mathlib.GroupTheory.Transfer
+public import Mathlib.Topology.Algebra.OpenSubgroup
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Continuous transfer from an open finite-index subgroup
@@ -16,6 +18,8 @@ The algebraic transfer is continuous: its transversal formula is a finite produc
 and representatives are continuous functions of the discrete coset space. Normality
 of the subgroup and discreteness of the target are not needed.
 -/
+
+@[expose] public section
 
 open scoped Pointwise
 

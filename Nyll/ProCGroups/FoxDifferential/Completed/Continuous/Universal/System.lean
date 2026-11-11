@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStage
-import Nyll.ProCGroups.InverseSystems.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStage
+public import Nyll.ProCGroups.InverseSystems.Basic
 
 /-!
 # Fox differential: completed — continuous — universal — system
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   Inverse-limit projections of the finite \(A_{\psi}(C)\) stage system are compatible with
   transition maps.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

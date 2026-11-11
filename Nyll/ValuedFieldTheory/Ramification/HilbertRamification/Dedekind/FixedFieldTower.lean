@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFields
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFields
 
 /-!
 # Hilbert ramification theory: decomposition and inertia tower
@@ -14,6 +16,8 @@ This file contains the group-theoretic fixed-field part of the tower
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 
 /-!
 # Finite-place splitting through prime ideals
@@ -20,6 +24,10 @@ normal-closure splitting reductions.
 
 
 
+@[expose] public section
+
+universe u v w
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -29,7 +37,7 @@ open AlgebraicNumberTheory.Valuations
 open HilbertRamification
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -41,11 +49,11 @@ theorem absoluteValueDecompositionGroup_eq_finitePlaceStabilizer
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
       (HeightOneSpectrum.adicAbv K v) L) :
-    letI := finitePlaceMulAction K L
+    let := finitePlaceMulAction K L
     absoluteValueDecompositionGroup K w.1 =
       MulAction.stabilizer (L ≃ₐ[K] L)
         (finitePlaceExtensionCentre (K := K) (L := L) v w) := by
-  let := finitePlaceMulAction K L
+  intro sharedOwner1
   ext σ
   rw [mem_absoluteValueDecompositionGroup_iff_extensionConjugate_eq
       (HeightOneSpectrum.adicAbv K v)
@@ -178,7 +186,7 @@ theorem Set.Finite.preimage_finitePlaceBelow
 
 section IntermediateField
 
-variable {M : Type}
+variable {M : Type w}
     [Field M] [NumberField M]
     [Algebra K M] [Algebra M L]
     [IsScalarTower K M L]

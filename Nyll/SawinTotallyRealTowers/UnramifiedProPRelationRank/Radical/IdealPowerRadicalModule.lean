@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
 
 /-!
 # The ideal-power radical as a finite `ZMod p`-module
@@ -15,6 +17,8 @@ dividing `p`. This file packages its additive presentation as the canonical
 cardinality formulas. The module structure remains explicit and is not
 installed as a global instance.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

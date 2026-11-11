@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.IntegralLattice
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
-import Nyll.ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.IntegralLattice
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
+public import Nyll.ValuedFieldTheory.LocalField.Padic.NonarchimedeanLocalField
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
 
 /-!
 # Comparison of the chosen and canonical valuations on the p-adic field
@@ -20,6 +23,8 @@ extensions.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

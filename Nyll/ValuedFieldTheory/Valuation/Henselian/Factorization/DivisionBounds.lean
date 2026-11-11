@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
 
 /-!
 # degree bounds for the division remainder
@@ -13,6 +15,8 @@ This file supplies the degree estimate for the remainder in the coefficientwise 
 correction step.  It removes the later need to assume separately that the
 residue of the remainder has small degree.
 -/
+
+@[expose] public section
 
 noncomputable section
 

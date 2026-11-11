@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.InverseSystems.ProjectionImageSystems
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
-import Nyll.ProCGroups.Profinite.Basic
+module
+
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.InverseSystems.ProjectionImageSystems
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
+public import Nyll.ProCGroups.Profinite.Basic
+public import Nyll.ProCGroups.InverseSystems.Basic
 
 /-!
 # Detecting topological generation in finite quotients
@@ -17,6 +20,8 @@ This module characterizes topological generation in inverse limits by generation
 finite-stage image.  It specializes the criterion to quotients by open normal subgroups, both
 for a set alone and for a set together with a fixed subgroup.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

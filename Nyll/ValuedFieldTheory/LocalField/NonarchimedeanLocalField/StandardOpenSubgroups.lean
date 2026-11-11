@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 
 /-!
 # Standard open subgroups of a nonarchimedean local field
@@ -15,6 +17,8 @@ principal-unit group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

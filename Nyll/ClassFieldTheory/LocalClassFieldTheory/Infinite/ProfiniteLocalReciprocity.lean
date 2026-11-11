@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.FiniteAbelianQuotientKernels
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.LocalMultiplicativeCompletion
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteGaloisAbelianization
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.TopologicalAbelianizationCongr
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.FiniteAbelianQuotientKernels
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.LocalMultiplicativeCompletion
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteGaloisAbelianization
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.TopologicalAbelianizationCongr
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
 # Profinite local reciprocity
@@ -25,7 +28,11 @@ existence theorem.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u
 
 open CategoryTheory
 
@@ -33,7 +40,7 @@ namespace LocalClassFieldTheory
 
 open LocalFieldTheory RamificationTheory
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- Restriction to the separable closure gives the canonical topological
@@ -79,7 +86,7 @@ noncomputable instance standardLocalAbsoluteAbelianization_t2Space :
 /-- The usual absolute Galois topological abelianization, packaged as a stable
 profinite group. -/
 noncomputable def standardLocalAbsoluteAbelianProfinite
-    (K : Type) [Field K] : ProfiniteGrp :=
+    (K : Type u) [Field K] : ProfiniteGrp.{u} :=
   ProfiniteGrp.of (_root_.Field.absoluteGaloisGroupAbelianization K)
 
 /-- The canonical extension of the separable absolute Artin map to the
@@ -320,11 +327,11 @@ theorem profiniteLocalReciprocity_finiteProjection
         (standardLocalAbsoluteAbelianProfinite K) (absoluteLocalArtinMap K) N x := by
   let lhs : TopologicalProfiniteCompletion Kˣ →
       (((standardLocalAbsoluteAbelianProfinite K).toFiniteQuotientFunctor ⋙
-        forget₂ FiniteGrp ProfiniteGrp).obj N : Type) :=
+        forget₂ FiniteGrp ProfiniteGrp).obj N : Type u) :=
     fun y => QuotientGroup.mk' N.toSubgroup (profiniteLocalReciprocity K y)
   let rhs : TopologicalProfiniteCompletion Kˣ →
       (((standardLocalAbsoluteAbelianProfinite K).toFiniteQuotientFunctor ⋙
-        forget₂ FiniteGrp ProfiniteGrp).obj N : Type) :=
+        forget₂ FiniteGrp ProfiniteGrp).obj N : Type u) :=
     fun y => topologicalProfiniteCompletionFiniteProjection
       (standardLocalAbsoluteAbelianProfinite K) (absoluteLocalArtinMap K) N y
   have hlhs : Continuous lhs := by
@@ -334,7 +341,7 @@ theorem profiniteLocalReciprocity_finiteProjection
     let q :
         (standardLocalAbsoluteAbelianProfinite K ⧸ N.toSubgroup) →ₜ*
           (((standardLocalAbsoluteAbelianProfinite K).toFiniteQuotientFunctor ⋙
-            forget₂ FiniteGrp ProfiniteGrp).obj N : Type) :=
+            forget₂ FiniteGrp ProfiniteGrp).obj N : Type u) :=
       { toFun := id
         map_one' := rfl
         map_mul' := by intro a b; rfl

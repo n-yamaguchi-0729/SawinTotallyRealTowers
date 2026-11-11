@@ -4,8 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.BaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Scalar extension from relative to ordinary adeles
@@ -16,6 +25,8 @@ determinant norms in a field tower.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct RestrictedProduct
 open NumberField IsDedekindDomain
@@ -215,7 +226,7 @@ theorem infinitePlaceTensorRingEquivAbove_tmul
       infinitePlaceBelow (K := K) W = w})
     (a : w.Completion)
     (x : L) :
-    letI : W.1.1.LiesOver w.1 :=
+    let : W.1.1.LiesOver w.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1) W.2⟩
     infinitePlaceTensorRingEquivAbove
         (K := K) (L := L) w
@@ -223,8 +234,7 @@ theorem infinitePlaceTensorRingEquivAbove_tmul
       NumberField.LiesOver.completionMap
           (v := w) (w := W.1) a *
         algebraMap L W.1.Completion x := by
-  let : W.1.1.LiesOver w.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1) W.2⟩
+  intro sharedOwner1
   rw [infinitePlaceTensorRingEquivAbove_apply]
   change
     (InfinitePlace.Completion.equiv W.1).symm
@@ -239,6 +249,10 @@ theorem infinitePlaceTensorRingEquivAbove_tmul
   dsimp only [infinitePlaceAboveToExtension]
   rw [completionTensorDecomposition_left_tmul_apply, map_mul]
   congr 1
+  apply (InfinitePlace.Completion.equiv W.1).injective
+  rw [RingEquiv.apply_symm_apply]
+  exact DFunLike.congr_fun
+    (infinitePlaceCompletionAlgEquiv_algebraMap w W.1 W.2) a
 
 /-- Flatten the products over finite base places and places above them
 to the product over all finite places of the extension field. -/
@@ -874,14 +888,13 @@ theorem relativeAdeleBaseChangeRingEquiv_infiniteComponent_tmul
     (x : L)
     (W : InfinitePlace L) :
     let v := infinitePlaceBelow (K := K) W
-    letI : W.1.LiesOver v.1 := ⟨rfl⟩
+    let : W.1.LiesOver v.1 := ⟨rfl⟩
     (relativeAdeleBaseChangeRingEquiv
         (K := K) (L := L) (a ⊗ₜ[K] x)).1 W =
       NumberField.LiesOver.completionMap
           (v := v) (w := W) (a.1 v) *
         algebraMap L W.Completion x := by
-  let v := infinitePlaceBelow (K := K) W
-  let : W.1.LiesOver v.1 := ⟨rfl⟩
+  intro v sharedOwner2
   change
     infinitePlaceTensorRingEquivAbove
         (K := K) (L := L) v
@@ -1089,8 +1102,8 @@ theorem relativeIdeleBaseChangeMulEquiv_principalIdele
               (infinitePlaceBelow (K := K) W))
           ⟨W, rfl⟩ =
         algebraMap L W.Completion (x : L)
-    simp only [relativeIdeleToLocalData]
-    rw [RelativeIdeleGroup.infiniteComponent_principalIdele,
+    rw [relativeIdeleToLocalData_infinite,
+      RelativeIdeleGroup.infiniteComponent_principalIdele,
       infinitePlaceTensorUnitsEquivAbove_localFieldIdeleInclusion]
     rfl
   · rw [relativeIdeleBaseChangeMulEquiv_finite]
@@ -1108,6 +1121,6 @@ theorem relativeIdeleBaseChangeMulEquiv_principalIdele
               (finitePlaceBelow (K := K) W))
           ⟨W, rfl⟩ =
         Units.map (FinitePlace.embedding (K := L) W) x
-    simp only [relativeIdeleToLocalData]
-    rw [RelativeIdeleGroup.finiteComponent_principalIdele,
+    rw [relativeIdeleToLocalData_finite,
+      RelativeIdeleGroup.finiteComponent_principalIdele,
       finitePlaceTensorUnitsEquivAboveAdic_localFieldIdeleInclusion]

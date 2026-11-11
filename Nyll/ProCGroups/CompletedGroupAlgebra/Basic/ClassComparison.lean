@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Topology
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Topology
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Topology
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Topology
 
 /-!
 # Completed Group Algebra / Basic / Class Comparison
@@ -14,6 +16,8 @@ This module compares the all-finite and \(C\)-indexed named completed carriers t
 canonical projections, and bundles the resulting inverse maps as ring, algebra, and topological
 equivalences for pro-\(C\) groups.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

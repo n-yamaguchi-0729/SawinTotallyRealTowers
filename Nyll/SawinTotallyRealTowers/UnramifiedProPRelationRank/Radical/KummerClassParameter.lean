@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
-import Mathlib.LinearAlgebra.Dimension.Finite
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
+public import Mathlib.LinearAlgebra.Dimension.Finite
 
 /-!
 # Finite Kummer and class-group parameters
@@ -16,6 +18,8 @@ argument has two finite pieces: an `S`-unit Kummer quotient and the elementary
 ideal class quotient.  This file packages those pieces as one finite-dimensional
 `ZMod p`-module without installing noncanonical global module instances.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -30,13 +34,11 @@ open KummerTheory
 variable (F : Type*) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-private def pPositive : ℕ+ := (p.toPNat (Fact.out : p.Prime).pos)
-
 /-- The Kummer and ideal-class parameter space attached to a finite set of
 finite places. -/
 noncomputable def kummerClassParameter
     (S : Finset (HeightOneSpectrum (𝓞 F))) : ModuleCat (ZMod p) := by
-  let n : ℕ+ := pPositive p
+  let n : ℕ+ := p.toPNat (Fact.out : p.Prime).pos
   let R := RestrictedRadicalQuotient n
     (fullSUnitKummerSubgroup (K := F) n S)
   let C := PClassGroup F p
@@ -55,7 +57,7 @@ noncomputable def kummerClassParameter
 theorem kummerClassParameter_finiteDimensional
     (S : Finset (HeightOneSpectrum (𝓞 F))) :
     FiniteDimensional (ZMod p) (kummerClassParameter F p S) := by
-  let n : ℕ+ := pPositive p
+  let n : ℕ+ := p.toPNat (Fact.out : p.Prime).pos
   let R := RestrictedRadicalQuotient n
     (fullSUnitKummerSubgroup (K := F) n S)
   let C := PClassGroup F p

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
-import Nyll.GaloisCohomology.ProP.H2FiniteStage
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+public import Nyll.GaloisCohomology.ProP.H2FiniteStage
 
 /-!
 # Finite nonsplit embedding problems detected by degree two
@@ -15,6 +17,8 @@ a nonzero class on one finite `p`-group quotient.  Its explicit cocycle
 extension is therefore a finite central `p`-extension with no continuous
 group-theoretic section.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

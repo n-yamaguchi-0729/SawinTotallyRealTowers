@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.Subgroups.Products
+module
+
+public import Nyll.ProCGroups.ProC.Subgroups.Products
 
 /-!
 # Maps between left quotients
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.ProC.Subgroups.Products
 This file defines the canonical projection \(G/L \to G/H\) for nested subgroups and proves its
 formula, continuity, surjectivity, functoriality, and compatibility with the quotient action.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

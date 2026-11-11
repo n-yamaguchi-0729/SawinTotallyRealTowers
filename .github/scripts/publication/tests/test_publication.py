@@ -130,6 +130,16 @@ class TrustedRunTests(unittest.TestCase):
 
 
 class LocalTests(unittest.TestCase):
+    def test_generalized_jacobian_repository_uses_unchanged_module_roots(self):
+        import public_ci
+        name = 'GeneralizedJacobianVarieties'
+        self.assertEqual(auto.repository_name(auto.OWNER + '/' + name), name)
+        self.assertEqual(core.PRIMARY[name], ['JacobianVarieties'])
+        self.assertIn(name, public_ci.SCRIPT_REPOS)
+        self.assertNotIn('JacobianVarieties', public_ci.SCRIPT_REPOS)
+        with self.assertRaises(ValueError):
+            auto.repository_name(auto.OWNER + '/JacobianVarieties')
+
     def setUp(self):
         # The shared workspace never writes test files to the OS temporary folder.
         location = Path(os.environ.get('NYLL_PUBLICATION_TEST_TMP',

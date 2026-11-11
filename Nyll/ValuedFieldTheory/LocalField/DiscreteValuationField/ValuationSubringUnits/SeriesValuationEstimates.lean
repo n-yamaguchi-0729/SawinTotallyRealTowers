@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
-import Mathlib.Order.Filter.AtTopBot.Tendsto
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
+public import Mathlib.Order.Filter.AtTopBot.Tendsto
 
 /-!
 # Valuation estimates for logarithm and exponential series
@@ -15,6 +17,8 @@ integer valuations of the logarithm and exponential series terms.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

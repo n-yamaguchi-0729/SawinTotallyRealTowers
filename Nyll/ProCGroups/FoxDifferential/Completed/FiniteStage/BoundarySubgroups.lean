@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.SemidirectCycles
 
 /-!
 # Fox differential: completed — finite stage — boundary subgroups
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   Source-kernel semidirect points are exactly points with right component \(1\) and left component
   in the source-kernel derivative subgroup.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

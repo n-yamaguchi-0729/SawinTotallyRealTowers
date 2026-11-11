@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.Order.GaloisConnection.Basic
+module
+
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.Order.GaloisConnection.Basic
 
 /-!
 # Fixed fields of intersections of closed Galois subgroups
@@ -13,6 +15,8 @@ import Mathlib.Order.GaloisConnection.Basic
 The fixed field of an intersection of closed subgroups is the compositum of their fixed
 fields. The comparison uses the infinite Galois correspondence.
 -/
+
+@[expose] public section
 
 universe u v w
 namespace ClassFieldTower.Sawin

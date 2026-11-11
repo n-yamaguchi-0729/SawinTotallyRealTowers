@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.CompletedOperatorCompatibility
-import Nyll.ProCGroups.ProP.Fox.FiltrationDrop
-import Nyll.ProCGroups.ProP.Presentation.RelatorDepth
+module
+
+public import Nyll.ProCGroups.ProP.Fox.CompletedOperatorCompatibility
+public import Nyll.ProCGroups.ProP.Fox.FiltrationDrop
+public import Nyll.ProCGroups.ProP.Presentation.RelatorDepth
 
 /-!
 # Filtration drop for the completed presentation Fox operator
@@ -16,6 +18,8 @@ map.  Its right Fox--Leibniz rule lowers the closed augmentation filtration by
 one, so the Fox derivative of a group element of Zassenhaus depth at least
 `n + 1` has every coordinate in target depth at least `n`.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

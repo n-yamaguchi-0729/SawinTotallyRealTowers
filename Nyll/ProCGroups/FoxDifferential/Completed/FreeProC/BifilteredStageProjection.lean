@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageProjection
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.Transition
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.System
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.InverseSystem
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageProjection
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.Transition
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.System
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.InverseSystem
 
 /-!
 # Fox differential: completed — free pro-\(C\) — bifiltered stage projection
@@ -28,6 +30,8 @@ The principal declarations in this module are:
   Bifiltered compatibility transports kernel-word point formulas from a finer completed stage to a
   coarser completed stage.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

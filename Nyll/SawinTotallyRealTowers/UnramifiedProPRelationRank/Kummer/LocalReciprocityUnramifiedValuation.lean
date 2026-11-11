@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterFixedField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterFixedField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange
 
 /-!
 # Unramified local reciprocity and the valuation line
@@ -15,6 +17,8 @@ character space onto the valuation line in the dual of actual power classes.
 The proof evaluates finite Artin reciprocity in the character's own
 unramified fixed field.
 -/
+
+@[expose] public section
 
 open scoped Topology ValuativeRel
 

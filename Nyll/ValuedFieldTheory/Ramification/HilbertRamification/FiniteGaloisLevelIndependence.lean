@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FiniteGaloisLevel
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FiniteGaloisLevel
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
 /-!
 # Choice independence at finite Galois levels
@@ -17,6 +21,8 @@ formed from any other complete-DVF target extending the base valuation.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

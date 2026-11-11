@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
 
 /-!
 # Low-degree Tate cohomology of products
@@ -14,6 +16,8 @@ dependent products, giving the product step for low-degree Herbrand quotients.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

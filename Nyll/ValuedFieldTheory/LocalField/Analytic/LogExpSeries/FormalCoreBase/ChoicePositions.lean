@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ExplicitChoiceCounts
+module
+
+public import Mathlib.Algebra.BigOperators.Ring.Finset
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ExplicitChoiceCounts
 
 /-!
 # Realizing formal-product choices by position sets
@@ -14,6 +17,8 @@ sets and proves the resulting position-count formulas.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -49,11 +54,14 @@ theorem formalLogOnePlusProductArgumentBasicFactorLabel_eq_two_iff_of_basic
   constructor
   · intro h
     rcases hm with hleft | hright | hmixed
-    · simp [hleft] at h
-    · simp [hright] at h
+    · rw [hleft, formalLogOnePlusProductArgumentBasicFactorLabel_left] at h
+      exact False.elim ((by decide : (0 : Fin 3) ≠ 2) h)
+    · rw [hright, formalLogOnePlusProductArgumentBasicFactorLabel_right] at h
+      exact False.elim ((by decide : (1 : Fin 3) ≠ 2) h)
     · simpa [formalLogOnePlusProductArgumentBasicFactorMixed] using hmixed
   · intro h
-    simp [h, formalLogOnePlusProductArgumentBasicFactorMixed]
+    rw [h, formalLogOnePlusProductArgumentBasicFactorMixed,
+      formalLogOnePlusProductArgumentBasicFactorLabel_mixed]
 
 /-- The basic-factor sequence with mixed positions `M`, left positions `L`,
 and right factors in every remaining position below `q`. -/
@@ -70,7 +78,7 @@ noncomputable def formalLogOnePlusProductArgumentChoiceFromMixedLeft
       intro i hi
       by_cases hq : i ∈ Finset.range q
       · exact hq
-      · simp [hq] at hi)
+      · exact False.elim (hi (ite_eq_right hq)))
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentChoiceFromMixedLeft q M L i = if i ∈ M
@@ -84,15 +92,13 @@ formalLogOnePlusProductArgumentBasicFactorRight`.
       if i ∈ M then formalLogOnePlusProductArgumentBasicFactorMixed
       else if i ∈ L then formalLogOnePlusProductArgumentBasicFactorLeft
       else formalLogOnePlusProductArgumentBasicFactorRight := by
-  have hlt : i < q := Finset.mem_range.mp hi
-  simp [formalLogOnePlusProductArgumentChoiceFromMixedLeft, hlt]
+  exact ite_eq_left hi
 
 /-- Establishes the identity `formalLogOnePlusProductArgumentChoiceFromMixedLeft q M L i = 0`. -/
 @[simp] theorem formalLogOnePlusProductArgumentChoiceFromMixedLeft_apply_of_not_mem
     {q : ℕ} {M L : Finset ℕ} {i : ℕ} (hi : i ∉ Finset.range q) :
     formalLogOnePlusProductArgumentChoiceFromMixedLeft q M L i = 0 := by
-  have hle : q ≤ i := by simpa [Finset.mem_range] using hi
-  simp [formalLogOnePlusProductArgumentChoiceFromMixedLeft, hle]
+  exact ite_eq_right hi
 
 /-- Positions below `q` at which `l` has the mixed-factor label. -/
 noncomputable def formalLogOnePlusProductArgumentMixedPositions
@@ -120,8 +126,9 @@ theorem formalLogOnePlusProductArgumentMixedPositions_card
     (q : ℕ) (l : ℕ →₀ (Fin 2 →₀ ℕ)) :
     (formalLogOnePlusProductArgumentMixedPositions q l).card =
       formalLogOnePlusProductArgumentBasicFactorLabelCount q l 2 := by
-  simp [formalLogOnePlusProductArgumentMixedPositions,
-    formalLogOnePlusProductArgumentBasicFactorLabelCount, Finset.sum_boole]
+  exact (Finset.sum_boole
+    (fun i => formalLogOnePlusProductArgumentBasicFactorLabel (l i) = (2 : Fin 3))
+    (Finset.range q)).symm
 
 /--
 Establishes the identity `(formalLogOnePlusProductArgumentLeftPositions q l).card =
@@ -131,8 +138,9 @@ theorem formalLogOnePlusProductArgumentLeftPositions_card
     (q : ℕ) (l : ℕ →₀ (Fin 2 →₀ ℕ)) :
     (formalLogOnePlusProductArgumentLeftPositions q l).card =
       formalLogOnePlusProductArgumentBasicFactorLabelCount q l 0 := by
-  simp [formalLogOnePlusProductArgumentLeftPositions,
-    formalLogOnePlusProductArgumentBasicFactorLabelCount, Finset.sum_boole]
+  exact (Finset.sum_boole
+    (fun i => formalLogOnePlusProductArgumentBasicFactorLabel (l i) = (0 : Fin 3))
+    (Finset.range q)).symm
 
 /--
 Establishes the identity `(formalLogOnePlusProductArgumentRightPositions q l).card =
@@ -142,8 +150,9 @@ theorem formalLogOnePlusProductArgumentRightPositions_card
     (q : ℕ) (l : ℕ →₀ (Fin 2 →₀ ℕ)) :
     (formalLogOnePlusProductArgumentRightPositions q l).card =
       formalLogOnePlusProductArgumentBasicFactorLabelCount q l 1 := by
-  simp [formalLogOnePlusProductArgumentRightPositions,
-    formalLogOnePlusProductArgumentBasicFactorLabelCount, Finset.sum_boole]
+  exact (Finset.sum_boole
+    (fun i => formalLogOnePlusProductArgumentBasicFactorLabel (l i) = (1 : Fin 3))
+    (Finset.range q)).symm
 
 /--
 Establishes the identity `formalLogOnePlusProductArgumentMixedPositions q

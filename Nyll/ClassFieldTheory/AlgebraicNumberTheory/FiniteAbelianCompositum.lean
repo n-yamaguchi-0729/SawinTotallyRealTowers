@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Abelian
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+module
+
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 
 /-!
 # Finite abelian composita
@@ -18,17 +20,19 @@ canonical factor embeddings and their elementary degree bounds.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace AlgebraicNumberTheory
 
 open scoped IsMulCommutative
 
-universe u v
+universe u v w
 
 /-- The chosen copy of a finite Galois extension in the separable closure. -/
 def finiteGaloisFieldRange
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
     IntermediateField K (SeparableClosure K) :=
   AlgHom.fieldRange
@@ -36,7 +40,7 @@ def finiteGaloisFieldRange
 
 /-- The chosen embedding identifies the extension with its field range. -/
 def finiteGaloisFieldRangeEquiv
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
     L ≃ₐ[K] finiteGaloisFieldRange K L :=
   AlgEquiv.ofInjectiveField
@@ -44,14 +48,14 @@ def finiteGaloisFieldRangeEquiv
 
 /-- The chosen field-range model is finite-dimensional over the base. -/
 instance finiteGaloisFieldRange_finiteDimensional
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
     FiniteDimensional K (finiteGaloisFieldRange K L) :=
   (finiteGaloisFieldRangeEquiv K L).toLinearEquiv.finiteDimensional
 
 /-- The chosen field-range model is Galois over the base. -/
 instance finiteGaloisFieldRange_isGalois
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
     IsGalois K (finiteGaloisFieldRange K L) :=
   IsGalois.of_algEquiv (finiteGaloisFieldRangeEquiv K L)
@@ -128,7 +132,7 @@ end AbelianCompositum
 
 section ConcreteAbelianCompositum
 
-variable (K L E : Type)
+variable (K : Type u) (L : Type v) (E : Type w)
 variable [Field K]
 variable [Field L] [Field E] [Algebra K L] [Algebra K E]
 variable [FiniteDimensional K L] [FiniteDimensional K E]

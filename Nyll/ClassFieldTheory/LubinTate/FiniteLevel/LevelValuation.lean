@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.CompleteDVF
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.CompleteDVF
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
 /-!
 # Uniqueness of the valuation on standard Lubin--Tate levels
@@ -18,6 +20,8 @@ needed by the genuine lower- and upper-numbering ramification groups.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

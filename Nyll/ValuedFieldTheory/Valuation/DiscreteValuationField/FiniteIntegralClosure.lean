@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
-import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
+public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianFinite
 
 /-!
 # Finite integral closures over complete DVFs
@@ -13,6 +16,8 @@ import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 This file provides record-free theorems for the integral closure
 of a complete-DVF valuation ring in a finite separable field extension.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -545,7 +550,7 @@ theorem exists_integralClosure_standard_completeDVF
       map_smul' := by
         intro r x
         change e (r * x) = (algebraMap B vL.valuationSubring r) * e x
-        simp [RingHom.algebraMap_toAlgebra] }
+        exact e.map_mul r x }
   have :
       IsAdicComplete (IsLocalRing.maximalIdeal B) B :=
     integralClosure_maximalIdeal_isAdicComplete_of_finite_separable

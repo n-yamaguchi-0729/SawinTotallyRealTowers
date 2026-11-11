@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.ZMod
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.LinearAlgebra.Basis.Basic
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.LinearAlgebra.FiniteDimensional.Defs
-import Mathlib.RingTheory.Finiteness.Basic
-import Mathlib.RingTheory.LaurentSeries
-import Mathlib.RingTheory.Localization.Away.Basic
-import Mathlib.RingTheory.RingHom.Finite
+module
+
+public import Mathlib.Algebra.Algebra.ZMod
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.LinearAlgebra.Basis.Basic
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.RingTheory.Finiteness.Basic
+public import Mathlib.RingTheory.LaurentSeries
+public import Mathlib.RingTheory.Localization.Away.Basic
+public import Mathlib.RingTheory.RingHom.Finite
 
 /-!
 # Coefficient-field descent for Laurent series
@@ -23,6 +25,8 @@ coefficientwise map from `F_p((X))` to `k((X))`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -83,9 +87,9 @@ variable (p : ℕ) (k : Type u) [Fact p.Prime] [Field k] [CharP k p]
 /-- A finite field of characteristic `p` is finite-dimensional over its prime
 field `ZMod p`. -/
 theorem zmod_finiteDimensional_of_finite [Finite k] :
-    letI : Algebra (ZMod p) k := ZMod.algebra k p
+    let : Algebra (ZMod p) k := ZMod.algebra k p
     FiniteDimensional (ZMod p) k := by
-  let : Algebra (ZMod p) k := ZMod.algebra k p
+  intro sharedOwner1
   have : Fintype k := Fintype.ofFinite k
   exact Module.finite_def.2 <| by
     simpa using
@@ -95,9 +99,9 @@ theorem zmod_finiteDimensional_of_finite [Finite k] :
 /-- Finite generation of `k⟦X⟧` over `F_p⟦X⟧`, for a finite coefficient
 field `k` of characteristic `p`. -/
 theorem zmodPowerSeries_moduleFinite [Finite k] :
-    letI : Algebra (ZMod p) k := ZMod.algebra k p
+    let : Algebra (ZMod p) k := ZMod.algebra k p
     Module.Finite (ZMod p)⟦X⟧ k⟦X⟧ := by
-  let : Algebra (ZMod p) k := ZMod.algebra k p
+  intro sharedOwner1
   have : FiniteDimensional (ZMod p) k :=
     zmod_finiteDimensional_of_finite p k
   exact powerSeries_moduleFinite_of_finiteDimensional (R := ZMod p) (A := k)
@@ -282,7 +286,9 @@ noncomputable def zmodLaurentCoeffCoord {ι : Type*} [Algebra (ZMod p) k]
       by_contra hlt
       have hzero : f.coeff n = 0 :=
         HahnSeries.coeff_eq_zero_of_lt_order (not_le.mp hlt)
-      exact hn (by simp [hzero]))
+      exact hn (by
+        change b.repr (f.coeff n) i = 0
+        rw [hzero, map_zero, Finsupp.zero_apply]))
 
 omit [CharP k p] in
 /--
@@ -301,15 +307,14 @@ theorem zmodLaurentCoeffCoord_coeff {ι : Type*} [Algebra (ZMod p) k]
 
 /-- Finite generation of `k((X))` as a module over `F_p((X))`. -/
 theorem zmodLaurent_moduleFinite [Finite k] :
-    letI : Algebra ((ZMod p)⸨X⸩) (k⸨X⸩) :=
+    let : Algebra ((ZMod p)⸨X⸩) (k⸨X⸩) :=
       zmodLaurentCoeffAlgebra p k
     Module.Finite ((ZMod p)⸨X⸩) (k⸨X⸩) := by
+  intro laurentAlgebra
   classical
   let : Algebra (ZMod p) k := ZMod.algebra k p
   have : FiniteDimensional (ZMod p) k :=
     zmod_finiteDimensional_of_finite p k
-  let : Algebra ((ZMod p)⸨X⸩) (k⸨X⸩) :=
-    zmodLaurentCoeffAlgebra p k
   let b : Module.Basis (Fin (Module.finrank (ZMod p) k)) (ZMod p) k :=
     Module.finBasis (ZMod p) k
   let gens : Finset k⸨X⸩ :=
@@ -364,11 +369,10 @@ theorem zmodLaurentCoeffMap_finite [Finite k] :
 /-- Finite-dimensionality of `k((X))` over the literal prime-field Laurent
 series `F_p((X))`. -/
 theorem zmodLaurent_finiteDimensional [Finite k] :
-    letI : Algebra ((ZMod p)⸨X⸩) (k⸨X⸩) :=
+    let : Algebra ((ZMod p)⸨X⸩) (k⸨X⸩) :=
       zmodLaurentCoeffAlgebra p k
     FiniteDimensional ((ZMod p)⸨X⸩) (k⸨X⸩) := by
-  let : Algebra ((ZMod p)⸨X⸩) (k⸨X⸩) :=
-    zmodLaurentCoeffAlgebra p k
+  intro sharedOwner1
   exact zmodLaurent_moduleFinite p k
 
 end FiniteCoefficientLaurent

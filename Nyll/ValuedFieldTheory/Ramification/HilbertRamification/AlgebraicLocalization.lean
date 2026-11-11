@@ -4,19 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Localization and decomposition comparison for decomposition groups
@@ -27,6 +30,8 @@ the Galois group of the localization over the completed base field.  The
 localization is algebraic, not the
 whole metric completion in infinite degree.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -142,10 +147,12 @@ theorem valuationPreservingCompletionRingEquiv_mem_localization
   let : SMul K w.1.Completion := hK.toSMul
   let := AbsoluteValue.completionAlgebra vK w.1 w.2
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
-  apply IntermediateField.adjoin_induction
-      (p := fun x (_ : x ∈ E) =>
+  refine IntermediateField.adjoin_induction
+      (F := vK.Completion)
+      (motive := fun x (_ : x ∈ E) =>
         valuationPreservingCompletionRingEquiv vK w σ hσ x ∈ E)
       (s := Set.range (AbsoluteValue.toCompletion w.1))
+      (x := z) ?_ ?_ ?_ ?_ ?_ hz
   · intro x hx
     rcases hx with ⟨a, rfl⟩
     rw [valuationPreservingCompletionRingEquiv_toCompletion]
@@ -162,7 +169,6 @@ theorem valuationPreservingCompletionRingEquiv_mem_localization
     simpa only [map_inv₀] using E.inv_mem hx'
   · intro x y hx hy hx' hy'
     simpa only [map_mul] using E.mul_mem hx' hy'
-  · exact hz
 
 /-- The inverse completion lift also preserves `L K_v`. -/
 theorem valuationPreservingCompletionRingEquiv_symm_mem_localization
@@ -174,10 +180,12 @@ theorem valuationPreservingCompletionRingEquiv_symm_mem_localization
   let : SMul K w.1.Completion := hK.toSMul
   let := AbsoluteValue.completionAlgebra vK w.1 w.2
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
-  apply IntermediateField.adjoin_induction
-      (p := fun x (_ : x ∈ E) =>
+  refine IntermediateField.adjoin_induction
+      (F := vK.Completion)
+      (motive := fun x (_ : x ∈ E) =>
         (valuationPreservingCompletionRingEquiv vK w σ hσ).symm x ∈ E)
       (s := Set.range (AbsoluteValue.toCompletion w.1))
+      (x := z) ?_ ?_ ?_ ?_ ?_ hz
   · intro x hx
     rcases hx with ⟨a, rfl⟩
     have hgen := valuationPreservingCompletionRingEquiv_toCompletion
@@ -212,20 +220,17 @@ theorem valuationPreservingCompletionRingEquiv_symm_mem_localization
     simpa only [map_inv₀] using E.inv_mem hx'
   · intro x y hx hy hx' hy'
     simpa only [map_mul] using E.mul_mem hx' hy'
-  · exact hz
 
 /-- A valuation-preserving automorphism of `L` extends to a
 `K_v`-automorphism of the algebraic localization. -/
 def valuationPreservingLocalizationAlgEquiv
     (σ : L ≃ₐ[K] L) (hσ : ∀ x : L, w.1 (σ x) = w.1 x) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalization vK w.1 w.2 ≃ₐ[vK.Completion]
       AbsoluteValue.algebraicLocalization vK w.1 w.2 := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner1 sharedOwner4
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   let e := valuationPreservingCompletionRingEquiv vK w σ hσ
   exact
@@ -255,15 +260,13 @@ def valuationPreservingLocalizationAlgEquiv
 
 @[simp] theorem valuationPreservingLocalizationAlgEquiv_toLocalization
     (σ : L ≃ₐ[K] L) (hσ : ∀ x : L, w.1 (σ x) = w.1 x) (x : L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     valuationPreservingLocalizationAlgEquiv vK w σ hσ
         (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 x) =
       AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 (σ x) := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   apply Subtype.ext
   exact valuationPreservingCompletionRingEquiv_toCompletion vK w σ hσ x
 
@@ -308,14 +311,12 @@ theorem localizationAbsoluteValue_algEquiv
       letI : SMul K w.1.Completion := hK.toSMul
       letI := AbsoluteValue.completionAlgebra vK w.1 w.2
       AbsoluteValue.algebraicLocalization vK w.1 w.2) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2 (τ x) =
       AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2 x := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   let vhat := AbsoluteValue.completionAbsoluteValue vK
   let wloc := AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
@@ -383,15 +384,13 @@ theorem localizationAlgEquivRestrict_toLocalization
       AbsoluteValue.algebraicLocalization vK w.1 w.2 ≃ₐ[vK.Completion]
         AbsoluteValue.algebraicLocalization vK w.1 w.2)
     (x : L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
         (localizationAlgEquivRestrict vK w τ x) =
       τ (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 x) := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   let i : L →+* E := AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
   let : Algebra K E := (i.comp (algebraMap K L)).toAlgebra
@@ -507,14 +506,12 @@ theorem decompositionGroupToLocalization_localizationToDecompositionGroup
       letI := AbsoluteValue.completionAlgebra vK w.1 w.2
       AbsoluteValue.algebraicLocalization vK w.1 w.2 ≃ₐ[vK.Completion]
         AbsoluteValue.algebraicLocalization vK w.1 w.2) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     decompositionGroupToLocalization vK hvK w
         (localizationToDecompositionGroup vK hvK w τ) = τ := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let i := AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
   let ρ := decompositionGroupToLocalization vK hvK w
     (localizationToDecompositionGroup vK hvK w τ)
@@ -536,15 +533,13 @@ omit [IsGalois K L] in
 /-- Extension from the decomposition group respects composition. -/
 theorem decompositionGroupToLocalization_mul
     (σ τ : absoluteValueDecompositionGroup K w.1) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     decompositionGroupToLocalization vK hvK w (σ * τ) =
       decompositionGroupToLocalization vK hvK w σ *
         decompositionGroupToLocalization vK hvK w τ := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let i := AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
   let ρL := decompositionGroupToLocalization vK hvK w (σ * τ)
   let ρR := decompositionGroupToLocalization vK hvK w σ *

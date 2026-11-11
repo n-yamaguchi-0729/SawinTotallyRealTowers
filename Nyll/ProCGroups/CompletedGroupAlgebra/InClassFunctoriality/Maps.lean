@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.StageMaps
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.StageMaps
 
 /-!
 # Completed Group Algebra / Functoriality Within a Class / Maps
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.StageMaps
 This module lifts hereditary \(C\)-indexed finite-stage maps to the named completed carrier and
 proves their algebraic, topological, and dense-subalgebra characterizations.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

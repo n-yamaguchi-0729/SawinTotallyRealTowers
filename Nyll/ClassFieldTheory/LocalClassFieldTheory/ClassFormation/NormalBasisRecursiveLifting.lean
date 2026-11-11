@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGradedLifting
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FilteredLiftingSequence
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGradedLifting
 
 /-!
 # Infinite lifting on the normal-basis principal-unit filtration
@@ -15,6 +17,8 @@ lifting is iterated, its correction factors are multiplied, and completeness
 of the local field turns the resulting formal recursion into an actual norm
 or coboundary in the initial subgroup.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology
@@ -54,13 +58,13 @@ private theorem filteredCorrectionProduct_eq_chosenNormalBasisProduct
 normal-basis level, an actually fixed unit is the norm of a unit at the same
 level. -/
 theorem exists_chosenNormalBasisPrincipalUnit_fixed_is_tateNorm :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ c : Nat, ∀ n : Nat, c ≤ n → ∀ a : 𝒪[L]ˣ,
       a ∈ chosenNormalBasisPrincipalUnitSet K L n →
       (∀ sigma : Gal(L / K), sigma • a = a) →
       ∃ b : 𝒪[L]ˣ, b ∈ chosenNormalBasisPrincipalUnitSet K L n ∧
         a = tateNorm (Gal(L / K)) 𝒪[L]ˣ b := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   rcases exists_chosenNormalBasisPrincipalUnit_h0_oneStep_lifting
       (K := K) (L := L) with ⟨cStep, hStep⟩
   rcases exists_tendsto_chosenNormalBasisPrincipalUnitCorrectionProduct
@@ -152,13 +156,13 @@ normal-basis level. -/
 theorem exists_chosenNormalBasisPrincipalUnit_normOne_is_sigmaMinusOne
     (g : Gal(L/K)) (hgen : ∀ sigma : Gal(L / K),
       sigma ∈ Subgroup.zpowers g) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ c : Nat, ∀ n : Nat, c ≤ n → ∀ a : 𝒪[L]ˣ,
       a ∈ chosenNormalBasisPrincipalUnitSet K L n →
       tateNorm (Gal(L / K)) 𝒪[L]ˣ a = 1 →
       ∃ b : 𝒪[L]ˣ, b ∈ chosenNormalBasisPrincipalUnitSet K L n ∧
         a = sigmaMinusOne (Gal(L / K)) 𝒪[L]ˣ g b := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   rcases exists_chosenNormalBasisPrincipalUnit_hMinusOne_oneStep_lifting
       (K := K) (L := L) g hgen with ⟨cStep, hStep⟩
   rcases exists_tendsto_chosenNormalBasisPrincipalUnitCorrectionProduct

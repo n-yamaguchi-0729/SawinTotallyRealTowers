@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Abelian
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
+module
+
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
 
 /-!
 # Absolute abelianization inside the separable closure
@@ -20,11 +22,15 @@ construction uniform in every characteristic.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped IsMulCommutative
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 
 /-- The closure of the commutator subgroup of the separable absolute Galois
 group, packaged as a closed subgroup. -/

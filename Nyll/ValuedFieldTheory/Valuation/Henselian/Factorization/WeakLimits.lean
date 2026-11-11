@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.AdicLimits
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.AdicLimits
 
 /-!
 # maximal-ideal limit from displayed factors
@@ -13,6 +15,8 @@ import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.AdicLimits
 This file carries the displayed `C π` factors from the infinite Hensel
 prefixes through the maximal-ideal complete-limit argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 

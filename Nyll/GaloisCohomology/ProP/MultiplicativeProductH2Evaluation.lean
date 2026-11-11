@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.Algebra.Group.TypeTags.Basic
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.Algebra.Group.TypeTags.Basic
 
 /-!
 # Degree-two cohomology detected by product coordinates
@@ -19,6 +21,8 @@ An actual one-cochain primitive in each coordinate combines into a product
 primitive.  Consequently evaluation detects degree-two classes, including
 for an infinite product of multiplicative coefficient groups.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Cohomology
 open CategoryTheory groupCohomology

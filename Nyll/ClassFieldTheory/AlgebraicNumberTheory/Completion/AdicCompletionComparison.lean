@@ -4,15 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionMap
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
-import Mathlib.NumberTheory.RamificationInertia.Valuation
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
+public import Mathlib.NumberTheory.RamificationInertia.Valuation
+public import Mathlib.RingTheory.RamificationInertia.Ramification
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Comparing the exact-extension and concrete adic-completion maps
@@ -23,6 +28,8 @@ completions at the corresponding finite places.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -325,7 +332,7 @@ theorem finitePlaceExtensionAdicCompletionMap_valued
   let k : K := WithVal.equiv (w.valuation K) r
   have hkval : w.valuation K k = Valued.v x := by
     change Valued.v r = Valued.v x
-    rw [← HeightOneSpectrum.adicCompletion.valued_toCompletion]
+    rw [← HeightOneSpectrum.adicCompletion.valued_toCompletion_apply]
     exact hr.symm
   have hk : k ≠ 0 := by
     intro hk
@@ -382,8 +389,9 @@ theorem finitePlaceExtensionAdicCompletionMap_valued
           rw [finitePlaceExtensionAdicCompletionMap_coe,
             HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
     _ = (w.valuation K k) ^
-          w.asIdeal.ramificationIdx' W.asIdeal :=
-      (HeightOneSpectrum.valuation_liesOver L w W k).symm
+          w.asIdeal.ramificationIdx' W.asIdeal := by
+      rw [Ideal.ramificationIdx'_eq_ramificationIdx w.asIdeal W.asIdeal w.ne_bot]
+      exact (HeightOneSpectrum.valuation_liesOver L w W k).symm
     _ = Valued.v x ^
           w.asIdeal.ramificationIdx' W.asIdeal := by
       rw [hkval]

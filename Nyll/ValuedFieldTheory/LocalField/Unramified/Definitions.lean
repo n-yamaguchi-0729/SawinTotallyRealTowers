@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationInvariants
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
 
 /-!
 # Finite and algebraic unramified valued extensions
@@ -13,6 +18,8 @@ import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 Finite unramified valued extensions are expressed directly by the
 degree equality and residue separability condition.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -23,15 +30,39 @@ open ValuationTheory.DiscreteValuationField
 namespace ValuationTheory.DiscreteValuationField.ValuedExtension
 
 variable {K : Type u} {L : Type w} [Field K] [Field L]
-variable [Algebra K L] [FiniteDimensional K L]
+variable [Algebra K L]
 
-/-- A finite valued extension is unramified
-when its residue extension is separable and its field degree equals its
-residue degree. -/
+/-- A finite valued extension is unramified when its residue extension is separable and its
+field degree equals its residue degree. Unlike `HasRamificationIndexOne` (the historical
+`IsUnramified`), this predicate requires residue separability and the degree equality.
+The explicit finite-dimensionality argument retains the finite-extension contract. -/
 def IsFiniteUnramified (base : DVF.{u, v} K) (target : DVF.{w, x} L)
-    [base.valuation.HasExtension target.valuation] : Prop :=
+    [FiniteDimensional K L] [base.valuation.HasExtension target.valuation] : Prop :=
   Algebra.IsSeparable base.residueField target.residueField ∧
     degree base target = residueDegree base target
+
+variable [FiniteDimensional K L]
+
+/-- For finite separable extensions of complete discretely valued fields, finite
+unramifiedness is precisely residue separability together with ramification index one.
+The residue-separability condition is retained explicitly on the right-hand side. -/
+theorem isFiniteUnramified_iff_residueSeparable_and_hasRamificationIndexOne
+    (base : CompleteDVF.{u, v} K) (target : CompleteDVF.{w, x} L)
+    [base.valuation.HasExtension target.valuation]
+    [Algebra.IsSeparable K L]
+    [IsScalarTower base.valuationSubring target.valuationSubring L] :
+    IsFiniteUnramified base.toDVF target.toDVF ↔
+      Algebra.IsSeparable base.residueField target.residueField ∧
+        HasRamificationIndexOne base.toDVF target.toDVF := by
+  have he : HasRamificationIndexOne base.toDVF target.toDVF ↔
+      residueDegree base.toDVF target.toDVF = degree base.toDVF target.toDVF :=
+    (open LocalFieldTheory.DiscreteValuationField.ValuedExtension in
+      ramificationIndex_eq_one_iff_residueDegree_eq_degree_of_finite_separable base target)
+  constructor
+  · rintro ⟨hsep, hdegree⟩
+    exact ⟨hsep, he.mpr hdegree.symm⟩
+  · rintro ⟨hsep, hindex⟩
+    exact ⟨hsep, (he.mp hindex).symm⟩
 
 end ValuationTheory.DiscreteValuationField.ValuedExtension
 

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteIndexTransfer
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteIndexTransfer
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Prime-to-index injectivity of continuous degree-two restriction
@@ -22,6 +24,8 @@ This proves injectivity without a cohomological corestriction package, finite-st
 or a normality assumption. The only local instances record local compactness of the closed
 subgroup and the finite index of its preimage under a surjective projection.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

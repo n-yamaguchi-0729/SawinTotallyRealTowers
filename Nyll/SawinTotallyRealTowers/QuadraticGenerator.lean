@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Even
-import Mathlib.FieldTheory.KummerExtension
-import Mathlib.FieldTheory.KummerPolynomial
+module
+
+public import Mathlib.Algebra.Group.Even
+public import Mathlib.FieldTheory.KummerExtension
+public import Mathlib.FieldTheory.KummerPolynomial
 
 /-!
 # A nonsquare rational generator for a quadratic extension
@@ -16,6 +18,8 @@ a Kummer extension. The resulting generator has irreducible polynomial
 `X ^ 2 - C d`, which forces its rational square `d` to be nonzero and
 nonsquare. No ramification or reality assumption is involved.
 -/
+
+@[expose] public section
 
 universe u
 

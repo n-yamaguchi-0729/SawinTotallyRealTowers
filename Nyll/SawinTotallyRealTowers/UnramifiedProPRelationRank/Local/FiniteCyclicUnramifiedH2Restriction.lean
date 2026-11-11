@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisBaseUnitsH2Naturality
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitsH2
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisBaseUnitsH2Naturality
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitsH2
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 
 /-!
 # Vanishing of cyclic units cohomology under unramified restriction
@@ -20,6 +22,8 @@ Inflation of a cyclic degree-two units class followed by restriction vanishes fo
 unramified extension of the specified degree. The proof transports the base-units
 comparison to units cohomology.
 -/
+
+@[expose] public section
 
 open CategoryTheory CategoryTheory.Limits
 open scoped ValuativeRel

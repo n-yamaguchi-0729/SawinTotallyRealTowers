@@ -4,18 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.LinearAlgebra.Determinant
-import Mathlib.RingTheory.Norm.Transitivity
-import Mathlib.RingTheory.Valuation.Integral
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+module
+
+public import Mathlib.LinearAlgebra.Determinant
+public import Mathlib.RingTheory.Norm.Transitivity
+public import Mathlib.RingTheory.Valuation.Integral
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 /-!
 # Norms in valued field extensions
 
 Packages field norms as homomorphisms on units and restricts them to valuation
 rings and their unit groups under the appropriate integral hypotheses.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -46,7 +50,9 @@ lemma mulLeft_surjective_of_ne_zero {x : L} (hx : x ≠ 0) :
     Function.Surjective (LinearMap.mulLeft K x) := by
   intro y
   refine ⟨x⁻¹ * y, ?_⟩
-  simp [LinearMap.mulLeft, hx]
+  simp only [LinearMap.mulLeft, ZeroHom.toFun_eq_coe, AddMonoidHom.toZeroHom_coe,
+    AddMonoidHom.coe_mulLeft, LinearMap.coe_mk, AddHom.coe_mk, ne_eq, hx, not_false_eq_true,
+    mul_inv_cancel_left₀]
 
 /-- A bijective linear endomorphism has nonzero determinant. -/
 lemma det_ne_zero_of_bijective (f : L →ₗ[K] L) (hf : Function.Bijective f) :
@@ -83,14 +89,17 @@ extension degree. -/
 lemma normUnits_mapBaseUnitsToExtensionUnits_apply_coe (x : Kˣ) :
     ((normUnits K L (mapBaseUnitsToExtensionUnits K L x) : Kˣ) : K) =
       (x : K) ^ Module.finrank K L := by
-  simp [normUnits, mapBaseUnitsToExtensionUnits, Algebra.norm_algebraMap]
+  simp only [normUnits, mapBaseUnitsToExtensionUnits, RingHom.toMonoidHom_eq_coe, Units.coe_map,
+    MonoidHom.coe_ofClass, Algebra.norm_algebraMap]
 
 /-- The unit norm of an embedded base unit is the degree-th power of that base unit. -/
 lemma normUnits_algebraMap_base (x : Kˣ) :
     normUnits K L (mapBaseUnitsToExtensionUnits K L x) =
       Units.map (MonoidHom.id K) (x ^ Module.finrank K L) := by
   ext
-  simp [normUnits, mapBaseUnitsToExtensionUnits, Algebra.norm_algebraMap]
+  simp only [normUnits, mapBaseUnitsToExtensionUnits, RingHom.toMonoidHom_eq_coe, Units.coe_map,
+    MonoidHom.coe_ofClass, Algebra.norm_algebraMap, Units.map_id, MonoidHom.id_apply,
+    Units.val_pow_eq_pow_val]
 
 /-- The field norm is invariant under `K`-algebra automorphisms of the extension. -/
 lemma normUnits_algEquiv_apply (σ : L ≃ₐ[K] L) (x : Lˣ) :
@@ -214,11 +223,12 @@ def normIntegerUnits
   }
   map_one' := by
     ext
-    simp [normIntegerUnitsValue]
+    simp only [normIntegerUnitsValue, Units.val_one, OneMemClass.coe_one, map_one]
   map_mul' := by
     intro x y
     ext
-    simp [normIntegerUnitsValue]
+    simp only [normIntegerUnitsValue, Units.val_mul, Subring.coe_mul, map_mul,
+      MulMemClass.mk_mul_mk]
 
 /-- Coercing the integer-unit norm to the base field yields the algebra norm of the
 original unit. -/
@@ -245,7 +255,9 @@ lemma mapBaseUnits_normUnits_eq_prod_gal [FiniteDimensional K L] [IsGalois K L]
     mapBaseUnitsToExtensionUnits K L (normUnits K L x) =
       ∏ σ : L ≃ₐ[K] L, Units.mapEquiv σ.toMulEquiv x := by
   ext
-  simp [mapBaseUnitsToExtensionUnits, normUnits, Algebra.norm_eq_prod_automorphisms]
+  simp only [mapBaseUnitsToExtensionUnits, RingHom.toMonoidHom_eq_coe, normUnits, Units.coe_map,
+    MonoidHom.coe_ofClass, Algebra.norm_eq_prod_automorphisms, Units.coe_prod, Units.coe_mapEquiv,
+    MulEquiv.coe_mk, AlgEquiv.toEquiv_eq_coe, EquivLike.coe_coe]
 
 end Valuation
 

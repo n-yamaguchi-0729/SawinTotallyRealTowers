@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Transfer
-import Mathlib.GroupTheory.Abelianization.Defs
+module
+
+public import Mathlib.GroupTheory.Transfer
+public import Mathlib.GroupTheory.Abelianization.Defs
 
 /-!
 # Naturality of transfer under a quotient
@@ -14,6 +16,8 @@ This file supplies the group-theoretic source used in transfer--norm naturality.
 has kernel contained in a finite-index subgroup, it identifies the two left-coset spaces and
 transfer commutes with the induced maps on abelianizations.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -183,7 +187,7 @@ private theorem leftTransversalMapOfSurjective_smul
       (mem_leftTransversalMapOfSurjective_iff
         f hf H hker T t).1 ht
     refine ⟨p * x, Set.smul_mem_smul_set (a := p) hx, ?_⟩
-    simp [map_mul, hfx]
+    simp only [map_mul, hfx, smul_eq_mul]
 
 private theorem leftTransversals_diff_natural_of_surjective
     (f : P →* Q) (hf : Function.Surjective f)
@@ -216,7 +220,7 @@ private theorem leftTransversals_diff_natural_of_surjective
   intro q _
   apply congrArg Abelianization.of
   apply Subtype.ext
-  simp [e]
+  simp only [MonoidHom.subgroupMap_apply_coe, map_mul, map_inv, Equiv.symm_apply_apply, e]
 
 /-- Transfer is natural for a surjective homomorphism whose kernel is
 contained in the finite-index subgroup.  Both transfer maps are Mathlib's

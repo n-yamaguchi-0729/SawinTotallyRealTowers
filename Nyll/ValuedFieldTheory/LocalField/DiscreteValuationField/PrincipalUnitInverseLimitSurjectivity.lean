@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.Core
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.Core
 
 /-!
 # Compact surjectivity criterion for the principal-unit inverse limit
@@ -18,6 +20,8 @@ of a fixed target form a decreasing sequence of nonempty compact closed sets.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -44,13 +48,12 @@ theorem Internal.surjective_principalUnitInverseLimitCarrier_of_surjective_coord
     (F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, v} K)
     {A : Type w} [TopologicalSpace A] [CompactSpace A]
     (g : A → Internal.principalUnitInverseLimitCarrier F) :
-    letI : (n : ℕ) → TopologicalSpace (Internal.principalUnitQuotientCarrier F n) :=
+    let : (n : ℕ) → TopologicalSpace (Internal.principalUnitQuotientCarrier F n) :=
       fun _ => ⊥
     Continuous g →
       (∀ n, Function.Surjective (fun a : A => (g a).1 n)) →
         Function.Surjective g := by
-  let : (n : ℕ) → TopologicalSpace (Internal.principalUnitQuotientCarrier F n) :=
-    fun _ => ⊥
+  intro sharedOwner1
   let : (n : ℕ) → DiscreteTopology (Internal.principalUnitQuotientCarrier F n) :=
     fun _ => ⟨rfl⟩
   intro hg hsur y
@@ -93,15 +96,13 @@ theorem Internal.surjective_additive_principalUnitInverseLimitCarrier_of_surject
     (F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, v} K)
     {A : Type w} [TopologicalSpace A] [CompactSpace A]
     (g : A → Additive (Internal.principalUnitInverseLimitCarrier F)) :
-    letI : (n : ℕ) → TopologicalSpace (Internal.principalUnitQuotientCarrier F n) :=
+    let : (n : ℕ) → TopologicalSpace (Internal.principalUnitQuotientCarrier F n) :=
       fun _ => ⊥
     Continuous g →
       (∀ n, Function.Surjective (fun a : A =>
         Additive.ofMul ((Additive.toMul (g a)).1 n))) →
         Function.Surjective g := by
-  let : (n : ℕ) → TopologicalSpace (Internal.principalUnitQuotientCarrier F n) :=
-    fun _ => ⊥
-  intro hg hsur
+  intro sharedOwner1 hg hsur
   let gm : A → Internal.principalUnitInverseLimitCarrier F := fun a =>
     Additive.toMul (g a)
   have hgm : Continuous gm := hg

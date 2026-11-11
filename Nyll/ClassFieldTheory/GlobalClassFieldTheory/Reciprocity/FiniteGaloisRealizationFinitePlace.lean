@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationCore
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # Finite places in the compatible Galois realization
@@ -15,6 +18,8 @@ places and completions in the original number-field tower.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField
@@ -47,21 +52,16 @@ noncomputable def
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv K v) L) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv K v)
       (SeparableClosure ℚ) := by
-  letI : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  letI : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  letI : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   letI : IsScalarTower ℚ L (SeparableClosure ℚ) :=
     numberFieldTowerSeparableClosureTopScalarTower L
   letI : Algebra.IsAlgebraic L (SeparableClosure ℚ) :=
@@ -81,22 +81,17 @@ theorem
     (w : AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv K v) L)
     (x : L) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     (numberFieldTowerFinitePlaceExtensionToSeparableClosure
       K L v w).1
         (algebraMap L (SeparableClosure ℚ) x) =
       w.1 x := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   let : IsScalarTower ℚ L (SeparableClosure ℚ) :=
     numberFieldTowerSeparableClosureTopScalarTower L
   let : Algebra.IsAlgebraic L (SeparableClosure ℚ) :=
@@ -114,23 +109,18 @@ theorem
     (v : HeightOneSpectrum (𝓞 K))
     (w : AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv K v) L) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureBaseAlgebra K L
-    letI : Algebra L (SeparableClosure ℚ) :=
+    let : Algebra L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureTopAlgebra L
-    letI : IsScalarTower K L (SeparableClosure ℚ) :=
+    let : IsScalarTower K L (SeparableClosure ℚ) :=
       numberFieldTowerSeparableClosureScalarTower K L
     (numberFieldTowerFinitePlaceExtensionToSeparableClosure
         K L v w).1.comp
         (f := algebraMap L (SeparableClosure ℚ))
         (algebraMap L (SeparableClosure ℚ)).injective =
       w.1 := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   ext x
   exact
     numberFieldTowerFinitePlaceExtensionToSeparableClosure_algebraMap

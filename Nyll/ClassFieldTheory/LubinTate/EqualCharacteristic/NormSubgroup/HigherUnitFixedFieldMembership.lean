@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitLevelMapFixed
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitLevelMapFixed
 
 /-!
 # LubinTate the explicit norm-subgroup computation: the standard level lies in the higher-unit
@@ -12,6 +14,10 @@ fixed field
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 noncomputable section
 
@@ -23,22 +29,22 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 noncomputable local instance equalCharacteristicHigherUnitMembershipBaseAlgebra
-    (F : LocalField K) :
+    (F : LocalField.{u, v} K) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra F
 
 noncomputable local instance equalCharacteristicHigherUnitMembershipLevelAlgebra
-    (F : LocalField K) (n : ℕ) :
+    (F : LocalField.{u, v} K) (n : ℕ) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedLevelField F n) :=
   equalCharacteristicCompletedFrobeniusFixedLevelAlgebra F n
 
 local instance equalCharacteristicHigherUnitMembershipScalarTower
-    (F : LocalField K) (n : ℕ) :
+    (F : LocalField.{u, v} K) (n : ℕ) :
     IsScalarTower F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField)
       (equalCharacteristicCompletedLevelField F n) :=
@@ -48,7 +54,7 @@ local instance equalCharacteristicHigherUnitMembershipScalarTower
 `equalCharacteristicLubinTateLevelFieldToCompleted_mem_fixedField_of_mem_higherUnit`. -/
 theorem
     equalCharacteristicLubinTateLevelFieldToCompleted_mem_fixedField_of_mem_higherUnit
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n)

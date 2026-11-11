@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracketRecursion
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaAtCompletedLevel
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ThetaAtCompletedLevel
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracketRecursion
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaAtCompletedLevel
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
 
 /-!
 # The completed theta-intertwining theorem: the formal standard bracket at a completed division
@@ -25,6 +28,8 @@ and follows the source torsion orbit until the finite bracket terminates.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open Filter
@@ -40,16 +45,6 @@ namespace EqualCharacteristic
 open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
-
-private instance equalCharacteristicDirectBracketLevelCharP
-    (F : LocalField.{u, v} K)
-    [CharP K F.residueCharacteristic] (n : ℕ) :
-    CharP (equalCharacteristicCompletedLevelField F n)
-      F.residueCharacteristic :=
-  charP_of_injective_algebraMap
-    (algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)
-      (equalCharacteristicCompletedLevelField F n)).injective
-    F.residueCharacteristic
 
 noncomputable local instance equalCharacteristicDirectBracketBaseValuationIsNontrivial
     (F : LocalField.{u, v} K) :
@@ -116,7 +111,7 @@ private noncomputable local instance
 private theorem equalCharacteristicDirectBracketCoefficientHom_continuous
     (F : LocalField.{u, v} K) (n : ℕ) :
     Continuous (equalCharacteristicCompletedLevelCoefficientHom F n) :=
-  continuous_of_discreteTopology
+  equalCharacteristicCompletedLevelCoefficientHom_continuous F n
 
 private noncomputable local instance equalCharacteristicDirectBracketCoefficientAlgebra
     (F : LocalField.{u, v} K) (n : ℕ) :
@@ -143,14 +138,8 @@ private theorem equalCharacteristicDirectBracketEvaluation_hasEval_of_hasSubst
     (a : ((AlgebraicClosure F.residueField)⟦X⟧)⟦X⟧)
     (ha : PowerSeries.HasSubst a) :
     PowerSeries.HasEval
-      (equalCharacteristicCompletedLevelEvaluation F n x hx a) := by
-  exact ha.hasEval.map
-    (φ := equalCharacteristicCompletedLevelEvaluation F n x hx)
-    (by
-      rw [equalCharacteristicCompletedLevelEvaluation,
-        PowerSeries.coe_eval₂Hom]
-      exact PowerSeries.continuous_eval₂
-        (equalCharacteristicDirectBracketCoefficientHom_continuous F n) hx)
+      (equalCharacteristicCompletedLevelEvaluation F n x hx a) :=
+  equalCharacteristicCompletedLevelEvaluation_hasEval_of_hasSubst F n x hx a ha
 
 private theorem equalCharacteristicDirectBracketEvaluation_subst
     (F : LocalField.{u, v} K) (n : ℕ)
@@ -163,20 +152,8 @@ private theorem equalCharacteristicDirectBracketEvaluation_subst
     equalCharacteristicCompletedLevelEvaluation F n x hx
         (PowerSeries.subst a f) =
       equalCharacteristicCompletedLevelEvaluation F n
-        (equalCharacteristicCompletedLevelEvaluation F n x hx a) haEval f := by
-  let R := (AlgebraicClosure F.residueField)⟦X⟧
-  let S := Valued.integer (equalCharacteristicCompletedLevelField F n)
-  simp only [equalCharacteristicCompletedLevelEvaluation,
-    PowerSeries.coe_eval₂Hom]
-  change PowerSeries.eval₂ (algebraMap R S) x (PowerSeries.subst a f) =
-    PowerSeries.eval₂ (algebraMap R S)
-      (PowerSeries.eval₂ (algebraMap R S) x a) f
-  simpa only [PowerSeries.eval₂, PowerSeries.subst, Function.const_apply]
-    using
-      (MvPowerSeries.eval₂_subst
-        (R := R) (S := R) (T := S)
-        (a := fun _ : Unit ↦ a) ha.const
-        (PowerSeries.hasEval hx) f)
+        (equalCharacteristicCompletedLevelEvaluation F n x hx a) haEval f :=
+  equalCharacteristicCompletedLevelEvaluation_subst_at F n x hx a f ha haEval
 
 private theorem equalCharacteristicCompletedLevelEvaluation_eq_of_point_eq
     (F : LocalField.{u, v} K) (n : ℕ)
@@ -184,9 +161,8 @@ private theorem equalCharacteristicCompletedLevelEvaluation_eq_of_point_eq
     (hx : PowerSeries.HasEval x) (hy : PowerSeries.HasEval y)
     (hxy : x = y) :
     equalCharacteristicCompletedLevelEvaluation F n x hx =
-      equalCharacteristicCompletedLevelEvaluation F n y hy := by
-  subst y
-  rfl
+      equalCharacteristicCompletedLevelEvaluation F n y hy :=
+  equalCharacteristicCompletedLevelEvaluation_congr F n x y hx hy hxy
 
 private theorem equalCharacteristicCompletedLevelCoefficientHom_C_base
     (F : LocalField.{u, v} K) (n : ℕ) (c : F.residueField) :

@@ -4,14 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
-import Nyll.ValuedFieldTheory.Valuation.Completion.ExtensionInvariants
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
+public import Nyll.ValuedFieldTheory.Valuation.Completion.ExtensionInvariants
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # Integer rings in the two finite-place completion models
@@ -23,10 +32,14 @@ residue field of a rational finite-place completion.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v
 
 open AlgebraicNumberTheory.Valuations
 open LocalFieldTheory
@@ -35,7 +48,7 @@ open LocalFieldTheory.IsNonarchimedeanLocalField
 /-- Embed global integers into the valuation ring of their finite-place
 completion. -/
 noncomputable def finitePlaceIntegerToCompletion
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) :
     (𝓞 K) →+* 𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] :=
   RingHom.codRestrict
@@ -61,7 +74,7 @@ noncomputable def finitePlaceIntegerToCompletion
 
 @[simp]
 theorem finitePlaceIntegerToCompletion_coe
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
     ((finitePlaceIntegerToCompletion v x :
       𝒪[ChosenFinitePlaceBaseCompletion (K := K) v]) :
@@ -73,7 +86,7 @@ theorem finitePlaceIntegerToCompletion_coe
 standard finite-place embedding. -/
 @[simp]
 theorem finitePlaceCompletionRingEquiv_toCompletion
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     finitePlaceCompletionRingEquiv v
         (algebraMap K (ChosenFinitePlaceBaseCompletion (K := K) v) x) =
@@ -100,7 +113,7 @@ noncomputable def finitePlaceIdealResidueEquivLocalization
 /-- The residue field at a finite prime is canonically the residue field of
 its normalized absolute-value completion. -/
 noncomputable def finitePlaceIdealResidueEquivCompletion
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) :
     (𝓞 K ⧸ v.asIdeal) ≃+*
       𝓀[ChosenFinitePlaceBaseCompletion (K := K) v] := by
@@ -153,7 +166,7 @@ noncomputable def finitePlaceIdealResidueEquivCompletion
 
 @[simp]
 theorem finitePlaceIdealResidueEquivCompletion_apply_mk
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
     finitePlaceIdealResidueEquivCompletion v
         (Ideal.Quotient.mk v.asIdeal x) =
@@ -167,7 +180,7 @@ theorem finitePlaceIdealResidueEquivCompletion_apply_mk
 /-- The finite completion and its defining prime ideal have residue fields
 of the same cardinality. -/
 theorem finitePlaceCompletion_residueField_card
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) :
     Nat.card 𝓀[ChosenFinitePlaceBaseCompletion (K := K) v] =
       Nat.card (𝓞 K ⧸ v.asIdeal) :=
@@ -176,7 +189,7 @@ theorem finitePlaceCompletion_residueField_card
 /-- The canonical equivalence of completion fields identifies their two
 valuation rings. -/
 theorem finitePlaceCompletionRingEquiv_mem_integers_iff
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K))
     (x : ChosenFinitePlaceBaseCompletion (K := K) v) :
     finitePlaceCompletionRingEquiv v x ∈
@@ -204,7 +217,7 @@ theorem finitePlaceCompletionRingEquiv_mem_integers_iff
 /-- The canonical equivalence between the valuation ring of the
 absolute-value completion and mathlib's adic completion integers. -/
 noncomputable def finitePlaceCompletionIntegerRingEquiv
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (v : HeightOneSpectrum (𝓞 K)) :
     𝒪[ChosenFinitePlaceBaseCompletion (K := K) v] ≃+*
       v.adicCompletionIntegers K :=
@@ -219,7 +232,7 @@ noncomputable def finitePlaceCompletionIntegerRingEquiv
 localized completion and the concrete adic completion integers at its
 centre. -/
 noncomputable def chosenFinitePlaceLocalizedIntegerRingEquiv
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -269,7 +282,7 @@ noncomputable def chosenFinitePlaceLocalizedIntegerRingEquiv
 /-- The integer rings of the standard completion at the centre and of the
 chosen localized completion are canonically equivalent. -/
 noncomputable def standardToChosenLocalizedIntegerRingEquiv
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -278,15 +291,14 @@ noncomputable def standardToChosenLocalizedIntegerRingEquiv
       (K := K) (L := L) v (chosenFinitePlaceExtension (L := L) v)
     𝒪[ChosenFinitePlaceBaseCompletion (K := L) W] ≃+*
       𝒪[ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v] := by
-  let W := finitePlaceExtensionCentre
-    (K := K) (L := L) v (chosenFinitePlaceExtension (L := L) v)
+  intro W
   exact (finitePlaceCompletionIntegerRingEquiv W).trans
     (chosenFinitePlaceLocalizedIntegerRingEquiv (K := K) (L := L) v).symm
 
 /-- Embed global integers into the integer ring of the chosen localized
 completion, through the canonical comparison of completion models. -/
 noncomputable def chosenFinitePlaceIntegerToLocalizedCompletion
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -303,7 +315,7 @@ noncomputable def chosenFinitePlaceIntegerToLocalizedCompletion
 standard field embedding into the algebraic localization. -/
 @[simp]
 theorem chosenFinitePlaceIntegerToLocalizedCompletion_coe
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -374,7 +386,7 @@ theorem chosenFinitePlaceIntegerToLocalizedCompletion_coe
 /-- Restriction of a decomposition-group automorphism to global integers
 commutes with their embedding in the chosen algebraic localization. -/
 theorem chosenFinitePlaceIntegerToLocalizedCompletion_equivariant
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -398,8 +410,7 @@ theorem chosenFinitePlaceIntegerToLocalizedCompletion_equivariant
           (NumberField.RingOfIntegers.mapAlgEquiv (σ : L ≃ₐ[K] L) x) :
           𝒪[ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v]) :
           ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v) := by
-  let vK := HeightOneSpectrum.adicAbv K v
-  let w := chosenFinitePlaceExtension (L := L) v
+  intro vK w
   rw [chosenFinitePlaceIntegerToLocalizedCompletion_coe,
     chosenFinitePlaceIntegerToLocalizedCompletion_coe]
   change
@@ -416,7 +427,7 @@ theorem chosenFinitePlaceIntegerToLocalizedCompletion_equivariant
 equivalent residue fields.  This transfers ideal-theoretic Frobenius
 conditions to the local field on which the chosen Artin map acts. -/
 noncomputable def chosenFinitePlaceLocalizedResidueEquiv
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -425,15 +436,14 @@ noncomputable def chosenFinitePlaceLocalizedResidueEquiv
       (K := K) (L := L) v (chosenFinitePlaceExtension (L := L) v)
     (𝓞 L ⧸ W.asIdeal) ≃+*
       𝓀[ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v] := by
-  let W := finitePlaceExtensionCentre
-    (K := K) (L := L) v (chosenFinitePlaceExtension (L := L) v)
+  intro W
   exact (finitePlaceIdealResidueEquivCompletion W).trans
     (IsLocalRing.ResidueField.mapEquiv
       (standardToChosenLocalizedIntegerRingEquiv (K := K) (L := L) v))
 
 @[simp]
 theorem chosenFinitePlaceLocalizedResidueEquiv_apply_mk
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -446,8 +456,7 @@ theorem chosenFinitePlaceLocalizedResidueEquiv_apply_mk
         𝒪[ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v]
         (chosenFinitePlaceIntegerToLocalizedCompletion
           (K := K) (L := L) v x) := by
-  let W := finitePlaceExtensionCentre
-    (K := K) (L := L) v (chosenFinitePlaceExtension (L := L) v)
+  intro W
   let eInteger :
       𝒪[ChosenFinitePlaceBaseCompletion (K := L) W] ≃+*
         𝒪[ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v] :=
@@ -485,7 +494,7 @@ theorem chosenFinitePlaceLocalizedResidueEquiv_apply_mk
 /-- The chosen comparison from the prime-ideal residue field to the localized
 completion residue field respects the decomposition-group action. -/
 theorem chosenFinitePlaceLocalizedResidueEquiv_equivariant
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -509,11 +518,7 @@ theorem chosenFinitePlaceLocalizedResidueEquiv_equivariant
           vK (RayClass.adicAbv_isNontrivial v) w) σ)
         (chosenFinitePlaceLocalizedResidueEquiv (K := K) (L := L) v
           (Ideal.Quotient.mk W.asIdeal x)) := by
-  let vK := HeightOneSpectrum.adicAbv K v
-  let w := chosenFinitePlaceExtension (L := L) v
-  let W := finitePlaceExtensionCentre (K := K) (L := L) v w
-  let C := ChosenFinitePlaceBaseCompletion (K := K) v
-  let E := ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) v
+  intro vK w W C E
   let f : E ≃ₐ[C] E :=
     (HilbertRamification.decompositionGroupEquivAlgebraicLocalizationAut
       vK (RayClass.adicAbv_isNontrivial v) w) σ
@@ -553,7 +558,7 @@ theorem chosenFinitePlaceLocalizedResidueEquiv_equivariant
 /-- The residue cardinality of the chosen localized extension is the norm
 of its centre ideal. -/
 theorem chosenFinitePlaceLocalized_residueField_card
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

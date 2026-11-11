@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationInvariants
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationInvariants
 
 /-!
 # Ramification ideals in finite complete-DVF extensions
@@ -16,6 +18,8 @@ in the ambient valued-extension context; no extension marker is involved.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

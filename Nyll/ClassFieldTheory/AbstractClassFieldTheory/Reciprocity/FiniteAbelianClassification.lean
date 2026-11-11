@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
 
 /-!
 # Finite abelian classification by norm subgroups
@@ -20,14 +23,17 @@ their compositum.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace ClassFormation
 
 open CyclicCohomology KummerTheory
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace FiniteAbelianSubextension
 
@@ -48,20 +54,20 @@ local instance representedQuotient_finite
 /-- Additive subgroups which are open for the explicitly declared norm
 topology.  The topology is part of the predicate, so no ambient topology
 instance is changed outside the finite abelian classification theorem. -/
-def NormOpenAddSubgroup (A : Rep ℤ G) (K : ClosedSubgroup G) :=
+def NormOpenAddSubgroup (A : Rep.{v} ℤ G) (K : ClosedSubgroup G) :=
   {H : AddSubgroup (ambientFixedAddSubgroup A K) //
     IsNormOpen A K (H : Set (ambientFixedAddSubgroup A K))}
 
 /-- Norm-open subgroups inherit the literal inclusion order of their
 underlying additive subgroups.  This instance is stated explicitly because
 `NormOpenAddSubgroup` is an opaque boundary type, not a transparent alias. -/
-instance normOpenAddSubgroupPartialOrder (A : Rep ℤ G)
+instance normOpenAddSubgroupPartialOrder (A : Rep.{v} ℤ G)
     (K : ClosedSubgroup G) : PartialOrder (NormOpenAddSubgroup A K) :=
   PartialOrder.lift (fun H => H.1) (fun _ _ h => Subtype.ext h)
 
 /-- The actual map in the finite abelian classification theorem, `L ↦ N_{L/K} A_L`, with openness
 carried by the codomain rather than assumed. -/
-def normSubgroupMap (A : Rep ℤ G)
+def normSubgroupMap (A : Rep.{v} ℤ G)
     (L : FiniteAbelianSubextension K) : NormOpenAddSubgroup A K := by
   refine ⟨L.normSubgroup A, ?_⟩
   simpa [FiniteAbelianSubextension.normSubgroup,
@@ -72,14 +78,14 @@ def normSubgroupMap (A : Rep ℤ G)
 /-- Establishes the identity `(L.normSubgroupMap A).1 = L.normSubgroup A`. -/
 @[simp]
 theorem normSubgroupMap_val
-    (A : Rep ℤ G) (L : FiniteAbelianSubextension K) :
+    (A : Rep.{v} ℤ G) (L : FiniteAbelianSubextension K) :
     (L.normSubgroupMap A).1 = L.normSubgroup A :=
   rfl
 
 /-- The subgroup product `N_{L₁}N_{L₂}` (a supremum in additive
 notation) is open in the norm topology.  It contains the defining norm
 neighbourhood attached to `L₁`. -/
-theorem sup_normSubgroup_isOpen (A : Rep ℤ G)
+theorem sup_normSubgroup_isOpen (A : Rep.{v} ℤ G)
     (L₁ L₂ : FiniteAbelianSubextension K) :
     IsNormOpen A K
       ((L₁.normSubgroup A ⊔ L₂.normSubgroup A :
@@ -98,7 +104,7 @@ finite reciprocity; they are not exposed as hypotheses of the classification.
 private theorem normSubgroup_compositum_eq_inf_of_reciprocity_bijective
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G)
     (L₁ L₂ : FiniteAbelianSubextension K.field)
@@ -419,7 +425,7 @@ bijectivities from finite reciprocity. -/
 private theorem le_iff_normSubgroup_le_of_compositum_and_reciprocity
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G)
     (L₁ L₂ : FiniteAbelianSubextension K.field)
@@ -486,7 +492,7 @@ private theorem le_iff_normSubgroup_le_of_compositum_and_reciprocity
 the unconditional inclusion for an intersection field into equality. -/
 private theorem normSubgroup_intersection_eq_sup_of_surjective_and_order
     [IsTopologicalGroup G] [CompactSpace G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G)
     (L₁ L₂ : FiniteAbelianSubextension K)
     (hsurjective : ∀ H : AddSubgroup (ambientFixedAddSubgroup A K),
       IsNormOpen A K (H : Set (ambientFixedAddSubgroup A K)) →
@@ -537,7 +543,7 @@ local instance classification_abelianExtension_finite
 /-- The original finite Galois field lies below the abelian class-field
 candidate cut out inside it. -/
 theorem classFieldCandidate_field_le
-    (E : FiniteGaloisSubextension K) (A : Rep ℤ G)
+    (E : FiniteGaloisSubextension K) (A : Rep.{v} ℤ G)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :
@@ -550,7 +556,7 @@ theorem classFieldCandidate_field_le
 /-- Restriction from `E/K` to its class-field candidate is trivial exactly
 on the pulled-back subgroup used to define that candidate. -/
 theorem classFieldCandidate_restriction_eq_one_iff
-    (E : FiniteGaloisSubextension K) (A : Rep ℤ G)
+    (E : FiniteGaloisSubextension K) (A : Rep.{v} ℤ G)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient))
@@ -598,7 +604,7 @@ theorem classFieldCandidate_restriction_eq_one_iff
 assumption of the classification endpoint. -/
 private theorem classFieldCandidate_normSubgroup_eq_of_reciprocity
     [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G)
     (E : FiniteGaloisSubextension K.field)
@@ -717,18 +723,15 @@ theorem upperQuotientEquiv_quotientMk_eq_restriction
     {K : ClosedSubgroup G}
     (E : FiniteGaloisSubextension K) (S : Subgroup E.extensionQuotient)
     [hS : S.Normal] (q : E.extensionQuotient) :
-    letI : (extensionSubgroup K E.field E.below).Normal := E.normal
-    letI : (extensionSubgroup K (E.intermediateField S)
+    let : (extensionSubgroup K E.field E.below).Normal := E.normal
+    let : (extensionSubgroup K (E.intermediateField S)
       (E.intermediateField_le_base S)).Normal :=
       E.intermediateField_normal S hS
     E.upperQuotientEquiv S (QuotientGroup.mk q) =
       abstractReciprocityRestriction K (E.intermediateField S) E.field
         (E.field_le_intermediateField S)
         (E.intermediateField_le_base S) q := by
-  let : (extensionSubgroup K E.field E.below).Normal := E.normal
-  let : (extensionSubgroup K (E.intermediateField S)
-      (E.intermediateField_le_base S)).Normal :=
-    E.intermediateField_normal S hS
+  intro sharedOwner1 sharedOwner2
   refine QuotientGroup.induction_on q ?_
   intro k
   exact E.upperQuotientEquiv_mk_mk S k
@@ -740,12 +743,11 @@ namespace ClassFormation
 
 open CyclicCohomology KummerTheory
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace FiniteAbelianSubextension
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- finite reciprocity specialized to an actual finite abelian extension.
 The two halves are supplied by the general Sylow surjectivity argument and

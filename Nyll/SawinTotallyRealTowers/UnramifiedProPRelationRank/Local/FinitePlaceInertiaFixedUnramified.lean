@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceSeparableEmbedding
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalFiniteInertiaUnramified
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceSeparableEmbedding
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalFiniteInertiaUnramified
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 
 /-!
 # Finite Galois fields fixed by absolute inertia are unramified
@@ -23,6 +26,8 @@ leaf are reactivated. The three local proof instances (characteristic zero and
 two field-algebra torsion-freeness proofs) resolve otherwise ambiguous synthesis
 at `IsAlgClosed.lift`; no new data instance or alternative scalar tower is used.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField ValuativeRel

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteLocalReciprocity
 
 /-!
 # Actual finite values of the absolute local Artin map
@@ -13,13 +15,19 @@ Projecting the absolute Artin map to a finite abelian subextension recovers
 its canonical finite Artin map, not merely the same norm kernel.
 -/
 
+@[expose] public section
+
 noncomputable section
+
+universe u
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
 open LocalClassFieldTheory
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+section GeneralMaps
+
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
@@ -35,7 +43,7 @@ private theorem separableAbsoluteLocalArtinMap_finiteQuotientRestriction
     (N : OpenNormalSubgroup (localAbsoluteAbelianProfinite K)) (a : Kˣ) :
     absoluteAbelianRestriction K (absoluteFiniteQuotientField K N)
         (separableAbsoluteLocalArtinMap K a) =
-      abelianLocalArtinMap K (absoluteFiniteQuotientField K N) a := by
+      Universe.abelianLocalArtinMap K (absoluteFiniteQuotientField K N) a := by
   rw [absoluteAbelianRestriction_finiteProjection]
   change absoluteFiniteQuotientEquiv K N
     (QuotientGroup.mk' N.toSubgroup (separableAbsoluteLocalArtinMap K a)) = _
@@ -44,11 +52,11 @@ private theorem separableAbsoluteLocalArtinMap_finiteQuotientRestriction
 
 /-- The actual absolute Artin value restricts to the actual finite abelian
 local Artin value. -/
-theorem separableAbsoluteLocalArtinMap_restriction
+theorem separableAbsoluteLocalArtinMap_restriction_universe
     (E : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [IsAbelianGalois K E] (a : Kˣ) :
     absoluteAbelianRestriction K E (separableAbsoluteLocalArtinMap K a) =
-      abelianLocalArtinMap K E a := by
+      Universe.abelianLocalArtinMap K E a := by
   generalize hN : absoluteAbelianRestrictionKernel K E = N
   have hfield : absoluteFiniteQuotientField K N = E := by
     rw [← hN, absoluteFiniteQuotientField_restrictionKernel]
@@ -57,6 +65,31 @@ theorem separableAbsoluteLocalArtinMap_restriction
 
 /-- The same finite-value comparison for the usual algebraic-closure
 absolute Artin map. -/
+theorem absoluteLocalArtinMap_restriction_universe
+    (E : IntermediateField K (SeparableClosure K))
+    [FiniteDimensional K E] [IsAbelianGalois K E] (a : Kˣ) :
+    absoluteAbelianRestriction K E
+        ((separableToStandardAbsoluteAbelianizationEquiv K).symm
+          (absoluteLocalArtinMap K a)) =
+      Universe.abelianLocalArtinMap K E a := by
+  rw [separableToStandardAbsoluteAbelianizationEquiv_symm_artinMap]
+  exact separableAbsoluteLocalArtinMap_restriction_universe K E a
+
+end GeneralMaps
+
+variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+  [IsNonarchimedeanLocalField K]
+
+/-- The finite restriction formula in the original Type 0 convention. -/
+theorem separableAbsoluteLocalArtinMap_restriction
+    (E : IntermediateField K (SeparableClosure K))
+    [FiniteDimensional K E] [IsAbelianGalois K E] (a : Kˣ) :
+    absoluteAbelianRestriction K E (separableAbsoluteLocalArtinMap K a) =
+      abelianLocalArtinMap K E a := by
+  rw [← Universe.abelianLocalArtinMap_eq_native K E]
+  exact separableAbsoluteLocalArtinMap_restriction_universe K E a
+
+/-- The algebraic-closure restriction formula in the original Type 0 convention. -/
 theorem absoluteLocalArtinMap_restriction
     (E : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [IsAbelianGalois K E] (a : Kˣ) :
@@ -64,7 +97,7 @@ theorem absoluteLocalArtinMap_restriction
         ((separableToStandardAbsoluteAbelianizationEquiv K).symm
           (absoluteLocalArtinMap K a)) =
       abelianLocalArtinMap K E a := by
-  rw [separableToStandardAbsoluteAbelianizationEquiv_symm_artinMap]
-  exact separableAbsoluteLocalArtinMap_restriction K E a
+  rw [← Universe.abelianLocalArtinMap_eq_native K E]
+  exact absoluteLocalArtinMap_restriction_universe K E a
 
 end ClassFieldTower.Martinet.Shafarevich

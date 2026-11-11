@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
 
 /-!
 # Semilinear transport of actual absolute Artin representatives
@@ -15,6 +17,8 @@ The profinite finite-quotient realization then identifies the absolute value.
 The valuation certificate is supplied for the actual completion comparison by
 `FinitePlaceCompletionValuationCompatibility`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -107,8 +111,8 @@ theorem absoluteLocalArtinMap_semilinear_lift
   change AlgEquiv.restrictNormalHom (absoluteFiniteQuotientField K' N)
       (standardToSeparableAbsoluteGaloisEquiv K' tau) =
     absoluteFiniteQuotientEquiv K' N ((absoluteFiniteQuotientEquiv K' N).symm
-      (abelianLocalArtinMap K' (absoluteFiniteQuotientField K' N) a'))
-  rw [ContinuousMulEquiv.apply_symm_apply]
+      (Universe.abelianLocalArtinMap K' (absoluteFiniteQuotientField K' N) a'))
+  rw [ContinuousMulEquiv.apply_symm_apply, Universe.abelianLocalArtinMap_eq_native]
   let E := absoluteFiniteQuotientField K' N
   have hmap : abelianLocalArtinMap K' E a' = abelianLocalArtinMonoidHom K' E a' := by
     change (abelianLocalArtinMap K' E).toMonoidHom a' = _

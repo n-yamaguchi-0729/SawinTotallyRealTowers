@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FreeProC.Basic
+module
+
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Generation.Basic
 
 /-!
 # Free pro-C finite-basis utilities
@@ -15,6 +19,8 @@ Its canonical finite index is `ULift (Fin n)`, which lies in the carrier
 universe required by the generated-target lifting property. Concrete `Fin n`
 displays can be obtained by reindexing with `ULift.up`.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 

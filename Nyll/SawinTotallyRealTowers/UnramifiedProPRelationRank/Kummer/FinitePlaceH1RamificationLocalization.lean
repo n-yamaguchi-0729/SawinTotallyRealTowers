@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1CharacterLocalization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.Pi
-import Mathlib.LinearAlgebra.Pi
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1CharacterLocalization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.Pi
+public import Mathlib.LinearAlgebra.Pi
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Instances.ZMod
 
 /-!
 # Finite-place ramification restriction of absolute H¹ characters
@@ -21,6 +23,8 @@ Absolute continuous mod-`p` characters first restrict to a finite-place decompos
 and then to its inertia subgroup.  The resulting maps are assembled over all finite places, and
 their kernels recover the local unramified subspaces.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 

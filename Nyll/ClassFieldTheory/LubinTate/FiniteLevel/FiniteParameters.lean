@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
-import Mathlib.GroupTheory.Coset.Card
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
+public import Mathlib.GroupTheory.Coset.Card
 
 /-!
 # Finite unit parameters for standard Lubin--Tate levels
@@ -24,6 +26,8 @@ parameter quotient.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

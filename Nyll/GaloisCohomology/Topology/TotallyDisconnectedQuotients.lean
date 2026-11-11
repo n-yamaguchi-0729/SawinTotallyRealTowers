@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ClopenNhdofOne
-import Mathlib.Topology.Algebra.Group.Quotient
+module
+
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
+public import Mathlib.Topology.Algebra.Group.Quotient
 
 /-!
 # Totally disconnected quotient groups
@@ -15,6 +17,8 @@ disconnected topological group is totally disconnected.
 -/
 
 
+
+@[expose] public section
 
 namespace QuotientGroup
 

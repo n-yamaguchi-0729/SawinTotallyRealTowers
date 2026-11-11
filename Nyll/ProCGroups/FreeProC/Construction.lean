@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FreeGroup.Basic
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.Order.Basic
-import Nyll.ProCGroups.Completion.Construction
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.FreeProC.Basic
-import Nyll.ProCGroups.ProC.Category.Basic
+module
+
+public import Mathlib.GroupTheory.FreeGroup.Basic
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.Order.Basic
+public import Nyll.ProCGroups.Completion.Construction
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.ProC.Category.Basic
 
 /-!
 # Constructing free pro-C groups of finite rank
@@ -18,6 +20,8 @@ import Nyll.ProCGroups.ProC.Category.Basic
 Complete the abstract free group, then take its pro-C residual quotient. The
 constructed source carries the universal property, rather than assuming one.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.FreeProC
 

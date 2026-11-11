@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
 
 /-!
 # Valuation-subring units inside field units
@@ -14,6 +16,8 @@ valuation ring to units of its fraction field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

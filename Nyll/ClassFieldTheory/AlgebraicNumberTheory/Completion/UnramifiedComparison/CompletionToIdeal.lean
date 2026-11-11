@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
-import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Basic
-import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Norm
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
+public import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Basic
+public import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
 
 /-!
 # From completed to ideal-theoretic unramifiedness
@@ -19,10 +25,14 @@ a finite Galois extension.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v
 
 open AlgebraicNumberTheory.Valuations
 open LocalClassFieldTheory
@@ -30,7 +40,7 @@ open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

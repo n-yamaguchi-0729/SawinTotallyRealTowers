@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldPrimitive
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldPrimitive
 
 /-!
 # The completed theta-intertwining theorem: the fixed primitive completed power basis
@@ -14,6 +16,8 @@ of elements fixed by the prescribed completed Frobenius.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

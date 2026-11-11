@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
 
 /-!
 # Valuations of standard Lubin--Tate iterates at a primitive point
@@ -21,6 +23,8 @@ equal to the totally ramified level degree `(q - 1) q ^ n`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

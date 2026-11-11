@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ReidemeisterSchreier.Groupoid
+module
+
+public import Nyll.ProCGroups.ReidemeisterSchreier.Groupoid
 
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Words / Nielsen Schreier Compat
@@ -13,6 +15,8 @@ This module connects the local word conventions with Mathlib's
 Nielsen--Schreier action-groupoid basis and establishes the edge and back-edge
 identities needed to transport that basis.
 -/
+
+@[expose] public section
 
 universe u
 

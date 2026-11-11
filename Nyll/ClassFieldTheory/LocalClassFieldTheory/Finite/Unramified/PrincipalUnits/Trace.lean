@@ -4,16 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace` Lean module. -/
 
 
+@[expose] public section
+
 noncomputable section
 
-universe u
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -28,7 +32,7 @@ namespace UnramifiedPrincipalUnits
 `1 + rϖ_L^n`, the norm after base extension back to `L` is residue trace on
 the associated graded quotient. -/
 theorem quotientNorm_oneAdd_uniformizerPow_eq_trace
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -118,7 +122,7 @@ end UnramifiedPrincipalUnits
 on `U_K^n/U_K^(n+1)`. -/
 theorem
   principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_oneAdd_uniformizer_pow_eq_trace
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -179,7 +183,7 @@ theorem
 /-- Actual integral-closure version: in residue coordinates, the norm on the
 successive principal-unit quotient is the finite residue-field trace. -/
 theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_trace_coord
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -211,7 +215,7 @@ theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_trace
 
 /-- The residue-trace model for the actual unramified norm on
 `U^n/U^(n+1)`, written in the base-uniformizer coordinates. -/
-noncomputable def principalUnitsSuccQuotTraceOfUnramifiedValuation (K L : Type u)
+noncomputable def principalUnitsSuccQuotTraceOfUnramifiedValuation (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L]
@@ -231,7 +235,7 @@ noncomputable def principalUnitsSuccQuotTraceOfUnramifiedValuation (K L : Type u
 /-- States the theorem `principalUnitsSuccQuotTraceOfUnramifiedValuation_apply`. -/
 @[simp]
 theorem principalUnitsSuccQuotTraceOfUnramifiedValuation_apply
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L]
@@ -252,7 +256,7 @@ theorem principalUnitsSuccQuotTraceOfUnramifiedValuation_apply
 /-- The residue-trace model on successive principal-unit quotients is
 surjective in the unramified valuation case. -/
 theorem principalUnitsSuccQuotTraceOfUnramifiedValuation_surjective
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L]
@@ -282,7 +286,7 @@ theorem principalUnitsSuccQuotTraceOfUnramifiedValuation_surjective
 principal-unit quotient is the finite residue-field trace in base-uniformizer
 coordinates. -/
 theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_eq_trace
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -310,7 +314,7 @@ theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_eq_tr
 quotient, the unramified norm is surjective after writing the quotient
 additively. -/
 theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_toAdditive_surjective
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -329,7 +333,7 @@ theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_toAdd
 /-- Actual integral-closure version: on every successive principal-unit
 quotient, the unramified norm is surjective. -/
 theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_surjective
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]

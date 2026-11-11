@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
-import Nyll.ProCGroups.Generation.QuotientCriteria
-import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+module
+
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.Generation.QuotientCriteria
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
 
 /-!
 # Finite-quotient predicates for profinite groups
@@ -15,6 +17,8 @@ This file defines cyclic, abelian, and \(p\)-group open-normal quotient bases. I
 cyclic basis associated with a single topological generator and the basic implications between
 these predicates.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

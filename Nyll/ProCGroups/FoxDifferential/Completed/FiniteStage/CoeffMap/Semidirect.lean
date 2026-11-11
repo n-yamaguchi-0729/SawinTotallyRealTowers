@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Augmentation
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.Augmentation
 
 /-!
 # Fox differential: completed — finite stage — coeff map — semidirect
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   Finite-stage group-algebra derivative coordinates commute with source transition and coefficient
   reduction.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

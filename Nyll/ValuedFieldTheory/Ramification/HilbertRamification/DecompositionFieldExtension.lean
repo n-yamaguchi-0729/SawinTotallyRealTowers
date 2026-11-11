@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 
 /-!
 # Decomposition-field extension comparison
@@ -15,6 +19,8 @@ infinite Galois extensions and for archimedean or nonarchimedean valuations.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

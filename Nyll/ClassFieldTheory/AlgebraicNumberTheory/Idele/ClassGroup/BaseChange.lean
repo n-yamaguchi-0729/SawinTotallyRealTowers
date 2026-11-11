@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
-import Mathlib.RingTheory.IsTensorProduct
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Mathlib.RingTheory.IsTensorProduct
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Base change of idele-class norms along a pushout square
@@ -28,15 +33,17 @@ determinant-norm base-change identity.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField
 
 noncomputable section
 
-universe u
+universe u v w x
 
 variable
-    (K M L N : Type u)
+    (K : Type u) (M : Type v) (L : Type w) (N : Type x)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -50,12 +57,12 @@ variable
 
 -- These canonical commutativity proofs are local to the imported tower
 -- module; retain them here for the quotient-group instances.
-local instance (A B C : Type u) [Field A] [NumberField A]
+local instance (A : Type u) (B : Type v) (C : Type w) [Field A] [NumberField A]
     [Field B] [Field C] [Algebra A B] [Algebra B C] :
     IsMulCommutative (TowerRelativeIdeleGroup A B C) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
-local instance (A B : Type u) [Field A] [NumberField A]
+local instance (A : Type u) (B : Type v) [Field A] [NumberField A]
     [Field B] [Algebra A B] :
     IsMulCommutative (RelativeIdeleGroup.ClassGroup A B) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
@@ -103,7 +110,12 @@ def pushoutTowerAdeleEquiv :
         (e₂.toRingEquiv.trans e₃.toRingEquiv) with
       commutes' := ?_ }
   intro a
-  simp [e₁, e₂, e₃]
+  simp only [AlgEquiv.symm_toRingEquiv, RingEquiv.symm_mk, AlgEquiv.toEquiv_eq_coe,
+    AlgEquiv.symm_toEquiv_eq_symm, RingEquiv.toEquiv_eq_coe, Algebra.TensorProduct.algebraMap_apply,
+    Algebra.algebraMap_self, RingHom.id_apply, Equiv.toFun_as_coe, EquivLike.coe_coe,
+    RingEquiv.coe_trans, RingEquiv.coe_mk, Function.comp_apply,
+    Algebra.TensorProduct.commRight_symm_tmul, Algebra.IsPushout.cancelBaseChangeAlg_tmul,
+    Algebra.TensorProduct.commRight_tmul, e₁, e₂, e₃]
 
 /-- Scalar extension of coefficients from the bottom adele ring to
 `𝔸_K ⊗[K] M`, while retaining the top field `L`. -/
@@ -218,7 +230,10 @@ theorem pushoutTowerIdeleNorm_inclusion
     _ = Algebra.norm (RelativeAdeleRing K M)
           (baseChangedRelativeAdeleMap K M L
             (a : RelativeAdeleRing K L)) := by
-      simp [pushoutTowerAdeleInclusion]
+      simp only [pushoutTowerAdeleInclusion, AlgEquiv.symm_toRingEquiv, RingEquiv.symm_mk,
+        AlgEquiv.toEquiv_eq_coe, AlgEquiv.symm_toEquiv_eq_symm, RingEquiv.toRingHom_eq_coe,
+        AlgHom.toRingHom_eq_coe, RingHom.coe_comp, RingHom.coe_coe, RingEquiv.coe_mk,
+        EquivLike.coe_coe, Function.comp_apply, AlgEquiv.apply_symm_apply]
     _ = f (Algebra.norm
           (NumberField.AdeleRing (𝓞 K) K)
           (a : RelativeAdeleRing K L)) :=
@@ -347,7 +362,7 @@ theorem towerCompositeClassNorm_changeIntermediate
       towerCompositeClassNorm K M N c := by
   rw [towerCompositeClassNorm_eq_ideleClassNorm,
     towerCompositeClassNorm_eq_ideleClassNorm]
-  simp [changeIntermediateClassGroupEquiv]
+  simp only [changeIntermediateClassGroupEquiv, MulEquiv.trans_apply, MulEquiv.apply_symm_apply]
 
 omit [NumberField M] [NumberField L] [Algebra.IsPushout K M L N] in
 /-- Every composite norm through `M` is, after changing the tower

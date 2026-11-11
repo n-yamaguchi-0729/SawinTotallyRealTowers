@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.PUnit
-import Mathlib.Algebra.Group.ULift
-import Mathlib.Algebra.Category.Grp.FiniteGrp
-import Mathlib.CategoryTheory.ObjectProperty.ClosedUnderIsomorphisms
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import Mathlib.Algebra.Group.PUnit
+public import Mathlib.Algebra.Group.ULift
+public import Mathlib.Algebra.Category.Grp.FiniteGrp
+public import Mathlib.CategoryTheory.ObjectProperty.ClosedUnderIsomorphisms
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Finite-group classes and their closure properties
@@ -18,6 +20,8 @@ module provides universe-independent membership through finite-group representat
 the closure conditions used throughout the pro-\(C\) library, including formations, varieties,
 Melnikov formations, hereditary classes, and full formations.
 -/
+
+@[expose] public section
 
 namespace ProCGroups
 

@@ -4,18 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedDegreeBaseChange
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.Order.Hom.Lattice
-import Mathlib.NumberTheory.LocalField.Basic
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedDegreeBaseChange
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.Order.Hom.Lattice
+public import Mathlib.NumberTheory.LocalField.Basic
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
 /-!
 # The standard unramified extension as a compositum
@@ -24,6 +26,8 @@ The relative degree-`m` unramified fixed field over an actual finite
 absolute subgroup is its compositum with the standard absolute unramified
 extension of degree `f * m`, where `f` is its absolute residue degree.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open ClassFormation CyclicCohomology

@@ -4,7 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
+public import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
 
 /-!
 # Archimedean behavior of idele norms
@@ -15,6 +22,8 @@ preserved by the ordinary norm in a finite number-field extension.
 
 
 
+@[expose] public section
+
 open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain
 
@@ -24,11 +33,11 @@ namespace IdeleGroup
 
 universe u v
 
+section
+
 variable
     (K : Type u) (L : Type v)
-    [Field K] [NumberField K]
-    [Field L] [NumberField L]
-    [Algebra K L] [FiniteDimensional K L]
+    [Field K] [Field L] [Algebra K L]
 
 private theorem nnnormUnitHom_map_ringEquiv_of_isometry
     {F E : Type*}
@@ -56,7 +65,6 @@ private theorem nnnormUnitHom_real_normUnits_complex
     abs_of_nonneg (Complex.normSq_nonneg _),
     Complex.normSq_eq_norm_sq]
 
-omit [NumberField K] [NumberField L] [FiniteDimensional K L] in
 /-- At an infinite place, the positive norm of a local field norm, with
 the base multiplicity, is the positive norm upstairs with the upstairs
 multiplicity. -/
@@ -65,12 +73,12 @@ private theorem nnnormUnitHom_normUnits_infinitePlace
     (W : InfinitePlace L)
     (hW : W ∈ v₀.placesOver L)
     (x : W.Completionˣ) :
-    letI : W.1.LiesOver v₀.1 := hW
+    let : W.1.LiesOver v₀.1 := hW
     nnnormUnitHom v₀.Completion
         (LocalFieldTheory.normUnits
           v₀.Completion W.Completion x) ^ v₀.mult =
       nnnormUnitHom W.Completion x ^ W.mult := by
-  let : W.1.LiesOver v₀.1 := hW
+  intro sharedOwner1
   rcases v₀.isReal_or_isComplex with hvReal | hvComplex
   · rcases W.isReal_or_isComplex with hWReal | hWComplex
     · let eBase :=
@@ -298,6 +306,14 @@ private theorem nnnormUnitHom_normUnits_infinitePlace
           _ = edist y z :=
             (InfinitePlace.Completion.isometry_extensionEmbedding W).edist_eq _ _
       exact hCore eExtension hCompatible hExtensionIsometry
+
+end
+
+variable
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K]
+    [Field L] [NumberField L]
+    [Algebra K L] [FiniteDimensional K L]
 
 /-- The archimedean positive norm is preserved by the ordinary idele norm. -/
 theorem archimedeanNorm_norm

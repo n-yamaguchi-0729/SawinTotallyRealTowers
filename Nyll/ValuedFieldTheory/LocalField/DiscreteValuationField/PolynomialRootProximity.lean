@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Polynomial.Splits
-import Mathlib.Data.Finset.Max
-import Mathlib.RingTheory.DiscreteValuationRing.Basic
+module
+
+public import Mathlib.Algebra.Polynomial.Splits
+public import Mathlib.Data.Finset.Max
+public import Mathlib.RingTheory.DiscreteValuationRing.Basic
 
 /-!
 # A root-proximity estimate over a discrete valuation ring
@@ -22,6 +24,8 @@ Repeated roots and zero derivative values are allowed; the statement is in
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -51,7 +55,7 @@ private theorem addVal_multiset_prod_le
       · exact h z (Multiset.mem_cons_self z s)
       · apply ih
         intro t ht
-        exact h t (by simp [ht])
+        exact h t (Multiset.mem_cons_of_mem ht)
 
 /-- Let `p` be a nonconstant monic polynomial that splits over a discrete
 valuation ring.  For every `x`, some root `y` satisfies

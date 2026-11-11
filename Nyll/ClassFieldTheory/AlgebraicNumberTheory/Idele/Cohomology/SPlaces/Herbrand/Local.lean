@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.FamilyClassAxiom
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.FamilyClassAxiom
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Cohomology of the unrestricted factors of a relative `S`-idele
@@ -17,6 +22,8 @@ of all infinite places and the finite places in `S`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -55,37 +62,24 @@ the degree of its localized completion. -/
 theorem absoluteValueDecompositionGroup_card_eq_localizedDegree
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (w : AbsoluteValueExtension vK L) :
-    letI hK :=
+    let hK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let : SMul K w.1.Completion := hK.toSMul
+    let : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI := localizedCompletionGlobalAlgebra vK w
-    letI := localizedCompletionIsScalarTower vK w
-    letI : FiniteDimensional vK.Completion
+    let := localizedCompletionGlobalAlgebra vK w
+    let := localizedCompletionIsScalarTower vK w
+    let : FiniteDimensional vK.Completion
         (LocalizedCompletion vK w) :=
       localizedCompletionModuleFinite vK hvK w
-    letI : IsGalois vK.Completion
+    let : IsGalois vK.Completion
         (LocalizedCompletion vK w) :=
       HilbertRamification.algebraicLocalization_isGalois vK w
     Nat.card (absoluteValueDecompositionGroup K w.1) =
       Module.finrank vK.Completion
         (LocalizedCompletion vK w) := by
-  let hK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let : Algebra vK.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vK w.1 w.2
-  let := localizedCompletionGlobalAlgebra vK w
-  let := localizedCompletionIsScalarTower vK w
-  let : FiniteDimensional vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionModuleFinite vK hvK w
-  let : IsGalois vK.Completion
-      (LocalizedCompletion vK w) :=
-    HilbertRamification.algebraicLocalization_isGalois vK w
+  intro hK sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7
   calc
     Nat.card (absoluteValueDecompositionGroup K w.1) =
         Nat.card

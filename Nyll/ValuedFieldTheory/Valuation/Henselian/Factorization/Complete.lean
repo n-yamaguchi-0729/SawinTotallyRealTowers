@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
 
 /-!
 # Hensel's lemma over a complete valued field
@@ -14,6 +16,8 @@ This file supplies the explicit endpoint from completeness and
 nonarchimedeanness, using the principal element selected from the finitely many
 initial error coefficients in the proof core.
 -/
+
+@[expose] public section
 
 noncomputable section
 

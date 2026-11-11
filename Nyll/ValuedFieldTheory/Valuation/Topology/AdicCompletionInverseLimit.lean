@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Topology.AdicCompletionInverseLimitRing
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Topology.AdicCompletionInverseLimitRing
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
 
 /-!
 # Adic unit and higher-unit inverse limits
@@ -16,6 +21,8 @@ rings.  The underlying adic ring inverse-limit theory lives in
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -666,7 +673,8 @@ def dvrHigherUnitQuotientTransition
     intro u hu
     exact higherUnitSubgroup_le_of_le π (Nat.succ_le_succ hmn) hu
 
-private theorem dvrHigherUnitQuotientTransition_mk
+/-- Higher-unit transitions preserve the original unit representative. -/
+theorem dvrHigherUnitQuotientTransition_mk
     {O : Type*} [CommRing O] (π : O) {m n : ℕ} (hmn : m ≤ n) (u : Oˣ) :
     dvrHigherUnitQuotientTransition π hmn
         (u : Oˣ ⧸ higherUnitSubgroup π (n + 1)) =
@@ -850,8 +858,8 @@ noncomputable instance dvrHigherUnitQuotientInverseLimit.instTopologicalSpace
   exact
     (dvrHigherUnitQuotientInverseLimitCompatibleFamiliesEquiv π).topologicalSpace
 
-private noncomputable def
-    dvrHigherUnitQuotientInverseLimitRepresentationHomeomorph
+/-- The higher-unit inverse limit is homeomorphic to its compatible quotient families. -/
+noncomputable def dvrHigherUnitQuotientInverseLimitRepresentationHomeomorph
     {O : Type*} [CommRing O] (π : O) :
     letI : (n : ℕ) → TopologicalSpace
       (Oˣ ⧸ higherUnitSubgroup π (n + 1)) := fun _ => ⊥
@@ -1095,7 +1103,7 @@ noncomputable def adicUnitsTopology
 
 /-- Reduction to a higher-unit quotient is continuous for the adic topology
 on `Oˣ` and the discrete topology on the finite quotient. -/
-private theorem higherUnitQuotient_mk_continuous_adic_raw
+theorem higherUnitQuotient_mk_continuous_adic_raw
     {O : Type*} [CommRing O] (π : O) (n : ℕ) :
     @Continuous Oˣ (Oˣ ⧸ higherUnitSubgroup π n)
       (adicUnitsTopology (uniformizerPowerIdeal π 1))
@@ -1166,18 +1174,17 @@ theorem higherUnitQuotient_mk_continuous_adic
       (QuotientGroup.mk u.ofTopology : Oˣ ⧸ higherUnitSubgroup π n)) at hmodel
   simpa only [DiscreteHigherUnitQuotient.equiv_symm_apply] using hmodel
 
-private noncomputable def unitsCompatibleFamiliesHomeomorph
+/-- The complete adic unit group is homeomorphic to its compatible higher-unit quotients. -/
+noncomputable def unitsCompatibleFamiliesHomeomorph
     {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {π : O} (hπ : Irreducible π) [IsAdicComplete (uniformizerPowerIdeal π 1) O] :
-    letI : TopologicalSpace O := (uniformizerPowerIdeal π 1).adicTopology
-    letI : (n : ℕ) →
+    let : TopologicalSpace O := (uniformizerPowerIdeal π 1).adicTopology
+    let : (n : ℕ) →
       TopologicalSpace (Oˣ ⧸ higherUnitSubgroup π (n + 1)) := fun _ => ⊥
     Oˣ ≃ₜ compatibleGroupFamilies
       (fun n : ℕ => Oˣ ⧸ higherUnitSubgroup π (n + 1))
       (fun {_ _} hmn => dvrHigherUnitQuotientTransition π hmn) := by
-  letI : TopologicalSpace O := (uniformizerPowerIdeal π 1).adicTopology
-  letI : (n : ℕ) →
-      TopologicalSpace (Oˣ ⧸ higherUnitSubgroup π (n + 1)) := fun _ => ⊥
+  intro sharedOwner1 sharedOwner2
   letI : (n : ℕ) →
       DiscreteTopology (Oˣ ⧸ higherUnitSubgroup π (n + 1)) :=
     fun _ => ⟨rfl⟩
@@ -1210,7 +1217,7 @@ private noncomputable def unitsCompatibleFamiliesHomeomorph
           (e (e.symm q)).1 n :=
         (dvrUnitsEquivHigherUnitQuotientInverseLimit_apply
           hπ (e.symm q) n).symm
-      _ = q.1 n := by simp [e.apply_symm_apply q]
+      _ = q.1 n := by rw [e.apply_symm_apply]
   · change Continuous fun u : Oˣ => c u
     exact Continuous.subtype_mk
       (continuous_pi fun n => by
@@ -1257,9 +1264,9 @@ private noncomputable def unitsCompatibleFamiliesHomeomorph
                 (e (e.symm q')).1 n :=
               (dvrUnitsEquivHigherUnitQuotientInverseLimit_apply
                 hπ (e.symm q') n).symm
-            _ = q'.1 n := by simp [e.apply_symm_apply q']
+            _ = q'.1 n := by rw [e.apply_symm_apply]
             _ = q.1 n := hq'
-            _ = (e (e.symm q)).1 n := by simp [e.apply_symm_apply q]
+            _ = (e (e.symm q)).1 n := by rw [e.apply_symm_apply]
             _ = QuotientGroup.mk (e.symm q) :=
               dvrUnitsEquivHigherUnitQuotientInverseLimit_apply
                 hπ (e.symm q) n
@@ -1314,9 +1321,9 @@ private noncomputable def unitsCompatibleFamiliesHomeomorph
                 (e (e.symm q')).1 n :=
               (dvrUnitsEquivHigherUnitQuotientInverseLimit_apply
                 hπ (e.symm q') n).symm
-            _ = q'.1 n := by simp [e.apply_symm_apply q']
+            _ = q'.1 n := by rw [e.apply_symm_apply]
             _ = q.1 n := hq'
-            _ = (e (e.symm q)).1 n := by simp [e.apply_symm_apply q]
+            _ = (e (e.symm q)).1 n := by rw [e.apply_symm_apply]
             _ = QuotientGroup.mk (e.symm q) :=
               dvrUnitsEquivHigherUnitQuotientInverseLimit_apply
                 hπ (e.symm q) n

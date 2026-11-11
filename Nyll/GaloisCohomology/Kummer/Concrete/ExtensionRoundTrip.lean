@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteGeneration
-import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteGeneration
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
 
 /-!
 # extension-side round trip
@@ -16,6 +18,8 @@ to the actual radical subgroup of `E` recovers `E` itself.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

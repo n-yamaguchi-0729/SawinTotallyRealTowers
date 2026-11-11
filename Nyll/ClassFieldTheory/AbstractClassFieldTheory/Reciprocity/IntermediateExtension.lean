@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
-import Mathlib.Topology.Algebra.Group.Basic
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
+public import Mathlib.Topology.Algebra.Group.Basic
 
 /-!
 # Intermediate extensions from actual quotient subgroups
@@ -22,6 +24,8 @@ identifications are then obtained from the actual restriction map and the
 first and third isomorphism theorems; no correspondence certificate is
 assumed.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -124,7 +128,7 @@ private theorem mem_representativeIntermediateCoset_iff
         extensionSubgroup K L.field L.below :=
       QuotientGroup.eq_iff_div_mem.mp hxout
     refine ⟨x / Quotient.out (L.extensionQuotientMulEquiv q), hdiv, ?_⟩
-    simp [div_eq_mul_inv, mul_assoc]
+    exact div_mul_cancel x _
 
 omit [IsTopologicalGroup G] in
 private theorem intermediateCoset_eq_representativeIntermediateCoset

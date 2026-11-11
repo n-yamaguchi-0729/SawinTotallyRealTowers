@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Universal
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.Universal
 
 /-!
 # The chosen degree-one Frobenius element
@@ -13,6 +15,8 @@ Surjectivity of the normalized degree supplies a Frobenius-semigroup element
 of exponent one.  The chosen object and its specification are kept together
 here so the multiplicativity proof can consume a named choice boundary.
 -/
+
+@[expose] public section
 
 universe u
 

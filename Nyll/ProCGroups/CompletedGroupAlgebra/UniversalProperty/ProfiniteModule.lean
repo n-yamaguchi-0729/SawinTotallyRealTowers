@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.OpenSubmoduleQuotient
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.OpenSubmoduleQuotient
 
 /-!
 # Lifts to profinite modules
@@ -13,6 +15,8 @@ Compatible lifts to all open-submodule quotients are assembled by compactness in
 linear map to a profinite module. This file proves existence and uniqueness and applies it to the
 free profinite-module property of completed group algebras.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

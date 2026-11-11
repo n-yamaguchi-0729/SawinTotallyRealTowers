@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FiniteGeneration.OpenSubgroups
-import Nyll.ProCGroups.ProP.Zassenhaus.DegreeTwo
-import Nyll.ProCGroups.ProP.Zassenhaus.Laws
-import Nyll.ProCGroups.ProP.Zassenhaus.Depth
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
-import Mathlib.Topology.Algebra.ClopenNhdofOne
-import Mathlib.Topology.Constructions
+module
+
+public import Nyll.ProCGroups.FiniteGeneration.OpenSubgroups
+public import Nyll.ProCGroups.ProP.Zassenhaus.DegreeTwo
+public import Nyll.ProCGroups.ProP.Zassenhaus.Laws
+public import Nyll.ProCGroups.ProP.Zassenhaus.Depth
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
+public import Mathlib.Topology.Constructions
 
 /-!
 # Deep finite open quotients and lifts
@@ -21,6 +23,8 @@ inside arbitrary closed augmentation degrees. Applying an actual compact
 surjective homomorphism to such a source subgroup gives a target open
 normal subgroup whose elements have source lifts of the required depth.
 -/
+
+@[expose] public section
 
 open scoped commutatorElement
 

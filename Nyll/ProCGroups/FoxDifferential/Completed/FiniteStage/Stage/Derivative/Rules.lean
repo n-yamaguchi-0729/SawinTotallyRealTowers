@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Lift
-import Nyll.ProCGroups.FoxDifferential.Completed.Residue.FreeGroup.Coordinates
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Lift
+public import Nyll.ProCGroups.FoxDifferential.Completed.Residue.FreeGroup.Coordinates
 
 /-!
 # Fox differential: finite stage — stage — derivative — rules
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageDerivative_mul`
   The finite-stage Fox product rule holds componentwise.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitPrimes
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.DegreeOnePrimes
-import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.NumberTheory.RamificationInertia.Unramified
-import Mathlib.NumberTheory.LegendreSymbol.Basic
-import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition
-import Mathlib.RingTheory.RamificationInertia.Inertia
-import Mathlib.Data.Nat.ModEq
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitPrimes
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.DegreeOnePrimes
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.NumberTheory.RamificationInertia.Unramified
+public import Mathlib.NumberTheory.LegendreSymbol.Basic
+public import Mathlib.LinearAlgebra.Dimension.FreeAndStrongRankCondition
+public import Mathlib.RingTheory.RamificationInertia.Inertia
+public import Mathlib.Data.Nat.ModEq
 
 /-!
 # Completely split primes congruent to one modulo four
@@ -22,6 +24,8 @@ congruent to one modulo four and outside any specified finite set.
 The construction passes through an extension containing a square root
 of minus one.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -62,7 +66,7 @@ and avoidance of an arbitrary finite set. The proof applies the elementary
 polynomial prime-divisor argument to K(i), then contracts its degree-one
 unramified prime to K. -/
 theorem exists_completelySplitPrime_modFour_one_not_mem
-    (K : Type) [Field K] [NumberField K] [IsGalois ℚ K] (bad : Finset ℕ) :
+    (K : Type*) [Field K] [NumberField K] [IsGalois ℚ K] (bad : Finset ℕ) :
     ∃ q : Nat.Primes, q.val ∉ bad ∧ q.val % 4 = 1 ∧
       FinitePlaceSplitsCompletely (K := ℚ) (L := K)
         ((Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm q) := by

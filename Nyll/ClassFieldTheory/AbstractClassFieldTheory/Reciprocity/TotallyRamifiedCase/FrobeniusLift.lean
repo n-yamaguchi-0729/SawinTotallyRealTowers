@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 
 /-!
 # Frobenius lifts for totally ramified extensions
@@ -15,6 +17,10 @@ Galois extension used in the totally ramified reciprocity argument.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace ClassFormation
@@ -22,8 +28,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 

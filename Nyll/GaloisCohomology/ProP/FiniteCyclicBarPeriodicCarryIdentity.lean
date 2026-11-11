@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCocycle
-import Mathlib.GroupTheory.OrderOfElement
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCocycle
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.GroupTheory.OrderOfElement
+public import Mathlib.RepresentationTheory.Rep.Basic
 
 /-!
 # The cyclic carry identity for the bar--periodic comparison
@@ -17,15 +21,17 @@ these prefixes is the carry times the full cyclic norm vector.  In particular,
 the comparison has positive sign.
 -/
 
+@[expose] public section
+
 namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
 open Representation
 
-universe u
+universe u v
 
-variable {R G : Type u} [CommRing R] [CommGroup G] [Fintype G]
+variable {R : Type u} {G : Type v} [CommRing R] [CommGroup G] [Fintype G]
 
 /-- The prefix `1 + g + ... + g^(m-1)` in the left regular representation. -/
 noncomputable def finiteCyclicPrefixNat (g : G) (m : ℕ) : MonoidAlgebra R G :=
@@ -41,19 +47,20 @@ noncomputable def finiteCyclicGeneratorPrefix
 theorem finiteCyclicGeneratorPrefix_one
     (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
     finiteCyclicGeneratorPrefix (R := R) g hg 1 = 0 := by
-  simp [finiteCyclicGeneratorPrefix, finiteCyclicPrefixNat]
+  simp only [finiteCyclicGeneratorPrefix, finiteCyclicPrefixNat,
+    finiteCyclicGeneratorCoordinate_one, ZMod.val_zero, Finset.range_zero, Finset.sum_empty]
 
 omit [Fintype G] in
 @[simp]
 theorem finiteCyclicPrefixNat_zero (g : G) :
     finiteCyclicPrefixNat (R := R) g 0 = 0 := by
-  simp [finiteCyclicPrefixNat]
+  simp only [finiteCyclicPrefixNat, Finset.range_zero, Finset.sum_empty]
 
 omit [Fintype G] in
 theorem finiteCyclicPrefixNat_succ (g : G) (m : ℕ) :
     finiteCyclicPrefixNat (R := R) g (m + 1) =
       finiteCyclicPrefixNat (R := R) g m + MonoidAlgebra.single (g ^ m) 1 := by
-  simp [finiteCyclicPrefixNat, Finset.sum_range_succ]
+  simp only [finiteCyclicPrefixNat, Finset.sum_range_succ]
 
 omit [Fintype G] in
 theorem leftRegular_single_one (x y : G) :
@@ -74,7 +81,8 @@ theorem finiteCyclicPrefixNat_add (g : G) (i j : ℕ) :
         (Rep.leftRegular R G).ρ (g ^ i) (finiteCyclicPrefixNat (R := R) g j) =
       finiteCyclicPrefixNat (R := R) g (i + j) := by
   induction j with
-  | zero => simp [finiteCyclicPrefixNat]
+  | zero => simp only [finiteCyclicPrefixNat, map_pow, Finset.range_zero, Finset.sum_empty,
+    map_zero, add_zero]
   | succ j ih =>
       rw [finiteCyclicPrefixNat_succ, map_add]
       calc
@@ -119,7 +127,7 @@ theorem leftRegular_prefix_sub (g : G) (m : ℕ) :
           (Rep.leftRegular R G).ρ g (MonoidAlgebra.single (g ^ m) 1) =
             MonoidAlgebra.single (g ^ (m + 1)) 1 := by
         ext z
-        simp [pow_succ']
+        simp only [ofMulAction_single, smul_eq_mul, MonoidAlgebra.coeff_single, pow_succ']
       calc
         _ =
             ((Rep.leftRegular R G).ρ g
@@ -132,6 +140,23 @@ theorem leftRegular_prefix_sub (g : G) (m : ℕ) :
             (MonoidAlgebra.single (g ^ (m + 1)) 1 -
               MonoidAlgebra.single (g ^ m) 1) := by rw [ih, hsingle]
         _ = _ := by abel
+
+/-- The full generator prefix is the norm of the unit basis vector. -/
+theorem finiteCyclicPrefixNat_card_eq_norm_one
+    (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g) :
+    finiteCyclicPrefixNat (R := R) g (Nat.card G) =
+      (Rep.leftRegular R G).norm.asHom.hom (MonoidAlgebra.single 1 1) := by
+  rw [finiteCyclicPrefixNat, ← Fin.sum_univ_eq_sum_range]
+  calc
+    ∑ i : Fin (Nat.card G), MonoidAlgebra.single (g ^ i.val) (1 : R) =
+        ∑ x : G, MonoidAlgebra.single x (1 : R) :=
+      Equiv.sum_comp (finiteCyclicGeneratorPowEquiv g hg)
+        (fun x : G ↦ MonoidAlgebra.single x (1 : R))
+    _ = _ := by
+      rw [Rep.norm_apply, Representation.norm, LinearMap.sum_apply]
+      apply Finset.sum_congr rfl
+      intro x _
+      rw [leftRegular_single_one, mul_one]
 
 /-- The degree-one prefix has differential `[x] - [1]`. -/
 theorem finiteCyclicGeneratorPrefix_sub

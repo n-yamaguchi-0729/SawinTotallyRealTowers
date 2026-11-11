@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Mathlib.Data.Finset.Basic
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-import Mathlib.RingTheory.Norm.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Mathlib.Data.Finset.Basic
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+public import Mathlib.RingTheory.Norm.Basic
 
 /-!
 # Quotients by local norm subgroups
@@ -17,22 +19,24 @@ Constructs `Kˣ/N(Lˣ)`, its universal maps and comparison equivalences, and
 relates its finite cardinality to the index of the norm subgroup.
 -/
 
+@[expose] public section
+
 namespace LocalFieldTheory
 
 noncomputable section
 
-universe u v
+universe u v w
 
 /-- The norm subgroup N_{L/K}(Lˣ) ≤ Kˣ. -/
-def localNormSubgroup (K L : Type u) [Field K] [Field L] [Algebra K L] : Subgroup Kˣ :=
+def localNormSubgroup (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] : Subgroup Kˣ :=
   (normUnits K L).range
 
 /-- Units modulo field norms. -/
-def NormQuotient (K L : Type u) [Field K] [Field L] [Algebra K L] : Type u :=
+def NormQuotient (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] : Type u :=
   Kˣ ⧸ localNormSubgroup K L
 
 /-- Field units modulo the local norm subgroup form a commutative group. -/
-instance normQuotientCommGroup (K L : Type u) [Field K] [Field L] [Algebra K L] :
+instance normQuotientCommGroup (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] :
     CommGroup (NormQuotient K L) := by
   change CommGroup (Kˣ ⧸ localNormSubgroup K L)
   infer_instance
@@ -41,13 +45,13 @@ instance normQuotientCommGroup (K L : Type u) [Field K] [Field L] [Algebra K L] 
 that need quotient-level constructions should use this equivalence instead of
 unfolding `NormQuotient`. -/
 def normQuotientConcreteEquiv
-    (K L : Type u) [Field K] [Field L] [Algebra K L] :
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] :
     NormQuotient K L ≃* Kˣ ⧸ localNormSubgroup K L := by
   change (Kˣ ⧸ localNormSubgroup K L) ≃* Kˣ ⧸ localNormSubgroup K L
   exact MulEquiv.refl _
 
 /-- Defines `normClass`. -/
-def normClass (K L : Type u) [Field K] [Field L] [Algebra K L] :
+def normClass (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] :
     Kˣ →* NormQuotient K L := by
   change Kˣ →* Kˣ ⧸ localNormSubgroup K L
   let N := localNormSubgroup K L
@@ -57,14 +61,14 @@ def normClass (K L : Type u) [Field K] [Field L] [Algebra K L] :
 representative. -/
 @[simp]
 theorem normQuotientConcreteEquiv_normClass
-    (K L : Type u) [Field K] [Field L] [Algebra K L] (x : Kˣ) :
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] (x : Kˣ) :
     normQuotientConcreteEquiv K L (normClass K L x) =
       QuotientGroup.mk x := by
   rfl
 
 /-- Define a homomorphism out of a norm quotient from a homomorphism on
 `Kˣ` that kills every local norm. -/
-def normQuotientLift {K L : Type u} {M : Type v} [Field K] [Field L] [Algebra K L]
+def normQuotientLift {K : Type u} {L : Type v} {M : Type w} [Field K] [Field L] [Algebra K L]
     [Group M] (f : Kˣ →* M) (h : localNormSubgroup K L ≤ f.ker) :
     NormQuotient K L →* M := by
   change (Kˣ ⧸ localNormSubgroup K L) →* M
@@ -74,7 +78,7 @@ def normQuotientLift {K L : Type u} {M : Type v} [Field K] [Field L] [Algebra K 
 /-- A homomorphism descended through the norm quotient agrees with the original homomorphism on
 representatives. -/
 @[simp]
-theorem normQuotientLift_normClass {K L : Type u} {M : Type v} [Field K] [Field L]
+theorem normQuotientLift_normClass {K : Type u} {L : Type v} {M : Type w} [Field K] [Field L]
     [Algebra K L] [Group M] (f : Kˣ →* M)
     (h : localNormSubgroup K L ≤ f.ker) (x : Kˣ) :
     normQuotientLift f h (normClass K L x) = f x := by
@@ -82,7 +86,7 @@ theorem normQuotientLift_normClass {K L : Type u} {M : Type v} [Field K] [Field 
 
 /-- A map obtained by descending a surjective homomorphism through the norm
 quotient is still surjective. -/
-theorem normQuotientLift_surjective {K L : Type u} {M : Type v} [Field K] [Field L]
+theorem normQuotientLift_surjective {K : Type u} {L : Type v} {M : Type w} [Field K] [Field L]
     [Algebra K L] [Group M] (f : Kˣ →* M)
     (h : localNormSubgroup K L ≤ f.ker) (hf : Function.Surjective f) :
     Function.Surjective (normQuotientLift f h) := by
@@ -94,7 +98,7 @@ theorem normQuotientLift_surjective {K L : Type u} {M : Type v} [Field K] [Field
 subgroup has been identified.  This is the sole public boundary for such
 representation changes. -/
 def normQuotientEquivOfSubgroupEq
-    (K L : Type u) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     (N : Subgroup Kˣ) (h : localNormSubgroup K L = N) :
     NormQuotient K L ≃* Kˣ ⧸ N := by
   change (Kˣ ⧸ localNormSubgroup K L) ≃* (Kˣ ⧸ N)
@@ -104,7 +108,7 @@ def normQuotientEquivOfSubgroupEq
 corresponding quotient class. -/
 @[simp]
 theorem normQuotientEquivOfSubgroupEq_normClass
-    (K L : Type u) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     (N : Subgroup Kˣ) (h : localNormSubgroup K L = N) (x : Kˣ) :
     normQuotientEquivOfSubgroupEq K L N h (normClass K L x) =
       QuotientGroup.mk x := by
@@ -114,7 +118,7 @@ theorem normQuotientEquivOfSubgroupEq_normClass
 
 /-- Identify two norm quotients when their defining norm subgroups agree. -/
 def normQuotientEquivOfNormSubgroupEq
-    (K L M : Type u) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     (h : localNormSubgroup K L = localNormSubgroup K M) :
     NormQuotient K L ≃* NormQuotient K M := by
@@ -125,7 +129,7 @@ def normQuotientEquivOfNormSubgroupEq
 An equality of norm subgroups identifies norm classes represented by the same base-field unit. -/
 @[simp]
 theorem normQuotientEquivOfNormSubgroupEq_normClass
-    (K L M : Type u) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     (h : localNormSubgroup K L = localNormSubgroup K M) (x : Kˣ) :
     normQuotientEquivOfNormSubgroupEq K L M h (normClass K L x) =
@@ -136,7 +140,7 @@ theorem normQuotientEquivOfNormSubgroupEq_normClass
 
 /-- First isomorphism theorem with an opaque norm quotient as its source. -/
 def normQuotientEquivOfSurjective
-    {K L : Type u} {M : Type v} [Field K] [Field L] [Algebra K L]
+    {K : Type u} {L : Type v} {M : Type w} [Field K] [Field L] [Algebra K L]
     [Group M] (f : Kˣ →* M) (hf : Function.Surjective f)
     (hker : f.ker = localNormSubgroup K L) : NormQuotient K L ≃* M := by
   change (Kˣ ⧸ localNormSubgroup K L) ≃* M
@@ -146,7 +150,7 @@ def normQuotientEquivOfSurjective
 /-- The first-isomorphism equivalence sends a norm class to the image of its representative. -/
 @[simp]
 theorem normQuotientEquivOfSurjective_normClass
-    {K L : Type u} {M : Type v} [Field K] [Field L] [Algebra K L]
+    {K : Type u} {L : Type v} {M : Type w} [Field K] [Field L] [Algebra K L]
     [Group M] (f : Kˣ →* M) (hf : Function.Surjective f)
     (hker : f.ker = localNormSubgroup K L) (x : Kˣ) :
     normQuotientEquivOfSurjective f hf hker (normClass K L x) = f x := by
@@ -159,7 +163,7 @@ theorem normQuotientEquivOfSurjective_normClass
 
 /-- Eliminate a norm-quotient class through the canonical quotient map,
 without exposing the quotient representation to clients. -/
-protected theorem NormQuotient.inductionOn {K L : Type u} [Field K] [Field L]
+protected theorem NormQuotient.inductionOn {K : Type u} {L : Type v} [Field K] [Field L]
     [Algebra K L] {motive : NormQuotient K L → Prop}
     (q : NormQuotient K L)
     (h : ∀ x : Kˣ, motive (normClass K L x)) : motive q := by
@@ -169,19 +173,19 @@ protected theorem NormQuotient.inductionOn {K L : Type u} [Field K] [Field L]
   exact h x
 
 /-- The quotient class of any extension-unit norm is the identity norm class. -/
-theorem mk_normUnits_eq_one (K L : Type u) [Field K] [Field L] [Algebra K L] (x : Lˣ) :
+theorem mk_normUnits_eq_one (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] (x : Lˣ) :
     normClass K L (normUnits K L x) = 1 := by
   exact (QuotientGroup.eq_one_iff (normUnits K L x)).2 ⟨x, rfl⟩
 
 /-- A base-field unit has trivial norm class exactly when it lies in the local norm subgroup. -/
-theorem normClass_eq_one_iff (K L : Type u) [Field K] [Field L]
+theorem normClass_eq_one_iff (K : Type u) (L : Type v) [Field K] [Field L]
     [Algebra K L] (x : Kˣ) :
     normClass K L x = 1 ↔ ∃ y : Lˣ, normUnits K L y = x := by
   rw [← MonoidHom.mem_range]
   exact QuotientGroup.eq_one_iff x
 
 /-- Two units have the same norm class exactly when their quotient is a local norm. -/
-theorem normClass_eq_iff_div_mem (K L : Type u) [Field K] [Field L]
+theorem normClass_eq_iff_div_mem (K : Type u) (L : Type v) [Field K] [Field L]
     [Algebra K L] (x y : Kˣ) :
     normClass K L x = normClass K L y ↔
       x / y ∈ localNormSubgroup K L :=
@@ -190,7 +194,7 @@ theorem normClass_eq_iff_div_mem (K L : Type u) [Field K] [Field L]
     exact QuotientGroup.eq_iff_div_mem (N := N)
 
 /-- The kernel of the norm-class homomorphism is the local norm subgroup. -/
-theorem normClass_ker (K L : Type u) [Field K] [Field L] [Algebra K L] :
+theorem normClass_ker (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] :
     MonoidHom.ker (normClass K L) = localNormSubgroup K L :=
   by
     let N := localNormSubgroup K L
@@ -198,13 +202,13 @@ theorem normClass_ker (K L : Type u) [Field K] [Field L] [Algebra K L] :
 
 /-- Membership in the kernel of the norm-class map is equivalent to membership in the local norm
 subgroup. -/
-theorem normClass_mem_ker_iff (K L : Type u) [Field K] [Field L]
+theorem normClass_mem_ker_iff (K : Type u) (L : Type v) [Field K] [Field L]
     [Algebra K L] (x : Kˣ) :
     x ∈ MonoidHom.ker (normClass K L) ↔ x ∈ localNormSubgroup K L := by
   rw [normClass_ker K L]
 
 /-- A norm class is one exactly when its representative is a local norm. -/
-theorem normClass_eq_one_iff_mem (K L : Type u) [Field K] [Field L]
+theorem normClass_eq_one_iff_mem (K : Type u) (L : Type v) [Field K] [Field L]
     [Algebra K L] (x : Kˣ) :
     normClass K L x = 1 ↔ x ∈ localNormSubgroup K L := by
   rw [← normClass_mem_ker_iff K L x]
@@ -212,7 +216,7 @@ theorem normClass_eq_one_iff_mem (K L : Type u) [Field K] [Field L]
 
 /-- The map of norm quotients induced by inclusion of their norm subgroups. -/
 def normQuotientMapOfLE
-    (K L M : Type u) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     (h : localNormSubgroup K L ≤ localNormSubgroup K M) :
     NormQuotient K L →* NormQuotient K M :=
@@ -222,7 +226,7 @@ def normQuotientMapOfLE
 /-- The quotient map induced by inclusion of norm subgroups preserves representatives. -/
 @[simp]
 theorem normQuotientMapOfLE_normClass
-    (K L M : Type u) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     (h : localNormSubgroup K L ≤ localNormSubgroup K M) (x : Kˣ) :
     normQuotientMapOfLE K L M h (normClass K L x) = normClass K M x := by
@@ -260,19 +264,19 @@ instance normQuotient_self_subsingleton (K : Type u) [Field K] :
     rw [normQuotient_self_eq_one K x, normQuotient_self_eq_one K y]
 
 /-- A representative from the local norm subgroup has trivial norm class. -/
-theorem normClass_eq_one_of_mem (K L : Type u) [Field K] [Field L]
+theorem normClass_eq_one_of_mem (K : Type u) (L : Type v) [Field K] [Field L]
     [Algebra K L] {x : Kˣ} (hx : x ∈ localNormSubgroup K L) :
     normClass K L x = 1 :=
   (normClass_eq_one_iff_mem K L x).2 hx
 
 /-- An integral power of a unit norm has trivial norm class. -/
 theorem normClass_normUnits_zpow_eq_one
-    (K L : Type u) [Field K] [Field L] [Algebra K L] (x : Lˣ) (n : Int) :
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] (x : Lˣ) (n : Int) :
     normClass K L ((normUnits K L x) ^ n) = 1 := by
   rw [map_zpow, mk_normUnits_eq_one, one_zpow]
 
 /-- Two norm classes agree exactly when their representatives differ by a unit norm. -/
-theorem normClass_eq_iff_exists_norm_div (K L : Type u)
+theorem normClass_eq_iff_exists_norm_div (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x y : Kˣ) :
     normClass K L x = normClass K L y ↔
       ∃ z : Lˣ, x / y = normUnits K L z := by
@@ -286,21 +290,21 @@ theorem normClass_eq_iff_exists_norm_div (K L : Type u)
     exact ⟨z, hz.symm⟩
 
 /-- Multiplying a representative on the left by a unit norm leaves its norm class unchanged. -/
-theorem normClass_normUnits_mul (K L : Type u)
+theorem normClass_normUnits_mul (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (z : Lˣ) (x : Kˣ) :
     normClass K L (normUnits K L z * x) = normClass K L x := by
   rw [map_mul, mk_normUnits_eq_one]
   exact one_mul (normClass K L x)
 
 /-- Multiplying a representative on the right by a unit norm leaves its norm class unchanged. -/
-theorem normClass_mul_normUnits (K L : Type u)
+theorem normClass_mul_normUnits (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x : Kˣ) (z : Lˣ) :
     normClass K L (x * normUnits K L z) = normClass K L x := by
   rw [map_mul, mk_normUnits_eq_one]
   exact mul_one (normClass K L x)
 
 /-- Left multiplication by an integral power of a unit norm leaves a norm class unchanged. -/
-theorem normClass_normUnits_zpow_mul (K L : Type u)
+theorem normClass_normUnits_zpow_mul (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (z : Lˣ) (n : Int) (x : Kˣ) :
     normClass K L ((normUnits K L z) ^ n * x) =
       normClass K L x := by
@@ -308,7 +312,7 @@ theorem normClass_normUnits_zpow_mul (K L : Type u)
   exact one_mul (normClass K L x)
 
 /-- Right multiplication by an integral power of a unit norm leaves a norm class unchanged. -/
-theorem normClass_mul_normUnits_zpow (K L : Type u)
+theorem normClass_mul_normUnits_zpow (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x : Kˣ) (z : Lˣ) (n : Int) :
     normClass K L (x * (normUnits K L z) ^ n) =
       normClass K L x := by
@@ -318,7 +322,7 @@ theorem normClass_mul_normUnits_zpow (K L : Type u)
 /-! ### Surjectivity and equality refinements for norm quotients -/
 
 /-- A representative obtained by multiplying another by a unit norm defines the same norm class. -/
-theorem normClass_eq_of_eq_normUnits_mul (K L : Type u)
+theorem normClass_eq_of_eq_normUnits_mul (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] {x y : Kˣ} (z : Lˣ)
     (h : x = normUnits K L z * y) :
     normClass K L x = normClass K L y := by
@@ -326,7 +330,7 @@ theorem normClass_eq_of_eq_normUnits_mul (K L : Type u)
 
 /-- Two norm classes agree exactly when one representative times the other's inverse is a local
 norm. -/
-theorem normClass_eq_iff_mul_inv_mem (K L : Type u)
+theorem normClass_eq_iff_mul_inv_mem (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x y : Kˣ) :
     normClass K L x = normClass K L y ↔
       x * y⁻¹ ∈ localNormSubgroup K L := by
@@ -334,7 +338,7 @@ theorem normClass_eq_iff_mul_inv_mem (K L : Type u)
 
 /-- Two norm classes agree exactly when a unit norm converts the second representative to the first
 on the left. -/
-theorem normClass_eq_iff_exists_norm_mul_left (K L : Type u)
+theorem normClass_eq_iff_exists_norm_mul_left (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x y : Kˣ) :
     normClass K L x = normClass K L y ↔
       ∃ z : Lˣ, x = normUnits K L z * y := by
@@ -349,7 +353,7 @@ theorem normClass_eq_iff_exists_norm_mul_left (K L : Type u)
 
 /-- Two norm classes agree exactly when a unit norm converts the second representative to the first
 on the right. -/
-theorem normClass_eq_iff_exists_norm_mul_right (K L : Type u)
+theorem normClass_eq_iff_exists_norm_mul_right (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (x y : Kˣ) :
     normClass K L x = normClass K L y ↔
       ∃ z : Lˣ, x = y * normUnits K L z := by
@@ -362,7 +366,7 @@ theorem normClass_eq_iff_exists_norm_mul_right (K L : Type u)
     exact normClass_mul_normUnits K L y z
 
 /-- If the unit norm is surjective, all base-field units have the same norm class. -/
-theorem normClass_eq_all_of_normUnits_surjective (K L : Type u)
+theorem normClass_eq_all_of_normUnits_surjective (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L]
     (h : Function.Surjective (normUnits K L)) (x y : Kˣ) :
     normClass K L x = normClass K L y := by
@@ -370,7 +374,7 @@ theorem normClass_eq_all_of_normUnits_surjective (K L : Type u)
   exact MonoidHom.mem_range.mpr (h (x / y))
 
 /-- If every base-field unit is a local norm, all norm classes coincide. -/
-theorem normClass_eq_of_localNormSubgroup_eq_top (K L : Type u)
+theorem normClass_eq_of_localNormSubgroup_eq_top (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] (h : localNormSubgroup K L = ⊤) (x y : Kˣ) :
     normClass K L x = normClass K L y :=
   (normClass_eq_iff_div_mem K L x y).2 (by

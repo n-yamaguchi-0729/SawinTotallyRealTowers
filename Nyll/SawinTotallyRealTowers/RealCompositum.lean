@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
-import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
+module
+
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.TotallyRealComplex
 
 /-!
 # Real places in composita over the rationals
@@ -16,6 +18,8 @@ at infinite places is exactly total reality. Total reality is preserved by
 composita inside an algebraic extension, so this supplies the real-place
 condition independently of the finite ramification support and the prime `p`.
 -/
+
+@[expose] public section
 
 open NumberField
 

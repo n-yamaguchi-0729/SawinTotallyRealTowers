@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
 /-!
 # The maximal Kummer subgroup
@@ -16,11 +18,15 @@ restricted radical quotient is canonically the ordinary power-class group.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace KummerTheory
 
-variable (K : Type) [Field K]
+variable (K : Type u) [Field K]
 
 /-- The largest admissible Kummer subgroup, corresponding to adjoining all
 `n`-th roots of elements of `Kˣ`. -/

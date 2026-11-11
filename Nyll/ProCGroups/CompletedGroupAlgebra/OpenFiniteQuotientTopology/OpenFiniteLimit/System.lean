@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteQuotients
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteQuotients
+public import Nyll.ProCGroups.InverseSystems.Basic
 
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Open Finite Limit / System
@@ -13,6 +16,8 @@ This module defines the two-parameter open-finite quotient system and its named 
 carrier. The compatible-family representation is exposed only by an explicit equivalence and the
 canonical projection/compatibility/extensionality API.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

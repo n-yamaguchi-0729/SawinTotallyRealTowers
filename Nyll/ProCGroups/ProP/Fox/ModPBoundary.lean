@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPGroupDerivative
-import Nyll.ProCGroups.ProP.Fox.Rows
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPGroupDerivative
+public import Nyll.ProCGroups.ProP.Fox.Rows
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
 
 /-!
 # Mod-p Fox boundary and displayed relation matrix
@@ -16,6 +18,8 @@ The mod-`p` presentation derivative satisfies its fundamental formula, so the
 displayed relator rows give a finite linear map whose composite with the
 boundary is zero.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

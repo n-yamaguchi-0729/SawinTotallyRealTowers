@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedInertiaComparison
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldNormResidueNaturality
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedInertiaComparison
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldNormResidueNaturality
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
 /-!
 # Fixed-field norm quotients
@@ -17,6 +19,10 @@ records their compatibility with fixed-field norm-residue symbols.
 -/
 
 
+
+@[expose] public section
+
+universe u
 
 noncomputable section
 
@@ -429,7 +435,7 @@ theorem abstractFixedFieldNormResidueSymbol_eq_of_normClass_eq
 quotient equivalence agree on classes transported through a separable-closure
 equivalence. -/
 theorem fixedFieldQuotientEquiv_mk_compatibility
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K))
     (J : ClosedSubgroup Gal(SeparableClosure K/K))
@@ -438,7 +444,7 @@ theorem fixedFieldQuotientEquiv_mk_compatibility
     [hJfinite : Finite
       (H.field.toSubgroup ⧸ extensionSubgroup H.field J hJH)] :
     let F := abstractFixedField K (SeparableClosure K) H.field
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (τ : (intrinsicAbstractBase F).toSubgroup),
@@ -462,11 +468,7 @@ theorem fixedFieldQuotientEquiv_mk_compatibility
           (QuotientGroup.mk (φ τ.1)) =
       finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
           F E i (QuotientGroup.mk τ) := by
-  dsimp only
-  let F := abstractFixedField K (SeparableClosure K) H.field
-  let : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
-  intro e τ
+  intro F reusedStructure2 e τ
   let E := abstractRelativeFixedField K (SeparableClosure K) hJH
   let : FiniteDimensional F E :=
     abstractRelativeFixedField_finiteDimensional

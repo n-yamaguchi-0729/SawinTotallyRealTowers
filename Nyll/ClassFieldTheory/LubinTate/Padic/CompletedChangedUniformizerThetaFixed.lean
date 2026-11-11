@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedFrobeniusEvaluation
 
 /-!
 # Fixedness of completed p-adic changed-uniformizer theta values
@@ -18,6 +20,8 @@ convergent theta value is fixed.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -83,10 +87,7 @@ theorem padicCompletedDiagonalFrobenius_multiplicativeUnitAction
           p n u⁻¹ x hx)
         (u : (padicLocalField p).valuationSubring) =
       x := by
-  let r :=
-    padicCompletedUnitFrobeniusIntegerEquiv p n u⁻¹
-  let x := padicCompletedMultiplicativePrimitivePoint p n
-  let hx := padicCompletedMultiplicativePrimitivePoint_hasEval p n
+  intro r x hx
   have hpoint :
       r x =
         padicCompletedMultiplicativePrimitivePointUnitAction p u⁻¹ n := by

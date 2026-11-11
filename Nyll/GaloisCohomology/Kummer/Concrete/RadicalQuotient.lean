@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Infinite
-import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
+module
+
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
 
 /-!
 # Ambient radical quotients
@@ -21,6 +23,8 @@ smaller subgroup of `n`-th powers of elements of `D.carrier`.
 -/
 
 
+
+@[expose] public section
 
 namespace KummerTheory
 

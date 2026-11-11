@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedGeometricRestriction
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedGeometricRestriction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
 
 /-!
 # Cyclotomic unramified local--global compatibility
@@ -16,6 +21,8 @@ finite one-place idele class with the chosen local Artin homomorphism.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NumberField
 
@@ -158,20 +165,20 @@ private theorem
       LocalClassFieldTheory.abstractRelativeFixedField
         ℚ (SeparableClosure ℚ)
         (rationalCyclotomicFieldInertia_le H.field)
-    letI _ : NumberField F :=
+    let _ : NumberField F :=
       cyclotomicUnramifiedGeometricBaseNumberField H
-    letI _ : NumberField E :=
+    let _ : NumberField E :=
       cyclotomicUnramifiedGeometricRelativeNumberField H L
-    letI _ : Algebra F E := E.algebra'
-    letI _ : Algebra F U := U.algebra'
-    letI _ : IsAbelianGalois F E :=
+    let _ : Algebra F E := E.algebra'
+    let _ : Algebra F U := U.algebra'
+    let _ : IsAbelianGalois F E :=
       cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-    letI _ : IsAbelianGalois F U :=
+    let _ : IsAbelianGalois F U :=
       cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-    letI _ : Algebra E U :=
+    let _ : Algebra E U :=
       abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
         H L hUnramified
-    letI _ : @IsScalarTower F E U
+    let _ : @IsScalarTower F E U
         Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
       IsScalarTower.of_algHom
         (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
@@ -180,35 +187,8 @@ private theorem
         H L hUnramified).comp
         (infiniteGlobalArtinMonoidHom F U).toMonoidHom =
       globalArtinMonoidHom (K := F) (L := E) := by
-  dsimp only
-  let F :=
-    LocalClassFieldTheory.abstractFixedField
-      ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    LocalClassFieldTheory.abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
-  let U :=
-    LocalClassFieldTheory.abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ)
-      (rationalCyclotomicFieldInertia_le H.field)
-  let fNumberField : NumberField F :=
-    cyclotomicUnramifiedGeometricBaseNumberField H
-  let eNumberField : NumberField E :=
-    cyclotomicUnramifiedGeometricRelativeNumberField H L
-  let fEAlgebra : Algebra F E := E.algebra'
-  let fUAlgebra : Algebra F U := U.algebra'
-  let fEIsAbelianGalois : IsAbelianGalois F E :=
-    cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-  let fUIsAbelianGalois : IsAbelianGalois F U :=
-    cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-  let eUAlgebra : Algebra E U :=
-    abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
-      H L hUnramified
-  let fEUTower : @IsScalarTower F E U
-      Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
-    IsScalarTower.of_algHom
-      (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
-        H L hUnramified)
+  intro F E U fNumberField eNumberField fEAlgebra fUAlgebra fEIsAbelianGalois fUIsAbelianGalois
+    eUAlgebra fEUTower
   calc
     (abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom
         H L hUnramified).comp
@@ -312,13 +292,7 @@ theorem
         (IdeleGroup.finitePlaceIdeleClass v) =
       chosenFinitePlaceArtinMonoidHom
         (K := F) (L := E) v := by
-  dsimp only
-  let F :=
-    LocalClassFieldTheory.abstractFixedField
-      ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    LocalClassFieldTheory.abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
+  intro F E
   let U :=
     LocalClassFieldTheory.abstractRelativeFixedField
       ℚ (SeparableClosure ℚ)

@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.DegreeOnePrimes
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
-import Mathlib.FieldTheory.Galois.IsGaloisGroup
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.RingTheory.RamificationInertia.Ramification
-import Mathlib.Algebra.Group.Subgroup.Finite
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.DegreeOnePrimes
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+public import Mathlib.FieldTheory.Galois.IsGaloisGroup
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.RingTheory.RamificationInertia.Ramification
+public import Mathlib.Algebra.Group.Subgroup.Finite
 
 /-!
 # Completely split primes of number fields
@@ -19,6 +21,8 @@ Unramified degree-one primes in a finite Galois number field give
 complete splitting above the canonical rational finite place. Such
 primes exist outside any specified finite set.
 -/
+
+@[expose] public section
 
 open scoped NumberField Pointwise
 open NumberField IsDedekindDomain HilbertRamification.Dedekind
@@ -68,7 +72,7 @@ theorem finitePlaceBelow_eq_rationalPrimePlace
 /-- For a finite Galois number field, an unramified degree-one prime
 has trivial decomposition group, hence gives complete splitting. -/
 theorem finitePlaceSplitsCompletely_of_unramified_degree_one
-    (K : Type) [Field K] [NumberField K] [IsGalois ℚ K]
+    (K : Type*) [Field K] [NumberField K] [IsGalois ℚ K]
     (q : Nat.Primes) (W : HeightOneSpectrum (𝓞 K))
     (hOver : W.asIdeal.LiesOver (Ideal.span ({(q.val : ℤ)} : Set ℤ)))
     (hf : W.asIdeal.inertiaDeg ℤ = 1)
@@ -103,7 +107,7 @@ theorem finitePlaceSplitsCompletely_of_unramified_degree_one
 
 /-- There is a completely split rational prime outside every finite set. -/
 theorem exists_completelySplitPrime_not_mem
-    (K : Type) [Field K] [NumberField K] [IsGalois ℚ K] (bad : Finset ℕ) :
+    (K : Type*) [Field K] [NumberField K] [IsGalois ℚ K] (bad : Finset ℕ) :
     ∃ q : Nat.Primes, q.val ∉ bad ∧
       FinitePlaceSplitsCompletely (K := ℚ) (L := K)
         ((Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm q) := by

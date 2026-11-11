@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.Algebra.Algebra.Equiv
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.LinearAlgebra.Dimension.Finite
-import Mathlib.LinearAlgebra.LinearIndependent.Defs
+module
+
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
 
 /-!
 # Unbounded finite Galois degrees inside an infinite Galois extension
@@ -20,6 +22,8 @@ infinite Galois group therefore supplies arbitrarily large linearly
 independent finite families. Their finite Galois closures give the required
 actual intermediate fields.
 -/
+
+@[expose] public section
 
 namespace AlgebraicNumberTheory
 

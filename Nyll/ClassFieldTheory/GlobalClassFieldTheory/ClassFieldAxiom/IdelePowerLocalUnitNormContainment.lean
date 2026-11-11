@@ -4,12 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitLocalPowerMap
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.KummerLocalNormContainment
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitLocalPowerMap
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdelePowerLocalUnitSubgroup
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.KummerLocalNormContainment
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
 
 /-!
 # Norm containment for idele power-local-unit subgroups
@@ -21,6 +32,8 @@ idele-class norm-index argument.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
@@ -30,6 +43,8 @@ open LocalFieldTheory
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
 variable {K : Type*} [Field K] [NumberField K]
@@ -37,7 +52,7 @@ variable {K : Type*} [Field K] [NumberField K]
 /-- Ideles whose components at the finite places of `S` are local norms
 from the chosen localizations of `L / K`. -/
 def finitePlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -50,7 +65,7 @@ def finitePlaceLocalNormCondition
 
 /-- Elementwise form of the finite family of local norm conditions. -/
 theorem mem_finitePlaceLocalNormCondition_iff
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -68,7 +83,7 @@ theorem mem_finitePlaceLocalNormCondition_iff
 `h(S,T)` implies the actual local norm condition for an exponent-`n`
 Kummer extension. -/
 theorem idelePowerLocalUnitSubgroup_le_finitePlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -95,7 +110,7 @@ open scoped Classical in
 at `S` this follows from the exponent-`n` Galois structure, while at `T`
 it follows from complete splitting. -/
 theorem idelePowerLocalUnitSubgroup_le_unionLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -128,7 +143,7 @@ theorem idelePowerLocalUnitSubgroup_le_unionLocalNormCondition
 
 /-- The simultaneous local norm condition at every finite place. -/
 def allFinitePlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -142,7 +157,7 @@ open scoped Classical in
 /-- Under the concrete splitting and unramifiedness conditions, every finite
 component of `h(S,T)` is an actual local norm. -/
 theorem idelePowerLocalUnitSubgroup_le_allFinitePlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -188,7 +203,7 @@ theorem idelePowerLocalUnitSubgroup_le_allFinitePlaceLocalNormCondition
 /-- Every global relative-idele norm satisfies all of the actual
 finite-place local norm conditions. -/
 theorem relativeIdeleNorm_range_le_allFinitePlaceLocalNormCondition
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
@@ -242,22 +257,8 @@ theorem
         p v hp hv hn r eG S₀
     principalIdelePowerLocalUnitSubgroup (K := K) n S' T =
       sUnitNthPowersInField (K := K) n (S' ∪ T) := by
+  intro hnK nUnit S₀ S' T
   classical
-  dsimp only
-  let hnK : ((n : ℕ) : K) ≠ 0 := by
-    exact_mod_cast n.ne_zero
-  let nUnit : Kˣ :=
-    Units.mk0 ((n : ℕ) : K) hnK
-  let S₀ :=
-    (S ∪ IdeleGroup.sufficientlyLargeFiniteSet (K := K)) ∪
-      chosenUnitFiniteSupport (K := K) nUnit
-  let S' :=
-    enlargeByFiniteKummerRadicalSupport
-      (K := K) (L := E) n hmu S₀
-  let T :=
-    sUnitKummerPrimeSet
-      (K := K) (Omega := Omega) E n hmu
-      p v hp hv hn r eG S₀
   let hST : Disjoint S' T :=
     (sUnitKummerPrimeSet_disjoint_enlargeByFiniteKummerRadicalSupport
       (K := K) (Omega := Omega) E n hmu

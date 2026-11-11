@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.Augmentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.Augmentation
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — system — basic
@@ -24,6 +27,8 @@ The principal declarations in this module are:
   The transition map attached to the identity refinement is the identity homomorphism in the Fox
   differential construction.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

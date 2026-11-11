@@ -4,23 +4,25 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Algebra.EuclideanDomain.Basic
-import Mathlib.Algebra.Order.Field.Power
-import Mathlib.Analysis.SpecialFunctions.Log.Base
-import Mathlib.NumberTheory.Padics.PadicVal.Basic
-import Mathlib.Topology.Algebra.Order.Field
-import Batteries.Tactic.Init
-import Lean.Elab.Tactic.NormCast
-import Lean.Elab.Tactic.Omega
-import Lean.Elab.Tactic.RCases
-import Mathlib.Algebra.Order.Field.Basic
-import Mathlib.Order.Filter.Defs
-import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Linarith.Frontend
-import Mathlib.Tactic.Positivity.Basic
-import Mathlib.Tactic.Ring.RingNF
+module
+
+public import Mathlib.Data.Nat.Factorization.Basic
+public import Mathlib.Data.Nat.Prime.Basic
+public import Mathlib.Algebra.EuclideanDomain.Basic
+public import Mathlib.Algebra.Order.Field.Power
+public import Mathlib.Analysis.SpecialFunctions.Log.Base
+public import Mathlib.NumberTheory.Padics.PadicVal.Basic
+public import Mathlib.Topology.Algebra.Order.Field
+public import Batteries.Tactic.Init
+public import Lean.Elab.Tactic.NormCast
+public import Lean.Elab.Tactic.Omega
+public import Lean.Elab.Tactic.RCases
+public import Mathlib.Algebra.Order.Field.Basic
+public import Mathlib.Order.Filter.Defs
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.Linarith.Frontend
+public import Mathlib.Tactic.Positivity.Basic
+public import Mathlib.Tactic.Ring.RingNF
 
 /-!
 # Arithmetic lemmas for local-field index calculations
@@ -35,6 +37,8 @@ logarithm and exponential series.
 -/
 
 
+
+@[expose] public section
 
 namespace LocalFieldTheory.DiscreteValuationField
 

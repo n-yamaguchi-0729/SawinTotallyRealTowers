@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteTowerBaseUnitsH2
-import Nyll.GaloisCohomology.ProP.FiniteCyclicH2CoefficientNorm
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitNorm
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteTowerBaseUnitsH2
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicH2CoefficientNorm
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitNorm
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 
 /-!
 # Vanishing of base-unit H² in an unramified local tower
@@ -21,6 +23,8 @@ In K → L → N with N/L unramified and [N:L] dividing e(L/K), every
 K-unit embedded in L has an actual norm preimage from N. The cyclic
 coefficient criterion therefore kills the whole degree-two map.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 

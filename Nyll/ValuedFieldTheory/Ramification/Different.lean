@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
-import Mathlib.RingTheory.DedekindDomain.Different
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
+public import Mathlib.RingTheory.DedekindDomain.Different
 
 /-!
 # Different and codifferent for valued finite extensions
@@ -17,6 +19,8 @@ the local unramified criterion.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -166,20 +170,15 @@ private theorem fractionRing_isSeparable_of_finite_separable
     [IsScalarTower base.valuationSubring target.valuationSubring L]
     [IsIntegralClosure target.valuationSubring base.valuationSubring L]
     [Module.IsTorsionFree base.valuationSubring target.valuationSubring] :
-    letI : FaithfulSMul base.valuationSubring target.valuationSubring :=
+    let : FaithfulSMul base.valuationSubring target.valuationSubring :=
       Module.IsTorsionFree.to_faithfulSMul
-    letI : FaithfulSMul base.valuationSubring
+    let : FaithfulSMul base.valuationSubring
         (FractionRing target.valuationSubring) := inferInstance
-    letI : Algebra (FractionRing base.valuationSubring)
+    let : Algebra (FractionRing base.valuationSubring)
         (FractionRing target.valuationSubring) := FractionRing.liftAlgebra _ _
     Algebra.IsSeparable (FractionRing base.valuationSubring)
       (FractionRing target.valuationSubring) := by
-  let : FaithfulSMul base.valuationSubring target.valuationSubring :=
-    Module.IsTorsionFree.to_faithfulSMul
-  let : FaithfulSMul base.valuationSubring
-      (FractionRing target.valuationSubring) := inferInstance
-  let fracAlgebra : Algebra (FractionRing base.valuationSubring)
-      (FractionRing target.valuationSubring) := FractionRing.liftAlgebra _ _
+  intro sharedOwner1 sharedOwner2 fracAlgebra
   let : SMul (FractionRing base.valuationSubring)
       (FractionRing target.valuationSubring) :=
     @Algebra.toSMul _ _ _ _ fracAlgebra
@@ -197,7 +196,7 @@ private theorem fractionRing_isSeparable_of_finite_separable
     apply IsLocalization.ringHom_ext (nonZeroDivisors base.valuationSubring)
     ext a
     simp only [RingHom.coe_comp, RingHom.coe_coe,
-      AlgEquiv.coe_ringEquiv, Function.comp_apply,
+      AlgEquiv.coe_toRingEquiv, Function.comp_apply,
       AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]
     rw [IsScalarTower.algebraMap_apply
       base.valuationSubring target.valuationSubring L,

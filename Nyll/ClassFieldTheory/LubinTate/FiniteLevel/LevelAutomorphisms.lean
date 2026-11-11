@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Automorphisms of standard Lubin--Tate level fields
@@ -20,6 +22,8 @@ field degree, hence that every standard level is Galois.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

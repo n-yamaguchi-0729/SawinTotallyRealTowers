@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedPolynomialEvaluation
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaAtCompletedLevel
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.ChangedPolynomialEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedPrimitiveAction
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectThetaAtCompletedLevel
 
 /-!
 # The completed theta-intertwining theorem: the direct target level inside the completed source
@@ -19,6 +21,8 @@ embedding of the finite target Lubin--Tate level into the completed field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -56,16 +60,6 @@ local instance equalCharacteristicDirectTargetScalarTower
       (equalCharacteristicCompletedUnramifiedField F.residueField)
       (equalCharacteristicCompletedLevelField F n) :=
   IsScalarTower.of_algebraMap_eq' rfl
-
-private instance equalCharacteristicDirectTargetLevelCharP
-    (F : LocalField.{u, v} K)
-    [CharP K F.residueCharacteristic] (n : ℕ) :
-    CharP (equalCharacteristicCompletedLevelField F n)
-      F.residueCharacteristic :=
-  charP_of_injective_algebraMap
-    (algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)
-      (equalCharacteristicCompletedLevelField F n)).injective
-    F.residueCharacteristic
 
 /-- The direct analytic target parameter is exactly the image of the
 changed Laurent uniformizer `uT`. -/

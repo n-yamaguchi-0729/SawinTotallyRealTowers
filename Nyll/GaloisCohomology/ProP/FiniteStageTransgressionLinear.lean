@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgression
-import Nyll.GaloisCohomology.ProP.FiniteTransgressionLinear
-import Mathlib.LinearAlgebra.LinearIndependent.Basic
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgression
+public import Nyll.GaloisCohomology.ProP.FiniteTransgressionLinear
+public import Mathlib.LinearAlgebra.LinearIndependent.Basic
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
 
 /-!
 # Linear finite-stage transgression
@@ -15,6 +18,8 @@ Defines finite-stage inflation as a linear map, composes it with the explicit fi
 transgression map, and transports the no-extendable-combination independence criterion across
 injective degree-two inflation.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

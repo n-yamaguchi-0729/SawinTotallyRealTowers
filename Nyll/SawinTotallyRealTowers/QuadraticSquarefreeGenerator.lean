@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticGenerator
-import Nyll.SawinTotallyRealTowers.RationalSquarefree
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticGenerator
+public import Nyll.SawinTotallyRealTowers.RationalSquarefree
 
 /-!
 # Squarefree integer generators of rational quadratic extensions
@@ -13,6 +15,8 @@ import Nyll.SawinTotallyRealTowers.RationalSquarefree
 Rescaling a rational Kummer generator by a nonzero rational number preserves
 the generated field and replaces its square by a signed squarefree integer.
 -/
+
+@[expose] public section
 
 universe u
 

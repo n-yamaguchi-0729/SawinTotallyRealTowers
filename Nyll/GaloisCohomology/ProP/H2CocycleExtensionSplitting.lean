@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
-import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Continuous.Basic
-import Mathlib.RepresentationTheory.Continuous.TopRep
-import Mathlib.Topology.ContinuousMap.Algebra
-import Mathlib.Topology.ContinuousMap.Basic
-import Mathlib.Topology.ContinuousMap.Defs
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+public import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Continuous.Basic
+public import Mathlib.RepresentationTheory.Continuous.TopRep
+public import Mathlib.Topology.ContinuousMap.Algebra
+public import Mathlib.Topology.ContinuousMap.Basic
+public import Mathlib.Topology.ContinuousMap.Defs
 
 /-!
 # Splitting a cocycle extension whose degree-two class vanishes
@@ -21,6 +23,8 @@ inhomogeneous primitive.  That primitive gives an explicit continuous group
 section of the associated degree-two cocycle extension.  In particular, a
 cocycle with zero homology class has a continuous splitting.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

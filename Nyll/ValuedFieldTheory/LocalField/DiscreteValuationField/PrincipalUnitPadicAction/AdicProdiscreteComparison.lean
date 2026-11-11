@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitTopology
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitTopology
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
 
 /-!
 # Adic and prodiscrete principal-unit models
@@ -14,6 +18,8 @@ by the inverse limit of finite quotient coordinates.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -41,15 +47,13 @@ namespace Internal
 instance-parametric carrier. -/
 noncomputable def adicPrincipalUnitsHomeomorphUnderlying
     (F : CompleteDVF.{u, v} K) :
-    letI : TopologicalSpace F.valuationSubring :=
+    let : TopologicalSpace F.valuationSubring :=
       (uniformizerPowerIdeal
         (chosenPrincipalUnitPadicUniformizer F) 1).adicTopology
     AdicPrincipalUnits F ≃ₜ
       Additive
         ((LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1) := by
-  letI : TopologicalSpace F.valuationSubring :=
-    (uniformizerPowerIdeal
-      (chosenPrincipalUnitPadicUniformizer F) 1).adicTopology
+  intro sharedOwner1
   exact (AdicPrincipalUnits.homeomorph F).trans
     (WithTopology.homeomorph
       (α := Additive

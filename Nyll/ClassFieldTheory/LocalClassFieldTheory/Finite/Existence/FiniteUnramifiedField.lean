@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedComparison
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # The standard finite unramified local extension
@@ -23,6 +26,10 @@ No second Frobenius is introduced.  The canonical lift on this field is the
 existing `arithmeticFrobeniusOfUnramifiedValuation`.
 -/
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -32,7 +39,7 @@ open ClassFormation LocalFieldTheory
 
 /-- The actual fixed field of the canonical degree-`d` unramified factor. -/
 abbrev localFiniteUnramifiedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     IntermediateField K (SeparableClosure K) :=
@@ -41,7 +48,7 @@ abbrev localFiniteUnramifiedField
 
 /-- The standard unramified fixed field is finite over its base. -/
 noncomputable instance localFiniteUnramifiedField_finiteDimensional
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     FiniteDimensional K (localFiniteUnramifiedField K d hd) :=
@@ -52,7 +59,7 @@ noncomputable instance localFiniteUnramifiedField_finiteDimensional
 
 /-- The standard unramified fixed field is abelian Galois over its base. -/
 noncomputable instance localFiniteUnramifiedField_isAbelianGalois
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     IsAbelianGalois K (localFiniteUnramifiedField K d hd) :=
@@ -61,7 +68,7 @@ noncomputable instance localFiniteUnramifiedField_isAbelianGalois
 
 /-- The canonical spectral norm on the standard unramified fixed field. -/
 noncomputable instance localFiniteUnramifiedField_nontriviallyNormedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     NontriviallyNormedField (localFiniteUnramifiedField K d hd) :=
@@ -70,7 +77,7 @@ noncomputable instance localFiniteUnramifiedField_nontriviallyNormedField
 
 /-- The valuation relation induced by the canonical spectral norm. -/
 noncomputable instance localFiniteUnramifiedField_valuativeRel
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     ValuativeRel (localFiniteUnramifiedField K d hd) :=
@@ -79,7 +86,7 @@ noncomputable instance localFiniteUnramifiedField_valuativeRel
 
 /-- A standard finite unramified fixed field is again a local field. -/
 noncomputable instance localFiniteUnramifiedField_isNonarchimedeanLocalField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     IsNonarchimedeanLocalField (localFiniteUnramifiedField K d hd) :=
@@ -88,7 +95,7 @@ noncomputable instance localFiniteUnramifiedField_isNonarchimedeanLocalField
 
 /-- The spectral valuation is the extension of the valuation on `K`. -/
 noncomputable instance localFiniteUnramifiedField_valuationHasExtension
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     Valuation.HasExtension (ValuativeRel.valuation K)
@@ -99,7 +106,7 @@ noncomputable instance localFiniteUnramifiedField_valuationHasExtension
 /-- The fixed field has the degree prescribed by the abstract unramified
 factor. -/
 theorem localFiniteUnramifiedField_finrank
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     Module.finrank K (localFiniteUnramifiedField K d hd) = d := by
@@ -141,7 +148,7 @@ theorem localFiniteUnramifiedField_finrank
 /-- The literal residue extension of the standard fixed field also has
 degree `d`. -/
 theorem localFiniteUnramifiedField_residue_finrank
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     @Module.finrank 𝓀[K]
@@ -189,7 +196,7 @@ theorem localFiniteUnramifiedField_residue_finrank
 
 /-- The standard fixed field is unramified for the actual local valuations. -/
 noncomputable instance localFiniteUnramifiedField_isUnramifiedValuedExtension
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     IsNonarchimedeanLocalField.IsUnramifiedValuedExtension K
@@ -211,7 +218,7 @@ noncomputable instance localFiniteUnramifiedField_isUnramifiedValuedExtension
 /-- On the standard degree-`d` fixed field, the existing arithmetic
 Frobenius has order exactly `d`. -/
 theorem localFiniteUnramifiedField_arithmeticFrobenius_order
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (d : ℕ) (hd : 0 < d) :
     orderOf

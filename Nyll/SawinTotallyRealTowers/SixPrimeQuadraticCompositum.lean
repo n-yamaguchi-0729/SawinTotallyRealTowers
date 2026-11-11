@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiveQuadraticSquareClasses
-import Nyll.SawinTotallyRealTowers.QuadraticAdmissibleLayer
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Mathlib.Data.Finset.Lattice.Fold
-import Mathlib.Data.Nat.PrimeFin
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.Tactic.FinCases
+module
+
+public import Nyll.SawinTotallyRealTowers.FiveQuadraticSquareClasses
+public import Nyll.SawinTotallyRealTowers.QuadraticAdmissibleLayer
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Mathlib.Data.Finset.Lattice.Fold
+public import Mathlib.Data.Nat.PrimeFin
+public import Mathlib.Data.Nat.Squarefree
+public import Mathlib.Tactic.FinCases
 
 /-!
 # The five quadratic layers over the six-prime support
@@ -20,6 +22,8 @@ the chosen algebraic closure of ℚ. Each satisfies the prescribed finite
 ramification and real-place conditions. Their finite supremum is therefore
 an admissible compositum of these five quadratic fields.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open IsDedekindDomain

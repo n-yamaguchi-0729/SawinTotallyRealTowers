@@ -4,25 +4,35 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.NormContainment
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedIdeleIndex
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.CyclotomicPrimeBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeDegreeSubextension
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.PrimeOrderFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+module
+
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlacePowerIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.NormContainment
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedIdeleIndex
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.SupportedPrincipalQuotient
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.PrimePowerKummerIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.SmallModel
+public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.CyclotomicPrimeBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeDegreeSubextension
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.IdeleClassHerbrandSupportedFinal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.PrimeOrderFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Index
 
 /-!
 # The global class-field axiom
@@ -40,7 +50,11 @@ principal relative ideles.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w x
 
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
@@ -52,7 +66,7 @@ acting group.  For a fixed representative `a`, its group norm is
 `a ^ |G|`.  This exponent observation drives the prime-degree descent
 step. -/
 theorem herbrandH0_pow_card_eq_one
-    {G A : Type}
+    {G : Type u} {A : Type v}
     [Group G] [Fintype G]
     [CommGroup A] [MulDistribMulAction G A]
     (q : HerbrandH0 G A) :
@@ -78,7 +92,7 @@ theorem herbrandH0_pow_card_eq_one
 /-- Specialization of the exponent calculation to the actual relative
 idele class group. -/
 theorem ideleClassHerbrandH0_pow_finrank_eq_one
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -87,11 +101,10 @@ theorem ideleClassHerbrandH0_pow_finrank_eq_one
         RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
       HerbrandH0 (L ≃ₐ[K] L)
         (RelativeIdeleGroup.ClassGroup K L)) :
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
     q ^ Module.finrank K L = 1 := by
-  let :=
-    RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
+  intro sharedOwner1
   rw [← IsGalois.card_aut_eq_finrank,
     Nat.card_eq_fintype_card]
   exact herbrandH0_pow_card_eq_one q
@@ -99,14 +112,14 @@ theorem ideleClassHerbrandH0_pow_finrank_eq_one
 section NormQuotientCommutativity
 
 local instance cyclicNormBase_isMulCommutative
-    (A : Type) [Field A] [NumberField A] :
+    (A : Type*) [Field A] [NumberField A] :
     IsMulCommutative (IdeleClassGroup A) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 /-- The concrete class-norm quotient `C_K / N C_L` has exponent dividing
 `[L:K]`. -/
 theorem ideleClassNormQuotient_pow_finrank_eq_one
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -126,7 +139,7 @@ theorem ideleClassNormQuotient_pow_finrank_eq_one
 argument, `p` is the extension degree and `d` is the roots-of-unity
 base-change degree. -/
 theorem pow_injective_of_exponent_of_coprime
-    {A : Type} [CommGroup A]
+    {A : Type u} [CommGroup A]
     (p d : ℕ)
     (hexponent : ∀ x : A, x ^ p = 1)
     (hcoprime : d.Coprime p) :
@@ -153,7 +166,7 @@ theorem pow_injective_of_exponent_of_coprime
 /-- On the actual class-norm quotient, every power coprime to the
 extension degree is injective. -/
 theorem ideleClassNormQuotient_pow_injective_of_coprime
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -189,7 +202,7 @@ to `[L:K]`, the induced map
 is injective.  The target is expressed in the fixed-bottom-field tower
 model, so no unproved identification `𝔸_K ⊗_K M ≃ 𝔸_M` is assumed. -/
 theorem pushoutNormQuotientMap_injective_of_coprime
-    (K M L N : Type)
+    (K : Type u) (M : Type v) (L : Type w) (N : Type x)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -214,7 +227,7 @@ theorem pushoutNormQuotientMap_injective_of_coprime
 section IntermediateNormQuotientCommutativity
 
 local instance cyclicNormRelative_isMulCommutative
-    (A B : Type) [Field A] [NumberField A] [Field B] [Algebra A B] :
+    (A : Type u) (B : Type v) [Field A] [NumberField A] [Field B] [Algebra A B] :
     IsMulCommutative (RelativeIdeleGroup.ClassGroup A B) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
@@ -224,7 +237,7 @@ presentation to the actual norm quotient `C_M / N_{N/M} C_N`.
 Only the Galois hypothesis on the auxiliary extension `M/K` is needed
 for this last comparison. -/
 noncomputable def actualPushoutNormQuotientMap
-    (K M L N : Type)
+    (K : Type u) (M : Type v) (L : Type w) (N : Type x)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -246,7 +259,7 @@ noncomputable def actualPushoutNormQuotientMap
 to the corresponding base-changed representative. -/
 @[simp]
 theorem actualPushoutNormQuotientMap_mk
-    (K M L N : Type)
+    (K : Type u) (M : Type v) (L : Type w) (N : Type x)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -284,7 +297,7 @@ theorem actualPushoutNormQuotientMap_mk
 /-- Actual-target form of the injective roots-of-unity base-change
 step. -/
 theorem actualPushoutNormQuotientMap_injective_of_coprime
-    (K M L N : Type)
+    (K : Type u) (M : Type v) (L : Type w) (N : Type x)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -312,7 +325,7 @@ theorem actualPushoutNormQuotientMap_injective_of_coprime
 /-- Cardinal consequence with the actual `N/M` norm quotient as
 target. -/
 theorem ideleClassNormQuotient_card_le_actualPushout
-    (K M L N : Type)
+    (K : Type u) (M : Type v) (L : Type w) (N : Type x)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -339,7 +352,7 @@ theorem ideleClassNormQuotient_card_le_actualPushout
 the prime-power Kummer calculation gives norm index `p` for the concrete
 cyclotomic pushout.  Coprimality of the cyclotomic degree then makes the
 actual pushout map on norm quotients injective. -/
-theorem ideleClassNorm_index_le_prime_of_finrank_eq
+private theorem ideleClassNorm_index_le_prime_of_finrank_eq_native
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
@@ -412,7 +425,7 @@ theorem ideleClassNorm_index_le_prime_of_finrank_eq
 `#(C_K / N_{L/K}C_L) ≤
   #(C_M / N_{L/M}C_L) · #(C_K / N_{M/K}C_M)`. -/
 theorem ideleClassNormQuotient_card_le_actual_tower_mul
-    (K M L : Type)
+    (K : Type u) (M : Type v) (L : Type w)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -462,7 +475,7 @@ theorem ideleClassNormQuotient_card_le_actual_tower_mul
 end IntermediateNormQuotientCommutativity
 
 /-- Relative-coordinate source for the norm-index calculation. -/
-theorem relativeIdeleClassNorm_index_eq_finrank_cyclic
+private theorem relativeIdeleClassNorm_index_eq_finrank_cyclic_native
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
@@ -549,7 +562,7 @@ theorem relativeIdeleClassNorm_index_eq_finrank_cyclic
             Module.finrank K M := by
         rw [hBaseDegree]
         exact
-          ideleClassNorm_index_le_prime_of_finrank_eq
+          ideleClassNorm_index_le_prime_of_finrank_eq_native
             K M p hp hBaseDegree
       obtain ⟨sigmaM, hsigmaM⟩ :=
         IsCyclic.exists_generator (α := M ≃ₐ[K] M)
@@ -619,23 +632,88 @@ theorem relativeIdeleClassNorm_index_eq_finrank_cyclic
       exact (le_antisymm hUpper hLower).trans hfinrank
 
 /-- The ordinary idele-class norm has index equal to the degree for every
-finite cyclic extension. -/
+finite cyclic extension, independently of the universes of its fields.
+The native Tate calculation is applied to compatible small models; the
+actual norm subgroup is transported by the same field equivalences. -/
 theorem ideleClassNorm_index_eq_finrank_cyclic
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [IsCyclic (L ≃ₐ[K] L)] :
     (_root_.ideleClassNorm K L).range.index =
       Module.finrank K L := by
-  rw [ordinaryIdeleClassNorm_range_eq_relative]
-  exact
-    relativeIdeleClassNorm_index_eq_finrank_cyclic K L
+  let : Small.{0} K := ClassFieldTheory.numberField_small K
+  let : Small.{0} L := ClassFieldTheory.numberField_small L
+  let : NumberField (Shrink.{0} K) := ClassFieldTheory.numberField_shrink K
+  let : NumberField (Shrink.{0} L) := ClassFieldTheory.numberField_shrink L
+  let : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
+  let : FiniteDimensional (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_finiteDimensional K L
+  let : IsGalois (Shrink.{0} K) (Shrink.{0} L) :=
+    IsGalois.of_equiv_equiv (f := (Shrink.ringEquiv K).symm)
+      (g := (Shrink.ringEquiv L).symm) (HasseArf.shrinkAlgebra_commutes K L)
+  let : IsCyclic (Shrink.{0} L ≃ₐ[Shrink.{0} K] Shrink.{0} L) :=
+    (HasseArf.shrinkGalMulEquiv K L).isCyclic.mpr inferInstance
+  let eK : K ≃ₐ[ℚ] Shrink.{0} K := (Shrink.ringEquiv K).symm.toRatAlgEquiv
+  let eL : L ≃ₐ[ℚ] Shrink.{0} L := (Shrink.ringEquiv L).symm.toRatAlgEquiv
+  have hcomm (a : K) : eL (algebraMap K L a) =
+      algebraMap (Shrink.{0} K) (Shrink.{0} L) (eK a) :=
+    (DFunLike.congr_fun (HasseArf.shrinkAlgebra_commutes K L) a).symm
+  calc
+    (_root_.ideleClassNorm K L).range.index =
+        ((_root_.ideleClassNorm K L).range.map
+          (ideleClassCongr eK).toMonoidHom).index :=
+      (Subgroup.index_map_equiv _ (ideleClassCongr eK)).symm
+    _ = (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range.index := by
+      rw [ordinaryIdeleClassNorm_range_map_congrOfAlgEquiv eK eL hcomm]
+    _ = Module.finrank (Shrink.{0} K) (Shrink.{0} L) := by
+      rw [ordinaryIdeleClassNorm_range_eq_relative]
+      exact relativeIdeleClassNorm_index_eq_finrank_cyclic_native
+        (Shrink.{0} K) (Shrink.{0} L)
+    _ = Module.finrank K L := by
+      rw [← IsGalois.card_aut_eq_finrank, ← IsGalois.card_aut_eq_finrank]
+      exact Nat.card_congr (HasseArf.shrinkGalEquiv K L)
+
+private theorem ordinaryIdeleClassNorm_range_eq_cohomology
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    (_root_.ideleClassNorm K L).range =
+      (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range :=
+  ordinaryIdeleClassNorm_range_eq_relative
+
+/-- The relative-coordinate norm subgroup has the same index in the
+original fields as the ordinary norm subgroup, in independent universes. -/
+theorem relativeIdeleClassNorm_index_eq_finrank_cyclic
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
+    [IsCyclic (L ≃ₐ[K] L)] :
+    (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index =
+      Module.finrank K L := by
+  rw [← ordinaryIdeleClassNorm_range_eq_cohomology K L]
+  exact ideleClassNorm_index_eq_finrank_cyclic K L
+
+/-- The original prime-degree norm bound for independent original fields.
+The native Kummer argument remains the private supplier of cyclic reciprocity. -/
+theorem ideleClassNorm_index_le_prime_of_finrank_eq
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
+    (p : ℕ) (hp : p.Prime) (hdegree : Module.finrank K L = p) :
+    (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index ≤ p := by
+  have : Fact p.Prime := ⟨hp⟩
+  have : IsCyclic (L ≃ₐ[K] L) :=
+    isCyclic_of_prime_card ((IsGalois.card_aut_eq_finrank K L).trans hdegree)
+  exact ((relativeIdeleClassNorm_index_eq_finrank_cyclic K L).trans hdegree).le
 
 /-- Finiteness propagation through the actual tower norm-quotient
 sequence. -/
 theorem relativeIdeleClassNormQuotient_finite_of_actual_tower
-    (K M L : Type)
+    (K : Type u) (M : Type v) (L : Type w)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]
@@ -692,8 +770,8 @@ theorem relativeIdeleClassNormQuotient_finite_of_actual_tower
 /-- The relative-coordinate presentation of the idele-class norm quotient
 is finite and has cardinality at most
 the extension degree for every finite abelian Galois extension. -/
-theorem
-    relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian
+private theorem
+    relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian_native
     (K L : Type)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
@@ -820,10 +898,60 @@ theorem
             Module.finrank_mul_finrank K M L]
         _ = degree := hfinrank
 
+/-- The actual relative norm quotient is finite and bounded by the extension
+degree for independent field universes. Compatible field equivalences transport
+the same ordinary norm quotient, then the original relative-range comparison
+restores the specified coordinate presentation. -/
+theorem relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian
+    (K : Type u) (L : Type v)
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsAbelianGalois K L] :
+    Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ∧
+      Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+        Module.finrank K L := by
+  let : Small.{0} K := ClassFieldTheory.numberField_small K
+  let : Small.{0} L := ClassFieldTheory.numberField_small L
+  let : NumberField (Shrink.{0} K) := ClassFieldTheory.numberField_shrink K
+  let : NumberField (Shrink.{0} L) := ClassFieldTheory.numberField_shrink L
+  let : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
+  let : FiniteDimensional (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_finiteDimensional K L
+  have : IsAbelianGalois (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_isAbelianGalois K L
+  let eK : K ≃ₐ[ℚ] Shrink.{0} K := (Shrink.ringEquiv K).symm.toRatAlgEquiv
+  let eL : L ≃ₐ[ℚ] Shrink.{0} L := (Shrink.ringEquiv L).symm.toRatAlgEquiv
+  have hcomm (a : K) : eL (algebraMap K L a) =
+      algebraMap (Shrink.{0} K) (Shrink.{0} L) (eK a) :=
+    (DFunLike.congr_fun (HasseArf.shrinkAlgebra_commutes K L) a).symm
+  let e := ordinaryIdeleClassNormQuotientCongrOfAlgEquiv eK eL hcomm
+  have hsmall := relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian_native
+    (Shrink.{0} K) (Shrink.{0} L)
+  have hsmallOrdinary :
+      Finite (IdeleClassGroup (Shrink.{0} K) ⧸
+        (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range) ∧
+      Nat.card (IdeleClassGroup (Shrink.{0} K) ⧸
+        (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range) ≤
+          Module.finrank (Shrink.{0} K) (Shrink.{0} L) := by
+    simpa only [RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient,
+      ordinaryIdeleClassNorm_range_eq_cohomology] using hsmall
+  have : Finite (IdeleClassGroup (Shrink.{0} K) ⧸
+      (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range) := hsmallOrdinary.1
+  have hdegree : Module.finrank (Shrink.{0} K) (Shrink.{0} L) = Module.finrank K L := by
+    rw [← IsGalois.card_aut_eq_finrank, ← IsGalois.card_aut_eq_finrank]
+    exact Nat.card_congr (HasseArf.shrinkGalEquiv K L)
+  have hordinary : Finite (IdeleClassGroup K ⧸ (_root_.ideleClassNorm K L).range) ∧
+      Nat.card (IdeleClassGroup K ⧸ (_root_.ideleClassNorm K L).range) ≤
+        Module.finrank K L :=
+    ⟨Finite.of_injective e e.injective,
+      (Nat.card_congr e.toEquiv).trans_le (hsmallOrdinary.2.trans_eq hdegree)⟩
+  simpa only [RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient,
+    ordinaryIdeleClassNorm_range_eq_cohomology] using hordinary
+
 /-- Finiteness of the actual ordinary idele-class norm quotient of a finite
 abelian Galois extension. -/
 theorem ideleClassNormQuotient_finite_abelian
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
@@ -839,7 +967,7 @@ theorem ideleClassNormQuotient_finite_abelian
 idele-class norm quotient of a finite abelian Galois
 extension. -/
 theorem ideleClassNormQuotient_card_le_finrank_abelian
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
@@ -866,7 +994,7 @@ theorem ideleClass_lowDegree_card_eq_finrank_cyclic
     (hsigma :
       ∀ tau : L ≃ₐ[K] L,
         tau ∈ Subgroup.zpowers sigma) :
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
     Nat.card
           (HerbrandH0 (L ≃ₐ[K] L)
@@ -876,8 +1004,7 @@ theorem ideleClass_lowDegree_card_eq_finrank_cyclic
           (HerbrandHMinusOne (L ≃ₐ[K] L)
             (RelativeIdeleGroup.ClassGroup K L) sigma) =
         1 := by
-  let :=
-    RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
+  intro sharedOwner1
   let : IsCyclic (L ≃ₐ[K] L) :=
     ⟨⟨sigma, hsigma⟩⟩
   obtain ⟨hC, hCvalue⟩ :=
@@ -939,7 +1066,7 @@ theorem ideleClass_tate_lowDegree_finite_card_eq_finrank_cyclic
     (hsigma :
       ∀ tau : L ≃ₐ[K] L,
         tau ∈ Subgroup.zpowers sigma) :
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
     Finite
           (tateCohomology
@@ -959,8 +1086,7 @@ theorem ideleClass_tate_lowDegree_finite_card_eq_finrank_cyclic
             (Rep.ofMulDistribMulAction (L ≃ₐ[K] L)
               (RelativeIdeleGroup.ClassGroup K L)) (-1)) =
         1 := by
-  let :=
-    RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
+  intro sharedOwner1
   have hHerbrand :=
     ideleClass_lowDegree_card_eq_finrank_cyclic
       K L sigma hsigma
@@ -1058,15 +1184,14 @@ theorem ideleClass_tateHMinusOne_subsingleton_cyclic
     (hsigma :
       ∀ tau : L ≃ₐ[K] L,
         tau ∈ Subgroup.zpowers sigma) :
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
     Subsingleton
       (Multiplicative
         (tateCohomology
           (Rep.ofMulDistribMulAction (L ≃ₐ[K] L)
             (RelativeIdeleGroup.ClassGroup K L)) (-1))) := by
-  let :=
-    RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
+  intro sharedOwner1
   have h :=
     ideleClass_tate_lowDegree_finite_card_eq_finrank_cyclic
       K L sigma hsigma
@@ -1085,11 +1210,10 @@ theorem fieldUnitsHerbrandHMinusOne_subsingleton
     [FiniteDimensional K L]
     (σ : L ≃ₐ[K] L)
     (hσ : ∀ τ : L ≃ₐ[K] L, τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
     Subsingleton (HerbrandHMinusOne (L ≃ₐ[K] L) Lˣ σ) := by
-  let :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
+  intro sharedOwner1
   let e :=
     LocalClassFieldTheory.herbrandHminusOneEquivUnitsTateHminusOne
       K L σ hσ
@@ -1112,11 +1236,10 @@ theorem fieldUnitsHerbrandHMinusOne_card_eq_one
     [FiniteDimensional K L]
     (σ : L ≃ₐ[K] L)
     (hσ : ∀ τ : L ≃ₐ[K] L, τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
     Nat.card (HerbrandHMinusOne (L ≃ₐ[K] L) Lˣ σ) = 1 := by
-  let :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
+  intro sharedOwner1
   let :
       Subsingleton
         (HerbrandHMinusOne (L ≃ₐ[K] L) Lˣ σ) :=
@@ -1133,21 +1256,16 @@ theorem principalIdelesHerbrandHMinusOne_subsingleton
     [FiniteDimensional K L] [IsGalois K L]
     (σ : L ≃ₐ[K] L)
     (hσ : ∀ τ : L ≃ₐ[K] L, τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
-    letI :=
+    let :=
       RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
     Subsingleton
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (RelativeIdeleGroup.principalSubgroup K L) σ) := by
-  let :=
-    LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
-  let :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
-  let :=
-    RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   let e :=
     fieldUnitsHerbrandHMinusOneEquivPrincipalIdeles
       K L σ

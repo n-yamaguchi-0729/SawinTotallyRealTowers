@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.AddCommGroup
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.AddCommGroup
 
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — system — completion map
@@ -20,6 +22,8 @@ The principal declarations in this module are:
   The finite-stage projection to the completed mod-\(n\) group algebra is given by the corresponding
   coordinate formula.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

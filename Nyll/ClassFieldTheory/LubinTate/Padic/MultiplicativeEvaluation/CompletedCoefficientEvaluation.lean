@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedLevel
-import Mathlib.RingTheory.AdicCompletion.Topology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedLevel
+public import Mathlib.RingTheory.AdicCompletion.Topology
 
 /-!
 # Coefficient maps and analytic evaluation on completed p-adic levels
@@ -17,6 +19,8 @@ general injectivity criterion for evaluation with unit linear coefficient.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

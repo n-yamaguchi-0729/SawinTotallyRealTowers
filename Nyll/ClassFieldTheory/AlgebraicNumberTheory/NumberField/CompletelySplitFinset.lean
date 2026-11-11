@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitPrimes
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.GaloisAction
-import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
-import Mathlib.RingTheory.Ideal.Maps
-import Mathlib.Data.Finset.Card
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitPrimes
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.GaloisAction
+public import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
+public import Mathlib.RingTheory.Ideal.Maps
+public import Mathlib.Data.Finset.Card
 
 /-!
 # A finite set of primes witnessing complete splitting
@@ -20,6 +22,8 @@ when the rational prime splits completely. Its prime ideals form a finite
 set of cardinality equal to the number-field degree.
 -/
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -28,7 +32,7 @@ namespace AlgebraicNumberTheory.PrimeSelection
 /-- A completely split rational prime gives exactly a field-degree-sized
 finite set of distinct maximal ideals containing that rational prime. -/
 theorem exists_finset_maximalIdeals_of_finitePlaceSplitsCompletely
-    (F : Type) [Field F] [NumberField F] [IsGalois ℚ F]
+    (F : Type*) [Field F] [NumberField F] [IsGalois ℚ F]
     (q : Nat.Primes)
     (hsplit : FinitePlaceSplitsCompletely (K := ℚ) (L := F)
       ((Rat.HeightOneSpectrum.primesEquiv (R := 𝓞 ℚ)).symm q)) :

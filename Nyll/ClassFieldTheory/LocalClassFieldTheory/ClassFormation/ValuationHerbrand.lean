@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
 
 /-!
 # The valuation sequence and Herbrand quotients
@@ -16,6 +18,8 @@ valuation sequence from integer units through field units to the value group.
 All three actions are the concrete actions from `ValuationReal`: the Galois
 action on integer and field units, and the trivial action on the value group.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -42,9 +46,9 @@ omit [FiniteDimensional K L] in
 /-- The actual valuation sequence has equivariant maps, is exact at field
 units, is injective on integer units, and is surjective onto the value group. -/
 theorem valuationHerbrand_shortExact :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := galoisGroupFieldUnitsMulDistribMulAction K L
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupFieldUnitsMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     (∀ (σ : Gal(L / K)) (x : (ValuativeRel.valuation L).integerˣ),
         integerUnitsToFieldUnits L (σ • x) =
           σ • integerUnitsToFieldUnits L x) ∧
@@ -56,9 +60,7 @@ theorem valuationHerbrand_shortExact :
           integerUnitsToFieldUnits L y = x) ∧
       Function.Injective (integerUnitsToFieldUnits L) ∧
       Function.Surjective (valuationUnitsMulHom L) := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := galoisGroupFieldUnitsMulDistribMulAction K L
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   exact ⟨integerUnitsToFieldUnits_galoisGroup_equivariant K L,
     valuationUnitsMulHom_galoisGroup_equivariant K L,
     valuationUnitsMulHom_eq_one_iff_exists_integerUnit L,
@@ -96,9 +98,9 @@ theorem valuationHerbrand_multiplicativity_of_integerUnits_defined
       letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
       HerbrandQuotientDefined (Gal(L / K))
         (ValuativeRel.valuation L).integerˣ g) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := galoisGroupFieldUnitsMulDistribMulAction K L
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupFieldUnitsMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     let hZ : HerbrandQuotientDefined (Gal(L / K)) (Multiplicative Int) g :=
       galoisGroupValueGroup_herbrandQuotientDefined K L g
     ∃ hField : HerbrandQuotientDefined (Gal(L / K)) Lˣ g,
@@ -110,11 +112,7 @@ theorem valuationHerbrand_multiplicativity_of_integerUnits_defined
             g hU.1 hU.2 *
           @herbrandQuotient (Gal(L / K)) (Multiplicative Int) _ _ _
             (galoisGroupValueGroupMulDistribMulAction K L) g hZ.1 hZ.2 := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := galoisGroupFieldUnitsMulDistribMulAction K L
-  let := galoisGroupValueGroupMulDistribMulAction K L
-  let hZ : HerbrandQuotientDefined (Gal(L / K)) (Multiplicative Int) g :=
-    galoisGroupValueGroup_herbrandQuotientDefined K L g
+  intro sharedOwner1 sharedOwner2 sharedOwner3 hZ
   let hseq := valuationHerbrand_shortExact K L
   let hField := herbrandQuotientDefined_middle_of_left_right
     (G := Gal(L / K))

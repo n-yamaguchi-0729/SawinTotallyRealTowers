@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
 /-!
 # Norm quotients and narrow finite conductors in a field tower
@@ -29,6 +33,10 @@ conductor.
 
 
 
+@[expose] public section
+
+universe u v w
+
 open scoped NumberField
 
 noncomputable section
@@ -39,8 +47,8 @@ namespace GlobalClassFields
 open NumberField
 
 /-- The canonical commutativity witness used to form ordinary norm quotients. -/
-private theorem normTowerIdeleClassIsMulCommutative
-    {F : Type} [Field F] [NumberField F] :
+theorem normTowerIdeleClassIsMulCommutative
+    {F : Type u} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
@@ -66,20 +74,20 @@ private theorem normTowerQuotientIsMulCommutative
 
 /-- A quotient of the idele class group is commutative, so its norm-image
 subgroups are normal when forming the second quotient. -/
-private theorem normTowerIdeleClassQuotientIsMulCommutative
-    {F : Type} [Field F] [NumberField F]
+theorem normTowerIdeleClassQuotientIsMulCommutative
+    {F : Type u} [Field F] [NumberField F]
     (N : Subgroup (IdeleClassGroup F)) :
     IsMulCommutative (IdeleClassGroup F ⧸ N) :=
   normTowerQuotientIsMulCommutative N
 
 attribute [local instance] normTowerIdeleClassQuotientIsMulCommutative
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 section Tower
 
 variable
-    {M L : Type}
+    {M : Type v} {L : Type w}
     [Field M] [NumberField M]
     [Field L] [NumberField L]
     [Algebra K M] [Algebra M L] [Algebra K L]

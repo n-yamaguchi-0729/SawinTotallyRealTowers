@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageProjection
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageProjection
 
 /-!
 # Fox differential: completed — free pro-\(C\) — coordinate stage projection
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The finite-stage coordinate map for completed free Fox coordinates has the stated value on a
   single generator.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

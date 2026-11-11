@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Stage
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Stage
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power augmentation ideal — additive
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `coe_add_primePowerCompletedGroupAlgebraAugmentationIdeal`
   The inclusion of the completed augmentation ideal preserves addition.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -195,7 +199,7 @@ Each finite-stage prime-power augmentation ideal inherits an additive commutativ
 from its ambient finite group algebra.
 -/
 @[reducible]
-private def instAddCommGroupPrimePowerCompletedGroupAlgebraAugmentationIdealStage
+def instAddCommGroupPrimePowerCompletedGroupAlgebraAugmentationIdealStage
     (i : PrimePowerCompletedGroupAlgebraIndex G) :
     AddCommGroup ((primePowerCompletedGroupAlgebraAugmentationIdealSystem ℓ G).X i) := by
   dsimp [primePowerCompletedGroupAlgebraAugmentationIdealSystem]
@@ -207,7 +211,7 @@ The dependent family of finite-stage prime-power augmentation ideals carries the
 additive commutative group structure.
 -/
 @[reducible]
-private def instAddCommGroupPrimePowerCompletedGroupAlgebraAugmentationIdealFamily :
+def instAddCommGroupPrimePowerCompletedGroupAlgebraAugmentationIdealFamily :
     AddCommGroup
       ((i : PrimePowerCompletedGroupAlgebraIndex G) →
         (primePowerCompletedGroupAlgebraAugmentationIdealSystem ℓ G).X i) :=

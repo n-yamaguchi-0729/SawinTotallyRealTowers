@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Polynomial.Eval.Defs
-import Mathlib.Algebra.Ring.GeomSum
-import Mathlib.RingTheory.Ideal.Defs
-import Mathlib.Tactic.Ring
+module
+
+public import Mathlib.Algebra.Polynomial.Eval.Defs
+public import Mathlib.Algebra.Ring.GeomSum
+public import Mathlib.RingTheory.Ideal.Defs
+public import Mathlib.Tactic.Ring
 
 /-!
 # Hilbert ramification theory: polynomial sources
@@ -17,6 +19,8 @@ completion-free formalization of ramification-number theory.
 -/
 
 
+
+@[expose] public section
 
 namespace RamificationTheory.HilbertRamification
 namespace Higher

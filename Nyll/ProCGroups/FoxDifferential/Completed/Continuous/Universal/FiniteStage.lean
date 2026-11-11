@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.Basic
-import Nyll.ProCGroups.InverseSystems.Utilities
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.Basic
+public import Nyll.ProCGroups.InverseSystems.Utilities
+public import Nyll.ProCGroups.FiniteGroups.Classes
 
 /-!
 # Fox differential: completed — continuous — universal — finite stage
@@ -24,9 +27,11 @@ The principal declarations in this module are:
   The order on completed differential-module indices is the simultaneous refinement order on source,
   target, and coefficient stages.
 - `nonempty_zcCompletedDifferentialModuleIndex`
-  The finite-stage index type is nonempty for a continuous homomorphism: take the pullback of the
-  terminal completed group-algebra target stage.
+  The finite-stage index type is nonempty for every group homomorphism: use trivial source and
+  target quotients and the terminal coefficient stage.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -111,70 +116,64 @@ def zcCompletedDifferentialModuleComapIndex
       ((((OrderDual.ofDual i.2).1 : OpenNormalSubgroup H) : Subgroup H))
     simpa [completedGroupAlgebraComapIndexInClass] using hg
 
-omit [IsTopologicalGroup G] in
+omit [IsTopologicalGroup G] [IsTopologicalGroup H] in
 /--
-The finite-stage index type is nonempty for a continuous homomorphism: take the pullback of the
-terminal completed group-algebra target stage.
+The finite-stage index type is nonempty for every group homomorphism: use trivial source and
+target quotients and the terminal coefficient stage.
 -/
 theorem nonempty_zcCompletedDifferentialModuleIndex
-    [ProCGroups.FiniteGroupClass.ContainsTrivialQuotients C]
-    (hC : ProCGroups.FiniteGroupClass.Hereditary C)
-    (ψc : ContinuousMonoidHom G H) :
-    Nonempty (ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom) :=
-  ⟨zcCompletedDifferentialModuleComapIndex C hC ψc
-    (ProCIntegerIndex.terminal (C := C) inferInstance,
-      zcCompletedGroupAlgebraTopIndex C H)⟩
+    [ProCGroups.FiniteGroupClass.ContainsTrivialQuotients C] :
+    Nonempty (ZCCompletedDifferentialModuleIndex C ψ) := by
+  refine ⟨{ source := OpenNormalSubgroupInClass.top (C := C) (G := G)
+            target := (ProCIntegerIndex.terminal (C := C) inferInstance,
+              zcCompletedGroupAlgebraTopIndex C H)
+            compatible := ?_ }⟩
+  intro g _
+  exact Subgroup.mem_top (ψ g)
 
-omit [IsTopologicalGroup G] in
+omit [IsTopologicalGroup G] [IsTopologicalGroup H] in
 /--
-The compatible finite source/target/coefficient stages are directed for a continuous
-homomorphism, provided the finite quotient class is closed under the usual formation and
-hereditary operations.
+Compatible finite source/target/coefficient stages are directed for every group homomorphism
+when the finite quotient class is a formation. Intersect the two existing source subgroups and
+the two existing target subgroups; their compatibility is preserved by intersection.
 -/
 theorem directed_zcCompletedDifferentialModuleIndex
-    (hForm : ProCGroups.FiniteGroupClass.Formation C)
-    (hHer : ProCGroups.FiniteGroupClass.Hereditary C)
-    (ψc : ContinuousMonoidHom G H) :
+    (hForm : ProCGroups.FiniteGroupClass.Formation C) :
     Directed (· ≤ ·)
-      (id : ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom →
-        ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom) := by
+      (id : ZCCompletedDifferentialModuleIndex C ψ →
+        ZCCompletedDifferentialModuleIndex C ψ) := by
   intro i j
   rcases ProCIntegerIndex.directed_of_formation hForm i.target.1 j.target.1 with
     ⟨n, hin, hjn⟩
-  rcases directed_openNormalSubgroupInClass
-      (C := C) (G := H) hForm i.target.2 j.target.2 with
-    ⟨U, hiU, hjU⟩
-  let target : ZCCompletedGroupAlgebraIndex C H := (n, U)
-  let comapSource : OpenNormalSubgroupInClass C G :=
-    OrderDual.ofDual
-      (completedGroupAlgebraComapIndexInClass
-        (G := G) (H := H) C hHer ψc U)
-  let sourceIJ : OpenNormalSubgroupInClass C G :=
+  let source : OpenNormalSubgroupInClass C G :=
     ⟨i.source.1 ⊓ j.source.1,
       ProCGroups.FiniteGroupClass.Formation.quotient_inf_mem
         (C := C) (G := G) hForm i.source.1 j.source.1 i.source.2 j.source.2⟩
-  let source : OpenNormalSubgroupInClass C G :=
-    ⟨sourceIJ.1 ⊓ comapSource.1,
+  let target : OpenNormalSubgroupInClass C H :=
+    ⟨(OrderDual.ofDual i.target.2).1 ⊓ (OrderDual.ofDual j.target.2).1,
       ProCGroups.FiniteGroupClass.Formation.quotient_inf_mem
-        (C := C) (G := G) hForm sourceIJ.1 comapSource.1 sourceIJ.2 comapSource.2⟩
-  let k : ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom :=
+        (C := C) (G := H) hForm
+        (OrderDual.ofDual i.target.2).1 (OrderDual.ofDual j.target.2).1
+        (OrderDual.ofDual i.target.2).2 (OrderDual.ofDual j.target.2).2⟩
+  let k : ZCCompletedDifferentialModuleIndex C ψ :=
     { source := source
-      target := target
+      target := (n, OrderDual.toDual target)
       compatible := by
         intro g hg
-        have hgcomap : g ∈ (comapSource.1 : Subgroup G) := hg.2
-        change ψc.toMonoidHom g ∈
-          ((((OrderDual.ofDual U).1 : OpenNormalSubgroup H) : Subgroup H))
-        simpa [comapSource, completedGroupAlgebraComapIndexInClass] using hgcomap }
+        exact ⟨i.compatible hg.1, j.compatible hg.2⟩ }
   refine ⟨k, ?_, ?_⟩
   · constructor
     · intro g hg
-      exact hg.1.1
-    · exact ⟨hin, hiU⟩
+      exact hg.1
+    · refine ⟨hin, ?_⟩
+      change (target.1 : Subgroup H) ≤ ((OrderDual.ofDual i.target.2).1 : Subgroup H)
+      exact inf_le_left
   · constructor
     · intro g hg
-      exact hg.1.2
-    · exact ⟨hjn, hjU⟩
+      exact hg.2
+    · refine ⟨hjn, ?_⟩
+      change (target.1 : Subgroup H) ≤ ((OrderDual.ofDual j.target.2).1 : Subgroup H)
+      exact inf_le_right
 
 /-- The source quotient \(G/V\) at one finite differential-module stage. -/
 abbrev zcCompletedDifferentialModuleStageSource
@@ -470,7 +469,7 @@ source-identity stage scalars after restriction along the finite-stage ring
 map. -/
 def zcCompletedDifferentialModuleIdentitySourceStageToStageCrossedHom
     (i : ZCCompletedDifferentialModuleIndex C ψ) :
-    letI : Module
+    let : Module
         (zcCompletedDifferentialModuleStageRing C (MonoidHom.id G)
           (zcCompletedDifferentialModuleIdentitySourceIndex C ψ i))
         (ZCCompletedDifferentialModuleStage C ψ i) :=
@@ -479,11 +478,7 @@ def zcCompletedDifferentialModuleIdentitySourceStageToStageCrossedHom
       (zcCompletedDifferentialModuleStageScalar C (MonoidHom.id G)
         (zcCompletedDifferentialModuleIdentitySourceIndex C ψ i))
       (ZCCompletedDifferentialModuleStage C ψ i) := by
-  letI : Module
-      (zcCompletedDifferentialModuleStageRing C (MonoidHom.id G)
-        (zcCompletedDifferentialModuleIdentitySourceIndex C ψ i))
-      (ZCCompletedDifferentialModuleStage C ψ i) :=
-    Module.compHom _ (zcCompletedDifferentialModuleIdentitySourceStageRingHom C ψ i)
+  intro targetModule
   exact
     { toFun := fun q =>
         universalCrossedDifferential
@@ -520,7 +515,7 @@ i, sending d q to d q.
 -/
 def zcCompletedDifferentialModuleIdentitySourceStageToStage
     (i : ZCCompletedDifferentialModuleIndex C ψ) :
-    letI : Module
+    let : Module
         (zcCompletedDifferentialModuleStageRing C (MonoidHom.id G)
           (zcCompletedDifferentialModuleIdentitySourceIndex C ψ i))
         (ZCCompletedDifferentialModuleStage C ψ i) :=
@@ -530,11 +525,7 @@ def zcCompletedDifferentialModuleIdentitySourceStageToStage
       zcCompletedDifferentialModuleStageRing C (MonoidHom.id G)
         (zcCompletedDifferentialModuleIdentitySourceIndex C ψ i)]
       ZCCompletedDifferentialModuleStage C ψ i := by
-  letI : Module
-      (zcCompletedDifferentialModuleStageRing C (MonoidHom.id G)
-        (zcCompletedDifferentialModuleIdentitySourceIndex C ψ i))
-      (ZCCompletedDifferentialModuleStage C ψ i) :=
-    Module.compHom _ (zcCompletedDifferentialModuleIdentitySourceStageRingHom C ψ i)
+  intro targetModule
   exact crossedHomModuleLift
     (A := ZCCompletedDifferentialModuleStage C ψ i)
     (zcCompletedDifferentialModuleStageScalar C (MonoidHom.id G)
@@ -1331,14 +1322,12 @@ omit [IsTopologicalGroup G] in
 /-- The universal differential transported along a finite-stage refinement. -/
 def zcCompletedDifferentialModuleStageTransitionCrossedHom
     {i j : ZCCompletedDifferentialModuleIndex C ψ} (hij : i ≤ j) :
-    letI : Module (zcCompletedDifferentialModuleStageRing C ψ j)
+    let : Module (zcCompletedDifferentialModuleStageRing C ψ j)
         (ZCCompletedDifferentialModuleStage C ψ i) :=
       Module.compHom _ (zcCompletedGroupAlgebraTransition C H hij.2)
     ScalarCrossedHom (zcCompletedDifferentialModuleStageScalar C ψ j)
       (ZCCompletedDifferentialModuleStage C ψ i) := by
-  letI : Module (zcCompletedDifferentialModuleStageRing C ψ j)
-      (ZCCompletedDifferentialModuleStage C ψ i) :=
-    Module.compHom _ (zcCompletedGroupAlgebraTransition C H hij.2)
+  intro targetModule
   exact
     { toFun := fun x =>
         universalCrossedDifferential (zcCompletedDifferentialModuleStageScalar C ψ i)

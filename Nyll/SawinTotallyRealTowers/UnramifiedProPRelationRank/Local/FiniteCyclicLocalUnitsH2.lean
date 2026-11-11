@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicH2TateH0
-import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
-import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
-import Nyll.GaloisCohomology.Cyclic.TateH0.Main
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicH2TateH0
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Main
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # Degree-two cohomology of cyclic local unit representations
@@ -22,6 +25,8 @@ group itself.
 The periodicity comparison is normalized by the supplied cyclic generator.
 The norm-quotient and Artin comparisons are the existing canonical ones.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.CompletedSeries
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerCoefficient
-import Mathlib.RingTheory.PowerSeries.Expand
-import Mathlib.RingTheory.PowerSeries.Order
-import Mathlib.RingTheory.PowerSeries.Trunc
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.CompletedSeries
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerCoefficient
+public import Mathlib.RingTheory.PowerSeries.Expand
+public import Mathlib.RingTheory.PowerSeries.Order
+public import Mathlib.RingTheory.PowerSeries.Trunc
 
 /-!
 # Changed-uniformizer defect correction
@@ -18,6 +20,8 @@ constructs the unique coefficient that kills that defect.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -138,7 +142,8 @@ theorem padicChangedUniformizerDefect_coeff_mem_span_p
     padicChangedUniformizerDefect_map_constantCoeff p u H hH,
     map_zero]
 
-private theorem exists_padicChangedUniformizerNormalizedDefect
+/-- Every changed-uniformizer defect coefficient is divisible by the residue prime. -/
+theorem exists_padicChangedUniformizerNormalizedDefect
     (p : ℕ) [Fact p.Prime]
     (u : (padicLocalField p).valuationSubringˣ)
     (H : PowerSeries (padicCompletedUnramifiedWittRing p))
@@ -154,7 +159,8 @@ private theorem exists_padicChangedUniformizerNormalizedDefect
   rcases hmem with ⟨b, hb⟩
   exact ⟨b, hb.symm⟩
 
-private noncomputable def padicChangedUniformizerNormalizedDefect
+/-- The defect coefficient divided by the residue prime. -/
+noncomputable def padicChangedUniformizerNormalizedDefect
     (p : ℕ) [Fact p.Prime]
     (u : (padicLocalField p).valuationSubringˣ)
     (H : PowerSeries (padicCompletedUnramifiedWittRing p))

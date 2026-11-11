@@ -4,14 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.GroupLike
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.GroupLike
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteComparison
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Completed Group Algebra / Separation
 
 This module contains separation lemmas for completed group algebras using finite quotients.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

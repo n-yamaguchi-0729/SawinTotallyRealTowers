@@ -4,11 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedReciprocity
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedReciprocity
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedSymbol
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The global norm-residue symbol
@@ -33,6 +39,10 @@ the actual ordinary idele-class norm.
 
 
 
+@[expose] public section
+
+universe u v
+
 open scoped IsMulCommutative NumberField
 open NumberField
 
@@ -46,22 +56,23 @@ open KummerTheory
 
 /-- Fix the canonical class-group dictionary before forming norm quotients. -/
 @[instance_reducible]
-private noncomputable def globalNormResidueIdeleClassCommGroup
-    (F : Type) [Field F] [NumberField F] :
+noncomputable def globalNormResidueIdeleClassCommGroup
+    (F : Type u) [Field F] [NumberField F] :
     CommGroup (IdeleClassGroup F) :=
   QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
 attribute [local instance] globalNormResidueIdeleClassCommGroup
 
-private theorem globalNormResidueIdeleClassIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
+/-- The canonical idele-class multiplication is commutative. -/
+theorem globalNormResidueIdeleClassIsMulCommutative
+    (F : Type u) [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   IsMulCommutative.of_comm (fun a b => mul_comm a b)
 
 attribute [local instance] globalNormResidueIdeleClassIsMulCommutative
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
 
@@ -123,7 +134,7 @@ theorem
 Galois-group comparison.  Keeping this composition behind a typed boundary
 prevents the finite norm quotient from being reconstructed while composing
 with the concrete quotient comparison. -/
-private noncomputable def
+noncomputable def
     numberFieldTowerAbstractNormResidueGaloisEquiv :
     FiniteNormQuotient rationalIdeleClassRepresentation
         (numberFieldTowerBaseSubgroup K L)

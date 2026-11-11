@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
 
 /-!
 # A valuation-theoretic finite Galois form of Krasner's argument
@@ -21,6 +23,8 @@ inequality are sufficient.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

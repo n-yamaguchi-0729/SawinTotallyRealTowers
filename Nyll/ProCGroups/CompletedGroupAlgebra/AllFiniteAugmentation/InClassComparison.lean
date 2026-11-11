@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.CanonicalAugmentation
-import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.CanonicalAugmentation
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
 
 /-!
 # Comparing all-finite and in-class augmentations
@@ -13,6 +15,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
 The canonical comparison maps between the all-finite and in-class completions commute with their
 augmentations. This file records both directions of that compatibility.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

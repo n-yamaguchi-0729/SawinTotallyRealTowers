@@ -4,18 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerUnitsH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicUnramifiedTowerH2Restriction
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.GroupTheory.PGroup
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerUnitsH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicUnramifiedTowerH2Restriction
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Data.Fintype.Card
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.OrderOfElement
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Cyclicity of local p-extension unit H² from an unramified tower
@@ -25,6 +27,8 @@ of relative restriction. Middle exactness lifts it to the p-extension's
 H², and injectivity preserves its order. The proven cardinality bound
 then makes that lifted element a generator.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 open scoped ValuativeRel

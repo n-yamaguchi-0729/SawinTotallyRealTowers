@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Ring.Basic
-import Mathlib.Algebra.Module.Pi
+module
+
+public import Mathlib.Topology.Algebra.Ring.Basic
+public import Mathlib.Algebra.Module.Pi
 
 /-!
 # Concrete inverse systems and their limits
@@ -16,6 +18,8 @@ property and equips limits of group, additive-group, module, and ring systems wi
 coordinatewise algebraic structures and canonical projection homomorphisms.
 -/
 
+
+@[expose] public section
 
 open Set
 open scoped Topology

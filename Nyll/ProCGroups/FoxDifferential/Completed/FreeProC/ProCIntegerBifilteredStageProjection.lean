@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerStageCoeffProjection
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerStageCoeffProjection
 
 /-!
 # Fox differential: completed — free pro-\(C\) — pro c integer bifiltered stage projection
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `zcCompletedGroupAlgebraBifilteredStageCoeffMap_groupLike_eq_stageRight`
   Group-like formula rewritten through the finite right quotient map.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

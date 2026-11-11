@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobenius
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField
-import Mathlib.RingTheory.PowerSeries.Evaluation
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CoefficientFrobenius
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField
+public import Mathlib.RingTheory.PowerSeries.Evaluation
 
 /-!
 # The equal-characteristic completed-unramified construction: the completed maximal-unramified
@@ -26,6 +28,8 @@ evaluation or norm-subgroup arguments.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -320,7 +324,7 @@ theorem equalCharacteristicCompletedUnramifiedFrobenius_valuation
       Valued.v x := by
   apply le_antisymm
   · by_cases hx : x = 0
-    · simp [hx]
+    · simpa only [hx, map_zero] using (le_refl (0 : ℤᵐ⁰))
     have hxval : Valued.v x ≠ (0 : ℤᵐ⁰) :=
       (Valuation.ne_zero_iff (Valued.v :
         Valuation (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰)).2 hx
@@ -336,7 +340,7 @@ theorem equalCharacteristicCompletedUnramifiedFrobenius_valuation
     rw [equalCharacteristicCompletedUnramifiedFrobenius_coeff, hcoeff]
     exact zero_pow Nat.card_pos.ne'
   · by_cases hx : x = 0
-    · simp [hx]
+    · simpa only [hx, map_zero] using (le_refl (0 : ℤᵐ⁰))
     have hfxne : equalCharacteristicCompletedUnramifiedFrobenius k x ≠ 0 :=
       (map_ne_zero (equalCharacteristicCompletedUnramifiedFrobenius k)).2 hx
     have hfxval :

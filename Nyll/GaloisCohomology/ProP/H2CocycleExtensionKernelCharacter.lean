@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionSplitting
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionSplitting
 
 /-!
 # Splitting a cocycle extension with a coefficient-kernel character
@@ -13,6 +15,8 @@ A continuous character which is the identity on the explicit coefficient kernel 
 a continuous section by correcting the zero-coordinate lift. The prime-to-index restriction
 leaf supplies this character from the actual finite-index transfer.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

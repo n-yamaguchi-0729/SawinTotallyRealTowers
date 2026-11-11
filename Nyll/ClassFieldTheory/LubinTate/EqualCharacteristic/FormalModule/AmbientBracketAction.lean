@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateAction
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.LubinTateAction
 
 /-!
 # The finite Lubin–Tate bracket construction: Lubin--Tate brackets in an ambient extension field
@@ -20,6 +22,8 @@ Lubin--Tate level fields.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

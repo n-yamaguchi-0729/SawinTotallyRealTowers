@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.TrivSqZeroExt.Basic
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Abstract
+module
+
+public import Mathlib.Algebra.TrivSqZeroExt.Basic
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Abstract
 
 /-!
 # First-order characters of an ordinary group algebra
@@ -15,6 +17,8 @@ numbers.  Its square-zero coordinate detects degree one, so the square of the
 augmentation ideal is annihilated.  This is the separation mechanism used in
 the reverse degree-two Zassenhaus inclusion.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

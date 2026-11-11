@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
 
 /-!
 # Simple Kummer extensions
@@ -17,11 +19,15 @@ the `n`-th roots of unity, this is a finite cyclic Galois extension.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace KummerTheory
 
-variable (K : Type) [Field K]
+variable (K : Type u) [Field K]
 
 /-- A chosen `n`-th root of `b` in the separable closure. -/
 noncomputable def chosenSimpleKummerRoot
@@ -117,7 +123,7 @@ theorem chosenSimpleKummerExtension_adjoin_root_eq_top
     let E := chosenSimpleKummerExtension K n hnK b
     IntermediateField.adjoin K
       {((chosenSimpleKummerRootUnit K n hnK b : Eˣ) : E)} = ⊤ := by
-  let E := chosenSimpleKummerExtension K n hnK b
+  intro E
   let beta : E := (chosenSimpleKummerRootUnit K n hnK b : Eˣ)
   let R : IntermediateField K E :=
     IntermediateField.adjoin K {beta}

@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 
 /-!
 # The normalized cyclotomic idele value
@@ -33,7 +38,11 @@ hypothesis is substituted for it here.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u
 
 open scoped Topology
 
@@ -90,7 +99,7 @@ theorem rationalCyclotomicZHatIdeleValue_normOne_denseRange :
       rationalCyclotomicZHatGlobalArtin_normOne_denseRange
       rationalCyclotomicZHatFieldGalEquivZHat.continuous
 
-variable (K : Type) [Field K] [NumberField K]
+variable (K : Type u) [Field K] [NumberField K]
 
 local instance
     (E : FiniteGaloisIntermediateField
@@ -293,7 +302,7 @@ theorem finiteCyclotomicLayer_normArtin_range
     (E :
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField) :
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite ℚ E
     let C :=
       numberFieldCyclotomicZHatFiniteCompositum K E
@@ -302,10 +311,7 @@ theorem finiteCyclotomicLayer_normArtin_range
           (IdeleGroup.norm ℚ K)).range =
       (IntermediateField.restrictRestrictAlgEquivMapHom
         ℚ E K C).range := by
-  let : NumberField E :=
-    NumberField.of_module_finite ℚ E
-  let C :=
-    numberFieldCyclotomicZHatFiniteCompositum K E
+  intro sharedOwner1 C
   let r :
       (C ≃ₐ[K] C) →* (E ≃ₐ[ℚ] E) :=
     IntermediateField.restrictRestrictAlgEquivMapHom
@@ -358,14 +364,13 @@ theorem finiteCyclotomicLayer_normArtin_range_eq_fixingSubgroup
     (E :
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField) :
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite ℚ E
     ((globalArtinMonoidHom
         (K := ℚ) (L := E)).comp
           (IdeleGroup.norm ℚ K)).range =
       (numberFieldCyclotomicZHatFiniteIntersection K E).fixingSubgroup := by
-  let : NumberField E :=
-    NumberField.of_module_finite ℚ E
+  intro sharedOwner1
   rw [finiteCyclotomicLayer_normArtin_range K E]
   exact
     numberFieldCyclotomicZHatFiniteCompositum_restriction_range
@@ -383,22 +388,13 @@ theorem
       inf_le_right
     let E :=
       (numberFieldCyclotomicZHatIntersection K).restrict hle
-    letI : FiniteDimensional ℚ E :=
+    let : FiniteDimensional ℚ E :=
       (IntermediateField.restrictAlgEquiv hle).toLinearEquiv.finiteDimensional
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite ℚ E
     IdeleGroup.norm ℚ K a ∈
       (RelativeIdeleGroup.norm ℚ E).range := by
-  let hle :
-      numberFieldCyclotomicZHatIntersection K ≤
-        rationalCyclotomicZHatField :=
-    inf_le_right
-  let E :=
-    (numberFieldCyclotomicZHatIntersection K).restrict hle
-  let : FiniteDimensional ℚ E :=
-    (IntermediateField.restrictAlgEquiv hle).toLinearEquiv.finiteDimensional
-  let : NumberField E :=
-    NumberField.of_module_finite ℚ E
+  intro hle E sharedOwner3 sharedOwner4
   let eEK : E →ₐ[ℚ] K :=
     (numberFieldCyclotomicZHatIntersectionEmbedding K).comp
       (IntermediateField.restrictAlgEquiv hle).symm.toAlgHom
@@ -428,7 +424,7 @@ theorem
     _ = RelativeIdeleGroup.norm ℚ K b := by
       rw [show
         towerRelativeIdeleEquiv ℚ E K t = b by
-          simp [t]]
+          exact (towerRelativeIdeleEquiv ℚ E K).apply_symm_apply b]
     _ = IdeleGroup.norm ℚ K
           (relativeIdeleBaseChangeMulEquiv
             (K := ℚ) (L := K) b) :=
@@ -438,7 +434,7 @@ theorem
       rw [show
         relativeIdeleBaseChangeMulEquiv
             (K := ℚ) (L := K) b = a by
-          simp [b]]
+          exact (relativeIdeleBaseChangeMulEquiv (K := ℚ) (L := K)).apply_symm_apply a]
 
 /-- The infinite rational Artin symbol of `N_{K/ℚ}(a)` fixes the actual
 intersection `K ∩ ℚ̃`. -/
@@ -535,20 +531,7 @@ theorem
             rationalCyclotomicZHatGlobalArtin_norm_mem_intersection_fixingSubgroup
               K a⟩ :
           F.fixingSubgroup)) := by
-  let hle :
-      numberFieldCyclotomicZHatIntersection K ≤
-        rationalCyclotomicZHatField :=
-    inf_le_right
-  let F :=
-    (numberFieldCyclotomicZHatIntersection K).restrict hle
-  change
-    DenseRange
-      (fun a : IdeleGroup K =>
-        (⟨rationalCyclotomicZHatGlobalArtin
-              (IdeleGroup.norm ℚ K a),
-            rationalCyclotomicZHatGlobalArtin_norm_mem_intersection_fixingSubgroup
-              K a⟩ :
-          F.fixingSubgroup))
+  intro hle F
   apply dense_iff_inter_open.mpr
   rintro U hU ⟨σ, hσU⟩
   rw [isOpen_induced_iff] at hU
@@ -766,7 +749,7 @@ theorem cyclotomicZHatNormComposite_mem_mulNat_range
               inf_le_right)).fixingSubgroup.map
           rationalCyclotomicZHatFieldGalEquivZHat.toMonoidHom) := by
     rw [Subgroup.mem_toAddSubgroup']
-    simpa using hmap
+    exact hmap
   rw [
     rationalCyclotomicZHatFieldGal_fixingSubgroup_image_eq_mulNat_range
       K] at hadd

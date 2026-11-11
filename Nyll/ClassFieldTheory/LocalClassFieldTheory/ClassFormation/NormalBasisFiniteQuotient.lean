@@ -4,12 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction
-import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientTower
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientTower
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.ClassFormation.NormalBasisFiniteQuotient` Lean module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open LocalFieldTheory

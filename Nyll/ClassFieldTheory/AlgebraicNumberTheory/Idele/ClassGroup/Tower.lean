@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
-import Mathlib.LinearAlgebra.TensorProduct.Basis
-import Mathlib.RingTheory.TensorProduct.Maps
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Mathlib.LinearAlgebra.TensorProduct.Basis
+public import Mathlib.RingTheory.TensorProduct.Maps
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Idele-class norms in a field tower
@@ -23,15 +28,17 @@ quotients form a natural right-exact sequence.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField
 
 noncomputable section
 
-universe u
+universe u v w
 
 variable
-    (K M L : Type u)
+    (K : Type u) (M : Type v) (L : Type w)
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Field L] [NumberField L]

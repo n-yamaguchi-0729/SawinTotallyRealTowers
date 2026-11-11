@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.CompatibilityAndSurjectivity
+module
+
+public import Nyll.ProCGroups.InverseSystems.CompatibilityAndSurjectivity
 
 /-!
 # Cofinal reindexing, density, and projection neighborhoods
@@ -14,6 +16,8 @@ coordinates and studies the map induced by a morphism on limits.  It proves dens
 surjectivity criteria, invariance of the limit under cofinal reindexing or restriction, and the
 projection-preimage basis for compact Hausdorff systems.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology

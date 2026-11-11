@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.Nat.Basic
+module
+
+public import Mathlib.Data.Nat.Basic
 
 /-!
 # Reidemeister Schreier / Schreier
 
 This module formalizes Schreier generators and rewriting.
 -/
+
+@[expose] public section
 
 namespace ReidemeisterSchreier
 namespace Schreier

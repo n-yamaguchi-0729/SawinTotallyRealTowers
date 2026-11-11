@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.AddCommGroup
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.AddCommGroup
 
 /-!
 # Fox differential: coefficient rings — prime-power completed group algebra — coeff — ring
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `coe_mul_primePowerCompletedCoeff`
   Multiplication in the prime-power completed coefficient ring is computed coordinatewise.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -93,7 +97,7 @@ instance instIntCastPrimePowerCompletedCoeff : IntCast (PrimePowerCompletedCoeff
 
 /-- Each finite prime-power coefficient stage is a commutative ring. -/
 @[reducible]
-private def instCommRingPrimePowerCompletedCoeffStage
+def instCommRingPrimePowerCompletedCoeffStage
     (i : PrimePowerCompletedGroupAlgebraIndex G) :
     CommRing ((primePowerCompletedCoeffSystem ℓ G).X i) := by
   dsimp [primePowerCompletedCoeffSystem]
@@ -105,7 +109,7 @@ The family-level prime-power completed coefficient object is a commutative ring 
 computed coordinatewise.
 -/
 @[reducible]
-private def instCommRingPrimePowerCompletedCoeffFamily :
+def instCommRingPrimePowerCompletedCoeffFamily :
     CommRing
       ((i : PrimePowerCompletedGroupAlgebraIndex G) →
         (primePowerCompletedCoeffSystem ℓ G).X i) :=

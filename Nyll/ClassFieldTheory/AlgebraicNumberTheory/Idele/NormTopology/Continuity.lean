@@ -4,16 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormLocalOrder
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormLocalOrder
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Continuity of the global idele norm
@@ -24,6 +31,8 @@ uses the topological-group structure to obtain continuity everywhere.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain
@@ -209,18 +218,14 @@ private theorem infinitePlace_normUnits_continuous
     (v₀ : InfinitePlace K)
     (W : {W : InfinitePlace L //
       _root_.infinitePlaceBelow (K := K) W = v₀}) :
-    letI : W.1.1.LiesOver v₀.1 :=
+    let : W.1.1.LiesOver v₀.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1) W.2⟩
-    letI : Algebra v₀.Completion W.1.Completion :=
+    let : Algebra v₀.Completion W.1.Completion :=
       (NumberField.LiesOver.completionMap
         (v := v₀) (w := W.1)).toAlgebra
     Continuous
       (LocalFieldTheory.normUnits v₀.Completion W.1.Completion) := by
-  let : W.1.1.LiesOver v₀.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1) W.2⟩
-  let : Algebra v₀.Completion W.1.Completion :=
-    (NumberField.LiesOver.completionMap
-      (v := v₀) (w := W.1)).toAlgebra
+  intro sharedOwner1 sharedOwner2
   rcases v₀.isReal_or_isComplex with hvReal | hvComplex
   · rcases W.1.isReal_or_isComplex with hWReal | hWComplex
     · let eBase :=

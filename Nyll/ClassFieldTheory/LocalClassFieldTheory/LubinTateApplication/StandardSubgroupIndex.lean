@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Index
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.StandardLocalField
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipalQuotient
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.NormSubgroup
+module
+
+public import Mathlib.GroupTheory.Index
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.StandardLocalField
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UniformizerPrincipalQuotient
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.FiniteParameters
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.NormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
 /-!
 # The canonical standard subgroup index
@@ -27,7 +30,11 @@ finite standard Lubin--Tate unit-parameter count.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w
 
 open scoped ValuativeRel
 
@@ -39,7 +46,7 @@ open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory.DiscreteValuationField.CompleteDVF
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- The canonical packaged Lubin--Tate uniformizer is the topology-first

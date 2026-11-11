@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.IntrinsicBaseEquivalence
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.IntrinsicBaseEquivalence
 
 /-!
 # Embedded extension quotients
@@ -16,6 +18,10 @@ group.
 -/
 
 
+
+@[expose] public section
+
+universe u v w
 
 noncomputable section
 
@@ -30,7 +36,7 @@ extension subgroup for `E / F` is equivalent to membership in the ambient
 extension subgroup determined by the two field ranges. -/
 theorem
     intrinsicExtensionSubgroup_iff_ambientEmbeddedField
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -38,9 +44,9 @@ theorem
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (tau : (intrinsicAbstractBase F).toSubgroup),
@@ -68,32 +74,7 @@ theorem
           (intrinsicAbstractBase F) EI.field EI.below ↔
         intrinsicBaseEquivAmbientEmbeddedField K F i e tau ∈
           extensionSubgroup H₀ J₀ hJH := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e tau
-  let jF : E →ₐ[F] SeparableClosure K :=
-    { j with commutes' := fun x => rfl }
-  let jI : E →ₐ[F] SeparableClosure F :=
-    e.symm.toAlgHom.comp jF
-  let EI :=
-    finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    apply (AlgHom.fieldRange i).fixingSubgroup_le
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e tau jF jI EI H₀ J₀ hJH
   change
     tau.1 ∈ (AlgHom.fieldRange jI).fixingSubgroup ↔
       (intrinsicBaseEquivAmbientEmbeddedField
@@ -128,7 +109,7 @@ theorem
 for `E / F` onto the ambient subgroup fixing the field range of `E`. -/
 theorem
     map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -136,9 +117,9 @@ theorem
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       let jF : E →ₐ[F] SeparableClosure K :=
@@ -167,36 +148,7 @@ theorem
           (intrinsicAbstractBase F) EI.field EI.below).map
           psi.toMonoidHom =
         extensionSubgroup H₀ J₀ hJH := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e
-  let jF : E →ₐ[F] SeparableClosure K :=
-    { j with commutes' := fun x => rfl }
-  let jI : E →ₐ[F] SeparableClosure F :=
-    e.symm.toAlgHom.comp jF
-  let EI :=
-    finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  have hRange :
-      AlgHom.fieldRange i ≤ AlgHom.fieldRange j := by
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    exact (AlgHom.fieldRange i).fixingSubgroup_le hRange
-  let psi :=
-    intrinsicBaseEquivAmbientEmbeddedField K F i e
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e jF jI EI H₀ J₀ hJH psi
   ext sigma
   constructor
   · rintro ⟨tau, htau, rfl⟩
@@ -219,7 +171,7 @@ theorem
 /-- The fixing subgroup cut out by an embedded finite Galois extension is
 normal inside the fixing subgroup of its embedded base field. -/
 theorem ambientEmbeddedExtensionSubgroup_normal
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -227,9 +179,9 @@ theorem ambientEmbeddedExtensionSubgroup_normal
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       let _e := e
@@ -248,34 +200,13 @@ theorem ambientEmbeddedExtensionSubgroup_normal
         rcases hx with ⟨y, rfl⟩
         exact ⟨algebraMap F E y, rfl⟩
       (extensionSubgroup H₀ J₀ hJH).Normal := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e _e H₀ J₀ hJH
   let jF : E →ₐ[F] SeparableClosure K :=
     { j with commutes' := fun x => rfl }
   let jI : E →ₐ[F] SeparableClosure F :=
     e.symm.toAlgHom.comp jF
   let EI :=
     finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  have hRange :
-      AlgHom.fieldRange i ≤ AlgHom.fieldRange j := by
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    exact (AlgHom.fieldRange i).fixingSubgroup_le hRange
   let psi :=
     intrinsicBaseEquivAmbientEmbeddedField K F i e
   let hSourceNormal :
@@ -287,9 +218,7 @@ theorem ambientEmbeddedExtensionSubgroup_normal
           (intrinsicAbstractBase F) EI.field EI.below).map
           psi.toMonoidHom =
         extensionSubgroup H₀ J₀ hJH := by
-    simpa only [i, jF, jI, EI, H₀, J₀, hJH, psi] using
-      map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField
-        K F E j e
+    exact map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField K F E j e
   rw [← hmap]
   exact
     Subgroup.Normal.map hSourceNormal
@@ -298,7 +227,7 @@ theorem ambientEmbeddedExtensionSubgroup_normal
 /-- The relative quotient of fixing subgroups attached to an embedded
 finite Galois extension is finite. -/
 theorem ambientEmbeddedExtensionQuotient_finite
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -306,9 +235,9 @@ theorem ambientEmbeddedExtensionQuotient_finite
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       let H₀ :=
@@ -325,42 +254,18 @@ theorem ambientEmbeddedExtensionQuotient_finite
         intro x hx
         rcases hx with ⟨y, rfl⟩
         exact ⟨algebraMap F E y, rfl⟩
-      letI _hTargetNormal :
+      let _hTargetNormal :
           (extensionSubgroup H₀ J₀ hJH).Normal :=
         ambientEmbeddedExtensionSubgroup_normal K F E j e
       Finite
         (H₀.toSubgroup ⧸ extensionSubgroup H₀ J₀ hJH) := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e H₀ J₀ hJH hTargetNormal
   let jF : E →ₐ[F] SeparableClosure K :=
     { j with commutes' := fun x => rfl }
   let jI : E →ₐ[F] SeparableClosure F :=
     e.symm.toAlgHom.comp jF
   let EI :=
     finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  have hRange :
-      AlgHom.fieldRange i ≤ AlgHom.fieldRange j := by
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    exact (AlgHom.fieldRange i).fixingSubgroup_le hRange
-  let hTargetNormal :
-      (extensionSubgroup H₀ J₀ hJH).Normal :=
-    ambientEmbeddedExtensionSubgroup_normal K F E j e
   let psi :=
     intrinsicBaseEquivAmbientEmbeddedField K F i e
   let hSourceNormal :
@@ -377,9 +282,7 @@ theorem ambientEmbeddedExtensionQuotient_finite
           (intrinsicAbstractBase F) EI.field EI.below).map
           psi.toMonoidHom =
         extensionSubgroup H₀ J₀ hJH := by
-    simpa only [i, jF, jI, EI, H₀, J₀, hJH, psi] using
-      map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField
-        K F E j e
+    exact map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField K F E j e
   exact
     Finite.of_equiv
       ((intrinsicAbstractBase F).toSubgroup ⧸
@@ -395,7 +298,7 @@ theorem ambientEmbeddedExtensionQuotient_finite
 finite Galois extension is canonically its actual Galois group. -/
 noncomputable def
     ambientEmbeddedExtensionQuotientEquivGaloisGroup
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -403,9 +306,9 @@ noncomputable def
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       let H₀ :=
@@ -422,56 +325,30 @@ noncomputable def
         intro x hx
         rcases hx with ⟨y, rfl⟩
         exact ⟨algebraMap F E y, rfl⟩
-      letI hTargetNormal :
+      let _ :
           (extensionSubgroup H₀ J₀ hJH).Normal :=
         ambientEmbeddedExtensionSubgroup_normal K F E j e
       (H₀.toSubgroup ⧸ extensionSubgroup H₀ J₀ hJH) ≃*
         Gal(E / F) := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  letI : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e H₀ J₀ hJH hTargetNormal
   let jF : E →ₐ[F] SeparableClosure K :=
     { j with commutes' := fun x => rfl }
   let jI : E →ₐ[F] SeparableClosure F :=
     e.symm.toAlgHom.comp jF
   let EI :=
     finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  have hRange :
-      AlgHom.fieldRange i ≤ AlgHom.fieldRange j := by
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    exact (AlgHom.fieldRange i).fixingSubgroup_le hRange
   let psi :=
     intrinsicBaseEquivAmbientEmbeddedField K F i e
   letI hSourceNormal :
       (extensionSubgroup
         (intrinsicAbstractBase F) EI.field EI.below).Normal :=
     EI.normal
-  letI hTargetNormal :
-      (extensionSubgroup H₀ J₀ hJH).Normal :=
-    ambientEmbeddedExtensionSubgroup_normal K F E j e
   have hmap :
       (extensionSubgroup
           (intrinsicAbstractBase F) EI.field EI.below).map
           psi.toMonoidHom =
         extensionSubgroup H₀ J₀ hJH := by
-    simpa only [i, jF, jI, EI, H₀, J₀, hJH, psi] using
-      map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField
-        K F E j e
+    exact map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField K F E j e
   exact
     (QuotientGroup.congr
       (extensionSubgroup
@@ -485,7 +362,7 @@ noncomputable def
 intrinsic automorphism to its class in the finite Galois quotient. -/
 theorem
     ambientEmbeddedExtensionQuotientEquivGaloisGroup_mk
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -493,9 +370,9 @@ theorem
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (tau : (intrinsicAbstractBase F).toSubgroup),
@@ -519,11 +396,11 @@ theorem
         intro x hx
         rcases hx with ⟨y, rfl⟩
         exact ⟨algebraMap F E y, rfl⟩
-      letI _hSourceNormal :
+      let _hSourceNormal :
           (extensionSubgroup
             (intrinsicAbstractBase F) EI.field EI.below).Normal :=
         EI.normal
-      letI _hTargetNormal :
+      let _hTargetNormal :
           (extensionSubgroup H₀ J₀ hJH).Normal :=
         ambientEmbeddedExtensionSubgroup_normal K F E j e
       ambientEmbeddedExtensionQuotientEquivGaloisGroup
@@ -533,39 +410,8 @@ theorem
               K F i e tau)) =
         finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
           F E jI (QuotientGroup.mk tau) := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e tau
-  let jF : E →ₐ[F] SeparableClosure K :=
-    { j with commutes' := fun x => rfl }
-  let jI : E →ₐ[F] SeparableClosure F :=
-    e.symm.toAlgHom.comp jF
-  let EI :=
-    finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    apply (AlgHom.fieldRange i).fixingSubgroup_le
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let hSourceNormal :
-      (extensionSubgroup
-        (intrinsicAbstractBase F) EI.field EI.below).Normal :=
-    EI.normal
-  let hTargetNormal :
-      (extensionSubgroup H₀ J₀ hJH).Normal :=
-    ambientEmbeddedExtensionSubgroup_normal K F E j e
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e tau jF jI EI H₀ J₀ hJH hSourceNormal
+    hTargetNormal
   let psi :=
     intrinsicBaseEquivAmbientEmbeddedField K F i e
   have hmap :
@@ -573,9 +419,7 @@ theorem
           (intrinsicAbstractBase F) EI.field EI.below).map
           psi.toMonoidHom =
         extensionSubgroup H₀ J₀ hJH := by
-    simpa only [i, jF, jI, EI, H₀, J₀, hJH, psi] using
-      map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField
-        K F E j e
+    exact map_intrinsicExtensionSubgroup_eq_ambientEmbeddedField K F E j e
   change
     finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
         F E jI
@@ -599,7 +443,7 @@ theorem
 agrees, after applying the embedding, with the original ambient automorphism. -/
 theorem
     ambientEmbeddedExtensionQuotientEquivGaloisGroup_mk_apply
-    (K F E : Type) [Field K] [Field F] [Field E]
+    (K : Type u) (F : Type v) (E : Type w) [Field K] [Field F] [Field E]
     [Algebra K F] [Algebra F E] [Algebra K E]
     [IsScalarTower K F E]
     [FiniteDimensional K F] [Algebra.IsSeparable K F]
@@ -607,9 +451,9 @@ theorem
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (rho :
@@ -630,48 +474,24 @@ theorem
         intro y hy
         rcases hy with ⟨z, rfl⟩
         exact ⟨algebraMap F E z, rfl⟩
-      letI _hTargetNormal :
+      let _hTargetNormal :
           (extensionSubgroup H₀ J₀ hJH).Normal :=
         ambientEmbeddedExtensionSubgroup_normal K F E j e
       j
           (ambientEmbeddedExtensionQuotientEquivGaloisGroup
             K F E j e (QuotientGroup.mk rho) x) =
         rho.1.1 (j x) := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e rho x
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e rho x H₀ J₀ hJH hTargetNormal
   let jF : E →ₐ[F] SeparableClosure K :=
     { j with commutes' := fun y => rfl }
   let jI : E →ₐ[F] SeparableClosure F :=
     e.symm.toAlgHom.comp jF
   let EI :=
     finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  have hRange :
-      AlgHom.fieldRange i ≤ AlgHom.fieldRange j := by
-    intro y hy
-    rcases hy with ⟨z, rfl⟩
-    exact ⟨algebraMap F E z, rfl⟩
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    exact (AlgHom.fieldRange i).fixingSubgroup_le hRange
   let hSourceNormal :
       (extensionSubgroup
         (intrinsicAbstractBase F) EI.field EI.below).Normal :=
     EI.normal
-  let hTargetNormal :
-      (extensionSubgroup H₀ J₀ hJH).Normal :=
-    ambientEmbeddedExtensionSubgroup_normal K F E j e
   let psi :=
     intrinsicBaseEquivAmbientEmbeddedField K F i e
   let tau :

@@ -4,30 +4,37 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Local
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyFinite
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyCardinality
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Factors
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.Herbrand
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInclusion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.HerbrandExactSequence
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
-import Mathlib.Algebra.BigOperators.GroupWithZero.Finset
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Local
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyFinite
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyCardinality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.Factors
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInclusion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.HerbrandExactSequence
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
+public import Mathlib.Algebra.BigOperators.GroupWithZero.Finset
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # Supported ideles and the idele-class norm index
@@ -38,6 +45,8 @@ sequence from `S`-units to supported ideles and idele classes.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -180,7 +189,7 @@ theorem
       w ∉ S →
         ChosenFinitePlaceIsUnramified
           (K := K) (L := L) w) :
-    letI :=
+    let :=
       relativeOutsideSPlaceFactorsAction
         (K := K) (L := L) S
     ∃ h :
@@ -193,9 +202,7 @@ theorem
           (RelativeOutsideSPlaceFactors
             (K := K) (L := L) S)
           _ _ _ _ σ h.1 h.2 = 1 := by
-  let outsideAction :=
-    relativeOutsideSPlaceFactorsAction
-      (K := K) (L := L) S
+  intro outsideAction
   have hsub :=
     relativeOutsideSPlaceFactors_unramifiedHerbrand_subsingleton
       (K := K) (L := L) S σ hgen hUnram
@@ -248,7 +255,7 @@ theorem
       w ∉ S →
         ChosenFinitePlaceIsUnramified
           (K := K) (L := L) w) :
-    letI :=
+    let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
     ∃ h :
@@ -264,9 +271,7 @@ theorem
         ∏ i,
           (relativeUnrestrictedSPlaceLocalDegree
             (K := K) (L := L) S i : ℚ) := by
-  let supportedAction :=
-    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
-      (K := K) (L := L) S
+  intro supportedAction
   let unrestrictedAction :=
     relativeUnrestrictedSPlaceFactorsAction
       (K := K) (L := L) S
@@ -409,12 +414,12 @@ omit [IsGalois K L] in
 ideles. -/
 theorem sUnitToRelativeIdeleSupported_equivariant
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    letI :=
+    let :=
       sUnitMulDistribMulAction K L
         (finitePlacesAbove (K := K) (L := L) S)
         (finitePlacesAbove_isGaloisStable
           (K := K) (L := L) S)
-    letI :=
+    let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
     ∀ (σ : L ≃ₐ[K] L)
@@ -426,15 +431,7 @@ theorem sUnitToRelativeIdeleSupported_equivariant
         σ •
           sUnitToRelativeIdeleSupported
             (K := K) (L := L) S x := by
-  let sUnitAction :=
-    sUnitMulDistribMulAction K L
-      (finitePlacesAbove (K := K) (L := L) S)
-      (finitePlacesAbove_isGaloisStable
-        (K := K) (L := L) S)
-  let supportedAction :=
-    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
-      (K := K) (L := L) S
-  intro σ x
+  intro sUnitAction supportedAction σ x
   apply Subtype.ext
   change
     RelativeIdeleGroup.principalIdele K L
@@ -452,10 +449,10 @@ omit [NumberField L] [IsGalois K L] in
 /-- Equivariance of the supported-idele quotient map. -/
 theorem relativeIdeleSupportedToClass_equivariant
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    letI :=
+    let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
-    letI := ideleClassMulDistribMulAction K L
+    let := ideleClassMulDistribMulAction K L
     ∀ (σ : L ≃ₐ[K] L)
       (z :
         relativeIdeleLocalTensorDecompositionSupportedSubgroup
@@ -465,11 +462,7 @@ theorem relativeIdeleSupportedToClass_equivariant
         σ •
           relativeIdeleSupportedToClass
             (K := K) (L := L) S z := by
-  let supportedAction :=
-    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
-      (K := K) (L := L) S
-  let classAction := ideleClassMulDistribMulAction K L
-  intro σ z
+  intro supportedAction classAction σ z
   change
     QuotientGroup.mk'
         (RelativeIdeleGroup.principalSubgroup K L)
@@ -678,16 +671,14 @@ theorem logPlaceBelowRelativeUnrestrictedIndex_smul
       SUnitGroup.LogPlace
         (K := L)
         (finitePlacesAbove (K := K) (L := L) S)) :
-    letI :=
+    let :=
       aboveSLogPlaceMulAction
         (K := K) (L := L) S
     logPlaceBelowRelativeUnrestrictedIndex
         (K := K) (L := L) S (σ • q) =
       logPlaceBelowRelativeUnrestrictedIndex
         (K := K) (L := L) S q := by
-  let logAction :=
-    aboveSLogPlaceMulAction
-      (K := K) (L := L) S
+  intro logAction
   cases q with
   | inl W =>
       change
@@ -736,7 +727,7 @@ theorem logPlaceBelowRelativeUnrestrictedIndex_smul
 /-- The map on Galois orbits induced by taking the place below. -/
 noncomputable def logPlaceOrbitBelowRelativeUnrestrictedIndex
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    letI :=
+    let :=
       aboveSLogPlaceMulAction
         (K := K) (L := L) S
     MulAction.orbitRel.Quotient
@@ -745,9 +736,7 @@ noncomputable def logPlaceOrbitBelowRelativeUnrestrictedIndex
           (K := L)
           (finitePlacesAbove (K := K) (L := L) S)) →
       RelativeUnrestrictedSPlaceIndex (K := K) S := by
-  letI logAction :=
-    aboveSLogPlaceMulAction
-      (K := K) (L := L) S
+  intro logAction
   exact
     Quotient.lift
       (logPlaceBelowRelativeUnrestrictedIndex
@@ -1031,10 +1020,10 @@ in the `S`-unit calculation. -/
 theorem
     relativeUnrestrictedSPlaceLocalDegree_product_eq_logPlaceOrbitProduct
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    letI :=
+    let :=
       aboveSLogPlaceMulAction
         (K := K) (L := L) S
-    letI :
+    let :
         Fintype
           (MulAction.orbitRel.Quotient
             (L ≃ₐ[K] L)
@@ -1056,18 +1045,7 @@ theorem
         (logPlaceLocalDegree K L
           (finitePlacesAbove (K := K) (L := L) S)
           ω.out : ℚ) := by
-  let logAction :=
-    aboveSLogPlaceMulAction
-      (K := K) (L := L) S
-  let orbitFintype :
-      Fintype
-        (MulAction.orbitRel.Quotient
-          (L ≃ₐ[K] L)
-          (SUnitGroup.LogPlace
-            (K := L)
-            (finitePlacesAbove
-              (K := K) (L := L) S))) :=
-    Fintype.ofFinite _
+  intro logAction orbitFintype
   let e :=
     logPlaceOrbitEquivRelativeUnrestrictedSPlaceIndex
       (K := K) (L := L) S

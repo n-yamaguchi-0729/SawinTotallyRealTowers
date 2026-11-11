@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationFinitePlace
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationNormQuotient
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationFinitePlace
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationNormQuotient
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # Reciprocity for a realized finite Galois number-field tower
@@ -17,6 +21,10 @@ then transports abstract reciprocity back to the original tower.
 -/
 
 
+
+@[expose] public section
+
+universe u v w x
 
 open scoped NumberField
 open NumberField
@@ -33,22 +41,23 @@ open RamificationTheory
 
 /-- Fix the canonical class-group structure before forming norm quotients. -/
 @[instance_reducible]
-private noncomputable def realizedTowerIdeleClassCommGroup
-    (F : Type) [Field F] [NumberField F] :
+noncomputable def realizedTowerIdeleClassCommGroup
+    (F : Type u) [Field F] [NumberField F] :
     CommGroup (IdeleClassGroup F) :=
   QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
 attribute [local instance] realizedTowerIdeleClassCommGroup
 
-private theorem realizedTowerIdeleClassIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
+/-- The same canonical idele-class multiplication is commutative. -/
+theorem realizedTowerIdeleClassIsMulCommutative
+    (F : Type u) [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   IsMulCommutative.of_comm (fun a b => mul_comm a b)
 
 attribute [local instance] realizedTowerIdeleClassIsMulCommutative
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
@@ -126,13 +135,6 @@ private theorem numberFieldTowerRestrictedTopFiniteDimensional :
       (numberFieldTowerTopSubgroup_le_baseSubgroup K L))
   exact numberFieldTowerAbstractTopFiniteDimensional K L
 
-private theorem numberFieldTowerRestrictedTopNumberField :
-    NumberField
-      ((abstractRelativeFixedField ℚ (SeparableClosure ℚ)
-        (numberFieldTowerTopSubgroup_le_baseSubgroup K L)).restrictScalars ℚ) := by
-  let := numberFieldTowerRestrictedTopFiniteDimensional K L
-  exact NumberField.of_module_finite ℚ _
-
 @[reducible] private noncomputable def numberFieldTowerRestrictedTopAlgebra :
     Algebra
       (abstractFixedField ℚ (SeparableClosure ℚ)
@@ -143,21 +145,8 @@ private theorem numberFieldTowerRestrictedTopNumberField :
     (abstractFixedField_le ℚ (SeparableClosure ℚ)
       (numberFieldTowerTopSubgroup_le_baseSubgroup K L))).toRingHom.toAlgebra
 
-private theorem numberFieldTowerAbstractRelativeIsGalois :
-    IsGalois
-      (abstractFixedField ℚ (SeparableClosure ℚ)
-        (numberFieldTowerBaseSubgroup K L))
-      (abstractRelativeFixedField ℚ (SeparableClosure ℚ)
-        (numberFieldTowerTopSubgroup_le_baseSubgroup K L)) :=
-  abstractRelativeFixedField_isGalois
-    ℚ (SeparableClosure ℚ)
-    (numberFieldTowerBaseSubgroup K L)
-    (numberFieldTowerTopSubgroup L)
-    (numberFieldTowerTopSubgroup_le_baseSubgroup K L)
-    (numberFieldTowerExtensionSubgroupNormal K L)
-
 private theorem ordinaryIdeleClassNormQuotientCongrOfAlgEquiv_symm_mk
-    {K₀ L₀ K₁ L₁ : Type}
+    {K₀ : Type u} {L₀ : Type v} {K₁ : Type w} {L₁ : Type x}
     [Field K₀] [NumberField K₀]
     [Field L₀] [NumberField L₀] [Algebra K₀ L₀]
     [Field K₁] [NumberField K₁]

@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.SeriesTerms
+module
+
+public import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.SeriesTerms
 
 /-!
 Establishes convergence and summability of the exponential series on sufficiently deep
 nonarchimedean ideals.
 -/
 
+
+@[expose] public section
 
 open Filter
 open Polynomial
@@ -91,13 +95,13 @@ theorem tendsto_zero_exp_term_ofWithZeroValuation_of_one_lt
       v (((n.factorial : ℕ) : K)) =
         WithZero.exp (-(padicValNat p n.factorial : ℤ)))
     (hxone : 1 < ((ofWithZeroValuation v).val x : ℝ)) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun n : ℕ =>
         ((x ^ n /
           Units.mk0 (((n.factorial : ℕ) : K)) (hnK n) : Kˣ) : K))
       atTop (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   rw [tendsto_iff_forall_eventually_mem]
   intro s hs
   rw [Valued.mem_nhds_zero] at hs
@@ -138,12 +142,12 @@ theorem summable_exp_term_ofWithZeroValuation_of_one_lt
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun n : ℕ =>
         ((x ^ n /
           Units.mk0 (((n.factorial : ℕ) : K)) (hnK n) : Kˣ) : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -177,10 +181,10 @@ theorem hasSum_expSeriesTerm_expSeries_ofWithZeroValuation_of_one_lt
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum (fun n : ℕ => expSeriesTerm x hnK n)
       (expSeriesOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hs :
       Summable
         (fun n : ℕ =>
@@ -203,10 +207,10 @@ theorem tendsto_expSeriesPartialSum_ofWithZeroValuation_of_one_lt
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun N : ℕ => expSeriesPartialSum x hnK N) atTop
       (𝓝 (expSeriesOfWithZeroValuation v x hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_expSeriesTerm_expSeries_ofWithZeroValuation_of_one_lt
       (v := v) (p := p) x hnK hnval hxone hcomplete
@@ -278,13 +282,13 @@ theorem tendsto_zero_exp_term_ofWithZeroValuation_scaled_of_threshold
     (hxthreshold :
       (e : ℝ) / ((p : ℝ) - 1) <
         ((ofWithZeroValuation v).val x : ℝ)) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun n : ℕ =>
         ((x ^ n /
           Units.mk0 (((n.factorial : ℕ) : K)) (hnK n) : Kˣ) : K))
       atTop (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   rw [tendsto_iff_forall_eventually_mem]
   intro s hs
   rw [Valued.mem_nhds_zero] at hs
@@ -326,12 +330,12 @@ theorem summable_exp_term_ofWithZeroValuation_scaled_of_threshold
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun n : ℕ =>
         ((x ^ n /
           Units.mk0 (((n.factorial : ℕ) : K)) (hnK n) : Kˣ) : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -367,10 +371,10 @@ theorem hasSum_expSeriesTerm_expSeries_ofWithZeroValuation_scaled_of_threshold
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum (fun n : ℕ => expSeriesTerm x hnK n)
       (expSeriesOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hs :
       Summable
         (fun n : ℕ =>
@@ -395,10 +399,10 @@ theorem tendsto_expSeriesPartialSum_ofWithZeroValuation_scaled_of_threshold
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun N : ℕ => expSeriesPartialSum x hnK N) atTop
       (𝓝 (expSeriesOfWithZeroValuation v x hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_expSeriesTerm_expSeries_ofWithZeroValuation_scaled_of_threshold
       (v := v) (p := p) e x hnK hnval hxthreshold hcomplete
@@ -439,10 +443,10 @@ theorem tendsto_zero_expSeriesTermField_ofWithZeroValuation_of_lt_exp_neg_one
       v (((n.factorial : ℕ) : K)) =
         WithZero.exp (-(padicValNat p n.factorial : ℤ)))
     (hvx : v x < WithZero.exp (-1 : ℤ)) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun n : ℕ => expSeriesTermField x hnK n) atTop
       (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   by_cases hx : x = 0
   · have hconst :
         (fun n : ℕ => expSeriesTermField x hnK n) =ᶠ[atTop]
@@ -473,9 +477,9 @@ theorem summable_expSeriesTermField_ofWithZeroValuation_of_lt_exp_neg_one
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable (fun n : ℕ => expSeriesTermField x hnK n) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -503,10 +507,10 @@ theorem hasSum_expSeriesTermField_expSeriesField_ofWithZeroValuation_of_lt_exp_n
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum (fun n : ℕ => expSeriesTermField x hnK n)
       (expSeriesFieldOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hs :
       Summable (fun n : ℕ => expSeriesTermField x hnK n) :=
     summable_expSeriesTermField_ofWithZeroValuation_of_lt_exp_neg_one
@@ -525,10 +529,10 @@ theorem tendsto_zero_expSeriesTermField_ofWithZeroValuation_scaled_of_threshold
     (hxthreshold : ∀ hx : x ≠ 0,
       (e : ℝ) / ((p : ℝ) - 1) <
         ((ofWithZeroValuation v).val (Units.mk0 x hx) : ℝ)) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun n : ℕ => expSeriesTermField x hnK n) atTop
       (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   by_cases hx : x = 0
   · have hconst :
         (fun n : ℕ => expSeriesTermField x hnK n) =ᶠ[atTop]
@@ -557,9 +561,9 @@ theorem summable_expSeriesTermField_ofWithZeroValuation_scaled_of_threshold
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable (fun n : ℕ => expSeriesTermField x hnK n) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -589,10 +593,10 @@ theorem hasSum_expSeriesTermField_expSeriesField_ofWithZeroValuation_scaled_of_t
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum (fun n : ℕ => expSeriesTermField x hnK n)
       (expSeriesFieldOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hs :
       Summable (fun n : ℕ => expSeriesTermField x hnK n) :=
     summable_expSeriesTermField_ofWithZeroValuation_scaled_of_threshold
@@ -614,10 +618,10 @@ theorem tendsto_expSeriesPartialSumField_ofWithZeroValuation_scaled_of_threshold
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun N : ℕ => expSeriesPartialSumField x hnK N) atTop
       (𝓝 (expSeriesFieldOfWithZeroValuation v x hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_expSeriesTermField_expSeriesField_ofWithZeroValuation_scaled_of_threshold
       (v := v) (p := p) e x hnK hnval hxthreshold hcomplete
@@ -637,12 +641,12 @@ theorem hasSum_formalExpPowerSeries_eval_expSeriesField
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         PowerSeries.coeff n (PowerSeries.exp K) * x ^ n)
       (expSeriesFieldOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_expSeriesTermField_expSeriesField_ofWithZeroValuation_of_lt_exp_neg_one
       (v := v) (p := p) x hnK hnval hvx hcomplete
@@ -666,12 +670,12 @@ theorem summable_expSeriesTermField_mul_prod_ofWithZeroValuation_of_lt_exp_neg_o
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun ij : ℕ × ℕ =>
         expSeriesTermField x hnK ij.1 *
           expSeriesTermField y hnK ij.2) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hxsum :
       Summable (fun n : ℕ => expSeriesTermField x hnK n) :=
@@ -698,7 +702,7 @@ theorem
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         ∑ ij ∈ Finset.antidiagonal n,
@@ -706,7 +710,7 @@ theorem
             expSeriesTermField y hnK ij.2)
       (expSeriesFieldOfWithZeroValuation v x hnK *
         expSeriesFieldOfWithZeroValuation v y hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hxsum :
       Summable (fun n : ℕ => expSeriesTermField x hnK n) :=
@@ -797,12 +801,12 @@ theorem summable_expSeriesTermField_mul_prod_ofWithZeroValuation_scaled_of_thres
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun ij : ℕ × ℕ =>
         expSeriesTermField x hnK ij.1 *
           expSeriesTermField y hnK ij.2) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hxsum :
       Summable (fun n : ℕ => expSeriesTermField x hnK n) :=
@@ -833,7 +837,7 @@ theorem
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         ∑ ij ∈ Finset.antidiagonal n,
@@ -841,7 +845,7 @@ theorem
             expSeriesTermField y hnK ij.2)
       (expSeriesFieldOfWithZeroValuation v x hnK *
         expSeriesFieldOfWithZeroValuation v y hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hxsum :
       Summable (fun n : ℕ => expSeriesTermField x hnK n) :=
@@ -1050,10 +1054,10 @@ theorem tendsto_expSeriesPartialSumField_ofWithZeroValuation_of_lt_exp_neg_one
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun N : ℕ => expSeriesPartialSumField x hnK N) atTop
       (𝓝 (expSeriesFieldOfWithZeroValuation v x hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_expSeriesTermField_expSeriesField_ofWithZeroValuation_of_lt_exp_neg_one
       (v := v) (p := p) x hnK hnval hvx hcomplete

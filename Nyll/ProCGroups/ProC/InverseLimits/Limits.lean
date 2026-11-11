@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
-import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.FilteredFamilies
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+module
+
+public import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.FilteredFamilies
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 
 /-!
 # Inverse limits and closed-normal quotients
@@ -16,6 +18,8 @@ This file equips inverse limits of finite topological group systems with their c
 and proves the pro-\(C\) basis property for the resulting limits and for quotients by closed
 normal subgroups.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise
@@ -31,10 +35,6 @@ section
 variable {C : FiniteGroupClass.{u}}
 variable {I : Type u} [Preorder I] [Nonempty I]
 variable (S : InverseSystems.InverseSystem (I := I))
-/--
-The constructed object carries the topological space structure inherited from its construction.
--/
-instance instTopologicalSpaceX (i : I) : TopologicalSpace (S.X i) := S.topologicalSpace i
 variable [∀ i, Group (S.X i)]
 variable [∀ i, IsTopologicalGroup (S.X i)]
 variable [InverseSystems.IsGroupSystem S]

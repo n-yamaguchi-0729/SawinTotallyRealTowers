@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.UnitRepresentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.UnitRepresentation
 
 /-!
 # Completed Group Algebra / Basic / Within a Class / Index
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra
 This module defines the reverse-ordered open normal subgroups whose quotients lie in a finite-group
 class \(C\), together with their finite quotient groups and canonical quotient projections.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

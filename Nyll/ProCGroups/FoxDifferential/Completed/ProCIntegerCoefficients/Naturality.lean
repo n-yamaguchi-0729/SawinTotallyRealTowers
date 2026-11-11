@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Fundamental
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Fundamental
 
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — naturality
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The finite stage of the \(\mathbb{Z}_C\)-completed group-algebra map transports a singleton to the
   singleton at its quotient image.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -855,14 +859,12 @@ variable [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
 completed group-algebra scalar action. -/
 def zcUniversalDifferentialTargetCrossedHom
     (ψ : G →* H) (φ : H →ₜ* K) :
-    letI : Module (ZCCompletedGroupAlgebra C H)
+    let : Module (ZCCompletedGroupAlgebra C H)
         (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) :=
       Module.compHom _ (zcCompletedGroupAlgebraMap C hC φ)
     ScalarCrossedHom (zcCompletedGroupAlgebraScalar C ψ)
       (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) := by
-  letI : Module (ZCCompletedGroupAlgebra C H)
-      (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) :=
-    Module.compHom _ (zcCompletedGroupAlgebraMap C hC φ)
+  intro targetModule
   exact
     { toFun := fun g => zcUniversalDifferential C (φ.toMonoidHom.comp ψ) g
       map_mul' := by
@@ -890,14 +892,12 @@ group-algebra map induced by \(\varphi : H \to K\), and the universal differenti
 -/
 def zcCompletedDifferentialModuleTargetMap
     (ψ : G →* H) (φ : H →ₜ* K) :
-    letI : Module (ZCCompletedGroupAlgebra C H)
+    let : Module (ZCCompletedGroupAlgebra C H)
         (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) :=
       Module.compHom _ (zcCompletedGroupAlgebraMap C hC φ)
     ZCCompletedDifferentialModule C ψ →ₗ[ZCCompletedGroupAlgebra C H]
       ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ) := by
-  letI : Module (ZCCompletedGroupAlgebra C H)
-      (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) :=
-    Module.compHom _ (zcCompletedGroupAlgebraMap C hC φ)
+  intro targetModule
   exact
     crossedHomModuleLift
       (A := ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ))
@@ -911,15 +911,13 @@ homomorphism at finite stages.
 @[simp 900]
 theorem zcCompletedDifferentialModuleTargetMap_universal
     (ψ : G →* H) (φ : H →ₜ* K) (g : G) :
-    letI : Module (ZCCompletedGroupAlgebra C H)
+    let : Module (ZCCompletedGroupAlgebra C H)
         (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) :=
       Module.compHom _ (zcCompletedGroupAlgebraMap C hC φ)
     zcCompletedDifferentialModuleTargetMap C hC ψ φ
         (zcUniversalDifferential C ψ g) =
       zcUniversalDifferential C (φ.toMonoidHom.comp ψ) g := by
-  let : Module (ZCCompletedGroupAlgebra C H)
-      (ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ)) :=
-    Module.compHom _ (zcCompletedGroupAlgebraMap C hC φ)
+  intro targetModule
   exact
     crossedHomModuleLift_universal
       (A := ZCCompletedDifferentialModule C (φ.toMonoidHom.comp ψ))

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Comap
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Comap
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Completed Group Algebra / All Finite Functoriality / Stage Map
@@ -13,6 +16,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.Canonica
 This module lifts the quotient homomorphism from `Comap` to finite group algebras and proves its
 continuity, transition compatibility, and compatibility with the canonical dense stage maps.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -101,20 +106,15 @@ theorem continuous_completedGroupAlgebraFunctorialStageMap
     [TopologicalSpace R] [IsTopologicalRing R]
     (φ : G →* H) (hφ : Continuous φ)
     (V : CompletedGroupAlgebraIndex H) :
-    letI : TopologicalSpace
+    let : TopologicalSpace
         (CompletedGroupAlgebraStage R G (completedGroupAlgebraComapIndex (G := G) φ hφ V)) :=
       (completedGroupAlgebraSystem R G).topologicalSpace
         (completedGroupAlgebraComapIndex (G := G) φ hφ V)
-    letI : TopologicalSpace (CompletedGroupAlgebraStage R H V) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStage R H V) :=
       (completedGroupAlgebraSystem R H).topologicalSpace V
     Continuous (completedGroupAlgebraFunctorialStageMap (G := G) (H := H) (R := R)
       φ hφ V) := by
-  let : TopologicalSpace
-      (CompletedGroupAlgebraStage R G (completedGroupAlgebraComapIndex (G := G) φ hφ V)) :=
-    (completedGroupAlgebraSystem R G).topologicalSpace
-      (completedGroupAlgebraComapIndex (G := G) φ hφ V)
-  let : TopologicalSpace (CompletedGroupAlgebraStage R H V) :=
-    (completedGroupAlgebraSystem R H).topologicalSpace V
+  intro sharedOwner1 sharedOwner2
   exact finiteGroupAlgebra_mapDomainRingHom_continuous R
     (CompletedGroupAlgebraQuotient G (completedGroupAlgebraComapIndex (G := G) φ hφ V))
     (CompletedGroupAlgebraQuotient H V)

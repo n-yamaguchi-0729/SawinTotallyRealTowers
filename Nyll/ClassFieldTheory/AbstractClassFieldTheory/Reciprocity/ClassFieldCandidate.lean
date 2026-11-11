@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.IntermediateExtension
+public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
 
 /-!
 # A finite class-field candidate from a norm-open subgroup
@@ -29,6 +31,10 @@ asserted here.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace ClassFormation
@@ -36,8 +42,7 @@ namespace ClassFormation
 open CyclicCohomology KummerTheory
 open scoped commutatorElement
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /-! ## The finite level beneath an open norm-topology subgroup -/
 
@@ -47,7 +52,7 @@ in the
 norm topology contains the norm subgroup of an actual finite Galois
 extension. -/
 theorem normOpenAddSubgroup_contains_finiteNormSubgroup
-    (A : Rep ℤ G) (K : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (hH : IsNormOpen A K H) :
     ∃ E : FiniteGaloisSubextension K,
@@ -66,7 +71,7 @@ local instance normQuotient_extensionQuotient_finite
 /-- The subgroup `H / N_E` of the actual norm quotient, represented as
 the image of `H` under the quotient map. -/
 def normQuotientSubgroup
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K)) :
     AddSubgroup (FiniteNormQuotient A K E.field E.below) := by
   letI : Finite (K.toSubgroup ⧸
@@ -78,17 +83,16 @@ omit [IsTopologicalGroup G] in
 `H / N_E`.  This is the group-theoretic fact used in the middle of the
 finite-classification surjectivity proof. -/
 theorem finiteNormClass_mem_normQuotientSubgroup_iff
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (hEH : ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H)
     (a : ambientFixedAddSubgroup A K) :
-    letI : Finite (K.toSubgroup ⧸
+    let : Finite (K.toSubgroup ⧸
         extensionSubgroup K E.field E.below) := E.finite
     finiteNormClass A K E.field E.below a ∈
         normQuotientSubgroup A E H ↔
       a ∈ H := by
-  let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K E.field E.below) := E.finite
+  intro sharedOwner1
   constructor
   · rintro ⟨b, hb, hba⟩
     have hba' : finiteNormClass A K E.field E.below b =
@@ -114,7 +118,7 @@ the actual abelianization `G(E/K)ᵃᵇ`.
 The argument `rE` is kept explicit: this definition does not construct the
 finite reciprocity equivalence. -/
 def reciprocityAbelianizedSubgroup
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :
@@ -128,7 +132,7 @@ omit [IsTopologicalGroup G] in
 /-- Membership in the transported subgroup is literal membership of the
 corresponding reciprocity class in the image of `H / N_E`. -/
 theorem mem_reciprocityAbelianizedSubgroup_iff
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient))
@@ -143,7 +147,7 @@ theorem mem_reciprocityAbelianizedSubgroup_iff
 /-- The representative-level abelianized class map obtained by first
 passing to `A_K / N_E` and then applying the specified equivalence. -/
 def reciprocityAbelianizedClassHom
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :
     ambientFixedAddSubgroup A K →+
@@ -155,7 +159,7 @@ omit [IsTopologicalGroup G] in
 inverse image under the abelianized class map.  This is the precise
 full-preimage statement used before taking the fixed field in the finite classification argument. -/
 theorem reciprocityClass_mem_abelianizedSubgroup_iff
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (hEH : ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H)
     (rE : FiniteNormQuotient A K E.field E.below ≃+
@@ -257,7 +261,7 @@ theorem intermediateFiniteAbelianOfCommutatorLe_field
 /-- The subgroup obtained from `H / N_E` on the abelianization side,
 pulled back to the actual finite Galois quotient. -/
 def reciprocityPreimageSubgroup
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :
@@ -269,7 +273,7 @@ omit [IsTopologicalGroup G] in
 /-- The actual subgroup used to define the intermediate field contains
 the commutator, independently of any kernel assertion for `rE`. -/
 theorem commutator_le_reciprocityPreimageSubgroup
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :
@@ -282,7 +286,7 @@ omit [IsTopologicalGroup G] in
 representative-level reciprocity class.  This is the group-side form of the
 full-preimage assertion used in the finite-classification surjectivity proof. -/
 theorem reciprocityClass_mem_preimageSubgroup_iff
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (hEH : ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H)
     (rE : FiniteNormQuotient A K E.field E.below ≃+
@@ -306,7 +310,7 @@ omit [IsTopologicalGroup G] in
 restricts trivially to the quotient cut out by the candidate precisely for
 the elements of `H`. -/
 theorem candidateQuotient_eq_one_iff
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (hEH : ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H)
     (rE : FiniteNormQuotient A K E.field E.below ≃+
@@ -339,7 +343,7 @@ surjectivity proof of the finite abelian classification theorem.  No claim that 
 subgroup equals
 `H` is made before finite reciprocity is available. -/
 def classFieldCandidate
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :
@@ -352,7 +356,7 @@ def classFieldCandidate
 an opaque correspondence object. -/
 @[simp]
 theorem classFieldCandidate_field
-    (A : Rep ℤ G) (E : FiniteGaloisSubextension K)
+    (A : Rep.{v} ℤ G) (E : FiniteGaloisSubextension K)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
       Additive (Abelianization E.extensionQuotient)) :

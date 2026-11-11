@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteTransgression
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Continuous.Basic
-import Mathlib.RepresentationTheory.Continuous.TopRep
-import Mathlib.Topology.ContinuousMap.Algebra
-import Mathlib.Topology.ContinuousMap.Basic
-import Mathlib.Topology.ContinuousMap.Defs
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteTransgression
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Continuous.Basic
+public import Mathlib.RepresentationTheory.Continuous.TopRep
+public import Mathlib.Topology.ContinuousMap.Algebra
+public import Mathlib.Topology.ContinuousMap.Basic
+public import Mathlib.Topology.ContinuousMap.Defs
 
 /-!
 # Kernel exactness for finite transgression
@@ -19,6 +21,8 @@ If the explicit factor-set class of an invariant character vanishes, an elementw
 calculation constructs an extension of that character to the ambient group.  This is the kernel
 half of the low-degree transgression exact sequence needed for relation-rank comparison.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open scoped Topology
@@ -130,6 +134,20 @@ noncomputable def transgressionKernelExtension
               rw [← hbgh]
               abel
 
+/-- The coboundary extension is evaluated using the selected quotient residue. -/
+theorem transgressionKernelExtension_apply
+    (N : Subgroup P) [N.Normal]
+    (χ : MonoidHom N (Multiplicative (ZMod p)))
+    (hχ : ∀ (g : P) (n : N), χ (MulAut.conjNormal g n) = χ n)
+    (b : P ⧸ N → ZMod p)
+    (hb : ∀ q r,
+      b r - b (q * r) + b q = transgressionFactor N χ q r)
+    (g : P) :
+    transgressionKernelExtension N χ hχ b hb g =
+      Multiplicative.ofAdd
+        ((χ (quotientSectionResidue N g)).toAdd + b (QuotientGroup.mk' N g)) :=
+  rfl
+
 /-- The coboundary extension restricts to the original kernel character. -/
 theorem transgressionKernelExtension_restrict
     (N : Subgroup P) [N.Normal]
@@ -141,17 +159,15 @@ theorem transgressionKernelExtension_restrict
     (transgressionKernelExtension N χ hχ b hb).comp N.subtype = χ := by
   ext n
   simp only [MonoidHom.coe_comp, Function.comp_apply]
-  dsimp only [transgressionKernelExtension]
+  rw [transgressionKernelExtension_apply]
   change Multiplicative.toAdd (Multiplicative.ofAdd
     ((χ (quotientSectionResidue N (n : P))).toAdd +
       b (QuotientGroup.mk' N (n : P)))) = (χ n).toAdd
-  rw [show QuotientGroup.mk' N (n : P) = 1 by
-    change ((n : P) : P ⧸ N) = 1
-    exact (QuotientGroup.eq_one_iff (N := N) (n : P)).2 n.2]
-  change (χ (quotientSectionResidue N n)).toAdd + b 1 = (χ n).toAdd
   have hnq : QuotientGroup.mk' N (n : P) = 1 := by
     change ((n : P) : P ⧸ N) = 1
     exact (QuotientGroup.eq_one_iff (N := N) (n : P)).2 n.2
+  rw [hnq]
+  change (χ (quotientSectionResidue N n)).toAdd + b 1 = (χ n).toAdd
   have hres : quotientSectionResidue N n =
       n * (quotientSectionFactor N 1 1)⁻¹ := by
     apply Subtype.ext

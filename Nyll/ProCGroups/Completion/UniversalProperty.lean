@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+module
+
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProC.InverseLimits.ContinuousExtensions
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Pro C Groups / Completion / Universal Property
@@ -13,18 +17,20 @@ This module defines the universal property of a pro-\(C\) completion and proves
 the resulting lift, uniqueness, comparison, and canonical-equivalence results.
 -/
 
+@[expose] public section
+
 open scoped Topology
 
 namespace ProCGroups.Completion
 
-universe u v
+universe u v w uG
 
 variable {C : ProCGroups.FiniteGroupClass}
 
 /-- An abstract pro-\(C\) completion of a topological group. -/
 structure IsProCCompletion
     (C : ProCGroups.FiniteGroupClass)
-    (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+    (G : Type uG) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (Ghat : Type u) [Group Ghat] [TopologicalSpace Ghat] [IsTopologicalGroup Ghat]
       [CompactSpace Ghat] [T2Space Ghat] [TotallyDisconnectedSpace Ghat]
     (ι : G →ₜ* Ghat) : Prop where
@@ -47,10 +53,81 @@ structure IsProCCompletion
 
 namespace IsProCCompletion
 
-variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+variable {G : Type uG} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable {Ghat : Type u} [Group Ghat] [TopologicalSpace Ghat] [IsTopologicalGroup Ghat]
 variable [CompactSpace Ghat] [T2Space Ghat] [TotallyDisconnectedSpace Ghat]
 variable {ι : G →ₜ* Ghat}
+
+/-- Density determines continuous maps from the completion into any Hausdorff target. -/
+theorem continuousHom_ext (hι : IsProCCompletion C G Ghat ι)
+    {H : Type v} [Group H] [TopologicalSpace H] [T2Space H]
+    {f g : Ghat →ₜ* H} (hfg : f.comp ι = g.comp ι) : f = g := by
+  apply DFunLike.ext
+  exact congrFun (hι.denseRange.equalizer f.continuous g.continuous (by
+    funext x
+    exact DFunLike.congr_fun hfg x))
+
+/-- The native completion property supplies extension to every target universe through its
+actual finite quotients. -/
+theorem existsUnique_liftAcrossUniverses (hι : IsProCCompletion C G Ghat ι)
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C H) (φ : G →ₜ* H) :
+    ∃! f : Ghat →ₜ* H, f.comp ι = φ := by
+  have hext := ProCGroups.ProC.existsUnique_continuousExtension_of_finiteQuotients
+    (C := C) (ι : G → Ghat) hH (φ : G → H) (by
+      intro K _ _ _ _ hK q
+      have hKbasis := ProCGroups.ProC.HasOpenNormalBasisInClass.of_finite_discrete_mem hK
+      obtain ⟨f, hf, huniq⟩ := hι.existsUnique_lift hKbasis (q.comp φ)
+      refine ⟨f, fun x => DFunLike.congr_fun hf x, ?_⟩
+      intro g hg
+      apply huniq g
+      ext x
+      exact hg x)
+  obtain ⟨f, hf, huniq⟩ := hext
+  refine ⟨f, ?_, ?_⟩
+  · ext x
+    exact hf x
+  · intro g hg
+    exact huniq g (fun x => DFunLike.congr_fun hg x)
+
+/-- Extend into an independent target universe using the native completion witness. -/
+noncomputable def liftAcrossUniverses (hι : IsProCCompletion C G Ghat ι)
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C H) (φ : G →ₜ* H) :
+    Ghat →ₜ* H :=
+  Classical.choose (ExistsUnique.exists (hι.existsUnique_liftAcrossUniverses hH φ))
+
+/-- The independent-universe extension agrees with the given map on the original group. -/
+theorem liftAcrossUniverses_spec (hι : IsProCCompletion C G Ghat ι)
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C H) (φ : G →ₜ* H) :
+    (hι.liftAcrossUniverses hH φ).comp ι = φ :=
+  Classical.choose_spec (ExistsUnique.exists (hι.existsUnique_liftAcrossUniverses hH φ))
+
+/-- Uniqueness compares the actual continuous extension maps. -/
+theorem liftAcrossUniverses_unique (hι : IsProCCompletion C G Ghat ι)
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C H) (φ : G →ₜ* H)
+    {f : Ghat →ₜ* H} (hf : f.comp ι = φ) : f = hι.liftAcrossUniverses hH φ :=
+  hι.continuousHom_ext (hf.trans (hι.liftAcrossUniverses_spec hH φ).symm)
+
+/-- Extension commutes with continuous postcomposition in an independent third universe. -/
+theorem liftAcrossUniverses_comp (hι : IsProCCompletion C G Ghat ι)
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    {K : Type w} [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
+    [CompactSpace K] [T2Space K] [TotallyDisconnectedSpace K]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C H)
+    (hK : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C K)
+    (φ : G →ₜ* H) (q : H →ₜ* K) :
+    q.comp (hι.liftAcrossUniverses hH φ) = hι.liftAcrossUniverses hK (q.comp φ) := by
+  apply hι.liftAcrossUniverses_unique
+  change q.comp ((hι.liftAcrossUniverses hH φ).comp ι) = q.comp φ
+  rw [hι.liftAcrossUniverses_spec]
 
 /--
 A continuous homomorphism from the source group to a pro-\(C\) target factors uniquely through
@@ -85,6 +162,16 @@ theorem lift_unique
     {f : Ghat →ₜ* H} (hfac : f.comp ι = φ) :
     f = hι.lift hH φ :=
   (hι.existsUnique_lift hH φ).unique hfac (hι.lift_spec hH φ)
+
+/-- In the native universe, the new extension is the original chosen lift. -/
+theorem liftAcrossUniverses_eq_lift (hι : IsProCCompletion C G Ghat ι)
+    {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClass C H) (φ : G →ₜ* H) :
+    hι.liftAcrossUniverses
+        (ProCGroups.ProC.hasOpenNormalBasisInClassAcrossUniverses_iff.mpr hH) φ =
+      hι.lift hH φ :=
+  hι.lift_unique hH φ (hι.liftAcrossUniverses_spec _ φ)
 
 /--
 Continuous homomorphisms out of a pro-\(C\) completion are determined by their composites with
@@ -126,6 +213,32 @@ theorem comparison_spec
     (h₂ : IsProCCompletion C G Ghat₂ ι₂) :
     (h₁.comparison h₂).comp ι = ι₂ :=
   h₁.lift_spec h₂.hasOpenNormalBasisInClass ι₂
+
+/-- Comparing native completions commutes with extension to an independent target. -/
+theorem liftAcrossUniverses_comparison
+    (h₁ : IsProCCompletion C G Ghat ι)
+    (h₂ : IsProCCompletion C G Ghat₂ ι₂)
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
+    (hH : ProCGroups.ProC.HasOpenNormalBasisInClassAcrossUniverses C H) (φ : G →ₜ* H) :
+    (h₂.liftAcrossUniverses hH φ).comp (h₁.comparison h₂) =
+      h₁.liftAcrossUniverses hH φ := by
+  apply h₁.liftAcrossUniverses_unique
+  change (h₂.liftAcrossUniverses hH φ).comp ((h₁.comparison h₂).comp ι) = φ
+  rw [h₁.comparison_spec, h₂.liftAcrossUniverses_spec]
+
+/-- Canonical comparison of completions is transitive. -/
+theorem comparison_comp
+    (h₁ : IsProCCompletion C G Ghat ι)
+    (h₂ : IsProCCompletion C G Ghat₂ ι₂)
+    {Ghat₃ : Type u} [Group Ghat₃] [TopologicalSpace Ghat₃] [IsTopologicalGroup Ghat₃]
+    [CompactSpace Ghat₃] [T2Space Ghat₃] [TotallyDisconnectedSpace Ghat₃]
+    {ι₃ : G →ₜ* Ghat₃} (h₃ : IsProCCompletion C G Ghat₃ ι₃) :
+    (h₂.comparison h₃).comp (h₁.comparison h₂) = h₁.comparison h₃ := by
+  apply h₁.continuousHom_ext
+  change (h₂.comparison h₃).comp ((h₁.comparison h₂).comp ι) =
+    (h₁.comparison h₃).comp ι
+  rw [h₁.comparison_spec, h₂.comparison_spec, h₁.comparison_spec]
 
 /-- The two comparison maps between pro-\(C\) completions compose to the identity. -/
 @[simp 900] theorem comparison_comp_eq_id

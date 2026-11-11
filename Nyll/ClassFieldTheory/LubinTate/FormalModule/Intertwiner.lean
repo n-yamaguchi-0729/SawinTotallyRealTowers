@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.LinearTerm
-import Mathlib.RingTheory.MvPowerSeries.Substitution
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.LinearTerm
+public import Mathlib.RingTheory.MvPowerSeries.Substitution
 
 /-!
 # Intertwining equations for Lubin--Tate series
@@ -16,6 +18,8 @@ module defines the multivariable intertwining equation and its additive defect.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

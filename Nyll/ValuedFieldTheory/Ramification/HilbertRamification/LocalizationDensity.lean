@@ -4,20 +4,25 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.BaseChange
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.BaseChange
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Localization and decomposition comparison through density
@@ -29,6 +34,8 @@ between `L` and `L_w`.  None of the results below assumes finite degree.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -83,41 +90,6 @@ theorem algebraicLocalizationDensity_mem_principalUnitGroup_iff_abs_lt_one
 
 end AbsoluteValuePrincipalUnits
 
-namespace ValuationSubring
-
-/-- Inertia membership as the congruence `sigma x = x` modulo the maximal
-ideal for every integral element. -/
-theorem mem_inertiaGroup_iff_sub_mem_nonunits
-    {F : Type*} {E : Type*} [Field F] [Field E] [Algebra F E]
-    (A : _root_.ValuationSubring E) (sigma : decompositionGroup F A) :
-    sigma ∈ inertiaGroup F A ↔
-      ∀ x : A,
-        ((sigma : E ≃ₐ[F] E) (x : E) - (x : E)) ∈ A.nonunits := by
-  change residueAction F A sigma = 1 ↔ _
-  constructor
-  · intro hsigma x
-    have happ := congrArg
-      (fun e : IsLocalRing.ResidueField A ≃+* IsLocalRing.ResidueField A ↦
-        e (IsLocalRing.residue A x)) hsigma
-    change sigma • (IsLocalRing.residue A x) =
-      IsLocalRing.residue A x at happ
-    rw [← IsLocalRing.ResidueField.residue_smul,
-      (open ValuationTheory.DiscreteValuationField.ResidueField in
-        residue_eq_residue_iff_sub_mem_maximalIdeal)]
-      at happ
-    exact A.coe_mem_nonunits_iff.mpr happ
-  · intro hsigma
-    apply RingEquiv.ext
-    intro y
-    obtain ⟨x, rfl⟩ := IsLocalRing.residue_surjective y
-    change sigma • (IsLocalRing.residue A x) =
-      IsLocalRing.residue A x
-    rw [← IsLocalRing.ResidueField.residue_smul,
-      (open ValuationTheory.DiscreteValuationField.ResidueField in
-        residue_eq_residue_iff_sub_mem_maximalIdeal)]
-    exact A.coe_mem_nonunits_iff.mp (hsigma x)
-
-end ValuationSubring
 
 section Localization
 
@@ -133,13 +105,16 @@ local instance completionBaseSMul : SMul K w.1.Completion :=
 local instance completionAlgebra : Algebra vK.Completion w.1.Completion :=
   AbsoluteValue.completionAlgebra vK w.1 w.2
 
-private abbrev localization : IntermediateField vK.Completion w.1.Completion :=
+/-- The algebraic localization of the extension at the chosen absolute value. -/
+abbrev localization : IntermediateField vK.Completion w.1.Completion :=
   AbsoluteValue.algebraicLocalization vK w.1 w.2
 
-private abbrev toLocalization : L →+* localization vK w :=
+/-- The canonical embedding of the extension field into its algebraic localization. -/
+abbrev toLocalization : L →+* localization vK w :=
   AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
 
-private abbrev localizationAbsoluteValue :
+/-- The absolute value on the algebraic localization induced by the completion. -/
+abbrev localizationAbsoluteValue :
     AbsoluteValue (localization vK w) ℝ :=
   AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2
 
@@ -170,12 +145,14 @@ theorem algebraicLocalizationDensity_localization_nonarchimedean
     AbsoluteValue.algebraicLocalizationAbsoluteValue_toAlgebraicLocalization vK w.1 w.2 (n : L)
   simpa using hrestrict.trans_le (hC n)
 
-private abbrev extensionValuationSubring
+/-- The valuation subring defined by the chosen nonarchimedean absolute value. -/
+abbrev extensionValuationSubring
     (hw : LubinTate.Valuations.NonarchimedeanAbsoluteValue w.1) :
     _root_.ValuationSubring L :=
   absoluteValueValuationSubring w.1 hw
 
-private abbrev localizationValuationSubring
+/-- The valuation subring of the algebraic localization. -/
+abbrev localizationValuationSubring
     (hw : LubinTate.Valuations.NonarchimedeanAbsoluteValue w.1) :
     _root_.ValuationSubring (localization vK w) :=
   absoluteValueValuationSubring

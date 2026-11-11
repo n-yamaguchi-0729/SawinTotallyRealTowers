@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.Transport
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassFieldNaturality
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldComparison
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.Transport
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassFieldNaturality
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
 
 /-!
 # Big Hilbert reciprocity over the realized base field
@@ -17,6 +21,10 @@ field of the selected big Hilbert class field.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -26,11 +34,11 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 local instance
     bigHilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
-    {F : Type} [Field F] [NumberField F] :
+    {F : Type*} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
@@ -50,7 +58,7 @@ theorem bigHilbertClassField_ideleClassNorm_range_eq_intrinsic :
 /-- Global reciprocity identifies the genuine Galois group of the
 selected big Hilbert class field with the narrow ideal class group of
 the original number field. -/
-private noncomputable def bigHilbertClassFieldReciprocityData :
+noncomputable def bigHilbertClassFieldReciprocityData :
     {e : Gal((bigHilbertClassField K) /
           (bigHilbertClassFieldBase K)) ≃*
         RayClass.NarrowClassGroup K //
@@ -66,6 +74,8 @@ private noncomputable def bigHilbertClassFieldReciprocityData :
                 (bigHilbertClassFieldNormSubgroup
                   (K := bigHilbertClassFieldBase K)) c))} := by
   let d := hilbertClassFieldGlobalReciprocityTransportData
+    (F := bigHilbertClassFieldBase K) (E := bigHilbertClassField K)
+    (I := RayClass.NarrowClassGroup K)
     (bigHilbertClassFieldNormSubgroup
       (K := bigHilbertClassFieldBase K))
     (bigHilbertClassField_ideleClassNorm_range_eq_intrinsic
@@ -73,6 +83,7 @@ private noncomputable def bigHilbertClassFieldReciprocityData :
     ((bigHilbertClassFieldQuotientEquivNarrowClassGroup
         (K := bigHilbertClassFieldBase K)).trans
       (bigHilbertNarrowClassGroupCongr
+        (K := bigHilbertClassFieldBase K) (M := K)
         (bigHilbertClassFieldBaseEquiv (K := K)).symm))
   refine ⟨d.1, ?_⟩
   intro c

@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
+public import Nyll.GaloisCohomology.Topology.HomogeneousContinuousCochainsFunctor
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Comparison of small and lifted trivial coefficients
@@ -16,6 +20,8 @@ of homogeneous cochains transports this coefficient isomorphism to every
 continuous-cohomology degree.
 -/
 
+@[expose] public section
+
 open CategoryTheory
 
 namespace ClassFieldTower.Cohomology
@@ -25,68 +31,12 @@ noncomputable section
 variable (p : ℕ) (G : Type)
 variable [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
-local instance continuousSMulULiftZModSmall :
-    ContinuousSMul (ZMod p) (ULift.{0} (ZMod p)) :=
-  ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
-
-/-- Forget the universe lift on the trivial coefficient representation. -/
-noncomputable def trivialZModPLiftedToSmall :
-    trivialZModPLifted p G ⟶ trivialZModP p G := by
-  apply TopRep.ofHom
-  exact
-    { toContinuousLinearMap :=
-        (ContinuousLinearEquiv.ulift :
-          ULift.{0} (ZMod p) ≃L[ZMod p] ZMod p).toContinuousLinearMap
-      isIntertwining' := by
-        intro g
-        apply ContinuousLinearMap.ext
-        intro x
-        rfl }
-
-/-- Lift the benchmark's small trivial coefficient representation. -/
-noncomputable def trivialZModPSmallToLifted :
-    trivialZModP p G ⟶ trivialZModPLifted p G := by
-  apply TopRep.ofHom
-  exact
-    { toContinuousLinearMap :=
-        (ContinuousLinearEquiv.ulift :
-          ULift.{0} (ZMod p) ≃L[ZMod p] ZMod p).symm.toContinuousLinearMap
-      isIntertwining' := by
-        intro g
-        rfl }
-
-/-- The small and lifted trivial coefficient representations are isomorphic. -/
-noncomputable def trivialZModPLiftedSmallIso :
-    trivialZModPLifted p G ≅ trivialZModP p G where
-  hom := trivialZModPLiftedToSmall p G
-  inv := trivialZModPSmallToLifted p G
-  hom_inv_id := rfl
-  inv_hom_id := rfl
-
 /-- The induced isomorphism between the homogeneous cochain complexes. -/
 noncomputable def trivialZModPCochainsLiftedSmallIso :
     TopRep.homogeneousCochains (trivialZModPLifted p G) ≅
-      TopRep.homogeneousCochains (trivialZModP p G) where
-  hom := ContinuousCohomology.cochainsMap (ContinuousMonoidHom.id G)
-    (trivialZModPLiftedSmallIso p G).hom
-  inv := ContinuousCohomology.cochainsMap (ContinuousMonoidHom.id G)
-    (trivialZModPLiftedSmallIso p G).inv
-  hom_inv_id := by
-    exact (ContinuousCohomology.cochainsMap_comp
-      (X := trivialZModPLifted p G) (Y := trivialZModP p G)
-      (Z := trivialZModPLifted p G)
-      (ContinuousMonoidHom.id G) (ContinuousMonoidHom.id G)
-      (trivialZModPLiftedSmallIso p G).hom
-      (trivialZModPLiftedSmallIso p G).inv).symm.trans
-      (ContinuousCohomology.cochainsMap_id _)
-  inv_hom_id := by
-    exact (ContinuousCohomology.cochainsMap_comp
-      (X := trivialZModP p G) (Y := trivialZModPLifted p G)
-      (Z := trivialZModP p G)
-      (ContinuousMonoidHom.id G) (ContinuousMonoidHom.id G)
-      (trivialZModPLiftedSmallIso p G).inv
-      (trivialZModPLiftedSmallIso p G).hom).symm.trans
-      (ContinuousCohomology.cochainsMap_id _)
+      TopRep.homogeneousCochains (trivialZModP p G) :=
+  (TopRep.homogeneousContinuousCochainsFunctorOver (ZMod p) G).mapIso
+    (trivialZModPLiftedSmallIso p G)
 
 /-- The categorical continuous-cohomology comparison in every degree. -/
 noncomputable def continuousCohomologyZModPLiftedSmallIso (n : ℕ) :
@@ -100,6 +50,75 @@ noncomputable def continuousCohomologyZModPLiftedSmallLinearEquiv (n : ℕ) :
     continuousCohomologyZModPLifted p G n ≃ₗ[ZMod p]
       continuousCohomologyZModP p G n :=
   (continuousCohomologyZModPLiftedSmallIso p G n).toContinuousLinearEquiv.toLinearEquiv
+
+local instance continuousH1ZModModuleSmallComparison :
+    Module (ZMod p) (ClassFieldTower.ProP.ContinuousH1ZMod (p := p) (G := G)) :=
+  ClassFieldTower.ProP.continuousH1ZModModule
+
+/-- The cochain comparison forgets only the actual coefficient universe lift. -/
+@[simp]
+theorem trivialZModPCochainsLiftedSmallIso_hom_f_one_apply
+    (c : (trivialZModPCochainsLifted p G).X 1) (g h : G) :
+    (((trivialZModPCochainsLiftedSmallIso p G).hom.f 1).hom c).1 g h =
+      (c.1 g h).down :=
+  rfl
+
+/-- Forgetting the coefficient lift preserves the cocycle attached to the same character. -/
+theorem trivialZModPLiftedSmallIso_cocyclesMap_cocycleOfH1Lifted
+    (χ : ClassFieldTower.ProP.ContinuousH1ZMod (p := p) (G := G)) :
+    ContinuousCohomology.cocyclesMap (ContinuousMonoidHom.id G)
+        (trivialZModPLiftedSmallIso p G).hom 1 (cocycleOfH1Lifted χ) =
+      cocycleOfH1 χ := by
+  apply topModule_mono_injective ((trivialZModPCochains p G).iCycles 1)
+  rw [← ConcreteCategory.comp_apply, HomologicalComplex.cyclesMap_i]
+  change ((trivialZModPCochainsLiftedSmallIso p G).hom.f 1).hom
+      (homogeneousOneCochainOfCocycleLifted (cocycleOfH1Lifted χ)) =
+    homogeneousOneCochainOfCocycle (cocycleOfH1 χ)
+  rw [homogeneousOneCochainOfCocycleLifted_cocycleOfH1Lifted,
+    homogeneousOneCochainOfCocycle_cocycleOfH1]
+  apply Subtype.ext
+  ext g h
+  rw [trivialZModPCochainsLiftedSmallIso_hom_f_one_apply,
+    homogeneousOneCochainOfH1Lifted_apply, homogeneousOneCochainOfH1_apply]
+
+/-- The small and lifted degree-one bridges represent the same continuous character. -/
+theorem continuousCohomologyZModPLiftedSmallLinearEquiv_h1
+    (χ : ClassFieldTower.ProP.ContinuousH1ZMod (p := p) (G := G)) :
+    continuousCohomologyZModPLiftedSmallLinearEquiv p G 1
+        (continuousH1ZModEquivContinuousCohomologyLifted χ) =
+      continuousH1ZModEquivContinuousCohomology χ := by
+  change ContinuousCohomology.map (ContinuousMonoidHom.id G)
+      (trivialZModPLiftedSmallIso p G).hom 1
+      (ContinuousCohomology.π (trivialZModPLifted p G) 1 (cocycleOfH1Lifted χ)) =
+    ContinuousCohomology.π (trivialZModP p G) 1 (cocycleOfH1 χ)
+  have hπ := congrArg
+    (fun f : ContinuousCohomology.cocycles (trivialZModPLifted p G) 1 ⟶
+        continuousCohomologyZModP p G 1 => f.hom (cocycleOfH1Lifted χ))
+    (ContinuousCohomology.π_map (X := trivialZModPLifted p G) (Y := trivialZModP p G)
+      (ContinuousMonoidHom.id G) (trivialZModPLiftedSmallIso p G).hom 1)
+  change ContinuousCohomology.map (ContinuousMonoidHom.id G)
+      (trivialZModPLiftedSmallIso p G).hom 1
+      (ContinuousCohomology.π (trivialZModPLifted p G) 1 (cocycleOfH1Lifted χ)) =
+    ContinuousCohomology.π (trivialZModP p G) 1
+      (ContinuousCohomology.cocyclesMap (ContinuousMonoidHom.id G)
+        (trivialZModPLiftedSmallIso p G).hom 1 (cocycleOfH1Lifted χ)) at hπ
+  exact hπ.trans
+    (congrArg
+      (fun z : ContinuousCohomology.cocycles (trivialZModP p G) 1 =>
+        (ContinuousCohomology.π (trivialZModP p G) 1).hom z)
+      (trivialZModPLiftedSmallIso_cocyclesMap_cocycleOfH1Lifted p G χ))
+
+/-- Recovering a character commutes with forgetting the coefficient universe lift. -/
+theorem continuousH1ZModEquivContinuousCohomology_symm_liftedSmall
+    (x : continuousCohomologyZModPLifted p G 1) :
+    continuousH1ZModEquivContinuousCohomology.symm
+        (continuousCohomologyZModPLiftedSmallLinearEquiv p G 1 x) =
+      continuousH1ZModEquivContinuousCohomologyLifted.symm x := by
+  apply continuousH1ZModEquivContinuousCohomology.injective
+  rw [LinearEquiv.apply_symm_apply]
+  simpa only [LinearEquiv.apply_symm_apply] using
+    continuousCohomologyZModPLiftedSmallLinearEquiv_h1 p G
+      (continuousH1ZModEquivContinuousCohomologyLifted.symm x)
 
 /-- Small and lifted trivial coefficients give the same cohomological dimension. -/
 theorem continuousCohomologyZModPLiftedSmall_finrank_eq (n : ℕ) :

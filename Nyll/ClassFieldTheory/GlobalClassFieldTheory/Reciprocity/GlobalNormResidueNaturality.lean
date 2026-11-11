@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.AbstractFixedFieldGlobalNormResidue
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.AbstractFixedFieldGlobalNormResidue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # Naturality of the global norm-residue symbol
@@ -17,6 +21,8 @@ statement is directly usable by fixed-field overextension arguments.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative
 
@@ -32,22 +38,22 @@ open AlgebraicNumberTheory
 open LocalClassFieldTheory
 open RamificationTheory
 
-universe u
+universe u v w x uG uA uC uX
 
 @[instance_reducible]
 private noncomputable def naturalityIdeleClassCommGroup
-    (F : Type) [Field F] [NumberField F] : CommGroup (IdeleClassGroup F) :=
+    (F : Type u) [Field F] [NumberField F] : CommGroup (IdeleClassGroup F) :=
   QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
 attribute [local instance] naturalityIdeleClassCommGroup
 
 local instance ideleClassGroupIsMulCommutative
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     : IsMulCommutative (IdeleClassGroup F) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 local instance ideleClassSubgroupNormal
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     (N : Subgroup (IdeleClassGroup F)) : N.Normal :=
   N.normal_of_isMulCommutative
 
@@ -93,7 +99,7 @@ private theorem rationalAmbientFixedAddEquiv_transport_apply_val
     {A B : FiniteAbstractField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)}
     (hAB : A = B)
-    {X : Type} [AddGroup X]
+    {X : Type uX} [AddGroup X]
     (e : X ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation A.field)
     (x : X) :
@@ -107,16 +113,6 @@ private theorem rationalAmbientFixedAddEquiv_transport_apply_val
         e x).1) =
       (e x).1 := by
   cases hAB
-  rfl
-
-/-- Changing only the bundled subgroup of an additive subgroup element
-does not change its value in the ambient group. -/
-private theorem addSubgroupCongr_apply_val
-    {A : Type} [AddGroup A]
-    {H K : AddSubgroup A}
-    (h : H = K) (x : H) :
-    ((AddEquiv.addSubgroupCongr h x).1 : A) = x.1 := by
-  cases h
   rfl
 
 /-- Transporting an idele class along a field equality and the corresponding
@@ -151,7 +147,7 @@ private theorem rationalIdeleClassEquivFixed_congr_apply_val
 /-- Transporting the target intermediate field of a base-field equivalence
 preserves its rational fixed-part representative. -/
 private theorem rationalIdeleClassEquivFixed_transport_baseEquiv_val
-    {T : Type} [Field T] [NumberField T]
+    {T : Type u} [Field T] [NumberField T]
     {A B : IntermediateField ℚ (SeparableClosure ℚ)}
     [FiniteDimensional ℚ A] [FiniteDimensional ℚ B]
     (h : A = B) (e : T ≃ₐ[ℚ] B)
@@ -225,7 +221,7 @@ private def abelianizedExtensionQuotientAddEquiv_transportBase
     {A B : FiniteAbstractField G}
     (hAB : A = B)
     (P : FiniteGaloisSubextension A.field)
-    {X : Type} [AddGroup X]
+    {X : Type uX} [AddGroup X]
     (e : Additive (Abelianization P.extensionQuotient) ≃+ X) :
     Additive
         (Abelianization
@@ -245,7 +241,7 @@ private def abelianizedExtensionQuotientAddEquiv_transportExtension
     {K : ClosedSubgroup G}
     {P Q : FiniteGaloisSubextension K}
     (hPQ : P = Q)
-    {X : Type} [AddGroup X]
+    {X : Type uX} [AddGroup X]
     (e : Additive (Abelianization P.extensionQuotient) ≃+ X) :
     Additive (Abelianization Q.extensionQuotient) ≃+ X := by
   cases hPQ
@@ -313,7 +309,7 @@ private theorem abelianizedCanonicalEquiv_transportFiniteGalois
             FiniteGaloisSubextension Y.field)
           hAB)
         P = Q)
-    {X : Type} [CommGroup X]
+    {X : Type uX} [CommGroup X]
     (e : P.extensionQuotient ≃* X) :
     abelianizedExtensionQuotientAddEquiv_transportExtension hPQ
         (abelianizedExtensionQuotientAddEquiv_transportBase
@@ -335,7 +331,7 @@ private def rationalFiniteNormResidueValue
     (K : FiniteAbstractField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (L : FiniteGaloisSubextension K.field)
-    {C X : Type} [AddGroup C] [AddGroup X]
+    {C : Type uC} {X : Type uX} [AddGroup C] [AddGroup X]
     (eIdele : C ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation K.field)
     (eGalois : Additive (Abelianization L.extensionQuotient) ≃+ X)
@@ -363,7 +359,7 @@ private theorem rationalFiniteNormResidueValue_transportBase
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)}
     (hAB : A = B)
     (P : FiniteGaloisSubextension A.field)
-    {C X : Type} [AddGroup C] [AddGroup X]
+    {C : Type uC} {X : Type uX} [AddGroup C] [AddGroup X]
     (eIdele : C ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation A.field)
     (eGalois : Additive (Abelianization P.extensionQuotient) ≃+ X)
@@ -398,7 +394,7 @@ private theorem rationalFiniteNormResidueValue_transportExtension
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     {P Q : FiniteGaloisSubextension K.field}
     (hPQ : P = Q)
-    {C X : Type} [AddGroup C] [AddGroup X]
+    {C : Type uC} {X : Type uX} [AddGroup C] [AddGroup X]
     (eIdele : C ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation K.field)
     (eGalois : Additive (Abelianization P.extensionQuotient) ≃+ X)
@@ -654,7 +650,7 @@ private theorem rationalFiniteNormResidueValue_transportToAbstractExtension
             hAH)
           L =
         P.toFiniteGaloisExtension)
-    {C X : Type} [AddGroup C] [AddGroup X]
+    {C : Type uC} {X : Type uX} [AddGroup C] [AddGroup X]
     (eIdele : C ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation A.field)
     (eGalois : Additive (Abelianization L.extensionQuotient) ≃+ X)
@@ -835,20 +831,10 @@ private theorem
           hHEmbedded)
         (numberFieldEmbeddedIdeleClassEquivAmbientFixed F E j) c =
       rationalAbstractFixedFieldIdeleClassEquivFixed H.field c := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) P.below
-  let j : E →ₐ[ℚ] SeparableClosure ℚ :=
-    E.val.restrictScalars ℚ
+  intro F E j sharedOwner2 hHEmbedded
   have hBase :
       numberFieldEmbeddedBaseSubgroup F E j = H.field :=
     numberFieldEmbeddedBaseSubgroup_abstractFixedFieldInclusion H P
-  have hHEmbedded :
-      numberFieldEmbeddedFiniteAbstractField F E j = H :=
-    numberFieldEmbeddedFiniteAbstractField_abstractFixedFieldInclusion H P
   have hFixedBase :
       abstractFixedField ℚ (SeparableClosure ℚ)
           (numberFieldEmbeddedBaseSubgroup F E j) = F :=
@@ -917,20 +903,7 @@ private theorem
           hHEmbedded)
         PEmbedded =
       P.toFiniteGaloisExtension := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) H.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) P.below
-  let j : E →ₐ[ℚ] SeparableClosure ℚ :=
-    E.val.restrictScalars ℚ
-  let HEmbedded :=
-    numberFieldEmbeddedFiniteAbstractField F E j
-  let PEmbedded : FiniteGaloisSubextension HEmbedded.field :=
-    numberFieldEmbeddedFiniteGaloisSubextension F E j
-  have hHEmbedded : HEmbedded = H :=
-    numberFieldEmbeddedFiniteAbstractField_abstractFixedFieldInclusion H P
+  intro F E j HEmbedded PEmbedded hHEmbedded
   exact finiteGaloisSubextension_transport_eq_of_field_eq
     hHEmbedded PEmbedded P.toFiniteGaloisExtension
     (numberFieldEmbeddedTopSubgroup_abstractFixedFieldInclusion H P)
@@ -1922,7 +1895,7 @@ private theorem rationalFiniteNormResidueValue_congr_apply
     (K : FiniteAbstractField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (L : FiniteGaloisSubextension K.field)
-    {C X : Type} [AddGroup C] [AddGroup X]
+    {C : Type uC} {X : Type uX} [AddGroup C] [AddGroup X]
     (eIdele eIdele' : C ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation K.field)
     (eGalois eGalois' :
@@ -2049,7 +2022,7 @@ end AbstractFixedFieldInclusion
 section EmbeddedNumberFieldRestriction
 
 variable
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [NumberField K]
     [Field K'] [NumberField K']
     [Field L] [NumberField L]
@@ -2376,10 +2349,10 @@ theorem
       numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L jLower
     let hJ'H' :=
       numberFieldEmbeddedTopSubgroup_le_baseSubgroup K' L' j
-    letI _ :
+    let _ :
         (CyclicCohomology.extensionSubgroup H J hJH).Normal :=
       numberFieldEmbeddedExtensionSubgroup_normal K L jLower
-    letI _ :
+    let _ :
         (CyclicCohomology.extensionSubgroup H' J' hJ'H').Normal :=
       numberFieldEmbeddedExtensionSubgroup_normal K' L' j
     ((AlgEquiv.restrictNormalHom L).comp
@@ -2396,33 +2369,7 @@ theorem
               hJH hJ'H'
               hH'H hJ'J)
             (Additive.ofMul z))) := by
-  dsimp only
-  let jLower : L →ₐ[ℚ] SeparableClosure ℚ :=
-    j.comp (IsScalarTower.toAlgHom ℚ L L')
-  let H :=
-    numberFieldEmbeddedBaseSubgroup K L jLower
-  let H' :=
-    numberFieldEmbeddedBaseSubgroup K' L' j
-  let J :=
-    numberFieldEmbeddedTopSubgroup K L jLower
-  let J' :=
-    numberFieldEmbeddedTopSubgroup K' L' j
-  let hH'H :=
-    numberFieldEmbeddedBaseSubgroup_le_of_tower K K' L L' j
-  let hJ'J :=
-    numberFieldEmbeddedTopSubgroup_le_of_tower K K' L L' j
-  let hJH :=
-    numberFieldEmbeddedTopSubgroup_le_baseSubgroup
-      K L jLower
-  let hJ'H' :=
-    numberFieldEmbeddedTopSubgroup_le_baseSubgroup
-      K' L' j
-  let hLowerNormal :
-      (CyclicCohomology.extensionSubgroup H J hJH).Normal :=
-    numberFieldEmbeddedExtensionSubgroup_normal K L jLower
-  let hUpperNormal :
-      (CyclicCohomology.extensionSubgroup H' J' hJ'H').Normal :=
-    numberFieldEmbeddedExtensionSubgroup_normal K' L' j
+  intro jLower H H' J J' hH'H hJ'J hJH hJ'H' hLowerNormal hUpperNormal
   let qLower :=
     numberFieldEmbeddedExtensionQuotientEquivGaloisGroup
       K L jLower
@@ -2674,9 +2621,7 @@ theorem globalNormResidueMonoidHomOfEmbedding_norm_restriction
         (globalNormResidueMonoidHomOfEmbedding K' L' j) =
       (globalNormResidueMonoidHomOfEmbedding K L jLower).comp
         (_root_.ideleClassNorm K K') := by
-  dsimp only
-  let jLower : L →ₐ[ℚ] SeparableClosure ℚ :=
-    j.comp (IsScalarTower.toAlgHom ℚ L L')
+  intro jLower
   let H :=
     numberFieldEmbeddedBaseSubgroup K L jLower
   let H' :=
@@ -2864,7 +2809,7 @@ theorem globalNormResidueMonoidHomOfEmbedding_norm_restriction
 end EmbeddedNumberFieldRestriction
 
 variable
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+    {G : Type uG} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
 
@@ -2874,7 +2819,7 @@ the canonical projection between its finite norm quotient and the
 norm quotient of an intermediate subextension. -/
 theorem normResidueSymbol_restriction_sameBase
     (D : DegreeData G)
-    (A : Rep ℤ G)
+    (A : Rep.{uA} ℤ G)
     (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     (K : FiniteAbstractField G)
@@ -2891,12 +2836,12 @@ theorem normResidueSymbol_restriction_sameBase
         (K.field.toSubgroup ⧸
           CyclicCohomology.extensionSubgroup K.field L
             (hLM.trans hMK))] :
-    letI _ : Finite
+    let _ : Finite
         (M.toSubgroup ⧸
           CyclicCohomology.extensionSubgroup M L hLM) :=
       abstractReciprocity_lowerExtension_finite
         K.field M L hLM hMK
-    letI hIntermediateFinite : Finite
+    let hIntermediateFinite : Finite
         (K.field.toSubgroup ⧸
           CyclicCohomology.extensionSubgroup K.field M hMK) :=
       abstractReciprocity_intermediateQuotient_finite
@@ -2907,17 +2852,17 @@ theorem normResidueSymbol_restriction_sameBase
       ⟨L, hLM.trans hMK, hLnormal, hLfinite⟩
     let hEL_EM : EL.field.toSubgroup ≤ EM.field.toSubgroup :=
       hLM
-    let QL : Type :=
+    let QL : Type uA :=
       FiniteNormQuotient A K.field L (hLM.trans hMK)
-    let QM : Type :=
+    let QM : Type uA :=
       FiniteNormQuotient A K.field M hMK
-    let AL : Type :=
+    let AL : Type uG :=
       Additive
         (Abelianization
           (K.field.toSubgroup ⧸
             CyclicCohomology.extensionSubgroup
               K.field L (hLM.trans hMK)))
-    let AM : Type :=
+    let AM : Type uG :=
       Additive
         (Abelianization
           (K.field.toSubgroup ⧸
@@ -2946,47 +2891,7 @@ theorem normResidueSymbol_restriction_sameBase
         QL →+ AM) =
       (normEM.comp projection :
         QL →+ AM) := by
-  let _ : Finite
-      (M.toSubgroup ⧸
-        CyclicCohomology.extensionSubgroup M L hLM) :=
-    abstractReciprocity_lowerExtension_finite
-      K.field M L hLM hMK
-  let hIntermediateFinite : Finite
-      (K.field.toSubgroup ⧸
-        CyclicCohomology.extensionSubgroup K.field M hMK) :=
-    abstractReciprocity_intermediateQuotient_finite
-      K.field M L hLM hMK
-  let EM : FiniteGaloisSubextension K.field :=
-    ⟨M, hMK, hMnormal, hIntermediateFinite⟩
-  let EL : FiniteGaloisSubextension K.field :=
-    ⟨L, hLM.trans hMK, hLnormal, hLfinite⟩
-  let hEL_EM : EL.field.toSubgroup ≤ EM.field.toSubgroup :=
-    hLM
-  let QL : Type :=
-    FiniteNormQuotient A K.field L (hLM.trans hMK)
-  let QM : Type :=
-    FiniteNormQuotient A K.field M hMK
-  let AL : Type :=
-    Additive
-      (Abelianization
-        (K.field.toSubgroup ⧸
-          CyclicCohomology.extensionSubgroup
-            K.field L (hLM.trans hMK)))
-  let AM : Type :=
-    Additive
-      (Abelianization
-        (K.field.toSubgroup ⧸
-          CyclicCohomology.extensionSubgroup K.field M hMK))
-  let restriction :
-      AL →+ AM :=
-    MonoidHom.toAdditive
-      (normResidueNaturalityAbelianizedRestriction
-        K.field K.field EM.field EL.field
-        EM.below EL.below le_rfl hEL_EM)
-  let projection :
-      QL →+ QM :=
-    abstractReciprocityNormProjection
-      A K.field EM.field EL.field hEL_EM EM.below
+  intro sharedOwner1 hIntermediateFinite EM EL hEL_EM QL QM AL AM restriction projection
   let T : FiniteAbstractFieldExtension G :=
     { base := K
       field := K

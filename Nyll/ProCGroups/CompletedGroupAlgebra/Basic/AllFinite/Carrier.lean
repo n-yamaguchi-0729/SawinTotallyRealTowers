@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Stage
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Stage
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Completed Group Algebra / Basic / All Finite / Carrier
@@ -14,6 +17,8 @@ Its compatible-family realization is available only through the explicit equival
 projection, compatibility, and extensionality API below. Ring and module structures are inherited
 once from the generic inverse-limit construction.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,9 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
-import Nyll.ProCGroups.Completion.ProCIntegerPrimePower
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
+module
+
+public import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
+public import Nyll.ProCGroups.Completion.ProCIntegerPrimePower
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Stage
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.System
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.FiniteQuotients
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
 
 /-!
 # Continuous reduction of completed pro-p group algebras modulo p
@@ -17,6 +24,8 @@ compatible family over the group quotients.  Its inverse-limit lift is the
 canonical continuous reduction map to the completed group algebra over
 `ZMod p`.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosure
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.PrimeOrderFixedField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CyclicPrimePowerFullDecomposition
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.PrimeOrderFixedField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CyclicPrimePowerFullDecomposition
 
 /-!
 # Cofinitely split finite extensions are trivial
@@ -21,6 +23,8 @@ conclusion.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

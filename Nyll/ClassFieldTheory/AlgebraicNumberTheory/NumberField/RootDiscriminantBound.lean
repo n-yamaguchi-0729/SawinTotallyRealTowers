@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.NumberField.Discriminant.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Tactic.Positivity
-import Mathlib.Tactic.NormNum
+module
+
+public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.Tactic.Positivity
+public import Mathlib.Tactic.NormNum
 
 /-!
 # From an integral discriminant bound to a root discriminant bound
 -/
+
+@[expose] public section
 
 namespace AlgebraicNumberTheory.DiscriminantBounds
 

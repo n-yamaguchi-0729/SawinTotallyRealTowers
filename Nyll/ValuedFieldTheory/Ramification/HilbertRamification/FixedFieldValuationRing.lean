@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
-import Mathlib.RingTheory.DiscreteValuationRing.TFAE
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
+public import Mathlib.RingTheory.DiscreteValuationRing.TFAE
 
 /-!
 # Restricted valuation rings on actual fixed fields
@@ -18,6 +20,8 @@ Henselian assumption.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

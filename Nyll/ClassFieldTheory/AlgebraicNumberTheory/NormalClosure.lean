@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Normal.Closure
-import Mathlib.NumberTheory.NumberField.Basic
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Normal.Closure
+public import Mathlib.NumberTheory.NumberField.Basic
 
 /-!
 # A finite normal closure of a number-field extension
@@ -18,6 +20,8 @@ the original field is embedded by the canonical chosen lift.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -94,9 +98,11 @@ theorem normalClosure_eq_top_of_source_algEquiv
     ext x
     constructor
     · rintro ⟨y, rfl⟩
-      exact ⟨e y, by simp [g]⟩
+      exact ⟨e y, by simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.coe_comp,
+        AlgEquiv.coe_toAlgHom, Function.comp_apply, AlgEquiv.symm_apply_apply, g]⟩
     · rintro ⟨y, rfl⟩
-      exact ⟨e.symm y, by simp [g]⟩
+      exact ⟨e.symm y, by simp only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.coe_comp,
+        AlgEquiv.coe_toAlgHom, Function.comp_apply, g]⟩
   rw [hRange]
   exact g.fieldRange_le_normalClosure
 

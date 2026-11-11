@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.UniqueRing
-import Mathlib.RingTheory.Polynomial.GaussLemma
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.UniqueRing
+public import Mathlib.RingTheory.Polynomial.GaussLemma
 
 /-!
 # reduction of irreducible factors
@@ -15,6 +17,8 @@ monic polynomial over the base valuation ring whose roots lie in a splitting
 field in fact splits over every extension valuation ring: its roots are
 integral over the base and hence belong to that ring.
 -/
+
+@[expose] public section
 
 noncomputable section
 

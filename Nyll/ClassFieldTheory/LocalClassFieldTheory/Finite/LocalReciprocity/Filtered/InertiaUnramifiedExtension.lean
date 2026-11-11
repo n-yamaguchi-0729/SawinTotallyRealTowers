@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.AbstractUnramified
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.AbstractUnramified
 
 /-!
 # Finite local extensions fixed by inertia are unramified
@@ -15,6 +17,8 @@ canonical spectral valuation.  The proof constructs its finite abstract field,
 uses the existing abstract-to-valued unramifiedness theorem, and transports the
 result along the infinite Galois correspondence.
 -/
+
+@[expose] public section
 
 open scoped ValuativeRel
 

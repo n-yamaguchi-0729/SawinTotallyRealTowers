@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Analysis.SpecificLimits.Basic
-import Mathlib.Algebra.Order.Field.Power
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Linarith
+module
+
+public import Mathlib.Analysis.SpecificLimits.Basic
+public import Mathlib.Algebra.Order.Field.Power
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Linarith
 
 /-!
 # A countable Frobenius relation budget
@@ -17,6 +19,8 @@ Depths n + 5 leave a strict negative Golod--Shafarevich margin at t = 5/12.
 This numerical file does not assert that the required Frobenius elements
 or their deep lifts have already been constructed.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

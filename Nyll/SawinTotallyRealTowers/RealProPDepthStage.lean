@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
-import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Mathlib.FieldTheory.Galois.Profinite
-import Nyll.ProCGroups.ProP.Zassenhaus.OpenNormal
-import Mathlib.GroupTheory.QuotientGroup.Defs
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
+public import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.ProCGroups.ProP.Zassenhaus.OpenNormal
+public import Mathlib.GroupTheory.QuotientGroup.Defs
 
 /-!
 # Finite arithmetic stages detecting source depth
@@ -18,6 +20,8 @@ An actual quotient of a finitely generated profinite group admits finite
 arithmetic stages such that every element trivial on that stage has a lift
 of any prescribed augmentation depth in the source.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

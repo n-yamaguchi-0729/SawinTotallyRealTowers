@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FreeProC.Basic
-import Nyll.ProCGroups.ProP.Presentation.Basic
+module
+
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.ProP.Presentation.Basic
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
 
 /-!
 # Projectivity of finite-basis free pro-p groups
@@ -14,6 +17,8 @@ A finite-basis free pro-`p` group lifts continuously through every continuous su
 pro-`p` group.  The section form is the projective input for the standard proof that its
 continuous degree-two cohomology vanishes.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FreeProC.FiniteBasis
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Magnus.ClosedGeneratedVector
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Topology
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.RelationReflection
+module
+
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Magnus.ClosedGeneratedVector
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Topology
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.RelationReflection
+public import Nyll.ProCGroups.Completion.ProCInteger
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
 
 /-!
 # Fox differential: completed — free pro-\(C\) — natural topology
@@ -27,6 +32,8 @@ The principal declarations in this module are:
   Closedness of the completed relation submodule implies that finite-stage projections separate
   points of the completed differential module.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 
@@ -135,12 +142,7 @@ theorem freeProC_zcDiffModuleStageProjsSeparate_of_relSubmoduleClosed
       Nonempty
         (ZCCompletedDifferentialModuleIndex
           C psi.toMonoidHom) :=
-    ⟨zcCompletedDifferentialModuleComapIndex
-      (C := C) (G := sourceData.carrier) (H := H)
-      hC.hereditary psi
-      ((ProCGroups.Completion.ProCIntegerIndex.terminal
-          (C := C) inferInstance),
-        zcCompletedGroupAlgebraTopIndex C H)⟩
+    nonempty_zcCompletedDifferentialModuleIndex C psi.toMonoidHom
   have hdir :
       Directed (· ≤ ·)
         (id :
@@ -150,8 +152,7 @@ theorem freeProC_zcDiffModuleStageProjsSeparate_of_relSubmoduleClosed
               C psi.toMonoidHom) :=
     directed_zcCompletedDifferentialModuleIndex
       (C := C) (G := sourceData.carrier) (H := H)
-      (hC.melnikovFormation.formation)
-      hC.hereditary psi
+      psi.toMonoidHom hC.melnikovFormation.formation
   exact
     freeProC_zcDiffModuleStageProjsSeparate_of_finiteRelationReductionsReflectRelations
       (H := H) (C := C) sourceData psi
@@ -194,12 +195,7 @@ theorem freeProC_zcDiffModuleRelSubmoduleClosed_iff_stageProjsSeparate
       Nonempty
         (ZCCompletedDifferentialModuleIndex
           C psi.toMonoidHom) :=
-    ⟨zcCompletedDifferentialModuleComapIndex
-      (C := C) (G := sourceData.carrier) (H := H)
-      hC.hereditary psi
-      ((ProCGroups.Completion.ProCIntegerIndex.terminal
-          (C := C) inferInstance),
-        zcCompletedGroupAlgebraTopIndex C H)⟩
+    nonempty_zcCompletedDifferentialModuleIndex C psi.toMonoidHom
   have hdir :
       Directed (· ≤ ·)
         (id :
@@ -209,8 +205,7 @@ theorem freeProC_zcDiffModuleRelSubmoduleClosed_iff_stageProjsSeparate
               C psi.toMonoidHom) :=
     directed_zcCompletedDifferentialModuleIndex
       (C := C) (G := sourceData.carrier) (H := H)
-      (hC.melnikovFormation.formation)
-      hC.hereditary psi
+      psi.toMonoidHom hC.melnikovFormation.formation
   exact
     zcDiffModuleRelSubmoduleClosed_iff_stageProjsSeparate
       (C := C) (ψ := psi.toMonoidHom) hdir
@@ -233,12 +228,7 @@ theorem freeProC_zcDiffModuleRelSubmoduleClosed_iff_t2_naturalTopology
       Nonempty
         (ZCCompletedDifferentialModuleIndex
           C psi.toMonoidHom) :=
-    ⟨zcCompletedDifferentialModuleComapIndex
-      (C := C) (G := sourceData.carrier) (H := H)
-      hC.hereditary psi
-      ((ProCGroups.Completion.ProCIntegerIndex.terminal
-          (C := C) inferInstance),
-        zcCompletedGroupAlgebraTopIndex C H)⟩
+    nonempty_zcCompletedDifferentialModuleIndex C psi.toMonoidHom
   have hdir :
       Directed (· ≤ ·)
         (id :
@@ -248,8 +238,7 @@ theorem freeProC_zcDiffModuleRelSubmoduleClosed_iff_t2_naturalTopology
               C psi.toMonoidHom) :=
     directed_zcCompletedDifferentialModuleIndex
       (C := C) (G := sourceData.carrier) (H := H)
-      (hC.melnikovFormation.formation)
-      hC.hereditary psi
+      psi.toMonoidHom hC.melnikovFormation.formation
   exact
     zcCompletedDifferentialModuleRelationSubmoduleClosed_iff_t2_naturalTopology
       (C := C) (ψ := psi.toMonoidHom) hdir

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
+module
+
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
 
 /-!
 # Restriction from an enlarged S-unit Kummer extension
@@ -15,6 +17,8 @@ attached to kernel elements.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain

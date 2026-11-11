@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.CoeffMap
 
 /-!
 # Fox differential: prime-power completed group algebra — basic — stage coeff map — coeff
@@ -14,6 +16,8 @@ The principal declarations in this module are:
 - `primePower_pos`
   The prime-power moduli used throughout the compatibility layer are positive.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

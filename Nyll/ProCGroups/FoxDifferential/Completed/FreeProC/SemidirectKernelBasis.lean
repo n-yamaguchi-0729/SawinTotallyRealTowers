@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageRightProjection
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageRightProjection
 
 /-!
 # Fox differential: completed — free pro-\(C\) — semidirect kernel basis
@@ -27,6 +29,8 @@ The principal declarations in this module are:
   directed finite-stage system, then the coordinatewise finite product maps also form a
   zero-neighborhood kernel basis.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

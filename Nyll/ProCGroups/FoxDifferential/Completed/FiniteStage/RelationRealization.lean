@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationSubmodule
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundarySubgroups
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationSubmodule
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundarySubgroups
 
 /-!
 # Fox differential: completed — finite stage — relation realization
@@ -25,6 +27,8 @@ The principal declarations in this module are:
   Module-level finite exactness gives function-level finite exactness for the relation boundary
   followed by the Fox boundary.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

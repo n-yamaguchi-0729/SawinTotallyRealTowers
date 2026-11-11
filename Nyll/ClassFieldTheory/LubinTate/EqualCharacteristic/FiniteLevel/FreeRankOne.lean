@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.AmbientDivisionTorsion
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
-import Mathlib.Algebra.Module.RingHom
-import Mathlib.Data.Fintype.EquivFin
-import Mathlib.LinearAlgebra.FreeModule.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.AmbientDivisionTorsion
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FiniteParameters
+public import Mathlib.Algebra.Module.RingHom
+public import Mathlib.Data.Fintype.EquivFin
+public import Mathlib.LinearAlgebra.FreeModule.Basic
 
 /-!
 # The primitive-division-module equivalence: equal-characteristic division points are free of
@@ -23,6 +25,8 @@ level `n + 1`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

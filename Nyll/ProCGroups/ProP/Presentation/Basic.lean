@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FreeProC.FiniteBasis
-import Nyll.ProCGroups.Presentations.Profinite
+module
+
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
+public import Nyll.ProCGroups.Presentations.Profinite
 
 /-!
 # Finite pro-p presentations
@@ -15,6 +17,8 @@ relator family, and the existing `IsFreePresentationOf` certificate.  The free
 source data is a type index, rather than a structure field, so its canonical
 group and topology instances remain syntactically determined.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

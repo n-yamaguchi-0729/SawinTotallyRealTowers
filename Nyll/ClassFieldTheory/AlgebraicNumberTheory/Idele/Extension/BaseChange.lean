@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
-import Mathlib.FieldTheory.Galois.NormalBasis
-import Mathlib.GroupTheory.GroupAction.Defs
-import Mathlib.LinearAlgebra.TensorProduct.Basis
-import Mathlib.RingTheory.Norm.Basic
-import Mathlib.RingTheory.TensorProduct.Maps
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Mathlib.FieldTheory.Galois.NormalBasis
+public import Mathlib.GroupTheory.GroupAction.Defs
+public import Mathlib.LinearAlgebra.TensorProduct.Basis
+public import Mathlib.RingTheory.Norm.Basic
+public import Mathlib.RingTheory.TensorProduct.Maps
 
 /-!
 # Ideles in finite extensions: the tensor-product model
@@ -19,6 +21,8 @@ This file uses the canonical presentation
 `𝔸_L = 𝔸_K ⊗_K L`.  This makes extension, Galois conjugation, and the
 idele norm formal linear-algebra operations.
 -/
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField
@@ -155,10 +159,11 @@ theorem norm_fieldInclusion (x : L) :
       (NumberField.AdeleRing (𝓞 K) K)).map_det]
   congr 1
   ext i j
-  simp [bA, b, fieldInclusion,
-    Algebra.smul_def,
-    Algebra.leftMulMatrix_eq_repr_mul,
-    Algebra.TensorProduct.tmul_mul_tmul]
+  simp only [fieldInclusion, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
+    Algebra.TensorProduct.includeRight_apply, Algebra.leftMulMatrix_eq_repr_mul,
+    Module.Basis.baseChange_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one,
+    Module.Basis.baseChange_repr_tmul, Algebra.smul_def, RingHom.mapMatrix_apply, Matrix.map_apply,
+    bA, b]
 
 omit [NumberField L] in
 /-- The relative idele norm carries a principal idele to the
@@ -366,7 +371,7 @@ theorem galoisAverage_tmul
     Algebra.algebraMap_eq_smul_one]
   rw [← TensorProduct.smul_tmul]
   congr 1
-  simp [Algebra.smul_def, map_mul, mul_assoc, mul_comm]
+  simp only [Algebra.smul_def, mul_comm, mul_assoc, map_mul]
 
 omit [NumberField L] in
 theorem galoisAverage_mem_adeleInclusion_range
@@ -386,8 +391,7 @@ theorem galoisAverage_mem_adeleInclusion_range
       obtain ⟨b, hb⟩ := hy
       refine ⟨a + b, ?_⟩
       rw [map_add, ha, hb]
-      simp [galoisAverage, Finset.sum_add_distrib,
-        smul_add]
+      simp only [galoisAverage, map_add, Finset.sum_add_distrib, smul_add]
 
 omit [NumberField L] in
 theorem exists_adele_eq_of_galois_fixed

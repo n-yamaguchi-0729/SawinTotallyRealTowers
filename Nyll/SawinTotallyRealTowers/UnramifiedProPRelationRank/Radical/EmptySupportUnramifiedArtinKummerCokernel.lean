@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedArtinKummerLocalization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedArtinKummerLocalization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # The empty-support unramified Artin--Kummer cokernel
@@ -21,6 +23,8 @@ This uses the dual of the unramified local subspace as localization target;
 it does not identify the different ramified-quotient model
 `EmptySupportCohomologicalH1Cokernel` with the arithmetic cokernel.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

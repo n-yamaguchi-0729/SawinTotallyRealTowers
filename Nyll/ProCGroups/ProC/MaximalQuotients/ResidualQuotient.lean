@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualCore
-import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
-import Nyll.ProCGroups.ProC.Subgroups.Products
+module
+
+public import Nyll.ProCGroups.ProC.MaximalQuotients.ResidualCore
+public import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
+public import Nyll.ProCGroups.ProC.Subgroups.Products
 
 /-!
 # The quotient by the pro-C residual core
@@ -15,6 +17,8 @@ For a formation `C`, the quotient by the intersection of all kernels with pro-`C
 itself pro-`C`.  The proof realizes the residual quotient as a subdirect product of all the
 pro-`C` quotients occurring in the definition of the residual core.
 -/
+
+@[expose] public section
 
 open Set
 

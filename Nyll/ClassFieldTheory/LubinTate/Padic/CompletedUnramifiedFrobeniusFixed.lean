@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Finite.Basic
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
+module
+
+public import Mathlib.FieldTheory.Finite.Basic
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedField
 
 /-!
 # Fixed points of p-adic completed-unramified Frobenius
@@ -21,6 +23,8 @@ fraction back in the Witt ring.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

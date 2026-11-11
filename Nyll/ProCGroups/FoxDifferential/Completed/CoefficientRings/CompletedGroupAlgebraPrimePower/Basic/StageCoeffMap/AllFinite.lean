@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.CompletionMap
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.CompletionMap
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Fox differential: prime-power completed group algebra — basic — stage coeff map — all finite
@@ -21,6 +25,8 @@ The principal declarations in this module are:
 - `modNCompletedGroupAlgebraStageCoeffMap_comp`
   All-finite stage coefficient maps compose according to transitivity of modulus divisibility.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

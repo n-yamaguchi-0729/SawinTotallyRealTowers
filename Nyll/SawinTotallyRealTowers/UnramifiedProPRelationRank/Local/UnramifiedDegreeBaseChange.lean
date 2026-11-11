@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
-import Mathlib.Algebra.Group.Subgroup.Defs
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
+public import Mathlib.Algebra.Group.Subgroup.Defs
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
 /-!
 # Base change of standard unramified degree kernels
@@ -20,6 +22,8 @@ absolute subgroup with the standard unramified degree-`f * m` subgroup
 produces its own standard unramified degree-`m` subgroup.  Both sides use
 the actual normalized degree maps.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 

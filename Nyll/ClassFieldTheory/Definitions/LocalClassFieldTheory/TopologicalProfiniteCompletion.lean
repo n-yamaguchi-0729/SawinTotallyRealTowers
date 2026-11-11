@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
-import Mathlib.Topology.Algebra.Group.Quotient
-import Mathlib.Topology.Algebra.OpenSubgroup
+module
+
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Basic
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Algebra.OpenSubgroup
 
 /-!
 # Topological profinite completion
@@ -18,6 +20,8 @@ quotients.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

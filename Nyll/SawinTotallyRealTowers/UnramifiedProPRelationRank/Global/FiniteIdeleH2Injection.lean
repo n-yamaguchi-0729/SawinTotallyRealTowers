@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleClassPGroupH1
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleClassPGroupH1
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LongExactSequence
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 
 /-!
 # The principal-idele sequence in degree two
@@ -16,6 +19,8 @@ The actual principal ideles, relative ideles, and relative idele classes form
 a short exact sequence of Galois representations.  Its long exact sequence
 is the source of the global degree-two diagonal injection.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField
 

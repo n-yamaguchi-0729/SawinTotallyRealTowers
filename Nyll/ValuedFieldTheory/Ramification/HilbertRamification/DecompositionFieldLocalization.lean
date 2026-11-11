@@ -4,12 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationDensity
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldExtension
-import Nyll.ValuedFieldTheory.Valuation.Completion.ExtensionInvariants
-import Mathlib.FieldTheory.SeparableClosure
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationDensity
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldExtension
+public import Nyll.ValuedFieldTheory.Valuation.Completion.ExtensionInvariants
+public import Mathlib.FieldTheory.SeparableClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
 
 /-!
 # Decomposition-field value and residue comparison
@@ -21,6 +27,8 @@ the nonarchimedean case.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -46,12 +54,6 @@ local instance proposition98CompletionBaseSMul : SMul K w.1.Completion :=
 
 local instance proposition98CompletionAlgebra : Algebra vK.Completion w.1.Completion :=
   AbsoluteValue.completionAlgebra vK w.1 w.2
-
-private abbrev localization : IntermediateField vK.Completion w.1.Completion :=
-  AbsoluteValue.algebraicLocalization vK w.1 w.2
-
-private abbrev toLocalization : L →+* localization vK w :=
-  AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
 
 local instance proposition98LocalizationBaseAlgebra : Algebra K (localization vK w) :=
   ((algebraMap vK.Completion (localization vK w)).comp

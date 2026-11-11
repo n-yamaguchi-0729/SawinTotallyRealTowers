@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ConjugatePrimeNorm
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.CorrectionSum
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusPowerSumRelation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.NormClassRelation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.PrimeUnitDifferences
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FiniteStageCorrections
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ReciprocityMapMul
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ConjugatePrimeNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.CorrectionSum
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusPowerSumRelation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.NormClassRelation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.PrimeUnitDifferences
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FiniteStageCorrections
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ReciprocityMapMul
 
 /-!
 # The abstract reciprocity construction, the finite reciprocity equivalence
@@ -26,7 +28,9 @@ decomposition descends to the additive reciprocity homomorphism of the finite re
 equivalence.
 -/
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -44,14 +48,13 @@ noncomputable section
 
 section finiteReciprocityValues
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
 /-- The reciprocity value of a Frobenius element after passage from the
 universal norm quotient to the finite quotient by `N_{L/K} A_L`. -/
-def finiteReciprocityValue (D : DegreeData G) (A : Rep ℤ G)
+def finiteReciprocityValue (D : DegreeData G) (A : Rep.{uA} ℤ G)
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -67,7 +70,7 @@ def finiteReciprocityValue (D : DegreeData G) (A : Rep ℤ G)
 /-- reciprocity multiplicativity remains additive after passage from the universal norm
 quotient to the finite quotient by `N_{L/K} A_L`. -/
 theorem finiteReciprocityValue_mul
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -88,7 +91,7 @@ theorem finiteReciprocityValue_mul
 /-- Formula for the finite Frobenius value using the chosen prime element
 of its fixed field. -/
 theorem finiteReciprocityValue_eq_primeNormClass
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -118,7 +121,7 @@ theorem finiteReciprocityValue_eq_primeNormClass
 /-- The same formula for any prime element of the fixed field.  Prime-choice
 independence is exactly the reciprocity construction's consequence of the unit-cohomology axiom. -/
 theorem finiteReciprocityValue_eq_primeNormClass_of_isPrime
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -239,8 +242,7 @@ end frobeniusLiftAlgebra
 
 section trivialRestrictionValues
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -248,7 +250,7 @@ namespace DegreeData
 finite norm quotient. Its fixed field contains `L`, so its norm to `K` factors through
 `N_{L/K}`. -/
 theorem finiteReciprocityValue_eq_zero_of_restriction_eq_one
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -331,8 +333,7 @@ end equalFrobeniusLifts
 
 section liftComparison
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -341,7 +342,7 @@ finite automorphism are either equal, or the larger-degree lift is the
 smaller one times a positive Frobenius lift which restricts trivially and
 therefore has zero value in the finite norm quotient. -/
 theorem finiteReciprocityHom_lift_comparison
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -437,8 +438,7 @@ end chosenFrobeniusLifts
 
 section finiteReciprocityHom
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -446,7 +446,7 @@ namespace DegreeData
 choosing the finite degree-quotient decomposition lift and evaluating in the finite norm
 quotient.  Lift-independence and additivity are reduced to the concrete
 steps above and reciprocity multiplicativity, respectively. -/
-def finiteReciprocityCandidate (D : DegreeData G) (A : Rep ℤ G)
+def finiteReciprocityCandidate (D : DegreeData G) (A : Rep.{uA} ℤ G)
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -462,7 +462,7 @@ def finiteReciprocityCandidate (D : DegreeData G) (A : Rep ℤ G)
 
 /-- The finite reciprocity candidate evaluates a norm class through its chosen Frobenius lift. -/
 @[simp]
-theorem finiteReciprocityCandidate_apply (D : DegreeData G) (A : Rep ℤ G)
+theorem finiteReciprocityCandidate_apply (D : DegreeData G) (A : Rep.{uA} ℤ G)
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -481,7 +481,7 @@ theorem finiteReciprocityCandidate_apply (D : DegreeData G) (A : Rep ℤ G)
 /-- Formula for the candidate using the fixed field of its specified
 the finite degree-quotient decomposition lift. -/
 theorem finiteReciprocityCandidate_eq_primeNormClass
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -514,7 +514,7 @@ theorem finiteReciprocityCandidate_eq_primeNormClass
 
 /-- The finite reciprocity candidate sends the zero norm class to the identity. -/
 @[simp]
-theorem finiteReciprocityCandidate_zero (D : DegreeData G) (A : Rep ℤ G)
+theorem finiteReciprocityCandidate_zero (D : DegreeData G) (A : Rep.{uA} ℤ G)
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -533,7 +533,7 @@ product of their chosen lifts have the same restriction.  Applying the
 degree comparison gives exactly the remaining lift-independence obligation
 in the additivity proof of the finite reciprocity equivalence. -/
 theorem finiteReciprocityHom_product_lift_comparison
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -569,7 +569,7 @@ theorem finiteReciprocityHom_product_lift_comparison
 the degree comparison proves that the finite reciprocity value is
 independent of the chosen lift.  This is the full three-case argument. -/
 private theorem finiteReciprocityValue_eq_of_same_restriction_of_mul
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -600,8 +600,8 @@ private theorem finiteReciprocityValue_eq_of_same_restriction_of_mul
 multiplicativity
 is available.  Lift-independence is invoked for the chosen lift of a
 product and the product of the two chosen lifts. -/
-private theorem finiteReciprocityCandidate_add_of_mul
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+theorem finiteReciprocityCandidate_add_of_mul
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -645,8 +645,8 @@ private theorem finiteReciprocityCandidate_add_of_mul
 
 /-- The finite reciprocity equivalence with the semigroup-additivity input isolated.  The
 final theorem discharges this input directly from reciprocity multiplicativity. -/
-private def finiteReciprocityHom_of_mul
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+def finiteReciprocityHom_of_mul
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -668,7 +668,7 @@ private def finiteReciprocityHom_of_mul
 /-- Evaluation of the conditional finite reciprocity homomorphism using any
 Frobenius lift of the specified finite automorphism. -/
 private theorem finiteReciprocityHom_of_mul_apply_of_frobeniusLift
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -698,7 +698,7 @@ private theorem finiteReciprocityHom_of_mul_apply_of_frobeniusLift
 /-- Prime-norm formula for the conditional finite reciprocity equivalence map, using
 an arbitrary Frobenius lift and an arbitrary prime of its fixed field. -/
 private theorem finiteReciprocityHom_of_mul_apply_eq_primeNormClass
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -744,7 +744,7 @@ private theorem finiteReciprocityHom_of_mul_apply_eq_primeNormClass
 Frobenius lifts to an additive reciprocity homomorphism on the finite Galois
 group. -/
 def finiteReciprocityHom
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -761,7 +761,7 @@ def finiteReciprocityHom
 /-- Prime-norm evaluation formula for the finite reciprocity equivalence, using any prime
 element in the fixed field of a chosen Frobenius lift. -/
 theorem finiteReciprocityHom_apply_eq_primeNormClass
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -865,8 +865,7 @@ theorem unramifiedFrobenius_fixedField_degree
         (K.field.toSubgroup ⧸ extensionSubgroup K.field S hSK) :=
       D.frobeniusFixedField_finite K L hLK σ
     ((DegreeData.FiniteAbstractExtension.ofInclusion S K.field hSK).degree : ℕ) = 1 := by
-  let σ := D.chosenUnramifiedFrobeniusLift K L hLK
-  let S := D.frobeniusFixedField K L hLK σ
+  intro σ S
   let hSK : S.toSubgroup ≤ K.field.toSubgroup :=
     D.frobeniusFixedField_le K L hLK σ
   let : Finite
@@ -893,9 +892,8 @@ end unramifiedFixedFields
 
 section unramifiedReciprocity
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{uA} ℤ G}
 
 namespace ValuationData
 

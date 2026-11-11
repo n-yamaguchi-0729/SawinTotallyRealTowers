@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # Finite local reciprocity: the value group of the local henselian valuation
@@ -17,6 +20,8 @@ in `ℤ̂`.  Its range is proved to be exactly the ordinary integers inside
 `ℤ̂`, and the quotients by `nℤ` are identified with `ZMod n`.  These are the
 source-producing parts of the Henselian valuation condition.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open RamificationTheory KummerTheory
@@ -32,18 +37,17 @@ noncomputable section
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
-private abbrev G := Gal(SeparableClosure K / K)
+local notation "G" => Gal(SeparableClosure K / K)
 
-private abbrev A : Rep ℤ (G K) :=
-  galoisAmbientUnitsRep K (SeparableClosure K)
+local notation "A" => galoisAmbientUnitsRep K (SeparableClosure K)
 
 /-- `Kˣ` is the coefficient group fixed by the distinguished base subgroup
 of the absolute separable Galois group. -/
 def baseFieldUnitsEquiv :
-    Additive Kˣ ≃+ ambientFixedAddSubgroup (A K) (baseField (G K)) :=
+    Additive Kˣ ≃+ ambientFixedAddSubgroup A (baseField G) :=
   (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).trans
     (AddEquiv.addSubgroupCongr
-      (congrArg (ambientFixedAddSubgroup (A K))
+      (congrArg (ambientFixedAddSubgroup A)
         (closedFixingSubgroup_bot_eq_baseField K (SeparableClosure K))))
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
@@ -65,7 +69,7 @@ theorem baseFieldUnitsEquiv_val (x : Kˣ) :
 /-- The normalized valuation `v_K : Kˣ → ℤ`, embedded in `ℤ̂` and written on
 the actual fixed coefficient group. -/
 def localBaseValuation :
-    ambientFixedAddSubgroup (A K) (baseField (G K)) →+ ZHat :=
+    ambientFixedAddSubgroup A (baseField G) →+ ZHat :=
   (Int.castRingHom ZHat).toAddMonoidHom.comp
     ((LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K).comp
       (baseFieldUnitsEquiv K).symm.toAddMonoidHom)
@@ -151,7 +155,7 @@ theorem localValueGroupReduction_ker (n : ℕ) (hn : 0 < n) :
   · rintro z ⟨w, rfl⟩
     change zHatReduction n hn (n • (w : ZHat)) = 0
     rw [map_nsmul]
-    simp [nsmul_eq_mul]
+    rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
 /-- The cyclic quotient condition in the Henselian valuation condition, for the actual local value
 group. -/

@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Abelianization.Defs
-import Nyll.ProCGroups.Abelian.TopologicalAbelianization
-import Nyll.ProCGroups.ProC.Subgroups.Closed
+module
+
+public import Mathlib.GroupTheory.Abelianization.Defs
+public import Nyll.ProCGroups.Abelian.TopologicalAbelianization
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 
 /-!
 # Profinite kernels and their abelianizations
@@ -15,6 +18,8 @@ This file equips kernels of continuous maps between profinite groups with their 
 topology and constructs the corresponding topological abelianization. It also transfers
 open-normal quotient bases in a finite-group class to these kernel constructions.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.ProC
 

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # Uniqueness criteria for extensions of Henselian discrete valuations
@@ -15,6 +18,8 @@ used to compare extensions. Local maximal-ideal centers and subsingleton fibers
 lead to uniqueness criteria, including criteria obtained from Henselian quotient
 maps, adic completeness, and finite-separable extensions.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -109,12 +114,7 @@ theorem idealOfLE_comap_integralClosureValuationSubringIntegerMap_eq_maximalIdea
         (integralClosureValuationSubringIntegerMapOfMemOrInv
           (K := K) (L := L) base hval) =
       base.maximalIdeal := by
-  let B :=
-    ValuationTheory.DiscreteValuationField.Valuation.integralClosureValuationSubringOfMemOrInv
-      (L := L) base.toDVF.valuation hval
-  let hvL_le : B ≤ vL.valuationSubring :=
-    Valuation.integralClosureValuationSubringOfMemOrInv_le_valuationSubring_of_hasExtension
-      (L := L) base.toDVF.valuation vL hval
+  intro B hvL_le
   let i : base.valuationSubring →+* B :=
     integralClosureValuationSubringIntegerMapOfMemOrInv
       (K := K) (L := L) base hval
@@ -192,7 +192,7 @@ theorem prime_eq_maximalIdeal_of_comap_integralClosureValuationSubringIntegerMap
     obtain ⟨a, ha_max, ha_not_bot⟩ := Set.not_subset.mp hnot_le_bot
     have ha_ne_zero : a ≠ 0 := by
       intro ha
-      exact ha_not_bot (by simp [ha])
+      exact ha_not_bot (Ideal.mem_bot.mpr ha)
     intro hPbot
     have ha_comap : a ∈ P.comap i := by
       simpa [B, i, hcomap] using ha_max

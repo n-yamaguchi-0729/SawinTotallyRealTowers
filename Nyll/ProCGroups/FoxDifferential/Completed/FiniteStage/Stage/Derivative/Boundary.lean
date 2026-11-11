@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.FoxBoundary
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
-import Mathlib.Tactic.NoncommRing
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.FoxBoundary
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
+public import Mathlib.Tactic.NoncommRing
 
 /-!
 # Fox differential: finite stage — stage — derivative — boundary
@@ -24,6 +26,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageDerivative_fundamental_formula`
   Finite-stage Fox fundamental formula for a free-group word.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

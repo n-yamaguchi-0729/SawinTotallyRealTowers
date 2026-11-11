@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
-import Mathlib.RingTheory.Valuation.Extension
-import Mathlib.RingTheory.RamificationInertia.Basic
-import Mathlib.NumberTheory.RamificationInertia.Inertia
-import Mathlib.NumberTheory.RamificationInertia.Ramification
-import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-import Mathlib.Algebra.Group.Units.Hom
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.RingTheory.RamificationInertia.Basic
+public import Mathlib.NumberTheory.RamificationInertia.Inertia
+public import Mathlib.NumberTheory.RamificationInertia.Ramification
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+public import Mathlib.Algebra.Group.Units.Hom
 
 /-!
 # Finite extensions of discretely valued fields
@@ -22,6 +24,8 @@ proof-irrelevant marker object.  All invariants and maps are defined once for
 `DVF` values and can therefore be used unchanged for Henselian and complete
 discretely valued fields through their canonical `toDVF` projections.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -481,15 +485,24 @@ omit [FiniteDimensional K L] in
   rw [← residueMap_residue base target,
     residueFieldEquivOfSurjective_symm_apply_residueMap]
 
-/-- Unramified means that the canonical ramification index is one. -/
-def IsUnramified : Prop :=
+/-- The chosen valuation extension has ramification index one.
+This is the weakly unramified condition; residue separability is not included. -/
+def HasRamificationIndexOne : Prop :=
   ramificationIndex base target = 1
+
+/-- Historical name for `HasRamificationIndexOne`.
+This condition alone is weaker than finite unramifiedness: it does not require
+residue separability or the equality of field degree and residue degree. -/
+abbrev IsUnramified : Prop :=
+  HasRamificationIndexOne base target
 
 /-- Totally ramified means that the canonical residue degree is one. -/
 def IsTotallyRamified : Prop :=
   residueDegree base target = 1
 
-/-- Defectlessness is the exact fundamental equality. -/
+/-- The exact fundamental equality for this chosen pair of valuations, using the global
+field degree. Without a unique extension of the base valuation, this condition is stronger
+than absence of local defect: it is not an equality involving the sum over all extensions. -/
 def IsDefectless : Prop :=
   degree base target =
     ramificationIndex base target * residueDegree base target

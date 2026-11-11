@@ -4,34 +4,36 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Algebra.Group.TypeTags.Finite
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.GroupTheory.PGroup
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.SetTheory.Cardinal.ToNat
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
-import Nyll.ProCGroups.FreeProC.Basic
-import Nyll.ProCGroups.FreeProC.Construction
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Nyll.ProCGroups.ProP.MinimalEpimorphism
-import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.RealProTwoGeneratorRank
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Mathlib.Data.Finset.Image
-import Mathlib.Data.Fintype.Defs
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Data.Nat.Cast.Defs
-import Mathlib.Data.Set.Image
-import Mathlib.Data.ZMod.Defs
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Order
+module
+
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Algebra.Group.TypeTags.Finite
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.SetTheory.Cardinal.ToNat
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.FreeProC.Construction
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Nyll.ProCGroups.ProP.MinimalEpimorphism
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.RealProTwoGeneratorRank
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Mathlib.Data.Finset.Image
+public import Mathlib.Data.Fintype.Defs
+public import Mathlib.Data.Fintype.Card
+public import Mathlib.Data.Fintype.EquivFin
+public import Mathlib.Data.Nat.Cast.Defs
+public import Mathlib.Data.Set.Image
+public import Mathlib.Data.ZMod.Defs
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.SetTheory.Cardinal.Basic
+public import Mathlib.SetTheory.Cardinal.Order
 
 /-!
 # A constructed minimal free source for the initial real pro-2 group
@@ -39,6 +41,8 @@ import Mathlib.SetTheory.Cardinal.Order
 The finite-rank free source is an actual completion of an abstract free group.
 Its epimorphism to the arithmetic group has kernel in the Frattini subgroup.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

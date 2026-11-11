@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotients
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotients
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
 /-!
 # Transition maps between absolute finite quotients
@@ -16,6 +18,10 @@ transition on the profinite side and restriction on the Galois side.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -23,7 +29,7 @@ namespace LocalClassFieldTheory
 open LocalFieldTheory
 open RamificationTheory
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 /-- Pullback of open normal subgroups is monotone. -/
 theorem absoluteFiniteQuotientPreimage_mono

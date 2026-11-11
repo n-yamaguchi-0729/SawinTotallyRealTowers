@@ -4,19 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteCharacterEquiv
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Perfect
 
 /-!
 # Absolute Kummer characters
 
-For a field containing a primitive `n`-th root of unity, this file identifies
+For a perfect field containing a primitive `n`-th root of unity, this file identifies
 `K× / K×ⁿ` with continuous characters of the absolute Galois group.  The
 target is first the discrete group of `n`-th roots of unity and is then
 identified with the discrete multiplicative group underlying `ZMod n`.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -28,7 +33,8 @@ open KummerTheory
 
 variable (K : Type*) [Field K]
 
-private abbrev AbsoluteRadicalDatum (n : ℕ+) :=
+/-- The chosen radical datum in the algebraic closure for a positive exponent. -/
+abbrev AbsoluteRadicalDatum (n : ℕ+) :=
   chosenFiniteKummerRadicalDatum (K := K) (L := AlgebraicClosure K) n
 
 /-- Every base-field unit has an `n`-th root in the algebraic closure. -/
@@ -56,7 +62,8 @@ noncomputable def unitsEquivAbsoluteRadicalCarrier (n : ℕ+) :
     (MulEquiv.subgroupCongr
       (finiteKummerRadicalSubgroup_algebraicClosure_eq_top K n).symm)
 
-private theorem map_powerRange_unitsEquivAbsoluteRadicalCarrier (n : ℕ+) :
+/-- The unit-group power subgroup transports to the ambient powers in the radical datum. -/
+theorem map_powerRange_unitsEquivAbsoluteRadicalCarrier (n : ℕ+) :
     (powMonoidHom (n : ℕ) : Kˣ →* Kˣ).range.map
         (unitsEquivAbsoluteRadicalCarrier K n).toMonoidHom =
       (AbsoluteRadicalDatum K n).ambientNthPowersSubgroup := by
@@ -88,16 +95,20 @@ noncomputable def absolutePowerClassEquivRadicalQuotient (n : ℕ+) :
 
 /-- Absolute Kummer theory with its natural roots-of-unity target. -/
 noncomputable def absoluteKummerContinuousNthRootsCharacterEquiv
-    [CharZero K]
+    [PerfectField K]
     (n : ℕ+) (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     Kˣ ⧸ (powMonoidHom (n : ℕ) : Kˣ →* Kˣ).range ≃*
       (Field.absoluteGaloisGroup K →ₜ*
-        DiscreteNthRootsSubgroup (AlgebraicClosure K) (n : ℕ)) :=
-    (absolutePowerClassEquivRadicalQuotient K n).trans
+        DiscreteNthRootsSubgroup (AlgebraicClosure K) (n : ℕ)) := by
+  let : IsGalois K (AlgebraicClosure K) :=
+    { to_isSeparable := inferInstance
+      to_normal := inferInstance }
+  exact (absolutePowerClassEquivRadicalQuotient K n).trans
     (infiniteKummerContinuousCharacterEquivOfPrimitiveRoots
       (K := K) (Ω := AlgebraicClosure K) n hmu)
 
-private noncomputable def nthRootsSubgroupEquivMultiplicativeZMod
+/-- A primitive root identifies the roots-of-unity subgroup with the cyclic group of its order. -/
+noncomputable def nthRootsSubgroupEquivMultiplicativeZMod
     (n : ℕ+) (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     nthRootsSubgroup (AlgebraicClosure K) (n : ℕ) ≃*
       Multiplicative (ZMod (n : ℕ)) := by
@@ -128,7 +139,8 @@ noncomputable def discreteNthRootsContinuousMulEquivMultiplicativeZMod
   continuous_toFun := continuous_of_discreteTopology
   continuous_invFun := continuous_of_discreteTopology
 
-private def continuousCharacterCongrRight
+/-- Transport continuous multiplicative characters along a continuous target equivalence. -/
+def continuousCharacterCongrRight
     {G A B : Type*} [Group G] [TopologicalSpace G]
     [CommGroup A] [TopologicalSpace A] [IsTopologicalGroup A]
     [CommGroup B] [TopologicalSpace B] [IsTopologicalGroup B]
@@ -153,7 +165,7 @@ private def continuousCharacterCongrRight
 /-- Absolute Kummer theory in the mod-`n` character convention used by the
 continuous degree-one cohomology API. -/
 noncomputable def absoluteKummerContinuousZModCharacterEquiv
-    [CharZero K]
+    [PerfectField K]
     (n : ℕ+) (hmu : (primitiveRoots (n : ℕ) K).Nonempty) :
     Kˣ ⧸ (powMonoidHom (n : ℕ) : Kˣ →* Kˣ).range ≃*
       (Field.absoluteGaloisGroup K →ₜ* Multiplicative (ZMod (n : ℕ))) :=

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
 
 /-!
 # Valuation compatibility of the two finite-place completion models
@@ -14,6 +16,8 @@ import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Semil
 The comparison is an isometry; both valuation relations are exactly the norm
 comparison relation.  This supplies the certificate for actual Artin naturality.
 -/
+
+@[expose] public section
 
 noncomputable section
 namespace ClassFieldTower.Martinet.Shafarevich

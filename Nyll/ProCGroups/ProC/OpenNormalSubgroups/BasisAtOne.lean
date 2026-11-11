@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ClopenNhdofOne
+module
+
+public import Mathlib.Topology.Separation.Connected
+public import Mathlib.Topology.Separation.Regular
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 /-!
 # Open-normal neighborhood bases at the identity
@@ -12,6 +16,8 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 Every identity neighborhood in a profinite group contains an open normal subgroup. This file
 packages that refinement result for later basis, separation, and inverse-limit arguments.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.ProC
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.System
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.System
 
 /-!
 # Fox differential: coefficient rings — prime-power completed group algebra — coeff — add comm group
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `coe_add_primePowerCompletedCoeff`
   The inclusion of the prime-power completed coefficient ring preserves addition.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

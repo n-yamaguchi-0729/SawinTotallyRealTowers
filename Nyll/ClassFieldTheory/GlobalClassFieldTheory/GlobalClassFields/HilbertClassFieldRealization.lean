@@ -4,18 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Degree
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Construction
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationValue
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationCore
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Evaluation
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Evaluation
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.GlobalNormResidue
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Degree
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Construction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationValue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationCore
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.Evaluation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Evaluation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
 
 /-!
 # Actual realizations of the Hilbert class fields
@@ -33,6 +36,10 @@ the ordinary class number for the small Hilbert class field.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped NumberField
 
 noncomputable section
@@ -45,19 +52,12 @@ open LocalClassFieldTheory
 open NumberField
 open Reciprocity
 
-variable {K : Type} [Field K] [NumberField K]
-
-/-- The big-Hilbert congruence subgroup has finite index, registered at
-the realization layer where the closed finite-index construction uses it. -/
-instance bigHilbertClassFieldNormSubgroupFiniteIndex :
-    (bigHilbertClassFieldNormSubgroup (K := K)).FiniteIndex := by
-  unfold bigHilbertClassFieldNormSubgroup
-  infer_instance
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The concrete finite Galois norm neighbourhood used to realize the
 big Hilbert class field. -/
-noncomputable abbrev bigHilbertClassFieldNormAmbient (K : Type)
-    [Field K] [NumberField K] : Type :=
+noncomputable abbrev bigHilbertClassFieldNormAmbient (K : Type u)
+    [Field K] [NumberField K] : Type u :=
   closedFiniteIndexClassFieldNormAmbient
     (K := K)
     (bigHilbertClassFieldNormSubgroup (K := K))
@@ -65,8 +65,8 @@ noncomputable abbrev bigHilbertClassFieldNormAmbient (K : Type)
 
 /-- The concrete finite Galois norm neighbourhood used to realize the
 small Hilbert class field. -/
-noncomputable abbrev smallHilbertClassFieldNormAmbient (K : Type)
-    [Field K] [NumberField K] : Type :=
+noncomputable abbrev smallHilbertClassFieldNormAmbient (K : Type u)
+    [Field K] [NumberField K] : Type u :=
   closedFiniteIndexClassFieldNormAmbient
     (K := K)
     (smallHilbertClassFieldNormSubgroup (K := K))
@@ -74,7 +74,7 @@ noncomputable abbrev smallHilbertClassFieldNormAmbient (K : Type)
 
 /-- The compatible abstract base subgroup for the actual big Hilbert
 class-field realization. -/
-noncomputable abbrev bigHilbertClassFieldBaseSubgroup (K : Type)
+noncomputable abbrev bigHilbertClassFieldBaseSubgroup (K : Type u)
     [Field K] [NumberField K] :=
   closedFiniteIndexClassFieldBaseSubgroup
     (K := K) (bigHilbertClassFieldNormSubgroup (K := K))
@@ -83,7 +83,7 @@ noncomputable abbrev bigHilbertClassFieldBaseSubgroup (K : Type)
 /-- The finite abelian subextension selected by the big-Hilbert norm
 subgroup.  This is the actual class-field witness, rather than merely an
 existence proposition. -/
-noncomputable abbrev bigHilbertClassFieldSubextension (K : Type)
+noncomputable abbrev bigHilbertClassFieldSubextension (K : Type u)
     [Field K] [NumberField K] :
     FiniteAbelianSubextension
       (bigHilbertClassFieldBaseSubgroup K) :=
@@ -93,7 +93,7 @@ noncomputable abbrev bigHilbertClassFieldSubextension (K : Type)
 
 /-- The compatible actual copy of the original number field occurring
 as the base fixed field in the big-Hilbert realization. -/
-noncomputable abbrev bigHilbertClassFieldBase (K : Type)
+noncomputable abbrev bigHilbertClassFieldBase (K : Type u)
     [Field K] [NumberField K] : Type :=
   closedFiniteIndexClassFieldBase
     (K := K) (bigHilbertClassFieldNormSubgroup (K := K))
@@ -101,7 +101,7 @@ noncomputable abbrev bigHilbertClassFieldBase (K : Type)
 
 /-- The actual big Hilbert class field selected inside the rational
 separable closure. -/
-noncomputable abbrev bigHilbertClassField (K : Type)
+noncomputable abbrev bigHilbertClassField (K : Type u)
     [Field K] [NumberField K] : Type :=
   closedFiniteIndexClassField
     (K := K) (bigHilbertClassFieldNormSubgroup (K := K))
@@ -205,7 +205,7 @@ theorem bigHilbertClassField_finrank_eq_narrowClassGroup_card :
 
 /-- The compatible abstract base subgroup for the actual small Hilbert
 class-field realization. -/
-noncomputable abbrev smallHilbertClassFieldBaseSubgroup (K : Type)
+noncomputable abbrev smallHilbertClassFieldBaseSubgroup (K : Type u)
     [Field K] [NumberField K] :=
   closedFiniteIndexClassFieldBaseSubgroup
     (K := K) (smallHilbertClassFieldNormSubgroup (K := K))
@@ -213,7 +213,7 @@ noncomputable abbrev smallHilbertClassFieldBaseSubgroup (K : Type)
 
 /-- The finite abelian subextension selected by the small-Hilbert norm
 subgroup.  This named witness is the input used by principalization. -/
-noncomputable abbrev smallHilbertClassFieldSubextension (K : Type)
+noncomputable abbrev smallHilbertClassFieldSubextension (K : Type u)
     [Field K] [NumberField K] :
     FiniteAbelianSubextension
       (smallHilbertClassFieldBaseSubgroup K) :=
@@ -223,7 +223,7 @@ noncomputable abbrev smallHilbertClassFieldSubextension (K : Type)
 
 /-- The compatible actual copy of the original number field occurring
 as the base fixed field in the small-Hilbert realization. -/
-noncomputable abbrev smallHilbertClassFieldBase (K : Type)
+noncomputable abbrev smallHilbertClassFieldBase (K : Type u)
     [Field K] [NumberField K] : Type :=
   closedFiniteIndexClassFieldBase
     (K := K) (smallHilbertClassFieldNormSubgroup (K := K))
@@ -231,7 +231,7 @@ noncomputable abbrev smallHilbertClassFieldBase (K : Type)
 
 /-- The actual small Hilbert class field selected inside the rational
 separable closure. -/
-noncomputable abbrev smallHilbertClassField (K : Type)
+noncomputable abbrev smallHilbertClassField (K : Type u)
     [Field K] [NumberField K] : Type :=
   closedFiniteIndexClassField
     (K := K) (smallHilbertClassFieldNormSubgroup (K := K))

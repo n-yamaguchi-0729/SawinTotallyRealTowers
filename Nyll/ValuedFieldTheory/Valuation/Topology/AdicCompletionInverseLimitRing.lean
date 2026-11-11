@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
-import Nyll.ValuedFieldTheory.Valuation.Topology.CompatibleInverseLimit
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
-import Nyll.ValuedFieldTheory.Valuation.Topology.Models
-import Mathlib.Algebra.Ring.TransferInstance
-import Mathlib.Topology.Homeomorph.TransferInstance
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
+public import Nyll.ValuedFieldTheory.Valuation.Topology.CompatibleInverseLimit
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
+public import Mathlib.Algebra.Ring.TransferInstance
+public import Mathlib.Topology.Homeomorph.TransferInstance
 
 /-!
 # Adic completion and inverse limits
@@ -20,6 +22,8 @@ groups.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -259,7 +263,8 @@ noncomputable instance adicQuotientInverseLimit.instTopologicalSpace
   letI : (n : ℕ) → TopologicalSpace (R ⧸ I ^ n) := fun _ => ⊥
   exact (adicQuotientInverseLimitCompatibleFamiliesEquiv I).topologicalSpace
 
-private noncomputable def adicQuotientInverseLimitRepresentationHomeomorph
+/-- The all-level adic inverse limit is homeomorphic to its compatible quotient families. -/
+noncomputable def adicQuotientInverseLimitRepresentationHomeomorph
     {R : Type*} [CommRing R] (I : Ideal R) :
     letI : (n : ℕ) → TopologicalSpace (R ⧸ I ^ n) := fun _ => ⊥
     adicQuotientInverseLimit I ≃ₜ
@@ -466,7 +471,7 @@ theorem adicQuotientInverseLimitEquiv_apply
 
 /-- Reduction modulo `I^n` is continuous from the `I`-adic topology to the
 discrete finite quotient topology. -/
-private theorem quotient_mk_continuous_adic_raw
+theorem quotient_mk_continuous_adic_raw
     {R : Type*} [CommRing R] (I : Ideal R) (n : ℕ) :
     @Continuous R (R ⧸ I ^ n) I.adicTopology
       (⊥ : TopologicalSpace (R ⧸ I ^ n))
@@ -513,7 +518,8 @@ theorem quotient_mk_continuous_adic
   convert hmodel using 1
   rfl
 
-private noncomputable def adicQuotientCompatibleFamiliesHomeomorph
+/-- An adically complete ring is homeomorphic to its compatible quotient families. -/
+noncomputable def adicQuotientCompatibleFamiliesHomeomorph
     {R : Type*} [CommRing R] (I : Ideal R) [IsAdicComplete I R] :
     letI : TopologicalSpace R := I.adicTopology
     letI : (n : ℕ) → TopologicalSpace (R ⧸ I ^ n) := fun _ => ⊥
@@ -568,13 +574,13 @@ private noncomputable def adicQuotientCompatibleFamiliesHomeomorph
           Ideal.Quotient.mk (I ^ n) (e.symm q') = (e (e.symm q')).1 n :=
             (adicQuotientInverseLimitEquiv_apply I (e.symm q') n).symm
           _ = q'.1 n := by
-            simp [e.apply_symm_apply q']
+            rw [e.apply_symm_apply]
       have hred : Ideal.Quotient.mk (I ^ n) (e.symm q) = q.1 n := by
         calc
           Ideal.Quotient.mk (I ^ n) (e.symm q) = (e (e.symm q)).1 n :=
             (adicQuotientInverseLimitEquiv_apply I (e.symm q) n).symm
           _ = q.1 n := by
-            simp [e.apply_symm_apply q]
+            rw [e.apply_symm_apply]
       have hmk : Ideal.Quotient.mk (I ^ n) (e.symm q') =
           Ideal.Quotient.mk (I ^ n) (e.symm q) := by
         rw [hred', hred, hq']
@@ -695,8 +701,8 @@ noncomputable instance adicPositiveQuotientInverseLimit.instTopologicalSpace
   exact
     (adicPositiveQuotientInverseLimitCompatibleFamiliesEquiv I).topologicalSpace
 
-private noncomputable def
-    adicPositiveQuotientInverseLimitRepresentationHomeomorph
+/-- The positive-level adic inverse limit is homeomorphic to its compatible quotient families. -/
+noncomputable def adicPositiveQuotientInverseLimitRepresentationHomeomorph
     {R : Type*} [CommRing R] (I : Ideal R) :
     letI : (n : ℕ) → TopologicalSpace (R ⧸ I ^ (n + 1)) := fun _ => ⊥
     adicPositiveQuotientInverseLimit I ≃ₜ
@@ -841,7 +847,8 @@ theorem adicPositiveQuotientInverseLimitEquiv_apply
       Ideal.Quotient.mk (I ^ (n + 1)) x :=
   adicQuotientInverseLimitEquiv_apply I x (n + 1)
 
-private noncomputable def adicPositiveQuotientCompatibleFamiliesHomeomorph
+/-- An adically complete ring is homeomorphic to its positive-level quotient families. -/
+noncomputable def adicPositiveQuotientCompatibleFamiliesHomeomorph
     {R : Type*} [CommRing R] (I : Ideal R) [IsAdicComplete I R] :
     letI : TopologicalSpace R := I.adicTopology
     letI : (n : ℕ) → TopologicalSpace (R ⧸ I ^ (n + 1)) := fun _ => ⊥
@@ -875,7 +882,7 @@ private noncomputable def adicPositiveQuotientCompatibleFamiliesHomeomorph
     calc
       Ideal.Quotient.mk (I ^ (n + 1)) (e.symm q) = (e (e.symm q)).1 n :=
         (adicPositiveQuotientInverseLimitEquiv_apply I (e.symm q) n).symm
-      _ = q.1 n := by simp [e.apply_symm_apply q]
+      _ = q.1 n := by rw [e.apply_symm_apply]
   · change Continuous fun x : R => c x
     exact Continuous.subtype_mk
       (continuous_pi fun n => by
@@ -915,13 +922,13 @@ private noncomputable def adicPositiveQuotientCompatibleFamiliesHomeomorph
           Ideal.Quotient.mk (I ^ (n + 1)) (e.symm q') = (e (e.symm q')).1 n :=
             (adicPositiveQuotientInverseLimitEquiv_apply
               I (e.symm q') n).symm
-          _ = q'.1 n := by simp [e.apply_symm_apply q']
+          _ = q'.1 n := by rw [e.apply_symm_apply]
       have hred : Ideal.Quotient.mk (I ^ (n + 1)) (e.symm q) = q.1 n := by
         calc
           Ideal.Quotient.mk (I ^ (n + 1)) (e.symm q) = (e (e.symm q)).1 n :=
             (adicPositiveQuotientInverseLimitEquiv_apply
               I (e.symm q) n).symm
-          _ = q.1 n := by simp [e.apply_symm_apply q]
+          _ = q.1 n := by rw [e.apply_symm_apply]
       have hmk : Ideal.Quotient.mk (I ^ (n + 1)) (e.symm q') =
           Ideal.Quotient.mk (I ^ (n + 1)) (e.symm q) := by
         rw [hred', hred, hq']

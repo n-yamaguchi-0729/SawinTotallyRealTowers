@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
-import Mathlib.RingTheory.DedekindDomain.IntegralClosure
-import Mathlib.RingTheory.Valuation.LocalSubring
-import Mathlib.RingTheory.Valuation.Integral
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
+public import Mathlib.RingTheory.DedekindDomain.IntegralClosure
+public import Mathlib.RingTheory.Valuation.LocalSubring
+public import Mathlib.RingTheory.Valuation.Integral
 
 /-!
 # Chevalley's valuation extension theorem
@@ -17,6 +19,8 @@ subring/residue-field API.  This file proves the field-extension form of
 Chevalley's valuation extension theorem from mathlib's maximal local subring
 construction: a local subring of a field is dominated by a valuation subring.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -56,7 +60,8 @@ theorem mem_base_valuationSubring_of_lift_mem
   rcases A.mem_or_inv_mem x with hxA | hxinvA
   · exact hxA
   · by_cases hx0 : x = 0
-    · simp [hx0]
+    · rw [hx0]
+      exact zero_mem _
     let y : A := ⟨x⁻¹, hxinvA⟩
     let f : A →+* B.toSubring :=
       (algebraMap A L).codRestrict B.toSubring hB
@@ -286,13 +291,10 @@ theorem integralClosureValuationSubringOfMemOrInv_isIntegralClosure
         z ∈ (integralClosure vK.valuationSubring L).toSubring ∨
           z⁻¹ ∈ (integralClosure vK.valuationSubring L).toSubring) :
     let B := integralClosureValuationSubringOfMemOrInv (L := L) vK hval
-    letI : vK.HasExtension B.valuation :=
+    let : vK.HasExtension B.valuation :=
       integralClosureValuationSubringOfMemOrInv_hasExtension (L := L) vK hval
     IsIntegralClosure B vK.valuationSubring L := by
-  let B := integralClosureValuationSubringOfMemOrInv (L := L) vK hval
-  let : vK.HasExtension B.valuation :=
-    integralClosureValuationSubringOfMemOrInv_hasExtension (L := L) vK hval
-  change IsIntegralClosure B vK.valuationSubring L
+  intro B sharedOwner2
   refine
     { algebraMap_injective := Subtype.coe_injective
       isIntegral_iff := ?_ }
@@ -863,12 +865,10 @@ theorem moduleFinite_integralClosureValuationSubringOfMemOrInv
     [FiniteDimensional K L] [Algebra.IsSeparable K L]
     [IsNoetherianRing vK.valuationSubring] :
     let B := integralClosureValuationSubringOfMemOrInv (L := L) vK hval
-    letI : vK.HasExtension B.valuation :=
+    let : vK.HasExtension B.valuation :=
       integralClosureValuationSubringOfMemOrInv_hasExtension (L := L) vK hval
     Module.Finite vK.valuationSubring B.valuation.valuationSubring := by
-  let B := integralClosureValuationSubringOfMemOrInv (L := L) vK hval
-  let : vK.HasExtension B.valuation :=
-    integralClosureValuationSubringOfMemOrInv_hasExtension (L := L) vK hval
+  intro B sharedOwner2
   let : IsIntegralClosure B.valuation.valuationSubring vK.valuationSubring L := by
     rw [ValuationSubring.valuationSubring_valuation B]
     exact integralClosureValuationSubringOfMemOrInv_isIntegralClosure
@@ -1279,10 +1279,10 @@ theorem valuationSubring_liesOver_tower_of_hasExtension
     (vL : _root_.Valuation L ΓL)
     (vM : _root_.Valuation M ΓM)
     [vK.HasExtension vL] [vL.HasExtension vM] :
-    letI : vK.HasExtension vM := hasExtension_trans vK vL vM
+    let : vK.HasExtension vM := hasExtension_trans vK vL vM
     (IsLocalRing.maximalIdeal vM.valuationSubring).LiesOver
       (IsLocalRing.maximalIdeal vK.valuationSubring) := by
-  let : vK.HasExtension vM := hasExtension_trans vK vL vM
+  intro sharedOwner1
   exact valuationSubring_liesOver_of_hasExtension vK vM
 
 /-- The valuation-ring algebra maps in a tower agree with the direct

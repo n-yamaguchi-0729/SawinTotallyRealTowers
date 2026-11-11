@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.NormRestriction
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.NormRestriction
 
 /-!
 # Semilinear naturality of finite local reciprocity
@@ -17,9 +19,13 @@ vertical extension and applies the genuine norm--restriction theorem.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
+
+universe u v w x
 
 open LocalFieldTheory
 open scoped ValuativeRel
@@ -29,7 +35,7 @@ transported `Algebra` structure behind this opaque predicate prevents every
 consumer of semilinear Artin naturality from storing a dependent `letI` in
 its public theorem type. -/
 def SemilinearValuationCompatible
-    (K K' : Type)
+    (K : Type u) (K' : Type v)
     [Field K] [ValuativeRel K]
     [Field K'] [ValuativeRel K']
     (eK : K ≃+* K') : Prop :=
@@ -41,7 +47,7 @@ def SemilinearValuationCompatible
 specified base-field equivalence.  Its generic head is cheap to expose in
 public APIs even when the concrete algebra towers are large. -/
 structure SemilinearBaseCompatible
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [Field K'] [Field L] [Field L']
     [Algebra K L] [Algebra K' L']
     (eK : K ≃+* K') (eL : L ≃+* L') : Prop where
@@ -54,7 +60,7 @@ structure SemilinearBaseCompatible
 base and extension fields.  Compatibility is semilinear: `eL` restricts to
 `eK` on the base field. -/
 noncomputable def semilinearGaloisGroupCongr
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [Field K'] [Field L] [Field L']
     [Algebra K L] [Algebra K' L']
     (eK : K ≃+* K') (eL : L ≃+* L')
@@ -109,7 +115,7 @@ noncomputable def semilinearGaloisGroupCongr
 field equivalence. -/
 @[simp]
 theorem semilinearGaloisGroupCongr_apply_equiv
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [Field K'] [Field L] [Field L']
     [Algebra K L] [Algebra K' L']
     (eK : K ≃+* K') (eL : L ≃+* L')
@@ -125,7 +131,7 @@ theorem semilinearGaloisGroupCongr_apply_equiv
 /-- Evaluate certified semilinear conjugation on an element of the extension
 field. -/
 theorem SemilinearBaseCompatible.conjugation_apply
-    {K K' L L' : Type}
+    {K : Type u} {K' : Type v} {L : Type w} {L' : Type x}
     [Field K] [Field K'] [Field L] [Field L']
     [Algebra K L] [Algebra K' L']
     {eK : K ≃+* K'} {eL : L ≃+* L'}
@@ -207,7 +213,10 @@ theorem abelianLocalArtinMonoidHom_semilinear_conjugation
           AlgEquiv.restrictNormal_commutes
             ((AlgEquiv.restrictScalarsHom K) τ) L x
       _ = eL (conjugation.symm τ x) := by
-        simp [conjugation, semilinearGaloisGroupCongr]
+        exact (congrArg (fun σ : Gal(L' / K') => σ (eL x))
+          (conjugation.apply_symm_apply τ)).symm.trans
+          (semilinearGaloisGroupCongr_apply_equiv
+            K K' L L' eK eL hcomm (conjugation.symm τ) x)
   have hnorm (a : Kˣ) :
       normUnits K K' (Units.map eK.toMonoidHom a) = a := by
     apply Units.ext

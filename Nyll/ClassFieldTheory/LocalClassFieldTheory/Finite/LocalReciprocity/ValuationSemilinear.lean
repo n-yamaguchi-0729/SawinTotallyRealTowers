@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
 
 /-!
 # The selected separable valuation under a semilinear equivalence
@@ -14,16 +16,20 @@ Henselian uniqueness then identifies the selected valuation rings on the
 separable closures; no equality of the extension valuations is assumed.
 -/
 
+@[expose] public section
+
 noncomputable section
 
 namespace ClassFieldTower.Martinet.Shafarevich
 
 open LocalClassFieldTheory LocalFieldTheory
 
+universe u v
+
 /-- Valuation-compatible base and closure equivalences preserve the selected
 valuation subrings used to define local residue degree. -/
 theorem localSeparableValuationSubring_comap_semilinear
-    (K K' : Type)
+    (K : Type u) (K' : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field K'] [ValuativeRel K'] [TopologicalSpace K'] [IsNonarchimedeanLocalField K']
     (c : K ≃+* K') (e : SeparableClosure K ≃+* SeparableClosure K')

@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.Rows
+module
+
+public import Nyll.ProCGroups.ProP.Fox.Rows
+public import Nyll.ProCGroups.Presentations.Profinite
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
 
 /-!
 # Closed generation of completed kernel Fox rows
@@ -14,6 +18,8 @@ displayed-row span into a closed normal subgroup.  Since the displayed
 relators closed-normally generate the kernel, every kernel row lies in their
 closed coefficient span.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

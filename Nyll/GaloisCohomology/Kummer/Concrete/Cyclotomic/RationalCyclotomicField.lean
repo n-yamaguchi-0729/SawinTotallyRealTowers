@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.Tower
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.NumberTheory.Cyclotomic.Basic
-import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
+module
+
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.NumberTheory.Cyclotomic.Basic
+public import Mathlib.NumberTheory.NumberField.Cyclotomic.Galois
 
 /-!
 # The rational cyclotomic closure
@@ -24,6 +26,8 @@ the rational cyclotomic calculation.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

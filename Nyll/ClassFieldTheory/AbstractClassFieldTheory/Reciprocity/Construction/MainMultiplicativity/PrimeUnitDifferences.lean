@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
 
 /-!
 # Finite-stage unit differences of Frobenius primes
@@ -15,7 +17,9 @@ differences from quotient-action translates, come from finite-stage units.
 
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -26,7 +30,7 @@ noncomputable section
 
 open CategoryTheory
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -34,7 +38,7 @@ namespace DegreeData
 finite-stage unit after inclusion in `A_{\widetilde L}`. The common stage is
 their finite compositum, which is unramified over both fixed fields. -/
 theorem frobeniusPrimeDifference_mem_infiniteUnitAddSubgroup
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -152,7 +156,7 @@ of it is a finite-stage unit.  A finite Galois refinement of the prime's
 fixed field supplies a stage stable under the chosen quotient
 representative. -/
 theorem frobeniusPrime_actionDifference_mem_infiniteUnitAddSubgroup
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)

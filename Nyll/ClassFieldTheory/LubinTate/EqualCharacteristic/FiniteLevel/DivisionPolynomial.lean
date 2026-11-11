@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.AmbientDivisionTorsion
-import Mathlib.FieldTheory.IsSepClosed
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.AmbientDivisionTorsion
+public import Mathlib.FieldTheory.IsSepClosed
 
 /-!
 # The uniformizer norm identity: equal-characteristic Lubin--Tate division polynomials
@@ -23,6 +25,8 @@ primitive root in the separable closure.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped PowerSeries LaurentSeries Polynomial
@@ -36,7 +40,8 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-private instance equalCharacteristicDivisionBaseCharP
+/-- The Laurent-series division field has the positive residue characteristic. -/
+instance equalCharacteristicDivisionBaseCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] :
     CharP F.residueField⸨X⸩ F.residueCharacteristic :=
@@ -44,7 +49,8 @@ private instance equalCharacteristicDivisionBaseCharP
     (algebraMap F.residueField F.residueField⸨X⸩).injective
     F.residueCharacteristic
 
-private instance equalCharacteristicDivisionClosureCharP
+/-- The chosen separable closure of the division field has the same characteristic. -/
+instance equalCharacteristicDivisionClosureCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] :
     CharP (SeparableClosure F.residueField⸨X⸩)
@@ -242,7 +248,7 @@ theorem equalCharacteristicLubinTatePiPolynomialIterate_derivative
       rw [equalCharacteristicLubinTatePiPolynomialIterate_succ,
         Polynomial.derivative_comp, ih,
         equalCharacteristicLubinTatePiPolynomial_derivative]
-      simp [pow_succ]
+      simp only [Polynomial.C_comp, pow_succ, map_mul]
 
 /-- Every iterated division polynomial is separable. -/
 theorem equalCharacteristicLubinTatePiPolynomialIterate_separable

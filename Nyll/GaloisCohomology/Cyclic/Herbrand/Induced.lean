@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
-import Nyll.ProCGroups.InducedFunctions
-import Mathlib.Logic.Equiv.Fin.Rotate
+module
+
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Group.Defs
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
+public import Nyll.ProCGroups.InducedFunctions
+public import Mathlib.Logic.Equiv.Fin.Rotate
 
 /-!
 # Multiplicative induced modules
@@ -22,6 +26,8 @@ used for the products of the local multiplicative groups above a place.
 The basic equivariant-function model is supplied by `ProCGroups.InducedFunctions`;
 this module adds the cyclic-coordinate and Herbrand calculations.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -70,7 +76,7 @@ theorem prod_twistedFinRotate_div
     intro j hj
     have hj0 : j ≠ 0 :=
       Finset.ne_of_mem_erase hj
-    simp [hj0]
+    exact ite_eq_right hj0
   have hv :
       (∏ j : Fin n, v j) = v 0 * R := by
     rw [← Finset.mul_prod_erase Finset.univ v
@@ -113,15 +119,14 @@ theorem finPartialProduct_zero
     {C : Type*} [CommMonoid C] {n : ℕ}
     (v : Fin n → C) :
     finPartialProduct v 0 = 1 := by
-  simp [finPartialProduct]
+  exact Finset.prod_range_zero _
 
 theorem finPartialProduct_succ
     {C : Type*} [CommMonoid C] {n : ℕ}
     (v : Fin n → C) (i : Fin n) :
     finPartialProduct v (i.1 + 1) =
       finPartialProduct v i.1 * v i := by
-  simp [finPartialProduct,
-    Finset.prod_range_succ, i.2]
+  simp only [finPartialProduct, Finset.prod_range_succ, dite_eq_left i.2]
 
 theorem finPartialProduct_full
     {C : Type*} [CommMonoid C] {n : ℕ}
@@ -432,7 +437,8 @@ noncomputable def inducedCoordinates (σ : G)
     let e := cyclicCosetEquiv H σ hgen
     have hsymm : e.symm (σ ^ i.1) = (1, i) := by
       apply e.injective
-      simp [e]
+      exact (e.apply_symm_apply _).trans
+        ((cyclicCosetEquiv_apply H σ hgen 1 i).trans (one_mul _)).symm
     change
       (e.symm (σ ^ i.1)).1 •
           v (e.symm (σ ^ i.1)).2 = v i
@@ -532,7 +538,7 @@ theorem inducedCoordinateProduct_section (σ : G)
       intro hi
       apply hne
       exact Fin.ext hi
-    simp [inducedFirstCoordinateHom, hi0]
+    exact ite_eq_right hi0
   · intro hnot
     exact (hnot (Finset.mem_univ i0)).elim
 
@@ -839,7 +845,7 @@ theorem inducedCoordinateProduct_eq_one_mem_augmentation
       finPartialProduct v (i.1 + 1) *
           (finPartialProduct v i.1)⁻¹ = v i
     rw [finPartialProduct_succ v i]
-    simp [mul_assoc]
+    exact mul_inv_cancel_comm _ _
   · have hle : i.1 + 1 ≤ H.index :=
       Nat.succ_le_iff.mpr i.2
     have heq : i.1 + 1 = H.index :=
@@ -1016,7 +1022,7 @@ theorem inducedSection_mem_augmentation (σ : G)
     (augmentationSubgroup G
       (InducedModule (B := B) H) σ).mul_mem
         hd ha₂
-  have heq : d * a₂ = a₁ := by simp [d]
+  have heq : d * a₂ = a₁ := inv_mul_cancel_right a₁ a₂
   rw [heq] at hmul
   exact hmul
 
@@ -1161,10 +1167,10 @@ group. -/
 noncomputable def inducedHerbrandH0EquivOfFiniteCyclic
     (σ : G)
     (hgen : ∀ x : G, x ∈ Subgroup.zpowers σ) :
-    letI : Fintype H := Fintype.ofFinite H
+    let : Fintype H := Fintype.ofFinite H
     HerbrandH0 G (InducedModule (B := B) H) ≃*
       HerbrandH0 H B := by
-  letI : Fintype H := Fintype.ofFinite H
+  intro sharedOwner1
   letI : IsCyclic G := ⟨⟨σ, hgen⟩⟩
   letI : CommGroup G := IsCyclic.commGroup
   exact inducedHerbrandH0Equiv H σ hgen
@@ -1174,12 +1180,12 @@ group. -/
 noncomputable def inducedHerbrandHMinusOneEquivOfFiniteCyclic
     (σ : G)
     (hgen : ∀ x : G, x ∈ Subgroup.zpowers σ) :
-    letI : Fintype H := Fintype.ofFinite H
+    let : Fintype H := Fintype.ofFinite H
     HerbrandHMinusOne G
         (InducedModule (B := B) H) σ ≃*
       HerbrandHMinusOne H B
         (subgroupGeneratorOfGenerator H σ hgen) := by
-  letI : Fintype H := Fintype.ofFinite H
+  intro sharedOwner1
   letI : IsCyclic G := ⟨⟨σ, hgen⟩⟩
   letI : CommGroup G := IsCyclic.commGroup
   have hτ :

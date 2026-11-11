@@ -4,19 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
-import Mathlib.Algebra.BigOperators.Pi
-import Mathlib.Algebra.Group.Hom.Defs
-import Mathlib.Algebra.Group.Prod
-import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
-import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Mathlib.Algebra.BigOperators.Pi
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.Group.Prod
+public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+public import Mathlib.Topology.Algebra.Group.Units
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Real-sign-trivial quadratic idele characters
@@ -27,6 +30,8 @@ idele. Finite integral-unit triviality then kills integral ideles and the
 principal ideles of the ideal-square radical, by the actual ideal map.
 -/
 
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField BigOperators

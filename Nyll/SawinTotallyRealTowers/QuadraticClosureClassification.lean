@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticClosure
-import Nyll.SawinTotallyRealTowers.QuadraticSupportedGenerator
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
-import Mathlib.Algebra.Ring.Commute
-import Mathlib.Algebra.Algebra.Rat
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticClosure
+public import Nyll.SawinTotallyRealTowers.QuadraticSupportedGenerator
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
+public import Mathlib.Algebra.Ring.Commute
+public import Mathlib.Algebra.Algebra.Rat
 
 /-!
 # Identifying quadratic subfields from their generators
@@ -17,6 +19,8 @@ A root of the same quadratic equation generates the same subfield of the
 fixed algebraic closure. This identifies arbitrary quadratic layers with
 the concrete constructors and makes squarefree radicands unique.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Data.ZMod.QuotientGroup
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Data.ZMod.QuotientGroup
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Valuation
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.ClassFormation.ValueGroupCohomology` Lean module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -33,11 +37,11 @@ variable (K L : Type u) [Field K] [Field L] [Algebra K L]
 /-- On the trivially acted-on value group, the finite-group norm is
 multiplication by the order of the Galois group. -/
 theorem galoisGroupValueGroup_tateNorm_toAdd (a : Multiplicative Int) :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     Multiplicative.toAdd
         (tateNorm (Gal(L / K)) (Multiplicative Int) a) =
       (Fintype.card (Gal(L / K)) : Int) * Multiplicative.toAdd a := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   have hnorm : tateNorm (Gal(L / K)) (Multiplicative Int) a =
       a ^ Fintype.card (Gal(L / K)) := by
     simp only [tateNorm, galoisGroupValueGroupMulDistribMulAction_smul,
@@ -58,10 +62,9 @@ def galoisGroupValueGroupFixedToZModHom :
 
 /-- States the theorem `galoisGroupValueGroupFixedToZModHom_surjective`. -/
 theorem galoisGroupValueGroupFixedToZModHom_surjective :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     Function.Surjective (galoisGroupValueGroupFixedToZModHom K L) := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
-  intro y
+  intro sharedOwner1 y
   rcases ZMod.intCast_surjective (Multiplicative.toAdd y) with ⟨z, hz⟩
   let x : fixedSubgroup (Gal(L / K)) (Multiplicative Int) :=
     ⟨Multiplicative.ofAdd z, by intro σ; rfl⟩
@@ -74,11 +77,11 @@ theorem galoisGroupValueGroupFixedToZModHom_surjective :
 /-- The kernel of reduction modulo `|G|` is exactly the norm subgroup inside
 the fixed subgroup. -/
 theorem galoisGroupValueGroupFixedToZModHom_ker :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     MonoidHom.ker (galoisGroupValueGroupFixedToZModHom K L) =
       (tateNormSubgroup (Gal(L / K)) (Multiplicative Int)).subgroupOf
         (fixedSubgroup (Gal(L / K)) (Multiplicative Int)) := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   ext x
   rw [MonoidHom.mem_ker]
   constructor
@@ -114,10 +117,10 @@ theorem galoisGroupValueGroupFixedToZModHom_ker :
 
 /-- The actual custom Tate `H⁰` of the trivial value group is `Z/|G|Z`. -/
 noncomputable def galoisGroupValueGroupHerbrandH0MulEquivZMod :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     HerbrandH0 (Gal(L / K)) (Multiplicative Int) ≃*
       Multiplicative (ZMod (Fintype.card (Gal(L / K)))) := by
-  letI := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   exact
     (HerbrandH0.equiv
       (G := Gal(L / K)) (A := Multiplicative Int)).trans
@@ -130,20 +133,20 @@ noncomputable def galoisGroupValueGroupHerbrandH0MulEquivZMod :
 /-- Finiteness of value-group `H⁰`, derived from its explicit cyclic
 description rather than assumed as an extra hypothesis. -/
 theorem galoisGroupValueGroupHerbrandH0Finite :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     Finite (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   exact Finite.of_equiv
     (Multiplicative (ZMod (Fintype.card (Gal(L / K)))))
     (galoisGroupValueGroupHerbrandH0MulEquivZMod K L).symm.toEquiv
 
 /-- Value-group factor for the local class-field axiom: `#H⁰(G,ℤ)=|G|`. -/
 theorem galoisGroupValueGroup_herbrandH0_card :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     letI := galoisGroupValueGroupHerbrandH0Finite K L
     Nat.card (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) =
       Fintype.card (Gal(L / K)) := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   rw [Nat.card_congr (galoisGroupValueGroupHerbrandH0MulEquivZMod K L).toEquiv,
     Nat.card_congr
       (Multiplicative.toAdd :
@@ -154,19 +157,19 @@ theorem galoisGroupValueGroup_herbrandH0_card :
 /-- For a finite Galois extension, the value-group factor is the extension
 degree appearing in the local class-field-axiom theorem. -/
 theorem galoisGroupValueGroup_herbrandH0_card_eq_finrank [IsGalois K L] :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     letI := galoisGroupValueGroupHerbrandH0Finite K L
     Nat.card (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) =
       Module.finrank K L := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   rw [galoisGroupValueGroup_herbrandH0_card K L]
   exact Fintype.card_eq_nat_card.trans (IsGalois.card_aut_eq_finrank K L)
 
 /-- The norm kernel of the trivial torsion-free value group is zero. -/
 theorem galoisGroupValueGroup_normKernelSubgroup_eq_bot :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     normKernelSubgroup (Gal(L / K)) (Multiplicative Int) = ⊥ := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   apply le_antisymm
   · intro x hx
     rw [Subgroup.mem_bot]
@@ -185,10 +188,10 @@ theorem galoisGroupValueGroup_normKernelSubgroup_eq_bot :
 norm kernel. -/
 theorem galoisGroupValueGroupHerbrandHMinusOneFinite
     (σ : Gal(L/K)) :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     Finite
       (HerbrandHMinusOne (Gal(L / K)) (Multiplicative Int) σ) := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   have : Subsingleton
       (normKernelSubgroup (Gal(L / K)) (Multiplicative Int)) := by
     rw [galoisGroupValueGroup_normKernelSubgroup_eq_bot K L]
@@ -210,11 +213,11 @@ theorem galoisGroupValueGroupHerbrandHMinusOneFinite
 /-- Value-group factor for the local class-field axiom: `H⁻¹(G,ℤ)` is trivial. -/
 theorem galoisGroupValueGroup_herbrandHMinusOne_card_eq_one
     (σ : Gal(L/K)) :
-    letI := galoisGroupValueGroupMulDistribMulAction K L
+    let := galoisGroupValueGroupMulDistribMulAction K L
     letI := galoisGroupValueGroupHerbrandHMinusOneFinite K L σ
     Nat.card
       (HerbrandHMinusOne (Gal(L / K)) (Multiplicative Int) σ) = 1 := by
-  let := galoisGroupValueGroupMulDistribMulAction K L
+  intro sharedOwner1
   have : Subsingleton
       (normKernelSubgroup (Gal(L / K)) (Multiplicative Int)) := by
     rw [galoisGroupValueGroup_normKernelSubgroup_eq_bot K L]

@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Monogeneity
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Monogeneity
+public import Nyll.ValuedFieldTheory.Valuation.HenselLemma
 
 /-!
 # First ramification-quotient homomorphism over general DVFs
@@ -17,6 +20,8 @@ ramified extensions.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -311,7 +316,7 @@ theorem dvfUniformizerQuotientUnit_mul_eq
             target.valuationSubringˣ) : target.valuationSubring) * pi := by
       rw [dvfUniformizerQuotientUnit_mul_uniformizer
         (base := base) (target := target) huniq pi hpi sigma]
-      simp [mul_assoc]
+      exact (mul_assoc _ _ _).symm
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Quotient-unit membership is equivalent to one-deeper displacement of the

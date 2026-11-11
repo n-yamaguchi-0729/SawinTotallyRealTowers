@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Group.Quotient
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+module
+
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 
 /-!
 # Continuous maps between group quotients
@@ -14,6 +17,8 @@ This file develops algebraic and continuous equivalences induced by surjective h
 lifts and maps between quotient groups, congruences between quotients, and restrictions to
 preimages of subgroups.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -44,7 +49,7 @@ theorem comap_eq_of_map_eq_of_ker_le
 Under the kernel condition, the induced quotient map has trivial kernel for the corresponding
 representative-level map.
 -/
-private theorem map_ker_eq_bot_of_map_eq_of_ker_le
+theorem map_ker_eq_bot_of_map_eq_of_ker_le
     (f : G →* H) {N : Subgroup G} {M : Subgroup H} [N.Normal] [M.Normal]
     (hNM : N ≤ M.comap f) (hmap : N.map f = M) (hker : f.ker ≤ N) :
     (QuotientGroup.map (N := N) (M := M) (f := f) hNM).ker = ⊥ := by
@@ -102,6 +107,42 @@ section Topology
 variable {G : Type u} {H : Type v}
 variable [Group G] [TopologicalSpace G]
 variable [Group H] [TopologicalSpace H]
+
+/-- A homomorphism out of an open normal quotient gives a continuous map on the
+original group. Only the source quotient needs to be discrete. -/
+def quotientToDiscreteMap [SeparatelyContinuousMul G]
+    (U : OpenNormalSubgroup G) (f : (G ⧸ (U : Subgroup G)) →* H) : G →ₜ* H := by
+  let : DiscreteTopology (G ⧸ (U : Subgroup G)) :=
+    QuotientGroup.discreteTopology U.toOpenSubgroup.isOpen
+  exact
+    { toMonoidHom := f.comp (QuotientGroup.mk' (U : Subgroup G))
+      continuous_toFun := (show Continuous f from continuous_of_discreteTopology).comp
+        (show Continuous (QuotientGroup.mk' (U : Subgroup G)) from QuotientGroup.continuous_mk) }
+
+/-- The continuous map out of an open normal quotient evaluates through the same quotient map. -/
+@[simp] theorem quotientToDiscreteMap_apply [SeparatelyContinuousMul G]
+    (U : OpenNormalSubgroup G) (f : (G ⧸ (U : Subgroup G)) →* H) (g : G) :
+    quotientToDiscreteMap U f g = f (QuotientGroup.mk' (U : Subgroup G) g) :=
+  rfl
+
+/-- An equivalence of an open normal quotient with a discrete group is continuous
+in both directions, with independent universes for the two groups. -/
+def quotientDiscreteEquiv [SeparatelyContinuousMul G] [DiscreteTopology H]
+    (U : OpenNormalSubgroup G) (e : (G ⧸ (U : Subgroup G)) ≃* H) :
+    (G ⧸ (U : Subgroup G)) ≃ₜ* H := by
+  let : DiscreteTopology (G ⧸ (U : Subgroup G)) :=
+    QuotientGroup.discreteTopology U.toOpenSubgroup.isOpen
+  exact
+    { toMulEquiv := e
+      continuous_toFun := continuous_of_discreteTopology
+      continuous_invFun := continuous_of_discreteTopology }
+
+/-- The continuous equivalence on an open normal quotient preserves representative values. -/
+@[simp] theorem quotientDiscreteEquiv_apply_mk [SeparatelyContinuousMul G] [DiscreteTopology H]
+    (U : OpenNormalSubgroup G) (e : (G ⧸ (U : Subgroup G)) ≃* H) (g : G) :
+    quotientDiscreteEquiv U e (QuotientGroup.mk' (U : Subgroup G) g) =
+      e (QuotientGroup.mk' (U : Subgroup G) g) :=
+  rfl
 
 /-- The lifted continuous quotient map is induced by the quotient universal property. -/
 def liftₜ

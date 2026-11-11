@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
+public import Mathlib.Topology.Instances.ZMod
+public import Mathlib.Topology.Algebra.Module.Equiv.Basic
 
 /-!
 # Continuous cohomology with trivial `ZMod p` coefficients
@@ -13,6 +16,8 @@ import Mathlib.Topology.Instances.ZMod
 This is the coefficient object used by the relation-rank benchmark, together with its canonical
 restriction maps on homogeneous cochains, cocycles, and continuous cohomology.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 
@@ -97,7 +102,8 @@ noncomputable abbrev continuousCohomologyZModPMap (f : H →ₜ* G) (n : ℕ) :
 theorem trivialZModPCochainsMap_id :
     trivialZModPCochainsMap p (ContinuousMonoidHom.id G) =
       𝟙 (trivialZModPCochains p G) := by
-  simp [trivialZModPCochainsMap]
+  simp only [trivialZModPCochainsMap, trivialZModPRestrictionHom_id,
+    ContinuousCohomology.cochainsMap_id]
 
 @[simp]
 theorem trivialZModPCochainsMap_comp
@@ -113,7 +119,8 @@ theorem trivialZModPCochainsMap_comp
 theorem continuousCohomologyZModPMap_id (n : ℕ) :
     continuousCohomologyZModPMap p (ContinuousMonoidHom.id G) n =
       𝟙 (continuousCohomologyZModP p G n) := by
-  simp [continuousCohomologyZModPMap]
+  simp only [continuousCohomologyZModPMap, trivialZModPRestrictionHom_id,
+    ContinuousCohomology.map_id]
 
 @[simp]
 theorem continuousCohomologyZModPMap_comp
@@ -224,7 +231,8 @@ noncomputable abbrev continuousCohomologyZModPMapLifted (f : H →ₜ* G) (n : �
 theorem trivialZModPCochainsMapLifted_id :
     trivialZModPCochainsMapLifted p (ContinuousMonoidHom.id G) =
       𝟙 (trivialZModPCochainsLifted p G) := by
-  simp [trivialZModPCochainsMapLifted]
+  simp only [trivialZModPCochainsMapLifted, trivialZModPRestrictionHomLifted_id,
+    ContinuousCohomology.cochainsMap_id]
 
 @[simp]
 theorem trivialZModPCochainsMapLifted_comp
@@ -240,7 +248,8 @@ theorem trivialZModPCochainsMapLifted_comp
 theorem continuousCohomologyZModPMapLifted_id (n : ℕ) :
     continuousCohomologyZModPMapLifted p (ContinuousMonoidHom.id G) n =
       𝟙 (continuousCohomologyZModPLifted p G n) := by
-  simp [continuousCohomologyZModPMapLifted]
+  simp only [continuousCohomologyZModPMapLifted, trivialZModPRestrictionHomLifted_id,
+    ContinuousCohomology.map_id]
 
 @[simp]
 theorem continuousCohomologyZModPMapLifted_comp
@@ -266,6 +275,51 @@ theorem trivialZModPLifted_π_naturality (f : H →ₜ* G) (n : ℕ) :
 end LiftedCohomology
 
 end Lifted
+
+section SmallComparison
+
+variable (p : ℕ) (G : Type)
+variable [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+
+local instance continuousSMulULiftZModSmall :
+    ContinuousSMul (ZMod p) (ULift.{0} (ZMod p)) :=
+  ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+
+/-- Forget the universe lift on the trivial coefficient representation. -/
+noncomputable def trivialZModPLiftedToSmall :
+    trivialZModPLifted p G ⟶ trivialZModP p G := by
+  apply TopRep.ofHom
+  exact
+    { toContinuousLinearMap :=
+        (ContinuousLinearEquiv.ulift :
+          ULift.{0} (ZMod p) ≃L[ZMod p] ZMod p).toContinuousLinearMap
+      isIntertwining' := by
+        intro g
+        apply ContinuousLinearMap.ext
+        intro x
+        rfl }
+
+/-- Lift the benchmark's small trivial coefficient representation. -/
+noncomputable def trivialZModPSmallToLifted :
+    trivialZModP p G ⟶ trivialZModPLifted p G := by
+  apply TopRep.ofHom
+  exact
+    { toContinuousLinearMap :=
+        (ContinuousLinearEquiv.ulift :
+          ULift.{0} (ZMod p) ≃L[ZMod p] ZMod p).symm.toContinuousLinearMap
+      isIntertwining' := by
+        intro g
+        rfl }
+
+/-- The small and lifted trivial coefficient representations are isomorphic. -/
+noncomputable def trivialZModPLiftedSmallIso :
+    trivialZModPLifted p G ≅ trivialZModP p G where
+  hom := trivialZModPLiftedToSmall p G
+  inv := trivialZModPSmallToLifted p G
+  hom_inv_id := rfl
+  inv_hom_id := rfl
+
+end SmallComparison
 
 end
 

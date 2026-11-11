@@ -4,15 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnitTopology
-import Mathlib.FieldTheory.KrullTopology
-import Mathlib.Topology.Algebra.Group.Quotient
-import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
-import Mathlib.Topology.Algebra.Group.Units
-import Mathlib.Topology.Algebra.OpenSubgroup
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnitTopology
+public import Mathlib.FieldTheory.KrullTopology
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Algebra.Group.TopologicalAbelianization
+public import Mathlib.Topology.Algebra.Group.Units
+public import Mathlib.Topology.Algebra.OpenSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Mathlib.RingTheory.Finiteness.Small
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkOpenSubgroups
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ShrinkTransport
 
 /-!
 # Topological finite local reciprocity
@@ -25,6 +34,8 @@ is the topological abelianization of the finite Krull Galois group.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -34,7 +45,7 @@ open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
 noncomputable local instance normQuotientTopologicalSpace
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K L : Type*) [Field K] [Field L] [Algebra K L]
     [TopologicalSpace K] :
     TopologicalSpace (NormQuotient K L) := by
   change TopologicalSpace (Kˣ ⧸ localNormSubgroup K L)
@@ -42,7 +53,7 @@ noncomputable local instance normQuotientTopologicalSpace
 
 section NormSubgroupTopology
 
-universe u
+universe u v
 
 /-- The norm map restricted to valuation-ring units upstairs. -/
 private def integerUnitNormMap
@@ -217,7 +228,7 @@ open _root_.ValuationTheory.DiscreteValuationField.Valuation (
 ) in
 /-- The norm subgroup of a finite Galois extension of a nonarchimedean local
 field is open in the native topology of the base-field unit group. -/
-theorem localNormSubgroup_isOpen
+private theorem localNormSubgroup_isOpen_native
     (K L : Type) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
@@ -330,9 +341,47 @@ theorem localNormSubgroup_isOpen
     exact hIntegralClosure
   exact localNormSubgroup_isOpen_of_compatibleLocalField K L
 
+/-- The norm image is open in the topology of the original local field.
+The same field equivalences transport the algebra embedding, norm subgroup and unit topology. -/
+theorem localNormSubgroup_isOpen
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
+    [ValuativeRel K] [TopologicalSpace K]
+    [IsNonarchimedeanLocalField K] :
+    IsOpen (localNormSubgroup K L : Set Kˣ) := by
+  let : Small.{0} K := smallLocalField K
+  let : Small.{0} L := Module.Finite.small K L
+  let : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
+  have : FiniteDimensional (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_finiteDimensional K L
+  have : IsGalois (Shrink.{0} K) (Shrink.{0} L) :=
+    IsGalois.of_equiv_equiv (f := (Shrink.ringEquiv K).symm)
+      (g := (Shrink.ringEquiv L).symm) (HasseArf.shrinkAlgebra_commutes K L)
+  let : ValuativeRel (Shrink.{0} K) := shrinkLocalFieldValuativeRel K
+  have : IsNonarchimedeanLocalField (Shrink.{0} K) :=
+    shrinkLocalField_isNonarchimedeanLocalField K
+  let e : (Shrink.{0} K)ˣ ≃ₜ* Kˣ := shrinkUnitsContinuousMulEquiv K
+  have hmap : (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L)).map
+      e.toMulEquiv.toMonoidHom = localNormSubgroup K L := by
+    change (ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K) (Shrink.{0} L)).map
+      (Units.mapEquiv (Shrink.ringEquiv K).toMulEquiv).toMonoidHom =
+        ClassFieldTheory.fieldNormSubgroup K L
+    apply ClassFieldTheory.fieldNormSubgroup_map_ringEquiv
+      (Shrink.ringEquiv K) (Shrink.ringEquiv L)
+    apply RingHom.ext
+    intro x
+    exact (HasseArf.shrinkAlgebra_apply K L x).symm
+  have hopen : IsOpen
+      (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L) : Set (Shrink.{0} K)ˣ) :=
+    localNormSubgroup_isOpen_native (Shrink.{0} K) (Shrink.{0} L)
+  rw [← hmap]
+  change IsOpen (e ''
+    (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L) : Set (Shrink.{0} K)ˣ))
+  exact e.toHomeomorph.isOpenMap _ hopen
+
 /-- The native quotient topology on the finite norm quotient is discrete. -/
 theorem normQuotient_discrete
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -350,7 +399,8 @@ variable (K L : Type) [Field K] [Field L] [Algebra K L]
   [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [FiniteDimensional K L] [IsGalois K L]
 
-private theorem commutator_topologicalClosure_eq
+/-- A discrete group has a closed commutator subgroup. -/
+theorem commutator_topologicalClosure_eq
     (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [DiscreteTopology G] :
     Subgroup.topologicalClosure (commutator G) = commutator G := by

@@ -4,17 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.NegativeThreeCharacter
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Data.Nat.Prime.Defs
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.Tactic.FinCases
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Nyll.SawinTotallyRealTowers.NegativeThreeCharacter
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Data.Nat.Prime.Defs
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Basic
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Prescribing the real value of an absolute quadratic character
@@ -25,6 +27,8 @@ This constructs a character with any specified real value, starting with
 an arbitrary continuous quadratic character and imposing no arithmetic
 condition on that input.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

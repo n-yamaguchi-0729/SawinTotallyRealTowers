@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Projection
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Projection
 
 /-!
 # Completed Group Algebra / Basic / Within a Class / Topology
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Projection
 This module transports finite-stage topological structures through the named \(C\)-indexed
 inverse-limit carrier and records its compactness and separation properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -28,34 +32,19 @@ universe u v w
 variable (G : Type v) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable (R : Type u) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
 
-local instance
-    (C : ProCGroups.FiniteGroupClass.{v})
-    (U : CompletedGroupAlgebraIndexInClass G C) :
-    Ring ((completedGroupAlgebraSystemInClass C R G).X U) := by
-  change Ring (CompletedGroupAlgebraStageInClass C R G U)
-  infer_instance
-
-local instance
-    (C : ProCGroups.FiniteGroupClass.{v})
-    (U : CompletedGroupAlgebraIndexInClass G C) :
-    Module R ((completedGroupAlgebraSystemInClass C R G).X U) := by
-  change Module R (CompletedGroupAlgebraStageInClass C R G U)
-  infer_instance
+attribute [local instance] instRingCompletedGroupAlgebraSystemInClassStage
+  instModuleCompletedGroupAlgebraSystemInClassStage
 
 /-- Each \(C\)-indexed finite stage is a topological ring. -/
 theorem completedGroupAlgebraStageInClass_isTopologicalRing
     (C : ProCGroups.FiniteGroupClass.{v})
     (U : CompletedGroupAlgebraIndexInClass G C) :
-    letI : Finite (CompletedGroupAlgebraQuotientInClass G C U) :=
+    let : Finite (CompletedGroupAlgebraQuotientInClass G C U) :=
       finite_completedGroupAlgebraQuotientInClass G C U
-    letI : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
       (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
     IsTopologicalRing (CompletedGroupAlgebraStageInClass C R G U) := by
-  let : Finite (CompletedGroupAlgebraQuotientInClass G C U) :=
-    finite_completedGroupAlgebraQuotientInClass G C U
-  let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R G U) :=
-    (completedGroupAlgebraSystemInClass C R G).topologicalSpace U
-  dsimp [completedGroupAlgebraSystemInClass, CompletedGroupAlgebraStageInClass]
+  intro finiteQuotient stageTopology
   exact finiteGroupAlgebra_isTopologicalRing R (CompletedGroupAlgebraQuotientInClass G C U)
 
 /--

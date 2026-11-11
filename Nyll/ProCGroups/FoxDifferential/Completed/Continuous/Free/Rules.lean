@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Naturality
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Naturality
 
 /-!
 # Fox differential: completed — continuous — free — rules
@@ -23,6 +25,8 @@ The principal declarations in this module are:
 - `freeProCZCCompletedFoxRightHomContinuousMonoidHom_apply`
   Evaluation of the bundled right homomorphism.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

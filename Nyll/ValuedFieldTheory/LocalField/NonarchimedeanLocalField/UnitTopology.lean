@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 
 /-!
 # The unit subgroup of a nonarchimedean local field
@@ -15,6 +17,8 @@ the native topology of a nonarchimedean local field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

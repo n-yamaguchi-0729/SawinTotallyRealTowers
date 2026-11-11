@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.Nat.Squarefree
-import Mathlib.NumberTheory.Multiplicity
+module
+
+public import Mathlib.Data.Nat.Squarefree
+public import Mathlib.NumberTheory.Multiplicity
 
 /-!
 # Parity of integral quadratic coordinates
@@ -14,6 +16,8 @@ For a signed squarefree integer `d`, the norm numerator `a² - d b²`
 is divisible by four precisely for even coordinates, or for odd coordinates
 when `d` is one modulo four.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

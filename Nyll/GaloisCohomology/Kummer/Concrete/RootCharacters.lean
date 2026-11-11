@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.FieldTheory.Normal.Basic
 
 /-!
 # Root characters for Kummer theory
@@ -13,6 +17,8 @@ Support API for root-quotient constructions in concrete Kummer extensions.
 -/
 
 
+
+@[expose] public section
 
 namespace KummerTheory
 
@@ -70,7 +76,7 @@ theorem smul_mem_nthRootsSubgroup
   calc
     (σ • u) ^ n = σ • (u ^ n) := by
       exact (map_pow (MulDistribMulAction.toMonoidHom Lˣ σ) u n).symm
-    _ = 1 := by simp [hu]
+    _ = 1 := by simp only [hu, smul_one]
 
 end TorsionSubgroups
 
@@ -82,15 +88,35 @@ variable {K L : Type*} [Field K] [Field L] [Algebra K L]
 def rootQuotient (β : Lˣ) (σ : Gal(L/K)) : Lˣ :=
   σ • β / β
 
+/-- Root quotients commute with the actual restriction to a normal
+subextension. This retains the chosen root, rather than only its Kummer class. -/
+theorem rootQuotient_map_restrictNormal
+    {E : Type*} [Field E] [Algebra K E] [Algebra E L]
+    [IsScalarTower K E L] [Normal K E]
+    (β : Eˣ) (σ : Gal(L/K)) :
+    rootQuotient (K := K) (L := L)
+        (Units.map (algebraMap E L).toMonoidHom β) σ =
+      Units.map (algebraMap E L).toMonoidHom
+        (rootQuotient (K := K) (L := E) β
+          (AlgEquiv.restrictNormalHom E σ)) := by
+  apply Units.ext
+  simp only [rootQuotient, Units.val_div_eq_div_val, Units.coe_map]
+  change σ (algebraMap E L (β : E)) / algebraMap E L (β : E) =
+    algebraMap E L
+      ((AlgEquiv.restrictNormalHom E σ) (β : E) / (β : E))
+  rw [map_div₀]
+  exact congrArg (fun x : L => x / algebraMap E L (β : E))
+    (AlgEquiv.restrictNormal_commutes σ E (β : E)).symm
+
 /-- The root-quotient attached to the identity automorphism is trivial. -/
 @[simp] theorem rootQuotient_one (β : Lˣ) :
     rootQuotient (K := K) (L := L) β 1 = 1 := by
-  simp [rootQuotient]
+  simp only [rootQuotient, one_smul, div_self']
 
 /-- Multiplying the root-quotient by the chosen root recovers its Galois transform. -/
 @[simp] theorem rootQuotient_mul_right (β : Lˣ) (σ : Gal(L/K)) :
     rootQuotient (K := K) (L := L) β σ * β = σ • β := by
-  simp [rootQuotient]
+  simp only [rootQuotient, AlgEquiv.smul_units_def, div_mul_cancel]
 
 /-- Base-field units have trivial root-quotient. -/
 @[simp] theorem rootQuotient_algebraMap_unit (u : Kˣ) (σ : Gal(L/K)) :
@@ -107,7 +133,8 @@ theorem rootQuotient_mul_root (u v : Lˣ) (σ : Gal(L/K)) :
     rootQuotient (K := K) (L := L) (u * v) σ =
       rootQuotient (K := K) (L := L) u σ *
         rootQuotient (K := K) (L := L) v σ := by
-  simp [rootQuotient, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+  simp only [rootQuotient, smul_mul', AlgEquiv.smul_units_def, div_eq_mul_inv, mul_inv_rev,
+    mul_comm, mul_assoc, mul_left_comm]
 
 /-- The root-quotient is trivial exactly when the chosen root is fixed by `σ`. -/
 theorem rootQuotient_eq_one_iff (β : Lˣ) (σ : Gal(L/K)) :
@@ -122,7 +149,8 @@ theorem rootQuotient_mul (β : Lˣ) (σ τ : Gal(L/K)) :
         rootQuotient (K := K) (L := L) β σ := by
   rw [rootQuotient]
   rw [mul_smul]
-  simp [rootQuotient, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+  simp only [AlgEquiv.smul_units_def, div_eq_mul_inv, mul_comm, rootQuotient, smul_mul', smul_inv',
+    mul_left_comm, mul_assoc, mul_inv_cancel, mul_one]
 
 /-- Reformulation: `σ ↦ σ(β) / β` is a multiplicative `1`-cocycle. -/
 theorem isMulCocycle₁_rootQuotient (β : Lˣ) :
@@ -142,7 +170,8 @@ theorem rootQuotient_div (u v : Lˣ) (σ : Gal(L/K)) :
     rootQuotient (K := K) (L := L) (u / v) σ =
       rootQuotient (K := K) (L := L) u σ /
         rootQuotient (K := K) (L := L) v σ := by
-  simp [rootQuotient, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm]
+  simp only [rootQuotient, div_eq_mul_inv, smul_mul', AlgEquiv.smul_units_def, smul_inv',
+    mul_inv_rev, inv_inv, mul_comm, mul_assoc, mul_left_comm]
 
 /-- Changing the chosen root changes the corresponding quotient cocycle by a coboundary. -/
 theorem rootQuotient_changeRoot (u v : Lˣ) (σ : Gal(L/K)) :
@@ -169,6 +198,21 @@ theorem rootQuotient_mem_nthRootsSubgroup_of_pow_fixed
   exact rootQuotient_pow_eq_one_of_pow_fixed (K := K) (L := L) hβ σ
 
 end RootQuotients
+
+/-- Conjugating a Galois automorphism through an algebra equivalence carries
+the corresponding root quotient through the same equivalence. -/
+theorem rootQuotient_map_algEquiv
+    (K : Type*) [Field K]
+    {L E : Type*} [Field L] [Field E] [Algebra K L] [Algebra K E]
+    (e : L ≃ₐ[K] E) (u : Lˣ) (sigma : Gal(L/K)) :
+    rootQuotient (K := K) (L := E)
+        (Units.map e.toMonoidHom u) (AlgEquiv.autCongr e sigma) =
+      Units.map e.toMonoidHom
+        (rootQuotient (K := K) (L := L) u sigma) := by
+  apply Units.ext
+  simp only [rootQuotient, AlgEquiv.smul_units_def, Units.val_div_eq_div_val, Units.coe_map]
+  change e (sigma (e.symm (e (u : L)))) / e (u : L) = e (sigma (u : L) / (u : L))
+  rw [e.symm_apply_apply, map_div₀]
 
 section RadicalData
 
@@ -211,7 +255,7 @@ def rootCocycle (a : D.carrier) (σ : Gal(L/K)) : Lˣ :=
 /-- The chosen root-quotient is trivial at the identity automorphism. -/
 @[simp] theorem rootCocycle_one (a : D.carrier) :
     D.rootCocycle a 1 = 1 := by
-  simp [rootCocycle]
+  simp only [rootCocycle, rootQuotient_one]
 
 /-- The chosen root-quotient satisfies the multiplicative cocycle identity. -/
 theorem rootCocycle_mul (a : D.carrier) (σ τ : Gal(L/K)) :

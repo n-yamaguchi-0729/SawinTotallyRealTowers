@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.SourceFormula
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.SourceFormula
 
 /-!
 # Fox differential: completed — continuous — free — canonical formula
@@ -20,6 +22,8 @@ The principal declarations in this module are:
   Explicit \([\rho g] - 1\) form of the source-shaped completed Fox-Euler formula for the canonical
   free pro-\(C\) semidirect lift.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

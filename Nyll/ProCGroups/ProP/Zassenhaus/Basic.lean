@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.Zassenhaus.GroupLike
+module
+
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.Zassenhaus.GroupLike
 
 /-!
 # Basic mod-`p` Zassenhaus subgroups
@@ -15,6 +17,8 @@ difference lies in the closure of the `n`-th augmentation power.  This leaf
 establishes the subgroup, topology, degree-one, and the easy inclusion of the
 closed power--commutator core in degree two.
 -/
+
+@[expose] public section
 
 open scoped Topology commutatorElement
 
@@ -32,7 +36,10 @@ variable (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 /-- The mod-`p` Zassenhaus subgroup defined by the closed augmentation filtration. -/
 def zassenhausSubgroup (n : ℕ) : Subgroup G where
   carrier := {g | groupLikeDifference p G g ∈ closedAugmentationPower p G n}
-  one_mem' := by simp [groupLikeDifference_one]
+  one_mem' := by
+    change groupLikeDifference p G 1 ∈ closedAugmentationPower p G n
+    rw [groupLikeDifference_one]
+    exact Ideal.zero_mem _
   mul_mem' := by
     intro g h hg hh
     change groupLikeDifference p G g ∈ closedAugmentationPower p G n at hg

@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.Coordinates
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.Coordinates
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
 /-!
 # Joint local components of relative adeles and ideles
@@ -17,6 +20,8 @@ tensor decomposition has been established.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -50,7 +55,10 @@ theorem relativeAdeleFiniteComponent_basis_repr
         (K := K) (L := L) z i).2 w := by
   classical
   rw [relativeAdeleFiniteComponent_eq_sum_tmul_coefficients]
-  simp [relativeExtensionBasis, Finsupp.single_apply]
+  simp only [relativeExtensionBasis, map_sum, Algebra.TensorProduct.basis_repr_tmul,
+    Module.Basis.repr_self, Finsupp.mapRange_single, map_one, Finsupp.smul_single, smul_eq_mul,
+    mul_one, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply, Finset.sum_ite_eq',
+    Finset.mem_univ, ↓reduceIte]
 
 omit [NumberField L] in
 /-- A local tensor component has the expected chosen-basis

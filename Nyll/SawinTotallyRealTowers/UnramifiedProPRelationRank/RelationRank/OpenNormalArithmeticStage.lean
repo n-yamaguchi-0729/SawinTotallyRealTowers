@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGroup
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Arithmetic fields attached to open normal quotients
@@ -14,6 +17,8 @@ Galois group is realized by the Galois group of a concrete finite
 everywhere-unramified `p`-extension.  This is the finite-stage arithmetic
 bridge used before introducing any cohomological local--global map.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -29,14 +34,16 @@ open ProCGroups
 variable (F : Type u) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-private noncomputable def openNormalClosedSubgroup
+/-- The original open normal subgroup with its closedness proof. -/
+noncomputable def openNormalClosedSubgroup
     (U : OpenNormalSubgroup
       (MaxEverywhereUnramifiedProPGaloisGroup F p)) :
     ClosedSubgroup (MaxEverywhereUnramifiedProPGaloisGroup F p) :=
   ⟨(U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F p)),
     ProCGroups.openNormalSubgroup_isClosed U⟩
 
-private noncomputable def openNormalFixedFieldInMaximal
+/-- Its fixed field inside the original maximal compositum. -/
+noncomputable def openNormalFixedFieldInMaximal
     (U : OpenNormalSubgroup
       (MaxEverywhereUnramifiedProPGaloisGroup F p)) :
     IntermediateField F (maximalEverywhereUnramifiedProP F p) :=

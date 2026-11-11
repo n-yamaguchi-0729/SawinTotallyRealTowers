@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
 
 /-!
 # The small Hilbert class field over the original number field
@@ -22,6 +24,10 @@ in the principal ideal theorem.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -29,7 +35,7 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
-variable (K : Type) [Field K] [NumberField K]
+variable (K : Type u) [Field K] [NumberField K]
 
 /-- The canonical fixed-field copy underlying the selected small
 Hilbert class field, regarded as an algebra over the original number

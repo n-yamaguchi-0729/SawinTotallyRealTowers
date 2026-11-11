@@ -4,45 +4,47 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.ClosedKernelFiniteGeneration
-import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.FiniteGroups.Classes
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
-import Nyll.ProCGroups.FreeProC.Basic
-import Nyll.ProCGroups.FreeProC.Construction
-import Nyll.ProCGroups.FreeProC.FiniteBasis
-import Nyll.ProCGroups.FreeProC.FinitelyGenerated
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.Presentations.Profinite
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Nyll.ProCGroups.ProP.MinimalEpimorphism
-import Nyll.ProCGroups.ProP.Presentation.Basic
-import Nyll.ProCGroups.ProP.Presentation.Minimal
-import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Group.TypeTags.Basic
-import Mathlib.Algebra.Group.TypeTags.Finite
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Fintype.OfMap
-import Mathlib.Data.ZMod.Basic
-import Mathlib.GroupTheory.PGroup
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.LinearAlgebra.FiniteDimensional.Defs
-import Mathlib.SetTheory.Cardinal.Basic
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.SetTheory.Cardinal.Order
-import Mathlib.SetTheory.Cardinal.ToNat
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
-import Mathlib.Topology.Compactness.Compact
-import Mathlib.Topology.Constructions
-import Mathlib.Topology.Instances.ZMod
-import Mathlib.Topology.Order
+module
+
+public import Nyll.GaloisCohomology.ProP.ClosedKernelFiniteGeneration
+public import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.FiniteGroups.Classes
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.FreeProC.Construction
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
+public import Nyll.ProCGroups.FreeProC.FinitelyGenerated
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.Presentations.Profinite
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Nyll.ProCGroups.ProP.MinimalEpimorphism
+public import Nyll.ProCGroups.ProP.Presentation.Basic
+public import Nyll.ProCGroups.ProP.Presentation.Minimal
+public import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Group.TypeTags.Basic
+public import Mathlib.Algebra.Group.TypeTags.Finite
+public import Mathlib.Data.Fintype.Card
+public import Mathlib.Data.Fintype.OfMap
+public import Mathlib.Data.ZMod.Basic
+public import Mathlib.GroupTheory.PGroup
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.LinearAlgebra.FiniteDimensional.Defs
+public import Mathlib.SetTheory.Cardinal.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.SetTheory.Cardinal.Order
+public import Mathlib.SetTheory.Cardinal.ToNat
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Mathlib.Topology.Compactness.Compact
+public import Mathlib.Topology.Constructions
+public import Mathlib.Topology.Instances.ZMod
+public import Mathlib.Topology.Order
 
 /-!
 # Constructing finite minimal pro-p presentations
@@ -51,6 +53,8 @@ A finitely generated pro-p group with finite-dimensional H² has an actual finit
 presentation.  The free source is constructed by completion, its epimorphism is minimal by
 equality of generator ranks, and the closed kernel is normally generated using H².
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # Finite-place restriction of absolute mod-p characters
@@ -16,6 +18,8 @@ Continuous mod-`p` characters of the absolute Galois group restrict to the absol
 decomposition subgroup at every finite place.  This file linearizes each restriction and
 assembles all of them into a dependent product.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 

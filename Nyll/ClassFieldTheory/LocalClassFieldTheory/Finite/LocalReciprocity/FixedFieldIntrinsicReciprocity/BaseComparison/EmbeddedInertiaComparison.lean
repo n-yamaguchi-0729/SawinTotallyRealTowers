@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedExtensionQuotient
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedExtensionQuotient
 
 /-!
 # Embedded inertia comparison
@@ -15,6 +17,8 @@ realization inside an ambient separable closure.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -43,9 +47,9 @@ theorem
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (tau : (intrinsicAbstractBase F).toSubgroup),
@@ -74,34 +78,7 @@ theorem
         intrinsicBaseEquivAmbientEmbeddedField K F i e tau ∈
           (localResidueDatum K).extensionInertiaWithin
             H₀ J₀ hJH := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e tau
-  let jF : E →ₐ[F] SeparableClosure K :=
-    { j with commutes' := fun x => rfl }
-  let jI : E →ₐ[F] SeparableClosure F :=
-    e.symm.toAlgHom.comp jF
-  let EI :=
-    finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  have hRange :
-      AlgHom.fieldRange i ≤ AlgHom.fieldRange j := by
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    exact (AlgHom.fieldRange i).fixingSubgroup_le hRange
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e tau jF jI EI H₀ J₀ hJH
   let hHabsolute : Finite
       ((baseField
         Gal(SeparableClosure K / K)).toSubgroup ⧸
@@ -202,9 +179,9 @@ theorem
     (j : E →ₐ[K] SeparableClosure K) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ e : SeparableClosure F ≃ₐ[F] SeparableClosure K,
       let jF : E →ₐ[F] SeparableClosure K :=
@@ -234,34 +211,7 @@ theorem
           psi.toMonoidHom =
         (localResidueDatum K).extensionInertiaWithin
           H₀ J₀ hJH := by
-  dsimp only
-  let i :=
-    j.comp (IsScalarTower.toAlgHom K F E)
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e
-  let jF : E →ₐ[F] SeparableClosure K :=
-    { j with commutes' := fun x => rfl }
-  let jI : E →ₐ[F] SeparableClosure F :=
-    e.symm.toAlgHom.comp jF
-  let EI :=
-    finiteGaloisAbstractExtensionOfEmbedding F E jI
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let J₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange j)
-  let hJH : J₀.toSubgroup ≤ H₀.toSubgroup := by
-    change
-      (AlgHom.fieldRange j).fixingSubgroup ≤
-        (AlgHom.fieldRange i).fixingSubgroup
-    apply (AlgHom.fieldRange i).fixingSubgroup_le
-    intro x hx
-    rcases hx with ⟨y, rfl⟩
-    exact ⟨algebraMap F E y, rfl⟩
-  let psi :=
-    intrinsicBaseEquivAmbientEmbeddedField K F i e
+  intro i intrinsicClosureAlgebra embeddedClosureAlgebra e jF jI EI H₀ J₀ hJH psi
   ext sigma
   constructor
   · rintro ⟨tau, htau, rfl⟩

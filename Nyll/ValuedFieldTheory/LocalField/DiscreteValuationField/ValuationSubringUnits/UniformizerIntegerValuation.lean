@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.CompleteRangeRestriction
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
 
 /-!
 # Integer valuations from complete-DVF uniformizers
@@ -15,6 +18,8 @@ therefore an integer-valued multiplicative valuation on field units.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -42,7 +47,7 @@ noncomputable def fieldUnitValueUnit
 theorem fieldUnitValueUnit_one (F : CompleteDVF.{u, v} K) :
     (fieldUnitValueUnit F) (1 : Kˣ) = 1 := by
   ext
-  simp [fieldUnitValueUnit]
+  simp only [fieldUnitValueUnit, Units.val_one, map_one, Units.mk0_one]
 
 /--
 `fieldUnitValueUnit` satisfies the multiplication formula `(CompleteDVF.fieldUnitValueUnit F) (x *
@@ -54,7 +59,7 @@ theorem fieldUnitValueUnit_mul
     (fieldUnitValueUnit F) (x * y) =
       (fieldUnitValueUnit F) x * (fieldUnitValueUnit F) y := by
   ext
-  simp [fieldUnitValueUnit]
+  simp only [fieldUnitValueUnit, Units.val_mul, map_mul, Units.mk0_mul, Units.val_mk0]
 
 /-- The value of a chosen uniformizer, regarded as a unit of the ambient value
 group. -/
@@ -81,7 +86,7 @@ theorem exists_uniformizerValueUnit_zpow_eq_fieldUnitValueUnit
         (F.valuation : K →*₀ F.ValueGroup)
         (show (((fieldUnitValueUnit F) x : F.ValueGroup)) ∈
             Set.range F.valuation from
-          ⟨(x : K), by simp [fieldUnitValueUnit]⟩)
+          ⟨(x : K), by simp only [fieldUnitValueUnit, Units.val_mk0]⟩)
   rw [hπ.zpowers_eq_valueGroup, Subgroup.mem_zpowers_iff] at hxmem
   simpa [uniformizerValueUnit] using hxmem
 
@@ -180,7 +185,7 @@ theorem multiplicativeIntegerValuationOfUniformizer_isUniformizer
   apply ((uniformizerValueUnit_zpow_inj F) hπ).1
   rw [(uniformizerValueUnit_zpow_uniformizerValueExponent_eq_fieldUnitValueUnit F)]
   ext
-  simp [fieldUnitValueUnit, uniformizerValueUnit]
+  simp only [fieldUnitValueUnit, Units.val_mk0, uniformizerValueUnit, zpow_ofNat, pow_one]
 
 /-- The zero subgroup of the attached integer-valued valuation is exactly the
 valuation-subring unit group. -/
@@ -206,7 +211,7 @@ theorem multiplicativeIntegerValuationOfUniformizer_zeroSubgroup_eq_unitGroup
     apply ((uniformizerValueUnit_zpow_inj F) hπ).1
     rw [(uniformizerValueUnit_zpow_uniformizerValueExponent_eq_fieldUnitValueUnit F)]
     ext
-    simp [fieldUnitValueUnit, hx]
+    simp only [fieldUnitValueUnit, hx, Units.mk0_one, Units.val_one, zpow_ofNat, pow_zero]
 
 end CompleteDVF
 end LocalFieldTheory.DiscreteValuationField

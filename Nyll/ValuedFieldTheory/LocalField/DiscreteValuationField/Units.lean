@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.GroupTheory.Index
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.GroupTheory.Index
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Principal-unit filtrations
@@ -14,6 +16,8 @@ import Mathlib.GroupTheory.QuotientGroup.Basic
 This file provides a theorem API for antitone principal-unit filtrations used by
 ramification and norm arguments.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

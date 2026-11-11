@@ -4,21 +4,29 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInclusion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlock
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockEquivApply
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInclusion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockInducedSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceIntegralBlockTensorSmul
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.CompletionTransport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Inclusion
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Integral finite-place preimages of local tensor norms
@@ -31,10 +39,14 @@ input needed to assemble pointwise local norm preimages globally.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v
 
 
 open AlgebraicNumberTheory.Valuations
@@ -44,12 +56,11 @@ open LocalFieldTheory.IsNonarchimedeanLocalField
 open ValuationTheory.Completion
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
-universe u
 
 omit [NumberField L] [IsGalois K L] in
 /-- The finite-place completion comparison restricts to an inclusion of
@@ -130,7 +141,7 @@ theorem exists_finitePlaceCompletionIntegerUnit_of_unitsEquiv_eq
 /-- If the norm of an extension-field unit comes from a base valuation-ring
 unit, then the extension-field unit has normalized valuation zero. -/
 theorem v_eq_zero_of_normUnits_eq_integerUnitsToFieldUnits
-    (F E : Type u)
+    (F : Type u) (E : Type v)
     [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F]
     [Field E] [ValuativeRel E] [TopologicalSpace E]
@@ -561,9 +572,8 @@ private theorem exists_localizedCompletionNormPreimage_with_norm_bounds
           finitePlaceCompletionUnitsContinuousMulEquiv v₀ x₀ = x ∧
             ‖(y : E)‖ ≤ 1 ∧
               ‖((y⁻¹ : Eˣ) : E)‖ ≤ 1 := by
+  intro vK w
   classical
-  let vK := HeightOneSpectrum.adicAbv K v₀
-  let w := chosenFinitePlaceExtension (L := L) v₀
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v₀
   let hvKna : IsNonarchimedean (vK : K → ℝ) :=
@@ -740,9 +750,8 @@ private theorem exists_singleFinitePlaceIntegralUnit_norm_eq
               w.1.Completion) =
             (x₀ : vK.Completion) ∧
           finitePlaceCompletionUnitsContinuousMulEquiv v₀ x₀ = x := by
+  intro vK w
   classical
-  let vK := HeightOneSpectrum.adicAbv K v₀
-  let w := chosenFinitePlaceExtension (L := L) v₀
   let hvK : vK.IsNontrivial :=
     RayClass.adicAbv_isNontrivial v₀
   let hvKna : IsNonarchimedean (vK : K → ℝ) :=

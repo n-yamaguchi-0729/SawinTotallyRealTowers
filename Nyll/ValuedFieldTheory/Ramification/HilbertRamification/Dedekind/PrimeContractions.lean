@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFieldTower
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.FixedFieldTower
 
 /-!
 # Hilbert ramification theory: number-field prime contractions
@@ -14,6 +16,8 @@ of number fields and defines the contracted primes `p`, `P_Z`, and `P_T`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

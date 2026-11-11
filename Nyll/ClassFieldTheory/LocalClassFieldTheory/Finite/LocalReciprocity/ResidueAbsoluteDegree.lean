@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAbsoluteFrobenius
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.IsSepClosed
+module
+
+public import Nyll.SchemeTheory.RingTheory.FieldExtensions.FiniteFrobeniusFixed
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueAbsoluteFrobenius
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.IsSepClosed
 
 /-!
 # Finite local reciprocity: the absolute residue degree map
@@ -23,6 +26,8 @@ global statement from the compatible finite Frobenius coordinates:
 * its compact image is all of the absolute Galois group;
 * inversion gives the continuous degree map of the finite local reciprocity construction.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -41,10 +46,12 @@ open Polynomial
 variable (k : Type u) [Field k] [Fintype k]
 
 omit [Fintype k] in
-private instance finiteFieldRingCharPrime [Finite k] : Fact (ringChar k).Prime :=
+/-- The characteristic of a finite field is prime. -/
+instance finiteFieldRingCharPrime [Finite k] : Fact (ringChar k).Prime :=
   ⟨CharP.char_is_prime k (ringChar k)⟩
 
-private noncomputable instance absoluteGaloisGroupT2 :
+/-- The absolute Galois group of a finite field is Hausdorff in its Krull topology. -/
+noncomputable instance absoluteGaloisGroupT2 :
     T2Space (Field.absoluteGaloisGroup k) := by
   unfold Field.absoluteGaloisGroup
   exact krullTopology_t2
@@ -126,27 +133,8 @@ Frobenius are exactly the elements of the base field. -/
 theorem mem_range_algebraMap_iff_frobenius_fixed
     (x : AlgebraicClosure k) :
     x ∈ Set.range (algebraMap k (AlgebraicClosure k)) ↔
-      FiniteField.frobeniusAlgEquivOfAlgebraic k (AlgebraicClosure k) x = x := by
-  constructor
-  · rintro ⟨a, rfl⟩
-    simp only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic]
-    rw [← map_pow, FiniteField.pow_card]
-  · intro hx
-    have hxpow : x ^ Fintype.card k = x := by
-      simpa only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic] using hx
-    let p : k[X] := X ^ Fintype.card k - X
-    have hpne : p ≠ 0 := by
-      exact FiniteField.X_pow_card_sub_X_ne_zero k Fintype.one_lt_card
-    have hxroot : x ∈ p.rootSet (AlgebraicClosure k) := by
-      rw [Polynomial.mem_rootSet_of_ne hpne]
-      simp [p, hxpow]
-    have hsplits : (p.map (algebraMap k k)).Splits := by
-      simpa only [p] using (FiniteField.isSplittingField_sub k k).splits
-    have himage := hsplits.image_rootSet
-      (Algebra.ofId k (AlgebraicClosure k))
-    rw [← himage] at hxroot
-    rcases hxroot with ⟨a, _ha, hax⟩
-    exact ⟨a, hax⟩
+      FiniteField.frobeniusAlgEquivOfAlgebraic k (AlgebraicClosure k) x = x :=
+  mem_range_algebraMap_iff_frobenius_fixed_in k (AlgebraicClosure k) x
 
 /-- The compact image of the assembled Frobenius map, as a closed subgroup
 of the absolute Galois group. -/
@@ -289,13 +277,13 @@ the actual restriction of the automorphism to `E`. -/
 theorem finiteResidueFrobeniusExponentHom_degree_coordinate
     (sigma : Field.absoluteGaloisGroup k)
     (E : FiniteGaloisIntermediateField k (AlgebraicClosure k)) :
-    letI : Finite E := Module.finite_of_finite k
+    let : Finite E := Module.finite_of_finite k
     finiteResidueFrobeniusExponentHom k E
         (Multiplicative.ofAdd
           (zHatReduction (Module.finrank k E) Module.finrank_pos
             (residueAbsoluteDegree k sigma).toAdd)) =
       AlgEquiv.restrictNormalHom E sigma := by
-  let : Finite E := Module.finite_of_finite k
+  intro sharedOwner1
   exact finiteResidueFrobeniusIntermediate_residueAbsoluteDegree k sigma E
 
 /-- Equivalently, the inverse finite Frobenius coordinate of a restriction
@@ -303,13 +291,13 @@ is the reduction of the absolute degree modulo the residue extension degree. -/
 theorem finiteResidueFrobeniusExponentEquiv_symm_restrict
     (sigma : Field.absoluteGaloisGroup k)
     (E : FiniteGaloisIntermediateField k (AlgebraicClosure k)) :
-    letI : Finite E := Module.finite_of_finite k
+    let : Finite E := Module.finite_of_finite k
     (finiteResidueFrobeniusExponentEquiv k E).symm
         (AlgEquiv.restrictNormalHom E sigma) =
       Multiplicative.ofAdd
         (zHatReduction (Module.finrank k E) Module.finrank_pos
           (residueAbsoluteDegree k sigma).toAdd) := by
-  let : Finite E := Module.finite_of_finite k
+  intro sharedOwner1
   apply (finiteResidueFrobeniusExponentEquiv k E).injective
   rw [(finiteResidueFrobeniusExponentEquiv k E).apply_symm_apply]
   exact (finiteResidueFrobeniusExponentHom_degree_coordinate k sigma E).symm

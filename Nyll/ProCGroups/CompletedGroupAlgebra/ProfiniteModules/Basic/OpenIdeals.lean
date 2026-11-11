@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Generators
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Generators
 
 /-!
 # Open ideals in profinite rings
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Generators
 This file develops open-ideal bases at zero in profinite rings, proves their quotients finite, and
 derives the finite-open-ideal quotient basis and linear-topology properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

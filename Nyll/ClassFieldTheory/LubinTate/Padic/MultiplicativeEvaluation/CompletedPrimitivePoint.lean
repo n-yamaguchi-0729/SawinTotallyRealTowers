@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedScalarEndomorphism
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedScalarEndomorphism
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
 
 /-!
 # The completed multiplicative primitive point
@@ -17,6 +19,8 @@ that point.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

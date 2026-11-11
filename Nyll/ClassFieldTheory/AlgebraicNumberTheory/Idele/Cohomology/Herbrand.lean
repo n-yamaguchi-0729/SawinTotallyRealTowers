@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisDescent
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Module
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisDescent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Module
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Herbrand cohomology of the relative idele class group
@@ -25,10 +30,14 @@ norm is proved from the Galois product formula.
 
 
 
+@[expose] public section
+
 open scoped BigOperators NumberField
 open NumberField
 
 noncomputable section
+
+universe u v
 
 
 open CyclicCohomology.ProfiniteCohomology.Herbrand
@@ -38,7 +47,7 @@ namespace RelativeIdeleGroup
 namespace Cohomology
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 

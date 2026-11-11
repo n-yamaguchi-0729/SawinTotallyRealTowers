@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ClassFormationPGroupH1
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationSubextension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ClassFormationPGroupH1
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteGaloisRealizationSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # Degree-one vanishing for actual finite p-extensions of number fields
@@ -27,6 +33,8 @@ action is fixed once locally.  The only auxiliary tower setup is the
 quotient-restriction lemma (four canonical data instances and one normality
 proof); no setup is repeated in the cohomology transport.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField
 open scoped NumberField TensorProduct
@@ -154,9 +162,7 @@ private theorem rationalFixed_conjugate_action
       (rationalIdeleClassEquivFixed E
         (Additive.ofMul (ideleClassCongr e
           (ideleClassCongr (tau.restrictScalars ℚ) c)))).1 := by
-  dsimp only
-  let E := numberFieldInRationalSeparableClosure L
-  let e : L ≃ₐ[ℚ] E := (numberFieldSeparableClosureEmbedding L).equivFieldRange
+  intro E e
   let eta : E ≃ₐ[ℚ] E := (e.symm.trans (tau.restrictScalars ℚ)).trans e
   have hse : ∀ x : E, (eta x).1 = sigma x.1 := by
     intro x

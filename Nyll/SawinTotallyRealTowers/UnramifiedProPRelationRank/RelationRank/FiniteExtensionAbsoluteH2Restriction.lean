@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicAbsoluteH2Restriction
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicAbsoluteH2Restriction
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 
 /-!
 # Absolute H² restriction along actual finite-field embeddings
@@ -16,6 +18,8 @@ Galois group. Transporting prime-to-index restriction along this actual
 continuous equivalence proves injectivity for the field-embedding map,
 including the named cyclotomic extension.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

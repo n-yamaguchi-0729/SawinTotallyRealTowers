@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
-import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.RingTheory.TensorProduct.Finite
-import Mathlib.RingTheory.TensorProduct.Maps
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
+public import Mathlib.RingTheory.TensorProduct.Finite
+public import Mathlib.RingTheory.TensorProduct.Maps
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Finite localizations inside metric completions
@@ -18,6 +21,8 @@ the metric completion `L_w` is already all of `L_w`.  The proof uses no
 separability: the image of `K_v ⊗_K L` is finite-dimensional and closed,
 but contains the dense copy of `L`.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -76,11 +81,11 @@ theorem absoluteValueExtension_localizationTensorHom_tmul
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (w : AbsoluteValueExtension vK L)
     (b : vK.Completion) (a : L) :
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     absoluteValueExtension_localizationTensorHom vK w (b ⊗ₜ[K] a) =
       algebraMap vK.Completion w.1.Completion b *
         AbsoluteValue.toCompletionAlgHom (K := K) w.1 a := by
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro sharedOwner1
   rfl
 
 /-- For a finite extension, the canonical map `K_v ⊗_K L → L_w` is
@@ -135,13 +140,11 @@ theorem absoluteValueExtension_finiteLocalization_eq_top
     [FiniteDimensional K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalization vK w.1 w.2 = ⊤ := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   apply top_unique
   intro y _
@@ -182,18 +185,13 @@ over the completed base field. -/
 theorem localizedCompletionModuleFinite
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
     Module.Finite vK.Completion
       (AbsoluteValue.algebraicLocalization vK w.1 w.2) := by
-  let hK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let : Algebra vK.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let : Module.Finite vK.Completion
       (vK.Completion ⊗[K] L) :=
     inferInstance
@@ -213,14 +211,12 @@ metric completion. -/
 noncomputable def localizedCompletionEquivCompletion
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalization vK w.1 w.2 ≃ₐ[vK.Completion]
       w.1.Completion := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner4 sharedOwner5
   exact
     (IntermediateField.equivOfEq
       (absoluteValueExtension_finiteLocalization_eq_top vK hvK w)).trans

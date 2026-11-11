@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusNorms
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamified
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusNorms
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamified
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.CyclicNormQuotient
 
 /-!
 # The fixed source in the totally ramified reciprocity argument
@@ -16,6 +19,10 @@ boundary and carries out the source-producing fixed-element calculation.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace ClassFormation
@@ -23,13 +30,12 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- If two commuting group elements act compatibly on a coboundary, the
 standard corrected combination is fixed by the first element. -/
 theorem abstractReciprocity_fixedCombination_of_commute
-    {Q : IntegralRepGroupType} [Group Q] (B : Rep ℤ Q)
+    {Q : Type u} [Group Q] (B : Rep.{v} ℤ Q)
     (g t : Q) (hcomm : Commute g t) (c b a : B.V)
     (htc : B.ρ t c = c)
     (hgb : B.ρ g b = B.ρ t b)
@@ -69,7 +75,7 @@ theorem abstractReciprocity_fixedCombination_of_commute
 namespace FiniteGaloisSubextension
 /-- The lower inclusion homomorphism preserves the relative coset action. -/
 theorem relativeCosetAction_lowerInclusionHom
-    (A : Rep ℤ G) [IsTopologicalGroup G] {K : ClosedSubgroup G}
+    (A : Rep.{v} ℤ G) [IsTopologicalGroup G] {K : ClosedSubgroup G}
     (M : FiniteGaloisSubextension K) (S : Subgroup M.extensionQuotient)
     (a : ambientFixedAddSubgroup A M.field)
     (g : (M.intermediateField S).toSubgroup ⧸
@@ -117,7 +123,7 @@ end FiniteCyclicSubextension
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 -- The two fixed-field presentations have the same canonical addition.
 -- Fix its homogeneous type before elaborating the bundled second operand.
@@ -369,17 +375,6 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
   have hg : ∀ x, x ∈ Subgroup.zpowers g :=
     D.abstractReciprocityTotallyRamifiedLowerGenerator_generates
       KR LG hLGTot q hq
-  let hNFintype : Fintype N.extensionQuotient := Fintype.ofFinite _
-  let hNCyclic : IsCyclic N.extensionQuotient := by
-    rw [isCyclic_iff_exists_zpowers_eq_top]
-    refine ⟨g, ?_⟩
-    ext x
-    constructor
-    · intro _
-      exact Subgroup.mem_top x
-    · intro _
-      exact hg x
-  let hNcomm : CommGroup N.extensionQuotient := IsCyclic.commGroup
   obtain ⟨aN, haN⟩ :=
     abstractReciprocity_exists_hMinusOne_primitive hcf
       EN N.normal g hg uM wM hnormWU
@@ -508,13 +503,9 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
     apply eB₀.injective
     rw [hActionX, hxB]
     rfl
-  let T := Rep.FiniteCyclicGroup.normHomCompSub B₀ g
-  let xCycle : T.moduleCatLeftHomologyData.K := ⟨xB₀, by
-    change B₀.ρ g xB₀ - xB₀ = 0
-    exact sub_eq_zero.mpr hxB₀⟩
   let x : ambientFixedAddSubgroup A M₀ :=
     (cyclicFixedCycleEquiv A M₀ M.field hMM₀
-      N.normal N.finite g hg).symm xCycle
+      N.normal N.finite g hg).symm ⟨xB₀, sub_eq_zero.mpr hxB₀⟩
   refine ⟨x, ?_⟩
   have hxFormula : fixedFieldInclusion A M₀ M.field hMM₀ x = eB xB := by
     apply Subtype.ext

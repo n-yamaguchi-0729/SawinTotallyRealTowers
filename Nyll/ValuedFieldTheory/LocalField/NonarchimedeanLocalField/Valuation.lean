@@ -4,14 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNorm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNorm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 /-!
 # Integer-valued valuations
 
 Relates membership in the valuation ring to the ambient valuation and exposes
 the associated surjective multiplicative valuation with a uniformizer.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

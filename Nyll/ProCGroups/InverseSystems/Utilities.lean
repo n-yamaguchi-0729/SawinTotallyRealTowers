@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Homeomorph.Lemmas
+module
+
+public import Mathlib.Topology.Homeomorph.Lemmas
 
 /-!
 # Order-theoretic utilities for inverse systems
@@ -13,6 +15,8 @@ The finite-upper-bound lemma in this module turns directedness of a preorder int
 dominating any nonempty finite set of indices.  It is the common combinatorial step in
 compactness, cofinality, and finite-coordinate arguments for inverse limits.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.InverseSystems
 

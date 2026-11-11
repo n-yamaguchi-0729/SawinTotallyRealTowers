@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Categorical.AlgebraicPullbacks
-import Nyll.ProCGroups.Profinite.Basic
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
-import Nyll.ProCGroups.TopologicalGroups
+module
+
+public import Nyll.ProCGroups.Categorical.AlgebraicPullbacks
+public import Nyll.ProCGroups.Profinite.Basic
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+public import Nyll.ProCGroups.TopologicalGroups
 
 /-!
 # Continuous pullbacks of topological groups
@@ -16,6 +18,8 @@ This module develops continuous fiber products and the universal property
 obtained by testing a continuous square against profinite source groups. The
 four objects in a tested square are not required to be profinite.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.Categorical
 

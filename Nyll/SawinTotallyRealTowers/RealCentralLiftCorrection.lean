@@ -4,21 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
-import Nyll.GaloisCohomology.ProP.H2CocycleExtension
-import Nyll.GaloisCohomology.ProP.QuotientRestriction
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
-import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.SawinTotallyRealTowers.RealCharacterInertiaExistence
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
-import Nyll.ProCGroups.Topologies.QuotientMaps
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtension
+public import Nyll.GaloisCohomology.ProP.QuotientRestriction
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.SawinTotallyRealTowers.RealCharacterInertiaExistence
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
+public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Removing unwanted inertia and real conjugation from cocycle lifts
@@ -29,6 +31,8 @@ these reference lifts are genuine local characters. Prime three absorbs the
 rational radical obstruction, and a global character corrects all outside
 inertia and the real value without changing the projected homomorphism.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 open NumberField IsDedekindDomain

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtinCompatibility
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtinCompatibility
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Descent of the infinite global Artin homomorphism
@@ -18,15 +21,19 @@ ordinary quotient topology.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
 variable
-    {K Ω : Type}
+    {K : Type u} {Ω : Type v}
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
 
@@ -89,7 +96,7 @@ theorem infiniteGlobalIdeleClassArtinMonoidHom_mk
   rw [infiniteGlobalIdeleClassArtinMonoidHom]
   exact QuotientGroup.lift_mk _ _ _
 
-private theorem infiniteGlobalIdeleClassArtinMonoidHom_continuous :
+theorem infiniteGlobalIdeleClassArtinMonoidHom_continuous :
     Continuous
       (infiniteGlobalIdeleClassArtinMonoidHom
         (K := K) (Ω := Ω)) := by

@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
-import Nyll.GaloisCohomology.ProP.H2PrimeToIndexRestriction
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.CyclotomicPrimeBaseChange
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
+public import Nyll.GaloisCohomology.ProP.H2PrimeToIndexRestriction
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.CyclotomicPrimeBaseChange
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Nyll.GaloisCohomology.ProP.QuotientRestriction
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
 
 /-!
 # Detecting absolute H² after adjoining the p-th roots of unity
@@ -18,6 +22,8 @@ subgroup in the absolute Galois group is therefore open of index prime to
 transfer argument. This applies to the absolute Galois group, not to an
 open subgroup of the maximal unramified pro-p quotient.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

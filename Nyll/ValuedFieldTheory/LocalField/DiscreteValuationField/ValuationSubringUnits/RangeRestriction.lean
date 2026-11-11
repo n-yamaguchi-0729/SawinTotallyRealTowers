@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
 
 /-!
 # Restricting a valuation to its multiplicative range
@@ -14,6 +16,8 @@ residue field as the original valuation.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -131,7 +135,7 @@ theorem valuationSubringEquivMrangeRestrict_map_maximalIdeal
   · rintro ⟨x, hx, rfl⟩
     exact (valuationSubringEquivMrangeRestrict_mem_maximalIdeal_iff v x).2 hx
   · intro hy
-    refine ⟨e.symm y, ?_, by simp [e]⟩
+    refine ⟨e.symm y, ?_, e.apply_symm_apply y⟩
     exact
       (valuationSubringEquivMrangeRestrict_mem_maximalIdeal_iff v (e.symm y)).1
         (by simpa [e] using hy)

@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumberFormula
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.FixedField
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamification
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumberRestriction
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.DepthSum
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumberFormula
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.FixedField
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamification
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumberRestriction
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
 
 /-!
 # Herbrand's theorem for general discrete valuation fields
@@ -22,6 +25,8 @@ the finite-group averaging argument used in the quotient-filtration comparison.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -261,204 +266,7 @@ def fixedFieldUpperRamificationGroup
         (base := base) (target := target) huniq H s := by
   unfold fixedFieldUpperRamificationGroup
   rw [fixedFieldInverseHerbrandFunction_herbrandFunction]
-noncomputable local instance lowerMembershipDecidable
-    {G : Type*} [Group G] (F : AntitoneNormalSubgroupFiltration G)
-    (n : ℕ) (sigma : G) : Decidable (sigma ∈ F.lower n) :=
-  Classical.propDecidable _
-
-noncomputable local instance finiteSubgroupFintype
-    {G : Type*} [Group G] [Finite G] (H : Subgroup G) : Fintype H :=
-  Fintype.ofFinite H
-
-private theorem truncate_depth_eq_intrinsic_summand_of_mem
-    {G : Type*} [Group G] [Finite G]
-    (F : AntitoneNormalSubgroupFiltration G) (depth : G → ℕ∞)
-    (hmem : ∀ n sigma,
-      sigma ∈ F.lower n ↔ (((n + 1 : ℕ) : ℕ∞) ≤ depth sigma))
-    (m : ℕ) {s : ℝ} (hms : (m : ℝ) ≤ s) (hsm : s ≤ m + 1)
-    (sigma : F.lower 0) :
-    truncateENatAtDVF (depth (sigma : G)) (s + 1) =
-      1 + (F.truncatedLowerDepth m sigma : ℝ) +
-        (s - m) * (if (sigma : G) ∈ F.lower (m + 1) then 1 else 0) := by
-  classical
-  let i := depth (sigma : G)
-  have hi_one : (1 : ℕ∞) ≤ i := by
-    simpa [i] using (hmem 0 (sigma : G)).1 sigma.property
-  by_cases hhigh : ((m + 2 : ℕ) : ℕ∞) ≤ i
-  · have hsigma : (sigma : G) ∈ F.lower (m + 1) := by
-      apply (hmem (m + 1) (sigma : G)).2
-      simpa [i, Nat.add_assoc] using hhigh
-    have hdepth : F.truncatedLowerDepth m sigma = m := by
-      rw [AntitoneNormalSubgroupFiltration.truncatedLowerDepth]
-      rw [Finset.filter_eq_self.2]
-      · exact Finset.card_range m
-      · intro j hj
-        apply (hmem (j + 1) (sigma : G)).2
-        have hjm : j < m := Finset.mem_range.1 hj
-        have hjle : ((j + 2 : ℕ) : ℕ∞) ≤ ((m + 2 : ℕ) : ℕ∞) :=
-          ENat.natCast_le_natCast.2 (by omega)
-        simpa [i, Nat.add_assoc] using hjle.trans hhigh
-    have htrunc : truncateENatAtDVF i (s + 1) = s + 1 := by
-      exact truncateENatAtDVF_eq_right_of_natCast_le
-        (m := m + 2) (by
-          norm_num [Nat.cast_add, Nat.cast_ofNat] at hsm ⊢
-          linarith) hhigh
-    rw [htrunc, hdepth]
-    simp [hsigma]
-    ring
-  · have hlt : i < ((m + 2 : ℕ) : ℕ∞) := lt_of_not_ge hhigh
-    have hine : i ≠ ⊤ := ne_top_of_lt hlt
-    obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 hine
-    have hk_one : 1 ≤ k := by
-      exact_mod_cast (hi_one.trans_eq hk.symm)
-    have hk_upper : k ≤ m + 1 := by
-      have : k < m + 2 := by exact_mod_cast (hk.symm ▸ hlt)
-      omega
-    have hsigma : (sigma : G) ∉ F.lower (m + 1) := by
-      intro hsigma
-      apply hhigh
-      simpa [i, Nat.add_assoc] using (hmem (m + 1) (sigma : G)).1 hsigma
-    have hdepth : F.truncatedLowerDepth m sigma = k - 1 := by
-      rw [AntitoneNormalSubgroupFiltration.truncatedLowerDepth]
-      have hfilter :
-          (Finset.range m).filter
-              (fun j => (sigma : G) ∈ F.lower (j + 1)) =
-            Finset.range (k - 1) := by
-        ext j
-        simp only [Finset.mem_filter, Finset.mem_range]
-        have hthreshold :
-            ((sigma : G) ∈ F.lower (j + 1)) ↔ j + 2 ≤ k := by
-          rw [hmem]
-          change (((j + 1 + 1 : ℕ) : ℕ∞) ≤ i) ↔ j + 2 ≤ k
-          rw [← hk]
-          norm_cast
-        rw [hthreshold]
-        omega
-      rw [hfilter, Finset.card_range]
-    have htrunc : truncateENatAtDVF i (s + 1) = k := by
-      rw [← hk, truncateENatAtDVF_coe, min_eq_left]
-      have : (k : ℝ) ≤ m + 1 := by exact_mod_cast hk_upper
-      linarith
-    rw [htrunc, hdepth]
-    rw [ite_eq_right hsigma]
-    simp only [mul_zero, add_zero]
-    exact_mod_cast (by omega : k = 1 + (k - 1))
-
-private theorem truncate_depth_eq_zero_of_not_mem_lower_zero
-    {G : Type*} [Group G] [Finite G]
-    (F : AntitoneNormalSubgroupFiltration G) (depth : G → ℕ∞)
-    (hmem : ∀ n sigma,
-      sigma ∈ F.lower n ↔ (((n + 1 : ℕ) : ℕ∞) ≤ depth sigma))
-    {s : ℝ} (hs : -1 ≤ s) {sigma : G}
-    (hsigma : sigma ∉ F.lower 0) :
-    truncateENatAtDVF (depth sigma) (s + 1) = 0 := by
-  have hi : depth sigma < 1 := by
-    rw [← not_le]
-    intro hi
-    exact hsigma ((hmem 0 sigma).2 (by simpa using hi))
-  have hi0 : depth sigma = 0 := Order.lt_one_iff.1 hi
-  rw [hi0]
-  simp [truncateENatAtDVF,
-    min_eq_left (show (0 : ℝ) ≤ s + 1 by linarith)]
-
-private theorem sum_truncate_depth_eq_sum_lower_zero_of_mem
-    {G : Type*} [Group G] [Fintype G]
-    (F : AntitoneNormalSubgroupFiltration G) (depth : G → ℕ∞)
-    (hmem : ∀ n sigma,
-      sigma ∈ F.lower n ↔ (((n + 1 : ℕ) : ℕ∞) ≤ depth sigma))
-    {s : ℝ} (hs : -1 ≤ s) :
-    (∑ sigma : G, truncateENatAtDVF (depth sigma) (s + 1)) =
-      ∑ sigma : F.lower 0,
-        truncateENatAtDVF (depth (sigma : G)) (s + 1) := by
-  classical
-  let q : G → ℝ := fun sigma =>
-    truncateENatAtDVF (depth sigma) (s + 1)
-  calc
-    ∑ sigma : G, q sigma =
-        ∑ sigma : G, if sigma ∈ F.lower 0 then q sigma else 0 := by
-      apply Finset.sum_congr rfl
-      intro sigma _
-      by_cases hsigma : sigma ∈ F.lower 0
-      · simp [hsigma]
-      · rw [ite_eq_right hsigma]
-        exact truncate_depth_eq_zero_of_not_mem_lower_zero
-          F depth hmem hs hsigma
-    _ = ∑ sigma : F.lower 0, q (sigma : G) := by
-      rw [← Finset.sum_filter (p := fun sigma : G => sigma ∈ F.lower 0)]
-      simpa using
-        (Finset.sum_subtype_eq_sum_filter
-          (s := (Finset.univ : Finset G)) q
-          (p := fun sigma : G => sigma ∈ F.lower 0)).symm
-
-private theorem sum_lower_zero_truncate_depth_eq_intrinsic_of_mem
-    {G : Type*} [Group G] [Finite G]
-    (F : AntitoneNormalSubgroupFiltration G) (depth : G → ℕ∞)
-    (hmem : ∀ n sigma,
-      sigma ∈ F.lower n ↔ (((n + 1 : ℕ) : ℕ∞) ≤ depth sigma))
-    (m : ℕ) {s : ℝ} (hms : (m : ℝ) ≤ s) (hsm : s ≤ m + 1) :
-    (∑ sigma : F.lower 0,
-        truncateENatAtDVF (depth (sigma : G)) (s + 1)) =
-      Nat.card (F.lower 0) +
-        (∑ sigma : F.lower 0, (F.truncatedLowerDepth m sigma : ℝ)) +
-        (s - m) * Nat.card (F.lower (m + 1)) := by
-  classical
-  simp_rw [truncate_depth_eq_intrinsic_summand_of_mem
-    F depth hmem m hms hsm]
-  have hindicator :
-      (∑ sigma : F.lower 0,
-        (if (sigma : G) ∈ F.lower (m + 1) then (1 : ℝ) else 0)) =
-        Nat.card (F.lower (m + 1)) := by
-    exact_mod_cast (F.card_lower_succ_eq_sum_indicator m).symm
-  change Finset.sum Finset.univ (fun sigma : F.lower 0 =>
-      (1 : ℝ) + (F.truncatedLowerDepth m sigma : ℝ) +
-        (s - m) *
-          (if (sigma : G) ∈ F.lower (m + 1) then 1 else 0)) = _
-  rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
-  rw [← Finset.mul_sum, hindicator]
-  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one,
-    Nat.card_eq_fintype_card]
-
-open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration
-    (herbrandFunction herbrandFunction_of_nonpos) in
-private theorem herbrandFunction_eq_depth_sum_of_mem
-    {G : Type*} [Group G] [Fintype G]
-    (F : AntitoneNormalSubgroupFiltration G) (depth : G → ℕ∞)
-    (hmem : ∀ n sigma,
-      sigma ∈ F.lower n ↔ (((n + 1 : ℕ) : ℕ∞) ≤ depth sigma))
-    {s : ℝ} (hs : -1 ≤ s) :
-    (herbrandFunction F) s =
-      (1 / Nat.card (F.lower 0) : ℝ) *
-        (∑ sigma : G, truncateENatAtDVF (depth sigma) (s + 1)) - 1 := by
-  classical
-  have hcard : (Nat.card (F.lower 0) : ℝ) ≠ 0 := by
-    exact_mod_cast
-      (ne_of_gt (show 0 < Nat.card (F.lower 0) from Finite.card_pos))
-  rw [sum_truncate_depth_eq_sum_lower_zero_of_mem F depth hmem hs]
-  by_cases hs0 : 0 ≤ s
-  · let m := ⌊s⌋₊
-    have hms : (m : ℝ) ≤ s := Nat.floor_le hs0
-    have hsm : s ≤ m + 1 := (Nat.lt_floor_add_one s).le
-    rw [sum_lower_zero_truncate_depth_eq_intrinsic_of_mem
-      F depth hmem m hms hsm]
-    rw [F.herbrandFunction_eq_depth_sum_of_mem_Icc m hms hsm]
-    field_simp
-    ring
-  · have hsle : s ≤ 0 := le_of_not_ge hs0
-    rw [(herbrandFunction_of_nonpos F) hsle]
-    have hpoint : ∀ sigma : F.lower 0,
-        truncateENatAtDVF (depth (sigma : G)) (s + 1) = s + 1 := by
-      intro sigma
-      have hi : (1 : ℕ∞) ≤ depth (sigma : G) := by
-        simpa using (hmem 0 (sigma : G)).1 sigma.property
-      exact truncateENatAtDVF_eq_right_of_natCast_le
-        (m := 1) (by
-          norm_num at hsle ⊢
-          linarith) hi
-    simp_rw [hpoint]
-    simp only [Finset.sum_const, nsmul_eq_mul]
-    rw [Finset.card_univ, ← Nat.card_eq_fintype_card]
-    field_simp
-    ring
+attribute [local instance] lowerMembershipDecidable finiteSubgroupFintype
 
 private theorem fixedField_herbrandFunction_formula_dvf
     (huniq :
@@ -490,140 +298,6 @@ noncomputable local instance finiteQuotientFiberFintype
     (q : G ⧸ H) : Fintype (NonarchimedeanDepth.QuotientFiber H q) :=
   Fintype.ofFinite _
 
-private theorem truncate_depth_eq_intrinsic_summand
-    {G : Type*} [Group G] [Finite G]
-    (D : NonarchimedeanDepth G) (H : Subgroup G) [H.Normal]
-    (m : ℕ) {s : ℝ} (hms : (m : ℝ) ≤ s) (hsm : s ≤ m + 1)
-    (tau : (D.depthLowerFiltration H).lower 0) :
-    truncateENatAtDVF (D.depth ((tau : H) : G)) (s + 1) =
-      1 + ((D.depthLowerFiltration H).truncatedLowerDepth m tau : ℝ) +
-        (s - m) *
-          (if (tau : H) ∈ (D.depthLowerFiltration H).lower (m + 1)
-            then 1 else 0) := by
-  classical
-  let F := D.depthLowerFiltration H
-  let i := D.depth ((tau : H) : G)
-  have hi_one : (1 : ℕ∞) ≤ i := tau.property
-  by_cases hhigh : ((m + 2 : ℕ) : ℕ∞) ≤ i
-  · have hmem : (tau : H) ∈
-        (D.depthLowerFiltration H).lower (m + 1) := hhigh
-    have hdepth : F.truncatedLowerDepth m tau = m := by
-      rw [AntitoneNormalSubgroupFiltration.truncatedLowerDepth]
-      rw [Finset.filter_eq_self.2]
-      · exact Finset.card_range m
-      · intro j hj
-        change ((j + 2 : ℕ) : ℕ∞) ≤ i
-        have hjm : j < m := Finset.mem_range.1 hj
-        have hjm' : ((j + 2 : ℕ) : ℕ∞) ≤ ((m + 2 : ℕ) : ℕ∞) :=
-          ENat.natCast_le_natCast.2 (by omega)
-        exact hjm'.trans hhigh
-    have htrunc : truncateENatAtDVF i (s + 1) = s + 1 := by
-      exact truncateENatAtDVF_eq_right_of_natCast_le
-        (m := m + 2) (by
-          norm_num [Nat.cast_add, Nat.cast_ofNat] at hsm ⊢
-          linarith) hhigh
-    rw [htrunc, hdepth]
-    rw [ite_eq_left hmem]
-    ring
-  · have hlt : i < ((m + 2 : ℕ) : ℕ∞) := lt_of_not_ge hhigh
-    have hine : i ≠ ⊤ := ne_top_of_lt hlt
-    obtain ⟨k, hk⟩ := ENat.ne_top_iff_exists.1 hine
-    have hk_one : 1 ≤ k := by
-      exact_mod_cast (hi_one.trans_eq hk.symm)
-    have hk_upper : k ≤ m + 1 := by
-      have : k < m + 2 := ENat.natCast_lt_natCast.1 (hk.symm ▸ hlt)
-      omega
-    have hmem : (tau : H) ∉
-        (D.depthLowerFiltration H).lower (m + 1) := hhigh
-    have hdepth : F.truncatedLowerDepth m tau = k - 1 := by
-      rw [AntitoneNormalSubgroupFiltration.truncatedLowerDepth]
-      have hfilter :
-          (Finset.range m).filter
-              (fun j => (tau : H) ∈ F.lower (j + 1)) =
-            Finset.range (k - 1) := by
-        ext j
-        simp only [Finset.mem_filter, Finset.mem_range]
-        have hthreshold :
-            ((tau : H) ∈ F.lower (j + 1)) ↔ j + 2 ≤ k := by
-          change (((j + 2 : ℕ) : ℕ∞) ≤ i) ↔ j + 2 ≤ k
-          rw [← hk]
-          norm_cast
-        rw [hthreshold]
-        omega
-      rw [hfilter, Finset.card_range]
-    have htrunc : truncateENatAtDVF i (s + 1) = k := by
-      rw [← hk, truncateENatAtDVF_coe, min_eq_left]
-      have : (k : ℝ) ≤ m + 1 := by exact_mod_cast hk_upper
-      linarith
-    rw [htrunc, hdepth]
-    rw [ite_eq_right hmem]
-    simp only [mul_zero, add_zero]
-    exact_mod_cast (by omega : k = 1 + (k - 1))
-
-private theorem sum_truncate_depth_eq_sum_lower_zero
-    {G : Type*} [Group G] [Finite G]
-    (D : NonarchimedeanDepth G) (H : Subgroup G) [H.Normal]
-    {s : ℝ} (hs : -1 ≤ s) :
-    (∑ tau : H, truncateENatAtDVF (D.depth (tau : G)) (s + 1)) =
-      ∑ tau : (D.depthLowerFiltration H).lower 0,
-        truncateENatAtDVF (D.depth ((tau : H) : G)) (s + 1) := by
-  classical
-  let F := D.depthLowerFiltration H
-  let f : H → ℝ := fun tau => truncateENatAtDVF (D.depth (tau : G)) (s + 1)
-  calc
-    ∑ tau : H, f tau =
-        ∑ tau : H, if tau ∈ F.lower 0 then f tau else 0 := by
-      apply Finset.sum_congr rfl
-      intro tau _
-      by_cases htau : tau ∈ F.lower 0
-      · simp [htau]
-      · rw [ite_eq_right htau]
-        have hzero : D.depth (tau : G) = (0 : ℕ∞) := by
-          exact D.depth_eq_zero_of_not_mem_lower_zero H tau htau
-        change truncateENatAtDVF (D.depth (tau : G)) (s + 1) = 0
-        rw [hzero]
-        simp [truncateENatAtDVF, show (0 : ℝ) ≤ s + 1 by linarith]
-    _ = ∑ tau : F.lower 0, f (tau : H) := by
-      rw [← Finset.sum_filter (p := fun tau : H => tau ∈ F.lower 0)]
-      change
-        (∑ tau ∈ (Finset.univ : Finset H) with tau ∈ F.lower 0, f tau) =
-          ∑ tau : {tau : H // tau ∈ F.lower 0}, f tau
-      simpa using
-        (Finset.sum_subtype_eq_sum_filter
-          (s := (Finset.univ : Finset H)) f
-          (p := fun tau : H => tau ∈ F.lower 0)).symm
-
-private theorem sum_lower_zero_truncate_depth_eq_intrinsic
-    {G : Type*} [Group G] [Finite G]
-    (D : NonarchimedeanDepth G) (H : Subgroup G) [H.Normal]
-    (m : ℕ) {s : ℝ} (hms : (m : ℝ) ≤ s) (hsm : s ≤ m + 1) :
-    (∑ tau : (D.depthLowerFiltration H).lower 0,
-        truncateENatAtDVF (D.depth ((tau : H) : G)) (s + 1)) =
-      Nat.card ((D.depthLowerFiltration H).lower 0) +
-        (∑ tau : (D.depthLowerFiltration H).lower 0,
-          ((D.depthLowerFiltration H).truncatedLowerDepth m tau : ℝ)) +
-        (s - m) * Nat.card ((D.depthLowerFiltration H).lower (m + 1)) := by
-  classical
-  let F := D.depthLowerFiltration H
-  change (∑ tau : F.lower 0,
-      truncateENatAtDVF (D.depth (((tau : F.lower 0) : H) : G)) (s + 1)) =
-    Nat.card (F.lower 0) +
-      (∑ tau : F.lower 0, (F.truncatedLowerDepth m tau : ℝ)) +
-      (s - m) * Nat.card (F.lower (m + 1))
-  simp_rw [truncate_depth_eq_intrinsic_summand D H m hms hsm]
-  have hindicator :
-      (∑ tau : F.lower 0,
-        (if (tau : H) ∈ F.lower (m + 1) then (1 : ℝ) else 0)) =
-        Nat.card (F.lower (m + 1)) := by
-    exact_mod_cast (F.card_lower_succ_eq_sum_indicator m).symm
-  change Finset.sum Finset.univ (fun tau : F.lower 0 =>
-      (1 : ℝ) + (F.truncatedLowerDepth m tau : ℝ) +
-        (s - m) * (if (tau : H) ∈ F.lower (m + 1) then 1 else 0)) = _
-  rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
-  rw [← Finset.mul_sum, hindicator]
-  simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one,
-    Nat.card_eq_fintype_card]
-
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
   herbrandFunction
   herbrandFunction_of_nonpos
@@ -636,39 +310,11 @@ private theorem depth_herbrandFunction_add_one_eq_average
     {s : ℝ} (hs : -1 ≤ s) :
     (D.depthLowerFiltration H).herbrandFunction s + 1 =
       (1 / D.depthRamificationIndex H : ℝ) *
-        ∑ tau : H, truncateENatAtDVF (D.depth (tau : G)) (s + 1) := by
-  classical
-  let F := D.depthLowerFiltration H
-  change (herbrandFunction F) s + 1 =
-    (1 / (Nat.card (F.lower 0) : ℝ)) *
-      ∑ tau : H, truncateENatAtDVF (D.depth (tau : G)) (s + 1)
-  have he : (Nat.card (F.lower 0) : ℝ) ≠ 0 := by
-    exact_mod_cast (show 0 < Nat.card (F.lower 0) from Finite.card_pos).ne'
-  rw [sum_truncate_depth_eq_sum_lower_zero D H hs]
-  by_cases hs0 : 0 ≤ s
-  · let m := ⌊s⌋₊
-    have hms : (m : ℝ) ≤ s := Nat.floor_le hs0
-    have hsm : s ≤ m + 1 := (Nat.lt_floor_add_one s).le
-    rw [sum_lower_zero_truncate_depth_eq_intrinsic D H m hms hsm]
-    rw [F.herbrandFunction_eq_depth_sum_of_mem_Icc m hms hsm]
-    field_simp
-    ring
-  · have hsle : s ≤ 0 := le_of_not_ge hs0
-    rw [(herbrandFunction_of_nonpos F) hsle]
-    have hpoint : ∀ tau : F.lower 0,
-        truncateENatAtDVF (D.depth (((tau : F.lower 0) : H) : G)) (s + 1) =
-          s + 1 := by
-      intro tau
-      exact truncateENatAtDVF_eq_right_of_natCast_le
-        (m := 1) (by
-          norm_num
-          linarith) tau.property
-    simp_rw [hpoint]
-    simp only [Finset.sum_const, nsmul_eq_mul]
-    rw [Finset.card_univ, ← Nat.card_eq_fintype_card]
-    change s + 1 = (1 / (Nat.card (F.lower 0) : ℝ)) *
-      (Nat.card (F.lower 0) * (s + 1))
-    field_simp
+        ∑ tau : H, truncateENatAtDVF (D.depth (tau : G)) (s + 1) :=
+  (congrArg (fun z : ℝ => z + 1)
+    (herbrandFunction_eq_depth_sum_of_mem
+      (D.depthLowerFiltration H) (fun tau : H => D.depth (tau : G))
+      (fun _ _ => Iff.rfl) hs)).trans (sub_add_cancel _ _)
 
 private theorem truncate_min_coe_eq_of_le
     {i : ℕ∞} {m : ℕ} {r : ℝ} (hr : r ≤ m) :

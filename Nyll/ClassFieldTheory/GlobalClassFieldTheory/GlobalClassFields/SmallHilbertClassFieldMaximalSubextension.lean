@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldUnramifiedMaximality
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldContainment
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.IdealClassFieldTheory.SmallHilbertTowerConjugation
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldUnramifiedMaximality
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldContainment
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.IdealClassFieldTheory.SmallHilbertTowerConjugation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # The maximal everywhere-unramified abelian subextension
@@ -20,6 +24,10 @@ inside the selected field.
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 open scoped NumberField
 
@@ -35,20 +43,20 @@ open IdealClassFieldTheory LocalClassFieldTheory NumberField Reciprocity
 idele classes and additive fixed subgroups. -/
 @[instance_reducible]
 private noncomputable def smallHilbertMaximalSubextensionIdeleClassCommGroup
-    (F : Type) [Field F] [NumberField F] :
+    (F : Type*) [Field F] [NumberField F] :
     CommGroup (IdeleClassGroup F) :=
   QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
 attribute [local instance] smallHilbertMaximalSubextensionIdeleClassCommGroup
 
 private structure SmallHilbertTransportedAddSubgroupData
-    {A B : Type} [AddGroup A] [AddGroup B]
+    {A : Type*} {B : Type*} [AddGroup A] [AddGroup B]
     (e : A ≃+ B) (H : AddSubgroup A) where
   subgroup : AddSubgroup B
   map_symm : subgroup.map e.symm.toAddMonoidHom = H
 
 private def smallHilbertTransportedAddSubgroupData
-    {A B : Type} [AddGroup A] [AddGroup B]
+    {A : Type*} {B : Type*} [AddGroup A] [AddGroup B]
     (e : A ≃+ B) (H : AddSubgroup A) :
     SmallHilbertTransportedAddSubgroupData e H where
   subgroup := H.map e.toAddMonoidHom
@@ -57,7 +65,7 @@ private def smallHilbertTransportedAddSubgroupData
       (K := H) (H := H.map e.toAddMonoidHom) (e := e)).2 rfl
 
 private theorem smallHilbertAddSubgroup_eq_of_map_symm_eq
-    {A B : Type} [AddGroup A] [AddGroup B]
+    {A : Type*} {B : Type*} [AddGroup A] [AddGroup B]
     (e : A ≃+ B) (H J : AddSubgroup B)
     (h : H.map e.symm.toAddMonoidHom =
       J.map e.symm.toAddMonoidHom) :
@@ -67,7 +75,7 @@ private theorem smallHilbertAddSubgroup_eq_of_map_symm_eq
 /-- The fixed-field idèle-class equivalence at the selected small-Hilbert
 base, named once so later subgroup comparisons do not reconstruct it. -/
 private noncomputable def smallHilbertClassFieldMaximalIdeleClassEquiv
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     Additive (IdeleClassGroup (smallHilbertClassFieldBase K)) ≃+
       ambientFixedAddSubgroup rationalIdeleClassRepresentation
         (smallHilbertClassFieldBaseSubgroup K) :=
@@ -77,13 +85,13 @@ private noncomputable def smallHilbertClassFieldMaximalIdeleClassEquiv
 /-- The intrinsic ordinary norm subgroup at the selected base, with its
 additive carrier fixed in the declaration type. -/
 private noncomputable def smallHilbertClassFieldMaximalIntrinsicNormSubgroup
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     AddSubgroup (Additive (IdeleClassGroup (smallHilbertClassFieldBase K))) :=
   (smallHilbertClassFieldNormSubgroup
     (K := smallHilbertClassFieldBase K)).toAddSubgroup
 
 private noncomputable def smallHilbertClassFieldMaximalTransportData
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     SmallHilbertTransportedAddSubgroupData
       (smallHilbertClassFieldMaximalIdeleClassEquiv K)
       (smallHilbertClassFieldMaximalIntrinsicNormSubgroup K) :=
@@ -95,21 +103,21 @@ private noncomputable def smallHilbertClassFieldMaximalTransportData
 Keeping this endpoint opaque prevents the fixed-field aliases from being
 re-elaborated when the inverse transport is applied. -/
 private noncomputable def smallHilbertClassFieldMaximalNormEndpoint
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     AddSubgroup
       (ambientFixedAddSubgroup rationalIdeleClassRepresentation
         (smallHilbertClassFieldBaseSubgroup K)) :=
   (smallHilbertClassFieldMaximalTransportData K).subgroup
 
 private theorem smallHilbertClassFieldMaximalNormEndpoint_map_symm
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     (smallHilbertClassFieldMaximalNormEndpoint K).map
         (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
       smallHilbertClassFieldMaximalIntrinsicNormSubgroup K :=
   (smallHilbertClassFieldMaximalTransportData K).map_symm
 
 private theorem smallHilbertClassFieldMaximalNormEndpoint_eq_public
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     smallHilbertClassFieldMaximalNormEndpoint K =
       smallHilbertNormSubgroupInRationalClassFormation
         (numberFieldTowerFiniteAbstractField K
@@ -119,7 +127,7 @@ private theorem smallHilbertClassFieldMaximalNormEndpoint_eq_public
 /-- Mapping the selected abstract norm subgroup back to the ordinary
 idèle-class group gives the named intrinsic subgroup. -/
 private theorem smallHilbertClassFieldMaximalNormSubgroup_map_symm
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     ((smallHilbertClassFieldSubextension K).normSubgroup
         rationalIdeleClassRepresentation).map
       (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
@@ -166,7 +174,7 @@ private theorem smallHilbertClassFieldMaximalNormSubgroup_map_symm
 /-- Both subgroups have the same inverse image under the fixed-field
 idèle-class equivalence. -/
 private theorem smallHilbertClassFieldMaximalNormSubgroup_map_eq_endpoint_map
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     ((smallHilbertClassFieldSubextension K).normSubgroup
         rationalIdeleClassRepresentation).map
       (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
@@ -183,7 +191,7 @@ private theorem smallHilbertClassFieldMaximalNormSubgroup_map_eq_endpoint_map
       (smallHilbertClassFieldMaximalNormEndpoint_map_symm K).symm
 
 private theorem smallHilbertClassFieldMaximalNormSubgroup_eq_endpoint
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     (smallHilbertClassFieldSubextension K).normSubgroup
         rationalIdeleClassRepresentation =
       smallHilbertClassFieldMaximalNormEndpoint K := by
@@ -203,7 +211,7 @@ the intrinsic small-Hilbert norm subgroup in the rational absolute class
 formation. -/
 @[simp]
 theorem smallHilbertClassFieldSubextension_normSubgroup
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     (smallHilbertClassFieldSubextension K).normSubgroup
         rationalIdeleClassRepresentation =
       smallHilbertNormSubgroupInRationalClassFormation
@@ -225,7 +233,7 @@ subextension of the selected rational base is everywhere unramified.
 Naming this predicate keeps the fixed-field instance tower out of the
 signatures of every theorem which uses it. -/
 def finiteAbelianSubextensionIsEverywhereUnramified
-    (K : Type) [Field K] [NumberField K]
+    (K : Type u) [Field K] [NumberField K]
     (P : FiniteAbelianSubextension
       (smallHilbertClassFieldBaseSubgroup K)) : Prop :=
   let F :=
@@ -262,7 +270,7 @@ fixed-field base which is unramified at every finite and infinite place
 is contained in the selected small Hilbert class-field subextension. -/
 theorem
     everywhereUnramifiedAbelianSubextension_le_smallHilbertClassFieldSubextension
-    (K : Type) [Field K] [NumberField K]
+    (K : Type u) [Field K] [NumberField K]
     (P : FiniteAbelianSubextension
       (smallHilbertClassFieldBaseSubgroup K)) :
     finiteAbelianSubextensionIsEverywhereUnramified K P →
@@ -311,7 +319,7 @@ actual everywhere-unramified abelian subextensions of the same rational
 fixed-field base. -/
 theorem
     smallHilbertClassFieldSubextension_isEverywhereUnramifiedAndMaximalAbelian
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     IsEverywhereUnramified K (smallHilbertClassField K) ∧
       ∀ P : FiniteAbelianSubextension
           (smallHilbertClassFieldBaseSubgroup K),
@@ -329,7 +337,7 @@ finite and infinite places has a genuine `K`-embedding into the selected
 small Hilbert class field of `K`. -/
 theorem
     finiteAbelianExtension_nonempty_algHom_to_smallHilbertClassField_of_everywhereUnramified
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L]
     [Algebra K L] [FiniteDimensional K L]

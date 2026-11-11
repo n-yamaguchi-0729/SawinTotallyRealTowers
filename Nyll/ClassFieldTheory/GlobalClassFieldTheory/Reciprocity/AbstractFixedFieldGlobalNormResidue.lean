@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Global norm residue on actual fixed fields
@@ -23,10 +27,14 @@ either field is introduced.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField
 open NumberField
 
 noncomputable section
+
+universe u v w x
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
@@ -44,7 +52,7 @@ different embeddings of the same field need not induce definitionally equal
 algebra structures. -/
 @[reducible]
 noncomputable def rationalEmbeddingSeparableClosureAlgebra
-    {F : Type} [Field F] [Algebra ℚ F]
+    {F : Type u} [Field F] [Algebra ℚ F]
     (i : F →ₐ[ℚ] SeparableClosure ℚ) :
     Algebra F (SeparableClosure ℚ) :=
   i.toRingHom.toAlgebra
@@ -53,7 +61,7 @@ noncomputable def rationalEmbeddingSeparableClosureAlgebra
 rational separable closure differ by an automorphism of that
 separable closure. -/
 theorem exists_numberFieldEmbeddingComparisonAutomorphism
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     (i j : F →ₐ[ℚ] SeparableClosure ℚ) :
     ∃ σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ,
       ∀ x : F, σ (i x) = j x := by
@@ -82,7 +90,7 @@ theorem exists_numberFieldEmbeddingComparisonAutomorphism
 /-- The canonical comparison automorphism between two rational
 embeddings of one number field into the fixed separable closure. -/
 noncomputable def numberFieldEmbeddingComparisonAutomorphism
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     (i j : F →ₐ[ℚ] SeparableClosure ℚ) :
     SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ :=
   Classical.choose
@@ -92,7 +100,7 @@ noncomputable def numberFieldEmbeddingComparisonAutomorphism
 number field to the second one pointwise. -/
 @[simp]
 theorem numberFieldEmbeddingComparisonAutomorphism_apply
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     (i j : F →ₐ[ℚ] SeparableClosure ℚ)
     (x : F) :
     numberFieldEmbeddingComparisonAutomorphism i j (i x) =
@@ -104,7 +112,7 @@ theorem numberFieldEmbeddingComparisonAutomorphism_apply
 field by the comparison automorphism gives the fixing subgroup of the
 other embedded copy. -/
 theorem conjugateClosedFixingSubgroup_embeddingRange
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     (i j : F →ₐ[ℚ] SeparableClosure ℚ) :
     conjugateClosedSubgroup
         (RamificationTheory.closedFixingSubgroup
@@ -151,17 +159,17 @@ theorem conjugateClosedFixingSubgroup_embeddingRange
 section EmbeddedNumberFieldRealization
 
 local instance numberFieldEmbeddedIdeleClassGroupIsMulCommutative
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     : IsMulCommutative (IdeleClassGroup F) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 local instance numberFieldEmbeddedIdeleClassSubgroupNormal
-    {F : Type} [Field F] [NumberField F]
+    {F : Type u} [Field F] [NumberField F]
     (N : Subgroup (IdeleClassGroup F)) : N.Normal :=
   N.normal_of_isMulCommutative
 
 variable
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
 
 /-- The lower embedding obtained by restricting an explicitly supplied
@@ -192,7 +200,7 @@ abbrev numberFieldEmbeddedBaseSubgroup
 
 /-- The fixing subgroup of the explicitly embedded top field. -/
 abbrev numberFieldEmbeddedTopSubgroup
-    (_K L : Type) [Field L] [NumberField L]
+    (_K : Type u) (L : Type v) [Field L] [NumberField L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ) :
     ClosedSubgroup
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ) :=
@@ -217,11 +225,10 @@ the rational separable closure carrying the algebra structure induced
 by an explicit compatible embedding. -/
 noncomputable def numberFieldEmbeddedSeparableClosureEquiv
     (j : L →ₐ[ℚ] SeparableClosure ℚ) :
-    letI : Algebra K (SeparableClosure ℚ) :=
+    let : Algebra K (SeparableClosure ℚ) :=
       numberFieldEmbeddedSeparableClosureAlgebra K L j
     SeparableClosure K ≃ₐ[K] SeparableClosure ℚ := by
-  letI : Algebra K (SeparableClosure ℚ) :=
-    numberFieldEmbeddedSeparableClosureAlgebra K L j
+  intro sharedOwner1
   letI hScalarTower : IsScalarTower ℚ K (SeparableClosure ℚ) :=
     IsScalarTower.of_algebraMap_eq'
       (numberFieldEmbeddedLowerEmbedding K L j).comp_algebraMap.symm
@@ -593,7 +600,7 @@ noncomputable def
       (MulEquiv.toAdditive actualFieldEquiv.symm)
 
 private theorem numberFieldEmbeddedOrdinaryNormQuotientCongr_symm_mk
-    {K₀ L₀ K₁ L₁ : Type}
+    {K₀ : Type u} {L₀ : Type v} {K₁ : Type w} {L₁ : Type x}
     [Field K₀] [NumberField K₀]
     [Field L₀] [NumberField L₀] [Algebra K₀ L₀]
     [Field K₁] [NumberField K₁]
@@ -1105,7 +1112,7 @@ end EmbeddedNumberFieldRealization
 section EmbeddedNumberFieldRestriction
 
 variable
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [NumberField K]
     [Field K'] [NumberField K']
     [Field L] [NumberField L]
@@ -1289,12 +1296,7 @@ noncomputable def
           (FiniteGaloisSubextension.extensionQuotient
             L.toFiniteGaloisExtension)) ≃+
       Additive (Gal(E / F)) := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) K.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
+  intro F E
   let e :
       L.extensionQuotient ≃*
         Gal(E / F) :=
@@ -1324,12 +1326,7 @@ noncomputable def abstractFixedFieldGlobalNormResidueEquiv :
         (IdeleClassGroup F ⧸
           (_root_.ideleClassNorm F E).range) ≃+
       Additive (Gal(E / F)) := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) K.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
+  intro F E
   let eNorm :
       FiniteNormQuotient rationalIdeleClassRepresentation
           K.field L.field L.below ≃+
@@ -1349,7 +1346,7 @@ noncomputable def abstractFixedFieldGlobalNormResidueEquiv :
 
 /-- The abstract finite norm-residue equivalence with its dependent source
 instance fixed to the public finite norm quotient. -/
-private noncomputable def abstractFixedFieldFiniteNormResidueGaloisEquiv :
+noncomputable def abstractFixedFieldFiniteNormResidueGaloisEquiv :
     FiniteNormQuotient rationalIdeleClassRepresentation
         K.field L.field L.below ≃+
       Additive
@@ -1396,12 +1393,7 @@ noncomputable def ambientFixedGlobalNormResidueAddMonoidHom :
     ambientFixedAddSubgroup
         rationalIdeleClassRepresentation K.field →+
       Additive (Gal(E / F)) := by
-  dsimp only
-  let F :=
-    abstractFixedField ℚ (SeparableClosure ℚ) K.field
-  let E :=
-    abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below
+  intro F E
   exact
     (abstractFixedFieldFiniteNormResidueGaloisEquiv K L).toAddMonoidHom.comp
       (finiteNormClassHom rationalIdeleClassRepresentation
@@ -1409,7 +1401,7 @@ noncomputable def ambientFixedGlobalNormResidueAddMonoidHom :
 
 /-- The ordinary idele class group of the lower fixed field, transported
 to the fixed part of the rational absolute idele-class representation. -/
-private noncomputable def abstractFixedFieldIdeleClassToAmbientFixedMonoidHom :
+noncomputable def abstractFixedFieldIdeleClassToAmbientFixedMonoidHom :
     let F :=
       abstractFixedField ℚ (SeparableClosure ℚ) K.field
     IdeleClassGroup F →*

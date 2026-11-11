@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Truncation
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Truncation
 
 /-!
 # the power step in Hensel's iteration
@@ -15,6 +17,8 @@ the maximal ideal; here it is converted into the actual improvement of the
 factorization error after the update
 `g ↦ g + π^n p`, `h ↦ h + π^n q`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

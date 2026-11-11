@@ -4,9 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.DeepPrincipalUnits
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
 /-!
 # Finiteness of local power-class groups
@@ -19,6 +26,10 @@ theorem.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace LocalFieldTheory
@@ -26,7 +37,7 @@ namespace LocalFieldTheory
 open scoped ValuativeRel
 open LocalFieldTheory.DiscreteValuationField
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 open _root_.LocalFieldTheory.DiscreteValuationField (

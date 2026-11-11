@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinDescent
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinSurjectivity
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinDescent
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinSurjectivity
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Global Artin map for the maximal abelian extension
@@ -18,14 +21,18 @@ idele-representative evaluation and its finite Galois projections.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-variable (K : Type) [Field K] [NumberField K]
+variable (K : Type u) [Field K] [NumberField K]
 
 /-- The continuous global Artin homomorphism from the idele class group to
 the Galois group of the maximal abelian extension. -/
@@ -51,12 +58,12 @@ global Artin map. -/
 theorem maximalAbelianGlobalArtin_finiteProjection
     (a : IdeleGroup K)
     (E : FiniteGaloisIntermediateField K (maximalAbelianExtension K)) :
-    letI : NumberField E := NumberField.of_module_finite K E
+    let : NumberField E := NumberField.of_module_finite K E
     AlgEquiv.restrictNormalHom E
         (maximalAbelianGlobalArtin K
           (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a)) =
       globalArtinMonoidHom (K := K) (L := E) a := by
-  let : NumberField E := NumberField.of_module_finite K E
+  intro sharedOwner1
   rw [maximalAbelianGlobalArtin_mk]
   exact
     restrictNormalHom_infiniteGlobalArtinMonoidHom

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
 
 /-!
 # Uniqueness of logarithms on local-field units
@@ -15,6 +17,8 @@ on a uniformizer.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

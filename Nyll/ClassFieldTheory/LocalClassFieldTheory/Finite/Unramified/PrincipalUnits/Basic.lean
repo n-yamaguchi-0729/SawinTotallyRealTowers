@@ -4,17 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic` Lean module. -/
 
 
+@[expose] public section
+
 noncomputable section
 
-universe u
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -26,7 +30,7 @@ open Filter
 /-- In an actual unramified valuation extension, the actual integer-unit norm
 sends `U_L^n` into `U_K^n`. -/
 theorem normIntegerUnits_mem_principalUnits_of_unramifiedValuation_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -42,7 +46,7 @@ theorem normIntegerUnits_mem_principalUnits_of_unramifiedValuation_of_isIntegral
 /-- Actual integral-closure version of the integer-unit norm restricted to
 principal units in an actual unramified valuation extension. -/
 noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -61,7 +65,7 @@ noncomputable def principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure
 /-- States the theorem `principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_apply`. -/
 @[simp]
 theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_apply
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -79,7 +83,7 @@ theorem principalUnitsNormOfUnramifiedValuationOfIsIntegralClosure_apply
 principal-unit norm recovers the extension-side norm expressed through the
 integral-closure Galois product. -/
 theorem principalUnitsMap_normOfUnramifiedValuationOfIsIntegralClosure_eq_normExtensionSide
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -99,7 +103,7 @@ namespace UnramifiedPrincipalUnits
 /-- The integral-closure norm-product calculation before residue trace
 identification. -/
 theorem norm_oneAdd_sub_galoisSum_mem_next
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -128,7 +132,7 @@ end UnramifiedPrincipalUnits
 quotients.  This is the quotient map used in the unramified norm calculation before
 identifying the associated graded map with residue trace. -/
 noncomputable def principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -154,7 +158,7 @@ noncomputable def principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClo
 /-- States the theorem `principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_mk`. -/
 @[simp]
 theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_mk
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -172,7 +176,7 @@ theorem principalUnitsSuccQuotNormOfUnramifiedValuationOfIsIntegralClosure_mk
 /-- The integral-closure associated-graded norm-product
 calculation in the unramified norm calculation. -/
 theorem principalUnitsSuccQuotMap_normOfUnramifiedValuationOfIsIntegralClosure_oneAdd_base_eq_sum
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.StageAugmentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.StageAugmentation
 
 /-!
 # Completed Group Algebra / All Finite Augmentation / Canonical Augmentation
@@ -13,6 +15,8 @@ This module defines the all-finite canonical augmentation as the composition of 
 finite-stage augmentation with the canonical bundled projection, and proves that it can be
 computed at every finite stage.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

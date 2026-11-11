@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Step
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Step
 
 /-!
 # recursive Hensel iterates
@@ -13,6 +15,8 @@ This file records the recursive polynomial iterates used in the proof
 of Hensel's lemma and the coefficientwise adic estimates needed for the later
 completion argument.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -293,11 +297,13 @@ theorem henselFactorization_henselIterate_sub_coeff_mem_maximalIdeal_pow_of_le_o
   | zero =>
       intro i
       have hm0 : m = 0 := Nat.eq_zero_of_le_zero hmn
-      simp [hm0]
+      simp only [hm0, zero_add, pow_one, henselFactorization_henselIterate_zero, sub_self,
+        Polynomial.coeff_zero, zero_mem]
   | succ n ih =>
       intro i
       by_cases hm : m = n + 1
-      · simp [hm]
+      · simp only [hm, henselFactorization_henselIterate_succ, map_pow, sub_self,
+        Polynomial.coeff_zero, zero_mem]
       · have hmle : m ≤ n := Nat.lt_succ_iff.mp (lt_of_le_of_ne hmn hm)
         have hprev := ih hmle i
         have hincr :
@@ -332,11 +338,13 @@ theorem henselFactorization_henselIterate_sub_coeff_mem_span_pow_of_le
   | zero =>
       intro i
       have hm0 : m = 0 := Nat.eq_zero_of_le_zero hmn
-      simp [hm0]
+      simp only [hm0, zero_add, pow_one, henselFactorization_henselIterate_zero, sub_self,
+        Polynomial.coeff_zero, zero_mem]
   | succ n ih =>
       intro i
       by_cases hm : m = n + 1
-      · simp [hm]
+      · simp only [hm, henselFactorization_henselIterate_succ, map_pow, sub_self,
+        Polynomial.coeff_zero, zero_mem]
       · have hmle : m ≤ n := Nat.lt_succ_iff.mp (lt_of_le_of_ne hmn hm)
         have hprev := ih hmle i
         have hincr :

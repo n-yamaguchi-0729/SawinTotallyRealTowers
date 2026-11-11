@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
-import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
 # Intrinsic inertia and local Kummer characters
@@ -16,6 +19,8 @@ The standard algebraic-closure Kummer character is transported to the local
 separable-closure model. Its kernel is the stabilizer of the chosen simple
 Kummer root, without imposing a residue-characteristic restriction.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

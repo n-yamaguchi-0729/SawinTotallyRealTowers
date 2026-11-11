@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedStandardResidue
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedResidueFrobenius
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedStandardResidue
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedResidueFrobenius
 
 /-!
 # Frobenius orientation in the completed standard/changed compositum
@@ -21,6 +23,8 @@ arithmetic Frobenius of the finite unramified extension.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -47,15 +51,15 @@ theorem
       FiniteDimensional.right ℚ_[p] D M
     let : IsGalois D M :=
       IsGalois.tower_top_of_isGalois ℚ_[p] D M
-    letI : NontriviallyNormedField D :=
+    let : NontriviallyNormedField D :=
       finiteExtensionSpectralNormedField ℚ_[p] D
-    letI : ValuativeRel D :=
+    let : ValuativeRel D :=
       finiteExtensionSpectralValuativeRel ℚ_[p] D
     let : IsNonarchimedeanLocalField D :=
       finiteExtensionSpectralIsNonarchimedeanLocalField ℚ_[p] D
-    letI : NontriviallyNormedField M :=
+    let : NontriviallyNormedField M :=
       finiteExtensionSpectralNormedField ℚ_[p] M
-    letI : ValuativeRel M :=
+    let : ValuativeRel M :=
       finiteExtensionSpectralValuativeRel ℚ_[p] M
     let : IsNonarchimedeanLocalField M :=
       finiteExtensionSpectralIsNonarchimedeanLocalField ℚ_[p] M
@@ -81,44 +85,8 @@ theorem
         p u n
     padicCompletedChangedUniformizerRelativeArtinCandidate p u n =
       (arithmeticFrobeniusOfUnramifiedValuation D M)⁻¹ := by
-  let D := padicCompletedChangedUniformizerFixedField p u n
-  let M := padicCompletedStandardChangedCompositum p u n
-  let : FiniteDimensional D M :=
-    FiniteDimensional.right ℚ_[p] D M
-  let : IsGalois D M :=
-    IsGalois.tower_top_of_isGalois ℚ_[p] D M
-  let : NontriviallyNormedField D :=
-    finiteExtensionSpectralNormedField ℚ_[p] D
-  let : ValuativeRel D :=
-    finiteExtensionSpectralValuativeRel ℚ_[p] D
-  let : IsNonarchimedeanLocalField D :=
-    finiteExtensionSpectralIsNonarchimedeanLocalField ℚ_[p] D
-  let : NontriviallyNormedField M :=
-    finiteExtensionSpectralNormedField ℚ_[p] M
-  let : ValuativeRel M :=
-    finiteExtensionSpectralValuativeRel ℚ_[p] M
-  let : IsNonarchimedeanLocalField M :=
-    finiteExtensionSpectralIsNonarchimedeanLocalField ℚ_[p] M
-  let :
-      Valuation.HasExtension (ValuativeRel.valuation D)
-        (ValuativeRel.valuation M) :=
-    finiteExtensionSpectralValuation_hasExtension_of_tower
-      ℚ_[p] D M
-  let :
-      Module.Finite
-        (ValuativeRel.valuation D).integer
-        (ValuativeRel.valuation M).integer :=
-    integerRing_moduleFinite_of_finite_separable D M
-  let :
-      IsIntegralClosure
-        (ValuativeRel.valuation M).integer
-        (ValuativeRel.valuation D).integer M :=
-    padicCompletedStandardChangedCompositum_integerRing_isIntegralClosure
-      p u n
-  let :
-      IsNonarchimedeanLocalField.IsUnramifiedValuedExtension D M :=
-    padicCompletedStandardChangedCompositum_isUnramifiedValuedExtension
-      p u n
+  intro D M sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7 sharedOwner8
+    sharedOwner9 sharedOwner10 sharedOwner11 sharedOwner12 sharedOwner13 sharedOwner14
   have hM :
       IsLocalRing.ResidueField
           (localCompleteDVF M).valuation.valuationSubring =

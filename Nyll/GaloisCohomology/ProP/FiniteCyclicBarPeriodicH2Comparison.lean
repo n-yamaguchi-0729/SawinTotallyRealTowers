@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicChainComparison
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicChainComparison
+public import Nyll.GaloisCohomology.GroupTheory.ProjectiveResolutionComparison
 
 /-!
 # Canonical degree-two bar--periodic comparison for finite cyclic groups
@@ -12,6 +15,8 @@ import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicChainComparison
 This module identifies the normalized finite-cyclic carry cocycle in bar
 cohomology with the canonical even-degree class from the periodic resolution.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -23,136 +28,8 @@ universe u
 
 variable {R G : Type u} [CommRing R] [CommGroup G] [Fintype G]
 
-/-- The contravariant cochain map induced by a map of projective resolutions. -/
-def resolutionLinearYonedaMap
-    {X X' : Rep R G} {f : X ⟶ X'}
-    (P : ProjectiveResolution X) (P' : ProjectiveResolution X')
-    (phi : ProjectiveResolution.Hom P P' f) (A : Rep R G) :
-    P'.complex.linearYonedaObj R A ⟶ P.complex.linearYonedaObj R A :=
-  (HomologicalComplex.unopFunctor
-      (ModuleCat.{u} R) (ComplexShape.down ℕ)).map
-    (((((linearYoneda R (Rep R G)).obj A).rightOp.mapHomologicalComplex
-      (ComplexShape.down ℕ)).map phi.hom).op)
-
-omit [Fintype G] in
-@[simp]
-theorem resolutionLinearYonedaMap_f
-    {X X' : Rep R G} {f : X ⟶ X'}
-    (P : ProjectiveResolution X) (P' : ProjectiveResolution X')
-    (phi : ProjectiveResolution.Hom P P' f) (A : Rep R G) (n : ℕ) :
-    (resolutionLinearYonedaMap P P' phi A).f n =
-      ModuleCat.ofHom (Linear.leftComp R A (phi.hom.f n)) := rfl
-
-omit [Fintype G] in
-theorem resolution_isoExt_hom_naturality
-    {X X' : Rep R G} {f : X ⟶ X'}
-    (P : ProjectiveResolution X) (P' : ProjectiveResolution X')
-    (phi : ProjectiveResolution.Hom P P' f) (A : Rep R G) (i : ℕ) :
-    (((_root_.Ext R (Rep R G) i).map f.op).app A) ≫ (P.isoExt i A).hom =
-      (P'.isoExt i A).hom ≫
-        HomologicalComplex.homologyMap
-          (resolutionLinearYonedaMap P P' phi A) i := by
-  dsimp [ProjectiveResolution.isoExt, _root_.Ext]
-  have h := ProjectiveResolution.isoLeftDerivedObj_inv_naturality
-    f P P' phi.hom phi.hom_f_zero_comp_π_f_zero
-      ((linearYoneda R (Rep R G)).obj A).rightOp i
-  have hUnop := congr_arg Quiver.Hom.unop h
-  have hLeftDerivedRaw :
-      ((((linearYoneda R (Rep R G)).obj A).rightOp.leftDerived i).map f).unop ≫
-        (P.isoLeftDerivedObj
-          ((linearYoneda R (Rep R G)).obj A).rightOp i).inv.unop =
-      (P'.isoLeftDerivedObj
-          ((linearYoneda R (Rep R G)).obj A).rightOp i).inv.unop ≫
-        ((((linearYoneda R (Rep R G)).obj A).rightOp.mapHomologicalComplex
-            (ComplexShape.down ℕ) ⋙
-          HomologicalComplex.homologyFunctor
-            (ModuleCat R)ᵒᵖ (ComplexShape.down ℕ) i).map phi.hom).unop := by
-    simpa only [unop_comp] using hUnop
-  let FP := ((linearYoneda R (Rep R G)).obj A).rightOp.mapHomologicalComplex
-    (ComplexShape.down ℕ)
-  let KP := FP.obj P.complex
-  let KP' := FP.obj P'.complex
-  let eP : KP.unop.homology i ≅
-      unop ((HomologicalComplex.homologyFunctor
-        (ModuleCat R)ᵒᵖ (ComplexShape.down ℕ) i).obj KP) :=
-    by
-      simpa only [HomologicalComplex.homologyFunctor_obj] using KP.homologyUnop i
-  let eP' : KP'.unop.homology i ≅
-      unop ((HomologicalComplex.homologyFunctor
-        (ModuleCat R)ᵒᵖ (ComplexShape.down ℕ) i).obj KP') :=
-    by
-      simpa only [HomologicalComplex.homologyFunctor_obj] using KP'.homologyUnop i
-  let hMap : KP'.unop.homology i ⟶ KP.unop.homology i := by
-    change
-      (P'.complex.linearYonedaObj R A).homology i ⟶
-        (P.complex.linearYonedaObj R A).homology i
-    exact HomologicalComplex.homologyMap
-      (resolutionLinearYonedaMap P P' phi A) i
-  have hOp := HomologicalComplex.homologyOp_hom_naturality
-    (resolutionLinearYonedaMap P P' phi A) i
-  have hOp' := congr_arg Quiver.Hom.unop hOp
-  have hNaturality :
-      eP'.hom ≫
-        ((((linearYoneda R (Rep R G)).obj A).rightOp.mapHomologicalComplex
-              (ComplexShape.down ℕ) ⋙
-            HomologicalComplex.homologyFunctor
-              (ModuleCat R)ᵒᵖ (ComplexShape.down ℕ) i).map phi.hom).unop =
-        hMap ≫ eP.hom := by
-    change
-      (HomologicalComplex.homologyMap
-          ((HomologicalComplex.opFunctor
-            (ModuleCat.{u} R) (ComplexShape.up ℕ)).map
-              (resolutionLinearYonedaMap P P' phi A).op) i ≫
-        (HomologicalComplex.homologyOp
-          (P'.complex.linearYonedaObj R A) i).hom).unop =
-      ((HomologicalComplex.homologyOp
-          (P.complex.linearYonedaObj R A) i).hom ≫
-        (HomologicalComplex.homologyMap
-          (resolutionLinearYonedaMap P P' phi A) i).op).unop
-    exact hOp'
-  change
-    ((((linearYoneda R (Rep R G)).obj A).rightOp.leftDerived i).map f).unop ≫
-        (P.isoLeftDerivedObj
-          ((linearYoneda R (Rep R G)).obj A).rightOp i).inv.unop ≫
-        eP.inv =
-      (P'.isoLeftDerivedObj
-          ((linearYoneda R (Rep R G)).obj A).rightOp i).inv.unop ≫
-        eP'.inv ≫
-        hMap
-  rw [← Category.assoc, hLeftDerivedRaw]
-  simp only [Category.assoc]
-  apply (cancel_epi
-    (P'.isoLeftDerivedObj
-      ((linearYoneda R (Rep R G)).obj A).rightOp i).inv.unop).mpr
-  apply (cancel_epi eP'.hom).mp
-  rw [
-    ← Category.assoc, hNaturality, Category.assoc, Iso.hom_inv_id,
-    Category.comp_id, Iso.hom_inv_id_assoc]
-
-omit [Fintype G] in
-theorem groupCohomologyIso_hom_naturality
-    (P P' : ProjectiveResolution (Rep.trivial R G R))
-    (phi : ProjectiveResolution.Hom P P' (𝟙 _))
-    (A : Rep R G) (i : ℕ) :
-    (groupCohomologyIso A i P).hom =
-      (groupCohomologyIso A i P').hom ≫
-        HomologicalComplex.homologyMap
-          (resolutionLinearYonedaMap P P' phi A) i := by
-  have hIsoExt :
-      (P.isoExt i A).hom =
-        (P'.isoExt i A).hom ≫
-          HomologicalComplex.homologyMap
-            (resolutionLinearYonedaMap P P' phi A) i := by
-    simpa using resolution_isoExt_hom_naturality P P' phi A i
-  change
-    (groupCohomologyIsoExt A i).hom ≫ (P.isoExt i A).hom =
-      ((groupCohomologyIsoExt A i).hom ≫ (P'.isoExt i A).hom) ≫
-        HomologicalComplex.homologyMap
-          (resolutionLinearYonedaMap P P' phi A) i
-  rw [hIsoExt, Category.assoc]
-
 /-- The identity bridge between the homological-complex and short-complex owners of homology. -/
-private noncomputable def cyclicPeriodicH2HomologyOwnerIso
+noncomputable def cyclicPeriodicH2HomologyOwnerIso
     (A : Rep R G) (g : G) :
     (Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).homology 2 ≅
       ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).sc 2).homology :=
@@ -163,14 +40,6 @@ private theorem cyclicPeriodicH2HomologyOwnerIso_hom
     (cyclicPeriodicH2HomologyOwnerIso A g).hom =
       𝟙 ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).homology 2) := by
   rfl
-
-private theorem cyclicPeriodicH2HomologyOwnerIso_eq_refl
-    (A : Rep R G) (g : G) :
-    cyclicPeriodicH2HomologyOwnerIso A g =
-      Iso.refl
-        ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).homology 2) := by
-  apply Iso.ext
-  exact cyclicPeriodicH2HomologyOwnerIso_hom A g
 
 /-- The short-complex isomorphism underlying `cyclicPeriodicH2Iso`. -/
 noncomputable def cyclicPeriodicH2ScIso (A : Rep R G) (g : G) :
@@ -215,47 +84,29 @@ theorem cyclicPeriodicH2Iso_eq
   intro x
   rfl
 
-private noncomputable def cyclicPeriodicH2KernelIso
+/-- The fixed-point kernel is the kernel term in the periodic degree-two complex. -/
+noncomputable def cyclicPeriodicH2KernelIso
     (A : Rep R G) (g : G) :
     ModuleCat.of R
         (LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap) ≅
       (Rep.FiniteCyclicGroup.normHomCompSub A g).moduleCatLeftHomologyData.K :=
   eqToIso (by rfl)
 
-private theorem cyclicPeriodicH2KernelIso_hom
-    (A : Rep R G) (g : G) :
-    (cyclicPeriodicH2KernelIso A g).hom =
-      𝟙 (ModuleCat.of R
-        (LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap)) := by
-  rfl
-
 /-- The identity bridge between the short-complex and homological-complex owners of cycles. -/
-private noncomputable def cyclicPeriodicH2CyclesOwnerIso
+noncomputable def cyclicPeriodicH2CyclesOwnerIso
     (A : Rep R G) (g : G) :
     ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).sc 2).cycles ≅
       (Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).cycles 2 :=
   eqToIso (by rfl)
 
-private theorem cyclicPeriodicH2CyclesOwnerIso_hom
-    (A : Rep R G) (g : G) :
-    (cyclicPeriodicH2CyclesOwnerIso A g).hom =
-      𝟙 ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).cycles 2) := by
-  rfl
-
 /-- The identity bridge from the middle object of the short complex to degree two. -/
-private noncomputable def cyclicPeriodicH2DegreeOwnerIso
+noncomputable def cyclicPeriodicH2DegreeOwnerIso
     (A : Rep R G) (g : G) :
     ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).sc 2).X₂ ≅
       (Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).X 2 :=
   eqToIso (by rfl)
 
-private theorem cyclicPeriodicH2DegreeOwnerIso_hom
-    (A : Rep R G) (g : G) :
-    (cyclicPeriodicH2DegreeOwnerIso A g).hom =
-      𝟙 ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).X 2) := by
-  rfl
-
-private theorem cyclicPeriodicH2CyclesOwnerIso_hom_iCycles
+theorem cyclicPeriodicH2CyclesOwnerIso_hom_iCycles
     (A : Rep R G) (g : G) :
     (cyclicPeriodicH2CyclesOwnerIso A g).hom ≫
         (Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).iCycles 2 =
@@ -268,7 +119,7 @@ private theorem cyclicPeriodicH2CyclesOwnerIso_hom_iCycles
         𝟙 ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).sc 2).X₂
   simp only [Category.id_comp, Category.comp_id]
 
-private theorem cyclicPeriodicH2DegreeOwners_comp_homResolutionIso_inv
+theorem cyclicPeriodicH2DegreeOwners_comp_homResolutionIso_inv
     (A : Rep R G) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g) :
     (cyclicPeriodicH2ScIso A g).inv.τ₂ ≫
         (cyclicPeriodicH2DegreeOwnerIso A g).hom ≫
@@ -292,7 +143,7 @@ private theorem cyclicPeriodicH2DegreeOwners_comp_homResolutionIso_inv
     rfl
   exact hOwner.mp hNative
 
-private theorem cyclicPeriodicH2OwnerIso_homologyπ
+theorem cyclicPeriodicH2OwnerIso_homologyπ
     (A : Rep R G) (g : G) :
     (cyclicPeriodicH2CyclesOwnerIso A g).hom ≫
         (Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).homologyπ 2 ≫
@@ -305,7 +156,7 @@ private theorem cyclicPeriodicH2OwnerIso_homologyπ
       ((Rep.FiniteCyclicGroup.moduleCatCochainComplex A g).sc 2).homologyπ
   simp only [Category.id_comp, Category.comp_id]
 
-private theorem cyclicPeriodicH2Iso_hom_owner
+theorem cyclicPeriodicH2Iso_hom_owner
     (A : Rep R G) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g) :
     (cyclicPeriodicH2Iso A g hg).hom =
       (HomologicalComplex.homologyMapIso
@@ -629,34 +480,6 @@ theorem finiteCyclicBarPeriodic_cyclesMap_eq
     simpa only [ConcreteCategory.comp_apply] using hi
   rw [hi', cyclicPeriodicH2CyclesMap_iCycles_apply]
   exact finiteCyclicBarPeriodicCochainMap_two_carry A g hg a
-
-omit [Fintype G] in
-theorem groupCohomologyIso_bar_hom_eq_homologyMap
-    (A : Rep R G) :
-    (groupCohomologyIso A 2 (Rep.barResolution R G)).hom =
-      HomologicalComplex.homologyMap
-        (groupCohomology.inhomogeneousCochainsIso A).hom 2 := by
-  change
-    (groupCohomologyIsoExt A 2).hom ≫
-        (Rep.barResolution.extIso R G A 2).hom = _
-  rw [show groupCohomologyIsoExt A 2 =
-    isoOfQuasiIsoAt
-        (HomotopyEquiv.ofIso
-          (groupCohomology.inhomogeneousCochainsIso A)).hom 2 ≪≫
-      (Rep.barResolution.extIso R G A 2).symm from rfl]
-  simp only [Iso.trans_hom]
-  let e := Rep.barResolution.extIso R G A 2
-  let q := isoOfQuasiIsoAt
-    (HomotopyEquiv.ofIso
-      (groupCohomology.inhomogeneousCochainsIso A)).hom 2
-  calc
-    ((q.hom ≫ e.inv) ≫ e.hom) =
-        q.hom ≫ (e.inv ≫ e.hom) :=
-      Category.assoc q.hom e.inv e.hom
-    _ = q.hom ≫ 𝟙 _ :=
-      congrArg (fun f ↦ q.hom ≫ f) e.inv_hom_id
-    _ = q.hom := Category.comp_id q.hom
-    _ = _ := isoOfQuasiIsoAt_hom _ _
 
 theorem groupCohomologyIso_bar_H2π_carry
     (A : Rep R G) (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
-import Mathlib.LinearAlgebra.Dimension.Localization
-import Mathlib.RingTheory.RamificationInertia.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+public import Mathlib.LinearAlgebra.Dimension.Localization
+public import Mathlib.RingTheory.RamificationInertia.Basic
 
 /-!
 # Defectlessness from a finite extension of valuation rings
@@ -15,6 +17,8 @@ The local Dedekind fundamental identity only needs discretely valued fields.
 Completeness and Henselianity play no role once the target valuation ring is a
 finite module over the base valuation ring.
 -/
+
+@[expose] public section
 
 noncomputable section
 

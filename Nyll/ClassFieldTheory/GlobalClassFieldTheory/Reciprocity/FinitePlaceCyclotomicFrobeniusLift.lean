@@ -4,15 +4,30 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusLift
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerPrimeProduct
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicPrincipalIdele
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseChange
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalPrimeFactor
-import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusLift
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerPrimeProduct
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicPrincipalIdele
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseChange
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalPrimeFactor
+public import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Decomposition
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.FiniteOrder
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacter
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
 
 /-!
 # Decomposition-compatible cyclotomic Frobenius lifts
@@ -30,6 +45,8 @@ in `absoluteValueDecompositionGroup_map_restrictNormalHom`.
 
 
 
+@[expose] public section
+
 open AlgebraicNumberTheory.Valuations
 open AlgebraicNumberTheory
 open HilbertRamification
@@ -38,6 +55,8 @@ open NumberField IsDedekindDomain
 open scoped NumberField
 
 noncomputable section
+
+universe u v w
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
@@ -81,7 +100,7 @@ noncomputable local instance
   rationalCyclotomicLevelIsAbelianGalois m
 
 variable
-    {K L Ω : Type}
+    {K : Type u} {L : Type v} {Ω : Type w}
     [Field K] [Field L] [Field Ω]
     [Algebra K L] [Algebra L Ω] [Algebra K Ω]
     [IsScalarTower K L Ω] [Normal K L]
@@ -171,7 +190,7 @@ of the exact extension in the abelian finite layer returns the valuation
 stabilizer statement upstairs. -/
 theorem
     infiniteGlobalArtinMonoidHom_finitePlaceIdele_mem_absoluteValueDecompositionGroup
-    {F A : Type}
+    {F : Type u} {A : Type v}
     [Field F] [NumberField F]
     [Field A] [Algebra F A] [IsAbelianGalois F A]
     (v : HeightOneSpectrum (𝓞 F))
@@ -875,7 +894,7 @@ The source is the valuation stabilizer itself, rather than an abstract
 copy of a local Galois group. -/
 noncomputable def
     numberFieldCyclotomicPadicDecompositionCoordinate
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (wC : AbsoluteValue
       (numberFieldCyclotomicZHatCompositum F) ℝ)
     (p : Nat.Primes) :
@@ -894,7 +913,7 @@ noncomputable def
 of the restricted global automorphism. -/
 @[simp]
 theorem numberFieldCyclotomicPadicDecompositionCoordinate_apply
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (wC : AbsoluteValue
       (numberFieldCyclotomicZHatCompositum F) ℝ)
     (p : Nat.Primes)
@@ -910,7 +929,7 @@ the decomposition coordinate is the `p`-adic coordinate of the
 rational cyclotomic idèle value of the ordinary field norm. -/
 theorem
     numberFieldCyclotomicPadicDecompositionCoordinate_infiniteGlobalArtin
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (wC : AbsoluteValue
       (numberFieldCyclotomicZHatCompositum F) ℝ)
     (p : Nat.Primes) (a : IdeleGroup F)
@@ -940,7 +959,7 @@ closed.  This is the compact image of the actual closed decomposition
 group in the Krull topology. -/
 theorem
     numberFieldCyclotomicPadicDecompositionCoordinate_range_isClosed
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (wC : AbsoluteValue
       (numberFieldCyclotomicZHatCompositum F) ℝ)
     (p : Nat.Primes) :
@@ -1146,7 +1165,7 @@ local formulas show that its full `p`-adic cyclotomic character is
 non-torsion, so its torsion-free coordinate cannot vanish. -/
 theorem
     numberFieldCyclotomicPadicDecompositionCoordinate_range_toAddSubgroup_ne_bot
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F))
     (wC : AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv F v)
@@ -1324,7 +1343,7 @@ group has finite index in `ℤ_[p]`.  This is the precise nonvanishing
 input used to correct a Frobenius lift inside the restriction kernel. -/
 theorem
     numberFieldCyclotomicPadicDecompositionCoordinate_range_index_ne_zero
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F))
     (wC : AbsoluteValueExtension
       (NumberField.HeightOneSpectrum.adicAbv F v)
@@ -1359,7 +1378,7 @@ theorem
 class of the chosen absolute value on the cyclotomic compositum. -/
 theorem
     numberFieldCyclotomicPadicDecompositionCoordinate_range_index_ne_zero_of_isEquiv
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F))
     (wC : AbsoluteValue
       (numberFieldCyclotomicZHatCompositum F) ℝ)
@@ -1410,7 +1429,7 @@ nonarchimedean absolute value to the unique positive normalizing exponent,
 obtaining an exact extension without changing its decomposition group. -/
 theorem
     numberFieldCyclotomicPadicDecompositionCoordinate_range_index_ne_zero_of_base_isEquiv
-    (F : Type) [Field F] [NumberField F]
+    (F : Type u) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F))
     (wC : AbsoluteValue
       (numberFieldCyclotomicZHatCompositum F) ℝ)

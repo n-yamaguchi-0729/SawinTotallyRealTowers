@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStageMapped
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStageMapped
 
 /-!
 # Restriction from the synchronized cyclotomic stage
@@ -18,6 +20,8 @@ Only the original-stage algebra and its matching F-tower are introduced
 locally; the cyclotomic tower is inherited from the mapped intermediate
 field, and no alternative algebra on that tower is installed.
 -/
+
+@[expose] public section
 
 noncomputable section
 

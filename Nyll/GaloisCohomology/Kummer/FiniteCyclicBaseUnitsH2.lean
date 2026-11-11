@@ -4,21 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicH2CoefficientNorm
-import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCocycle
-import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.Algebra.Module.LinearMap.Defs
-import Mathlib.FieldTheory.Fixed
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.RepresentationTheory.Invariants
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicH2CoefficientNorm
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCocycle
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.Module.LinearMap.Defs
+public import Mathlib.FieldTheory.Fixed
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.RepresentationTheory.Invariants
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
 
 /-!
 # Base-unit representatives for cyclic field-unit H²
@@ -28,6 +30,8 @@ In a finite cyclic Galois extension, every H² class has a carry representative
 with invariant coefficient; Galois fixed-value descent makes that coefficient
 an actual base-field unit.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

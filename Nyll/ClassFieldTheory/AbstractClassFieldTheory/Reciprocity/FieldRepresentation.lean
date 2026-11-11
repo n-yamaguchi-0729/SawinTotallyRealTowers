@@ -4,8 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
 
 /-!
 # Actual coefficient representation for an abstract extension
@@ -14,6 +15,10 @@ This file identifies the invariant carrier used by
 `extensionFixedRepresentation A K L` with the actual fixed group
 `A_L`, and compares the representation norm with `N_{L/K}`.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -27,13 +32,12 @@ noncomputable section
 
 open scoped BigOperators
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The invariant carrier in the descended quotient representation is the
 actual fixed group `A_L`. -/
 def extensionFixedRepresentationEquiv
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
     (extensionFixedRepresentation A K L hLK hnormal).V ≃+
@@ -62,7 +66,7 @@ ambientFixedAddSubgroup A L) : A.V) = a.1`.
 -/
 @[simp]
 theorem extensionFixedRepresentationEquiv_apply_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (a : (extensionFixedRepresentation A K L hLK hnormal).V) :
@@ -75,7 +79,7 @@ Establishes the identity `((extensionFixedRepresentationEquiv A K L hLK hnormal)
 -/
 @[simp]
 theorem extensionFixedRepresentationEquiv_symm_apply_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (a : ambientFixedAddSubgroup A L) :
@@ -85,7 +89,7 @@ theorem extensionFixedRepresentationEquiv_symm_apply_coe
 /-- The quotient action on `A_L` is the same coset action used by the
 relative norm. -/
 theorem extensionFixedRepresentation_action_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK)
@@ -102,23 +106,20 @@ theorem extensionFixedRepresentation_action_coe
 /-- The norm in the descended representation is the actual relative norm
 on the underlying fixed coefficient. -/
 theorem extensionFixedRepresentation_norm_coe
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (a : (extensionFixedRepresentation A K L hLK hnormal).V) :
-    letI := hnormal
-    letI := Fintype.ofFinite
+    let := hnormal
+    let := Fintype.ofFinite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    ((extensionFixedRepresentation A K L hLK hnormal).norm.hom a).1 =
+    ((extensionFixedRepresentation A K L hLK hnormal).norm.asHom.hom a).1 =
       ((relativeNorm A K L hLK
         (extensionFixedRepresentationEquiv A K L hLK hnormal a) :
           ambientFixedAddSubgroup A K) : A.V) := by
-  let := hnormal
-  let := Fintype.ofFinite
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK)
+  intro sharedOwner1 sharedOwner2
   rw [relativeNorm_apply_coe]
-  simp only [Rep.norm, Representation.norm, relativeNormValue]
   let M := extensionFixedRepresentation A K L hLK hnormal
   let : Module ℤ M.V := M.hV2
   change ((∑ q, M.ρ q) a).1 =

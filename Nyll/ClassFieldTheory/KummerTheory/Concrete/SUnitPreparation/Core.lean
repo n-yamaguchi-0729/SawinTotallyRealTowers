@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.EnlargedSUnitRestriction
-import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitLocalPowerKernel
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
+module
+
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.EnlargedSUnitRestriction
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitLocalPowerKernel
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FiniteRadicalSupport
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
 
 /-!
 # Rank and kernel coordinates for S-unit preparation
@@ -19,6 +22,8 @@ cardinality, and prime-power coordinates.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain

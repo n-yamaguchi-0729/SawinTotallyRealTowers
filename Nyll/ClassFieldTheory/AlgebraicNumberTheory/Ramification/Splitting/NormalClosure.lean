@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
-import Mathlib.FieldTheory.Normal.Closure
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
+public import Mathlib.FieldTheory.Normal.Closure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
 /-!
 # Complete splitting and normal closures
@@ -33,6 +36,10 @@ completely already in `M`.
 
 
 
+@[expose] public section
+
+universe u v w
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -43,7 +50,7 @@ open HilbertRamification
 
 section AbsoluteValueExtensions
 
-variable {K M : Type}
+variable {K : Type u} {M : Type v}
     [Field K] [Field M] [Algebra K M]
 
 /-- Extend an actual extension of `v` from an intermediate field to the
@@ -308,7 +315,7 @@ end AbsoluteValueExtensions
 
 section CompleteSplitting
 
-variable {K E : Type}
+variable {K : Type u} {E : Type v}
     [Field K] [Field E] [Algebra K E]
     [FiniteDimensional K E]
 
@@ -335,7 +342,7 @@ end CompleteSplitting
 
 section DoubleCosetCount
 
-variable {K M : Type}
+variable {K : Type u} {M : Type v}
     [Field K] [Field M] [Algebra K M]
     [IsGalois K M]
 
@@ -441,7 +448,7 @@ end DoubleCosetCount
 
 section NormalClosure
 
-variable {K M : Type}
+variable {K : Type u} {M : Type v}
     [Field K] [Field M] [Algebra K M]
     [FiniteDimensional K M] [IsGalois K M]
 
@@ -495,7 +502,7 @@ end NormalClosure
 
 section FinitePlaces
 
-variable {K M : Type}
+variable {K : Type u} {M : Type v}
     [Field K] [NumberField K]
     [Field M] [Algebra K M]
     [FiniteDimensional K M] [IsGalois K M]
@@ -624,7 +631,7 @@ end FinitePlaces
 section SplittingTransport
 
 variable
-    {K E E' : Type}
+    {K : Type u} {E : Type v} {E' : Type w}
     [Field K]
     [Field E] [Algebra K E]
     [Field E'] [Algebra K E']
@@ -703,7 +710,7 @@ end SplittingTransport
 section GaloisSplittingBridge
 
 variable
-    {K E : Type}
+    {K : Type u} {E : Type v}
     [Field K] [NumberField K]
     [Field E] [Algebra K E]
     [FiniteDimensional K E]
@@ -762,7 +769,7 @@ end GaloisSplittingBridge
 section SplittingThroughRestriction
 
 variable
-    {K E N : Type}
+    {K : Type u} {E : Type v} {N : Type w}
     [Field K] [NumberField K]
     [Field E] [Algebra K E]
     [FiniteDimensional K E] [IsGalois K E]
@@ -873,7 +880,7 @@ end SplittingThroughRestriction
 section FiniteNormalClosure
 
 variable
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
 

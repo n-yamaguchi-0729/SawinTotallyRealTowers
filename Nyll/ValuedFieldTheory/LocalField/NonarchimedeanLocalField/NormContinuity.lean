@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
-import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Topology.Instances.Matrix
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
+public import Mathlib.Topology.Instances.Matrix
 
 /-!
 # Continuity of finite field norms
@@ -19,6 +21,8 @@ statements for field units and valuation-ring units.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

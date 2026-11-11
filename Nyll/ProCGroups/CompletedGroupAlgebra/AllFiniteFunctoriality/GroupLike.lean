@@ -4,13 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Map
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.Map
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Completed Group Algebra / All Finite Functoriality / Group-Like
 
 This module records the action of the all-finite functorial map on canonical group-like elements.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -76,12 +82,11 @@ theorem completedGroupAlgebraOf_mul (g h : G) :
 /-- The finite-stage group-like map \(G\to R[G/U]\) is continuous. -/
 theorem continuous_completedGroupAlgebraStageMap_of
     (U : CompletedGroupAlgebraIndex G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
       (completedGroupAlgebraSystem R G).topologicalSpace U
     Continuous fun g : G =>
       completedGroupAlgebraStageMap R G U (MonoidAlgebra.of R G g) := by
-  let : TopologicalSpace (CompletedGroupAlgebraStage R G U) :=
-    (completedGroupAlgebraSystem R G).topologicalSpace U
+  intro sharedOwner1
   let : DiscreteTopology (CompletedGroupAlgebraQuotient G U) :=
     QuotientGroup.discreteTopology
       (ProCGroups.openNormalSubgroup_isOpen

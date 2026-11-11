@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPBoundary
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.RelationReflection
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationRealization
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPBoundary
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.RelationReflection
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationRealization
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebra
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Finite mod-p Fox stages of a presentation
@@ -16,6 +20,8 @@ finite Fox stage.  Relation-ideal differentiation supplies module-level and
 function-level exactness of the relation boundary followed by the Fox
 boundary at that stage.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

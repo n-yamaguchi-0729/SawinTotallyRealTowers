@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitsNorm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitsNorm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
 /-!
 # LubinTate the explicit norm-subgroup computation: the sharp standard subgroup consists of norms
@@ -15,6 +17,10 @@ the division-level inclusion `(T⁻¹) × U^(n+1) ≤ N(L_n/K)`.
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 noncomputable section
 
@@ -28,20 +34,19 @@ open LocalFieldTheory
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 /-- The canonical field principal-unit subgroup `U^(n+1)` consists of
 norms from the standard level. -/
 theorem equalCharacteristicLubinTate_fieldPrincipalUnits_le_normSubgroup
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
-    letI : ValuativeRel F.residueField⸨X⸩ :=
+    let : ValuativeRel F.residueField⸨X⸩ :=
       equalCharacteristicLaurentValuativeRel F
     LocalFieldTheory.fieldPrincipalUnits F.residueField⸨X⸩ (n + 1) ≤
       equalCharacteristicLubinTateNormSubgroup F n := by
-  let : ValuativeRel F.residueField⸨X⸩ :=
-    equalCharacteristicLaurentValuativeRel F
+  intro sharedOwner1
   rw [← equalCharacteristicLubinTateHigherUnitSubgroup_map_toLaurentField_eq]
   rintro x ⟨a, ha, rfl⟩
   exact
@@ -52,16 +57,15 @@ theorem equalCharacteristicLubinTate_fieldPrincipalUnits_le_normSubgroup
 subgroup. -/
 theorem
     equalCharacteristicLubinTate_uniformizerPrincipalSubgroup_le_normSubgroup
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
-    letI : ValuativeRel F.residueField⸨X⸩ :=
+    let : ValuativeRel F.residueField⸨X⸩ :=
       equalCharacteristicLaurentValuativeRel F
     LocalFieldTheory.uniformizerPrincipalSubgroup F.residueField⸨X⸩
         ((equalCharacteristicLaurentUniformizerUnit F)⁻¹) 1 (n + 1) ≤
       equalCharacteristicLubinTateNormSubgroup F n := by
-  let : ValuativeRel F.residueField⸨X⸩ :=
-    equalCharacteristicLaurentValuativeRel F
+  intro sharedOwner1
   rw [LocalFieldTheory.uniformizerPrincipalSubgroup]
   apply sup_le
   · simpa using

@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.Algebra.Group.Hom.Basic
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.IntegerMultipleSubgroup
-import Mathlib.RingTheory.RootsOfUnity.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.Algebra.Group.Hom.Basic
+public import Mathlib.Algebra.Group.TypeTags.Finite
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.IntegerMultipleSubgroup
+public import Mathlib.RingTheory.RootsOfUnity.Basic
 
 /-!
 # Power indices in commutative groups
@@ -19,6 +22,8 @@ kernel are mathlib's `powMonoidHom`, `MonoidHom.range`, and `MonoidHom.ker`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -277,7 +282,7 @@ theorem nthPowerProductQuotientHom_surjective (n : ℕ) :
   intro h
   exact ⟨(g, h), rfl⟩
 
-/-- The product power-class homomorphism has trivial kernel. -/
+/-- The kernel of the product power-class homomorphism is the subgroup of `n`th powers. -/
 theorem nthPowerProductQuotientHom_ker (n : ℕ) :
     (nthPowerProductQuotientHom G H n).ker =
       (powMonoidHom n : (G × H) →* (G × H)).range := by
@@ -621,7 +626,7 @@ theorem powMonoidHom_range_multiplicative_eq_nsmulAddSubgroup_toSubgroup
     rcases hxadd with ⟨y, hy⟩
     refine ⟨Multiplicative.ofAdd y, ?_⟩
     apply Multiplicative.toAdd.injective
-    simp [hy]
+    exact hy
 
 /-- General cardinal form of the multiplicative/additive quotient
 translation. -/

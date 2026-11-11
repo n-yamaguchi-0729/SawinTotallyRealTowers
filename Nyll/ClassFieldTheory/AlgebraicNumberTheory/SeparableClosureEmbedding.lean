@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.FieldTheory.KrullTopology
-import Mathlib.NumberTheory.NumberField.Basic
+module
+
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.FieldTheory.KrullTopology
+public import Mathlib.NumberTheory.NumberField.Basic
 
 /-!
 # Embeddings into a separable closure
@@ -16,6 +18,8 @@ chosen separable closure of its base field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+module
+
+public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # finite abelian Kummer theory, the finite abelian Kummer decomposition: the cyclic
@@ -20,6 +22,10 @@ stabilizer.  This is the abstract analogue of the construction
 `a^σ⁻¹ = ζ` and hence the single-radical generation step.
 -/
 
+@[expose] public section
+
+universe u v
+
 namespace KummerTheory
 
 open CyclicCohomology
@@ -33,8 +39,8 @@ open CategoryTheory
 /-- Stabilizer for the action carried by a representation.  We keep it
 explicit because a `Representation` does not install its action as a global
 `MulAction` instance on the underlying module. -/
-def representationStabilizer {Q : IntegralRepGroupType} [Group Q]
-    (B : Rep ℤ Q) (a : B.V) : Subgroup Q := by
+def representationStabilizer {Q : Type u} [Group Q]
+    (B : Rep.{v} ℤ Q) (a : B.V) : Subgroup Q := by
   letI : Module ℤ B.V := B.hV2
   exact
     { carrier := {q | B.ρ q a = a}
@@ -60,9 +66,9 @@ The two conclusions say that `wp a` belongs to the base fixed module and
 that the orbit of `a` has the full size of `Q`.  No radical element or
 generation assertion is assumed. -/
 theorem cyclic_single_radical_of_tateHMinusOne_isZero
-    {Q : IntegralRepGroupType} [Group Q] [Fintype Q]
-    (B : Rep ℤ Q) (g : Q) (hg : ∀ q, q ∈ Subgroup.zpowers g)
-    (hzero : Limits.IsZero (tateCohomology B (-1)))
+    {Q : Type u} [Group Q] [Fintype Q]
+    (B : Rep.{v} ℤ Q) (g : Q) (hg : ∀ q, q ∈ Subgroup.zpowers g)
+    (hzero : Limits.IsZero (IntegralGroupCohomology.Universe.tate B (-1)))
     (wp : B ⟶ B) (n : ℕ+) (xi : B.V)
     (hxi_order : addOrderOf xi = (n : ℕ))
     (hxi_kernel : wp.hom xi = 0)
@@ -95,13 +101,13 @@ theorem cyclic_single_radical_of_tateHMinusOne_isZero
     simp only [eta, map_nsmul, hxi_fixed]
   have heta_kernel : wp.hom eta = 0 := by
     simp only [eta, map_nsmul, hxi_kernel, smul_zero]
-  have heta_norm : B.norm.hom eta = 0 := by
-    have hnorm : B.norm.hom eta = d • eta := by
+  have heta_norm : B.norm.asHom.hom eta = 0 := by
+    have hnorm : B.norm.asHom.hom eta = d • eta := by
       simp [Rep.norm, Representation.norm, d, heta_fixed]
     rw [hnorm, ← heta_order]
     exact addOrderOf_nsmul_eq_zero eta
   obtain ⟨a, ha⟩ :=
-    normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
+    IntegralGroupCohomology.Universe.normKernel_of_tate_isZero
       B g hg hzero eta heta_norm
   have ha' : B.ρ g a = eta + a := by
     exact eq_add_of_sub_eq ha
@@ -154,7 +160,7 @@ theorem cyclic_single_radical_of_tateHMinusOne_isZero
 
 /-- Finite-cyclic, single-radical frontier of finite abelian Kummer theory, the finite abelian
 Kummer decomposition,
-now obtained from `SatisfiesCyclicNormKernelVanishing` itself.
+now obtained from `SatisfiesIntegralCyclicNormKernelVanishing` itself.
 
 Here `B` is the actual coefficient representation `A_L` attached to the
 abstract cyclic extension.  The operator is stated on `B`; constructing it
@@ -162,8 +168,8 @@ functorially from a global operator on `A`, and assembling cyclic
 subextensions into the full abelian Kummer extension, are deliberately not
 claimed in this theorem. -/
 theorem cyclicOperator_singleRadical_of_normKernelVanishing
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G) (hAxiom : SatisfiesCyclicNormKernelVanishing A)
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G) (hAxiom : SatisfiesIntegralCyclicNormKernelVanishing A)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup K L hLK).Normal]
     [hfinite : Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
@@ -185,7 +191,8 @@ theorem cyclicOperator_singleRadical_of_normKernelVanishing
   let : Fintype (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
     Fintype.ofFinite (K.toSubgroup ⧸ extensionSubgroup K L hLK)
   have hzero : Limits.IsZero
-      (tateCohomology (extensionFixedRepresentation A K L hLK hnormal) (-1)) :=
+      (IntegralGroupCohomology.Universe.tate
+        (extensionFixedRepresentation A K L hLK hnormal) (-1)) :=
     hAxiom K L hLK hnormal hfinite g hg
   apply cyclic_single_radical_of_tateHMinusOne_isZero
     (extensionFixedRepresentation A K L hLK hnormal) g hg hzero

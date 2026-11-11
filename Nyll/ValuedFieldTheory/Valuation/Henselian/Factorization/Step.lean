@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DegreeBounds
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DegreeBounds
 
 /-!
 # one Hensel iteration step
@@ -14,6 +16,8 @@ This file packages the algebraic correction, degree truncation, and `π`-power
 update into the single step used recursively in the proof of Hensel's
 lemma.
 -/
+
+@[expose] public section
 
 noncomputable section
 

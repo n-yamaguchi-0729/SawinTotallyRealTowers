@@ -4,8 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
-import Mathlib.Dynamics.BirkhoffSum.Basic
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormConjugation
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
+public import Nyll.GaloisCohomology.GroupTheory.RepresentationPowers
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
+public import Mathlib.Dynamics.BirkhoffSum.Basic
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # Universal norm descent
@@ -15,7 +22,9 @@ calculation used by the abstract reciprocity construction, together with
 the norm, action, and iterate identities it requires.
 -/
 
-universe u v
+@[expose] public section
+
+universe u v uG uA
 
 namespace ClassFormation
 
@@ -33,8 +42,8 @@ open scoped BigOperators
 group action.  This is the equivariance used when the construction applies the norm
 to equation `(*)`. -/
 private theorem restricted_norm_action
-    {R : IntegralRepGroupType} [Group R] (H : Subgroup R) [H.Normal] [Fintype H]
-    (B : Rep ℤ R) (r : R) (x : B.V) :
+    {R : Type uG} [Group R] (H : Subgroup R) [H.Normal] [Fintype H]
+    (B : Rep.{uA} ℤ R) (r : R) (x : B.V) :
     (∑ h : H, B.ρ h.1 (B.ρ r x)) =
       B.ρ r (∑ h : H, B.ρ h.1 x) := by
   rw [map_sum]
@@ -52,7 +61,7 @@ private theorem restricted_norm_action
           rfl
         _ = B.ρ (r * (e h).1) x := by
           rw [he]
-          simp [mul_assoc]
+          rw [mul_assoc, mul_inv_cancel_left]
         _ = B.ρ r (B.ρ (e h).1 x) := by
           rw [map_mul]
           rfl
@@ -60,34 +69,38 @@ private theorem restricted_norm_action
       exact e.sum_comp (fun h : H => B.ρ r (B.ρ h.1 x))
 
 private theorem restricted_rep_norm_action
-    {R : IntegralRepGroupType} [Group R] (H : Subgroup R) [H.Normal] [Fintype H]
-    (B : Rep ℤ R) (r : R) (x : B.V) :
-    let U : Rep ℤ H := Rep.res H.subtype B
-    U.norm.hom (B.ρ r x) = B.ρ r (U.norm.hom x) := by
-  let U : Rep ℤ H := Rep.res H.subtype B
-  simpa [Rep.norm, Representation.norm] using
-    restricted_norm_action H B r x
+    {R : Type uG} [Group R] (H : Subgroup R) [H.Normal] [Fintype H]
+    (B : Rep.{uA} ℤ R) (r : R) (x : B.V) :
+    let U : Rep.{uA} ℤ H := Rep.res H.subtype B
+    U.norm.asHom.hom (B.ρ r x) = B.ρ r (U.norm.asHom.hom x) := by
+  intro U
+  have hnorm (y : B.V) : U.norm.asHom.hom y = ∑ h : H, B.ρ h.1 y :=
+    LinearMap.sum_apply Finset.univ (fun h : H => B.ρ h.1) y
+  calc
+    U.norm.asHom.hom (B.ρ r x) = ∑ h : H, B.ρ h.1 (B.ρ r x) := hnorm _
+    _ = B.ρ r (∑ h : H, B.ρ h.1 x) := restricted_norm_action H B r x
+    _ = B.ρ r (U.norm.asHom.hom x) := congrArg (B.ρ r) (hnorm x).symm
 
 /-- Transport the ordinary conjugation action back to a field stabilized
 by that conjugation. -/
 noncomputable def conjugateStableAction
-    {R : IntegralRepGroupType} [Group R] [TopologicalSpace R] [ContinuousMul R]
-    (B : Rep ℤ R) (F : ClosedSubgroup R) (s : R)
+    {R : Type uG} [Group R] [TopologicalSpace R] [ContinuousMul R]
+    (B : Rep.{uA} ℤ R) (F : ClosedSubgroup R) (s : R)
     (hF : conjugateClosedSubgroup F s = F)
     (a : ambientFixedAddSubgroup B F) : ambientFixedAddSubgroup B F :=
   hF ▸ conjugateFixedElement B F s a
 
 private theorem transport_fixed_coe
-    {R : IntegralRepGroupType} [Group R] [TopologicalSpace R]
-    (B : Rep ℤ R) (F' F : ClosedSubgroup R) (h : F' = F)
+    {R : Type uG} [Group R] [TopologicalSpace R]
+    (B : Rep.{uA} ℤ R) (F' F : ClosedSubgroup R) (h : F' = F)
     (a : ambientFixedAddSubgroup B F') :
     (((h ▸ a : ambientFixedAddSubgroup B F) : B.V)) = a.1 := by
   cases h
   rfl
 
 private theorem relativeNorm_transport_coe
-    {R : IntegralRepGroupType} [Group R] [TopologicalSpace R]
-    (B : Rep ℤ R)
+    {R : Type uG} [Group R] [TopologicalSpace R]
+    (B : Rep.{uA} ℤ R)
     (F' E' F E : ClosedSubgroup R)
     (hF : F' = F) (hE : E' = E)
     (hE'F' : E'.toSubgroup ≤ F'.toSubgroup)
@@ -104,8 +117,8 @@ private theorem relativeNorm_transport_coe
 /-- The conjugation-stable action agrees with its ambient action after coercion. -/
 @[simp]
 theorem conjugateStableAction_coe
-    {R : IntegralRepGroupType} [Group R] [TopologicalSpace R] [ContinuousMul R]
-    (B : Rep ℤ R) (F : ClosedSubgroup R) (s : R)
+    {R : Type uG} [Group R] [TopologicalSpace R] [ContinuousMul R]
+    (B : Rep.{uA} ℤ R) (F : ClosedSubgroup R) (s : R)
     (hF : conjugateClosedSubgroup F s = F)
     (a : ambientFixedAddSubgroup B F) :
     ((conjugateStableAction B F s hF a : ambientFixedAddSubgroup B F) : B.V) =
@@ -115,8 +128,8 @@ theorem conjugateStableAction_coe
 /-- Relative norm is equivariant for a conjugation stabilizing both
 fields in the tower. -/
 theorem relativeNorm_conjugateStableAction
-    {R : IntegralRepGroupType} [Group R] [TopologicalSpace R] [ContinuousMul R]
-    (B : Rep ℤ R) (F E : ClosedSubgroup R)
+    {R : Type uG} [Group R] [TopologicalSpace R] [ContinuousMul R]
+    (B : Rep.{uA} ℤ R) (F E : ClosedSubgroup R)
     (hEF : E.toSubgroup ≤ F.toSubgroup) (s : R)
     [Finite (F.toSubgroup ⧸ extensionSubgroup F E hEF)]
     (hF : conjugateClosedSubgroup F s = F)
@@ -155,14 +168,14 @@ the class of `u` in coinvariants is fixed by `φ`.  The conclusion is not
 assumed: `H⁰=0` first produces the barred lifts, and `H⁻¹=0` then produces
 the correction term `y` appearing. -/
 theorem universalNormDescent_cyclic_lift_and_correction
-    {R : IntegralRepGroupType} [Group R] (H : Subgroup R) [H.Normal] [Fintype H]
-    (B : Rep ℤ R) (g : H) (hg : ∀ q, q ∈ Subgroup.zpowers g)
+    {R : Type uG} [Group R] (H : Subgroup R) [H.Normal] [Fintype H]
+    (B : Rep.{uA} ℤ R) (g : H) (hg : ∀ q, q ∈ Subgroup.zpowers g)
     (hzero0 :
-      let U : Rep ℤ H := Rep.res H.subtype B
-      Limits.IsZero (tateCohomology U 0))
+      let U : Rep.{uA} ℤ H := Rep.res H.subtype B
+      Limits.IsZero (IntegralGroupCohomology.Universe.tate U 0))
     (hzeroMinusOne :
-      let U : Rep ℤ H := Rep.res H.subtype B
-      Limits.IsZero (tateCohomology U (-1)))
+      let U : Rep.{uA} ℤ H := Rep.res H.subtype B
+      Limits.IsZero (IntegralGroupCohomology.Universe.tate U (-1)))
     {ι : Type v} (s : Finset ι) (φ : R) (τ : ι → R)
     (u : B.V) (uᵢ : ι → B.V)
     (huFixed : ∀ q : H, B.ρ q.1 u = u)
@@ -175,26 +188,26 @@ theorem universalNormDescent_cyclic_lift_and_correction
       B.ρ g.1 y - y =
         B.ρ φ uBar - uBar -
           ∑ i ∈ s, (B.ρ (τ i) (uBarᵢ i) - uBarᵢ i) := by
-  let U : Rep ℤ H := Rep.res H.subtype B
+  let U : Rep.{uA} ℤ H := Rep.res H.subtype B
   have huGenerator : U.ρ g u = u := huFixed g
-  have huLift : ∃ z : B.V, U.norm.hom z = u :=
-    exists_norm_eq_of_tateHZero_isZero U g hg hzero0 u huGenerator
+  have huLift : ∃ z : B.V, U.norm.asHom.hom z = u :=
+    IntegralGroupCohomology.Universe.exists_norm_eq_of_tate_isZero U g hg hzero0 u huGenerator
   obtain ⟨uBar, huBar⟩ := huLift
   have huᵢGenerator (i : ι) : U.ρ g (uᵢ i) = uᵢ i := huᵢFixed i g
-  have huᵢLift (i : ι) : ∃ z : B.V, U.norm.hom z = uᵢ i :=
-    exists_norm_eq_of_tateHZero_isZero U g hg hzero0
+  have huᵢLift (i : ι) : ∃ z : B.V, U.norm.asHom.hom z = uᵢ i :=
+    IntegralGroupCohomology.Universe.exists_norm_eq_of_tate_isZero U g hg hzero0
       (uᵢ i) (huᵢGenerator i)
   choose uBarᵢ huBarᵢ using huᵢLift
   let delta : B.V :=
     B.ρ φ uBar - uBar -
       ∑ i ∈ s, (B.ρ (τ i) (uBarᵢ i) - uBarᵢ i)
-  have hdeltaNorm : U.norm.hom delta = 0 := by
+  have hdeltaNorm : U.norm.asHom.hom delta = 0 := by
     calc
-      U.norm.hom delta =
-          U.norm.hom (B.ρ φ uBar) - U.norm.hom uBar -
+      U.norm.asHom.hom delta =
+          U.norm.asHom.hom (B.ρ φ uBar) - U.norm.asHom.hom uBar -
             ∑ i ∈ s,
-              (U.norm.hom (B.ρ (τ i) (uBarᵢ i)) -
-                U.norm.hom (uBarᵢ i)) := by
+              (U.norm.asHom.hom (B.ρ (τ i) (uBarᵢ i)) -
+                U.norm.asHom.hom (uBarᵢ i)) := by
         dsimp [delta]
         rw [map_sub, map_sub, map_sum]
         simp_rw [map_sub]
@@ -207,7 +220,7 @@ theorem universalNormDescent_cyclic_lift_and_correction
         rw [restricted_rep_norm_action H B (τ i) (uBarᵢ i), huBarᵢ i]
       _ = 0 := by rw [hstar, sub_self]
   obtain ⟨y, hy⟩ :=
-    CyclicCohomology.normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
+    IntegralGroupCohomology.Universe.normKernel_of_tate_isZero
       U g hg hzeroMinusOne delta hdeltaNorm
   refine ⟨uBar, uBarᵢ, y, ?_, ?_, ?_⟩
   · simpa [U, Rep.norm, Representation.norm] using huBar
@@ -218,10 +231,10 @@ theorem universalNormDescent_cyclic_lift_and_correction
 /-- Enumerate the norm of a finite cyclic representation by the first
 n powers of a specified generator. -/
 theorem rep_norm_eq_generatorPowerSum
-    {Q : IntegralRepGroupType} [Group Q] [Fintype Q]
-    (B : Rep ℤ Q) (g : Q) (hg : ∀ q, q ∈ Subgroup.zpowers g)
+    {Q : Type uG} [Group Q] [Fintype Q]
+    (B : Rep.{uA} ℤ Q) (g : Q) (hg : ∀ q, q ∈ Subgroup.zpowers g)
     (n : ℕ) (hcard : Fintype.card Q = n) (x : B.V) :
-    B.norm.hom x = ∑ i : Fin n, B.ρ (g ^ i.1) x := by
+    B.norm.asHom.hom x = ∑ i : Fin n, B.ρ (g ^ i.1) x := by
   classical
   have horder : orderOf g = n := by
     calc
@@ -252,35 +265,19 @@ theorem rep_norm_eq_generatorPowerSum
     (e.sum_comp (fun q : Q => B.ρ q x)).symm
   simpa [Rep.norm, Representation.norm] using hsum
 
-/-- Powers in a representation are the iterates of the corresponding
-action map. -/
-theorem rep_action_pow_eq_iterate {R : IntegralRepGroupType} [Group R]
-    (B : Rep ℤ R) (g : R) (n : ℕ) (x : B.V) :
-    B.ρ (g ^ n) x = ((B.ρ g)^[n]) x := by
-  let : Module ℤ B.V := B.hV2
-  rw [map_pow, Module.End.coe_pow]
-
 /-- Replace the generator action in the preceding norm formula by a
 pointwise equal endomorphism and enumerate its iterates. -/
 theorem rep_norm_eq_generatorIterateSum
-    {Q : IntegralRepGroupType} [Group Q] [Fintype Q]
-    (B : Rep ℤ Q) (g : Q) (hg : ∀ q, q ∈ Subgroup.zpowers g)
+    {Q : Type uG} [Group Q] [Fintype Q]
+    (B : Rep.{uA} ℤ Q) (g : Q) (hg : ∀ q, q ∈ Subgroup.zpowers g)
     (n : ℕ) (hcard : Fintype.card Q = n)
     (f : B.V → B.V) (hf : ∀ z, B.ρ g z = f z) (x : B.V) :
-    B.norm.hom x = ∑ i : Fin n, (f^[i.1]) x := by
+    B.norm.asHom.hom x = ∑ i : Fin n, (f^[i.1]) x := by
   rw [rep_norm_eq_generatorPowerSum B g hg n hcard x]
   apply Finset.sum_congr rfl
   intro i _
   rw [rep_action_pow_eq_iterate]
   exact congrFun (congrArg (fun h : B.V → B.V => h^[i.1]) (funext hf)) x
-
-/-- Every nonnegative power fixes an element fixed by the original group
-element. -/
-theorem rep_action_pow_fixed {R : IntegralRepGroupType} [Group R]
-    (B : Rep ℤ R) (g : R) (x : B.V) (hx : B.ρ g x = x) (n : ℕ) :
-    B.ρ (g ^ n) x = x := by
-  rw [rep_action_pow_eq_iterate]
-  exact Function.IsFixedPt.iterate hx n
 
 end
 

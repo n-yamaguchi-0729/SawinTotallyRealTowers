@@ -4,21 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
-import Mathlib.Algebra.Algebra.Basic
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Mathlib.RingTheory.Valuation.Extension
-import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.RingTheory.LocalRing.ResidueField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
 
 /-!
 # Relative unramified extensions inside a fixed separable closure
@@ -27,6 +29,8 @@ The relative unramified extension is realized as a named fixed field. Its inclus
 algebra structure are compared with the relative field, and its degree, residue degree,
 Galois property, and unramified valuation extension are recorded.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -121,12 +125,12 @@ def relativeUnramifiedFixedField_algebra
 private def relativeUnramifiedFixedField_equivRelative
     (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (m : ℕ) (hm : 0 < m) :
-    letI := relativeUnramifiedFixedField_algebra K H m hm
+    let := relativeUnramifiedFixedField_algebra K H m hm
     relativeUnramifiedFixedField K H m hm ≃ₐ[
       abstractFixedField K (SeparableClosure K) H.field]
       abstractRelativeFixedField K (SeparableClosure K) (K := H.field)
         (relativeUnramifiedFiniteExtension K H m hm).below := by
-  letI := relativeUnramifiedFixedField_algebra K H m hm
+  intro sharedOwner1
   exact {
     toFun := fun x => ⟨x.1, x.2⟩
     invFun := fun x => ⟨x.1, x.2⟩
@@ -203,7 +207,8 @@ theorem relativeUnramifiedFixedField_isGalois
   exact IsGalois.of_algEquiv
     (relativeUnramifiedFixedField_equivRelative K H m hm).symm
 
-private theorem relativeUnramifiedFixedField_integer_isLocalHom
+/-- The relative fixed-field inclusion is local on the compatible valuation integer rings. -/
+theorem relativeUnramifiedFixedField_integer_isLocalHom
     (H : FiniteAbstractField (Gal(SeparableClosure K/K))) (m : ℕ) (hm : 0 < m)
     [ValuativeRel (abstractFixedField K (SeparableClosure K) H.field)]
     [ValuativeRel (relativeUnramifiedFixedField K H m hm)]

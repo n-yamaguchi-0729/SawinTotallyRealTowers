@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
-import Mathlib.Tactic.Ring
+module
+
+public import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
+public import Mathlib.Tactic.Ring
 
 /-!
 # The continuous cup product of two trivial mod-p characters
@@ -18,6 +20,8 @@ representatives give the degree-two cochain
 This file constructs that cochain directly and proves its cocycle equation.
 No choice of cocycle representatives is involved.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open ClassFieldTower.ProP

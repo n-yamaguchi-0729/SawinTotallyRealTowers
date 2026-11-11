@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.LinearDisjoint
-import Mathlib.LinearAlgebra.Dimension.Constructions
-import Mathlib.LinearAlgebra.TensorProduct.Basis
+module
+
+public import Mathlib.FieldTheory.LinearDisjoint
+public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.LinearAlgebra.TensorProduct.Basis
 
 /-!
 # Coprime tensor-product base change of a Galois extension
@@ -24,14 +26,16 @@ dimension of the tensor product.
 
 
 
+@[expose] public section
+
 open scoped TensorProduct
 
 noncomputable section
 
-universe u
+universe u v w
 
 variable
-    (K M L : Type u)
+    (K : Type u) (M : Type v) (L : Type w)
     [Field K] [Field M] [Field L]
     [Algebra K M] [Algebra K L]
     [hKM : FiniteDimensional K M]
@@ -79,7 +83,10 @@ def tensorBaseChangeAut
       (AlgEquiv.refl : M ≃ₐ[K] M) σ).toRingEquiv with
     commutes' := by
       intro m
-      simp [Algebra.TensorProduct.algebraMap_apply] }
+      simp only [AlgEquiv.toEquiv_eq_coe, Algebra.TensorProduct.algebraMap_apply,
+        Algebra.algebraMap_self, RingHom.id_apply, Equiv.toFun_as_coe, EquivLike.coe_coe,
+        Algebra.TensorProduct.congr_apply, AlgEquiv.refl_toAlgHom, Algebra.TensorProduct.map_tmul,
+        AlgHom.coe_id, id_eq, map_one] }
 
 omit hKM hKL hGalois in
 @[simp]
@@ -88,7 +95,9 @@ theorem tensorBaseChangeAut_tmul
     (m : M) (x : L) :
     tensorBaseChangeAut K M L σ (m ⊗ₜ[K] x) =
       m ⊗ₜ[K] σ x := by
-  simp [tensorBaseChangeAut]
+  simp only [tensorBaseChangeAut, AlgEquiv.toEquiv_eq_coe, AlgEquiv.coe_mk, EquivLike.coe_coe,
+    Algebra.TensorProduct.congr_apply, AlgEquiv.refl_toAlgHom, Algebra.TensorProduct.map_tmul,
+    AlgHom.coe_id, id_eq, AlgEquiv.coe_toAlgHom]
 
 omit hKM hKL hGalois in
 /-- Distinct automorphisms remain distinct after tensor base change. -/

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Mathlib.LinearAlgebra.Pi
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # The family of finite-place degree-two localization maps
@@ -13,6 +15,8 @@ import Mathlib.LinearAlgebra.Pi
 The restriction maps to all absolute decomposition subgroups are assembled into one linear map
 with dependent function codomain.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 

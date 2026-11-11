@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Homeomorph.Lemmas
-import Mathlib.Topology.DiscreteQuotient
-import Mathlib.Topology.Separation.Profinite
-import Nyll.ProCGroups.InverseSystems.CofinalityAndDensity
+module
+
+public import Mathlib.Topology.Homeomorph.Lemmas
+public import Mathlib.Topology.DiscreteQuotient
+public import Mathlib.Topology.Connected.TotallyDisconnected
+public import Mathlib.Topology.InductiveDimension.Classes
+public import Mathlib.Topology.Separation.Regular
+public import Nyll.ProCGroups.InverseSystems.CofinalityAndDensity
 
 /-!
 # Profinite spaces as limits of finite discrete quotients
@@ -17,6 +21,8 @@ system of finite discrete quotients.  This module constructs the canonical homeo
 the space to that inverse limit and also proves the clopen-basis criterion used in the converse
 direction.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -35,7 +41,7 @@ theorem exists_clopen_subset_of_mem_open {X : Type w} [TopologicalSpace X]
     [CompactSpace X] [T2Space X] [TotallyDisconnectedSpace X]
     {x : X} {U : Set X} (hU : IsOpen U) (hx : x ∈ U) :
     ∃ V : Set X, IsClopen V ∧ x ∈ V ∧ V ⊆ U :=
-  compact_exists_isClopen_in_isOpen hU hx
+  exists_isClopen_mem_of_isOpen hU hx
 
 /-- The inverse system of all discrete quotients of \(X\). -/
 def discreteQuotientSystem (X : Type w) [TopologicalSpace X] :
@@ -52,7 +58,7 @@ def discreteQuotientSystem (X : Type w) [TopologicalSpace X] :
     exact congrFun (DiscreteQuotient.ofLE_comp_ofLE hRT hQR) x
 
 /-- The discrete quotient projections form a compatible family of maps. -/
-private theorem compatibleMaps_discreteQuotientProj (X : Type w) [TopologicalSpace X] :
+theorem compatibleMaps_discreteQuotientProj (X : Type w) [TopologicalSpace X] :
     (discreteQuotientSystem X).CompatibleMaps
       (fun Q : OrderDual (DiscreteQuotient X) => (Q : DiscreteQuotient X).proj) := by
   intro Q R h
@@ -124,7 +130,8 @@ its discrete quotients has \(Q\)-coordinate equal to the quotient projection of 
 theorem totallyDisconnectedSpace_of_t2_basis_clopen (X : Type w) [TopologicalSpace X] [T2Space X]
     (hX : TopologicalSpace.IsTopologicalBasis {s : Set X | IsClopen s}) :
     TotallyDisconnectedSpace X := by
-  let _ : TotallySeparatedSpace X := totallySeparatedSpace_of_t0_of_basis_clopen hX
+  have : ZeroDimensionalSpace X :=
+    zeroDimensionalSpace_iff_isTopologicalBasis_isClopen.mpr hX
   infer_instance
 
 end ProCGroups.InverseSystems

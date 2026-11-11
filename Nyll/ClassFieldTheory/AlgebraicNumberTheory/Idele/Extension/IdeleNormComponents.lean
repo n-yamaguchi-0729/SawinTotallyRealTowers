@@ -4,10 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalNorm
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
 
 /-!
 # Local components of the ordinary idele norm
@@ -20,6 +27,8 @@ forms of the local idele norm formula.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NumberField TensorProduct NumberField.LiesOver
 open NumberField IsDedekindDomain
@@ -70,10 +79,8 @@ private theorem finiteComponent_norm_eq_prod_extensions
         Units.map (Algebra.norm vK.Completion)
           (_root_.finitePlaceLocalTensorDecompositionUnitsComponent
             (K := K) (L := L) v w x) := by
+  intro vK hvK
   classical
-  let vK := HeightOneSpectrum.adicAbv K v
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
   let e :=
     relativeIdeleBaseChangeMulEquiv
       (K := K) (L := L)
@@ -187,10 +194,8 @@ private theorem finiteComponent_norm_eq_prod_completion
             (finiteComponent
               (finitePlaceExtensionEquivAbove
                 (K := K) (L := L) v w).1 a)) := by
+  intro vK hvK
   classical
-  let vK := HeightOneSpectrum.adicAbv K v
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
   let e :=
     relativeIdeleBaseChangeMulEquiv
       (K := K) (L := L)
@@ -337,10 +342,8 @@ private theorem finiteComponent_norm_eq_prod_exact_index
           (finiteComponent
             (finitePlaceExtensionEquivAbove
               (K := K) (L := L) v w).1 a) := by
+  intro vK hvK
   classical
-  let vK := HeightOneSpectrum.adicAbv K v
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
   let eBase :=
     _root_.relativeFinitePlaceCompletionAlgEquiv
       (K := K) v
@@ -513,10 +516,8 @@ theorem finiteComponent_norm_eq_prod
         LocalFieldTheory.normUnits
           (v.adicCompletion K) (W.1.adicCompletion L)
           (finiteComponent W.1 a) := by
+  intro vK hvK
   classical
-  let vK := HeightOneSpectrum.adicAbv K v
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
   let eAbove :=
     finitePlaceExtensionEquivAbove
       (K := K) (L := L) v
@@ -606,9 +607,8 @@ private theorem infiniteComponent_norm_eq_prod_extensions
         Units.map (Algebra.norm vK.Completion)
           (AlgebraicNumberTheory.Valuations.localTensorUnitsEquivCompletionProduct
             vK hvK x' w) := by
+  intro vK hvK
   classical
-  let vK := v.1
-  let hvK : vK.IsNontrivial := v.isNontrivial
   let e :=
     relativeIdeleBaseChangeMulEquiv
       (K := K) (L := L)
@@ -737,9 +737,8 @@ private theorem infiniteComponent_norm_eq_prod_completion
           (Units.mapEquiv
             (InfinitePlace.Completion.equiv W.1).toMulEquiv
             (infiniteComponent W.1 a)) := by
+  intro vK hvK
   classical
-  let vK := v.1
-  let hvK : vK.IsNontrivial := v.isNontrivial
   let e :=
     relativeIdeleBaseChangeMulEquiv
       (K := K) (L := L)
@@ -838,7 +837,7 @@ private theorem infiniteComponent_norm_eq_prod_completion
               (_root_.infinitePlaceBelow (K := K) W.1))
             ⟨W.1, rfl⟩ =
           infiniteComponent W.1 a at hcomponent
-      simp only [_root_.relativeIdeleToLocalData] at hcomponent
+      rw [_root_.relativeIdeleToLocalData_infinite] at hcomponent
       have hcomponentFixed :
           _root_.infinitePlaceTensorUnitsEquivAbove
               (K := K) (L := L) v x W =
@@ -901,9 +900,8 @@ theorem infiniteComponent_norm_eq_prod
         LocalFieldTheory.normUnits
           v.Completion W.1.Completion
           (infiniteComponent W.1 a) := by
+  intro vK hvK
   classical
-  let vK := v.1
-  let hvK : vK.IsNontrivial := v.isNontrivial
   let eBase :=
     _root_.infinitePlaceCompletionAlgEquiv
       (K := K) v

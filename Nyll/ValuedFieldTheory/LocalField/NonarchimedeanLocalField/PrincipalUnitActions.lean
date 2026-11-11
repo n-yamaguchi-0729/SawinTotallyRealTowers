@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 /-!
 # Actions on principal-unit quotients
 
 Transports valuation-ring automorphisms to maximal-ideal powers, principal
 units, and their successive quotients, together with the resulting actions.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -94,7 +98,8 @@ theorem maximalIdealPowMapEquivOfIntegerRingEquiv_apply
     (maximalIdealPowMapEquivOfIntegerRingEquiv K n e a : 𝒪[K]) = e (a : 𝒪[K]) :=
   rfl
 
-private theorem maximalIdealPowSuccQuotMapOfIntegerRingEquiv_respects
+/-- Integer-ring automorphisms preserve the equivalence relation on successive ideal quotients. -/
+theorem maximalIdealPowSuccQuotMapOfIntegerRingEquiv_respects
     (K : Type u) [Field K] [ValuativeRel K]
     (n : Nat) (e : 𝒪[K] ≃+* 𝒪[K])
     (a b : ((𝓂[K] ^ n : Ideal 𝒪[K]) : Type u))

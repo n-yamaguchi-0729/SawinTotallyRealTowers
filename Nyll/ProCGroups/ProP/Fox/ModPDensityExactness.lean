@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPDisplayedSpan
-import Nyll.ProCGroups.ProP.Fox.ModPStageProjection
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPDisplayedSpan
+public import Nyll.ProCGroups.ProP.Fox.ModPStageProjection
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
 
 /-!
 # Completed mod-p Fox density and relation exactness
@@ -22,6 +25,8 @@ Combining this density result with the displayed-row span theorem proves
 unfiltered exactness of the completed relation matrix followed by the Fox
 boundary.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

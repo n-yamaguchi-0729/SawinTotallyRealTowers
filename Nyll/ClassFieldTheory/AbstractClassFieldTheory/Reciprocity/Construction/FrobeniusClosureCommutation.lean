@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
 
 /-!
 # Frobenius-closure commutation
@@ -13,6 +15,8 @@ This module promotes commutation with a Frobenius generator to its closed
 procyclic subgroup and derives the conjugation identities for the associated
 fixed field.
 -/
+
+@[expose] public section
 
 universe u
 
@@ -101,7 +105,8 @@ theorem conjugate_frobeniusFixedField_eq_of_commutes (D : DegreeData G)
       have htxval : t.1 = k.1⁻¹ * x * k.1 := by simpa using htx
       have : x = k.1 * t.1 * k.1⁻¹ := by
         calc
-          x = k.1 * (k.1⁻¹ * x * k.1) * k.1⁻¹ := by simp [mul_assoc]
+          x = k.1 * (k.1⁻¹ * x * k.1) * k.1⁻¹ := by
+            simp only [mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one]
           _ = k.1 * t.1 * k.1⁻¹ := by rw [htxval]
       rw [this]
       exact K.field.toSubgroup.mul_mem
@@ -123,7 +128,8 @@ theorem conjugate_frobeniusFixedField_eq_of_commutes (D : DegreeData G)
         dsimp [xK]
         have htxval : t.1 = k.1⁻¹ * x * k.1 := by simpa using htx
         calc
-          x = k.1 * (k.1⁻¹ * x * k.1) * k.1⁻¹ := by simp [mul_assoc]
+          x = k.1 * (k.1⁻¹ * x * k.1) * k.1⁻¹ := by
+            simp only [mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one]
           _ = k.1 * t.1 * k.1⁻¹ := by rw [htxval]
       rw [hxval]
       change (QuotientGroup.mk k :
@@ -148,7 +154,7 @@ theorem conjugate_frobeniusFixedField_eq_of_commutes (D : DegreeData G)
       have hqconj : q⁻¹ * QuotientGroup.mk t * q = QuotientGroup.mk t := by
         calc
           q⁻¹ * QuotientGroup.mk t * q =
-              q⁻¹ * (QuotientGroup.mk t * q) := by simp [mul_assoc]
+              q⁻¹ * (QuotientGroup.mk t * q) := mul_assoc _ _ _
           _ = q⁻¹ * (q * QuotientGroup.mk t) := by rw [hcomm']
           _ = QuotientGroup.mk t := inv_mul_cancel_left _ _
       have hyval : yK = k⁻¹ * t * k := by

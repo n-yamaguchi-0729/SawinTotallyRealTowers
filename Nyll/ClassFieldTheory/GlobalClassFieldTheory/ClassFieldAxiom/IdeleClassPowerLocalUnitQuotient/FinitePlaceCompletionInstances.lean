@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
-import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
-import Mathlib.NumberTheory.NumberField.ProductFormula
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
+public import Mathlib.NumberTheory.NumberField.ProductFormula
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Canonical structures on finite completions
@@ -16,14 +19,18 @@ and finite residue-field structures used by finite-place class-field
 arithmetic.
 -/
 
+@[expose] public section
+
 open scoped NumberField ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The distinguished valuation on a finite completion of a number field is
 complete discrete. -/

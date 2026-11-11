@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CanonicalUnramifiedNormQuotient
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CanonicalUnramifiedNormQuotient
 
 /-!
 # Norm-class relations for reciprocity multiplicativity
@@ -16,7 +18,9 @@ maximal-unramified norm quotient and then to the reciprocity map.
 
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -27,7 +31,7 @@ noncomputable section
 
 open CategoryTheory
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -35,7 +39,7 @@ namespace DegreeData
 alternating Frobenius power sum gives the alternating sum of the three
 finite fixed-field norms. -/
 theorem relativeNorm_frobeniusPowerSum_alternating
-    (D : DegreeData G) (A : Rep ℤ G)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
@@ -146,7 +150,7 @@ theorem relativeNorm_frobeniusPowerSum_alternating
 norm of `u` descends to a universal norm in `A_K`, the alternating norm
 relation is exactly the desired equality of reciprocity classes. -/
 theorem maximalUnramifiedNormClass_add_eq_of_relativeNorm
-    (D : DegreeData G) (A : Rep ℤ G)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
     [Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)]
@@ -188,7 +192,7 @@ theorem maximalUnramifiedNormClass_add_eq_of_relativeNorm
 norm classes into reciprocity multiplicativity's equality for the canonical reciprocity
 map. -/
 theorem reciprocityMap_mul_of_primeNormClass_eq
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)

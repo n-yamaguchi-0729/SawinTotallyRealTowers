@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCocycle
-import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.RepresentationTheory.Rep.Basic
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicCarryCocycle
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.FiniteCyclic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.RepresentationTheory.Rep.Basic
 
 /-!
 # Vanishing of a coefficient-changed cyclic carry class
@@ -17,6 +19,8 @@ A coefficient morphism sends the carry cocycle of a fixed element to the carry
 cocycle of its image. If that image is the norm of an actual element in the
 target representation, the resulting degree-two cohomology class is zero.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 
@@ -31,7 +35,7 @@ theorem finiteCyclicCarry_coefficientMap_eq_zero_of_norm
     (A B : Rep R G) (g : G) (hg : ∀ x : G, x ∈ Subgroup.zpowers g)
     (φ : A ⟶ B)
     (a : LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap)
-    (b : B) (hb : B.norm.hom b = φ.hom a.1) :
+    (b : B) (hb : B.norm.asHom.hom b = φ.hom a.1) :
     groupCohomology.map (MonoidHom.id G) φ 2
         (groupCohomology.H2π A (finiteCyclicCarryTwoCocycle A g hg a)) = 0 := by
   have ha : A.ρ g a.1 = a.1 := by

@@ -4,14 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.BaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Reassociation
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleClassBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Module
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Reassociation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleClassBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.FiniteRamifiedPrimes
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.Module
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 
 /-!
 # A sufficiently large unramified support for the idele-class calculation
@@ -26,14 +33,17 @@ relative ideles with the ordinary supported idele subgroup of `L`.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
 
+universe u v
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -97,6 +107,51 @@ theorem finitePlacesAbove_isGaloisStable
       finitePlaceBelow (K := K)
         (finitePlaceEquiv K L σ W) ∈ S
   rw [finitePlaceBelow_finitePlaceEquiv]
+
+/-- A diagonal idele is supported at `T` exactly when its defining
+field unit is a `T`-unit. -/
+theorem principalIdele_mem_supportedAt_iff_sUnit
+    (T : Finset (HeightOneSpectrum (𝓞 L)))
+    (x : Lˣ) :
+    IdeleGroup.principalIdele L x ∈
+        IdeleGroup.supportedAt (K := L) (T : Set _) ↔
+      x ∈ SUnitGroup (K := L) T := by
+  rw [IdeleGroup.mem_supportedAt_iff, mem_SUnitGroup_iff]
+  constructor
+  · intro hx W hW
+    have hunit := hx W (by simpa using hW)
+    rw [
+      HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one]
+        at hunit
+    change
+      Valued.v
+          (((IdeleGroup.finiteComponent W
+            (IdeleGroup.principalIdele L x) :
+              (W.adicCompletion L)ˣ) :
+            W.adicCompletion L)) = 1 at hunit
+    rw [IdeleGroup.finiteComponent_principalIdele,
+      HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at hunit
+    exact hunit
+  · intro hx W hW
+    rw [
+      HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one]
+    change
+      Valued.v
+          (((IdeleGroup.finiteComponent W
+            (IdeleGroup.principalIdele L x) :
+              (W.adicCompletion L)ˣ) :
+            W.adicCompletion L)) = 1
+    rw [IdeleGroup.finiteComponent_principalIdele,
+      HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
+    exact hx W (by simpa using hW)
+
+section NativeRelativeSupport
+
+variable
+    {K L : Type}
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
 
 omit [IsGalois K L] in
 /-- Scalar extension carries the concrete supported
@@ -211,43 +266,6 @@ theorem relativeIdeleSupported_sup_principal_eq_top
         (K := K) (L := L)).toMonoidHom
       (relativeIdeleBaseChangeMulEquiv
         (K := K) (L := L)).surjective]
-
-/-- A diagonal idele is supported at `T` exactly when its defining
-field unit is a `T`-unit. -/
-theorem principalIdele_mem_supportedAt_iff_sUnit
-    (T : Finset (HeightOneSpectrum (𝓞 L)))
-    (x : Lˣ) :
-    IdeleGroup.principalIdele L x ∈
-        IdeleGroup.supportedAt (K := L) (T : Set _) ↔
-      x ∈ SUnitGroup (K := L) T := by
-  rw [IdeleGroup.mem_supportedAt_iff, mem_SUnitGroup_iff]
-  constructor
-  · intro hx W hW
-    have hunit := hx W (by simpa using hW)
-    rw [
-      HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one]
-        at hunit
-    change
-      Valued.v
-          (((IdeleGroup.finiteComponent W
-            (IdeleGroup.principalIdele L x) :
-              (W.adicCompletion L)ˣ) :
-            W.adicCompletion L)) = 1 at hunit
-    rw [IdeleGroup.finiteComponent_principalIdele,
-      HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at hunit
-    exact hunit
-  · intro hx W hW
-    rw [
-      HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one]
-    change
-      Valued.v
-          (((IdeleGroup.finiteComponent W
-            (IdeleGroup.principalIdele L x) :
-              (W.adicCompletion L)ˣ) :
-            W.adicCompletion L)) = 1
-    rw [IdeleGroup.finiteComponent_principalIdele,
-      HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
-    exact hx W (by simpa using hW)
 
 /-- The diagonal map from extension-field `S`-units into the
 intersection of the relative principal and supported subgroups. -/
@@ -401,12 +419,12 @@ theorem
     (x :
       SUnitGroup (K := L)
         (finitePlacesAbove (K := K) (L := L) S)) :
-    letI :=
+    let :=
       sUnitMulDistribMulAction K L
         (finitePlacesAbove (K := K) (L := L) S)
         (finitePlacesAbove_isGaloisStable
           (K := K) (L := L) S)
-    letI :=
+    let :=
       relativePrincipalSupportedIntersectionAction
         (K := K) (L := L) S
     sUnitEquivRelativePrincipalSupportedIntersection
@@ -414,14 +432,7 @@ theorem
       σ •
         sUnitEquivRelativePrincipalSupportedIntersection
           (K := K) (L := L) S x := by
-  let :=
-    sUnitMulDistribMulAction K L
-      (finitePlacesAbove (K := K) (L := L) S)
-      (finitePlacesAbove_isGaloisStable
-        (K := K) (L := L) S)
-  let :=
-    relativePrincipalSupportedIntersectionAction
-      (K := K) (L := L) S
+  intro sharedOwner1 sharedOwner2
   apply Subtype.ext
   apply Subtype.ext
   change
@@ -435,6 +446,8 @@ theorem
   exact
     (RelativeIdeleGroup.smul_principalIdele
       K L σ (x : Lˣ)).symm
+
+end NativeRelativeSupport
 
 /-- The finite base places at which at least one extension prime is
 ramified. -/
@@ -501,6 +514,14 @@ theorem supportedAboveHerbrandSupport_sup_principal_eq_top :
       (K := K) (L := L)))
     le_rfl
 
+section NativeRelativeHerbrandSupport
+
+variable
+    {K L : Type}
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
+
 omit [IsGalois K L] in
 /-- The relative ideles supported at the Herbrand support, together
 with the relative principal ideles, generate the full relative idele
@@ -516,6 +537,8 @@ theorem relativeSupportedAboveHerbrandSupport_sup_principal_eq_top :
     (ideleClassHerbrandSupport (K := K) (L := L))
     (supportedAboveHerbrandSupport_sup_principal_eq_top
       (K := K) (L := L))
+
+end NativeRelativeHerbrandSupport
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Outside the chosen base support, every finite place of `L` is

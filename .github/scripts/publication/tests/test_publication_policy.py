@@ -68,7 +68,7 @@ class PublicationPolicyTests(unittest.TestCase):
         temp = tempfile.TemporaryDirectory(dir=location)
         self.addCleanup(temp.cleanup)
         self.clones = Path(temp.name)
-        self.repo = self.clones / 'JacobianVarieties'
+        self.repo = self.clones / 'GeneralizedJacobianVarieties'
         self.repo.mkdir()
         self.internal = core.INTERNAL_DOCUMENT_PATHS | {
             'AGENTS.md', 'Nyll/JacobianVarieties/AGENTS.md',
@@ -107,7 +107,7 @@ class PublicationPolicyTests(unittest.TestCase):
         if args == ('status', '--porcelain', '-z'):
             return b''
         if args == ('remote', 'get-url', 'origin'):
-            return ('https://github.com/' + core.OWNER + '/JacobianVarieties.git\n').encode()
+            return ('https://github.com/' + core.OWNER + '/GeneralizedJacobianVarieties.git\n').encode()
         if args == ('branch', '--show-current'):
             return b'main\n'
         if args in (('rev-parse', 'HEAD'), ('rev-parse', 'origin/main')):
@@ -133,7 +133,7 @@ class PublicationPolicyTests(unittest.TestCase):
 
     def test_removes_internal_documents_before_the_managed_inventory_existed(self):
         with self.mocks():
-            prepared = core.prepare_repository('JacobianVarieties', *source_fixture())
+            prepared = core.prepare_repository('GeneralizedJacobianVarieties', *source_fixture())
             _, desired, deletes, record = prepared
             self.assertFalse(any(core.is_internal_document(p) for p in desired))
             self.assertTrue(self.internal <= deletes)
@@ -151,7 +151,7 @@ class PublicationPolicyTests(unittest.TestCase):
         inputs = source_fixture()
         inputs[0][core.PACKAGE + 'nested/AGENTS.md'] = b'private\n'
         with self.mocks(), self.assertRaisesRegex(ValueError, 'Internal workspace document'):
-            core.prepare_repository('JacobianVarieties', *inputs)
+            core.prepare_repository('GeneralizedJacobianVarieties', *inputs)
         self.assertTrue(all((self.repo / p).exists() for p in self.internal))
         self.assertFalse((self.repo / core.PUBLICATION).exists())
 

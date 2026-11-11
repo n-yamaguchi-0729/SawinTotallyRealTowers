@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
-import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
 
 /-!
 # finite restricted Kummer pairing
@@ -25,6 +27,8 @@ No character-surjectivity or lattice-correspondence conclusion is assumed.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,31 +4,33 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Mathlib.Analysis.Normed.Field.Instances
-import Mathlib.Analysis.Normed.Module.Completion
-import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Mathlib.Analysis.Normed.Field.Instances
+public import Mathlib.Analysis.Normed.Module.Completion
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 
 /-!
 # Extension of valuations to finite field extensions
@@ -39,6 +41,8 @@ concrete algebraic closure.  The absolute value `bar v` on that algebraic
 closure is produced by the unique-extension unique extension theorem, not supplied as an
 extra hypothesis.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -107,14 +111,12 @@ noncomputable def absoluteValueExtension_localizationEmbedding
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     [Algebra.IsAlgebraic K L]
     (vK : AbsoluteValue K ℝ) (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalization vK w.1 w.2 →ₐ[vK.Completion]
       absoluteValueExtension_algebraicCompletionClosure vK := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner1 sharedOwner4
   letI : Algebra.IsAlgebraic vK.Completion
       (AbsoluteValue.algebraicLocalization vK w.1 w.2) :=
     AbsoluteValue.algebraicLocalization_isAlgebraic vK w.1 w.2
@@ -137,15 +139,13 @@ theorem absoluteValueExtension_localizationAbsoluteValue_eq_pullback
     [Algebra.IsAlgebraic K L]
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalizationAbsoluteValue vK w.1 w.2 =
       (absoluteValueExtension_algebraicClosureAbsoluteValue vK hvK).comp
         (absoluteValueExtension_localizationEmbedding vK w).injective := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let : Algebra.IsAlgebraic vK.Completion
       (AbsoluteValue.algebraicLocalization vK w.1 w.2) :=
     AbsoluteValue.algebraicLocalization_isAlgebraic vK w.1 w.2
@@ -417,10 +417,12 @@ noncomputable def absoluteValueExtension_algebraicClosureCompletionAlgebra
 noncomputable def absoluteValueExtension_algebraicClosureToCompletionAlgHom
     {K : Type u} [Field K] (vK : AbsoluteValue K ℝ)
     (hvK : vK.IsNontrivial) :
-    letI := absoluteValueExtension_algebraicClosureCompletionAlgebra vK hvK
+    let : Algebra vK.Completion
+        (absoluteValueExtension_algebraicClosureAbsoluteValue vK hvK).Completion :=
+      absoluteValueExtension_algebraicClosureCompletionAlgebra vK hvK
     absoluteValueExtension_algebraicCompletionClosure vK →ₐ[vK.Completion]
       (absoluteValueExtension_algebraicClosureAbsoluteValue vK hvK).Completion := by
-  letI := absoluteValueExtension_algebraicClosureCompletionAlgebra vK hvK
+  intro sharedAlgebra
   exact
     { __ := absoluteValueExtension_algebraicClosureToCompletionRingHom vK hvK
       commutes' _ := rfl }
@@ -630,11 +632,11 @@ theorem absoluteValueExtension_embeddingCompletionAlgHom_mem_range
   let F := absoluteValueExtension_embeddingCompletionAlgHom vK hvK w tau htau
   let j := absoluteValueExtension_algebraicClosureToCompletionAlgHom vK hvK
   change F (z : w.1.Completion) ∈ j.range
-  apply IntermediateField.adjoin_induction
+  refine IntermediateField.adjoin_induction
       (F := vK.Completion)
       (s := Set.range (AbsoluteValue.toCompletion w.1))
-      (p := fun x _ => F x ∈ j.range)
-      (x := (z : w.1.Completion))
+      (motive := fun x _ => F x ∈ j.range)
+      (x := (z : w.1.Completion)) ?_ ?_ ?_ ?_ ?_ z.property
   · intro x hx
     rcases hx with ⟨y, rfl⟩
     refine ⟨tau y, ?_⟩
@@ -659,7 +661,6 @@ theorem absoluteValueExtension_embeddingCompletionAlgHom_mem_range
     simpa only [map_inv₀] using congrArg Inv.inv ha
   · intro x y _ _ hx hy
     simpa only [map_mul] using j.range.mul_mem hx hy
-  · exact z.property
 
 /-- A valuation-preserving embedding `tau : L → \bar K_v` extends to a
 `K_v`-embedding of the common localization.  The construction first extends
@@ -671,14 +672,12 @@ noncomputable def absoluteValueExtension_localizationEmbeddingOfPullback
     (w : AbsoluteValueExtension vK L)
     (tau : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK)
     (htau : w.1 = absoluteValueExtension_pullback vK hvK tau) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalization vK w.1 w.2 →ₐ[vK.Completion]
       absoluteValueExtension_algebraicCompletionClosure vK := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner1 sharedOwner4
   letI := absoluteValueExtension_algebraicClosureCompletionAlgebra vK hvK
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   let F := absoluteValueExtension_embeddingCompletionAlgHom vK hvK w tau htau
@@ -698,14 +697,12 @@ theorem absoluteValueExtension_localizationEmbeddingOfPullback_toLocalization
     (tau : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK)
     (htau : w.1 = absoluteValueExtension_pullback vK hvK tau)
     (x : L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     absoluteValueExtension_localizationEmbeddingOfPullback vK hvK w tau htau
         (AbsoluteValue.toAlgebraicLocalization vK w.1 w.2 x) = tau x := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let := absoluteValueExtension_algebraicClosureCompletionAlgebra vK hvK
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   let F := absoluteValueExtension_embeddingCompletionAlgHom vK hvK w tau htau

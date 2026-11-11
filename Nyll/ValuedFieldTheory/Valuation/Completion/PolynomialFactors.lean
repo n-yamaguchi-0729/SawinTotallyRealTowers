@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
-import Mathlib.FieldTheory.Minpoly.IsConjRoot
-import Mathlib.Algebra.Polynomial.FieldDivision
-import Mathlib.RingTheory.Adjoin.PowerBasis
+module
+
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+public import Mathlib.FieldTheory.Minpoly.IsConjRoot
+public import Mathlib.Algebra.Polynomial.FieldDivision
+public import Mathlib.RingTheory.Adjoin.PowerBasis
 
 /-!
 # Irreducible factors as conjugacy classes of roots
@@ -17,6 +19,8 @@ the extension-factor correspondence.  Multiplicities are deliberately discarded:
 valuation correspond to the *distinct* irreducible factors over the
 completion.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -173,7 +177,7 @@ noncomputable def simpleEmbeddingsEquivMappedMinpolyRoots
         ((minpoly K α).map (algebraMap K K')) := by
   let pb : PowerBasis K L := PowerBasis.ofAdjoinEqTop hα hgen
   let p : K'[X] := (minpoly K α).map (algebraMap K K')
-  have hpbgen : pb.gen = α := by simp [pb]
+  have hpbgen : pb.gen = α := PowerBasis.ofAdjoinEqTop_gen hα hgen
   have hp : p ≠ 0 :=
     (Polynomial.map_ne_zero_iff (algebraMap K K').injective).2
       (minpoly.ne_zero hα)

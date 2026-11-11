@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
-import Mathlib.Algebra.Polynomial.Lifts
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Mathlib.Algebra.Polynomial.Lifts
 
 /-!
 # Integral closure for a unique discrete valuation extension
@@ -21,6 +23,8 @@ No completeness or Henselian hypothesis is used.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

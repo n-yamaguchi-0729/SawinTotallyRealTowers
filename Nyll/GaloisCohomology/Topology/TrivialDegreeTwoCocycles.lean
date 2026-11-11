@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Topology.ContinuousCohomologyRepresentatives
-import Mathlib.RepresentationTheory.Continuous.Basic
-import Mathlib.Topology.ContinuousMap.Algebra
-import Mathlib.Tactic.Group
+module
+
+public import Nyll.GaloisCohomology.Topology.ContinuousCohomologyRepresentatives
+public import Mathlib.RepresentationTheory.Continuous.Basic
+public import Mathlib.Topology.ContinuousMap.Algebra
+public import Mathlib.Tactic.Group
 
 /-!
 # Normalized degree-two cocycles with trivial continuous coefficients
@@ -15,6 +17,8 @@ import Mathlib.Tactic.Group
 These coefficient-ring-independent formulas share the normalization and
 primitive construction between finite-field and integral coefficients.
 -/
+
+@[expose] public section
 
 open scoped Topology
 open CategoryTheory TopRep ContRepresentation
@@ -28,7 +32,8 @@ variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
 variable (X : TopRep.{u} R F)
 variable (hX : ∀ (g : F) (x : X), X.ρ g x = x)
 
-private def cocycleValue
+/-- Evaluation of a homogeneous continuous two-cocycle on three group elements. -/
+def cocycleValue
     (z : ContinuousCohomology.cocycles X 2)
     (x₀ x₁ x₂ : F) : X :=
   (((homogeneousCochains X).iCycles 2).hom z).1 x₀ x₁ x₂

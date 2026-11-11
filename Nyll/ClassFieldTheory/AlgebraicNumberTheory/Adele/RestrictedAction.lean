@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
-import Mathlib.RingTheory.TensorProduct.Maps
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
+public import Mathlib.RingTheory.TensorProduct.Maps
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
 /-!
 # Galois action on the restricted local product
@@ -17,6 +21,8 @@ coordinatewise tensor-conjugation action.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -160,7 +166,7 @@ theorem relativeAdeleInfiniteComponent_conjugation
           (K := K) (L := L) w z) := by
   induction z using TensorProduct.inductionOn with
   | tmul a x => rfl
-  | add x y hx hy => simp [hx, hy]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 omit [NumberField L] [FiniteDimensional K L] in
 /-- Finite-place evaluation commutes with Galois conjugation. -/
@@ -178,7 +184,7 @@ theorem relativeAdeleFiniteComponent_conjugation
           (K := K) (L := L) w z) := by
   induction z using TensorProduct.inductionOn with
   | tmul a x => rfl
-  | add x y hx hy => simp [hx, hy]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 omit [NumberField L] [FiniteDimensional K L] in
 /-- The infinite local unit component map is equivariant. -/
@@ -186,14 +192,13 @@ theorem RelativeIdeleGroup.infiniteComponent_smul
     (w : InfinitePlace K)
     (σ : L ≃ₐ[K] L)
     (z : RelativeIdeleGroup K L) :
-    letI := scalarTensorUnitsAction
+    let := scalarTensorUnitsAction
       (K := K) (L := L) (A := w.Completion)
     RelativeIdeleGroup.infiniteComponent
         (K := K) (L := L) w (σ • z) =
       σ • RelativeIdeleGroup.infiniteComponent
         (K := K) (L := L) w z := by
-  let _ := scalarTensorUnitsAction
-    (K := K) (L := L) (A := w.Completion)
+  intro sharedOwner1
   apply Units.ext
   exact relativeAdeleInfiniteComponent_conjugation
     (K := K) (L := L) w σ
@@ -205,16 +210,14 @@ theorem RelativeIdeleGroup.finiteComponent_smul
     (w : HeightOneSpectrum (𝓞 K))
     (σ : L ≃ₐ[K] L)
     (z : RelativeIdeleGroup K L) :
-    letI := scalarTensorUnitsAction
+    let := scalarTensorUnitsAction
       (K := K) (L := L)
       (A := w.adicCompletion K)
     RelativeIdeleGroup.finiteComponent
         (K := K) (L := L) w (σ • z) =
       σ • RelativeIdeleGroup.finiteComponent
         (K := K) (L := L) w z := by
-  let _ := scalarTensorUnitsAction
-    (K := K) (L := L)
-    (A := w.adicCompletion K)
+  intro sharedOwner1
   apply Units.ext
   exact relativeAdeleFiniteComponent_conjugation
     (K := K) (L := L) w σ
@@ -265,22 +268,17 @@ omit [NumberField L] in
 theorem relativeIdeleMulEquivLocalData_smul
     (σ : L ≃ₐ[K] L)
     (z : RelativeIdeleGroup K L) :
-    letI :=
+    let :=
       relativeIdeleRestrictedMulDistribMulAction
         (K := K) (L := L)
-    letI :=
+    let :=
       relativeLocalIdeleDataMulDistribMulAction
         (K := K) (L := L)
     relativeIdeleMulEquivLocalData
         (K := K) (L := L) (σ • z) =
       σ • relativeIdeleMulEquivLocalData
         (K := K) (L := L) z := by
-  let _ :=
-    relativeIdeleRestrictedMulDistribMulAction
-      (K := K) (L := L)
-  let _ :=
-    relativeLocalIdeleDataMulDistribMulAction
-      (K := K) (L := L)
+  intro sharedOwner1 sharedOwner2
   change
     relativeIdeleMulEquivLocalData
         (K := K) (L := L) (σ • z) =
@@ -301,24 +299,17 @@ theorem RelativeLocalIdeleData.infinite_smul
     (σ : L ≃ₐ[K] L)
     (a : RelativeLocalIdeleData (K := K) (L := L))
     (w : InfinitePlace K) :
-    letI :=
+    let :=
       relativeIdeleRestrictedMulDistribMulAction
         (K := K) (L := L)
-    letI :=
+    let :=
       relativeLocalIdeleDataMulDistribMulAction
         (K := K) (L := L)
-    letI := scalarTensorUnitsAction
+    let := scalarTensorUnitsAction
       (K := K) (L := L) (A := w.Completion)
     (σ • a).infinite w =
       σ • a.infinite w := by
-  let _ :=
-    relativeIdeleRestrictedMulDistribMulAction
-      (K := K) (L := L)
-  let _ :=
-    relativeLocalIdeleDataMulDistribMulAction
-      (K := K) (L := L)
-  let _ := scalarTensorUnitsAction
-    (K := K) (L := L) (A := w.Completion)
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   change
     RelativeIdeleGroup.infiniteComponent
         (K := K) (L := L) w
@@ -335,26 +326,18 @@ theorem RelativeLocalIdeleData.finite_smul
     (σ : L ≃ₐ[K] L)
     (a : RelativeLocalIdeleData (K := K) (L := L))
     (w : HeightOneSpectrum (𝓞 K)) :
-    letI :=
+    let :=
       relativeIdeleRestrictedMulDistribMulAction
         (K := K) (L := L)
-    letI :=
+    let :=
       relativeLocalIdeleDataMulDistribMulAction
         (K := K) (L := L)
-    letI := scalarTensorUnitsAction
+    let := scalarTensorUnitsAction
       (K := K) (L := L)
       (A := w.adicCompletion K)
     (σ • a).finite w =
       σ • a.finite w := by
-  let _ :=
-    relativeIdeleRestrictedMulDistribMulAction
-      (K := K) (L := L)
-  let _ :=
-    relativeLocalIdeleDataMulDistribMulAction
-      (K := K) (L := L)
-  let _ := scalarTensorUnitsAction
-    (K := K) (L := L)
-    (A := w.adicCompletion K)
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   change
     RelativeIdeleGroup.finiteComponent
         (K := K) (L := L) w

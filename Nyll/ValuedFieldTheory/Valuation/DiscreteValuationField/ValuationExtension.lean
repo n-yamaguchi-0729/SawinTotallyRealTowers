@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 
 /-!
 # Valuation extensions
@@ -14,6 +16,8 @@ Mathlib's uniqueness criterion for valuations is expressed through
 when they have the same valuation subring.  The results here use the ambient
 valued-extension property directly; no marker object is introduced.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -184,9 +188,9 @@ theorem comap_valuationSubring_eq_base :
     target.valuation.valuationSubring.comap (algebraMap K L) =
       base.valuation.valuationSubring := by
   ext a
-  simp [Valuation.mem_valuationSubring_iff,
-    _root_.Valuation.HasExtension.val_map_le_one_iff
-      (vR := base.valuation) (vA := target.valuation)]
+  change target.valuation (algebraMap K L a) ≤ 1 ↔ base.valuation a ≤ 1
+  exact _root_.Valuation.HasExtension.val_map_le_one_iff
+    (vR := base.valuation) (vA := target.valuation) a
 
 /-- Any valuation extending the base valuation has valuation subring pulling
 back to the base valuation subring. -/
@@ -196,9 +200,9 @@ theorem comap_valuationSubring_eq_base_of_hasExtension
     v'.valuationSubring.comap (algebraMap K L) =
       base.valuation.valuationSubring := by
   ext a
-  simp [Valuation.mem_valuationSubring_iff,
-    _root_.Valuation.HasExtension.val_map_le_one_iff
-      (vR := base.valuation) (vA := v')]
+  change v' (algebraMap K L a) ≤ 1 ↔ base.valuation a ≤ 1
+  exact _root_.Valuation.HasExtension.val_map_le_one_iff
+    (vR := base.valuation) (vA := v') a
 
 end Pullback
 

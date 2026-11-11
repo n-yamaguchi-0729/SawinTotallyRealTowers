@@ -4,12 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SimpleExtensionLocalBehavior
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
+public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # Local norm containment for Kummer extensions
@@ -20,6 +29,8 @@ power subgroup, lie in the norm subgroup at a chosen finite place.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal IsMulCommutative
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
@@ -28,6 +39,8 @@ open KummerTheory
 open LocalFieldTheory
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
@@ -57,10 +70,10 @@ completion when every global Galois automorphism has exponent dividing
 simple-Kummer wrappers below. -/
 private theorem
     nthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup_of_galois_pow_eq_one
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
-    [FiniteDimensional K L] [IsGalois K L]
+    [FiniteDimensional K L] [IsAbelianGalois K L]
     (n : ℕ+)
     (hGlobal :
       ∀ sigma : L ≃ₐ[K] L,
@@ -137,14 +150,10 @@ private theorem
     rw [map_pow, map_one]
     apply Subtype.ext
     exact hGlobal (eLocal.symm tau).1
-  have hAbelianized :
-      ∀ a : Abelianization (E ≃ₐ[vK.Completion] E),
-        a ^ (n : ℕ) = 1 := by
-    intro a
-    refine QuotientGroup.induction_on a ?_
-    intro tau
-    change (Abelianization.of tau) ^ (n : ℕ) = 1
-    rw [← map_pow, hLocal tau, map_one]
+  let : IsAbelianGalois vK.Completion E :=
+    { is_comm.comm := fun sigma tau => eLocal.symm.injective (by
+        rw [map_mul, map_mul]
+        exact mul_comm _ _) }
   intro x hx
   obtain ⟨y, hy⟩ :=
     (MonoidHom.mem_range
@@ -159,13 +168,13 @@ private theorem
       (localNormSubgroup
         vK.Completion E).map e.toMonoidHom
   refine ⟨(e.symm y) ^ (n : ℕ), ?_, ?_⟩
-  · rw [← LocalClassFieldTheory.localArtinMonoidHom_ker]
+  · rw [← LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_ker]
     change
-      LocalClassFieldTheory.localArtinMonoidHom
+      LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
           vK.Completion E ((e.symm y) ^ (n : ℕ)) = 1
     rw [map_pow]
-    exact hAbelianized
-      (LocalClassFieldTheory.localArtinMonoidHom
+    exact hLocal
+      (LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
         vK.Completion E (e.symm y))
   · change e ((e.symm y) ^ (n : ℕ)) = y ^ (n : ℕ)
     rw [map_pow, e.apply_symm_apply]
@@ -173,7 +182,7 @@ private theorem
 /-- Local `n`-th powers are norms from the chosen finite-place
 completion when the global Galois group has exponent dividing `n`. -/
 theorem nthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -187,6 +196,10 @@ theorem nthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup
           (v.adicCompletion K)ˣ).range ≤
       _root_.chosenFinitePlaceLocalNormSubgroup
         (K := K) (L := L) v := by
+  let : IsAbelianGalois K L :=
+    { is_comm.comm := fun sigma tau => eG.injective (by
+        rw [map_mul, map_mul]
+        exact mul_comm _ _) }
   exact
     nthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup_of_galois_pow_eq_one
       (K := K) (L := L) n
@@ -197,7 +210,7 @@ theorem nthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup
 produced by the concrete Kummer character, rather than supplied as a
 hypothesis. -/
 theorem chosenSimpleKummerNthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup
-    {K : Type} [Field K] [NumberField K]
+    {K : Type u} [Field K] [NumberField K]
     (n : ℕ+)
     (hnK : ((n : ℕ) : K) ≠ 0)
     (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
@@ -205,10 +218,10 @@ theorem chosenSimpleKummerNthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup
     (v : HeightOneSpectrum (𝓞 K)) :
     let E :=
       KummerTheory.chosenSimpleKummerExtension K n hnK b
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       KummerTheory.chosenSimpleKummerExtension_finiteDimensional
         K n hnK b
-    letI : IsAbelianGalois K E :=
+    let : IsAbelianGalois K E :=
       KummerTheory.chosenSimpleKummerExtension_isAbelianGalois
         K n hnK hmu b
     (powMonoidHom (n : ℕ) :
@@ -216,14 +229,7 @@ theorem chosenSimpleKummerNthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup
           (v.adicCompletion K)ˣ).range ≤
       _root_.chosenFinitePlaceLocalNormSubgroup
         (K := K) (L := E) v := by
-  let E :=
-    KummerTheory.chosenSimpleKummerExtension K n hnK b
-  let : FiniteDimensional K E :=
-    KummerTheory.chosenSimpleKummerExtension_finiteDimensional
-      K n hnK b
-  let : IsAbelianGalois K E :=
-    KummerTheory.chosenSimpleKummerExtension_isAbelianGalois
-      K n hnK hmu b
+  intro E sharedOwner2 sharedOwner3
   exact
     nthPowerSubgroup_le_chosenFinitePlaceLocalNormSubgroup_of_galois_pow_eq_one
       (K := K) (L := E) n

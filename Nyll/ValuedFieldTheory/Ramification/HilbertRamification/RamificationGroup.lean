@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 
 /-!
 # Hilbert ramification theory: ramification subgroup source lemmas
@@ -14,6 +16,8 @@ subgroup `R_w`.  The key point for the later character map
 `I_w -> Hom(Delta/Gamma, lambda*)` is that `R_w` is a normal subgroup of
 `I_w`, not merely a subgroup.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 

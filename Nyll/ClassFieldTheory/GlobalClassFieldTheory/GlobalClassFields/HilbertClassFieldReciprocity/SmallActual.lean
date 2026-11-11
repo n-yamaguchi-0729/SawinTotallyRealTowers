@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.Transport
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldNaturality
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.Transport
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Small Hilbert reciprocity over the realized base field
@@ -15,6 +19,10 @@ field of the selected small Hilbert class field.
 -/
 
 
+
+@[expose] public section
+
+universe u
 
 open scoped IsMulCommutative NumberField
 
@@ -26,11 +34,11 @@ namespace GlobalClassFields
 open NumberField
 open Reciprocity
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 local instance
     smallHilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
-    {F : Type} [Field F] [NumberField F] :
+    {F : Type*} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
@@ -50,7 +58,7 @@ theorem smallHilbertClassField_ideleClassNorm_range_eq_intrinsic :
 /-- Global reciprocity identifies the genuine Galois group of the
 selected small Hilbert class field with the ordinary ideal class group
 of the original number field. -/
-private noncomputable def smallHilbertClassFieldReciprocityData :
+noncomputable def smallHilbertClassFieldReciprocityData :
     {e : Gal((smallHilbertClassField K) /
           (smallHilbertClassFieldBase K)) ≃*
         ClassGroup (𝓞 K) //

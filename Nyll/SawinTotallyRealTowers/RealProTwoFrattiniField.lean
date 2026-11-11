@@ -4,13 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FixedFieldIntersection
-import Nyll.SawinTotallyRealTowers.ProTwoFrattini
-import Nyll.SawinTotallyRealTowers.RealProTwoQuadraticFixedFields
-import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
-import Mathlib.Order.CompleteLattice.Basic
-import Mathlib.Topology.Algebra.OpenSubgroup
+module
+
+public import Nyll.SawinTotallyRealTowers.FixedFieldIntersection
+public import Nyll.SawinTotallyRealTowers.ProTwoFrattini
+public import Nyll.SawinTotallyRealTowers.RealProTwoQuadraticFixedFields
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
+public import Mathlib.Order.CompleteLattice.Basic
+public import Mathlib.Topology.Algebra.OpenSubgroup
+public import Nyll.ProCGroups.ProP.ProfiniteFrattini
 
 /-!
 # The Frattini fixed field of the initial real pro-two group
@@ -19,6 +22,8 @@ The group-theoretic intersection over quadratic quotients and the
 arithmetic classification of all quadratic layers identify the actual
 Frattini fixed field. No finite-generation hypothesis is used.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

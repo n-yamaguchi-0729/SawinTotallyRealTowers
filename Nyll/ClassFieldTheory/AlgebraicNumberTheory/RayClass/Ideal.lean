@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
-import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
-import Mathlib.Topology.Algebra.IsOpenUnits
-import Mathlib.Topology.Algebra.Ring.Compact
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
+public import Mathlib.Topology.Algebra.IsOpenUnits
+public import Mathlib.Topology.Algebra.Ring.Compact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Ideals prime to a ray-class modulus
@@ -21,6 +26,8 @@ develops the approximation maps used in ray-class ideal constructions.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField WithZero
 open NumberField IsDedekindDomain

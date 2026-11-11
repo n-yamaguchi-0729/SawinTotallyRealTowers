@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Algebra.Group.Quotient
-import Mathlib.GroupTheory.Commutator.Basic
-import Nyll.ProCGroups.Topologies.QuotientMaps
+module
+
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Mathlib.Topology.Algebra.Group.Subgroup
+public import Mathlib.GroupTheory.Commutator.Basic
+public import Nyll.ProCGroups.Topologies.QuotientMaps
 
 /-!
 # Topologically characteristic subgroups
@@ -16,6 +19,8 @@ This file studies subgroups invariant under continuous automorphisms. It proves 
 closed commutator subgroup, gives equivalent map and comap formulations, and establishes closure
 of topologically characteristic subgroups under lattice operations and topological closure.
 -/
+
+@[expose] public section
 
 universe u
 

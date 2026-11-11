@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Cohomology.FiniteInvariantCharacter
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Separation
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.ProCGroups.Cohomology.FiniteInvariantCharacter
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Separation
+public import Mathlib.Topology.Instances.ZMod
 
 /-!
 # Relative Nakayama characters for pro-p groups
@@ -16,6 +18,8 @@ A strict inclusion of closed ambient-normal subgroups of a pro-`p` group can be 
 nonzero continuous `ZMod p`-valued character.  The construction separates one element in a finite
 `p`-group quotient and applies the finite invariant-character theorem there.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

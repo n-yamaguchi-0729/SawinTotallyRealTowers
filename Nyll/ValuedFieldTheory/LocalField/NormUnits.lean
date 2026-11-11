@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Norm.Transitivity
+module
+
+public import Mathlib.RingTheory.Norm.Transitivity
 
 /-!
 # Field norms on unit groups
@@ -13,6 +15,8 @@ This file provides the common algebraic norm map on unit groups.  It is
 independent of any valuation or local-field structure, so valued-field and
 discrete-valuation APIs can share the same definition.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

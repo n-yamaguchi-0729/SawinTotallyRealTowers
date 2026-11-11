@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
-import Nyll.ProCGroups.ProC.Kernels
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
+public import Nyll.ProCGroups.ProC.Kernels
+public import Nyll.ProCGroups.Abelian.TopologicalAbelianization
+public import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 
 /-!
 # Continuous Fox formulas from topological generators
@@ -19,6 +23,8 @@ fundamental and Euler formulas from generator values.
 The free pro-\(C\) specializations are parameterized by the canonical finite-group class `C`;
 there is no predicate-to-class conversion or raw crossed-differential compatibility layer.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNorm
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNorm
 
 /-!
 # Base-unit norm images in field towers
@@ -17,9 +19,11 @@ norm transitivity.
 
 
 
+@[expose] public section
+
 noncomputable section
 
-universe u
+universe u v w
 
 namespace LocalFieldTheory.DiscreteValuationField
 
@@ -27,7 +31,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 section BaseUnits
 
-variable {K L : Type u}
+variable {K : Type u} {L : Type v}
 variable [Field K] [Field L] [Algebra K L]
 
 /-- The unit-group map induced by the algebra map. -/
@@ -78,7 +82,7 @@ end BaseUnits
 
 section Tower
 
-variable {K L M : Type u}
+variable {K : Type u} {L : Type v} {M : Type w}
 variable [Field K] [Field L] [Field M]
 variable [Algebra K L] [Algebra K M] [Algebra L M]
 variable [IsScalarTower K L M]
@@ -88,9 +92,8 @@ theorem baseUnitsMap_tower (x : Kˣ) :
     baseUnitsMap (K := L) (L := M)
         (baseUnitsMap (K := K) (L := L) x) =
       baseUnitsMap (K := K) (L := M) x := by
-  ext
-  simpa [baseUnitsMap] using
-    (IsScalarTower.algebraMap_apply K L M (x : K)).symm
+  apply Units.ext
+  exact (IsScalarTower.algebraMap_apply K L M (x : K)).symm
 
 /-- Elementwise tower transport for the subgroup of embedded base units. -/
 theorem baseUnitsMap_mem_baseUnitsImageSubgroup_tower
@@ -117,7 +120,7 @@ end Tower
 
 section LowerNormTower
 
-variable {K L M : Type u}
+variable {K : Type u} {L : Type v} {M : Type w}
 variable [Field K] [Field L] [Field M]
 variable [Algebra K L] [Algebra L M]
 
@@ -175,7 +178,7 @@ end LowerNormTower
 
 section NormDownTower
 
-variable {K L M : Type u}
+variable {K : Type u} {L : Type v} {M : Type w}
 variable [Field K] [Field L] [Field M]
 variable [Algebra K L] [Algebra L M]
 

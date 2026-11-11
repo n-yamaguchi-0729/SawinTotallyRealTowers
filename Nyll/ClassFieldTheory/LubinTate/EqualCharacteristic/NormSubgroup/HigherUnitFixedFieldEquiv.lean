@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldSurjective
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldSurjective
 
 /-!
 # LubinTate the explicit norm-subgroup computation: the standard level is the higher-unit fixed
@@ -16,6 +18,10 @@ have the same degree `(q - 1) q^n`.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 
@@ -26,7 +32,7 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 attribute [local instance]
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra
@@ -40,7 +46,7 @@ attribute [local instance]
 /-- Defines `equalCharacteristicLubinTateLevelFieldEquivFixedFieldOfHigherUnit`. -/
 noncomputable def
     equalCharacteristicLubinTateLevelFieldEquivFixedFieldOfHigherUnit
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n) :

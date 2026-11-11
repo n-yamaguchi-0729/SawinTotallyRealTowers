@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
 
 /-!
 # Conjugation and base change
@@ -19,6 +21,8 @@ nonarchimedean homomorphisms.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -41,7 +45,8 @@ variable (hsquare : tauL.comp (algebraMap K L) =
 variable [Normal K L]
 
 include hsquare in
-private def galoisPullbackElement (sigma : L' ≃ₐ[K'] L') : L ≃ₐ[K] L := by
+/-- An automorphism restricted along the commutative square of field embeddings. -/
+def galoisPullbackElement (sigma : L' ≃ₐ[K'] L') : L ≃ₐ[K] L := by
   letI : Algebra K K' := tauK.toAlgebra
   letI : Algebra K L' := ((algebraMap K' L').comp tauK).toAlgebra
   letI : Algebra L L' := tauL.toAlgebra
@@ -60,7 +65,8 @@ private def galoisPullbackElement (sigma : L' ≃ₐ[K'] L') : L ≃ₐ[K] L := 
       ((sigma.restrictScalars K).toAlgHom.comp
         tauLK)
 
-private theorem galoisPullbackElement_commutes
+/-- Restriction of an automorphism commutes with the extension-field embedding. -/
+theorem galoisPullbackElement_commutes
     (sigma : L' ≃ₐ[K'] L') (x : L) :
     tauL (galoisPullbackElement tauK tauL hsquare sigma x) =
       sigma (tauL x) := by
@@ -145,10 +151,12 @@ open RamificationTheory.HilbertRamification.ValuationSubring
 
 variable (A' : _root_.ValuationSubring L')
 
-private abbrev pulledValuationSubring : _root_.ValuationSubring L :=
+/-- The valuation subring pulled back along the extension-field embedding. -/
+abbrev pulledValuationSubring : _root_.ValuationSubring L :=
   A'.comap tauL
 
-private theorem mem_nonunits_pulled_iff (x : L) :
+/-- Membership in the pulled-back maximal ideal is detected after embedding. -/
+theorem mem_nonunits_pulled_iff (x : L) :
     x ∈ (pulledValuationSubring tauL A').nonunits ↔
       tauL x ∈ A'.nonunits := by
   rw [_root_.ValuationSubring.mem_nonunits_iff_or,
@@ -176,7 +184,9 @@ private theorem units_map_mem_principalUnitGroup_iff (x : Lˣ) :
   rw [hcoe]
   simpa only [_root_.ValuationSubring.mem_nonunits_iff, map_sub, map_one] using h
 
-private theorem mem_inertiaGroup_iff_sub_mem_nonunits
+/-- Inertia membership as congruence to the identity on integral elements
+modulo the maximal ideal. -/
+theorem mem_inertiaGroup_iff_sub_mem_nonunits
     {F : Type*} {E : Type*} [Field F] [Field E] [Algebra F E]
     (A : _root_.ValuationSubring E) (sigma : decompositionGroup F A) :
     sigma ∈ inertiaGroup F A ↔
@@ -237,7 +247,8 @@ def galoisPullback_decompositionGroupMap :
     exact map_mul (galoisPullback_galoisPullback tauK tauL hsquare)
       (sigma : L' ≃ₐ[K'] L') (rho : L' ≃ₐ[K'] L')
 
-private theorem decompositionGroupMap_commutes
+/-- The decomposition-group pullback commutes with the extension-field embedding. -/
+theorem decompositionGroupMap_commutes
     (sigma : decompositionGroup K' A') (x : L) :
     tauL ((((galoisPullback_decompositionGroupMap tauK tauL hsquare A' sigma :
       decompositionGroup K (pulledValuationSubring tauL A')) :
@@ -295,7 +306,8 @@ private theorem automorphismUnitQuotient_map
   ext
   simp [automorphismUnitQuotient, inertiaGroupMap_commutes]
 
-private theorem ramificationPredicate_map
+/-- Pullback preserves the principal-unit condition defining the ramification group. -/
+theorem ramificationPredicate_map
     (sigma : inertiaGroup K' A')
     (hsigma : ∀ y : L'ˣ,
       automorphismUnitQuotient K' A' (sigma : decompositionGroup K' A') y ∈

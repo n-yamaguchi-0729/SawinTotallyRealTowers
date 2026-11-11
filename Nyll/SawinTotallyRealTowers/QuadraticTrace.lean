@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticGenerator
-import Mathlib.RingTheory.Adjoin.PowerBasis
-import Mathlib.RingTheory.Norm.Basic
-import Mathlib.RingTheory.Trace.Basic
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticGenerator
+public import Mathlib.RingTheory.Adjoin.PowerBasis
+public import Mathlib.RingTheory.Norm.Basic
+public import Mathlib.RingTheory.Trace.Basic
 
 /-!
 # Traces and norms in quadratic coordinates
@@ -17,6 +19,8 @@ A square-root generator of a quadratic extension has minimal polynomial
 of `1` and the generator, follow from the power basis and a two-dimensional
 determinant identity.
 -/
+
+@[expose] public section
 
 noncomputable section
 

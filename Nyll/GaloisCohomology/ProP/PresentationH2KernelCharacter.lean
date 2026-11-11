@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.InvariantKernelH1
-import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Nyll.GaloisCohomology.ProP.InvariantKernelH1
+public import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Kernel characters extracted from presentation degree-two classes
@@ -15,6 +17,8 @@ import Mathlib.Topology.Algebra.ContinuousMonoidHom
 The normalized free-source primitive restricts to a continuous conjugation-invariant character
 of the presentation kernel.  The construction is linear in the degree-two cohomology class.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

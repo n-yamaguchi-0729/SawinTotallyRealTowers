@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Completed
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.Algebra.GroupWithZero.Action.End
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Completed
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.GroupWithZero.Action.End
 
 /-!
 # Group-like unit representations
@@ -15,6 +17,8 @@ Groups embed as units in their algebraic and completed group algebras. This file
 representation to augmentation and shows how restriction of scalars gives continuous group
 actions on modules.
 -/
+
+@[expose] public section
 
 open scoped Topology
 open ProCGroups
@@ -102,9 +106,9 @@ theorem unitRepresentation_continuousSMul
     [TopologicalSpace S] [AddCommGroup A] [TopologicalSpace A] [Module S A]
     [ContinuousSMul S A] (ρ : G →* Sˣ)
     (hρ : Continuous fun g : G => ((ρ g : Sˣ) : S)) :
-    letI : DistribMulAction G A := unitRepresentationDistribMulAction G S A ρ
+    let : DistribMulAction G A := unitRepresentationDistribMulAction G S A ρ
     ContinuousSMul G A := by
-  let : DistribMulAction G A := unitRepresentationDistribMulAction G S A ρ
+  intro sharedOwner1
   refine ⟨?_⟩
   change Continuous fun p : G × A => ((ρ p.1 : Sˣ) : S) • p.2
   have hpair : Continuous fun p : G × A => (((ρ p.1 : Sˣ) : S), p.2) :=
@@ -121,15 +125,12 @@ theorem finiteGroupAlgebra_module_induces_continuous_gmodule
     [AddCommGroup A] [TopologicalSpace A] [Module (MonoidAlgebra R G) A]
     (hsmul : letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
       ContinuousSMul (MonoidAlgebra R G) A) :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
-    letI : DistribMulAction G A :=
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : DistribMulAction G A :=
       unitRepresentationDistribMulAction G (MonoidAlgebra R G) A
         (groupAlgebraUnitRepresentation R G)
     ContinuousSMul G A := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
-  let : DistribMulAction G A :=
-    unitRepresentationDistribMulAction G (MonoidAlgebra R G) A
-      (groupAlgebraUnitRepresentation R G)
+  intro sharedOwner1 sharedOwner2
   refine ⟨?_⟩
   change Continuous fun p : G × A =>
     ((groupAlgebraUnitRepresentation R G p.1 : (MonoidAlgebra R G)ˣ) : MonoidAlgebra R G) • p.2
@@ -162,13 +163,11 @@ theorem completedGroupAlgebra_module_induces_continuous_gmodule
     [Group G] [Ring RG] [TopologicalSpace RG] [AddCommGroup A] [TopologicalSpace A]
     [Module RG A] [ContinuousSMul RG A] (dense : MonoidAlgebra R G →+* RG)
     (hdenseG : Continuous fun g : G => dense (MonoidAlgebra.of R G g)) :
-    letI : DistribMulAction G A :=
+    let : DistribMulAction G A :=
       unitRepresentationDistribMulAction G RG A
         (completedGroupAlgebraUnitRepresentation R G RG dense)
     ContinuousSMul G A := by
-  let : DistribMulAction G A :=
-    unitRepresentationDistribMulAction G RG A
-      (completedGroupAlgebraUnitRepresentation R G RG dense)
+  intro sharedOwner1
   exact unitRepresentation_continuousSMul G RG A
     (completedGroupAlgebraUnitRepresentation R G RG dense) (by simpa using hdenseG)
 

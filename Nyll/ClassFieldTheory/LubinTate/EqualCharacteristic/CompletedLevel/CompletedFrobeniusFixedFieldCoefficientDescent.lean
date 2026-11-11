@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldPowerBasis
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldPowerBasis
 
 /-!
 # The completed theta-intertwining theorem: coefficient descent in the completed fixed field
@@ -15,6 +17,8 @@ completed unramified field to the original Laurent base.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

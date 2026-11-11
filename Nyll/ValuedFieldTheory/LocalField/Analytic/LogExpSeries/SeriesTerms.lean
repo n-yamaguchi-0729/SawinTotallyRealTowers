@@ -4,16 +4,25 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
-import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalProduct
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
+module
+
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.GroupWithZero.Basic
+public import Mathlib.RingTheory.PowerSeries.Basic
+public import Mathlib.Algebra.Group.Units.Defs
+public import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
+public import Mathlib.Topology.Algebra.Valued.WithZeroMulInt
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalProduct
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitDecomposition
 
 /-!
 Defines the logarithm and exponential series terms and proves the valuation estimates used in
 their convergence arguments.
 -/
 
+
+@[expose] public section
 
 open Filter
 open Polynomial
@@ -55,7 +64,7 @@ noncomputable def signedLogSeriesTerm
 @[simp] theorem signedLogSeriesTerm_zero
     (x : Kˣ) (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) :
     signedLogSeriesTerm x hnK 0 = (x : K) := by
-  simp [signedLogSeriesTerm]
+  rw [signedLogSeriesTerm, pow_zero, one_mul, logSeriesTerm_zero]
 
 /-- The finite partial sum of the principal-unit logarithm series. -/
 noncomputable def logOnePlusPartialSum
@@ -66,13 +75,14 @@ noncomputable def logOnePlusPartialSum
 @[simp] theorem logOnePlusPartialSum_zero
     (x : Kˣ) (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) :
     logOnePlusPartialSum x hnK 0 = 0 := by
-  simp [logOnePlusPartialSum]
+  exact Finset.sum_range_zero (signedLogSeriesTerm x hnK)
 
 /-- Establishes the identity `logOnePlusPartialSum x hnK 1 = (x : K)`. -/
 @[simp] theorem logOnePlusPartialSum_one
     (x : Kˣ) (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) :
     logOnePlusPartialSum x hnK 1 = (x : K) := by
-  simp [logOnePlusPartialSum]
+  exact (Finset.sum_range_one (signedLogSeriesTerm x hnK)).trans
+    (signedLogSeriesTerm_zero x hnK)
 
 /-- The value of the principal-unit logarithm series, formed as a topological
 sum in the topology attached to `v`. -/
@@ -104,7 +114,7 @@ noncomputable def signedLogSeriesTermField
 @[simp] theorem signedLogSeriesTermField_zero
     (x : K) (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) :
     signedLogSeriesTermField x hnK 0 = x := by
-  simp [signedLogSeriesTermField]
+  rw [signedLogSeriesTermField, pow_zero, one_mul, logSeriesTermField_zero]
 
 /-- The `n`-th field logarithm-series term is the evaluation of the
 `(n+1)`-st coefficient of the formal series `log(1+X)` at `x`. -/
@@ -125,8 +135,8 @@ theorem powerSeries_log_coeff_mul_pow_eq_signedLogSeriesTermField
     rw [show n + 1 + 1 = n + 2 by omega, pow_add]
     norm_num
   rw [PowerSeries.coeff_log, ite_eq_right (Nat.succ_ne_zero n), hsign, hcoeff]
-  simp [signedLogSeriesTermField, logSeriesTermField, div_eq_mul_inv,
-    mul_assoc, mul_left_comm, mul_comm]
+  exact (div_mul_eq_mul_div₀ ((-1 : K) ^ n) (x ^ (n + 1)) ((n + 1 : ℕ) : K)).trans
+    (mul_div_assoc _ _ _)
 
 /-- Field-element finite partial sums of the principal-unit logarithm series. -/
 noncomputable def logOnePlusPartialSumField
@@ -137,13 +147,14 @@ noncomputable def logOnePlusPartialSumField
 @[simp] theorem logOnePlusPartialSumField_zero
     (x : K) (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) :
     logOnePlusPartialSumField x hnK 0 = 0 := by
-  simp [logOnePlusPartialSumField]
+  exact Finset.sum_range_zero (signedLogSeriesTermField x hnK)
 
 /-- Establishes the identity `logOnePlusPartialSumField x hnK 1 = x`. -/
 @[simp] theorem logOnePlusPartialSumField_one
     (x : K) (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) :
     logOnePlusPartialSumField x hnK 1 = x := by
-  simp [logOnePlusPartialSumField]
+  exact (Finset.sum_range_one (signedLogSeriesTermField x hnK)).trans
+    (signedLogSeriesTermField_zero x hnK)
 
 /-- Finite logarithm polynomials are exactly the finite evaluations of the
 formal power series `log(1+X)` with the constant term omitted. -/
@@ -191,13 +202,14 @@ noncomputable def expSeriesPartialSum
 @[simp] theorem expSeriesPartialSum_zero
     (x : Kˣ) (hnK : ∀ n : ℕ, (((n.factorial : ℕ) : K) ≠ 0)) :
     expSeriesPartialSum x hnK 0 = 0 := by
-  simp [expSeriesPartialSum]
+  exact Finset.sum_range_zero (expSeriesTerm x hnK)
 
 /-- Establishes the identity `expSeriesPartialSum x hnK 1 = 1`. -/
 @[simp] theorem expSeriesPartialSum_one
     (x : Kˣ) (hnK : ∀ n : ℕ, (((n.factorial : ℕ) : K) ≠ 0)) :
     expSeriesPartialSum x hnK 1 = 1 := by
-  simp [expSeriesPartialSum]
+  exact (Finset.sum_range_one (expSeriesTerm x hnK)).trans
+    (expSeriesTerm_zero x hnK)
 
 /-- The value of the exponential series in the topology attached to `v`. -/
 noncomputable def expSeriesOfWithZeroValuation
@@ -218,7 +230,8 @@ noncomputable def expSeriesTermField
 @[simp] theorem expSeriesTermField_zero
     (x : K) (hnK : ∀ n : ℕ, (((n.factorial : ℕ) : K) ≠ 0)) :
     expSeriesTermField x hnK 0 = 1 := by
-  simp [expSeriesTermField]
+  simp only [expSeriesTermField, pow_zero, Nat.factorial_zero, Nat.cast_one,
+    Units.val_mk0, div_one]
 
 /-- The `n`-th field exponential-series term is the evaluation of the
 `n`-th coefficient of mathlib's formal exponential series at `x`. -/
@@ -228,7 +241,9 @@ theorem formalExpPowerSeries_coeff_mul_pow_eq_expSeriesTermField
     PowerSeries.coeff n (PowerSeries.exp K) * x ^ n =
       expSeriesTermField x hnK n := by
   rw [PowerSeries.coeff_exp]
-  simp [expSeriesTermField, div_eq_mul_inv, mul_comm]
+  rw [map_div₀, _root_.map_one (algebraMap ℚ K), map_natCast]
+  exact (div_mul_eq_mul_div₀ 1 (x ^ n) (n.factorial : K)).trans
+    (congrArg (fun z : K => z / (n.factorial : K)) (one_mul _))
 
 /-- Field-element finite partial sums of the exponential series. -/
 noncomputable def expSeriesPartialSumField
@@ -240,13 +255,13 @@ noncomputable def expSeriesPartialSumField
 @[simp] theorem expSeriesPartialSumField_zero
     (x : K) (hnK : ∀ n : ℕ, (((n.factorial : ℕ) : K) ≠ 0)) :
     expSeriesPartialSumField x hnK 0 = 0 := by
-  simp [expSeriesPartialSumField]
+  simp only [expSeriesPartialSumField, Finset.range_zero, Finset.sum_empty]
 
 /-- Establishes the identity `expSeriesPartialSumField x hnK 1 = 1`. -/
 @[simp] theorem expSeriesPartialSumField_one
     (x : K) (hnK : ∀ n : ℕ, (((n.factorial : ℕ) : K) ≠ 0)) :
     expSeriesPartialSumField x hnK 1 = 1 := by
-  simp [expSeriesPartialSumField]
+  simp only [expSeriesPartialSumField, Finset.sum_range_one, expSeriesTermField_zero]
 
 /-- Finite exponential polynomials are exactly the finite evaluations of
 mathlib's formal exponential series. -/
@@ -289,7 +304,8 @@ theorem expSeriesTermField_add_eq_sum_antidiagonal
             PowerSeries.coeff ij.2
               (PowerSeries.rescale y (PowerSeries.exp K)) := by
       exact Finset.sum_congr rfl fun ij _ => by
-        simp [mul_assoc, mul_left_comm, mul_comm]
+        rw [PowerSeries.coeff_rescale, PowerSeries.coeff_rescale]
+        exact congrArg₂ (fun a b : K => a * b) (mul_comm _ _) (mul_comm _ _)
     _ = PowerSeries.coeff n
           (PowerSeries.rescale x (PowerSeries.exp K) *
             PowerSeries.rescale y (PowerSeries.exp K)) := by
@@ -298,7 +314,7 @@ theorem expSeriesTermField_add_eq_sum_antidiagonal
           (PowerSeries.rescale (x + y) (PowerSeries.exp K)) := by
       rw [PowerSeries.exp_mul_exp_eq_exp_add]
     _ = PowerSeries.coeff n (PowerSeries.exp K) * (x + y) ^ n := by
-      simp [mul_comm]
+      rw [PowerSeries.coeff_rescale, mul_comm]
     _ = expSeriesTermField (x + y) hnK n :=
       formalExpPowerSeries_coeff_mul_pow_eq_expSeriesTermField
         (K := K) (x + y) hnK n
@@ -373,7 +389,8 @@ theorem logSeriesTermField_eq_logSeriesTerm_mk0
     (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) (n : ℕ) :
     logSeriesTermField x hnK n =
       logSeriesTerm (Units.mk0 x hx) hnK n := by
-  simp [logSeriesTermField, logSeriesTerm]
+  exact (Units.val_div_eq_div_val ((Units.mk0 x hx) ^ (n + 1))
+    (Units.mk0 (((n + 1 : ℕ) : K)) (hnK n))).symm
 
 /--
 Establishes the identity `signedLogSeriesTermField x hnK n = signedLogSeriesTerm (Units.mk0 x hx)
@@ -384,8 +401,8 @@ theorem signedLogSeriesTermField_eq_signedLogSeriesTerm_mk0
     (hnK : ∀ n : ℕ, (((n + 1 : ℕ) : K) ≠ 0)) (n : ℕ) :
     signedLogSeriesTermField x hnK n =
       signedLogSeriesTerm (Units.mk0 x hx) hnK n := by
-  simp [signedLogSeriesTermField, signedLogSeriesTerm,
-    logSeriesTermField_eq_logSeriesTerm_mk0 hx hnK n]
+  exact congrArg (fun z : K => (-1 : K) ^ n * z)
+    (logSeriesTermField_eq_logSeriesTerm_mk0 hx hnK n)
 
 /--
 Establishes the identity `logOnePlusSeriesFieldOfWithZeroValuation v x hnK =
@@ -410,7 +427,8 @@ theorem expSeriesTermField_eq_expSeriesTerm_mk0
     (hnK : ∀ n : ℕ, (((n.factorial : ℕ) : K) ≠ 0)) (n : ℕ) :
     expSeriesTermField x hnK n =
       expSeriesTerm (Units.mk0 x hx) hnK n := by
-  simp [expSeriesTermField, expSeriesTerm]
+  exact (Units.val_div_eq_div_val ((Units.mk0 x hx) ^ n)
+    (Units.mk0 (((n.factorial : ℕ) : K)) (hnK n))).symm
 
 /--
 Establishes the identity `expSeriesFieldOfWithZeroValuation v x hnK = expSeriesOfWithZeroValuation
@@ -433,9 +451,9 @@ topological input needed before applying mathlib's nonarchimedean infinite-sum
 criterion. -/
 theorem nonarchimedeanRing_ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ))) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     NonarchimedeanRing K := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   simpa [Valued.mk'] using v.subgroups_basis.nonarchimedean
 
 /-- In the topology attached to a `ℤᵐ⁰`-valued valuation, every element of
@@ -443,9 +461,9 @@ valuation strictly below one is topologically nilpotent. -/
 theorem isTopologicallyNilpotent_ofWithZeroValuation_lt_one
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
     {x : K} (hx : v x < (1 : WithZero (Multiplicative ℤ))) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     IsTopologicallyNilpotent x := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   exact Valued.tendsto_zero_pow_of_v_lt_one hx
 
 /-- If a nonzero field element has valuation strictly below one, then its
@@ -539,7 +557,7 @@ theorem ofWithZeroValuation_val_eq_of_valuation_eq
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ))) {x y : Kˣ}
     (hxy : v (x : K) = v (y : K)) :
     (ofWithZeroValuation v).val x = (ofWithZeroValuation v).val y := by
-  simp [ofWithZeroValuation_val, hxy]
+  exact congrArg (fun z : WithZero (Multiplicative ℤ) => -WithZero.log z) hxy
 
 /-- The integer valuation attached to a nonarchimedean `ℤᵐ⁰`-valuation is
 bounded below by the minimum under addition. -/
@@ -564,8 +582,7 @@ theorem ofWithZeroValuation_val_add_ge_min
     have hy_le_sum :
         (ofWithZeroValuation v).val (Units.mk0 y hy) ≤
           (ofWithZeroValuation v).val (Units.mk0 (x + y) hxy) := by
-      simp [ofWithZeroValuation_val]
-      linarith
+      exact neg_le_neg hlog
     exact le_trans (min_le_right _ _) hy_le_sum
   · have hyxv : v y ≤ v x := le_of_not_ge hxyv
     have hsum_x : v (x + y) ≤ v x := by
@@ -580,8 +597,7 @@ theorem ofWithZeroValuation_val_add_ge_min
     have hx_le_sum :
         (ofWithZeroValuation v).val (Units.mk0 x hx) ≤
           (ofWithZeroValuation v).val (Units.mk0 (x + y) hxy) := by
-      simp [ofWithZeroValuation_val]
-      linarith
+      exact neg_le_neg hlog
     exact le_trans (min_le_left _ _) hx_le_sum
 
 /-- In the topology attached to a discrete `ℤᵐ⁰`-valued valuation, every open
@@ -753,13 +769,13 @@ theorem tendsto_zero_log_term_ofWithZeroValuation_of_pos
       v (((n + 1 : ℕ) : K)) =
         WithZero.exp (-(padicValNat p (n + 1) : ℤ)))
     (hxpos : 0 < (ofWithZeroValuation v).val x) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun n : ℕ =>
         ((x ^ (n + 1) /
           Units.mk0 (((n + 1 : ℕ) : K)) (hnK n) : Kˣ) : K))
       atTop (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   rw [tendsto_iff_forall_eventually_mem]
   intro s hs
   rw [Valued.mem_nhds_zero] at hs
@@ -797,14 +813,14 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_of_pos
       v (((n + 1 : ℕ) : K)) =
         WithZero.exp (-(padicValNat p (n + 1) : ℤ)))
     (hxpos : 0 < (ofWithZeroValuation v).val x) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun n : ℕ =>
         (-1 : K) ^ n *
           ((x ^ (n + 1) /
             Units.mk0 (((n + 1 : ℕ) : K)) (hnK n) : Kˣ) : K))
       atTop (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   rw [tendsto_iff_forall_eventually_mem]
   intro s hs
   rw [Valued.mem_nhds_zero] at hs
@@ -852,12 +868,12 @@ theorem summable_log_term_ofWithZeroValuation_of_pos
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun n : ℕ =>
         ((x ^ (n + 1) /
           Units.mk0 (((n + 1 : ℕ) : K)) (hnK n) : Kˣ) : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -890,13 +906,13 @@ theorem summable_signed_log_term_ofWithZeroValuation_of_pos
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun n : ℕ =>
         (-1 : K) ^ n *
           ((x ^ (n + 1) /
             Units.mk0 (((n + 1 : ℕ) : K)) (hnK n) : Kˣ) : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -933,10 +949,10 @@ theorem hasSum_signedLogSeriesTerm_logOnePlusSeries_ofWithZeroValuation_of_pos
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum (fun n : ℕ => signedLogSeriesTerm x hnK n)
       (logOnePlusSeriesOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hs :
       Summable
         (fun n : ℕ =>
@@ -962,10 +978,10 @@ theorem tendsto_logOnePlusPartialSum_ofWithZeroValuation_of_pos
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun N : ℕ => logOnePlusPartialSum x hnK N) atTop
       (𝓝 (logOnePlusSeriesOfWithZeroValuation v x hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_signedLogSeriesTerm_logOnePlusSeries_ofWithZeroValuation_of_pos
       (v := v) (p := p) x hnK hnval hxpos hcomplete
@@ -1037,14 +1053,14 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_scaled_of_pos
       v (((n + 1 : ℕ) : K)) =
         WithZero.exp (-((e : ℤ) * (padicValNat p (n + 1) : ℤ))))
     (hxpos : 0 < (ofWithZeroValuation v).val x) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto
       (fun n : ℕ =>
         (-1 : K) ^ n *
           ((x ^ (n + 1) /
             Units.mk0 (((n + 1 : ℕ) : K)) (hnK n) : Kˣ) : K))
       atTop (𝓝 (0 : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   rw [tendsto_iff_forall_eventually_mem]
   intro s hs
   rw [Valued.mem_nhds_zero] at hs
@@ -1091,13 +1107,13 @@ theorem summable_signed_log_term_ofWithZeroValuation_scaled_of_pos
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Summable
       (fun n : ℕ =>
         (-1 : K) ^ n *
           ((x ^ (n + 1) /
             Units.mk0 (((n + 1 : ℕ) : K)) (hnK n) : Kˣ) : K)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
   have hzero :
@@ -1133,10 +1149,10 @@ theorem hasSum_signedLogSeriesTerm_logOnePlusSeries_ofWithZeroValuation_scaled_o
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum (fun n : ℕ => signedLogSeriesTerm x hnK n)
       (logOnePlusSeriesOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hs :
       Summable
         (fun n : ℕ =>
@@ -1161,10 +1177,10 @@ theorem tendsto_logOnePlusPartialSum_ofWithZeroValuation_scaled_of_pos
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Tendsto (fun N : ℕ => logOnePlusPartialSum x hnK N) atTop
       (𝓝 (logOnePlusSeriesOfWithZeroValuation v x hnK)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_signedLogSeriesTerm_logOnePlusSeries_ofWithZeroValuation_scaled_of_pos
       (v := v) (p := p) e x hnK hnval hxpos hcomplete

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CompletedUnramifiedField
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaSeries
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CompletedUnramifiedField
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaSeries
 
 /-!
 # Analytic evaluation for theta
@@ -20,6 +22,8 @@ analytic evaluation map.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

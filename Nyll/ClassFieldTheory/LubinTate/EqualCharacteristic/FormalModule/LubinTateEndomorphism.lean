@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentModel
-import Mathlib.Algebra.CharP.Algebra
-import Mathlib.Algebra.CharP.Frobenius
-import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentModel
+public import Mathlib.Algebra.CharP.Algebra
+public import Mathlib.Algebra.CharP.Frobenius
+public import Mathlib.Algebra.BigOperators.Group.Finset.Lemmas
 
 /-!
 # The equal-characteristic Lubin–Tate action: the equal-characteristic Lubin--Tate endomorphism
@@ -29,6 +31,8 @@ ordinary scalar multiplication in the ambient field.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped PowerSeries LaurentSeries
@@ -48,7 +52,8 @@ private theorem addMonoidEnd_mul_apply
     (f * g) x = f (g x) :=
   rfl
 
-private instance equalCharacteristicLaurentCharP
+/-- Coefficient extension preserves the positive residue characteristic on Laurent series. -/
+local instance equalCharacteristicLaurentCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] :
     CharP F.residueField⸨X⸩ F.residueCharacteristic :=

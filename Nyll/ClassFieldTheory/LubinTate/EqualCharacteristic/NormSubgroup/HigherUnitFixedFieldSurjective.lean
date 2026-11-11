@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldEmbedding
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldDegree
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFixedFieldEmbedding
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedFieldDegree
 
 /-!
 # LubinTate the explicit norm-subgroup computation: surjectivity of the higher-unit fixed-field
@@ -17,6 +19,10 @@ The standard level and the fixed field have the same finite degree
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 
@@ -27,7 +33,7 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 attribute [local instance]
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra
@@ -54,7 +60,7 @@ private theorem ringHom_surjective_of_finrank_eq
 /-- The canonical standard-level embedding onto the higher-unit fixed field
 is surjective. -/
 theorem equalCharacteristicLubinTateLevelFieldToFixedFieldOfHigherUnit_surjective
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n) :

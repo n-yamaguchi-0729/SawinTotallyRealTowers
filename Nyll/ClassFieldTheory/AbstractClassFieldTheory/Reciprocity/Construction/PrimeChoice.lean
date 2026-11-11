@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
 
 /-!
 # The abstract reciprocity construction: choosing prime elements
@@ -13,6 +15,10 @@ Surjectivity of the normalized valuation supplies a prime element in every
 finite abstract field.  Any two choices differ by a unit (additively, their
 difference has value zero).
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -26,9 +32,8 @@ noncomputable section
 
 namespace ValuationData
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- A chosen prime element of a finite abstract field.  Later independence
 lemmas show that the reciprocity class does not depend on this choice. -/

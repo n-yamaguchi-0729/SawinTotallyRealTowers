@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldComparison
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Naturality of the small Hilbert class field
@@ -19,7 +24,9 @@ therefore compatible with the canonical quotient--class-group equivalences.
 
 
 
-open scoped NumberField
+@[expose] public section
+
+open scoped IsMulCommutative NumberField
 
 noncomputable section
 
@@ -28,13 +35,8 @@ namespace GlobalClassFields
 
 open NumberField
 
-/-- Supply the canonical commutativity used by both small-Hilbert quotients. -/
-private theorem smallHilbertNaturalityIdeleClassIsMulCommutative
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-attribute [local instance] smallHilbertNaturalityIdeleClassIsMulCommutative
+attribute [local instance]
+  hilbertClassFieldComparison_ideleClassGroupIsMulCommutative
 
 variable
     {K M : Type*}
@@ -105,7 +107,8 @@ theorem smallHilbertClassFieldQuotientEquivClassGroup_naturality
       smallHilbertClassGroupCongr e
         (smallHilbertClassFieldQuotientEquivClassGroup
           (K := K) q) := by
-  simp [smallHilbertClassGroupCongr]
+  simp only [smallHilbertClassGroupCongr, MulEquiv.trans_apply,
+    MulEquiv.symm_apply_apply]
 
 /-- Homomorphism form of naturality for the small-Hilbert
 quotient--class-group identification. -/

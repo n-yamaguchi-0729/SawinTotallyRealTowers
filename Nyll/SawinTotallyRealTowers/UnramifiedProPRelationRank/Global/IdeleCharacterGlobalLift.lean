@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianKernel
-import Nyll.ProCGroups.Topologies.QuotientMaps
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianKernel
+public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Lifting an idele character to an absolute Galois character
@@ -17,6 +20,8 @@ the idele class group and then to its component quotient. Actual global reciproc
 that quotient with the maximal abelian Galois group. Restriction from the absolute Galois
 group therefore gives a genuine continuous degree-one class.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 

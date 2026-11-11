@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Presentation.GeneratorRank
-import Nyll.ProCGroups.FiniteGeneration.Basic
+module
+
+public import Nyll.ProCGroups.ProP.Presentation.GeneratorRank
+public import Nyll.ProCGroups.FiniteGeneration.Basic
 
 /-!
 # Finite generation of a displayed presentation source
@@ -13,6 +15,8 @@ import Nyll.ProCGroups.FiniteGeneration.Basic
 The actual finite free basis supplies a finite topological generating set.
 No minimality assumption on the presentation is required.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP.FiniteProPPresentation
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ChoiceCountSystem
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.ChoiceCountSystem
 
 /-!
 # Explicit counts for basic-factor choices
@@ -14,6 +16,8 @@ label-count and multinomial choice spaces.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

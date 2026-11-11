@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Concrete realization of finite abelian subextensions
@@ -19,6 +21,8 @@ carried by the abstract package, so this actual extension is abelian Galois.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -89,7 +93,7 @@ theorem IsAbelianGalois.of_base_equiv
   exact DFunLike.congr_fun (mul_comm σ' τ') x
 
 variable
-    {k Ω : Type}
+    {k : Type u} {Ω : Type v}
     [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
     {K : ClosedSubgroup (Gal(Ω/k))}
 

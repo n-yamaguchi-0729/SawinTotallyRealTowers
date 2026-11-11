@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Compactification.OnePoint.Basic
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
-import Nyll.ProCGroups.Profinite.Basic
+module
+
+public import Mathlib.Topology.Compactification.OnePoint.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.Profinite.Basic
 
 /-!
 # Convergence of generating sets in profinite groups
@@ -16,6 +18,8 @@ The open-subgroup convergence predicate is shown to be stable under pointed cont
 subsets, and finite modifications.  For a generating set containing one, the module identifies
 its closure with a compact one-point extension and proves that the convergent set is closed.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

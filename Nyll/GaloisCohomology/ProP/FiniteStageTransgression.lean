@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
-import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteStage
-import Nyll.GaloisCohomology.ProP.QuotientRestriction
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
+public import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteStage
+public import Nyll.GaloisCohomology.ProP.QuotientRestriction
+public import Nyll.GaloisCohomology.ProP.FiniteTransgression
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
 
 /-!
 # Inflation of finite-stage transgression classes
@@ -14,6 +18,8 @@ import Nyll.GaloisCohomology.ProP.QuotientRestriction
 For a closed normal subgroup `R` and an ambient finite quotient `F/U`, this file constructs the
 canonical map from `F/R` to `(F/U)/(image R)` and uses it to inflate the finite factor-set class.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

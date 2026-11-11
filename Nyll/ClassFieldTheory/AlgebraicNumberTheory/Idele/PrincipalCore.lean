@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 
 /-!
 # Principal ideles and the idele class group
@@ -12,6 +14,8 @@ import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 This file formalizes the diagonal
 embedding of `Kˣ` into the idele group and the resulting idele class group.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

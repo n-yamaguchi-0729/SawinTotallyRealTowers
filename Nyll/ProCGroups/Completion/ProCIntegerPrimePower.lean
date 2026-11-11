@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Completion.ProCInteger
+module
+
+public import Nyll.ProCGroups.Completion.ProCInteger
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.InverseSystems.CofinalityAndDensity
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
 
 /-!
 # Pro C Groups / Completion / Prime-Power pro-C Integer
@@ -12,6 +17,8 @@ import Nyll.ProCGroups.Completion.ProCInteger
 This module specializes the pro-C integer construction to prime-power moduli and proves the
 pro-p density, generation, and procyclicity results.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.Completion
 

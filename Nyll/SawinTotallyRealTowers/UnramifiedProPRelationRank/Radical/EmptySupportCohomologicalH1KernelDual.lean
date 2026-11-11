@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1Cokernel
-import Mathlib.LinearAlgebra.Dual.Lemmas
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1Cokernel
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # The kernel-dual model of the self-dual cohomological cokernel
@@ -18,6 +20,8 @@ As in `EmptySupportCohomologicalH1Cokernel`, this is an intermediate self-dual `
 general arithmetic `B_∅` uses the Tate-dual coefficient `μ_p`; connecting the two models remains a
 separate local Tate/Kummer comparison.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField
@@ -121,6 +125,8 @@ theorem emptySupportCohomologicalH1CokernelEquivKernelDual_mk
     emptySupportCohomologicalH1CokernelEquivKernelDual F p
         (Submodule.Quotient.mk phi) =
       emptySupportCohomologicalH1KernelDualRestriction F p phi := by
-  simp [emptySupportCohomologicalH1CokernelEquivKernelDual]
+  rw [emptySupportCohomologicalH1CokernelEquivKernelDual,
+    LinearEquiv.trans_apply, Submodule.quotEquivOfEq_mk,
+    LinearMap.quotKerEquivOfSurjective_apply_mk]
 
 end ClassFieldTower.Martinet.Shafarevich

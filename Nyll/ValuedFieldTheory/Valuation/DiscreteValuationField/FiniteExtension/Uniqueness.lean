@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # Uniqueness criteria for complete discretely valued field extensions
@@ -14,6 +17,8 @@ valuation subrings, local centers, and fibers provide concrete criteria, while
 the corresponding Henselian-field results are transferred to complete fields.
 The module also records criteria from finite modules and adic completeness.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -1052,11 +1057,11 @@ theorem exists_chevalley_extension_valuation_eq_target_of_hasUniqueValuationExte
       ∃ _ : LinearOrderedCommGroupWithZero ΓL,
         ∃ vL : _root_.Valuation L ΓL,
           ∃ hExt : base.valuation.HasExtension vL,
-            letI : base.valuation.HasExtension vL := hExt
-            letI : Algebra base.valuationSubring vL.valuationSubring := by
+            let : base.valuation.HasExtension vL := hExt
+            let : Algebra base.valuationSubring vL.valuationSubring := by
               change Algebra base.valuation.valuationSubring vL.valuationSubring
               infer_instance
-            letI : IsLocalHom
+            let : IsLocalHom
                 (algebraMap base.valuationSubring vL.valuationSubring) := by
               exact Valuation.integerMap_isLocalHom_of_hasExtension
                 base.valuation vL
@@ -1078,20 +1083,13 @@ theorem exists_chevalley_extension_valuation_eq_target_of_hasUniqueValuationExte
     Valuation.chevalley_exists_extension_valuation_with_pullback_integralClosure_local_data
       (L := L) base.valuation
   let : LinearOrderedCommGroupWithZero ΓL := hΓL
-  let : base.valuation.HasExtension vL := hExt
-  let : Algebra base.valuationSubring vL.valuationSubring := by
-    change Algebra base.valuation.valuationSubring vL.valuationSubring
-    infer_instance
-  let : IsLocalHom
-      (algebraMap base.valuationSubring vL.valuationSubring) := by
-    exact Valuation.integerMap_isLocalHom_of_hasExtension
-      base.valuation vL
+  refine ⟨ΓL, hΓL, vL, hExt, ?_⟩
+  intro extension algebra localHom
   have hEquiv : target.valuation.IsEquiv vL :=
     @huniq ΓL inferInstance vL inferInstance
   have hSubring : target.valuation.valuationSubring = vL.valuationSubring :=
     valuationSubring_eq_of_valuation_isEquiv target hEquiv
-  exact ⟨ΓL, inferInstance, vL, inferInstance, hpullback, hIntegral, hlies,
-    hlocal, hResidue, hEquiv, hSubring⟩
+  exact ⟨hpullback, hIntegral, hlies, hlocal, hResidue, hEquiv, hSubring⟩
 
 
 /-- In a finite separable extension, any valuation subring whose valuation

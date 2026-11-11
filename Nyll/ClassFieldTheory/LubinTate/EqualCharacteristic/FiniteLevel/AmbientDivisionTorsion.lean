@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.AmbientBracketAction
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.AmbientBracketAction
 
 /-!
 # Ambient Lubin--Tate division groups
@@ -16,6 +18,8 @@ closure, where the nonzero division points live.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -59,7 +63,8 @@ theorem equalCharacteristicLubinTateAmbientPiIterate_bracket
         (equalCharacteristicLubinTateAmbientPiIterate F t i x) := by
   induction i generalizing x with
   | zero =>
-      simp [equalCharacteristicLubinTateAmbientPiIterate_zero]
+      rw [equalCharacteristicLubinTateAmbientPiIterate_zero,
+        equalCharacteristicLubinTateAmbientPiIterate_zero]
   | succ i ih =>
       rw [equalCharacteristicLubinTateAmbientPiIterate_succ,
         equalCharacteristicLubinTateAmbientPiEnd_bracket, ih,

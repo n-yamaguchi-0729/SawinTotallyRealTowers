@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.RingTheory.Filtration
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnits
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.RingTheory.Filtration
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnits
 /-!
 # Successive principal-unit quotients
 
 Develops `U^n/U^(n+1)` and identifies it with the additive ideal quotient
 `𝓂^n/𝓂^(n+1)` through the first-order map `a ↦ 1 + a`.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -398,7 +402,7 @@ lemma unit_sub_eq_mul_div_sub_one
     (a : 𝒪[K]) - (b : 𝒪[K]) =
       (b : 𝒪[K]) * (((a / b : 𝒪[K]ˣ) : 𝒪[K]) - 1) := by
   have hmul : (b : 𝒪[K]) * ((a / b : 𝒪[K]ˣ) : 𝒪[K]) = (a : 𝒪[K]) := by
-    simp [div_eq_mul_inv, mul_left_comm]
+    exact congrArg (fun u : 𝒪[K]ˣ => (u : 𝒪[K])) (mul_div_cancel b a)
   calc
     (a : 𝒪[K]) - (b : 𝒪[K]) =
         (b : 𝒪[K]) * ((a / b : 𝒪[K]ˣ) : 𝒪[K]) - (b : 𝒪[K]) := by
@@ -1183,14 +1187,14 @@ theorem finset_prod_one_add_sub_one_mem_maximalIdeal_of_mem_pow
     rw [Finset.prod_empty, sub_self]
     exact (𝓂[K] : Ideal 𝒪[K]).zero_mem
   · intro i s hi ih a ha
-    have hai_pow : a i ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := ha i (by simp [hi])
+    have hai_pow : a i ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := ha i (Finset.mem_insert_self i s)
     have hai : a i ∈ (𝓂[K] : Ideal 𝒪[K]) := by
       have hle : (𝓂[K] ^ n : Ideal 𝒪[K]) ≤ (𝓂[K] ^ 1 : Ideal 𝒪[K]) :=
         Ideal.pow_le_pow_right hn
       simpa using hle hai_pow
     have hs : ∀ j ∈ s, a j ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := by
       intro j hj
-      exact ha j (by simp [hj])
+      exact ha j (Finset.mem_insert_of_mem hj)
     have hprod : (s.prod fun j => 1 + a j) - 1 ∈ (𝓂[K] : Ideal 𝒪[K]) :=
       ih a hs
     have hterm : a i * (s.prod fun j => 1 + a j) ∈ (𝓂[K] : Ideal 𝒪[K]) :=
@@ -1218,10 +1222,10 @@ theorem finset_prod_one_add_sub_one_sub_sum_mem_maximalIdeal_pow_succ
     rw [Finset.prod_empty, Finset.sum_empty, sub_self, sub_zero]
     exact (𝓂[K] ^ (n + 1) : Ideal 𝒪[K]).zero_mem
   · intro i s hi ih a ha
-    have hai : a i ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := ha i (by simp [hi])
+    have hai : a i ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := ha i (Finset.mem_insert_self i s)
     have hs : ∀ j ∈ s, a j ∈ (𝓂[K] ^ n : Ideal 𝒪[K]) := by
       intro j hj
-      exact ha j (by simp [hj])
+      exact ha j (Finset.mem_insert_of_mem hj)
     have hind :
         (s.prod fun j => 1 + a j) - 1 - (s.sum fun j => a j) ∈
           (𝓂[K] ^ (n + 1) : Ideal 𝒪[K]) :=

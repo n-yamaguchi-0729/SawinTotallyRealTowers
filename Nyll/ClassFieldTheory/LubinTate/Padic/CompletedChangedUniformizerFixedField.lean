@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerThetaFixed
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedFrobeniusFixed
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerThetaFixed
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedUnramifiedFrobeniusFixed
 
 /-!
 # The changed p-adic Lubin--Tate level as a completed Frobenius fixed field
@@ -26,6 +28,8 @@ finite changed level, with no comparison hypothesis.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped Polynomial
@@ -42,7 +46,8 @@ noncomputable def padicCompletedChangedUniformizerFrobeniusAlgEquiv
     (u : (padicLocalField p).valuationSubringˣ) (n : ℕ) :
     padicCompletedLevelField p n ≃ₐ[ℚ_[p]]
       padicCompletedLevelField p n :=
-  AlgEquiv.ofRingEquiv (by
+  AlgEquiv.ofRingEquiv
+    (f := padicCompletedUnitFrobeniusLiftEquiv p n u⁻¹) (by
     intro b
     change
       padicCompletedUnitFrobeniusLiftEquiv p n u⁻¹

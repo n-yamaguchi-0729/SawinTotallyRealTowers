@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
-import Nyll.GaloisCohomology.GroupTheory.Finite
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
+public import Nyll.GaloisCohomology.GroupTheory.Finite
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Decomposition groups and complete splitting at finite places
@@ -26,6 +31,8 @@ degree one.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -35,7 +42,9 @@ open AlgebraicNumberTheory.Valuations
 open HilbertRamification
 open LocalClassFieldTheory
 
-variable {K L : Type}
+universe u v w
+
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -260,7 +269,7 @@ theorem finitePlace_not_splitsCompletely_of_decompositionGroup_eq_top
 
 section IntermediateField
 
-variable {M : Type}
+variable {M : Type w}
     [Field M] [Algebra K M] [Algebra M L]
     [IsScalarTower K M L]
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
 
 /-!
 # coefficient truncation for the Hensel correction step
@@ -13,6 +15,8 @@ This file contains the finite coefficient-cutting step used in the
 proof of Hensel's lemma: after the division step, coefficients already zero in
 the residue field may be omitted to impose the required degree bound.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -79,7 +83,7 @@ theorem henselFactorization_lowPart_map_eq_of_high_coeff_mem_ker
     rw [Polynomial.coeff_map, Polynomial.coeff_map,
       henselFactorization_lowPart_coeff_eq_zero_of_lt (P := P) hlt]
     rw [RingHom.mem_ker] at hker
-    simpa using hker.symm
+    simpa only [map_zero] using hker.symm
 
 /-- residue-map form of high-coefficient truncation. -/
 theorem henselFactorization_lowPart_residue_map_eq_of_high_coeff_mem_maximalIdeal
@@ -185,10 +189,11 @@ theorem henselFactorization_natDegree_right_le_tsub_of_mul_natDegree_le
     (hprod : (g * Q).natDegree ≤ d) :
     Q.natDegree ≤ d - m := by
   by_cases hQ : Q = 0
-  · simp [hQ]
+  · rw [hQ, Polynomial.natDegree_zero]
+    exact Nat.zero_le _
   · have hsum : m + Q.natDegree ≤ d := by
-      simpa [hgdeg, Polynomial.natDegree_mul hg hQ] using hprod
-    exact Nat.le_sub_of_add_le (by simpa [Nat.add_comm] using hsum)
+      simpa only [Polynomial.natDegree_mul hg hQ, hgdeg] using hprod
+    exact Nat.le_sub_of_add_le (by simpa only [Nat.add_comm] using hsum)
 
 /-- unit-leading degree division over an arbitrary
 commutative ring: if the product with a degree-`m` polynomial whose leading
@@ -206,7 +211,7 @@ theorem henselFactorization_natDegree_right_le_tsub_of_unit_leading_mul_natDegre
     ⟨u, _hu, hmonic, _hdegree, hnatDegree⟩
   let G : R[X] := Polynomial.C (((u⁻¹ : Rˣ) : R)) * g
   have hGmonic : G.Monic := by
-    simpa [G] using hmonic
+    exact hmonic
   have hGnat : G.natDegree = m := by
     simpa [G, hgdeg] using hnatDegree
   have hinvUnit : IsUnit (((u⁻¹ : Rˣ) : R)) := ⟨u⁻¹, rfl⟩

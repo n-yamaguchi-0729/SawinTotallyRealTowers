@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldValuationRing
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
-import Mathlib.NumberTheory.RamificationInertia.Galois
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldValuationRing
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
+public import Mathlib.NumberTheory.RamificationInertia.Galois
 
 /-!
 # The ramification index of an actual fixed field over a general DVF
@@ -18,6 +20,8 @@ depth subgroup require no completeness or Henselian hypothesis.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Equiv
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.ClosedGeneratedCoordinates.Equiv
 
 /-!
 # Fox differential: completed — continuous — closed generated coordinates — topology
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   coordinate topology on \(A_{\psi}(C)\). Equivalently, the displayed family map
   \(\mathbb{Z}_C\llbracket H\rrbracket^{X} \to A_{\psi}(C)\) is continuous for this topology.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 
@@ -348,7 +352,7 @@ theorem continuous_add_closedGenDerivativeCoordinateTopologyZC_of_fundFormula
             (freeProCZCCompletedFoxDerivativeVectorViaClosedGenerated
               (C := C) hfree (fun i : X => psi (family i)) htarget hφconv g) =
           zcUniversalDifferential C psi.toMonoidHom g) :
-    letI : TopologicalSpace
+    let : TopologicalSpace
         (ZCCompletedDifferentialModule C psi.toMonoidHom) :=
       closedGeneratedDerivativeCoordinateTopologyProCInteger_of_fundamental_formula
         (G := G) (H := H) C psi family hfree htarget hφconv
@@ -357,11 +361,7 @@ theorem continuous_add_closedGenDerivativeCoordinateTopologyZC_of_fundFormula
       ZCCompletedDifferentialModule C psi.toMonoidHom ×
         ZCCompletedDifferentialModule C psi.toMonoidHom =>
       p.1 + p.2) := by
-  let : TopologicalSpace
-      (ZCCompletedDifferentialModule C psi.toMonoidHom) :=
-    closedGeneratedDerivativeCoordinateTopologyProCInteger_of_fundamental_formula
-      (G := G) (H := H) C psi family hfree htarget hφconv
-      hH hφHconv hφHgen hfundamental
+  intro sharedOwner1
   let e :=
     closedGeneratedDerivativeCoordinateLinearEquivProCInteger_of_fundamental_formula
       (G := G) (H := H) C psi family hfree htarget hφconv
@@ -416,18 +416,14 @@ theorem continuous_neg_closedGenDerivativeCoordinateTopologyZC_of_fundFormula
             (freeProCZCCompletedFoxDerivativeVectorViaClosedGenerated
               (C := C) hfree (fun i : X => psi (family i)) htarget hφconv g) =
           zcUniversalDifferential C psi.toMonoidHom g) :
-    letI : TopologicalSpace
+    let : TopologicalSpace
         (ZCCompletedDifferentialModule C psi.toMonoidHom) :=
       closedGeneratedDerivativeCoordinateTopologyProCInteger_of_fundamental_formula
         (G := G) (H := H) C psi family hfree htarget hφconv
         hH hφHconv hφHgen hfundamental
     Continuous
       (fun a : ZCCompletedDifferentialModule C psi.toMonoidHom => -a) := by
-  let : TopologicalSpace
-      (ZCCompletedDifferentialModule C psi.toMonoidHom) :=
-    closedGeneratedDerivativeCoordinateTopologyProCInteger_of_fundamental_formula
-      (G := G) (H := H) C psi family hfree htarget hφconv
-      hH hφHconv hφHgen hfundamental
+  intro sharedOwner1
   let e :=
     closedGeneratedDerivativeCoordinateLinearEquivProCInteger_of_fundamental_formula
       (G := G) (H := H) C psi family hfree htarget hφconv
@@ -471,7 +467,7 @@ theorem continuous_smul_closedGenDerivativeCoordinateTopologyZC_of_fundFormula
             (freeProCZCCompletedFoxDerivativeVectorViaClosedGenerated
               (C := C) hfree (fun i : X => psi (family i)) htarget hφconv g) =
           zcUniversalDifferential C psi.toMonoidHom g) :
-    letI : TopologicalSpace
+    let : TopologicalSpace
         (ZCCompletedDifferentialModule C psi.toMonoidHom) :=
       closedGeneratedDerivativeCoordinateTopologyProCInteger_of_fundamental_formula
         (G := G) (H := H) C psi family hfree htarget hφconv
@@ -481,11 +477,7 @@ theorem continuous_smul_closedGenDerivativeCoordinateTopologyZC_of_fundFormula
         ZCCompletedGroupAlgebra C H ×
           ZCCompletedDifferentialModule C psi.toMonoidHom =>
         p.1 • p.2) := by
-  let : TopologicalSpace
-      (ZCCompletedDifferentialModule C psi.toMonoidHom) :=
-    closedGeneratedDerivativeCoordinateTopologyProCInteger_of_fundamental_formula
-      (G := G) (H := H) C psi family hfree htarget hφconv
-      hH hφHconv hφHgen hfundamental
+  intro sharedOwner1
   let e :=
     closedGeneratedDerivativeCoordinateLinearEquivProCInteger_of_fundamental_formula
       (G := G) (H := H) C psi family hfree htarget hφconv

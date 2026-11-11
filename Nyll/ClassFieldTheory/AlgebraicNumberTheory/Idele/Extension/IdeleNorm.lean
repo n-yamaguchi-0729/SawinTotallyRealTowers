@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The norm on ordinary ideles
@@ -17,6 +20,8 @@ field transports that existing norm to the usual map
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField

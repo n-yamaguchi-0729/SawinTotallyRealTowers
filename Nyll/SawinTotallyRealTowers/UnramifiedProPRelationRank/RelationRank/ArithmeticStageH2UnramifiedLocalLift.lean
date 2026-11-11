@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2EmbeddingProblem
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
+public import Nyll.GaloisCohomology.ProP.H2CentralExtensionClass
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtension
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
 
 /-!
 # Unramified local solutions of arithmetic-stage central embedding problems
@@ -18,6 +23,8 @@ Composing with the inertia quotient gives a local solution that kills inertia.
 
 No splitting of the extension over the finite decomposition group is required.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField Topology

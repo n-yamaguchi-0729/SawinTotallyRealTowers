@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
 
 /-!
 # Local Artin--Kummer duality on continuous H¹
@@ -17,6 +19,8 @@ the absolute Kummer equivalence to continuous additive `ZMod p` characters.
 This is an Artin--Kummer duality statement.  It does not identify the pairing
 with a cup product followed by a local invariant map.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.WeakLimits
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.PrincipalLimits
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.WeakLimits
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.PrincipalLimits
 
 /-!
 # explicit valuation-ring Hensel statement
@@ -14,6 +16,8 @@ import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.PrincipalLimits
 This file connects the chosen finite-minimum coefficient to
 the displayed-factor complete-limit theorem.
 -/
+
+@[expose] public section
 
 noncomputable section
 

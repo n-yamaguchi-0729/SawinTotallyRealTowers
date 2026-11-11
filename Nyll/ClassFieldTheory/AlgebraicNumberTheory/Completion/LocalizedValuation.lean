@@ -4,10 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuativeExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # Valuation rings of algebraic localizations
@@ -19,6 +27,8 @@ localized valuation ring with the integral closure of the base valuation ring.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct ValuativeRel NNReal
 open NumberField IsDedekindDomain
 
@@ -29,8 +39,10 @@ open HilbertRamification
 open LocalClassFieldTheory
 open LocalFieldTheory
 
+universe u v
+
 variable
-    {K : Type} {L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.Topology.Algebra.Group.Quotient
+module
+
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.Topology.Algebra.Group.Quotient
 
 /-!
 # Absolute restriction to the maximal real pro-p compositum
@@ -24,6 +26,8 @@ relative Galois group, providing the concrete quotient for later factorization.
 No primality or ramification comparison is needed for this Galois boundary.
 -/
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -31,7 +35,8 @@ noncomputable section
 
 namespace ClassFieldTower.Sawin
 
-private def normalAbsoluteRestriction (F : Type) [Field F]
+/-- Continuous restriction from the absolute Galois group to a normal intermediate field. -/
+def normalAbsoluteRestriction (F : Type) [Field F]
     (M : IntermediateField F (AlgebraicClosure F)) (hM : Normal F M) :
     Field.absoluteGaloisGroup F →ₜ* (M ≃ₐ[F] M) := by
   let : Normal F M := hM

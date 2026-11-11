@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Ring.Pi
-import Mathlib.Algebra.Ring.Subring.Defs
-import Mathlib.Algebra.Group.Subgroup.Defs
+module
+
+public import Mathlib.Algebra.Ring.Pi
+public import Mathlib.Algebra.Ring.Subring.Defs
+public import Mathlib.Algebra.Group.Subgroup.Defs
 
 /-!
 # Compatible families in inverse systems
@@ -20,6 +22,8 @@ rebuilding the same pointwise instances for each inverse system.
 -/
 
 
+
+@[expose] public section
 
 namespace LubinTate
 

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
-import Mathlib.GroupTheory.Index
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
+public import Mathlib.GroupTheory.Index
 
 /-!
 # Pure group theory for Herbrand towers
@@ -24,6 +26,8 @@ in the Hilbert-ramification Herbrand theorem module.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

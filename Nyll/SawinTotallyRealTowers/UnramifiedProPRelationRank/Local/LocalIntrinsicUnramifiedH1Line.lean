@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerFree
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
-import Nyll.ProCGroups.Topologies.QuotientMaps
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerFree
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
+public import Nyll.ProCGroups.Topologies.QuotientMaps
 
 /-!
 # The intrinsic unramified local first-cohomology line
@@ -17,6 +19,8 @@ Restriction to intrinsic inertia defines the unramified submodule of continuous
 first-cohomology characters. The residue-degree character modulo `p` spans this
 submodule, and its scalar parametrization is injective.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -123,7 +127,7 @@ noncomputable def localResidueDegreeModPH1Line :
       ContinuousH1ZMod (p := p) (G := Gal(SeparableClosure K / K)) where
   toFun a := a • localResidueDegreeModPH1 K p
   map_add' a b := by rw [add_smul]
-  map_smul' a b := by simp [smul_smul]
+  map_smul' a b := mul_smul a b (localResidueDegreeModPH1 K p)
 
 private noncomputable def scaledZHatReductionCharacter (a : ZMod p) :
     ZHatMul →ₜ* Multiplicative (ZMod p) where
@@ -135,7 +139,10 @@ private noncomputable def scaledZHatReductionCharacter (a : ZMod p) :
     rw [map_zero, mul_zero]
   map_mul' x y := by
     apply Multiplicative.ext
-    simp [mul_add]
+    change a * zHatReduction p (Fact.out : p.Prime).pos (x.toAdd + y.toAdd) =
+      a * zHatReduction p (Fact.out : p.Prime).pos x.toAdd +
+        a * zHatReduction p (Fact.out : p.Prime).pos y.toAdd
+    rw [map_add, mul_add]
   continuous_toFun := by
     let scale : Multiplicative (ZMod p) → Multiplicative (ZMod p) :=
       fun x ↦ Multiplicative.ofAdd (a * x.toAdd)

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FixedTowerUnitDescent
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteFieldUnitMaps
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FixedTowerUnitDescent
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteFieldUnitMaps
 
 /-!
 # Infinite-level unit descent
@@ -15,7 +17,9 @@ the infinite unit subgroup, proves its action and norm stability, and
 descends maximal-unramified norm equations from finite support.
 -/
 
-universe u v
+@[expose] public section
+
+universe uG uA
 
 namespace ClassFormation
 
@@ -29,7 +33,7 @@ noncomputable section
 open CategoryTheory
 open scoped BigOperators
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type uG} [Group G] [TopologicalSpace G]
 
 namespace FiniteIntermediateField
 
@@ -54,7 +58,7 @@ end FiniteIntermediateField
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{uA} ℤ G}
 
 /-- Unit-valued strengthening of finite-support descent.  If the chosen
 finite support is a unit, the descended K-rational element is a unit as
@@ -337,7 +341,7 @@ theorem maximalUnramifiedNorm_mem_infiniteUnitAddSubgroup
     (ha : a ∈ v.infiniteUnitAddSubgroup
       (D.maximalUnramifiedField L) K
       (D.maximalUnramifiedField_le_of_le hLK)) :
-    letI : Finite
+    let : Finite
         ((D.maximalUnramifiedField K.field).toSubgroup ⧸
           extensionSubgroup (D.maximalUnramifiedField K.field)
             (D.maximalUnramifiedField L)
@@ -349,12 +353,7 @@ theorem maximalUnramifiedNorm_mem_infiniteUnitAddSubgroup
           (D.maximalUnramifiedField L) (D.maximalUnramifiedField_mono hLK) a)
       ∈ v.infiniteUnitAddSubgroup (D.maximalUnramifiedField L) K
         (D.maximalUnramifiedField_le_of_le hLK) := by
-  let : Finite
-      ((D.maximalUnramifiedField K.field).toSubgroup ⧸
-        extensionSubgroup (D.maximalUnramifiedField K.field)
-          (D.maximalUnramifiedField L)
-          (D.maximalUnramifiedField_mono hLK)) :=
-    D.maximalUnramifiedExtension_finite K.field L hLK
+  intro sharedOwner1
   let I := D.maximalUnramifiedField K.field
   let E := D.maximalUnramifiedField L
   let hEI := D.maximalUnramifiedField_mono hLK
@@ -436,7 +435,7 @@ theorem descend_maximalUnramifiedNorm_unit
       let J := fixedFieldInclusion A (D.maximalUnramifiedField K.field)
         (D.maximalUnramifiedField L) (D.maximalUnramifiedField_mono hLK)
       D.frobeniusQuotientAction A K.field L hLK φ.1 (J (N a)) = J (N a)) :
-    letI : Finite
+    let : Finite
         ((D.maximalUnramifiedField K.field).toSubgroup ⧸
           extensionSubgroup (D.maximalUnramifiedField K.field)
             (D.maximalUnramifiedField L)
@@ -447,12 +446,7 @@ theorem descend_maximalUnramifiedNorm_unit
         (D.maximalUnramifiedField_le K.field) aK.1 =
         relativeNorm A (D.maximalUnramifiedField K.field)
           (D.maximalUnramifiedField L) (D.maximalUnramifiedField_mono hLK) a := by
-  let : Finite
-      ((D.maximalUnramifiedField K.field).toSubgroup ⧸
-        extensionSubgroup (D.maximalUnramifiedField K.field)
-          (D.maximalUnramifiedField L)
-          (D.maximalUnramifiedField_mono hLK)) :=
-    D.maximalUnramifiedExtension_finite K.field L hLK
+  intro sharedOwner1
   let I := D.maximalUnramifiedField K.field
   let E := D.maximalUnramifiedField L
   let hEI := D.maximalUnramifiedField_mono hLK

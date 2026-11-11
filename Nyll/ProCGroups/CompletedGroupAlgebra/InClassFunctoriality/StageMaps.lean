@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.ComapIndex
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.ComapIndex
 
 /-!
 # Functorial maps at in-class finite stages
@@ -14,6 +16,8 @@ This file constructs the finite-stage group-algebra map induced by a continuous 
 homomorphism. It proves formulas on basis elements and scalars and compatibility with coefficient
 change, transitions, and the completed map.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -132,28 +136,22 @@ theorem continuous_completedGroupAlgebraFunctorialStageMapInClass
     (C : ProCGroups.FiniteGroupClass.{v})
     (hHer : ProCGroups.FiniteGroupClass.Hereditary C)
     (φ : G →* H) (hφ : Continuous φ) (V : CompletedGroupAlgebraIndexInClass H C) :
-    letI : TopologicalSpace
+    let : TopologicalSpace
         (CompletedGroupAlgebraStageInClass C R G
           (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V)) :=
       (completedGroupAlgebraSystemInClass C R G).topologicalSpace
         (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V)
-    letI : TopologicalSpace (CompletedGroupAlgebraStageInClass C R H V) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R H V) :=
       (completedGroupAlgebraSystemInClass C R H).topologicalSpace V
     Continuous (completedGroupAlgebraFunctorialStageMapInClass
       (G := G) (H := H) C hHer (R := R) φ hφ V) := by
+  intro sharedOwner1 sharedOwner2
   let : Finite (CompletedGroupAlgebraQuotientInClass G C
       (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V)) :=
     finite_completedGroupAlgebraQuotientInClass G C
       (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V)
   let : Finite (CompletedGroupAlgebraQuotientInClass H C V) :=
     finite_completedGroupAlgebraQuotientInClass H C V
-  let : TopologicalSpace
-      (CompletedGroupAlgebraStageInClass C R G
-        (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V)) :=
-    (completedGroupAlgebraSystemInClass C R G).topologicalSpace
-      (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V)
-  let : TopologicalSpace (CompletedGroupAlgebraStageInClass C R H V) :=
-    (completedGroupAlgebraSystemInClass C R H).topologicalSpace V
   exact finiteGroupAlgebra_mapDomainRingHom_continuous R
     (CompletedGroupAlgebraQuotientInClass G C
       (completedGroupAlgebraComapIndexInClass (G := G) (H := H) C hHer φ hφ V))

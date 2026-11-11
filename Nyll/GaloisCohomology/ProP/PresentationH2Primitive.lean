@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FreeProPH2
-import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.FreeProPH2
+public import Nyll.GaloisCohomology.ProP.FiniteTransgressionKernel
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Primitive selection for presentation degree-two classes
@@ -15,6 +17,8 @@ This file linearly selects homogeneous cocycle representatives and, after restri
 finite-basis free pro-`p` source, linearly selects degree-one primitives.  It also records the
 pointwise boundary and normalization identities used by the presentation five-term argument.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

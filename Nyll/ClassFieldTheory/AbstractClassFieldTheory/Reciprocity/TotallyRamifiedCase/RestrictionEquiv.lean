@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionCosets
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusLift
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionCosets
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusLift
 
 /-!
 # The lower Galois group in the totally ramified auxiliary tower
@@ -16,6 +18,10 @@ ramified quotient and constructs its cyclic generator.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace ClassFormation
@@ -23,8 +29,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -45,8 +50,7 @@ noncomputable def abstractReciprocityTotallyRamifiedRestrictionEquiv
         (M.maximalUnramifiedSubextension D) M.field N.below).Normal :=
       N.normal
     N.extensionQuotient ≃* L.extensionQuotient := by
-  let M := D.abstractReciprocityTotallyRamifiedFiniteGaloisExtension
-    K L hTot q
+  intro M
   let hML := D.abstractReciprocityTotallyRamifiedFiniteGaloisExtension_le_L
     K L hTot q
   have hInertia : ∀ i : K.field.toSubgroup,

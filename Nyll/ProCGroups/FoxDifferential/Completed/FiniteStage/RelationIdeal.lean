@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationAction
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Source
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationAction
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Source
 
 /-!
 # Fox differential: completed — finite stage — relation ideal
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageRelationAugmentationGenerator_mem_groupAlgebraMapKernel`
   A relation augmentation generator maps to zero in the target group algebra.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

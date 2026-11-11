@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.InertiaUnramifiedExtension
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramifiedEquiv
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.InertiaUnramifiedExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramifiedEquiv
 
 /-!
 # Inertia-trivial finite embeddings give actual unramified local extensions
@@ -21,6 +23,8 @@ pair; all remaining local instances are finiteness, Galois, or valuation-
 compatibility proofs. No second algebra path or valuation on one target is
 introduced, and the spectral setup occurs only once.
 -/
+
+@[expose] public section
 
 open scoped ValuativeRel
 noncomputable section

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldRelativeNorm
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalClassFieldAxiom
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHenselianValuation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
-import Mathlib.FieldTheory.Galois.Notation
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldRelativeNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalClassFieldAxiom
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalHenselianValuation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
+public import Mathlib.FieldTheory.Galois.Notation
 
 /-!
 # Naturality of fixed-field norm-residue symbols
@@ -19,6 +21,8 @@ Galois ambient field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -154,11 +158,7 @@ theorem abstractFixedFieldAbelianizedRestriction_on_representative
         (q.abelianizationCongr
           (Abelianization.of
             (QuotientGroup.mk (Subgroup.inclusion hK'K σ)))) := by
-  dsimp only
-  let q := abstractExtensionQuotientEquivGaloisGroup
-    k Ω K L hLK hLnormal
-  let q' := abstractExtensionQuotientEquivGaloisGroup
-    k Ω K' L' hL'K' hL'normal
+  intro q q'
   change Additive.ofMul
       (q.abelianizationCongr
         (normResidueNaturalityAbelianizedRestriction K K' L L'
@@ -196,7 +196,7 @@ theorem abstractFixedFieldNormResidueSymbol_norm_restriction
       ((baseField (Gal(Ω/k))).toSubgroup ⧸
         extensionSubgroup (baseField (Gal(Ω/k))) K
           (le_baseField K))] :
-    letI : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
+    let : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
         extensionSubgroup (baseField (Gal(Ω / k))) K'
           (le_baseField K')) :=
       relativeTowerQuotientFinite (baseField (Gal(Ω / k))) K K' hK'K
@@ -208,11 +208,7 @@ theorem abstractFixedFieldNormResidueSymbol_norm_restriction
       (abstractFixedFieldNormResidueSymbol
         k Ω D v hcf K L hLK).comp
         (abstractFixedFieldNormUnits k Ω K K' hK'K) := by
-  let : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
-      extensionSubgroup (baseField (Gal(Ω / k))) K'
-        (le_baseField K')) :=
-    relativeTowerQuotientFinite (baseField (Gal(Ω / k))) K K' hK'K
-      (le_baseField K)
+  intro sharedOwner1
   let KF : FiniteAbstractField (Gal(Ω / k)) :=
     ⟨K, hKabsolute⟩
   let K'F : FiniteAbstractField (Gal(Ω / k)) :=
@@ -296,9 +292,9 @@ noncomputable def abstractFixedFieldAbelianizedTransfer
     [hLfinite : Finite
       (K.toSubgroup ⧸
         extensionSubgroup K L (hLK'.trans hK'K))] :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-    letI : Finite
+    let : Finite
         (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       FiniteGaloisSubextension.finite_extension_over_intermediate
         (hLK'.trans hK'K) hK'K hLK'
@@ -308,12 +304,7 @@ noncomputable def abstractFixedFieldAbelianizedTransfer
       Additive (Abelianization
         Gal(abstractRelativeFixedField k Ω hLK' /
           abstractFixedField k Ω K')) := by
-  letI : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  letI : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    FiniteGaloisSubextension.finite_extension_over_intermediate
-      (hLK'.trans hK'K) hK'K hLK'
+  intro sharedOwner1 sharedOwner2
   exact MonoidHom.toAdditive
     ((abstractExtensionQuotientEquivGaloisGroup
       k Ω K' L hLK' inferInstance).abelianizationCongr.toMonoidHom.comp
@@ -343,17 +334,17 @@ theorem abstractFixedFieldNormResidueSymbol_transfer_inclusion
       ((baseField (Gal(Ω/k))).toSubgroup ⧸
         extensionSubgroup (baseField (Gal(Ω/k))) K
           (le_baseField K))] :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-    letI : Finite
+    let : Finite
         (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       FiniteGaloisSubextension.finite_extension_over_intermediate
         (hLK'.trans hK'K) hK'K hLK'
-    letI : Finite
+    let : Finite
         (K.toSubgroup ⧸ extensionSubgroup K K' hK'K) :=
       FiniteGaloisSubextension.finite_intermediate_extension
         (hLK'.trans hK'K) hLK' hK'K
-    letI : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
+    let : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
         extensionSubgroup (baseField (Gal(Ω / k))) K'
           (le_baseField K')) :=
       relativeTowerQuotientFinite (baseField (Gal(Ω / k))) K K' hK'K
@@ -365,21 +356,7 @@ theorem abstractFixedFieldNormResidueSymbol_transfer_inclusion
       (abstractFixedFieldNormResidueSymbol
         k Ω D v hcf K' L hLK').comp
         (abstractFixedFieldUnitsInclusion k Ω K K' hK'K) := by
-  let : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  let : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    FiniteGaloisSubextension.finite_extension_over_intermediate
-      (hLK'.trans hK'K) hK'K hLK'
-  let : Finite
-      (K.toSubgroup ⧸ extensionSubgroup K K' hK'K) :=
-    FiniteGaloisSubextension.finite_intermediate_extension
-      (hLK'.trans hK'K) hLK' hK'K
-  let : Finite ((baseField (Gal(Ω / k))).toSubgroup ⧸
-      extensionSubgroup (baseField (Gal(Ω / k))) K'
-        (le_baseField K')) :=
-    relativeTowerQuotientFinite (baseField (Gal(Ω / k))) K K' hK'K
-      (le_baseField K)
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4
   let KF : FiniteAbstractField (Gal(Ω / k)) :=
     ⟨K, hKabsolute⟩
   let K'F : FiniteAbstractField (Gal(Ω / k)) :=
@@ -521,7 +498,11 @@ theorem upperAbsoluteFinite
 /-- The fixed-field norm-residue symbol for the lower horizontal extension,
 induced by the canonical local class formation. -/
 noncomputable def lowerNormResidueSymbol
-    (T : LocalFixedFieldNormRestrictionSquare k) := by
+    (T : LocalFixedFieldNormRestrictionSquare k) :
+    Additive (abstractFixedField k (SeparableClosure k) T.lowerBase)ˣ →+
+      Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k) T.lowerTop_le_lowerBase /
+          abstractFixedField k (SeparableClosure k) T.lowerBase)) := by
   letI := T.lowerNormal
   letI := T.lowerFinite
   letI := T.lowerAbsoluteFinite
@@ -534,7 +515,11 @@ noncomputable def lowerNormResidueSymbol
 /-- The fixed-field norm-residue symbol for the upper horizontal extension,
 induced by the canonical local class formation. -/
 noncomputable def upperNormResidueSymbol
-    (T : LocalFixedFieldNormRestrictionSquare k) := by
+    (T : LocalFixedFieldNormRestrictionSquare k) :
+    Additive (abstractFixedField k (SeparableClosure k) T.upperBase)ˣ →+
+      Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k) T.upperTop_le_upperBase /
+          abstractFixedField k (SeparableClosure k) T.upperBase)) := by
   letI := T.upperNormal
   letI := T.upperFinite
   letI := upperAbsoluteFinite T
@@ -552,7 +537,13 @@ noncomputable def normUnits
 
 /-- Restriction between the abelianized actual relative Galois groups. -/
 noncomputable def abelianizedRestriction
-    (T : LocalFixedFieldNormRestrictionSquare k) := by
+    (T : LocalFixedFieldNormRestrictionSquare k) :
+    Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k) T.upperTop_le_upperBase /
+          abstractFixedField k (SeparableClosure k) T.upperBase)) →+
+      Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k) T.lowerTop_le_lowerBase /
+          abstractFixedField k (SeparableClosure k) T.lowerBase)) := by
   letI := T.lowerNormal
   letI := T.upperNormal
   exact
@@ -681,7 +672,12 @@ theorem intermediateAbsoluteFinite
 /-- The fixed-field norm-residue symbol for the total extension, induced by
 the canonical local class formation. -/
 noncomputable def baseNormResidueSymbol
-    (T : LocalFixedFieldTransferTower k) := by
+    (T : LocalFixedFieldTransferTower k) :
+    Additive (abstractFixedField k (SeparableClosure k) T.base)ˣ →+
+      Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k)
+          (T.top_le_intermediate.trans T.intermediate_le_base) /
+          abstractFixedField k (SeparableClosure k) T.base)) := by
   letI := T.totalNormal
   letI := T.totalFinite
   letI := T.baseAbsoluteFinite
@@ -695,7 +691,11 @@ noncomputable def baseNormResidueSymbol
 /-- The fixed-field norm-residue symbol after changing the base to the
 intermediate fixed field, induced by the canonical local class formation. -/
 noncomputable def intermediateNormResidueSymbol
-    (T : LocalFixedFieldTransferTower k) := by
+    (T : LocalFixedFieldTransferTower k) :
+    Additive (abstractFixedField k (SeparableClosure k) T.intermediate)ˣ →+
+      Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k) T.top_le_intermediate /
+          abstractFixedField k (SeparableClosure k) T.intermediate)) := by
   letI := intermediateNormal T
   letI := intermediateFinite T
   letI := intermediateAbsoluteFinite T
@@ -713,7 +713,14 @@ noncomputable def unitsInclusion
 
 /-- Transfer between the abelianized actual relative Galois groups. -/
 noncomputable def abelianizedTransfer
-    (T : LocalFixedFieldTransferTower k) := by
+    (T : LocalFixedFieldTransferTower k) :
+    Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k)
+          (T.top_le_intermediate.trans T.intermediate_le_base) /
+          abstractFixedField k (SeparableClosure k) T.base)) →+
+      Additive (Abelianization
+        Gal(abstractRelativeFixedField k (SeparableClosure k) T.top_le_intermediate /
+          abstractFixedField k (SeparableClosure k) T.intermediate)) := by
   letI := T.totalNormal
   letI := T.totalFinite
   exact

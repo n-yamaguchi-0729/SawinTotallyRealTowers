@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
-import Mathlib.RingTheory.PowerSeries.Binomial
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
+public import Mathlib.RingTheory.PowerSeries.Binomial
 
 /-!
 # The multiplicative Lubin--Tate series over `ℚ_p`
@@ -22,6 +24,8 @@ uniformizer of `ℚ_p`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

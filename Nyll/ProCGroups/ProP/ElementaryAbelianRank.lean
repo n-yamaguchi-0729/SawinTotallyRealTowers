@@ -4,22 +4,26 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.LinearAlgebra.Basis.VectorSpace
-import Mathlib.LinearAlgebra.Dimension.Constructions
-import Mathlib.RingTheory.Finiteness.Cardinality
-import Nyll.ProCGroups.FiniteGeneration.Basic
+module
+
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.LinearAlgebra.Basis.VectorSpace
+public import Mathlib.LinearAlgebra.Dimension.Constructions
+public import Mathlib.RingTheory.Finiteness.Cardinality
+public import Nyll.ProCGroups.FiniteGeneration.Basic
 
 /-!
 # Generator bounds for finite elementary abelian groups
 
-This file compares bounded topological generation of a finite discrete
-commutative group with the dimension of a supplied `ZMod p`-module structure
-on its additive copy.  It creates no group or module instance: the canonical
+This file bounds topological generation of a finite commutative group by the dimension of
+its supplied `ZMod p`-module structure. The converse dimension bound assumes a discrete
+topology. It creates no group or module instance: the canonical
 structure for a power--commutator quotient is installed only in the importing
 pro-`p` leaf.
 -/
+
+@[expose] public section
 
 open Set
 
@@ -83,10 +87,11 @@ theorem finrank_le_of_topologicallyGeneratedByAtMost_zmod
   rw [hcard] at hfin
   exact hfin.trans hs_card
 
-/-- A basis of a finite `ZMod p`-module gives a minimal-size topological generating set. -/
+/-- A basis of a finite `ZMod p`-module gives a topological generating set
+of size at most its dimension. -/
 theorem topologicallyGeneratedByAtMost_finrank_zmod
     {p : ℕ} {Q : Type u} [Fact (Nat.Prime p)]
-    [TopologicalSpace Q] [CommGroup Q] [IsTopologicalGroup Q] [DiscreteTopology Q]
+    [TopologicalSpace Q] [CommGroup Q] [IsTopologicalGroup Q]
     [Finite Q] [Module (ZMod p) (Additive Q)] :
     TopologicallyGeneratedByAtMost (Module.finrank (ZMod p) (Additive Q)) Q := by
   classical
@@ -101,47 +106,51 @@ theorem topologicallyGeneratedByAtMost_finrank_zmod
       Module.finrank_eq_card_chooseBasisIndex (ZMod p) (Additive Q)
     rw [hfinrank]
     exact hcard_le
-  · apply topologicallyGenerates_iff_subgroupClosure_eq_top_of_discrete.mpr
-    let H : Subgroup Q := Subgroup.closure (s : Set Q)
-    let A : AddSubgroup (Additive Q) :=
-      { carrier := {x : Additive Q | Additive.toMul x ∈ H}
-        zero_mem' := by
-          change (1 : Q) ∈ H
-          exact H.one_mem
-        add_mem' := by
-          intro x y hx hy
-          change Additive.toMul x * Additive.toMul y ∈ H
-          exact H.mul_mem hx hy
-        neg_mem' := by
-          intro x hx
-          change (Additive.toMul x)⁻¹ ∈ H
-          exact H.inv_mem hx }
-    have hspan_le :
-        Submodule.span (ZMod p) (Set.range b) ≤ AddSubgroup.toZModSubmodule p A := by
-      apply Submodule.span_le.2
-      intro x hx
-      rcases hx with ⟨i, rfl⟩
-      change b i ∈ AddSubgroup.toZModSubmodule p A
-      change b i ∈ A
-      change Additive.toMul (b i) ∈ H
-      exact Subgroup.subset_closure (by
-        show Additive.toMul (b i) ∈ (s : Set Q)
-        exact Finset.mem_coe.2
-          (Finset.mem_image.2 ⟨i, Finset.mem_univ i, rfl⟩))
-    have hA_top : A = ⊤ := by
+  · have hs_closure : Subgroup.closure (s : Set Q) = ⊤ := by
+      let H : Subgroup Q := Subgroup.closure (s : Set Q)
+      let A : AddSubgroup (Additive Q) :=
+        { carrier := {x : Additive Q | Additive.toMul x ∈ H}
+          zero_mem' := by
+            change (1 : Q) ∈ H
+            exact H.one_mem
+          add_mem' := by
+            intro x y hx hy
+            change Additive.toMul x * Additive.toMul y ∈ H
+            exact H.mul_mem hx hy
+          neg_mem' := by
+            intro x hx
+            change (Additive.toMul x)⁻¹ ∈ H
+            exact H.inv_mem hx }
+      have hspan_le :
+          Submodule.span (ZMod p) (Set.range b) ≤ AddSubgroup.toZModSubmodule p A := by
+        apply Submodule.span_le.2
+        intro x hx
+        rcases hx with ⟨i, rfl⟩
+        change b i ∈ AddSubgroup.toZModSubmodule p A
+        change b i ∈ A
+        change Additive.toMul (b i) ∈ H
+        exact Subgroup.subset_closure (by
+          show Additive.toMul (b i) ∈ (s : Set Q)
+          exact Finset.mem_coe.2
+            (Finset.mem_image.2 ⟨i, Finset.mem_univ i, rfl⟩))
+      have hA_top : A = ⊤ := by
+        apply eq_top_iff.2
+        intro x _
+        have hx_span : x ∈ Submodule.span (ZMod p) (Set.range b) := by
+          rw [Module.Basis.span_eq b]
+          exact Submodule.mem_top
+        have hx_sub : x ∈ AddSubgroup.toZModSubmodule p A := hspan_le hx_span
+        change x ∈ A at hx_sub
+        exact hx_sub
       apply eq_top_iff.2
-      intro x _
-      have hx_span : x ∈ Submodule.span (ZMod p) (Set.range b) := by
-        rw [Module.Basis.span_eq b]
-        exact Submodule.mem_top
-      have hx_sub : x ∈ AddSubgroup.toZModSubmodule p A := hspan_le hx_span
-      change x ∈ A at hx_sub
-      exact hx_sub
-    apply eq_top_iff.2
-    intro q _
-    have hqA : Additive.ofMul q ∈ A := by
-      rw [hA_top]
-      exact AddSubgroup.mem_top _
-    simpa [A, H] using hqA
+      intro q _
+      have hqA : Additive.ofMul q ∈ A := by
+        rw [hA_top]
+        exact AddSubgroup.mem_top _
+      exact hqA
+    change (Subgroup.closure (s : Set Q)).topologicalClosure = ⊤
+    apply top_unique
+    rw [← hs_closure]
+    exact Subgroup.le_topologicalClosure _
 
 end ClassFieldTower.ProP

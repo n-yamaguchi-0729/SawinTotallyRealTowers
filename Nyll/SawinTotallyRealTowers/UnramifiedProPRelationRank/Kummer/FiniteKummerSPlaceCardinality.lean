@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerSPlaceLocalization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceFieldUnitsH2
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.Data.ZMod.Basic
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerSPlaceLocalization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceFieldUnitsH2
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.Data.ZMod.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Cardinal bounds for finite-support Kummer images
@@ -21,6 +23,8 @@ its exponent. Its localized image embeds in the product of the actual
 local torsion groups. The proved kernel containment then gives a
 surjection from that image to the field-unit coefficient image.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField TensorProduct BigOperators

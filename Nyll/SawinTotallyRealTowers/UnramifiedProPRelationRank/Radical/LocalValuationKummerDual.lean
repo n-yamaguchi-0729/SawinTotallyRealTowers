@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
 
 /-!
 # Finite-place valuation defects and local Kummer duality
@@ -20,6 +22,8 @@ The resulting dual map is the local object that must eventually be compared with
 coordinate maps in `finiteValuationLocalizationDual` and, through local Hilbert duality, with
 local Kummer classes.
 -/
+
+@[expose] public section
 
 open scoped NumberField ValuativeRel
 

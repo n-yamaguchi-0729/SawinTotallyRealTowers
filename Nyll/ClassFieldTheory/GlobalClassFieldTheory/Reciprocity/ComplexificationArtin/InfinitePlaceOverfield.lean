@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RationalComplexification
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RationalComplexification
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.FiniteAbelianCompositum
 
 /-!
 # The complex-conjugation overfield at an infinite place
@@ -15,10 +18,14 @@ complex place, and identifies ambient complex conjugation on that field.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative
 open NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
@@ -26,7 +33,7 @@ namespace Reciprocity
 section ComplexConjugationOverextension
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K]
     [Field L] [NumberField L] [Algebra K L]
 

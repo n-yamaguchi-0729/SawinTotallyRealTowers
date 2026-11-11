@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # Right cosets for Schreier rewriting
@@ -18,6 +20,8 @@ The quotient is intentionally only a coset space: for a non-normal subgroup it
 has no multiplication.  Algebraic quotient arguments therefore use the usual
 left quotient rather than a misleading `MulEquiv` wrapper.
 -/
+
+@[expose] public section
 
 namespace ReidemeisterSchreier
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
+module
+
+public import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
 
 /-!
 # Truncated augmentation dimensions
@@ -14,6 +16,8 @@ group algebra used by the truncated Golod--Shafarevich inequality.  The
 shifted definition uses truncated subtraction, so shifts beyond the cutoff
 give the zero quotient without side conditions in downstream statements.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

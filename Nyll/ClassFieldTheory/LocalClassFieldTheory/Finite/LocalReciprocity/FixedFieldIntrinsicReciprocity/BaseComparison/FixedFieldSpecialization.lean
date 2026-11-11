@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.FixedFieldNormQuotient
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.FixedFieldNormQuotient
 
 /-!
 # Intrinsic fixed-field specialization
@@ -15,6 +17,10 @@ fields and packages the intrinsic Frobenius quotient.
 -/
 
 
+
+@[expose] public section
+
+universe u
 
 noncomputable section
 
@@ -36,7 +42,7 @@ private theorem mem_subgroup_iff_of_map_eq_of_ker_eq
 the intrinsic extension subgroup of a finite fixed-field extension with
 membership in its ambient extension subgroup. -/
 theorem intrinsicExtensionSubgroup_iff_ambientFixedField
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K))
     (J : ClosedSubgroup Gal(SeparableClosure K/K))
@@ -45,7 +51,7 @@ theorem intrinsicExtensionSubgroup_iff_ambientFixedField
     [hJfinite : Finite
       (H.field.toSubgroup ⧸ extensionSubgroup H.field J hJH)] :
     let F := abstractFixedField K (SeparableClosure K) H.field
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (τ : (intrinsicAbstractBase F).toSubgroup),
@@ -68,11 +74,7 @@ theorem intrinsicExtensionSubgroup_iff_ambientFixedField
     τ ∈ extensionSubgroup
         (intrinsicAbstractBase F) EI.field EI.below ↔
       φ τ.1 ∈ extensionSubgroup H.field J hJH := by
-  dsimp only
-  let F := abstractFixedField K (SeparableClosure K) H.field
-  let : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
-  intro e τ
+  intro F reusedStructure2 e τ
   let E := abstractRelativeFixedField K (SeparableClosure K) hJH
   let : FiniteDimensional F E :=
     abstractRelativeFixedField_finiteDimensional
@@ -159,7 +161,7 @@ theorem intrinsicExtensionInertia_iff_ambientFixedField
     [hJfinite : Finite
       (H.field.toSubgroup ⧸ extensionSubgroup H.field J hJH)] :
     let F := abstractFixedField K (SeparableClosure K) H.field
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (τ : (intrinsicAbstractBase F).toSubgroup),
@@ -192,11 +194,7 @@ theorem intrinsicExtensionInertia_iff_ambientFixedField
         (intrinsicAbstractBase F) EI.field EI.below ↔
       φ τ.1 ∈ (localResidueDatum K).extensionInertiaWithin
         H.field J hJH := by
-  dsimp only
-  let F := abstractFixedField K (SeparableClosure K) H.field
-  let : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
-  intro e τ
+  intro F reusedStructure2 e τ
   let E := abstractRelativeFixedField K (SeparableClosure K) hJH
   let : FiniteDimensional K F :=
     abstractFixedField_finiteDimensional
@@ -275,7 +273,7 @@ theorem intrinsicExtensionInertia_iff_ambientFixedField
 /-- The type of algebra equivalences from the intrinsic separable closure of a
 finite fixed field to the ambient separable closure. -/
 abbrev intrinsicFixedFieldSeparableClosureEquiv
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K)) :=
   let F := abstractFixedField K (SeparableClosure K) H.field

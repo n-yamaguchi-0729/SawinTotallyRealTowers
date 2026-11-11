@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.InfinitePlaceTensorNorm
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.InfinitePlaceTensorNorm
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Small Hilbert norm subgroups and everywhere-unramified extensions
@@ -26,9 +32,13 @@ by the class number.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField NumberField.LiesOver
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
@@ -36,7 +46,7 @@ namespace GlobalClassFields
 open NumberField IsDedekindDomain
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -426,9 +436,10 @@ theorem cyclicEverywhereUnramifiedExtensionDegree_dvd_classNumber
           (K := K) (L := L) = ∅) :
     Module.finrank K L ∣
       NumberField.classNumber K := by
+  let : IsAbelianGalois K L := IsAbelianGalois.of_isCyclic K L
   simpa only [
     ← Subgroup.index_eq_card,
-    ClassFieldAxiom.ideleClassNorm_index_eq_finrank_cyclic K L] using
+    Reciprocity.ideleClassNorm_index_eq_finrank_abelian K L] using
       ideleClassNormQuotient_card_dvd_classNumber_of_everywhereUnramified
         (K := K) (L := L) hunramifiedFinite
 
@@ -448,9 +459,10 @@ theorem
             (classGroupToIdeleClassNormQuotient
               (K := K) (L := L) hunramifiedFinite)) *
         Module.finrank K L := by
+  let : IsAbelianGalois K L := IsAbelianGalois.of_isCyclic K L
   simpa only [
     ← Subgroup.index_eq_card,
-    ClassFieldAxiom.ideleClassNorm_index_eq_finrank_cyclic K L] using
+    Reciprocity.ideleClassNorm_index_eq_finrank_abelian K L] using
       classNumber_eq_unramifiedNormKernel_card_mul_normQuotient_card
         (K := K) (L := L) hunramifiedFinite
 

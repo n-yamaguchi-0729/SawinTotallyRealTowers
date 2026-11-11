@@ -4,29 +4,31 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.LubinTateTransport
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.StandardSubgroupIntersection
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupSurjectivity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.OrderReversal
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteGaloisRealization
-import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
-import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.LubinTateTransport
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.StandardSubgroupIntersection
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormContainment
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupSurjectivity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.OrderReversal
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTopology
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteGaloisRealization
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
 
 /-!
 # Equal-characteristic existence for local class field theory
@@ -39,7 +41,11 @@ subgroup lies in any prescribed open finite-index subgroup of `Kˣ`.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u
 
 namespace LocalClassFieldTheory
 
@@ -90,6 +96,11 @@ theorem exists_equalCharacteristicLubinTateFiniteGaloisExtension_normSubgroup_ma
     exists_finiteGaloisExtension_normSubgroup_map_le_of_normSubgroup_le
       K E (LocalFieldTheory.uniformizerPrincipalSubgroup K ϖ 1 n) hLT
 
+section UniverseNamedField
+
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
+  [IsNonarchimedeanLocalField K]
+
 /-- The transported Lubin--Tate level retained as a named finite abelian
 subextension of the fixed separable closure. -/
 noncomputable def
@@ -127,23 +138,17 @@ noncomputable def equalCharacteristicTransportedLubinTateFixedFieldEquiv
       (Additive.ofMul ϖ) = 1)
     (m : ℕ) :
     let F := equalCharacteristicTargetLocalField K
-    letI : CharP K F.residueCharacteristic :=
+    let : CharP K F.residueCharacteristic :=
       equalCharacteristicTargetResidueCharacteristicCharP K p
     let E := equalCharacteristicLubinTateLevelField F m
-    letI : CharP K p := hKp
-    letI : Algebra K E :=
+    let : CharP K p := hKp
+    let : Algebra K E :=
       equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
     E ≃ₐ[K]
       abstractFixedField K (SeparableClosure K)
         (equalCharacteristicTransportedLubinTateFiniteAbelianSubextension
           K p ϖ hϖ m).field := by
-  let F := equalCharacteristicTargetLocalField K
-  letI : CharP K F.residueCharacteristic :=
-    equalCharacteristicTargetResidueCharacteristicCharP K p
-  let E := equalCharacteristicLubinTateLevelField F m
-  letI : CharP K p := hKp
-  letI : Algebra K E :=
-    equalCharacteristicTransportedLubinTateLevelAlgebra K p ϖ hϖ m
+  intro F sharedOwner2 E sharedOwner4 sharedOwner5
   letI : FiniteDimensional K E :=
     equalCharacteristicTransportedLubinTateLevel_finiteDimensional
       K p ϖ hϖ m
@@ -166,6 +171,8 @@ noncomputable def equalCharacteristicTransportedLubinTateFixedFieldEquiv
         (finiteGaloisFieldRangeOfEmbedding K E i)
   rw [hfixed]
   exact finiteGaloisFieldRangeEquivOfEmbedding K E i
+
+end UniverseNamedField
 
 /-- The named transported Lubin--Tate subextension retains the concrete norm
 containment at level `m + 1`. -/
@@ -418,9 +425,7 @@ theorem openFiniteIndexSubgroup_isNormOpen_of_charP
       ((H.toAddSubgroup.map e.toAddMonoidHom :
         AddSubgroup (ambientFixedAddSubgroup A B)) :
         Set (ambientFixedAddSubgroup A B)) := by
-  let A := intrinsicAbsoluteUnits K
-  let B := intrinsicAbstractBase K
-  let e := baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)
+  intro A B e
   obtain ⟨ϖ, d, n, hϖ, hd, hn, hstandard⟩ :=
     LocalFieldTheory.exists_uniformizerPrincipalSubgroup_le_of_isOpen_finiteIndex
       K H hH

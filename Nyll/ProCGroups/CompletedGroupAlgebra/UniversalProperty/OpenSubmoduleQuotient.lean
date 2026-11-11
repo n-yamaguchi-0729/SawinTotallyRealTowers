@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.FiniteQuotient
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.FiniteQuotient
 
 /-!
 # Lifts to open-submodule quotients
@@ -13,6 +15,8 @@ The finite-quotient universal property yields a unique continuous linear lift to
 profinite module by an open submodule. This file constructs the lift and records its value on
 group-like generators and its factorization formula.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

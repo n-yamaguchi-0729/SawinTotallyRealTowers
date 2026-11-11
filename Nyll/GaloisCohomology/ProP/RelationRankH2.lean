@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.PresentationH2LowerBound
-import Nyll.GaloisCohomology.ProP.PresentationH2UpperBound
+module
+
+public import Nyll.GaloisCohomology.ProP.PresentationH2LowerBound
+public import Nyll.GaloisCohomology.ProP.PresentationH2UpperBound
 
 /-!
 # Minimal relation rank and degree-two continuous cohomology
@@ -15,6 +17,8 @@ finitely minimally presented pro-`p` group with the dimension of its continuous
 degree-two cohomology with trivial `ZMod p` coefficients.
 -/
 
+@[expose] public section
+
 open scoped Topology
 
 namespace ClassFieldTower.ProP
@@ -23,7 +27,9 @@ noncomputable section
 
 universe u
 
-/-- The dimension of continuous degree-two cohomology with trivial `ZMod p` coefficients. -/
+/-- The natural-valued `Module.finrank` of continuous degree-two cohomology with trivial
+`ZMod p` coefficients. This uses the total `finrank` convention: for prime `p`, infinite
+dimension gives zero. Finite-dimensionality is supplied separately in rank comparisons. -/
 noncomputable def h2Rank (p : ℕ)
     (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] : ℕ :=
   Module.finrank (ZMod p)

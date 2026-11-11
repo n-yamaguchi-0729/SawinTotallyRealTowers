@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFrobeniusFixed
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAutomorphisms
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnitFrobeniusFixed
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.UniformizerNorm
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAutomorphisms
 
 /-!
 # LubinTate the explicit norm-subgroup computation: higher-unit Frobenius fixes the standard
@@ -14,6 +16,10 @@ level map
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 noncomputable section
 
@@ -25,7 +31,7 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 /-- Two ring homomorphisms out of a power-basis extension agree pointwise
 once they agree on the base field and on the power-basis generator. -/
@@ -47,32 +53,33 @@ private theorem ringHom_apply_eq_of_powerBasis
   exact DFunLike.congr_fun h x
 
 @[reducible] noncomputable local instance equalCharacteristicHigherUnitMapBaseAlgebra
-    (F : LocalField K) :
+    (F : LocalField.{u, v} K) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   equalCharacteristicCompletedLevelBaseAlgebra F
 
 @[reducible] noncomputable local instance equalCharacteristicHigherUnitMapLevelAlgebra
-    (F : LocalField K) (n : ℕ) :
+    (F : LocalField.{u, v} K) (n : ℕ) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedLevelField F n) :=
   equalCharacteristicCompletedLevelLaurentAlgebra F n
 
 local instance equalCharacteristicHigherUnitMapScalarTower
-    (F : LocalField K) (n : ℕ) :
+    (F : LocalField.{u, v} K) (n : ℕ) :
     IsScalarTower F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField)
       (equalCharacteristicCompletedLevelField F n) :=
   IsScalarTower.of_algebraMap_eq' rfl
 
-private noncomputable def higherUnitLevelMapRingHom
-    (F : LocalField K) [CharP K F.residueCharacteristic] (n : ℕ) :
+/-- The finite Lubin--Tate level embeds into its completed level as a ring. -/
+noncomputable def higherUnitLevelMapRingHom
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic] (n : ℕ) :
     equalCharacteristicLubinTateLevelField F n →+*
       equalCharacteristicCompletedLevelField F n :=
   (equalCharacteristicLubinTateLevelFieldToCompleted F n).toRingHom
 
 private theorem higherUnitLevelMapRingHom_apply
-    (F : LocalField K) [CharP K F.residueCharacteristic] (n : ℕ)
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic] (n : ℕ)
     (x : equalCharacteristicLubinTateLevelField F n) :
     higherUnitLevelMapRingHom F n x =
       equalCharacteristicLubinTateLevelFieldToCompleted F n x :=
@@ -82,7 +89,7 @@ private theorem higherUnitLevelMapRingHom_apply
 as a ring homomorphism.  This is the lightweight interface used by consumers
 that do not need to reconstruct its concrete algebra structures. -/
 noncomputable def equalCharacteristicLubinTateLevelFieldToCompletedRingHom
-    (F : LocalField K) [CharP K F.residueCharacteristic] (n : ℕ) :
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic] (n : ℕ) :
     equalCharacteristicLubinTateLevelField F n →+*
       equalCharacteristicCompletedLevelField F n :=
   higherUnitLevelMapRingHom F n
@@ -90,7 +97,7 @@ noncomputable def equalCharacteristicLubinTateLevelFieldToCompletedRingHom
 /-- States the theorem `equalCharacteristicLubinTateLevelFieldToCompletedRingHom_algebraMap`. -/
 @[simp]
 theorem equalCharacteristicLubinTateLevelFieldToCompletedRingHom_algebraMap
-    (F : LocalField K) [CharP K F.residueCharacteristic]
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic]
     (n : ℕ) (b : F.residueField⸨X⸩) :
     equalCharacteristicLubinTateLevelFieldToCompletedRingHom F n
         (algebraMap F.residueField⸨X⸩
@@ -103,14 +110,14 @@ theorem equalCharacteristicLubinTateLevelFieldToCompletedRingHom_algebraMap
   exact (equalCharacteristicLubinTateLevelFieldToCompleted F n).commutes b
 
 private noncomputable def higherUnitFrobeniusRingHom
-    (F : LocalField K) [CharP K F.residueCharacteristic]
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ) :
     equalCharacteristicCompletedLevelField F n →+*
       equalCharacteristicCompletedLevelField F n :=
   (equalCharacteristicCompletedFrobeniusAlgEquiv F a n).toRingEquiv.toRingHom
 
 private theorem higherUnitFrobeniusRingHom_apply
-    (F : LocalField K) [CharP K F.residueCharacteristic]
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (x : equalCharacteristicCompletedLevelField F n) :
     higherUnitFrobeniusRingHom F a n x =
@@ -118,7 +125,7 @@ private theorem higherUnitFrobeniusRingHom_apply
   rfl
 
 private theorem higherUnitLevelMapRingHom_gen
-    (F : LocalField K) [CharP K F.residueCharacteristic] (n : ℕ) :
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic] (n : ℕ) :
     higherUnitLevelMapRingHom F n
         (equalCharacteristicLubinTateLevelPowerBasis F n).gen =
       equalCharacteristicCompletedPrimitiveRoot F n := by
@@ -129,7 +136,7 @@ private theorem higherUnitLevelMapRingHom_gen
     equalCharacteristicLubinTateLevelFieldToCompleted_generator]
 
 private theorem higherUnitFrobeniusRingHom_levelMap_algebraMap
-    (F : LocalField K) [CharP K F.residueCharacteristic]
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ) (b : F.residueField⸨X⸩) :
     higherUnitFrobeniusRingHom F a n
         (higherUnitLevelMapRingHom F n
@@ -144,7 +151,7 @@ private theorem higherUnitFrobeniusRingHom_levelMap_algebraMap
   exact (equalCharacteristicCompletedFrobeniusAlgEquiv F a n).commutes b
 
 private theorem higherUnitLevelMap_fixed_core
-    (F : LocalField K) [CharP K F.residueCharacteristic]
+    (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n)
     (x : equalCharacteristicLubinTateLevelField F n) :
@@ -165,7 +172,7 @@ private theorem higherUnitLevelMap_fixed_core
 `equalCharacteristicCompletedFrobeniusAlgEquiv_comp_levelFieldToCompleted_of_mem_higherUnit`. -/
 theorem
     equalCharacteristicCompletedFrobeniusAlgEquiv_comp_levelFieldToCompleted_of_mem_higherUnit
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n)

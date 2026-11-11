@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
 
 /-!
 # Local norms at an unramified chosen finite place
@@ -16,10 +19,14 @@ norm subgroup of the chosen localized completion.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v
 
 open AlgebraicNumberTheory.Valuations
 open LocalClassFieldTheory
@@ -27,7 +34,7 @@ open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]

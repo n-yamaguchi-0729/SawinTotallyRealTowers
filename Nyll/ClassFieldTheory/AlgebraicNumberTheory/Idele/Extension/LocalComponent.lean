@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 
 /-!
 # Local components of relative adeles and ideles
@@ -18,6 +22,8 @@ therefore gives the actual local component map
 This is the map needed to apply the local tensor decomposition and the local
 norm calculation to a genuine relative idele.
 -/
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -79,7 +85,8 @@ theorem relativeAdeleInfiniteComponent_tmul
     relativeAdeleInfiniteComponent
         (K := K) (L := L) v (a ⊗ₜ[K] x) =
       a.1 v ⊗ₜ[K] x := by
-  simp [relativeAdeleInfiniteComponent]
+  simp only [relativeAdeleInfiniteComponent, Algebra.TensorProduct.map_tmul,
+    infiniteAdeleComponentAlgHom_apply, AlgHom.coe_id, id_eq]
 
 /-- Evaluation of an adele at a finite place, as a `K`-algebra
 homomorphism. -/
@@ -133,7 +140,8 @@ theorem relativeAdeleFiniteComponent_tmul
     relativeAdeleFiniteComponent (K := K) (L := L) v
         (a ⊗ₜ[K] x) =
       a.2 v ⊗ₜ[K] x := by
-  simp [relativeAdeleFiniteComponent]
+  simp only [relativeAdeleFiniteComponent, Algebra.TensorProduct.map_tmul,
+    finiteAdeleComponentAlgHom_apply, AlgHom.coe_id, id_eq]
 
 omit [NumberField K] [NumberField L] in
 /-- Determinant norm commutes with scalar extension along a homomorphism

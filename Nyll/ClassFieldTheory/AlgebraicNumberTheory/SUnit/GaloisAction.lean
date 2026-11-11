@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
-import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.LatticeHerbrand
-import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.LatticeHerbrand
+public import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 
 /-!
 # Galois actions on `S`-units and their logarithmic lattice
@@ -20,12 +22,16 @@ to the actual `S`-unit group.
 
 
 
+@[expose] public section
+
 open scoped BigOperators NumberField nonZeroDivisors
 open IsDedekindDomain Module
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 open CyclicCohomology
 
 noncomputable section
+
+universe u v
 
 variable
     (K L : Type*) [Field K] [NumberField K]
@@ -516,13 +522,12 @@ theorem permutationRepresentation_logPlace
     (hS : IsGaloisStableFinitePlaces K L S)
     (σ : L ≃ₐ[K] L)
     (z : SUnitGroup.FullLogSpace (K := L) S) :
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
     permutationRepresentation
         (logPlacePermutationHom K L S hS) σ z =
       σ • z := by
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2
   ext p
   rfl
 
@@ -533,12 +538,11 @@ theorem coordinateSum_smul
     (hS : IsGaloisStableFinitePlaces K L S)
     (σ : L ≃ₐ[K] L)
     (z : SUnitGroup.FullLogSpace (K := L) S) :
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
     SUnitGroup.coordinateSum (K := L) S (σ • z) =
       SUnitGroup.coordinateSum (K := L) S z := by
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2
   change
     (∑ p : SUnitGroup.LogPlace (K := L) S,
       z (σ⁻¹ • p)) = ∑ p, z p
@@ -790,16 +794,13 @@ theorem fullLogAmbient_smul
     (hS : IsGaloisStableFinitePlaces K L S)
     (σ : L ≃ₐ[K] L)
     (x : Additive (SUnitGroup (K := L) S)) :
-    letI := sUnitMulDistribMulAction K L S hS
-    letI := additiveSUnitDistribMulAction K L S hS
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
+    let := sUnitMulDistribMulAction K L S hS
+    let := additiveSUnitDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
     SUnitGroup.fullLogAmbient (K := L) S (σ • x) =
       σ • SUnitGroup.fullLogAmbient (K := L) S x := by
-  let := sUnitMulDistribMulAction K L S hS
-  let := additiveSUnitDistribMulAction K L S hS
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4
   let y : L :=
     (((Additive.toMul x :
       SUnitGroup (K := L) S) : Lˣ) : L)
@@ -878,18 +879,14 @@ theorem fullLog_smul
     (hS : IsGaloisStableFinitePlaces K L S)
     (σ : L ≃ₐ[K] L)
     (x : Additive (SUnitGroup (K := L) S)) :
-    letI := sUnitMulDistribMulAction K L S hS
-    letI := additiveSUnitDistribMulAction K L S hS
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
-    letI := logHyperplaneDistribMulAction K L S hS
+    let := sUnitMulDistribMulAction K L S hS
+    let := additiveSUnitDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
+    let := logHyperplaneDistribMulAction K L S hS
     SUnitGroup.fullLog (K := L) S (σ • x) =
       σ • SUnitGroup.fullLog (K := L) S x := by
-  let := sUnitMulDistribMulAction K L S hS
-  let := additiveSUnitDistribMulAction K L S hS
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
-  let := logHyperplaneDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   apply Subtype.ext
   exact fullLogAmbient_smul K L hS σ x
 
@@ -948,17 +945,13 @@ theorem fullLogLattice_smul_mem
     (σ : L ≃ₐ[K] L)
     (z : SUnitGroup.LogHyperplane (K := L) S)
     (hz : z ∈ SUnitGroup.fullLogLattice (K := L) S) :
-    letI := sUnitMulDistribMulAction K L S hS
-    letI := additiveSUnitDistribMulAction K L S hS
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
-    letI := logHyperplaneDistribMulAction K L S hS
+    let := sUnitMulDistribMulAction K L S hS
+    let := additiveSUnitDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
+    let := logHyperplaneDistribMulAction K L S hS
     σ • z ∈ SUnitGroup.fullLogLattice (K := L) S := by
-  let := sUnitMulDistribMulAction K L S hS
-  let := additiveSUnitDistribMulAction K L S hS
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
-  let := logHyperplaneDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   rw [SUnitGroup.fullLogLattice_eq_range] at hz ⊢
   obtain ⟨x, hx⟩ := hz
   change SUnitGroup.fullLog (K := L) S x = z at hx
@@ -975,14 +968,12 @@ theorem fullLogSpaceSplit_fst_smul
     (hS : IsGaloisStableFinitePlaces K L S)
     (σ : L ≃ₐ[K] L)
     (z : SUnitGroup.FullLogSpace (K := L) S) :
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
-    letI := logHyperplaneDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
+    let := logHyperplaneDistribMulAction K L S hS
     (fullLogSpaceSplit L S (σ • z)).1 =
       σ • (fullLogSpaceSplit L S z).1 := by
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
-  let := logHyperplaneDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   apply Subtype.ext
   change
     σ • z -
@@ -1004,12 +995,11 @@ theorem fullLogSpaceSplit_snd_smul
     (hS : IsGaloisStableFinitePlaces K L S)
     (σ : L ≃ₐ[K] L)
     (z : SUnitGroup.FullLogSpace (K := L) S) :
-    letI := logPlaceMulAction K L S hS
-    letI := fullLogSpaceDistribMulAction K L S hS
+    let := logPlaceMulAction K L S hS
+    let := fullLogSpaceDistribMulAction K L S hS
     (fullLogSpaceSplit L S (σ • z)).2 =
       (fullLogSpaceSplit L S z).2 := by
-  let := logPlaceMulAction K L S hS
-  let := fullLogSpaceDistribMulAction K L S hS
+  intro sharedOwner1 sharedOwner2
   exact coordinateSum_smul K L hS σ z
 
 omit [NumberField K] in
@@ -1107,7 +1097,7 @@ lattice.  The Herbrand quotient is the product of the orders of the
 stabilizers of the Galois orbits of logarithmic places. -/
 theorem
     extendedFullLogLattice_herbrandQuotient_eq_stabilizerProduct
-    (K L : Type) [Field K] [NumberField K]
+    (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     {S : Finset (HeightOneSpectrum (𝓞 L))}
     (hS : IsGaloisStableFinitePlaces K L S)
@@ -1161,8 +1151,7 @@ theorem
               (SUnitGroup.LogPlace (K := L) S),
           (Fintype.card
             (permutationOrbitStabilizer ω) : ℚ) := by
-  let ρ :=
-    logPlacePermutationHom K L S hS
+  intro ρ
   exact
     completePermutationLattice_herbrandQuotient_eq_stabilizerProduct
       (G := L ≃ₐ[K] L)

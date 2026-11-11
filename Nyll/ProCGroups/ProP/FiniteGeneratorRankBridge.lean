@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.GeneratorRank
+module
+
+public import Nyll.ProCGroups.ProP.GeneratorRank
 
 /-!
 # Finite-set presentation of topological generator rank
@@ -14,6 +16,8 @@ finite topological generating set.  For a topologically finitely generated
 profinite group, this agrees with the library's cardinal-valued topological
 rank followed by `Cardinal.toNat`.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

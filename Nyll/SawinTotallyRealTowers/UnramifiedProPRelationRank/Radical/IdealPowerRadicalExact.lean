@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.OrdinaryUnitModP
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
-import Mathlib.RingTheory.DedekindDomain.SelmerGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.OrdinaryUnitModP
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
+public import Mathlib.RingTheory.DedekindDomain.SelmerGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
 
 /-!
 # The exact unit--radical--class sequence
@@ -16,6 +20,8 @@ This file supplies the missing maps in the empty-support Selmer sequence:
 ordinary units modulo powers inject into the ideal-power radical, whose
 ideal-root class map surjects onto class-group power torsion.
 -/
+
+@[expose] public section
 
 open scoped NumberField nonZeroDivisors
 open NumberField IsDedekindDomain
@@ -56,7 +62,8 @@ noncomputable def integralUnitToIdealNthPowerRadicalQuotient
     (idealNthPowerRadicalKummerSubgroup K n)).comp
       (integralUnitToIdealNthPowerRadical K n)
 
-private theorem integralUnitToIdealNthPowerRadicalQuotient_ker
+/-- The kernel consists exactly of integral units that are `n`-th powers. -/
+theorem integralUnitToIdealNthPowerRadicalQuotient_ker
     (n : ℕ+) :
     MonoidHom.ker (integralUnitToIdealNthPowerRadicalQuotient K n) =
       (powMonoidHom (n : ℕ) : (𝓞 K)ˣ →* (𝓞 K)ˣ).range := by
@@ -192,7 +199,7 @@ theorem range_ordinaryUnitToIdealRadical_eq_ker_toClassTorsion
     change (b⁻¹) ^ (n : ℕ) =
       RayClass.integralUnitToFieldUnit u / a.1
     rw [hu]
-    simp [div_eq_mul_inv, mul_comm]
+    rw [div_div, mul_comm (b ^ (n : ℕ)), ← div_div, div_self', one_div, inv_pow]
 
 /-- The empty-support ideal-power radical quotient is finite. -/
 noncomputable instance finite_idealNthPowerRadicalQuotient

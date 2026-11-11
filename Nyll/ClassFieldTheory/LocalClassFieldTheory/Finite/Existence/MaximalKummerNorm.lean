@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PowerClassFiniteness
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PowerClassFiniteness
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
+public import Nyll.GaloisCohomology.Kummer.Concrete.MaximalKummerSubgroup
 
 /-!
 # Norm group of the maximal Kummer extension
@@ -19,6 +22,8 @@ exponent-`n` Kummer extension with the subgroup of `n`-th powers.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -26,9 +31,11 @@ namespace LocalClassFieldTheory
 open CyclicCohomology KummerTheory ClassFormation
 open LocalFieldTheory.DiscreteValuationField LocalFieldTheory
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+universe u v
+
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
-variable {Omega : Type} [Field Omega] [Algebra K Omega] [IsSepClosure K Omega]
+variable {Omega : Type v} [Field Omega] [Algebra K Omega] [IsSepClosure K Omega]
 
 /-- The Galois group of the maximal exponent-`n` Kummer extension is
 canonically equivalent to the local power-class group. -/
@@ -74,11 +81,13 @@ noncomputable def maximalKummerNormQuotientEquivPowerQuotient
       (K := K) (Omega := Omega) n hmu Delta.1
   letI : CommGroup Gal(E/K) :=
     CommGroup.mk (fun a b => IsMulCommutative.is_comm.comm a b)
+  letI : IsAbelianGalois K E :=
+    kummerRadicalExtension_isAbelianGalois
+      (K := K) (Omega := Omega) n hmu Delta.1
   exact
-    (abelianizationEquivNormQuotient K E).symm.trans
-      (Abelianization.equivOfComm.symm.trans
-        (chosenMaximalKummerGaloisEquivPowerQuotient
-          (K := K) (Omega := Omega) n hnK hmu))
+    (Classical.choose (Universe.quotientEquiv_existsUnique K E).exists).toMulEquiv.trans
+      (chosenMaximalKummerGaloisEquivPowerQuotient
+        (K := K) (Omega := Omega) n hnK hmu)
 
 /-- Every `n`-th power is a norm from the maximal exponent-`n` Kummer
 extension. -/
@@ -100,21 +109,18 @@ theorem powMonoidHom_range_le_maximalKummerNormSubgroup
       (K := K) (Omega := Omega) n hmu Delta.1
   let : CommGroup Gal(E/K) :=
     CommGroup.mk (fun a b => IsMulCommutative.is_comm.comm a b)
-  have habExponent :
-      ∀ a : Abelianization (Gal(E / K)), a ^ (n : ℕ) = 1 := by
-    intro a
-    apply (Abelianization.equivOfComm :
-      Gal(E/K) ≃* Abelianization (Gal(E/K))).symm.injective
-    rw [map_pow, map_one]
-    exact kummerRadicalExtension_galois_pow_eq_one
-      (K := K) (Omega := Omega) n hmu Delta.1 _
+  let : IsAbelianGalois K E :=
+    kummerRadicalExtension_isAbelianGalois
+      (K := K) (Omega := Omega) n hmu Delta.1
   change (powMonoidHom (n : ℕ) : Kˣ →* Kˣ).range ≤ localNormSubgroup K E
   intro x hx
   obtain ⟨y, rfl⟩ :=
     (MonoidHom.mem_range (G := Kˣ)).1 hx
-  rw [← localArtinMonoidHom_ker K E, MonoidHom.mem_ker,
+  rw [← Universe.abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker,
     powMonoidHom_apply, map_pow]
-  exact habExponent (localArtinMonoidHom K E y)
+  exact kummerRadicalExtension_galois_pow_eq_one
+    (K := K) (Omega := Omega) n hmu Delta.1
+      (Universe.abelianLocalArtinMonoidHom K E y)
 
 /-- If the base field contains the `n`-th roots of unity, the norm subgroup
 of the maximal exponent-`n` Kummer extension is exactly `Kˣⁿ`. -/

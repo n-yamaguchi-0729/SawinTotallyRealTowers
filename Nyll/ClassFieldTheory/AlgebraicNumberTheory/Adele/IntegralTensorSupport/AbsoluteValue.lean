@@ -4,20 +4,27 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Module.NatInt
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Complete
-import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
-import Mathlib.LinearAlgebra.Basis.SMul
-import Mathlib.RingTheory.Algebraic.Integral
-import Mathlib.RingTheory.DedekindDomain.Factorization
-import Mathlib.RingTheory.Discriminant
-import Mathlib.RingTheory.Localization.Finiteness
-import Mathlib.RingTheory.Valuation.LocalSubring
-import Mathlib.RingTheory.Valuation.ValuationSubring
+module
+
+public import Mathlib.Algebra.Module.NatInt
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Complete
+public import Nyll.ValuedFieldTheory.Valuation.Completion.TensorProductDecomposition
+public import Mathlib.LinearAlgebra.Basis.SMul
+public import Mathlib.RingTheory.Algebraic.Integral
+public import Mathlib.RingTheory.DedekindDomain.Factorization
+public import Mathlib.RingTheory.Discriminant
+public import Mathlib.RingTheory.Localization.Finiteness
+public import Mathlib.RingTheory.Valuation.LocalSubring
+public import Mathlib.RingTheory.Valuation.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # Integral lattices for the relative tensor basis
@@ -42,6 +49,8 @@ unit groups needed in the finite-support decomposition.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain

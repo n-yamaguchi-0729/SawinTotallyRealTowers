@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdentityComponent
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldOriginalField
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdentityComponent
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldOriginalField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The kernel of maximal abelian global reciprocity
@@ -24,16 +27,20 @@ supplies the detecting finite Galois coordinate.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
 open GlobalClassFields
 
-variable (K : Type) [Field K] [NumberField K]
+variable (K : Type u) [Field K] [NumberField K]
 
 /-- A class outside the identity component is excluded by a closed
 finite-index subgroup which contains the identity component. -/
@@ -95,7 +102,7 @@ theorem exists_closedFiniteIndexSubgroup_not_mem_of_not_mem_identityComponent
 /-- Replacing a finite abelian extension by its selected finite layer in the
 maximal abelian extension preserves its idele-class norm range. -/
 theorem finiteAbelianExtensionInMaximalAbelianExtension_ideleClassNorm_range
-    (L : Type) [Field L] [NumberField L] [Algebra K L]
+    (L : Type v) [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
     let E := finiteAbelianExtensionInMaximalAbelianExtension K L
     let _ : NumberField E := NumberField.of_module_finite K E

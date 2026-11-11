@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
-import Mathlib.RingTheory.Valuation.RamificationGroup
-import Mathlib.FieldTheory.Normal.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Mathlib.RingTheory.Valuation.RamificationGroup
+public import Mathlib.FieldTheory.Normal.Basic
 
 /-!
 # The unique-extension characterization: automorphism invariance from unique extension
@@ -16,6 +18,8 @@ again an extension valuation ring.  Hence uniqueness forces the chosen ring
 to be fixed by every automorphism of the extension field.  This is the first
 Galois-theoretic step in the converse direction of the unique-extension characterization.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -246,16 +250,14 @@ theorem minpoly_residue_eq_of_minpoly_eq_of_unique_extension
       V.valuation.HasExtension W'.valuation → W' = W)
     {x y : L} (hxy : minpoly K x = minpoly K y)
     (hx : x ∈ W.toSubring) (hy : y ∈ W.toSubring) :
-    letI : Algebra (IsLocalRing.ResidueField V)
+    let : Algebra (IsLocalRing.ResidueField V)
         (IsLocalRing.ResidueField W) :=
       (residueFieldMapOfHasExtension V W hW).toAlgebra
     minpoly (IsLocalRing.ResidueField V)
         (IsLocalRing.residue W ⟨x, hx⟩) =
       minpoly (IsLocalRing.ResidueField V)
         (IsLocalRing.residue W ⟨y, hy⟩) := by
-  let : Algebra (IsLocalRing.ResidueField V)
-      (IsLocalRing.ResidueField W) :=
-    (residueFieldMapOfHasExtension V W hW).toAlgebra
+  intro sharedOwner1
   obtain ⟨σ, hσ⟩ := (Normal.minpoly_eq_iff_mem_orbit L).1 hxy
   let e : IsLocalRing.ResidueField W ≃ₐ[IsLocalRing.ResidueField V]
       IsLocalRing.ResidueField W :=

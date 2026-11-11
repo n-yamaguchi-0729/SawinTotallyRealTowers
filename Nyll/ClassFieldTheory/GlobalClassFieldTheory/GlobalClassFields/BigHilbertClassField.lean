@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 
 /-!
 # The big Hilbert class field
@@ -18,6 +23,8 @@ the narrow finite conductor/ramification criterion.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -35,6 +42,13 @@ def bigHilbertClassFieldNormSubgroup :
     Subgroup (IdeleClassGroup K) :=
   (RayClass.Modulus.narrowOfFinite
     (0 : RayClass.FiniteModulus K)).congruenceSubgroup
+
+/-- The big-Hilbert norm subgroup has finite index by its defining ray modulus. -/
+instance bigHilbertClassFieldNormSubgroupFiniteIndex
+    {K : Type*} [Field K] [NumberField K] :
+    (bigHilbertClassFieldNormSubgroup (K := K)).FiniteIndex :=
+  RayClass.congruenceSubgroupFiniteIndex
+    (RayClass.Modulus.narrowOfFinite (0 : RayClass.FiniteModulus K))
 
 instance bigHilbertClassFieldNormSubgroup_normal :
     (bigHilbertClassFieldNormSubgroup (K := K)).Normal := by

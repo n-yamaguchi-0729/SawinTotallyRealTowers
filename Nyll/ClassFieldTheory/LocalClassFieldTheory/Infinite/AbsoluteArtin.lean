@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotientTransitions
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotientTransitions
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseNaturality
 
 /-!
 # The absolute local Artin map from compatible finite quotients
@@ -17,7 +20,11 @@ compatibility.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u
 
 open CategoryTheory
 
@@ -25,7 +32,7 @@ namespace LocalClassFieldTheory
 
 open LocalFieldTheory RamificationTheory
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- The finite Artin coordinate at an open normal subgroup of the absolute
@@ -35,14 +42,14 @@ noncomputable def absoluteFiniteArtinMap
     Kˣ →ₜ* (localAbsoluteAbelianProfinite K ⧸ N.toSubgroup) :=
   (ContinuousMonoidHom.toContinuousMonoidHom
       (absoluteFiniteQuotientEquiv K N).symm).comp
-    (abelianLocalArtinMap K (absoluteFiniteQuotientField K N))
+    (Universe.abelianLocalArtinMap K (absoluteFiniteQuotientField K N))
 
 /-- Every finite coordinate of the absolute Artin map is onto. -/
 theorem absoluteFiniteArtinMap_surjective
     (N : OpenNormalSubgroup (localAbsoluteAbelianProfinite K)) :
     Function.Surjective (absoluteFiniteArtinMap K N) :=
   (absoluteFiniteQuotientEquiv K N).symm.surjective.comp
-    (abelianLocalArtinMap_surjective K
+    (Universe.abelianLocalArtinMap_surjective K
       (absoluteFiniteQuotientField K N))
 
 /-- The kernel of a finite absolute Artin coordinate is the ordinary norm
@@ -51,15 +58,12 @@ theorem absoluteFiniteArtinMap_ker
     (N : OpenNormalSubgroup (localAbsoluteAbelianProfinite K)) :
     (absoluteFiniteArtinMap K N).toMonoidHom.ker =
       localNormSubgroup K (absoluteFiniteQuotientField K N) := by
-  rw [← abelianLocalArtinMap_ker K (absoluteFiniteQuotientField K N)]
-  ext a
-  simp only [MonoidHom.mem_ker, absoluteFiniteArtinMap]
-  constructor
-  · intro ha
-    apply (absoluteFiniteQuotientEquiv K N).symm.injective
-    simpa using ha
-  · intro ha
-    simpa using congrArg (absoluteFiniteQuotientEquiv K N).symm ha
+  have h := MonoidHom.ker_comp_of_injective
+    (Universe.abelianLocalArtinMap K (absoluteFiniteQuotientField K N)).toMonoidHom
+    (ContinuousMonoidHom.toContinuousMonoidHom
+      (absoluteFiniteQuotientEquiv K N).symm).toMonoidHom
+    (absoluteFiniteQuotientEquiv K N).symm.injective
+  exact h.trans (Universe.abelianLocalArtinMap_ker K (absoluteFiniteQuotientField K N))
 
 /-- Finite absolute Artin coordinates commute with quotient transition. -/
 theorem absoluteFiniteArtinMap_transition
@@ -75,11 +79,11 @@ theorem absoluteFiniteArtinMap_transition
     absoluteFiniteQuotientEquiv K M
         (absoluteFiniteQuotientTransition hNM
           ((absoluteFiniteQuotientEquiv K N).symm
-            (abelianLocalArtinMap K
+            (Universe.abelianLocalArtinMap K
               (absoluteFiniteQuotientField K N) a))) =
       absoluteFiniteQuotientEquiv K M
         ((absoluteFiniteQuotientEquiv K M).symm
-          (abelianLocalArtinMap K
+          (Universe.abelianLocalArtinMap K
             (absoluteFiniteQuotientField K M) a))
   calc
     _ = intermediateFieldRestrictContinuous K
@@ -88,24 +92,24 @@ theorem absoluteFiniteArtinMap_transition
           (absoluteFiniteQuotientField_antitone hNM)
           (absoluteFiniteQuotientEquiv K N
             ((absoluteFiniteQuotientEquiv K N).symm
-              (abelianLocalArtinMap K
+              (Universe.abelianLocalArtinMap K
                 (absoluteFiniteQuotientField K N) a))) := by
         exact (DFunLike.congr_fun
           (absoluteFiniteQuotientEquiv_transition (K := K) hNM)
           ((absoluteFiniteQuotientEquiv K N).symm
-            (abelianLocalArtinMap K
+            (Universe.abelianLocalArtinMap K
               (absoluteFiniteQuotientField K N) a))).symm
     _ = intermediateFieldRestrictContinuous K
           (absoluteFiniteQuotientField K M)
           (absoluteFiniteQuotientField K N)
           (absoluteFiniteQuotientField_antitone hNM)
-          (abelianLocalArtinMap K
+          (Universe.abelianLocalArtinMap K
             (absoluteFiniteQuotientField K N) a) := by
         rw [(absoluteFiniteQuotientEquiv K N).apply_symm_apply]
-    _ = abelianLocalArtinMap K
+    _ = Universe.abelianLocalArtinMap K
           (absoluteFiniteQuotientField K M) a :=
         DFunLike.congr_fun
-          (abelianLocalArtinMap_restrict K
+          (Universe.abelianLocalArtinMap_restrict K
             (absoluteFiniteQuotientField K M)
             (absoluteFiniteQuotientField K N)
             (absoluteFiniteQuotientField_antitone hNM)) a
@@ -114,7 +118,7 @@ theorem absoluteFiniteArtinMap_transition
 
 /-- The compatible cone of finite Artin coordinates, valued in the inverse
 limit of all open finite quotients of the absolute abelianized Galois group. -/
-noncomputable def absoluteFiniteArtinLimit : ProfiniteGrp :=
+noncomputable def absoluteFiniteArtinLimit : ProfiniteGrp.{u} :=
   ProfiniteGrp.limit
     ((localAbsoluteAbelianProfinite K).toFiniteQuotientFunctor ⋙
       forget₂ FiniteGrp ProfiniteGrp)
@@ -129,7 +133,7 @@ noncomputable def absoluteGaloisAbelianizationLimitEquiv :
 
 /-- Defines `absoluteFiniteArtinLimitMap`. -/
 noncomputable def absoluteFiniteArtinLimitMap :
-    Kˣ →ₜ* (absoluteFiniteArtinLimit K : Type) where
+    Kˣ →ₜ* (absoluteFiniteArtinLimit K : Type u) where
   toFun a :=
     ⟨fun N => absoluteFiniteArtinMap K N a, by
       intro N M i
@@ -159,7 +163,7 @@ noncomputable def absoluteFiniteArtinLimitMap :
     let q :
         (localAbsoluteAbelianProfinite K ⧸ N.toSubgroup) →ₜ*
           (((localAbsoluteAbelianProfinite K).toFiniteQuotientFunctor ⋙
-            forget₂ FiniteGrp ProfiniteGrp).obj N : Type) :=
+            forget₂ FiniteGrp ProfiniteGrp).obj N : Type u) :=
       { toFun := id
         map_one' := rfl
         map_mul' := by intro x y; rfl

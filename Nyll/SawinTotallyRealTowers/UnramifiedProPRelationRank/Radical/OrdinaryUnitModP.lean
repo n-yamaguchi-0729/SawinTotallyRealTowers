@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
-import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+module
+
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
+public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.Rank
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
 
 /-!
 # Ordinary units modulo prime powers
@@ -15,6 +20,8 @@ number-field unit group modulo `p`-th powers.  The torsion correction is one
 exactly when the field contains a primitive `p`-th root of unity.  The module
 structure is exposed explicitly and is not installed as a global instance.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -241,7 +248,7 @@ theorem card_ordinaryUnitNthPowerQuotient
       rintro ⟨ζ, hζ⟩
       exact hroots ⟨ζ, (mem_primitiveRoots hp.pos).mpr hζ⟩
     rw [card_ordinaryUnitNthPowerQuotient_of_no_primitiveRoot K p hp hμ]
-    simp [hroots]
+    rw [ite_eq_right hroots, add_zero]
 
 /-- The `ZMod p`-dimension computed using the explicit ordinary-unit module. -/
 noncomputable def ordinaryUnitModPFinrank (p : ℕ) : ℕ :=

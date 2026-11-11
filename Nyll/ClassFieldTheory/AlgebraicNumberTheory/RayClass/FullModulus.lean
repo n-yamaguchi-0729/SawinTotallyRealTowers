@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Ray moduli with selected real places
@@ -15,6 +18,8 @@ idèle-class congruence subgroups without fixing an archimedean convention.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -249,19 +254,19 @@ theorem localInfiniteCongruenceSubgroup_replaceFinitePart
 theorem localInfiniteCongruenceSubgroup_of_mem
     (m : Modulus K) (v : RealPlace K) (hv : v ∈ m.infinitePart) :
     m.localInfiniteCongruenceSubgroup v.1 = infinitePositiveSubgroup v.1 := by
-  simp [localInfiniteCongruenceSubgroup, v.property, hv]
+  simp only [localInfiniteCongruenceSubgroup, v.property, hv, ↓reduceDIte]
 
 @[simp]
 theorem localInfiniteCongruenceSubgroup_of_not_mem
     (m : Modulus K) (v : RealPlace K) (hv : v ∉ m.infinitePart) :
     m.localInfiniteCongruenceSubgroup v.1 = ⊤ := by
-  simp [localInfiniteCongruenceSubgroup, v.property, hv]
+  simp only [localInfiniteCongruenceSubgroup, v.property, hv, ↓reduceDIte]
 
 @[simp]
 theorem localInfiniteCongruenceSubgroup_of_not_isReal
     (m : Modulus K) (w : InfinitePlace K) (hw : ¬ w.IsReal) :
     m.localInfiniteCongruenceSubgroup w = ⊤ := by
-  simp [localInfiniteCongruenceSubgroup, hw]
+  simp only [localInfiniteCongruenceSubgroup, hw, ↓reduceDIte]
 
 /-- The subgroup of infinite idèles positive at the real places selected by
 the modulus. -/

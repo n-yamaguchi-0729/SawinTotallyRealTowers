@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Characters of the finite valuation vector of an idele
@@ -16,6 +21,8 @@ idele character. No continuity of the functional on that product is required: it
 vanishes on the open subgroup of ideles integral at every finite place. On principal ideles
 the character agrees with the dual of global finite-valuation localization.
 -/
+
+@[expose] public section
 
 open scoped NumberField WithZero
 

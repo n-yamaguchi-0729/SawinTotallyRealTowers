@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.RelativeNormDoubleCoset
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusActionRemainder
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.RelativeNormDoubleCoset
 
 /-!
 # Norms of primes in conjugate Frobenius fixed fields
@@ -16,7 +18,9 @@ proves equality of their relative norms in the base fixed field.
 
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -29,11 +33,7 @@ open CategoryTheory
 
 section conjugatePrimeNorms
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : IntegralRepGroupType`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -43,7 +43,7 @@ normalized valuations preserves primality, while conjugation equivariance of the
 norm and the fact that the conjugating representative lies in `G_K` give
 equality of the two norms in `A_K`. -/
 theorem exists_primeElement_frobeniusActionConjugate_norm_eq
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)

@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Finite abelian subextensions and native norm subgroups
@@ -22,6 +25,10 @@ existence-theorem input.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -29,7 +36,9 @@ namespace LocalClassFieldTheory
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 
-variable (K : Type) [Field K]
+section GenericFixedField
+
+variable (K : Type u) [Field K]
 
 /-- Finiteness over the concrete ground-field fixing group implies
 finiteness over the abstract class-formation `baseField`. -/
@@ -142,6 +151,10 @@ theorem finiteAbelianSubextension_compositum_fixedField
       exact InfiniteGalois.fixingSubgroup_fixedField U.field,
     show ET.fixingSubgroup = T.field.toSubgroup by
       exact InfiniteGalois.fixingSubgroup_fixedField T.field]
+
+end GenericFixedField
+
+variable (K : Type) [Field K]
 
 /-- The relative class-formation norm of a unit in an arbitrary abstract fixed
 field is the ordinary field norm, before identifying the base fixed units

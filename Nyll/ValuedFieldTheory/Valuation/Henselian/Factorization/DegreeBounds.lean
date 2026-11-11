@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DivisionBounds
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DivisionBounds
 
 /-!
 # degree bounds for the error factors
@@ -12,6 +14,8 @@ import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DivisionBounds
 This file supplies the degree estimates for the polynomials `f_n` appearing in
 the coefficientwise Hensel iteration.
 -/
+
+@[expose] public section
 
 noncomputable section
 

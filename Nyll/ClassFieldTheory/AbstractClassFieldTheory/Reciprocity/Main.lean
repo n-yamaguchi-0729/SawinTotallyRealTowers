@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransfer
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Sylow
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusLift
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionCosets
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionEquiv
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusNorms
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FixedSource
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.Conclusion
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransfer
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Sylow
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusLift
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionCosets
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.RestrictionEquiv
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FrobeniusNorms
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.FixedSource
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase.Conclusion
+public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
 
 /-!
 # The abstract reciprocity theorem
@@ -22,6 +24,10 @@ This file assembles the three reductions.  The terminal
 cyclic totally ramified calculation is proved in
 `AbstractClassFieldTheory.Reciprocity.TotallyRamifiedCase`.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -33,8 +39,7 @@ open CyclicCohomology
 
 noncomputable section
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- Additive exactness of the finite Galois row attached to an intermediate
 Galois field. -/
@@ -45,14 +50,12 @@ private theorem abstractReciprocity_galois_functionExact
     [hLnormal :
       (extensionSubgroup K L (hLM.trans hMK)).Normal]
     [hMnormal : (extensionSubgroup K M hMK).Normal] :
-    letI : (extensionSubgroup M L hLM).Normal :=
+    let : (extensionSubgroup M L hLM).Normal :=
       transferNormNaturality_intermediateExtension_normal K M L hLM hMK
     Function.Exact
       (MonoidHom.toAdditive (abstractReciprocityInclusion K M L hLM hMK))
       (MonoidHom.toAdditive (abstractReciprocityRestriction K M L hLM hMK)) := by
-  let : (extensionSubgroup M L hLM).Normal :=
-    transferNormNaturality_intermediateExtension_normal K M L hLM hMK
-  intro q
+  intro sharedOwner1 q
   constructor
   · intro hq
     have hmul : abstractReciprocityRestriction K M L hLM hMK q.toMul = 1 := by
@@ -167,7 +170,7 @@ private theorem abstractReciprocity_addSubgroup_eq_top_of_exponent_and_sylow_le
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- The common reciprocity square used by the cyclic and intermediate-field
 reductions in the abstract reciprocity theorem. -/
@@ -254,14 +257,12 @@ theorem abstractReciprocity_cyclic_finiteReciprocityHom_bijective
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     [hCyclic : IsCyclic L.extensionQuotient] :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     Function.Bijective
       (D.finiteReciprocityHom A v hAxiom K L.field L.below) := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
+  intro sharedOwner1
   let S := L.inertiaImage D
   let M := L.maximalUnramifiedSubextension D
   let hLM : L.field.toSubgroup ≤ M.toSubgroup :=
@@ -423,15 +424,13 @@ private theorem abstractReciprocity_solvable_finiteReciprocityHom_surjective
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     [hsolvable : IsSolvable L.extensionQuotient] :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     Function.Surjective
       (D.finiteReciprocityHom A v hAxiom K L.field L.below) := by
+  intro sharedOwner1
   classical
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
   let Q := L.extensionQuotient
   by_cases hcyclic : IsCyclic Q
   · let : IsCyclic Q := hcyclic
@@ -578,15 +577,13 @@ theorem abstractReciprocity_finiteReciprocityHom_surjective
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     Function.Surjective
       (D.finiteReciprocityHom A v hAxiom K L.field L.below) := by
+  intro sharedOwner1
   classical
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
   let r := D.finiteReciprocityHom A v hAxiom K L.field L.below
   apply (AddMonoidHom.range_eq_top (f := r)).1
   have hdegreePos : 0 < (L.toFiniteAbstractExtension.degree : ℕ) :=
@@ -662,15 +659,13 @@ theorem abstractReciprocity_abelian_finiteReciprocityHom_injective
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     [hcommutative : IsMulCommutative L.extensionQuotient] :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     Function.Injective
       (D.finiteReciprocityHom A v hAxiom K L.field L.below) := by
+  intro sharedOwner1
   classical
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
   let EKK : FiniteAbstractFieldExtension G :=
     { field := K
       base := K
@@ -742,16 +737,14 @@ theorem abstractReciprocity_abelianizedReciprocity_bijective
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     Function.Bijective
       (D.transferNormNaturalityAbelianizedReciprocity
         A v hAxiom K L.field L.below) := by
+  intro sharedOwner1
   classical
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
   let Q := L.extensionQuotient
   let S := commutator Q
   let hSnormal : S.Normal := inferInstance
@@ -864,19 +857,17 @@ namespace DegreeData
 extension `L/K`, the reciprocity homomorphism identifies the abelianized
 Galois group with the finite norm quotient. -/
 noncomputable def abstractReciprocityEquiv
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     Additive (Abelianization L.extensionQuotient) ≃+
       FiniteNormQuotient A K.field L.field L.below := by
-  letI : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
+  intro sharedOwner1
   let hAxiom := v.classFieldAxiom_implies_unramifiedUnitCohomology hcf
   exact AddEquiv.ofBijective
     (D.transferNormNaturalityAbelianizedReciprocity
@@ -888,13 +879,13 @@ noncomputable def abstractReciprocityEquiv
 the finite reciprocity equivalence. -/
 @[simp]
 theorem abstractReciprocityEquiv_apply_of
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     (q : L.extensionQuotient) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     D.abstractReciprocityEquiv A v hcf K L
@@ -902,9 +893,7 @@ theorem abstractReciprocityEquiv_apply_of
       D.finiteReciprocityHom A v (v.classFieldAxiom_implies_unramifiedUnitCohomology hcf)
         K L.field L.below
         (Additive.ofMul q) := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
+  intro sharedOwner1
   exact D.transferNormNaturalityAbelianizedReciprocity_of
     A v (v.classFieldAxiom_implies_unramifiedUnitCohomology hcf) K L.field L.below
       q
@@ -912,32 +901,30 @@ theorem abstractReciprocityEquiv_apply_of
 /-- The norm-residue symbol `(·, L/K)`, defined in this construction as the inverse
 of the reciprocity isomorphism in the abstract reciprocity theorem. -/
 noncomputable def normResidueSymbol
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     FiniteNormQuotient A K.field L.field L.below ≃+
       Additive (Abelianization L.extensionQuotient) := by
-  letI : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
+  intro sharedOwner1
   exact (D.abstractReciprocityEquiv A v hcf K L).symm
 
 /-- The norm-residue symbol sends the reciprocity class of a Galois
 element back to its class in the abelianization. -/
 @[simp]
 theorem normResidueSymbol_finiteReciprocityHom
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     (q : L.extensionQuotient) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     D.normResidueSymbol A v hcf K L
@@ -945,9 +932,7 @@ theorem normResidueSymbol_finiteReciprocityHom
           K L.field L.below
           (Additive.ofMul q)) =
       Additive.ofMul (Abelianization.of q) := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
+  intro sharedOwner1
   rw [← D.abstractReciprocityEquiv_apply_of A v hcf K L q]
   exact (D.abstractReciprocityEquiv A v hcf K L).symm_apply_apply _
 
@@ -955,21 +940,18 @@ theorem normResidueSymbol_finiteReciprocityHom
 identity on the finite norm quotient. -/
 @[simp]
 theorem abstractReciprocity_normResidueSymbol
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     ∀ a : FiniteNormQuotient A K.field L.field L.below,
     D.abstractReciprocityEquiv A v hcf K L
         (D.normResidueSymbol A v hcf K L a) = a := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
-  intro a
+  intro sharedOwner1 a
   exact (D.abstractReciprocityEquiv A v hcf K L).apply_symm_apply a
 
 end DegreeData
@@ -996,8 +978,7 @@ commutative diagrams for the inverse norm-residue symbol.
 
 noncomputable section
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- A commutative square of additive isomorphisms remains commutative after
 replacing both horizontal isomorphisms by their inverses. -/
@@ -1074,7 +1055,7 @@ theorem normResidueNaturalityAbelianizedRestriction_of_mk
 additive homomorphism.  Its second component is `N_{K'/K}` on finite norm
 quotients from norm--conjugation naturality. -/
 def normResidueNaturalityNormRestrictionPairMap
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K K' L L' : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
@@ -1107,7 +1088,7 @@ relative norm to the field element.
 -/
 @[simp]
 theorem normResidueNaturalityNormRestrictionPairMap_on_representatives
-    (A : Rep ℤ G)
+    (A : Rep.{v} ℤ G)
     (K K' L L' : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
@@ -1185,7 +1166,7 @@ one additive homomorphism.  The second component is the actual descended
 map `a ↦ a^s` from norm--conjugation naturality. -/
 def normResidueNaturalityConjugationPairMap
     [ContinuousMul G]
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) (s : G)
     [hLnormal : (extensionSubgroup K L hLK).Normal]
     [hLfinite : Finite
@@ -1222,7 +1203,7 @@ element.
 @[simp]
 theorem normResidueNaturalityConjugationPairMap_on_representatives
     [ContinuousMul G]
-    (A : Rep ℤ G) (K L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) (s : G)
     [hLnormal : (extensionSubgroup K L hLK).Normal]
     [hLfinite : Finite
@@ -1260,7 +1241,7 @@ first component is Mathlib's actual transfer, transported to
 `G(L/K')ᵃᵇ` in transfer--norm naturality; the second is inclusion
 `A_K → A_{K'}` descended to finite norm quotients. -/
 def normResidueNaturalityTransferInclusionPairMap
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal :
@@ -1268,9 +1249,9 @@ def normResidueNaturalityTransferInclusionPairMap
     [hLfinite : Finite
       (K.toSubgroup ⧸
         extensionSubgroup K L (hLK'.trans hK'K))] :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-    letI : Finite
+    let : Finite
         (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       Finite.of_injective
         (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
@@ -1283,14 +1264,7 @@ def normResidueNaturalityTransferInclusionPairMap
       Additive (Abelianization
         (K'.toSubgroup ⧸ extensionSubgroup K' L hLK')) ×
         FiniteNormQuotient A K' L hLK' := by
-  letI : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  letI : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
-      (transferNormNaturalityIntermediateInclusion_injective
-        K K' L hLK' hK'K)
+  intro sharedOwner1 sharedOwner2
   exact AddMonoidHom.prodMap
     (MonoidHom.toAdditive
       (transferNormNaturalityTransfer K K' L hLK' hK'K))
@@ -1302,7 +1276,7 @@ fixed-field inclusion to the norm class.
 -/
 @[simp]
 theorem normResidueNaturalityTransferInclusionPairMap_on_representatives
-    (A : Rep ℤ G) (K K' L : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K K' L : ClosedSubgroup G)
     (hLK' : L.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [hLnormal :
@@ -1313,9 +1287,9 @@ theorem normResidueNaturalityTransferInclusionPairMap_on_representatives
     (σ : K.toSubgroup ⧸
       extensionSubgroup K L (hLK'.trans hK'K))
     (a : ambientFixedAddSubgroup A K) :
-    letI : (extensionSubgroup K' L hLK').Normal :=
+    let : (extensionSubgroup K' L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-    letI : Finite
+    let : Finite
         (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       Finite.of_injective
         (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
@@ -1329,14 +1303,7 @@ theorem normResidueNaturalityTransferInclusionPairMap_on_representatives
             (Abelianization.of σ)),
         finiteNormClass A K' L hLK'
           (fixedFieldInclusion A K K' hK'K a)) := by
-  let : (extensionSubgroup K' L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal K K' L hLK' hK'K
-  let : Finite
-      (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion K K' L hLK' hK'K)
-      (transferNormNaturalityIntermediateInclusion_injective
-        K K' L hLK' hK'K)
+  intro sharedOwner1 sharedOwner2
   ext
   · rfl
   · exact transferNormNaturality_normQuotientInclusion_finiteNormClass
@@ -1350,7 +1317,7 @@ namespace DegreeData
 commutes with restriction on Galois groups and the relative norm on norm
 quotients. -/
 theorem normResidueNaturality_norm_restriction
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
@@ -1378,11 +1345,7 @@ theorem normResidueNaturality_norm_restriction
         (finiteReciprocityNaturalityNormMap A
           T.base.field T.field.field L L'
           hLK hL'K' T.below hL'L) := by
-  dsimp only
-  let E : FiniteGaloisSubextension T.base.field :=
-    ⟨L, hLK, hLnormal, hLKfinite⟩
-  let E' : FiniteGaloisSubextension T.field.field :=
-    ⟨L', hL'K', hL'normal, hL'K'finite⟩
+  intro E E'
   let q := MonoidHom.toAdditive
     (normResidueNaturalityAbelianizedRestriction
       T.base.field T.field.field L L'
@@ -1423,7 +1386,7 @@ theorem normResidueNaturality_norm_restriction
 /-- **Reciprocity naturality, second diagram.**  The norm-residue symbol
 commutes with conjugation of the extension and of norm classes. -/
 theorem normResidueNaturality_conjugation
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
@@ -1435,7 +1398,7 @@ theorem normResidueNaturality_conjugation
     let Ks := K.conjugate s
     let Ls := conjugateClosedSubgroup L s
     let hLsKs := conjugateClosedSubgroup_mono hLK s
-    letI : Finite (Ks.field.toSubgroup ⧸
+    let : Finite (Ks.field.toSubgroup ⧸
         extensionSubgroup Ks.field Ls hLsKs) :=
       finite_conjugateExtension K.field L hLK s
     let E : FiniteGaloisSubextension K.field :=
@@ -1448,19 +1411,7 @@ theorem normResidueNaturality_conjugation
       (D.normResidueSymbol A v hcf K E).toAddMonoidHom =
       (D.normResidueSymbol A v hcf Ks Es).toAddMonoidHom.comp
         (finiteReciprocityNaturalityConjugationNormMap A K.field L hLK s) := by
-  dsimp only
-  let hLsfinite : Finite
-      ((conjugateClosedSubgroup K.field s).toSubgroup ⧸
-        extensionSubgroup (conjugateClosedSubgroup K.field s)
-          (conjugateClosedSubgroup L s)
-          (conjugateClosedSubgroup_mono hLK s)) :=
-    finite_conjugateExtension K.field L hLK s
-  let Ks := K.conjugate s
-  let E : FiniteGaloisSubextension K.field :=
-    ⟨L, hLK, hLnormal, hLfinite⟩
-  let Es : FiniteGaloisSubextension Ks.field :=
-    ⟨conjugateClosedSubgroup L s, conjugateClosedSubgroup_mono hLK s,
-      inferInstance, hLsfinite⟩
+  intro Ks Ls hLsKs hLsfinite E Es
   let q := MonoidHom.toAdditive
     (normResidueNaturalityAbelianizedConjugation K.field L hLK s).toMonoidHom
   let b := finiteReciprocityNaturalityConjugationNormMap A K.field L hLK s
@@ -1495,7 +1446,7 @@ theorem normResidueNaturality_conjugation
 commutes with transfer on abelianized Galois groups and inclusion on norm
 quotients. -/
 theorem normResidueNaturality_transfer_inclusion
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
@@ -1506,10 +1457,10 @@ theorem normResidueNaturality_transfer_inclusion
     [hLfinite : Finite
       (T.base.field.toSubgroup ⧸
         extensionSubgroup T.base.field L (hLK'.trans T.below))] :
-    letI : (extensionSubgroup T.field.field L hLK').Normal :=
+    let : (extensionSubgroup T.field.field L hLK').Normal :=
       transferNormNaturality_intermediateExtension_normal
         T.base.field T.field.field L hLK' T.below
-    letI : Finite
+    let : Finite
         (T.field.field.toSubgroup ⧸
           extensionSubgroup T.field.field L hLK') :=
       Finite.of_injective
@@ -1528,22 +1479,7 @@ theorem normResidueNaturality_transfer_inclusion
       (D.normResidueSymbol A v hcf T.field E').toAddMonoidHom.comp
         (transferNormNaturalityNormQuotientInclusion A
           T.base.field T.field.field L hLK' T.below) := by
-  dsimp only
-  let : (extensionSubgroup T.field.field L hLK').Normal :=
-    transferNormNaturality_intermediateExtension_normal
-      T.base.field T.field.field L hLK' T.below
-  let : Finite
-      (T.field.field.toSubgroup ⧸
-        extensionSubgroup T.field.field L hLK') :=
-    Finite.of_injective
-      (transferNormNaturalityIntermediateInclusion
-        T.base.field T.field.field L hLK' T.below)
-      (transferNormNaturalityIntermediateInclusion_injective
-        T.base.field T.field.field L hLK' T.below)
-  let E : FiniteGaloisSubextension T.base.field :=
-    ⟨L, hLK'.trans T.below, hLnormal, hLfinite⟩
-  let E' : FiniteGaloisSubextension T.field.field :=
-    ⟨L, hLK', inferInstance, inferInstance⟩
+  intro reusedStructure1 reusedStructure2 E E'
   let q := MonoidHom.toAdditive
     (transferNormNaturalityTransfer
       T.base.field T.field.field L hLK' T.below)

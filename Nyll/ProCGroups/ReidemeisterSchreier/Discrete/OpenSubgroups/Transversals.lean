@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Schreier
-import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.Basic
-import Nyll.ProCGroups.ReidemeisterSchreier.RightQuotient
+module
+
+public import Mathlib.GroupTheory.Schreier
+public import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.Basic
+public import Nyll.ProCGroups.ReidemeisterSchreier.RightQuotient
 
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Transversals
@@ -15,6 +17,8 @@ This module defines full and partial right Schreier transversals in free
 groups, proves their complement and prefix-closure properties, and supplies
 the existence and extension results used later.
 -/
+
+@[expose] public section
 
 universe u
 

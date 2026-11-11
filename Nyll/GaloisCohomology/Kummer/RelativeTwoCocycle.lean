@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.Tactic.Abel
+module
+
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.Tactic.Abel
 
 /-!
 # Relative representatives of degree-two cohomology classes
@@ -17,6 +19,8 @@ subgroup. Their conjugation defect is an actual degree-one cocycle, the input
 for Hilbert 90 in finite Galois descent.
 -/
 
+@[expose] public section
+
 open CategoryTheory
 open Rep
 open groupCohomology
@@ -25,7 +29,9 @@ namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
-variable {k G : Type} [CommRing k] [Group G]
+universe u
+
+variable {k G : Type u} [CommRing k] [Group G]
 
 /-- Replace a restriction-zero class by a cohomologous cocycle that vanishes
 on both subgroup arguments. No normality is needed for this first step. -/

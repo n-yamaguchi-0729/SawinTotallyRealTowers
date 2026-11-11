@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteSubgroupResidueDegree
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueValuationComparison
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
-import Nyll.ValuedFieldTheory.Valuation.UniqueRing
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteSubgroupResidueDegree
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueValuationComparison
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
+public import Nyll.ValuedFieldTheory.Valuation.UniqueRing
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
 
 /-!
 # Finite local reciprocity: comparison of the two finite residue-field models
@@ -18,6 +21,8 @@ closure.  The norm formula uses the literal residue field of the spectral
 valuation on that fixed field.  This file compares those presentations by
 the uniqueness of the finite extension valuation.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology RamificationTheory ClassFormation
@@ -53,9 +58,31 @@ noncomputable def valuationSubringEquivDecompositionFieldOfEqTop
   let eFZ : F ≃ₐ[F] Z :=
     (IntermediateField.botEquiv F Omega).symm.trans
       (IntermediateField.equivOfEq hZ.symm)
-  refine
-    { toFun := fun x => ⟨eFZ (x : F), ?_⟩
-      invFun := fun z => ⟨eFZ.symm (z : Z), ?_⟩
+  let toFun : C → decompositionFieldValuationSubring F A := fun x => by
+    refine ⟨eFZ (x : F), ?_⟩
+    change ((eFZ x : Z) : Omega) ∈ A
+    have he : ((eFZ x : Z) : Omega) =
+        algebraMap F Omega (x : F) := by
+      rfl
+    rw [he]
+    have hx : (x : F) ∈ A.comap (algebraMap F Omega) := by
+      rw [hC]
+      exact x.property
+    exact hx
+  let invFun : decompositionFieldValuationSubring F A → C := fun z => by
+    refine ⟨eFZ.symm (z : Z), ?_⟩
+    have hz : eFZ.symm (z : Z) ∈ A.comap (algebraMap F Omega) := by
+      change algebraMap F Omega (eFZ.symm (z : Z)) ∈ A
+      have he : algebraMap F Omega (eFZ.symm (z : Z)) =
+          ((z : Z) : Omega) := by
+        exact congrArg Subtype.val (eFZ.apply_symm_apply (z : Z))
+      rw [he]
+      exact z.property
+    rw [hC] at hz
+    exact hz
+  exact
+    { toFun := toFun
+      invFun := invFun
       left_inv := fun x => by
         apply Subtype.ext
         exact eFZ.symm_apply_apply (x : F)
@@ -68,24 +95,6 @@ noncomputable def valuationSubringEquivDecompositionFieldOfEqTop
       map_mul' := fun x y => by
         apply Subtype.ext
         exact map_mul eFZ (x : F) (y : F) }
-  · change ((eFZ x : Z) : Omega) ∈ A
-    have he : ((eFZ x : Z) : Omega) =
-        algebraMap F Omega (x : F) := by
-      rfl
-    rw [he]
-    have hx : (x : F) ∈ A.comap (algebraMap F Omega) := by
-      rw [hC]
-      exact x.property
-    exact hx
-  · have hz : eFZ.symm (z : Z) ∈ A.comap (algebraMap F Omega) := by
-      change algebraMap F Omega (eFZ.symm (z : Z)) ∈ A
-      have he : algebraMap F Omega (eFZ.symm (z : Z)) =
-          ((z : Z) : Omega) := by
-        exact congrArg Subtype.val (eFZ.apply_symm_apply (z : Z))
-      rw [he]
-      exact z.property
-    rw [hC] at hz
-    exact hz
 
 /-- The corresponding equivalence between literal and intrinsic residue
 fields. -/
@@ -121,7 +130,7 @@ theorem residueFieldEquivDecompositionResidueOfEqTop_algebraMap
 
 /-! ## The finite fixed-field comparison -/
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- **Finite local reciprocity, residue-degree comparison.**  For an arbitrary finite

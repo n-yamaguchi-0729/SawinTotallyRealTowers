@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.GolodShafarevich.GradedPieces
-import Nyll.ProCGroups.GolodShafarevich.TruncatedFoxSequence
-import Mathlib.Algebra.Exact.Sequence
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.ProCGroups.GolodShafarevich.GradedPieces
+public import Nyll.ProCGroups.GolodShafarevich.TruncatedFoxSequence
+public import Mathlib.Algebra.Exact.Sequence
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Truncated Golod--Shafarevich dimension inequality
@@ -16,6 +18,8 @@ The numerical core is rank--nullity for a right-exact sequence of finite
 dimensional vector spaces.  It is stated separately from the filtered Fox
 maps so the Nat arithmetic and the linear-algebra argument remain reusable.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

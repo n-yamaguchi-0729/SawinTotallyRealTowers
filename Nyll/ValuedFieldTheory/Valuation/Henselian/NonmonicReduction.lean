@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
 
 /-!
 # the nonmonic reduction branch
@@ -17,6 +19,8 @@ with nonunit leading coefficient has constant reduction.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open Polynomial
@@ -24,13 +28,13 @@ open Polynomial
 namespace AlgebraicNumberTheory
 namespace Valuations
 
-universe u
+universe u v
 
 /-- If the roots of a primitive irreducible polynomial all have the same
 value in a splitting field, then the nonunit-leading-coefficient branch has
 constant reduction. -/
 theorem primitive_irreducible_reduction_natDegree_zero_of_leadingCoeff_nonunit_of_roots_eq
-    {K L : Type u} [Field K] [Field L] [Algebra K L]
+    {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (V : ValuationSubring K) (B : ValuationSubring L)
     [V.valuation.HasExtension B.valuation]
     (Q : Polynomial V) (hQprim : Q.IsPrimitive)

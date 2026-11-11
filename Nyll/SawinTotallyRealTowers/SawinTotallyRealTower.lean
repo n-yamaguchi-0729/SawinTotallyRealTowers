@@ -7,15 +7,17 @@ https://github.com/google-deepmind/formal-conjectures/blob/8323e878b83fcd7f4a448
 Original statement: Copyright 2025 The Formal Conjectures Authors; Apache 2.0.
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProPFrobeniusFixedFieldSplitting
-import Nyll.SawinTotallyRealTowers.SawinDiscriminantBound
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.UnboundedDegree
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitFinset
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.RootDiscriminantBound
-import Mathlib.NumberTheory.NumberField.Discriminant.Basic
-import Mathlib.Order.Preorder.Finite
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusFixedFieldSplitting
+public import Nyll.SawinTotallyRealTowers.SawinDiscriminantBound
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.UnboundedDegree
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.CompletelySplitFinset
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.RootDiscriminantBound
+public import Mathlib.NumberTheory.NumberField.Discriminant.Basic
+public import Mathlib.Order.Preorder.Finite
 
 /-!
 # Sawin's totally real tower
@@ -25,6 +27,8 @@ splits completely in totally real number fields of unbounded degree and
 uniformly bounded root discriminant. The statement matches the arithmetic
 input `Erdos90.sawin_totally_real_tower` in Formal Conjectures.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

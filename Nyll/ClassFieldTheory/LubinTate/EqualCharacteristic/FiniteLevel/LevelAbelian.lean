@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAutomorphisms
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelAutomorphisms
+public import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # The uniformizer norm identity: abelian equal-characteristic Lubin--Tate level fields
@@ -21,6 +23,8 @@ power-basis generator, hence everywhere.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

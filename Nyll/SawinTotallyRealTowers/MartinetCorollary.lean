@@ -7,8 +7,10 @@ https://github.com/leanprover/lean-eval/blob/6b4b87b672f5301f24983a12fda65dac608
 Lean Eval repository: Copyright 2026 Lean FRO, LLC; Apache 2.0.
 -/
 
-import Nyll.SawinTotallyRealTowers.SawinTotallyRealTower
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
+module
+
+public import Nyll.SawinTotallyRealTowers.SawinTotallyRealTower
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 /-!
 # Martinet's totally real towers as a corollary of Sawin's theorem
@@ -16,6 +18,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 Forgetting the splitting conditions in Sawin's theorem gives totally real
 number fields of unbounded degree with uniformly bounded root discriminant.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

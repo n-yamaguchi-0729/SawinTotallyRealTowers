@@ -4,16 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.Average
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Average
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Tower
 
 /-!
 # General-DVF ramification numbers as a nonarchimedean depth
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

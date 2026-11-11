@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalSelmer
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalSelmer
 
 /-!
 # Ideal-power radical classes as absolute Kummer characters
@@ -16,6 +18,8 @@ quotient, into the continuous mod-`n` characters of the absolute Galois
 group.  The image subgroup records exactly the Kummer characters satisfying
 the empty finite-valuation condition.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

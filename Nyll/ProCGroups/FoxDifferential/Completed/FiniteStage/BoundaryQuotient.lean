@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationSubmodule
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationSubmodule
 
 /-!
 # Fox differential: completed — finite stage — boundary quotient
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   A boundary cycle represents zero in the relation quotient when module-level finite exactness
   holds.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

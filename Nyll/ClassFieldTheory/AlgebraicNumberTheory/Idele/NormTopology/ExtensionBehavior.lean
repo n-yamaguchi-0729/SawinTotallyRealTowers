@@ -4,7 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
+public import Mathlib.Analysis.Normed.Group.Uniform
+public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 
 /-!
 # Scalar-extension behavior of idele norms
@@ -16,6 +22,8 @@ reciprocity.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain
@@ -40,12 +48,19 @@ private theorem infinitePlaceCompletionMap_isometry
     Isometry
       (NumberField.LiesOver.completionMap
         (v := v₀) (w := W)) := by
-  unfold NumberField.LiesOver.completionMap
-  exact
-    (InfinitePlace.Completion.isometryEquivCompletion W).symm.isometry.comp
-      ((UniformSpace.Completion.isometry_mapRingHom
-          (InfinitePlace.LiesOver.isometry_algebraMap W v₀)).comp
-        (InfinitePlace.Completion.isometryEquivCompletion v₀).isometry)
+  refine AddMonoidHomClass.isometry_of_norm
+    (NumberField.LiesOver.completionMap v₀ W) ?_
+  intro x
+  refine InfinitePlace.Completion.induction_on v₀ x ?_ ?_
+  · exact isClosed_eq
+      (continuous_norm.comp (NumberField.LiesOver.continuous_completionMap v₀ W))
+      continuous_norm
+  · intro y
+    rw [NumberField.LiesOver.completionMap_coe]
+    simpa only [InfinitePlace.Completion.norm_coe, WithAbs.norm_eq_apply_ofAbs,
+      WithAbs.equiv_apply, InfinitePlace.coe_apply] using
+      (InfinitePlace.LiesOver.isometry_algebraMap W v₀).norm_map_of_map_zero
+        (map_zero (algebraMap (WithAbs v₀.1) (WithAbs W.1))) y
 
 omit [NumberField L] in
 /-- Mapping a unit along an infinite-place completion map preserves its

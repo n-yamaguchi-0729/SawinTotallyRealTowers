@@ -4,28 +4,30 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.SawinTotallyRealTowers.FiniteKummerContinuousKernel
-import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.RealProTwoH2AbsoluteKernel
-import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
-import Nyll.SawinTotallyRealTowers.RealProPStageLocalConditions
-import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
-import Nyll.SawinTotallyRealTowers.SixPrimeFiniteSupport
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerSPlaceCardinality
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.GaloisCohomology.ProP.H2FiniteStageFamily
-import Nyll.GaloisCohomology.ProP.H2InflationRangeCardinality
-import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
-import Nyll.GaloisCohomology.ProP.DiscreteH2Comparison
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Mathlib.Algebra.Module.Submodule.Range
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.SawinTotallyRealTowers.FiniteKummerContinuousKernel
+public import Nyll.SawinTotallyRealTowers.RealProPOpenNormalStage
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.RealProTwoH2AbsoluteKernel
+public import Nyll.SawinTotallyRealTowers.RealProPStageRestriction
+public import Nyll.SawinTotallyRealTowers.RealProPStageLocalConditions
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
+public import Nyll.SawinTotallyRealTowers.SixPrimeFiniteSupport
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerSPlaceCardinality
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.GaloisCohomology.ProP.H2FiniteStageFamily
+public import Nyll.GaloisCohomology.ProP.H2InflationRangeCardinality
+public import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
+public import Nyll.GaloisCohomology.ProP.DiscreteH2Comparison
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Mathlib.Algebra.Module.Submodule.Range
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # Six-dimensional degree two for the initial real pro-two group
@@ -37,6 +39,8 @@ therefore give a surjection from that Kummer image onto the stage inflation
 image. Uniform finite-stage cardinality bounds imply finite continuous H²
 and dimension at most six, with no cohomological finiteness assumption.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 open NumberField IsDedekindDomain CategoryTheory
@@ -98,7 +102,7 @@ private theorem initialStage_inflationRange_natCard_le
     continuousCohomologyZModPLiftedLinearEquiv e 2
   let dc : continuousCohomologyZModPLifted 2 Gal(E/ℚ) 2 ≃+
       groupCohomology (Rep.trivial ℤ Gal(E/ℚ) (ULift.{0} (ZMod 2))) 2 :=
-    discreteContinuousH2AddEquiv (p := 2) (Q := Gal(E/ℚ))
+    discreteContinuousH2AddEquiv (R := ℤ) (p := 2) (Q := Gal(E/ℚ))
   let I : continuousCohomologyZModPLifted 2 (G ⧸ (U.1 : Subgroup G)) 2 →ₗ[ZMod 2]
       continuousCohomologyZModPLifted 2 G 2 :=
     (continuousCohomologyZModPMapLifted 2

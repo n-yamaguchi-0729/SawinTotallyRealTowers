@@ -4,16 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-import Mathlib.Algebra.Group.Pi.Units
-import Mathlib.Algebra.Group.Submonoid.Units
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Mathlib.Algebra.Group.Pi.Units
+public import Mathlib.Algebra.Group.Submonoid.Units
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Integral finite local factors of the relative idele group
@@ -28,6 +32,8 @@ rather than coordinate-dependent, reasons.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -324,30 +330,18 @@ theorem relativeLocalTensorDecompositionIntegralUnitAt_smul
     (x : (w.adicCompletion K ⊗[K] L)ˣ)
     (hx : RelativeLocalTensorDecompositionIntegralUnitAt
       (K := K) (L := L) w x) :
-    letI := scalarTensorUnitsAction
+    let := scalarTensorUnitsAction
       (K := K) (L := L)
       (A := w.adicCompletion K)
     RelativeLocalTensorDecompositionIntegralUnitAt
       (K := K) (L := L) w (σ • x) := by
-  let := scalarTensorUnitsAction
-    (K := K) (L := L)
-    (A := w.adicCompletion K)
+  intro sharedOwner1
   constructor
-  · change
-      RelativeLocalTensorDecompositionIntegralAt
-        (K := K) (L := L) w
-        (↑(σ • x) :
-          w.adicCompletion K ⊗[K] L)
-    rw [scalarTensorUnitsAction_coe]
+  · rw [scalarTensorUnitsAction_coe]
     exact
       relativeLocalTensorDecompositionIntegralAt_scalarTensorConjugation
         (K := K) (L := L) w σ hx.1
-  · change
-      RelativeLocalTensorDecompositionIntegralAt
-        (K := K) (L := L) w
-        (↑((σ • x)⁻¹) :
-          w.adicCompletion K ⊗[K] L)
-    rw [← smul_inv', scalarTensorUnitsAction_coe]
+  · rw [← smul_inv', scalarTensorUnitsAction_coe]
     exact
       relativeLocalTensorDecompositionIntegralAt_scalarTensorConjugation
         (K := K) (L := L) w σ hx.2

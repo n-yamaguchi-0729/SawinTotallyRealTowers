@@ -4,16 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.AdditiveEquiv
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnits
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.AdditiveEquiv
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnits
 /-!
 # Residue units
 
 Constructs the quotient of valuation-ring units by first principal units and
 identifies it, multiplicatively and additively, with the residue-field units.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 

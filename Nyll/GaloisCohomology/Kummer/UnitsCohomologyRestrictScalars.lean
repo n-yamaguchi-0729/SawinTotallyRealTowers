@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.Tower
-import Mathlib.Algebra.Module.Equiv.Defs
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.Algebra.Module.Equiv.Defs
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # Unit cohomology under surjective scalar restriction
@@ -15,6 +17,8 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 When F → E is surjective, restricting an E-automorphism of N to F
 is a group isomorphism. Its action on Nˣ is unchanged.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

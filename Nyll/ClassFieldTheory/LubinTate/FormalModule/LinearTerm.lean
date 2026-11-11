@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.MvPowerSeries.Order
-import Mathlib.RingTheory.PowerSeries.Substitution
+module
+
+public import Mathlib.RingTheory.MvPowerSeries.Order
+public import Mathlib.RingTheory.PowerSeries.Substitution
 
 /-!
 # Prescribed linear terms for multivariable power series
@@ -15,6 +17,8 @@ from the corresponding linear form has total order at least two.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -32,7 +36,8 @@ noncomputable def linearForm (L : σ → R) : MvPowerSeries σ R :=
 @[simp]
 theorem constantCoeff_linearForm (L : σ → R) :
     MvPowerSeries.constantCoeff (linearForm L) = 0 := by
-  simp [linearForm]
+  simp only [linearForm, map_sum, map_mul, MvPowerSeries.constantCoeff_C,
+    MvPowerSeries.constantCoeff_X, mul_zero, Finset.sum_const_zero]
 
 /-- A series has prescribed linear term `L` when its difference from
 `sum_i L_i X_i` has total order at least two. -/

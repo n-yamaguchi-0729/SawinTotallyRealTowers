@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
-import Nyll.SawinTotallyRealTowers.QuadraticClosure
-import Nyll.SawinTotallyRealTowers.QuadraticFieldDiscriminant
-import Nyll.SawinTotallyRealTowers.QuadraticReality
-import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
-import Mathlib.Algebra.Order.Ring.Cast
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.GroupTheory.PGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
+public import Nyll.SawinTotallyRealTowers.QuadraticClosure
+public import Nyll.SawinTotallyRealTowers.QuadraticFieldDiscriminant
+public import Nyll.SawinTotallyRealTowers.QuadraticReality
+public import Nyll.SawinTotallyRealTowers.RationalRamificationSupport
+public import Mathlib.Algebra.Order.Ring.Cast
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # Admissible quadratic layers from supported radicands
@@ -22,6 +24,8 @@ has order two, its embeddings are real, and its discriminant is the given
 integer. Restricting its prime divisors therefore makes this constructed
 field an admissible finite layer of the real pro-two tower.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

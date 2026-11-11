@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RationalComplexification
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RationalComplexification
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 
 /-!
 # Complexification of a number field
@@ -16,6 +19,8 @@ and proves that restriction to the rational cyclotomic factor is faithful.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative
 open AlgebraicNumberTheory NumberField
@@ -28,13 +33,15 @@ namespace Reciprocity
 attribute [local instance]
   rationalComplexificationCyclotomicField_isAbelianGalois
 
-private def rationalComplexificationAmbientField :
+/-- The rational fourth-root field viewed inside the rational separable closure. -/
+def rationalComplexificationAmbientField :
     IntermediateField ℚ (SeparableClosure ℚ) := by
   letI : Algebra ℚ KummerTheory.rationalCyclotomicField :=
     DivisionRing.toRatAlgebra
   exact IntermediateField.lift rationalComplexificationCyclotomicField
 
-private noncomputable def rationalComplexificationAmbientEquiv :
+/-- The original fourth-root field is equivalent to its lifted ambient copy. -/
+noncomputable def rationalComplexificationAmbientEquiv :
     rationalComplexificationCyclotomicField ≃ₐ[ℚ]
       rationalComplexificationAmbientField := by
   letI : Algebra ℚ KummerTheory.rationalCyclotomicField :=
@@ -157,13 +164,13 @@ private def numberFieldComplexificationCyclotomicLayer :
       le_sup_right)
 
 @[reducible]
-noncomputable local instance
+private noncomputable local instance
     numberFieldComplexificationBaseLayerRationalAlgebra :
     Algebra ℚ (numberFieldComplexificationBaseLayer F) :=
   (numberFieldComplexificationBaseLayer F).algebra'
 
 @[reducible]
-noncomputable local instance
+private noncomputable local instance
     numberFieldComplexificationCyclotomicLayerRationalAlgebra :
     Algebra ℚ (numberFieldComplexificationCyclotomicLayer F) :=
   (numberFieldComplexificationCyclotomicLayer F).algebra'

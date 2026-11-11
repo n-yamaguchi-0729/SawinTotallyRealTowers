@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.LocalField.Basic
+module
+
+public import Mathlib.NumberTheory.LocalField.Basic
 /-!
 # Basic structure of nonarchimedean local fields
 
 Compactness facts and the normalized integer-valued valuation attached to a
 nonarchimedean local field.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -67,14 +71,17 @@ theorem v_surjective (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K
     apply hγ_ne
     simpa [h] using ha.symm
   refine ⟨Additive.ofMul (Units.mk0 a ha0), ?_⟩
-  simp [v, γ, ha]
+  simp only [v, toMul_ofMul, Units.val_mk0, ha, γ,
+    (_root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K).apply_symm_apply,
+    WithZero.unzero_coe, toAdd_ofAdd]
 
 /-- The normalized valuation turns multiplication of field units into addition of integers. -/
 theorem v_mul (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (x y : Kˣ) :
     v K (Additive.ofMul (x * y)) =
       v K (Additive.ofMul x) + v K (Additive.ofMul y) := by
-  simp [v, Valuation.map_mul, WithZero.unzero_mul, toAdd_mul]
+  simp only [v, toMul_ofMul, Units.val_mul, map_mul, WithZero.unzero_mul,
+    toAdd_mul]
 
 /-- The normalized valuation of the multiplicative identity is zero. -/
 @[simp]

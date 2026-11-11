@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
-import Mathlib.RingTheory.AdicCompletion.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
+public import Mathlib.RingTheory.AdicCompletion.Basic
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Principal adic filtrations in complete nonarchimedean valuation rings
@@ -16,6 +19,8 @@ unit ball generates a separated and precomplete principal filtration on the
 closed unit ball.  These facts are shared by the coefficientwise Hensel
 construction and the irreducible-polynomial coefficient estimate.
 -/
+
+@[expose] public section
 
 noncomputable section
 

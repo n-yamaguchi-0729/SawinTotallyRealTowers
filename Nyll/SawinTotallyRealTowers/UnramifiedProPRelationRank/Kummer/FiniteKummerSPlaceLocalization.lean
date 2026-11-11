@@ -4,15 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.SupportedSPlaceFactorsH2Localization
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteIdeleH2Injection
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.SupportedSPlaceFactorsH2Localization
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteIdeleH2Injection
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 
 /-!
 # Finite Kummer coefficients in an arbitrary finite idele support
@@ -21,6 +24,8 @@ Roots of unity are integral at every finite place. The empty-support
 coefficient map therefore factors through each prescribed finite support,
 without changing the principal idele in the full idele representation.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField TensorProduct

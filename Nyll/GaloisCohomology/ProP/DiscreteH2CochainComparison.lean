@@ -4,17 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.Tactic.Group
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Mathlib.Tactic.Group
 
 /-!
 # Homogeneous and inhomogeneous cochains for a discrete group
 
-For a discrete group in the base universe, continuous homogeneous cochains
+For a discrete group in an arbitrary universe, continuous homogeneous cochains
 with lifted trivial mod-`p` coefficients are additively equivalent to the
 usual inhomogeneous function cochains.  This file records the equivalences
 in degrees one through three.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 
@@ -22,8 +26,10 @@ namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
+universe u
+
 variable {p : ℕ}
-variable {Q : Type} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
+variable {Q : Type u} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
 variable [DiscreteTopology Q]
 
 omit [DiscreteTopology Q] in
@@ -80,16 +86,16 @@ theorem homogeneousThreeCochainLifted_leftInvariant
 
 /-- Dehomogenize a homogeneous degree-one cochain. -/
 def dehomogenizeOne
-    (c : (trivialZModPCochainsLifted p Q).X 1) (g : Q) : ULift (ZMod p) :=
+    (c : (trivialZModPCochainsLifted p Q).X 1) (g : Q) : ULift.{u} (ZMod p) :=
   c.1 1 g
 
 /-- Homogenize an inhomogeneous degree-one cochain. -/
-def homogenizeOne (f : Q → ULift (ZMod p)) :
+def homogenizeOne (f : Q → ULift.{u} (ZMod p)) :
     (trivialZModPCochainsLifted p Q).X 1 := by
-  let σ₀ : C(Q × Q, ULift.{0} (ZMod p)) :=
+  let σ₀ : C(Q × Q, ULift.{u} (ZMod p)) :=
     ⟨fun x ↦ f (x.1⁻¹ * x.2),
       continuous_of_discreteTopology⟩
-  let σ : C(Q, C(Q, ULift.{0} (ZMod p))) := ContinuousMap.curry σ₀
+  let σ : C(Q, C(Q, ULift.{u} (ZMod p))) := ContinuousMap.curry σ₀
   exact ⟨σ, by
     intro a
     apply ContinuousMap.ext
@@ -101,14 +107,14 @@ def homogenizeOne (f : Q → ULift (ZMod p)) :
     group⟩
 
 @[simp]
-theorem homogenizeOne_apply (f : Q → ULift (ZMod p)) (g h : Q) :
+theorem homogenizeOne_apply (f : Q → ULift.{u} (ZMod p)) (g h : Q) :
     (homogenizeOne f).1 g h = f (g⁻¹ * h) :=
   rfl
 
 /-- Additive equivalence between homogeneous and inhomogeneous degree-one
 cochains. -/
 noncomputable def homogeneousOneCochainAddEquiv :
-    (trivialZModPCochainsLifted p Q).X 1 ≃+ (Q → ULift (ZMod p)) where
+    (trivialZModPCochainsLifted p Q).X 1 ≃+ (Q → ULift.{u} (ZMod p)) where
   toFun := dehomogenizeOne
   invFun := homogenizeOne
   left_inv := by
@@ -133,16 +139,16 @@ noncomputable def homogeneousOneCochainAddEquiv :
 /-- Dehomogenize a homogeneous degree-two cochain. -/
 def dehomogenizeTwo
     (c : (trivialZModPCochainsLifted p Q).X 2)
-    (gh : Q × Q) : ULift (ZMod p) :=
+    (gh : Q × Q) : ULift.{u} (ZMod p) :=
   c.1 1 gh.1 (gh.1 * gh.2)
 
 /-- Homogenize an inhomogeneous degree-two cochain. -/
-def homogenizeTwo (f : Q × Q → ULift (ZMod p)) :
+def homogenizeTwo (f : Q × Q → ULift.{u} (ZMod p)) :
     (trivialZModPCochainsLifted p Q).X 2 := by
-  let σ₀ : C((Q × Q) × Q, ULift.{0} (ZMod p)) :=
+  let σ₀ : C((Q × Q) × Q, ULift.{u} (ZMod p)) :=
     ⟨fun x ↦ f (x.1.1⁻¹ * x.1.2, x.1.2⁻¹ * x.2),
       continuous_of_discreteTopology⟩
-  let σ : C(Q, C(Q, C(Q, ULift.{0} (ZMod p)))) :=
+  let σ : C(Q, C(Q, C(Q, ULift.{u} (ZMod p)))) :=
     ContinuousMap.curry (ContinuousMap.curry σ₀)
   exact ⟨σ, by
     intro a
@@ -162,14 +168,14 @@ def homogenizeTwo (f : Q × Q → ULift (ZMod p)) :
 
 @[simp]
 theorem homogenizeTwo_apply
-    (f : Q × Q → ULift (ZMod p)) (g h k : Q) :
+    (f : Q × Q → ULift.{u} (ZMod p)) (g h k : Q) :
     (homogenizeTwo f).1 g h k = f (g⁻¹ * h, h⁻¹ * k) :=
   rfl
 
 /-- Additive equivalence between homogeneous and inhomogeneous degree-two
 cochains. -/
 noncomputable def homogeneousTwoCochainAddEquiv :
-    (trivialZModPCochainsLifted p Q).X 2 ≃+ (Q × Q → ULift (ZMod p)) where
+    (trivialZModPCochainsLifted p Q).X 2 ≃+ (Q × Q → ULift.{u} (ZMod p)) where
   toFun := dehomogenizeTwo
   invFun := homogenizeTwo
   left_inv := by
@@ -199,19 +205,19 @@ noncomputable def homogeneousTwoCochainAddEquiv :
 /-- Dehomogenize a homogeneous degree-three cochain. -/
 def dehomogenizeThree
     (c : (trivialZModPCochainsLifted p Q).X 3)
-    (ghk : Q × Q × Q) : ULift (ZMod p) :=
+    (ghk : Q × Q × Q) : ULift.{u} (ZMod p) :=
   (c.1 1 ghk.1 (ghk.1 * ghk.2.1)
     (ghk.1 * ghk.2.1 * ghk.2.2))
 
 /-- Homogenize an inhomogeneous degree-three cochain. -/
-def homogenizeThree (f : Q × Q × Q → ULift (ZMod p)) :
+def homogenizeThree (f : Q × Q × Q → ULift.{u} (ZMod p)) :
     (trivialZModPCochainsLifted p Q).X 3 := by
-  let σ₀ : C(((Q × Q) × Q) × Q, ULift.{0} (ZMod p)) :=
+  let σ₀ : C(((Q × Q) × Q) × Q, ULift.{u} (ZMod p)) :=
     ⟨fun x ↦ f (x.1.1.1⁻¹ * x.1.1.2,
           x.1.1.2⁻¹ * x.1.2, x.1.2⁻¹ * x.2),
       continuous_of_discreteTopology⟩
   let σ :
-      C(Q, C(Q, C(Q, C(Q, ULift.{0} (ZMod p))))) :=
+      C(Q, C(Q, C(Q, C(Q, ULift.{u} (ZMod p))))) :=
     ContinuousMap.curry
       (ContinuousMap.curry (ContinuousMap.curry σ₀))
   exact ⟨σ, by
@@ -238,7 +244,7 @@ def homogenizeThree (f : Q × Q × Q → ULift (ZMod p)) :
 
 @[simp]
 theorem homogenizeThree_apply
-    (f : Q × Q × Q → ULift (ZMod p)) (g h k l : Q) :
+    (f : Q × Q × Q → ULift.{u} (ZMod p)) (g h k l : Q) :
     (homogenizeThree f).1 g h k l =
       f (g⁻¹ * h, h⁻¹ * k, k⁻¹ * l) :=
   rfl
@@ -247,7 +253,7 @@ theorem homogenizeThree_apply
 cochains. -/
 noncomputable def homogeneousThreeCochainAddEquiv :
     (trivialZModPCochainsLifted p Q).X 3 ≃+
-      (Q × Q × Q → ULift (ZMod p)) where
+      (Q × Q × Q → ULift.{u} (ZMod p)) where
   toFun := dehomogenizeThree
   invFun := homogenizeThree
   left_inv := by

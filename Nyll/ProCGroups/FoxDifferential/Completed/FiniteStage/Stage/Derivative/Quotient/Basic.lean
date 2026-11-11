@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Relators
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Relators
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Stage.Derivative.Rules
 
 /-!
 # Fox differential: stage — derivative — quotient — basic
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   The right component of the descended finite-stage lift is the quotient map from \(F/[N,N]N^n\) to
   \(F/N\).
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

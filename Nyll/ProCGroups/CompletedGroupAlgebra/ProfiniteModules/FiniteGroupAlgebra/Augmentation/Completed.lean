@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Abstract
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Augmentation.Abstract
 
 /-!
 # Augmentation after completion
@@ -13,6 +15,8 @@ An algebraic augmentation compatible with the completion map extends uniquely to
 augmentation of the completed group algebra. This file constructs that map, its kernel ideal and
 short exact sequence, and the finite-group-algebra instance.
 -/
+
+@[expose] public section
 
 open scoped Topology
 open ProCGroups
@@ -182,10 +186,10 @@ induced by the ordinary augmentation.
 theorem finiteGroupAlgebra_hasCompletedGroupAlgebraAugmentation
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [Group G] [Finite G] :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
     hasCompletedGroupAlgebraAugmentation R G (MonoidAlgebra R G)
       (RingHom.id (MonoidAlgebra R G)) := by
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+  intro sharedOwner1
   refine Exists.intro (groupAlgebraAugmentation R G) ?_
   exact And.intro (RingHom.comp_id (groupAlgebraAugmentation R G))
     (finiteGroupAlgebra_augmentation_continuous R G)

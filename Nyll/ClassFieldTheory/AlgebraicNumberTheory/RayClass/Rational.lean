@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
-import Mathlib.Data.Nat.Factorization.Basic
-import Mathlib.Data.Nat.GCD.BigOperators
-import Mathlib.Data.ZMod.Units
-import Mathlib.NumberTheory.NumberField.Units.Basic
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
-import Mathlib.NumberTheory.Padics.RingHoms
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Mathlib.Data.Nat.Factorization.Basic
+public import Mathlib.Data.Nat.GCD.BigOperators
+public import Mathlib.Data.ZMod.Units
+public import Mathlib.NumberTheory.NumberField.Units.Basic
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Ray class groups of the rational numbers
@@ -23,6 +28,8 @@ isomorphism with `(ZMod m)ˣ`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -118,7 +125,7 @@ abbrev rationalFractionalIdeal (I : FractionalIdealGroup ℚ) :
 
 /-- An arbitrary principal generator of a nonzero rational fractional
 ideal, before choosing its sign. -/
-private noncomputable def rawRationalIdealGenerator
+noncomputable def rawRationalIdealGenerator
     (I : FractionalIdealGroup ℚ) : ℚ :=
   Submodule.IsPrincipal.generator
     ((rationalFractionalIdeal I : FractionalIdeal
@@ -197,7 +204,7 @@ theorem positiveRationalIdealGenerator_one :
   apply eq_of_spanSingleton_eq_of_pos
     (positiveRationalIdealGenerator_pos 1) zero_lt_one
   rw [← rationalFractionalIdeal_eq_span_positiveGenerator]
-  exact FractionalIdeal.spanSingleton_one.symm
+  exact (map_one (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 ℚ)))).symm
 
 theorem positiveRationalIdealGenerator_mul
     (I J : FractionalIdealGroup ℚ) :
@@ -209,7 +216,7 @@ theorem positiveRationalIdealGenerator_mul
     (mul_pos (positiveRationalIdealGenerator_pos I)
       (positiveRationalIdealGenerator_pos J))
   rw [← rationalFractionalIdeal_eq_span_positiveGenerator,
-    ← FractionalIdeal.spanSingleton_mul_spanSingleton,
+    map_mul (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 ℚ))),
     ← rationalFractionalIdeal_eq_span_positiveGenerator,
     ← rationalFractionalIdeal_eq_span_positiveGenerator]
   rfl

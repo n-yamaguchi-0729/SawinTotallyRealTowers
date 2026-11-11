@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.Schreier
-import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Generators
-import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.NielsenSchreierCompat
-import Nyll.ProCGroups.ReidemeisterSchreier.FreeGroup.Automorphisms
+module
+
+public import Mathlib.GroupTheory.Schreier
+public import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Generators
+public import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.Words.NielsenSchreierCompat
+public import Nyll.ProCGroups.ReidemeisterSchreier.FreeGroup.Automorphisms
 
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Prefix Tree
@@ -16,6 +18,8 @@ This module constructs the Schreier prefix tree from a right transversal,
 proves its positive and negative edge criteria, and relates its complement
 edges to the nontrivial Schreier generators.
 -/
+
+@[expose] public section
 
 universe u
 
@@ -481,15 +485,15 @@ noncomputable def schreierRootEndMulEquiv {X : Type u} [DecidableEq X]
         ActionCategory (FreeGroup X) T)) ≃* L := by
   let rootT : T := ⟨(1 : FreeGroup X), hT.2.1⟩
   refine
-    { toFun := fun g => ⟨g.1, ?_⟩
-      invFun := fun l => ⟨l.1, ?_⟩
+    { toFun := fun g => ⟨g.asHom.1, ?_⟩
+      invFun := fun l => .of ⟨l.1, ?_⟩
       left_inv := ?_
       right_inv := ?_
       map_mul' := ?_ }
-  · let gF : FreeGroup X := g.1
+  · let gF : FreeGroup X := g.asHom.1
     have hrep : schreierRepresentative (X := X) hT (gF⁻¹) = rootT := by
       simpa only [rootT, one_mul] using
-        (schreierTransversalRightCosetAction_smul (X := X) hT gF rootT).symm.trans g.2
+        (schreierTransversalRightCosetAction_smul (X := X) hT gF rootT).symm.trans g.asHom.2
     have hmemInv : gF⁻¹ ∈ L := by
       have hm : gF⁻¹ *
           (((schreierRepresentative (X := X) hT (gF⁻¹) : T) : FreeGroup X))⁻¹ ∈ L :=

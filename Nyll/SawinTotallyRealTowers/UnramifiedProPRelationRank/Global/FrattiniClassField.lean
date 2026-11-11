@@ -8,6 +8,8 @@ import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.HilbertElem
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGroup
 import Nyll.ProCGroups.ProP.GeneratorRank
 import Nyll.ProCGroups.ProP.PowerCommutatorUniversal
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
+import Nyll.ProCGroups.ProC.InverseLimits.Predicates
 
 /-!
 # The Frattini quotient and the elementary Hilbert class field
@@ -258,7 +260,7 @@ private theorem topologicallyFinitelyGenerated_of_finite_powerCommutatorQuotient
     apply Set.eq_univ_of_forall
     intro z
     refine ⟨liftQ z, ?_, ?_⟩
-    · simp [s]
+    · exact Finset.mem_image.mpr ⟨z, Finset.mem_univ z, rfl⟩
     · exact Function.surjInv_eq
         (powerCommutatorQuotientMk_surjective q G) z
   rw [himage]

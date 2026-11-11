@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
 
 /-!
 # Fox differential: completed — continuous — free — source formula
@@ -15,6 +17,8 @@ The principal declarations in this module are:
   Source-shaped completed Fox boundary formula for continuous crossed differentials out of a free
   pro-\(C\) source.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

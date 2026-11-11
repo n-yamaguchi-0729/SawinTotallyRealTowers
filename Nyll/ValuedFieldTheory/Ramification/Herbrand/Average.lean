@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.Tower
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Function
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Tower
 
 /-!
 # The fibre average in Herbrand's theorem
@@ -27,6 +29,8 @@ the separate input of the quotient-depth identity.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 universe u
@@ -45,7 +49,7 @@ theorem depth_inv (σ : G) : D.depth σ⁻¹ = D.depth σ := by
   have hmin := D.depth_mul_eq_min_of_ne h
   have htop : min (D.depth σ⁻¹) (D.depth σ) = ⊤ := by
     rw [← hmin]
-    simp [D.depth_one]
+    simp only [inv_mul_cancel, D.depth_one]
   have hσinv : D.depth σ⁻¹ = ⊤ := (min_eq_top.mp htop).1
   have hσ : D.depth σ = ⊤ := (min_eq_top.mp htop).2
   exact h (hσinv.trans hσ.symm)
@@ -63,7 +67,8 @@ noncomputable local instance averageQuotientFiberFintype [Finite G] (q : G ⧸ H
 `H_n = {τ | n + 1 ≤ depth τ}`. -/
 def depthLowerSubgroup (n : ℕ) : Subgroup H where
   carrier := {τ | WithTop.some (n + 1) ≤ D.depth (τ : G)}
-  one_mem' := by simp [D.depth_one]
+  one_mem' := by simp only [WithTop.coe_add, ENat.some_eq_natCast, WithTop.coe_one,
+    Set.mem_ofPred_eq, OneMemClass.coe_one, D.depth_one, le_top]
   mul_mem' := by
     intro σ τ hσ hτ
     exact le_trans (le_min hσ hτ) (D.depth_mul_ge_min (σ : G) (τ : G))
@@ -129,7 +134,9 @@ theorem truncatedLowerDepth_add_one (n : ℕ)
             (τ : H) ∈ (D.depthLowerFiltration H).lower (i + 1)) =
           Finset.range n := by
       ext i
-      simp [depthLowerFiltration, depthLowerSubgroup, htop]
+      simp only [depthLowerFiltration, depthLowerSubgroup, WithTop.coe_add, ENat.some_eq_natCast,
+        WithTop.coe_one, Nat.reduceAdd, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk,
+        Set.mem_ofPred_eq, htop, le_top, Finset.filter_true, Finset.mem_range]
     rw [truncatedLowerDepth, hfilter]
     simp only [Finset.card_range, htop, min_eq_right le_top,
       WithTop.untopD_coe]
@@ -180,7 +187,7 @@ theorem depth_eq_zero_of_not_mem_lower_zero (τ : H)
       intro hk
       exact hnot (WithTop.coe_le_coe.2 hk)
     have : k = 0 := by omega
-    simp [this]
+    simp only [this, WithTop.coe_zero, CharP.cast_eq_zero]
 
 omit [H.Normal] in
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
@@ -206,7 +213,8 @@ theorem sum_min_depth_eq_card_add_truncated (n : ℕ) [Finite G] :
     have hnot : τ ∉ F.lower 0 := by simpa [p] using hτ
     have hzero : D.depth (τ : G) = (0 : ℕ) := by
       simpa [F] using D.depth_eq_zero_of_not_mem_lower_zero H τ hnot
-    simp [f, hzero]
+    simp only [WithTop.coe_add, ENat.some_eq_natCast, WithTop.coe_one, hzero, CharP.cast_eq_zero,
+      zero_le, inf_of_le_left, WithTop.untopD_zero, f]
   calc
     (∑ τ : H,
         (WithTop.untopD (α := ℕ) 0
@@ -217,7 +225,7 @@ theorem sum_min_depth_eq_card_add_truncated (n : ℕ) [Finite G] :
     _ = ∑ τ : F.lower 0, f (τ : H) := by
       apply Finset.sum_subtype
       intro τ
-      simp [p]
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, p]
     _ = ∑ τ : F.lower 0,
         ((1 : ℝ) + ((truncatedLowerDepth F) n τ : ℝ)) := by
       apply Finset.sum_congr rfl
@@ -323,7 +331,7 @@ theorem quotientFiberAverage_eq_zero_of_maximal_depth_zero
       WithTop.some (D.quotientFiberDepth H hq γ) = D.depth (γ : G) :=
         D.coe_quotientFiberDepth H hq γ
       _ = WithTop.some 0 := hdepthγ
-  simp [quotientFiberAverage, hzero]
+  simp only [quotientFiberAverage, hzero, CharP.cast_eq_zero, Finset.sum_const_zero, zero_div]
 
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration (
   herbrandFunction

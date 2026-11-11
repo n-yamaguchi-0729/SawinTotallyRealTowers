@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.CategoryTheory.ConcreteCategory.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Mathlib.CategoryTheory.ConcreteCategory.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Pro C Groups / Topological Groups
 
 This module formalizes basic topological-group constructions used by the pro-\(C\) library.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 open scoped Topology

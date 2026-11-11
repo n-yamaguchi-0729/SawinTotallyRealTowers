@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.BasePlaceSelection
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.FinitePlaceDecomposition
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.BasePlaceSelection
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.SUnitKummerPrimeSelection.FinitePlaceDecomposition
 
 /-!
 # Coordinate places in an S-unit Kummer extension
@@ -16,6 +18,8 @@ properties.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain
@@ -58,7 +62,7 @@ theorem exists_sUnitKummerCoordinatePlace
         (K := K) (Omega := Omega) n S'
     let hnK : ((n : ℕ) : K) ≠ 0 := by
       exact_mod_cast n.ne_zero
-    letI : FiniteDimensional K N :=
+    let : FiniteDimensional K N :=
       fullSUnitKummerExtension_finiteDimensional
         (K := K) (Omega := Omega) n hnK hmu S'
     let Ni :=
@@ -69,9 +73,9 @@ theorem exists_sUnitKummerCoordinatePlace
         (sUnitKummerKernelGenerator
           (K := K) (Omega := Omega) E n hmu
           p v hp hv hn r eG S i)
-    letI : NumberField Ni :=
+    let : NumberField Ni :=
       NumberField.of_module_finite K Ni
-    letI : IsGalois Ni N :=
+    let : IsGalois Ni N :=
       enlargedSUnitKummerCyclicFixedField_isGalois
         (K := K) (Omega := Omega) E n hmu
         (galois_pow_eq_one_of_equiv_pi_zmod
@@ -87,36 +91,7 @@ theorem exists_sUnitKummerCoordinatePlace
         _root_.finitePlaceDecompositionGroup
             (K := Ni) (L := N) q =
           ⊤ := by
-  dsimp only
-  let S' :=
-    enlargeByFiniteKummerRadicalSupport
-      (K := K) (L := E) n hmu S
-  let N :=
-    fullSUnitKummerExtension
-      (K := K) (Omega := Omega) n S'
-  have hnK : ((n : ℕ) : K) ≠ 0 := by
-    exact_mod_cast n.ne_zero
-  let : FiniteDimensional K N :=
-    fullSUnitKummerExtension_finiteDimensional
-      (K := K) (Omega := Omega) n hnK hmu S'
-  let Ni :=
-    enlargedSUnitKummerCyclicFixedField
-      (K := K) (Omega := Omega) E n hmu
-      (galois_pow_eq_one_of_equiv_pi_zmod
-        (K := K) E n r eG) S
-      (sUnitKummerKernelGenerator
-        (K := K) (Omega := Omega) E n hmu
-        p v hp hv hn r eG S i)
-  let : NumberField Ni :=
-    NumberField.of_module_finite K Ni
-  let : IsGalois Ni N :=
-    enlargedSUnitKummerCyclicFixedField_isGalois
-      (K := K) (Omega := Omega) E n hmu
-      (galois_pow_eq_one_of_equiv_pi_zmod
-        (K := K) E n r eG) S
-      (sUnitKummerKernelGenerator
-        (K := K) (Omega := Omega) E n hmu
-        p v hp hv hn r eG S i)
+  intro S' N hnK hNfinite Ni hNiNumberField hNiGalois
   have h :=
     sUnitKummerChosenBasePlaces_mem_coordinateBasePlaceCandidates
       (K := K) (Omega := Omega) E n hmu

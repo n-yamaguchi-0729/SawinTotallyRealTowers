@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaPrincipalUnits
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.Core
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.IwasawaPrincipalUnits
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.Core
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicLinearOfContinuous
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Topological structure of local-field units
@@ -17,6 +22,8 @@ the given `WithZero (Multiplicative ℤ)`-valued valuation.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -43,9 +50,9 @@ noncomputable def chosenFieldUnitsStructure_mixedCharacteristic
     [Finite (IsLocalRing.ResidueField v.valuationSubring)] [CharZero K]
     (hv : Function.Surjective v) :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : MixedWithZeroValuationContext v :=
+    let : MixedWithZeroValuationContext v :=
       mixedWithZeroValuationContext v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] K
     Σ a : ℕ,
       Multiplicative ℤ ×
@@ -53,11 +60,7 @@ noncomputable def chosenFieldUnitsStructure_mixedCharacteristic
             Multiplicative
       (ZMod (F.residueCharacteristic ^ a) ×
                 (Fin d → ℤ_[F.residueCharacteristic]))) ≃ₜ* Kˣ := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  letI : MixedWithZeroValuationContext v :=
-    mixedWithZeroValuationContext v
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let d := Module.finrank ℚ_[F.residueCharacteristic] K
+  intro F sharedOwner1 sharedOwner2 d
   let hex :=
     WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
       v hv
@@ -88,12 +91,11 @@ noncomputable def chosenFirstPrincipalUnitStructure_equalCharacteristic
     [Finite (IsLocalRing.ResidueField v.valuationSubring)]
     [CharP K (ofWithZeroValuation v).residueCharacteristic] :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Multiplicative (ℕ → ℤ_[F.residueCharacteristic]) ≃ₜ*
       LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
         F.toCompleteDVF 1 := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro F sharedOwner1
   let hex := F.toCompleteDVF.exists_uniformizer
   let π := Classical.choose hex
   have hπ : v.IsUniformizer (π : K) := Classical.choose_spec hex
@@ -132,12 +134,11 @@ noncomputable def chosenFieldUnitsStructure_equalCharacteristic
     [Finite (IsLocalRing.ResidueField v.valuationSubring)]
     [CharP K (ofWithZeroValuation v).residueCharacteristic] :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Multiplicative ℤ ×
         (Multiplicative (ZMod (Nat.card F.residueField - 1)) ×
           Multiplicative (ℕ → ℤ_[F.residueCharacteristic])) ≃ₜ* Kˣ := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro F sharedOwner1
   let hex := F.toCompleteDVF.exists_uniformizer
   let π := Classical.choose hex
   have hπ : v.IsUniformizer (π : K) := Classical.choose_spec hex

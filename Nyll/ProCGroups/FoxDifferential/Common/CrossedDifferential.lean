@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Commutator
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.Algebra.GroupWithZero.Action.Basic
-import Mathlib.Algebra.Group.Subgroup.Lattice
-import Mathlib.Algebra.Module.BigOperators
-import Mathlib.Algebra.Module.LinearMap.Basic
-import Mathlib.GroupTheory.SemidirectProduct
+module
+
+public import Mathlib.Algebra.Group.Commutator
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.GroupWithZero.Action.Basic
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Mathlib.Algebra.Module.BigOperators
+public import Mathlib.Algebra.Module.LinearMap.Basic
+public import Mathlib.GroupTheory.SemidirectProduct
 
 /-!
 # Bundled crossed homomorphisms
@@ -25,6 +27,8 @@ crossed homomorphisms.
 this module.  The former parallel raw-function predicate and its conversion layer have been
 removed, so downstream APIs operate on the bundled maps directly.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -105,7 +109,8 @@ instance instFunLike : FunLike (CrossedHom action) G A where
   coe_injective f g h := by
     cases f
     cases g
-    simp_all
+    cases h
+    rfl
 
 /-- The underlying function of a crossed homomorphism agrees with its coercion to a function. -/
 @[simp]

@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormConjugation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormConjugation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldCandidate
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianSubextension
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # Galois structure on a conjugate-stable abelian tower
@@ -20,6 +23,8 @@ commutator-intermediate-field and transfer APIs can be applied to the tower.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

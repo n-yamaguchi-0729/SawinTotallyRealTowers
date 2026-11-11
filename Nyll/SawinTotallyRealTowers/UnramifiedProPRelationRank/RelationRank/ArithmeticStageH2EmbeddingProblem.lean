@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2FiniteEmbeddingProblem
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
+module
+
+public import Nyll.GaloisCohomology.ProP.H2FiniteEmbeddingProblem
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
 
 /-!
 # Finite degree-two embedding problems at arithmetic stages
@@ -15,6 +17,8 @@ Galois group is detected on a finite quotient.  The quotient is transported to
 the Galois group of its concrete arithmetic stage, carrying the cocycle
 extension to a finite nonsplit central `p`-group embedding problem there.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
-import Nyll.ValuedFieldTheory.Valuation.Topology.Models
-import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
 /-!
 # Coefficients for a complete DVR expansion
@@ -20,6 +22,8 @@ coefficients and remainders satisfying
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -464,7 +468,7 @@ theorem coeff_zero_ne_zero_of_isUnit
   intro hzero
   have hres_coeff :
       F.residueMap (coeff F R π hπ u 0) = 0 := by
-    simp [hzero]
+    rw [hzero, map_zero]
   have hres_u : F.residueMap u = 0 := by
     have hcoeff :=
       residue_coeff F R π hπ u 0

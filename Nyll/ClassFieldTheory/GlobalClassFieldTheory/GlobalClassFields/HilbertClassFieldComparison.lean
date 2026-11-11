@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
 
 /-!
 # Comparison of the big and small Hilbert class fields
@@ -17,6 +22,8 @@ description of the kernel of that transition.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NumberField
 
@@ -31,7 +38,7 @@ variable {K : Type*} [Field K] [NumberField K]
 
 /-- Fix the canonical commutativity needed for Hilbert norm-subgroup
 quotients in this module. -/
-private theorem hilbertClassFieldComparison_ideleClassGroupIsMulCommutative :
+theorem hilbertClassFieldComparison_ideleClassGroupIsMulCommutative :
     IsMulCommutative (IdeleClassGroup K) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
@@ -253,7 +260,8 @@ theorem hilbertClassFieldSign_exact_sequence :
       bigHilbertClassFieldQuotientToSmallHilbertClassFieldQuotient_surjective
         (K := K)⟩
 
-private theorem bigHilbertQuotientEquiv_mem_narrowClassKernel
+/-- The Hilbert quotient equivalence maps the transition kernel into the narrow class kernel. -/
+theorem bigHilbertQuotientEquiv_mem_narrowClassKernel
     (q : MonoidHom.ker
       (bigHilbertClassFieldQuotientToSmallHilbertClassFieldQuotient
         (K := K))) :
@@ -266,7 +274,8 @@ private theorem bigHilbertQuotientEquiv_mem_narrowClassKernel
       (K := K) q.1]
   rw [MonoidHom.mem_ker.mp q.2, map_one]
 
-private theorem bigHilbertQuotientEquiv_symm_mem_bigToSmallKernel
+/-- The inverse Hilbert quotient equivalence preserves the transition kernel. -/
+theorem bigHilbertQuotientEquiv_symm_mem_bigToSmallKernel
     (c : MonoidHom.ker
       (RayClass.narrowToClassGroup (K := K))) :
     (bigHilbertClassFieldQuotientEquivNarrowClassGroup
@@ -317,7 +326,8 @@ def bigToSmallHilbertKernelEquivNarrowClassKernel :
       (bigHilbertClassFieldQuotientEquivNarrowClassGroup
         (K := K)).map_mul q.1 r.1
 
-private theorem signToNarrow_mem_narrowClassKernel
+/-- Real-sign classes lie in the kernel of the narrow-to-ordinary class map. -/
+theorem signToNarrow_mem_narrowClassKernel
     (s : RayClass.realSignGroup K) :
     RayClass.signToNarrow (K := K) s ∈
       MonoidHom.ker (RayClass.narrowToClassGroup (K := K)) := by

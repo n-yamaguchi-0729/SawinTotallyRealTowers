@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtensionSupport
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.FieldTheory.SeparableClosure
+module
+
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtensionSupport
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.FieldTheory.SeparableClosure
 
 /-!
 # The maximal real compositum with prescribed ramification support
@@ -17,6 +19,8 @@ Galoisness and total reality follow from the corresponding properties of
 those layers. The pro-p property and arithmetic rank estimates are separate
 theorems, not inputs to this construction.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

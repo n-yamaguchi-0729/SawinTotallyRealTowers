@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # The actual global character measuring nonadditivity of chosen lifts
@@ -16,6 +18,8 @@ class. Its difference from the chosen solution is a global character, and
 all three lifts are unramified outside the fixed stage support. On inertia
 this character is exactly the additivity defect of the local characters.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology

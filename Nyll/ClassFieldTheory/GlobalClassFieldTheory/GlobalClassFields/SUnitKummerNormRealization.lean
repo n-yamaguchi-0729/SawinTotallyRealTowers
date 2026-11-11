@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SUnitKummerNormCore
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitKummerUnramified
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.StandardSubgroupIndex
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SUnitKummerNormCore
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitKummerUnramified
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.LubinTateApplication.StandardSubgroupIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
 
 /-!
 # Exact norm realization by the full S-unit Kummer extension
@@ -23,9 +27,13 @@ norm-residue index formula.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
@@ -34,12 +42,12 @@ open NumberField IsDedekindDomain
 open GlobalClassFieldTheory.ClassFieldAxiom
 open KummerTheory
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The full S-unit Kummer extension has ordinary idele-class norm range
 equal to the canonical power-local-unit subgroup. -/
 theorem fullSUnitKummerExtension_ideleClassNormRange_eq_powerLocalUnit
-    {Omega : Type} [Field Omega] [Algebra K Omega]
+    {Omega : Type v} [Field Omega] [Algebra K Omega]
     [IsSepClosure K Omega]
     (n : ℕ+)
     (hn : 1 < (n : ℕ))
@@ -49,33 +57,22 @@ theorem fullSUnitKummerExtension_ideleClassNormRange_eq_powerLocalUnit
     let E :=
       KummerTheory.fullSUnitKummerExtension
         (K := K) (Omega := Omega) n S
-    letI : FiniteDimensional K E :=
+    let : FiniteDimensional K E :=
       KummerTheory.fullSUnitKummerExtension_finiteDimensional
         (K := K) (Omega := Omega) n
         (by exact_mod_cast n.ne_zero) hmu S
-    letI : IsGalois K E :=
+    let : IsGalois K E :=
       KummerTheory.fullSUnitKummerExtension_isGalois
         (K := K) (Omega := Omega) n S
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite K E
     (_root_.ideleClassNorm K E).range =
       ideleClassPowerLocalUnitSubgroup (K := K) n S ∅ := by
   classical
-  dsimp only
-  let S := sUnitKummerNormSupport (K := K) n seed
-  let E :=
-    KummerTheory.fullSUnitKummerExtension
-      (K := K) (Omega := Omega) n S
+  intro S E
   let hnK : ((n : ℕ) : K) ≠ 0 := by
     exact_mod_cast n.ne_zero
-  let : FiniteDimensional K E :=
-    KummerTheory.fullSUnitKummerExtension_finiteDimensional
-      (K := K) (Omega := Omega) n hnK hmu S
-  let : IsGalois K E :=
-    KummerTheory.fullSUnitKummerExtension_isGalois
-      (K := K) (Omega := Omega) n S
-  let : NumberField E :=
-    NumberField.of_module_finite K E
+  intro sharedFiniteDimensional sharedIsGalois sharedNumberField
   let r := totalPlaceCard (K := K) S
   let eG :
       Gal(E/K) ≃*

@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.SeparableClosurePadicLift
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.SeparableClosurePadicLift
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusFixedField
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PadicCyclicClosure
 
 /-!
 # Finite p-adic cyclic data for local-global Artin compatibility
@@ -14,6 +18,8 @@ coordinates and the corresponding abstract auxiliary subextension.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NumberField
 open NumberField
@@ -28,8 +34,10 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
+universe u v
+
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
@@ -83,13 +91,6 @@ local instance numberFieldTowerBaseSubgroupCompactSpace :
       (numberFieldTowerBaseSubgroup K L).toSubgroup :=
   isCompact_iff_compactSpace.mp
     (numberFieldTowerBaseSubgroup K L).isClosed'.isCompact
-
-/-- Inclusion of a subgroup equipped with its subtype topology. -/
-private def continuousSubgroupSubtype
-    {A : Type*} [Group A] [TopologicalSpace A]
-    (H : Subgroup A) : H →ₜ* A where
-  toMonoidHom := H.subtype
-  continuous_toFun := continuous_subtype_val
 
 /-- The finite quotient coordinate on the compatible embedded copy of
 the absolute Galois group of `K`. -/
@@ -198,7 +199,7 @@ noncomputable def numberFieldTowerBaseSubgroupPadicCyclotomicDegree
     (numberFieldTowerBaseSubgroup K L).toSubgroup →ₜ*
       Multiplicative ℤ_[p.1] :=
   (rationalSeparableClosurePadicCyclotomicDegree p).comp
-    (continuousSubgroupSubtype
+    (ClassFormation.continuousSubgroupSubtype
       (numberFieldTowerBaseSubgroup K L).toSubgroup)
 
 /-- The simultaneous finite-extension and cyclotomic `p`-adic
@@ -477,7 +478,7 @@ theorem numberFieldTowerFinitePadicCyclicImageDegree_injective
     Function.Injective
       (((numberFieldTowerFinitePadicImageDegree
           (K := K) (L := L) p).comp
-        (continuousSubgroupSubtype
+        (ClassFormation.continuousSubgroupSubtype
           (ClassFormation.padicCyclicClosure γ).toSubgroup)) :
         ClassFormation.padicCyclicClosure γ →
           Multiplicative ℤ_[p.1]) := by

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Nyll.ProCGroups.Profinite.OpenSubgroups
-import Nyll.ProCGroups.Topologies.QuotientMaps
-import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+module
+
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
+public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 
 /-!
 # Basic operations on open normal subgroups
@@ -15,6 +17,8 @@ import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 This file develops bundled open normal subgroups, their finite discrete quotients and projections,
 maps and comaps, transition morphisms, normal cores, and finite intersections.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

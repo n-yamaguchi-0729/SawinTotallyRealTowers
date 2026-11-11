@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.PrincipalUnitExp
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.PrincipalUnitExp
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
 
 /-!
 Restricts the logarithm series to principal units and places its values in the corresponding
 additive ideal.
 -/
 
+
+@[expose] public section
 
 open Filter
 open Polynomial
@@ -144,6 +149,37 @@ noncomputable def principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValu
       exact hge
   exact ⟨b, hbmem⟩
 
+open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
+  higherPrincipalUnitGroup
+) in
+/-- The underlying field value of the scaled logarithm is the corresponding logarithm series. -/
+@[simp] theorem principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled
+    (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
+    [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
+    {p : ℕ} [Fact p.Prime] (e n : ℕ)
+    {π : (completeDVFOfWithZeroValuation v).valuationSubring}
+    (hπ : v.IsUniformizer (π : K))
+    (hπval : v (π : K) = WithZero.exp (-1 : ℤ))
+    (hn : 1 ≤ n)
+    (hlevel : (e : ℚ) / ((p : ℚ) - 1) < (n : ℚ))
+    (hnK : ∀ m : ℕ, (((m + 1 : ℕ) : K) ≠ 0))
+    (hnval : ∀ m : ℕ,
+      v (((m + 1 : ℕ) : K)) =
+        WithZero.exp (-((e : ℤ) * (padicValNat p (m + 1) : ℤ))))
+    (hcomplete :
+      let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+      CompleteSpace K)
+    (u : (higherPrincipalUnitGroup (completeDVFOfWithZeroValuation v)) n) :
+    let F : CompleteDVF.{u, 0} K := completeDVFOfWithZeroValuation v
+    (((principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled
+        (v := v) (p := p) e n (π := π) hπ hπval hn hlevel
+        hnK hnval hcomplete u : (F.maximalIdeal ^ n : Ideal F.valuationSubring)) :
+        F.valuationSubring) : K) =
+      logOnePlusSeriesFieldOfWithZeroValuation v
+        ((((u : F.valuationSubringˣ) : F.valuationSubring) : K) - 1) hnK := by
+  intro F
+  rfl
+
 /-- On the successive additive quotient `m^n/m^(n+1)`, the composite
 `Log ∘ Exp` induced by the ramified endpoint maps is the identity. -/
 theorem principalUnitLogSeries_expSeries_maximalIdealPowSuccQuot_eq_self_ofWithZeroValuationScaled
@@ -196,8 +232,9 @@ theorem principalUnitLogSeries_expSeries_maximalIdealPowSuccQuot_eq_self_ofWithZ
       (a := (a : F.valuationSubring))
       (b := (l : F.valuationSubring) - (a : F.valuationSubring))
       a.property ?_
-  simp [l, expu, principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled,
-    principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled, F]
+  change ((l : F.valuationSubring) : K) - ((a : F.valuationSubring) : K) = _
+  rw [principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled,
+    principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled]
 
 open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (
   higherPrincipalUnitGroup
@@ -286,8 +323,8 @@ theorem principalUnitExpSeries_logSeries_principalUnitSuccQuot_eq_self_ofWithZer
         hnKlog hnvalLog hnKexp hnvalExp hcomplete
         (a := a0) (b := b0 - a0) ha0 ?_
     simp [a0, b0, expLogu, loga,
-      principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled,
-      principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled, F]
+      principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled,
+      principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled, F]
   rw [class_eq_subOne expLogu b0 rfl hb0, class_eq_subOne u a0 rfl ha0]
   exact
     higherPrincipalUnitGroup.principalUnitSuccQuotOfIdealPow_eq_of_sub_mem_succ
@@ -348,8 +385,9 @@ theorem
       (a := (a : F.valuationSubring))
       (b := (l : F.valuationSubring) - (a : F.valuationSubring))
       a.property ?_
-  simp [l, expu, principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled,
-    principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled, F]
+  change ((l : F.valuationSubring) : K) - ((a : F.valuationSubring) : K) = _
+  rw [principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled,
+    principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled]
 
 /-- The deep exponential–logarithm equivalence, additive finite quotient identity at level `n+1`:
 `Log ∘ Exp` is the identity in `O / m^(n+1)`. -/
@@ -466,8 +504,8 @@ theorem
         hnKlog hnvalLog hnKexp hnvalExp hcomplete
         (a := a0) (b := b0 - a0) ha0 ?_
     simp [a0, b0, expLogu, loga,
-      principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled,
-      principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled, F]
+      principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled,
+      principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled, F]
   have hsub :
       ((expLogu : F.valuationSubringˣ) : F.valuationSubring) -
         ((u : F.valuationSubringˣ) : F.valuationSubring) =

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedIterates
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
-import Mathlib.RingTheory.MvPowerSeries.Inverse
-import Mathlib.RingTheory.PowerSeries.Inverse
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedIterates
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
+public import Mathlib.RingTheory.MvPowerSeries.Inverse
+public import Mathlib.RingTheory.PowerSeries.Inverse
 
 /-!
 # Displacements of primitive Lubin--Tate points
@@ -25,6 +27,8 @@ valuation of the topologically nilpotent input that it multiplies.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -234,42 +238,9 @@ end FormalFactors
 
 section AnalyticValuation
 
-private noncomputable local instance
-    standardLubinTatePrimitiveDisplacementCoefficientUniformSpace :
-    UniformSpace F.valuationSubring :=
-  ⊥
-
-private noncomputable local instance
-    standardLubinTatePrimitiveDisplacementTargetWithIdeal
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    WithIdeal
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring where
-  i := (standardLubinTateLevelCompleteDVF hπ n).maximalIdeal
-
-private noncomputable local instance
-    standardLubinTatePrimitiveDisplacementTargetCompleteSpace
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    CompleteSpace
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring := by
-  let target := standardLubinTateLevelCompleteDVF hπ n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
-
-private noncomputable local instance
-    standardLubinTatePrimitiveDisplacementTargetT2Space
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    T2Space
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring := by
-  let target := standardLubinTateLevelCompleteDVF hπ n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).2
-
-private noncomputable local instance
-    standardLubinTatePrimitiveDisplacementAlgebra
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
-    Algebra F.valuationSubring
-      (standardLubinTateLevelCompleteDVF hπ n).valuationSubring :=
-  (standardLubinTateLevelCoefficientHom hπ n).toAlgebra
+attribute [local instance] standardLubinTateLevelCoefficientUniformSpace
+  standardLubinTateLevelTargetWithIdeal standardLubinTateLevelTargetCompleteSpace
+  standardLubinTateLevelTargetT2Space standardLubinTatePrimitiveActionAlgebra
 
 private theorem hasEval_fin_two
     {R : Type*} [CommRing R] [TopologicalSpace R]
@@ -641,7 +612,8 @@ theorem
       intro hzero
       apply hdeep
       rw [CompleteDVF.higherPrincipalUnitGroup.mem_iff]
-      simp [hzero]
+      rw [hzero]
+      exact zero_mem _
     have hπirr : Irreducible π :=
       (IsDiscreteValuationRing.irreducible_iff_uniformizer π).2
         (F.toCompleteDVF.maximalIdeal_eq_span_uniformizer hπ)
@@ -693,7 +665,7 @@ theorem
       exact_mod_cast hpowNat
 
 /-- On the interval
-`q^(k-1) - 1 ≤ r ≤ q^k - 1`, the lower displacement bound `r + 1`
+`q^(k-1) ≤ r < q^k`, the lower displacement bound `r + 1`
 detects the `k`th principal-unit subgroup. -/
 theorem
     standardLubinTatePrimitivePointIntegerAction_sub_self_addVal_ge_iff_mem_of_pow_interval
@@ -722,7 +694,8 @@ theorem
       intro hzero
       apply hnotDeep
       rw [CompleteDVF.higherPrincipalUnitGroup.mem_iff]
-      simp [hzero]
+      rw [hzero]
+      exact zero_mem _
     have hπirr : Irreducible π :=
       (IsDiscreteValuationRing.irreducible_iff_uniformizer π).2
         (F.toCompleteDVF.maximalIdeal_eq_span_uniformizer hπ)
@@ -945,7 +918,8 @@ theorem standardLubinTateGal_displacement_addVal_le_of_ne
     intro hzero
     apply hnotDeep
     rw [CompleteDVF.higherPrincipalUnitGroup.mem_iff]
-    simp [hzero]
+    rw [hzero]
+    exact zero_mem _
   have hπirr : Irreducible π :=
     (IsDiscreteValuationRing.irreducible_iff_uniformizer π).2
       (F.toCompleteDVF.maximalIdeal_eq_span_uniformizer hπ)

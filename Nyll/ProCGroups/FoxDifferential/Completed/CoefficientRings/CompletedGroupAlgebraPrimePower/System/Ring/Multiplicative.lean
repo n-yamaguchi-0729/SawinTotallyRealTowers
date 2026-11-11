@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.System.Ring.AddCommGroup
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.System.Ring.AddCommGroup
 
 /-!
 # Fox differential: prime-power completed group algebra — system — ring — multiplicative
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `coe_mul_primePowerCompletedGroupAlgebra`
   Multiplication in the prime-power completed group algebra is computed coordinatewise.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -90,7 +94,7 @@ instance instIntCastPrimePowerCompletedGroupAlgebra :
 
 /-- Each finite prime-power group-algebra stage carries its standard ring structure. -/
 @[reducible]
-private def instRingPrimePowerCompletedGroupAlgebraStage
+def instRingPrimePowerCompletedGroupAlgebraStage
     (i : PrimePowerCompletedGroupAlgebraIndex G) :
     Ring ((primePowerCompletedGroupAlgebraSystem ℓ G).X i) := by
   dsimp [primePowerCompletedGroupAlgebraSystem, PrimePowerCompletedGroupAlgebraStage]
@@ -102,7 +106,7 @@ The dependent family of finite prime-power group-algebra stages carries the poin
 structure.
 -/
 @[reducible]
-private def instRingPrimePowerCompletedGroupAlgebraFamily :
+def instRingPrimePowerCompletedGroupAlgebraFamily :
     Ring
       ((i : PrimePowerCompletedGroupAlgebraIndex G) →
         (primePowerCompletedGroupAlgebraSystem ℓ G).X i) :=

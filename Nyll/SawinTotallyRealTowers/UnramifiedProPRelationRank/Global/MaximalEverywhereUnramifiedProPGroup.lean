@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGalois
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPCofinality
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.Profinite.OpenSubgroups
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGalois
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPCofinality
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # The maximal everywhere-unramified pro-p Galois group
@@ -17,6 +20,8 @@ compositum is a finite `p`-group.  The corresponding fixed field is finite
 Galois, hence lies in one bundled finite `p`-extension by cofinality; restriction
 from that extension supplies the required quotient `p`-group structure.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

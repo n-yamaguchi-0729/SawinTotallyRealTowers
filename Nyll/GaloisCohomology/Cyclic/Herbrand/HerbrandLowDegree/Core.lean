@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Cardinality
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Cardinality
 
 /-!
 # Low-degree Herbrand quotients
@@ -14,6 +16,8 @@ The foundational constructions and their comparison with mathlib Tate
 cohomology are split into focused modules.  This public module retains the
 Herbrand quotient and its multiplicativity result.
 -/
+
+@[expose] public section
 
 namespace CyclicCohomology
 
@@ -71,7 +75,7 @@ for a short exact sequence of multiplicative `G`-modules, proved from the
 standard two-periodic Tate complex and mathlib's homology long exact
 sequence. -/
 theorem herbrandQuotient_exact_multiplicative
-    {G A B C : Type}
+    {G : Type uG} {A B C : Type uA}
     [Group G] [Fintype G]
     [CommGroup A] [CommGroup B] [CommGroup C]
     [MulDistribMulAction G A] [MulDistribMulAction G B]

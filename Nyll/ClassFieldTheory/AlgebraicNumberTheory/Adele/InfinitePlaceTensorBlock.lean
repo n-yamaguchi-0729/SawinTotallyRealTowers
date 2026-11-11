@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Archimedean relative-idele factors as induced local blocks
@@ -19,6 +22,8 @@ the local tensor decomposition, equivariantly for the full Galois action.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct NumberField.LiesOver
 open NumberField
@@ -76,7 +81,7 @@ theorem infinitePlaceCompletionAlgEquiv_algebraMap
             v.1 w.1 u.2).continuous.comp
           (InfinitePlace.Completion.continuous_toCompletion v))
         ((InfinitePlace.Completion.continuous_toCompletion w).comp
-          NumberField.LiesOver.continuous_completionMap)
+          (NumberField.LiesOver.continuous_completionMap v w))
   · intro y
     have hy :
         (y : v.1.Completion) =
@@ -142,7 +147,7 @@ theorem infinitePlaceLocalTensorAlgEquiv_conjugation
           (K := K) (L := L) w z) := by
   induction z using TensorProduct.inductionOn with
   | tmul a x => rfl
-  | add x y hx hy => simp [hx, hy]
+  | add x y hx hy => simp only [map_add, hx, hy]
 
 omit [NumberField K] [NumberField L] [FiniteDimensional K L] in
 /-- The completion comparison on units is equivariant. -/
@@ -150,18 +155,15 @@ theorem infinitePlaceLocalTensorUnitsEquiv_smul
     (w : InfinitePlace K)
     (σ : L ≃ₐ[K] L)
     (z : (w.Completion ⊗[K] L)ˣ) :
-    letI := scalarTensorUnitsAction
+    let := scalarTensorUnitsAction
       (K := K) (L := L) (A := w.Completion)
-    letI := localTensorUnitsAction
+    let := localTensorUnitsAction
       (K := K) (L := L) w.1
     infinitePlaceLocalTensorUnitsEquiv
         (K := K) (L := L) w (σ • z) =
       σ • infinitePlaceLocalTensorUnitsEquiv
         (K := K) (L := L) w z := by
-  let := scalarTensorUnitsAction
-    (K := K) (L := L) (A := w.Completion)
-  let := localTensorUnitsAction
-    (K := K) (L := L) w.1
+  intro sharedOwner1 sharedOwner2
   apply Units.ext
   exact infinitePlaceLocalTensorAlgEquiv_conjugation
     (K := K) (L := L) w σ
@@ -178,36 +180,23 @@ noncomputable def
     (w : InfinitePlace K)
     (hw : w.1.IsNontrivial)
     (u : AbsoluteValueExtension w.1 L) :
-    letI :=
+    let :=
       decompositionGroupLocalUnitsAction w.1 hw u
-    letI hK :=
+    let hK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) u.1
-    letI : SMul K u.1.Completion := hK.toSMul
-    letI :=
+    let : SMul K u.1.Completion := hK.toSMul
+    let :=
       AbsoluteValue.completionAlgebra
         w.1 u.1 u.2
-    letI : ∀ u' : AbsoluteValueExtension w.1 L,
+    let : ∀ u' : AbsoluteValueExtension w.1 L,
         Algebra w.1.Completion u'.1.Completion :=
       fun u' =>
         AbsoluteValue.completionAlgebra
           w.1 u'.1 u'.2
     (w.Completion ⊗[K] L)ˣ ≃*
       LocalPlaceBlock w.1 hw u := by
-  letI :=
-    decompositionGroupLocalUnitsAction w.1 hw u
-  letI hK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) u.1
-  letI : SMul K u.1.Completion := hK.toSMul
-  letI :=
-    AbsoluteValue.completionAlgebra
-      w.1 u.1 u.2
-  letI : ∀ u' : AbsoluteValueExtension w.1 L,
-      Algebra w.1.Completion u'.1.Completion :=
-    fun u' =>
-      AbsoluteValue.completionAlgebra
-        w.1 u'.1 u'.2
+  intro sharedOwner1 hK sharedOwner3 sharedOwner4 sharedOwner5
   exact
     (infinitePlaceLocalTensorUnitsEquiv
       (K := K) (L := L) w).trans
@@ -255,15 +244,14 @@ theorem
     infinitePlaceTensorUnitsEquivLocalPlaceBlock_smul
     (σ : L ≃ₐ[K] L)
     (z : (w.Completion ⊗[K] L)ˣ) :
-    letI :=
+    let :=
       decompositionGroupLocalUnitsAction w.1 hw u
     infinitePlaceTensorUnitsEquivLocalPlaceBlock
         (K := K) (L := L) w hw u (σ • z) =
       σ •
         infinitePlaceTensorUnitsEquivLocalPlaceBlock
           (K := K) (L := L) w hw u z := by
-  let :=
-    decompositionGroupLocalUnitsAction w.1 hw u
+  intro sharedOwner1
   have hsource :
       infinitePlaceLocalTensorUnitsEquiv
           (K := K) (L := L) w (σ • z) =

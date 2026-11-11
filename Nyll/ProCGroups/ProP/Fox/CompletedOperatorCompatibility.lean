@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.CompletedLeibniz
-import Nyll.ProCGroups.ProP.Fox.CompletedOperator
-import Nyll.ProCGroups.ProP.Zassenhaus.Functoriality
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.InClassComparison
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.InClassNaturality
+module
+
+public import Nyll.ProCGroups.ProP.Fox.CompletedLeibniz
+public import Nyll.ProCGroups.ProP.Fox.CompletedOperator
+public import Nyll.ProCGroups.ProP.Zassenhaus.Functoriality
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.InClassComparison
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteFunctoriality.InClassNaturality
 
 /-!
 # Fox--Leibniz compatibility for the completed mod-p operator
@@ -18,6 +20,8 @@ its crossed-product law from group-like elements.  The comparison equivalence
 between all-finite and pro-`p`-indexed completed group algebras then transports
 this law to the completed operator used by the Zassenhaus filtration.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
-import Nyll.ProCGroups.ProC.Quotients.DescendingClosedSubgroupQuotients
+module
+
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.ProC.Quotients.DescendingClosedSubgroupQuotients
 
 /-!
 # Continuous sections of left-quotient projections
@@ -14,6 +16,8 @@ Using normalized section data ordered by intermediate closed subgroups, this fil
 upper-bound argument to construct continuous sections of \(G/K \to G/H\). It concludes with a
 continuous section of the quotient map by any closed subgroup of a profinite group.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

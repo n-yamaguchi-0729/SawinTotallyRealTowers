@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.Basic
-import Nyll.ProCGroups.InverseSystems.Utilities
+module
+
+public import Nyll.ProCGroups.InverseSystems.Basic
+public import Nyll.ProCGroups.InverseSystems.Utilities
 
 /-!
 # Morphisms of inverse systems and maps on their limits
@@ -15,6 +17,8 @@ module then defines continuous stagewise morphisms, constructs their induced map
 limits, and gives stagewise hypotheses ensuring that those maps are injective, embeddings, or
 surjective.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TateTransport
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TateTransport
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
 
 /-!
 # The local class-field-axiom theorem: units in an abstract finite fixed-field tower
@@ -20,6 +22,8 @@ essential for transporting the actual Tate groups rather than only their
 underlying norm quotients.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 open RamificationTheory CyclicCohomology KummerTheory
 
@@ -31,9 +35,11 @@ open ClassFormation
 
 noncomputable section
 
+universe u v
+
 open CategoryTheory
 
-variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
+variable (k : Type u) (Ω : Type v) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
 
 /-- Units of the concrete fixed field represented by an arbitrary closed
 subgroup, identified directly with the corresponding fixed coefficients. -/
@@ -154,13 +160,13 @@ theorem abstractExtensionQuotientEquivGaloisGroup_mk_apply_val
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (σ : K.toSubgroup)
     (x : abstractRelativeFixedField k Ω hLK) :
-    letI := hnormal
+    let := hnormal
     σ.1 (x : Ω) =
       (((abstractExtensionQuotientEquivGaloisGroup
           k Ω K L hLK hnormal
           (QuotientGroup.mk' (extensionSubgroup K L hLK) σ)) x :
         abstractRelativeFixedField k Ω hLK) : Ω) := by
-  let := hnormal
+  intro sharedOwner1
   let : (abstractRelativeFixedField k Ω hLK).fixingSubgroup.Normal :=
     abstractRelativeFixingSubgroup_normal k Ω K L hLK hnormal
   let H : ClosedSubgroup (Gal(Ω / abstractFixedField k Ω K)) :=
@@ -209,7 +215,7 @@ theorem relativeCosetAction_abstractRelativeFixedFieldUnit_val
     (hnormal : (extensionSubgroup K L hLK).Normal)
     (x : Additive (abstractRelativeFixedField k Ω hLK)ˣ)
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK) :
-    letI := hnormal
+    let := hnormal
     ((Additive.toMul
       (relativeCosetAction (galoisAmbientUnitsRep k Ω)
         K L hLK
@@ -222,7 +228,7 @@ theorem relativeCosetAction_abstractRelativeFixedFieldUnit_val
               k Ω K L hLK hnormal q) x) :
           (abstractRelativeFixedField k Ω hLK)ˣ) :
         abstractRelativeFixedField k Ω hLK) : Ω) := by
-  let := hnormal
+  intro sharedOwner1
   refine Quotient.inductionOn' q ?_
   intro σ
   rw [relativeCosetAction_mk]
@@ -241,7 +247,7 @@ theorem abstractExtensionFixedRepresentationUnitsEquiv_action
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK)
     (x : (extensionFixedRepresentation (galoisAmbientUnitsRep k Ω)
       K L hLK hnormal).V) :
-    letI := hnormal
+    let := hnormal
     abstractExtensionFixedRepresentationUnitsEquiv k Ω K L hLK hnormal
         ((extensionFixedRepresentation (galoisAmbientUnitsRep k Ω)
           K L hLK hnormal).ρ q x) =
@@ -251,7 +257,7 @@ theorem abstractExtensionFixedRepresentationUnitsEquiv_action
             k Ω K L hLK hnormal q)
           (abstractExtensionFixedRepresentationUnitsEquiv
             k Ω K L hLK hnormal x) := by
-  let := hnormal
+  intro sharedOwner1
   let eFixed := abstractRelativeFixedFieldUnitsEquivGaloisFixed
     k Ω K L hLK
   apply eFixed.injective
@@ -280,7 +286,7 @@ def abstractExtensionFixedRepresentationIsoUnitsRes
     (K L : ClosedSubgroup (Gal(Ω/k)))
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hnormal : (extensionSubgroup K L hLK).Normal) :
-    letI := hnormal
+    let := hnormal
     extensionFixedRepresentation (galoisAmbientUnitsRep k Ω)
         K L hLK hnormal ≅
       Rep.res
@@ -288,7 +294,7 @@ def abstractExtensionFixedRepresentationIsoUnitsRes
           k Ω K L hLK hnormal).toMonoidHom
         (Rep.ofAlgebraAutOnUnits (abstractFixedField k Ω K)
           (abstractRelativeFixedField k Ω hLK)) := by
-  letI := hnormal
+  intro sharedOwner1
   let e := abstractExtensionFixedRepresentationUnitsEquiv
     k Ω K L hLK hnormal
   refine Rep.mkIso (Representation.Equiv.mk e.toIntLinearEquiv ?_)

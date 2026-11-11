@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.RingTheory.Invariant.Profinite
+module
+
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.RingTheory.Invariant.Profinite
 
 /-!
 # Profinite invariant rings: normality on prime residue fields
@@ -16,6 +18,8 @@ statement.  The proof is the same finite-orbit argument as in this construction:
 element of the discrete ring is fixed by an open normal subgroup, so its
 orbit polynomial is computed in a finite quotient.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 

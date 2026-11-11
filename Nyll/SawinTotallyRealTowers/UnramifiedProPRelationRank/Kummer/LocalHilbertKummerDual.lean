@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairingNondegeneracy
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.Defs
-import Mathlib.Algebra.Module.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPairingNondegeneracy
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.Defs
+public import Mathlib.Algebra.Module.ZMod
 
 /-! # The local Hilbert pairing as a linear dual embedding -/
+
+@[expose] public section
 
 noncomputable section
 

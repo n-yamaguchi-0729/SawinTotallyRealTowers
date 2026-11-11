@@ -4,8 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectKernelBasis
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectKernelBasis
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Augmentation
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
+public import Nyll.ProCGroups.FiniteGroups.Classes
+public import Nyll.ProCGroups.InverseSystems.Basic
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.InverseLimits.Limits
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 
 /-!
 # Fox differential: completed — continuous — topology
@@ -22,6 +34,8 @@ The principal declarations in this module are:
 - `continuous_zcCompletedGroupAlgebraProjection`
   A finite stage projection from \(\mathbb{Z}_C\llbracket G\rrbracket\) is continuous.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

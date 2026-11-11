@@ -4,8 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianNormConductor
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianNormConductor
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Conductor
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnits
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
 
 /-!
 # Comparison of global and local conductor exponents
@@ -20,9 +34,13 @@ conductor exponent of the chosen localized extension.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
@@ -31,7 +49,7 @@ open NumberField IsDedekindDomain
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- The canonical comparison between the two finite-place completion models
 identifies the field principal-unit filtration with the ray-class higher-unit
@@ -41,22 +59,15 @@ theorem finitePlaceFieldPrincipalUnits_map_eq_localHigherUnitGroup
     let vK := HeightOneSpectrum.adicAbv K v
     let hvKna : IsNonarchimedean (vK : K → ℝ) :=
       HeightOneSpectrum.isNonarchimedean_adicAbv K v
-    letI : Valued vK.Completion ℝ≥0 :=
+    let : Valued vK.Completion ℝ≥0 :=
       _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceArtinCompletionValued
         vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let : ValuativeRel vK.Completion :=
       _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
     (LocalFieldTheory.fieldPrincipalUnits vK.Completion n).map
         (_root_.finitePlaceCompletionUnitsContinuousMulEquiv v).toMonoidHom =
       RayClass.localHigherUnitGroup v n := by
-  let vK := HeightOneSpectrum.adicAbv K v
-  let hvKna : IsNonarchimedean (vK : K → ℝ) :=
-    HeightOneSpectrum.isNonarchimedean_adicAbv K v
-  let : Valued vK.Completion ℝ≥0 :=
-    _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceArtinCompletionValued
-      vK hvKna
-  let : ValuativeRel vK.Completion :=
-    _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
+  intro vK hvKna sharedOwner3 sharedOwner4
   let eField : vK.Completion ≃+* v.adicCompletion K :=
     _root_.finitePlaceCompletionRingEquiv v
   let eIntegers :
@@ -132,19 +143,15 @@ theorem finitePlaceCompletion_valuationMap_eq_zero_of_mem_localHigherUnitGroup
     (x : (v.adicCompletion K)ˣ)
     (hx : x ∈ RayClass.localHigherUnitGroup v n) :
     let vK := HeightOneSpectrum.adicAbv K v
-    letI : ValuativeRel vK.Completion :=
+    let : ValuativeRel vK.Completion :=
       _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
-    letI : IsNonarchimedeanLocalField vK.Completion :=
+    let : IsNonarchimedeanLocalField vK.Completion :=
       Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
     IsNonarchimedeanLocalField.valuationMap vK.Completion
         (Additive.ofMul
           ((_root_.finitePlaceCompletionUnitsContinuousMulEquiv v).symm x)) =
       0 := by
-  let vK := HeightOneSpectrum.adicAbv K v
-  let : ValuativeRel vK.Completion :=
-    _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
-  let : IsNonarchimedeanLocalField vK.Completion :=
-    Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+  intro vK sharedOwner2 sharedOwner3
   have hxMap :
       x ∈
         (LocalFieldTheory.fieldPrincipalUnits vK.Completion n).map
@@ -165,14 +172,13 @@ theorem finitePlaceCompletion_valuationMap_eq_zero_of_mem_localHigherUnitGroup
           vK.Completion) at hxPrincipal
   rcases hxPrincipal with ⟨u, _hu, hu⟩
   rw [← hu]
-  dsimp only
   rw [IsNonarchimedeanLocalField.valuationMap_apply]
   exact
     IsNonarchimedeanLocalField.v_integerUnitsToFieldUnits
       vK.Completion u
 
 variable
-    {L : Type}
+    {L : Type v}
     [Field L] [NumberField L] [Algebra K L]
 
 section Galois
@@ -191,51 +197,30 @@ theorem
     let hvKna : IsNonarchimedean (vK : K → ℝ) :=
       HeightOneSpectrum.isNonarchimedean_adicAbv K v
     let w := _root_.chosenFinitePlaceExtension (L := L) v
-    letI hK :=
+    let hK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let : SMul K w.1.Completion := hK.toSMul
+    let : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI :=
+    let :=
       LocalClassFieldTheory.localizedCompletionGlobalAlgebra vK w
-    letI :=
+    let :=
       LocalClassFieldTheory.localizedCompletionIsScalarTower vK w
     let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-    letI : FiniteDimensional vK.Completion E :=
+    let : FiniteDimensional vK.Completion E :=
       AlgebraicNumberTheory.Valuations.localizedCompletionModuleFinite vK hvK w
-    letI : Valued vK.Completion ℝ≥0 :=
+    let : Valued vK.Completion ℝ≥0 :=
       _root_.finitePlaceCompletionValued vK hvKna
-    letI : ValuativeRel vK.Completion :=
+    let : ValuativeRel vK.Completion :=
       _root_.finitePlaceCompletionValuativeRel vK hvKna
     RayClass.localHigherUnitGroup v n ≤
         _root_.chosenFinitePlaceLocalNormSubgroup
           (K := K) (L := L) v ↔
       LocalFieldTheory.fieldPrincipalUnits vK.Completion n ≤
         LocalFieldTheory.localNormSubgroup vK.Completion E := by
-  let vK := HeightOneSpectrum.adicAbv K v
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
-  let hvKna : IsNonarchimedean (vK : K → ℝ) :=
-    HeightOneSpectrum.isNonarchimedean_adicAbv K v
-  let w := _root_.chosenFinitePlaceExtension (L := L) v
-  let hK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let : Algebra vK.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vK w.1 w.2
-  let :=
-    LocalClassFieldTheory.localizedCompletionGlobalAlgebra vK w
-  let :=
-    LocalClassFieldTheory.localizedCompletionIsScalarTower vK w
-  let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let : FiniteDimensional vK.Completion E :=
-    AlgebraicNumberTheory.Valuations.localizedCompletionModuleFinite vK hvK w
-  let : Valued vK.Completion ℝ≥0 :=
-    _root_.finitePlaceCompletionValued vK hvKna
-  let : ValuativeRel vK.Completion :=
-    _root_.finitePlaceCompletionValuativeRel vK hvKna
+  intro vK hvK hvKna w hK sharedOwner6 sharedOwner7 sharedOwner8 sharedOwner9 E sharedOwner11
+    sharedOwner12 sharedOwner13
   let e :
       vK.Completionˣ ≃ₜ* (v.adicCompletion K)ˣ :=
     _root_.finitePlaceCompletionUnitsContinuousMulEquiv v

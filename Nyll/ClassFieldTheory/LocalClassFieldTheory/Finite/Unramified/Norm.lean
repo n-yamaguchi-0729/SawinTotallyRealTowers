@@ -4,16 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.ResidueNorm
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.ResidueNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-! Provides the public declarations in the `LocalClassFieldTheory.Finite.Unramified.Norm` Lean
 module. -/
 
 
+@[expose] public section
+
 noncomputable section
 
-universe u
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -26,7 +33,7 @@ open LocalFieldTheory.IsNonarchimedeanLocalField
 norm surjectivity: combine the quotient norm on `𝒪[L]ˣ/U_L¹` with the
 actual `U_L¹ -> U_K¹` lifting. -/
 theorem normIntegerUnits_surjective_unramified_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]
@@ -70,8 +77,7 @@ theorem normIntegerUnits_surjective_unramified_of_isIntegralClosure
           rw [(normIntegerUnits K L).map_mul]
     _ = normIntegerUnits K L u * (y / normIntegerUnits K L u) := by
           rw [hzUnits]
-    _ = y := by
-          simp [div_eq_mul_inv, mul_left_comm]
+    _ = y := mul_div_cancel _ _
 
 /-- For a finite unramified extension: the norm of an integer unit is again an integer unit,
 so its normalized valuation is zero.
@@ -79,7 +85,7 @@ so its normalized valuation is zero.
 This is the unit part of the standard decomposition `x = u * π^m`; it uses the
 actual integer-unit norm, not a norm-valuation certificate. -/
 theorem v_normUnits_integerUnitsToFieldUnits
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [Algebra K L] [LocalFieldTheory.ValuativeExtension K L]
     (u : 𝒪[L]ˣ) :
@@ -98,7 +104,7 @@ theorem v_normUnits_integerUnitsToFieldUnits
 valuation.  This is the `N(π_K^m) = π_K^{m[L:K]}` part of the unramified norm calculation,
 proved from the algebra norm of a base element. -/
 theorem v_normUnits_mapBase_inverseIntegerRingUniformizerFieldUnit_zpow
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [Algebra K L] (m : Int) :
     LocalFieldTheory.IsNonarchimedeanLocalField.v K
@@ -127,7 +133,7 @@ theorem v_normUnits_mapBase_inverseIntegerRingUniformizerFieldUnit_zpow
 part and a power of the chosen inverse uniformizer, the valuation of its norm is
 determined by the exponent. -/
 theorem v_normUnits_integerUnit_mul_mapBase_inverseIntegerRingUniformizer_zpow
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [Algebra K L] [LocalFieldTheory.ValuativeExtension K L]
     (u : 𝒪[L]ˣ) (m : Int) :
@@ -153,7 +159,7 @@ decompose `x = u * π^{v_L(x)}`, then combine the integer-unit norm with
 `N(π^m) = π_K^{m[L:K]}`.  No common-uniformizer value, norm-valuation formula,
 or residue-degree equality is assumed as an extra input. -/
 theorem v_normUnits_unramifiedValuation
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [LocalFieldTheory.ValuativeExtension K L]
@@ -193,7 +199,7 @@ theorem v_normUnits_unramifiedValuation
 /-- For a finite unramified extension, reverse containment source: every field norm has
 valuation divisible by `[L : K]` in the actual unramified valuation case. -/
 theorem finrank_dvd_valuation_of_mem_normSubgroup_unramified
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [LocalFieldTheory.ValuativeExtension K L]
@@ -216,7 +222,7 @@ This is the standard argument `a = u * π_K^(m[L:K])`, with
 `π_K^(m[L:K]) = N(π_K^m)`.  It uses the integral-closure version of the
 integer-unit lifting, with no auxiliary invariant package. -/
 theorem mem_normSubgroup_of_finrank_dvd_valuation_unramified_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]
@@ -281,7 +287,7 @@ divisible by `[L : K]`.
 This combines the actual norm-valuation calculation with the actual
 integral-closure unit lifting. -/
 theorem mem_normSubgroup_unramifiedValuation_iff_finrank_dvd_valuation_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
     [IsNonarchimedeanLocalField L]

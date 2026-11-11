@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.DiscreteH2Comparison
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Mathlib.FieldTheory.KrullTopology
+module
+
+public import Nyll.GaloisCohomology.ProP.DiscreteH2Comparison
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Mathlib.FieldTheory.KrullTopology
 
 /-!
 # The finite Kummer cup-product coefficient square
@@ -21,6 +23,8 @@ This is only a coefficient-change statement.  It neither assumes the Galois
 group is cyclic nor identifies the resulting class with a norm or Hilbert
 symbol.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 open ClassFieldTower.ProP
@@ -40,7 +44,7 @@ noncomputable def finiteKummerCupCoefficientTwoCocycle
     groupCohomology.cocycles₂ (Rep.ofAlgebraAutOnUnits K L) :=
   groupCohomology.mapCocycles₂ (MonoidHom.id (Gal(L/K)))
     (finiteKummerCoefficientRepHom K L p hmu)
-    (Cohomology.ordinaryH1CupTwoCocycle chi psi)
+    (Cohomology.ordinaryH1CupTwoCocycle (R := ℤ) chi psi)
 
 @[simp]
 theorem finiteKummerCupCoefficientTwoCocycle_apply
@@ -63,7 +67,7 @@ noncomputable def finiteKummerCupCoefficientCocycle
     (finiteKummerCoefficientRepHom K L p hmu) 2
     ((groupCohomology.isoCocycles₂
       (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ))))).inv
-      (Cohomology.ordinaryH1CupTwoCocycle chi psi))
+      (Cohomology.ordinaryH1CupTwoCocycle (R := ℤ) chi psi))
 
 /-- In the general inhomogeneous-cochain model, the coefficient-changed cup
 cocycle is obtained by applying the chosen-root map pointwise. -/
@@ -78,7 +82,7 @@ theorem finiteKummerCupCoefficientCocycle_apply
           (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2
           ((groupCohomology.isoCocycles₂
             (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ))))).inv
-            (Cohomology.ordinaryH1CupTwoCocycle chi psi)) x) := by
+            (Cohomology.ordinaryH1CupTwoCocycle (R := ℤ) chi psi)) x) := by
   exact finiteKummerCoefficientCocyclesMap_apply K L p hmu _ x
 
 /-- The general and pair-shaped presentations of the coefficient-changed cup
@@ -120,7 +124,7 @@ theorem finiteKummerCoefficientH2Map_ordinaryH1CupClass_quotient
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
     (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(L/K))) :
     finiteKummerCoefficientH2Map K L p hmu
-        (Cohomology.ordinaryH1CupClass chi psi) =
+        (Cohomology.ordinaryH1CupClass (R := ℤ) chi psi) =
       groupCohomology.π (Rep.ofAlgebraAutOnUnits K L) 2
         (finiteKummerCupCoefficientCocycle K L p hmu chi psi) := by
   change
@@ -129,7 +133,7 @@ theorem finiteKummerCoefficientH2Map_ordinaryH1CupClass_quotient
           (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ)))) 2
           ((groupCohomology.isoCocycles₂
             (Rep.trivial ℤ (Gal(L/K)) (ULift (ZMod (p : ℕ))))).inv
-            (Cohomology.ordinaryH1CupTwoCocycle chi psi))) = _
+            (Cohomology.ordinaryH1CupTwoCocycle (R := ℤ) chi psi))) = _
   exact finiteKummerCoefficientH2Map_quotient K L p hmu _
 
 /-- The chosen-root coefficient map sends the ordinary character cup class
@@ -138,11 +142,11 @@ theorem finiteKummerCoefficientH2Map_ordinaryH1CupClass
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
     (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(L/K))) :
     finiteKummerCoefficientH2Map K L p hmu
-        (Cohomology.ordinaryH1CupClass chi psi) =
+        (Cohomology.ordinaryH1CupClass (R := ℤ) chi psi) =
       groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K L)
         (finiteKummerCupCoefficientTwoCocycle K L p hmu chi psi) := by
   exact finiteKummerCoefficientH2Map_H2π K L p hmu
-    (Cohomology.ordinaryH1CupTwoCocycle chi psi)
+    (Cohomology.ordinaryH1CupTwoCocycle (R := ℤ) chi psi)
 
 section FiniteGalois
 
@@ -156,11 +160,11 @@ theorem finiteKummerCoefficientH2Map_discreteContinuousH1Cup
     (hmu : (primitiveRoots (p : ℕ) K).Nonempty)
     (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(L/K))) :
     finiteKummerCoefficientH2Map K L p hmu
-        (Cohomology.discreteContinuousH2AddEquiv
+        (Cohomology.discreteContinuousH2AddEquiv (R := ℤ)
           (Cohomology.continuousH1CupProductLifted chi psi)) =
       groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K L)
         (finiteKummerCupCoefficientTwoCocycle K L p hmu chi psi) := by
-  rw [Cohomology.discreteContinuousH2AddEquiv_continuousH1Cup]
+  rw [Cohomology.discreteContinuousH2AddEquiv_continuousH1Cup (R := ℤ)]
   exact finiteKummerCoefficientH2Map_ordinaryH1CupClass K L p hmu chi psi
 
 end FiniteGalois

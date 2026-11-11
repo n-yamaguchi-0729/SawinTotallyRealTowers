@@ -4,9 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.IntegerRingComparison
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.IntegerRingComparison
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Mathlib.RingTheory.RamificationInertia.Ramification
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
 
 /-!
 # From ideal-theoretic to completed unramifiedness
@@ -18,10 +24,14 @@ completion.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v w
 
 open AlgebraicNumberTheory.Valuations
 open LocalClassFieldTheory
@@ -29,7 +39,7 @@ open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
@@ -37,7 +47,7 @@ variable
 /-- A uniformizer of a finite-place completion induced by an element of the
 global integer ring, together with its valuation and comparison properties. -/
 structure FinitePlaceCompletionIntegralUniformizer
-    {F : Type} [Field F] [NumberField F]
+    {F : Type w} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) where
   /-- The inducing element of the global integer ring. -/
   integer : 𝓞 F
@@ -70,7 +80,7 @@ structure FinitePlaceCompletionIntegralUniformizer
 /-- A chosen global integral uniformizer and its image in a finite-place
 completion. -/
 noncomputable def chosenFinitePlaceCompletionIntegralUniformizer
-    {F : Type} [Field F] [NumberField F]
+    {F : Type w} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) :
     FinitePlaceCompletionIntegralUniformizer v := by
   let vF := HeightOneSpectrum.adicAbv F v
@@ -294,6 +304,7 @@ theorem chosenFinitePlace_integral_uniformizer_not_mem_maximalIdeal_sq
       _ =
           (v.valuation K (π : K)) ^
             v.asIdeal.ramificationIdx' W.asIdeal := by
+        rw [Ideal.ramificationIdx'_eq_ramificationIdx v.asIdeal W.asIdeal v.ne_bot]
         symm
         exact HeightOneSpectrum.valuation_liesOver
           L v W (π : K)

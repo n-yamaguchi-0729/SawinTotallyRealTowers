@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.InfinitePlaceOverfield
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.InfinitePlaceOverfield
 
 /-!
 # The quadratic overextension at a ramified real place
@@ -15,10 +17,14 @@ quadratic overextension above it, and the faithful cyclotomic restriction.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative
 open NumberField
 
 noncomputable section
+
+universe u v
 
 namespace GlobalClassFieldTheory
 namespace Reciprocity
@@ -29,7 +35,7 @@ attribute [local instance]
 section ComplexConjugationOverextension
 
 variable
-    {K L : Type}
+    {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]

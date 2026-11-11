@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FiniteAbelian.Duality
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
+module
+
+public import Mathlib.GroupTheory.FiniteAbelian.Duality
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
 
 /-!
 # finite actual-field form
@@ -21,6 +24,8 @@ the Kummer generation theorem; it is not the general abstract-module or infinite
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -51,6 +56,32 @@ theorem nthRootsOfUnityInBase_of_primitiveRoots
   apply Units.ext
   exact rootsOfUnityEquivOfPrimitiveRoots_symm_apply
     (algebraMap K L).injective hmu eta
+
+/-- A Kummer root quotient does not depend on the chosen `n`-th root once
+the base field contains a primitive `n`-th root of unity. -/
+theorem rootQuotient_eq_of_same_pow_of_primitiveRoots
+    (K : Type*) [Field K] {L : Type*} [Field L] [Algebra K L]
+    (n : ℕ+) (hmu : (primitiveRoots (n : ℕ) K).Nonempty)
+    (a : Kˣ) (u u' : Lˣ)
+    (hu : u ^ (n : ℕ) =
+      Units.map (algebraMap K L).toMonoidHom a)
+    (hu' : u' ^ (n : ℕ) =
+      Units.map (algebraMap K L).toMonoidHom a)
+    (sigma : Gal(L/K)) :
+    rootQuotient (K := K) (L := L) u sigma =
+      rootQuotient (K := K) (L := L) u' sigma := by
+  let D := chosenFiniteKummerRadicalDatum (K := K) (L := L) n
+  let delta : D.carrier := ⟨a, u, hu⟩
+  let hfixed :=
+    nthRootsOfUnity_fixed (K := K) (L := L) n
+      (nthRootsOfUnityInBase_of_primitiveRoots
+        (K := K) (L := L) n hmu)
+  calc
+    rootQuotient (K := K) (L := L) u sigma =
+        D.rootCharacter delta hfixed sigma :=
+      D.rootCharacter_eq_of_same_pow hfixed delta hu sigma
+    _ = rootQuotient (K := K) (L := L) u' sigma :=
+      (D.rootCharacter_eq_of_same_pow hfixed delta hu' sigma).symm
 
 /-- Finite actual-field version of The Kummer generation theorem.
 

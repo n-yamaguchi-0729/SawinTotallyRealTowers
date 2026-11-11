@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.DedekindDomain.Different
-import Mathlib.RingTheory.DedekindDomain.Factorization
+module
+
+public import Mathlib.RingTheory.DedekindDomain.Different
+public import Mathlib.RingTheory.DedekindDomain.Factorization
 
 /-!
 # Finiteness of ramified primes in Dedekind extensions
@@ -15,6 +17,8 @@ height-one primes of either the extension ring or the base ring ramify.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

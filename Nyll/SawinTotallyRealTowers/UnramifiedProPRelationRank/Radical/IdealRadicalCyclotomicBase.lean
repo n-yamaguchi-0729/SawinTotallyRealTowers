@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
-import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalExact
+public import Mathlib.RingTheory.RootsOfUnity.AlgebraicallyClosed
 
 /-!
 # The ideal radical over a cyclotomic base
@@ -15,6 +17,8 @@ For a number field `F` and a prime `p`, this file chooses a primitive `p`-th roo
 admissible Kummer subgroup over that cyclotomic base.  Its restricted radical quotient is finite,
 by a source-proved surjection from the base-field ideal radical quotient.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -32,13 +36,13 @@ variable (p : ℕ) (hp : p.Prime)
 noncomputable def idealRadicalPrimitiveRoot : AlgebraicClosure F := by
   let _ : NeZero (p : F) := ⟨by exact_mod_cast hp.ne_zero⟩
   exact Classical.choose
-    (HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure F) p)
+    (HasEnoughRootsOfUnity.exists_isPrimitiveRoot (AlgebraicClosure F) p)
 
 theorem idealRadicalPrimitiveRoot_isPrimitiveRoot :
     IsPrimitiveRoot (idealRadicalPrimitiveRoot F p hp) p := by
   let _ : NeZero (p : F) := ⟨by exact_mod_cast hp.ne_zero⟩
   exact Classical.choose_spec
-    (HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure F) p)
+    (HasEnoughRootsOfUnity.exists_isPrimitiveRoot (AlgebraicClosure F) p)
 
 /-- The cyclotomic base `F(μ_p)` inside `AlgebraicClosure F`. -/
 noncomputable def IdealRadicalCyclotomicBase :
@@ -91,7 +95,8 @@ noncomputable def idealRadicalToCyclotomicKummerSubgroup :
       (le_sup_left : MonoidHom.range (idealRadicalToCyclotomicBase F p hp) ≤
         (idealRadicalCyclotomicKummerSubgroup F p hp).1) ⟨a, rfl⟩
 
-private noncomputable def idealRadicalToCyclotomicQuotientRaw :
+/-- The base-field ideal radical mapped to the actual cyclotomic radical quotient. -/
+noncomputable def idealRadicalToCyclotomicQuotientRaw :
     (idealNthPowerRadicalKummerSubgroup F (p.toPNat hp.pos)).1 →*
       RestrictedRadicalQuotient (p.toPNat hp.pos)
         (idealRadicalCyclotomicKummerSubgroup F p hp) :=
@@ -130,6 +135,16 @@ noncomputable def idealRadicalQuotientToCyclotomicQuotient :
     (Units.map
       (algebraMap F (IdealRadicalCyclotomicBase F p hp)).toMonoidHom) hb
 
+/-- The cyclotomic quotient map sends a represented ideal radical class to its raw image. -/
+@[simp]
+theorem idealRadicalQuotientToCyclotomicQuotient_mk
+    (a : (idealNthPowerRadicalKummerSubgroup F (p.toPNat hp.pos)).1) :
+    idealRadicalQuotientToCyclotomicQuotient F p hp
+        (restrictedRadicalQuotientMk (p.toPNat hp.pos)
+          (idealNthPowerRadicalKummerSubgroup F (p.toPNat hp.pos)) a) =
+      idealRadicalToCyclotomicQuotientRaw F p hp a :=
+  rfl
+
 /-- Every cyclotomic Kummer class is represented by a mapped base-field ideal radical class. -/
 theorem idealRadicalQuotientToCyclotomicQuotient_surjective :
     Function.Surjective (idealRadicalQuotientToCyclotomicQuotient F p hp) := by
@@ -151,8 +166,7 @@ theorem idealRadicalQuotientToCyclotomicQuotient_surjective :
       (idealRadicalCyclotomicKummerSubgroup F p hp)).2 hy
   refine ⟨restrictedRadicalQuotientMk (p.toPNat hp.pos)
     (idealNthPowerRadicalKummerSubgroup F (p.toPNat hp.pos)) a, ?_⟩
-  rw [idealRadicalQuotientToCyclotomicQuotient,
-    restrictedRadicalQuotientLift_mk]
+  rw [idealRadicalQuotientToCyclotomicQuotient_mk]
   change restrictedRadicalQuotientMk (p.toPNat hp.pos)
       (idealRadicalCyclotomicKummerSubgroup F p hp) aDelta =
     restrictedRadicalQuotientMk (p.toPNat hp.pos)

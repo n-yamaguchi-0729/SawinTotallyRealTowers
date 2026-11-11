@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Mathlib.Algebra.Polynomial.Div
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Mathlib.Algebra.Polynomial.Div
 
 /-!
 # reduction input for the coefficient estimate
@@ -17,6 +19,8 @@ absolute value, coefficients of value `< 1` reduce to zero and coefficients of
 value `1` reduce to nonzero elements.  Hence the first coefficient of value
 `1` gives the exact initial `X`-power dividing the reduced polynomial.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -180,7 +184,8 @@ theorem irreduciblePolynomial_coeff_ne_zero_of_abs_eq_one
     {i : ℕ} (hi : v (F.coeff i : K) = 1) :
     F.coeff i ≠ 0 := by
   intro hzero
-  simp [hzero] at hi
+  rw [hzero, ZeroMemClass.coe_zero, map_zero] at hi
+  exact zero_ne_one hi
 
 /-- reduction input: if the leading coefficient has absolute
 value `< 1`, then a coefficient of value `1` occurs strictly before the
@@ -625,7 +630,7 @@ theorem irreduciblePolynomial_scale_by_max_coeff_abs_data
       (∀ i : ℕ, v (g.coeff i) = m⁻¹ * v (f.coeff i)) ∧
         (∀ i : ℕ, v (g.coeff i) ≤ 1) ∧
           v (g.coeff n) = 1 := by
-  let g : K[X] := Polynomial.C (f.coeff n)⁻¹ * f
+  intro g
   have hmne : m ≠ 0 := ne_of_gt hmpos
   have hn_ne : f.coeff n ≠ 0 := by
     intro hzero
@@ -751,7 +756,7 @@ theorem irreduciblePolynomial_normalized_scale_hensel_reduction_factor_input
                   ((F.map (IsLocalRing.residue
                     (absoluteValueValuationSubring v hnonarch)) /ₘ
                       Polynomial.X ^ r).coeff 0) ≠ 0 := by
-  let g : K[X] := Polynomial.C (f.coeff n)⁻¹ * f
+  intro g
   rcases irreduciblePolynomial_scale_by_max_coeff_abs_data
       v hmpos hnmax hbound with
     ⟨hdegree, hcoeff_abs, hcoeff_le, hn_one⟩

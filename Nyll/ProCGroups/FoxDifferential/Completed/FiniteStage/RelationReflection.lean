@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStage
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStage
 
 /-!
 # Finite-stage relation reflection for completed Fox differentials
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.FiniteStag
 This module records the elementary equivalence between membership in a
 finite-stage relation submodule and vanishing in its quotient.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 

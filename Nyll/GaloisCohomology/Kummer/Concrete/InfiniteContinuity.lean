@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
+module
+
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Algebra.OpenSubgroup
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
 
 /-!
 # continuity of Kummer characters for infinite extensions
@@ -22,6 +25,8 @@ asserted here.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
-import Nyll.ProCGroups.Completion.ProCInteger
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
+public import Nyll.ProCGroups.Completion.ProCInteger
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.InverseSystems.Basic
 
 /-!
 # Completed Group Algebra / Basic / All Finite / Stage
@@ -14,6 +18,8 @@ This module defines the finite group-algebra stages \(R[G/U]\), coefficient-chan
 quotient-transition ring homomorphisms, their compatibility laws, and the topological inverse
 system used by the all-finite completion.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

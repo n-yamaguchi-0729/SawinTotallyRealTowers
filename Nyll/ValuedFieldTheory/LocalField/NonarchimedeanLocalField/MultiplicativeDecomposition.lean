@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ProfiniteUnits
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
-import Mathlib.Topology.LocallyConstant.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormContinuity
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ProfiniteUnits
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Mathlib.Topology.LocallyConstant.Basic
 
 /-!
 # Topological decomposition of a local multiplicative group
@@ -19,6 +21,8 @@ downstream separation arguments avoid carrying a uniformizer parameter.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

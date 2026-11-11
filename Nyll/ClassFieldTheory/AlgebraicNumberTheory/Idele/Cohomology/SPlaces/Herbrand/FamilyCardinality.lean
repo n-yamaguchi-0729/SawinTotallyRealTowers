@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyFinite
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Herbrand.FamilyFinite
 
 /-!
 # Cardinalities of finite unrestricted local-block families
@@ -14,6 +16,8 @@ finiteness results and the canonical family instance providers.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField BigOperators ValuativeRel NNReal
 open NumberField IsDedekindDomain
@@ -80,9 +84,7 @@ theorem
       ∏ i,
         relativeUnrestrictedSPlaceLocalDegree
           (K := K) (L := L) S i := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
+  intro d
   let localAction :=
     localBlockFamilyLocalAction d
   let blockAction :=
@@ -178,9 +180,7 @@ theorem
     Nat.card
         (HerbrandHMinusOne (L ≃ₐ[K] L)
           (LocalBlockFamily d) σ) = 1 := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
+  intro d
   let localAction :=
     localBlockFamilyLocalAction d
   let blockAction :=

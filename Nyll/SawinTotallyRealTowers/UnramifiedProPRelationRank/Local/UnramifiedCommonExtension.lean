@@ -4,22 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.RelativeUnramifiedFixedField
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFixedFieldCompositum
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.LinearAlgebra.Dimension.Finite
-import Mathlib.GroupTheory.Index
-import Mathlib.SetTheory.Cardinal.Finite
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.RelativeUnramifiedFixedField
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFixedFieldCompositum
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.FiniteUnramifiedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Mathlib.GroupTheory.Index
+public import Mathlib.SetTheory.Cardinal.Finite
 
 /-!
 # Unramified common extensions and fixed-field composita
@@ -28,6 +30,8 @@ The relative unramified fixed field is identified with the compositum of the cho
 intermediate fields. The comparison supplies its degree, Galois structure, residue
 degree, and unramified valuation extension.
 -/
+
+@[expose] public section
 
 noncomputable section
 

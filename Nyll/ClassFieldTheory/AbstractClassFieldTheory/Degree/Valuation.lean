@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusLift
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusLift
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
 
 /-!
 # normalized degree and Frobenius theory: henselian valuations
@@ -15,6 +17,8 @@ in .  Accordingly a valuation and a norm are additive homomorphisms.  This
 file formalizes the valuation-quotient axiom and constructs the normalized valuations of
 normalized-valuation functoriality.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -26,13 +30,12 @@ open CyclicCohomology
 
 noncomputable section
 
-universe u
+universe u v
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The norm `N_{K|k}` on the actual fixed modules. -/
-def normToBase (A : Rep ℤ G) (K : ClosedSubgroup G)
+def normToBase (A : Rep.{v} ℤ G) (K : ClosedSubgroup G)
     [Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) K (le_baseField K))] :
     ambientFixedAddSubgroup A K →+
@@ -158,7 +161,7 @@ finite abstract field. -/
 
 `integers_mem` and `canonical_value_quotient_bijective` are precisely
 condition (i), while `norm_range` is condition (ii). -/
-structure ValuationData (D : DegreeData G) (A : Rep ℤ G) where
+structure ValuationData (D : DegreeData G) (A : Rep.{v} ℤ G) where
   /-- The additive valuation on the distinguished base-field fixed module. -/
   toAddMonoidHom : ambientFixedAddSubgroup A (baseField G) →+ ZHat
   /-- Every integral value occurs in the image of the valuation. -/
@@ -176,7 +179,7 @@ structure ValuationData (D : DegreeData G) (A : Rep ℤ G) where
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- The value group `Z = v(A_k)`. -/
 def valueGroup (v : ValuationData D A) : AddSubgroup ZHat :=

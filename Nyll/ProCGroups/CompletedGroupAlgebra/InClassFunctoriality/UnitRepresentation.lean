@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Comparison
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.Comparison
 
 /-!
 # Unit representations in the in-class completion
@@ -13,6 +15,8 @@ This file studies the continuous group-like unit representation in an in-class c
 algebra. Its image spans densely, and scalar restriction along it equips profinite modules with a
 continuous group action.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -127,15 +131,12 @@ theorem completedGroupAlgebraInClass_module_induces_continuous_gmodule
     (A : Type (max u v)) [AddCommGroup A] [TopologicalSpace A]
     [Module (CompletedGroupAlgebraInClass C R G) A]
     [ContinuousSMul (CompletedGroupAlgebraInClass C R G) A] :
-    letI : DistribMulAction G A :=
+    let : DistribMulAction G A :=
       unitRepresentationDistribMulAction G (CompletedGroupAlgebraInClass C R G) A
         (completedGroupAlgebraUnitRepresentation R G (CompletedGroupAlgebraInClass C R G)
             (toCompletedGroupAlgebraInClassRingHom C R G))
     ContinuousSMul G A := by
-  let : DistribMulAction G A :=
-    unitRepresentationDistribMulAction G (CompletedGroupAlgebraInClass C R G) A
-      (completedGroupAlgebraUnitRepresentation R G (CompletedGroupAlgebraInClass C R G)
-        (toCompletedGroupAlgebraInClassRingHom C R G))
+  intro sharedOwner1
   exact unitRepresentation_continuousSMul G (CompletedGroupAlgebraInClass C R G) A
     (completedGroupAlgebraUnitRepresentation R G (CompletedGroupAlgebraInClass C R G)
         (toCompletedGroupAlgebraInClassRingHom C R G))

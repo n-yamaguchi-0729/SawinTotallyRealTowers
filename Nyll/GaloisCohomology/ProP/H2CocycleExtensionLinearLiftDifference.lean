@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 
 /-!
 # Difference calculations for linear and character-corrected lifts
@@ -16,6 +18,8 @@ These formulas use the actual coefficient coordinates of the existing lifts.
 In particular, agreement of a correction character with the lift difference on
 a subgroup is exactly the condition for the corrected lift to kill that subgroup.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalKernel
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalLinearMap
-import Nyll.GaloisCohomology.ProP.H2InflationRangeBound
-import Mathlib.LinearAlgebra.Dimension.LinearMap
-import Mathlib.Algebra.Field.ZMod
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalKernel
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalLinearMap
+public import Nyll.GaloisCohomology.ProP.H2InflationRangeBound
+public import Mathlib.LinearAlgebra.Dimension.LinearMap
+public import Mathlib.Algebra.Field.ZMod
 
 /-!
 # Embedding actual finite-stage inflation ranges in the radical dual
@@ -18,6 +20,8 @@ the map onto the inflation range therefore gives an injective map from
 that range to the radical dual. This uses only the proved kernel inclusion;
 no compatibility of sections at different finite stages is required.
 -/
+
+@[expose] public section
 
 open scoped NumberField Topology
 noncomputable section

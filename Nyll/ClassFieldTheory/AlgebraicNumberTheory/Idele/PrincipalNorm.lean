@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
-import Mathlib.RingTheory.FractionalIdeal.Norm
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Mathlib.RingTheory.FractionalIdeal.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The product formula for principal ideles
@@ -16,6 +21,8 @@ copy of `Kˣ`, and hence descends to the idele class group.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct NNReal WithZero
 open NumberField IsDedekindDomain

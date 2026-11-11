@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Module.ZLattice.Basic
-import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
-import Mathlib.LinearAlgebra.Matrix.Gershgorin
+module
+
+public import Mathlib.Algebra.Module.ZLattice.Basic
+public import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
+public import Mathlib.LinearAlgebra.Matrix.Gershgorin
 
 /-!
 # Permutation-stable sublattices
@@ -19,6 +21,8 @@ over the finite group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -530,12 +534,12 @@ theorem averagedLatticeVector_equivariant
     have hindex :
         (ρ (g * h)).symm (ρ g i) = (ρ h).symm i := by
       rw [Equiv.symm_apply_eq]
-      simp [map_mul]
+      simp only [map_mul, Equiv.Perm.mul_apply, Equiv.apply_symm_apply]
     have hcoordinate :
         (ρ (g * h)).symm j =
           (ρ h).symm ((ρ g).symm j) := by
       rw [Equiv.symm_apply_eq]
-      simp [map_mul]
+      simp only [map_mul, Equiv.Perm.mul_apply, Equiv.apply_symm_apply]
     rw [hindex, hcoordinate]
   calc
     ∑ h : G, F h = ∑ h : G, H (g * h) := by

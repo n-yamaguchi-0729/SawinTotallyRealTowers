@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticBasisDiscriminant
-import Nyll.SawinTotallyRealTowers.QuadraticIntegerBasis
-import Mathlib.NumberTheory.NumberField.Discriminant.Defs
-import Mathlib.NumberTheory.NumberField.Norm
-import Mathlib.Tactic.FinCases
-import Mathlib.Tactic.LinearCombination
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Ring
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticBasisDiscriminant
+public import Nyll.SawinTotallyRealTowers.QuadraticIntegerBasis
+public import Mathlib.NumberTheory.NumberField.Discriminant.Defs
+public import Mathlib.NumberTheory.NumberField.Norm
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.LinearCombination
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Ring
 
 /-!
 # Discriminants of squarefree quadratic number fields
@@ -21,6 +23,8 @@ field discriminant. Integer traces agree with rational traces after scalar
 extension, so the two-by-two trace determinants give `4d` or `d` according
 to the signed radicand modulo four.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField

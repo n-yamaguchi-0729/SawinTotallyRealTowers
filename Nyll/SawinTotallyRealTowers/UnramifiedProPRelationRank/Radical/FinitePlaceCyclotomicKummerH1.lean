@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
-import Nyll.ProCGroups.ProP.ContinuousH1
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Local Kummer H¹ over the cyclotomic base
@@ -21,6 +23,8 @@ This is the intrinsic-local endpoint of the desired finite-place comparison.  Tr
 chosen global decomposition subgroup still requires a topological local--global Galois
 equivalence; the available localization comparison is only a `MulEquiv`.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology
@@ -194,7 +198,9 @@ theorem finitePlaceCyclotomicCompletionH1Valuation_kummer
     finitePlaceCyclotomicCompletionH1Valuation F p v
         (finitePlaceCyclotomicCompletionKummerH1LinearEquiv F p v x) =
       finitePlaceLocalPowerClassValuation (FinitePlaceCyclotomicBase F p) p v x := by
-  simp [finitePlaceCyclotomicCompletionH1Valuation]
+  exact congrArg
+    (finitePlaceLocalPowerClassValuation (FinitePlaceCyclotomicBase F p) p v)
+    ((finitePlaceCyclotomicCompletionKummerH1LinearEquiv F p v).symm_apply_apply x)
 
 /-- The transported valuation on intrinsic local `H¹` is surjective. -/
 theorem finitePlaceCyclotomicCompletionH1Valuation_surjective

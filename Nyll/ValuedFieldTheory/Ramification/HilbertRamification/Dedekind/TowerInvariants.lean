@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # Hilbert ramification theory: ramification and inertia in towers
@@ -14,6 +16,8 @@ degrees used in the prime-decomposition tower identity.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

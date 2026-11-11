@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportInertiaCorrection
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteInertiaUnramifiedFactor
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLiftDifference
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportInertiaCorrection
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteInertiaUnramifiedFactor
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLiftDifference
 
 /-!
 # The actual radical functional detects stage inflation
@@ -17,6 +19,8 @@ chosen lift's inertia defects. Correcting the lift by this character kills
 every finite inertia group. The actual maximal-unramified factor therefore
 lifts the stage quotient, forcing its inflated degree-two class to vanish.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField Topology

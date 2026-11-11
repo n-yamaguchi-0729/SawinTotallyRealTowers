@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedSymbol
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedSymbol
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Main
+public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
 
 /-!
 # Abstract reciprocity, maximal-unramified reciprocity
@@ -19,15 +21,18 @@ finite compatibility and then records the two formulas.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace ClassFormation
 
 open ClassFormation CyclicCohomology KummerTheory
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 namespace ValuationData
 
@@ -40,7 +45,7 @@ theorem maximalUnramifiedNormResidueSymbol_finiteRestriction
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     (hUnramified : L.IsUnramified D) :
-    letI : Finite (K.field.toSubgroup ⧸
+    let : Finite (K.field.toSubgroup ⧸
         extensionSubgroup K.field L.field L.below) := L.finite
     ∀ a : ambientFixedAddSubgroup A K.field,
     Additive.ofMul
@@ -50,9 +55,7 @@ theorem maximalUnramifiedNormResidueSymbol_finiteRestriction
       (v.unramifiedReciprocityEquiv hAxiom
         K L.field L.below hUnramified).symm
         (finiteNormClass A K.field L.field L.below a) := by
-  let : Finite (K.field.toSubgroup ⧸
-      extensionSubgroup K.field L.field L.below) := L.finite
-  intro a
+  intro sharedOwner1 a
   exact (maximalUnramifiedNormResidueSymbol_finiteRestriction_of_generator v hAxiom
     K L hUnramified
       (D.finiteReciprocityHom A v hAxiom K L.field L.below)
@@ -70,7 +73,7 @@ theorem normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field)
     (hUnramified : L.IsUnramified D)
     (a : ambientFixedAddSubgroup A K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     D.normResidueSymbol A v hcf K L
@@ -80,9 +83,7 @@ theorem normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
           (DegreeData.finiteUnramifiedRestriction D
             (K.toFiniteResidueAbstractField D) L hUnramified
             (maximalUnramifiedNormResidueSymbol v K a).toMul)) := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
+  intro sharedOwner1
   let hAxiom :=
     v.classFieldAxiom_implies_unramifiedUnitCohomology hcf
   let q :=

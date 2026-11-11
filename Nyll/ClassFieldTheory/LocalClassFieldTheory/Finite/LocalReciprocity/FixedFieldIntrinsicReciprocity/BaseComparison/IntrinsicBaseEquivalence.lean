@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldLocalData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldLocalData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
 /-!
 # Intrinsic-to-ambient base equivalences
@@ -16,6 +18,10 @@ realization as a fixing subgroup in an ambient separable closure.
 -/
 
 
+
+@[expose] public section
+
+universe u v
 
 noncomputable section
 
@@ -28,7 +34,7 @@ open scoped ValuativeRel
 /-- The fixing subgroup of the image of a finite extension embedded in
 `SeparableClosure K` has finite index in the ambient base-field subgroup. -/
 theorem ambientEmbeddedAbsoluteQuotientFinite
-    (K F : Type) [Field K] [Field F]
+    (K : Type u) (F : Type v) [Field K] [Field F]
     [Algebra K F] [FiniteDimensional K F]
     (i : F →ₐ[K] SeparableClosure K) :
     let H₀ :=
@@ -40,9 +46,7 @@ theorem ambientEmbeddedAbsoluteQuotientFinite
         extensionSubgroup
           (baseField Gal(SeparableClosure K / K))
           H₀ (le_baseField H₀)) := by
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
+  intro H₀
   let : FiniteDimensional K (AlgHom.fieldRange i) :=
     (AlgEquiv.ofInjectiveField i).toLinearEquiv.finiteDimensional
   let G := Gal(SeparableClosure K / K)
@@ -55,7 +59,7 @@ theorem ambientEmbeddedAbsoluteQuotientFinite
         (AlgHom.fieldRange i)⟩
   let Bbase : Bases :=
     ⟨baseField G, le_baseField H₀⟩
-  let Q : Bases → Type := fun B =>
+  let Q : Bases → Type u := fun B =>
     B.1.toSubgroup ⧸ extensionSubgroup B.1 H₀ B.2
   have hBase : Bfix = Bbase := by
     apply Subtype.ext
@@ -105,7 +109,7 @@ theorem intrinsicBase_normalizedDegree_eq_ambientFixedField
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K)) :
     let F := abstractFixedField K (SeparableClosure K) H.field
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (τ : (intrinsicAbstractBase F).toSubgroup),
@@ -126,11 +130,7 @@ theorem intrinsicBase_normalizedDegree_eq_ambientFixedField
         ((abstractSubgroupEquivGaloisGroup
           K (SeparableClosure K) H.field).symm
             (AlgEquiv.autCongr e τ.1)) := by
-  dsimp only
-  let F := abstractFixedField K (SeparableClosure K) H.field
-  let : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
-  intro e τ
+  intro F reusedStructure2 e τ
   let : FiniteDimensional K F :=
     abstractFixedField_finiteDimensional
       K (SeparableClosure K) H.field H.finite
@@ -148,20 +148,16 @@ theorem intrinsicBase_normalizedDegree_eq_ambientFixedField
 /-- A separable-closure equivalence identifies the intrinsic base subgroup of a
 finite fixed field with its defining subgroup in the ambient Galois group. -/
 noncomputable def intrinsicBaseEquivAmbientFixedField
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K)) :
     let F := abstractFixedField K (SeparableClosure K) H.field
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
     (e : SeparableClosure F ≃ₐ[F] SeparableClosure K) →
       (intrinsicAbstractBase F).toSubgroup ≃*
         H.field.toSubgroup := by
-  dsimp only
-  let F := abstractFixedField K (SeparableClosure K) H.field
-  letI : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
-  intro e
+  intro F reusedStructure2 e
   let φ :
       Gal(SeparableClosure F / F) ≃*
         H.field.toSubgroup :=
@@ -174,7 +170,7 @@ noncomputable def intrinsicBaseEquivAmbientFixedField
 equivalence is conjugation followed by the standard fixed-field subgroup equivalence. -/
 @[simp]
 theorem intrinsicBaseEquivAmbientFixedField_apply_val
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K)) :
     let F := abstractFixedField K (SeparableClosure K) H.field
@@ -195,20 +191,18 @@ separable-closure equivalence identifies its intrinsic base subgroup with the
 ambient subgroup fixing the embedding's field range. -/
 noncomputable def
     intrinsicBaseEquivAmbientEmbeddedField
-    (K F : Type) [Field K] [Field F]
+    (K : Type u) (F : Type v) [Field K] [Field F]
     [Algebra K F] [FiniteDimensional K F] [Algebra.IsSeparable K F]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     (e : SeparableClosure F ≃ₐ[F] SeparableClosure K) →
       (intrinsicAbstractBase F).toSubgroup ≃*
         (closedFixingSubgroup K (SeparableClosure K)
           (AlgHom.fieldRange i)).toSubgroup := by
-  letI : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e
+  intro intrinsicClosureAlgebra embeddedClosureAlgebra e
   let H₀ :=
     closedFixingSubgroup K (SeparableClosure K)
       (AlgHom.fieldRange i)
@@ -311,19 +305,19 @@ obtained by conjugating the intrinsic automorphism through the chosen
 separable-closure equivalence. -/
 theorem
     intrinsicBaseEquivAmbientEmbeddedField_apply
-    (K F : Type) [Field K] [Field F]
+    (K : Type u) (F : Type v) [Field K] [Field F]
     [Algebra K F] [FiniteDimensional K F] [Algebra.IsSeparable K F]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (tau : (intrinsicAbstractBase F).toSubgroup),
       let H₀ :=
         closedFixingSubgroup K (SeparableClosure K)
           (AlgHom.fieldRange i)
-      letI hHabsolute : Finite
+      let hHabsolute : Finite
           ((baseField
             Gal(SeparableClosure K / K)).toSubgroup ⧸
             extensionSubgroup
@@ -372,27 +366,7 @@ theorem
       intrinsicBaseEquivAmbientEmbeddedField K F i e tau =
         (abstractSubgroupEquivGaloisGroup
           K (SeparableClosure K) H₀).symm rho := by
-  let : Algebra F (SeparableClosure F) :=
-    (separableClosure F (AlgebraicClosure F)).algebra
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e tau
-  dsimp only
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let hHabsolute : Finite
-      ((baseField
-        Gal(SeparableClosure K / K)).toSubgroup ⧸
-        extensionSubgroup
-          (baseField Gal(SeparableClosure K / K))
-          H₀ (le_baseField H₀)) := by
-    exact ambientEmbeddedAbsoluteQuotientFinite K F i
-  let H : FiniteAbstractField
-      Gal(SeparableClosure K / K) :=
-    ⟨H₀, hHabsolute⟩
-  let F₀ :=
-    abstractFixedField K (SeparableClosure K) H₀
+  intro sharedOwner1 sharedOwner2 e tau H₀ hHabsolute H F₀ hfixed phi rho
   let : FiniteDimensional K F₀ :=
     abstractFixedField_finiteDimensional
       K (SeparableClosure K) H₀ hHabsolute
@@ -406,14 +380,6 @@ theorem
   let e₀ : SeparableClosure F₀ ≃ₐ[F₀] SeparableClosure K :=
     IsSepClosure.equiv F₀
       (SeparableClosure F₀) (SeparableClosure K)
-  have hfixed :
-      F₀ = AlgHom.fieldRange i :=
-    InfiniteGalois.fixedField_fixingSubgroup
-      (AlgHom.fieldRange i)
-  let phiAlg : F ≃ₐ[K] F₀ :=
-    (i.equivFieldRange).trans
-      (IntermediateField.equivOfEq hfixed.symm)
-  let phi : F ≃+* F₀ := phiAlg.toRingEquiv
   let c : SeparableClosure F ≃+* SeparableClosure F₀ :=
     e.toRingEquiv.trans e₀.symm.toRingEquiv
   have hc (x : F) :
@@ -438,33 +404,6 @@ theorem
           apply c.injective
           rw [c.apply_symm_apply, hc, phi.apply_symm_apply]
         rw [hpre, tau.1.commutes, hc, phi.apply_symm_apply] }
-  let rho : Gal(SeparableClosure K / F₀) :=
-    { e.symm.toRingEquiv.trans
-        (tau.1.toRingEquiv.trans e.toRingEquiv) with
-      commutes' := fun x => by
-        change e (tau.1 (e.symm
-          (algebraMap F₀ (SeparableClosure K) x))) =
-            algebraMap F₀ (SeparableClosure K) x
-        have hpre :
-            e.symm
-                (algebraMap F₀ (SeparableClosure K) x) =
-              algebraMap F (SeparableClosure F) (phi.symm x) := by
-          apply e.injective
-          rw [e.apply_symm_apply, e.commutes]
-          change (x : SeparableClosure K) =
-            i (phi.symm x)
-          rw [← show
-            ((phi (phi.symm x) : F₀) :
-                SeparableClosure K) =
-              i (phi.symm x) by rfl,
-            phi.apply_symm_apply]
-        rw [hpre, tau.1.commutes, e.commutes]
-        change i (phi.symm x) = (x : SeparableClosure K)
-        rw [← show
-          ((phi (phi.symm x) : F₀) :
-              SeparableClosure K) =
-            i (phi.symm x) by rfl,
-          phi.apply_symm_apply] }
   have hrho :
       AlgEquiv.autCongr e₀ thetaTau = rho := by
     apply AlgEquiv.ext
@@ -499,12 +438,12 @@ theorem
 by conjugating the intrinsic automorphism through the chosen equivalence. -/
 theorem
     intrinsicBaseEquivAmbientEmbeddedField_apply_val
-    (K F : Type) [Field K] [Field F]
+    (K : Type u) (F : Type v) [Field K] [Field F]
     [Algebra K F] [FiniteDimensional K F] [Algebra.IsSeparable K F]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (tau : (intrinsicAbstractBase F).toSubgroup)
@@ -512,9 +451,7 @@ theorem
       (intrinsicBaseEquivAmbientEmbeddedField
         K F i e tau).1.1 x =
         e (tau.1 (e.symm x)) := by
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e tau x
+  intro intrinsicClosureAlgebra embeddedClosureAlgebra e tau x
   let H₀ :=
     closedFixingSubgroup K (SeparableClosure K)
       (AlgHom.fieldRange i)
@@ -594,16 +531,16 @@ theorem
     [Valuation.HasExtension
       (ValuativeRel.valuation K) (ValuativeRel.valuation F)]
     (i : F →ₐ[K] SeparableClosure K) :
-    letI : Algebra F (SeparableClosure F) :=
+    let : Algebra F (SeparableClosure F) :=
       (separableClosure F (AlgebraicClosure F)).algebra
-    letI : Algebra F (SeparableClosure K) :=
+    let : Algebra F (SeparableClosure K) :=
       i.toRingHom.toAlgebra
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (tau : (intrinsicAbstractBase F).toSubgroup),
       let H₀ :=
         closedFixingSubgroup K (SeparableClosure K)
           (AlgHom.fieldRange i)
-      letI hHabsolute : Finite
+      let hHabsolute : Finite
           ((baseField
             Gal(SeparableClosure K / K)).toSubgroup ⧸
             extensionSubgroup
@@ -619,23 +556,7 @@ theorem
         (localResidueDatum K).normalizedDegree
           (H.toFiniteResidueAbstractField (localResidueDatum K))
           (intrinsicBaseEquivAmbientEmbeddedField K F i e tau) := by
-  let : Algebra F (SeparableClosure K) :=
-    i.toRingHom.toAlgebra
-  intro e tau
-  dsimp only
-  let H₀ :=
-    closedFixingSubgroup K (SeparableClosure K)
-      (AlgHom.fieldRange i)
-  let hHabsolute : Finite
-      ((baseField
-        Gal(SeparableClosure K / K)).toSubgroup ⧸
-        extensionSubgroup
-          (baseField Gal(SeparableClosure K / K))
-          H₀ (le_baseField H₀)) := by
-    exact ambientEmbeddedAbsoluteQuotientFinite K F i
-  let H : FiniteAbstractField
-      Gal(SeparableClosure K / K) :=
-    ⟨H₀, hHabsolute⟩
+  intro intrinsicClosureAlgebra embeddedClosureAlgebra e tau H₀ hHabsolute H
   rw [intrinsicBase_normalizedDegree_eq_localResidueDegree F tau]
   have hdegree :=
     localResidueDegree_eq_normalizedDegree_finiteExtensionEquiv

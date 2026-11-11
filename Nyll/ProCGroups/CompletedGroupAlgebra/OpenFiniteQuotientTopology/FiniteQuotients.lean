@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.CanonicalMaps
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Finite coefficient-and-group quotients
@@ -13,6 +16,8 @@ This file constructs the finite group-algebra stages obtained by quotienting bot
 and the group. It develops their quotient maps, kernels, transition maps, basis formulas,
 continuity, and surjectivity.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -59,14 +64,13 @@ theorem finiteGroupAlgebra_mapRangeRingHom_continuous
     (S : Type u) [CommRing S] [TopologicalSpace S]
     (Q : Type v) [Group Q] [Finite Q]
     (f : R →+* S) (hf : Continuous f) :
-    letI : TopologicalSpace (MonoidAlgebra R Q) := finiteGroupAlgebraTopology R Q
-    letI : TopologicalSpace (MonoidAlgebra S Q) := finiteGroupAlgebraTopology S Q
+    let : TopologicalSpace (MonoidAlgebra R Q) := finiteGroupAlgebraTopology R Q
+    let : TopologicalSpace (MonoidAlgebra S Q) := finiteGroupAlgebraTopology S Q
     Continuous (MonoidAlgebra.mapRingHom Q f :
       MonoidAlgebra R Q → MonoidAlgebra S Q) := by
   classical
+  intro sharedOwner1 sharedOwner2
   let : Fintype Q := Fintype.ofFinite Q
-  let : TopologicalSpace (MonoidAlgebra R Q) := finiteGroupAlgebraTopology R Q
-  let : TopologicalSpace (MonoidAlgebra S Q) := finiteGroupAlgebraTopology S Q
   let eS : MonoidAlgebra S Q ≃ (Q → S) :=
     MonoidAlgebra.coeffEquiv.trans Finsupp.equivFunOnFinite
   have heS : Topology.IsInducing (eS : MonoidAlgebra S Q → Q → S) :=
@@ -91,11 +95,11 @@ finite-product topology.
 theorem finiteGroupAlgebraTopology_discrete_of_discrete_coeff
     (S : Type u) [CommRing S] [TopologicalSpace S] [DiscreteTopology S]
     (Q : Type v) [Finite Q] :
-    letI : TopologicalSpace (MonoidAlgebra S Q) := finiteGroupAlgebraTopology S Q
+    let : TopologicalSpace (MonoidAlgebra S Q) := finiteGroupAlgebraTopology S Q
     DiscreteTopology (MonoidAlgebra S Q) := by
   classical
+  intro sharedOwner1
   let : Fintype Q := Fintype.ofFinite Q
-  let : TopologicalSpace (MonoidAlgebra S Q) := finiteGroupAlgebraTopology S Q
   let e : MonoidAlgebra S Q ≃ (Q → S) :=
     MonoidAlgebra.coeffEquiv.trans Finsupp.equivFunOnFinite
   exact DiscreteTopology.of_continuous_injective

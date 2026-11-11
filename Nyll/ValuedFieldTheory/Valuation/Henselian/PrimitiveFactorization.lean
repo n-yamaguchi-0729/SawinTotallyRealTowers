@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveReduction
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveReduction
 
 /-!
 # Primitive irreducible reductions and Hensel factorization
@@ -16,6 +18,8 @@ power of one irreducible residual polynomial.  Unique factorization then
 partitions the fraction-field irreducible factors along any coprime residual
 factorization.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -326,7 +330,7 @@ theorem henselFactorization_of_primitiveIrreducibleReductionProperty
       _ = (gbar * hbar') *
           (ubar : Polynomial (IsLocalRing.ResidueField V)) := by
         dsimp [hbar']
-        simp [mul_assoc]
+        simp only [mul_assoc, Units.inv_mul, mul_one]
   have hcoprime' : IsCoprime gbar hbar' := by
     rcases hcoprime with ⟨A, B, hbez⟩
     refine ⟨A, B * (ubar : Polynomial (IsLocalRing.ResidueField V)), ?_⟩
@@ -351,7 +355,7 @@ theorem henselFactorization_of_primitiveIrreducibleReductionProperty
     change (H₀ * U).map (IsLocalRing.residue V) = hbar
     rw [Polynomial.map_mul, hH₀map, hmapU]
     dsimp [hbar']
-    simp [mul_assoc]
+    simp only [mul_assoc, Units.inv_mul, mul_one]
   have hgh0 : gbar * hbar ≠ 0 := by
     rw [← hfactor]
     exact hfbar

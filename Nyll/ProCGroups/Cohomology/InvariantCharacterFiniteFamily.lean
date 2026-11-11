@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteStage
+module
+
+public import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteStage
 
 /-!
 # Common finite-stage descent for finite families of invariant characters
@@ -13,6 +15,8 @@ A finite family of ambient-conjugation-invariant continuous mod-`p` characters o
 subgroup descends to one common finite `p`-group quotient.  The construction preserves all
 pointwise `ZMod p`-linear relations, which is the finite-stage input needed for dimension arguments.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

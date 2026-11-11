@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.CoefficientReduction
-import Nyll.ProCGroups.ProP.Zassenhaus.GroupLike
+module
+
+public import Nyll.ProCGroups.ProP.Fox.CoefficientReduction
+public import Nyll.ProCGroups.ProP.Zassenhaus.GroupLike
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # Compatibility of mod-p coefficient reduction
@@ -14,6 +17,8 @@ The continuous coefficient-reduction homomorphism preserves group-like
 elements, commutes with augmentation, and carries the algebraic and closed
 augmentation filtrations to their mod-`p` counterparts.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

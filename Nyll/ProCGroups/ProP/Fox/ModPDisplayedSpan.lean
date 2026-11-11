@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPBoundary
-import Nyll.ProCGroups.ProP.Fox.ClosedSpan
-import Nyll.ProCGroups.ProP.Fox.CoefficientReductionCompatibility
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPBoundary
+public import Nyll.ProCGroups.ProP.Fox.ClosedSpan
+public import Nyll.ProCGroups.ProP.Fox.CoefficientReductionCompatibility
 
 /-!
 # Mod-p images of the displayed Fox-row span
@@ -16,6 +18,8 @@ to their mod-`p` counterparts.  The integral closed-span theorem and the
 closed range of the finite mod-`p` relation matrix then show that every
 kernel Fox row belongs to that matrix range.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

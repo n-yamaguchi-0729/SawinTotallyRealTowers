@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Mathlib.RingTheory.RamificationInertia.Ramification
-import Mathlib.RingTheory.LocalRing.RingHom.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Mathlib.RingTheory.RamificationInertia.Ramification
+public import Mathlib.RingTheory.LocalRing.RingHom.Basic
 
 /-!
 # Unramifiedness across an actual finite local-field equivalence
@@ -18,18 +20,23 @@ membership supplies it. The two extension towers are fixed explicitly, with
 no new data instances and one local formally-unramified proof instance.
 -/
 
+@[expose] public section
+
 open scoped ValuativeRel
 noncomputable section
+universe u v w
+
 namespace ClassFieldTower.Martinet.Shafarevich
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-variable (K L M : Type) [Field K] [ValuativeRel K]
+variable (K : Type u) (L : Type v) (M : Type w) [Field K] [ValuativeRel K]
   [Field L] [ValuativeRel L] [Field M] [ValuativeRel M]
   [Algebra K L] [Algebra K M]
   [IsIntegralClosure 𝒪[L] 𝒪[K] L] [IsIntegralClosure 𝒪[M] 𝒪[K] M]
 
-private theorem finiteLocalAlgEquiv_mem_integerRing (e : L ≃ₐ[K] M) (x : 𝒪[L]) :
+/-- A base-field equivalence preserves the integer rings defined by integral closure. -/
+theorem finiteLocalAlgEquiv_mem_integerRing (e : L ≃ₐ[K] M) (x : 𝒪[L]) :
     e (x : L) ∈ 𝒪[M] := by
   have hx : IsIntegral 𝒪[K] (x : L) :=
     (IsIntegralClosure.isIntegral_iff (A := 𝒪[L]) (R := 𝒪[K]) (B := L)).2 ⟨x, rfl⟩

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.SubtypeLinear
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.SubtypeLinear
 
 /-!
 # Fox differential: completed — finite stage — basic
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `foxCommutatorPowerRelatorSet_subset`
   The finite Fox commutator-power relator set is contained in N.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

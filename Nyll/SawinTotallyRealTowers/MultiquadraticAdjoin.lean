@@ -4,18 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticSquareDescent
-import Nyll.SawinTotallyRealTowers.SquareRootAdjoin
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.Group.Even
-import Mathlib.Data.Set.Image
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Empty
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.Tactic.FieldSimp
-import Mathlib.Tactic.Ring
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticSquareDescent
+public import Nyll.SawinTotallyRealTowers.SquareRootAdjoin
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Group.Even
+public import Mathlib.Data.Set.Image
+public import Mathlib.Data.Finset.Card
+public import Mathlib.Data.Finset.Empty
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Defs
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.Tactic.FieldSimp
+public import Mathlib.Tactic.Ring
 
 /-!
 # Degree and square classes of multiquadratic extensions
@@ -26,6 +28,8 @@ classification are proved simultaneously: classification in the previous
 layer guarantees that the next square root gives a quadratic extension.
 The reverse square-class implication constructs the product of the roots.
 -/
+
+@[expose] public section
 
 open scoped BigOperators
 universe u v w

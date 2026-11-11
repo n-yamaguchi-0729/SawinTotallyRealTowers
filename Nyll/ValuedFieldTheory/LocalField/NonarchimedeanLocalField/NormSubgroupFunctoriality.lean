@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
 /-!
 # Functoriality of finite-extension norm subgroups
@@ -16,7 +18,11 @@ identities for unit norms and their images in the base field.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w
 
 namespace LocalFieldTheory
 
@@ -25,7 +31,7 @@ open LocalFieldTheory
 /-- Enlarging the top field in a finite tower can only shrink its norm
 subgroup in the base field. -/
 theorem normSubgroup_le_of_tower
-    (K M L : Type) [Field K] [Field M] [Field L]
+    (K : Type u) (M : Type v) (L : Type w) [Field K] [Field M] [Field L]
     [Algebra K M] [Algebra M L] [Algebra K L]
     [IsScalarTower K M L] [FiniteDimensional M L] :
     localNormSubgroup K L ≤ localNormSubgroup K M := by
@@ -36,7 +42,7 @@ theorem normSubgroup_le_of_tower
 /-- The norm on units is unchanged after replacing a finite extension by an
 isomorphic realization. -/
 theorem normUnits_algEquiv
-    (K L M : Type) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     (e : L ≃ₐ[K] M) (x : Lˣ) :
     normUnits K M (Units.mapEquiv e.toMulEquiv x) = normUnits K L x := by
@@ -46,7 +52,7 @@ theorem normUnits_algEquiv
 /-- Norm subgroups are unchanged after replacing an extension by an
 isomorphic realization. -/
 theorem normSubgroup_algEquiv
-    (K L M : Type) [Field K] [Field L] [Field M]
+    (K : Type u) (L : Type v) (M : Type w) [Field K] [Field L] [Field M]
     [Algebra K L] [Algebra K M]
     (e : L ≃ₐ[K] M) :
     localNormSubgroup K M = localNormSubgroup K L := by
@@ -69,7 +75,7 @@ theorem normSubgroup_algEquiv
 /-- An algebra embedding of finite extensions reverses inclusion of their
 norm subgroups. -/
 theorem normSubgroup_le_of_algHom
-    (K M D : Type) [Field K] [Field M] [Field D]
+    (K : Type u) (M : Type v) (D : Type w) [Field K] [Field M] [Field D]
     [Algebra K M] [Algebra K D]
     [FiniteDimensional K M] [FiniteDimensional K D]
     (i : M →ₐ[K] D) :

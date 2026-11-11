@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Nyll.ProCGroups.ProP.Presentation.Minimal
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.Defs
-import Mathlib.Algebra.Module.Pi
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Nyll.ProCGroups.ProP.Presentation.Minimal
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.Defs
+public import Mathlib.Algebra.Module.Pi
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ProCGroups.Presentations.Profinite
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
 
 /-!
 # Invariant continuous characters of a presentation kernel
@@ -22,6 +26,8 @@ finite pro-`p` presentation as a `ZMod p`-submodule.  Evaluation on the displaye
 injective, so this invariant character space is finite-dimensional of rank at most the displayed
 relation count.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

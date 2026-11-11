@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
 
 /-!
 # The normalized integer valuation of a local field
@@ -20,13 +24,15 @@ residue field are preserved.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalFieldTheory
 
 open scoped ValuativeRel
 
-universe u
+universe u v
 
 variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
@@ -60,7 +66,7 @@ open _root_.ValuationTheory.DiscreteValuationField.ValuedExtension
 valuation integer ring.  This transports the finite-module theorem for the
 complete-DVF packages along the equality of their valuations. -/
 theorem integerRing_moduleFinite_of_finite_separable
-    (L : Type u) [Field L] [Algebra K L] [FiniteDimensional K L]
+    (L : Type v) [Field L] [Algebra K L] [FiniteDimensional K L]
     [Algebra.IsSeparable K L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L]
     [Valuation.HasExtension (ValuativeRel.valuation K)
@@ -218,7 +224,7 @@ theorem localIntegerValuationSubringEquiv_map_maximalIdeal :
     exact
       (localIntegerValuationSubringEquiv_mem_maximalIdeal_iff K x).2 hx
   · intro hy
-    refine ⟨e.symm y, ?_, by simp [e]⟩
+    refine ⟨e.symm y, ?_, e.apply_symm_apply y⟩
     exact
       (localIntegerValuationSubringEquiv_mem_maximalIdeal_iff K
         (e.symm y)).1 (by simpa [e] using hy)
@@ -275,7 +281,7 @@ noncomputable instance localIntegerValuation_isCompleteDiscrete :
           (localIntegerValuationSubringEquiv_mem_maximalIdeal_iff K
             (e.symm y)).1 (by simpa [e] using hy)
       · intro hx
-        refine ⟨e x, ?_, by simp [e]⟩
+        refine ⟨e x, ?_, e.symm_apply_apply x⟩
         exact
           (localIntegerValuationSubringEquiv_mem_maximalIdeal_iff K x).2 hx
     simpa [hmap] using hcomplete

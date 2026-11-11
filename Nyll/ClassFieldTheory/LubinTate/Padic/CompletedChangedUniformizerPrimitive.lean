@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveAction
+module
+
+public import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveAction
 
 /-!
 # Primitive changed-uniformizer points in the completed p-adic level
@@ -19,6 +21,8 @@ completed level over the completed-unramified coefficient field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

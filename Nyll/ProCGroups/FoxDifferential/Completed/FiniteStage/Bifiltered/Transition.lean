@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.TargetMap
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.TargetMap
 
 /-!
 # Fox differential: completed — finite stage — bifiltered — transition
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageBifilteredTargetGroupAlgebraMap_of`
   Evaluation of the bifiltered target-group-algebra transition on a represented word.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

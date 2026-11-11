@@ -4,8 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicFinitePlaceArtin
-import Mathlib.Algebra.BigOperators.Finprod
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicFinitePlaceArtin
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
 
 /-!
 # Away-from-p factors of a rational cyclotomic principal idele
@@ -20,6 +26,8 @@ away-from-`p` finite product.  The construction also applies to `k = 0`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -110,7 +118,9 @@ private theorem rationalCyclotomicPrincipalHeightOneArtinInput_spec
           (IdeleGroup.principalIdele ℚ x)) := by
   rfl
 
-private noncomputable def rationalCyclotomicPrincipalHeightOneCharacter
+/-- The cyclotomic coordinate of the principal idele's chosen Artin symbol
+at a rational height-one prime. -/
+noncomputable def rationalCyclotomicPrincipalHeightOneCharacter
     (p : Nat.Primes) (k : ℕ) (x : ℚˣ)
     (v : HeightOneSpectrum (𝓞 ℚ)) :
     (ZMod (p.1 ^ k))ˣ :=
@@ -121,7 +131,14 @@ private noncomputable def rationalCyclotomicPrincipalHeightOneCharacter
     (hK :=
       KummerTheory.rationalCyclotomicLevel_isCyclotomicExtension
         ⟨p.1 ^ k, pow_pos p.2.pos k⟩)
-    (rationalCyclotomicPrincipalHeightOneArtinInput p k x v)
+    (chosenFinitePlaceArtinMonoidHom
+      (K := ℚ)
+      (L :=
+        KummerTheory.rationalCyclotomicLevel
+          ⟨p.1 ^ k, pow_pos p.2.pos k⟩)
+      v
+      (IdeleGroup.finiteComponent v
+        (IdeleGroup.principalIdele ℚ x)))
 
 /-- The named height-one character is the cyclotomic coordinate of the
 chosen finite-place Artin symbol. -/
@@ -144,8 +161,7 @@ theorem rationalCyclotomicPrincipalHeightOneCharacter_spec
           v
           (IdeleGroup.finiteComponent v
             (IdeleGroup.principalIdele ℚ x))) := by
-  rw [rationalCyclotomicPrincipalHeightOneCharacter,
-    rationalCyclotomicPrincipalHeightOneArtinInput_spec]
+  rfl
 
 /-- The genuine chosen finite-place Artin character of the rational
 principal idele at the prime `q`, evaluated in the `p ^ k` cyclotomic
@@ -294,7 +310,8 @@ theorem rationalCyclotomicPrincipalFinitePlaceCharacter_at_prime_succ_formula
   calc
     rationalCyclotomicPrincipalFinitePlaceCharacter p (n + 1) x p = _ := by
       rw [rationalCyclotomicPrincipalFinitePlaceCharacter_spec,
-        rationalCyclotomicPrincipalHeightOneCharacter]
+        rationalCyclotomicPrincipalHeightOneCharacter,
+        rationalCyclotomicPrincipalHeightOneArtinInput_spec]
     _ = _ := hCharacter
     _ = Units.map
         (PadicInt.toZModPow (p := p.1) (n + 1)).toMonoidHom

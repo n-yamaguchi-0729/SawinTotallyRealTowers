@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityDefinition
+module
+
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityDefinition
 
 /-!
 # The abstract reciprocity construction: independence of the prime element
@@ -14,7 +17,9 @@ This file supplies the finite-Galois cofinality and compositum argument used to 
 reciprocity construction is independent of its prime element.
 -/
 
-universe u
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -367,8 +372,7 @@ end groupTheoreticRefinements
 
 section reciprocityIndependence
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -376,7 +380,7 @@ namespace DegreeData
 Assuming the unit-cohomology axiom, replacing the chosen prime of the Frobenius fixed field
 by any other prime does not change the reciprocity class. -/
 theorem reciprocityValueOfPrime_eq_reciprocityMap
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{v} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -505,9 +509,9 @@ theorem reciprocityValueOfPrime_eq_reciprocityMap
       unramified := hPSunramified }
   have hzero :
       CategoryTheory.Limits.IsZero
-          (tateCohomology (Euc.unitRepresentation v) 0) ∧
+          (IntegralGroupCohomology.Universe.tate (Euc.unitRepresentation v) 0) ∧
         CategoryTheory.Limits.IsZero
-          (tateCohomology (Euc.unitRepresentation v) (-1)) :=
+          (IntegralGroupCohomology.Universe.tate (Euc.unitRepresentation v) (-1)) :=
     hAxiom Kuc Euc
   obtain ⟨ε, hε⟩ :=
     v.exists_unit_relativeNorm_eq_of_tateHZero_isZero

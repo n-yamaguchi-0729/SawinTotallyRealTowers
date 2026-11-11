@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.Analytic.ContinuousFieldUnitLog
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.ContinuousFieldUnitLog
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Finite and uniformizer factors of the field-unit group
@@ -18,6 +23,8 @@ the cyclic group of order `q - 1`, with its (necessarily discrete) topology.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -77,12 +84,11 @@ noncomputable def continuousMulEquivProdComm
 group of order `q - 1`, where `q` is the residue-field cardinality. -/
 noncomputable def residueRootsOfUnityContinuousMulEquivZMod
     (F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, v} K) [Finite F.residueField] :
-    letI : Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
+    let : Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
       _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F
     Multiplicative (ZMod (Nat.card F.residueField - 1)) ≃ₜ*
       residueRootsOfUnityGroup F := by
-  letI : Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
-    _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F
+  intro sharedOwner1
   rw [← Nat.card_units F.residueField]
   let e : Multiplicative (ZMod (Nat.card F.residueFieldˣ)) ≃*
       residueRootsOfUnityGroup F :=
@@ -103,13 +109,12 @@ factors appearing in the decomposition. -/
 noncomputable def fieldUnitsContinuousMulEquivCyclicRootsPrincipalUnitsUniformizer
     (F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, v} K) [Finite F.residueField]
     {π : F.valuationSubring} (hπ : F.valuation.IsUniformizer (π : K)) :
-    letI : Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
+    let : Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
       _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F
     ((Multiplicative (ZMod (Nat.card F.residueField - 1)) ×
         LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F 1) ×
           Multiplicative ℤ) ≃ₜ* Kˣ := by
-  letI : Valued K (MonoidHom.mrange F.valuation.toMonoidWithZeroHom) :=
-    _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued F
+  intro sharedOwner1
   exact
     (continuousMulEquivProdCongr
       (continuousMulEquivProdCongr
@@ -132,13 +137,12 @@ noncomputable def fieldUnitsContinuousMulEquivRootsPrincipalUnitsUniformizerOfWi
     (hπ : v.IsUniformizer (π : K)) :
     let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
       MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-    letI : Finite F.residueField := by
+    let : Finite F.residueField := by
       change Finite (IsLocalRing.ResidueField v.valuationSubring)
       infer_instance
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     fieldUnitDecompositionFactors F ≃ₜ* Kˣ := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
-    MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
+  intro F
   let direct : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   let restricted : Valued K
       (MonoidHom.mrange v.toMonoidWithZeroHom) :=
@@ -151,9 +155,7 @@ noncomputable def fieldUnitsContinuousMulEquivRootsPrincipalUnitsUniformizerOfWi
       (_root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF.mrangeRestrictValued
         (WithZeroValuationTopology.completeDVF v)).toUniformSpace
     exact WithZeroValuationTopology.valuedMk_uniformSpace_eq_mrangeRestrict v
-  haveI : Finite F.residueField := by
-    change Finite (IsLocalRing.ResidueField v.valuationSubring)
-    infer_instance
+  intro sharedOwner3
   let E :=
     letI : Valued K
         (MonoidHom.mrange v.toMonoidWithZeroHom) := restricted
@@ -195,7 +197,7 @@ noncomputable def fieldUnitsContinuousMulEquivRootsPrincipalUnitsUniformizerOfWi
         (unitsTopology restricted.toTopologicalSpace)
         (factorsTopology restricted.toTopologicalSpace) e.symm := by
     exact E.symm.continuous
-  letI : Valued K (WithZero (Multiplicative ℤ)) := direct
+  intro sharedOwner4
   exact
     { e with
       continuous_toFun := by
@@ -225,20 +227,13 @@ noncomputable def residueRootsOfUnityContinuousMulEquivZModOfWithZeroValuation
     [Finite (IsLocalRing.ResidueField v.valuationSubring)] :
     let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
       MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-    letI : Finite F.residueField := by
+    let : Finite F.residueField := by
       change Finite (IsLocalRing.ResidueField v.valuationSubring)
       infer_instance
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Multiplicative (ZMod (Nat.card F.residueField - 1)) ≃ₜ*
       residueRootsOfUnityGroup F := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
-    MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-  haveI : Finite F.residueField := by
-    change Finite (IsLocalRing.ResidueField v.valuationSubring)
-    infer_instance
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  change Multiplicative (ZMod (Nat.card F.residueField - 1)) ≃ₜ*
-    residueRootsOfUnityGroup F
+  intro F sharedOwner1 sharedOwner2
   rw [← Nat.card_units F.residueField]
   let e : Multiplicative (ZMod (Nat.card F.residueFieldˣ)) ≃*
       residueRootsOfUnityGroup F :=
@@ -264,19 +259,14 @@ noncomputable def
     (hπ : v.IsUniformizer (π : K)) :
     let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
       MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-    letI : Finite F.residueField := by
+    let : Finite F.residueField := by
       change Finite (IsLocalRing.ResidueField v.valuationSubring)
       infer_instance
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     ((Multiplicative (ZMod (Nat.card F.residueField - 1)) ×
         LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F 1) ×
           Multiplicative ℤ) ≃ₜ* Kˣ := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
-    MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-  haveI : Finite F.residueField := by
-    change Finite (IsLocalRing.ResidueField v.valuationSubring)
-    infer_instance
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro F sharedOwner1 sharedOwner2
   exact
     (continuousMulEquivProdCongr
       (continuousMulEquivProdCongr
@@ -299,23 +289,14 @@ noncomputable def fieldUnitsContinuousMulEquivUniformizerRootsPrincipalUnitsOfWi
     (P : Type*) [TopologicalSpace P] [MulOneClass P] :
     let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
       MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-    letI : Finite F.residueField := by
+    let : Finite F.residueField := by
       change Finite (IsLocalRing.ResidueField v.valuationSubring)
       infer_instance
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     (P ≃ₜ* LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F 1) →
       Multiplicative ℤ ×
         (Multiplicative (ZMod (Nat.card F.residueField - 1)) × P) ≃ₜ* Kˣ := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
-    MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-  haveI : Finite F.residueField := by
-    change Finite (IsLocalRing.ResidueField v.valuationSubring)
-    infer_instance
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  change (P ≃ₜ* LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F 1) →
-    Multiplicative ℤ ×
-      (Multiplicative (ZMod (Nat.card F.residueField - 1)) × P) ≃ₜ* Kˣ
-  intro eP
+  intro F sharedOwner1 sharedOwner2 eP
   exact
     (continuousMulEquivProdComm (Multiplicative ℤ)
       (Multiplicative (ZMod (Nat.card F.residueField - 1)) × P)).trans

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
+module
+
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
 
 /-!
 # Maximal subgroups of finite p-groups
@@ -13,6 +15,8 @@ This file proves the finite-group source needed for the Burnside basis theorem:
 a maximal subgroup of a finite `p`-group is normal, and its quotient has order
 exactly `p`.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

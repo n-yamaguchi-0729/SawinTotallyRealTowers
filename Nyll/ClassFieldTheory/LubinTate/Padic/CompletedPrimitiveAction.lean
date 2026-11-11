@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveIrreducible
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.Core
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.RingTheory.Adjoin.PowerBasis
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedPrimitiveIrreducible
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.Core
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.CompletedCoefficientEvaluation
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.RingTheory.Adjoin.PowerBasis
 
 /-!
 # Primitive unit action on a completed p-adic Lubin--Tate level
@@ -28,6 +31,8 @@ generates the completed splitting field.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped Polynomial PowerSeries
@@ -37,30 +42,10 @@ namespace LubinTate
 open LocalFieldTheory.DiscreteValuationField
 open LocalFieldTheory.DiscreteValuationField.Examples.Qp
 
-private noncomputable local instance
-    padicCompletedActionTargetWithIdeal
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    WithIdeal
-      (padicCompletedLevelCompleteDVF p n).valuationSubring where
-  i := (padicCompletedLevelCompleteDVF p n).maximalIdeal
-
-private noncomputable local instance
-    padicCompletedActionTargetCompleteSpace
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    CompleteSpace
-      (padicCompletedLevelCompleteDVF p n).valuationSubring := by
-  let target := padicCompletedLevelCompleteDVF p n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
-
-private noncomputable local instance
-    padicCompletedActionTargetT2Space
-    (p : ℕ) [Fact p.Prime] (n : ℕ) :
-    T2Space
-      (padicCompletedLevelCompleteDVF p n).valuationSubring := by
-  let target := padicCompletedLevelCompleteDVF p n
-  have hadic : IsAdic target.maximalIdeal := rfl
-  exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).2
+attribute [local instance]
+  padicCompletedMultiplicativeTargetWithIdeal
+  padicCompletedMultiplicativeTargetCompleteSpace
+  padicCompletedMultiplicativeTargetT2Space
 
 /-- The chosen completed primitive root annihilates the original standard
 primitive polynomial over `ℚ_[p]`. -/
@@ -88,7 +73,7 @@ noncomputable def padicStandardLevelEmbedding
       padicMultiplicativeLubinTateSeries_isUniformizer p
     standardLubinTateLevelField hπ n →ₐ[ℚ_[p]]
       padicCompletedLevelField p n := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   exact
     (standardLubinTateLevelPowerBasis hπ n).lift
       (padicCompletedPrimitiveRoot p n) (by
@@ -110,7 +95,7 @@ theorem padicStandardLevelEmbedding_apply_gen
     padicStandardLevelEmbedding p n
         (standardLubinTateLevelPowerBasis hπ n).gen =
       padicCompletedPrimitiveRoot p n := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   simp only [padicStandardLevelEmbedding, PowerBasis.lift_gen]
 
 /-- A finite unit parameter, realized as a root in the completed splitting
@@ -491,7 +476,7 @@ noncomputable def padicStandardLevelUnitParameterPowerBasis
     let hπ :=
       padicMultiplicativeLubinTateSeries_isUniformizer p
     PowerBasis ℚ_[p] (standardLubinTateLevelField hπ n) := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   exact
     (standardLubinTateLevelPowerBasis hπ n).map
       (standardLubinTateUnitParameterAlgEquiv
@@ -508,7 +493,7 @@ theorem padicStandardLevelUnitParameterPowerBasis_gen
     (padicStandardLevelUnitParameterPowerBasis p n a).gen =
       standardLubinTateUnitParameterLevelRoot
         (padicLocalField p) hπ n a := by
-  let hπ := padicMultiplicativeLubinTateSeries_isUniformizer p
+  intro hπ
   simp only [padicStandardLevelUnitParameterPowerBasis,
     PowerBasis.map_gen]
   exact standardLubinTateUnitParameterAlgEquiv_apply_gen

@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerBaseUnitsH2Naturality
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerUnitsH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitsH2
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerBaseUnitsH2Naturality
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerUnitsH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedBaseUnitsH2
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 
 /-!
 # Vanishing of restriction after inflation in a local-field tower
@@ -18,6 +20,8 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Basic
 A cyclic base-units degree-two class vanishes after inflation and restriction to an
 unramified relative extension whose degree divides the lower ramification index.
 -/
+
+@[expose] public section
 
 open CategoryTheory CategoryTheory.Limits
 open scoped ValuativeRel

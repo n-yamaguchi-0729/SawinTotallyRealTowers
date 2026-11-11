@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.RadicalQuotient
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalQuotient
 
 /-!
 # finite Kummer character isomorphism
@@ -25,6 +27,8 @@ lattice correspondence between radical subgroups and abelian extensions.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

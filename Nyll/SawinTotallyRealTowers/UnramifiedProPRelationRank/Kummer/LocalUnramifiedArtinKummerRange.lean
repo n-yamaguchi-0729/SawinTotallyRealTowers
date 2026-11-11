@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.InertiaUnramifiedExtension
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerValuationDual
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalArtinKummerH1Duality
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Filtered.InertiaUnramifiedExtension
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerValuationDual
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalArtinKummerH1Duality
 
 /-!
 # Unramified Artin--Kummer duality and the valuation line
@@ -17,6 +19,8 @@ the Artin--Kummer pairing precisely onto the valuation line in the dual.
 The proof uses actual unramified Kummer extensions and their Frobenius action,
 and applies also when the residue characteristic is the coefficient prime.
 -/
+
+@[expose] public section
 
 noncomputable section
 

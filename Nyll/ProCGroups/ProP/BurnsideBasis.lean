@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.ProfiniteFrattini
-import Nyll.ProCGroups.Generation.QuotientCriteria
-import Nyll.ProCGroups.ProC.Quotients.LeftQuotientMaps
+module
+
+public import Nyll.ProCGroups.ProP.ProfiniteFrattini
+public import Nyll.ProCGroups.Generation.QuotientCriteria
+public import Nyll.ProCGroups.ProC.Quotients.LeftQuotientMaps
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # The pro-p Burnside basis criterion
@@ -21,6 +26,8 @@ The only locally synthesized structure in the main theorem is normality of
 the closed power--commutator subgroup.  No quotient algebra or module
 instance is exported.
 -/
+
+@[expose] public section
 
 open Set
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationDepth
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 
 /-!
 # Compatibility of valuation-ring actions with Galois restriction
@@ -17,6 +19,8 @@ restriction to `L / K`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

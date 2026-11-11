@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.ContinuousH1CupCochain
-import Nyll.GaloisCohomology.ProP.FiniteTransgression
+module
+
+public import Nyll.GaloisCohomology.ProP.ContinuousH1CupCochain
+public import Nyll.GaloisCohomology.ProP.FiniteTransgression
 
 /-!
 # The continuous cup product of two trivial mod-p characters
@@ -13,6 +15,8 @@ import Nyll.GaloisCohomology.ProP.FiniteTransgression
 This file packages the explicit canonical character cup cocycle as a
 degree-two continuous cohomology class and as a bilinear map.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open ClassFieldTower.ProP

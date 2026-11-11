@@ -4,7 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPointDescentCore
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPointDescentCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisDescent
 
 /-!
 # Finite-level and direct-limit fixed-point descent endpoints
@@ -15,6 +21,8 @@ idèle-class direct limit.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -171,7 +179,7 @@ theorem rationalDirectLimit_fixed_exists_ideleClass
     (z : rationalIdeleClassDirectLimit)
     (hz_fixed :
       ∀ σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ,
-        σ ∈ K.fixingSubgroup → σ • z = z) :
+        σ ∈ K.fixingSubgroup → rationalIdeleClassDirectLimitSMul.smul σ z = z) :
     ∃ q : IdeleClassGroup K,
       rationalIntermediateIdeleClassToDirectLimit K q = z := by
   obtain ⟨E, c, hzc⟩ :=

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamification
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.FixedFieldRamification
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniformizerGradedHom
 
 /-!
 # Quotient-depth identity over a general DVF
@@ -17,6 +19,8 @@ restricted valuation ring; no completeness or Henselian hypothesis occurs.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -195,7 +199,13 @@ def subgroupOrbitPolynomialCoeffFixedFieldDVF
     (fun p : Polynomial target.valuationSubring => p.coeff n)
     (subgroupOrbitPolynomialDVF_map_aut
       (base := base) (target := target) huniq H z rho)
-  exact congrArg Subtype.val (by simpa [c] using hmap)
+  have hc : (valuationSubringAutOfUniqueExtension
+      (base := base) (target := target) huniq rho).toRingHom c = c := by
+    simpa only [c, Polynomial.coeff_map] using hmap
+  have hcoe := congrArg (fun a : target.valuationSubring => (a : L)) hc
+  rw [Subgroup.smul_def, AlgEquiv.smul_def]
+  simpa only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom,
+    valuationSubringAutOfUniqueExtension_apply_coe] using hcoe
 
 /-- Product of generator displacements over the right coset `sigma H`. -/
 def cosetGeneratorDisplacementProductDVF

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
-import Mathlib.RingTheory.Henselian
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Basic
+public import Mathlib.RingTheory.Henselian
 
 /-!
 # Henselian discretely valued fields
@@ -13,6 +15,8 @@ import Mathlib.RingTheory.Henselian
 This file contains the lightweight package for a discretely valued field whose
 valuation ring is Henselian at its maximal ideal.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

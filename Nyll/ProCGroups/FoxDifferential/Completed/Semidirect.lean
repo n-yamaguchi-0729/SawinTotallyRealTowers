@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Fundamental
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Fundamental
 
 /-!
 # Fox differential: completed — semidirect
@@ -21,6 +23,8 @@ The principal declarations in this module are:
 - `one_left`
   The left component of the identity semidirect element is zero.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -51,7 +55,9 @@ theorem ext {a b : ZCCompletedFoxSemidirect C X H}
     (hleft : a.left = b.left) (hright : a.right = b.right) : a = b := by
   cases a
   cases b
-  simp_all
+  cases hleft
+  cases hright
+  rfl
 
 /-- Identity element of the completed Fox semidirect product. -/
 instance instOneZCCompletedFoxSemidirect : One (ZCCompletedFoxSemidirect C X H) where

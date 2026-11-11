@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
-import Mathlib.FieldTheory.Galois.Abelian
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAutomorphisms
+public import Mathlib.FieldTheory.Galois.Abelian
 
 /-!
 # Abelian standard Lubin--Tate level fields
@@ -22,6 +24,8 @@ to the Galois group.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CompletedUnramifiedField
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveIrreducible
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveTorsion
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
-import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
-import Mathlib.FieldTheory.SplittingField.Construction
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Frobenius.CompletedUnramifiedField
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveIrreducible
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.PrimitiveTorsion
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
+public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+public import Mathlib.FieldTheory.SplittingField.Construction
 
 /-!
 # The completed theta-intertwining theorem: a completed Lubin--Tate level field
@@ -24,6 +26,8 @@ evaluation point for the theta series of the completed theta-intertwining theore
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -48,7 +52,8 @@ noncomputable local instance equalCharacteristicCompletedLevelBaseAlgebra
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   laurentSeriesCoefficientAlgebra
 
-private instance equalCharacteristicCompletedLevelBaseCharP
+/-- The completed unramified base has the residue characteristic. -/
+instance equalCharacteristicCompletedLevelBaseCharP
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic] :
     CharP (equalCharacteristicCompletedUnramifiedField F.residueField)
@@ -180,7 +185,8 @@ noncomputable local instance equalCharacteristicCompletedLevelScalarTower
       (equalCharacteristicCompletedLevelField F n) :=
   IsScalarTower.of_algebraMap_eq' rfl
 
-private instance equalCharacteristicCompletedLevelCharP
+/-- The completed primitive level has the residue characteristic. -/
+instance equalCharacteristicCompletedLevelCharP
     (F : LocalField.{u, v} K) [CharP K F.residueCharacteristic]
     (n : ℕ) :
     CharP (equalCharacteristicCompletedLevelField F n)
@@ -276,7 +282,8 @@ theorem equalCharacteristicCompletedLevelField_finiteDimensional
       (equalCharacteristicCompletedLevelField F n) := by
   infer_instance
 
-private theorem equalCharacteristicCompletedPrimitivePolynomial_map_degree_ne_zero
+/-- The completed primitive polynomial remains of nonzero degree over its splitting field. -/
+theorem equalCharacteristicCompletedPrimitivePolynomial_map_degree_ne_zero
     (F : LocalField.{u, v} K) (n : ℕ) :
     ((equalCharacteristicCompletedPrimitivePolynomial F n).map
       (algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)

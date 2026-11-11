@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasis
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.PrincipalUnitGraded
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasis
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.PrincipalUnitGraded
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisGaloisAction
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.ClassFormation.NormalBasisGradedLifting` Lean module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -40,14 +44,13 @@ the lattice quotient. -/
 theorem chosenNormalBasisPrincipalUnitLatticeClass_galoisGroup
     (n : Nat) (sigma : Gal(L/K)) (u : 𝒪[L]ˣ)
     (hu : u ∈ chosenNormalBasisPrincipalUnitSet K L n) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-    letI := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
     chosenNormalBasisPrincipalUnitLatticeClass K L n (sigma • u)
         (galoisGroup_smul_mem_chosenNormalBasisPrincipalUnitSet
           (K := K) (L := L) n sigma hu) =
       sigma • chosenNormalBasisPrincipalUnitLatticeClass K L n u hu := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := galoisGroupChosenNormalBasisLatticeSuccQuotDistribMulAction K L n
+  intro sharedOwner1 sharedOwner2
   let y : chosenBaseUniformizerPowSubmodule K L n
       (chosenNormalBasisIntegerLattice K L) :=
     ⟨((((u : 𝒪[L]ˣ) : 𝒪[L]) - 1 : 𝒪[L]) : L), hu⟩
@@ -163,7 +166,7 @@ a norm from the same level times a fixed unit one level deeper. -/
 theorem exists_chosenNormalBasisPrincipalUnit_h0_oneStep_lifting
     [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Module.Finite 𝒪[K] 𝒪[L]] :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ c : Nat, ∀ k : Nat, c ≤ k → ∀ a : 𝒪[L]ˣ,
       a ∈ chosenNormalBasisPrincipalUnitSet K L k →
       (∀ sigma : Gal(L / K), sigma • a = a) →
@@ -172,7 +175,7 @@ theorem exists_chosenNormalBasisPrincipalUnit_h0_oneStep_lifting
         a' ∈ chosenNormalBasisPrincipalUnitSet K L (k + 1) ∧
         (∀ sigma : Gal(L / K), sigma • a' = a') ∧
         a = tateNorm (Gal(L / K)) 𝒪[L]ˣ b * a' := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   rcases exists_chosenNormalBasisPrincipalUnitSuccQuotMulEquivLatticeSuccQuot
       (K := K) (L := L) with ⟨c, hc⟩
   refine ⟨c, ?_⟩
@@ -315,7 +318,7 @@ theorem exists_chosenNormalBasisPrincipalUnit_hMinusOne_oneStep_lifting
     [Module.Finite 𝒪[K] 𝒪[L]]
     (g : Gal(L/K)) (hgen : ∀ sigma : Gal(L/K),
       sigma ∈ Subgroup.zpowers g) :
-    letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
     ∃ c : Nat, ∀ k : Nat, c ≤ k → ∀ a : 𝒪[L]ˣ,
       a ∈ chosenNormalBasisPrincipalUnitSet K L k →
       tateNorm (Gal(L / K)) 𝒪[L]ˣ a = 1 →
@@ -324,7 +327,7 @@ theorem exists_chosenNormalBasisPrincipalUnit_hMinusOne_oneStep_lifting
         a' ∈ chosenNormalBasisPrincipalUnitSet K L (k + 1) ∧
         tateNorm (Gal(L / K)) 𝒪[L]ˣ a' = 1 ∧
         a = sigmaMinusOne (Gal(L / K)) 𝒪[L]ˣ g b * a' := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  intro sharedOwner1
   rcases exists_chosenNormalBasisPrincipalUnitSuccQuotMulEquivLatticeSuccQuot
       (K := K) (L := L) with ⟨c, hc⟩
   refine ⟨c, ?_⟩

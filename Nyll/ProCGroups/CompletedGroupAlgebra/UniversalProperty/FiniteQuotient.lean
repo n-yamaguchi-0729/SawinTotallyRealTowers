@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Lifts to finite and discrete quotients
@@ -13,6 +18,8 @@ Maps from the algebraic group algebra that factor through a finite stage extend 
 completion. This file constructs those lifts, specializes them to discrete modules, and proves
 joint injectivity of the finite-stage projections.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

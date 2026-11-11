@@ -4,14 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.FieldTheory.IsAlgClosed.Basic
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Mathlib.Analysis.SpecialFunctions.Pow.Real
+public import Mathlib.FieldTheory.IsAlgClosed.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Archimedean norm approximation
@@ -24,6 +33,8 @@ of every scalar extension of positive degree.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -139,8 +150,8 @@ theorem infinitePositiveSubgroup_le_infiniteTensorNormSubgroup
 
 end ArchimedeanNorm
 
-variable {K : Type} [Field K] [NumberField K]
-variable {L : Type} [Field L] [Algebra K L]
+variable {K : Type u} [Field K] [NumberField K]
+variable {L : Type v} [Field L] [Algebra K L]
     [FiniteDimensional K L]
 
 /-- Complete splitting at a finite place makes the chosen local norm

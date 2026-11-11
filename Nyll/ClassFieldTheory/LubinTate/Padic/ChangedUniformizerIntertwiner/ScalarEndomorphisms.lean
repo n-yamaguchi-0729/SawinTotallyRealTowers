@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveIntertwiner
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.IntertwinerConstruction
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveIntertwiner
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerIntertwiner.IntertwinerConstruction
 
 /-!
 # Completed scalar endomorphisms
@@ -19,6 +21,8 @@ commutation.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
+module
+
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Product
 
 /-!
 # Herbrand quotients of finite products
@@ -15,6 +17,8 @@ product formula for Herbrand quotients.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators
 
@@ -42,26 +46,18 @@ theorem herbrandQuotient_pi
     (σ : G)
     [∀ i, Finite (HerbrandH0 G (A i))]
     [∀ i, Finite (HerbrandHMinusOne G (A i) σ)] :
-    letI : Finite (HerbrandH0 G (∀ i, A i)) :=
+    let : Finite (HerbrandH0 G (∀ i, A i)) :=
       Finite.of_equiv
         (∀ i, HerbrandH0 G (A i))
         (herbrandH0PiEquiv (G := G) A).symm.toEquiv
-    letI : Finite (HerbrandHMinusOne G (∀ i, A i) σ) :=
+    let : Finite (HerbrandHMinusOne G (∀ i, A i) σ) :=
       Finite.of_equiv
         (∀ i, HerbrandHMinusOne G (A i) σ)
         (herbrandHMinusOnePiEquiv
           (G := G) A σ).symm.toEquiv
     herbrandQuotient (G := G) (A := ∀ i, A i) σ =
       ∏ i, herbrandQuotient (G := G) (A := A i) σ := by
-  let : Finite (HerbrandH0 G (∀ i, A i)) :=
-    Finite.of_equiv
-      (∀ i, HerbrandH0 G (A i))
-      (herbrandH0PiEquiv (G := G) A).symm.toEquiv
-  let : Finite (HerbrandHMinusOne G (∀ i, A i) σ) :=
-    Finite.of_equiv
-      (∀ i, HerbrandHMinusOne G (A i) σ)
-      (herbrandHMinusOnePiEquiv
-        (G := G) A σ).symm.toEquiv
+  intro sharedOwner1 sharedOwner2
   unfold herbrandQuotient
   rw [Nat.card_congr
       (herbrandH0PiEquiv (G := G) A).toEquiv,

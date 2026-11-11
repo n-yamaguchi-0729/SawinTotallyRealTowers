@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 
 /-!
 # Hilbert ramification theory: decomposition and inertia fields
@@ -16,6 +18,8 @@ acting on the fraction field and use mathlib's Galois correspondence.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -62,9 +66,8 @@ theorem fixedFieldOfSubgroup_fixingSubgroup_eq
         ((fixedFieldOfSubgroup (K := K) (L := L) G H : IntermediateField K L) :
           Set L) =
       H := by
-  simp [fixedFieldOfSubgroup,
-    (IsGaloisGroup.fixingSubgroup_fixedPoints
-      (G := G) (K := K) (L := L) (H := H))]
+  simp only [fixedFieldOfSubgroup,
+    (IsGaloisGroup.fixingSubgroup_fixedPoints (G := G) (K := K) (L := L) (H := H))]
 
 variable {G}
 
@@ -125,7 +128,8 @@ theorem mem_decompositionField_iff
     {P : Ideal B} [MulSemiringAction G B] {x : L} :
     x ∈ decompositionField (K := K) (L := L) G P ↔
       ∀ σ ∈ decompositionGroup P G, σ • x = x := by
-  simp [decompositionField]
+  simp only [decompositionField, FixedPoints.mem_intermediateField_iff, Subtype.forall,
+    MulAction.mem_stabilizer_iff, Subgroup.mk_smul]
 
 variable (G)
 
@@ -138,7 +142,7 @@ theorem dedekindDecomposition_decompositionField_fixingSubgroup_eq
         ((decompositionField (K := K) (L := L) G P : IntermediateField K L) :
           Set L) =
       decompositionGroup P G := by
-  simp [decompositionField]
+  simp only [decompositionField, IsGaloisGroup.fixingSubgroup_fixedPoints]
 
 variable {G}
 
@@ -200,9 +204,10 @@ theorem dedekindTower_decompositionField_finrank_eq_decomposition_card
     (P : Ideal B) [MulSemiringAction G B] [IsGaloisGroup G K L] :
     Module.finrank (decompositionField (K := K) (L := L) G P) L =
       Nat.card (decompositionGroup P G) := by
-  simp [decompositionField, fixedFieldOfSubgroup,
-    (IsGaloisGroup.finrank_fixedPoints_eq_card_subgroup
-      (G := G) (K := K) (L := L) (H := decompositionGroup P G))]
+  simp only [decompositionField, fixedFieldOfSubgroup,
+    (IsGaloisGroup.finrank_fixedPoints_eq_card_subgroup (G := G) (K := K) (L := L) (H :=
+        decompositionGroup P G)),
+    MulAction.mem_stabilizer_iff]
 
 /-- The prime-decomposition tower identity:
 the decomposition group is the Galois group of `L/Z_P`. -/
@@ -227,7 +232,8 @@ theorem mem_inertiaField_iff
     {P : Ideal B} [MulSemiringAction G B] {x : L} :
     x ∈ inertiaField (K := K) (L := L) G P ↔
       ∀ σ ∈ inertiaGroup P G, σ • x = x := by
-  simp [inertiaField]
+  simp only [inertiaField, FixedPoints.mem_intermediateField_iff, Subtype.forall,
+    AddSubgroup.mem_inertia, AddSubgroup.mem_mk, Submodule.mem_toAddSubmonoid, Subgroup.mk_smul]
 
 variable (G)
 
@@ -256,7 +262,7 @@ theorem dedekindRamification_inertiaField_fixingSubgroup_eq
         ((inertiaField (K := K) (L := L) G P : IntermediateField K L) :
           Set L) =
       inertiaGroup P G := by
-  simp [inertiaField]
+  simp only [inertiaField, IsGaloisGroup.fixingSubgroup_fixedPoints]
 
 variable {G}
 
@@ -290,9 +296,10 @@ theorem dedekindRamification_inertiaField_finrank_eq_inertia_card
     (P : Ideal B) [MulSemiringAction G B] [IsGaloisGroup G K L] :
     Module.finrank (inertiaField (K := K) (L := L) G P) L =
       Nat.card (inertiaGroup P G) := by
-  simp [inertiaField, fixedFieldOfSubgroup,
-    (IsGaloisGroup.finrank_fixedPoints_eq_card_subgroup
-      (G := G) (K := K) (L := L) (H := inertiaGroup P G))]
+  simp only [inertiaField, fixedFieldOfSubgroup,
+    (IsGaloisGroup.finrank_fixedPoints_eq_card_subgroup (G := G) (K := K) (L := L) (H :=
+        inertiaGroup P G)),
+    AddSubgroup.mem_inertia, AddSubgroup.mem_mk, Submodule.mem_toAddSubmonoid]
 
 /-- A prime-decomposition consequence:
 the inertia group is the Galois group of `L/T_P`. -/

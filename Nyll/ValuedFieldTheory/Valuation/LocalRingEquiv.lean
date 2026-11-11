@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.RamificationInertia.Ramification
-import Mathlib.RingTheory.LocalRing.Basic
-import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
+module
+
+public import Mathlib.NumberTheory.RamificationInertia.Ramification
+public import Mathlib.RingTheory.LocalRing.Basic
+public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 
 /-!
 # Local-ring equivalences and maximal ideals
@@ -15,6 +17,8 @@ Equivalences of local rings preserve the maximal ideal and all of its powers.
 The resulting membership criterion is useful when transporting principal-unit
 filtrations between equivalent valuation rings.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

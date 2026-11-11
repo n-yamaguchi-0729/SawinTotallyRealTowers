@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Nyll.ProCGroups.ProP.BurnsideBasis
-import Nyll.ProCGroups.ProP.FrattiniQuotient
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.Generation.Basic
-import Mathlib.Algebra.Group.Subgroup.Map
-import Mathlib.Algebra.Group.Subgroup.Lattice
-import Mathlib.Data.Finset.Lattice.Fold
-import Mathlib.Topology.Algebra.Group.Basic
+module
+
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Nyll.ProCGroups.ProP.BurnsideBasis
+public import Nyll.ProCGroups.ProP.FrattiniQuotient
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Mathlib.Algebra.Group.Subgroup.Map
+public import Mathlib.Algebra.Group.Subgroup.Lattice
+public import Mathlib.Data.Finset.Lattice.Fold
+public import Mathlib.Topology.Algebra.Group.Basic
 
 /-!
 # Closed increasing subgroup chains in a finitely generated pro-p group
@@ -23,6 +25,8 @@ monotone sequence of closed subgroups with dense union already reaches the
 whole group. This is the finite-witness step for a hypothetically finite
 quotient by countably many relators.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveRoot
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveRoot
 
 /-!
 # Primitive Lubin--Tate torsion points
@@ -21,6 +23,8 @@ does not vanish.  All arguments are characteristic-independent.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -245,10 +249,7 @@ theorem chosenStandardLubinTatePrimitivePredecessor_isRoot
           (chosenStandardLubinTatePrimitiveRoot hπ n)
     ((standardLubinTatePrimitivePolynomialOverField F π m).map
       (algebraMap K (SeparableClosure K))).IsRoot y := by
-  let y :=
-    (standardLubinTatePolynomialIterateOverSeparableClosure
-      F π (n - m)).eval
-        (chosenStandardLubinTatePrimitiveRoot hπ n)
+  intro y
   have hyIterate :
       (standardLubinTatePolynomialIterateOverSeparableClosure F π m).eval
           y =

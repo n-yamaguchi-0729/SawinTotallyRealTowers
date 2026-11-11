@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Cohomology.FiniteInvariantCharacter
-import Mathlib.Topology.Instances.ZMod
-import Nyll.ProCGroups.ProC.Quotients.ClosedSubgroupNeighborhoods
+module
+
+public import Nyll.ProCGroups.Cohomology.FiniteInvariantCharacter
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ProCGroups.ProC.Quotients.ClosedSubgroupNeighborhoods
 
 /-!
 # Finite-stage descent of invariant characters
@@ -16,6 +18,8 @@ pro-`p` group descends to the subgroup's image in one finite `p`-group quotient.
 finite-stage input needed to construct transgression without assuming that the closed subgroup is
 open.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

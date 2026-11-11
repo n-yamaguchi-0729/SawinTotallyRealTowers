@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueActionIndex
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueActionIndex
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteIntegralClosure
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # Finite local reciprocity: the local residue degree datum
@@ -28,6 +32,10 @@ is algebraically closed because its extension to the residue of
 perfect over the finite base residue field.
 -/
 
+@[expose] public section
+
+universe u
+
 namespace LocalClassFieldTheory
 
 open ClassFormation
@@ -42,7 +50,7 @@ open scoped Pointwise ValuativeRel
 open HilbertRamification.ValuationSubring
 open Field.absoluteGaloisGroup
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 local instance localSeparableClosureAlgebra :
@@ -57,7 +65,7 @@ local instance localSeparableClosureScalarTower :
 
 /-- A Chevalley extension of the local valuation to the chosen algebraic
 closure.  This is the valuation choice `w | v` made in the finite local reciprocity construction. -/
-private noncomputable def localAbsoluteValuationSubring :
+noncomputable def localAbsoluteValuationSubring :
     ValuationSubring (AlgebraicClosure K) :=
   Classical.choose
     (ValuationTheory.DiscreteValuationField.Valuation.exists_extension_valuationSubring
@@ -177,7 +185,7 @@ theorem localSeparableDecompositionGroup_eq_top :
 
 /-- When the decomposition subgroup is top, the valuation ring on the
 decomposition field is the original local valuation ring. -/
-private noncomputable def localBaseValuationSubringEquivDecompositionField :
+noncomputable def localBaseValuationSubringEquivDecompositionField :
     (localCompleteDVF K).valuationSubring ≃+*
       decompositionFieldValuationSubring K
         (localSeparableValuationSubring K) := by
@@ -192,9 +200,29 @@ private noncomputable def localBaseValuationSubringEquivDecompositionField :
   let eKZ : K ≃ₐ[K] Z :=
     (IntermediateField.botEquiv K (SeparableClosure K)).symm.trans
       (IntermediateField.equivOfEq hZ.symm)
-  refine
-    { toFun := fun x => ⟨eKZ (x : K), ?_⟩
-      invFun := fun z => ⟨eKZ.symm (z : Z), ?_⟩
+  let toFun : (localCompleteDVF K).valuationSubring →
+      decompositionFieldValuationSubring K A := fun x => by
+    refine ⟨eKZ (x : K), ?_⟩
+    change ((eKZ x : Z) : SeparableClosure K) ∈ A
+    have he : ((eKZ x : Z) : SeparableClosure K) =
+        algebraMap K (SeparableClosure K) (x : K) := by
+      rfl
+    rw [he]
+    exact (localSeparableValuationSubring_pullback K (x : K)).2 x.property
+  let invFun : decompositionFieldValuationSubring K A →
+      (localCompleteDVF K).valuationSubring := fun z => by
+    refine ⟨eKZ.symm (z : Z), ?_⟩
+    change eKZ.symm (z : Z) ∈
+      (localCompleteDVF K).valuation.valuationSubring
+    apply (localSeparableValuationSubring_pullback K (eKZ.symm (z : Z))).1
+    have he : algebraMap K (SeparableClosure K) (eKZ.symm (z : Z)) =
+        ((z : Z) : SeparableClosure K) := by
+      exact congrArg Subtype.val (eKZ.apply_symm_apply (z : Z))
+    rw [he]
+    exact z.property
+  exact
+    { toFun := toFun
+      invFun := invFun
       left_inv := fun x => by
         apply Subtype.ext
         exact eKZ.symm_apply_apply (x : K)
@@ -207,20 +235,6 @@ private noncomputable def localBaseValuationSubringEquivDecompositionField :
       map_mul' := fun x y => by
         apply Subtype.ext
         exact map_mul eKZ (x : K) (y : K) }
-  · change ((eKZ x : Z) : SeparableClosure K) ∈ A
-    have he : ((eKZ x : Z) : SeparableClosure K) =
-        algebraMap K (SeparableClosure K) (x : K) := by
-      rfl
-    rw [he]
-    exact (localSeparableValuationSubring_pullback K (x : K)).2 x.property
-  · change eKZ.symm (z : Z) ∈
-      (localCompleteDVF K).valuation.valuationSubring
-    apply (localSeparableValuationSubring_pullback K (eKZ.symm (z : Z))).1
-    have he : algebraMap K (SeparableClosure K) (eKZ.symm (z : Z)) =
-        ((z : Z) : SeparableClosure K) := by
-      exact congrArg Subtype.val (eKZ.apply_symm_apply (z : Z))
-    rw [he]
-    exact z.property
 
 /-- The residue field in the residue-action exact sequence is canonically the finite residue
 field of the original local field. -/
@@ -320,15 +334,15 @@ private theorem localSelectedResidueLift_residue
 the residue field is continuous for the Krull topologies.  A finite residue
 subextension is controlled by adjoining to `K` one lift of each of its
 finitely many elements. -/
-private theorem localSeparableResidueAlgAction_continuous :
+theorem localSeparableResidueAlgAction_continuous :
     Continuous
       (residueAlgActionOfEqTop K
         (localSeparableValuationSubring K)
         (localSeparableDecompositionGroup_eq_top K)) := by
   classical
   let A := localSeparableValuationSubring K
-  let k : Type := decompositionResidueField K A
-  let Omega : Type := selectedResidueField A
+  let k : Type u := decompositionResidueField K A
+  let Omega : Type u := selectedResidueField A
   let hA := localSeparableDecompositionGroup_eq_top K
   let rho := residueAlgActionOfEqTop K A hA
   refine continuous_of_continuousAt_one rho ?_

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.GolodShafarevich.TruncatedFoxMaps
+module
+
+public import Nyll.ProCGroups.GolodShafarevich.TruncatedFoxMaps
 
 /-!
 # Right exactness of the truncated mod-p Fox sequence
@@ -13,6 +15,8 @@ Strict lifting for the filtered Fox complex and the augmentation-ideal
 description of the boundary range give a concrete right-exact sequence on
 shifted finite truncations.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

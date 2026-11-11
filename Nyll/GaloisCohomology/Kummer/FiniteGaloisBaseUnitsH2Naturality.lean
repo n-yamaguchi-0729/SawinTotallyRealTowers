@@ -4,17 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
-import Nyll.GaloisCohomology.Kummer.FiniteTowerBaseUnitsH2
-import Mathlib.Algebra.Algebra.Tower
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
+public import Nyll.GaloisCohomology.Kummer.FiniteTowerBaseUnitsH2
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # Base-unit inflation and restriction
@@ -23,6 +25,8 @@ The two routes through a finite Galois tower are compared using their actual
 group restriction and coefficient maps. This comparison is used to turn
 relative norm primitives into vanishing of restricted inflated H² classes.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

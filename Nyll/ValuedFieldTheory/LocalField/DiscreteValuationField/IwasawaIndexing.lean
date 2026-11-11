@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.Padics.RingHoms
-import Mathlib.Topology.Homeomorph.Lemmas
-import Mathlib.Basic.Denumerable
+module
+
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Mathlib.Topology.Homeomorph.Lemmas
+public import Mathlib.Basic.Denumerable
 
 /-!
 # Topological structure of local-field units: reindexing the Iwasawa product
@@ -17,6 +19,8 @@ records that, when the basis is nonempty, this is exactly a countable product.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

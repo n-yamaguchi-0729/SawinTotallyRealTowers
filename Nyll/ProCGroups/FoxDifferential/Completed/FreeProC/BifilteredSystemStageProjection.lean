@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.BifilteredStageProjection
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.InverseSystem
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.BifilteredStageProjection
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Bifiltered.InverseSystem
 
 /-!
 # Fox differential: completed — free pro-\(C\) — bifiltered system stage projection
@@ -25,6 +27,8 @@ The principal declarations in this module are:
   A completed boundary-cycle point maps to a stagewise boundary-cycle point in the bifiltered
   inverse limit.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

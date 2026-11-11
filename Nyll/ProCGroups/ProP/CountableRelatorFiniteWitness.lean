@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.ClosedChainStabilization
-import Nyll.ProCGroups.FiniteGeneration.OpenSubgroups
-import Nyll.ProCGroups.Presentations.Profinite
-import Nyll.ProCGroups.ProC.Subgroups.Closed
-import Nyll.ProCGroups.FiniteGroups.StandardClasses
-import Mathlib.Algebra.Group.Subgroup.Pointwise
-import Mathlib.Algebra.Group.Subgroup.Map
-import Mathlib.Algebra.Group.Subgroup.Ker
-import Mathlib.GroupTheory.Index
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+module
+
+public import Nyll.ProCGroups.ProP.ClosedChainStabilization
+public import Nyll.ProCGroups.FiniteGeneration.OpenSubgroups
+public import Nyll.ProCGroups.Presentations.Profinite
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
+public import Mathlib.Algebra.Group.Subgroup.Pointwise
+public import Mathlib.Algebra.Group.Subgroup.Map
+public import Mathlib.Algebra.Group.Subgroup.Ker
+public import Mathlib.GroupTheory.Index
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 
 /-!
 # A finite witness for a finite quotient by countably many relations
@@ -23,6 +25,8 @@ is finite, its open kernel is finitely generated. The finite Frattini
 quotient of that kernel then supplies a finite prefix with the same closed
 normal closure. No finite presentation of the countable quotient is an input.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

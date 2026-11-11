@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange
 
 /-!
 # The annihilator of intrinsic unramified local H¹
@@ -14,6 +16,8 @@ first argument, vanishes on precisely the valuation-zero Kummer classes.
 This is the local kernel statement needed to assemble the empty-support
 unramified local-to-global dual map.
 -/
+
+@[expose] public section
 
 noncomputable section
 

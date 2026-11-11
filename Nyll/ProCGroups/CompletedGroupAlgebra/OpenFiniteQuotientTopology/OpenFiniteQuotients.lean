@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.FiniteQuotients
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.FiniteQuotients
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # The open-finite quotient system
@@ -13,6 +16,8 @@ Open coefficient ideals and open normal group subgroups index a cofiltered syste
 algebras. This file defines its stages, transitions, projections, and the kernel-neighborhood
 topology they induce on the algebraic group algebra.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -247,11 +252,10 @@ theorem completedGroupAlgebraOpenFiniteQuotientStage_discrete
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G]
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
+    let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
       completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
     DiscreteTopology (CompletedGroupAlgebraOpenQuotientStage R G K) := by
-  let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
-    completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
+  intro sharedOwner1
   exact ⟨rfl⟩
 
 /--
@@ -260,16 +264,15 @@ The coefficient quotient from the finite stage \(R[G/U]\) to the kernel-neighbor
 -/
 theorem continuous_completedGroupAlgebraStageCoeffQuotientMap_openIdeal
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraStage R G K.2) :=
+    let : TopologicalSpace (CompletedGroupAlgebraStage R G K.2) :=
       (completedGroupAlgebraSystem R G).topologicalSpace K.2
-    letI : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
+    let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
       completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
     Continuous (completedGroupAlgebraStageCoeffQuotientMap R G
       ((OrderDual.ofDual K.1).1 : Ideal R) K.2) := by
+  intro sharedOwner4 sharedOwner5
   let Iopen : CompletedGroupAlgebraOpenIdeal R := OrderDual.ofDual K.1
   let Q := CompletedGroupAlgebraQuotient G K.2
-  let : TopologicalSpace (CompletedGroupAlgebraStage R G K.2) :=
-    (completedGroupAlgebraSystem R G).topologicalSpace K.2
   let : TopologicalSpace (R ⧸ (Iopen.1 : Ideal R)) := ⊥
   have : DiscreteTopology (R ⧸ (Iopen.1 : Ideal R)) := ⟨rfl⟩
   have hmk : Continuous (Ideal.Quotient.mk (Iopen.1 : Ideal R)) :=
@@ -293,9 +296,9 @@ theorem continuous_completedGroupAlgebraStageCoeffQuotientMap_openIdeal
   let tfin : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
     finiteGroupAlgebraTopology (R ⧸ (Iopen.1 : Ideal R)) Q
   let tdisc : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
-    completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
+    sharedOwner5
   have ht : tfin = tdisc := by
-    dsimp [tfin, tdisc, completedGroupAlgebraOpenFiniteQuotientStageTopology]
+    dsimp [tfin, tdisc, sharedOwner5, completedGroupAlgebraOpenFiniteQuotientStageTopology]
     exact hdisc.eq_bot
   change @Continuous (CompletedGroupAlgebraStage R G K.2)
     (CompletedGroupAlgebraOpenQuotientStage R G K)
@@ -310,13 +313,12 @@ continuous.
 -/
 theorem continuous_completedGroupAlgebraOpenFiniteQuotientProjection
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
+    let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
       completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
     Continuous (completedGroupAlgebraOpenFiniteQuotientProjection R G K) := by
+  intro sharedOwner3
   let : TopologicalSpace (CompletedGroupAlgebraStage R G K.2) :=
     (completedGroupAlgebraSystem R G).topologicalSpace K.2
-  let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
-    completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
   exact (continuous_completedGroupAlgebraStageCoeffQuotientMap_openIdeal
     (R := R) (G := G) K).comp ((completedGroupAlgebraSystem R G).continuous_projection K.2)
 
@@ -347,17 +349,13 @@ def groupAlgebraOpenFiniteQuotientKernelTopology
 theorem continuous_groupAlgebraOpenFiniteQuotientProductMap_kernelTopology
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       groupAlgebraOpenFiniteQuotientKernelTopology R G
-    letI : ∀ K : CompletedGroupAlgebraOpenQuotientIndex R G,
+    let : ∀ K : CompletedGroupAlgebraOpenQuotientIndex R G,
         TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
       fun K => completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
     Continuous (groupAlgebraOpenFiniteQuotientProductMap R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) :=
-    groupAlgebraOpenFiniteQuotientKernelTopology R G
-  let : ∀ K : CompletedGroupAlgebraOpenQuotientIndex R G,
-      TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
-    fun K => completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
+  intro sharedOwner1 sharedOwner2
   exact continuous_induced_dom
 
 /--
@@ -368,13 +366,12 @@ theorem continuous_groupAlgebraOpenFiniteQuotientMap_kernelTopology
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G]
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       groupAlgebraOpenFiniteQuotientKernelTopology R G
-    letI : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
+    let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
       completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
     Continuous (groupAlgebraOpenFiniteQuotientMap R G K) := by
-  let : TopologicalSpace (MonoidAlgebra R G) :=
-    groupAlgebraOpenFiniteQuotientKernelTopology R G
+  intro sharedOwner4 sharedOwner5
   let : ∀ K : CompletedGroupAlgebraOpenQuotientIndex R G,
       TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
     fun K => completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
@@ -388,11 +385,10 @@ theorem groupAlgebraOpenFiniteQuotientKernel_isOpen_kernelTopology
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G]
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       groupAlgebraOpenFiniteQuotientKernelTopology R G
     IsOpen (groupAlgebraOpenFiniteQuotientKernel R G K : Set (MonoidAlgebra R G)) := by
-  let : TopologicalSpace (MonoidAlgebra R G) :=
-    groupAlgebraOpenFiniteQuotientKernelTopology R G
+  intro sharedOwner1
   let : TopologicalSpace (CompletedGroupAlgebraOpenQuotientStage R G K) :=
     completedGroupAlgebraOpenFiniteQuotientStageTopology R G K
   have : DiscreteTopology (CompletedGroupAlgebraOpenQuotientStage R G K) :=
@@ -407,12 +403,11 @@ theorem groupAlgebraOpenFiniteQuotientKernel_mem_nhds_zero_kernelTopology
     (R : Type u) (G : Type v) [CommRing R] [TopologicalSpace R] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G]
     (K : CompletedGroupAlgebraOpenQuotientIndex R G) :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       groupAlgebraOpenFiniteQuotientKernelTopology R G
     (groupAlgebraOpenFiniteQuotientKernel R G K : Set (MonoidAlgebra R G)) ∈
       𝓝 (0 : MonoidAlgebra R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) :=
-    groupAlgebraOpenFiniteQuotientKernelTopology R G
+  intro sharedOwner1
   apply IsOpen.mem_nhds
     (groupAlgebraOpenFiniteQuotientKernel_isOpen_kernelTopology R G K)
   change (0 : MonoidAlgebra R G) ∈ groupAlgebraOpenFiniteQuotientKernel R G K

@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
-import Nyll.GaloisCohomology.Cyclic.TateComparison
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
+public import Nyll.GaloisCohomology.Cyclic.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # The local multiplicative group satisfies the class-field axiom
@@ -20,6 +24,8 @@ applies.  The fixed unit representation and cyclic Tate-complex comparisons
 then transport its two cardinality statements back to the abstract
 class-field-axiom predicate.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology ClassFormation
@@ -113,15 +119,11 @@ private theorem galoisAmbientUnits_satisfiesClassFieldAxiom
   have hHm1actual :
       Nat.card (tateCohomology U (-1)) = 1 :=
     hUnitsTateCard.cardHminusOne
-  refine
-    { finiteTateHZero := by
-        change Finite (tateCohomology M 0)
-        infer_instance
-      finiteTateHMinusOne := by
-        change Finite (tateCohomology M (-1))
-        infer_instance
-      tateHZero_card := ?_
-      tateHMinusOne_card := ?_ }
+  refine ClassFieldAxiomCohomologyData.ofOriginal (by
+    change Finite (tateCohomology M 0)
+    infer_instance) (by
+    change Finite (tateCohomology M (-1))
+    infer_instance) ?_ ?_
   · change Nat.card
       (tateCohomology M 0) =
         ((DegreeData.FiniteAbstractExtension.ofInclusion L K hLK).degree : ℕ)

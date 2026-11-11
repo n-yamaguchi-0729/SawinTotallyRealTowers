@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Concrete.FiniteSupport
-import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
+module
+
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteSupport
+public import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
 
 /-!
 # infinite inverse inclusion
@@ -18,6 +20,8 @@ theorem at that stage shows that the original radical already belongs to
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

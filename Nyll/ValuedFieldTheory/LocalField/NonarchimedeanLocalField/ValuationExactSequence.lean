@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Valuation
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
-import Mathlib.Algebra.Group.Hom.Basic
-import Mathlib.RingTheory.Valuation.Discrete.Basic
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Valuation
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Mathlib.Algebra.Group.Hom.Basic
+public import Mathlib.RingTheory.Valuation.Discrete.Basic
 
 /-!
 # The valuation exact sequence
@@ -16,6 +18,8 @@ Builds the normalized valuation map `Kˣ → ℤ` and proves exactness of the
 sequence from valuation-ring units through field units to `ℤ`.
 -/
 
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -451,7 +455,7 @@ theorem uniformizerUnitFactor_mul_uniformizer_zpow (K : Type u)
     integerUnitsToFieldUnits K (uniformizerUnitFactor K ϖ hϖ x) *
         ϖ ^ valuationMap K (Additive.ofMul x) = x := by
   rw [integerUnitsToFieldUnits_uniformizerUnitFactor]
-  simp [div_eq_mul_inv, mul_assoc]
+  exact div_mul_cancel x _
 
 /-- Existence form of the standard decomposition `Kˣ = O_Kˣ · ⟨ϖ⟩`. -/
 theorem exists_integerUnit_mul_uniformizer_zpow (K : Type u)

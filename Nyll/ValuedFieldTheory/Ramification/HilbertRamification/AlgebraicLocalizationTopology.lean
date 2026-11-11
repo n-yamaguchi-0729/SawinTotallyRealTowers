@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionField
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Topological decomposition--localization comparison
@@ -15,6 +19,8 @@ The algebraic localization comparison is algebraically a `MulEquiv`.  This file 
 finite-support continuity input: fixing one element of the algebraic localization only requires
 fixing finitely many elements of the original algebraic extension.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -43,7 +49,8 @@ local instance generalLocalizationCompletionAlgebra :
     Algebra vK.Completion w.1.Completion :=
   AbsoluteValue.completionAlgebra vK w.1 w.2
 
-private abbrev localization :=
+/-- The algebraic localization used by the decomposition-group comparison. -/
+abbrev localization :=
   AbsoluteValue.algebraicLocalization vK w.1 w.2
 
 omit [IsGalois K L] in
@@ -60,12 +67,14 @@ theorem algebraicLocalization_fixing_finite_support
       (Set.range (AbsoluteValue.toCompletion w.1))
   change E at z
   classical
-  apply IntermediateField.adjoin_induction
-      (p := fun y (hy : y ∈ E) ↦
+  refine IntermediateField.adjoin_induction
+      (F := vK.Completion)
+      (motive := fun y (hy : y ∈ E) ↦
         ∃ S : Finset L, ∀ σ : absoluteValueDecompositionGroup K w.1,
           (∀ x ∈ S, (σ.1 : L ≃ₐ[K] L) x = x) →
             decompositionGroupToLocalization vK hvK w σ ⟨y, hy⟩ = ⟨y, hy⟩)
       (s := Set.range (AbsoluteValue.toCompletion w.1))
+      (x := (z : w.1.Completion)) ?_ ?_ ?_ ?_ ?_ z.property
   · intro y hy
     rcases hy with ⟨x, rfl⟩
     refine ⟨{x}, fun σ hσ ↦ ?_⟩

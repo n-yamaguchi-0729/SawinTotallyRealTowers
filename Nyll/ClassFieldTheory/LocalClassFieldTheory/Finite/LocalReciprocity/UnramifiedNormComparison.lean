@@ -4,11 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.RingTheory.Finiteness.Small
+public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkOpenSubgroups
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedFrobenius
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Norm quotients for unramified local extensions
@@ -22,8 +29,11 @@ the valuation quotient have the same finite cardinality.
 
 
 
+@[expose] public section
+
 noncomputable section
 
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -31,7 +41,7 @@ open scoped ValuativeRel
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-variable (K L : Type)
+variable (K : Type u) (L : Type v)
   [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -108,35 +118,52 @@ theorem galoisGroupEquivAbelianizationOfUnramifiedValuation_apply
       Abelianization.of σ :=
   rfl
 
-noncomputable local instance unramifiedNormComparisonNormQuotientFinite :
-    Finite (NormQuotient K L) :=
-  Finite.of_equiv (Gal(L / K))
-    ((galoisGroupEquivAbelianizationOfUnramifiedValuation K L).toEquiv.trans
-      (abelianizationEquivNormQuotient K L).toEquiv)
-
 private theorem normQuotient_card_eq_finrank :
     Nat.card (NormQuotient K L) = Module.finrank K L := by
-  let : Finite (Abelianization (Gal(L / K))) :=
-    Finite.of_surjective Abelianization.of QuotientGroup.mk_surjective
+  let : Small.{0} K := smallLocalField K
+  let : Small.{0} L := Module.Finite.small K L
+  let : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
+  let : FiniteDimensional (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_finiteDimensional K L
+  let : IsGalois (Shrink.{0} K) (Shrink.{0} L) :=
+    IsGalois.of_equiv_equiv (f := (Shrink.ringEquiv K).symm)
+      (g := (Shrink.ringEquiv L).symm) (HasseArf.shrinkAlgebra_commutes K L)
+  let : ValuativeRel (Shrink.{0} K) := shrinkLocalFieldValuativeRel K
+  let : IsNonarchimedeanLocalField (Shrink.{0} K) :=
+    shrinkLocalField_isNonarchimedeanLocalField K
+  let eQ : NormQuotient K L ≃* NormQuotient (Shrink.{0} K) (Shrink.{0} L) :=
+    QuotientGroup.congr (localNormSubgroup K L)
+      (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L))
+      (Units.mapEquiv (Shrink.ringEquiv K).symm.toMulEquiv)
+      (ClassFieldTheory.fieldNormSubgroup_map_ringEquiv
+        (Shrink.ringEquiv K).symm (Shrink.ringEquiv L).symm
+        (HasseArf.shrinkAlgebra_commutes K L))
   calc
     Nat.card (NormQuotient K L) =
-        Nat.card (Abelianization (Gal(L / K))) :=
-      Nat.card_congr (abelianizationEquivNormQuotient K L).symm.toEquiv
+        Nat.card (NormQuotient (Shrink.{0} K) (Shrink.{0} L)) :=
+      Nat.card_congr eQ.toEquiv
+    _ = Nat.card (Abelianization (Gal(Shrink.{0} L / Shrink.{0} K))) :=
+      Nat.card_congr
+        (abelianizationEquivNormQuotient (Shrink.{0} K) (Shrink.{0} L)).symm.toEquiv
+    _ = Nat.card (Abelianization (Gal(L / K))) :=
+      Nat.card_congr (HasseArf.shrinkGalMulEquiv K L).abelianizationCongr.toEquiv
     _ = Nat.card (Gal(L / K)) :=
       (Nat.card_congr
         (galoisGroupEquivAbelianizationOfUnramifiedValuation K L).toEquiv).symm
     _ = Module.finrank K L :=
       galoisGroup_card_eq_finrank_of_unramifiedValuation K L
 
+noncomputable local instance unramifiedNormComparisonNormQuotientFinite :
+    Finite (NormQuotient K L) :=
+  Nat.finite_of_card_ne_zero (by
+    rw [normQuotient_card_eq_finrank K L]
+    exact Module.finrank_pos.ne')
+
 /-- The comparison from the actual norm quotient to the valuation quotient is injective. -/
 theorem normQuotientToUnramifiedNormQuotient_injective :
     Function.Injective
       (normQuotientToUnramifiedNormQuotient K L) := by
   let : NeZero (Module.finrank K L) := ⟨Module.finrank_pos.ne'⟩
-  let : Finite (NormQuotient K L) :=
-    Finite.of_equiv (Gal(L / K))
-      ((galoisGroupEquivAbelianizationOfUnramifiedValuation K L).trans
-        (abelianizationEquivNormQuotient K L)).toEquiv
   have hcard :
       Nat.card (NormQuotient K L) =
         Nat.card

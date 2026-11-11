@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Surjectivity criteria for the local norm-subgroup map
@@ -19,6 +22,8 @@ and constructs norm-topology witnesses from concrete finite Galois extensions.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -206,9 +211,7 @@ theorem finiteIndexSubgroup_isNormOpen_of_normSubgroup_le
       ((H.toAddSubgroup.map e.toAddMonoidHom :
         AddSubgroup (ambientFixedAddSubgroup A B)) :
         Set (ambientFixedAddSubgroup A B)) := by
-  let A := intrinsicAbsoluteUnits K
-  let B := intrinsicAbstractBase K
-  let e := baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)
+  intro A B e
   let i := AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K E
   let R : IntermediateField K (SeparableClosure K) := AlgHom.fieldRange i
   let : FiniteDimensional K R :=

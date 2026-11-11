@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FrattiniPowers
+module
+
+public import Nyll.ProCGroups.ProP.FrattiniPowers
 
 /-!
 # The power--commutator quotient
@@ -14,6 +16,8 @@ powers and commutators.  The quotient is commutative and has exponent dividing
 `p`.  These facts are the algebraic input for the pro-`p` Frattini quotient;
 no equality with the Frattini subgroup is assumed.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 

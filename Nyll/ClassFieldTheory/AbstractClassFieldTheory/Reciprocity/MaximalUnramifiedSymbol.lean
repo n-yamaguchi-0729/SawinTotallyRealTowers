@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransfer
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransfer
 
 /-!
 # Abstract reciprocity: the maximal-unramified symbol
@@ -19,13 +21,15 @@ been proved from the unramified norm-quotient equivalence.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace ClassFormation
 
 open ClassFormation CyclicCohomology KummerTheory
 
-universe u
+universe u v
 
 section DegreeOnly
 
@@ -146,7 +150,8 @@ theorem finiteUnramifiedRestriction_frobenius
     L.toGaloisSubextension.extensionQuotientMulEquiv.apply_symm_apply
       (D.unramifiedFrobenius K L.field L.below)
 
-private theorem finiteUnramifiedDegreeHom_killsExtension
+/-- The normalized degree modulo the extension degree kills the unramified extension subgroup. -/
+theorem finiteUnramifiedDegreeHom_killsExtension
     (D : DegreeData G) (K : FiniteResidueAbstractField D)
     (L : FiniteGaloisSubextension K.field)
     (hUnramified : L.IsUnramified D) :
@@ -367,9 +372,8 @@ end DegreeOnly
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 open DegreeData
 
@@ -383,7 +387,7 @@ theorem canonicalUnramifiedReciprocity_degree_of_generator
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     ∀ (hUnramified : L.IsUnramified D)
@@ -399,10 +403,7 @@ theorem canonicalUnramifiedReciprocity_degree_of_generator
       (finiteUnramifiedDegreeEquiv D (K.toFiniteResidueAbstractField D)
         L hUnramified
         q.toMul).toAdd := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
-  intro hUnramified r hr q
+  intro sharedOwner1 hUnramified r hr q
   let KR := K.toFiniteResidueAbstractField D
   let g : Additive L.extensionQuotient :=
     Additive.ofMul (D.unramifiedFrobenius KR L.field L.below)
@@ -524,7 +525,7 @@ theorem maximalUnramifiedNormResidueSymbol_finiteReciprocity_of_generator
     (v : ValuationData D A) (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     ∀ (hUnramified : L.IsUnramified D)
@@ -539,10 +540,7 @@ theorem maximalUnramifiedNormResidueSymbol_finiteReciprocity_of_generator
           (K.toFiniteResidueAbstractField D) L hUnramified
           (maximalUnramifiedNormResidueSymbol v K a).toMul)) =
       finiteNormClass A K.field L.field L.below a := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
-  intro hUnramified r hr a
+  intro sharedOwner1 hUnramified r hr a
   apply v.canonicalUnramifiedNormQuotientValuation_injective
     hAxiom L.toFiniteAbstractFieldExtension L.normal hUnramified
   rw [canonicalUnramifiedReciprocity_degree_of_generator v
@@ -563,7 +561,7 @@ theorem maximalUnramifiedNormResidueSymbol_finiteRestriction_of_generator
     (v : ValuationData D A) (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : FiniteGaloisSubextension K.field) :
-    letI : Finite
+    let : Finite
         (K.field.toSubgroup ⧸
           extensionSubgroup K.field L.field L.below) := L.finite
     ∀ (hUnramified : L.IsUnramified D)
@@ -580,10 +578,7 @@ theorem maximalUnramifiedNormResidueSymbol_finiteRestriction_of_generator
         (finiteUnramifiedRestriction D
           (K.toFiniteResidueAbstractField D) L hUnramified
           (maximalUnramifiedNormResidueSymbol v K a).toMul) := by
-  let : Finite
-      (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) := L.finite
-  intro hUnramified r hr a
+  intro sharedOwner1 hUnramified r hr a
   apply (v.unramifiedReciprocity_equiv_of_generator hAxiom K L.field L.below
     hUnramified r hr).injective
   rw [AddEquiv.apply_symm_apply]

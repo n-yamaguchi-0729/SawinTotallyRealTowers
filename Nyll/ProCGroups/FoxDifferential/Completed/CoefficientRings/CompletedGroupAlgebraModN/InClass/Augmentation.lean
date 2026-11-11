@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.StageCoeffMap
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.InClass.StageCoeffMap
 
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — in class — augmentation
@@ -23,6 +25,8 @@ The principal declarations in this module are:
   Class-indexed finite-stage \(n\)-modular augmentations are compatible with group-quotient
   transition maps.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

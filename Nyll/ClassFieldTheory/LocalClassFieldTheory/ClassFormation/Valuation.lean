@@ -4,16 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Algebra.Equiv
-import Mathlib.Algebra.Group.Action.Units
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+module
+
+public import Mathlib.Algebra.Algebra.Equiv
+public import Mathlib.Algebra.Group.Action.Units
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
 
 /-! Provides the public declarations in the `LocalClassFieldTheory.ClassFormation.Valuation` Lean
 module. -/
 
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -21,7 +25,7 @@ open LocalFieldTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 open scoped ValuativeRel
 open IsNonarchimedeanLocalField
@@ -30,14 +34,14 @@ open IsNonarchimedeanLocalField
 field automorphism to a unit. -/
 @[implicit_reducible]
 def galoisGroupFieldUnitsMulDistribMulAction
-    (K L : Type u) [Field K] [Field L] [Algebra K L] :
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] :
     MulDistribMulAction (Gal(L / K)) Lˣ :=
   inferInstance
 
 /-- States the theorem `galoisGroupFieldUnitsMulDistribMulAction_smul`. -/
 @[simp]
 theorem galoisGroupFieldUnitsMulDistribMulAction_smul
-    (K L : Type u) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     (σ : Gal(L/K)) (x : Lˣ) :
     let _ : MulDistribMulAction (Gal(L / K)) Lˣ :=
       galoisGroupFieldUnitsMulDistribMulAction K L

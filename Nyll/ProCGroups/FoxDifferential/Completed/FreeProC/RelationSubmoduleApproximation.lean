@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageApproximation
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationSubmodule
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationIdealDerivative
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.StageApproximation
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationSubmodule
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationIdealDerivative
 
 /-!
 # Fox differential: completed — free pro-\(C\) — relation submodule approximation
@@ -25,6 +27,8 @@ The principal declarations in this module are:
   The source-boundary relation-ideal route also places completed boundary cycles inside the
   closed-generated Fox graph target.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

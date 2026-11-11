@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Norm.Basic
 
 /-!
 Develops quotient groups attached to an abstract valued norm, including kernel, image, and
@@ -16,6 +18,8 @@ representative criteria.
 Identifies norm-quotient classes with valuation classes modulo the residue degree and constructs
 the resulting cyclic equivalences.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -446,7 +450,8 @@ theorem mem_valueModResidueDegreeHom_ker_iff (x : G) :
     (N.residueDegree : ℤ) ∣ vG.val x
   rw [N.valueModResidueDegreeHom_apply,
     MultiplicativeIntegerValuation.valuationHom_apply]
-  simp [QuotientGroup.mk'_apply]
+  exact (QuotientGroup.eq_one_iff _).trans
+    (ofAdd_mem_integerMultipleSubgroup_iff _ _)
 
 /-- The map `G/G⁰ → ℤ/fℤ` induced by valuation modulo the
 residue-degree multiple subgroup. -/
@@ -518,7 +523,8 @@ theorem zeroSubgroupQuotientToValueModResidueDegree_mk_eq_one_iff
       (N.residueDegree : ℤ) ∣ vG.val x := by
   rw [N.zeroSubgroupQuotientToValueModResidueDegree_mk,
     MultiplicativeIntegerValuation.valuationHom_apply]
-  simp [QuotientGroup.mk'_apply]
+  exact (QuotientGroup.eq_one_iff _).trans
+    (ofAdd_mem_integerMultipleSubgroup_iff _ _)
 
 /--
 Characterizes `N.zeroSubgroupQuotientToValueModResidueDegree (QuotientGroup.mk' vG.zeroSubgroup x)
@@ -772,7 +778,7 @@ theorem zeroQuotientModuloResidueDegreeClass_mk_eq_one_iff
     (q : G ⧸ vG.zeroSubgroup) :
     QuotientGroup.mk' N.residueDegreeClassSubgroup q = 1 ↔
       q ∈ N.residueDegreeClassSubgroup := by
-  simp [QuotientGroup.mk'_apply]
+  exact QuotientGroup.eq_one_iff _
 
 /--
 Characterizes `QuotientGroup.mk' N.residueDegreeClassSubgroup (QuotientGroup.mk' vG.zeroSubgroup
@@ -864,7 +870,7 @@ theorem residueDegree_dvd_add_residueDegree_mul_sub (n k : ℤ) :
     (N.residueDegree : ℤ) ∣
       (n + (N.residueDegree : ℤ) * k) - n := by
   refine ⟨k, ?_⟩
-  ring
+  exact add_sub_cancel_left n ((N.residueDegree : ℤ) * k)
 
 /-- The value-mod-residue-degree map is periodic on target-uniformizer powers
 with period the residue degree. -/
@@ -883,7 +889,7 @@ theorem valueModResidueDegreeHom_uniformizer_zpow_add_residueDegree_mul_eq
         integerMultipleSubgroup (N.residueDegree : ℤ) := by
     rw [← ofAdd_sub, ofAdd_mem_integerMultipleSubgroup_iff]
     exact N.residueDegree_dvd_add_residueDegree_mul_sub n k
-  simp [QuotientGroup.mk'_apply]
+  exact QuotientGroup.eq_iff_div_mem.mpr hmem
 
 /-- The map `G/G⁰ → ℤ/fℤ` induced by valuation is periodic on
 target-uniformizer powers with period the residue degree. -/
@@ -1345,7 +1351,7 @@ theorem zeroSubgroupQuotientToNormQuotient_mk_eq_one_iff
         (QuotientGroup.mk' vG.zeroSubgroup x) = 1 ↔
       x ∈ N.normSubgroup := by
   rw [N.zeroSubgroupQuotientToNormQuotient_mk hzero x]
-  simp [QuotientGroup.mk'_apply]
+  exact QuotientGroup.eq_one_iff _
 
 /-- The kernel of `G/G⁰ → G/N` is the image of `N` in `G/G⁰`. -/
 theorem zeroSubgroupQuotientToNormQuotient_ker_eq_normSubgroupClassInZeroQuotient
@@ -1398,7 +1404,7 @@ theorem quotientZeroSubgroup_mk_mem_normSubgroupClassInZeroQuotient_iff
       (QuotientGroup.mk' vG.zeroSubgroup x),
     MonoidHom.mem_ker,
     N.zeroSubgroupQuotientToNormQuotient_mk hzero x]
-  simp [QuotientGroup.mk'_apply]
+  exact QuotientGroup.eq_one_iff _
 
 /--
 Characterizes `N.zeroSubgroupQuotientToNormQuotient hzero q = 1` by the equivalent condition `q ∈
@@ -1996,7 +2002,7 @@ variable (N : ValuedNorm vG vH)
 /-- Kernel criterion for the actual quotient by the norm subgroup. -/
 theorem normQuotient_mk_eq_one_iff_mem [(N.normSubgroup).Normal] (x : G) :
     QuotientGroup.mk' N.normSubgroup x = 1 ↔ x ∈ N.normSubgroup := by
-  simp [QuotientGroup.mk'_apply]
+  exact QuotientGroup.eq_one_iff _
 
 /-- Equality in the actual quotient by the norm subgroup is equality modulo
 the norm subgroup. -/

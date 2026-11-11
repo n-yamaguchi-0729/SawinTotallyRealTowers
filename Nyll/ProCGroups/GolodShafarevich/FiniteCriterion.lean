@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.GolodShafarevich.FiniteDimensions
-import Nyll.ProCGroups.GolodShafarevich.NumericalCriterion
-import Nyll.ProCGroups.GolodShafarevich.TruncatedInequality
-import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
-import Nyll.ProCGroups.ProP.Presentation.RelatorDepth
+module
+
+public import Nyll.ProCGroups.GolodShafarevich.FiniteDimensions
+public import Nyll.ProCGroups.GolodShafarevich.NumericalCriterion
+public import Nyll.ProCGroups.GolodShafarevich.TruncatedInequality
+public import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
+public import Nyll.ProCGroups.ProP.Presentation.RelatorDepth
 
 /-!
 # Finite Golod--Shafarevich bound
@@ -19,6 +21,8 @@ first stated for a concrete minimal presentation and then for the canonical
 minimal relation rank.  Its contrapositive is the reusable infinitude
 criterion.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

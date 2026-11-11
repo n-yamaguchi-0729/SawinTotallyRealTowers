@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.Topology.Algebra.ClopenNhdofOne
+module
+
+public import Mathlib.GroupTheory.OrderOfElement
+public import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 /-!
 # Open subgroups of compact groups
@@ -13,6 +15,8 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 This module records openness and closedness properties of open (normal) subgroups, constructs
 their pullbacks, and proves that they have finite index in compact topological groups.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

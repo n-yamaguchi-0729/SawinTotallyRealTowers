@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedUnits
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedUnits
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
 
 /-!
 # Adic integral units detect unramified reciprocity characters
@@ -15,6 +17,8 @@ adic valuation identifies its zero kernel with the actual completion's
 integral-unit subgroup. The roots-of-unity-free local reciprocity criterion
 therefore applies directly to finite-place idele factors.
 -/
+
+@[expose] public section
 
 open scoped NumberField ValuativeRel WithZero Topology
 

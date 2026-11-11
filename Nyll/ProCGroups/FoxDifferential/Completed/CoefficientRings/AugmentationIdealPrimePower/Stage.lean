@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Augmentation
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Augmentation
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power augmentation ideal — stage
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   Membership in the relevant augmentation kernel or augmentation ideal is equivalent to the
   corresponding vanishing condition.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

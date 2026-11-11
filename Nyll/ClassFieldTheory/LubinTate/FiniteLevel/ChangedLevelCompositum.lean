@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 
 /-!
 # A common valued field for original and changed Lubin--Tate levels
@@ -26,6 +30,8 @@ higher-unit hypothesis is used.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -111,7 +117,8 @@ theorem standardLubinTateChangedLevelCompositumField_isGalois
     { to_isSeparable := inferInstance
       to_normal := inferInstance }
 
-private theorem
+/-- The changed-level compositum has its integral-closure complete discrete valuation. -/
+theorem
     standardLubinTateChangedLevelCompositumCompleteDVFData_exists
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))

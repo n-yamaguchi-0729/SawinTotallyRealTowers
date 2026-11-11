@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.ClassComparison
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.ClassComparison
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Canonical Maps
@@ -13,6 +16,8 @@ This module constructs the canonical dense maps from the abstract group algebra 
 \(C\)-indexed and all-finite named completions, together with their bundled ring, algebra, and
 linear forms and finite-stage characterizations.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

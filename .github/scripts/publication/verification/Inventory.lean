@@ -377,7 +377,7 @@ private def writeResults (inputs : Inputs) (env : Environment)
     result.allSelected.transitiveSorryCount == 0 && result.allSelected.nonstandardCount == 0
   let summary := Json.mkObj [
     ("schemaVersion", Lean.toJson (1 : Nat)),
-    ("tool", Json.str "Lean 4.35.0-rc2 portable public-API declaration inventory"),
+    ("tool", Json.str "Lean 4.35.0 portable public-API declaration inventory"),
     ("auditPassed", Json.bool passed),
     ("kernelRecheckPerformed", Json.bool false),
     ("independentKernelCheckPerformed", Json.bool false),

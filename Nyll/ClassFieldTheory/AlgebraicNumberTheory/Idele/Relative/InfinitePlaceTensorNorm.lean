@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
 
 /-!
 # The norm image of an archimedean tensor factor
@@ -19,16 +23,20 @@ finite-place tensor-norm comparison.
 
 
 
+@[expose] public section
+
 open scoped NumberField TensorProduct NumberField.LiesOver
 open NumberField
 
 noncomputable section
 
+universe u v
+
 open LocalClassFieldTheory
 
 open LocalFieldTheory
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [IsGalois K L]
@@ -42,8 +50,7 @@ theorem infiniteTensorNormSubgroup_eq_localNormSubgroup
       ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
     infiniteTensorNormSubgroup (K := K) (L := L) v =
       localNormSubgroup v.Completion w.Completion := by
-  let : w.1.LiesOver v.1 :=
-    ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
+  intro sharedOwner1
   let u :=
     infinitePlaceAbsoluteValueExtension v w hw
   let hL :=

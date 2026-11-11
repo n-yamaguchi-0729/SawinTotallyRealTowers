@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaCoefficients
-import Mathlib.RingTheory.PowerSeries.Expand
+module
+
+public import Mathlib.RingTheory.PowerSeries.Basic
+public import Mathlib.FieldTheory.Finite.Basic
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaCoefficients
+public import Mathlib.RingTheory.PowerSeries.Expand
 
 /-!
 # LubinTate the equal-characteristic theta construction: the equal-characteristic theta series
@@ -23,6 +27,8 @@ convergence or evaluation hypothesis is inserted into its definition.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -111,7 +117,7 @@ theorem equalCharacteristicQAdditiveSeries_coeff
       if hn : IsEqualCharacteristicAdditiveExponent k n then
         b (equalCharacteristicAdditiveExponentIndex k n hn)
       else 0 := by
-  simp [equalCharacteristicQAdditiveSeries]
+  exact PowerSeries.coeff_mk _ _
 
 /-- The coefficient at exponent `q ^ j` is the prescribed coefficient `b j`. -/
 @[simp]
@@ -131,7 +137,7 @@ theorem equalCharacteristicQAdditiveSeries_coeff_eq_zero
     (hn : ¬ IsEqualCharacteristicAdditiveExponent k n) :
     PowerSeries.coeff n (equalCharacteristicQAdditiveSeries k b) = 0 := by
   rw [equalCharacteristicQAdditiveSeries_coeff]
-  simp [hn]
+  exact dite_eq_right hn
 
 /-- Every `q`-additive series has zero constant coefficient. -/
 @[simp]
@@ -228,7 +234,8 @@ theorem equalCharacteristicCardFrobenius_apply
     {B : Type w} [CommRing B] [Algebra k B] (x : B) :
     equalCharacteristicCardFrobenius k x = x ^ Nat.card k := by
   let : Fintype k := Fintype.ofFinite k
-  simp [equalCharacteristicCardFrobenius, Nat.card_eq_fintype_card]
+  exact congrArg (fun n : ℕ => x ^ n)
+    (Nat.card_eq_fintype_card (α := k)).symm
 
 /-- Frobenius on a power-series algebra is coefficient Frobenius followed by
 the exponent expansion `Y ↦ Y^q`. -/
@@ -302,7 +309,7 @@ theorem equalCharacteristicQAdditiveSeries_expand
           intro h
           have hq : Nat.card k = 1 := Nat.eq_one_of_dvd_one h
           exact (Finite.one_lt_card : 1 < Nat.card k).ne hq.symm
-        simp [hnot, equalCharacteristicQAdditiveShift]
+        exact ite_eq_right hnot
     | succ j =>
         rw [equalCharacteristicQAdditiveSeries_coeff_pow]
         change PowerSeries.coeff (Nat.card k ^ (j + 1))
@@ -461,9 +468,8 @@ theorem equalCharacteristicCompletedLubinTateSeries_pow_card_pow_coeff
           (Nat.card k ^ j)) =
       (if n = Nat.card k ^ (j + 1) then 1 else 0) +
         (if n = Nat.card k ^ j then pi ^ (Nat.card k ^ j) else 0) := by
-  rw [equalCharacteristicCompletedLubinTateSeries_pow_card_pow]
-  simp only [map_add, PowerSeries.coeff_X_pow, PowerSeries.coeff_C_mul]
-  split_ifs <;> simp_all
+  rw [equalCharacteristicCompletedLubinTateSeries_pow_card_pow,
+    map_add, PowerSeries.coeff_X_pow, PowerSeries.coeff_C_mul_X_pow]
 
 /-- Coefficients obtained by substituting `Y^q + pi Y` into a `q`-additive
 series. -/
@@ -700,7 +706,7 @@ theorem equalCharacteristicThetaSeries_intertwines
                 ((u⁻¹ : k⟦X⟧ˣ) : k⟦X⟧)) *
               (equalCharacteristicSemilinearUnit (u : k⟦X⟧) _ * PowerSeries.X) := by
             ring
-        _ = _ := by rw [huinv]; simp [mul_comm]
+        _ = _ := by rw [huinv, one_mul, mul_comm]
   | succ j =>
       rw [equalCharacteristicLubinTateSubstitutionCoefficient,
         equalCharacteristicLubinTatePostcompositionCoefficient]

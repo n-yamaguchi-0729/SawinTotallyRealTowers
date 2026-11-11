@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityIndependence
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ReciprocityIndependence
 
 /-!
 # Finite intermediate fields: composita and absolute finiteness
@@ -13,6 +15,8 @@ These are the finite-stage closure facts used in the proof of the universal norm
 compositum of two finite intermediate fields is their
 intersection on the Galois-group side.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 

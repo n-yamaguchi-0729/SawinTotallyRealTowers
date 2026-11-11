@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Mathlib.NumberTheory.NumberField.ClassNumber
+module
+
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Mathlib.NumberTheory.NumberField.ClassNumber
 
 /-!
 # The elementary `p`-class quotient
@@ -13,6 +15,8 @@ import Mathlib.NumberTheory.NumberField.ClassNumber
 This file defines the ordinary ideal class group modulo `p`th powers and its
 canonical dimension over `ZMod p` when `p` is prime.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

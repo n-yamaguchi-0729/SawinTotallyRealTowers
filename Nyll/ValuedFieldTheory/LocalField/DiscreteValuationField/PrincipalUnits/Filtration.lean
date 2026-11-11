@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
-import Mathlib.Algebra.CharP.Lemmas
-import Mathlib.Algebra.Group.Units.Hom
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
+public import Mathlib.Algebra.CharP.Lemmas
+public import Mathlib.Algebra.Group.Units.Hom
 
 /-!
 # Principal-unit filtration from a valuation ring
@@ -20,6 +22,8 @@ of the valuation ring is
 This file turns that definition into the abstract `AntitoneSubgroupFiltration`
 used by ramification and norm arguments.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -109,15 +113,15 @@ theorem one_add_pow_prime_sub_one_mem_pow_succ
   rcases exists_add_pow_prime_eq hp (1 : R) a with ⟨r, hr⟩
   have hnp : n + 1 ≤ n * p := by
     exact (Nat.add_le_add_left hn n).trans
-      (by simpa [Nat.mul_two] using Nat.mul_le_mul_left n hp.two_le)
+      (by simpa only [Nat.mul_two] using Nat.mul_le_mul_left n hp.two_le)
   have ha_pow_np : a ^ p ∈ I ^ (n * p) := by
-    simpa [pow_mul] using (Ideal.pow_mem_pow ha p)
+    simpa only [pow_mul] using (Ideal.pow_mem_pow ha p)
   have ha_pow_succ : a ^ p ∈ I ^ (n + 1) :=
     Ideal.pow_le_pow_right hnp ha_pow_np
   have ha_p_succ : a * (p : R) ∈ I ^ (n + 1) := by
-    simpa [pow_succ] using (Ideal.mul_mem_mul ha hp_mem)
+    simpa only [pow_succ] using (Ideal.mul_mem_mul ha hp_mem)
   have hp_a_succ : (p : R) * a ∈ I ^ (n + 1) := by
-    simpa [mul_comm] using ha_p_succ
+    simpa only [mul_comm] using ha_p_succ
   have hp_a_r_succ : (p : R) * a * r ∈ I ^ (n + 1) :=
     (I ^ (n + 1)).mul_mem_right r hp_a_succ
   have hbinom : (1 + a) ^ p - 1 = a ^ p + (p : R) * a * r := by
@@ -147,7 +151,8 @@ theorem pow_mem_succ_of_natCast_mem_maximalIdeal
   rw [higherPrincipalUnitGroup.mem_iff] at hu ⊢
   let a : F.valuationSubring := (u : F.valuationSubring) - 1
   have hu_eq : (u : F.valuationSubring) = 1 + a := by
-    simp [a]
+    change (u : F.valuationSubring) = 1 + ((u : F.valuationSubring) - 1)
+    rw [add_comm, sub_add_cancel]
   have hpow :
       ((u ^ p : F.valuationSubringˣ) : F.valuationSubring) =
         (u : F.valuationSubring) ^ p := Units.val_pow_eq_pow_val u p
@@ -174,8 +179,11 @@ theorem pow_mem_succ_of_residue_ringChar_eq
 /-- Establishes the identity `higherPrincipalUnitGroup F 0 = ⊤`. -/
 @[simp] theorem zero_eq_top :
     higherPrincipalUnitGroup F 0 = ⊤ := by
-  ext u
-  simp [higherPrincipalUnitGroup]
+  apply top_unique
+  intro u _hu
+  change (u : F.valuationSubring) - 1 ∈ F.maximalIdeal ^ 0
+  rw [pow_zero, Ideal.one_eq_top]
+  exact Submodule.mem_top
 
 /-- The residue of a valuation-ring unit, viewed as a unit of the residue
 field. -/
@@ -206,12 +214,12 @@ theorem mem_one_iff_residue_eq_one (u : F.valuationSubringˣ) :
       exact
         (residue_eq_residue_iff_sub_mem_maximalIdeal
           (R := F.valuationSubring) (u : F.valuationSubring) 1).2 hu
-    simpa using hres
+    simpa only [map_one] using hres
   · intro hu
     exact
       (residue_eq_residue_iff_sub_mem_maximalIdeal
         (R := F.valuationSubring) (u : F.valuationSubring) 1).1
-        (by simpa using hu)
+        (by simpa only [map_one] using hu)
 
 /--
 Characterizes `higherPrincipalUnitGroup.residueUnitHom F u = 1` by the equivalent condition `u ∈
@@ -225,10 +233,10 @@ theorem residueUnitHom_eq_one_iff (u : F.valuationSubringˣ) :
     apply (higherPrincipalUnitGroup.mem_one_iff_residue_eq_one F u).2
     have hval :=
       congrArg (fun z : F.residueFieldˣ => (z : F.residueField)) hu
-    simpa using hval
+    exact hval
   · intro hu
     apply Units.ext
-    simpa using (higherPrincipalUnitGroup.mem_one_iff_residue_eq_one F u).1 hu
+    exact (higherPrincipalUnitGroup.mem_one_iff_residue_eq_one F u).1 hu
 
 /--
 Characterizes `higherPrincipalUnitGroup.residueUnitHom F u =
@@ -246,7 +254,7 @@ theorem residueUnitHom_eq_iff_residue_eq
     exact congrArg (fun z : F.residueFieldˣ => (z : F.residueField)) h
   · intro h
     apply Units.ext
-    simpa using h
+    exact h
 end higherPrincipalUnitGroup
 
 end CompleteDVF

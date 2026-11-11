@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 
 /-!
 # Finite support in the maximal everywhere-unramified pro-p compositum
@@ -14,6 +16,8 @@ Finite-dimensional intermediate fields are compact in the lattice of
 intermediate fields.  Consequently, an inclusion into the maximal compositum
 already factors through a supremum of finitely many bundled finite extensions.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

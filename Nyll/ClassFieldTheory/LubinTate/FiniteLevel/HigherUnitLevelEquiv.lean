@@ -4,14 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedPrimitiveEvaluation
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedLevelCompositum
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveDisplacement
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PolynomialRootProximity
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.GaloisStabilizer
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationKrasner
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationRestriction
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedPrimitiveEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedLevelCompositum
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveDisplacement
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PolynomialRootProximity
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.GaloisStabilizer
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationKrasner
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationRestriction
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 
 /-!
 # Stability of a standard Lubin--Tate level under a deep unit change
@@ -40,6 +45,8 @@ other changed-root displacements.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -1237,7 +1244,7 @@ private theorem
 
 /-- Inside the common compositum, the restricted copies of the original and
 changed standard levels coincide at principal-unit depth `n + 1`. -/
-private theorem
+theorem
     standardLubinTateHigherUnit_restrict_changedLevel_eq_originalLevel
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))

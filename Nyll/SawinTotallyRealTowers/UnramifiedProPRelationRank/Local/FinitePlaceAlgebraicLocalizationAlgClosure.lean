@@ -4,11 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalizationTopology
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
-import Mathlib.Analysis.Normed.Field.Dense
-import Mathlib.FieldTheory.AlgebraicClosure
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalizationTopology
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
+public import Mathlib.Analysis.Normed.Field.Dense
+public import Mathlib.FieldTheory.AlgebraicClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Algebraic localization as a local algebraic closure
@@ -20,6 +27,8 @@ itself algebraically closed.  Together with its existing algebraicity theorem,
 this identifies the algebraic localization as an algebraic closure of the
 completed base field.
 -/
+
+@[expose] public section
 
 open Polynomial
 open scoped Topology
@@ -86,18 +95,14 @@ theorem absoluteValueAlgebraicLocalization_isAlgClosed
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (hvKna : IsNonarchimedean (vK : K → ℝ))
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     IsAlgClosed
       (AbsoluteValue.algebraicLocalization vK w.1 w.2) := by
+  intro hK completionSMul hCompletionAlgebra
   let _ : CharZero L :=
     charZero_of_injective_algebraMap (algebraMap K L).injective
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let _ := hK
-  let _ : SMul K w.1.Completion := hK.toSMul
-  let hCompletionAlgebra := AbsoluteValue.completionAlgebra vK w.1 w.2
-  let _ := hCompletionAlgebra
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   let C := w.1.Completion
   let _ : Algebra.IsAlgebraic vK.Completion E :=
@@ -166,7 +171,8 @@ theorem absoluteValueAlgebraicLocalization_isAlgClosed
           simp only [Finset.mem_filter, Set.mem_toFinset, S] at hz
           rw [norm_pos_iff, sub_ne_zero]
           exact hz.2.symm
-        · simp [delta, hS]
+        · rw [show delta = 1 from dite_eq_right hS]
+          exact zero_lt_one
       obtain ⟨y, hy⟩ :=
         (AbsoluteValue.denseRange_toCompletion w.1).exists_dist_lt
           x hdelta_pos
@@ -212,15 +218,15 @@ theorem absoluteValueAlgebraicLocalization_isAlgClosure
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (hvKna : IsNonarchimedean (vK : K → ℝ))
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
     letI : SMul K w.1.Completion := hK.toSMul
     letI := AbsoluteValue.completionAlgebra vK w.1 w.2
     letI : Module.IsTorsionFree vK.Completion
         (AbsoluteValue.algebraicLocalization vK w.1 w.2) :=
-      fieldAlgebra_isTorsionFree
+      by exact fieldAlgebra_isTorsionFree
     IsAlgClosure vK.Completion
       (AbsoluteValue.algebraicLocalization vK w.1 w.2) := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+  intro hK
   let _ := hK
   let _ : SMul K w.1.Completion := hK.toSMul
   let _ := AbsoluteValue.completionAlgebra vK w.1 w.2
@@ -248,11 +254,10 @@ theorem finitePlaceAlgebraicLocalization_isAlgClosure
     letI := AbsoluteValue.completionAlgebra vF w.1 w.2
     letI : Module.IsTorsionFree vF.Completion
         (AbsoluteValue.algebraicLocalization vF w.1 w.2) :=
-      fieldAlgebra_isTorsionFree
+      by exact fieldAlgebra_isTorsionFree
     IsAlgClosure vF.Completion
       (AbsoluteValue.algebraicLocalization vF w.1 w.2) := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let w := finitePlaceAbsoluteValueExtension F v
+  intro vF w
   exact absoluteValueAlgebraicLocalization_isAlgClosure vF
     (RayClass.adicAbv_isNontrivial v)
     (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v) w
@@ -263,17 +268,15 @@ noncomputable def absoluteValueAlgebraicLocalizationAlgEquivAlgebraicClosure
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (hvKna : IsNonarchimedean (vK : K → ℝ))
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AbsoluteValue.algebraicLocalization vK w.1 w.2 ≃ₐ[vK.Completion]
       AlgebraicClosure vK.Completion := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   letI : Module.IsTorsionFree vK.Completion E :=
-    fieldAlgebra_isTorsionFree
+    by exact fieldAlgebra_isTorsionFree
   letI : IsAlgClosure vK.Completion E :=
     absoluteValueAlgebraicLocalization_isAlgClosure vK hvK hvKna w
   exact IsAlgClosure.equiv vK.Completion E (AlgebraicClosure vK.Completion)
@@ -285,17 +288,15 @@ noncomputable def
     (vK : AbsoluteValue K ℝ) (hvK : vK.IsNontrivial)
     (hvKna : IsNonarchimedean (vK : K → ℝ))
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     HilbertRamification.absoluteValueDecompositionGroup K w.1 ≃ₜ*
       Field.absoluteGaloisGroup vK.Completion := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   letI : Module.IsTorsionFree vK.Completion E :=
-    fieldAlgebra_isTorsionFree
+    by exact fieldAlgebra_isTorsionFree
   letI : IsAlgClosure vK.Completion E :=
     absoluteValueAlgebraicLocalization_isAlgClosure vK hvK hvKna w
   let e : E ≃ₐ[vK.Completion] AlgebraicClosure vK.Completion :=

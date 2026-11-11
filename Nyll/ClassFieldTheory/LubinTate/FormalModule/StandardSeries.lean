@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.CoefficientEquation
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.CoefficientEquation
 
 /-!
 # The standard Lubin--Tate series
@@ -19,6 +21,8 @@ polynomial input without making an equal-characteristic assumption.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -48,14 +52,18 @@ noncomputable def standardLubinTateSeries
     have hq0 : Nat.card F.residueField ≠ 0 :=
       Nat.ne_of_gt (lt_trans Nat.zero_lt_one
         (Finite.one_lt_card (α := F.residueField)))
-    simp [standardLubinTatePowerSeries, hq0]
+    simp only [standardLubinTatePowerSeries, map_add, map_mul, PowerSeries.constantCoeff_C,
+      PowerSeries.constantCoeff_X, mul_zero, map_pow, ne_eq, hq0, not_false_eq_true, zero_pow,
+      add_zero]
   coeff_one_eq_uniformizer := by
     have hq : 1 ≠ Nat.card F.residueField :=
       (Finite.one_lt_card (α := F.residueField)).ne
-    simp [standardLubinTatePowerSeries, PowerSeries.coeff_X_pow, hq]
+    simp only [standardLubinTatePowerSeries, map_add, PowerSeries.coeff_succ_mul_X,
+      PowerSeries.coeff_zero_C, PowerSeries.coeff_X_pow, hq, ↓reduceIte, add_zero]
   map_residue_eq_frobenius := by
-    simp [standardLubinTatePowerSeries,
-      SameUniformizer.residueMap_uniformizer_eq_zero hπ]
+    simp only [standardLubinTatePowerSeries, map_add, map_mul, PowerSeries.map_C,
+      SameUniformizer.residueMap_uniformizer_eq_zero hπ, map_zero, PowerSeries.map_X, zero_mul,
+      map_pow, zero_add]
 
 namespace LubinTateSeries
 

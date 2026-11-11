@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Mathlib.FieldTheory.Finite.Extension
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Mathlib.FieldTheory.Finite.Extension
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # Finite local reciprocity: finite residue Frobenius coordinates
@@ -23,6 +25,8 @@ Frobenius `x ↦ x ^ #k`, and the exponent map is obtained by factoring its
 integer powers through `ZMod [L : k]`.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 
 open ClassFormation
@@ -37,14 +41,14 @@ variable (k : Type u) (L : Type v)
   [Field k] [Fintype k] [Field L] [Finite L] [Algebra k L]
 
 /-- Integer powers of the arithmetic Frobenius, written additively. -/
-private def finiteResidueFrobeniusIntegerPowers :
+def finiteResidueFrobeniusIntegerPowers :
     ℤ →+ Additive (L ≃ₐ[k] L) :=
   zmultiplesHom (Additive (L ≃ₐ[k] L)) (Additive.ofMul
     (FiniteField.frobeniusAlgEquivOfAlgebraic k L))
 
 /-- The order relation which lets integer Frobenius powers factor through
 `ZMod [L : k]`. -/
-private theorem finiteResidueFrobeniusIntegerPowers_degree_eq_zero :
+theorem finiteResidueFrobeniusIntegerPowers_degree_eq_zero :
     finiteResidueFrobeniusIntegerPowers k L (Module.finrank k L) = 0 := by
   apply Additive.ext
   change (FiniteField.frobeniusAlgEquivOfAlgebraic k L) ^

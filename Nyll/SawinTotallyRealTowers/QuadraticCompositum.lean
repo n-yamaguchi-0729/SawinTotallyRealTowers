@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset.Defs
-import Mathlib.Algebra.Ring.Commute
+module
+
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.Ring.Commute
 
 /-!
 # Square-class products inside intermediate fields
@@ -16,6 +18,8 @@ also contains a square root of their product, up to a square in the base
 field. The proof constructs that root as an actual product and compares
 the two roots by their signs.
 -/
+
+@[expose] public section
 
 universe u v w
 

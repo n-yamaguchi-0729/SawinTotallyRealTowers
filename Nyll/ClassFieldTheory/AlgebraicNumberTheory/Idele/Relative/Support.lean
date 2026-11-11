@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
 /-!
 # Finite coefficient support for relative ideles
@@ -24,6 +26,8 @@ This produces the finite support from a basis lattice.  Passing from
 that lattice to the product of local integer rings additionally requires
 integral compatibility of the relative tensor decomposition.
 -/
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain
@@ -184,7 +188,8 @@ theorem mem_relativeAdeleCoefficientSupport_iff
             (K := K) (L := L) z i).2 w ∉
           w.adicCompletionIntegers K := by
   classical
-  simp [relativeAdeleCoefficientSupport]
+  simp only [relativeAdeleCoefficientSupport, Finset.mem_biUnion, Finset.mem_univ,
+    mem_adeleNonIntegralPlaces_iff, true_and]
 
 /-- The exact coefficient support of a relative idele contains the
 exceptional places of the idele and its inverse. -/
@@ -220,7 +225,8 @@ theorem mem_relativeIdeleCoefficientSupport_iff
               RelativeAdeleRing K L) i).2 w ∉
           w.adicCompletionIntegers K) := by
   classical
-  simp [relativeIdeleCoefficientSupport]
+  simp only [relativeIdeleCoefficientSupport, Finset.mem_union,
+    mem_relativeAdeleCoefficientSupport_iff]
 
 omit [NumberField L] in
 /-- Outside the exact coefficient support, every coefficient of both

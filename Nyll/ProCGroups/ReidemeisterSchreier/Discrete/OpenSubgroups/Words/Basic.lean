@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ReidemeisterSchreier.FreeGroup.PrefixParent
+module
+
+public import Nyll.ProCGroups.ReidemeisterSchreier.FreeGroup.PrefixParent
 
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Words / Basic
@@ -13,6 +15,8 @@ This module defines the initial reduced-word segments of a free-group element
 and proves the membership and prefix-parent facts used by discrete Schreier
 transversals.
 -/
+
+@[expose] public section
 
 universe u
 

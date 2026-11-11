@@ -4,8 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.NormLaws
 
 /-!
 # Conjugation and relative norms
@@ -14,6 +15,8 @@ These are the field-conjugation and norm identities used in the abstract recipro
 construction and theorem.  They belong before the reciprocity construction: their proofs
 use only the actual relative norm and the conjugation action.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 
@@ -27,7 +30,7 @@ noncomputable section
 
 open scoped BigOperators
 
-universe u
+universe u v
 
 section GroupOnly
 
@@ -52,20 +55,24 @@ def conjugateSubgroupEquiv [ContinuousMul G]
     K.toSubgroup ≃* (conjugateClosedSubgroup K s).toSubgroup where
   toFun k := ⟨s⁻¹ * k.1 * s, by
     change s⁻¹ * k.1 * s ∈ conjugateClosedSubgroup K s
-    rw [conjugateClosedSubgroup_mem]
-    convert k.2 using 1
-    simp [mul_assoc]⟩
+    rw [conjugateClosedSubgroup_mem, mul_assoc s⁻¹ k.1 s,
+      mul_inv_cancel_left, mul_inv_cancel_right]
+    exact k.2⟩
   invFun x := ⟨s * x.1 * s⁻¹,
     (conjugateClosedSubgroup_mem K s x.1).mp x.2⟩
   left_inv k := by
     apply Subtype.ext
-    simp [mul_assoc]
+    change s * (s⁻¹ * k.1 * s) * s⁻¹ = k.1
+    rw [mul_assoc s⁻¹ k.1 s, mul_inv_cancel_left, mul_inv_cancel_right]
   right_inv x := by
     apply Subtype.ext
-    simp [mul_assoc]
+    change s⁻¹ * (s * x.1 * s⁻¹) * s = x.1
+    rw [mul_assoc s x.1 s⁻¹, inv_mul_cancel_left, inv_mul_cancel_right]
   map_mul' a b := by
     apply Subtype.ext
-    simp [mul_assoc]
+    change s⁻¹ * (a.1 * b.1) * s = (s⁻¹ * a.1 * s) * (s⁻¹ * b.1 * s)
+    simpa only [MulAut.conj_apply, inv_inv] using
+      (MulAut.conj s⁻¹).map_mul a.1 b.1
 
 /-- Establishes the identity `(conjugateSubgroupEquiv K s k).1 = s⁻¹ * k.1 * s`. -/
 @[simp]
@@ -208,12 +215,11 @@ end GroupOnly
 
 section Representation
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- Conjugation intertwines the two relative coset actions. -/
 private theorem relativeCosetAction_conjugate
-    [ContinuousMul G] (A : Rep ℤ G)
+    [ContinuousMul G] (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) (s : G)
     (a : ambientFixedAddSubgroup A L)
@@ -236,7 +242,7 @@ private theorem relativeCosetAction_conjugate
       exact hm.symm
     _ = A.ρ (s⁻¹ * k.1) a.1 := by
       congr 2
-      simp [mul_assoc]
+      exact mul_inv_cancel_right _ _
     _ = A.ρ s⁻¹ (A.ρ k.1 a.1) := by
       exact congrArg (fun φ => φ a.1) (map_mul A.ρ s⁻¹ k.1)
 
@@ -244,7 +250,7 @@ private theorem relativeCosetAction_conjugate
 diagram of norm--conjugation naturality:
 `N_{L^s/K^s}(a^s) = N_{L/K}(a)^s`. -/
 theorem relativeNorm_conjugate_apply
-    [ContinuousMul G] (A : Rep ℤ G)
+    [ContinuousMul G] (A : Rep.{v} ℤ G)
     (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) (s : G)
     [hLfinite : Finite

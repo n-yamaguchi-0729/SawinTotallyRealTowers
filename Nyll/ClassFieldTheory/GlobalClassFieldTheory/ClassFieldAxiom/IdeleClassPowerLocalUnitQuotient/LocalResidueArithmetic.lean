@@ -4,12 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
-import Nyll.ValuedFieldTheory.LocalField.Padic.PrincipalUnits
-import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
-import Mathlib.NumberTheory.NumberField.ProductFormula
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
+public import Nyll.ValuedFieldTheory.LocalField.Padic.PrincipalUnits
+public import Nyll.ValuedFieldTheory.Valuation.ValuedAdicComplete
+public import Mathlib.NumberTheory.NumberField.ProductFormula
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.IntegralLattice
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
 
 /-!
 # Residue arithmetic for finite-place power indices
@@ -20,15 +27,19 @@ invariants of the corresponding finite completions.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel
 open NumberField IsDedekindDomain
 open LocalFieldTheory
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 
 /-- The ideal norm is the cardinality of the residue field of the
@@ -72,9 +83,7 @@ theorem ramificationIndexOfWithZeroValuation_eq_extensionRamificationIndex
         (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF
           F.residueCharacteristic).toDVF
         F.toCompleteDVF.toDVF := by
-  let F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation
-      ν
+  intro F
   let p := F.residueCharacteristic
   let :
       LocalFieldTheory.DiscreteValuationField.LocalField.MixedQPadicContext
@@ -214,9 +223,7 @@ theorem card_localField_residueField_eq_pow_residueDegree
           (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF
             F.residueCharacteristic).toDVF
           F.toCompleteDVF.toDVF := by
-  let F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation
-      ν
+  intro F
   let p := F.residueCharacteristic
   let :
       LocalFieldTheory.DiscreteValuationField.LocalField.MixedQPadicContext
@@ -266,7 +273,7 @@ theorem finrank_qp_eq_ramificationIndex_mul_residueDegree
     let F :=
       LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation
         ν
-    letI :
+    let :
         LocalFieldTheory.DiscreteValuationField.LocalField.MixedQPadicContext
           F :=
       LocalFieldTheory.DiscreteValuationField.LocalField.mixedQPadicContext
@@ -278,14 +285,7 @@ theorem finrank_qp_eq_ramificationIndex_mul_residueDegree
           (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF
             F.residueCharacteristic).toDVF
           F.toCompleteDVF.toDVF := by
-  let F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation
-      ν
-  let :
-      LocalFieldTheory.DiscreteValuationField.LocalField.MixedQPadicContext
-        F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.mixedQPadicContext
-      F
+  intro F sharedOwner2
   let base :=
     LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF
       F.residueCharacteristic
@@ -309,7 +309,7 @@ theorem absNorm_eq_residueCharacteristic_pow_residueDegree
     let F :=
       LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation
         ν
-    letI :
+    let :
         LocalFieldTheory.DiscreteValuationField.LocalField.MixedQPadicContext
           F :=
       LocalFieldTheory.DiscreteValuationField.LocalField.mixedQPadicContext
@@ -320,19 +320,7 @@ theorem absNorm_eq_residueCharacteristic_pow_residueDegree
           (LocalFieldTheory.DiscreteValuationField.Examples.Qp.padicCompleteDVF
             F.residueCharacteristic).toDVF
           F.toCompleteDVF.toDVF := by
-  let ν :
-      Valuation
-        (v.adicCompletion K)
-        (WithZero (Multiplicative ℤ)) :=
-    Valued.v
-  let F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation
-      ν
-  let :
-      LocalFieldTheory.DiscreteValuationField.LocalField.MixedQPadicContext
-        F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.mixedQPadicContext
-      F
+  intro ν F sharedOwner3
   rw [absNorm_eq_card_adicResidueField]
   change
     Nat.card F.residueField =

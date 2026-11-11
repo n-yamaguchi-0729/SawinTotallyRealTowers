@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageKummerFieldUnitsH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageKummerFieldUnitsH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
 
 /-!
 # Absolute degree-two vanishing at the unramified arithmetic stage
@@ -21,6 +23,8 @@ only the original arithmetic stage and primitive-root data as inputs.
 A single local compactness proof unfolds the public absolute-group wrapper;
 no data-bearing or global instance is introduced.
 -/
+
+@[expose] public section
 
 noncomputable section
 

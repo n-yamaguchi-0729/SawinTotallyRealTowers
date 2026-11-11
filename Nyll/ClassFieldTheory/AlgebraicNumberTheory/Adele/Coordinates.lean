@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
 
 /-!
 # Coordinate assembly for relative adeles
@@ -17,6 +19,8 @@ local tensor components have first been chosen place by place.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct
 open NumberField IsDedekindDomain

@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 
 /-!
 # Positive archimedean section of the idele norm
@@ -18,6 +23,8 @@ its infinite components lie in the standard positive subgroups.
 -/
 
 
+
+@[expose] public section
 
 open scoped IsMulCommutative NNReal NumberField Topology
 open NumberField IsDedekindDomain
@@ -33,7 +40,7 @@ variable {K : Type u} [Field K] [NumberField K]
 
 /-- A positive real unit placed in an archimedean completion.  At a complex
 place it is first regarded as a complex unit. -/
-private noncomputable def positiveArchimedeanLocalComponent
+noncomputable def positiveArchimedeanLocalComponent
     (v : InfinitePlace K) :
     ℝ≥0ˣ →* v.Completionˣ := by
   by_cases hv : v.IsReal
@@ -52,7 +59,7 @@ private noncomputable def positiveArchimedeanLocalComponent
           (Units.map NNReal.toRealHom.toMonoidHom))
 
 /-- The positive local archimedean component, with its natural continuity. -/
-private noncomputable def positiveArchimedeanLocalComponentContinuous
+noncomputable def positiveArchimedeanLocalComponentContinuous
     (v : InfinitePlace K) :
     ℝ≥0ˣ →ₜ* v.Completionˣ where
   __ := positiveArchimedeanLocalComponent v
@@ -231,14 +238,14 @@ private theorem positiveArchimedeanLocalComponent_mem_positive
 
 /-- The positive root needed to compensate for the multiplicity of the
 chosen infinite place. -/
-private noncomputable def positiveArchimedeanRoot :
+noncomputable def positiveArchimedeanRoot :
     ℝ≥0ˣ →* ℝ≥0ˣ :=
   Units.map
     (NNReal.rpowMonoidHom
       (((w₀ (K := K)).mult : ℝ)⁻¹))
 
 /-- The positive root map used in the archimedean section is continuous. -/
-private noncomputable def positiveArchimedeanRootContinuous :
+noncomputable def positiveArchimedeanRootContinuous :
     ℝ≥0ˣ →ₜ* ℝ≥0ˣ where
   __ := positiveArchimedeanRoot (K := K)
   continuous_toFun :=

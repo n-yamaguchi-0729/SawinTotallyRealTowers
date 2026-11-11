@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.InvariantKernelH1
-import Nyll.ProCGroups.ProP.Presentation.RelationNakayama
-import Nyll.ProCGroups.Cohomology.RelativeNakayama
+module
+
+public import Nyll.GaloisCohomology.ProP.InvariantKernelH1
+public import Nyll.ProCGroups.ProP.Presentation.RelationNakayama
+public import Nyll.ProCGroups.Cohomology.RelativeNakayama
 
 /-!
 # Relation rank and invariant kernel H1
@@ -17,6 +19,8 @@ normalization, their invariant degree-one classes map to the coordinate basis.  
 relator evaluation is surjective and the invariant kernel `H1` dimension equals the displayed
 relation count.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

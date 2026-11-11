@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.PrefixTree
-import Nyll.ProCGroups.ReidemeisterSchreier.Quiver
-import Nyll.ProCGroups.ReidemeisterSchreier.Schreier
-import Mathlib.Data.Set.Card
+module
+
+public import Nyll.ProCGroups.ReidemeisterSchreier.Discrete.OpenSubgroups.PrefixTree
+public import Nyll.ProCGroups.ReidemeisterSchreier.Quiver
+public import Nyll.ProCGroups.ReidemeisterSchreier.Schreier
+public import Mathlib.Data.Set.Card
+public import Nyll.ProCGroups.ReidemeisterSchreier.Groupoid
 
 /-!
 # Reidemeister Schreier / Discrete / Open Subgroups / Free Basis
@@ -16,6 +19,8 @@ Using the action groupoid and Schreier prefix tree, this module constructs a
 free basis indexed by complement edges and transports it to the canonical
 type of nontrivial Schreier pairs.
 -/
+
+@[expose] public section
 
 universe u
 
@@ -28,18 +33,19 @@ a pair consisting of a vertex and a basis element.
 -/
 noncomputable def FreeGroupBasis.actionGroupoidGeneratorTotalEquiv
     {ι G A : Type u} [Group G] [MulAction G A] (b : FreeGroupBasis ι G) :
-    letI : IsFreeGroupoid (CategoryTheory.ActionCategory G A) :=
+    let : IsFreeGroupoid (CategoryTheory.ActionCategory G A) :=
       FreeGroupBasis.actionGroupoidIsFree b
     Quiver.Total (IsFreeGroupoid.Generators (CategoryTheory.ActionCategory G A)) ≃ A × ι := by
+  intro actionGroupoidOwner
   refine
     { toFun := fun e =>
         ((@Quiver.Total.left (IsFreeGroupoid.Generators (CategoryTheory.ActionCategory G A))
-            (FreeGroupBasis.actionGroupoidIsFree b).quiverGenerators e).back,
+            actionGroupoidOwner.quiverGenerators e).back,
           (@Quiver.Total.hom (IsFreeGroupoid.Generators (CategoryTheory.ActionCategory G A))
-            (FreeGroupBasis.actionGroupoidIsFree b).quiverGenerators e).1)
+            actionGroupoidOwner.quiverGenerators e).1)
       invFun := fun ai =>
         @Quiver.Total.mk (IsFreeGroupoid.Generators (CategoryTheory.ActionCategory G A))
-          (FreeGroupBasis.actionGroupoidIsFree b).quiverGenerators
+          actionGroupoidOwner.quiverGenerators
           (ai.1 : CategoryTheory.ActionCategory G A)
           ((b ai.2 • ai.1 : A) : CategoryTheory.ActionCategory G A) ⟨ai.2, rfl⟩
       left_inv := ?_
@@ -198,9 +204,9 @@ private noncomputable def nontrivialSchreierPairsEquivSchreierGeneratorSet
     let loop := ReidemeisterSchreier.Groupoid.rootLoopOfHom (schreierPrefixTree (X := X) hT)
       (IsFreeGroupoid.of i.1.hom)
     have hrootEq : (schreierRootEndMulEquiv (X := X) hT loop : L) =
-        (schreierLabelFunctor (X := X) hT).map loop := by
+        (schreierLabelFunctor (X := X) hT).map loop.asHom := by
       apply Subtype.ext
-      change loop.1 = (1 : FreeGroup X) * loop.1 * (1 : FreeGroup X)⁻¹
+      change loop.asHom.1 = (1 : FreeGroup X) * loop.asHom.1 * (1 : FreeGroup X)⁻¹
       simp only [one_mul, inv_one, mul_one]
     exact hrootEq.trans <| hloop.trans <| schreierLabelFunctor_map_of (X := X) hT i.1.hom
   have hto_inj : Function.Injective toSch := by
@@ -362,7 +368,7 @@ theorem natCard_schreierComplementEdges_eq_rankTransform_direct
         Nat.card totalGen - Nat.card {e : totalGen // e ∈ covered} := by
     change Nat.card ↥(coveredᶜ) = Nat.card totalGen - Nat.card ↥covered
     simpa only [Nat.card_coe_set_eq] using
-      (Set.ncard_compl covered (Set.toFinite covered) (Set.toFinite coveredᶜ))
+      (Set.ncard_compl covered (Set.toFinite covered))
   have hTotal : Nat.card totalGen = Nat.card T * Nat.card X :=
     (Nat.card_congr eTotal).trans (Nat.card_prod T X)
   let eObjNonRoot :
@@ -396,7 +402,7 @@ theorem natCard_schreierComplementEdges_eq_rankTransform_direct
         Nat.card T - Nat.card ↥({t : T | t = rootT})
       simpa only [Nat.card_coe_set_eq] using
         (Set.ncard_compl {t : T | t = rootT}
-          (Set.toFinite {t : T | t = rootT}) (Set.toFinite {t : T | t = rootT}ᶜ))
+          (Set.toFinite {t : T | t = rootT}))
     exact hcompl.trans (congrArg (fun n : ℕ => Nat.card T - n) hOne)
   have hNonRoot :
       Nat.card {v : Ttree // v ≠ Quiver.root Ttree} = Nat.card T - 1 := by

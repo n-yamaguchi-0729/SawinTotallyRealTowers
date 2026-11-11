@@ -4,7 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitLocalPowerKernel
+module
+
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitLocalPowerKernel
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.GaloisCohomology.Kummer.Concrete.ExtensionRoundTrip
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
+public import Nyll.GaloisCohomology.Kummer.Concrete.RadicalExtension
+public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
 
 /-!
 # Finite support for Kummer radicals
@@ -14,6 +24,8 @@ radical.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain

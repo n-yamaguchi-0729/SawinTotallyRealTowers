@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FinitePlaceFrobenius
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPUnramified
-import Nyll.ProCGroups.Topologies.QuotientMaps
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
-import Mathlib.Algebra.Group.Subgroup.Lattice
+module
+
+public import Nyll.SawinTotallyRealTowers.FinitePlaceFrobenius
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPUnramified
+public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
+public import Mathlib.Algebra.Group.Subgroup.Lattice
 
 /-!
 # Frobenius in the actual maximal real pro-p extension
@@ -18,6 +20,8 @@ Outside the allowed support inertia acts trivially. Consequently the
 actual decomposition map factors through its residue-degree quotient;
 killing arithmetic Frobenius kills its entire decomposition image.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

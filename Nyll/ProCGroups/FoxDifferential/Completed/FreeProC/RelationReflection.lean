@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationReflection
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.FiniteQuotientStages
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.NaturalTopology
-import Nyll.ProCGroups.FreeProC.FiniteBasis
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationReflection
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.FiniteQuotientStages
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.NaturalTopology
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
+public import Nyll.ProCGroups.Completion.ProCInteger
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Relation reflection for free pro-\(C\) presentations
@@ -16,6 +22,8 @@ This module supplies the finite free-basis family used to reflect completed
 Fox relations through finite quotient stages, and relates stagewise
 vanishing to equality in the completed differential module.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 

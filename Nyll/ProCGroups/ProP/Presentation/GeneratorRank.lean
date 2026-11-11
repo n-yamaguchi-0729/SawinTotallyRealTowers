@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Nyll.ProCGroups.ProP.Presentation.Minimal
+module
+
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Nyll.ProCGroups.ProP.Presentation.Minimal
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
 
 /-!
 # Generator rank of a minimal pro-p presentation
@@ -15,6 +18,8 @@ surjection from the target to the source Frattini quotient, and the Burnside
 basis theorem lifts a small generating set back to the free source, giving the
 reverse bound.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

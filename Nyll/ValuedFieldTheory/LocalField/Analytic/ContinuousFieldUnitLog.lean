@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
-import Nyll.ValuedFieldTheory.LocalField.Analytic.FieldUnitLogUniqueness
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpAdditivity
-import Nyll.ValuedFieldTheory.LocalField.Analytic.FieldUnitLogExtension
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.WithZeroValuationTopology
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.FieldUnitLogUniqueness
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpAdditivity
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.FieldUnitLogExtension
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.WithZeroValuationTopology
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.RangeRestrictedTopology
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # The local-field logarithm
@@ -19,6 +23,8 @@ uniformizer value forced by `log p = 0`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -50,11 +56,11 @@ theorem continuous_principalUnitLogSeriesHomOfWithZeroValuationScaled
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     Continuous
       (principalUnitLogSeriesHomOfWithZeroValuationScaled
         (v := v) (p := p) e hnK hnval hcomplete) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u,
     0} K := completeDVFOfWithZeroValuation v
   have hMulSubring :
@@ -382,8 +388,7 @@ theorem continuous_fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_ofWithZero
     Continuous
       (fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
         F hπ).symm := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u,
-    0} K := completeDVFOfWithZeroValuation v
+  intro F
   let direct : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   let restricted : Valued K
       (MonoidHom.mrange v.toMonoidWithZeroHom) :=
@@ -463,7 +468,7 @@ theorem existsUnique_continuous_log
             (L (higherPrincipalUnitGroup.valuationSubringUnitFieldUnitHom
               F.toCompleteDVF (u : F.toCompleteDVF.valuationSubringˣ))) =
           principalUnitLogSeriesOfWithZeroValuation v u hnK := by
-  let F : LocalField.{u, 0} K := LocalField.ofWithZeroValuation v
+  intro F
   let p : ℕ := F.residueCharacteristic
   let e : ℕ := LocalField.ramificationIndexOfWithZeroValuation v
   let pUnit : Kˣ :=

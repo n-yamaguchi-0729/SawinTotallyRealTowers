@@ -4,7 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.System
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Universal.System
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Definitions
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.FiniteQuotients
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.OpenSubmodule
+public import Nyll.ProCGroups.FiniteGroups.Classes
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
 
 /-!
 # Fox differential: completed — continuous — universal — natural topology
@@ -22,6 +30,8 @@ The principal declarations in this module are:
   The additive finite-stage projection sends the universal differential to the corresponding
   finite-stage differential.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -913,17 +923,13 @@ The quotient map defining the separated completed module is a quotient map for t
 pre-module topology.
 -/
 theorem isQuotientMap_zcSeparatedCompletedDifferentialModule_mkQ_naturalTopology :
-    letI : TopologicalSpace
+    let : TopologicalSpace
         (CrossedDifferentialPreModule (ZCCompletedGroupAlgebra C H) G) :=
       zcCompletedDifferentialPreModuleNaturalTopology C ψ
-    letI : TopologicalSpace (ZCSeparatedCompletedDifferentialModule C ψ) :=
+    let : TopologicalSpace (ZCSeparatedCompletedDifferentialModule C ψ) :=
       zcSeparatedCompletedDifferentialModuleNaturalTopology C ψ
     Topology.IsQuotientMap (zcCompletedDifferentialRelationFiniteClosedSubmodule C ψ).mkQ := by
-  let : TopologicalSpace
-      (CrossedDifferentialPreModule (ZCCompletedGroupAlgebra C H) G) :=
-    zcCompletedDifferentialPreModuleNaturalTopology C ψ
-  let : TopologicalSpace (ZCSeparatedCompletedDifferentialModule C ψ) :=
-    zcSeparatedCompletedDifferentialModuleNaturalTopology C ψ
+  intro sharedOwner1 sharedOwner2
   rw [Topology.isQuotientMap_iff]
   constructor
   · exact ⟨rfl⟩
@@ -2173,11 +2179,10 @@ def zcSeparatedCompletedDifferentialModuleLiftContinuousLinearMapOfContinuousPre
         inferInstance
         (crossedDifferentialModuleLiftLinear
           (R := ZCCompletedGroupAlgebra C H) delta)) :
-    letI : TopologicalSpace (ZCSeparatedCompletedDifferentialModule C ψ) :=
+    let : TopologicalSpace (ZCSeparatedCompletedDifferentialModule C ψ) :=
       zcSeparatedCompletedDifferentialModuleNaturalTopology C ψ
     ZCSeparatedCompletedDifferentialModule C ψ →L[ZCCompletedGroupAlgebra C H] A := by
-  letI : TopologicalSpace (ZCSeparatedCompletedDifferentialModule C ψ) :=
-    zcSeparatedCompletedDifferentialModuleNaturalTopology C ψ
+  intro sharedOwner3
   refine
     { toLinearMap :=
         zcSeparatedCompletedDifferentialModuleLiftOfContinuousPrelift
@@ -2307,7 +2312,6 @@ def zcSepContCrossedDiffEquivCLM
     {A : Type u} [AddCommGroup A] [Module (ZCCompletedGroupAlgebra C H) A]
     [TopologicalSpace A] [T1Space A]
     [ProCGroups.FiniteGroupClass.ContainsTrivialQuotients C]
-    (hC : ProCGroups.FiniteGroupClass.Hereditary C)
     (hForm : ProCGroups.FiniteGroupClass.Formation C)
     (ψc : ContinuousMonoidHom G H)
     (hprelift :
@@ -2329,11 +2333,11 @@ def zcSepContCrossedDiffEquivCLM
       ZCSeparatedCompletedDifferentialModule C ψc.toMonoidHom →L[ZCCompletedGroupAlgebra C H] A)
           := by
   letI : Nonempty (ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom) :=
-    nonempty_zcCompletedDifferentialModuleIndex C hC ψc
+    nonempty_zcCompletedDifferentialModuleIndex C ψc.toMonoidHom
   exact
     zcSeparatedCompletedContinuousCrossedDifferentialEquivContinuousLinearMap
       C ψc.toMonoidHom
-      (directed_zcCompletedDifferentialModuleIndex C hForm hC ψc)
+      (directed_zcCompletedDifferentialModuleIndex C ψc.toMonoidHom hForm)
       hprelift
 
 /--
@@ -2383,7 +2387,6 @@ def zcSepContCrossedDiffEquivCLMOfFiniteStage
     {A : Type u} [AddCommGroup A] [Module (ZCCompletedGroupAlgebra C H) A]
     [TopologicalSpace A] [T1Space A]
     [ProCGroups.FiniteGroupClass.ContainsTrivialQuotients C]
-    (hC : ProCGroups.FiniteGroupClass.Hereditary C)
     (hForm : ProCGroups.FiniteGroupClass.Formation C)
     (ψc : ContinuousMonoidHom G H)
     (hfactor :
@@ -2407,11 +2410,11 @@ def zcSepContCrossedDiffEquivCLMOfFiniteStage
       ZCSeparatedCompletedDifferentialModule C ψc.toMonoidHom →L[ZCCompletedGroupAlgebra C H] A)
           := by
   letI : Nonempty (ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom) :=
-    nonempty_zcCompletedDifferentialModuleIndex C hC ψc
+    nonempty_zcCompletedDifferentialModuleIndex C ψc.toMonoidHom
   exact
     zcSepCompletedContCrossedDiffEquivContinuousLinearMapOfFiniteStageFactorization
       C ψc.toMonoidHom
-      (directed_zcCompletedDifferentialModuleIndex C hForm hC ψc)
+      (directed_zcCompletedDifferentialModuleIndex C ψc.toMonoidHom hForm)
       hfactor
 
 /--
@@ -2697,11 +2700,11 @@ def zcApsiContinuousCrossedDifferentialEquivContinuousLinearMapOfProfiniteTarget
   letI : ProCGroups.FiniteGroupClass.ContainsTrivialQuotients C :=
     hForm.containsTrivialQuotients
   letI : Nonempty (ZCCompletedDifferentialModuleIndex C ψc.toMonoidHom) :=
-    nonempty_zcCompletedDifferentialModuleIndex C hC ψc
+    nonempty_zcCompletedDifferentialModuleIndex C ψc.toMonoidHom
   exact
     zcSeparatedCompletedContinuousCrossedDifferentialEquivContinuousLinearMap
       C ψc.toMonoidHom
-      (directed_zcCompletedDifferentialModuleIndex C hForm hC ψc)
+      (directed_zcCompletedDifferentialModuleIndex C ψc.toMonoidHom hForm)
       (fun delta hcont =>
         continuous_crossedDifferentialModuleLiftLinear_of_profiniteTarget
           C hC hForm ψc hG delta hcont)
@@ -3021,12 +3024,11 @@ theorem zcCompletedDifferentialModuleRelationSubmoduleClosed_iff_t2_naturalTopol
 omit [IsTopologicalGroup G] in
 /-- Addition is continuous for the finite-stage completed topology. -/
 theorem continuous_add_zcCompletedDifferentialModuleNaturalTopology :
-    letI : TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
+    let : TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
       zcCompletedDifferentialModuleNaturalTopology C ψ
     Continuous (fun p : ZCCompletedDifferentialModule C ψ ×
         ZCCompletedDifferentialModule C ψ => p.1 + p.2) := by
-  let : TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
-    zcCompletedDifferentialModuleNaturalTopology C ψ
+  intro sharedOwner1
   rw [continuous_induced_rng]
   change Continuous
     (fun p : ZCCompletedDifferentialModule C ψ ×
@@ -3043,11 +3045,10 @@ theorem continuous_add_zcCompletedDifferentialModuleNaturalTopology :
 omit [IsTopologicalGroup G] in
 /-- Negation is continuous for the finite-stage completed topology. -/
 theorem continuous_neg_zcCompletedDifferentialModuleNaturalTopology :
-    letI : TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
+    let : TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
       zcCompletedDifferentialModuleNaturalTopology C ψ
     Continuous (fun a : ZCCompletedDifferentialModule C ψ => -a) := by
-  let : TopologicalSpace (ZCCompletedDifferentialModule C ψ) :=
-    zcCompletedDifferentialModuleNaturalTopology C ψ
+  intro sharedOwner1
   rw [continuous_induced_rng]
   change Continuous
     (fun a : ZCCompletedDifferentialModule C ψ =>

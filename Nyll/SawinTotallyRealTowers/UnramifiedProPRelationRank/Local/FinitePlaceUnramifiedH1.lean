@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationRamificationGroups
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationRamificationGroups
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Unramified degree-one characters at a finite place
@@ -15,6 +20,8 @@ import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationRamif
 The valuation-subring inertia group is pulled back to the chosen absolute decomposition group.
 Restriction to this inertia subgroup defines the unramified continuous `H¹` subspace.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

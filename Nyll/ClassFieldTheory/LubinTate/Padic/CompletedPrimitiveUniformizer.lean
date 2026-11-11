@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
 /-!
 # The completed p-adic primitive point is a uniformizer
@@ -19,6 +21,8 @@ Consequently it is a genuine uniformizer of the completed level.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

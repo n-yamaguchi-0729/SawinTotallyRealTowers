@@ -4,11 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.FieldTheory.Galois.Abelian
-import Mathlib.GroupTheory.Abelianization.Defs
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Conductor
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormComparison
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Mathlib.GroupTheory.Abelianization.Defs
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Conductor
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormComparison
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNorm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnits
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Conductors and unramified extensions
@@ -24,7 +32,11 @@ ramification index to be one.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -32,15 +44,27 @@ open scoped ValuativeRel IsMulCommutative
 open LocalFieldTheory
 open LocalFieldTheory.IsNonarchimedeanLocalField
 
-private theorem normQuotientFiniteOfIsAbelianGalois
-    (K L : Type)
+/-- The actual Artin map identifies its actual norm quotient with the Galois group. -/
+private noncomputable def conductorNormQuotientEquivGalois
+    (K : Type u) (L : Type v)
+    [Field K] [ValuativeRel K] [TopologicalSpace K]
+    [IsNonarchimedeanLocalField K]
+    [Field L] [Algebra K L] [FiniteDimensional K L] [IsAbelianGalois K L] :
+    NormQuotient K L ≃* Gal(L / K) :=
+  (QuotientGroup.quotientMulEquivOfEq
+    (Universe.abelianLocalArtinMonoidHom_ker K L).symm).trans
+      (QuotientGroup.quotientKerEquivOfSurjective
+        (Universe.abelianLocalArtinMonoidHom K L)
+        (Universe.abelianLocalArtinMonoidHom_surjective K L))
+
+/-- The norm quotient of a finite abelian local extension is finite. -/
+theorem normQuotientFiniteOfIsAbelianGalois
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsAbelianGalois K L] :
     Finite (NormQuotient K L) := by
-  exact Finite.of_equiv Gal(L / K)
-    ((Abelianization.equivOfComm (H := Gal(L / K))).trans
-      (abelianizationEquivNormQuotient K L)).toEquiv
+  exact Finite.of_equiv Gal(L / K) (conductorNormQuotientEquivGalois K L).symm.toEquiv
 
 /-- If every base integer unit is a norm, the actual norm quotient is the
 cyclic quotient of the normalized value group by the residue degree.
@@ -49,7 +73,7 @@ This value-group comparison uses the separable norm-valuation formula for its
 residue degree; no unramifiedness assumption is made here. -/
 noncomputable def
     chosenNormQuotientEquivZModResidueFinrank_of_fieldPrincipalUnits_zero_le
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -113,31 +137,23 @@ noncomputable def
 /-- Finite local reciprocity gives the order of the norm quotient in a finite
 abelian extension: it is the field degree. -/
 theorem card_normQuotient_eq_finrank_of_isAbelianGalois
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsAbelianGalois K L] :
-    letI : Finite (NormQuotient K L) :=
+    let : Finite (NormQuotient K L) :=
       normQuotientFiniteOfIsAbelianGalois K L
     Nat.card (NormQuotient K L) = Module.finrank K L := by
-  let : Finite (NormQuotient K L) :=
-    normQuotientFiniteOfIsAbelianGalois K L
-  let : Finite (Abelianization Gal(L / K)) :=
-    Finite.of_equiv Gal(L / K)
-      (Abelianization.equivOfComm (H := Gal(L / K))).toEquiv
+  intro sharedOwner1
   calc
-    Nat.card (NormQuotient K L) =
-        Nat.card (Abelianization Gal(L / K)) :=
-      Nat.card_congr (abelianizationEquivNormQuotient K L).toEquiv.symm
-    _ = Nat.card Gal(L / K) :=
-      Nat.card_congr (Abelianization.equivOfComm
-        (H := Gal(L / K))).toEquiv.symm
+    Nat.card (NormQuotient K L) = Nat.card Gal(L / K) :=
+      Nat.card_congr (conductorNormQuotientEquivGalois K L).toEquiv
     _ = Module.finrank K L := galoisGroup_card_eq_finrank K L
 
 /-- In an actual finite unramified abelian extension, every base-field
 integer unit lies in the field-norm subgroup. -/
 theorem fieldPrincipalUnits_zero_le_normSubgroup_of_unramifiedValuation
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -157,7 +173,7 @@ theorem fieldPrincipalUnits_zero_le_normSubgroup_of_unramifiedValuation
 
 /-- An unramified finite abelian extension has conductor exponent zero. -/
 theorem localConductorExponent_eq_zero_of_unramifiedValuation
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -174,7 +190,7 @@ theorem localConductorExponent_eq_zero_of_unramifiedValuation
 
 /-- An unramified finite abelian extension has conductor ideal `1`. -/
 theorem localConductorIdeal_eq_one_of_unramifiedValuation
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -196,7 +212,7 @@ is the residue degree by the norm-valuation formula and the conductor-one
 unit inclusion, while finite local reciprocity gives the field degree.
 Cancelling the positive residue degree gives ramification index one. -/
 theorem isFiniteUnramifiedValuationExtension_of_localConductorIdeal_eq_one
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -284,7 +300,7 @@ theorem isFiniteUnramifiedValuationExtension_of_localConductorIdeal_eq_one
 /-- A finite abelian extension is unramified if and only if its conductor
 ideal is `1`. -/
 theorem isFiniteUnramifiedValuationExtension_iff_localConductorIdeal_eq_one
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -306,7 +322,7 @@ theorem isFiniteUnramifiedValuationExtension_iff_localConductorIdeal_eq_one
 /-- A concrete finite abelian local extension is unramified exactly when
 its local conductor exponent is zero. -/
 theorem isUnramifiedValuedExtension_iff_localConductorExponent_eq_zero
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -326,7 +342,7 @@ theorem isUnramifiedValuedExtension_iff_localConductorExponent_eq_zero
 exactly when its local conductor exponent is nonzero. -/
 theorem
     not_isUnramifiedValuedExtension_iff_localConductorExponent_ne_zero
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]

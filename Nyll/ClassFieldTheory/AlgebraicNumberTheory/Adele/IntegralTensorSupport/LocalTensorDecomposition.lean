@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Integral comparison for local tensor decompositions
@@ -15,6 +19,8 @@ place.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField TensorProduct NNReal
 open NumberField IsDedekindDomain
@@ -374,8 +380,8 @@ theorem scaledRelativeTensorCoordinates_isIntegral_of_localTensorDecompositionIn
     ∀ i, IsIntegral (absoluteValueCompletionIntegers vK
         (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv K w))
       (bA.equivFun xA i) := by
+  intro vK
   classical
-  let vK := NumberField.HeightOneSpectrum.adicAbv K w
   let hvK : IsNonarchimedean (vK : K → ℝ) :=
     NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv K w
   let hvK0 : vK.IsNontrivial :=

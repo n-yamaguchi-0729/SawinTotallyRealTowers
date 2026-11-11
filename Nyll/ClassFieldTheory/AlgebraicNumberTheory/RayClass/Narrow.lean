@@ -4,7 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Narrow ideal classes
@@ -14,6 +19,8 @@ global unit signs through the narrow and ordinary class groups.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -247,7 +254,7 @@ theorem toPrincipalIdeal_eq_one_iff_mem_integralUnits
           FractionalIdeal.spanSingleton
             (nonZeroDivisors (𝓞 K)) (1 : K) := by
       simpa only [coe_toPrincipalIdeal,
-        Units.val_one, FractionalIdeal.spanSingleton_one] using
+        Units.val_one, map_one] using
         congrArg Units.val hx
     obtain ⟨u, hu⟩ :=
       (FractionalIdeal.spanSingleton_eq_spanSingleton).mp hx'
@@ -264,7 +271,7 @@ theorem toPrincipalIdeal_eq_one_iff_mem_integralUnits
           (algebraMap (𝓞 K) K (u : 𝓞 K)) =
       (1 : FractionalIdeal
         (nonZeroDivisors (𝓞 K)) K)
-    rw [← FractionalIdeal.spanSingleton_one]
+    rw [← map_one (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K)))]
     apply
       (FractionalIdeal.spanSingleton_eq_spanSingleton).mpr
     refine ⟨u⁻¹, ?_⟩

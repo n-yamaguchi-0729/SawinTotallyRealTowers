@@ -4,11 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationInertiaAlgEquiv
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.ContinuousQuotientEquiv
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationInertiaAlgEquiv
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.ContinuousQuotientEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationRamificationGroups
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ResidueExactSequence
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Finite-place inertia under the local absolute-Galois comparison
@@ -18,6 +27,8 @@ the absolute Galois group of its completion preserves inertia.  Consequently
 it descends to a topological equivalence of the corresponding unramified
 quotients.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NNReal NumberField ValuativeRel
@@ -71,9 +82,9 @@ theorem decompositionGroupEquivAlgebraicLocalizationAut_mem_inertia_iff
     (w : AbsoluteValueExtension vK L)
     (hw : LubinTate.Valuations.NonarchimedeanAbsoluteValue w.1)
     (sigma : HilbertRamification.absoluteValueDecompositionGroup K w.1) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     decompositionGroupEquivAlgebraicLocalizationAut vK hvK w sigma ∈
         RamificationTheory.HilbertRamification.ValuationSubring.inertiaGroupInAut
           vK.Completion
@@ -82,9 +93,7 @@ theorem decompositionGroupEquivAlgebraicLocalizationAut_mem_inertia_iff
           vK hvK w hw sigma ∈
         RamificationTheory.HilbertRamification.ValuationSubring.inertiaGroup K
           (HilbertRamification.absoluteValueExtensionValuationSubring vK w hw) := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let _ : SMul K w.1.Completion := hK.toSMul
-  let _ := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let sigmaGlobal :=
     HilbertRamification.localizationRamificationGroups_absoluteValueDecompositionGroupEquiv
       vK hvK w hw sigma
@@ -182,7 +191,7 @@ theorem finitePlaceNormCompletionIsNonarchimedeanLocalField
       (finitePlaceCompletionValuativeRel vF
         (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v))
       inferInstance := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
+  intro vF
   let hvFna :=
     NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
   let _ : IsUltrametricDist vF.Completion :=
@@ -218,16 +227,12 @@ noncomputable def finitePlaceAlgebraicLocalizationAlgEquivSeparableClosure
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let w := finitePlaceAbsoluteValueExtension F v
-    letI hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
-    letI : SMul F w.1.Completion := hF.toSMul
-    letI := AbsoluteValue.completionAlgebra vF w.1 w.2
+    let hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
+    let : SMul F w.1.Completion := hF.toSMul
+    let := AbsoluteValue.completionAlgebra vF w.1 w.2
     AbsoluteValue.algebraicLocalization vF w.1 w.2 ≃ₐ[vF.Completion]
       SeparableClosure vF.Completion := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let w := finitePlaceAbsoluteValueExtension F v
-  letI hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
-  letI : SMul F w.1.Completion := hF.toSMul
-  letI := AbsoluteValue.completionAlgebra vF w.1 w.2
+  intro vF w hF sharedOwner4 sharedOwner5
   let E := AbsoluteValue.algebraicLocalization vF w.1 w.2
   letI : CharZero vF.Completion :=
     charZero_of_injective_algebraMap
@@ -309,7 +314,7 @@ theorem finitePlaceDecompositionTransport_apply
         (finitePlaceAlgebraicLocalizationAlgEquivSeparableClosure F v)
         (decompositionGroupEquivAlgebraicLocalizationAut
           vF (RayClass.adicAbv_isNontrivial v) w sigma) := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
+  intro vF
   let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
   let w := finitePlaceAbsoluteValueExtension F v
   let hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
@@ -364,8 +369,7 @@ theorem finitePlaceDecompositionTransport_mem_inertia_iff
       finitePlaceAbsoluteDecompositionValuationEquiv F v sigma ∈
         RamificationTheory.HilbertRamification.ValuationSubring.inertiaGroup F
           (finitePlaceAbsoluteValuationSubring F v) := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
+  intro vF hvFna
   let w := finitePlaceAbsoluteValueExtension F v
   let hw := finitePlaceAbsoluteValueExtension_nonarchimedean F v
   let _ : Valued vF.Completion NNReal :=
@@ -444,11 +448,11 @@ theorem finitePlaceLocalInertia_comap_eq_absoluteInertia
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-    letI : Valued vF.Completion NNReal :=
+    let : Valued vF.Completion NNReal :=
       finitePlaceCompletionValued vF hvFna
-    letI : ValuativeRel vF.Completion :=
+    let : ValuativeRel vF.Completion :=
       finitePlaceCompletionValuativeRel vF hvFna
-    letI : IsNonarchimedeanLocalField vF.Completion :=
+    let : IsNonarchimedeanLocalField vF.Completion :=
       finitePlaceNormCompletionIsNonarchimedeanLocalField F v
     Subgroup.comap
         (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
@@ -456,14 +460,7 @@ theorem finitePlaceLocalInertia_comap_eq_absoluteInertia
         (RamificationTheory.HilbertRamification.ValuationSubring.inertiaGroupInAut
           vF.Completion (localSeparableValuationSubring vF.Completion)) =
       finitePlaceAbsoluteInertiaSubgroup F v := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  let _ : Valued vF.Completion NNReal :=
-    finitePlaceCompletionValued vF hvFna
-  let _ : ValuativeRel vF.Completion :=
-    finitePlaceCompletionValuativeRel vF hvFna
-  let _ : IsNonarchimedeanLocalField vF.Completion :=
-    finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+  intro vF hvFna sharedOwner3 sharedOwner4 sharedOwner5
   ext sigma
   exact finitePlaceDecompositionTransport_mem_inertia_iff F v sigma
 
@@ -474,25 +471,18 @@ theorem finitePlaceAbsoluteInertia_map_eq_localResidueDegree_ker
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-    letI : Valued vF.Completion NNReal :=
+    let : Valued vF.Completion NNReal :=
       finitePlaceCompletionValued vF hvFna
-    letI : ValuativeRel vF.Completion :=
+    let : ValuativeRel vF.Completion :=
       finitePlaceCompletionValuativeRel vF hvFna
-    letI : IsNonarchimedeanLocalField vF.Completion :=
+    let : IsNonarchimedeanLocalField vF.Completion :=
       finitePlaceNormCompletionIsNonarchimedeanLocalField F v
     Subgroup.map
         (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
           F v).toMonoidHom
         (finitePlaceAbsoluteInertiaSubgroup F v) =
       MonoidHom.ker (localResidueDegree vF.Completion).toMonoidHom := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  let _ : Valued vF.Completion NNReal :=
-    finitePlaceCompletionValued vF hvFna
-  let _ : ValuativeRel vF.Completion :=
-    finitePlaceCompletionValuativeRel vF hvFna
-  let _ : IsNonarchimedeanLocalField vF.Completion :=
-    finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+  intro vF hvFna sharedOwner3 sharedOwner4 sharedOwner5
   let localEquiv :=
     finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup F v
   let eMul := localEquiv.toMulEquiv
@@ -530,23 +520,16 @@ noncomputable def finitePlaceUnramifiedQuotientContinuousMulEquiv
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-    letI : Valued vF.Completion NNReal :=
+    let : Valued vF.Completion NNReal :=
       finitePlaceCompletionValued vF hvFna
-    letI : ValuativeRel vF.Completion :=
+    let : ValuativeRel vF.Completion :=
       finitePlaceCompletionValuativeRel vF hvFna
-    letI : IsNonarchimedeanLocalField vF.Completion :=
+    let : IsNonarchimedeanLocalField vF.Completion :=
       finitePlaceNormCompletionIsNonarchimedeanLocalField F v
     finitePlaceAbsoluteDecompositionGroup F v ⧸
         finitePlaceAbsoluteInertiaSubgroup F v ≃ₜ*
       LocalUnramifiedGaloisQuotient vF.Completion := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  letI : Valued vF.Completion NNReal :=
-    finitePlaceCompletionValued vF hvFna
-  letI : ValuativeRel vF.Completion :=
-    finitePlaceCompletionValuativeRel vF hvFna
-  letI : IsNonarchimedeanLocalField vF.Completion :=
-    finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+  intro vF hvFna sharedOwner3 sharedOwner4 sharedOwner5
   exact
     LocalFieldTheory.QuotientGroup.continuousCongr
       (finitePlaceAbsoluteInertiaSubgroup F v)
@@ -562,11 +545,11 @@ theorem finitePlaceUnramifiedQuotientContinuousMulEquiv_mk
     (sigma : finitePlaceAbsoluteDecompositionGroup F v) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-    letI : Valued vF.Completion NNReal :=
+    let : Valued vF.Completion NNReal :=
       finitePlaceCompletionValued vF hvFna
-    letI : ValuativeRel vF.Completion :=
+    let : ValuativeRel vF.Completion :=
       finitePlaceCompletionValuativeRel vF hvFna
-    letI : IsNonarchimedeanLocalField vF.Completion :=
+    let : IsNonarchimedeanLocalField vF.Completion :=
       finitePlaceNormCompletionIsNonarchimedeanLocalField F v
     finitePlaceUnramifiedQuotientContinuousMulEquiv F v
         (QuotientGroup.mk' (finitePlaceAbsoluteInertiaSubgroup F v) sigma) =
@@ -574,14 +557,7 @@ theorem finitePlaceUnramifiedQuotientContinuousMulEquiv_mk
         (MonoidHom.ker (localResidueDegree vF.Completion).toMonoidHom)
         (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
           F v sigma) := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  let _ : Valued vF.Completion NNReal :=
-    finitePlaceCompletionValued vF hvFna
-  let _ : ValuativeRel vF.Completion :=
-    finitePlaceCompletionValuativeRel vF hvFna
-  let _ : IsNonarchimedeanLocalField vF.Completion :=
-    finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+  intro vF hvFna sharedOwner3 sharedOwner4 sharedOwner5
   exact LocalFieldTheory.QuotientGroup.continuousCongr_mk
     (finitePlaceAbsoluteInertiaSubgroup F v)
     (MonoidHom.ker (localResidueDegree vF.Completion).toMonoidHom)

@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteLevelValuationRestriction
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
 
 /-!
 # Absolute Galois ramification
@@ -12,6 +15,8 @@ import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.Finite
 This file develops the decomposition and inertia subgroups of an absolute
 Galois group after the finite-level valuation-restriction layer.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 
@@ -906,15 +911,14 @@ noncomputable def absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionS
     (A : ValuationSubring (AlgebraicClosure K))
     (hA : decompositionSubgroup K A = ⊤)
     (σ : Field.absoluteGaloisGroup K) :
-    letI : (inertiaSubgroupInAbsolute K A).Normal :=
+    let : (inertiaSubgroupInAbsolute K A).Normal :=
       inertiaSubgroupInAbsolute_normal_of_decompositionSubgroup_eq_top K A hA
     absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop
         K A hA
         (QuotientGroup.mk' (inertiaSubgroupInAbsolute K A) σ) =
       (absoluteResidueActionOfDecompositionSubgroupEqTop K A hA).rangeRestrict
         σ := by
-  let : (inertiaSubgroupInAbsolute K A).Normal :=
-    inertiaSubgroupInAbsolute_normal_of_decompositionSubgroup_eq_top K A hA
+  intro sharedOwner1
   change
     absoluteQuotientKernelEquivResidueActionRangeOfDecompositionSubgroupEqTop
         K A hA
@@ -932,15 +936,14 @@ absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop_symm_
     (A : ValuationSubring (AlgebraicClosure K))
     (hA : decompositionSubgroup K A = ⊤)
     (σ : Field.absoluteGaloisGroup K) :
-    letI : (inertiaSubgroupInAbsolute K A).Normal :=
+    let : (inertiaSubgroupInAbsolute K A).Normal :=
       inertiaSubgroupInAbsolute_normal_of_decompositionSubgroup_eq_top K A hA
     (absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop
         K A hA).symm
         ((absoluteResidueActionOfDecompositionSubgroupEqTop K A hA).rangeRestrict
           σ) =
       QuotientGroup.mk' (inertiaSubgroupInAbsolute K A) σ := by
-  let : (inertiaSubgroupInAbsolute K A).Normal :=
-    inertiaSubgroupInAbsolute_normal_of_decompositionSubgroup_eq_top K A hA
+  intro sharedOwner1
   apply
     (absoluteQuotientInertiaEquivResidueActionRangeOfDecompositionSubgroupEqTop
       K A hA).injective

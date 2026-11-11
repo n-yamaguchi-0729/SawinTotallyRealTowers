@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionKernel
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionLinear
-import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteFamily
-import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
-import Nyll.GaloisCohomology.ProP.RelationRankH1
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.LinearAlgebra.Dimension.Finite
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionKernel
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionLinear
+public import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteFamily
+public import Nyll.GaloisCohomology.ProP.PresentationQuotientEquiv
+public import Nyll.GaloisCohomology.ProP.RelationRankH1
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.LinearAlgebra.Dimension.Finite
 
 /-!
 # Relation rank as a lower bound for presentation target H²
@@ -22,6 +24,8 @@ linearly independent: a vanishing combination extends continuously to the free s
 minimality forces its restriction to the presentation kernel to vanish.  The presentation
 quotient equivalence then transports the resulting dimension bound to the target group.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

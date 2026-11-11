@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
 
 /-!
 # Generic transport core for Hilbert class-field reciprocity
@@ -17,6 +19,8 @@ composite.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -28,20 +32,20 @@ open Reciprocity
 
 /-- The shared commutativity provider used by the Hilbert reciprocity leaves. -/
 theorem hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
-    {F : Type} [Field F] [NumberField F] :
+    {F : Type*} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 local instance
     hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutativeLocal
-    {F : Type} [Field F] [NumberField F] :
+    {F : Type*} [Field F] [NumberField F] :
     IsMulCommutative (IdeleClassGroup F) :=
   hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
 /-- Inverse norm-residue evaluation transported through a subgroup equality
 and then through an arbitrary multiplicative equivalence. -/
 theorem hilbertClassFieldQuotientTransport_inverse_apply_with
-    {G A I : Type} [Group G] [Group A] [Group I]
+    {G : Type*} {A : Type*} {I : Type*} [Group G] [Group A] [Group I]
     (N H : Subgroup G) [N.Normal] [H.Normal]
     (e : Additive (G ⧸ N) ≃+ Additive A)
     (h : N = H) (f : G ⧸ H ≃* I) (c : G) :
@@ -65,7 +69,7 @@ theorem hilbertClassFieldQuotientTransport_inverse_apply_with
 /-- Global reciprocity followed by subgroup-equality transport and a chosen
 quotient equivalence. -/
 noncomputable def hilbertClassFieldGlobalReciprocityTransportEquiv
-    {F E I : Type}
+    {F : Type*} {E : Type*} {I : Type*}
     [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E]
     [FiniteDimensional F E] [IsAbelianGalois F E]
@@ -81,7 +85,7 @@ noncomputable def hilbertClassFieldGlobalReciprocityTransportEquiv
 /-- Evaluation of the shared transported reciprocity equivalence on the
 global norm-residue symbol. -/
 theorem hilbertClassFieldGlobalReciprocityTransport_globalNormResidue
-    {F E I : Type}
+    {F : Type*} {E : Type*} {I : Type*}
     [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E]
     [FiniteDimensional F E] [IsAbelianGalois F E]
@@ -128,7 +132,7 @@ theorem hilbertClassFieldGlobalReciprocityTransport_globalNormResidue
 /-- The transported equivalence and its evaluation theorem, packaged once for
 all four Hilbert class-field specializations. -/
 noncomputable def hilbertClassFieldGlobalReciprocityTransportData
-    {F E I : Type}
+    {F : Type*} {E : Type*} {I : Type*}
     [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E]
     [FiniteDimensional F E] [IsAbelianGalois F E]

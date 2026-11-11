@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FreeRankOne
-import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
-import Mathlib.GroupTheory.QuotientGroup.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.FreeRankOne
+public import Mathlib.LinearAlgebra.GeneralLinearGroup.Basic
+public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
 # The endomorphism-ring equivalence: endomorphisms and automorphisms of division modules
@@ -20,6 +22,8 @@ keeps this shift explicit.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -195,7 +199,8 @@ theorem mem_equalCharacteristicLubinTateHigherUnitSubgroup
     exact (equalCharacteristicLubinTateTruncatedRingMk_eq_iff
       F n (u : F.residueField⟦X⟧) 1).mpr hu
 
-private theorem equalCharacteristicLubinTateTruncationIdeal_le_constantCoeff_ker
+/-- Positive power-series truncation ideals have zero constant coefficient. -/
+theorem equalCharacteristicLubinTateTruncationIdeal_le_constantCoeff_ker
     (F : LocalField.{u, v} K) (n : ℕ) :
     Ideal.span ({PowerSeries.X ^ (n + 1)} : Set F.residueField⟦X⟧) ≤
       RingHom.ker (PowerSeries.constantCoeff (R := F.residueField)) := by

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.TopologicalProfiniteCompletion
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
+module
+
+public import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.TopologicalProfiniteCompletion
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
 
 /-!
 # Completion by open finite quotients
@@ -21,6 +23,8 @@ closed subgroups; it does not depend on a separate copied inverse-system impleme
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -47,7 +51,7 @@ theorem topologicalProfiniteCompletionMap_denseRange :
       (Subgroup.le_topologicalClosure S :
         (S : Set (openFiniteQuotientProduct G)) ⊆
           (S.topologicalClosure : Set (openFiniteQuotientProduct G)))).2 <| by
-      simp [Subgroup.topologicalClosure_coe]
+      simp only [Subgroup.topologicalClosure_coe, Std.le_refl]
   have hrange :
       Set.range (topologicalProfiniteCompletionMap G) = Set.range incl := by
     ext x
@@ -430,10 +434,11 @@ theorem topologicalProfiniteCompletionMapHom_comp
 /-- Bundled universal-arrow formulation of completion by open finite
 quotients.  This is the adjunction data used by clients: maps from `G` to a
 profinite group correspond to a unique continuous homomorphism out of its
-completion.  The target universe is independent of the source universe. -/
+completion. The candidate completion and target universes are independent
+of the source universe. -/
 structure ProfiniteCompletionUniversalProperty
     (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
-    (C : ProfiniteGrp.{u}) (ι : G →ₜ* C) : Prop where
+    (C : ProfiniteGrp.{w}) (ι : G →ₜ* C) : Prop where
   /-- The image of the canonical map `ι` is dense in the profinite completion candidate `C`. -/
   denseRange : DenseRange ι
   /-- Every continuous homomorphism from `G` to a profinite group factors uniquely through `ι`. -/

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
-import Mathlib.GroupTheory.GroupAction.Quotient
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
+public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+public import Mathlib.GroupTheory.GroupAction.Quotient
 
 /-!
 # The abstract reciprocity construction: the double-coset decomposition of a relative norm
@@ -17,7 +19,9 @@ This file constructs that partition from Mathlib's class-formula equivalence
 and reindexes the actual relative norm along it.
 -/
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -142,13 +146,12 @@ theorem chosenOrbitClassEquiv_symm_apply
 
 section relativeNormFormulas
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The relative norm reindexed by arbitrary chosen representatives of the
 intermediate-subgroup orbits. -/
 theorem relativeNorm_eq_sum_chosenOrbit_of_fintype
-    (A : Rep ℤ G) (K S : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K S : ClosedSubgroup G)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (M : Subgroup K.toSubgroup)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K S hSK)]
@@ -177,8 +180,9 @@ theorem relativeNorm_eq_sum_chosenOrbit_of_fintype
       (e.symm.sum_comp (relativeCosetAction A K S hSK a)).symm
     _ = _ := Fintype.sum_sigma _
 
+/-- Finite enumeration of the orbit-stabilizer sum associated to the relative norm. -/
 @[implicit_reducible]
-private noncomputable def relativeNormDoubleCosetSigmaFintype
+noncomputable def relativeNormDoubleCosetSigmaFintype
     (K K' S : ClosedSubgroup G)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -194,8 +198,9 @@ private noncomputable def relativeNormDoubleCosetSigmaFintype
     (K.toSubgroup ⧸ extensionSubgroup K S hSK)
     (relativeNormDoubleCosetEquiv K K' S hSK hK'K)
 
+/-- Finite enumeration of the intermediate-subgroup orbits in the relative norm. -/
 @[implicit_reducible]
-private noncomputable def relativeNormDoubleCosetOrbitFintype
+noncomputable def relativeNormDoubleCosetOrbitFintype
     (K K' S : ClosedSubgroup G)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -212,8 +217,9 @@ private noncomputable def relativeNormDoubleCosetOrbitFintype
       intro q q' h
       exact congrArg Sigma.fst h)
 
+/-- Finite enumeration of the stabilizer cosets over a relative-norm orbit. -/
 @[implicit_reducible]
-private noncomputable def relativeNormDoubleCosetStabilizerFintype
+noncomputable def relativeNormDoubleCosetStabilizerFintype
     (K K' S : ClosedSubgroup G)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -237,7 +243,7 @@ of the orbit set and the stabilizer cosets.  This form is convenient in
 arguments which already obtained those enumerations from a transfer
 formula; the result is independent of their ordering. -/
 theorem relativeNorm_eq_sum_doubleCoset_of_fintype
-    (A : Rep ℤ G) (K K' S : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' S : ClosedSubgroup G)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K S hSK)]
@@ -268,7 +274,7 @@ theorem relativeNorm_eq_sum_doubleCoset_of_fintype
 orbits and then by stabilizer cosets.  This is the additive form of the
 double-coset product decomposition in the proof of transfer--norm naturality. -/
 theorem relativeNorm_eq_sum_doubleCoset
-    (A : Rep ℤ G) (K K' S : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' S : ClosedSubgroup G)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K S hSK)]

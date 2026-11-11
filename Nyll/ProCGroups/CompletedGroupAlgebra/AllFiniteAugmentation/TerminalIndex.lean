@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Separation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Separation
 
 /-!
 # A base index for all-finite augmentation
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.Separation
 This file constructs a canonical inhabitant of the open-quotient index used by the all-finite
 completed group algebra, ensuring that its inverse system is nonempty.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,13 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.GaloisAction
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
-import Mathlib.RingTheory.Ideal.GoingUp
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.GaloisAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
+public import Mathlib.RingTheory.Ideal.GoingUp
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Finite places in a number-field extension
@@ -27,6 +32,8 @@ closure shows that the centres are precisely the finite places above `v`.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

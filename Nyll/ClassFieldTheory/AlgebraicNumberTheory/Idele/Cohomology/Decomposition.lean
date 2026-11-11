@@ -4,21 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.Instances
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.H0
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.HMinusOne
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.H0
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Cohomology
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.Instances
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.H0
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Family.HMinusOne
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.H0
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Cohomology
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Finite-support decompositions of actual ideles
@@ -38,6 +41,8 @@ show that every unramified induced integer-unit block has trivial
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct ValuativeRel
 open NumberField IsDedekindDomain
@@ -423,14 +428,12 @@ noncomputable def unramifiedInducedIntegerUnitsHerbrandH0Equiv
     (e : H ≃* Gal(ell/k))
     (σ : G)
     (hσ : ∀ τ : G, τ ∈ Subgroup.zpowers σ) :
-    letI : MulDistribMulAction H 𝒪[ell]ˣ :=
+    let : MulDistribMulAction H 𝒪[ell]ˣ :=
       MulDistribMulAction.compHom 𝒪[ell]ˣ e.toMonoidHom
-    letI : Fintype H := Fintype.ofFinite H
+    let : Fintype H := Fintype.ofFinite H
     HerbrandH0 G (InducedModule (B := 𝒪[ell]ˣ) H) ≃*
       HerbrandH0 (Gal(ell / k)) 𝒪[ell]ˣ := by
-  letI : MulDistribMulAction H 𝒪[ell]ˣ :=
-    MulDistribMulAction.compHom 𝒪[ell]ˣ e.toMonoidHom
-  letI : Fintype H := Fintype.ofFinite H
+  intro sharedOwner1 sharedOwner2
   exact
     (inducedHerbrandH0EquivOfFiniteCyclic H σ hσ).trans
       (herbrandH0CompMulEquiv (A := 𝒪[ell]ˣ) e)
@@ -447,16 +450,14 @@ noncomputable def unramifiedInducedIntegerUnitsHerbrandHMinusOneEquiv
     (e : H ≃* Gal(ell/k))
     (σ : G)
     (hσ : ∀ τ : G, τ ∈ Subgroup.zpowers σ) :
-    letI : MulDistribMulAction H 𝒪[ell]ˣ :=
+    let : MulDistribMulAction H 𝒪[ell]ˣ :=
       MulDistribMulAction.compHom 𝒪[ell]ˣ e.toMonoidHom
-    letI : Fintype H := Fintype.ofFinite H
+    let : Fintype H := Fintype.ofFinite H
     HerbrandHMinusOne G
         (InducedModule (B := 𝒪[ell]ˣ) H) σ ≃*
       HerbrandHMinusOne (Gal(ell / k)) 𝒪[ell]ˣ
         (e (subgroupGeneratorOfGenerator H σ hσ)) := by
-  letI : MulDistribMulAction H 𝒪[ell]ˣ :=
-    MulDistribMulAction.compHom 𝒪[ell]ˣ e.toMonoidHom
-  letI : Fintype H := Fintype.ofFinite H
+  intro sharedOwner1 sharedOwner2
   exact
     (inducedHerbrandHMinusOneEquivOfFiniteCyclic
       H σ hσ).trans
@@ -485,24 +486,19 @@ theorem unramifiedInducedIntegerUnitsHerbrand_subsingleton
     (e : H ≃* Gal(ell/k))
     (σ : G)
     (hσ : ∀ τ : G, τ ∈ Subgroup.zpowers σ) :
-    letI : MulDistribMulAction (Gal(ell / k)) 𝒪[ell]ˣ :=
+    let : MulDistribMulAction (Gal(ell / k)) 𝒪[ell]ˣ :=
       galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure
         k ell
-    letI : MulDistribMulAction H 𝒪[ell]ˣ :=
+    let : MulDistribMulAction H 𝒪[ell]ˣ :=
       MulDistribMulAction.compHom 𝒪[ell]ˣ e.toMonoidHom
-    letI : Fintype H := Fintype.ofFinite H
+    let : Fintype H := Fintype.ofFinite H
     Subsingleton
         (HerbrandH0 G
           (InducedModule (B := 𝒪[ell]ˣ) H)) ∧
       Subsingleton
         (HerbrandHMinusOne G
           (InducedModule (B := 𝒪[ell]ˣ) H) σ) := by
-  let _ : MulDistribMulAction (Gal(ell / k)) 𝒪[ell]ˣ :=
-    galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure
-      k ell
-  let _ : MulDistribMulAction H 𝒪[ell]ˣ :=
-    MulDistribMulAction.compHom 𝒪[ell]ˣ e.toMonoidHom
-  let _ : Fintype H := Fintype.ofFinite H
+  intro sharedOwner1 sharedOwner2 sharedOwner3
   let δ := subgroupGeneratorOfGenerator H σ hσ
   have hδ : ∀ τ : Gal(ell / k),
       τ ∈ Subgroup.zpowers (e δ) := by

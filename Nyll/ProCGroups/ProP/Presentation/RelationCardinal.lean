@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Presentation.GeneratorRank
+module
+
+public import Nyll.ProCGroups.ProP.Presentation.GeneratorRank
 
 /-!
 # Minimal relation cardinal
@@ -14,6 +16,8 @@ witness has been constructed.  It is the least displayed relation count among
 such presentations; no existence or comparison theorem is hidden in the
 definition.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

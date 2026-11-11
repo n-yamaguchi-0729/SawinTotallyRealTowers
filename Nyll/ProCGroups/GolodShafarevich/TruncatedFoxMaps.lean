@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPFilteredLifting
-import Nyll.ProCGroups.GolodShafarevich.GradedPieces
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.LinearAlgebra.Quotient.Pi
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPFilteredLifting
+public import Nyll.ProCGroups.GolodShafarevich.GradedPieces
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Group.Action.Defs
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
+public import Mathlib.LinearAlgebra.Quotient.Pi
 
 /-!
 # Truncated mod-p Fox maps
@@ -16,6 +20,8 @@ This file descends the completed relation matrix, Fox boundary, and canonical
 augmentation to the shifted closed-augmentation quotients used in the
 truncated Golod--Shafarevich sequence.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.ProP
 
@@ -57,30 +63,36 @@ def presentationModPFoxCoordinateFinEquiv :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
-private abbrev relationTruncationFamily (ν : Fin r → ℕ) (N : ℕ)
+/-- The shifted augmentation submodule in each relation coordinate. -/
+abbrev relationTruncationFamily (ν : Fin r → ℕ) (N : ℕ)
     (j : Fin r) : Submodule (ZMod p) (ModPCompletedGroupAlgebra p G) :=
   shiftedClosedAugmentationSubmodule (p := p) (G := G) N (ν j)
 
-private abbrev foxTruncationFamily (N : ℕ) (_i : Fin d) :
+/-- The shifted augmentation submodule in each Fox coordinate. -/
+abbrev foxTruncationFamily (N : ℕ) (_i : Fin d) :
     Submodule (ZMod p) (ModPCompletedGroupAlgebra p G) :=
   shiftedClosedAugmentationSubmodule (p := p) (G := G) N 1
 
-private abbrev relationPiFiltration (ν : Fin r → ℕ) (N : ℕ) :
+/-- The product of the shifted relation-coordinate submodules. -/
+abbrev relationPiFiltration (ν : Fin r → ℕ) (N : ℕ) :
     Submodule (ZMod p) (Fin r → ModPCompletedGroupAlgebra p G) :=
   Submodule.pi Set.univ (relationTruncationFamily (p := p) (G := G) ν N)
 
-private abbrev foxPiFiltration (N : ℕ) :
+/-- The product of the shifted Fox-coordinate submodules. -/
+abbrev foxPiFiltration (N : ℕ) :
     Submodule (ZMod p) (Fin d → ModPCompletedGroupAlgebra p G) :=
   Submodule.pi Set.univ (foxTruncationFamily (p := p) (G := G) (d := d) N)
 
-private def presentationModPRelationMatrixFin
+/-- The relation matrix with Fox coordinates indexed by the original finite set. -/
+def presentationModPRelationMatrixFin
     (P : FiniteProPPresentation p d r sourceData G) :
     (Fin r → ModPCompletedGroupAlgebra p G) →ₗ[ZMod p]
       (Fin d → ModPCompletedGroupAlgebra p G) :=
   ((presentationModPFoxCoordinateFinEquiv (p := p) (d := d) (G := G)).symm.toLinearMap.comp
     (presentationModPRelationMatrix P)).restrictScalars (ZMod p)
 
-private def presentationModPFoxBoundaryFin
+/-- The Fox boundary on coordinates indexed by the original finite set. -/
+def presentationModPFoxBoundaryFin
     (P : FiniteProPPresentation p d r sourceData G) :
     (Fin d → ModPCompletedGroupAlgebra p G) →ₗ[ZMod p]
       ModPCompletedGroupAlgebra p G :=
@@ -88,7 +100,8 @@ private def presentationModPFoxBoundaryFin
     (presentationModPFoxCoordinateFinEquiv (p := p) (d := d) (G := G)).toLinearMap).restrictScalars
       (ZMod p)
 
-private theorem relationMatrixFin_mem_foxPiFiltration
+/-- The relation matrix preserves the specified shifted coordinate filtrations. -/
+theorem relationMatrixFin_mem_foxPiFiltration
     (P : FiniteProPPresentation p d r sourceData G)
     (ν : Fin r → ℕ)
     (hν : ∀ j, P.RelatorZassenhausDepthAtLeast (ν j) j)
@@ -109,7 +122,8 @@ private theorem relationMatrixFin_mem_foxPiFiltration
   simpa [presentationModPRelationMatrixFin, foxTruncationFamily,
     shiftedClosedAugmentationSubmodule] using hmatrix (ULift.up i)
 
-private theorem foxBoundaryFin_mem_truncation
+/-- The Fox boundary sends its coordinate filtration into the next augmentation truncation. -/
+theorem foxBoundaryFin_mem_truncation
     (P : FiniteProPPresentation p d r sourceData G)
     (N : ℕ) :
     foxPiFiltration (p := p) (G := G) (d := d) N ≤
@@ -217,7 +231,8 @@ local instance : AddCommGroup (ZMod p) :=
 
 local instance : Module (ZMod p) (ZMod p) := Semiring.toModule
 
-private def presentationModPAugmentationLinearMap :
+/-- The canonical completed augmentation as a linear map over the residue field. -/
+def presentationModPAugmentationLinearMap :
     ModPCompletedGroupAlgebra p G →ₗ[ZMod p] ZMod p where
   toFun := completedGroupAlgebraCanonicalAugmentationInClass
     (R := ZMod p) (G := G) (FiniteGroupClass.pGroup p)
@@ -229,10 +244,12 @@ private def presentationModPAugmentationLinearMap :
         (R := ZMod p) (G := G) (FiniteGroupClass.pGroup p) (c • x) =
       c • completedGroupAlgebraCanonicalAugmentationInClass
         (R := ZMod p) (G := G) (FiniteGroupClass.pGroup p) x
-    simp [Algebra.smul_def]
+    rw [Algebra.smul_def, map_mul,
+      completedGroupAlgebraCanonicalAugmentationInClass_algebraMap, smul_eq_mul]
 
 omit [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
-private theorem shiftedTruncation_le_augmentation_ker (N : ℕ) :
+/-- Every positive shifted augmentation truncation lies in the augmentation kernel. -/
+theorem shiftedTruncation_le_augmentation_ker (N : ℕ) :
     shiftedClosedAugmentationSubmodule (p := p) (G := G) N 0 ≤
       (presentationModPAugmentationLinearMap (p := p) (G := G)).ker := by
   intro x hx

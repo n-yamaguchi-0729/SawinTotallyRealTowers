@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.Basic
+module
+
+public import Nyll.ProCGroups.ProP.Zassenhaus.Basic
 
 /-!
 # Commutator and power laws for the Zassenhaus filtration
@@ -15,6 +17,8 @@ group-like difference of a `p`-th power is a `p`-th power, giving degree
 `p * i`.  The elementwise statements are promoted to the corresponding
 subgroup inclusions.
 -/
+
+@[expose] public section
 
 open scoped Topology commutatorElement
 

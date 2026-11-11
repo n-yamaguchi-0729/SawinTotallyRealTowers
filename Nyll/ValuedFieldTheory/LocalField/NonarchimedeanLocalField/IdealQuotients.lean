@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
 
 /-! ### Residue and maximal-ideal successive quotients -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -404,11 +409,13 @@ def maximalIdealPowMulUniformizerPowMap
     𝒪[K] →ₗ[𝒪[K]] ((𝓂[K] ^ n : Ideal 𝒪[K]) : Type u) where
   toFun r := ⟨r * ϖ ^ n, mul_uniformizer_pow_mem_maximalIdeal_pow K ϖ hϖ n r⟩
   map_add' r s := by
-    ext
-    simp [add_mul]
+    apply Subtype.ext
+    change (r + s) * ϖ ^ n = r * ϖ ^ n + s * ϖ ^ n
+    exact add_mul r s (ϖ ^ n)
   map_smul' a r := by
-    ext
-    simp [mul_assoc]
+    apply Subtype.ext
+    change (a * r) * ϖ ^ n = a * (r * ϖ ^ n)
+    exact mul_assoc a r (ϖ ^ n)
 
 /-- The map into a maximal-ideal power multiplies its input by the corresponding uniformizer power.
 The map into a maximal-ideal power multiplies its input by the corresponding uniformizer power. -/

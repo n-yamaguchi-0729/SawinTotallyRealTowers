@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.UnitRepresentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.UnitRepresentation
 
 /-!
 # Augmentation at in-class quotient stages
@@ -12,6 +14,8 @@ import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.UnitRepresenta
 This file defines augmentation on each in-class finite stage and proves its values on basis
 elements and compatibility with transition, coefficient-change, and functorial stage maps.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

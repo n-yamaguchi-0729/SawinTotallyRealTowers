@@ -4,13 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormLocalOrder
-import Mathlib.Algebra.BigOperators.Finprod
-import Mathlib.NumberTheory.NumberField.Completion.Ramification
-import Mathlib.RingTheory.Ideal.Norm.RelNorm
+module
+
+public import Nyll.ClassFieldTheory.Algebra.FinprodFibers
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormLocalOrder
+public import Mathlib.Algebra.BigOperators.Finprod
+public import Mathlib.NumberTheory.NumberField.Completion.Ramification
+public import Mathlib.RingTheory.Ideal.Norm.RelNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Finite-place arithmetic of idele norms
@@ -21,6 +29,8 @@ finite positive norm under scalar extension.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NNReal NumberField NumberField.LiesOver
 open NumberField IsDedekindDomain
@@ -46,35 +56,8 @@ private theorem finprod_over_fibers
     (hf : HasFiniteMulSupport f) :
     (∏ᶠ b : β,
         ∏ᶠ x : {x : α // g x = b}, f x.1) =
-      ∏ᶠ x : α, f x := by
-  classical
-  let s := hf.toFinset
-  have hFiber (b : β) :
-      (∏ᶠ x : {x : α // g x = b}, f x.1) =
-        ∏ x ∈ s with g x = b, f x := by
-    rw [finprod_eq_prod_of_mulSupport_subset
-      (fun x : {x : α // g x = b} => f x.1)
-      (s := s.subtype fun x => g x = b)]
-    · simp only [Finset.prod_subtype_eq_prod_filter]
-    · intro x hx
-      change x ∈ s.subtype (fun x => g x = b)
-      change f x.1 ≠ 1 at hx
-      exact Finset.mem_subtype.mpr (hf.mem_toFinset.2 hx)
-  calc
-    (∏ᶠ b : β,
-        ∏ᶠ x : {x : α // g x = b}, f x.1) =
-        ∏ᶠ b : β,
-          ∏ x ∈ s with g x = b, f x :=
-      finprod_congr hFiber
-    _ = ∏ x ∈ s, f x := by
-      rw [finprod_eq_prod_of_mulSupport_subset _
-        (s.mulSupport_of_fiberwise_prod_subset_image f g)]
-      exact
-        Finset.prod_fiberwise_of_maps_to
-          (t := s.image g)
-          (fun x hx => Finset.mem_image_of_mem g hx) f
-    _ = ∏ᶠ x : α, f x :=
-      (finprod_eq_prod f hf).symm
+      ∏ᶠ x : α, f x :=
+  GlobalClassFieldTheory.Reciprocity.finprod_fibers_eq_sigma g f hf
 
 /-- A finite idele norm is its finitely supported product of local prime
 norms raised to the corresponding local orders. -/
@@ -168,16 +151,16 @@ theorem finiteComponentOrder_norm
     let vK := HeightOneSpectrum.adicAbv K v₀
     let hvK : vK.IsNontrivial :=
       RayClass.adicAbv_isNontrivial v₀
-    letI :=
+    let :=
       completionTensorDecomposition_extensionFintype
         (K := K) (L := L) vK hvK
     let eAbove :=
       finitePlaceExtensionEquivAbove
         (K := K) (L := L) v₀
-    letI : Fintype {W : HeightOneSpectrum (𝓞 L) //
+    let : Fintype {W : HeightOneSpectrum (𝓞 L) //
         _root_.finitePlaceBelow (K := K) W = v₀} :=
       Fintype.ofEquiv (AbsoluteValueExtension vK L) eAbove
-    letI : ∀ W : {W : HeightOneSpectrum (𝓞 L) //
+    let : ∀ W : {W : HeightOneSpectrum (𝓞 L) //
         _root_.finitePlaceBelow (K := K) W = v₀},
         Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
       fun W =>
@@ -190,26 +173,8 @@ theorem finiteComponentOrder_norm
         (W.1.asIdeal.inertiaDeg (𝓞 K) : ℤ) *
           (FiniteIdeleGroup.localOrder W.1
             (finiteComponent W.1 a)).toAdd := by
+  intro vK hvK reusedStructure3 eAbove reusedStructure5 reusedStructure6
   classical
-  dsimp only
-  let vK := HeightOneSpectrum.adicAbv K v₀
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v₀
-  let :=
-    completionTensorDecomposition_extensionFintype
-      (K := K) (L := L) vK hvK
-  let eAbove :=
-    finitePlaceExtensionEquivAbove
-      (K := K) (L := L) v₀
-  let : Fintype {W : HeightOneSpectrum (𝓞 L) //
-      _root_.finitePlaceBelow (K := K) W = v₀} :=
-    Fintype.ofEquiv (AbsoluteValueExtension vK L) eAbove
-  let : ∀ W : {W : HeightOneSpectrum (𝓞 L) //
-      _root_.finitePlaceBelow (K := K) W = v₀},
-      Algebra (v₀.adicCompletion K) (W.1.adicCompletion L) :=
-    fun W =>
-      (finitePlaceAdicCompletionMap
-        K L v₀ W).toAlgebra
   have hcomponent :
       finiteComponent v₀ (norm K L a) =
         ∏ W : {W : HeightOneSpectrum (𝓞 L) //

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.RingTheory.PowerSeries.Basic
-import Mathlib.Algebra.BigOperators.NatAntidiagonal
+module
+
+public import Mathlib.RingTheory.PowerSeries.Basic
+public import Mathlib.Algebra.BigOperators.NatAntidiagonal
 
 /-!
 # LubinTate the contracting Frobenius equation: the contracting Frobenius equation
@@ -26,6 +28,8 @@ or external existence assumption is needed.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -69,7 +73,7 @@ theorem contractingFrobeniusEquationSolution_coeff
     PowerSeries.coeff n
         (contractingFrobeniusEquationSolution φ γ β) =
       contractingFrobeniusEquationCoeff φ γ β n := by
-  simp [contractingFrobeniusEquationSolution]
+  simp only [contractingFrobeniusEquationSolution, PowerSeries.coeff_mk]
 
 private theorem sum_range_succ_convolution_of_constantCoeff_eq_zero
     (φ : R →+* R) (γ α : R⟦X⟧)

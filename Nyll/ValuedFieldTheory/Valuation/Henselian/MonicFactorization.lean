@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
-import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveFactorization
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.RingTheory.Norm.Basic
-import Mathlib.RingTheory.Polynomial.Vieta
+module
+
+public import Mathlib.Algebra.Polynomial.Degree.Operations
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveFactorization
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.RingTheory.Norm.Basic
+public import Mathlib.RingTheory.Polynomial.Vieta
 
 /-!
 # Monic Hensel factor lifting
@@ -19,6 +22,8 @@ The condition is the exact condition: a monic polynomial whose
 reduction is a product of relatively prime monic polynomials has monic factors
 with exactly those reductions.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -45,7 +50,7 @@ theorem valuation_coeff_prod_X_sub_C_le_pow_card
       have hα : w α ≤ B := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β ≤ B := by
         intro β hβ
-        exact hs β (by simp [hβ])
+        exact hs β (Multiset.mem_cons_of_mem hβ)
       have hpow_step : B ^ s.card ≤ B ^ (s.card + 1) := by
         rw [pow_succ]
         calc
@@ -114,7 +119,7 @@ theorem valuation_multiset_prod_eq_pow_card_of_eq
       have hα : w α = t := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, w β = t := by
         intro β hβ
-        exact hs β (by simp [hβ])
+        exact hs β (Multiset.mem_cons_of_mem hβ)
       simp only [Multiset.prod_cons, Multiset.card_cons, w.map_mul,
         hα, ih hs', pow_succ]
       ac_rfl
@@ -151,11 +156,11 @@ theorem valuation_esymm_le_pow
       | succ n =>
           rw [show n + 1 = n.succ by rfl, esymm_cons_succ]
           apply le_trans (w.map_add _ _) (max_le ?_ ?_)
-          · exact ih (fun b hb => hs b (by simp [hb])) (n + 1)
+          · exact ih (fun b hb => hs b (Multiset.mem_cons_of_mem hb)) (n + 1)
           · rw [w.map_mul, pow_succ]
             simpa [mul_comm] using
               (mul_le_mul' (hs a (Multiset.mem_cons_self a s))
-                (ih (fun b hb => hs b (by simp [hb])) n))
+                (ih (fun b hb => hs b (Multiset.mem_cons_of_mem hb)) n))
 
 /-- Strict elementary-symmetric bound when every entry is strictly below
 the target value. -/
@@ -175,12 +180,12 @@ theorem valuation_esymm_lt_pow
       change w ((a ::ₘ s).esymm (n + 1)) < t ^ (n + 1)
       rw [esymm_cons_succ]
       apply w.map_add_lt
-      · exact ih (fun b hb => hs b (by simp [hb])) (Nat.succ_pos n)
+      · exact ih (fun b hb => hs b (Multiset.mem_cons_of_mem hb)) (Nat.succ_pos n)
       · rw [w.map_mul, pow_succ]
         simpa [mul_comm] using
           (mul_lt_mul_of_nonneg_of_pos (hs a (Multiset.mem_cons_self a s))
             (valuation_esymm_le_pow w t s
-              (fun b hb => (hs b (by simp [hb])).le) n)
+              (fun b hb => (hs b (Multiset.mem_cons_of_mem hb)).le) n)
             (zero_le : 0 ≤ w a) ((zero_lt_iff).2 (pow_ne_zero n ht)))
 
 /-- If every entry has value at most one and one entry has value below one,
@@ -201,9 +206,9 @@ theorem valuation_multiset_prod_lt_one_of_mem_lt_one
     | @cons b u ih =>
         rw [Multiset.prod_cons, w.map_mul]
         simpa using mul_le_mul' (hu b (Multiset.mem_cons_self b u))
-          (ih (fun c hc => hu c (by simp [hc])))
+          (ih (fun c hc => hu c (Multiset.mem_cons_of_mem hc)))
   have htprod : w t.prod ≤ 1 :=
-    hprodle t (fun b hb => hs b (by simp [hb]))
+    hprodle t (fun b hb => hs b (Multiset.mem_cons_of_mem hb))
   exact mul_lt_one_of_lt_of_le halt htprod
 
 /-- The boundary elementary symmetric function is dominated by the unique
@@ -234,7 +239,7 @@ theorem valuation_esymm_eq_pow_card_add_of_eq_of_lt
         have ha : w a = t := hs a (Multiset.mem_cons_self a s)
         have hs' : ∀ b ∈ s, w b = t := by
           intro b hb
-          exact hs b (by simp [hb])
+          exact hs b (Multiset.mem_cons_of_mem hb)
         rcases ih hs' with ⟨heq, hlt⟩
         constructor
         · simp only [Multiset.card_cons]
@@ -248,7 +253,7 @@ theorem valuation_esymm_eq_pow_card_add_of_eq_of_lt
             ac_rfl
           rw [w.map_add_of_distinct_val (ne_of_lt (hfirst.trans_eq hsecond.symm)),
             hsecond]
-          simp [hfirst.le]
+          exact max_eq_right hfirst.le
         · intro n hn
           obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero
             (Nat.ne_of_gt (Nat.zero_lt_of_lt hn))
@@ -315,7 +320,7 @@ theorem valuation_coeff_prod_X_sub_C_lt_coeff_zero_of_one_lt
       have hα : 1 < w α := hs α (Multiset.mem_cons_self α s)
       have hs' : ∀ β ∈ s, 1 < w β := by
         intro β hβ
-        exact hs β (by simp [hβ])
+        exact hs β (Multiset.mem_cons_of_mem hβ)
       let q : Polynomial L :=
         (s.map (fun β => Polynomial.X - Polynomial.C β)).prod
       have hqzero : q.coeff 0 ≠ 0 := by
@@ -539,7 +544,7 @@ theorem exists_mixed_residual_minpoly_of_irreducible_roots_unequal
   have hzval : B.valuation z = 1 := by
     dsimp [z]
     rw [B.valuation.map_div, B.valuation.map_pow, hmapaVal]
-    simp [t, pow_ne_zero _ ht0]
+    exact div_self (pow_ne_zero r ht0)
   have hγpow : B.valuation γ ^ r < t ^ r :=
     pow_lt_pow_left₀ hγlt zero_le (Nat.ne_of_gt hrpos)
   have hzγval : B.valuation zγ < 1 := by
@@ -930,7 +935,8 @@ theorem not_irreducible_of_factor_natDegree_lt
   · exact (Nat.ne_of_gt hgpos) (Polynomial.natDegree_eq_zero_of_isUnit hgunit)
   · have hg0 : g ≠ 0 := by
       intro hzero
-      simp [hzero] at hgpos
+      rw [hzero, Polynomial.natDegree_zero] at hgpos
+      exact (Nat.lt_irrefl 0) hgpos
     have hh0 : h ≠ 0 := hhunit.ne_zero
     have hdegree : f.natDegree = g.natDegree := by
       rw [hfactor, Polynomial.natDegree_mul hg0 hh0,
@@ -1122,7 +1128,7 @@ theorem henselianRing_of_monicResidualCoprimeFactorLifting
         G.natDegree = (G.map (IsLocalRing.residue V)).natDegree :=
           (hG.natDegree_map (IsLocalRing.residue V)).symm
         _ = lbar.natDegree := by rw [hGmap]
-        _ = 1 := by simp [lbar]
+        _ = 1 := Polynomial.natDegree_X_sub_C abar
     let a : V := -G.coeff 0
     have hGshape : G = Polynomial.X - Polynomial.C a := by
       rw [hG.eq_X_add_C hGdegree]
@@ -1141,7 +1147,7 @@ theorem henselianRing_of_monicResidualCoprimeFactorLifting
     rw [← Ideal.Quotient.eq_zero_iff_mem]
     change IsLocalRing.residue V (a - a0) = 0
     rw [map_sub, haresidue]
-    simp [abar]
+    exact sub_self abar
 
 end DiscreteValuationField
 

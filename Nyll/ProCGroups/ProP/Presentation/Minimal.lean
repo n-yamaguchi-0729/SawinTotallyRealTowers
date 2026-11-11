@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.FrattiniQuotient
-import Nyll.ProCGroups.ProP.Presentation.Basic
+module
+
+public import Nyll.ProCGroups.ProP.FrattiniQuotient
+public import Nyll.ProCGroups.ProP.Presentation.Basic
 
 /-!
 # Minimal pro-p presentations
@@ -14,6 +16,8 @@ Minimality means that the presentation kernel lies in the source
 power--commutator core.  The quotient therefore descends the source Frattini
 quotient to a continuous surjection from the target.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerUnitsH2
-import Nyll.GaloisCohomology.Kummer.FiniteTowerBaseUnitsH2
-import Mathlib.Algebra.Algebra.Tower
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisTowerUnitsH2
+public import Nyll.GaloisCohomology.Kummer.FiniteTowerBaseUnitsH2
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # Base-unit H² naturality in finite Galois towers
@@ -20,6 +22,8 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 Relates the cohomology maps on field-unit representations to the corresponding
 base-unit maps in a finite Galois tower.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 namespace ClassFieldTower.Cohomology

@@ -4,9 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Norms of base units supported at one finite place
@@ -19,6 +23,8 @@ local-degree power.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NumberField
 open NumberField IsDedekindDomain
@@ -220,17 +226,15 @@ theorem norm_finitePlaceIdele_eq_finitePlaceIdele_normUnits
       {W : HeightOneSpectrum (𝓞 L) //
         _root_.finitePlaceBelow (K := K) W = v})
     (y : (W.1.adicCompletion L)ˣ) :
-    letI :
+    let :
         Algebra (v.adicCompletion K) (W.1.adicCompletion L) :=
       (finitePlaceAdicCompletionMap K L v W).toAlgebra
     norm K L (finitePlaceIdele W.1 y) =
       finitePlaceIdele v
         (LocalFieldTheory.normUnits
           (v.adicCompletion K) (W.1.adicCompletion L) y) := by
+  intro sharedOwner1
   classical
-  let :
-      Algebra (v.adicCompletion K) (W.1.adicCompletion L) :=
-    (finitePlaceAdicCompletionMap K L v W).toAlgebra
   apply Prod.ext
   · apply ContinuousMulEquiv.piUnits.injective
     funext w
@@ -310,7 +314,7 @@ theorem ideleClassNorm_finitePlaceIdeleClass_eq_normUnits
       {W : HeightOneSpectrum (𝓞 L) //
         _root_.finitePlaceBelow (K := K) W = v})
     (y : (W.1.adicCompletion L)ˣ) :
-    letI :
+    let :
         Algebra (v.adicCompletion K) (W.1.adicCompletion L) :=
       (finitePlaceAdicCompletionMap K L v W).toAlgebra
     _root_.ideleClassNorm K L
@@ -318,10 +322,8 @@ theorem ideleClassNorm_finitePlaceIdeleClass_eq_normUnits
       finitePlaceIdeleClass v
         (LocalFieldTheory.normUnits
           (v.adicCompletion K) (W.1.adicCompletion L) y) := by
+  intro sharedOwner1
   classical
-  let :
-      Algebra (v.adicCompletion K) (W.1.adicCompletion L) :=
-    (finitePlaceAdicCompletionMap K L v W).toAlgebra
   rw [
     finitePlaceIdeleClass,
     MonoidHom.coe_comp,

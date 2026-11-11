@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # algebraic extension and integral closure
@@ -14,6 +19,8 @@ This file packages the explicit algebraic-extension statement.  A
 valuation is represented by its valuation subring, so uniqueness is literal
 equality of valuation subrings (equivalently, equivalence of valuations).
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -51,7 +58,7 @@ theorem normFormula_algebraic_extension
     ∃! W : ValuationSubring L,
       V.valuation.HasExtension W.valuation ∧
         W.toSubring = (integralClosure V L).toSubring := by
-  let V := absoluteValueValuationSubring v hnonarch
+  intro V
   have hv : ValuationTheory.DiscreteValuationField.HenselFactorizationProperty V :=
     (henselianValuation_iff_henselFactorization v hnonarch).1 hhens
   have hvalV :
@@ -98,8 +105,7 @@ theorem absoluteValueValuation_hasExtension_of_extends
     let V := absoluteValueValuationSubring v hv
     let W := absoluteValueValuationSubring w hw
     V.valuation.HasExtension W.valuation := by
-  let V := absoluteValueValuationSubring v hv
-  let W := absoluteValueValuationSubring w hw
+  intro V W
   apply _root_.Valuation.HasExtension.ofComapInteger
   rw [ValuationSubring.integer_valuation, ValuationSubring.integer_valuation]
   have hcomap :=
@@ -151,7 +157,7 @@ theorem normFormula_finite_normFormulaAbsoluteValue_eq_of_valuationSubring_eq_of
     normFormula_finite_normFormulaAbsoluteValue_of_henselFactorization_nonarchimedean
       (K := K) (L := L) v hnonarch hv
   by_cases hx : x = 0
-  · simp [hx]
+  · simp only [hx, map_zero]
   · let n := Module.finrank K L
     have hn_pos : 0 < n := Module.finrank_pos (R := K) (M := L)
     have hn_ne : n ≠ 0 := Nat.ne_of_gt hn_pos

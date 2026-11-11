@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticBasis
-import Nyll.SawinTotallyRealTowers.QuadraticIntegralCoordinates
-import Nyll.SawinTotallyRealTowers.QuadraticIntegralParity
-import Mathlib.Algebra.Ring.Parity
-import Mathlib.NumberTheory.NumberField.Basic
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticBasis
+public import Nyll.SawinTotallyRealTowers.QuadraticIntegralCoordinates
+public import Nyll.SawinTotallyRealTowers.QuadraticIntegralParity
+public import Mathlib.Algebra.Ring.Parity
+public import Mathlib.NumberTheory.NumberField.Basic
 
 /-!
 # Integer coordinates in a quadratic number field
@@ -19,6 +21,8 @@ the generators are `1, α`. Every algebraic integer also has integer
 coordinates in `1, (1 + α) / 2` for every squarefree `d`. When `d` is one
 modulo four, the second generator is itself integral.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.TerminalIndex
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.AllFiniteAugmentation.TerminalIndex
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Augmentation at all-finite quotient stages
@@ -13,6 +16,8 @@ This file defines augmentation on each finite coefficient-and-group stage of the
 system and proves its formulas on basis elements and compatibility with transition, coefficient,
 and functorial stage maps.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

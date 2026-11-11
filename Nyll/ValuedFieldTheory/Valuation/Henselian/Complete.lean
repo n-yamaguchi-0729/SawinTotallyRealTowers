@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Complete
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Complete
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # Complete nonarchimedean absolute values are Henselian
@@ -19,6 +22,8 @@ consequence used in the henselianity criterion.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

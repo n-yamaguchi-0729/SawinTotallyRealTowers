@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpComposition
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpContinuity
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpComposition
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpContinuity
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Exponential and logarithm on deep principal units
@@ -16,6 +19,8 @@ or defect-membership hypothesis remains in the public result.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -132,8 +137,8 @@ noncomputable def chosenExpLogContinuousMulEquiv
     intro a
     apply Subtype.ext
     apply Subtype.ext
-    simpa [principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled,
-      principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled, F] using
+    simpa [principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled,
+      principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled, F] using
       logOnePlusSeries_expSeries_sub_one_eq_self_ofWithZeroValuation_scaled_of_threshold
         (v := v) (p := p) e (((a : F.valuationSubring) : K))
         hnKexp hnvalExp hnKlog hnvalLog
@@ -161,8 +166,8 @@ noncomputable def chosenExpLogContinuousMulEquiv
     apply Units.ext
     apply Subtype.ext
     simpa [a,
-      principalUnitLogSeriesOfHigherPrincipalUnitGroupOfWithZeroValuationScaled,
-      principalUnitExpSeriesOfMaximalIdealPowOfWithZeroValuationScaled, F] using hexact
+      principalUnitLogSeries_higherPrincipalUnitGroup_val_ofWithZeroValuationScaled,
+      principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled, F] using hexact
   exact
     principalUnitExpLogContinuousMulEquivOfExact_ofWithZeroValuationScaled
       (v := v) (p := p) e n (π := π) hπval hn hlevel'

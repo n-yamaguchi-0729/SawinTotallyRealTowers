@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
-import Nyll.ProCGroups.Categorical.ProfinitePullbacks
-import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
+module
+
+public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Basic
+public import Nyll.ProCGroups.Categorical.ProfinitePullbacks
+public import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
 
 /-!
 # Pro C Groups / Categorical / Quotient Pullback Equivalences
@@ -15,6 +17,8 @@ This module identifies the quotient by an intersection with the concrete
 fiber product of the two quotient maps to the quotient by their supremum, in
 both the algebraic and continuous settings.
 -/
+
+@[expose] public section
 
 namespace ProCGroups
 

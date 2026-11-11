@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
+module
+
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.BasisAtOne
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ClosedAndCosets
 
 /-!
 # Filtered families of open subgroups
@@ -14,6 +16,8 @@ This file proves compactness and intersection lemmas for directed families of cl
 subgroups. These results produce finite-intersection neighborhood bases and control images of
 intersections under continuous surjections.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.ProC
 

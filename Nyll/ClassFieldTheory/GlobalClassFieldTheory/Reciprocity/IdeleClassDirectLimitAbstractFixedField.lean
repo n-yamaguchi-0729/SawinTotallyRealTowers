@@ -4,8 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPoints
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldNorm
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPoints
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
 /-!
 # Abstract fixed fields in the rational idele-class representation
@@ -15,6 +23,8 @@ abstract fixed fields.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -202,7 +212,8 @@ theorem rationalIdeleClassEquivBaseFixed_coe
         E (RelativeIdeleGroup.classInclusion ℚ E c))
   exact Eq.trans h0 (Eq.trans h1 (Eq.trans h2 (Eq.trans h3 h4)))
 
-private noncomputable instance
+/-- A finite-index rational absolute Galois subgroup fixes a finite-dimensional field. -/
+noncomputable local instance rationalAbstractFixedFieldFiniteDimensional
     (K : ClosedSubgroup
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     [hfinite : Finite
@@ -212,18 +223,11 @@ private noncomputable instance
           (baseField
             (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
           K (le_baseField K))] :
-    NumberField
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) K) := by
-  let : FiniteDimensional ℚ
+    FiniteDimensional ℚ
       (LocalClassFieldTheory.abstractFixedField
         ℚ (SeparableClosure ℚ) K) :=
-    LocalClassFieldTheory.abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hfinite
-  exact
-    NumberField.of_module_finite ℚ
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) K)
+  LocalClassFieldTheory.abstractFixedField_finiteDimensional
+    ℚ (SeparableClosure ℚ) K hfinite
 
 /-- The actual idele class group of the fixed field represented by a
 finite-index closed subgroup is the corresponding fixed part of the

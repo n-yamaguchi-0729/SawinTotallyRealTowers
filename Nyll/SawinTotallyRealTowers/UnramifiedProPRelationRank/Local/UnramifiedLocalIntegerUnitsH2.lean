@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteCyclicH2TateH0
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Cohomology
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteCyclicH2TateH0
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Cohomology
 
 /-!
 # Integer-unit H² in an actual unramified local extension
@@ -16,6 +18,8 @@ with a zero Tate norm quotient.  In particular every two-cocycle has an
 integer-unit primitive, including in residue characteristic dividing the
 extension degree.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 open scoped ValuativeRel

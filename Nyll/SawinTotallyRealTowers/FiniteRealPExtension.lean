@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.GaloisPCompositum
-import Nyll.SawinTotallyRealTowers.RamificationSupportCompositum
-import Nyll.SawinTotallyRealTowers.RealCompositum
-import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
+module
+
+public import Nyll.SawinTotallyRealTowers.GaloisPCompositum
+public import Nyll.SawinTotallyRealTowers.RamificationSupportCompositum
+public import Nyll.SawinTotallyRealTowers.RealCompositum
+public import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 
 /-!
 # Finite layers of the real tower with prescribed ramification
@@ -18,6 +20,8 @@ family. These constructors provide the directed family used to form the
 maximal tower; no infiniteness or presentation is assumed.
 -/
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -25,9 +29,7 @@ noncomputable section
 
 namespace ClassFieldTower.Sawin
 
-private local instance finiteGaloisNumberField
-    (E : FiniteGaloisIntermediateField ℚ (AlgebraicClosure ℚ)) : NumberField E :=
-  NumberField.of_module_finite ℚ E
+attribute [local instance] finiteIntermediateFieldNumberField
 
 /-- The finite layers permitted in the initial real pro-p tower. -/
 def IsAdmissibleFiniteLayer (p : ℕ)
@@ -87,7 +89,8 @@ theorem IsAdmissibleFiniteLayer.of_le {p : ℕ}
   let : IsScalarTower ℚ E F := IsScalarTower.of_algebraMap_eq' rfl
   let : Normal ℚ E.toIntermediateField := E.isGalois.to_normal
   let : Normal ℚ F.toIntermediateField := F.isGalois.to_normal
-  refine ⟨?_, IsUnramifiedAtFinitePlacesOutside.bot T hF.2.1, ?_⟩
+  refine ⟨?_, IsUnramifiedAtFinitePlacesOutside.bot
+    (k := ℚ) (K := E) (F := F) T hF.2.1, ?_⟩
   · exact hF.1.of_surjective (AlgEquiv.restrictNormalHom E)
       (AlgEquiv.restrictNormalHom_surjective F)
   · let : IsUnramifiedAtInfinitePlaces ℚ F := hF.2.2

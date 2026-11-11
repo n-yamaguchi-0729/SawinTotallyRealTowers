@@ -4,8 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+module
+
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # finite abelian Kummer theory: the abstract field `K(S)`
@@ -16,6 +17,10 @@ member of `S`.  This file constructs that subgroup and proves that it is
 closed.  Closedness follows directly from continuity of each orbit map and
 the discrete topology on the coefficient module.
 -/
+
+@[expose] public section
+
+universe u v
 
 namespace KummerTheory
 
@@ -28,8 +33,8 @@ noncomputable section
 /-- The subgroup of `G_K` fixing every element of `S`, viewed as a subgroup
 of the ambient abstract Galois group `G`. -/
 def setFixingSubgroup
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (S : Set A.V) : Subgroup G := by
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G) (K : ClosedSubgroup G) (S : Set A.V) : Subgroup G := by
   letI : Module ℤ A.V := A.hV2
   exact
     { carrier := {σ | σ ∈ K ∧ ∀ a, a ∈ S → A.ρ σ a = a}
@@ -56,8 +61,8 @@ def setFixingSubgroup
 /-- For a continuous discrete representation, the stabilizer of one
 coefficient element is closed. -/
 theorem isClosed_setOf_representation_fixed
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
     (a : A.V) : IsClosed {σ : G | A.ρ σ a = a} := by
   let : TopologicalSpace A.V := ⊥
   let : DiscreteTopology A.V := discreteTopology_bot A.V
@@ -69,8 +74,8 @@ theorem isClosed_setOf_representation_fixed
 
 /-- The subgroup defining `K(S)` is closed. -/
 theorem setFixingSubgroup_isClosed
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
     (K : ClosedSubgroup G) (S : Set A.V) :
     IsClosed (setFixingSubgroup A K S : Set G) := by
   change IsClosed ((K : Set G) ∩ {σ : G | ∀ a, a ∈ S → A.ρ σ a = a})
@@ -87,8 +92,8 @@ theorem setFixingSubgroup_isClosed
 Its underlying subgroup is exactly the elements of `G_K` which fix `S`
 pointwise. -/
 def closedSetFixingSubgroup
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
     (K : ClosedSubgroup G) (S : Set A.V) : ClosedSubgroup G :=
   ⟨setFixingSubgroup A K S, setFixingSubgroup_isClosed A hcontinuous K S⟩
 
@@ -96,8 +101,8 @@ def closedSetFixingSubgroup
 of the closed set. -/
 @[simp]
 theorem mem_closedSetFixingSubgroup_iff
-    {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
     (K : ClosedSubgroup G) (S : Set A.V) (σ : G) :
     σ ∈ closedSetFixingSubgroup A hcontinuous K S ↔
       σ ∈ K ∧ ∀ a, a ∈ S → A.ρ σ a = a :=

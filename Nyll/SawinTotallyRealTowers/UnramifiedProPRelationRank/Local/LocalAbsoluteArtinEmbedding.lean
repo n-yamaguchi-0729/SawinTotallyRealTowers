@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
 
 /-!
 # Absolute Artin action on an embedded finite extension
@@ -14,6 +16,8 @@ An actual representative of the absolute Artin value acts on every embedded
 finite abelian extension by its finite Artin automorphism.  The representative
 condition is supplied by the quotient map, not by an Artin-comparison assumption.
 -/
+
+@[expose] public section
 
 noncomputable section
 

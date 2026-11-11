@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Group.Even
-import Mathlib.Algebra.Polynomial.Degree.Operations
-import Mathlib.Algebra.Polynomial.Monic
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
-import Mathlib.FieldTheory.KummerPolynomial
-import Mathlib.FieldTheory.Minpoly.Field
-import Mathlib.LinearAlgebra.Dimension.StrongRankCondition
+module
+
+public import Mathlib.Algebra.Group.Even
+public import Mathlib.Algebra.Polynomial.Degree.Operations
+public import Mathlib.Algebra.Polynomial.Monic
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+public import Mathlib.FieldTheory.KummerPolynomial
+public import Mathlib.FieldTheory.Minpoly.Field
+public import Mathlib.LinearAlgebra.Dimension.StrongRankCondition
 
 /-!
 # Adjoining a square root of a nonsquare
@@ -19,6 +21,8 @@ Over any base field, a square root of a nonsquare has minimal polynomial
 `X² - a` and generates an extension of degree two. No assumption on the
 characteristic or on the ambient extension is required.
 -/
+
+@[expose] public section
 
 open Polynomial
 

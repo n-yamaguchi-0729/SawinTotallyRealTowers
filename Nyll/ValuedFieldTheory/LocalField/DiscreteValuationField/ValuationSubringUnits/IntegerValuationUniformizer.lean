@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNormBase
-import Mathlib.RingTheory.Valuation.Extension
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValuationSubringUnits.IntegerValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldNormBase
+public import Mathlib.RingTheory.Valuation.Extension
 
 /-!
 # Uniformizers and unit subgroups for induced integer valuations
@@ -16,6 +18,8 @@ valuation-ring units, and scalar extension of field units.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -56,7 +60,7 @@ theorem exists_unit_valuation_eq_exp_neg_of_surjective
   have hπ_ne : π ≠ 0 := by
     intro hzero
     have hzero_val : v π = 0 := by
-      simp [hzero]
+      rw [hzero, map_zero]
     rw [hπ] at hzero_val
     exact WithZero.exp_ne_zero hzero_val
   exact ⟨Units.mk0 π hπ_ne, by simpa using hπ⟩
@@ -79,7 +83,7 @@ theorem ofWithZeroValuation_val_surjective_of_surjective
   have hx_ne : x ≠ 0 := by
     intro hzero
     have hzero_val : v x = 0 := by
-      simp [hzero]
+      rw [hzero, map_zero]
     rw [hx] at hzero_val
     exact WithZero.exp_ne_zero hzero_val
   exact ⟨Units.mk0 x hx_ne,

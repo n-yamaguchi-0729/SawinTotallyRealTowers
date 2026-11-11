@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.QuotientGroup.Finite
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Finite
 
 /-!
 # Named quotients of antitone normal-subgroup filtrations
@@ -16,6 +18,8 @@ Arithmetic Herbrand functions and valuation-action specializations live in
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

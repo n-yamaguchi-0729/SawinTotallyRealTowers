@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.RelativeTwoCocycle
-import Nyll.GaloisCohomology.Kummer.MixedTwoCocycle
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Invariants
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.GroupTheory.QuotientGroup.Defs
-import Mathlib.Tactic.Abel
+module
+
+public import Nyll.GaloisCohomology.Kummer.RelativeTwoCocycle
+public import Nyll.GaloisCohomology.Kummer.MixedTwoCocycle
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Invariants
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.GroupTheory.QuotientGroup.Defs
+public import Mathlib.Tactic.Abel
 
 /-!
 # Descent of mixed-zero two-cocycles to a quotient group
@@ -22,6 +24,8 @@ with relative normalization, this proves exactness in degree two when subgroup
 H¹ vanishes.
 -/
 
+@[expose] public section
+
 open CategoryTheory
 open Rep
 open groupCohomology
@@ -30,7 +34,9 @@ namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
-variable {k G : Type} [CommRing k] [Group G]
+universe u
+
+variable {k G : Type u} [CommRing k] [Group G]
 
 private theorem mixedTwoCocycle_second_right
     (A : Rep k G) (S : Subgroup G) (z : cocycles₂ A)

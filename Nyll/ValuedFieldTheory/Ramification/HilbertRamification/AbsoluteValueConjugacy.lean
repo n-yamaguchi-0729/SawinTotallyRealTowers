@@ -4,28 +4,31 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
 /-!
 # Valuation conjugacy
@@ -33,6 +36,8 @@ import Nyll.ValuedFieldTheory.Valuation.Completion.AbsoluteValueExtensions
 For a possibly infinite Galois extension `L/K`, the Galois group acts
 transitively on the extensions to `L` of a nontrivial absolute value of `K`.
 -/
+
+@[expose] public section
 
 noncomputable section
 

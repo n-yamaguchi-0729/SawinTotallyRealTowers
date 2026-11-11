@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
-import Mathlib.Algebra.Polynomial.FieldDivision
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
+public import Mathlib.Algebra.Polynomial.FieldDivision
+public import Mathlib.Algebra.Group.Units.Basic
 
 /-!
 # Factorization-shaped Hensel consequences
@@ -14,6 +17,8 @@ import Mathlib.Algebra.Polynomial.FieldDivision
 Mathlib exposes the simple-root form of Hensel's lemma.  The statements below
 turn it into a linear-factor lifting API for a simple residual linear factor.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 
@@ -36,6 +41,51 @@ theorem divByMonic_X_sub_C_eval_eq_derivative_eval
   have heval := congrArg (fun q : Polynomial S => q.eval a) h
   simpa [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_sub] using
     heval
+
+/-- Two simple roots over a local ring with the same residue are equal. -/
+theorem eq_of_simple_roots_of_residue_eq
+    {R : Type*} [CommRing R] [IsLocalRing R]
+    {f : Polynomial R} {a b : R}
+    (ha : f.IsRoot a) (hb : f.IsRoot b)
+    (hres : IsLocalRing.residue R b = IsLocalRing.residue R a)
+    (hderiv : IsUnit (f.derivative.eval a)) :
+    b = a := by
+  let q : Polynomial R := f /ₘ (Polynomial.X - Polynomial.C a)
+  have hfactor : (Polynomial.X - Polynomial.C a) * q = f := by
+    dsimp [q]
+    rw [Polynomial.mul_divByMonic_eq_iff_isRoot]
+    exact ha
+  have hqEval : q.eval a = f.derivative.eval a := by
+    simpa [q] using
+      divByMonic_X_sub_C_eval_eq_derivative_eval f a
+  have hqUnit : IsUnit (q.eval a) := by
+    simpa [hqEval] using hderiv
+  have hqResidue :
+      IsLocalRing.residue R (q.eval b) =
+        IsLocalRing.residue R (q.eval a) := by
+    calc
+      IsLocalRing.residue R (q.eval b) =
+          (q.map (IsLocalRing.residue R)).eval
+            (IsLocalRing.residue R b) := by
+        exact (Polynomial.eval_map_apply
+          (f := IsLocalRing.residue R) (p := q) b).symm
+      _ = (q.map (IsLocalRing.residue R)).eval
+            (IsLocalRing.residue R a) := by rw [hres]
+      _ = IsLocalRing.residue R (q.eval a) := by
+        exact Polynomial.eval_map_apply
+          (f := IsLocalRing.residue R) (p := q) a
+  have hqResidueNe : IsLocalRing.residue R (q.eval b) ≠ 0 := by
+    rw [hqResidue]
+    exact (IsLocalRing.residue_ne_zero_iff_isUnit (q.eval a)).2 hqUnit
+  have hqUnitB : IsUnit (q.eval b) :=
+    (IsLocalRing.residue_ne_zero_iff_isUnit (q.eval b)).1 hqResidueNe
+  have hmul : (b - a) * q.eval b = 0 := by
+    have hbEval : ((Polynomial.X - Polynomial.C a) * q).eval b = 0 := by
+      rw [hfactor]
+      exact Polynomial.IsRoot.def.mp hb
+    simpa [Polynomial.eval_mul, Polynomial.eval_sub] using hbEval
+  exact sub_eq_zero.mp
+    (hqUnitB.mul_right_cancel (hmul.trans (zero_mul (q.eval b)).symm))
 
 namespace HenselianDVF
 
@@ -100,45 +150,8 @@ theorem eq_of_isRoot_of_isRoot_of_residue_eq_of_derivative_isUnit
     (ha : f.IsRoot a) (hb : f.IsRoot b)
     (hres : F.residueMap b = F.residueMap a)
     (hderiv : IsUnit (f.derivative.eval a)) :
-    b = a := by
-  let q : Polynomial F.valuationSubring :=
-    f /ₘ (Polynomial.X - Polynomial.C a)
-  have hfactor :
-      (Polynomial.X - Polynomial.C a) * q = f := by
-    dsimp [q]
-    rw [Polynomial.mul_divByMonic_eq_iff_isRoot]
-    exact ha
-  have hq_eval :
-      q.eval a = f.derivative.eval a := by
-    simpa [q] using
-      divByMonic_X_sub_C_eval_eq_derivative_eval (p := f) a
-  have hq_unit_a : IsUnit (q.eval a) := by
-    simpa [hq_eval] using hderiv
-  have hq_residue :
-      F.residueMap (q.eval b) = F.residueMap (q.eval a) := by
-    calc
-      F.residueMap (q.eval b) =
-          (q.map F.residueMap).eval (F.residueMap b) := by
-        exact (Polynomial.eval_map_apply (f := F.residueMap) (p := q) b).symm
-      _ = (q.map F.residueMap).eval (F.residueMap a) := by
-        rw [hres]
-      _ = F.residueMap (q.eval a) := by
-        exact Polynomial.eval_map_apply (f := F.residueMap) (p := q) a
-  have hq_residue_ne : F.residueMap (q.eval b) ≠ 0 := by
-    rw [hq_residue]
-    exact (F.toDVF.residue_ne_zero_iff_isUnit (q.eval a)).2 hq_unit_a
-  have hq_ne : q.eval b ≠ 0 := by
-    intro hzero
-    exact hq_residue_ne (by rw [hzero, map_zero])
-  have hmul : (b - a) * q.eval b = 0 := by
-    have hb_eval :
-        ((Polynomial.X - Polynomial.C a) * q).eval b = 0 := by
-      rw [hfactor]
-      exact Polynomial.IsRoot.def.mp hb
-    simpa [Polynomial.eval_mul, Polynomial.eval_sub] using hb_eval
-  have hsub : b - a = 0 :=
-    (mul_eq_zero.mp hmul).resolve_right hq_ne
-  exact sub_eq_zero.mp hsub
+    b = a :=
+  ValuationTheory.DiscreteValuationField.eq_of_simple_roots_of_residue_eq ha hb hres hderiv
 
 /-- Hensel's lemma gives a linear factor lifting from a simple approximate root. -/
 theorem exists_linear_factor_lift

@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FieldUnitsHerbrand
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FieldUnitsHerbrand
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
 
 /-!
 # The local class-field axiom
@@ -16,6 +18,8 @@ For a cyclic extension of nonarchimedean local fields, the actual Tate
 cohomology of `Lˣ` has cardinalities `[L : K]` in degree zero and `1` in
 degree minus one.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology

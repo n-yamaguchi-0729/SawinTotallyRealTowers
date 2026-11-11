@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Augmentation
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.AugmentationIdealPrimePower.Augmentation
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power augmentation ideal — subtype linear
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   The coefficient-linear inclusion of the prime-power augmentation ideal returns the underlying
   completed group-algebra element.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

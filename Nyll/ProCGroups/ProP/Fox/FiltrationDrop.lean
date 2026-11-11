@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
+module
+
+public import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
 
 /-!
 # Filtration drop for continuous Fox operators
@@ -14,6 +16,8 @@ of the augmentation ideal.  Continuity extends this algebraic result to closed
 powers, and hence makes the drop independent of representatives modulo the
 next source layer.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

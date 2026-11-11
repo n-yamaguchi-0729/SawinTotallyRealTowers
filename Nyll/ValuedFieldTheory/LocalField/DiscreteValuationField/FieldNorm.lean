@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.NormFiltration
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.NormFiltration
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
 
 /-!
 # Field norm on unit groups
@@ -15,6 +17,8 @@ import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.ValueGroup
 This file connects mathlib's `Algebra.norm` with the unit-group and valued-norm
 APIs used by local CFT.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -157,7 +161,7 @@ fieldNormSubgroup K L`.
 theorem fieldNormSubgroup_div_mem_iff_inv_mul_mem (x y : Kˣ) :
     x / y ∈ fieldNormSubgroup K L ↔
       y⁻¹ * x ∈ fieldNormSubgroup K L := by
-  simp [div_eq_mul_inv, mul_comm]
+  rw [div_eq_mul_inv, mul_comm x y⁻¹]
 
 /--
 Characterizes `y⁻¹ * x ∈ fieldNormSubgroup K L` by the equivalent condition `x / y ∈
@@ -178,7 +182,7 @@ theorem fieldNormSubgroup_div_mem_iff_exists_norm_mul_eq
       ∃ z : Lˣ, normUnits K L z * y = x := by
   constructor
   · rintro ⟨z, hz⟩
-    exact ⟨z, by rw [hz]; simp [div_eq_mul_inv, mul_assoc]⟩
+    exact ⟨z, by rw [hz, div_mul_cancel]⟩
   · rintro ⟨z, hz⟩
     refine ⟨z, ?_⟩
     have h := congrArg (fun t : Kˣ => t * y⁻¹) hz
@@ -1606,7 +1610,7 @@ theorem fieldNormFiltrationQuotientMap_mk_eq_iff_inv_mul_mem
     (normUnits K L).map_div x y,
     UK.principalUnitSubgroup_div_mem_iff_inv_mul_mem
       (targetLevel n) (normUnits K L x) (normUnits K L y)]
-  simp [mul_comm]
+  rw [map_mul, map_inv]
 
 /--
 Characterizes `Function.Surjective (fieldNormFiltrationQuotientMap K L UK UL targetLevel hN n)` by

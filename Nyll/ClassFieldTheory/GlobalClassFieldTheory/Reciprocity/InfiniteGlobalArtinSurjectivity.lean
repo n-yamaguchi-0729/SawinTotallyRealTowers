@@ -4,9 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinDescent
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinDescent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
 
 /-!
 # Surjectivity of the infinite global Artin homomorphism
@@ -20,20 +27,24 @@ norm-one idele without changing its Artin symbol.
 
 
 
+@[expose] public section
+
 open scoped IsMulCommutative NNReal NumberField Topology
 open NumberField IsDedekindDomain
 open NumberField.Units.dirichletUnitTheorem
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- Compatibility name for the positive archimedean section. -/
 noncomputable def numberFieldPositiveArchimedeanIdele
-    (K : Type) [Field K] [NumberField K] :
+    (K : Type u) [Field K] [NumberField K] :
     ℝ≥0ˣ →* IdeleGroup K :=
   IdeleGroup.positiveArchimedeanSection K
 
@@ -66,7 +77,7 @@ theorem numberFieldPositiveArchimedeanIdele_absoluteNorm
   IdeleGroup.positiveArchimedeanSection_absoluteNorm r
 
 private theorem globalArtinMonoidHom_positiveArchimedeanSection
-    {L : Type}
+    {L : Type v}
     [Field L] [NumberField L] [Algebra K L]
     [IsAbelianGalois K L]
     (r : ℝ≥0ˣ) :
@@ -106,7 +117,7 @@ private theorem globalArtinMonoidHom_positiveArchimedeanSection
   rw [hinfinite, hfinite, mul_one]
 
 private theorem continuousMulEquivToLimit_infiniteGlobalArtinMonoidHom_apply'
-    {K Ω : Type}
+    {K : Type u} {Ω : Type v}
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
     (a : IdeleGroup K) :
@@ -120,7 +131,7 @@ private theorem continuousMulEquivToLimit_infiniteGlobalArtinMonoidHom_apply'
 section over every number field. -/
 @[simp]
 theorem infiniteGlobalArtinMonoidHom_positiveArchimedeanSection
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
     (r : ℝ≥0ˣ) :
@@ -150,7 +161,7 @@ theorem infiniteGlobalArtinMonoidHom_positiveArchimedeanSection
 section. -/
 @[simp]
 theorem infiniteGlobalArtinMonoidHom_numberFieldPositiveArchimedeanIdele
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
     (r : ℝ≥0ˣ) :
@@ -162,7 +173,7 @@ theorem infiniteGlobalArtinMonoidHom_numberFieldPositiveArchimedeanIdele
 /-- Every idele has the same infinite global Artin symbol as a norm-one
 idele. -/
 theorem exists_normOneIdele_same_infiniteGlobalArtin
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
     (a : IdeleGroup K) :
@@ -178,7 +189,7 @@ theorem exists_normOneIdele_same_infiniteGlobalArtin
 
 private theorem
     infiniteGlobalIdeleClassArtinContinuousMonoidHom_normOne_denseRange
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω] :
     DenseRange
@@ -217,7 +228,7 @@ private theorem
 
 private theorem
     infiniteGlobalIdeleClassArtinContinuousMonoidHom_normOne_surjective
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω] :
     Function.Surjective
@@ -247,7 +258,7 @@ private theorem
 
 /-- The infinite global Artin homomorphism on idele classes is surjective. -/
 theorem infiniteGlobalIdeleClassArtinContinuousMonoidHom_surjective
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω] :
     Function.Surjective
@@ -261,7 +272,7 @@ theorem infiniteGlobalIdeleClassArtinContinuousMonoidHom_surjective
 
 /-- The infinite global Artin homomorphism is surjective. -/
 theorem infiniteGlobalArtinMonoidHom_surjective
-    (K Ω : Type)
+    (K : Type u) (Ω : Type v)
     [Field K] [NumberField K]
     [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω] :
     Function.Surjective

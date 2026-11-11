@@ -4,20 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
-import Nyll.GaloisCohomology.Kummer.UnitsCohomologyCongr
-import Nyll.GaloisCohomology.Kummer.UnitsCohomologyRestrictScalars
-import Mathlib.Algebra.Algebra.Tower
-import Mathlib.Algebra.Group.Units.Equiv
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.Algebra.Module.Equiv.Basic
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
+public import Nyll.GaloisCohomology.Kummer.UnitsCohomologyCongr
+public import Nyll.GaloisCohomology.Kummer.UnitsCohomologyRestrictScalars
+public import Mathlib.Algebra.Algebra.Tower
+public import Mathlib.Algebra.Group.Units.Equiv
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.Module.Equiv.Basic
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # Unit H² in an arbitrary finite Galois tower
@@ -26,6 +28,8 @@ The actual restriction homomorphisms and inclusion of units define the
 inflation and restriction maps without representing the lower field as a
 subtype of the upper field.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

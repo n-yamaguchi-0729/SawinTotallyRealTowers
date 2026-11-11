@@ -4,13 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Generation.Basic
+module
+
+public import Nyll.ProCGroups.Generation.Basic
 
 /-!
 # Pro C Groups / Group Theory / Centralizers
 
 Centralizer lemmas and closed-cyclic-subgroup results used by the profinite applications.
 -/
+
+@[expose] public section
 
 open scoped Pointwise
 
@@ -102,11 +106,11 @@ theorem right_factor_mem_centralizerOf_of_mul_mem_and_left_mem {x c d : G}
     d ∈ centralizerOf x := by
   rw [mem_centralizerOf_iff] at hc hcd ⊢
   calc
-    d * x = c⁻¹ * (c * d * x) := by simp [mul_assoc]
+    d * x = c⁻¹ * (c * d * x) := by rw [mul_assoc c d x, inv_mul_cancel_left]
     _ = c⁻¹ * (x * (c * d)) := by rw [hcd]
-    _ = c⁻¹ * ((x * c) * d) := by simp [mul_assoc]
+    _ = c⁻¹ * ((x * c) * d) := by rw [mul_assoc x c d]
     _ = c⁻¹ * ((c * x) * d) := by rw [← hc]
-    _ = x * d := by simp [mul_assoc]
+    _ = x * d := by rw [mul_assoc c x d, inv_mul_cancel_left]
 
 
 /-- In a Hausdorff topological group, the centralizer of one element is closed. -/

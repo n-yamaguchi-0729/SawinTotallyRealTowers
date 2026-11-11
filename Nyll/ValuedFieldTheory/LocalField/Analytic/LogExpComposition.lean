@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpAdditivity
+module
+
+public import Mathlib.Data.Set.Finite.Basic
+public import Mathlib.RingTheory.PowerSeries.Log
+public import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpAdditivity
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.FormalCoreBase.PowerSeriesComposition
 
 /-!
 # Exact logarithm--exponential compositions
@@ -15,6 +20,8 @@ the deep exponential–logarithm equivalence, on the sharp ramified
 convergence ball.  The source lemmas below justify the Cauchy products and
 the unconditional regrouping involved in power-series substitution.
 -/
+
+@[expose] public section
 
 open Filter
 open Polynomial
@@ -49,7 +56,7 @@ theorem hasSum_powerSeries_pow_coeff_mul_pow
           HasSum (fun d : ℕ => if d = 0 then (1 : K) else 0) 1 := by
         apply hasSum_single 0
         intro d hd
-        simp [hd]
+        exact ite_eq_right hd
       have hsingle' :
           HasSum (fun d : ℕ => PowerSeries.coeff d (1 : PowerSeries K) * x ^ d) 1 :=
         hsingle.congr_fun fun d => by
@@ -231,7 +238,7 @@ theorem summable_powerSeries_subst_sigma_of_outer_summable
         exact Finset.mem_sigma.mpr ⟨hq, hd⟩
       by_contra hterm
       apply hdnot
-      simp [D, badFiber, hterm]
+      exact (hbadFiberFinite qd.1).mem_toFinset.mpr hterm
     · have houterGood :
           Valued.v (outerTerm qd.1) <
             MonoidWithZeroHom.ValueGroup₀.embedding γ.1 := by
@@ -332,8 +339,8 @@ theorem hasSum_powerSeries_subst_coeff_mul_pow_of_sigma
       have hbase : base q = 0 := by
         by_contra hne
         apply hq
-        simp [S, hne]
-      simp [fiberTerm, hbase]
+        exact hsupport.mem_toFinset.mpr hne
+      simp only [fiberTerm, hbase, zero_mul]
     have hsum :
         (∑ q ∈ S, fiberTerm q) =
           PowerSeries.coeff d (PowerSeries.subst g f) * x ^ d := by
@@ -383,12 +390,12 @@ theorem hasSum_formalExpPowerSeries_eval_expSeriesField_ofWithZeroValuation_scal
     (hcomplete :
       letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
       CompleteSpace K) :
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     HasSum
       (fun n : ℕ =>
         PowerSeries.coeff n (PowerSeries.exp K) * x ^ n)
       (expSeriesFieldOfWithZeroValuation v x hnK) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+  intro sharedOwner1
   have hsum :=
     hasSum_expSeriesTermField_expSeriesField_ofWithZeroValuation_scaled_of_threshold
       (v := v) (p := p) e x hnK hnval hthreshold hcomplete
@@ -408,7 +415,7 @@ theorem hasSum_powerSeries_sub_one_coeff_mul_pow
       HasSum (fun d : ℕ => if d = 0 then (1 : K) else 0) 1 := by
     apply hasSum_single 0
     intro d hd
-    simp [hd]
+    simp only [hd, ↓reduceIte]
   have hone :
       HasSum
         (fun d : ℕ => PowerSeries.coeff d (1 : PowerSeries K) * x ^ d)
@@ -417,7 +424,7 @@ theorem hasSum_powerSeries_sub_one_coeff_mul_pow
       by_cases hd : d = 0
       · subst d
         simp only [PowerSeries.coeff_zero_one, pow_zero, mul_one, ite_true]
-      · simp [PowerSeries.coeff_one, hd]
+      · simp only [PowerSeries.coeff_one, hd, ↓reduceIte, zero_mul]
   refine (hf.sub hone).congr_fun ?_
   intro d
   rw [map_sub]
@@ -433,7 +440,8 @@ theorem valuation_lt_one_ofWithZeroValuation_scaled_threshold_real
         ((ofWithZeroValuation v).val (Units.mk0 x hx) : ℝ)) :
     v x < (1 : WithZero (Multiplicative ℤ)) := by
   by_cases hx : x = 0
-  · simp [hx]
+  · rw [hx, map_zero]
+    exact zero_lt_one
   · have hp_two : (2 : ℕ) ≤ p := (Fact.out : Nat.Prime p).two_le
     have hp_two_real : (2 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hp_two
     have hp_sub_pos : 0 < ((p : ℝ) - 1) := by linarith
@@ -469,14 +477,18 @@ theorem valuation_powerSeries_log_coeff_mul_pow_le_self_scaled
   · subst x
     by_cases hd : d = 0
     · subst d
-      simp [PowerSeries.coeff_log]
-    · simp [hd]
+      simpa only [PowerSeries.coeff_zero_eq_constantCoeff,
+        PowerSeries.constantCoeff_log, zero_mul] using (le_refl (v (0 : K)))
+    · rw [zero_pow hd, mul_zero]
   · have hthresholdRat :
         (e : ℚ) / ((p : ℚ) - 1) <
           ((ofWithZeroValuation v).val (Units.mk0 x hx) : ℚ) := by
       exact_mod_cast hthreshold hx
     cases d with
-    | zero => simp [PowerSeries.coeff_log]
+    | zero =>
+        rw [PowerSeries.coeff_zero_eq_constantCoeff,
+          PowerSeries.constantCoeff_log, zero_mul, v.map_zero]
+        exact bot_le
     | succ n =>
         cases n with
         | zero =>
@@ -511,7 +523,7 @@ theorem valuation_formalExp_sub_one_coeff_mul_pow_le_self_scaled
     · subst d
       rw [PowerSeries.coeff_zero_eq_constantCoeff, map_sub,
         PowerSeries.constantCoeff_exp, PowerSeries.constantCoeff_one, sub_self, zero_mul]
-    · simp [hd]
+    · rw [zero_pow hd, mul_zero]
   · have hthresholdRat :
         (e : ℚ) / ((p : ℚ) - 1) <
           ((ofWithZeroValuation v).val (Units.mk0 x hx) : ℚ) := by
@@ -555,7 +567,7 @@ theorem hasSum_powerSeries_X_coeff_mul_pow
       HasSum (fun d : ℕ => if d = 1 then x else 0) x := by
     apply hasSum_single 1
     intro d hd
-    simp [hd]
+    exact ite_eq_right hd
   exact hsingle.congr_fun fun d => by
     by_cases hd : d = 1
     · subst d
@@ -573,7 +585,7 @@ theorem hasSum_powerSeries_one_add_X_coeff_mul_pow
       HasSum (fun d : ℕ => if d = 0 then (1 : K) else 0) 1 := by
     apply hasSum_single 0
     intro d hd
-    simp [hd]
+    exact ite_eq_right hd
   have hone :
       HasSum
         (fun d : ℕ => PowerSeries.coeff d (1 : PowerSeries K) * x ^ d)
@@ -616,7 +628,7 @@ theorem expSeries_logOnePlusSeries_eq_one_add_ofWithZeroValuation_scaled_of_thre
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
-  let : IsAddTorsionFree K := IsAddTorsionFree.of_module_rat K
+  let : HasUniqueDiv K := HasUniqueDiv.of_module_rat K
   by_cases hx : x = 0
   · subst x
     rw [logOnePlusSeriesField_zero_ofWithZeroValuation,
@@ -636,7 +648,7 @@ theorem expSeries_logOnePlusSeries_eq_one_add_ofWithZeroValuation_scaled_of_thre
           hthresholdRat hcomplete
     have hy : y ≠ 0 := by
       intro hy0
-      have hzero : v y = 0 := by simp [hy0]
+      have hzero : v y = 0 := by rw [hy0, map_zero]
       have hxzero : v x = 0 := by simpa [hvy_eq] using hzero
       exact ((_root_.Valuation.ne_zero_iff v).2 hx) hxzero
     have hyval_eq :
@@ -718,7 +730,7 @@ theorem logOnePlusSeries_expSeries_sub_one_eq_self_ofWithZeroValuation_scaled_of
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
   let : CompleteSpace K := hcomplete
   have : NonarchimedeanRing K := nonarchimedeanRing_ofWithZeroValuation v
-  let : IsAddTorsionFree K := IsAddTorsionFree.of_module_rat K
+  let : HasUniqueDiv K := HasUniqueDiv.of_module_rat K
   by_cases hx : x = 0
   · subst x
     rw [expSeriesField_zero_ofWithZeroValuation, sub_self,

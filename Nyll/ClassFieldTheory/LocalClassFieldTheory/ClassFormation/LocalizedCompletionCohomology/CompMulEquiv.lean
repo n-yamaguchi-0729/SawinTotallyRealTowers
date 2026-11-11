@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
-import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
-import Nyll.GaloisCohomology.Cyclic.TateH0.Main
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
-import Mathlib.FieldTheory.Galois.Infinite
+module
+
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Main
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteExtensionClassFieldAxiom
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Mathlib.FieldTheory.Galois.Infinite
 
 /-!
 # The local class-field axiom for decomposition-group blocks
@@ -31,6 +33,8 @@ class-field axiom then gives:
 -/
 
 
+
+@[expose] public section
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisInfiniteProduct
 
 /-!
 # Recursive correction sequences
@@ -16,6 +18,8 @@ cohomological input is hidden here: the existence of each one-step lift is an
 explicit parameter, discharged for the normal-basis filtration in the next
 file.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 

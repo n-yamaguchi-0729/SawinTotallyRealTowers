@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 
 /-!
 # Transport of unramified first-cohomology characters at a finite place
@@ -15,6 +17,8 @@ of the global decomposition group and of the completion's separable-closure Galo
 group. This equivalence identifies inertia-trivial characters with the intrinsic
 unramified residue-degree line.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NNReal NumberField ValuativeRel
@@ -43,7 +47,8 @@ local instance finitePlaceUnramifiedH1TransportModule
     Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
   continuousH1ZModModule
 
-private def continuousH1PullbackAddHom
+/-- Pull back continuous additive characters along a continuous group equivalence. -/
+def continuousH1PullbackAddHom
     {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (e : G ≃ₜ* H) :
@@ -120,23 +125,16 @@ theorem finitePlaceDecompositionH1LinearEquivLocalSeparable_mem_unramified_iff
       (p := p) (G := finitePlaceAbsoluteDecompositionGroup F v)) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-    letI : Valued vF.Completion NNReal :=
+    let : Valued vF.Completion NNReal :=
       finitePlaceCompletionValued vF hvFna
-    letI : ValuativeRel vF.Completion :=
+    let : ValuativeRel vF.Completion :=
       finitePlaceCompletionValuativeRel vF hvFna
-    letI : IsNonarchimedeanLocalField vF.Completion :=
+    let : IsNonarchimedeanLocalField vF.Completion :=
       finitePlaceNormCompletionIsNonarchimedeanLocalField F v
     finitePlaceDecompositionH1LinearEquivLocalSeparable F p v chi ∈
         localIntrinsicUnramifiedH1 vF.Completion p ↔
       chi ∈ finitePlaceUnramifiedH1 F p v := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  let _ : Valued vF.Completion NNReal :=
-    finitePlaceCompletionValued vF hvFna
-  let _ : ValuativeRel vF.Completion :=
-    finitePlaceCompletionValuativeRel vF hvFna
-  let _ : IsNonarchimedeanLocalField vF.Completion :=
-    finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+  intro vF hvFna hValued hValuativeRel hLocalField
   let e :=
     finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup F v
   let I := finitePlaceAbsoluteInertiaSubgroup F v

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerHilbertValuation
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerHilbertValuation
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
 
 /-!
 # The valuation dual of an unramified Kummer class
@@ -14,6 +16,8 @@ Unramified Hilbert characters are scalar multiples of reduced normalized
 valuation. Nondegeneracy shows that the Frobenius scalar of a nonzero class
 is nonzero, including at places above the Kummer exponent.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -59,7 +63,7 @@ theorem localPowerClassValuation_mk (a : Kˣ) :
       (valuationMap K (Additive.ofMul a) : ZMod p) := by
   change (localPowerClassValuationMonoidHom K p
     (QuotientGroup.mk' (powMonoidHom p : Kˣ →* Kˣ).range a)).toAdd = _
-  simp [localPowerClassValuationMonoidHom]
+  rfl
 
 /-- Local valuation on power classes is onto. -/
 theorem localPowerClassValuation_surjective :
@@ -138,7 +142,8 @@ theorem localHilbertDualEmbedding_mk_unramified
   rw [localHilbertPairing_apply, localHilbertSymbol_eq_unramifiedFrobenius_zpow
     K n (Nat.cast_ne_zero.mpr n.ne_zero) hmu a b ha, map_zpow,
     toAdd_zpow]
-  simp [unramifiedChosenSimpleKummerFrobeniusScalar, mul_comm]
+  rw [unramifiedChosenSimpleKummerFrobeniusScalar, zsmul_eq_mul,
+    Int.cast_neg, neg_mul, neg_mul, mul_comm]
 
 /-- A nonzero unramified Kummer class has a nonzero Frobenius scalar. -/
 theorem unramifiedChosenSimpleKummerFrobeniusScalar_ne_zero

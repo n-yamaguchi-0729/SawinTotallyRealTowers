@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2CocycleExtension
-import Nyll.ProCGroups.Cohomology.FreeProPProjective
-import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
-import Nyll.ProCGroups.ProC.Subgroups.Closed
+module
+
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtension
+public import Nyll.ProCGroups.Cohomology.FreeProPProjective
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
 
 /-!
 # Degree-two cohomology of a free pro-p group
@@ -18,6 +20,8 @@ presentation.  The proof is explicit: a homogeneous cocycle defines a twisted co
 pro-`p` extension, projectivity supplies a continuous section, and the section gives a
 homogeneous degree-one primitive.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Basic
 
 /-!
 # Algebraic localization inside an absolute-value completion
@@ -15,6 +17,8 @@ the compositum of `L` and the completed base field inside `wL.Completion`.
 The construction applies to arbitrary algebraic extensions and does not use a
 extra container for the chosen extension.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -35,13 +39,14 @@ noncomputable def algebraicLocalization
   exact IntermediateField.adjoin vK.Completion
     (Set.range (toCompletion wL))
 
-private theorem toCompletion_mem_algebraicLocalization
+/-- The original field maps into the intermediate field generated inside the completion. -/
+theorem toCompletion_mem_algebraicLocalization
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) (x : L) :
-    letI := completionAlgebra vK wL hw
+    let := completionAlgebra vK wL hw
     toCompletion wL x ∈ algebraicLocalization vK wL hw := by
-  let := completionAlgebra vK wL hw
+  intro sharedOwner1
   exact IntermediateField.subset_adjoin vK.Completion _ ⟨x, rfl⟩
 
 /-- The canonical copy of `L` in its algebraic localization. -/
@@ -63,11 +68,11 @@ theorem toAlgebraicLocalization_apply
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) (x : L) :
-    letI := completionAlgebra vK wL hw
+    let := completionAlgebra vK wL hw
     ((toAlgebraicLocalization vK wL hw x :
       algebraicLocalization vK wL hw) : wL.Completion) =
       toCompletion wL x := by
-  let := completionAlgebra vK wL hw
+  intro sharedOwner1
   rfl
 
 /-- The algebraic localization over the completed base is algebraic whenever
@@ -113,11 +118,10 @@ theorem algebraicLocalizationAbsoluteValue_extends
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) :
-    letI := completionAlgebra vK wL hw
+    let := completionAlgebra vK wL hw
     Extends (completionAbsoluteValue vK)
       (algebraicLocalizationAbsoluteValue vK wL hw) := by
-  let := completionAlgebra vK wL hw
-  intro x
+  intro sharedOwner1 x
   change ‖completionMap vK wL hw x‖ = ‖x‖
   exact (completionMap_isometry vK wL hw).norm_map_of_map_zero
     (map_zero _) x
@@ -128,10 +132,10 @@ theorem algebraicLocalizationAbsoluteValue_toAlgebraicLocalization
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) (x : L) :
-    letI := completionAlgebra vK wL hw
+    let := completionAlgebra vK wL hw
     algebraicLocalizationAbsoluteValue vK wL hw
         (toAlgebraicLocalization vK wL hw x) = wL x := by
-  let := completionAlgebra vK wL hw
+  intro sharedOwner1
   change ‖((WithAbs.equiv wL).symm x : wL.Completion)‖ = wL x
   rw [UniformSpace.Completion.norm_coe]
   rfl
@@ -143,11 +147,11 @@ theorem toAlgebraicLocalization_algebraMap
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (vK : AbsoluteValue K ℝ) (wL : AbsoluteValue L ℝ)
     (hw : Extends vK wL) (x : K) :
-    letI := completionAlgebra vK wL hw
+    let := completionAlgebra vK wL hw
     toAlgebraicLocalization vK wL hw (algebraMap K L x) =
       algebraMap vK.Completion (algebraicLocalization vK wL hw)
         (algebraMap K vK.Completion x) := by
-  let := completionAlgebra vK wL hw
+  intro sharedOwner1
   apply Subtype.ext
   exact (completionMap_coe vK wL hw x).symm
 

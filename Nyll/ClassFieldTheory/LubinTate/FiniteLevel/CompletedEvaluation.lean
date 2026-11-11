@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
-import Mathlib.RingTheory.AdicCompletion.Topology
-import Mathlib.RingTheory.PowerSeries.Evaluation
-import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardFormalGroup
+public import Mathlib.RingTheory.AdicCompletion.Topology
+public import Mathlib.RingTheory.PowerSeries.Evaluation
+public import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
 
 /-!
 # Analytic evaluation in standard Lubin--Tate level fields
@@ -24,6 +26,8 @@ nilpotent and is therefore a valid evaluation point.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -42,13 +46,15 @@ open SameUniformizer
 
 variable {K : Type u} [Field K]
 
-private noncomputable local instance (priority := 50)
+/-- The coefficient valuation ring is discrete for power-series evaluation. -/
+noncomputable local instance (priority := 50)
     standardLubinTateLevelCoefficientUniformSpace
     (F : LocalField.{u, v} K) :
     UniformSpace F.valuationSubring :=
   ⊥
 
-private noncomputable local instance
+/-- The target valuation ring carries its maximal-ideal topology. -/
+noncomputable local instance
     standardLubinTateLevelTargetWithIdeal
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
@@ -56,7 +62,8 @@ private noncomputable local instance
       (standardLubinTateLevelCompleteDVF hπ n).valuationSubring where
   i := (standardLubinTateLevelCompleteDVF hπ n).maximalIdeal
 
-private noncomputable local instance
+/-- The level valuation ring is complete for its maximal-ideal topology. -/
+noncomputable local instance
     standardLubinTateLevelTargetCompleteSpace
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :
@@ -66,7 +73,8 @@ private noncomputable local instance
   have hadic : IsAdic target.maximalIdeal := rfl
   exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).1
 
-private noncomputable local instance
+/-- The maximal-ideal topology of the level valuation ring is Hausdorff. -/
+noncomputable local instance
     standardLubinTateLevelTargetT2Space
     {F : LocalField.{u, v} K} {π : F.valuationSubring}
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ) :

@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
 /-!
 # Transport of upper ramification groups under an equivalent base field
@@ -17,7 +20,11 @@ identifying their automorphisms by their common action on the target.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v w
 
 namespace RamificationTheory.LocalField
 
@@ -32,7 +39,7 @@ open scoped ValuativeRel
 Galois groups are identified by leaving the underlying target automorphism
 unchanged. -/
 noncomputable def galoisGroupEquivOfBaseRingEquiv
-    (B K E : Type)
+    (B : Type u) (K : Type v) (E : Type w)
     [Field B] [Field K] [Field E]
     [Algebra B E] [Algebra K E]
     (e : B ≃+* K)
@@ -62,7 +69,7 @@ noncomputable def galoisGroupEquivOfBaseRingEquiv
 
 @[simp]
 theorem galoisGroupEquivOfBaseRingEquiv_apply
-    (B K E : Type)
+    (B : Type u) (K : Type v) (E : Type w)
     [Field B] [Field K] [Field E]
     [Algebra B E] [Algebra K E]
     (e : B ≃+* K)
@@ -74,13 +81,13 @@ theorem galoisGroupEquivOfBaseRingEquiv_apply
 open _root_.RamificationTheory.DiscreteValuationField.AntitoneNormalSubgroupFiltration
   (herbrandFunction_eq_of_card_lower_eq) in
 private theorem upperRamificationGroup_map_baseChange
-    (B K E : Type)
+    (B : Type u) (K : Type v) (E : Type w)
     [Field B] [Field K] [Field E]
     [Algebra B E] [Algebra K E]
     [FiniteDimensional B E] [FiniteDimensional K E]
-    (baseB : DVF.{0, 0} B)
-    (baseK : DVF.{0, 0} K)
-    (target : DVF.{0, 0} E)
+    (baseB : DVF.{u, u} B)
+    (baseK : DVF.{v, v} K)
+    (target : DVF.{w, 0} E)
     [baseB.valuation.HasExtension target.valuation]
     [baseK.valuation.HasExtension target.valuation]
     (huniqB :
@@ -183,7 +190,7 @@ private theorem upperRamificationGroup_map_baseChange
 local upper ramification group to the group for the transported algebra
 structure on the same target field. -/
 theorem localUpperRamificationGroup_map_baseRingEquiv
-    (B K E : Type)
+    (B : Type u) (K : Type v) (E : Type w)
     [Field B] [Field K] [Field E]
     [Algebra B E] [Algebra K E]
     [FiniteDimensional B E] [FiniteDimensional K E]

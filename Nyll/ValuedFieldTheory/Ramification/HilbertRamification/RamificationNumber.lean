@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Monogeneity
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Monogeneity
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
 /-!
 # Ramification numbers for a general discretely valued field
@@ -19,6 +21,8 @@ statements do not carry a generator hypothesis.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

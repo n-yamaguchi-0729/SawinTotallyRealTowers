@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
-import Mathlib.GroupTheory.PGroup
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
+public import Mathlib.GroupTheory.PGroup
 
 /-!
 # The maximal everywhere-unramified pro-p subextension
@@ -16,6 +18,8 @@ whose automorphism group is a `p`-group. The results here are the lattice
 universal properties of that compositum; finite-support and Galois properties
 of the resulting infinite extension belong to later leaves.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

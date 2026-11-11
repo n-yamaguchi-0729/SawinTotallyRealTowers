@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueDatum
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ResidueExactSequence
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.ResidueDatum
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ResidueExactSequence
 
 /-!
 # Finite local reciprocity: residue-action image indices
@@ -18,6 +20,8 @@ surjective.  If a finite-index subgroup has residue-action image equal to the
 fixing group of a finite residue subextension, its degree image has the
 ordinary residue-field index.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -86,7 +90,7 @@ theorem residueAlgActionOfEqTop_surjective
 
 section FiniteImageIndex
 
-variable (k Omega : Type)
+variable (k : Type u) (Omega : Type v)
   [Field k] [Fintype k] [Field Omega] [Algebra k Omega]
   [Algebra.IsAlgebraic k Omega] [IsAlgClosed Omega]
 

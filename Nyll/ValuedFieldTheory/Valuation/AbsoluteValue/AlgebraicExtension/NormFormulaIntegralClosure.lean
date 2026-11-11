@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
 
 /-!
 # the actual integral closure is a valuation ring
@@ -16,6 +18,8 @@ this says that every algebraic element or its inverse is integral over the
 base valuation ring.  Thus the actual integral closure, rather than an
 assumed target ring, satisfies the valuation-ring dichotomy.
 -/
+
+@[expose] public section
 
 noncomputable section
 

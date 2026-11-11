@@ -10,6 +10,7 @@ Lean Eval repository: Copyright 2026 Lean FRO, LLC; Apache 2.0.
 import Nyll.GaloisCohomology.ProP.SmallLiftedComparison
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FrattiniClassField
 import Nyll.ProCGroups.ProP.FiniteGeneratorRankBridge
+import Nyll.ProCGroups.ProC.InverseLimits.Predicates
 
 /-!
 # Adapter infrastructure for the LeanEval Shafarevich statement
@@ -108,7 +109,7 @@ theorem maxEverywhereUnramifiedProPGaloisGroup_topologicallyFinitelyGenerated
     apply Set.eq_univ_of_forall
     intro z
     refine ⟨liftQ z, ?_, ?_⟩
-    · simp [S]
+    · exact Finset.mem_image.mpr ⟨z, Finset.mem_univ z, rfl⟩
     · exact Function.surjInv_eq
         (powerCommutatorQuotientMk_surjective p G) z
   rw [himage]

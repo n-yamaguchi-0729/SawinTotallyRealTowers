@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Indices
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Indices
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 
 /-!
 # normalized degree and Frobenius theory: the initial datum and abstract fields
@@ -18,6 +20,8 @@ residue and ramification indices attached to inclusions of abstract fields.
 As in, a field is represented contravariantly by a closed subgroup of the
 ambient profinite group.
 -/
+
+@[expose] public section
 
 namespace ClassFormation
 

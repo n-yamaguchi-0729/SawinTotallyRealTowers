@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.CoordinateStageProjection
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.BifilteredSystemStageProjection
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.CoordinateStageProjection
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.BifilteredSystemStageProjection
 
 /-!
 # Fox differential: completed — free pro-\(C\) — bifiltered coefficient stage projection
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `zcFreeFoxCoordinatesBifilteredStageMap_transition`
   Coefficient-map transition compatibility implies transition compatibility for coordinate vectors.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

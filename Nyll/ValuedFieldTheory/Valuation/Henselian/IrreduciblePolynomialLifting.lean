@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
-import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
 
 /-!
 # Hensel obstruction to irreducibility
@@ -16,6 +18,8 @@ core contradiction for irreducible-polynomial lifting: a nontrivial factorizatio
 the reduction gives a nontrivial factorization over the complete valuation
 ring, hence the mapped field polynomial is not irreducible.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -40,7 +44,8 @@ theorem irreduciblePolynomial_not_irreducible_of_field_factor_natDegree_lt
   · exact hg_notunit hgunit
   · have hg_ne : g ≠ 0 := by
       intro hgzero
-      simp [hgzero] at hgpos
+      rw [hgzero, Polynomial.natDegree_zero] at hgpos
+      exact (Nat.lt_irrefl 0) hgpos
     have hh_ne : h ≠ 0 := hhunit.ne_zero
     have hdeg : f.natDegree = g.natDegree := by
       simpa [hfactor, Polynomial.natDegree_eq_zero_of_isUnit hhunit] using
@@ -73,7 +78,7 @@ theorem irreduciblePolynomial_not_irreducible_of_valuation_factorization
     calc
       f = F.map φ := hFmap.symm
       _ = (G * H).map φ := by rw [hfactor]
-      _ = G.map φ * H.map φ := by simp [Polynomial.map_mul]
+      _ = G.map φ * H.map φ := by rw [Polynomial.map_mul]
       _ = Gk * Hk := rfl
   have hGkDegree : Gk.natDegree = r := by
     calc
@@ -97,7 +102,7 @@ theorem irreduciblePolynomial_polynomial_ne_zero_of_eq_X_pow_mul_of_coeff_zero_n
     P ≠ 0 := by
   have hQne : Q ≠ 0 := by
     intro hQzero
-    exact hQ0 (by simp [hQzero])
+    exact hQ0 (by rw [hQzero, Polynomial.coeff_zero])
   rw [hfactor]
   exact mul_ne_zero (pow_ne_zero r Polynomial.X_ne_zero) hQne
 
@@ -203,7 +208,7 @@ theorem irreduciblePolynomial_normalized_scale_hensel_input_not_irreducible
     (hlead : v f.leadingCoeff < m) :
     let g : K[X] := Polynomial.C (f.coeff n)⁻¹ * f
     ¬ Irreducible g := by
-  let g : K[X] := Polynomial.C (f.coeff n)⁻¹ * f
+  intro g
   rcases irreduciblePolynomial_normalized_scale_hensel_reduction_factor_input
       v hnonarch hmpos hnmax hbound hconst hlead with
     ⟨F, r, hFmap, hFdegree, hrpos, hrlt, hfactor, hnatDegree, hcoprime, hQ0⟩

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebra
-import Mathlib.Data.ZMod.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebra
+public import Mathlib.Data.ZMod.Basic
 
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — in class — basic
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   The transition map sends a group-like basis element to the basis element supported at its image in
   the coarser quotient in the Fox differential construction.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

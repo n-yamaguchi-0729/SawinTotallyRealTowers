@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
 
 /-!
 # The in-class augmentation ideal
@@ -13,6 +15,8 @@ This file defines the kernel of the canonical augmentation on the in-class compl
 algebra, establishes the associated short exact sequence, and identifies the ideal through the
 canonical map from the algebraic group algebra.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

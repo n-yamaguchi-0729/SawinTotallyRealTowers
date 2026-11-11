@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
 
 /-!
 # Absolute data for finite local existence
@@ -18,6 +20,10 @@ these definitions.
 -/
 
 
+
+@[expose] public section
+
+universe u
 
 noncomputable section
 
@@ -67,7 +73,7 @@ end OpenFiniteIndexSubgroup
 /-- Normality over the abstract base fixing group makes the represented
 fixed field Galois over the concrete local base field. -/
 theorem abstractFixedField_isGalois_of_base_normal
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : ClosedSubgroup (Gal(SeparableClosure K/K)))
     (hnormal :
       (extensionSubgroup
@@ -102,7 +108,7 @@ theorem abstractFixedField_isGalois_of_base_normal
   rw [hfix]
   infer_instance
 
-variable (K : Type) [Field K]
+variable (K : Type u) [Field K]
 
 /-- The closed fixing group of the ground field is absolutely finite in the
 abstract Galois-theoretic sense (indeed, it is the full absolute Galois group). -/

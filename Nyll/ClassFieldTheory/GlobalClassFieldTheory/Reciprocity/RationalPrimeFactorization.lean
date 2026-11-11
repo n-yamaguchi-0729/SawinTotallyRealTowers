@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Rational
 
 /-!
 # Prime factorization of a nonzero rational number
@@ -19,6 +21,8 @@ identify the reduction of a natural unit modulo `p ^ k`.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators
 

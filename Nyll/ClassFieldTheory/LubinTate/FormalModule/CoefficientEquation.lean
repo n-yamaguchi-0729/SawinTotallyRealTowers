@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
-import Mathlib.Algebra.Group.Units.Basic
-import Mathlib.Logic.Function.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.Series
+public import Mathlib.Algebra.Group.Units.Basic
+public import Mathlib.Logic.Function.Basic
 
 /-!
 # Coefficient equations for a fixed uniformizer
@@ -17,6 +19,8 @@ has a unique solution in the valuation ring.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -54,7 +58,7 @@ theorem residueMap_uniformizer_pow_eq_zero
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K))
     {r : ℕ} (hr : r ≠ 0) :
     F.residueMap (π ^ r) = 0 := by
-  simp [map_pow, residueMap_uniformizer_eq_zero hπ, hr]
+  simp only [map_pow, residueMap_uniformizer_eq_zero hπ, ne_eq, hr, not_false_eq_true, zero_pow]
 
 /-- For positive `r`, the factor `1 - pi ^ r` is a unit of `O_K`. -/
 theorem isUnit_one_sub_uniformizer_pow

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.HigherUnits
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusFixedField
 
 /-!
 # LubinTate the explicit norm-subgroup computation: higher units fix the primitive point
@@ -17,6 +19,10 @@ Frobenius attached to `a` acts trivially on the standard primitive
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 
@@ -27,10 +33,10 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
 noncomputable local instance equalCharacteristicHigherUnitFixedBaseAlgebra
-    (F : LocalField K) :
+    (F : LocalField.{u, v} K) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
   equalCharacteristicCompletedFrobeniusFixedBaseAlgebra F
@@ -39,7 +45,7 @@ noncomputable local instance equalCharacteristicHigherUnitFixedBaseAlgebra
 `equalCharacteristicCompletedFrobeniusAlgEquiv_primitiveRoot_fixed_of_mem_higherUnit`. -/
 theorem
     equalCharacteristicCompletedFrobeniusAlgEquiv_primitiveRoot_fixed_of_mem_higherUnit
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (a : F.residueField⟦X⟧ˣ) (n : ℕ)
     (ha : a ∈ equalCharacteristicLubinTateHigherUnitSubgroup F n) :

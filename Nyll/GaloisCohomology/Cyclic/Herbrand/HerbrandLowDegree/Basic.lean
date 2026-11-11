@@ -4,15 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Data.Set.Finite.Range
-import Mathlib.GroupTheory.Coset.Card
-import Mathlib.GroupTheory.GroupAction.Basic
-import Mathlib.GroupTheory.Index
-import Mathlib.GroupTheory.OrderOfElement
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.GroupTheory.SpecificGroups.Cyclic
+module
+
+public import Mathlib.Algebra.Group.Defs
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Data.Set.Finite.Range
+public import Mathlib.GroupTheory.Coset.Card
+public import Mathlib.GroupTheory.GroupAction.Basic
+public import Mathlib.GroupTheory.Index
+public import Mathlib.GroupTheory.OrderOfElement
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 /-!
 # Low-degree Herbrand quotients
@@ -20,6 +23,8 @@ import Mathlib.GroupTheory.SpecificGroups.Cyclic
 This reusable implementation supplies the low-degree cyclic cohomology used
 by the class-formation and local class field theory layers.
 -/
+
+@[expose] public section
 
 namespace CyclicCohomology
 
@@ -207,21 +212,22 @@ omit [Fintype G] [CommGroup C] [MulDistribMulAction G C] in
 theorem map_sigmaMinusOne (f : A →* B)
     (hf : ∀ (g : G) (a : A), f (g • a) = g • f a) (σ : G) (a : A) :
     f (sigmaMinusOne G A σ a) = sigmaMinusOne G B σ (f a) := by
-  simp [sigmaMinusOne, hf σ a]
+  simp only [sigmaMinusOne, map_mul, map_inv, hf σ a]
 
 omit [Fintype G] [CommGroup B] [CommGroup C]
     [MulDistribMulAction G B] [MulDistribMulAction G C] in
 /-- The multiplicative coboundary `a ↦ a^(σ-1)` is multiplicative. -/
 theorem sigmaMinusOne_mul (σ : G) (a b : A) :
     sigmaMinusOne G A σ (a * b) = sigmaMinusOne G A σ a * sigmaMinusOne G A σ b := by
-  simp [sigmaMinusOne, mul_comm, mul_left_comm, mul_assoc]
+  simp only [sigmaMinusOne, smul_mul', mul_inv_rev]
+  ac_rfl
 
 omit [Fintype G] [CommGroup B] [CommGroup C]
     [MulDistribMulAction G B] [MulDistribMulAction G C] in
 /-- The multiplicative coboundary `a ↦ a^(σ-1)` as a homomorphism. -/
 def sigmaMinusOneHom (σ : G) : A →* A where
   toFun := sigmaMinusOne G A σ
-  map_one' := by simp [sigmaMinusOne, MulDistribMulAction.smul_one]
+  map_one' := by rw [sigmaMinusOne, MulDistribMulAction.smul_one, inv_one, mul_one]
   map_mul' := sigmaMinusOne_mul (G := G) (A := A) σ
 
 omit [Fintype G] [CommGroup B] [CommGroup C]
@@ -276,7 +282,7 @@ theorem sigmaMinusOneHom_ker_eq_fixedSubgroup
       (G := G) (A := A) (σ := σ) hgen (by simpa using ha)
   · intro ha
     change sigmaMinusOne G A σ a = 1
-    simp [sigmaMinusOne, ha σ]
+    rw [sigmaMinusOne, ha σ, mul_inv_cancel]
 
 omit [CommGroup B] [CommGroup C]
     [MulDistribMulAction G B] [MulDistribMulAction G C] in
@@ -718,7 +724,7 @@ omit [CommGroup A] [CommGroup C]
     [MulDistribMulAction G A] [MulDistribMulAction G B]
     [MulDistribMulAction G C] in
 /-- `H⁰` of the right-regular multiplicative induced module. -/
-def rightRegularFunctionHerbrandH0 := by
+def rightRegularFunctionHerbrandH0 : Type (max uG uB) := by
   letI := rightRegularFunctionMulDistribMulAction (G := G) (B := B)
   exact HerbrandH0 G (G → B)
 
@@ -752,7 +758,7 @@ omit [CommGroup A] [CommGroup C]
     [MulDistribMulAction G A] [MulDistribMulAction G B]
     [MulDistribMulAction G C] in
 /-- `H^{-1}` of the right-regular multiplicative induced module. -/
-def rightRegularFunctionHerbrandHMinusOne (σ : G) := by
+def rightRegularFunctionHerbrandHMinusOne (σ : G) : Type (max uG uB) := by
   letI := rightRegularFunctionMulDistribMulAction (G := G) (B := B)
   exact HerbrandHMinusOne G (G → B) σ
 
@@ -1041,7 +1047,7 @@ omit [Fintype G] [CommGroup A] [CommGroup C]
 /-- The partial primitive starts at `1`. -/
 theorem rightRegularCyclicPartialProduct_zero (σ : G) (f : G → B) :
     rightRegularCyclicPartialProduct (G := G) (B := B) σ f 0 = 1 := by
-  simp [rightRegularCyclicPartialProduct]
+  exact Finset.prod_range_zero _
 
 omit [Fintype G] [CommGroup A] [CommGroup C]
     [MulDistribMulAction G A] [MulDistribMulAction G B]
@@ -1050,7 +1056,7 @@ omit [Fintype G] [CommGroup A] [CommGroup C]
 theorem rightRegularCyclicPartialProduct_succ (σ : G) (f : G → B) (i : ℕ) :
     rightRegularCyclicPartialProduct (G := G) (B := B) σ f (i + 1) =
       rightRegularCyclicPartialProduct (G := G) (B := B) σ f i * f (σ ^ i) := by
-  simp [rightRegularCyclicPartialProduct, Finset.prod_range_succ]
+  exact Finset.prod_range_succ (fun k => f (σ ^ k)) i
 
 omit [Fintype G] [CommGroup A] [CommGroup C]
     [MulDistribMulAction G A] [MulDistribMulAction G B]
@@ -1063,7 +1069,7 @@ theorem rightRegularCyclicPartialProduct_succ_mul_inv
         (rightRegularCyclicPartialProduct (G := G) (B := B) σ f i)⁻¹ =
       f (σ ^ i) := by
   rw [rightRegularCyclicPartialProduct_succ]
-  simp [mul_comm, mul_assoc]
+  exact mul_inv_cancel_comm _ _
 
 omit [Fintype G] [CommGroup A] [CommGroup C]
     [MulDistribMulAction G A] [MulDistribMulAction G B]
@@ -1131,7 +1137,7 @@ theorem rightRegularCyclicIndex_val_pow_of_lt
       rightRegularCyclicIndex (G := G) σ hgen (σ ^ i) =
         (i : ZMod (Fintype.card G)) := by
     apply rightRegularCyclicIndex_eq_of_repr (G := G) σ hgen
-    simp [ZMod.val_natCast_of_lt hi]
+    rw [ZMod.val_natCast_of_lt hi]
   rw [hidx, ZMod.val_natCast_of_lt hi]
 
 omit [CommGroup A] [CommGroup C]
@@ -1214,7 +1220,7 @@ theorem rightRegularCyclicPrimitive_mul_sigma_mul_inv_of_index_eq_card_sub_one
         rightRegularCyclicIndex (G := G) σ hgen (x * σ) =
           (0 : ZMod (Fintype.card G)) := by
       apply rightRegularCyclicIndex_eq_of_repr (G := G) σ hgen
-      simp [hxσ]
+      rw [hxσ, ZMod.val_zero, pow_zero]
     rw [hidx]
     exact ZMod.val_zero
   have hwrap :
@@ -1408,10 +1414,10 @@ theorem rightRegularFunction_fixed_le_tateNormSubgroup :
                 _ = x⁻¹ * (x * g) := by rw [mul_assoc]
                 _ = x⁻¹ * 1 := by rw [hxg_one]
                 _ = x⁻¹ := mul_one _
-            simp [d, hxg]
+            exact ite_eq_right hxg
           · intro hxinv
             exact (hxinv (Finset.mem_univ _)).elim
-        _ = f 1 := by simp [d]
+        _ = f 1 := ite_eq_left (mul_inv_cancel x)
     _ = f x := hfixed_x.symm
 
 omit [CommGroup A] [CommGroup C]
@@ -1584,9 +1590,9 @@ theorem herbrandH0_subsingleton_of_addEquiv_rightRegularFunction
     [AddCommGroup M] [DistribMulAction G M] [AddCommGroup D]
     (e : M ≃+ (G → D))
     (he : ∀ (g : G) (m : M) (x : G), e (g • m) x = e m (x * g)) :
-    letI := multiplicativeMulDistribMulActionOfDistribMulAction G M
+    let := multiplicativeMulDistribMulActionOfDistribMulAction G M
     Subsingleton (HerbrandH0 G (Multiplicative M)) := by
-  let := multiplicativeMulDistribMulActionOfDistribMulAction G M
+  intro sharedOwner1
   let : MulDistribMulAction G (Multiplicative D) := {
     smul _ d := d
     one_smul := by
@@ -1621,9 +1627,9 @@ theorem herbrandHMinusOne_subsingleton_of_addEquiv_rightRegularFunction
     (σ : G) (hgen : ∀ g : G, g ∈ Subgroup.zpowers σ)
     (e : M ≃+ (G → D))
     (he : ∀ (g : G) (m : M) (x : G), e (g • m) x = e m (x * g)) :
-    letI := multiplicativeMulDistribMulActionOfDistribMulAction G M
+    let := multiplicativeMulDistribMulActionOfDistribMulAction G M
     Subsingleton (HerbrandHMinusOne G (Multiplicative M) σ) := by
-  let := multiplicativeMulDistribMulActionOfDistribMulAction G M
+  intro sharedOwner1
   let : MulDistribMulAction G (Multiplicative D) := {
     smul _ d := d
     one_smul := by

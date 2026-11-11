@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.CoreFrobeniusNorm
 
 /-!
 # Finite intermediate-field composita
@@ -12,6 +14,8 @@ import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.C
 This module records the quotient cardinal and common-compositum facts for
 finite intermediate fields used by the norm-descent tower.
 -/
+
+@[expose] public section
 
 universe u v
 

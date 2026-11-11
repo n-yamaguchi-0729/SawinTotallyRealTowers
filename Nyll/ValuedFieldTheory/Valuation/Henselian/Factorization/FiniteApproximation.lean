@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration
 
 /-!
 # finite Hensel prefixes
@@ -13,6 +15,8 @@ This file isolates the reusable one-step extension in the finite
 Hensel construction.  Compatible prefixes themselves are assembled once, as
 HenselFactorizationFinitePrefixState, in the next layer.
 -/
+
+@[expose] public section
 
 noncomputable section
 

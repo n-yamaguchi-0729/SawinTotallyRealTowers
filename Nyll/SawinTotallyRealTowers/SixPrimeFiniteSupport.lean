@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Mathlib.Data.Finset.Card
+module
+
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Mathlib.Data.Finset.Card
 
 /-!
 # Finite coordinates for the six-prime support
@@ -14,12 +16,15 @@ The finite set of allowed places is the actual six-prime support, with
 cardinality six. It provides the coordinate set used by H² localization.
 -/
 
+@[expose] public section
+
 open scoped NumberField
 open IsDedekindDomain
 
 namespace ClassFieldTower.Sawin
 
-private def sixAllowedPrimes : Finset Nat.Primes :=
+/-- The six rational primes used by the fixed ramification support. -/
+def sixAllowedPrimes : Finset Nat.Primes :=
   {⟨3, by decide⟩, ⟨5, by decide⟩, ⟨7, by decide⟩,
     ⟨11, by decide⟩, ⟨13, by decide⟩, ⟨17, by decide⟩}
 

@@ -4,13 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.BigOperators.Group.Finset.Defs
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
-import Mathlib.Algebra.Group.Nat.Even
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.Data.Fintype.Powerset
-import Mathlib.Data.Nat.Cast.Basic
-import Mathlib.Data.Rat.Lemmas
+module
+
+public import Mathlib.Algebra.BigOperators.Group.Finset.Defs
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Algebra.Group.Nat.Even
+public import Mathlib.Data.Fin.VecNotation
+public import Mathlib.Data.Fintype.Powerset
+public import Mathlib.Data.Nat.Cast.Basic
+public import Mathlib.Data.Rat.Lemmas
 
 /-!
 # Five independent rational square classes
@@ -20,6 +22,8 @@ There are exactly thirty-one nonempty subsets. The natural-number check
 uses the square-root decision procedure inside the Lean kernel; the
 rational statement follows from the square criterion for natural casts.
 -/
+
+@[expose] public section
 
 open scoped BigOperators
 

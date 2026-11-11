@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Evaluation
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Evaluation
 
 /-!
 # Norm-residue evaluation for a closed finite-index class field
@@ -16,6 +18,10 @@ the global norm-residue symbol to the corresponding quotient class.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -25,15 +31,11 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-/-- Canonical class-group commutativity supplies normality for quotient evaluation. -/
-private theorem closedFiniteIndexNormResidueClassGroupIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  IsMulCommutative.of_comm (fun a b => mul_comm a b)
+attribute [local instance]
+  globalNormResidueIdeleClassCommGroup
+  globalNormResidueIdeleClassIsMulCommutative
 
-attribute [local instance] closedFiniteIndexNormResidueClassGroupIsMulCommutative
-
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 private theorem quotientTransport_inverse_apply
     {G A : Type*} [Group G] [Group A]

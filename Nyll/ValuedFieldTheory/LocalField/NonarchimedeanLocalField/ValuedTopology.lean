@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Valued.ValuativeRel
+module
+
+public import Mathlib.Topology.Algebra.Valued.ValuativeRel
 
 /-!
 # Valued-field topology and the induced valuative relation
@@ -13,6 +15,8 @@ This file records the topology bridge used when a nonarchimedean norm is
 turned into a `ValuativeRel`: the topology already carried by a nontrivially
 valued field is the valuative topology for that induced relation.
 -/
+
+@[expose] public section
 
 noncomputable section
 

@@ -4,14 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ParameterCongruence
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueQuotient
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerDecomposition
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ChangedUniformizer
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.ParameterCongruence
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueQuotient
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.TeichmullerDecomposition
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RamificationNumber
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
 /-!
 # Evaluating a changed primitive polynomial at the original primitive point
@@ -33,6 +35,8 @@ Krasner comparison of the original and changed finite levels.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

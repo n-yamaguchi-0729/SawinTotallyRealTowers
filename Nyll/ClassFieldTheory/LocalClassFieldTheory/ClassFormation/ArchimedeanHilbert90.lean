@@ -4,16 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.H0
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
-import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Generator
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.HerbrandEquiv
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.H0
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.HMinusOne
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Trivial
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Cardinality.Quotient
+public import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # The Hilbert-90 half of the local class-field axiom at every place
@@ -25,6 +29,8 @@ at archimedean places.
 -/
 
 
+
+@[expose] public section
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
@@ -47,23 +53,23 @@ theorem localHerbrandHMinusOne_subsingleton
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI hK :=
+    let hK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let : SMul K w.1.Completion := hK.toSMul
+    let : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI := localizedCompletionGlobalAlgebra vK w
-    letI := localizedCompletionIsScalarTower vK w
-    letI : FiniteDimensional vK.Completion
+    let := localizedCompletionGlobalAlgebra vK w
+    let := localizedCompletionIsScalarTower vK w
+    let : FiniteDimensional vK.Completion
         (LocalizedCompletion vK w) :=
       localizedCompletionModuleFinite vK hvK w
-    letI : IsGalois vK.Completion
+    let : IsGalois vK.Completion
         (LocalizedCompletion vK w) :=
       HilbertRamification.algebraicLocalization_isGalois vK w
-    letI : Fintype (absoluteValueDecompositionGroup K w.1) :=
+    let : Fintype (absoluteValueDecompositionGroup K w.1) :=
       Fintype.ofFinite _
-    letI :=
+    let :=
       decompositionGroupLocalUnitsAction vK hvK w
     Subsingleton
       (HerbrandHMinusOne
@@ -72,24 +78,8 @@ theorem localHerbrandHMinusOne_subsingleton
         (subgroupGeneratorOfGenerator
           (absoluteValueDecompositionGroup K w.1)
           σ hgen)) := by
-  let hK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let : Algebra vK.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vK w.1 w.2
-  let := localizedCompletionGlobalAlgebra vK w
-  let := localizedCompletionIsScalarTower vK w
-  let : FiniteDimensional vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionModuleFinite vK hvK w
-  let : IsGalois vK.Completion
-      (LocalizedCompletion vK w) :=
-    HilbertRamification.algebraicLocalization_isGalois vK w
-  let : Fintype (absoluteValueDecompositionGroup K w.1) :=
-    Fintype.ofFinite _
-  let :=
-    decompositionGroupLocalUnitsAction vK hvK w
+  intro hK sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7
+    sharedOwner8 sharedOwner9
   let E :=
     localHerbrandHMinusOneEquivUnitsTateHminusOne
       vK hvK w σ hgen
@@ -124,23 +114,23 @@ theorem localHerbrandHMinusOne_card_eq_one_of_absoluteValue
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI hK :=
+    let hK :=
       AbsoluteValue.extensionCompletionAlgebra
         (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI : Algebra vK.Completion w.1.Completion :=
+    let : SMul K w.1.Completion := hK.toSMul
+    let : Algebra vK.Completion w.1.Completion :=
       AbsoluteValue.completionAlgebra vK w.1 w.2
-    letI := localizedCompletionGlobalAlgebra vK w
-    letI := localizedCompletionIsScalarTower vK w
-    letI : FiniteDimensional vK.Completion
+    let := localizedCompletionGlobalAlgebra vK w
+    let := localizedCompletionIsScalarTower vK w
+    let : FiniteDimensional vK.Completion
         (LocalizedCompletion vK w) :=
       localizedCompletionModuleFinite vK hvK w
-    letI : IsGalois vK.Completion
+    let : IsGalois vK.Completion
         (LocalizedCompletion vK w) :=
       HilbertRamification.algebraicLocalization_isGalois vK w
-    letI : Fintype (absoluteValueDecompositionGroup K w.1) :=
+    let : Fintype (absoluteValueDecompositionGroup K w.1) :=
       Fintype.ofFinite _
-    letI :=
+    let :=
       decompositionGroupLocalUnitsAction vK hvK w
     Nat.card
       (HerbrandHMinusOne
@@ -149,24 +139,8 @@ theorem localHerbrandHMinusOne_card_eq_one_of_absoluteValue
         (subgroupGeneratorOfGenerator
           (absoluteValueDecompositionGroup K w.1)
           σ hgen)) = 1 := by
-  let hK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let : Algebra vK.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vK w.1 w.2
-  let := localizedCompletionGlobalAlgebra vK w
-  let := localizedCompletionIsScalarTower vK w
-  let : FiniteDimensional vK.Completion
-      (LocalizedCompletion vK w) :=
-    localizedCompletionModuleFinite vK hvK w
-  let : IsGalois vK.Completion
-      (LocalizedCompletion vK w) :=
-    HilbertRamification.algebraicLocalization_isGalois vK w
-  let : Fintype (absoluteValueDecompositionGroup K w.1) :=
-    Fintype.ofFinite _
-  let :=
-    decompositionGroupLocalUnitsAction vK hvK w
+  intro hK sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7
+    sharedOwner8 sharedOwner9
   let :
       Subsingleton
         (HerbrandHMinusOne

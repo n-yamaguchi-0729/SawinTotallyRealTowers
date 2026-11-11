@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProC.Quotients.OpenSubgroupSections
+module
+
+public import Nyll.ProCGroups.ProC.Quotients.OpenSubgroupSections
 
 /-!
 # Quotients along descending closed-subgroup systems
@@ -13,6 +15,8 @@ This file constructs the inverse system of left quotients associated with a dire
 family of closed subgroups and proves the existence of compatible continuous lifts into its
 limit.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

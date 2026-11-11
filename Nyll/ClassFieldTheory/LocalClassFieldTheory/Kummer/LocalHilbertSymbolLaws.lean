@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
 
 /-!
 # Kernel laws for the local Hilbert symbol
@@ -19,6 +21,8 @@ injective.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -27,7 +31,9 @@ namespace Kummer
 open KummerTheory
 open LocalFieldTheory
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 variable [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 

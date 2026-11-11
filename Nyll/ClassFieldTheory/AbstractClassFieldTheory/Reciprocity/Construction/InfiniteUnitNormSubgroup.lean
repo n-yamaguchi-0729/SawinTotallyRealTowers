@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.InfiniteUnitDescent
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.InfiniteUnitDescent
 
 /-!
 # Infinite unit norm subgroups
@@ -14,7 +16,9 @@ their tower compatibility, and compares them with the ambient norm
 subgroups.
 -/
 
-universe u
+@[expose] public section
+
+universe uG uA
 
 namespace ClassFormation
 
@@ -28,11 +32,11 @@ noncomputable section
 open CategoryTheory
 open scoped BigOperators
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type uG} [Group G] [TopologicalSpace G]
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{uA} ℤ G}
 
 /-- The image `N_{M/K} U_M` from one finite intermediate field. -/
 def finiteIntermediateUnitNormRange

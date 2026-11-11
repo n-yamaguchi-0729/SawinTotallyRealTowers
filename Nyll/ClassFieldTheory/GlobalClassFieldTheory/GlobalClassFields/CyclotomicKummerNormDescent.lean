@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.KummerNormDescent
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SUnitKummerNormRealization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
-import Mathlib.NumberTheory.Cyclotomic.Basic
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.KummerNormDescent
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SUnitKummerNormRealization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SupportedBridge
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormalClosureNorm
+public import Mathlib.NumberTheory.Cyclotomic.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SufficientlyLarge
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.FullSUnitKummerExtension
 
 /-!
 # Cyclotomic descent for full S-unit Kummer norms
@@ -27,18 +31,22 @@ into a genuine finite Galois extension without enlarging its norm subgroup.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 open KummerTheory
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
 open GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 local instance cyclotomicKummerNormDescent_neZero
     (n : ℕ+) : NeZero (n : ℕ) :=
@@ -295,7 +303,7 @@ noncomputable local instance
 cyclotomic number field.  This is deliberately a named, non-instance boundary:
 downstream base-tower instances must not make every `NumberField` search unfold
 the full S-unit Kummer construction. -/
-private theorem cyclotomicKummerNormDescent_kummerNumberField
+theorem cyclotomicKummerNormDescent_kummerNumberField
     (n : ℕ+)
     (seed : Finset (HeightOneSpectrum (𝓞 K))) :
     NumberField
@@ -314,17 +322,12 @@ private theorem
     let C := CyclotomicField (n : ℕ) K
     let S' := cyclotomicKummerNormSupportAbove (K := K) n seed
     let E := cyclotomicFullSUnitKummerExtension (K := K) n seed
-    letI : NumberField E :=
+    let : NumberField E :=
       cyclotomicKummerNormDescent_kummerNumberField (K := K) n seed
     (_root_.ideleClassNorm C E).range =
       ideleClassPowerLocalUnitSubgroup (K := C) n S' ∅ := by
+  intro C S' E reusedStructure4
   classical
-  dsimp only
-  let C := CyclotomicField (n : ℕ) K
-  let S' := cyclotomicKummerNormSupportAbove (K := K) n seed
-  let E := cyclotomicFullSUnitKummerExtension (K := K) n seed
-  let : NumberField E :=
-    cyclotomicKummerNormDescent_kummerNumberField (K := K) n seed
   have hmu : (primitiveRoots (n : ℕ) C).Nonempty :=
     cyclotomicKummerNormDescent_primitiveRoots_nonempty
       (K := K) n
@@ -412,22 +415,19 @@ theorem
     (hn : 1 < (n : ℕ))
     (seed : Finset (HeightOneSpectrum (𝓞 K))) :
     let E := cyclotomicFullSUnitKummerExtension (K := K) n seed
-    letI : NumberField E :=
+    let : NumberField E :=
       cyclotomicKummerNormDescent_kummerNumberField (K := K) n seed
     (_root_.ideleClassNorm K E).range ≤
       ideleClassPowerLocalUnitSubgroup
         (K := K) n
         (cyclotomicKummerNormSupport (K := K) n seed) ∅ := by
+  intro E hENumberField
   classical
-  dsimp only
   let C := CyclotomicField (n : ℕ) K
   let S := cyclotomicKummerNormSupport (K := K) n seed
   let S' := cyclotomicKummerNormSupportAbove (K := K) n seed
-  let E := cyclotomicFullSUnitKummerExtension (K := K) n seed
   let : IsScalarTower K C E :=
     cyclotomicKummerNormDescent_kummerScalarTower (K := K) n seed
-  let : NumberField E :=
-    cyclotomicKummerNormDescent_kummerNumberField (K := K) n seed
   have hNormC :
       (_root_.ideleClassNorm C E).range =
         ideleClassPowerLocalUnitSubgroup (K := C) n S' ∅ :=
@@ -460,19 +460,15 @@ theorem
     (hn : 1 < (n : ℕ))
     (seed : Finset (HeightOneSpectrum (𝓞 K))) :
     let E := cyclotomicFullSUnitKummerExtension (K := K) n seed
-    letI : NumberField E :=
+    let : NumberField E :=
       cyclotomicKummerNormDescent_kummerNumberField (K := K) n seed
     let F := finiteNormalClosure K E
     (_root_.ideleClassNorm K F).range ≤
       ideleClassPowerLocalUnitSubgroup
         (K := K) n
         (cyclotomicKummerNormSupport (K := K) n seed) ∅ := by
+  intro E reusedStructure2 F
   classical
-  dsimp only
-  let E := cyclotomicFullSUnitKummerExtension (K := K) n seed
-  let : NumberField E :=
-    cyclotomicKummerNormDescent_kummerNumberField (K := K) n seed
-  let F := finiteNormalClosure K E
   calc
     (_root_.ideleClassNorm K F).range ≤
         (_root_.ideleClassNorm K E).range := by

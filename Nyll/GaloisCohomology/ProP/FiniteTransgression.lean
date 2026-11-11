@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.Algebra.Homology.ShortComplex.ConcreteCategory
-import Mathlib.Tactic.Abel
-import Mathlib.Tactic.Group
+module
+
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Mathlib.Algebra.Homology.ShortComplex.ConcreteCategory
+public import Mathlib.Tactic.Abel
+public import Mathlib.Tactic.Group
 
 /-!
 # Finite transgression factor sets
@@ -16,6 +18,8 @@ An ambient-conjugation-invariant ZMod p character on a normal subgroup determine
 factor-set homogeneous two-cocycle on the discrete quotient, and hence a continuous degree-two
 cohomology class with universe-lifted trivial coefficients.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open scoped Topology
@@ -141,7 +145,6 @@ theorem transgressionHomogeneousCochain_mem_cycles
   have hdabcd := congrArg (fun τ ↦ τ a b c d) hd
   rw [hdabcd]
   simp only [Nat.reduceAdd, ZeroMemClass.coe_zero, ContinuousMap.zero_apply]
-  dsimp only [transgressionHomogeneousCochain]
   let e : ULift.{u} (ZMod p) ≃ₗ[ZMod p] ZMod p := ULift.moduleEquiv
   let C := transgressionFactor N χ (b⁻¹ * c) (c⁻¹ * d)
   let D := transgressionFactor N χ (a⁻¹ * c) (c⁻¹ * d)

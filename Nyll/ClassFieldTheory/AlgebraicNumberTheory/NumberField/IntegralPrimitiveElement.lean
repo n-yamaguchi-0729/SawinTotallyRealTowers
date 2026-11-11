@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.PrimitiveElement
-import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
-import Mathlib.NumberTheory.NumberField.Ideal.KummerDedekind
-import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
-import Mathlib.RingTheory.Algebraic.Integral
-import Mathlib.GroupTheory.Index
+module
+
+public import Mathlib.FieldTheory.PrimitiveElement
+public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
+public import Mathlib.NumberTheory.NumberField.Ideal.KummerDedekind
+public import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
+public import Mathlib.RingTheory.Algebraic.Integral
+public import Mathlib.GroupTheory.Index
 
 /-!
 # Integral primitive elements and their finite index
@@ -18,6 +20,8 @@ Every number field has an integral primitive element. Its order has full
 integer rank, so its additive index is nonzero and lies in its conductor.
 Consequently the exponent used in Kummer--Dedekind is nonzero.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField Module Polynomial

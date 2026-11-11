@@ -4,14 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.Module.MinimalAxioms
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.NumberTheory.Padics.RingHoms
-import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitTopology
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.PadicReductionContinuous
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.QuotientTransition
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Algebra.Module.MinimalAxioms
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.InverseLimitTopology
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.PadicReductionContinuous
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnitPadicAction.QuotientTransition
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
 
 /-!
 # P-adic modules on finite principal-unit quotients
@@ -22,6 +25,8 @@ the transition maps.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

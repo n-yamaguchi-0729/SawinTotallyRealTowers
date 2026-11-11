@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.QuotientGroup.Finite
-import Nyll.ProCGroups.FiniteGroups.Classes
+module
+
+public import Mathlib.GroupTheory.QuotientGroup.Finite
+public import Nyll.ProCGroups.FiniteGroups.Classes
 
 /-!
 # The class of all finite groups
@@ -15,6 +17,8 @@ formation, subgroup, normal-subgroup, quotient, finite-subdirect-product, extens
 hereditary closure.  It also supplies the trivial-quotient instance used by pro-\(C\)
 constructions when no restriction beyond finiteness is intended.
 -/
+
+@[expose] public section
 
 namespace ProCGroups
 

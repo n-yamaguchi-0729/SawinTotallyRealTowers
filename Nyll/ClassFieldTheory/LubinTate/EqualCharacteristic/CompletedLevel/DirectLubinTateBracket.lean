@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaFirstIdentity
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Theta.ThetaFirstIdentity
 
 /-!
 # The completed theta-intertwining theorem: the standard equal-characteristic Lubin--Tate bracket
@@ -23,6 +25,8 @@ normalization `u⁻¹T -> T` used in Corollary the Lubin–Tate endomorphism com
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

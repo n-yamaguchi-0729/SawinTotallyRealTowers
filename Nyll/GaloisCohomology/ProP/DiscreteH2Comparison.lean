@@ -4,18 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.ContinuousH1CupProduct
-import Nyll.GaloisCohomology.ProP.DiscreteH2ShortComplexComparison
-import Mathlib.Algebra.Homology.ShortComplex.PreservesHomology
+module
+
+public import Nyll.GaloisCohomology.ProP.ContinuousH1CupProduct
+public import Nyll.GaloisCohomology.ProP.DiscreteH2ShortComplexComparison
+public import Mathlib.Algebra.Homology.ShortComplex.PreservesHomology
 
 /-!
 # Continuous and ordinary degree-two cohomology of a discrete group
 
-For a discrete group in the base universe, the explicit homogeneous and
+For a discrete group in an arbitrary universe, the explicit homogeneous and
 inhomogeneous comparison induces an additive equivalence in degree two.
-The ordinary coefficient object is exactly the trivial `Int`-representation
-on `ULift (ZMod p)` used by finite Kummer coefficient change.
+The ordinary coefficient object has the same lifted mod-`p` carrier and
+trivial action. Integer scalars in universe zero recover finite Kummer
+coefficient change; lifted integers give the existing integral owner in
+every universe.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep
 open ClassFieldTower.ProP
@@ -24,8 +30,11 @@ namespace ClassFieldTower.Cohomology
 
 noncomputable section
 
+universe u
+
 variable {p : ℕ}
-variable {Q : Type} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
+variable {R : Type u} [CommRing R] [Module R (ULift.{u} (ZMod p))]
+variable {Q : Type u} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
 variable [DiscreteTopology Q]
 
 /-- The comparison short-complex isomorphism, with the canonical
@@ -34,51 +43,61 @@ noncomputable def discreteH2MappedShortComplexIso :
     ((trivialZModPCochainsLifted p Q).sc 2).map
         (continuousCochainsToAddCommGrp p) ≅
       (groupCohomology.shortComplexH2
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).map
-        ordinaryCochainsToAddCommGrp :=
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).map
+        (ordinaryCochainsToAddCommGrp R) :=
   (continuousCochainsToAddCommGrp p).mapShortComplex.mapIso
       ((trivialZModPCochainsLifted p Q).isoSc' 1 2 3
         (CochainComplex.prev_nat_succ 1) (CochainComplex.next ℕ 2)) ≪≫
-    discreteH2ShortComplexIso (p := p) (Q := Q)
+    discreteH2ShortComplexIso (R := R) (p := p) (Q := Q)
 
 /-- The canonical additive-group isomorphism from lifted continuous
 degree-two cohomology to ordinary degree-two group cohomology. -/
 noncomputable def discreteContinuousH2AddCommGrpIso :
     (continuousCochainsToAddCommGrp p).obj
         (continuousCohomologyZModPLifted p Q 2) ≅
-      ordinaryCochainsToAddCommGrp.obj
+      (ordinaryCochainsToAddCommGrp R).obj
         (groupCohomology
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q)) 2) := by
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)) 2) := by
   let K := trivialZModPCochainsLifted p Q
   let S := groupCohomology.shortComplexH2
-    (ordinaryTrivialZModPLifted (p := p) (Q := Q))
+    (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))
   change
     (continuousCochainsToAddCommGrp p).obj ((K.sc 2).homology) ≅
-      ordinaryCochainsToAddCommGrp.obj
+      (ordinaryCochainsToAddCommGrp R).obj
         (groupCohomology
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q)) 2)
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)) 2)
   exact
     ((K.sc 2).mapHomologyIso (continuousCochainsToAddCommGrp p)).symm ≪≫
       ShortComplex.homologyMapIso
-        (discreteH2MappedShortComplexIso (p := p) (Q := Q)) ≪≫
-      S.mapHomologyIso ordinaryCochainsToAddCommGrp ≪≫
-      ordinaryCochainsToAddCommGrp.mapIso S.moduleCatHomologyIso ≪≫
-      ordinaryCochainsToAddCommGrp.mapIso
+        (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)) ≪≫
+      S.mapHomologyIso (ordinaryCochainsToAddCommGrp R) ≪≫
+      (ordinaryCochainsToAddCommGrp R).mapIso S.moduleCatHomologyIso ≪≫
+      (ordinaryCochainsToAddCommGrp R).mapIso
         (groupCohomology.H2Iso
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).symm
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).symm
 
 /-- Continuous homogeneous and ordinary inhomogeneous degree-two
 cohomology are additively equivalent for a discrete group. -/
 noncomputable def discreteContinuousH2AddEquiv :
     continuousCohomologyZModPLifted p Q 2 ≃+
       groupCohomology
-        (ordinaryTrivialZModPLifted (p := p) (Q := Q)) 2 :=
-  (discreteContinuousH2AddCommGrpIso (p := p) (Q := Q)).addCommGroupIsoToAddEquiv
+        (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)) 2 :=
+  (discreteContinuousH2AddCommGrpIso (R := R) (p := p) (Q := Q)).addCommGroupIsoToAddEquiv
+
+/-- The same cochain comparison lands in the existing integral cohomology
+owner in every universe, using the identity on actual coefficient values. -/
+noncomputable def discreteContinuousH2IntegralAddEquiv :
+    continuousCohomologyZModPLifted p Q 2 ≃+
+      IntegralGroupCohomology.cohomology
+        (Rep.trivial ℤ Q (ULift.{u} (ZMod p))) 2 :=
+  (discreteContinuousH2AddEquiv (R := ULift.{u} ℤ) (p := p) (Q := Q)).trans
+    (((groupCohomology.functor (ULift.{u} ℤ) Q 2).mapIso
+      (ordinaryTrivialZModPLiftedIntegralIso (p := p) (Q := Q))).toLinearEquiv.toAddEquiv)
 
 /-- The inhomogeneous cochain obtained from the canonical character cup. -/
 def ordinaryH1CupTwoCochain
     (chi psi : ContinuousH1ZMod (p := p) (G := Q)) :
-    Q × Q → ULift (ZMod p) :=
+    Q × Q → ULift.{u} (ZMod p) :=
   fun gh ↦ ULift.up
     (chi (Additive.ofMul gh.1) * psi (Additive.ofMul gh.2))
 
@@ -104,11 +123,11 @@ character cup formula. -/
 noncomputable def ordinaryH1CupTwoCocycle
     (chi psi : ContinuousH1ZMod (p := p) (G := Q)) :
     groupCohomology.cocycles₂
-      (ordinaryTrivialZModPLifted (p := p) (Q := Q)) := by
+      (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)) := by
   refine ⟨ordinaryH1CupTwoCochain chi psi, ?_⟩
   rw [groupCohomology.cocycles₂, LinearMap.mem_ker]
   rw [← dehomogenizeTwo_continuousH1Cup]
-  rw [← dehomogenizeTwo_d]
+  rw [← dehomogenizeTwo_d (R := R)]
   rw [continuousH1CupHomogeneousTwoCochainLifted_mem_cycles]
   rfl
 
@@ -117,10 +136,10 @@ cup formula. -/
 noncomputable def ordinaryH1CupClass
     (chi psi : ContinuousH1ZMod (p := p) (G := Q)) :
     groupCohomology
-      (ordinaryTrivialZModPLifted (p := p) (Q := Q)) 2 :=
+      (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)) 2 :=
   groupCohomology.H2π
-    (ordinaryTrivialZModPLifted (p := p) (Q := Q))
-    (ordinaryH1CupTwoCocycle chi psi)
+    (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))
+    (ordinaryH1CupTwoCocycle (R := R) chi psi)
 
 /-- The short-complex comparison carries a homology class represented by
 a homogeneous cycle to the class of its dehomogenized ordinary cycle. -/
@@ -128,12 +147,12 @@ theorem discreteH2ShortComplexIso_homologyπ :
     (((trivialZModPCochainsLifted p Q).sc' 1 2 3).map
         (continuousCochainsToAddCommGrp p)).homologyπ ≫
       (ShortComplex.homologyMapIso
-        (discreteH2ShortComplexIso (p := p) (Q := Q))).hom =
+        (discreteH2ShortComplexIso (R := R) (p := p) (Q := Q))).hom =
     ShortComplex.cyclesMap
-        (discreteH2ShortComplexIso (p := p) (Q := Q)).hom ≫
+        (discreteH2ShortComplexIso (R := R) (p := p) (Q := Q)).hom ≫
       ((groupCohomology.shortComplexH2
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).map
-        ordinaryCochainsToAddCommGrp).homologyπ :=
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).map
+        (ordinaryCochainsToAddCommGrp R)).homologyπ :=
   ShortComplex.homologyπ_naturality _
 
 /-- The mapped short-complex comparison sends a continuous class to its mapped cycle class. -/
@@ -141,52 +160,52 @@ theorem discreteH2MappedShortComplexIso_homologyπ_apply
     (z : (((trivialZModPCochainsLifted p Q).sc 2).map
       (continuousCochainsToAddCommGrp p)).cycles) :
     (ShortComplex.homologyMapIso
-        (discreteH2MappedShortComplexIso (p := p) (Q := Q))).hom
+        (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q))).hom
         (((((trivialZModPCochainsLifted p Q).sc 2).map
           (continuousCochainsToAddCommGrp p)).homologyπ) z) =
       (((groupCohomology.shortComplexH2
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).map
-        ordinaryCochainsToAddCommGrp).homologyπ)
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).map
+        (ordinaryCochainsToAddCommGrp R)).homologyπ)
         ((ShortComplex.cyclesMap
-          (discreteH2MappedShortComplexIso (p := p) (Q := Q)).hom) z) := by
+          (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)).hom) z) := by
   exact congrArg (fun f ↦ f z) (ShortComplex.homologyπ_naturality
-    (discreteH2MappedShortComplexIso (p := p) (Q := Q)).hom)
+    (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)).hom)
 
 /-- The mapped representative is the dehomogenized ordinary two-cochain. -/
 theorem discreteH2MappedShortComplexIso_cyclesMap_cochain
     (z : (((trivialZModPCochainsLifted p Q).sc 2).map
       (continuousCochainsToAddCommGrp p)).cycles) :
     (((groupCohomology.shortComplexH2
-        (ordinaryTrivialZModPLifted (p := p) (Q := Q))).map
-      ordinaryCochainsToAddCommGrp).iCycles)
+        (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).map
+      (ordinaryCochainsToAddCommGrp R)).iCycles)
         ((ShortComplex.cyclesMap
-          (discreteH2MappedShortComplexIso (p := p) (Q := Q)).hom) z) =
+          (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)).hom) z) =
       dehomogenizeTwo
         (((((trivialZModPCochainsLifted p Q).sc 2).map
           (continuousCochainsToAddCommGrp p)).iCycles) z) := by
   change
     ((ShortComplex.cyclesMap
-      (discreteH2MappedShortComplexIso (p := p) (Q := Q)).hom ≫
+      (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)).hom ≫
         ((groupCohomology.shortComplexH2
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).map
-            ordinaryCochainsToAddCommGrp).iCycles) z) = _
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).map
+            (ordinaryCochainsToAddCommGrp R)).iCycles) z) = _
   rw [ShortComplex.cyclesMap_i]
   rfl
 
 /-- The discrete comparison sends the continuous cup to the ordinary cup class. -/
 theorem discreteContinuousH2AddEquiv_continuousH1Cup
     (chi psi : ContinuousH1ZMod (p := p) (G := Q)) :
-    discreteContinuousH2AddEquiv (continuousH1CupProductLifted chi psi) =
-      ordinaryH1CupClass chi psi := by
+    discreteContinuousH2AddEquiv (R := R) (continuousH1CupProductLifted chi psi) =
+      ordinaryH1CupClass (R := R) chi psi := by
   change
-    (discreteContinuousH2AddCommGrpIso (p := p) (Q := Q)).hom
+    (discreteContinuousH2AddCommGrpIso (R := R) (p := p) (Q := Q)).hom
         (ContinuousCohomology.π (trivialZModPLifted p Q) 2
           (continuousH1CupHomogeneousTwoCocycleLifted chi psi)) =
       groupCohomology.H2π
-        (ordinaryTrivialZModPLifted (p := p) (Q := Q))
-        (ordinaryH1CupTwoCocycle chi psi)
+        (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))
+        (ordinaryH1CupTwoCocycle (R := R) chi psi)
   apply (ConcreteCategory.bijective_of_isIso (groupCohomology.H2Iso
-    (ordinaryTrivialZModPLifted (p := p) (Q := Q))).hom).1
+    (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom).1
   simp only [groupCohomology.H2π, CategoryTheory.ConcreteCategory.comp_apply,
     groupCohomology.π_comp_H2Iso_hom_apply, Iso.inv_hom_id_apply]
   let cupClassMapped :
@@ -195,62 +214,62 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
     ContinuousCohomology.π (trivialZModPLifted p Q) 2
       (continuousH1CupHomogeneousTwoCocycleLifted chi psi)
   let SO := groupCohomology.shortComplexH2
-    (ordinaryTrivialZModPLifted (p := p) (Q := Q))
-  let FO := ordinaryCochainsToAddCommGrp
+    (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))
+  let FO := (ordinaryCochainsToAddCommGrp R)
   let cupCycle : SO.moduleCatLeftHomologyData.K :=
-    ordinaryH1CupTwoCocycle chi psi
+    ordinaryH1CupTwoCocycle (R := R) chi psi
   change
     (groupCohomology.H2Iso
-      (ordinaryTrivialZModPLifted (p := p) (Q := Q))).hom
+      (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom
       ((((((trivialZModPCochainsLifted p Q).sc 2).mapHomologyIso
           (continuousCochainsToAddCommGrp p)).symm ≪≫
         ShortComplex.homologyMapIso
-          (discreteH2MappedShortComplexIso (p := p) (Q := Q)) ≪≫
+          (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)) ≪≫
         (groupCohomology.shortComplexH2
-          (ordinaryTrivialZModPLifted (p := p) (Q := Q))).mapHomologyIso
-            ordinaryCochainsToAddCommGrp ≪≫
-        ordinaryCochainsToAddCommGrp.mapIso
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).mapHomologyIso
+            (ordinaryCochainsToAddCommGrp R) ≪≫
+        (ordinaryCochainsToAddCommGrp R).mapIso
           (groupCohomology.shortComplexH2
-            (ordinaryTrivialZModPLifted (p := p) (Q := Q))).moduleCatHomologyIso ≪≫
-        ordinaryCochainsToAddCommGrp.mapIso
+            (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).moduleCatHomologyIso ≪≫
+        (ordinaryCochainsToAddCommGrp R).mapIso
           (groupCohomology.H2Iso
-            (ordinaryTrivialZModPLifted (p := p) (Q := Q))).symm).hom)
+            (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).symm).hom)
         cupClassMapped) =
       SO.moduleCatLeftHomologyData.π cupCycle
   simp only [Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom]
   have hH
       (x : SO.moduleCatLeftHomologyData.H) :
       (groupCohomology.H2Iso
-        (ordinaryTrivialZModPLifted (p := p) (Q := Q))).hom
+        (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom
           (FO.map
             (groupCohomology.H2Iso
-              (ordinaryTrivialZModPLifted (p := p) (Q := Q))).inv x) = x := by
+              (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).inv x) = x := by
     change
       (groupCohomology.H2Iso
-        (ordinaryTrivialZModPLifted (p := p) (Q := Q))).hom
+        (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom
           ((groupCohomology.H2Iso
-            (ordinaryTrivialZModPLifted (p := p) (Q := Q))).inv x) = x
+            (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).inv x) = x
     exact Iso.inv_hom_id_apply _ x
   let cupH : SO.moduleCatLeftHomologyData.H :=
     SO.moduleCatHomologyIso.hom
       ((SO.mapHomologyIso FO).hom
         ((ShortComplex.homologyMapIso
-          (discreteH2MappedShortComplexIso (p := p) (Q := Q))).hom
+          (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q))).hom
           ((((trivialZModPCochainsLifted p Q).sc 2).mapHomologyIso
             (continuousCochainsToAddCommGrp p)).inv cupClassMapped)))
   change
     (groupCohomology.H2Iso
-      (ordinaryTrivialZModPLifted (p := p) (Q := Q))).hom
+      (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom
         (FO.map
           (groupCohomology.H2Iso
-            (ordinaryTrivialZModPLifted (p := p) (Q := Q))).inv cupH) =
+            (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).inv cupH) =
       SO.moduleCatLeftHomologyData.π cupCycle
   rw [hH]
   change
     SO.moduleCatHomologyIso.hom
       ((SO.mapHomologyIso FO).hom
         ((ShortComplex.homologyMapIso
-          (discreteH2MappedShortComplexIso (p := p) (Q := Q))).hom
+          (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q))).hom
           ((((trivialZModPCochainsLifted p Q).sc 2).mapHomologyIso
             (continuousCochainsToAddCommGrp p)).inv
             (ContinuousCohomology.π (trivialZModPLifted p Q) 2
@@ -308,9 +327,9 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
     simp only [CategoryTheory.ConcreteCategory.comp_apply] at hz'
     rw [hzcycle] at hz'
     exact hz'.symm
-  rw [hz, discreteH2MappedShortComplexIso_homologyπ_apply]
+  rw [hz, discreteH2MappedShortComplexIso_homologyπ_apply (R := R)]
   let zo := (ShortComplex.cyclesMap
-    (discreteH2MappedShortComplexIso (p := p) (Q := Q)).hom) z
+    (discreteH2MappedShortComplexIso (R := R) (p := p) (Q := Q)).hom) z
   let ho := SO.homologyData.left
   have hnatO :
       (SO.map FO).homologyπ ≫ (SO.mapHomologyIso FO).hom =
@@ -347,7 +366,7 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
   congr 1
   apply (ModuleCat.mono_iff_injective
     (groupCohomology.shortComplexH2
-      (ordinaryTrivialZModPLifted (p := p) (Q := Q))).moduleCatLeftHomologyData.i).1
+      (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).moduleCatLeftHomologyData.i).1
     inferInstance
   rw [ShortComplex.moduleCatCyclesIso_hom_i_apply]
   have hSOi : SO.iCycles ((SO.mapCyclesIso FO).hom zo) = (SO.map FO).iCycles zo := by
@@ -358,7 +377,7 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
     exact h
   rw [hSOi]
   dsimp only [zo]
-  rw [discreteH2MappedShortComplexIso_cyclesMap_cochain]
+  rw [discreteH2MappedShortComplexIso_cyclesMap_cochain (R := R)]
   let KS := (trivialZModPCochainsLifted p Q).sc 2
   let KF := continuousCochainsToAddCommGrp p
   have hKi : (KS.map KF).iCycles z = (KF.map KS.iCycles)

@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticTrace
-import Nyll.SawinTotallyRealTowers.SquarefreeIntegralCoordinates
-import Nyll.SawinTotallyRealTowers.QuadraticIntegralGenerator
-import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
-import Mathlib.RingTheory.Norm.Transitivity
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticTrace
+public import Nyll.SawinTotallyRealTowers.SquarefreeIntegralCoordinates
+public import Nyll.SawinTotallyRealTowers.QuadraticIntegralGenerator
+public import Mathlib.Algebra.GCDMonoid.IntegrallyClosed
+public import Mathlib.RingTheory.Norm.Transitivity
 
 /-!
 # Integral coordinates in a quadratic number field
@@ -18,6 +20,8 @@ generator of signed squarefree square `d`, these identities force both
 coordinates to be half-integers and give the congruence modulo four.
 Conversely, the congruence supplies a monic integer polynomial.
 -/
+
+@[expose] public section
 
 universe u
 

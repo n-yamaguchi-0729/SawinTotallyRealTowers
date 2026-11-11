@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueGalois
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.RealLowerGroups
 
 /-!
 # Local inertia as the kernel of the actual residue action
@@ -15,7 +18,11 @@ This comparison uses the canonical integer ring of the given local field,
 and identifies it with the valuation ring used by the existing filtration.
 -/
 
+@[expose] public section
+
 noncomputable section
+
+universe u v
 
 namespace RamificationTheory.LocalField
 
@@ -28,7 +35,7 @@ open scoped ValuativeRel
 /-- The zeroth lower group is the kernel of the actual residue-field action,
 with the canonical integer ring of the given extension field. -/
 theorem localLowerRamificationGroup_zero_eq_residue_ker
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -95,7 +102,7 @@ theorem localLowerRamificationGroup_zero_eq_residue_ker
 
 /-- Upper inertia is the kernel of the canonical residue action. -/
 theorem localUpperRamificationGroup_zero_eq_residue_ker
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]

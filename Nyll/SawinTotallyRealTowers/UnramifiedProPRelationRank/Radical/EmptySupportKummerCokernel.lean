@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummerLinear
-import Mathlib.LinearAlgebra.Dual.Lemmas
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummerLinear
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 
 /-!
 # The empty-support Kummer cokernel
@@ -20,6 +22,8 @@ This is the algebraic Kummer model of `B_∅`.  Identifying its localization-dua
 cohomological map assembled from local unramified `H¹` still requires local Tate duality and
 global-to-local restriction maps.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 
@@ -189,6 +193,8 @@ theorem emptySupportKummerCokernelEquivIdealPowerRadicalDual_mk
         (Submodule.Quotient.mk φ) =
       absolutePowerClassDualRestriction K p φ :=
   by
-    simp [emptySupportKummerCokernelEquivIdealPowerRadicalDual]
+    rw [emptySupportKummerCokernelEquivIdealPowerRadicalDual,
+      LinearEquiv.trans_apply, Submodule.quotEquivOfEq_mk,
+      LinearMap.quotKerEquivOfSurjective_apply_mk]
 
 end ClassFieldTower.Martinet.Shafarevich

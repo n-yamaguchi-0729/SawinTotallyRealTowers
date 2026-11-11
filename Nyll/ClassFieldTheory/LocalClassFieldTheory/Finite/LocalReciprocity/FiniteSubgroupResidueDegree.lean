@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
 
 /-!
 # Finite local reciprocity: residue degree of a finite abstract field
@@ -16,6 +18,10 @@ closed subgroup.  The comparison is made on the common selected
 residue field, so it also applies when the fixed field is not normal over the
 original local field.
 -/
+
+@[expose] public section
+
+universe u
 
 namespace LocalClassFieldTheory
 open CyclicCohomology RamificationTheory ClassFormation
@@ -30,7 +36,7 @@ open scoped Pointwise ValuativeRel
 open HilbertRamification.ValuationSubring
 open Field.absoluteGaloisGroup
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- The residue subfield inside the selected residue algebraic closure which
@@ -166,7 +172,7 @@ theorem localAbstractFixedResidueAction_map_eq_fixingSubgroup
         inv_mem' := by
           intro y hy
           change rhoK sigma y = y at hy
-          simp [hy] }
+          exact (map_inv₀ (rhoK sigma) y).trans (congrArg Inv.inv hy) }
     have hrange : Set.range (algebraMap kE Omega) ⊆ T := by
       rintro y ⟨z, rfl⟩
       have hbase : rhoK sigma (algebraMap kE Omega z) =
@@ -395,34 +401,33 @@ theorem localResidueDatum_normalizedDegree_eq_residueAbsoluteDegreeIn
     (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (sigma : H.field.toSubgroup) :
     let F := localAbstractFixedResidueIntermediateField K H.field
-    letI : Algebra
+    let : Algebra
         (decompositionResidueField K (localSeparableValuationSubring K))
         F := F.algebra
-    letI : Module
+    let : Module
         (decompositionResidueField K (localSeparableValuationSubring K))
         F := Algebra.toModule
-    letI : FiniteDimensional
+    let : FiniteDimensional
         (decompositionResidueField K (localSeparableValuationSubring K))
         F :=
       localAbstractFixedResidueIntermediateField_finiteDimensional K H.field
-    letI : Finite F := Module.finite_of_finite
+    let : Finite F := Module.finite_of_finite
       (decompositionResidueField K (localSeparableValuationSubring K))
-    letI : Fintype F := Fintype.ofFinite F
+    let : Fintype F := Fintype.ofFinite F
     (localResidueDatum K).normalizedDegree
         (H.toFiniteResidueAbstractField (localResidueDatum K)) sigma =
       residueAbsoluteDegreeIn F
         (selectedResidueField (localSeparableValuationSubring K))
         (localAbstractFixedResidueActionOverIntermediateField
           K H.field sigma) := by
+  intro F sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5
   let A := localSeparableValuationSubring K
   let k := decompositionResidueField K A
   let Omega := selectedResidueField A
-  let F := localAbstractFixedResidueIntermediateField K H.field
-  let : Algebra k F := F.algebra
+  let : Algebra k F := sharedOwner1
   let : FiniteDimensional k F :=
-    localAbstractFixedResidueIntermediateField_finiteDimensional K H.field
-  let : Finite F := Module.finite_of_finite k
-  let : Fintype F := Fintype.ofFinite F
+    sharedOwner3
+  let : Finite F := sharedOwner4
   let HF := H.toFiniteResidueAbstractField (localResidueDatum K)
   let tau : Omega ≃ₐ[F] Omega :=
     localAbstractFixedResidueActionOverIntermediateField K H.field sigma

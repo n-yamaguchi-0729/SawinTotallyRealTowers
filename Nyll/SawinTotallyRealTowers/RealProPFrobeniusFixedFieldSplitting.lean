@@ -4,18 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProPFrobeniusFixedField
-import Nyll.SawinTotallyRealTowers.RealProPFrobeniusCut
-import Nyll.SawinTotallyRealTowers.RealProPFrobenius
-import Nyll.SawinTotallyRealTowers.RealProTwoFrobeniusSequence
-import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.GroupTheory.QuotientGroup.Defs
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusFixedField
+public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusCut
+public import Nyll.SawinTotallyRealTowers.RealProPFrobenius
+public import Nyll.SawinTotallyRealTowers.RealProTwoFrobeniusSequence
+public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.GroupTheory.QuotientGroup.Defs
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 
 /-!
 # Complete splitting in every finite layer of the actual cut field
@@ -25,6 +29,8 @@ unramified primes. Thus those groups fix the cut field elementwise. The
 proved restriction-image theorem for decomposition groups then gives complete
 splitting in every finite Galois layer inside that field.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

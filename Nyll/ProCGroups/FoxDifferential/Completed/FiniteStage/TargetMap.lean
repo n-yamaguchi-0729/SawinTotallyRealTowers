@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.BoundaryCycles
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.CoeffMap.BoundaryCycles
 
 /-!
 # Fox differential: completed — finite stage — target map
@@ -20,6 +22,8 @@ The principal declarations in this module are:
 - `foxAlgebraicStageBoundaryCycleSubmodule_targetMap_mem`
   Target-quotient refinement sends finite boundary cycles to finite boundary cycles.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

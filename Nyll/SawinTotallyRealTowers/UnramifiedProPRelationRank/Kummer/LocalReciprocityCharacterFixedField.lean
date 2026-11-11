@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia
 
 /-!
 # The finite local field cut out by a mod-`p` character
@@ -15,6 +17,8 @@ The finite abelian field is constructed from the character's actual open
 kernel.  Its finite character recovers absolute Artin evaluation, and
 inertia-triviality puts inertia in the field's fixing subgroup.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

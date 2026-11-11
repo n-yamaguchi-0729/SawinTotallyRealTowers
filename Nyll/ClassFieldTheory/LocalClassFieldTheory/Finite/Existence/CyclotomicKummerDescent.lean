@@ -4,10 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.Cyclotomic.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MaximalKummerNorm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormSubgroupFunctoriality
+module
+
+public import Mathlib.NumberTheory.Cyclotomic.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TopologicalReciprocity
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.MaximalKummerNorm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormSubgroupFunctoriality
+public import Nyll.GaloisCohomology.Kummer.Concrete.LocalMaximalKummerExtension
+public import Nyll.GaloisCohomology.Kummer.Concrete.MaximalKummerSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Cyclotomic descent for maximal Kummer norm subgroups
@@ -18,6 +23,8 @@ finite Galois extension whose norm subgroup is contained in `Kˣⁿ`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

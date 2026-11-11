@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerCoefficient
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.ChangedUniformizerCoefficient
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ValuationExtension
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
 
 /-!
 # The p-adic completed-unramified coefficient field
@@ -25,6 +27,8 @@ or Frobenius is introduced.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -108,7 +112,7 @@ theorem padicCompletedUnramifiedValuation_isAdicComplete
         intro r x
         change e (r * x) =
           (algebraMap W v.valuationSubring r) * e x
-        simp [RingHom.algebraMap_toAlgebra] }
+        exact e.map_mul r x }
   have hcompleteW :
       IsAdicComplete (IsLocalRing.maximalIdeal W) W := by
     rw [show IsLocalRing.maximalIdeal W =
@@ -205,7 +209,8 @@ private theorem
     _ = v.intValuation ((p : W) ^ m * (u : W)) := by
       rw [map_mul, map_pow]
 
-private theorem padicIntToCompletedUnramifiedWittRing_injective
+/-- The canonical map from p-adic integers to the completed unramified Witt ring is injective. -/
+theorem padicIntToCompletedUnramifiedWittRing_injective
     (p : ℕ) [Fact p.Prime] :
     Function.Injective (padicIntToCompletedUnramifiedWittRing p) := by
   exact

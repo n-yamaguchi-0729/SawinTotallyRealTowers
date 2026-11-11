@@ -4,8 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
-import Mathlib.Tactic.Abel
+module
+
+public import Nyll.ProCGroups.GroupTheory.CommutatorDifference
+public import Nyll.ProCGroups.ProP.Zassenhaus.AugmentationFiltration
+public import Mathlib.Tactic.Abel
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.AugmentationIdeal
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.GroupLike
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
 
 /-!
 # Group-like differences in the mod-`p` completed group algebra
@@ -15,6 +21,8 @@ The element `[g] - 1` translates multiplication, inversion, commutators, and
 these calculations in one leaf prevents later filtration proofs from
 re-elaborating large noncommutative ring expressions.
 -/
+
+@[expose] public section
 
 open scoped Topology commutatorElement
 
@@ -91,19 +99,6 @@ theorem groupLikeDifference_inv (g : G) :
               (ProCGroups.FiniteGroupClass.pGroup p) (ZMod p) G g - 1) := by
       rw [mul_sub, neg_mul, neg_mul, mul_one, hu]
       abel
-
-/-- A ring identity underlying the commutator filtration calculation. -/
-theorem commutatorDifference_identity
-    {R : Type*} [Ring R] (a b ai bi : R)
-    (hai : a * ai = 1) (hbi : b * bi = 1) :
-    a * b * ai * bi - 1 =
-      ((a - 1) * (b - 1) - (b - 1) * (a - 1)) * ai * bi := by
-  have hdiff : (a - 1) * (b - 1) - (b - 1) * (a - 1) = a * b - b * a := by
-    simp only [sub_mul, mul_sub, mul_one, one_mul]
-    abel
-  rw [hdiff]
-  simp only [sub_mul]
-  rw [mul_assoc b a ai, hai, mul_one, hbi]
 
 /-- A group commutator becomes a difference of quadratic augmentation terms,
 up to multiplication by group-like units. -/

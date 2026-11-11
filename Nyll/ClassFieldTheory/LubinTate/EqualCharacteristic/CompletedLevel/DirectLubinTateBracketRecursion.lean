@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.DirectLubinTateBracket
 
 /-!
 # The completed theta-intertwining theorem: recursion for the standard Lubin--Tate bracket
@@ -23,6 +25,8 @@ to the finite brackets acting on division points.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

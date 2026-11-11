@@ -4,7 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Core
+public import Nyll.GaloisCohomology.Cyclic.IntegralCyclicNormComplexes
+public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
 # The abstract reciprocity theorem: the totally ramified calculation
@@ -24,6 +30,10 @@ compatibility record or theorem-shaped certificate is introduced for that
 comparison.
 -/
 
+@[expose] public section
+
+universe u v
+
 namespace ClassFormation
 
 open KummerTheory
@@ -36,8 +46,7 @@ noncomputable section
 
 open CategoryTheory
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-! ## The linear calculation behind the fixed element -/
 
@@ -47,7 +56,7 @@ that `t` fixes `c`, that `g` and `t` have the same action on `b`, and that
 `b-c = a^g-a`.  Commutativity of the cyclic quotient then shows that
 `b+a-a^t` is fixed by `g`. -/
 private theorem abstractReciprocity_fixedCombination
-    {Q : IntegralRepGroupType} [CommGroup Q] (M : Rep ℤ Q)
+    {Q : Type u} [CommGroup Q] (M : Rep.{v} ℤ Q)
     (g t : Q) (c b a : M.V)
     (htc : M.ρ t c = c)
     (hgb : M.ρ g b = M.ρ t b)
@@ -88,7 +97,7 @@ private theorem abstractReciprocity_fixedCombination
 
 namespace ValuationData
 
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 /-- The representative extracted from a zero prime-norm class can be
 written as `π_L^k v` with an actual unit `v ∈ U_L`.  This is the
@@ -264,10 +273,10 @@ theorem abstractReciprocity_exists_hMinusOne_primitive
   let z : M.V :=
     (extensionFixedRepresentationEquiv A E.base.field E.field.field
       E.below hnormal).symm (w - u)
-  have hzNorm : M.norm.hom z = 0 := by
+  have hzNorm : M.norm.asHom.hom z = 0 := by
     apply Subtype.ext
     calc
-      (M.norm.hom z).1 =
+      (M.norm.asHom.hom z).1 =
           ((relativeNorm A E.base.field E.field.field E.below (w - u) :
             ambientFixedAddSubgroup A E.base.field) : A.V) :=
         extensionFixedRepresentation_norm_coe A E.base.field E.field.field
@@ -284,12 +293,12 @@ theorem abstractReciprocity_exists_hMinusOne_primitive
       finite := E.finiteQuotient
       generator := g
       generates := hg }
-  have hzero : Limits.IsZero (tateCohomology M (-1)) := by
-    simpa [Ecf,
+  have hzero : Limits.IsZero (IntegralGroupCohomology.Universe.tate M (-1)) := by
+    simpa only [Ecf,
       FiniteCyclicSubextension.fixedRepresentation] using
-        hcf.tateHMinusOne_isZero E.base Ecf
+        hcf.integralTateHMinusOne_isZero E.base Ecf
   obtain ⟨a, ha⟩ :=
-    CyclicCohomology.normKernel_le_sigmaMinusOneRange_of_tateHMinusOne_isZero
+    IntegralGroupCohomology.Universe.normKernel_of_tate_isZero
       M g hg hzero z hzNorm
   exact ⟨a, ha⟩
 
@@ -404,7 +413,7 @@ theorem abstractReciprocity_totallyRamified_fixedSource
   have hxM : M.ρ g xM = xM := by
     exact abstractReciprocity_fixedCombination M g t (k • piSigmaM) bM a
       hSigmaPow hbAction hbc
-  let T := Rep.FiniteCyclicGroup.normHomCompSub M g
+  let T := IntegralGroupCohomology.Universe.normHomCompSub M g
   let xCycle : T.moduleCatLeftHomologyData.K := ⟨xM, by
     change M.ρ g xM - xM = 0
     exact sub_eq_zero.mpr hxM⟩

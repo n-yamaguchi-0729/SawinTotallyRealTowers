@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
 /-!
 # Unramified norm subgroups
@@ -19,6 +21,8 @@ the canonical identification of the quotient with ZMod n.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -47,7 +51,7 @@ theorem valuationModDegree_surjective (K : Type u) [Field K] [ValuativeRel K]
   intro z
   rcases ZMod.intCast_surjective z with ⟨m, rfl⟩
   rcases LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_surjective K m with ⟨x, hx⟩
-  exact ⟨x, by simp [hx]⟩
+  exact ⟨x, congrArg (fun m : ℤ => (m : ZMod n)) hx⟩
 
 /-- A reduced valuation vanishes exactly when `n` divides the original valuation. -/
 theorem valuationModDegree_eq_zero_iff_dvd (K : Type u) [Field K] [ValuativeRel K]

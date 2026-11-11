@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.Core
+module
+
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.Core
 
 /-!
 # Restriction kernels of S-unit Kummer extensions
@@ -15,6 +17,8 @@ number, and their cyclic fixed fields.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative
 open NumberField IsDedekindDomain

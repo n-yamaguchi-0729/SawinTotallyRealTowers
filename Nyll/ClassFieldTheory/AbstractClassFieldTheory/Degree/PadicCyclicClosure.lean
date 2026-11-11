@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Indices
-import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
-import Mathlib.GroupTheory.Index
-import Mathlib.NumberTheory.Padics.ProperSpace
+module
+
+public import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Indices
+public import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
+public import Mathlib.GroupTheory.Index
+public import Mathlib.NumberTheory.Padics.ProperSpace
 
 /-!
 # Cyclic closures detected by a p-adic degree
@@ -20,6 +22,8 @@ any element of nonzero degree.
 -/
 
 
+
+@[expose] public section
 
 open scoped Topology
 

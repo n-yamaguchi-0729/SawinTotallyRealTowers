@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.LinearTopology
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Definitions
+module
+
+public import Mathlib.Topology.Algebra.LinearTopology
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.Basic.Definitions
 
 /-!
 # Open submodules of profinite modules
@@ -14,6 +16,8 @@ This file constructs open submodules inside identity neighborhoods using scalar 
 additive subgroups. It proves the resulting linear topology and the finiteness and discreteness of
 open-submodule quotients.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -30,9 +34,9 @@ theorem exists_openAddSubgroup_subset_open_nhds_zero
     [CompactSpace M] [T2Space M] [TotallyDisconnectedSpace M]
     {U : Set M} (hUopen : IsOpen U) (h0U : (0 : M) ∈ U) :
     ∃ H : OpenAddSubgroup M, (H : Set M) ⊆ U := by
-  rcases ((nhds_basis_clopen (0 : M)).mem_iff.mp (hUopen.mem_nhds h0U)) with
+  rcases ((nhds_basis_isClopen (0 : M)).mem_iff.mp (hUopen.mem_nhds h0U)) with
     ⟨W, hW, hWU⟩
-  rcases IsTopologicalAddGroup.exist_openAddSubgroup_sub_clopen_nhds_of_zero hW.2 hW.1 with
+  rcases IsTopologicalAddGroup.exist_openAddSubgroup_sub_clopen_nhds_of_zero hW.1 hW.2 with
     ⟨H, hH⟩
   exact ⟨H, hH.trans hWU⟩
 

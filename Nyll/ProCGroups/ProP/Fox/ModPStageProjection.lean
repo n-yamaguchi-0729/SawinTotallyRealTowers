@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Fox.ModPFiniteStage
-import Nyll.ProCGroups.ProP.Fox.ModPDisplayedSpan
+module
+
+public import Nyll.ProCGroups.ProP.Fox.ModPFiniteStage
+public import Nyll.ProCGroups.ProP.Fox.ModPDisplayedSpan
+public import Nyll.ProCGroups.Completion.ProCInteger
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebra
 
 /-!
 # Mod-p completed-to-finite Fox stage projection
@@ -16,6 +20,8 @@ the coefficient and coordinate projections, proves compatibility with the comple
 finite Fox boundaries, and identifies projected presentation derivatives with the reflected
 finite-stage derivative on abstract free words.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

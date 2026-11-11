@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.NumberTheory.Padics.RingHoms
-import Mathlib.Topology.Algebra.Module.Basic
-import Mathlib.LinearAlgebra.Pi
-import Mathlib.LinearAlgebra.Isomorphisms
-import Mathlib.RingTheory.Finiteness.Finsupp
+module
+
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Mathlib.Topology.Algebra.Module.Basic
+public import Mathlib.LinearAlgebra.Pi
+public import Mathlib.LinearAlgebra.Isomorphisms
+public import Mathlib.RingTheory.Finiteness.Finsupp
 
 /-!
 # Continuous additive maps of p-adic modules are p-adic linear
@@ -20,6 +22,8 @@ p-adic scalar.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

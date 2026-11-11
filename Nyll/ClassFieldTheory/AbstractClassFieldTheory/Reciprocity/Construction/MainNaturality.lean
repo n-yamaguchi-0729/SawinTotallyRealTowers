@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainFiniteReciprocity
+module
+
+public import Mathlib.Algebra.Group.Defs
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainFiniteReciprocity
 
 /-!
 # The abstract reciprocity construction, norm--conjugation naturality: naturality of reciprocity
@@ -16,7 +19,9 @@ eventual the finite reciprocity equivalence reciprocity homomorphisms can be con
 any additional comparison datum.
 -/
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -402,7 +407,7 @@ end DegreeData
 
 /-- Finiteness of the upper-left-to-lower-right composite extension in the
 first diagram. -/
-private theorem finiteReciprocityNaturality_tower_finite
+theorem finiteReciprocityNaturality_tower_finite
     (K K' L' : ClosedSubgroup G)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
@@ -416,13 +421,12 @@ end GroupOnly
 
 section Representation
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- The right vertical map in the first diagram of norm--conjugation naturality.  It is
 the actual norm `N_{K'/K}`, descended to the actual finite norm quotients. -/
 def finiteReciprocityNaturalityNormMap
-    (A : Rep ℤ G) (K K' L L' : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L L' : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -476,7 +480,7 @@ def finiteReciprocityNaturalityNormMap
 /-- The norm map carries a finite norm class to the corresponding class over the base. -/
 @[simp]
 theorem finiteReciprocityNaturalityNormMap_finiteNormClass
-    (A : Rep ℤ G) (K K' L L' : ClosedSubgroup G)
+    (A : Rep.{uA} ℤ G) (K K' L L' : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
     (hK'K : K'.toSubgroup ≤ K.toSubgroup)
@@ -497,7 +501,7 @@ theorem finiteReciprocityNaturalityNormMap_finiteNormClass
 
 /-- The additive map `a ↦ a^s` between the two actual fixed subgroups. -/
 def conjugateFixedElementHom [ContinuousMul G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (s : G) :
+    (A : Rep.{uA} ℤ G) (K : ClosedSubgroup G) (s : G) :
     ambientFixedAddSubgroup A K →+
       ambientFixedAddSubgroup A (conjugateClosedSubgroup K s) where
   toFun := conjugateFixedElement A K s
@@ -511,7 +515,7 @@ def conjugateFixedElementHom [ContinuousMul G]
 /-- The homomorphism on conjugate-fixed elements evaluates by the underlying conjugation map. -/
 @[simp]
 theorem conjugateFixedElementHom_apply [ContinuousMul G]
-    (A : Rep ℤ G) (K : ClosedSubgroup G) (s : G)
+    (A : Rep.{uA} ℤ G) (K : ClosedSubgroup G) (s : G)
     (a : ambientFixedAddSubgroup A K) :
     conjugateFixedElementHom A K s a = conjugateFixedElement A K s a :=
   rfl
@@ -519,12 +523,12 @@ theorem conjugateFixedElementHom_apply [ContinuousMul G]
 /-- The right vertical map in the conjugation diagram of norm--conjugation naturality,
 descended to the actual finite norm quotients. -/
 def finiteReciprocityNaturalityConjugationNormMap
-    [ContinuousMul G] (A : Rep ℤ G)
+    [ContinuousMul G] (A : Rep.{uA} ℤ G)
     (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) (s : G)
     [hLfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)] :
-    letI : Finite ((conjugateClosedSubgroup K s).toSubgroup ⧸
+    let : Finite ((conjugateClosedSubgroup K s).toSubgroup ⧸
         extensionSubgroup (conjugateClosedSubgroup K s)
           (conjugateClosedSubgroup L s)
           (conjugateClosedSubgroup_mono hLK s)) :=
@@ -533,11 +537,7 @@ def finiteReciprocityNaturalityConjugationNormMap
       FiniteNormQuotient A (conjugateClosedSubgroup K s)
         (conjugateClosedSubgroup L s)
         (conjugateClosedSubgroup_mono hLK s) := by
-  letI hConjFinite : Finite ((conjugateClosedSubgroup K s).toSubgroup ⧸
-      extensionSubgroup (conjugateClosedSubgroup K s)
-        (conjugateClosedSubgroup L s)
-        (conjugateClosedSubgroup_mono hLK s)) :=
-    finite_conjugateExtension K L hLK s
+  intro hConjFinite
   let f : ambientFixedAddSubgroup A K →+
       FiniteNormQuotient A (conjugateClosedSubgroup K s)
         (conjugateClosedSubgroup L s)
@@ -556,12 +556,12 @@ def finiteReciprocityNaturalityConjugationNormMap
 /-- The conjugation norm map preserves canonical finite norm classes. -/
 @[simp]
 theorem finiteReciprocityNaturalityConjugationNormMap_finiteNormClass
-    [ContinuousMul G] (A : Rep ℤ G)
+    [ContinuousMul G] (A : Rep.{uA} ℤ G)
     (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup) (s : G)
     [Finite (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (a : ambientFixedAddSubgroup A K) :
-    letI : Finite ((conjugateClosedSubgroup K s).toSubgroup ⧸
+    let : Finite ((conjugateClosedSubgroup K s).toSubgroup ⧸
         extensionSubgroup (conjugateClosedSubgroup K s)
           (conjugateClosedSubgroup L s)
           (conjugateClosedSubgroup_mono hLK s)) :=
@@ -571,11 +571,7 @@ theorem finiteReciprocityNaturalityConjugationNormMap_finiteNormClass
       finiteNormClass A (conjugateClosedSubgroup K s)
         (conjugateClosedSubgroup L s) (conjugateClosedSubgroup_mono hLK s)
         (conjugateFixedElement A K s a) := by
-  let hConjFinite : Finite ((conjugateClosedSubgroup K s).toSubgroup ⧸
-      extensionSubgroup (conjugateClosedSubgroup K s)
-        (conjugateClosedSubgroup L s)
-        (conjugateClosedSubgroup_mono hLK s)) :=
-    finite_conjugateExtension K L hLK s
+  intro hConjFinite
   simp [finiteReciprocityNaturalityConjugationNormMap]
   rfl
 
@@ -583,7 +579,7 @@ theorem finiteReciprocityNaturalityConjugationNormMap_finiteNormClass
 already expressed in the target finite norm quotient.  Taking `S = Σ` and
 `S' = Σ'` gives the calculation. -/
 theorem finiteReciprocityNaturality_norm_tower_class
-    (A : Rep ℤ G)
+    (A : Rep.{uA} ℤ G)
     (K K' L L' S S' : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
@@ -640,7 +636,7 @@ namespace DegreeData
 corresponds under the finite reciprocity equivalence to the norm `N_{K'/K}` on finite norm
 quotients. -/
 theorem finiteReciprocityNaturality_restriction_norm_commutes
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -795,7 +791,7 @@ end DegreeData
 /-- The norm identity used for the second diagram of norm--conjugation naturality,
 expressed in the conjugate finite norm quotient. -/
 theorem finiteReciprocityNaturality_conjugation_norm_class
-    [ContinuousMul G] (A : Rep ℤ G)
+    [ContinuousMul G] (A : Rep.{uA} ℤ G)
     (K L S : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
     (hSK : S.toSubgroup ≤ K.toSubgroup) (s : G)
@@ -838,7 +834,7 @@ theorem finiteReciprocityNaturalityDegree_conjugateSubgroupEquiv
     (K : ClosedSubgroup G) (s : G) (k : K.toSubgroup) :
     D.degree (conjugateSubgroupEquiv K s k).1 = D.degree k.1 := by
   rw [conjugateSubgroupEquiv_apply_coe, map_mul, map_mul, map_inv]
-  simp [mul_comm]
+  exact inv_mul_cancel_comm _ _
 
 /-- The normalized degree is invariant under the conjugation equivalence
 of field subgroups. -/
@@ -941,8 +937,9 @@ noncomputable def finiteReciprocityNaturalityFrobeniusConjugationEquiv
     change Continuous (fun k : K.toSubgroup =>
       (⟨s⁻¹ * k.1 * s, by
         change s⁻¹ * k.1 * s ∈ conjugateClosedSubgroup K s
-        rw [conjugateClosedSubgroup_mem]
-        simp [mul_assoc]⟩ :
+        rw [conjugateClosedSubgroup_mem, mul_assoc s⁻¹ k.1 s,
+          mul_inv_cancel_left, mul_inv_cancel_right]
+        exact k.2⟩ :
           (conjugateClosedSubgroup K s).toSubgroup))
     exact ((continuous_const.mul continuous_subtype_val).mul
       continuous_const).subtype_mk _
@@ -1082,7 +1079,8 @@ theorem finiteReciprocityNaturalityFrobeniusConjugationLift_exponent
 
 section ConjugateFrobeniusQuotients
 
-private theorem finiteReciprocityNaturalityConjugateInertia_normal
+/-- The conjugate relative inertia subgroup is normal. -/
+theorem finiteReciprocityNaturalityConjugateInertia_normal
     (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup) (s : G)
@@ -1200,7 +1198,7 @@ theorem finiteReciprocityNaturalityFrobeniusFixedField_conjugate
       dsimp [ks]
       change (k : G) = s * g * s⁻¹ at hkg
       rw [hkg]
-      simp [mul_assoc]
+      rw [mul_assoc s g s⁻¹, inv_mul_cancel_left, inv_mul_cancel_right]
     have hkClosure : QuotientGroup.mk k ∈
         (D.frobeniusClosure K L hLK σ).toSubgroup :=
       (D.mem_frobeniusFixedSubgroupWithin_iff K L hLK σ k).1 hk
@@ -1275,8 +1273,7 @@ end GroupOnly
 
 section Representation
 
-/-! Mathlib's `Rep ℤ G` forces its representation-bearing group `G` to `Type 0`. -/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -1297,7 +1294,7 @@ instance finiteReciprocityNaturalityFiniteAbstractConjugate_normal
   infer_instance
 
 private theorem finiteReciprocityNaturality_isPrimeElement_transport
-    (D : DegreeData G) {A : Rep ℤ G} (v : ValuationData D A)
+    (D : DegreeData G) {A : Rep.{uA} ℤ G} (v : ValuationData D A)
     (S T : FiniteAbstractField G) (hST : S.field = T.field)
     (π : ambientFixedAddSubgroup A S.field) (hπ : v.IsPrimeElement S π) :
     v.IsPrimeElement T (hST ▸ π) := by
@@ -1307,7 +1304,7 @@ private theorem finiteReciprocityNaturality_isPrimeElement_transport
   simpa only using hπ
 
 private theorem finiteReciprocityNaturality_relativeNorm_right_transport
-    (A : Rep ℤ G) (K S T : ClosedSubgroup G) (hST : S = T)
+    (A : Rep.{uA} ℤ G) (K S T : ClosedSubgroup G) (hST : S = T)
     (hSK : S.toSubgroup ≤ K.toSubgroup)
     (hTK : T.toSubgroup ≤ K.toSubgroup)
     [hKSfinite : Finite
@@ -1322,9 +1319,10 @@ private theorem finiteReciprocityNaturality_relativeNorm_right_transport
 
 section ConjugateFiniteNormQuotient
 
+/-- The finite norm quotient of the conjugate extension has its induced additive zero. -/
 @[instance_reducible]
-private def finiteReciprocityNaturalityConjugateNormAddZero
-    (A : Rep ℤ G) [IsTopologicalGroup G]
+def finiteReciprocityNaturalityConjugateNormAddZero
+    (A : Rep.{uA} ℤ G) [IsTopologicalGroup G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup) (s : G)
     [hLfinite : Finite
@@ -1347,7 +1345,7 @@ attribute [local instance] finiteReciprocityNaturalityConjugateNormAddZero
 groups corresponds under the finite reciprocity equivalence to conjugation of finite norm
 classes. -/
 theorem finiteReciprocityNaturality_conjugation_commutes
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -1359,23 +1357,16 @@ theorem finiteReciprocityNaturality_conjugation_commutes
     let Ks : FiniteAbstractField G := K.conjugate s
     let Ls := conjugateClosedSubgroup L s
     let hLsKs := conjugateClosedSubgroup_mono hLK s
-    letI : Finite
+    let : Finite
         (Ks.field.toSubgroup ⧸ extensionSubgroup Ks.field Ls hLsKs) :=
       finite_conjugateExtension K.field L hLK s
     (finiteReciprocityNaturalityConjugationNormMap A K.field L hLK s).comp
         (D.finiteReciprocityHom A v hAxiom K L hLK) =
       (D.finiteReciprocityHom A v hAxiom Ks Ls hLsKs).comp
         (finiteReciprocityNaturalityConjugation K.field L hLK s).toMonoidHom.toAdditive := by
-  dsimp only
-  let hLsfinite : Finite
-      ((conjugateClosedSubgroup K.field s).toSubgroup ⧸
-        extensionSubgroup (conjugateClosedSubgroup K.field s)
-          (conjugateClosedSubgroup L s)
-          (conjugateClosedSubgroup_mono hLK s)) :=
-    finite_conjugateExtension K.field L hLK s
+  intro Ks Ls hLsKs hLsfinite
   let KR : D.FiniteResidueAbstractField :=
     K.toFiniteResidueAbstractField D
-  let Ks : FiniteAbstractField G := K.conjugate s
   let KRs : D.FiniteResidueAbstractField :=
     Ks.toFiniteResidueAbstractField D
   have hKRs_conjugate : KR.conjugate s = KRs := by

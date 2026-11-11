@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
-import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
-import Mathlib.RingTheory.Valuation.Extension
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
+public import Mathlib.Analysis.Normed.Unbundled.SpectralNorm
+public import Mathlib.RingTheory.Valuation.Extension
+public import Mathlib.Topology.Algebra.Valued.NormedValued
+public import Mathlib.RingTheory.Valuation.ValuativeRel.Basic
 
 /-!
 # The canonical topology on a finite extension of a local field
@@ -20,17 +24,36 @@ while using the same topology on every field.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalFieldTheory
 
 open scoped NNReal ValuativeRel
 
+universe uK uE uL uF
+
+/-- Compare the canonical valuative relation and the original norm valuation.
+
+This is a declaration, so its field universe can be specialized independently
+at the intermediate and upper fields of a tower. -/
+private theorem normedFieldValuation_le_one_iff
+    (F : Type uF) [nF : NormedField F] [hUltra : IsUltrametricDist F] (y : F) :
+    let v : Valuation F ℝ≥0 := NormedField.valuation (K := F)
+    letI : ValuativeRel F := ValuativeRel.ofValuation v
+    ValuativeRel.valuation F y ≤ 1 ↔ v y ≤ 1 :=
+  let v : Valuation F ℝ≥0 := NormedField.valuation (K := F)
+  letI : ValuativeRel F := ValuativeRel.ofValuation v
+  let : v.Compatible := Valuation.Compatible.ofValuation v
+  (Valuation.vle_one_iff (ValuativeRel.valuation F) (x := y)).symm.trans
+    (Valuation.vle_one_iff v (x := y))
+
 /-- The normed-field structure canonically associated with the native
 topology of a nonarchimedean local field. -/
 @[reducible]
 noncomputable def localFieldNontriviallyNormedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type uK) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] : NontriviallyNormedField K := by
   letI : UniformSpace K := IsTopologicalAddGroup.rightUniformSpace K
   letI : IsUniformAddGroup K := isUniformAddGroup_of_addCommGroup
@@ -48,7 +71,7 @@ ultrametric.  This is kept as a named companion to
 `localFieldNontriviallyNormedField` so that every use of the spectral norm
 starts from the same norm and the same ultrametric structure. -/
 theorem localFieldIsUltrametricDist
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type uK) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
     letI : NontriviallyNormedField K :=
       localFieldNontriviallyNormedField K
@@ -67,7 +90,7 @@ theorem localFieldIsUltrametricDist
 topology of its nonarchimedean local base field. -/
 @[reducible]
 noncomputable def finiteExtensionSpectralNormedField
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] : NontriviallyNormedField L := by
@@ -78,7 +101,7 @@ noncomputable def finiteExtensionSpectralNormedField
 
 /-- A finite extension is complete for its canonical spectral norm. -/
 theorem finiteExtensionSpectralCompleteSpace
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -92,7 +115,7 @@ theorem finiteExtensionSpectralCompleteSpace
 
 /-- A finite extension is locally compact for its canonical spectral norm. -/
 theorem finiteExtensionSpectralLocallyCompactSpace
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -103,7 +126,7 @@ theorem finiteExtensionSpectralLocallyCompactSpace
     localFieldNontriviallyNormedField K
   let : IsUltrametricDist K := localFieldIsUltrametricDist K
   exact
-    (fun (V : Type) [nV : NontriviallyNormedField V]
+    (fun (V : Type uL) [nV : NontriviallyNormedField V]
         [spaceKV : NormedSpace K V] [FiniteDimensional K V] =>
       LocallyCompactSpace.of_finiteDimensional_of_complete K V)
       L (nV := finiteExtensionSpectralNormedField K L)
@@ -112,7 +135,7 @@ theorem finiteExtensionSpectralLocallyCompactSpace
 /-- The spectral norm on a finite extension of a nonarchimedean local field
 is ultrametric. -/
 theorem finiteExtensionSpectralIsUltrametricDist
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -123,7 +146,7 @@ theorem finiteExtensionSpectralIsUltrametricDist
     localFieldNontriviallyNormedField K
   let : IsUltrametricDist K := localFieldIsUltrametricDist K
   exact
-    (fun (F : Type) [nF : NormedField F]
+    (fun (F : Type uL) [nF : NormedField F]
         (h : IsNonarchimedean (norm : F → ℝ)) =>
       IsUltrametricDist.isUltrametricDist_of_isNonarchimedean_norm h)
       L (nF := (finiteExtensionSpectralNormedField K L).toNormedField)
@@ -132,7 +155,7 @@ theorem finiteExtensionSpectralIsUltrametricDist
 /-- The valuative relation induced by the canonical spectral norm. -/
 @[reducible]
 noncomputable def finiteExtensionSpectralValuativeRel
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -147,7 +170,7 @@ noncomputable def finiteExtensionSpectralValuativeRel
 /-- A finite extension with the spectral norm is again a nonarchimedean
 local field. -/
 theorem finiteExtensionSpectralIsNonarchimedeanLocalField
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -156,7 +179,7 @@ theorem finiteExtensionSpectralIsNonarchimedeanLocalField
     letI : ValuativeRel L := finiteExtensionSpectralValuativeRel K L
     IsNonarchimedeanLocalField L := by
   exact
-    (fun (F : Type) [nF : NontriviallyNormedField F] [hUltra : IsUltrametricDist F]
+    (fun (F : Type uL) [nF : NontriviallyNormedField F] [hUltra : IsUltrametricDist F]
         [hCompact : LocallyCompactSpace F] =>
       letI : Valued F ℝ≥0 := NormedField.toValued
       let vL : Valuation F ℝ≥0 := Valued.v
@@ -178,7 +201,7 @@ theorem finiteExtensionSpectralIsNonarchimedeanLocalField
 /-- The valuative relation coming from the spectral norm is the canonical
 extension of the native valuation on the local base field. -/
 theorem finiteExtensionSpectralValuation_hasExtension
-    (K L : Type) [Field K] [Field L] [Algebra K L]
+    (K : Type uK) (L : Type uL) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
@@ -200,14 +223,7 @@ theorem finiteExtensionSpectralValuation_hasExtension
   ext x
   simp only [Subring.mem_comap, Valuation.mem_integer_iff]
   have hL :=
-    (fun (F : Type) [nF : NormedField F] [hUltra : IsUltrametricDist F]
-        (y : F) =>
-      let v : Valuation F ℝ≥0 := NormedField.valuation (K := F)
-      letI : ValuativeRel F := ValuativeRel.ofValuation v
-      letI : v.Compatible := Valuation.Compatible.ofValuation v
-      (Valuation.vle_one_iff (ValuativeRel.valuation F) (x := y)).symm.trans
-        (Valuation.vle_one_iff v (x := y)))
-      L (nF := (finiteExtensionSpectralNormedField K L).toNormedField)
+    normedFieldValuation_le_one_iff L (nF := (finiteExtensionSpectralNormedField K L).toNormedField)
       (hUltra := finiteExtensionSpectralIsUltrametricDist K L)
       (algebraMap K L x)
   refine hL.trans ?_
@@ -223,7 +239,7 @@ normed algebra.  In particular, inclusion and norm maps in finite towers are
 continuous for one topology on each field. -/
 @[reducible]
 noncomputable def finiteExtensionSpectralNormedAlgebra
-    (K E L : Type) [Field K] [Field E] [Field L]
+    (K : Type uK) (E : Type uE) (L : Type uL) [Field K] [Field E] [Field L]
     [Algebra K E] [Algebra E L] [Algebra K L] [IsScalarTower K E L]
     [FiniteDimensional K E] [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
@@ -237,7 +253,7 @@ noncomputable def finiteExtensionSpectralNormedAlgebra
     localFieldNontriviallyNormedField K
   letI : IsUltrametricDist K := localFieldIsUltrametricDist K
   exact
-    (fun (F : Type) [nF : NormedField F] [aKF : NormedAlgebra K F]
+    (fun (F : Type uE) [nF : NormedField F] [aKF : NormedAlgebra K F]
         [Algebra F L] [IsScalarTower K F L] =>
       spectralNorm.normedAlgebra' (K := K) F L)
       E (nF := (finiteExtensionSpectralNormedField K E).toNormedField)
@@ -247,7 +263,7 @@ noncomputable def finiteExtensionSpectralNormedAlgebra
 local base, the upper spectral valuation extends the intermediate spectral
 valuation. -/
 theorem finiteExtensionSpectralValuation_hasExtension_of_tower
-    (K E L : Type) [Field K] [Field E] [Field L]
+    (K : Type uK) (E : Type uE) (L : Type uL) [Field K] [Field E] [Field L]
     [Algebra K E] [Algebra E L] [Algebra K L] [IsScalarTower K E L]
     [FiniteDimensional K E] [FiniteDimensional K L]
     [ValuativeRel K] [TopologicalSpace K]
@@ -268,20 +284,12 @@ theorem finiteExtensionSpectralValuation_hasExtension_of_tower
   apply Valuation.HasExtension.ofComapInteger
   ext x
   simp only [Subring.mem_comap, Valuation.mem_integer_iff]
-  have hCompare :=
-    (fun (F : Type) [nF : NormedField F] [hUltra : IsUltrametricDist F]
-        (y : F) =>
-      let v : Valuation F ℝ≥0 := NormedField.valuation (K := F)
-      letI : ValuativeRel F := ValuativeRel.ofValuation v
-      letI : v.Compatible := Valuation.Compatible.ofValuation v
-      (Valuation.vle_one_iff (ValuativeRel.valuation F) (x := y)).symm.trans
-        (Valuation.vle_one_iff v (x := y)))
   have hL :=
-    hCompare L (nF := (finiteExtensionSpectralNormedField K L).toNormedField)
+    normedFieldValuation_le_one_iff L (nF := (finiteExtensionSpectralNormedField K L).toNormedField)
       (hUltra := finiteExtensionSpectralIsUltrametricDist K L)
       (algebraMap E L x)
   have hE :=
-    hCompare E (nF := (finiteExtensionSpectralNormedField K E).toNormedField)
+    normedFieldValuation_le_one_iff E (nF := (finiteExtensionSpectralNormedField K E).toNormedField)
       (hUltra := finiteExtensionSpectralIsUltrametricDist K E) x
   refine hL.trans (Iff.trans ?_ hE.symm)
   change spectralNorm K L (algebraMap E L x) ≤ 1 ↔

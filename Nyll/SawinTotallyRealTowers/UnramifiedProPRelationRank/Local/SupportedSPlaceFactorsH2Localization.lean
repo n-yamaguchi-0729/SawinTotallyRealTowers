@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2
-import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2Evaluation
-import Nyll.GaloisCohomology.ProP.MultiplicativeBinaryProductH2Evaluation
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFinitePlaceIntegralBlockH2
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+module
+
+public import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2
+public import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2Evaluation
+public import Nyll.GaloisCohomology.ProP.MultiplicativeBinaryProductH2Evaluation
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFinitePlaceIntegralBlockH2
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 
 /-!
 # Degree-two localization of supported idele factors
@@ -18,6 +20,8 @@ The cohomology class of the S-place factors is determined by its finite
 coordinates in S when the outside integral blocks and infinite blocks
 are unramified. This detects classes by actual coordinate maps.
 -/
+
+@[expose] public section
 
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField TensorProduct
@@ -109,7 +113,8 @@ local instance localizedH2IdeleAction : MulDistribMulAction Gal(L / K)
     (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S) :=
   relativeIdeleLocalTensorDecompositionSupportedSubgroupAction (K := K) (L := L) S
 
-private def supportedSPlaceCohomologyIso :
+/-- The supported idele decomposition induces the original degree-two cohomology isomorphism. -/
+def supportedSPlaceCohomologyIso :
     groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
       (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S)) 2 ≅
     groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)

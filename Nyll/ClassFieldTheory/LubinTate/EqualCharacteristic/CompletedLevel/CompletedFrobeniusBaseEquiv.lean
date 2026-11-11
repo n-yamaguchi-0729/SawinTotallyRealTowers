@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusContinuity
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusContinuity
 
 /-!
 # The completed theta-intertwining theorem: the completed Frobenius lift over the Laurent base
@@ -15,6 +17,8 @@ Laurent base `k((T))`; hence the lift is an actual `k((T))`-automorphism.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

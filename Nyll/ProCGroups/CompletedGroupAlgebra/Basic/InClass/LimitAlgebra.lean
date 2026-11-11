@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.System
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.System
 
 /-!
 # Completed Group Algebra / Basic / Within a Class / Limit Algebra
@@ -14,6 +16,8 @@ completion. Its inverse-limit representation is exchanged explicitly, while proj
 compatibility, and extensionality are the ordinary public interface. Algebraic structures are
 inherited from the generic ring and module inverse limits.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

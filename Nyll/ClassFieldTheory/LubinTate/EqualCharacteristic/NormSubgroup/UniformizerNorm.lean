@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.LevelAlgebra
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.NormSubgroup.LevelAlgebra
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentUniformizerNormalization
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # LubinTate the explicit norm-subgroup computation: the uniformizer factor is a norm
@@ -18,6 +22,10 @@ and index arguments.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 
@@ -28,12 +36,11 @@ namespace EqualCharacteristic
 
 open LocalFieldTheory.DiscreteValuationField
 
-variable {K : Type} [Field K]
+variable {K : Type u} [Field K]
 
-universe u
 
 private theorem inverse_mem_normSubgroup_of_normUnits_eq
-    {B E : Type u} [Field B] [Field E] [Algebra B E]
+    {B E : Type*} [Field B] [Field E] [Algebra B E]
     [FiniteDimensional B E] (y : Eˣ) (pi : Bˣ)
     (hyNorm : LocalFieldTheory.normUnits B E y = pi) :
     pi⁻¹ ∈ LocalFieldTheory.localNormSubgroup B E := by
@@ -47,7 +54,7 @@ private theorem inverse_mem_normSubgroup_of_normUnits_eq
 /-- The normalized Laurent uniformizer `T⁻¹` is an actual norm from every
 explicit Lubin--Tate level field. -/
 theorem equalCharacteristicLubinTate_normalizedUniformizer_mem_normSubgroup
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
     (equalCharacteristicLaurentUniformizerUnit F)⁻¹ ∈
@@ -69,7 +76,7 @@ theorem equalCharacteristicLubinTate_normalizedUniformizer_mem_normSubgroup
 
 /-- Every integral power of the normalized Laurent uniformizer is a norm. -/
 theorem equalCharacteristicLubinTate_normalizedUniformizer_zpowers_le_normSubgroup
-    (F : LocalField K)
+    (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
     Subgroup.zpowers ((equalCharacteristicLaurentUniformizerUnit F)⁻¹) ≤

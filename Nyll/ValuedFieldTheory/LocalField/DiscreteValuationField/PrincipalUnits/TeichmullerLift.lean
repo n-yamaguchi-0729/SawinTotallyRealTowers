@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueRoots
-import Mathlib.Algebra.CharP.Lemmas
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.ResidueRoots
+public import Mathlib.Algebra.CharP.Lemmas
 
 /-!
 # Teichmuller lifts
@@ -13,6 +15,8 @@ import Mathlib.Algebra.CharP.Lemmas
 Constructs multiplicative Teichmuller representatives, and in equal characteristic the
 coefficient-field section of the residue map.
 -/
+
+@[expose] public section
 
 namespace LocalFieldTheory
 
@@ -54,7 +58,7 @@ noncomputable def residueTeichmullerLift [Finite F.residueField] :
 /-- Establishes the identity `higherPrincipalUnitGroup.residueTeichmullerLift F 0 = 0`. -/
 @[simp] theorem residueTeichmullerLift_zero [Finite F.residueField] :
     higherPrincipalUnitGroup.residueTeichmullerLift F 0 = 0 := by
-  simp [higherPrincipalUnitGroup.residueTeichmullerLift]
+  simp only [residueTeichmullerLift, ↓reduceDIte]
 
 /-- Establishes the identity `higherPrincipalUnitGroup.residueTeichmullerLift F 1 = 1`. -/
 @[simp] theorem residueTeichmullerLift_one [Finite F.residueField] :
@@ -65,7 +69,7 @@ noncomputable def residueTeichmullerLift [Finite F.residueField] :
   have hroot :
       e.symm (Units.mk0 (1 : F.residueField) hone) = 1 := by
     apply e.injective
-    simp [e]
+    simp only [Units.mk0_one, map_one, e]
   have hunit :
       ((e.symm (Units.mk0 (1 : F.residueField) hone) :
           higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
@@ -73,7 +77,8 @@ noncomputable def residueTeichmullerLift [Finite F.residueField] :
     exact congrArg
       (fun ζ : higherPrincipalUnitGroup.residueRootsOfUnityGroup F =>
         (ζ : F.valuationSubringˣ)) hroot
-  simp [higherPrincipalUnitGroup.residueTeichmullerLift, hone]
+  simp only [residueTeichmullerLift, hone, ↓reduceDIte, Units.mk0_one, map_one, OneMemClass.coe_one,
+    Units.val_one]
 
 /-- The Teichmuller lift reduces to the residue class it lifts. -/
 theorem residueMap_residueTeichmullerLift [Finite F.residueField]
@@ -81,7 +86,7 @@ theorem residueMap_residueTeichmullerLift [Finite F.residueField]
     F.residueMap (higherPrincipalUnitGroup.residueTeichmullerLift F y) = y := by
   classical
   by_cases hy : y = 0
-  · simp [higherPrincipalUnitGroup.residueTeichmullerLift, hy]
+  · simp only [residueTeichmullerLift, hy, ↓reduceDIte, map_zero]
   · let e :=
       higherPrincipalUnitGroup.residueRootsOfUnityEquivResidueFieldUnits F
     have hroot :
@@ -104,9 +109,10 @@ theorem residueTeichmullerLift_mul [Finite F.residueField]
         higherPrincipalUnitGroup.residueTeichmullerLift F y := by
   classical
   by_cases hx : x = 0
-  · simp [higherPrincipalUnitGroup.residueTeichmullerLift, hx]
+  · simp only [residueTeichmullerLift, hx, zero_mul, ↓reduceDIte, mul_dite, mul_zero, dite_eq_ite,
+    ite_self]
   by_cases hy : y = 0
-  · simp [higherPrincipalUnitGroup.residueTeichmullerLift, hy]
+  · simp only [residueTeichmullerLift, hy, mul_zero, ↓reduceDIte]
   have hxy : x * y ≠ 0 := mul_ne_zero hx hy
   let e :=
     higherPrincipalUnitGroup.residueRootsOfUnityEquivResidueFieldUnits F
@@ -115,7 +121,8 @@ theorem residueTeichmullerLift_mul [Finite F.residueField]
         e.symm (Units.mk0 x hx) * e.symm (Units.mk0 y hy) := by
     apply e.injective
     apply Units.ext
-    simp [e]
+    simp only [Units.mk0_mul, map_mul, residueRootsOfUnityEquivResidueFieldUnits_apply,
+      Units.val_mul, residueUnitHom_apply, e]
   have hunit :
       ((e.symm (Units.mk0 (x * y) hxy) :
           higherPrincipalUnitGroup.residueRootsOfUnityGroup F) :
@@ -129,7 +136,8 @@ theorem residueTeichmullerLift_mul [Finite F.residueField]
     exact congrArg
       (fun ζ : higherPrincipalUnitGroup.residueRootsOfUnityGroup F =>
         (ζ : F.valuationSubringˣ)) hroot
-  simp [higherPrincipalUnitGroup.residueTeichmullerLift, hx, hy, hxy]
+  simp only [residueTeichmullerLift, hxy, ↓reduceDIte, Units.mk0_mul, map_mul, Subgroup.coe_mul,
+    Units.val_mul, hx, hy]
 
 /-- Every Teichmuller representative is a root of `T^q - T`, where
 `q = #κ`. -/
@@ -144,7 +152,8 @@ theorem residueTeichmullerLift_pow_card [Finite F.residueField]
     simpa [Nat.card_eq_fintype_card] using
       (Fintype.card_pos : 0 < Fintype.card F.residueField)
   by_cases hy : y = 0
-  · simp [higherPrincipalUnitGroup.residueTeichmullerLift, hy]
+  · simp only [residueTeichmullerLift, hy, ↓reduceDIte, Nat.card_eq_fintype_card, ne_eq,
+    Fintype.card_ne_zero, not_false_eq_true, zero_pow]
   · let u : higherPrincipalUnitGroup.residueRootsOfUnityGroup F :=
       (higherPrincipalUnitGroup.residueRootsOfUnityEquivResidueFieldUnits F).symm
         (Units.mk0 y hy)
@@ -187,8 +196,8 @@ theorem residueTeichmullerLift_isRoot_X_pow_card_sub_X
         Polynomial F.valuationSubring).IsRoot
       (higherPrincipalUnitGroup.residueTeichmullerLift F y) := by
   rw [Polynomial.IsRoot.def]
-  simp [Polynomial.eval_sub,
-    higherPrincipalUnitGroup.residueTeichmullerLift_pow_card]
+  simp only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X,
+    residueTeichmullerLift_pow_card, sub_self]
 
 /-- In equal characteristic, `T^q - T` has unit derivative at every
 Teichmuller representative. -/
@@ -212,8 +221,8 @@ theorem residueTeichmullerRootPolynomial_derivative_eval_isUnit_of_charP
       ((Polynomial.X ^ Nat.card F.residueField - Polynomial.X :
           Polynomial F.valuationSubring).derivative).eval
         (higherPrincipalUnitGroup.residueTeichmullerLift F y) = -1 := by
-    simp [Polynomial.derivative_sub, Polynomial.derivative_X_pow,
-      Polynomial.derivative_X, hcard_cast]
+    simp only [Polynomial.derivative_sub, Polynomial.derivative_X_pow, hcard_cast, map_zero,
+      zero_mul, Polynomial.derivative_X, zero_sub, Polynomial.eval_neg, Polynomial.eval_one]
   rw [hderiv]
   exact isUnit_neg_one
 
@@ -267,10 +276,9 @@ theorem residueTeichmullerLift_add_of_charP [Finite F.residueField]
     have hbpow : b ^ Nat.card F.residueField = b := by
       rw [hcard, hfresh]
       rw [hxpow', hypow']
-    simp [f, b, Polynomial.eval_sub, hbpow]
+    simp only [Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, hbpow, sub_self, b, f]
   have hres : F.residueMap b = F.residueMap a := by
-    simp [a, b, map_add,
-      higherPrincipalUnitGroup.residueMap_residueTeichmullerLift]
+    simp only [map_add, residueMap_residueTeichmullerLift, b, a]
   have hderiv : IsUnit (f.derivative.eval a) := by
     simpa [f, a] using
       higherPrincipalUnitGroup.residueTeichmullerRootPolynomial_derivative_eval_isUnit_of_charP

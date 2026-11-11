@@ -4,19 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Lift
+module
+
+public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Lift
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.Finite.Unramified.ResidueNorm` Lean module. -/
 
 
+@[expose] public section
+
 noncomputable section
 
-universe u
+universe u v
 
 namespace LocalClassFieldTheory
 
@@ -28,7 +32,7 @@ open LocalFieldTheory.IsNonarchimedeanLocalField
 principal-unit quotients in an unramified valuation extension.  This is the
 the unramified norm calculation residue-unit quotient before the later `U^1` lifting. -/
 noncomputable def integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -49,7 +53,7 @@ noncomputable def integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure
 /-- States the theorem `integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_mk`. -/
 @[simp]
 theorem integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_mk
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -67,7 +71,7 @@ theorem integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_mk
 /-- After extending the residue of the integer-unit norm back to `𝓀[L]`, it
 is the product of the integral-closure residue actions. -/
 theorem residueUnitsMap_normIntegerUnits_eq_galoisGroup_residue_prod_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -92,7 +96,7 @@ theorem residueUnitsMap_normIntegerUnits_eq_galoisGroup_residue_prod_of_isIntegr
 /-- AlgEquiv-typed form of
 `residueUnitsMap_normIntegerUnits_eq_galoisGroup_residue_prod_of_isIntegralClosure`. -/
 theorem residueUnitsMap_normIntegerUnits_eq_galoisGroup_residue_algEquiv_prod_of_isIntegralClosure
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -115,7 +119,7 @@ theorem residueUnitsMap_normIntegerUnits_eq_galoisGroup_residue_algEquiv_prod_of
 /-- Quotient-level form of the residue product formula for the
 integer-unit norm. -/
 theorem integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_residue_algEquiv_base_extend
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -153,7 +157,7 @@ theorem integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_residue_alg
 agrees after base extension with the quotient-level finite residue norm model. -/
 theorem
   integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_residue_base_extend_eq_residueNorm
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -178,7 +182,7 @@ theorem
 on `𝒪[L]ˣ/U_L¹` is the quotient-level finite-field residue norm model. -/
 theorem
   integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_eq_residueNorm_of_unramifiedValuation
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
@@ -200,7 +204,7 @@ theorem
 the unramified valuation case. -/
 theorem
   integerUnitsModPrincipalUnitsNormOfGaloisOfIsIntegralClosure_surjective_of_unramifiedValuation
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]

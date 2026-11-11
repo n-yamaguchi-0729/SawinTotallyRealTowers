@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
-import Mathlib.FieldTheory.Normal.Basic
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
+public import Mathlib.FieldTheory.Normal.Basic
 
 /-!
 # Norms through an ambient Galois extension
@@ -17,6 +19,8 @@ product over all `K`-embeddings `L → M`.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators TensorProduct
 open NumberField
@@ -258,7 +262,7 @@ theorem eval_embeddingPolynomial
       ∑ i, f ((b.repr x i) • b i) := by
         apply Finset.sum_congr rfl
         intro i hi
-        simp [Algebra.smul_def]
+        simp only [Algebra.smul_def, map_mul, AlgHom.commutes]
     _ = f (∑ i, (b.repr x i) • b i) := by
       rw [map_sum]
     _ = f x := by rw [b.sum_repr]
@@ -281,7 +285,7 @@ theorem eval_embeddingProductPolynomial
         (embeddingProductPolynomial
           (M := M) b) =
       ∏ f : L →ₐ[K] M, f x := by
-  simp [embeddingProductPolynomial]
+  simp only [embeddingProductPolynomial, map_prod, eval_embeddingPolynomial]
 
 /-- The determinant-norm polynomial becomes the product of all embeddings
 after extending coefficients to the ambient Galois field. -/
@@ -310,7 +314,8 @@ theorem map_normPolynomial_eq_embeddingProductPolynomial
         c i = algebraMap K M (d i) :=
           (hd i).symm
         _ = algebraMap K M (b.repr x i) := by
-          simp [x]
+          simp only [Module.Basis.repr_symm_apply, Module.Basis.repr_linearCombination,
+            Finsupp.equivFunOnFinite_symm_apply_apply, x]
     rw [hcoords, eval_embeddingProductPolynomial]
     rw [MvPolynomial.eval_map]
     change MvPolynomial.eval₂ (algebraMap K M)
@@ -379,9 +384,11 @@ theorem eval₂_embeddingPolynomial_baseChange
           Algebra.TensorProduct.basis A b i) := by
         apply Finset.sum_congr rfl
         intro i hi
-        simp [Algebra.TensorProduct.basis_apply,
-          Algebra.TensorProduct.tmul_mul_tmul,
-          Algebra.smul_def]
+        simp only [Algebra.TensorProduct.includeLeft_apply,
+          Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one,
+          one_mul, Algebra.TensorProduct.basis_apply, Algebra.smul_def,
+          Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply,
+          scalarEmbedding_tmul]
     _ = scalarEmbedding A f
         (∑ i,
           ((Algebra.TensorProduct.basis A b).repr x i) •
@@ -416,7 +423,8 @@ theorem includeLeft_norm_eq_prod_scalarEmbeddings
       iL.comp (algebraMap K A) =
         iR.comp (algebraMap K M) := by
     ext t
-    simp [iL, iR]
+    simp only [AlgHom.toRingHom_eq_coe, AlgHom.comp_algebraMap_of_tower,
+      Algebra.TensorProduct.algebraMap_apply, iL, iR]
   have hleft :
       MvPolynomial.eval₂ iR
           (fun i ↦ iL (c i))

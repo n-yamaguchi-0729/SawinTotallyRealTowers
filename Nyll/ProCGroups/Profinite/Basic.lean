@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Profinite.OpenSubgroups
+module
+
+public import Mathlib.Topology.Separation.Connected
+public import Mathlib.Topology.Separation.Regular
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Separation in profinite groups
@@ -12,6 +16,8 @@ import Nyll.ProCGroups.Profinite.OpenSubgroups
 This module proves that an element of a profinite group lying in every open normal subgroup is
 the identity.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise

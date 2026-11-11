@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
-import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
+public import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ProCGroups.ProP.FrattiniPowers
 
 /-!
 # The empty-support Shafarevich radical
@@ -16,6 +20,8 @@ This file defines the field elements whose principal fractional ideals are
 positive powers, quotients them by field powers, and maps the resulting
 radical onto the matching torsion subgroup of the ordinary ideal class group.
 -/
+
+@[expose] public section
 
 open scoped NumberField nonZeroDivisors
 open NumberField IsDedekindDomain
@@ -209,7 +215,7 @@ noncomputable def idealNthPowerRadicalToClassTorsion
   restrictedRadicalQuotientLift n
     (idealNthPowerRadicalKummerSubgroup K n)
     (idealNthRootClassTorsionHom K n)
-    (restrictedNthPowers_le_ker_idealNthRootClassTorsionHom K n)
+    (by exact restrictedNthPowers_le_ker_idealNthRootClassTorsionHom K n)
 
 @[simp]
 theorem idealNthPowerRadicalToClassTorsion_mk

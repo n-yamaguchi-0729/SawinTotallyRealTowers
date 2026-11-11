@@ -9,6 +9,9 @@
     "GaloisCohomology": [
       "Nyll.GaloisCohomology"
     ],
+    "SchemeTheory": [
+      "Nyll.SchemeTheory"
+    ],
     "ClassFieldTheory": [
       "Nyll.ClassFieldTheory"
     ],
@@ -22,8 +25,8 @@
   "roots": [
     "Nyll"
   ],
-  "leanToolchain": "leanprover/lean4:v4.35.0-rc2",
-  "mathlibRevision": "065356127b1dc0016f66b7283ce0ce2c4055aa55",
+  "leanToolchain": "leanprover/lean4:v4.35.0",
+  "mathlibRevision": "56a005855ea17e0b0958f73ec801ae140b0a1679",
   "mathlibRepository": "https://github.com/leanprover-community/mathlib4",
   "externalModuleRoots": [
     "Mathlib",
@@ -49,6 +52,7 @@
     "ProCGroups",
     "ValuedFieldTheory",
     "GaloisCohomology",
+    "SchemeTheory",
     "ClassFieldTheory",
     "SawinTotallyRealTowers"
   ],
@@ -56,6 +60,7 @@
     "ProCGroups": 1,
     "ValuedFieldTheory": 1,
     "GaloisCohomology": 1,
+    "SchemeTheory": 1,
     "ClassFieldTheory": 2,
     "SawinTotallyRealTowers": 3
   },

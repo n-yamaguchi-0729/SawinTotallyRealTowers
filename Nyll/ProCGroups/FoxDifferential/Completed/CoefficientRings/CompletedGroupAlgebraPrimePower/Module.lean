@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.Projection
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Coeff.Projection
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power completed group algebra — module
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   The prime-power completed group-algebra projection on coefficients is computed by the
   corresponding group-algebra coordinate map.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

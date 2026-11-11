@@ -4,26 +4,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgression
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionKernel
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionLinear
-import Nyll.GaloisCohomology.ProP.FiniteTransgressionLinear
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteFamily
-import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteStage
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.ProP.ContinuousH1
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.ZMod
-import Mathlib.Algebra.Module.Defs
-import Mathlib.Algebra.Module.Pi
-import Mathlib.LinearAlgebra.Dimension.Finite
-import Mathlib.LinearAlgebra.LinearIndependent.Defs
-import Mathlib.Topology.Algebra.Group.Basic
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
-import Mathlib.Topology.Instances.ZMod
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgression
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionKernel
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionLinear
+public import Nyll.GaloisCohomology.ProP.FiniteTransgressionLinear
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteFamily
+public import Nyll.ProCGroups.Cohomology.InvariantCharacterFiniteStage
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.ProP.ContinuousH1
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.ZMod
+public import Mathlib.Algebra.Module.Defs
+public import Mathlib.Algebra.Module.Pi
+public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Mathlib.LinearAlgebra.LinearIndependent.Defs
+public import Mathlib.Topology.Algebra.Group.Basic
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Mathlib.Topology.Instances.ZMod
 
 /-!
 # Independent characters of a closed kernel and degree-two cohomology
@@ -32,6 +34,8 @@ A finite independent family of ambient-invariant characters of a closed normal s
 contained in the power--commutator subgroup gives independent classes in the quotient's H².
 No presentation or finite normal generating family is assumed.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

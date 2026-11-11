@@ -4,17 +4,24 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.InfiniteUnitNormSubgroup
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteIntermediateFieldCompositum
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldAction
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusPowerFixedField
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusQuotientDescent
+module
+
+public import Nyll.GaloisCohomology.GroupTheory.RepresentationPowers
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.InfiniteUnitNormSubgroup
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteIntermediateFieldCompositum
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusFixedFieldAction
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusPowerFixedField
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusQuotientDescent
 
 /-!
 Proves the universal norm-descent argument from maximal-unramified units to finite intermediate
 norm subgroups.
 -/
 
+
+@[expose] public section
+
+universe uG uA
 
 namespace ClassFormation
 
@@ -25,10 +32,9 @@ open CyclicCohomology
 noncomputable section
 open CategoryTheory
 open scoped BigOperators
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type uG} [Group G] [TopologicalSpace G]
 namespace ValuationData
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {D : DegreeData G} {A : Rep.{uA} ℤ G}
 
 /-- The universal norm-descent lemma, first descent step: the maximal-unramified norm of `u`
 is represented by a genuine unit over `K`. -/
@@ -54,7 +60,7 @@ theorem universalNormDescent_endpoint_descent
       ∑ i ∈ s,
         (D.frobeniusQuotientAction A K.field L hLK (τ i).1 (uᵢ i).1 -
           (uᵢ i).1)) :
-    letI : Finite
+    let : Finite
         ((D.maximalUnramifiedField K.field).toSubgroup ⧸
           extensionSubgroup (D.maximalUnramifiedField K.field)
             (D.maximalUnramifiedField L)
@@ -65,12 +71,7 @@ theorem universalNormDescent_endpoint_descent
         (D.maximalUnramifiedField_le K.field) aK.1 =
         relativeNorm A (D.maximalUnramifiedField K.field)
           (D.maximalUnramifiedField L) (D.maximalUnramifiedField_mono hLK) u.1 := by
-  let : Finite
-      ((D.maximalUnramifiedField K.field).toSubgroup ⧸
-        extensionSubgroup (D.maximalUnramifiedField K.field)
-          (D.maximalUnramifiedField L)
-          (D.maximalUnramifiedField_mono hLK)) :=
-    D.maximalUnramifiedExtension_finite K.field L hLK
+  intro sharedOwner1
   have hfixed := D.maximalUnramifiedNorm_fixed_of_hstar A
     (K.toFiniteResidueAbstractField D) L hLK
     s φ.1 τ u.1 (fun i => (uᵢ i).1) hstar
@@ -652,7 +653,7 @@ theorem universalNormDescent
       ∑ i ∈ s,
         (D.frobeniusQuotientAction A K.field L hLK (τ i).1 (uᵢ i).1 -
           (uᵢ i).1)) :
-    letI : Finite
+    let : Finite
         ((D.maximalUnramifiedField K.field).toSubgroup ⧸
           extensionSubgroup (D.maximalUnramifiedField K.field)
             (D.maximalUnramifiedField L)
@@ -665,12 +666,7 @@ theorem universalNormDescent
           (D.maximalUnramifiedField L)
           (D.maximalUnramifiedField_mono hLK) u.1 ∧
       aK.1 ∈ v.infiniteUnitNormSubgroup (D.maximalUnramifiedField L) K := by
-  let : Finite
-      ((D.maximalUnramifiedField K.field).toSubgroup ⧸
-        extensionSubgroup (D.maximalUnramifiedField K.field)
-          (D.maximalUnramifiedField L)
-          (D.maximalUnramifiedField_mono hLK)) :=
-    D.maximalUnramifiedExtension_finite K.field L hLK
+  intro sharedOwner1
   obtain ⟨aK, haK⟩ := v.universalNormDescent_endpoint_descent K L hLK φ hφ
     s τ u uᵢ hstar
   refine ⟨aK, haK, ?_⟩

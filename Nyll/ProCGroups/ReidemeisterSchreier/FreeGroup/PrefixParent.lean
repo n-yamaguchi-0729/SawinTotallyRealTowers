@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FreeGroup.Reduce
+module
+
+public import Mathlib.GroupTheory.FreeGroup.Reduce
 
 /-!
 # Reidemeister Schreier / Free Group / Prefix Parent
@@ -13,6 +15,8 @@ This module develops the signed-letter view of reduced free-group words,
 including cancellation at the last letter and the prefix-parent operation
 used to build Schreier prefix trees.
 -/
+
+@[expose] public section
 
 universe u
 

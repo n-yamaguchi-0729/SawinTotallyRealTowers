@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 
 /-!
 # Ramified local character quotient
@@ -12,6 +14,8 @@ import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceU
 Continuous mod-`p` characters of the chosen decomposition group are quotiented by the
 characters trivial on absolute inertia.
 -/
+
+@[expose] public section
 
 open NumberField IsDedekindDomain
 open scoped NumberField

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.PrimitiveElement
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
+module
+
+public import Mathlib.FieldTheory.PrimitiveElement
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableUnitsNorm
 
 /-!
 # Finite local reciprocity: norms from arbitrary finite separable fixed fields
@@ -19,6 +21,8 @@ field, not only over normal ones.  For an intermediate finite separable field
 identification to compare the abstract class-formation coset norm with the ordinary field
 norm, without a normality assumption on `E / K`.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open RamificationTheory KummerTheory
@@ -33,10 +37,12 @@ noncomputable section
 
 open scoped BigOperators
 
-variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
-  [IsGalois K Ω] [IsSepClosed Ω]
-
 section CosetsAndEmbeddings
+
+universe u v
+
+variable (K : Type u) (Ω : Type v) [Field K] [Field Ω] [Algebra K Ω]
+  [IsGalois K Ω] [IsSepClosed Ω]
 
 variable (E : IntermediateField K Ω)
 
@@ -88,7 +94,8 @@ theorem baseFixingCosetToAlgHom_mk
       σ.1.toAlgHom.comp E.val :=
   rfl
 
-private theorem baseFixingCosetToAlgHom_surjective
+/-- Every embedding into the separable closure is represented by a base-fixing coset. -/
+theorem baseFixingCosetToAlgHom_surjective
     [FiniteDimensional K E] [Algebra.IsSeparable K E] :
     Function.Surjective (baseFixingCosetToAlgHom K Ω E) := by
   intro f
@@ -117,7 +124,8 @@ private theorem baseFixingCosetToAlgHom_surjective
   exact hx
 
 omit [IsSepClosed Ω] in
-private theorem baseFixingCosetToAlgHom_injective :
+/-- Two base-fixing cosets with the same embedding are equal. -/
+theorem baseFixingCosetToAlgHom_injective :
     Function.Injective (baseFixingCosetToAlgHom K Ω E) := by
   intro q r hqr
   rw [← Quotient.out_eq q, ← Quotient.out_eq r] at hqr ⊢
@@ -162,6 +170,9 @@ noncomputable instance baseFixingExtensionQuotient_finite_of_isSeparable
   (baseFixingCosetEquivAlgHom K Ω E).finite_iff.mpr inferInstance
 
 end CosetsAndEmbeddings
+
+variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
+  [IsGalois K Ω] [IsSepClosed Ω]
 
 section NormAsProduct
 

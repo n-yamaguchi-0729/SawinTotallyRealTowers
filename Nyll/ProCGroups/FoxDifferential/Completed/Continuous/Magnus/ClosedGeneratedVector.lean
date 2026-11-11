@@ -4,9 +4,21 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FreeProC.FiniteBasis
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
+module
+
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Free.Continuity
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.TopologicalGeneration
+public import Nyll.ProCGroups.FoxDifferential.Common.CrossedDifferential
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.SemidirectLift
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Derivative
+public import Nyll.ProCGroups.FoxDifferential.Completed.Semidirect
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.ProC.Subgroups.Closed
+public import Nyll.ProCGroups.Topologies.TopologicallyCharacteristicSubgroups
 
 /-!
 # Fox Differential / Completed / Continuous Magnus / Closed Generated Vector
@@ -16,6 +28,8 @@ homomorphism, first over pro-\(C\) integers and then over the presented
 coefficient ring.  It also records the closed-generation and Magnus-reduction
 identities used by the completed Magnus injectivity argument.
 -/
+
+@[expose] public section
 
 namespace CrowellExactSequence
 

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Completion.PolynomialFactors
-import Mathlib.FieldTheory.Separable
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Completion.PolynomialFactors
+public import Mathlib.FieldTheory.Separable
 
 /-!
 # Distinct factors of a separable polynomial
@@ -14,6 +16,8 @@ A separable monic polynomial is the product of its distinct normalized
 irreducible factors, and those factors are pairwise coprime.  These are the
 factorization facts used in the Chinese-remainder proof of tensor-product decomposition.
 -/
+
+@[expose] public section
 
 noncomputable section
 

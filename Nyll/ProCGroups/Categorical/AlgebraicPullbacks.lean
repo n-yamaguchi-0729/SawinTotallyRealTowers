@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Category.Grp.Limits
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Defs
+module
+
+public import Mathlib.Algebra.Category.Grp.Limits
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Defs
 
 /-!
 # Pro C Groups / Categorical / Algebraic Pullbacks
@@ -15,6 +17,8 @@ This module develops concrete fiber products of groups, identifies them with
 the categorical pullback in `GrpCat`, and proves comparison and kernel
 criteria for the associated lift maps.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.Categorical
 

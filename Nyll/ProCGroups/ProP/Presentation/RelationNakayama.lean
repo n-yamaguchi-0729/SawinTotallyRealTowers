@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
-import Mathlib.Logic.Equiv.Fin.Basic
+module
+
+public import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
+public import Mathlib.Logic.Equiv.Fin.Basic
+public import Nyll.ProCGroups.FreeProC.FiniteBasis
 
 /-!
 # Irredundant relators in finite pro-p presentations
@@ -15,6 +18,8 @@ omitted without changing the presented group or minimality. A presentation
 realizing the minimal relation rank therefore has an irredundant displayed
 family of relators.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

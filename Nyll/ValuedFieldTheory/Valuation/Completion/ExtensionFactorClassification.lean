@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.Completion.PolynomialFactors
-import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
-import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
-import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.Completion.PolynomialFactors
+public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization
+public import Mathlib.FieldTheory.Minpoly.IsIntegrallyClosed
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
 # Classification of extensions of a completed absolute value
@@ -19,6 +22,8 @@ the completion, of an irreducible polynomial having `α` as a root.  The final
 theorem below also records the explicit pullback valuation and the extension
 of the chosen embedding to the completed field.
 -/
+
+@[expose] public section
 
 noncomputable section
 
@@ -138,7 +143,7 @@ theorem completionExtensionFactor_embeddingSetoid_rel_iff_conjugate
     (CompletionExtensionFactorEmbeddingSetoid vK α hα hgen).r τ τ' ↔
       AbsoluteValueExtensionConjugateOverCompletion vK τ τ' := by
   let pb : PowerBasis K L := PowerBasis.ofAdjoinEqTop hα hgen
-  have hpbgen : pb.gen = α := by simp [pb]
+  have hpbgen : pb.gen = α := PowerBasis.ofAdjoinEqTop_gen hα hgen
   change IsConjRoot vK.Completion (τ α) (τ' α) ↔ _
   constructor
   · intro hconj
@@ -437,14 +442,12 @@ noncomputable def completionExtensionFactor_adjoinRootEquivCompletion
     (α : L) (hα : IsIntegral K α)
     (hgen : Algebra.adjoin K ({α} : Set L) = ⊤)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     AdjoinRoot (completionExtensionFactor_extensionFactor vK α w) ≃ₐ[vK.Completion]
       w.1.Completion := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner1 sharedOwner4
   letI : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   let ι : L →ₐ[K] w.1.Completion :=
@@ -473,15 +476,13 @@ theorem completionExtensionFactor_adjoinRootEquivCompletion_root
     (α : L) (hα : IsIntegral K α)
     (hgen : Algebra.adjoin K ({α} : Set L) = ⊤)
     (w : AbsoluteValueExtension vK L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     completionExtensionFactor_adjoinRootEquivCompletion vK hvK α hα hgen w
         (AdjoinRoot.root (completionExtensionFactor_extensionFactor vK α w)) =
       AbsoluteValue.toCompletionAlgHom (K := K) w.1 α := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   let ι : L →ₐ[K] w.1.Completion :=
@@ -538,15 +539,13 @@ noncomputable def completionExtensionFactor_completionEquivSimpleRoot
     (w : AbsoluteValueExtension vK L)
     (τ : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK)
     (hτ : w.1 = absoluteValueExtension_pullback vK hvK τ) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     w.1.Completion ≃ₐ[vK.Completion]
       IntermediateField.adjoin vK.Completion
         ({τ α} : Set (absoluteValueExtension_algebraicCompletionClosure vK)) := by
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner1 sharedOwner4
   letI : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   have hfactor : completionExtensionFactor_extensionFactor vK α w =
@@ -571,16 +570,14 @@ theorem completionExtensionFactor_completionEquivSimpleRoot_gen
     (w : AbsoluteValueExtension vK L)
     (τ : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK)
     (hτ : w.1 = absoluteValueExtension_pullback vK hvK τ) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     completionExtensionFactor_completionEquivSimpleRoot
         vK hvK α hα hgen w τ hτ
         (AbsoluteValue.toCompletionAlgHom (K := K) w.1 α) =
       IntermediateField.AdjoinSimple.gen vK.Completion (τ α) := by
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro hK sharedOwner2 sharedOwner3
   let : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   let e0 := completionExtensionFactor_adjoinRootEquivCompletion
@@ -616,21 +613,19 @@ theorem completionExtensionFactor_completionEquivSimpleRoot_coe
     (τ : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK)
     (hτ : w.1 = absoluteValueExtension_pullback vK hvK τ)
     (x : L) :
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     ((completionExtensionFactor_completionEquivSimpleRoot
         vK hvK α hα hgen w τ hτ
         (AbsoluteValue.toCompletionAlgHom (K := K) w.1 x) :
       IntermediateField.adjoin vK.Completion
         ({τ α} : Set (absoluteValueExtension_algebraicCompletionClosure vK))) :
       absoluteValueExtension_algebraicCompletionClosure vK) = τ x := by
+  intro hK completionScalar completionAlgebra
   let pb : PowerBasis K L := PowerBasis.ofAdjoinEqTop hα hgen
   let : FiniteDimensional K L := pb.finite
   let : Algebra.IsAlgebraic K L := inferInstance
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
   let : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   let E := IntermediateField.adjoin vK.Completion
@@ -642,7 +637,7 @@ theorem completionExtensionFactor_completionEquivSimpleRoot_coe
     AbsoluteValue.toCompletionAlgHom (K := K) w.1
   let φ : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK :=
     ((E.val.comp e.toAlgHom).restrictScalars K).comp ι
-  have hpbgen : pb.gen = α := by simp [pb]
+  have hpbgen : pb.gen = α := PowerBasis.ofAdjoinEqTop_gen hα hgen
   have hφ : φ = τ := by
     apply pb.algHom_ext
     rw [hpbgen]
@@ -911,18 +906,14 @@ noncomputable def completionExtensionFactor_factorRootCompletionEquiv
       (absoluteValueExtension_algebraicCompletionClosure vK)) :
     let w := completionExtensionFactor_extensionOfFactorRoot
       vK hvK hf hroot hgen g β hβ
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     w.1.Completion ≃ₐ[vK.Completion]
       IntermediateField.adjoin vK.Completion
         ({β} : Set (absoluteValueExtension_algebraicCompletionClosure vK)) := by
   let hα := completionExtensionFactor_root_isIntegral hf hroot
-  let w := completionExtensionFactor_extensionOfFactorRoot
-    vK hvK hf hroot hgen g β hβ
-  letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  letI : SMul K w.1.Completion := hK.toSMul
-  letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+  intro w hK sharedOwner5 sharedOwner6
   have hfactor : completionExtensionFactor_extensionFactor vK α w = g.1 :=
     completionExtensionFactor_extensionOfFactorRoot_factor
       vK hvK hf hroot hgen g β hβ
@@ -949,19 +940,15 @@ theorem completionExtensionFactor_factorRootCompletionEquiv_gen
       (absoluteValueExtension_algebraicCompletionClosure vK)) :
     let w := completionExtensionFactor_extensionOfFactorRoot
       vK hvK hf hroot hgen g β hβ
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     completionExtensionFactor_factorRootCompletionEquiv
         vK hvK hf hroot hgen g β hβ
         (AbsoluteValue.toCompletionAlgHom (K := K) w.1 α) =
       IntermediateField.AdjoinSimple.gen vK.Completion β := by
+  intro w hK completionScalar completionAlgebra
   let hα := completionExtensionFactor_root_isIntegral hf hroot
-  let w := completionExtensionFactor_extensionOfFactorRoot
-    vK hvK hf hroot hgen g β hβ
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
   let e0 := completionExtensionFactor_adjoinRootEquivCompletion
     vK hvK α hα hgen w
   let hpoly : completionExtensionFactor_extensionFactor vK α w =
@@ -1002,26 +989,20 @@ theorem completionExtensionFactor_factorRootCompletionEquiv_coe
       vK hf hroot hgen g β hβ
     let w := completionExtensionFactor_extensionOfFactorRoot
       vK hvK hf hroot hgen g β hβ
-    letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-    letI : SMul K w.1.Completion := hK.toSMul
-    letI := AbsoluteValue.completionAlgebra vK w.1 w.2
+    let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
+    let : SMul K w.1.Completion := hK.toSMul
+    let := AbsoluteValue.completionAlgebra vK w.1 w.2
     ((completionExtensionFactor_factorRootCompletionEquiv
         vK hvK hf hroot hgen g β hβ
         (AbsoluteValue.toCompletionAlgHom (K := K) w.1 x) :
       IntermediateField.adjoin vK.Completion
         ({β} : Set (absoluteValueExtension_algebraicCompletionClosure vK))) :
       absoluteValueExtension_algebraicCompletionClosure vK) = τ x := by
+  intro τ w hK completionScalar completionAlgebra
   let hα := completionExtensionFactor_root_isIntegral hf hroot
   let pb : PowerBasis K L := PowerBasis.ofAdjoinEqTop hα hgen
   let : FiniteDimensional K L := pb.finite
   let : Algebra.IsAlgebraic K L := inferInstance
-  let τ := completionExtensionFactor_embeddingOfFactorRoot
-    vK hf hroot hgen g β hβ
-  let w := completionExtensionFactor_extensionOfFactorRoot
-    vK hvK hf hroot hgen g β hβ
-  let hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
-  let : SMul K w.1.Completion := hK.toSMul
-  let := AbsoluteValue.completionAlgebra vK w.1 w.2
   let : IsScalarTower K vK.Completion w.1.Completion :=
     AbsoluteValue.completion_isScalarTower vK w.1 w.2
   let E := IntermediateField.adjoin vK.Completion
@@ -1033,7 +1014,7 @@ theorem completionExtensionFactor_factorRootCompletionEquiv_coe
     AbsoluteValue.toCompletionAlgHom (K := K) w.1
   let φ : L →ₐ[K] absoluteValueExtension_algebraicCompletionClosure vK :=
     ((E.val.comp e.toAlgHom).restrictScalars K).comp ι
-  have hpbgen : pb.gen = α := by simp [pb]
+  have hpbgen : pb.gen = α := PowerBasis.ofAdjoinEqTop_gen hα hgen
   have hφ : φ = τ := by
     apply pb.algHom_ext
     rw [hpbgen]

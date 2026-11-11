@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalArtinKummerH1Duality
+import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertSymbol
 
 /-!
 # Artin--Kummer local duality at cyclotomic finite places

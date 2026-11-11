@@ -4,8 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Topology.AdicCompletionInverseLimit
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Topology.AdicCompletionInverseLimit
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
+public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
 
 /-!
 # The canonical p-adic action on first principal units
@@ -21,6 +26,8 @@ finite coordinate, and compatibility of reduction transports the action to
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

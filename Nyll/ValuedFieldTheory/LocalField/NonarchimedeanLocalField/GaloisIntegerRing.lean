@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.Galois.IsGaloisGroup
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitActions
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Valuation
+module
+
+public import Mathlib.FieldTheory.Galois.IsGaloisGroup
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitActions
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ResidueExtension
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Valuation
 /-!
 # Galois actions on valuation rings
 
@@ -16,11 +18,13 @@ Restricts Galois automorphisms to valuation rings and transports their action
 to ideals, ideal-power quotients, principal units, and successive quotients.
 -/
 
+@[expose] public section
+
 namespace LocalFieldTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 open scoped ValuativeRel
 
@@ -32,7 +36,7 @@ from a valuation-invariance certificate: integrality is transported by the
 `K`-algebra automorphism, and integral-closure membership brings the element
 back to `𝒪[L]`. -/
 theorem galoisGroup_mem_integerRing_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -50,7 +54,7 @@ theorem galoisGroup_mem_integerRing_of_isIntegralClosure
 /-- Restrict a real Galois automorphism to the valuation integer ring using the
 actual integral-closure property of valuation integer rings. -/
 def galoisGroupIntegerRingEquivOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] (σ : Gal(L/K)) :
@@ -68,7 +72,7 @@ def galoisGroupIntegerRingEquivOfIsIntegralClosure
 valuation ring. -/
 @[simp]
 theorem galoisGroupIntegerRingEquivOfIsIntegralClosure_apply
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -81,7 +85,7 @@ theorem galoisGroupIntegerRingEquivOfIsIntegralClosure_apply
 field. -/
 @[simp]
 theorem galoisGroupIntegerRingEquivOfIsIntegralClosure_symm_apply
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -93,7 +97,7 @@ theorem galoisGroupIntegerRingEquivOfIsIntegralClosure_symm_apply
 /-- Real Galois automorphisms act on `𝒪[L]` through the actual integral-closure
 restriction. -/
 def galoisGroupIntegerRingEquivHomOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
@@ -111,7 +115,7 @@ def galoisGroupIntegerRingEquivHomOfIsIntegralClosure
 integral-closure restriction of `Gal(L / K)`. -/
 @[reducible]
 def galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
@@ -121,7 +125,7 @@ def galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure
 /-- Restriction of a Galois automorphism commutes with the inclusion of the integer ring into the
 field. -/
 theorem galoisGroupIntegerRingEquivOfIsIntegralClosure_integerRingMap
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -135,7 +139,7 @@ theorem galoisGroupIntegerRingEquivOfIsIntegralClosure_integerRingMap
 
 /-- The actual `Gal(L / K)` action on `𝒪[L]` fixes the image of `𝒪[K]`. -/
 theorem galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure_integerRingMap
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -151,13 +155,13 @@ theorem galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure_integerRingMa
 /-- The actual integral-closure action commutes with the canonical
 `𝒪[K]`-scalar action on `𝒪[L]`. -/
 theorem galoisGroupIntegerRingSMulCommClassOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
-    letI := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
     SMulCommClass (Gal(L / K)) 𝒪[K] 𝒪[L] := by
-  let := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+  intro sharedOwner1
   refine ⟨?_⟩
   intro σ x y
   rw [Algebra.smul_def, Algebra.smul_def]
@@ -175,13 +179,13 @@ theorem galoisGroupIntegerRingSMulCommClassOfIsIntegralClosure
 /-- The actual integral-closure action is compatible with the field-level
 `Gal(L / K)` action after coercion to `L`. -/
 theorem galoisGroupIntegerRingFieldSMulDistribClassOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
-    letI := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
     SMulDistribClass (Gal(L / K)) 𝒪[L] L := by
-  let := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+  intro sharedOwner1
   refine ⟨?_⟩
   intro σ r s
   change σ (((r : 𝒪[L]) : L) * s) =
@@ -193,13 +197,13 @@ theorem galoisGroupIntegerRingFieldSMulDistribClassOfIsIntegralClosure
 Galois group.  This is the source-producing version of the ring-level Galois
 input needed for inertia/cardinality arguments. -/
 theorem galoisGroupIntegerRing_isGaloisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L] [IsGalois K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
-    letI := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+    let := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
     IsGaloisGroup (Gal(L / K)) 𝒪[K] 𝒪[L] := by
-  let := galoisGroupIntegerRingMulSemiringActionOfIsIntegralClosure K L
+  intro sharedOwner1
   let := galoisGroupIntegerRingFieldSMulDistribClassOfIsIntegralClosure K L
   let : Algebra.IsIntegral 𝒪[K] 𝒪[L] :=
     IsIntegralClosure.isIntegral_algebra 𝒪[K] L
@@ -208,7 +212,7 @@ theorem galoisGroupIntegerRing_isGaloisGroup_of_isIntegralClosure
 /-- The ideal action induced by the actual integral-closure restriction. -/
 @[reducible]
 def galoisGroupIntegerRingIdealDistribMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
@@ -220,7 +224,7 @@ def galoisGroupIntegerRingIdealDistribMulActionOfIsIntegralClosure
 restriction. -/
 @[reducible]
 def galoisGroupIntegerRingIdealMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
@@ -229,7 +233,7 @@ def galoisGroupIntegerRingIdealMulActionOfIsIntegralClosure
 
 /-- The Galois action on an integral-closure valuation ring preserves its maximal ideal. -/
 theorem galoisGroupIntegerRingAction_map_maximalIdeal_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -248,7 +252,7 @@ theorem galoisGroupIntegerRingAction_map_maximalIdeal_of_isIntegralClosure
 /-- Every Galois automorphism belongs to the stabilizer of the maximal ideal of the integral-closure
 valuation ring. -/
 theorem galoisGroupIntegerRingAction_mem_maximalIdeal_stabilizer_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -267,7 +271,7 @@ theorem galoisGroupIntegerRingAction_mem_maximalIdeal_stabilizer_of_isIntegralCl
 /-- Real Galois automorphisms, viewed inside the maximal-ideal stabilizer, using
 the actual integral-closure restriction. -/
 def galoisGroupMaximalIdealStabilizerHomOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
@@ -286,7 +290,7 @@ def galoisGroupMaximalIdealStabilizerHomOfIsIntegralClosure
 /-- Actual integral-closure real Galois action on the `n`-th principal-unit
 group. -/
 def galoisGroupPrincipalUnitsMapEquivOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -298,7 +302,7 @@ def galoisGroupPrincipalUnitsMapEquivOfIsIntegralClosure
 /-- The induced equivalence on principal units applies the restricted Galois automorphism to the
 underlying unit. -/
 theorem galoisGroupPrincipalUnitsMapEquivOfIsIntegralClosure_apply
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -312,7 +316,7 @@ theorem galoisGroupPrincipalUnitsMapEquivOfIsIntegralClosure_apply
 /-- Integral-closure Galois action on principal units as a group
 homomorphism. -/
 def galoisGroupPrincipalUnitsMapEquivHomOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -329,7 +333,7 @@ def galoisGroupPrincipalUnitsMapEquivHomOfIsIntegralClosure
 
 /-- Integral-closure Galois action on `𝓂_L^n/𝓂_L^(n+1)`. -/
 def galoisGroupMaximalIdealPowSuccQuotMapEquivOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -341,12 +345,12 @@ def galoisGroupMaximalIdealPowSuccQuotMapEquivOfIsIntegralClosure
 /-- The Galois equivalence on a successive maximal-ideal quotient maps the class of a representative
 to the class of its conjugate. -/
 theorem galoisGroupMaximalIdealPowSuccQuotMapEquivOfIsIntegralClosure_mk
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) (σ : Gal(L/K))
-    (a : ((𝓂[L] ^ n : Ideal 𝒪[L]) : Type u)) :
+    (a : ((𝓂[L] ^ n : Ideal 𝒪[L]) : Type v)) :
     galoisGroupMaximalIdealPowSuccQuotMapEquivOfIsIntegralClosure K L n σ
         (maximalIdealPowSuccQuotMk L n a) =
       maximalIdealPowSuccQuotMk L n
@@ -357,7 +361,7 @@ theorem galoisGroupMaximalIdealPowSuccQuotMapEquivOfIsIntegralClosure_mk
 
 /-- Integral-closure Galois action on maximal-ideal graded pieces. -/
 def galoisGroupMaximalIdealPowSuccQuotMapEquivHomOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -399,7 +403,7 @@ def galoisGroupMaximalIdealPowSuccQuotMapEquivHomOfIsIntegralClosure
 packaged as an additive action. -/
 @[reducible]
 def galoisGroupMaximalIdealPowSuccQuotDistribMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -434,7 +438,7 @@ def galoisGroupMaximalIdealPowSuccQuotDistribMulActionOfIsIntegralClosure
 /-- The distributive Galois action on a successive maximal-ideal quotient is computed by conjugating
 representatives. -/
 theorem galoisGroupMaximalIdealPowSuccQuotDistribMulActionOfIsIntegralClosure_smul
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -447,7 +451,7 @@ theorem galoisGroupMaximalIdealPowSuccQuotDistribMulActionOfIsIntegralClosure_sm
 maximal-ideal graded pieces. -/
 @[reducible]
 def galoisGroupMaximalIdealPowSuccQuotMultiplicativeMulDistribMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -492,7 +496,7 @@ def galoisGroupMaximalIdealPowSuccQuotMultiplicativeMulDistribMulActionOfIsInteg
 /-- After multiplicative re-encoding, the Galois action on a maximal-ideal quotient is still induced
 by conjugation. -/
 theorem galoisGroupMaximalIdealPowSuccQuotMultiplicativeMulDistribMulActionOfIsIntegralClosure_smul
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -506,7 +510,7 @@ theorem galoisGroupMaximalIdealPowSuccQuotMultiplicativeMulDistribMulActionOfIsI
 
 /-- Actual integral-closure action on `U^n/U^(n+1)`. -/
 def galoisGroupPrincipalUnitsSuccQuotMapEquivOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -518,7 +522,7 @@ def galoisGroupPrincipalUnitsSuccQuotMapEquivOfIsIntegralClosure
 /-- The Galois equivalence on a successive principal-unit quotient maps each class to the class of
 its conjugate. -/
 theorem galoisGroupPrincipalUnitsSuccQuotMapEquivOfIsIntegralClosure_apply
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -532,7 +536,7 @@ theorem galoisGroupPrincipalUnitsSuccQuotMapEquivOfIsIntegralClosure_apply
 /-- Actual integral-closure real Galois action on successive principal-unit
 quotients as a group homomorphism. -/
 def galoisGroupPrincipalUnitsSuccQuotMapEquivHomOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -556,7 +560,7 @@ quotients, packaged as the multiplicative action required by low-degree
 Herbrand quotients. -/
 @[reducible]
 def galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -589,7 +593,7 @@ def galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure
 /-- The packaged integral-closure action is the quotient map equivalence action
 pointwise. -/
 theorem galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure_smul
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -602,7 +606,7 @@ theorem galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure_
 successive principal-unit quotients. -/
 @[reducible]
 def galoisGroupPrincipalUnitsSuccQuotAddDistribMulActionOfIsIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -657,7 +661,7 @@ def galoisGroupPrincipalUnitsSuccQuotAddDistribMulActionOfIsIntegralClosure
 /-- The additive Galois action on a successive principal-unit quotient is induced by conjugation of
 representatives. -/
 theorem galoisGroupPrincipalUnitsSuccQuotAddDistribMulActionOfIsIntegralClosure_smul
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -671,7 +675,7 @@ theorem galoisGroupPrincipalUnitsSuccQuotAddDistribMulActionOfIsIntegralClosure_
 /-- The comparison from a maximal-ideal quotient to a principal-unit quotient intertwines the Galois
 actions. -/
 theorem principalUnitsSuccQuotOfMaximalIdealPowSuccQuot_galoisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -687,7 +691,7 @@ theorem principalUnitsSuccQuotOfMaximalIdealPowSuccQuot_galoisGroup_of_isIntegra
 /-- The additive comparison between maximal-ideal and principal-unit quotients is Galois
 equivariant. -/
 theorem principalUnitsSuccQuotOfMaximalIdealPowSuccQuotAdd_galoisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -704,7 +708,7 @@ theorem principalUnitsSuccQuotOfMaximalIdealPowSuccQuotAdd_galoisGroup_of_isInte
 /-- Real Galois equivariance of the additive associated-graded comparison,
 with both sides using the packaged additive actions. -/
 theorem maximalIdealPowSuccQuotAddEquivPrincipalUnitsSuccQuot_galoisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -725,7 +729,7 @@ theorem maximalIdealPowSuccQuotAddEquivPrincipalUnitsSuccQuot_galoisGroup_of_isI
 /-- Real Galois equivariance of the multiplicative associated-graded
 comparison, with both sides using the multiplicative packaged actions. -/
 theorem maximalIdealPowSuccQuotMulEquivPrincipalUnitsSuccQuot_galoisGroup_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
@@ -749,7 +753,7 @@ theorem maximalIdealPowSuccQuotMulEquivPrincipalUnitsSuccQuot_galoisGroup_of_isI
 /-- Actual integral-closure first-order expansion of the real Galois product
 attached to a principal-unit representative. -/
 theorem galoisGroup_prod_one_add_sub_one_sub_sum_mem_maximalIdeal_pow_succ_of_isIntegralClosure
-    (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
+    (K : Type u) (L : Type v) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L] [FiniteDimensional K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]

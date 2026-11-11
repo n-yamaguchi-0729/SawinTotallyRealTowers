@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.FiniteAbelianCompositum
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerFixedField
-import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedStandardLevelTransport
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.FiniteAbelianCompositum
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerFixedField
+public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedStandardLevelTransport
 
 /-!
 # The finite standard/changed compositum in the completed p-adic level
@@ -25,6 +27,8 @@ will identify with the actual local Artin symbol.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

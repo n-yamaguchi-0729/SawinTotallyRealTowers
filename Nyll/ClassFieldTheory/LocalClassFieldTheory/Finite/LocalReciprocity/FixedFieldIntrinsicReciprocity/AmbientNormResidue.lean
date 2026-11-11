@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.EmbeddedFrobeniusTransport
-import Mathlib.FieldTheory.Galois.Abelian
-import Mathlib.GroupTheory.Abelianization.Defs
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.EmbeddedFrobeniusTransport
+public import Mathlib.FieldTheory.Galois.Abelian
+public import Mathlib.GroupTheory.Abelianization.Defs
 
 /-!
 # Ambient embedded norm-residue values
@@ -18,6 +20,8 @@ the group itself.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

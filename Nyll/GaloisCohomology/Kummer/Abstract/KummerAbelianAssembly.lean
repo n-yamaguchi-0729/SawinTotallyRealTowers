@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.Abstract.KummerAbelianCyclicFactors
-import Nyll.GaloisCohomology.Kummer.Abstract.KummerFixedField
+module
+
+public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerAbelianCyclicFactors
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerFixedField
 
 /-!
 # finite abelian Kummer theory, the finite abelian Kummer decomposition: assembling cyclic radicals
@@ -17,6 +20,10 @@ a family of such radicals whose subgroups intersect in `G_L` generates the
 abstract field `L` over `K`.
 -/
 
+@[expose] public section
+
+universe u v
+
 namespace KummerTheory
 
 open CyclicCohomology
@@ -25,7 +32,7 @@ open CyclicCohomology
 
 noncomputable section
 
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 /-- Membership in `G_L`, regarded as a subgroup of `G_K`, is the same as
 ambient membership in the closed subgroup `G_L`. -/
@@ -41,7 +48,7 @@ theorem mem_extensionSubgroup_iff
 action after choosing a representative in `G_K`. -/
 @[simp]
 theorem extensionFixedRepresentation_quotient_mk_apply_val
-    (A : Rep ℤ G) (K M : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K M : ClosedSubgroup G)
     (hMK : M.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup (G := G) K M hMK).Normal]
     (a : (extensionFixedRepresentation A K M hMK hnormal).V)
@@ -53,7 +60,7 @@ theorem extensionFixedRepresentation_quotient_mk_apply_val
 /-- If an element of `A_M` has trivial stabilizer under `G_K/G_M`, its
 ambient value is fixed by `k : G_K` exactly when `k` belongs to `G_M`. -/
 theorem extensionFixedRepresentation_val_fixed_iff_mem
-    (A : Rep ℤ G) (K M : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K M : ClosedSubgroup G)
     (hMK : M.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup (G := G) K M hMK).Normal]
     (a : (extensionFixedRepresentation A K M hMK hnormal).V)
@@ -84,7 +91,7 @@ theorem extensionFixedRepresentation_val_fixed_iff_mem
 /-- Quotient-fixedness of the descended global operator says precisely that
 the ambient value `wp(a)` is fixed by `G_K`. -/
 theorem extensionFixedEndomorphism_fixed_val
-    (A : Rep ℤ G) (K M : ClosedSubgroup G)
+    (A : Rep.{v} ℤ G) (K M : ClosedSubgroup G)
     (hMK : M.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup (G := G) K M hMK).Normal]
     (wp : A ⟶ A)
@@ -105,7 +112,7 @@ subgroups intersect in `G_L`.  The generation conclusion is derived from
 the radicals' stabilizers; it is not an input. -/
 theorem closedSetFixingSubgroup_range_extensionFixed_eq
     [IsTopologicalGroup G]
-    (A : Rep ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
+    (A : Rep.{v} ℤ G) (hcontinuous : IsContinuousDiscreteRepresentation A)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     {iota : Type*}
     (M : iota → ClosedSubgroup G)
@@ -162,7 +169,7 @@ pointwise fixing subgroup of `S` is exactly `G_L` (the generation
 `L = K(S)`). -/
 theorem finiteAbelian_globalOperator_generators
     [IsTopologicalGroup G]
-    (A : Rep ℤ G) (hAxiom : SatisfiesCyclicNormKernelVanishing A)
+    (A : Rep.{v} ℤ G) (hAxiom : SatisfiesIntegralCyclicNormKernelVanishing A)
     (hcontinuous : IsContinuousDiscreteRepresentation A)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
     [hnormal : (extensionSubgroup (G := G) K L hLK).Normal]

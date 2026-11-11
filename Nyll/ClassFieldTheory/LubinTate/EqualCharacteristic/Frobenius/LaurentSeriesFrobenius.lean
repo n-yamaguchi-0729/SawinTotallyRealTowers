@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FiniteCoefficientLaurent
-import Mathlib.FieldTheory.Finite.Extension
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.LinearAlgebra.Basis.Basic
-import Mathlib.LinearAlgebra.Dimension.Free
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FiniteCoefficientLaurent
+public import Mathlib.FieldTheory.Finite.Extension
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.LinearAlgebra.Basis.Basic
+public import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # The equal-characteristic completed-unramified construction: finite unramified coefficient
@@ -29,6 +31,8 @@ postulate an abstract unramified extension.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -138,7 +142,8 @@ variable [Field k] [Field l] [Algebra k l]
   {ι : Type*} [Fintype ι]
 
 omit [Fintype ι] in
-private theorem laurentSeriesCoefficientBasis_linearIndependent
+/-- The constant images of a finite coefficient basis are Laurent-linearly independent. -/
+theorem laurentSeriesCoefficientBasis_linearIndependent
     [Finite ι]
     (b : Module.Basis ι k l) :
     LinearIndependent k⸨X⸩
@@ -170,7 +175,8 @@ private theorem laurentSeriesCoefficientBasis_linearIndependent
   exact hrepr i
 
 omit [Fintype ι] in
-private theorem laurentSeriesCoefficientBasis_span
+/-- The constant images of a finite coefficient basis span the coefficientwise extension. -/
+theorem laurentSeriesCoefficientBasis_span
     [Finite ι]
     (b : Module.Basis ι k l) :
     Submodule.span k⸨X⸩
@@ -218,10 +224,10 @@ noncomputable def laurentSeriesCoefficientBasis
 @[simp]
 theorem laurentSeriesCoefficientBasis_apply
     (b : Module.Basis ι k l) (i : ι) :
-    letI : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
+    let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
     laurentSeriesCoefficientBasis b i =
       (HahnSeries.C (Γ := ℤ) (b i) : l⸨X⸩) := by
-  let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
+  intro sharedOwner1
   exact Module.Basis.mk_apply _ _ _
 
 end FiniteBasis
@@ -230,18 +236,18 @@ end FiniteBasis
 extension. -/
 theorem laurentSeriesCoefficient_finiteDimensional
     [Field k] [Field l] [Algebra k l] [FiniteDimensional k l] :
-    letI : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
+    let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
     FiniteDimensional k⸨X⸩ l⸨X⸩ := by
-  let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
+  intro sharedOwner1
   let b : Module.Basis (Fin (Module.finrank k l)) k l := Module.finBasis k l
   exact (laurentSeriesCoefficientBasis b).finiteDimensional_of_finite
 
 /-- Coefficient extension does not change the finite extension degree. -/
 theorem laurentSeriesCoefficient_finrank
     [Field k] [Field l] [Algebra k l] [FiniteDimensional k l] :
-    letI : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
+    let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
     Module.finrank k⸨X⸩ l⸨X⸩ = Module.finrank k l := by
-  let : Algebra k⸨X⸩ l⸨X⸩ := laurentSeriesCoefficientAlgebra
+  intro sharedOwner1
   let b : Module.Basis (Fin (Module.finrank k l)) k l := Module.finBasis k l
   let B := laurentSeriesCoefficientBasis b
   let : FiniteDimensional k⸨X⸩ l⸨X⸩ :=

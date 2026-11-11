@@ -4,11 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
-import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
-import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
-import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.FieldUnits
+public import Nyll.GaloisCohomology.Cyclic.TateComparison
 
 /-!
 # The actual low-degree Tate quotients as Herbrand quotients
@@ -18,6 +22,8 @@ low-degree cyclic cohomology with the Tate objects built from mathlib's actual
 Galois representation on `Lˣ`.  The comparison uses the standard Galois action
 on units; it does not introduce a replacement coefficient object.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 
@@ -30,7 +36,11 @@ open scoped BigOperators
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 open CategoryTheory
 
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
+universe u v
+
+section Quotient
+
+variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
 
 /-- The norm in the actual unit representation is the multiplicative Herbrand
 norm after passing from `Additive Lˣ` back to `Lˣ`. -/
@@ -57,35 +67,20 @@ theorem unitsNormLinearMap_toMul_eq_tateNorm
     _ = tateNorm (Gal(L / K)) Lˣ x := by
       rfl
 
-/-- Multiplicative fixed units and the invariant submodule of the actual unit
-representation are the same additive group. -/
-def additiveFixedUnitsEquivInvariants :
-    Additive (fixedSubgroup (Gal(L / K)) Lˣ) ≃+
-      unitsInvariantSubmodule K L where
-  toFun x := ⟨Additive.ofMul ((Additive.toMul x : fixedSubgroup (Gal(L / K)) Lˣ) : Lˣ), by
-    intro σ
-    exact congrArg Additive.ofMul ((Additive.toMul x).property σ)⟩
-  invFun x := Additive.ofMul ⟨Additive.toMul (x : Additive Lˣ), by
-    intro σ
-    exact Additive.ofMul.injective (x.property σ)⟩
-  left_inv x := rfl
-  right_inv x := rfl
-  map_add' x y := rfl
-
 /-- Compose an additive equivalence with a submodule quotient map.
 
 Keeping this construction polymorphic prevents typeclass search from unfolding
 the concrete Galois representation while it looks for the quotient's additive
 structure. -/
-private def additiveEquivToQuotientHom
-    {A M : Type} [AddCommGroup A] [AddCommGroup M]
+def additiveEquivToQuotientHom
+    {A M : Type*} [AddCommGroup A] [AddCommGroup M]
     (e : A ≃+ M) (N : Submodule ℤ M) : A →+ M ⧸ N :=
   N.mkQ.toAddMonoidHom.comp e.toAddMonoidHom
 
 /-- Multiplicative form of an additive homomorphism, kept polymorphic for the
 same elaboration reason as `additiveEquivToQuotientHom`. -/
-private def additiveHomToMultiplicativeHom
-    {G B : Type} [Group G] [AddCommGroup B]
+def additiveHomToMultiplicativeHom
+    {G B : Type*} [Group G] [AddCommGroup B]
     (f : Additive G →+ B) : G →* Multiplicative B :=
   AddMonoidHom.toMultiplicativeRight f
 
@@ -93,23 +88,23 @@ private def additiveHomToMultiplicativeHom
 This is passed explicitly at concrete call sites to avoid rediscovering it by
 unfolding the coefficient representation. -/
 @[implicit_reducible]
-private def multiplicativeQuotientGroup
-    {M : Type} [AddCommGroup M] (N : Submodule ℤ M) :
+def multiplicativeQuotientGroup
+    {M : Type*} [AddCommGroup M] (N : Submodule ℤ M) :
     Group (Multiplicative (M ⧸ N)) :=
   Multiplicative.group
 
 /-- Kernel of a homomorphism into a multiplicative additive quotient, with the
 codomain structure supplied directly. -/
-private def kernelOfAdditiveQuotientHom
-    {G M : Type} [Group G] [AddCommGroup M]
+def kernelOfAdditiveQuotientHom
+    {G M : Type*} [Group G] [AddCommGroup M]
     (N : Submodule ℤ M) (f : G →* Multiplicative (M ⧸ N)) : Subgroup G :=
   @MonoidHom.ker G inferInstance (Multiplicative (M ⧸ N))
     (multiplicativeQuotientGroup N).toMulOneClass f
 
 /-- First-isomorphism-theorem comparison for a surjection onto a
 multiplicative additive quotient. -/
-private def quotientMulEquivOfSurjectiveAdditiveQuotient
-    {G M : Type} [CommGroup G] [AddCommGroup M]
+def quotientMulEquivOfSurjectiveAdditiveQuotient
+    {G M : Type*} [CommGroup G] [AddCommGroup M]
     (N : Submodule ℤ M) (S : Subgroup G)
     (f : G →* Multiplicative (M ⧸ N))
     (hker : kernelOfAdditiveQuotientHom N f = S)
@@ -122,8 +117,8 @@ private def quotientMulEquivOfSurjectiveAdditiveQuotient
 
 /-- Forget the type tags in an equivalence whose codomain is the
 multiplicative form of an additive group. -/
-private def mulEquivMultiplicativeToEquiv
-    {G B : Type} [Group G] [AddCommGroup B]
+def mulEquivMultiplicativeToEquiv
+    {G B : Type*} [Group G] [AddCommGroup B]
     (e : G ≃* Multiplicative B) : G ≃ B where
   toFun q := Multiplicative.toAdd (e q)
   invFun q := e.symm (Multiplicative.ofAdd q)
@@ -238,6 +233,10 @@ def herbrandH0MulEquivInvariantsNormQuotient
     (fixedUnitToInvariantsNormQuotientMonoidHom_ker K L)
     (fixedUnitToInvariantsNormQuotientMonoidHom_surjective K L)
 
+end Quotient
+
+variable (K L : Type) [Field K] [Field L] [Algebra K L]
+
 /-- The multiplicative Herbrand quotient of field units is mathlib's
 degree-zero Tate cohomology. -/
 def herbrandH0EquivTateCohomologyZero [Fintype (Gal(L/K))] :
@@ -287,6 +286,13 @@ def additiveNormKernelEquivUnitsNormKer [Fintype (Gal(L/K))] :
   right_inv x := rfl
   map_add' x y := rfl
 
+/-- The norm-kernel equivalence preserves the underlying unit. -/
+theorem additiveNormKernelEquivUnitsNormKer_apply_coe [Fintype (Gal(L/K))]
+    (x : Additive (normKernelSubgroup (Gal(L/K)) Lˣ)) :
+    (additiveNormKernelEquivUnitsNormKer K L x : Additive Lˣ) =
+      Additive.ofMul ((Additive.toMul x : normKernelSubgroup (Gal(L/K)) Lˣ) : Lˣ) :=
+  rfl
+
 /-- The actual additive differential `ρ(g)-1`, with codomain restricted to
 the kernel of the norm. -/
 def unitsRhoSubToNormKerLinearMap [Fintype (Gal(L/K))]
@@ -297,7 +303,7 @@ def unitsRhoSubToNormKerLinearMap [Fintype (Gal(L/K))]
       intro x
       change unitsNormLinearMap K L
         ((Rep.ofAlgebraAutOnUnits K L).ρ g x - x) = 0
-      change (Rep.ofAlgebraAutOnUnits K L).norm.hom
+      change (Rep.ofAlgebraAutOnUnits K L).norm.asHom.hom
         ((Rep.ofAlgebraAutOnUnits K L).ρ g x - x) = 0
       rw [map_sub]
       apply sub_eq_zero.mpr
@@ -305,6 +311,13 @@ def unitsRhoSubToNormKerLinearMap [Fintype (Gal(L/K))]
         ((Rep.ofAlgebraAutOnUnits K L).ρ g x) =
           Representation.norm (Rep.ofAlgebraAutOnUnits K L).ρ x
       exact Representation.norm_self_apply (Rep.ofAlgebraAutOnUnits K L).ρ g x)
+
+/-- Restricting the differential's codomain leaves its value unchanged. -/
+theorem unitsRhoSubToNormKerLinearMap_apply_coe [Fintype (Gal(L/K))]
+    (g : Gal(L/K)) (x : Additive Lˣ) :
+    (unitsRhoSubToNormKerLinearMap K L g x : Additive Lˣ) =
+      Sub.sub (α := Additive Lˣ) ((Rep.ofAlgebraAutOnUnits K L).ρ g x) x :=
+  rfl
 
 /-- Additive quotient map from the multiplicative norm kernel to the
 standard boundary presentation of degree-minus-one Tate cohomology. -/
@@ -355,8 +368,7 @@ theorem normKernelToUnitsBoundaryQuotientMonoidHom_ker
     have hy' := congrArg
       (fun z : LinearMap.ker (unitsNormLinearMap K L) =>
         Additive.toMul (z : Additive Lˣ)) hy
-    simp only [unitsRhoSubToNormKerLinearMap,
-      additiveNormKernelEquivUnitsNormKer] at hy'
+    simp only [additiveNormKernelEquivUnitsNormKer_apply_coe] at hy'
     change
       (Additive.toMul ((Rep.ofAlgebraAutOnUnits K L).ρ g y) : Lˣ) *
         (Additive.toMul y)⁻¹ = (x : Lˣ) at hy'
@@ -376,8 +388,7 @@ theorem normKernelToUnitsBoundaryQuotientMonoidHom_ker
     refine ⟨Additive.ofMul y, ?_⟩
     apply Subtype.ext
     apply Additive.toMul.injective
-    simp only [unitsRhoSubToNormKerLinearMap,
-      additiveNormKernelEquivUnitsNormKer]
+    simp only [additiveNormKernelEquivUnitsNormKer_apply_coe]
     change
       (Additive.toMul ((Rep.ofAlgebraAutOnUnits K L).ρ g (Additive.ofMul y)) : Lˣ) * y⁻¹ =
         (x : Lˣ)

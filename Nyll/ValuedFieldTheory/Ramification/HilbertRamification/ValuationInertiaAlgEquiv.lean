@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.BaseChange
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.BaseChange
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
 
 /-!
 # Valuation inertia under algebra equivalences
@@ -12,6 +15,8 @@ import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.BaseChange
 An algebra equivalence transports the ambient copy of valuation-subring inertia to the
 corresponding ambient inertia subgroup for the pulled-back valuation subring.
 -/
+
+@[expose] public section
 
 noncomputable section
 

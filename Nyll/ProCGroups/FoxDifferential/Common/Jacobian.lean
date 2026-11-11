@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.Module.LinearMap.Basic
-import Mathlib.Data.Matrix.Mul
+module
+
+public import Mathlib.Algebra.Module.LinearMap.Basic
+public import Mathlib.Data.Matrix.Mul
 
 /-!
 # Fox differential: common — jacobian
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   The identity Fox-Jacobian evaluates to the Kronecker-delta coefficient at the chosen pair of
   indices.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

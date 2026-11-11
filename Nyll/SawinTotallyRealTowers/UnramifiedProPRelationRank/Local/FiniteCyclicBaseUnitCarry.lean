@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 import Nyll.GaloisCohomology.ProP.FiniteCyclicBarPeriodicH2Comparison
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicUnitsH2PeriodicEvaluation
+import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
 
 /-!
 # Base-unit carry classes in finite cyclic unit cohomology
@@ -70,35 +72,32 @@ theorem finiteCyclicUnitsH2IsoNormQuotient_carry_baseUnit
     (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g)
     (a : Kˣ) :
-    letI := AlgEquiv.fintype K L
+    let := AlgEquiv.fintype K L
     let : IsCyclic (Gal(L / K)) :=
       CyclicCohomology.isCyclic_of_generator g hg
-    letI : CommGroup (Gal(L / K)) := IsCyclic.commGroup
+    let : CommGroup (Gal(L / K)) := IsCyclic.commGroup
     (finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom
         (groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K L)
           (finiteCyclicCarryTwoCocycle (Rep.ofAlgebraAutOnUnits K L)
             g hg (finiteCyclicBaseUnitFixed K L g a))) =
       Additive.ofMul (normClass K L a) := by
-  dsimp only
-  let := AlgEquiv.fintype K L
-  let : IsCyclic (Gal(L / K)) :=
-    CyclicCohomology.isCyclic_of_generator g hg
-  let : CommGroup (Gal(L / K)) := IsCyclic.commGroup
+  intro reusedStructure1 reusedStructure2 reusedStructure3
   let A := Rep.ofAlgebraAutOnUnits K L
   let baseUnitFixed :
       LinearMap.ker (Rep.applyAsHom A g - 𝟙 A).hom.toLinearMap :=
     Eq.mp (by rfl) (finiteCyclicBaseUnitFixed K L g a)
-  change
-    (finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom
-        (groupCohomology.H2π A
-          (finiteCyclicCarryTwoCocycle A g hg baseUnitFixed)) = _
-  rw [H2π_finiteCyclicCarryTwoCocycle]
-  change
-    (finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom
-        (finiteCyclicUnitsH2PeriodicClass K L g hg
-          (finiteCyclicBaseUnitFixed K L g a)) = _
-  rw [finiteCyclicUnitsH2IsoNormQuotient_periodicClass,
-    finiteCyclicGeneratorFixedBaseUnit_baseUnitFixed]
+  let periodic := Rep.FiniteCyclicGroup.groupCohomologyπEven A g hg 2 ⟨1, rfl⟩
+  have hperiodic : periodic baseUnitFixed =
+      finiteCyclicUnitsH2PeriodicClass K L g hg (finiteCyclicBaseUnitFixed K L g a) := by
+    dsimp only [finiteCyclicUnitsH2PeriodicClass]
+    exact congrArg periodic (Subtype.ext rfl)
+  have hcarry := H2π_finiteCyclicCarryTwoCocycle A g hg baseUnitFixed
+  have hnorm := finiteCyclicUnitsH2IsoNormQuotient_periodicClass K L g hg
+    (finiteCyclicBaseUnitFixed K L g a)
+  have hbase := finiteCyclicGeneratorFixedBaseUnit_baseUnitFixed K L g hg a
+  exact (congrArg (fun c => (finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom c)
+    (hcarry.trans hperiodic)).trans
+      (hnorm.trans (congrArg (fun u => Additive.ofMul (normClass K L u)) hbase))
 
 end
 

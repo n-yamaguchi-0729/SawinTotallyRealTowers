@@ -4,29 +4,35 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
-import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
-import Nyll.ValuedFieldTheory.Valuation.Completion.DegreeNormTrace
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Complete
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.FiniteNormExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormula
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaAbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.NormFormulaIntegralClosure
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.RamificationInvariants
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueExtensionCoefficients
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicExtension.UniqueValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completeness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ExponentialValuation
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Ostrowski
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.PrincipalAdicCompleteness
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.SpectralExtension
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.Core
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.ValuationSubring
+public import Nyll.ValuedFieldTheory.Valuation.Completion.DegreeNormTrace
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Complete
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.ExponentialValuations
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ResidueField
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
 
 /-!
 # Local degree, ramification, and residue invariants
@@ -44,6 +50,8 @@ the result.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped BigOperators
@@ -52,7 +60,8 @@ namespace AlgebraicNumberTheory.Valuations
 
 universe u v
 
-private theorem completionNonarchimedean
+/-- Completion preserves the nonarchimedean inequality. -/
+theorem completionNonarchimedean
     {K : Type u} [Field K] (vK : AbsoluteValue K ℝ)
     (hv : LubinTate.Valuations.NonarchimedeanAbsoluteValue vK) :
     LubinTate.Valuations.NonarchimedeanAbsoluteValue
@@ -70,7 +79,7 @@ theorem mem_absoluteValueExponentialSubring_iff
   rw [LubinTate.Valuations.mem_exponentialValuationSubring_iff]
   by_cases hx : x = 0
   · subst x
-    simp [absoluteValueExponentialValuation]
+    simp only [absoluteValueExponentialValuation_apply_zero, le_top, map_zero, zero_le_one]
   · rw [absoluteValueExponentialValuation_apply_ne_zero a ha hx]
     rw [WithTop.coe_nonneg]
     constructor
@@ -154,7 +163,8 @@ theorem mem_absoluteValueExponentialSubring_maximalIdeal_iff
   change (0 : WithTop ℝ) <
       absoluteValueExponentialValuation a ha (x : K) ↔ _
   by_cases hx : (x : K) = 0
-  · simp [hx, absoluteValueExponentialValuation]
+  · rw [hx, absoluteValueExponentialValuation_apply_zero, map_zero]
+    exact iff_of_true (WithTop.coe_lt_top (0 : ℝ)) zero_lt_one
   · exact (LubinTate.Valuations.associatedAbsoluteValue_lt_one_iff
       (absoluteValueExponentialValuation_associated a ha) hx).symm
 
@@ -297,12 +307,11 @@ theorem absoluteValueExtension_nonarchimedean
 theorem completionAbsoluteValue_extends_base
     {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
     (a : AbsoluteValue K ℝ) (w : AbsoluteValueExtension a L) :
-    letI := AbsoluteValue.completionAlgebra a w.1 w.2
+    let := AbsoluteValue.completionAlgebra a w.1 w.2
     AbsoluteValue.Extends
       (AbsoluteValue.completionAbsoluteValue a)
       (AbsoluteValue.completionAbsoluteValue w.1) := by
-  let := AbsoluteValue.completionAlgebra a w.1 w.2
-  intro x
+  intro sharedOwner1 x
   change ‖algebraMap a.Completion w.1.Completion x‖ = ‖x‖
   exact (AbsoluteValue.completionMap_isometry a w.1 w.2).norm_map_of_map_zero
     (map_zero _) x
@@ -348,7 +357,7 @@ theorem completionExponentialSubringMap_square
     (ha : LubinTate.Valuations.NonarchimedeanAbsoluteValue a)
     (hb : LubinTate.Valuations.NonarchimedeanAbsoluteValue b)
     (hExt : AbsoluteValue.Extends a b) :
-    letI := AbsoluteValue.completionAlgebra a b hExt
+    let := AbsoluteValue.completionAlgebra a b hExt
     let v := absoluteValueExponentialValuation a ha
     let w := absoluteValueExponentialValuation b hb
     let aC := AbsoluteValue.completionAbsoluteValue a
@@ -363,7 +372,7 @@ theorem completionExponentialSubringMap_square
     (completionExponentialSubringMap b hb).comp (exponentialValuationRingMap v w hvw) =
       (exponentialValuationRingMap vC wC hvwC).comp
         (completionExponentialSubringMap a ha) := by
-  let := AbsoluteValue.completionAlgebra a b hExt
+  intro sharedOwner1
   apply RingHom.ext
   intro x
   apply Subtype.ext
@@ -377,7 +386,7 @@ theorem completionResidueDegree_eq
     (ha : LubinTate.Valuations.NonarchimedeanAbsoluteValue a)
     (hb : LubinTate.Valuations.NonarchimedeanAbsoluteValue b)
     (hExt : AbsoluteValue.Extends a b) :
-    letI := AbsoluteValue.completionAlgebra a b hExt
+    let := AbsoluteValue.completionAlgebra a b hExt
     let v := absoluteValueExponentialValuation a ha
     let w := absoluteValueExponentialValuation b hb
     let aC := AbsoluteValue.completionAbsoluteValue a
@@ -390,18 +399,7 @@ theorem completionResidueDegree_eq
     let hvwC := absoluteValueExponentialValuation_extends aC bC haC hbC
       (completionAbsoluteValue_extends_base a ⟨b, hExt⟩)
     exponentialResidueDegree v w hvw = exponentialResidueDegree vC wC hvwC := by
-  let := AbsoluteValue.completionAlgebra a b hExt
-  let v := absoluteValueExponentialValuation a ha
-  let w := absoluteValueExponentialValuation b hb
-  let aC := AbsoluteValue.completionAbsoluteValue a
-  let bC := AbsoluteValue.completionAbsoluteValue b
-  let haC := completionNonarchimedean a ha
-  let hbC := completionNonarchimedean b hb
-  let vC := absoluteValueExponentialValuation aC haC
-  let wC := absoluteValueExponentialValuation bC hbC
-  let hvw := absoluteValueExponentialValuation_extends a b ha hb hExt
-  let hvwC := absoluteValueExponentialValuation_extends aC bC haC hbC
-    (completionAbsoluteValue_extends_base a ⟨b, hExt⟩)
+  intro sharedOwner1 v w aC bC haC hbC vC wC hvw hvwC
   let V := LubinTate.Valuations.exponentialValuationSubring v
   let W := LubinTate.Valuations.exponentialValuationSubring w
   let VC := LubinTate.Valuations.exponentialValuationSubring vC
@@ -494,11 +492,7 @@ theorem completionExtensionInvariants_local_identity
     letI := AbsoluteValue.completionAlgebra a w.1 w.2
     Module.finrank a.Completion w.1.Completion =
       exponentialRamificationIndex v wv * exponentialResidueDegree v wv hvw := by
-  let hb := absoluteValueExtension_nonarchimedean a w.1 ha w.2
-  let v := absoluteValueExponentialValuation a ha
-  let wv := absoluteValueExponentialValuation w.1 hb
-  let hvw := absoluteValueExponentialValuation_extends
-    a w.1 ha hb w.2
+  intro hb v wv hvw
   let aC := AbsoluteValue.completionAbsoluteValue a
   let bC := AbsoluteValue.completionAbsoluteValue w.1
   let haC := completionNonarchimedean a ha
@@ -563,7 +557,7 @@ theorem completionExtensionInvariants
     (hdisc : LubinTate.Valuations.DiscreteExponentialValuation
       (absoluteValueExponentialValuation a ha)) :
     let ha0 := absoluteValue_isNontrivial_of_discrete a ha hdisc
-    letI := completionTensorDecomposition_extensionFintype (K := K) (L := L) a ha0
+    let := completionTensorDecomposition_extensionFintype (K := K) (L := L) a ha0
     (∑ w : AbsoluteValueExtension a L,
       let hw := absoluteValueExtension_nonarchimedean a w.1 ha w.2
       let va := absoluteValueExponentialValuation a ha
@@ -572,8 +566,7 @@ theorem completionExtensionInvariants
         a w.1 ha hw w.2
       exponentialRamificationIndex va vw * exponentialResidueDegree va vw hvw) =
         Module.finrank K L := by
-  let ha0 := absoluteValue_isNontrivial_of_discrete a ha hdisc
-  let := completionTensorDecomposition_extensionFintype (K := K) (L := L) a ha0
+  intro ha0 sharedOwner2
   rw [completionDegreeNormTrace_degree (K := K) (L := L) a ha0]
   apply Finset.sum_congr rfl
   intro w _hw

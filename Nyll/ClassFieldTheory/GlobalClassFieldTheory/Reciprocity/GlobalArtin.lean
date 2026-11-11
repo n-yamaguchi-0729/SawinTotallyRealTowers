@@ -4,10 +4,16 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleArtin
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CofinitelySplitFiniteExtension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleArtin
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfinitePlaceArtin
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Cohomology.CofinitelySplitFiniteExtension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # The preliminary global Artin homomorphism
@@ -19,6 +25,8 @@ Artin factors.
 
 
 
+@[expose] public section
+
 open scoped BigOperators IsMulCommutative NumberField
   NumberField.LiesOver
 open NumberField IsDedekindDomain
@@ -26,10 +34,14 @@ open IdeleGroup RelativeIdeleGroup
 
 noncomputable section
 
+universe u v w x
+
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-variable {K L : Type}
+section GeneralMaps
+
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [IsAbelianGalois K L]
@@ -153,14 +165,14 @@ simultaneously at all archimedean and finite places.  The factors are
 indexed by the genuine places upstairs, and use the ordinary LCFT field
 norm on the corresponding completions. -/
 theorem globalArtinMonoidHom_norm_eq_place_products
-    {M : Type}
+    {M : Type w}
     [Field M] [NumberField M] [Algebra K M]
     (a : IdeleGroup M) :
-    letI : ∀ W : InfinitePlace M,
+    let : ∀ W : InfinitePlace M,
         W.1.LiesOver
       (infinitePlaceBelow (K := K) W).1 :=
       fun _ => ⟨rfl⟩
-    letI : ∀ W : HeightOneSpectrum (𝓞 M),
+    let : ∀ W : HeightOneSpectrum (𝓞 M),
         Algebra
           ((finitePlaceBelow
             (K := K) W).adicCompletion K)
@@ -191,21 +203,8 @@ theorem globalArtinMonoidHom_norm_eq_place_products
               (K := K) W).adicCompletion K)
             (W.adicCompletion M)
             (IdeleGroup.finiteComponent W a)) := by
+  intro sharedOwner1 sharedOwner2
   classical
-  let : ∀ W : InfinitePlace M,
-      W.1.LiesOver
-        (infinitePlaceBelow (K := K) W).1 :=
-    fun _ => ⟨rfl⟩
-  let : ∀ W : HeightOneSpectrum (𝓞 M),
-      Algebra
-        ((finitePlaceBelow
-          (K := K) W).adicCompletion K)
-        (W.adicCompletion M) :=
-    fun W =>
-      (finitePlaceAdicCompletionMap
-        K M
-        (finitePlaceBelow (K := K) W)
-        ⟨W, rfl⟩).toAlgebra
   change
     infinitePlaceGlobalArtinMonoidHom
         (K := K) (L := L)
@@ -223,7 +222,7 @@ Artin symbol.  The vertical Galois map is exactly the composite supplied
 by mathlib: first restrict scalars from `K'` to `K`, then restrict the
 automorphism of `L'` to the normal subextension `L`. -/
 theorem restrict_globalArtinMonoidHom_apply
-    {K' L' : Type}
+    {K' : Type w} {L' : Type x}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [Algebra K K'] [Algebra K' L'] [Algebra K L']
@@ -258,7 +257,7 @@ theorem restrict_globalArtinMonoidHom_apply
 diamond `K ⊂ K'`, `L ⊂ L'`, the ordinary idele norm and mathlib's standard
 restriction composite form a commuting square. -/
 theorem globalArtinMonoidHom_norm_restriction
-    {K' L' : Type}
+    {K' : Type w} {L' : Type x}
     [Field K'] [NumberField K']
     [Field L'] [NumberField L']
     [Algebra K K'] [Algebra K' L'] [Algebra K L']
@@ -319,7 +318,7 @@ theorem globalArtinMonoidHom_norm_restriction
 /-- For an abelian tower with fixed base field, the global Artin map
 commutes with the genuine restriction homomorphism. -/
 theorem globalArtinMonoidHom_restrict_tower
-    {E : Type}
+    {E : Type w}
     [Field E] [NumberField E]
     [Algebra K E] [Algebra E L]
     [IsScalarTower K E L]
@@ -460,9 +459,18 @@ theorem finitePlaceDecompositionGroup_le_globalArtinMonoidHom_range
       globalArtinMonoidHom_finitePlaceIdele
         (K := K) (L := L) v x⟩
 
+end GeneralMaps
+
+section NativeSurjectivity
+
+variable {K L : Type}
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [IsAbelianGalois K L]
+
 /-- The actual global Artin homomorphism of a finite abelian extension
 of number fields is surjective. -/
-theorem globalArtinMonoidHom_surjective :
+private theorem globalArtinMonoidHom_surjective_native :
     Function.Surjective
       (globalArtinMonoidHom
         (K := K) (L := L)) := by
@@ -527,6 +535,72 @@ theorem globalArtinMonoidHom_surjective :
         rw [IntermediateField.fixingSubgroup_bot]
   apply MonoidHom.range_eq_top.mp
   simpa only [H] using hHtop
+
+end NativeSurjectivity
+
+/-- The actual global Artin homomorphism is surjective for number fields in
+independent universes. The native proof supplies an idèle over compatible
+small models; the existing norm--restriction square returns a preimage for
+the original local-product Artin map. -/
+theorem globalArtinMonoidHom_surjective
+    {K : Type u} {L : Type v}
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    [IsAbelianGalois K L] :
+    Function.Surjective (globalArtinMonoidHom (K := K) (L := L)) := by
+  let : Small.{0} K := ClassFieldTheory.numberField_small K
+  let : Small.{0} L := ClassFieldTheory.numberField_small L
+  let : NumberField (Shrink.{0} K) := ClassFieldTheory.numberField_shrink K
+  let : NumberField (Shrink.{0} L) := ClassFieldTheory.numberField_shrink L
+  let smallAlgebra : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
+  let : IsAbelianGalois (Shrink.{0} K) (Shrink.{0} L) :=
+    HasseArf.shrink_isAbelianGalois K L
+  let baseAlgebra : Algebra K (Shrink.{0} K) := (Shrink.ringEquiv K).symm.toRingHom.toAlgebra
+  let extensionAlgebra : Algebra L (Shrink.{0} L) := (Shrink.ringEquiv L).symm.toRingHom.toAlgebra
+  let towerAlgebra : Algebra K (Shrink.{0} L) :=
+    ((algebraMap (Shrink.{0} K) (Shrink.{0} L)).comp
+      (Shrink.ringEquiv K).symm.toRingHom).toAlgebra
+  have : @IsScalarTower K (Shrink.{0} K) (Shrink.{0} L)
+      baseAlgebra.toSMul smallAlgebra.toSMul towerAlgebra.toSMul :=
+    @IsScalarTower.of_algebraMap_eq' K (Shrink.{0} K) (Shrink.{0} L)
+      _ _ _ baseAlgebra smallAlgebra towerAlgebra rfl
+  have : @IsScalarTower K L (Shrink.{0} L)
+      (inferInstance : Algebra K L).toSMul extensionAlgebra.toSMul towerAlgebra.toSMul :=
+    @IsScalarTower.of_algebraMap_eq' K L (Shrink.{0} L)
+      _ _ _ _ extensionAlgebra towerAlgebra (HasseArf.shrinkAlgebra_commutes K L)
+  intro σ
+  let τ : Gal(Shrink.{0} L / Shrink.{0} K) :=
+    (HasseArf.shrinkGalEquiv K L).symm σ
+  obtain ⟨a, ha⟩ := globalArtinMonoidHom_surjective_native
+    (K := Shrink.{0} K) (L := Shrink.{0} L) τ
+  refine ⟨IdeleGroup.norm K (Shrink.{0} K) a, ?_⟩
+  have hnorm := DFunLike.congr_fun
+    (globalArtinMonoidHom_norm_restriction
+      (K := K) (L := L) (K' := Shrink.{0} K) (L' := Shrink.{0} L)) a
+  change AlgEquiv.restrictNormalHom L
+      (AlgEquiv.restrictScalarsHom K
+        (globalArtinMonoidHom (K := Shrink.{0} K) (L := Shrink.{0} L) a)) =
+    globalArtinMonoidHom (K := K) (L := L)
+      (IdeleGroup.norm K (Shrink.{0} K) a) at hnorm
+  rw [ha] at hnorm
+  rw [← hnorm]
+  have hrestrict :
+      AlgEquiv.restrictNormalHom L (AlgEquiv.restrictScalarsHom K τ) =
+        HasseArf.shrinkGalEquiv K L τ := by
+    apply AlgEquiv.ext
+    intro z
+    obtain ⟨y, rfl⟩ := (Shrink.ringEquiv L).surjective z
+    rw [HasseArf.shrinkGalEquiv_apply]
+    apply (Shrink.ringEquiv L).symm.injective
+    rw [RingEquiv.symm_apply_apply]
+    have h := AlgEquiv.restrictNormal_commutes
+      (AlgEquiv.restrictScalarsHom K τ) L (Shrink.ringEquiv L y)
+    change (Shrink.ringEquiv L).symm
+        (AlgEquiv.restrictNormalHom L (AlgEquiv.restrictScalarsHom K τ)
+          (Shrink.ringEquiv L y)) =
+      τ ((Shrink.ringEquiv L).symm (Shrink.ringEquiv L y)) at h
+    simpa only [RingEquiv.symm_apply_apply] using h
+  exact hrestrict.trans ((HasseArf.shrinkGalEquiv K L).apply_symm_apply σ)
 
 end Reciprocity
 end GlobalClassFieldTheory

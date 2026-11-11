@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraModN.System.Basic
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.AllFinite.Index
 
 /-!
 # Fox differential: coefficient rings — mod-\(n\) completed group algebra — system — add comm group
@@ -23,6 +26,8 @@ The principal declarations in this module are:
   The inclusion of the mod-\(n\) completed group algebra into the ambient completed group algebra
   preserves addition.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -153,7 +158,7 @@ instance instSMulIntModNCompletedGroupAlgebra : SMul ℤ (ModNCompletedGroupAlge
 
 /-- Each finite mod-\(n\) group-algebra stage carries its standard additive commutative group. -/
 @[reducible]
-private def instAddCommGroupModNCompletedGroupAlgebraStage (U :
+def instAddCommGroupModNCompletedGroupAlgebraStage (U :
     _root_.CompletedGroupAlgebra.CompletedGroupAlgebraIndex G) :
     AddCommGroup ((modNCompletedGroupAlgebraSystem n G).X U) := by
   dsimp [modNCompletedGroupAlgebraSystem, ModNCompletedGroupAlgebraStage]
@@ -165,7 +170,7 @@ The dependent family of finite mod-\(n\) group-algebra stages carries the pointw
 commutative group structure.
 -/
 @[reducible]
-private def instAddCommGroupModNCompletedGroupAlgebraFamily :
+def instAddCommGroupModNCompletedGroupAlgebraFamily :
     AddCommGroup ((i : _root_.CompletedGroupAlgebra.CompletedGroupAlgebraIndex G) →
         (modNCompletedGroupAlgebraSystem n G).X i) :=
   inferInstance

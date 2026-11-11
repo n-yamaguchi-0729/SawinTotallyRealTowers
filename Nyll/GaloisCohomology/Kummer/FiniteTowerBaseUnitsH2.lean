@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.Algebra.Module.LinearMap.Defs
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteCyclicBaseUnitsH2
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.Module.LinearMap.Defs
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 
 /-!
 # Base-unit coefficients along a field tower
@@ -17,6 +19,8 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
 The inclusions Kˣ → Lˣ → Nˣ give an actual equivariant coefficient map
 for Gal(N/L), starting with the trivial action on Kˣ.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 

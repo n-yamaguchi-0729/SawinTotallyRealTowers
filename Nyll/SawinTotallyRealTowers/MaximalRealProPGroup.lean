@@ -4,12 +4,15 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.FiniteRealPExtensionSupport
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.ProCGroups.ProC.InverseLimits.Predicates
-import Nyll.ProCGroups.Profinite.OpenSubgroups
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.SawinTotallyRealTowers.FiniteRealPExtensionSupport
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # The Galois group of the maximal real pro-p compositum
@@ -20,6 +23,8 @@ a quotient of a p-group. Applying this to fixed fields of open normal
 subgroups gives a basis of open normal subgroups with finite p-group
 quotients. The argument applies to `p = 2` as well as odd primes.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain

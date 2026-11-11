@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Common.FreeCrossedDifferential
-import Nyll.ProCGroups.FoxDifferential.Completed.Residue.Core
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Common.FreeCrossedDifferential
+public import Nyll.ProCGroups.FoxDifferential.Completed.Residue.Core
 
 /-!
 # Fox differential: completed — residue — free group — basic
@@ -24,6 +26,8 @@ The principal declarations in this module are:
   Uniqueness of the residue free-group derivative vector among crossed differentials with standard
   coordinate values on free generators.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

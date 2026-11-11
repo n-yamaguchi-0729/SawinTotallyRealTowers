@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
 
 /-!
 # Finite-group sources for Herbrand's theorem
@@ -29,6 +31,8 @@ input is deliberately not packaged here as a hypothesis or data field.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -140,8 +144,9 @@ fibre.  This is the finite-sum reindexing used after choosing a maximal-depth
 representative. -/
 def rightCosetEquivQuotientFiber (σ : G) : H ≃ QuotientFiber H (QuotientGroup.mk' H σ) where
   toFun τ := ⟨σ * τ, by
-    rw [map_mul]
-    simp [(QuotientGroup.eq_one_iff (N := H) (x := (τ : G))).2 τ.property]⟩
+    have hτ : QuotientGroup.mk' H (τ : G) = 1 :=
+      (QuotientGroup.eq_one_iff (N := H) (x := (τ : G))).2 τ.property
+    rw [map_mul, hτ, mul_one]⟩
   invFun γ := ⟨σ⁻¹ * γ, by
     apply (QuotientGroup.eq_one_iff (N := H) (x := σ⁻¹ * (γ : G))).1
     change QuotientGroup.mk' H (σ⁻¹ * (γ : G)) = 1
@@ -166,8 +171,8 @@ theorem sum_quotientFiber_eq_sum_subgroup [Finite G]
     (rightCosetEquivQuotientFiber H σ).symm
     (fun γ : QuotientFiber H (QuotientGroup.mk' H σ) => f (γ : G))
     (fun τ : H => f (σ * τ)) (fun γ => by
-      change f (γ : G) = f (σ * (σ⁻¹ * (γ : G)))
-      rw [mul_inv_cancel_left])
+      simp only [rightCosetEquivQuotientFiber, Equiv.coe_fn_symm_mk,
+        mul_inv_cancel_left])
 
 /-- Partition a finite sum over `G` into the fibres of the quotient map. -/
 theorem sum_quotientFiber [Finite G]
@@ -194,8 +199,9 @@ theorem depth_mul_eq_min_of_maximal_representative
     (τ : H) :
     D.depth (σ * τ) = min (D.depth (τ : G)) (D.depth σ) := by
   have hfiber : QuotientGroup.mk' H (σ * (τ : G)) = QuotientGroup.mk' H σ := by
-    rw [map_mul]
-    simp [(QuotientGroup.eq_one_iff (N := H) (x := (τ : G))).2 τ.property]
+    have hτ : QuotientGroup.mk' H (τ : G) = 1 :=
+      (QuotientGroup.eq_one_iff (N := H) (x := (τ : G))).2 τ.property
+    rw [map_mul, hτ, mul_one]
   rcases lt_trichotomy (D.depth (τ : G)) (D.depth σ) with hlt | heq | hgt
   · simpa [min_comm] using D.depth_mul_eq_min_of_ne hlt.ne'
   · rw [heq, min_self]

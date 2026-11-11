@@ -4,9 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.HenselianValuationBase
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableFixedFieldNorm
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.HenselianValuationBase
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableFixedFieldNorm
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuationExactSequence
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Finite local reciprocity: the norm of an arbitrary finite abstract field
@@ -17,6 +22,8 @@ calculation is stated for their concrete fixed intermediate fields.  This file
 identifies the two presentations.  In particular, it does not assume that the
 finite fixed field is normal over the local ground field.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open RamificationTheory CyclicCohomology KummerTheory ClassFormation
@@ -169,6 +176,14 @@ theorem localBaseValuation_normToBase_abstractFixedFieldUnit
         ((baseFieldUnitsEquiv K).symm a)) = _
   rw [ha]
 
+/-- The residue module of a valued extension is its canonical quotient module. -/
+noncomputable local instance fixedFieldNormResidueModule
+    (k l : Type) [Field k] [Field l] [ValuativeRel k] [ValuativeRel l]
+    [Algebra k l]
+    [Valuation.HasExtension (ValuativeRel.valuation k) (ValuativeRel.valuation l)] :
+    Module 𝓀[k] 𝓀[l] :=
+  inferInstance
+
 /-- For an arbitrary finite separable abstract field, the image of the
 base valuation after the abstract class-formation norm is exactly the actual residue-degree
 multiple of the base value group. -/
@@ -230,7 +245,9 @@ theorem localBaseValuation_comp_normToBase_range_eq_residueFinrank
           (f : Int) *
             LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap
               (abstractFixedField K (SeparableClosure K) H) x := by
-      exact hnorm
+      simpa only [f, fixedFieldNormResidueModule,
+        LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
+        ofMul_toMul] using hnorm
     rw [hnorm', mem_nsmulImage_iff]
     refine ⟨Int.castRingHom ZHat
         (LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap
@@ -266,7 +283,9 @@ theorem localBaseValuation_comp_normToBase_range_eq_residueFinrank
           (f : Int) *
             LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap
               (abstractFixedField K (SeparableClosure K) H) x := by
-      exact hnorm
+      simpa only [f, fixedFieldNormResidueModule,
+        LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
+        ofMul_toMul] using hnorm
     rw [hnorm', hx]
     calc
       Int.castRingHom ZHat

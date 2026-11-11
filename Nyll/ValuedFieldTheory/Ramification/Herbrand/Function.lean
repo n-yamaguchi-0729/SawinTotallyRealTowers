@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
-import Mathlib.Algebra.Order.Floor.Ring
-import Mathlib.Topology.Order.MonotoneContinuity
-import Mathlib.Algebra.Order.Archimedean.Real.Basic
-import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
+public import Mathlib.Algebra.Order.Floor.Ring
+public import Mathlib.Topology.Order.MonotoneContinuity
+public import Mathlib.Algebra.Order.Archimedean.Real.Basic
+public import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 
 /-!
 # The Herbrand function
@@ -25,6 +27,8 @@ its restriction to `[-1,∞)` is exactly the normalized function on this range.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -146,12 +150,12 @@ theorem herbrandFunction_of_nonpos {s : ℝ} (hs : s ≤ 0) :
   rcases hs.eq_or_lt with rfl | hs
   · simp [herbrandFunction]
   · have hns : ¬ 0 ≤ s := not_le.mpr hs
-    simp [herbrandFunction, hns]
+    simp only [herbrandFunction, hns, ↓reduceIte]
 
 omit [Finite G] in
 /-- States the theorem `herbrandFunction_zero`. -/
 @[simp] theorem herbrandFunction_zero : (herbrandFunction F) 0 = 0 := by
-  simp [herbrandFunction]
+  exact herbrandFunction_of_nonpos F (le_refl (0 : ℝ))
 
 omit [Finite G] in
 /-- States the theorem `herbrandFunction_neg_one`. -/
@@ -172,6 +176,7 @@ omit [Finite G] in
     (herbrandFunction F) (n : ℝ) = (herbrandValueNat F) n := by
   simp [herbrandFunction]
 
+omit [Finite G] in
 /-- The first Herbrand value is the ratio of the first two lower-group orders. -/
 theorem herbrandFunction_one_eq :
     (herbrandFunction F) 1 =

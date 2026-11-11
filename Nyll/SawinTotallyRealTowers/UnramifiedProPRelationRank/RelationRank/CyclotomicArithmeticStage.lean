@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedCompositumBaseChange
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedCompositumBaseChange
 
 /-!
 # The actual cyclotomic base change of an unramified arithmetic stage
@@ -23,6 +25,8 @@ All instance choices are local and named. There is one new algebra
 structure, the inclusion L → C L, and one matching original-base tower;
 the C → C L tower is the canonical intermediate-field tower.
 -/
+
+@[expose] public section
 
 noncomputable section
 

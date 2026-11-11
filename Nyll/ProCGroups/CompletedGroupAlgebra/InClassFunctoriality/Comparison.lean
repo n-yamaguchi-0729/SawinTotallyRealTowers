@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.GroupLike
-import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.InClassFunctoriality.GroupLike
+public import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
 
 /-!
 # Comparison maps for in-class completions
@@ -14,6 +16,8 @@ This file computes the canonical maps between all-finite and in-class completed 
 group-like elements and their differences from one. It also records the corresponding formulas
 for functorial maps and restricted scalar actions.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

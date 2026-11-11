@@ -4,15 +4,17 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Algebra.BigOperators.Fin
-import Mathlib.Algebra.Group.Even
-import Mathlib.Data.Fin.SuccPred
-import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
-import Mathlib.LinearAlgebra.Basis.Defs
-import Mathlib.LinearAlgebra.Dimension.Free
-import Mathlib.RingTheory.Adjoin.PowerBasis
-import Mathlib.RingTheory.PowerBasis
-import Mathlib.Tactic.LinearCombination
+module
+
+public import Mathlib.Algebra.BigOperators.Fin
+public import Mathlib.Algebra.Group.Even
+public import Mathlib.Data.Fin.SuccPred
+public import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
+public import Mathlib.LinearAlgebra.Basis.Defs
+public import Mathlib.LinearAlgebra.Dimension.Free
+public import Mathlib.RingTheory.Adjoin.PowerBasis
+public import Mathlib.RingTheory.PowerBasis
+public import Mathlib.Tactic.LinearCombination
 
 /-!
 # Square classes that become squares in a quadratic extension
@@ -23,6 +25,8 @@ trivial or that of `a`. The basis `1, α` makes the cross coefficient of
 a square explicit. In characteristic different from two, that coefficient
 vanishes only when one of the two coordinates vanishes.
 -/
+
+@[expose] public section
 
 universe u v
 

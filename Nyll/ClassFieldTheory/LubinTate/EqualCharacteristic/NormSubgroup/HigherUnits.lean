@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.DivisionModuleEndomorphisms
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FormalModule.DivisionModuleEndomorphisms
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.Existence.LaurentLocalField
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
 /-!
 # LubinTate the explicit norm-subgroup computation: higher units in the Laurent-series model
@@ -19,6 +22,8 @@ unit group is `U^(n+1)`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -41,65 +46,44 @@ private theorem ringEquiv_map_maximalIdeal
     {R S : Type*} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) :
     Ideal.map e.toRingHom (IsLocalRing.maximalIdeal R) =
-      IsLocalRing.maximalIdeal S := by
-  apply le_antisymm
-  · rw [Ideal.map_le_iff_le_comap]
-    intro x hx
-    change e x ∈ IsLocalRing.maximalIdeal S
-    rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at hx ⊢
-    intro h
-    have h' := h.map e.symm.toRingHom
-    exact hx (by simpa using h')
-  · intro y hy
-    obtain ⟨x, rfl⟩ := e.surjective y
-    apply Ideal.mem_map_of_mem
-    rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff] at hy ⊢
-    intro h
-    exact hy (h.map e.toRingHom)
+      IsLocalRing.maximalIdeal S :=
+  ValuationTheory.ringEquiv_map_maximalIdeal e
 
 private theorem ringEquiv_map_maximalIdeal_pow
     {R S : Type*} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) :
     Ideal.map e.toRingHom (IsLocalRing.maximalIdeal R ^ n) =
-      IsLocalRing.maximalIdeal S ^ n := by
-  rw [Ideal.map_pow, ringEquiv_map_maximalIdeal]
+      IsLocalRing.maximalIdeal S ^ n :=
+  ValuationTheory.ringEquiv_map_maximalIdeal_pow e n
 
 private theorem ringEquiv_mem_maximalIdeal_pow_iff
     {R S : Type*} [CommRing R] [CommRing S]
     [IsLocalRing R] [IsLocalRing S] (e : R ≃+* S) (n : ℕ) (x : R) :
     e x ∈ IsLocalRing.maximalIdeal S ^ n ↔
-      x ∈ IsLocalRing.maximalIdeal R ^ n := by
-  rw [← ringEquiv_map_maximalIdeal_pow e n]
-  constructor
-  · intro hx
-    rcases (Ideal.mem_map_iff_of_surjective e.toRingHom e.surjective).1 hx with
-      ⟨y, hy, hey⟩
-    exact e.injective hey ▸ hy
-  · exact Ideal.mem_map_of_mem e.toRingHom
+      x ∈ IsLocalRing.maximalIdeal R ^ n :=
+  ValuationTheory.ringEquiv_mem_maximalIdeal_pow_iff e n x
 
 /-- The genuine equivalence between power-series units and the units of the
 canonical integer ring of the Laurent-series field. -/
 noncomputable def equalCharacteristicPowerSeriesUnitsEquivLaurentInteger
     (k : Type u) [Field k] :
-    letI : ValuativeRel k⸨X⸩ := ValuativeRel.ofValuation
+    let : ValuativeRel k⸨X⸩ := ValuativeRel.ofValuation
       (Valued.v : Valuation k⸨X⸩ ℤᵐ⁰)
     k⟦X⟧ˣ ≃* 𝒪[k⸨X⸩]ˣ := by
-  letI : ValuativeRel k⸨X⸩ := ValuativeRel.ofValuation
-    (Valued.v : Valuation k⸨X⸩ ℤᵐ⁰)
+  intro sharedOwner1
   exact Units.mapEquiv
     (powerSeriesEquivLaurentValuativeInteger k).toMulEquiv
 
 /-- States the theorem `equalCharacteristicPowerSeriesUnitsEquivLaurentInteger_mem_iff`. -/
 theorem equalCharacteristicPowerSeriesUnitsEquivLaurentInteger_mem_iff
     (k : Type u) [Field k] (n : ℕ) (a : k⟦X⟧ˣ) :
-    letI : ValuativeRel k⸨X⸩ := ValuativeRel.ofValuation
+    let : ValuativeRel k⸨X⸩ := ValuativeRel.ofValuation
       (Valued.v : Valuation k⸨X⸩ ℤᵐ⁰)
     equalCharacteristicPowerSeriesUnitsEquivLaurentInteger k a ∈
         principalUnits k⸨X⸩ n ↔
       (a : k⟦X⟧) - 1 ∈
         Ideal.span ({PowerSeries.X ^ n} : Set k⟦X⟧) := by
-  let : ValuativeRel k⸨X⸩ := ValuativeRel.ofValuation
-    (Valued.v : Valuation k⸨X⸩ ℤᵐ⁰)
+  intro sharedOwner1
   rw [mem_principalUnits_iff]
   change powerSeriesEquivLaurentValuativeInteger k
       (a : k⟦X⟧) - 1 ∈
@@ -114,14 +98,13 @@ theorem equalCharacteristicPowerSeriesUnitsEquivLaurentInteger_mem_iff
 principal-unit group `U^(n+1)` under the integer-unit equivalence. -/
 theorem equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_principalUnits
     (F : LocalField.{u, v} K) (n : ℕ) :
-    letI : ValuativeRel F.residueField⸨X⸩ :=
+    let : ValuativeRel F.residueField⸨X⸩ :=
       equalCharacteristicLaurentValuativeRel F
     (equalCharacteristicLubinTateHigherUnitSubgroup F n).map
         (equalCharacteristicPowerSeriesUnitsEquivLaurentInteger
           F.residueField).toMonoidHom =
       principalUnits F.residueField⸨X⸩ (n + 1) := by
-  let : ValuativeRel F.residueField⸨X⸩ :=
-    equalCharacteristicLaurentValuativeRel F
+  intro sharedOwner1
   let E := equalCharacteristicPowerSeriesUnitsEquivLaurentInteger
     F.residueField
   ext u
@@ -146,15 +129,14 @@ theorem equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_principalUnits
 unit kernel is the canonical field subgroup `U^(n+1)`. -/
 theorem equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_fieldPrincipalUnits
     (F : LocalField.{u, v} K) (n : ℕ) :
-    letI : ValuativeRel F.residueField⸨X⸩ :=
+    let : ValuativeRel F.residueField⸨X⸩ :=
       equalCharacteristicLaurentValuativeRel F
     ((equalCharacteristicLubinTateHigherUnitSubgroup F n).map
         (equalCharacteristicPowerSeriesUnitsEquivLaurentInteger
           F.residueField).toMonoidHom).map
         (integerUnitsToFieldUnits F.residueField⸨X⸩) =
       LocalFieldTheory.fieldPrincipalUnits F.residueField⸨X⸩ (n + 1) := by
-  let : ValuativeRel F.residueField⸨X⸩ :=
-    equalCharacteristicLaurentValuativeRel F
+  intro sharedOwner1
   rw [equalCharacteristicLubinTateHigherUnitSubgroup_map_eq_principalUnits]
   rfl
 

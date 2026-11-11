@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Uniqueness.Derivative
-import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.Uniqueness.Derivative
+public import Nyll.ProCGroups.FoxDifferential.Completed.Continuous.Topology
 
 /-!
 # Fox differential: completed — continuous — free — continuity
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `continuous_freeProCZCCompletedFoxRightHom`
   The target-group component of the free pro-\(C\) completed Fox semidirect lift is continuous.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

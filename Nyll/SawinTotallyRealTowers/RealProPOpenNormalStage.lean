@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Nyll.ProCGroups.Profinite.OpenSubgroups
+module
+
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Finite arithmetic stages of the real pro-p compositum
@@ -17,6 +19,8 @@ Lifting it to the chosen algebraic closure gives an admissible finite layer.
 The quotient is identified with that layer's Galois group. No rank estimate,
 finite presentation, or infiniteness hypothesis enters this construction.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField IsDedekindDomain
@@ -78,7 +82,8 @@ theorem openNormalQuotientEquivFiniteGaloisField_apply
   rw [InfiniteGalois.normalAutEquivQuotient_apply]
   exact AlgEquiv.restrictNormalHom_apply (IntermediateField.fixedField Uc.toSubgroup) σ x
 
-private local instance realCompositumGalois
+/-- The original real compositum is Galois, for local stage construction. -/
+public local instance realCompositumGalois
     (p : ℕ) (T : Set (HeightOneSpectrum (𝓞 ℚ))) :
     IsGalois ℚ (maximalRealProPOutside p T) := maximalRealProPOutside_isGalois p T
 

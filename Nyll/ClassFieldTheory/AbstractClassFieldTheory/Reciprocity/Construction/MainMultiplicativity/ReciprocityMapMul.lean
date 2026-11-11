@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ConjugatePrimeNorm
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusPowerSumRelation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.NormClassRelation
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FiniteStageCorrections
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.CorrectionSum
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ChosenDegreeOneFrobenius
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.ConjugatePrimeNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FrobeniusPowerSumRelation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.NormClassRelation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.FiniteStageCorrections
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainMultiplicativity.CorrectionSum
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.ChosenDegreeOneFrobenius
 
 /-!
 # Multiplicativity of the abstract reciprocity map
@@ -20,7 +22,9 @@ sum, and universal norm-descent results into reciprocity-map multiplicativity.
 
 
 
-universe u
+@[expose] public section
+
+universe u uA
 
 namespace ClassFormation
 
@@ -34,11 +38,7 @@ open scoped BigOperators
 
 section reciprocityMapMultiplicativity
 
-/-!
-Mathlib's `Rep ℤ G` requires its coefficient ring and acting group in the
-same universe, so this representation-bearing portion has `G : IntegralRepGroupType`.
--/
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace DegreeData
 
@@ -49,7 +49,7 @@ This is the endpoint of the calculation: the
 group-ring identity `(*)` supplies the hypothesis of the universal norm-descent lemma, whose
 universal-unit norm descends the resulting norm relation to `K`. -/
 theorem reciprocityMap_mul
-    (D : DegreeData G) (A : Rep ℤ G) (v : ValuationData D A)
+    (D : DegreeData G) (A : Rep.{uA} ℤ G) (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G]
     (hAxiom : v.SatisfiesUnramifiedUnitCohomology D)
@@ -110,17 +110,17 @@ theorem reciprocityMap_mul
   let Sigma2 : FiniteAbstractField G := ⟨S2, hS2absolute⟩
   let Sigma3 : FiniteAbstractField G := ⟨S3, hS3absolute⟩
   let pi1 : ambientFixedAddSubgroup A S1 := by
-    simpa [Sigma1] using v.chosenPrimeElement Sigma1
+    simpa only [Sigma1] using v.chosenPrimeElement Sigma1
   let pi2 : ambientFixedAddSubgroup A S2 := by
-    simpa [Sigma2] using v.chosenPrimeElement Sigma2
+    simpa only [Sigma2] using v.chosenPrimeElement Sigma2
   let pi3 : ambientFixedAddSubgroup A S3 := by
-    simpa [Sigma3] using v.chosenPrimeElement Sigma3
+    simpa only [Sigma3] using v.chosenPrimeElement Sigma3
   have hpi1 : v.IsPrimeElement Sigma1 pi1 := by
-    simpa [Sigma1, pi1] using v.chosenPrimeElement_isPrime Sigma1
+    simpa only [Sigma1, pi1] using v.chosenPrimeElement_isPrime Sigma1
   have hpi2 : v.IsPrimeElement Sigma2 pi2 := by
-    simpa [Sigma2, pi2] using v.chosenPrimeElement_isPrime Sigma2
+    simpa only [Sigma2, pi2] using v.chosenPrimeElement_isPrime Sigma2
   have hpi3 : v.IsPrimeElement Sigma3 pi3 := by
-    simpa [Sigma3, pi3] using v.chosenPrimeElement_isPrime Sigma3
+    simpa only [Sigma3, pi3] using v.chosenPrimeElement_isPrime Sigma3
   obtain ⟨pi4, hpi4, hnorm42⟩ :=
     D.exists_primeElement_frobeniusActionConjugate_norm_eq A v K L hLK
       phi sigma2 m pi2 hpi2
@@ -165,7 +165,7 @@ theorem reciprocityMap_mul
     exact hmem
   have huMem : u ∈ v.infiniteUnitAddSubgroup E K
       (D.maximalUnramifiedField_le_of_le hLK) := by
-    simpa [u, p1, p3, p4, E, S1, S3, S4, sigma3, sigma4, m,
+    simpa only [u, p1, p3, p4, E, S1, S3, S4, sigma3, sigma4, m,
       pi1, pi3] using
       D.frobeniusPowerSum_alternating_mem_infiniteUnitAddSubgroup
         A v K L hLK phi sigma1 sigma2 pi1 pi3 pi4 hpi1 hpi3 hpi4
@@ -175,7 +175,7 @@ theorem reciprocityMap_mul
   let tau : Fin 3 →
       (D.extensionNormalizedDegreeContinuous KR L hLK).toMonoidHom.ker :=
     fun i ↦ ⟨frobeniusMultiplicativityCorrectionAction tau1 tau4 i, by
-      simpa [tau1, tau4, sigma4, m] using hactionMem i⟩
+      simpa only [tau1, tau4, sigma4, m] using hactionMem i⟩
   let uU : v.infiniteUnitAddSubgroup E K
       (D.maximalUnramifiedField_le_of_le hLK) := ⟨u, huMem⟩
   let uiU : Fin 3 → v.infiniteUnitAddSubgroup E K
@@ -204,7 +204,7 @@ theorem reciprocityMap_mul
       (D.frobeniusQuotientAction A KR.field L hLK tau4 p4 - p4) +
       (D.frobeniusQuotientAction A KR.field L hLK tau1 p1 - p1) +
       (p3 - D.frobeniusQuotientAction A KR.field L hLK (tau4 * tau1) p3) by
-        simpa [u, p1, p3, p4, tau1, tau4, sigma3, sigma4, m,
+        simpa only [u, p1, p3, p4, tau1, tau4, sigma3, sigma4, m,
           E, S1, S3, S4, pi1, pi3] using hraw]
     simpa only [tau, uiU, correction, B,
       D.frobeniusQuotientRepresentation_apply] using hdiff
@@ -236,13 +236,13 @@ theorem reciprocityMap_mul
         D.maximalUnramifiedNormClass A K.field L r2 =
           D.maximalUnramifiedNormClass A K.field L r3 := by
     have hr42 : r4 = r2 := by
-      simpa [r4, r2, S4, S2, sigma4, m] using hnorm42
+      simpa only [r4, r2, S4, S2, sigma4, m] using hnorm42
     rw [← hr42, add_comm]
     exact hclasses41
   apply D.reciprocityMap_mul_of_primeNormClass_eq
     A v hAxiom K L hLK sigma1 sigma2 pi1 pi2 pi3
       hpi1 hpi2 hpi3
-  simpa [r1, r2, r3, E, S1, S2, S3, sigma3, pi1, pi2, pi3]
+  simpa only [r1, r2, r3, E, S1, S2, S3, sigma3, pi1, pi2, pi3]
     using hclasses12
 
 end DegreeData

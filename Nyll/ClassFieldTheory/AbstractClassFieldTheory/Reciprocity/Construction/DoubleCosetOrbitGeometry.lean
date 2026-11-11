@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
-import Mathlib.GroupTheory.DoubleCoset
-import Mathlib.GroupTheory.GroupAction.Quotient
-import Mathlib.Topology.Algebra.Group.ClosedSubgroup
-import Mathlib.Topology.Algebra.Group.SubmonoidClosure
+module
+
+public import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
+public import Mathlib.GroupTheory.DoubleCoset
+public import Mathlib.GroupTheory.GroupAction.Quotient
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Mathlib.Topology.Algebra.Group.SubmonoidClosure
 
 /-!
 # Orbit quotients and double-coset geometry
@@ -20,6 +22,8 @@ topological closure.  It has no class-formation or field-theoretic input.
 -/
 
 
+
+@[expose] public section
 
 universe u
 
@@ -56,7 +60,7 @@ noncomputable def orbitQuotientEquivDoubleCoset
         QuotientGroup.eq.mp hcoset
       refine ⟨s.1, s.2, (q₁.out⁻¹ * (s.1 * q₂.out))⁻¹,
         H.inv_mem hh, ?_⟩
-      simp [mul_assoc])
+      simp only [mul_inv_rev, inv_inv, mul_assoc, mul_inv_cancel_left])
   invFun z := Quotient.liftOn' z
     (fun x => Quotient.mk'' (QuotientGroup.mk x : Q ⧸ H)) (by
       intro x y hxy
@@ -128,7 +132,7 @@ noncomputable def doubleCosetInversionEquiv
       obtain ⟨s, hs, h, hh, rfl⟩ := hxy
       apply DoubleCoset.eq.mpr
       exact ⟨h⁻¹, H.inv_mem hh, s⁻¹, S.inv_mem hs,
-        by simp [mul_assoc]⟩)
+        by simp only [mul_assoc, mul_inv_rev]⟩)
   invFun z := Quotient.liftOn' z
     (fun x => DoubleCoset.mk S H x⁻¹) (by
       intro x y hxy
@@ -136,7 +140,7 @@ noncomputable def doubleCosetInversionEquiv
       obtain ⟨h, hh, s, hs, rfl⟩ := hxy
       apply DoubleCoset.eq.mpr
       exact ⟨s⁻¹, S.inv_mem hs, h⁻¹, H.inv_mem hh,
-        by simp [mul_assoc]⟩)
+        by simp only [mul_assoc, mul_inv_rev]⟩)
   left_inv z := by
     refine Quotient.inductionOn' z ?_
     intro x
@@ -147,6 +151,14 @@ noncomputable def doubleCosetInversionEquiv
     intro x
     change DoubleCoset.mk H S (x⁻¹)⁻¹ = DoubleCoset.mk H S x
     rw [inv_inv]
+
+/-- Inversion sends a represented double coset to the double coset of its inverse. -/
+@[simp]
+theorem doubleCosetInversionEquiv_mk
+    {Q : Type u} [Group Q] (S H : Subgroup Q) (x : Q) :
+    doubleCosetInversionEquiv S H (DoubleCoset.mk S H x) =
+      DoubleCoset.mk H S x⁻¹ :=
+  rfl
 
 /-- Orbit sets on the two quotient spaces are exchanged by inversion.
 This is the reindexing between the transfer and norm double-coset
@@ -168,22 +180,9 @@ theorem orbitQuotientSwapEquiv_mk
     orbitQuotientSwapEquiv S H
         (Quotient.mk'' (QuotientGroup.mk x : Q ⧸ H)) =
       Quotient.mk'' (QuotientGroup.mk x⁻¹ : Q ⧸ S) := by
-  change (orbitQuotientEquivDoubleCoset H S).symm
-      (doubleCosetInversionEquiv S H
-        (orbitQuotientEquivDoubleCoset S H
-          (Quotient.mk'' (QuotientGroup.mk x : Q ⧸ H)))) = _
-  unfold orbitQuotientEquivDoubleCoset doubleCosetInversionEquiv
-  simp only [Equiv.coe_fn_mk, Quotient.liftOn'_mk'', Equiv.coe_fn_symm_mk]
-  let u : Q := Quotient.out (QuotientGroup.mk x : Q ⧸ H)
-  have hu : u⁻¹ * x ∈ H := by
-    apply QuotientGroup.eq.mp
-    exact Quotient.out_eq' (QuotientGroup.mk x : Q ⧸ H)
-  apply Quotient.sound'
-  rw [orbitRel_apply, mem_orbit_iff]
-  refine ⟨⟨u⁻¹ * x, hu⟩, ?_⟩
-  change QuotientGroup.mk ((u⁻¹ * x) * x⁻¹) =
-    (QuotientGroup.mk u⁻¹ : Q ⧸ S)
-  simp [mul_assoc]
+  simp only [orbitQuotientSwapEquiv, Equiv.trans_apply,
+    orbitQuotientEquivDoubleCoset_mk, doubleCosetInversionEquiv_mk,
+    orbitQuotientEquivDoubleCoset_symm_mk]
 
 /-- A surjective homomorphism and an equivariant equivalence of the acted-on
 sets induce an equivalence of orbit sets. -/
@@ -328,13 +327,13 @@ theorem doubleCoset_closedCyclic_eq
       exact H.isOpen_of_isClosed_of_finiteIndex hHclosed
     have hcU : c ∈ U := by
       change x * c * c⁻¹ * x⁻¹ ∈ H
-      simp [mul_assoc]
+      simp only [mul_assoc, mul_inv_cancel, mul_one, one_mem]
     obtain ⟨s, hsU, hs⟩ :=
       (mem_closure_iff.mp hcclosure U hUopen hcU)
     have hsH : x * c * s⁻¹ * x⁻¹ ∈ H := hsU
     refine ⟨h * (x * c * s⁻¹ * x⁻¹), H.mul_mem hh hsH,
       s, hs, ?_⟩
-    simp [mul_assoc]
+    simp only [mul_assoc, inv_mul_cancel, mul_one]
 
 /-- Double-coset equivalence induced by the preceding density argument. -/
 noncomputable def doubleCosetClosedCyclicEquiv
@@ -364,6 +363,17 @@ noncomputable def doubleCosetClosedCyclicEquiv
     intro x
     rfl
 
+/-- Enlarging the cyclic side to its closure preserves each represented double coset. -/
+@[simp]
+theorem doubleCosetClosedCyclicEquiv_mk
+    {Q : Type u} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
+    (H : Subgroup Q) [H.FiniteIndex] (hHclosed : IsClosed (H : Set Q))
+    (g x : Q) :
+    doubleCosetClosedCyclicEquiv H hHclosed g
+        (DoubleCoset.mk H (Subgroup.zpowers g) x) =
+      DoubleCoset.mk H (closedSubgroupGenerated ({g} : Set Q)).toSubgroup x :=
+  rfl
+
 /-- On orbit sets, replacing the powers of a Frobenius by their closure is
 an equivalence whenever the subgroup acting on the other side has finite
 index and is closed. -/
@@ -390,25 +400,9 @@ theorem orbitQuotientClosedCyclicEquiv_mk
         (Quotient.mk'' (QuotientGroup.mk x : Q ⧸ Subgroup.zpowers g)) =
       Quotient.mk'' (QuotientGroup.mk x :
         Q ⧸ (closedSubgroupGenerated ({g} : Set Q)).toSubgroup) := by
-  let C := (closedSubgroupGenerated ({g} : Set Q)).toSubgroup
-  change (orbitQuotientEquivDoubleCoset H C).symm
-      (doubleCosetClosedCyclicEquiv H hHclosed g
-        (orbitQuotientEquivDoubleCoset H (Subgroup.zpowers g)
-          (Quotient.mk''
-            (QuotientGroup.mk x : Q ⧸ Subgroup.zpowers g)))) = _
-  unfold orbitQuotientEquivDoubleCoset doubleCosetClosedCyclicEquiv
-  simp only [Equiv.coe_fn_mk, Quotient.liftOn'_mk'', Equiv.coe_fn_symm_mk]
-  let a := Quotient.out (QuotientGroup.mk x : Q ⧸ Subgroup.zpowers g)
-  have ha : a⁻¹ * x ∈ Subgroup.zpowers g :=
-    QuotientGroup.leftRel_apply.mp
-      (Quotient.exact' (Quotient.out_eq'
-        (QuotientGroup.mk x : Q ⧸ Subgroup.zpowers g)))
-  have haC : a⁻¹ * x ∈ C := by
-    apply Subgroup.le_topologicalClosure _
-    simpa [Subgroup.zpowers_eq_closure] using ha
-  apply congrArg Quotient.mk''
-  apply QuotientGroup.eq.mpr
-  exact haC
+  simp only [orbitQuotientClosedCyclicEquiv, Equiv.trans_apply,
+    orbitQuotientEquivDoubleCoset_mk, doubleCosetClosedCyclicEquiv_mk,
+    orbitQuotientEquivDoubleCoset_symm_mk]
 
 end
 

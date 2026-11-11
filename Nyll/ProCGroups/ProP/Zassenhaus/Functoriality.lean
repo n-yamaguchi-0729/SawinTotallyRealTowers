@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Zassenhaus.Basic
-import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.Functoriality
+module
+
+public import Nyll.ProCGroups.ProP.Zassenhaus.Basic
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.Functoriality
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
 
 /-!
 # Functoriality of the Zassenhaus filtration
@@ -15,6 +18,8 @@ class-indexed completed group algebras.  Naturality of augmentation and
 continuity of that map show that every closed augmentation power, hence every
 Zassenhaus subgroup, is preserved.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,8 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.NormUniformizer
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.NormUniformizer
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # The norm subgroup of a standard Lubin--Tate level
@@ -20,6 +23,8 @@ norm calculation.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

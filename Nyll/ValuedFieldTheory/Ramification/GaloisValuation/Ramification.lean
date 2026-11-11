@@ -4,10 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.RamificationQuotients
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
-import Mathlib.Data.Rat.Lemmas
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.RamificationQuotients
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Core
+public import Mathlib.Data.Rat.Lemmas
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.Units
 
 /-!
 # Ramification filtrations
@@ -16,6 +19,8 @@ This file provides the group-theoretic lower ramification APIs used by local CFT
 Concrete valued extensions supply the action quotient estimates; the subgroup
 and normality/antitonicity consequences are proved here.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 
@@ -41,8 +46,9 @@ of `Nat.card`. -/
 noncomputable def herbrandStep (i : Nat) : Rat :=
   (Nat.card (F.lower i) : Rat) / (Nat.card (F.lower 0) : Rat)
 
-/-- The natural-index lower Herbrand function as the cumulative sum of the
-finite-level steps through `0, ..., n - 1`. -/
+/-- The legacy cumulative sum of finite-level steps through `0, ..., n - 1`.
+This convention differs from the normalized Herbrand value, whose steps use `1, ..., n`;
+the normalized API is `herbrandValueNat` in `Ramification.Herbrand.Function`. -/
 noncomputable def herbrandFunctionNat (n : Nat) : Rat :=
   Finset.sum (Finset.range n) fun i => F.herbrandStep i
 
@@ -840,8 +846,8 @@ def toLowerRamificationFiltration : AntitoneNormalSubgroupFiltration G where
 noncomputable def herbrandStep (i : Nat) : Rat :=
   D.toLowerRamificationFiltration.herbrandStep i
 
-/-- Natural-index Herbrand function attached to a depth-defined lower
-filtration. -/
+/-- The legacy partial sum through `0, ..., n - 1` for a depth-defined lower filtration.
+This is not the normalized `herbrandValueNat`, whose steps use `1, ..., n`. -/
 noncomputable def herbrandFunctionNat (n : Nat) : Rat :=
   D.toLowerRamificationFiltration.herbrandFunctionNat n
 
@@ -1001,8 +1007,8 @@ def toLowerRamificationFiltration : AntitoneNormalSubgroupFiltration G where
 noncomputable def herbrandStep (i : Nat) : Rat :=
   A.toLowerRamificationFiltration.herbrandStep i
 
-/-- Natural-index Herbrand function attached to an action-defined lower
-filtration. -/
+/-- The legacy partial sum through `0, ..., n - 1` for an action-defined lower filtration.
+This is not the normalized `herbrandValueNat`, whose steps use `1, ..., n`. -/
 noncomputable def herbrandFunctionNat (n : Nat) : Rat :=
   A.toLowerRamificationFiltration.herbrandFunctionNat n
 

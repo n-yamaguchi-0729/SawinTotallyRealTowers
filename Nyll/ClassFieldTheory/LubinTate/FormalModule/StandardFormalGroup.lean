@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveIntertwiner
-import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardSeries
-import Mathlib.RingTheory.FormalGroup.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.RecursiveIntertwiner
+public import Nyll.ClassFieldTheory.LubinTate.FormalModule.StandardSeries
+public import Mathlib.RingTheory.FormalGroup.Basic
 
 /-!
 # The standard Lubin--Tate formal group
@@ -24,6 +26,8 @@ one-variable power-series composition.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -331,40 +335,36 @@ section StandardFormalGroup
 variable (hπ :
   F.toCompleteDVF.valuation.IsUniformizer (π : K))
 
-private abbrev standardSeries :
-    LubinTateSeries F π :=
-  standardLubinTateSeries hπ
-
 /-- The unique two-variable series with linear term `X + Y` commuting with
 the standard Lubin--Tate series. -/
 noncomputable def standardFormalGroupPowerSeries :
     MvPowerSeries (Fin 2) F.valuationSubring :=
-  recursiveIntertwiner hπ (standardSeries hπ)
-    (standardSeries hπ) (fun _ => 1)
+  recursiveIntertwiner hπ (standardLubinTateSeries hπ)
+    (standardLubinTateSeries hπ) (fun _ => 1)
 
 /-- The standard formal-group series has linear term `X + Y`. -/
 theorem standardFormalGroupPowerSeries_hasLinearTerm :
     HasLinearTerm (standardFormalGroupPowerSeries hπ)
       (fun _ : Fin 2 => 1) :=
   recursiveIntertwiner_hasLinearTerm hπ
-    (standardSeries hπ) (standardSeries hπ) (fun _ => 1)
+    (standardLubinTateSeries hπ) (standardLubinTateSeries hπ) (fun _ => 1)
 
 /-- The standard formal-group series commutes with the standard
 Lubin--Tate series. -/
 theorem standardFormalGroupPowerSeries_intertwines :
-    Intertwines (standardSeries hπ) (standardSeries hπ)
+    Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (standardFormalGroupPowerSeries hπ) :=
   recursiveIntertwiner_intertwines hπ
-    (standardSeries hπ) (standardSeries hπ) (fun _ => 1)
+    (standardLubinTateSeries hπ) (standardLubinTateSeries hπ) (fun _ => 1)
 
 /-- The standard formal-group series is the unique two-variable
 intertwiner with linear term `X + Y`. -/
 theorem existsUnique_standardFormalGroupPowerSeries :
     ∃! H : MvPowerSeries (Fin 2) F.valuationSubring,
       HasLinearTerm H (fun _ : Fin 2 => 1) ∧
-        Intertwines (standardSeries hπ) (standardSeries hπ) H :=
+        Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ) H :=
   existsUnique_intertwiner hπ
-    (standardSeries hπ) (standardSeries hπ) (fun _ => 1)
+    (standardLubinTateSeries hπ) (standardLubinTateSeries hπ) (fun _ => 1)
 
 private theorem standardFormalGroupPowerSeries_subst_hasLinearTerm
     {τ : Type w} [Fintype τ]
@@ -392,11 +392,11 @@ private theorem standardFormalGroupPowerSeries_subst_intertwines
     {M₀ M₁ : τ → F.valuationSubring}
     (hG₀ : HasLinearTerm G₀ M₀)
     (hG₁ : HasLinearTerm G₁ M₁)
-    (hI₀ : Intertwines (standardSeries hπ)
-      (standardSeries hπ) G₀)
-    (hI₁ : Intertwines (standardSeries hπ)
-      (standardSeries hπ) G₁) :
-    Intertwines (standardSeries hπ) (standardSeries hπ)
+    (hI₀ : Intertwines (standardLubinTateSeries hπ)
+      (standardLubinTateSeries hπ) G₀)
+    (hI₁ : Intertwines (standardLubinTateSeries hπ)
+      (standardLubinTateSeries hπ) G₁) :
+    Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (MvPowerSeries.subst ![G₀, G₁]
         (standardFormalGroupPowerSeries hπ)) := by
   apply
@@ -447,15 +447,15 @@ theorem standardFormalGroupPowerSeries_subst_X_zero :
   have hIleft :=
     standardFormalGroupPowerSeries_subst_intertwines
       hπ hX hzero
-        (intertwines_X (standardSeries hπ) ())
+        (intertwines_X (standardLubinTateSeries hπ) ())
         (intertwines_zero
-          (standardSeries hπ) (standardSeries hπ))
+          (standardLubinTateSeries hπ) (standardLubinTateSeries hπ))
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries hπ) (standardSeries hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Unit => 1)
       hleft' hIleft hX
-      (intertwines_X (standardSeries hπ) ())
+      (intertwines_X (standardLubinTateSeries hπ) ())
 
 /-- The right identity law, proved by uniqueness. -/
 theorem standardFormalGroupPowerSeries_subst_zero_X :
@@ -492,14 +492,14 @@ theorem standardFormalGroupPowerSeries_subst_zero_X :
     standardFormalGroupPowerSeries_subst_intertwines
       hπ hzero hX
         (intertwines_zero
-          (standardSeries hπ) (standardSeries hπ))
-        (intertwines_X (standardSeries hπ) ())
+          (standardLubinTateSeries hπ) (standardLubinTateSeries hπ))
+        (intertwines_X (standardLubinTateSeries hπ) ())
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries hπ) (standardSeries hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Unit => 1)
       hright' hIright hX
-      (intertwines_X (standardSeries hπ) ())
+      (intertwines_X (standardLubinTateSeries hπ) ())
 
 /-- Associativity of the standard formal-group series, proved by comparing
 the two three-variable intertwiners with linear term `X + Y + Z`. -/
@@ -534,10 +534,10 @@ theorem standardFormalGroupPowerSeries_assoc :
     simpa [B] using
       (hasLinearTerm_X (R := F.valuationSubring) i)
   have hIX (i : Fin 3) :
-      Intertwines (standardSeries hπ) (standardSeries hπ)
+      Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
         (MvPowerSeries.X i :
           MvPowerSeries (Fin 3) F.valuationSubring) :=
-    intertwines_X (standardSeries hπ) i
+    intertwines_X (standardLubinTateSeries hπ) i
   have hF₀₁ :
       HasLinearTerm
         (MvPowerSeries.subst
@@ -550,7 +550,7 @@ theorem standardFormalGroupPowerSeries_assoc :
     standardFormalGroupPowerSeries_subst_hasLinearTerm
       hπ (hX 0) (hX 1)
   have hIF₀₁ :
-      Intertwines (standardSeries hπ) (standardSeries hπ)
+      Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
         (MvPowerSeries.subst
           ![
             (MvPowerSeries.X 0 :
@@ -571,7 +571,7 @@ theorem standardFormalGroupPowerSeries_assoc :
     standardFormalGroupPowerSeries_subst_hasLinearTerm
       hπ (hX 1) (hX 2)
   have hIF₁₂ :
-      Intertwines (standardSeries hπ) (standardSeries hπ)
+      Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
         (MvPowerSeries.subst
           ![
             (MvPowerSeries.X 1 :
@@ -625,7 +625,7 @@ theorem standardFormalGroupPowerSeries_assoc :
       hπ (hX 0) hF₁₂ (hIX 0) hIF₁₂
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries hπ) (standardSeries hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Fin 3 => 1)
       hleft' hIleft hright' hIright
 
@@ -668,11 +668,11 @@ theorem standardFormalGroupPowerSeries_comm :
   have hIswap :=
     standardFormalGroupPowerSeries_subst_intertwines
       hπ (hX 1) (hX 0)
-        (intertwines_X (standardSeries hπ) 1)
-        (intertwines_X (standardSeries hπ) 0)
+        (intertwines_X (standardLubinTateSeries hπ) 1)
+        (intertwines_X (standardLubinTateSeries hπ) 0)
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries hπ) (standardSeries hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Fin 2 => 1)
       (standardFormalGroupPowerSeries_hasLinearTerm hπ)
       (standardFormalGroupPowerSeries_intertwines hπ)
@@ -705,17 +705,13 @@ section StandardEndomorphisms
 variable (hπ :
   F.toCompleteDVF.valuation.IsUniformizer (π : K))
 
-private abbrev standardSeries' :
-    LubinTateSeries F π :=
-  standardLubinTateSeries hπ
-
 /-- The one-variable standard Lubin--Tate endomorphism with linear
 coefficient `a`. -/
 noncomputable def standardLubinTateEndomorphism
     (a : F.valuationSubring) :
     PowerSeries F.valuationSubring :=
-  recursiveIntertwiner hπ (standardSeries' hπ)
-    (standardSeries' hπ) (fun _ : Unit => a)
+  recursiveIntertwiner hπ (standardLubinTateSeries hπ)
+    (standardLubinTateSeries hπ) (fun _ : Unit => a)
 
 /-- The endomorphism `[a]` has linear coefficient `a`. -/
 theorem standardLubinTateEndomorphism_hasLinearTerm
@@ -723,17 +719,17 @@ theorem standardLubinTateEndomorphism_hasLinearTerm
     HasLinearTerm (standardLubinTateEndomorphism hπ a)
       (fun _ : Unit => a) :=
   recursiveIntertwiner_hasLinearTerm hπ
-    (standardSeries' hπ) (standardSeries' hπ)
+    (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
     (fun _ : Unit => a)
 
 /-- The endomorphism `[a]` commutes with the standard Lubin--Tate
 series. -/
 theorem standardLubinTateEndomorphism_intertwines
     (a : F.valuationSubring) :
-    Intertwines (standardSeries' hπ) (standardSeries' hπ)
+    Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (standardLubinTateEndomorphism hπ a) :=
   recursiveIntertwiner_intertwines hπ
-    (standardSeries' hπ) (standardSeries' hπ)
+    (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
     (fun _ : Unit => a)
 
 /-- `[a]` is the unique one-variable intertwiner with linear coefficient
@@ -742,9 +738,9 @@ theorem existsUnique_standardLubinTateEndomorphism
     (a : F.valuationSubring) :
     ∃! f : PowerSeries F.valuationSubring,
       HasLinearTerm f (fun _ : Unit => a) ∧
-        Intertwines (standardSeries' hπ) (standardSeries' hπ) f :=
+        Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ) f :=
   existsUnique_intertwiner hπ
-    (standardSeries' hπ) (standardSeries' hπ)
+    (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
     (fun _ : Unit => a)
 
 /-- The coefficient of `X` in `[a]` is `a`. -/
@@ -770,24 +766,24 @@ theorem standardLubinTateEndomorphism_one :
       (hasLinearTerm_X (R := F.valuationSubring) ())
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries' hπ) (standardSeries' hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Unit => 1)
       (standardLubinTateEndomorphism_hasLinearTerm hπ 1)
       (standardLubinTateEndomorphism_intertwines hπ 1)
-      hX (intertwines_X (standardSeries' hπ) ())
+      hX (intertwines_X (standardLubinTateSeries hπ) ())
 
 /-- The scalar `0` acts by the zero series. -/
 theorem standardLubinTateEndomorphism_zero :
     standardLubinTateEndomorphism hπ 0 = 0 := by
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries' hπ) (standardSeries' hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Unit => 0)
       (standardLubinTateEndomorphism_hasLinearTerm hπ 0)
       (standardLubinTateEndomorphism_intertwines hπ 0)
       hasLinearTerm_zero
       (intertwines_zero
-        (standardSeries' hπ) (standardSeries' hπ))
+        (standardLubinTateSeries hπ) (standardLubinTateSeries hπ))
 
 /-- Addition of scalars is addition in the standard formal group. -/
 theorem standardLubinTateEndomorphism_add
@@ -821,7 +817,7 @@ theorem standardLubinTateEndomorphism_add
       (standardLubinTateEndomorphism_intertwines hπ b)
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries' hπ) (standardSeries' hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Unit => a + b)
       (standardLubinTateEndomorphism_hasLinearTerm hπ (a + b))
       (standardLubinTateEndomorphism_intertwines hπ (a + b))
@@ -859,7 +855,7 @@ theorem standardLubinTateEndomorphism_mul
           hπ b).hasSubst
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries' hπ) (standardSeries' hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Unit => a * b)
       (standardLubinTateEndomorphism_hasLinearTerm hπ (a * b))
       (standardLubinTateEndomorphism_intertwines hπ (a * b))
@@ -895,7 +891,7 @@ theorem standardLubinTateEndomorphismInVariable_hasLinearTerm
 theorem standardLubinTateEndomorphismInVariable_intertwines
     {σ : Type w} [Finite σ]
     (a : F.valuationSubring) (i : σ) :
-    Intertwines (standardSeries' hπ) (standardSeries' hπ)
+    Intertwines (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (standardLubinTateEndomorphismInVariable hπ a i) := by
   simpa [standardLubinTateEndomorphismInVariable,
     PowerSeries.subst_def] using
@@ -979,7 +975,7 @@ theorem standardLubinTateEndomorphism_map_formalGroup
         hπ a (1 : Fin 2))
   exact
     eq_of_hasLinearTerm_of_intertwines hπ
-      (standardSeries' hπ) (standardSeries' hπ)
+      (standardLubinTateSeries hπ) (standardLubinTateSeries hπ)
       (fun _ : Fin 2 => a)
       hleft' hIleft hright' hIright
 

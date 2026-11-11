@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.LinearAlgebra.Quotient.Defs
-import Mathlib.LinearAlgebra.Span.Defs
-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Basic
-import Mathlib.Topology.Category.Profinite.Basic
-import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
+module
+
+public import Mathlib.LinearAlgebra.Quotient.Defs
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Basic
+public import Mathlib.Topology.Category.Profinite.Basic
+public import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
 
 /-!
 # Bundled profinite rings and modules
@@ -16,6 +18,8 @@ import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
 This file defines profinite rings, commutative profinite coefficient rings, and profinite modules.
 It also states their free-extension, discreteness, and finite-index submodule-basis properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

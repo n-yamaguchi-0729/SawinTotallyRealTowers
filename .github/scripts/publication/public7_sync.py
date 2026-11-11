@@ -46,7 +46,7 @@ PRIMARY = {
     'ClassFieldTheory': ['ClassFieldTheory'],
     'SawinTotallyRealTowers': ['SawinTotallyRealTowers'],
     'EtaleFundamentalGroupsAndCohomology': ['EtaleFundamentalGroups', 'EtaleCohomology'],
-    'JacobianVarieties': ['JacobianVarieties'],
+    'GeneralizedJacobianVarieties': ['JacobianVarieties'],
     'YamaguchiPapersFormalization': ['Yamaguchi26AbfaithfulGalois',
         'Yamaguchi26SolvableCoverings'],
     'AnabelianGeometry': ['AnabelianGeometry'],

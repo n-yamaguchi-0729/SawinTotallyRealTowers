@@ -4,15 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.ProfiniteFrattini
-import Nyll.ProCGroups.ProP.FinitePGroupMaximal
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
-import Nyll.ProCGroups.Profinite.OpenSubgroups
-import Mathlib.GroupTheory.Frattini
-import Mathlib.GroupTheory.Index
-import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
-import Mathlib.Order.Atoms
+module
+
+public import Nyll.ProCGroups.ProP.ProfiniteFrattini
+public import Nyll.ProCGroups.ProP.FinitePGroupMaximal
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.Basic
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
+public import Mathlib.GroupTheory.Frattini
+public import Mathlib.GroupTheory.Index
+public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
+public import Mathlib.Order.Atoms
+public import Nyll.ProCGroups.FiniteGroups.StandardClasses
 
 /-!
 # Detecting the pro-two Frattini subgroup by quadratic quotients
@@ -23,6 +26,8 @@ For the reverse inclusion, each maximal subgroup of a finite two-group
 quotient pulls back to an actual open normal subgroup of index two.
 Finite generation and finiteness of the Frattini quotient are not needed.
 -/
+
+@[expose] public section
 
 universe u v
 

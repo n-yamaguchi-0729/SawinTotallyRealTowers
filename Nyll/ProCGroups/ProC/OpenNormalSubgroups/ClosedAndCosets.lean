@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Profinite.OpenSubgroups
+module
+
+public import Mathlib.Topology.Separation.Connected
+public import Mathlib.Topology.Separation.Regular
+public import Nyll.ProCGroups.Profinite.OpenSubgroups
 
 /-!
 # Closed subgroups and cosets
@@ -12,6 +16,8 @@ import Nyll.ProCGroups.Profinite.OpenSubgroups
 This file expresses closed subgroups as intersections of open subgroups and develops separation by
 open subgroups. It also proves the disjointness and clopen properties of the relevant cosets.
 -/
+
+@[expose] public section
 
 namespace ProCGroups.ProC
 

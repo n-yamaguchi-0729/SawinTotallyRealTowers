@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusLift
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.CompletedLevel.CompletedFrobeniusLift
 
 /-!
 # The completed theta-intertwining theorem: continuity of the standard completed Frobenius lift
@@ -18,6 +20,8 @@ directly in the completed theta-intertwining theorem.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

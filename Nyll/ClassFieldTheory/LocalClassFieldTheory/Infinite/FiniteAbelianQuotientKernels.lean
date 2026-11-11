@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletionCriteria
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.Classification
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletionCriteria
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkLocalClassification
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
 /-!
 # Kernels attached to finite abelian subextensions
@@ -22,6 +24,10 @@ multiplicative group.
 
 
 
+@[expose] public section
+
+universe u
+
 noncomputable section
 
 namespace LocalClassFieldTheory
@@ -31,7 +37,9 @@ open scoped IsMulCommutative
 open LocalFieldTheory RamificationTheory
 open ClassFormation CyclicCohomology
 
-variable (K : Type) [Field K]
+section PureRestriction
+
+variable (K : Type u) [Field K]
 
 /-- Restriction from the absolute topological abelianization to the Galois
 group of a finite abelian subextension. -/
@@ -136,7 +144,11 @@ theorem absoluteFiniteQuotientField_restrictionKernel
   rw [absoluteFiniteQuotientPreimage_restrictionKernel,
     InfiniteGalois.fixedField_fixingSubgroup]
 
+end PureRestriction
+
 section LocalField
+
+variable (K : Type u) [Field K]
 
 variable [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
@@ -191,34 +203,26 @@ theorem separableAbsoluteLocalArtinMap_preimage_cofinal
       topologicalProfiniteCompletionPreimageIndex
         (localAbsoluteAbelianProfinite K)
         (separableAbsoluteLocalArtinMap K) N ≤ H := by
-  let Hnative : OpenFiniteIndexSubgroup K :=
+  let Hnative : ClassFieldTheory.OpenFiniteIndexSubgroup K :=
     ⟨H.toOpenNormalSubgroup.toSubgroup,
       H.toOpenNormalSubgroup.isOpen', H.finiteIndex'⟩
-  rcases finiteAbelianNormSubgroupMap_surjective K Hnative with ⟨L, hL⟩
-  let E : IntermediateField K (SeparableClosure K) :=
-    abstractFixedField K (SeparableClosure K) L.field
-  let : Finite ((baseField (intrinsicAbsoluteGalois K)).toSubgroup ⧸
-      extensionSubgroup (baseField (intrinsicAbsoluteGalois K)) L.field
-        (le_baseField L.field)) :=
-    finiteAbelianSubextension_finite_over_absoluteBase K L
-  let : FiniteDimensional K E :=
-    abstractFixedField_finiteDimensional
-      K (SeparableClosure K) L.field inferInstance
-  let : IsAbelianGalois K E :=
-    finiteAbelianSubextension_fixedField_isAbelianGalois K L
-  refine ⟨absoluteAbelianRestrictionKernel K E, ?_⟩
+  obtain ⟨E, hE⟩ := (shrinkFiniteAbelianFieldNormSubgroupOrderIso K).surjective
+    (OrderDual.toDual Hnative)
+  refine ⟨absoluteAbelianRestrictionKernel K E.1, ?_⟩
   change
     (topologicalProfiniteCompletionPreimageIndex
       (localAbsoluteAbelianProfinite K)
       (separableAbsoluteLocalArtinMap K)
-      (absoluteAbelianRestrictionKernel K E)).toOpenNormalSubgroup.toSubgroup ≤
+      (absoluteAbelianRestrictionKernel K E.1)).toOpenNormalSubgroup.toSubgroup ≤
         H.toOpenNormalSubgroup.toSubgroup
   rw [separableAbsoluteLocalArtinMap_preimage_restrictionKernel]
   have hsubgroup :
-      localNormSubgroup K E = H.toOpenNormalSubgroup.toSubgroup := by
-    simpa only [finiteAbelianNormSubgroupMap, finiteAbelianNormSubgroup,
-      Hnative, E] using
-        congrArg OpenFiniteIndexSubgroup.subgroup hL
+      E.normSubgroup = H.toOpenNormalSubgroup.toSubgroup :=
+    (shrinkFiniteAbelianFieldNormSubgroupOrderIso_apply K E).symm.trans
+      (congrArg
+        (fun J : (ClassFieldTheory.OpenFiniteIndexSubgroup K)ᵒᵈ =>
+          (OrderDual.ofDual J).1) hE)
+  change E.normSubgroup ≤ H.toOpenNormalSubgroup.toSubgroup
   rw [hsubgroup]
 
 end LocalField

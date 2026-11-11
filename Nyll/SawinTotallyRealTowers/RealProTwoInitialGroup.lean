@@ -4,26 +4,28 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.RealProTwoH2Bound
-import Nyll.SawinTotallyRealTowers.RealProTwoGeneratorRank
-import Nyll.SawinTotallyRealTowers.RealProTwoFrattiniQuotient
-import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
-import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
-import Nyll.SawinTotallyRealTowers.SixPrimeSupport
-import Nyll.GaloisCohomology.ProP.FinitePresentationExistence
-import Nyll.GaloisCohomology.ProP.RelationRankH2
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Nyll.ProCGroups.GolodShafarevich.FiniteCriterion
-import Nyll.ProCGroups.FiniteGeneration.Basic
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.ProP.GeneratorRank
-import Nyll.ProCGroups.ProP.FrattiniPowers
-import Nyll.ProCGroups.ProP.FrattiniQuotient
-import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
-import Mathlib.SetTheory.Cardinal.NatCard
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.Tactic.NormNum
-import Mathlib.Tactic.Linarith
+module
+
+public import Nyll.SawinTotallyRealTowers.RealProTwoH2Bound
+public import Nyll.SawinTotallyRealTowers.RealProTwoGeneratorRank
+public import Nyll.SawinTotallyRealTowers.RealProTwoFrattiniQuotient
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPGroup
+public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
+public import Nyll.SawinTotallyRealTowers.SixPrimeSupport
+public import Nyll.GaloisCohomology.ProP.FinitePresentationExistence
+public import Nyll.GaloisCohomology.ProP.RelationRankH2
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Nyll.ProCGroups.GolodShafarevich.FiniteCriterion
+public import Nyll.ProCGroups.FiniteGeneration.Basic
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProP.GeneratorRank
+public import Nyll.ProCGroups.ProP.FrattiniPowers
+public import Nyll.ProCGroups.ProP.FrattiniQuotient
+public import Nyll.ProCGroups.ProP.Presentation.RelationCardinal
+public import Mathlib.SetTheory.Cardinal.NatCard
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.Tactic.NormNum
+public import Mathlib.Tactic.Linarith
 
 /-!
 # The initial real pro-two group
@@ -33,6 +35,8 @@ a finite minimal presentation. Its relation rank is at most six, so the
 Golod--Shafarevich criterion proves that the actual Galois group is infinite.
 -/
 
+@[expose] public section
+
 open ProCGroups ProCGroups.FiniteGeneration ProCGroups.Generation
 open ClassFieldTower.Cohomology ClassFieldTower.ProP
 
@@ -40,9 +44,7 @@ namespace ClassFieldTower.Sawin
 
 private local instance initialPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
-private local instance initialMaximalIsGalois :
-    IsGalois ℚ (maximalRealProPOutside 2 sawinRationalPrimeSupport) :=
-  maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
+attribute [local instance] maximalRealProPOutside_isGalois
 
 private theorem nontrivial_initial :
     Nontrivial (maximalRealProPOutside 2 sawinRationalPrimeSupport ≃ₐ[ℚ]
@@ -71,8 +73,7 @@ theorem sawinInitialProTwoGroup_structure :
         (1 : ℝ) - (topologicalGeneratorRank G : ℝ) * (5 / 12) +
           (minimalRelationRank 2 G hP : ℝ) * (5 / 12) ^ 2 ≤ -1 / 24 ∧
         Infinite G := by
-  let G : Type := maximalRealProPOutside 2 sawinRationalPrimeSupport ≃ₐ[ℚ]
-    maximalRealProPOutside 2 sawinRationalPrimeSupport
+  intro G
   have hH2 := sawinInitialProTwoH2_finiteDimensional_finrank_le
   let : FiniteDimensional (ZMod 2) (continuousCohomologyZModPLifted 2 G 2) := hH2.1
   have hfg : TopologicallyFinitelyGenerated G :=

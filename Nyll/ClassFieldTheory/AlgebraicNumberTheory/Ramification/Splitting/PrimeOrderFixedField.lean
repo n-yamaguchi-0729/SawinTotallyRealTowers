@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosure
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.NormalClosure
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Extension
 
 /-!
 # Prime-order fixed fields and complete splitting
@@ -25,17 +29,21 @@ completely in `L / K'`.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
+
+universe u v w
 
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
 
 section PrimeOrderConstruction
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
@@ -176,7 +184,7 @@ end PrimeOrderConstruction
 
 section FinitePlaceAscent
 
-variable {K M : Type}
+variable {K : Type u} {M : Type w}
     [Field K] [NumberField K]
     [Field M] [NumberField M]
     [Algebra K M]
@@ -190,7 +198,7 @@ def FinitePlaceLiesAbove
     (NumberField.HeightOneSpectrum.adicAbv K v)
     (NumberField.HeightOneSpectrum.adicAbv M v')
 
-variable {L : Type}
+variable {L : Type v}
     [Field L] [NumberField L]
     [Algebra K L] [Algebra M L]
     [IsScalarTower K M L]
@@ -247,7 +255,7 @@ end FinitePlaceAscent
 
 section PrimeOrderFinitePlaces
 
-variable {K L : Type}
+variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L]
     [Algebra K L]
@@ -268,7 +276,7 @@ theorem primeOrderFixedField_threeSeven_data
       IsGalois K' L ∧
       IsCyclic (L ≃ₐ[K'] L) ∧
       Nat.card (L ≃ₐ[K'] L) = p := by
-  dsimp
+  intro K' p
   exact
     ⟨fixedFieldPrime_prime
         (K := K) (L := L) hdegree,

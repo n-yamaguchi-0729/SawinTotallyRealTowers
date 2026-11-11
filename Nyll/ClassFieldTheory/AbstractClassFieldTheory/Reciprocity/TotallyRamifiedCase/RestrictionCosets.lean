@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Reduction
 
 /-!
 # Restriction transport for finite Galois subextensions
@@ -15,6 +17,10 @@ and the compatible relative actions and norms used in ramified towers.
 
 
 
+@[expose] public section
+
+universe u v
+
 noncomputable section
 
 namespace ClassFormation
@@ -22,8 +28,7 @@ namespace ClassFormation
 open KummerTheory
 open CyclicCohomology
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
+variable {G : Type u} [Group G] [TopologicalSpace G]
 
 namespace FiniteGaloisSubextension
 
@@ -194,7 +199,7 @@ noncomputable def abstractReciprocityRestrictionMulEquiv
       infer_instance
     N.extensionQuotient ≃*
       E.quotient := by
-  let S := M.inertiaImage D
+  intro S
   let M₀ := M.maximalUnramifiedSubextension D
   let N := M.lowerFiniteGalois S
   let hM₀K : M₀.toSubgroup ≤ E.base.toSubgroup :=
@@ -228,7 +233,7 @@ noncomputable def abstractReciprocityRestrictionMulEquiv
 /-- Relative coset actions are transported by the restriction coset
 equivalence. -/
 theorem relativeCosetAction_abstractReciprocityRestrictionCosetEquiv
-    (A : Rep ℤ G) (D : DegreeData G) [IsTopologicalGroup G]
+    (A : Rep.{v} ℤ G) (D : DegreeData G) [IsTopologicalGroup G]
     (E : DegreeData.AbstractExtension G)
     (M : FiniteGaloisSubextension E.base)
     (hME : M.field.toSubgroup ≤ E.field.toSubgroup)
@@ -262,7 +267,7 @@ theorem relativeCosetAction_abstractReciprocityRestrictionCosetEquiv
 /-- Relative norm commutes with fixed-field inclusion along the totally
 ramified restriction equivalence. -/
 theorem abstractReciprocity_relativeNorm_fixedFieldInclusion
-    (A : Rep ℤ G) (D : DegreeData G) [IsTopologicalGroup G]
+    (A : Rep.{v} ℤ G) (D : DegreeData G) [IsTopologicalGroup G]
     (E : DegreeData.FiniteAbstractExtension G)
     (M : FiniteGaloisSubextension E.base)
     (hME : M.field.toSubgroup ≤ E.field.toSubgroup)
@@ -409,7 +414,7 @@ theorem commute_of_same_restriction_of_inertia_le
 /-- Equal restrictions induce equal relative coset actions on elements
 fixed by the upper field. -/
 theorem relativeCosetAction_eq_of_restriction_eq
-    (A : Rep ℤ G) (E : DegreeData.AbstractExtension G)
+    (A : Rep.{v} ℤ G) (E : DegreeData.AbstractExtension G)
     (M : FiniteGaloisSubextension E.base)
     (hME : M.field.toSubgroup ≤ E.field.toSubgroup)
     [hEnormal :
@@ -433,7 +438,7 @@ theorem relativeCosetAction_eq_of_restriction_eq
   let e : E.field.toSubgroup := ⟨(x⁻¹ * y).1, hxyE⟩
   have hy : y = x * Subgroup.inclusion E.below e := by
     apply Subtype.ext
-    simp [e]
+    exact (mul_inv_cancel_left x.1 y.1).symm
   rw [hy]
   change A.ρ x.1 a.1 = A.ρ (x.1 * e.1) a.1
   rw [map_mul]

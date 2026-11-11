@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.Homomorphisms
-import Mathlib.NumberTheory.Padics.RingHoms
-import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
-import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.Homomorphisms
+public import Mathlib.NumberTheory.Padics.RingHoms
+public import Mathlib.RingTheory.Polynomial.Cyclotomic.Roots
+public import Mathlib.RingTheory.Valuation.Discrete.IsDiscreteValuationRing
 
 /-!
 # The concrete p-adic field `ℚ_[p]`
@@ -18,6 +20,8 @@ statements instead of introducing public aliases for `ℚ_[p]` or its unit group
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -146,7 +150,7 @@ theorem padicDVRValuation_isAdicComplete
         intro r x
         change e (r * x) =
           (algebraMap ℤ_[p] (padicDVRValuation p).valuationSubring r) * e x
-        simp [RingHom.algebraMap_toAlgebra] }
+        exact e.map_mul r x }
   have hcompleteZp :
       IsAdicComplete (IsLocalRing.maximalIdeal ℤ_[p]) ℤ_[p] :=
     inferInstance

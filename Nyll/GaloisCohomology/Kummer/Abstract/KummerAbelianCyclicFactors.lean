@@ -4,8 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.GroupTheory.FiniteAbelian.Basic
-import Nyll.GaloisCohomology.Kummer.Abstract.KummerGlobalOperator
+module
+
+public import Mathlib.Topology.Algebra.Group.Subgroup
+public import Mathlib.GroupTheory.FiniteAbelian.Basic
+public import Mathlib.Topology.Algebra.Group.Quotient
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerGlobalOperator
 
 /-!
 # finite abelian Kummer theory, the finite abelian Kummer decomposition: cyclic factors of a finite
@@ -21,6 +25,8 @@ original normal subgroup.
 
 No radical generators or field-lattice endpoint are asserted here.
 -/
+
+@[expose] public section
 
 namespace KummerTheory
 
@@ -156,7 +162,10 @@ theorem cyclicFactorSubgroup_isClosed
       (cyclicFactorSubgroup (extensionSubgroup (G := G) K L hLK) f :
         Set K.toSubgroup) := by
   let H := extensionSubgroup (G := G) K L hLK
-  let : IsClosed (H : Set K.toSubgroup) := extensionSubgroup_isClosed K L hLK
+  have : T1Space (K.toSubgroup ⧸ H) :=
+    QuotientGroup.t1Space_iff.mpr (extensionSubgroup_isClosed K L hLK)
+  have : Finite (K.toSubgroup ⧸ H) := hfinite
+  have : DiscreteTopology (K.toSubgroup ⧸ H) := Finite.instDiscreteTopology
   change IsClosed
     ((QuotientGroup.mk' H) ⁻¹' (MonoidHom.ker f : Set (K.toSubgroup ⧸ H)))
   exact (isClosed_discrete _).preimage QuotientGroup.continuous_mk

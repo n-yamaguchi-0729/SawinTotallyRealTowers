@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelEvaluation
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAbelian
-import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
-import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.Padic.MultiplicativeEvaluation.FiniteLevelEvaluation
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelAbelian
+public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
+public import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 
 /-!
 # Primitive roots from finite p-adic Lubin--Tate levels
@@ -19,6 +21,8 @@ action.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -91,7 +95,7 @@ private theorem padicMultiplicativeScalarEndomorphism_nat
         apply Finsupp.ext
         intro i
         cases i
-        simp [hd0]
+        exact hd0
       subst d
       change
         PowerSeries.constantCoeff A -

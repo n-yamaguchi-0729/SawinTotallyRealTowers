@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusField
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusSemigroup
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.NormSubgroup
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.PrimeChoice
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusField
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FrobeniusSemigroup
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.NormSubgroup
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.PrimeChoice
 
 /-!
 # The abstract reciprocity construction, the reciprocity construction: the reciprocity map
@@ -18,7 +20,9 @@ class is the class of `N_{Σ|K}(π_Σ)` in
 element is proved separately from the unit-cohomology axiom.
 -/
 
-universe u
+@[expose] public section
+
+universe u v
 
 namespace ClassFormation
 
@@ -93,14 +97,13 @@ end frobeniusFixedFields
 
 section reciprocityValues
 
--- Mathlib's `Rep ℤ G` currently fixes the acting group to universe zero.
-variable {G : IntegralRepGroupType} [Group G] [TopologicalSpace G]
-variable {D : DegreeData G} {A : Rep ℤ G}
+variable {G : Type u} [Group G] [TopologicalSpace G]
+variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
 namespace DegreeData
 
 /-- The reciprocity construction with an explicit prime element `π_Σ`. -/
-def reciprocityValueOfPrime (D : DegreeData G) (A : Rep ℤ G)
+def reciprocityValueOfPrime (D : DegreeData G) (A : Rep.{v} ℤ G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
@@ -123,7 +126,7 @@ def reciprocityValueOfPrime (D : DegreeData G) (A : Rep ℤ G)
 using the canonical chosen prime supplied by surjectivity of `v_Σ`.
 The following independence theorem identifies this value with the formula
 for every prime element. -/
-def reciprocityMap (D : DegreeData G) (A : Rep ℤ G)
+def reciprocityMap (D : DegreeData G) (A : Rep.{v} ℤ G)
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)
@@ -156,7 +159,7 @@ def reciprocityMap (D : DegreeData G) (A : Rep ℤ G)
 The reciprocity map at a Frobenius element is represented by the chosen prime element in its
 Frobenius fixed field.
 -/
-theorem reciprocityMap_eq_chosenPrime (D : DegreeData G) (A : Rep ℤ G)
+theorem reciprocityMap_eq_chosenPrime (D : DegreeData G) (A : Rep.{v} ℤ G)
     (v : ValuationData D A)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteAbstractField G) (L : ClosedSubgroup G)

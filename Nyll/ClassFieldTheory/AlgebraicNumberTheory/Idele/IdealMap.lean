@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.Algebra.RestrictedProduct.Valuation
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
-import Mathlib.RingTheory.DedekindDomain.Factorization
-import Mathlib.RingTheory.ClassGroup.Basic
+module
+
+public import Nyll.ClassFieldTheory.Algebra.RestrictedProduct.Valuation
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Mathlib.RingTheory.DedekindDomain.Factorization
+public import Mathlib.RingTheory.ClassGroup.Basic
 
 /-!
 # The ideal attached to an idele
@@ -20,6 +22,8 @@ the kernel with the ideles integral at every finite place.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct WithZero
 open NumberField IsDedekindDomain
@@ -144,7 +148,7 @@ power of a finite prime. -/
 def primePowerHom (v : HeightOneSpectrum (𝓞 K)) :
     Multiplicative ℤ →* FractionalIdealGroup K :=
   MonoidHom.mk' (fun n => prime v ^ n.toAdd) fun m n => by
-    simp [zpow_add]
+    simp only [toAdd_mul, zpow_add]
 
 /-- Reconstruct a fractional ideal from its finitely supported vector
 of prime exponents. -/
@@ -164,7 +168,8 @@ theorem factorization_val (exps :
       exps.toAdd.prod fun v n =>
         (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ n := by
   classical
-  simp [factorization, primePowerHom, prime, Finsupp.prod]
+  simp only [factorization, Finsupp.prod, primePowerHom, prime, MonoidHom.mk'_apply, toAdd_ofAdd,
+    Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.val_mk0]
 
 theorem finite_count_support (I : FractionalIdealGroup K) :
     {v : HeightOneSpectrum (𝓞 K) |
@@ -354,7 +359,7 @@ theorem idealClass_surjective :
   induction c using ClassGroup.induction (R := 𝓞 K) K with
   | h I =>
       obtain ⟨a, ha⟩ := fractionalIdeal_surjective (K := K) I
-      exact ⟨a, by simp [idealClass, ha]⟩
+      exact ⟨a, by simp only [idealClass, MonoidHom.coe_comp, Function.comp_apply, ha]⟩
 
 /-- A quotient form of the ideal-class map. The following results identify
 this kernel with `I_K^{S∞} Kˣ`. -/

@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
-import Nyll.ValuedFieldTheory.LocalField.NormUnits
-import Mathlib.RingTheory.Norm.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.EqualCharacteristic.FiniteLevel.LevelField
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Mathlib.RingTheory.Norm.Basic
 
 /-!
 # The uniformizer norm identity: the uniformizer norm in the equal-characteristic level field
@@ -17,6 +19,8 @@ therefore gives the norm identity `N(-λ) = T`.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

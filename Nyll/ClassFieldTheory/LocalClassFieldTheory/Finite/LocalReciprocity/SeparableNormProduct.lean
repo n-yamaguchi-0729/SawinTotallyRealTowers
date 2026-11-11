@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.FieldTheory.PrimitiveElement
-import Mathlib.FieldTheory.IsSepClosed
-import Mathlib.RingTheory.Norm.Transitivity
-import Mathlib.RingTheory.AlgebraTower
+module
+
+public import Mathlib.FieldTheory.PrimitiveElement
+public import Mathlib.FieldTheory.IsSepClosed
+public import Mathlib.RingTheory.Norm.Transitivity
+public import Mathlib.RingTheory.AlgebraTower
 
 /-!
 # Separable field norms as products of embeddings
@@ -19,14 +21,18 @@ The ambient field need not be a normal extension of the base field.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped BigOperators
 
 namespace LocalClassFieldTheory
 
+universe u v w z
+
 noncomputable local instance finiteSeparableAlgHomFintypeForNormProduct
-    {k E T : Type} [Field k] [Field E] [Field T]
+    {k : Type u} {E : Type v} {T : Type w} [Field k] [Field E] [Field T]
     [Algebra k E] [Algebra k T]
     [FiniteDimensional k E] [Algebra.IsSeparable k E] :
     Fintype (E →ₐ[k] T) :=
@@ -35,8 +41,8 @@ noncomputable local instance finiteSeparableAlgHomFintypeForNormProduct
 /-- The embeddings of a finite separable tower above a power-basis generator
 split into embeddings of the lower field and their extensions. -/
 theorem prod_embeddings_algebraMap_powerBasisGen_eq
-    (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] [IsSepClosed Ω]
-    {L E : Type} [Field L] [Field E]
+    (k : Type u) (Ω : Type v) [Field k] [Field Ω] [Algebra k Ω] [IsSepClosed Ω]
+    {L : Type w} {E : Type z} [Field L] [Field E]
     [Algebra k L] [Algebra k E] [Algebra L E] [IsScalarTower k L E]
     [FiniteDimensional k L] [Algebra.IsSeparable k L]
     [Algebra.IsSeparable k E] [FiniteDimensional k E]
@@ -67,7 +73,7 @@ theorem prod_embeddings_algebraMap_powerBasisGen_eq
 /-- Mapping the norm of an element of a finite separable extension into a
 separably closed field gives the product of all base-field embeddings. -/
 theorem algebraMap_norm_eq_prod_embeddings_of_isSepClosed
-    (k Ω E : Type) [Field k] [Field Ω] [Field E]
+    (k : Type u) (Ω : Type v) (E : Type w) [Field k] [Field Ω] [Field E]
     [Algebra k Ω] [IsSepClosed Ω] [Algebra k E]
     [FiniteDimensional k E] [Algebra.IsSeparable k E]
     (x : E) :

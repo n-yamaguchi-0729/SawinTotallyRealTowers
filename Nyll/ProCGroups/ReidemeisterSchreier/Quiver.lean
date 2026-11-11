@@ -4,14 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Combinatorics.Quiver.Arborescence
-import Mathlib.Combinatorics.Quiver.ConnectedComponent
+module
+
+public import Mathlib.Combinatorics.Quiver.Arborescence
+public import Mathlib.Combinatorics.Quiver.ConnectedComponent
 
 /-!
 # Reidemeister Schreier / Quiver
 
 This module formalizes the quiver and arborescence tools used by the groupoid construction.
 -/
+
+@[expose] public section
 
 universe u
 

@@ -4,9 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteLimit.CanonicalMap
-import Mathlib.Algebra.Ring.TransferInstance
-import Mathlib.Topology.Homeomorph.TransferInstance
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.OpenFiniteQuotientTopology.OpenFiniteLimit.CanonicalMap
+public import Mathlib.Algebra.Ring.TransferInstance
+public import Mathlib.Topology.Homeomorph.TransferInstance
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Completed Group Algebra / Open Finite Quotient Topology / Open Finite Comparison
@@ -15,6 +18,8 @@ This module compares the named fixed-coefficient completion with the named two-p
 open-finite quotient completion and studies the induced topology, injectivity, density, and
 coefficient-quotient kernels.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -446,11 +451,10 @@ instance instTopologicalSpaceCompletedGroupAlgebraNaturalSource :
 /-- The forgetful equivalence is a homeomorphism to the raw group algebra carrying the natural
 topology. -/
 def completedGroupAlgebraNaturalSourceHomeomorph :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       completedGroupAlgebraNaturalTopology R G
     CompletedGroupAlgebraNaturalSource R G ≃ₜ MonoidAlgebra R G := by
-  letI : TopologicalSpace (MonoidAlgebra R G) :=
-    completedGroupAlgebraNaturalTopology R G
+  intro sharedOwner2
   exact (completedGroupAlgebraNaturalSourceEquiv (R := R) (G := G)).homeomorph
 
 /-- A genuine copy of the abstract group algebra reserved for the open-ideal/finite-group
@@ -489,11 +493,10 @@ instance instTopologicalSpaceCompletedGroupAlgebraKernelSource :
 /-- The forgetful equivalence is a homeomorphism to the raw group algebra carrying the
 kernel-neighborhood topology. -/
 def completedGroupAlgebraKernelSourceHomeomorph :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       groupAlgebraOpenFiniteQuotientKernelTopology R G
     CompletedGroupAlgebraKernelSource R G ≃ₜ MonoidAlgebra R G := by
-  letI : TopologicalSpace (MonoidAlgebra R G) :=
-    groupAlgebraOpenFiniteQuotientKernelTopology R G
+  intro sharedOwner2
   exact (completedGroupAlgebraKernelSourceEquiv (R := R) (G := G)).homeomorph
 
 /-- Canonical map from the natural-topology source wrapper. -/
@@ -536,11 +539,10 @@ The dense map from the abstract group algebra to the completed group algebra is 
 the natural finite-quotient topology.
 -/
 theorem continuous_toCompletedGroupAlgebraRingHom_naturalTopology :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       completedGroupAlgebraNaturalTopology R G
     Continuous (toCompletedGroupAlgebraRingHom R G) := by
-  let : TopologicalSpace (MonoidAlgebra R G) :=
-    completedGroupAlgebraNaturalTopology R G
+  intro sharedOwner1
   change Continuous (toCompletedGroupAlgebra R G)
   exact (continuous_induced_dom : Continuous (toCompletedGroupAlgebra R G))
 
@@ -587,11 +589,10 @@ The canonical map as a continuous \(R\)-linear map for the topology induced from
 \(\widehat{R[G]}\).
 -/
 def toCompletedGroupAlgebraContinuousLinearMap_naturalTopology :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       completedGroupAlgebraNaturalTopology R G
     MonoidAlgebra R G →L[R] CompletedGroupAlgebraCarrier R G := by
-  letI : TopologicalSpace (MonoidAlgebra R G) :=
-    completedGroupAlgebraNaturalTopology R G
+  intro sharedOwner2
   exact
     { toLinearMap := toCompletedGroupAlgebraLinearMap R G
       cont := continuous_toCompletedGroupAlgebraRingHom_naturalTopology (R := R) (G := G) }
@@ -776,11 +777,10 @@ theorem continuous_toCompletedGroupAlgebraKernelSourceRingHom
 def toCompletedGroupAlgebraContinuousLinearMap_kernelTopology
     [CompactSpace R] [T2Space R] [TotallyDisconnectedSpace R] [Nonempty
         (CompletedGroupAlgebraOpenQuotientIndex R G)] :
-    letI : TopologicalSpace (MonoidAlgebra R G) :=
+    let : TopologicalSpace (MonoidAlgebra R G) :=
       groupAlgebraOpenFiniteQuotientKernelTopology R G
     MonoidAlgebra R G →L[R] CompletedGroupAlgebraCarrier R G := by
-  letI : TopologicalSpace (MonoidAlgebra R G) :=
-    groupAlgebraOpenFiniteQuotientKernelTopology R G
+  intro sharedOwner2
   exact
     { toLinearMap := toCompletedGroupAlgebraLinearMap R G
       cont := continuous_toCompletedGroupAlgebraRingHom_kernelTopology

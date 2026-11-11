@@ -4,15 +4,19 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ValuedFieldTheory.Ramification.Herbrand.Quotient
-import Mathlib.FieldTheory.Galois.Basic
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ValuedFieldTheory.Ramification.Herbrand.Quotient
+public import Mathlib.FieldTheory.Galois.Basic
 
 /-!
 # Fixed-field group models for Herbrand towers
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

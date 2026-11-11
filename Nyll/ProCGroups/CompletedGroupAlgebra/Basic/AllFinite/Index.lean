@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
 
 /-!
 # Completed Group Algebra / Basic / All Finite / Index
@@ -13,6 +16,8 @@ This module defines the reverse-ordered finite-quotient indices for the all-fini
 their quotient groups and quotient projections, and the mutually inverse conversions with
 \(C\)-indexed quotients when a formation contains all finite quotients of the group.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

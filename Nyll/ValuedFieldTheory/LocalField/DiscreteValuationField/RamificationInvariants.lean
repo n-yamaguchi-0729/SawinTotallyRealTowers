@@ -4,7 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Degree
 
 /-!
 # Canonical ramification invariants
@@ -16,6 +20,8 @@ extension-marker arguments.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -202,10 +208,8 @@ theorem ramificationIndex_eq_degree_of_residueDegree_eq_one
   rw [degree_eq_ramificationIndex_mul_residueDegree base target, h, mul_one]
 
 /--
-Characterizes `ValuationTheory.DiscreteValuationField.ValuedExtension.IsUnramified base.toDVF
-target.toDVF` by the equivalent condition
-`ValuationTheory.DiscreteValuationField.ValuedExtension.ramificationIndex base.toDVF target.toDVF
-= 1`.
+Unfolds the historical `IsUnramified` name, which means `HasRamificationIndexOne`.
+It is only the weakly unramified condition; no residue separability is asserted.
 -/
 @[simp] theorem isUnramified_iff_ramificationIndex_eq_one :
     ValuationTheory.DiscreteValuationField.ValuedExtension.IsUnramified
@@ -353,10 +357,10 @@ theorem residueDegree_eq_one_iff_ramificationIndex_eq_degree_of_finite_separable
     simpa [he] using hdegree.symm
 
 /--
-Characterizes `ValuationTheory.DiscreteValuationField.ValuedExtension.IsUnramified base.toDVF
-target.toDVF` by the equivalent condition
-`ValuationTheory.DiscreteValuationField.ValuedExtension.residueDegree base.toDVF target.toDVF =
-ValuationTheory.DiscreteValuationField.ValuedExtension.degree base.toDVF target.toDVF`.
+Characterizes the historical `IsUnramified` name, namely `HasRamificationIndexOne`, by
+residue degree equal to field degree in a finite separable extension of complete valued fields.
+This does not assert residue separability; the stronger `IsFiniteUnramified` condition includes
+that additional requirement.
 -/
 theorem isUnramified_iff_residueDegree_eq_degree_of_finite_separable
     [Algebra.IsSeparable K L]

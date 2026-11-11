@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.Presentation.Minimal
-import Nyll.ProCGroups.ProP.Zassenhaus.Depth
+module
+
+public import Nyll.ProCGroups.ProP.Presentation.Minimal
+public import Nyll.ProCGroups.ProP.Zassenhaus.Depth
 
 /-!
 # Zassenhaus depth of displayed relators
@@ -15,6 +17,8 @@ Minimality supplies degree two directly from the identified
 power--commutator core, without choosing a finite maximum for an element of
 infinite depth.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

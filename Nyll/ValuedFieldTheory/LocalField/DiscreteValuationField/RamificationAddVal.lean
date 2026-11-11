@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
+module
+
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
 
 /-!
 # Additive valuations in finite complete-DVF extensions
@@ -18,6 +20,8 @@ ideal identity
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

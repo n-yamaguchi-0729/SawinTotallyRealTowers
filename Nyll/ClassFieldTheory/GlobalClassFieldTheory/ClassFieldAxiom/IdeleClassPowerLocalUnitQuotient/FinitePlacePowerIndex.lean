@@ -4,10 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
-import Mathlib.NumberTheory.NumberField.ProductFormula
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas
+public import Mathlib.NumberTheory.NumberField.ProductFormula
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.DenominatorValuation
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.MixedCharacteristicStructure.DeepPrincipalUnits
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PrincipalUnits.Filtration
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
 
 /-!
 # Finite-place power indices
@@ -18,14 +26,18 @@ to evaluate finite-place factors in idele power quotients.
 
 
 
+@[expose] public section
+
 open scoped NumberField NNReal ValuativeRel TensorProduct
 open NumberField IsDedekindDomain
 
 noncomputable section
 
+universe u v
+
 namespace GlobalClassFieldTheory.ClassFieldAxiom
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 open _root_.LocalFieldTheory.DiscreteValuationField (
   finite_fieldUnits_nthPowerQuotient_of_finite_principalUnits
@@ -68,12 +80,7 @@ theorem card_finitePlace_nthPowerQuotient
           F.residueCharacteristic ^
             (d *
               padicValNat F.residueCharacteristic (n : ℕ))) := by
-  let ν :
-      Valuation (v₀.adicCompletion K)
-        (WithZero (Multiplicative ℤ)) :=
-    Valued.v
-  let F :=
-    LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation ν
+  intro ν F
   let : NeZero (n : ℕ) := ⟨n.ne_zero⟩
   have hν : Function.Surjective ν :=
     v₀.valuedAdicCompletion_surjective K

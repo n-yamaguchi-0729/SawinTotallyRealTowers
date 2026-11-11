@@ -4,18 +4,20 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
-import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
-import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
-import Nyll.GaloisCohomology.ProP.TrivialZModP
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Galois.GaloisClosure
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
-import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
-import Mathlib.RepresentationTheory.Rep.Basic
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
+public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
+public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
+public import Nyll.GaloisCohomology.ProP.TrivialZModP
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Galois.GaloisClosure
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.LowDegree
+public import Mathlib.RepresentationTheory.Homological.ContCohomology.Basic
+public import Mathlib.RepresentationTheory.Rep.Basic
 
 /-!
 # Finite Kummer zero classes vanish after absolute inflation
@@ -27,6 +29,8 @@ inflated mod-p class is zero. The finite coefficient map is not asserted
 to be injective. This is the representative-level kernel comparison and
 uses neither a local-field nor an unramified-extension assumption.
 -/
+
+@[expose] public section
 
 namespace ClassFieldTower.Sawin
 

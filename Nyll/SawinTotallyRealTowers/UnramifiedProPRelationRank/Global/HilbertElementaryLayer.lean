@@ -10,6 +10,7 @@ import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
 import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldReciprocity.SmallOriginal
 import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldMaximalSubextension
 import Nyll.ProCGroups.Topologies.QuotientMaps
+import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 
 /-!
 # The elementary Hilbert class-field layer
@@ -96,22 +97,18 @@ theorem hilbertElementaryGalois_pow_eq_one (p : ℕ)
 /-- The Galois rank of the elementary Hilbert layer is the `p`-class rank. -/
 theorem finrank_hilbertElementaryGalois_eq_pClassRank
     (p : ℕ) [Fact (Nat.Prime p)] :
-    letI : Module (ZMod p)
+    let : Module (ZMod p)
         (Additive Gal((hilbertElementaryLayer K p) / K)) :=
       AddCommGroup.zmodModule (fun x => by
         change (Additive.toMul x) ^ p = 1
         exact hilbertElementaryGalois_pow_eq_one K p (Additive.toMul x))
     Module.finrank (ZMod p)
         (Additive Gal((hilbertElementaryLayer K p) / K)) = pClassRank K p := by
+  intro galoisModule
   let : Module (ZMod p) (Additive (PClassGroup K p)) :=
     AddCommGroup.zmodModule (fun x => by
       change (Additive.toMul x) ^ p = 1
       exact pClassGroup_pow_eq_one K p (Additive.toMul x))
-  let : Module (ZMod p)
-      (Additive Gal((hilbertElementaryLayer K p) / K)) :=
-    AddCommGroup.zmodModule (fun x => by
-      change (Additive.toMul x) ^ p = 1
-      exact hilbertElementaryGalois_pow_eq_one K p (Additive.toMul x))
   let e : Additive Gal((hilbertElementaryLayer K p) / K) ≃+
       Additive (PClassGroup K p) :=
     (hilbertElementaryGaloisEquivPClassGroup K p).toAdditive

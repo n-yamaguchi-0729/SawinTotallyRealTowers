@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.Finset.Insert
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.NumberTheory.Padics.HeightOneSpectrum
+module
+
+public import Mathlib.Data.Finset.Insert
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 
 /-!
 # The six rational primes allowed in the initial tower
@@ -14,6 +16,8 @@ import Mathlib.NumberTheory.Padics.HeightOneSpectrum
 The finite place support is the inverse image of the six primes under
 the canonical equivalence between finite places of ℚ and rational primes.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open IsDedekindDomain

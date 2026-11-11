@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValuationHerbrand
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValuationHerbrand
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
 
 /-!
 # The field-unit calculation in the local class-field-axiom theorem
@@ -18,6 +20,8 @@ class-field axiom. Its only input beyond the local-field hypotheses is the
 preceding normal-basis calculation `h(G, O_Lˣ) = 1` for the actual action on
 integer units.
 -/
+
+@[expose] public section
 
 namespace LocalClassFieldTheory
 open CyclicCohomology

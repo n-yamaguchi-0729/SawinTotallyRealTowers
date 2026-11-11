@@ -4,7 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationValue
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationValue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
 
 /-!
 # Generic evaluation core for transported reciprocity
@@ -16,6 +19,10 @@ domain-specific selected-field construction.
 
 
 
+@[expose] public section
+
+universe u v
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -25,16 +32,12 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-/-- Canonical class-group commutativity supplies normality in the transport formula. -/
-private theorem closedFiniteIndexEvaluationCoreClassGroupIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  IsMulCommutative.of_comm (fun a b => mul_comm a b)
-
-attribute [local instance] closedFiniteIndexEvaluationCoreClassGroupIsMulCommutative
+attribute [local instance]
+  globalNormResidueIdeleClassCommGroup
+  globalNormResidueIdeleClassIsMulCommutative
 
 variable
-    {K L : Type} [Field K] [NumberField K]
+    {K : Type u} {L : Type v} [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
 

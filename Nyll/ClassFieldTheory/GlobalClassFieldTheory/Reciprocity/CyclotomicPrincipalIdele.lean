@@ -4,7 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValue
+public import Mathlib.Algebra.Group.Torsion
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.ProfiniteUnitDecomposition.Decomposition
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacter
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicCharacterEquiv
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicField
+public import Nyll.GaloisCohomology.Kummer.Concrete.Cyclotomic.RationalCyclotomicTorsionField
 
 /-!
 # Principal ideles and the rational cyclotomic value
@@ -25,6 +36,8 @@ the explicit cyclotomic action; no such compatibility is assumed here.
 -/
 
 
+
+@[expose] public section
 
 open scoped BigOperators NumberField IsMulCommutative
 open NumberField IsDedekindDomain ClassFormation
@@ -104,7 +117,7 @@ theorem finiteSubfieldOfRationalCyclotomicField_le_level
     · apply KummerTheory.rationalCyclotomicLevel_mono
       exact ⟨(n : ℕ), rfl⟩
     · apply KummerTheory.rationalCyclotomicLevel_mono
-      exact ⟨(m : ℕ), by simp [Nat.mul_comm]⟩
+      exact ⟨(m : ℕ), Nat.mul_comm _ _⟩
   have helement :
       ∀ x : KummerTheory.rationalCyclotomicField,
         ∃ n : ℕ+,
@@ -314,8 +327,6 @@ theorem rationalCyclotomicZHatGlobalArtin_eq_fullRestriction
     IsAbelianGalois.of_algHom
       (E : IntermediateField ℚ
         rationalCyclotomicZHatField).val
-  let : NumberField E := hENumberField
-  let : IsAbelianGalois ℚ E := hEAbelian
   let σ : KummerTheory.rationalCyclotomicField ≃ₐ[ℚ]
       KummerTheory.rationalCyclotomicField :=
     infiniteGlobalArtinMonoidHom
@@ -331,9 +342,6 @@ theorem rationalCyclotomicZHatGlobalArtin_eq_fullRestriction
       KummerTheory.rationalCyclotomicField :=
     @Algebra.toSMul rationalCyclotomicZHatField
       KummerTheory.rationalCyclotomicField _ _ algZHatFull
-  let _ : Algebra rationalCyclotomicZHatField
-      KummerTheory.rationalCyclotomicField :=
-    algZHatFull
   let _ : IsScalarTower ℚ rationalCyclotomicZHatField
       KummerTheory.rationalCyclotomicField :=
     IsScalarTower.of_algHom i
@@ -343,8 +351,6 @@ theorem rationalCyclotomicZHatGlobalArtin_eq_fullRestriction
   let _ : SMul E KummerTheory.rationalCyclotomicField :=
     @Algebra.toSMul E
       KummerTheory.rationalCyclotomicField _ _ algEFull
-  let _ : Algebra E KummerTheory.rationalCyclotomicField :=
-    algEFull
   let _ : IsScalarTower ℚ E
       KummerTheory.rationalCyclotomicField :=
     IsScalarTower.of_algHom j
@@ -592,13 +598,7 @@ theorem
     exact
       globalArtinMonoidHom_rationalIdeleArchimedeanPart_sq
         (L := E.unop) a
-  exact
-    (pow_left_injective
-      (M :=
-        rationalCyclotomicZHatField ≃ₐ[ℚ]
-          rationalCyclotomicZHatField)
-      (n := 2) (by norm_num))
-        (by simpa using hsq)
+  exact (pow_eq_one_iff_left (by decide : (2 : ℕ) ≠ 0)).mp hsq
 
 /-- The rational cyclotomic value kills the archimedean part of every
 rational idele. -/
@@ -823,9 +823,9 @@ theorem
     (E :
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField) :
-    letI : NumberField E :=
+    let : NumberField E :=
       NumberField.of_module_finite ℚ E
-    letI : IsAbelianGalois ℚ E :=
+    let : IsAbelianGalois ℚ E :=
       IsAbelianGalois.of_algHom E.toIntermediateField.val
     AlgEquiv.restrictNormalHom E
         (rationalCyclotomicZHatGlobalArtin
@@ -834,10 +834,7 @@ theorem
         chosenFinitePlaceArtinMonoidHom
           (K := ℚ) (L := E) v
           (IdeleGroup.finiteComponent v a) := by
-  let hE : NumberField E :=
-    NumberField.of_module_finite ℚ E
-  let hAbelian : IsAbelianGalois ℚ E :=
-    IsAbelianGalois.of_algHom E.toIntermediateField.val
+  intro hE hAbelian
   let _ : NumberField E := hE
   let _ : IsAbelianGalois ℚ E := hAbelian
   exact

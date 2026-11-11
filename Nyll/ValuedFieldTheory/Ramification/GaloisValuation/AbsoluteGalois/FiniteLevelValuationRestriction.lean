@@ -4,44 +4,46 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Complete
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.AdicLimits
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Complete
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DegreeBounds
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DivisionBounds
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.FiniteApproximation
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.PrincipalLimits
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Step
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Truncation
-import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.WeakLimits
-import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
-import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialLifting
-import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
-import Nyll.ValuedFieldTheory.Valuation.Henselian.NonmonicReduction
-import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveFactorization
-import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveReduction
-import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueAlgebraicExtensions
-import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionPrimitive
-import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
-import Nyll.ValuedFieldTheory.Valuation.Henselian.ValuationExtensionCriterion
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
-import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
-import Mathlib.Algebra.Exact.Basic
-import Mathlib.FieldTheory.AbsoluteGaloisGroup
-import Mathlib.FieldTheory.Galois.Infinite
-import Mathlib.FieldTheory.Galois.Profinite
-import Mathlib.FieldTheory.PurelyInseparable.Basic
-import Mathlib.RingTheory.Valuation.RamificationGroup
-import Mathlib.Topology.Algebra.ContinuousMonoidHom
-import Mathlib.Topology.Maps.Basic
-import Mathlib.Topology.Sets.Opens
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Complete
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Core
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.AdicLimits
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Assembly
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Basic
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.CoefficientMinimum
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Complete
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DegreeBounds
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.DivisionBounds
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.ErrorPowers
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.FiniteApproximation
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.InfiniteApproximation
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Iteration
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.PrincipalLimits
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Step
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.Truncation
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.Factorization.WeakLimits
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialBounds
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.IrreduciblePolynomialLifting
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.MonicFactorization
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.NonmonicReduction
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveFactorization
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.PrimitiveReduction
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueAlgebraicExtensions
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionPrimitive
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.UniqueExtensionReduction
+public import Nyll.ValuedFieldTheory.Valuation.Henselian.ValuationExtensionCriterion
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
+public import Mathlib.Algebra.Exact.Basic
+public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Infinite
+public import Mathlib.FieldTheory.Galois.Profinite
+public import Mathlib.FieldTheory.PurelyInseparable.Basic
+public import Mathlib.RingTheory.Valuation.RamificationGroup
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Mathlib.Topology.Maps.Basic
+public import Mathlib.Topology.Sets.Opens
 
 /-!
 # Finite-level valuation restriction for absolute Galois arguments
@@ -49,6 +51,8 @@ import Mathlib.Topology.Sets.Opens
 This file isolates the valuation-restriction and separable-power lemmas
 used to pass from absolute Galois questions to finite intermediate fields.
 -/
+
+@[expose] public section
 
 namespace RamificationTheory
 
@@ -85,7 +89,8 @@ theorem mem_iff_pow_mem (x : K) {n : ℕ} (hn : 0 < n) :
         · simpa [hn0] using hxpow
         · have hnpos : 0 < n := Nat.pos_of_ne_zero hn0
           by_cases hx0 : x = 0
-          · simp [hx0]
+          · rw [hx0]
+            exact zero_mem _
           rcases A.mem_or_inv_mem x with hx | hxinv
           · exact hx
           · have hxpred : x ^ n ∈ A := by

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Data.ZMod.Basic
-import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Topology
+module
+
+public import Mathlib.Data.ZMod.Basic
+public import Nyll.ProCGroups.CompletedGroupAlgebra.ProfiniteModules.FiniteGroupAlgebra.Topology
 
 /-!
 # Functoriality of finite group algebras
@@ -14,6 +16,8 @@ This file studies group-algebra maps induced by homomorphisms of finite groups, 
 composition, basis formulas, continuity, and surjectivity. It also develops coefficient
 calculations for cyclic reductions used in later kernel arguments.
 -/
+
+@[expose] public section
 
 open scoped Topology
 open ProCGroups
@@ -26,14 +30,13 @@ universe u v
 theorem finiteGroupAlgebra_mapDomainRingHom_continuous
     (R : Type u) (G H : Type v) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
     [Group G] [Group H] [Finite G] [Finite H] (φ : G →* H) :
-    letI : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
-    letI : TopologicalSpace (MonoidAlgebra R H) := finiteGroupAlgebraTopology R H
+    let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
+    let : TopologicalSpace (MonoidAlgebra R H) := finiteGroupAlgebraTopology R H
     Continuous (MonoidAlgebra.mapDomainRingHom R φ : MonoidAlgebra R G → MonoidAlgebra R H) := by
   classical
+  intro sharedOwner1 sharedOwner2
   let : Fintype G := Fintype.ofFinite G
   let : Fintype H := Fintype.ofFinite H
-  let : TopologicalSpace (MonoidAlgebra R G) := finiteGroupAlgebraTopology R G
-  let : TopologicalSpace (MonoidAlgebra R H) := finiteGroupAlgebraTopology R H
   let e : MonoidAlgebra R H ≃ (H → R) :=
     (MonoidAlgebra.coeffEquiv (R := R) (M := H)).trans Finsupp.equivFunOnFinite
   have he : Topology.IsInducing (e : MonoidAlgebra R H → H → R) :=
@@ -411,17 +414,13 @@ theorem finiteProductCyclicReduction_fiber_card
     toFun t := ⟨t.1.2, by
       simpa [finiteProductCyclicReduction] using congrArg Prod.snd t.2⟩
     invFun z := ⟨(i.1, z.1), by
-      ext <;> first | rfl | assumption | exact finiteProductCyclicReduction |
-        exact finiteProductCyclicReduction.symm |
-        simp only [finiteProductCyclicReduction, MonoidHom.coe_mk, OneHom.coe_mk, z.2,
-          Prod.mk.eta]⟩
+      change (i.1, finiteCyclicReduction M K z.1) = i
+      exact Prod.ext rfl z.2⟩
     left_inv t := by
       apply Subtype.ext
-      have hfst := congrArg Prod.fst t.2
-      ext <;> first | rfl | assumption | exact finiteProductCyclicReduction |
-        exact finiteProductCyclicReduction.symm |
-        simp only [finiteProductCyclicReduction, MonoidHom.coe_mk, OneHom.coe_mk] at hfst ⊢
-      exact hfst.symm
+      apply Prod.ext
+      · exact (congrArg Prod.fst t.2).symm
+      · rfl
     right_inv z := by
       apply Subtype.ext
       rfl }

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Module
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.CoefficientRings.CompletedGroupAlgebraPrimePower.Module
 
 /-!
 # Fox differential: completed — coefficient rings — prime-power completed group algebra —
@@ -22,6 +24,8 @@ The principal declarations in this module are:
   Stagewise augmentations of a completed group-algebra element are independent of the
   finite-quotient component once the prime-power exponent is fixed.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

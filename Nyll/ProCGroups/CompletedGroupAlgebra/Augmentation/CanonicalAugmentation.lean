@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.StageAugmentation
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.StageAugmentation
 
 /-!
 # Canonical augmentation of the in-class completion
@@ -13,6 +15,8 @@ Compatible finite-stage augmentations assemble into the canonical augmentation o
 completed group algebra. This file proves its projection, coefficient-map, continuity, and
 surjectivity properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
-import Mathlib.Algebra.Module.Shrink
-import Mathlib.RingTheory.AdicCompletion.AsTensorProduct
-import Mathlib.RingTheory.AdicCompletion.Noetherian
-import Mathlib.RingTheory.Nakayama
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Henselian
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AdicPower
+public import Mathlib.Algebra.Module.Shrink
+public import Mathlib.RingTheory.AdicCompletion.AsTensorProduct
+public import Mathlib.RingTheory.AdicCompletion.Noetherian
+public import Mathlib.RingTheory.Nakayama
 
 /-!
 # Finite algebra consequences of Henselian pairs
@@ -17,6 +19,8 @@ import Mathlib.RingTheory.Nakayama
 This file keeps the Nakayama and finite-module completion consequences away
 from the lightweight `HenselianDVF` core.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

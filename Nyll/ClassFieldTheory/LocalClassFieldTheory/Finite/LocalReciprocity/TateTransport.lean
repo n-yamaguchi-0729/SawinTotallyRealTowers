@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.UnitCohomologyAxiom
 
 /-!
 # The local class-field-axiom theorem: transport of cyclic Tate complexes
@@ -16,6 +18,8 @@ transport the local class-field-axiom theorem: reindexing a representation along
 isomorphism and replacing a representation by an isomorphic one.
 -/
 
+@[expose] public section
+
 namespace LocalClassFieldTheory
 
 open ClassFormation
@@ -26,9 +30,11 @@ noncomputable section
 
 open CategoryTheory
 
+universe u v
+
 section CyclicGenerator
 
-variable {Q P : Type} [Group Q] [Group P]
+variable {Q : Type u} {P : Type v} [Group Q] [Group P]
 
 /-- A generator remains a generator after applying a group isomorphism. -/
 theorem map_cyclicGenerator (e : Q ≃* P) (g : Q)
@@ -47,13 +53,13 @@ section GroupEquiv
 variable {R Q P : Type} [CommRing R]
   [CommGroup Q] [CommGroup P] [Fintype Q] [Fintype P]
 
-private theorem res_norm_eq (e : Q ≃* P) (A : Rep R P) :
+/-- Reindexing the representation along a group equivalence preserves its norm map. -/
+theorem res_norm_eq (e : Q ≃* P) (A : Rep R P) :
     let Ares : Rep R Q :=
       Rep.res e.toMonoidHom A
-    ModuleCat.ofHom Ares.norm.hom.toLinearMap =
-      ModuleCat.ofHom A.norm.hom.toLinearMap := by
-  let Ares : Rep R Q :=
-    Rep.res e.toMonoidHom A
+    ModuleCat.ofHom Ares.norm.asHom.hom.toLinearMap =
+      ModuleCat.ofHom A.norm.asHom.hom.toLinearMap := by
+  intro Ares
   apply congrArg ModuleCat.ofHom
   change Representation.norm Ares.ρ = Representation.norm A.ρ
   simp only [Representation.norm]

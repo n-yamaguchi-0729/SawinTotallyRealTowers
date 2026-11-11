@@ -5,6 +5,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
+import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+import Nyll.GaloisCohomology.Cyclic.TateComparison
 
 /-!
 # Evaluating the finite-cyclic periodic unit class
@@ -116,42 +118,11 @@ theorem finiteCyclicUnitsH0Arithmetic_mk
         (normClass K L
           (Additive.toMul (invariantsUnitsAddEquivBaseUnits K L x))) := by
   let _ := AlgEquiv.fintype K L
-  let eInv := Submodule.Quotient.equiv
-      (unitsTateH0NormSubmodule K L)
-      (additiveNormSubgroup K L).toIntSubmodule
-      (invariantsUnitsEquivBaseUnits K L)
-      (invariantsUnitsEquivBaseUnits_map_tateNormSubmodule K L)
-  let eNormEq :=
-    QuotientAddGroup.quotientAddEquivOfEq
-      (additiveNormSubgroup_eq_ker_quotient_map K L)
-  have hNormSurjective : Function.Surjective
-      (MonoidHom.toAdditive (normClass K L)) := by
-    change Function.Surjective
-      (QuotientGroup.mk' (localNormSubgroup K L))
-    exact QuotientGroup.mk'_surjective _
-  let eNormKer :=
-    QuotientAddGroup.quotientKerEquivOfSurjective
-      (MonoidHom.toAdditive (normClass K L)) hNormSurjective
-  dsimp only [H0TateUnitsIsoNormQuotient]
-  simp only [Iso.trans_hom]
-  rw [ModuleCat.comp_apply, Iso.inv_hom_id_apply]
-  rw [ModuleCat.comp_apply]
-  dsimp only [LinearEquiv.toModuleIso]
-  change
-    eNormKer (eNormEq (eInv (Submodule.Quotient.mk x))) = _
-  dsimp only [eInv]
-  rw [Submodule.Quotient.equiv_apply, Submodule.mapQ_apply]
-  change
-    eNormKer
-      (eNormEq
-        (QuotientAddGroup.mk
-          ((invariantsUnitsEquivBaseUnits K L) x))) = _
-  dsimp only [eNormEq, eNormKer]
-  rw [QuotientAddGroup.quotientAddEquivOfEq_mk,
-    QuotientAddGroup.quotientKerEquivOfSurjective,
-    QuotientAddGroup.quotientKerEquivOfRightInverse_apply,
-    QuotientAddGroup.kerLift_mk]
-  rfl
+  change integralH0TateUnitsAddEquivNormQuotient K L
+      ((IntegralGroupCohomology.tateIsoOriginal (Rep.ofAlgebraAutOnUnits K L) 0).inv
+        ((tateUnitsH0IsoInvariantsQuotient K L).inv (Submodule.Quotient.mk x))) = _
+  rw [integralUnitsTateClass_original]
+  exact integralH0TateUnitsAddEquivNormQuotient_class K L x
 
 /-- The finite-cyclic periodic Tate representative is the invariant-unit
 quotient class of the same underlying fixed unit. -/
@@ -179,7 +150,7 @@ theorem finiteCyclicUnitsTateHZeroPeriodicClass_eq
       exact a.2⟩
   let aT : T.moduleCatLeftHomologyData.K := a'
   let S : ShortComplex (ModuleCat ℤ) :=
-    .mk A.norm.toModuleCatHom (groupCohomology.d₀₁ A)
+    .mk A.norm.asHom.toModuleCatHom (groupCohomology.d₀₁ A)
       (Rep.norm_comp_d_eq_zero A)
   have hkerCyclic :
       LinearMap.ker S.g.hom = LinearMap.ker T.g.hom := by

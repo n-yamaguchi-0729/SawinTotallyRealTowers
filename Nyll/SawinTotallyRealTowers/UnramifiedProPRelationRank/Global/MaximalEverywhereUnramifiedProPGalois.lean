@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
-import Mathlib.FieldTheory.Galois.Profinite
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
+public import Mathlib.FieldTheory.Galois.Profinite
 
 /-!
 # The Galois group of the maximal everywhere-unramified pro-p extension
@@ -16,6 +18,8 @@ separability and normality. The resulting automorphism group carries only the
 canonical Krull topology and profinite instances supplied by Mathlib; its
 pro-`p` property is deferred to the finite-support argument.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

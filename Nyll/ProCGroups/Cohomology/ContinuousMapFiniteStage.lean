@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
-import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
+module
+
+public import Nyll.ProCGroups.InverseSystems.FiniteStageFactorization
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.LimitPresentation
 
 /-!
 # Finite-stage factorization of continuous maps
@@ -14,6 +16,8 @@ Every continuous map from a pro-`C` group to a finite discrete space factors thr
 canonical open-normal quotients in `C`.  This is the finite-stage input for reducing continuous
 finite-coefficient cochains to finite quotients.
 -/
+
+@[expose] public section
 
 open scoped Topology
 
@@ -67,7 +71,7 @@ theorem exists_openNormalSubgroupInClass_factor_continuousMap_finite
   have hfacg := congrFun hfac (e g)
   change rho g = rhoK (OpenNormalSubgroupInClass.quotientProj (OrderDual.ofDual k) g)
   calc
-    rho g = (rho ∘ e.symm) (e g) := by simp [e]
+    rho g = (rho ∘ e.symm) (e g) := (congrArg rho (e.symm_apply_apply g)).symm
     _ = rhoK (S.projection k (e g)) := hfacg
     _ = rhoK (OpenNormalSubgroupInClass.quotientProj (OrderDual.ofDual k) g) := by
       rw [hk]

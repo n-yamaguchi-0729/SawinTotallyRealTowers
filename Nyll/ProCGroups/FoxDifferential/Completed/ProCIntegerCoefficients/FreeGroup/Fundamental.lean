@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Coordinates
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.FreeGroup.Coordinates
 
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — free group — fundamental
@@ -22,6 +24,8 @@ The principal declarations in this module are:
 - `zcFreeGroupFoxDerivative_euler_formula_of_crossedHom`
   The explicit \([\psi(w)]-1\) form of the conditional completed Fox-Euler formula.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

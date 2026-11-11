@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
-import Mathlib.GroupTheory.Torsion
+module
+
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
+public import Mathlib.GroupTheory.Torsion
 
 /-!
 # The torsion quotient in the cyclotomic decomposition
@@ -18,14 +20,16 @@ turns that decomposition into a `ℤ̂`-extension.
 
 
 
+@[expose] public section
+
 open scoped Topology
 
 noncomputable section
 
 namespace ClassFormation
 
-/-- The additive group of `ℤ̂` is torsion-free. -/
-instance : IsAddTorsionFree ZHat :=
+/-- Multiplication by a nonzero natural number is injective on `ℤ̂`. -/
+instance : HasUniqueDiv ZHat :=
   ⟨fun {_} hn => zHatMulNat_injective (Nat.pos_of_ne_zero hn)⟩
 
 /-- The multiplicative presentation of additive `ℤ̂` is torsion-free. -/

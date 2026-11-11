@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.Rank
-import Mathlib.Algebra.Module.PID
-import Mathlib.Algebra.Module.ZLattice.Basic
-import Mathlib.NumberTheory.NumberField.ProductFormula
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.Rank
+public import Mathlib.Algebra.Module.PID
+public import Mathlib.Algebra.Module.ZLattice.Basic
+public import Mathlib.NumberTheory.NumberField.ProductFormula
 
 /-!
 # The logarithmic lattice of `S`-units
@@ -25,6 +27,8 @@ lattice.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -85,6 +89,14 @@ noncomputable def reducedLog :
       exact_mod_cast
         divisorCoordinate_mul (K := K) S
           (Additive.toMul x) (Additive.toMul y) v
+
+/-- The finite coordinate of the reduced logarithm is the real divisor coordinate. -/
+@[simp]
+theorem reducedLog_snd_apply
+    (x : Additive (SUnitGroup (K := K) S)) (v : S) :
+    (reducedLog (K := K) S x).2 v =
+      (divisorCoordinate (K := K) S (Additive.toMul x) v : ℝ) :=
+  rfl
 
 /-- The normalized finite absolute value is the norm of the prime
 raised to minus the corresponding principal-divisor exponent. -/
@@ -172,10 +184,12 @@ theorem reducedLog_eq_zero_iff
       apply LinearMap.mem_ker.mpr
       ext v
       have hv := congrFun (congrArg Prod.snd hx) v
-      simpa [reducedLog, divisorLinearMap, divisor] using
-        (show
-          (divisorCoordinate (K := K) S
-            (Additive.toMul x) v : ℝ) = 0 from hv)
+      rw [reducedLog_snd_apply] at hv
+      change (divisorCoordinate (K := K) S (Additive.toMul x) v : ℝ) = 0 at hv
+      change
+        divisorCoordinate (K := K) S
+          (Additive.toMul x) v = 0
+      exact_mod_cast hv
     rw [← range_fromNumberFieldUnitsLinearMap_eq_ker_divisorLinearMap
       (K := K) S] at hxdiv
     obtain ⟨u, hu⟩ := hxdiv
@@ -305,14 +319,12 @@ instance instDiscreteTopology_reducedLogLattice :
       apply LinearMap.mem_ker.mpr
       ext v
       have hv := congrFun hfin v
+      rw [reducedLog_snd_apply] at hv
+      change (divisorCoordinate (K := K) S (Additive.toMul x) v : ℝ) = 0 at hv
       change
         divisorCoordinate (K := K) S
           (Additive.toMul x) v = 0
-      have hvreal :
-          (divisorCoordinate (K := K) S
-            (Additive.toMul x) v : ℝ) = 0 := by
-        simpa [reducedLog] using hv
-      exact_mod_cast hvreal
+      exact_mod_cast hv
     rw [← range_fromNumberFieldUnitsLinearMap_eq_ker_divisorLinearMap
       (K := K) S] at hxdiv
     obtain ⟨u, hu⟩ := hxdiv
@@ -400,26 +412,24 @@ theorem reducedLogLattice_span_eq_top :
       (reducedLogLattice (K := K) S :
         Set (ReducedLogSpace (K := K) S)) = ⊤ := by
   classical
+  let latticePoints : Set (ReducedLogSpace (K := K) S) :=
+    (reducedLogLattice (K := K) S : Set (ReducedLogSpace (K := K) S))
   let :
       DiscreteTopology
         (Submodule.span ℤ
-          (reducedLogLattice (K := K) S :
-            Set (ReducedLogSpace (K := K) S))) := by
+          latticePoints) := by
     rw [Submodule.span_eq]
     infer_instance
   apply Submodule.eq_top_of_finrank_eq
   change
     Set.finrank ℝ
-      (reducedLogLattice (K := K) S :
-        Set (ReducedLogSpace (K := K) S)) =
+      latticePoints =
       Module.finrank ℝ (ReducedLogSpace (K := K) S)
   calc
     Set.finrank ℝ
-        (reducedLogLattice (K := K) S :
-          Set (ReducedLogSpace (K := K) S)) =
+        latticePoints =
         Set.finrank ℤ
-          (reducedLogLattice (K := K) S :
-            Set (ReducedLogSpace (K := K) S)) :=
+          latticePoints :=
       Real.finrank_eq_int_finrank_of_discrete inferInstance
     _ = Module.finrank ℤ
           (reducedLogLattice (K := K) S) := by
@@ -1142,7 +1152,7 @@ noncomputable def rootsOfUnityEquivTorsion :
 
 /-- A linear section of the quotient by torsion.  It exists because
 the quotient is a free, hence projective, `ℤ`-module. -/
-private noncomputable def torsionQuotientSection :
+noncomputable def torsionQuotientSection :
     FreeQuotient (K := K) S →ₗ[ℤ]
       Additive (SUnitGroup (K := K) S) :=
   (Module.projective_lifting_property
@@ -1150,7 +1160,8 @@ private noncomputable def torsionQuotientSection :
     LinearMap.id
     (TorsionAdditive (K := K) S).mkQ_surjective).choose
 
-private theorem torsionQuotientSection_spec :
+/-- The chosen section splits the quotient map by torsion. -/
+theorem torsionQuotientSection_spec :
     (TorsionAdditive (K := K) S).mkQ.comp
         (torsionQuotientSection (K := K) S) =
       LinearMap.id :=
@@ -1161,7 +1172,7 @@ private theorem torsionQuotientSection_spec :
 
 /-- Splitting the exact sequence consisting of torsion, the `S`-unit
 group, and its torsion-free quotient. -/
-private noncomputable def torsionProdFreeQuotientEquiv :
+noncomputable def torsionProdFreeQuotientEquiv :
     Additive (SUnitGroup (K := K) S) ≃ₗ[ℤ]
       TorsionAdditive (K := K) S ×
         FreeQuotient (K := K) S :=

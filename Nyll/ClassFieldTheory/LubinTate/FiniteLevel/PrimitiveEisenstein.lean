@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.DivisionPolynomial
-import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
+module
+
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.DivisionPolynomial
+public import Mathlib.RingTheory.Polynomial.Eisenstein.Basic
 
 /-!
 # Eisenstein property of the standard primitive division polynomials
@@ -29,6 +31,8 @@ The argument is independent of the characteristic of `F`.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 open scoped Polynomial
@@ -48,8 +52,9 @@ theorem standardLubinTatePolynomial_map_residue
     (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) :
     (standardLubinTatePolynomial F π).map F.residueMap =
       Polynomial.X ^ Nat.card F.residueField := by
-  simp [standardLubinTatePolynomial,
-    SameUniformizer.residueMap_uniformizer_eq_zero hπ]
+  simp only [standardLubinTatePolynomial, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X,
+    Polynomial.map_mul, Polynomial.map_C, SameUniformizer.residueMap_uniformizer_eq_zero hπ,
+    map_zero, zero_mul, add_zero]
 
 /-- Reduction modulo the maximal ideal sends the `n`-fold standard iterate
 to `X ^ (q ^ n)`. -/
@@ -60,13 +65,14 @@ theorem standardLubinTatePolynomialIterate_map_residue
       Polynomial.X ^ (Nat.card F.residueField ^ n) := by
   induction n with
   | zero =>
-      simp [standardLubinTatePolynomialIterate]
+      simp only [standardLubinTatePolynomialIterate, Function.iterate_zero, id_eq, Polynomial.map_X,
+        pow_zero, pow_one]
   | succ n ih =>
       rw [standardLubinTatePolynomialIterate_succ,
         Polynomial.map_comp,
         standardLubinTatePolynomial_map_residue hπ,
         ih]
-      simp [← pow_mul, pow_succ]
+      simp only [Polynomial.pow_comp, Polynomial.X_comp, ← pow_mul, pow_succ]
 
 /-- Reduction modulo the maximal ideal sends the primitive quotient
 polynomial to its leading monomial. -/
@@ -77,10 +83,9 @@ theorem standardLubinTatePrimitivePolynomial_map_residue
       Polynomial.X ^
         ((Nat.card F.residueField - 1) *
           Nat.card F.residueField ^ n) := by
-  simp [standardLubinTatePrimitivePolynomial,
-    standardLubinTatePolynomialIterate_map_residue hπ,
-    SameUniformizer.residueMap_uniformizer_eq_zero hπ,
-    ← pow_mul, Nat.mul_comm]
+  simp only [standardLubinTatePrimitivePolynomial, Polynomial.map_add, Polynomial.map_pow,
+    standardLubinTatePolynomialIterate_map_residue hπ, ← pow_mul, Polynomial.map_C,
+    SameUniformizer.residueMap_uniformizer_eq_zero hπ, map_zero, add_zero, Nat.mul_comm]
 
 /-- The standard primitive quotient polynomial is Eisenstein at the maximal
 ideal of the valuation ring. -/
@@ -110,7 +115,7 @@ theorem standardLubinTatePrimitivePolynomial_isEisensteinAt
         standardLubinTatePrimitivePolynomial_natDegree] using hi
     have hzero : F.residueMap (Q.coeff i) = 0 := by
       rw [hcoeff]
-      simp [Polynomial.coeff_X_pow, ne_of_lt hid]
+      simp only [Polynomial.coeff_X_pow, ne_of_lt hid, ↓reduceIte]
     exact (F.toCompleteDVF.residue_eq_zero_iff (Q.coeff i)).1 hzero
   · simpa [Q] using
       F.toCompleteDVF.uniformizer_not_mem_maximalIdeal_sq hπ

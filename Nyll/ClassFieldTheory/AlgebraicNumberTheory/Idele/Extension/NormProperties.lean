@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
-import Mathlib.RingTheory.Norm.Transitivity
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
+public import Mathlib.RingTheory.Norm.Transitivity
 
 /-!
 # Functorial properties of the idele norm
@@ -16,6 +18,8 @@ general transitivity theorem for determinant norms.  The remaining
 statements record the base-field power formula and compatibility with
 principal ideles and Galois conjugation.
 -/
+
+@[expose] public section
 
 open scoped BigOperators
 open NumberField

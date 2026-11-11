@@ -4,9 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
-import Nyll.ProCGroups.Completion.FiniteQuotientLifts
-import Nyll.ProCGroups.FreeProC.Basic
+module
+
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ProCGroups.Completion.FiniteQuotientLifts
+public import Nyll.ProCGroups.FreeProC.Basic
+public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
+public import Nyll.GaloisCohomology.ProfiniteIntegers.TopologicalGeneration
+public import Nyll.ProCGroups.Completion.UniversalProperty
+public import Nyll.ProCGroups.FiniteGroups.AllFinite
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProC.InverseLimits.FiniteQuotients
+public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
 # The profinite integers as a rank-one free profinite group
@@ -18,6 +27,8 @@ free-profinite properties.
 
 This production leaf is independent of every `Progress` module.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology

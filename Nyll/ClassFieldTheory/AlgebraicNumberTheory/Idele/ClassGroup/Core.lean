@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Principal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.BaseChange
 
 /-!
 # The ordinary ideal class group as an idele quotient
@@ -17,6 +19,8 @@ ordinary ideal class group.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField RestrictedProduct WithZero
 open NumberField IsDedekindDomain
@@ -56,7 +60,7 @@ theorem count_toPrincipalIdeal (x : Kˣ)
             FractionalIdeal (nonZeroDivisors (𝓞 K)) K) := by
     rw [coe_toPrincipalIdeal, hx,
       FractionalIdeal.coeIdeal_span_singleton,
-      FractionalIdeal.spanSingleton_mul_spanSingleton,
+      ← map_mul (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 K))),
       IsFractionRing.mk'_eq_div, div_eq_mul_inv, mul_comm]
   rw [FractionalIdeal.count_well_defined K v
       (Units.ne_zero (toPrincipalIdeal (𝓞 K) K x)) hspan,

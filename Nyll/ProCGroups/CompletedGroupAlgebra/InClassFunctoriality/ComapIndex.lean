@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
+module
+
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Index
 
 /-!
 # Pulling back in-class quotient indices
@@ -13,6 +15,8 @@ An open-normal quotient index on the target pulls back along a continuous group 
 an index on the source. This file defines that comap, the induced finite quotient map, and its
 monotonicity, compatibility, and surjectivity properties.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

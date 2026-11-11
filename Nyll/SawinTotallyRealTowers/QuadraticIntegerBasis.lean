@@ -4,20 +4,22 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.QuadraticBasis
-import Nyll.SawinTotallyRealTowers.QuadraticIntegerRepresentation
-import Nyll.SawinTotallyRealTowers.QuadraticIntegralGenerator
-import Mathlib.Algebra.Algebra.Basic
-import Mathlib.Algebra.Module.LinearMap.Defs
-import Mathlib.Data.Fin.VecNotation
-import Mathlib.LinearAlgebra.Basis.Basic
-import Mathlib.LinearAlgebra.LinearIndependent.Basic
-import Mathlib.LinearAlgebra.Span.Defs
-import Mathlib.NumberTheory.NumberField.Basic
-import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
-import Mathlib.Tactic.FinCases
-import Mathlib.Tactic.Ring
-import Lean.Elab.Tactic.Omega
+module
+
+public import Nyll.SawinTotallyRealTowers.QuadraticBasis
+public import Nyll.SawinTotallyRealTowers.QuadraticIntegerRepresentation
+public import Nyll.SawinTotallyRealTowers.QuadraticIntegralGenerator
+public import Mathlib.Algebra.Algebra.Basic
+public import Mathlib.Algebra.Module.LinearMap.Defs
+public import Mathlib.Data.Fin.VecNotation
+public import Mathlib.LinearAlgebra.Basis.Basic
+public import Mathlib.LinearAlgebra.LinearIndependent.Basic
+public import Mathlib.LinearAlgebra.Span.Defs
+public import Mathlib.NumberTheory.NumberField.Basic
+public import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
+public import Mathlib.Tactic.FinCases
+public import Mathlib.Tactic.Ring
+public import Lean.Elab.Tactic.Omega
 
 /-!
 # Integral bases of squarefree quadratic number fields
@@ -28,6 +30,8 @@ classification gives spanning, and the concrete rational quadratic basis
 gives linear independence. These produce actual bases of the full ring of
 integers, with the two expected basis vectors.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 open NumberField
@@ -91,7 +95,8 @@ theorem adjoin_half_quadraticGenerator_eq_top
   rw [hRecover] at hα
   exact hα
 
-private theorem linearIndependent_one_integer_generator
+/-- A generator of the quadratic field gives an integrally independent pair with one. -/
+theorem linearIndependent_one_integer_generator
     (L : Type u) [Field L] [NumberField L] [Algebra.IsQuadraticExtension ℚ L]
     (β : 𝓞 L)
     (hGenerate : IntermediateField.adjoin ℚ ({(β : L)} : Set L) = ⊤) :

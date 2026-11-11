@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageProjection
-import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.QuotientKernelBasis
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.ProCIntegerBifilteredStageProjection
+public import Nyll.ProCGroups.FoxDifferential.Completed.FreeProC.QuotientKernelBasis
 
 /-!
 # Fox differential: completed — free pro-\(C\) — pro c integer bifiltered stage right projection
@@ -26,6 +28,8 @@ The principal declarations in this module are:
 - `zcCompletedGroupAlgebraBifilteredStageQuotientMap_apply`
   The intermediate stage quotient map sends \(h\) to its canonical class in the quotient \(H/U_j\).
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

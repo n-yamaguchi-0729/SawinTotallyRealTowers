@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.ProP.BurnsideBasis
-import Nyll.ProCGroups.ProP.ElementaryAbelianRank
+module
+
+public import Nyll.ProCGroups.ProP.BurnsideBasis
+public import Nyll.ProCGroups.ProP.ElementaryAbelianRank
 
 /-!
 # Generator rank of a finitely generated pro-p group
@@ -18,6 +20,8 @@ The quotient structures are canonical but deliberately section-local.  This
 keeps them out of global instance search while avoiding repeated `letI`
 blocks in theorem statements and proofs.
 -/
+
+@[expose] public section
 
 open Set
 open scoped IsMulCommutative

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationCore
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.EvaluationCore
 
 /-!
 # Evaluation of continuous closed finite-index reciprocity
@@ -15,6 +17,10 @@ the generic transported-reciprocity calculation.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -22,7 +28,7 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace GlobalClassFields
 
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- Evaluation of the selected class-field equivalence is the named inverse
 global norm-residue value in the quotient by the defining subgroup. -/

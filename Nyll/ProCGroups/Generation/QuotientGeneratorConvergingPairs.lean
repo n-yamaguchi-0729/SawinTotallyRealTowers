@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Generation.Convergence
-import Nyll.ProCGroups.Generation.GeneratorConvergingPairs
-import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
+module
+
+public import Nyll.ProCGroups.Generation.Convergence
+public import Nyll.ProCGroups.Generation.GeneratorConvergingPairs
+public import Nyll.ProCGroups.ProC.Quotients.ClosedNormal
 
 /-!
 # Converging generators constructed through quotient refinements
@@ -16,6 +18,8 @@ quotient together with coherent refinement maps.  Chain upper bounds and strict 
 a maximality argument producing generators converging to one; the final results transport this
 property and the resulting topological rank across surjections and continuous equivalences.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise
@@ -1510,35 +1514,6 @@ theorem GeneratesAndConvergesToOneAlongOpenSubgroups.image_of_continuousMulEquiv
       (topologicallyGenerates_continuousMulEquiv_image_iff (G := G) (H := H) e (X := X)).2 h.1,
       (ConvergesToOneAlongOpenSubgroups.image_of_continuousMulEquiv_iff
         (G := G) (H := H) e (X := X)).2 h.2⟩
-
-omit [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
-/-- Topological rank is invariant under continuous multiplicative equivalence. -/
-theorem topologicalRank_eq_of_continuousMulEquiv
-    {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
-    [CompactSpace H] [T2Space H] [TotallyDisconnectedSpace H]
-    (e : G ≃ₜ* H) :
-    topologicalRank G = topologicalRank H := by
-  apply le_antisymm
-  · rcases exists_topologicallyGenerates_card_eq_topologicalRank (G := H) with
-      ⟨Ymin, hYmin, hYcard⟩
-    calc
-      topologicalRank G ≤ Cardinal.mk (e.symm '' Ymin) := by
-        exact topologicalRank_le_mk_of_topologicallyGenerates
-          (G := G)
-          (topologicallyGenerates_continuousMulEquiv_image
-            (G := H) e.symm hYmin)
-      _ ≤ Cardinal.mk Ymin := Cardinal.mk_image_le
-      _ = topologicalRank H := hYcard
-  · rcases exists_topologicallyGenerates_card_eq_topologicalRank (G := G) with
-      ⟨Xmin, hXmin, hXcard⟩
-    calc
-      topologicalRank H ≤ Cardinal.mk (e '' Xmin) := by
-        exact topologicalRank_le_mk_of_topologicallyGenerates
-          (G := H)
-          (topologicallyGenerates_continuousMulEquiv_image
-            (G := G) e hXmin)
-      _ ≤ Cardinal.mk Xmin := Cardinal.mk_image_le
-      _ = topologicalRank G := hXcard
 
 
 end Generators

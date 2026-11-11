@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteGaloisAbelianization
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
-import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
+module
+
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteGaloisAbelianization
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
+public import Mathlib.Topology.Algebra.Category.ProfiniteGrp.Limits
 
 /-!
 # Finite quotients of the absolute abelianized Galois group
@@ -21,17 +23,21 @@ subextension.
 
 
 
+@[expose] public section
+
 noncomputable section
 
 namespace LocalClassFieldTheory
 
 open LocalFieldTheory RamificationTheory
 
-variable (K : Type) [Field K]
+universe u
+
+variable (K : Type u) [Field K]
 
 /-- The absolute topological abelianization, regarded as a stable profinite
 group. -/
-noncomputable def localAbsoluteAbelianProfinite : ProfiniteGrp :=
+noncomputable def localAbsoluteAbelianProfinite : ProfiniteGrp.{u} :=
   ProfiniteGrp.of
     (TopologicalAbelianization (intrinsicAbsoluteGalois K))
 

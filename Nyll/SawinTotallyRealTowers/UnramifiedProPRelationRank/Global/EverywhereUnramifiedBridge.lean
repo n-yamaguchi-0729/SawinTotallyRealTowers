@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
+module
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
 
 /-!
 # Everywhere-unramified bridges for number fields
@@ -14,6 +16,8 @@ This file combines the finite-prime bridges for rings of integers with the
 infinite-place API. It also transports everywhere-unramifiedness across an
 equivalence of top fields and supplies odd-degree Galois constructors.
 -/
+
+@[expose] public section
 
 open scoped NumberField
 

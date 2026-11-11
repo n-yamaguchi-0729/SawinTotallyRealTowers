@@ -4,23 +4,25 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
-import Nyll.GaloisCohomology.Kummer.QuotientTwoCocycle
-import Mathlib.Algebra.Category.ModuleCat.Basic
-import Mathlib.Algebra.Group.Units.Hom
-import Mathlib.Algebra.Module.Submodule.Equiv
-import Mathlib.Algebra.Module.Submodule.LinearMap
-import Mathlib.FieldTheory.IntermediateField.Basic
-import Mathlib.RepresentationTheory.Rep.Basic
-import Mathlib.RepresentationTheory.Rep.Res
-import Mathlib.FieldTheory.Galois.Basic
-import Mathlib.FieldTheory.Normal.Basic
-import Mathlib.FieldTheory.Normal.Defs
-import Mathlib.GroupTheory.QuotientGroup.Basic
-import Mathlib.GroupTheory.QuotientGroup.Defs
-import Mathlib.RepresentationTheory.Invariants
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
-import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
+module
+
+public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
+public import Nyll.GaloisCohomology.Kummer.QuotientTwoCocycle
+public import Mathlib.Algebra.Category.ModuleCat.Basic
+public import Mathlib.Algebra.Group.Units.Hom
+public import Mathlib.Algebra.Module.Submodule.Equiv
+public import Mathlib.Algebra.Module.Submodule.LinearMap
+public import Mathlib.FieldTheory.IntermediateField.Basic
+public import Mathlib.RepresentationTheory.Rep.Basic
+public import Mathlib.RepresentationTheory.Rep.Res
+public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.Normal.Basic
+public import Mathlib.FieldTheory.Normal.Defs
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+public import Mathlib.GroupTheory.QuotientGroup.Defs
+public import Mathlib.RepresentationTheory.Invariants
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
+public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 
 /-!
 # Transport of finite Galois field-unit cohomology
@@ -28,6 +30,8 @@ import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 Identifies the invariant and quotient representations associated to an
 intermediate field and transports the degree-two inflation and restriction maps.
 -/
+
+@[expose] public section
 
 open CategoryTheory
 
@@ -54,7 +58,8 @@ theorem finiteGaloisUnitsFixingSubgroupH1_subsingleton :
       (Rep.res E.fixingSubgroup.subtype (Rep.ofAlgebraAutOnUnits K L)) 1) := by
   apply (finiteGaloisUnitsRelativeCohomologyIso K L E 1).toLinearEquiv.injective.subsingleton
 
-private def unitsToInvariants :
+/-- Map lower-field units to the units fixed by the relative automorphism group. -/
+def unitsToInvariants :
     Rep.ofAlgebraAutOnUnits K E →ₗ[ℤ]
       (Rep.res E.fixingSubgroup.subtype (Rep.ofAlgebraAutOnUnits K L)).ρ.invariants :=
   ((Units.map E.val.toMonoidHom).toAdditive.toIntLinearMap).codRestrict _ (by
@@ -64,7 +69,8 @@ private def unitsToInvariants :
 
 variable [IsGalois K L]
 
-private theorem unitsToInvariants_bijective : Function.Bijective (unitsToInvariants K L E) := by
+/-- The invariant-unit map is bijective for a finite Galois extension. -/
+theorem unitsToInvariants_bijective : Function.Bijective (unitsToInvariants K L E) := by
   refine ⟨?_, ?_⟩
   · intro a b h
     exact Units.map_injective E.val.injective (congrArg Subtype.val h)
@@ -93,19 +99,22 @@ def finiteGaloisUnitsInvariantsEquiv :
 
 variable [Normal K E]
 
-private def restrictionQuotientEquiv :
+/-- The quotient by the restriction kernel identifies with the lower-field Galois group. -/
+def restrictionQuotientEquiv :
     Gal(L/K) ⧸ (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker ≃* Gal(E/K) :=
   QuotientGroup.quotientKerEquivOfSurjective (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E)
     (AlgEquiv.restrictNormalHom_surjective L (F := K) (K₁ := E))
 
-private def unitsToKernelInvariantsEquiv :
+/-- The lower-field units identify with the units invariant under the restriction kernel. -/
+def unitsToKernelInvariantsEquiv :
     (Rep.ofAlgebraAutOnUnits K E).V ≃ₗ[ℤ]
       ((Rep.ofAlgebraAutOnUnits K L).quotientToInvariants
         (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker).V :=
   (finiteGaloisUnitsInvariantsEquiv K L E).trans
     (LinearEquiv.ofEq _ _ (by rw [E.restrictNormalHom_ker]))
 
-private theorem unitsInvariants_equivariant (g : Gal(E/K)) :
+/-- The invariant-unit equivalence intertwines the lower-field and quotient actions. -/
+theorem unitsInvariants_equivariant (g : Gal(E/K)) :
     (unitsToKernelInvariantsEquiv K L E).toLinearMap ∘ₗ
         (Rep.ofAlgebraAutOnUnits K E).ρ g =
       ((Rep.ofAlgebraAutOnUnits K L).quotientToInvariants

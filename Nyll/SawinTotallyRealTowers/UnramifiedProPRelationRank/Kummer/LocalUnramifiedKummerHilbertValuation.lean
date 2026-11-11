@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
-import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UnramifiedNormalization
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionTopology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteExtensionCompleteDVF
 
 /-!
 # Unramified Kummer Hilbert characters and valuation
@@ -17,6 +19,8 @@ character is a Frobenius scalar times normalized valuation.  The argument
 uses the full unramified local Artin formula and therefore also applies at
 places above the Kummer exponent.
 -/
+
+@[expose] public section
 
 open scoped ValuativeRel
 
@@ -111,7 +115,7 @@ theorem localHilbertSymbol_eq_unramifiedFrobenius_zpow
       (ValuativeRel.valuation E).integer :=
     localCompleteDVF_integerRing_moduleFinite K E
   let _ : IsUnramifiedValuedExtension K E := ha
-  rw [localHilbertSymbol_skew]
+  rw [localHilbertSymbol_skew, localHilbertSymbol_eq_native]
   change
     ((nthRootsSubgroupEquivOfPrimitiveRoots K E n hmu).symm
       (chosenSimpleKummerRootCharacter K n hnK hmu a

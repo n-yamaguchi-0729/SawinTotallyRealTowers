@@ -4,10 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.SetTheory.Cardinal.Finite
-import Mathlib.Algebra.Group.Hom.Basic
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
-import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
+module
+
+public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.Algebra.Group.Hom.Basic
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
+public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitStructure
+public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 
 /-!
 # Power indices in local-field unit groups
@@ -18,6 +22,8 @@ form involving the normalized local absolute value are recorded.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 
@@ -62,8 +68,7 @@ theorem fieldIndex_eq_mul_unitIndex
     Nat.card (Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range) =
       n * Nat.card (F.valuationSubringˣ ⧸
         (powMonoidHom n : F.valuationSubringˣ →* F.valuationSubringˣ).range) := by
-  let F : ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K :=
-    MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
+  intro F
   have : Finite F.residueField := by
     change Finite (IsLocalRing.ResidueField v.valuationSubring)
     infer_instance
@@ -89,19 +94,15 @@ theorem mixed_fieldIndex
             (ofWithZeroValuation v).toCompleteDVF) 1) →* ((CompleteDVF.higherPrincipalUnitGroup
             (ofWithZeroValuation v).toCompleteDVF) 1)).range)] :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : MixedWithZeroValuationContext v :=
+    let : MixedWithZeroValuationContext v :=
       mixedWithZeroValuationContext v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] K
     Nat.card (Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range) =
       n * (Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) *
         F.residueCharacteristic ^
           (d * padicValNat F.residueCharacteristic n)) := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  let : MixedWithZeroValuationContext v :=
-    mixedWithZeroValuationContext v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let d := Module.finrank ℚ_[F.residueCharacteristic] K
+  intro F sharedOwner2 sharedOwner3 d
   let hex :=
     WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
       v hv
@@ -135,20 +136,16 @@ theorem mixed_unitIndex
             (ofWithZeroValuation v).toCompleteDVF) 1) →* ((CompleteDVF.higherPrincipalUnitGroup
             (ofWithZeroValuation v).toCompleteDVF) 1)).range)] :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : MixedWithZeroValuationContext v :=
+    let : MixedWithZeroValuationContext v :=
       mixedWithZeroValuationContext v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] K
     Nat.card (F.valuationSubringˣ ⧸
         (powMonoidHom n : F.valuationSubringˣ →* F.valuationSubringˣ).range) =
       Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) *
         F.residueCharacteristic ^
           (d * padicValNat F.residueCharacteristic n) := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  let : MixedWithZeroValuationContext v :=
-    mixedWithZeroValuationContext v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let d := Module.finrank ℚ_[F.residueCharacteristic] K
+  intro F sharedOwner2 sharedOwner3 d
   let hex :=
     WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
       v hv
@@ -184,7 +181,7 @@ theorem mixed_unitIndex_of_coprime
     Nat.card (F.valuationSubringˣ ⧸
         (powMonoidHom n : F.valuationSubringˣ →* F.valuationSubringˣ).range) =
       Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let : MixedWithZeroValuationContext v :=
     mixedWithZeroValuationContext v
   let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
@@ -231,18 +228,14 @@ theorem mixed_fieldIndex_rationalFormula
             (ofWithZeroValuation v).toCompleteDVF) 1) →* ((CompleteDVF.higherPrincipalUnitGroup
             (ofWithZeroValuation v).toCompleteDVF) 1)).range)] :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : MixedWithZeroValuationContext v :=
+    let : MixedWithZeroValuationContext v :=
       mixedWithZeroValuationContext v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] K
     (Nat.card (Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range) : ℚ) =
       (n * Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) : ℕ) /
         normalizedLocalNatAbs F.residueCharacteristic d n := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  let : MixedWithZeroValuationContext v :=
-    mixedWithZeroValuationContext v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let d := Module.finrank ℚ_[F.residueCharacteristic] K
+  intro F sharedOwner2 sharedOwner3 d
   let hex :=
     WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
       v hv
@@ -275,19 +268,15 @@ theorem mixed_unitIndex_rationalFormula
             (ofWithZeroValuation v).toCompleteDVF) 1) →* ((CompleteDVF.higherPrincipalUnitGroup
             (ofWithZeroValuation v).toCompleteDVF) 1)).range)] :
     let F : LocalField.{u, 0} K := ofWithZeroValuation v
-    letI : MixedWithZeroValuationContext v :=
+    let : MixedWithZeroValuationContext v :=
       mixedWithZeroValuationContext v
-    letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
+    let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
     let d := Module.finrank ℚ_[F.residueCharacteristic] K
     (Nat.card (F.valuationSubringˣ ⧸
         (powMonoidHom n : F.valuationSubringˣ →* F.valuationSubringˣ).range) : ℚ) =
       Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) /
         normalizedLocalNatAbs F.residueCharacteristic d n := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
-  let : MixedWithZeroValuationContext v :=
-    mixedWithZeroValuationContext v
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let d := Module.finrank ℚ_[F.residueCharacteristic] K
+  intro F sharedOwner2 sharedOwner3 d
   let hex :=
     WithZeroValuation.exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
       v hv
@@ -356,7 +345,7 @@ theorem equal_unitIndex
     Nat.card (F.valuationSubringˣ ⧸
         (powMonoidHom n : F.valuationSubringˣ →* F.valuationSubringˣ).range) =
       Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let hex := F.toCompleteDVF.exists_uniformizer
   let π := Classical.choose hex
   have hπ : v.IsUniformizer (π : K) := Classical.choose_spec hex
@@ -389,7 +378,7 @@ theorem equal_fieldIndex_rationalFormula
     (Nat.card (Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range) : ℚ) =
       (n * Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) : ℕ) /
         normalizedLocalNatAbs F.residueCharacteristic 0 n := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let hex := F.toCompleteDVF.exists_uniformizer
   let π := Classical.choose hex
   have hπ : v.IsUniformizer (π : K) := Classical.choose_spec hex
@@ -421,7 +410,7 @@ theorem equal_unitIndex_rationalFormula
         (powMonoidHom n : F.valuationSubringˣ →* F.valuationSubringˣ).range) : ℚ) =
       Nat.card ((powMonoidHom n : Kˣ →* Kˣ).ker) /
         normalizedLocalNatAbs F.residueCharacteristic 0 n := by
-  let F : LocalField.{u, 0} K := ofWithZeroValuation v
+  intro F
   let hex := F.toCompleteDVF.exists_uniformizer
   let π := Classical.choose hex
   have hπ : v.IsUniformizer (π : K) := Classical.choose_spec hex

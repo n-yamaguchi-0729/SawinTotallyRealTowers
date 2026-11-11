@@ -4,9 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
-import Mathlib.FieldTheory.Galois.GaloisClosure
+module
+
+public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
+public import Mathlib.FieldTheory.Galois.GaloisClosure
 
 /-!
 # Binary everywhere-unramified composita
@@ -17,6 +19,8 @@ An odd-degree hypothesis on the compositum then supplies the infinite-place
 condition.
 -/
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
@@ -25,7 +29,8 @@ universe u v
 
 namespace ClassFieldTower.Martinet
 
-private local instance finiteIntermediateFieldNumberField
+/-- A finite intermediate extension inherits the original number-field structure. -/
+local instance finiteIntermediateFieldNumberField
     {K : Type u} {Omega : Type v}
     [Field K] [NumberField K]
     [Field Omega] [Algebra K Omega]

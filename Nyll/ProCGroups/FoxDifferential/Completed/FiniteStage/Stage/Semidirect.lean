@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.Basic
 
 /-!
 # Fox differential: completed — finite stage — stage — semidirect
@@ -21,6 +23,8 @@ The principal declarations in this module are:
   Membership in the finite-stage source augmentation ideal is equivalent to vanishing under the
   finite-stage source augmentation map.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 
@@ -124,7 +128,9 @@ theorem ext
     (hleft : a.left = b.left) (hright : a.right = b.right) : a = b := by
   cases a
   cases b
-  simp_all
+  cases hleft
+  cases hright
+  rfl
 
 /-- The identity element of the finite-stage Fox semidirect product is \((0,1)\). -/
 instance instOneFoxAlgebraicStageSemidirect : One (FoxAlgebraicStageSemidirect (X := X) N n) where

@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionPrimitive
+module
+
+public import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionPrimitive
 
 /-!
 # Kernel exactness for inflated finite-stage transgression
@@ -13,6 +15,8 @@ A primitive for a vanishing inflated class is corrected by finite-stage quotient
 The resulting coboundary datum gives a continuous ambient character extending the original
 invariant kernel character.
 -/
+
+@[expose] public section
 
 open CategoryTheory TopRep ContRepresentation
 open scoped Topology

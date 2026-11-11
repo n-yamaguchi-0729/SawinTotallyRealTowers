@@ -4,11 +4,13 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.GaloisCohomology.ProP.H2InflationRangeBound
-import Mathlib.Algebra.Field.ZMod
-import Mathlib.Algebra.Module.Pi
-import Mathlib.Algebra.Module.Defs
-import Mathlib.FieldTheory.Finiteness
+module
+
+public import Nyll.GaloisCohomology.ProP.H2InflationRangeBound
+public import Mathlib.Algebra.Field.ZMod
+public import Mathlib.Algebra.Module.Pi
+public import Mathlib.Algebra.Module.Defs
+public import Mathlib.FieldTheory.Finiteness
 
 /-!
 # Cardinality bounds on finite-stage degree-two inflation
@@ -17,6 +19,8 @@ A uniform bound p^d on finite-stage inflation images gives finite
 continuous H² of dimension at most d. Finiteness of the finite-stage
 cohomology and its image is constructed, rather than assumed.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

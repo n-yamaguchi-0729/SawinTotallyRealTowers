@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
 
 /-!
 # Continuous closed finite-index class-field reciprocity
@@ -17,6 +19,10 @@ instances are reconstructed here.
 
 
 
+@[expose] public section
+
+universe u
+
 open scoped IsMulCommutative NumberField
 
 noncomputable section
@@ -26,15 +32,12 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-/-- Canonical class-group commutativity supplies normality for the two quotients. -/
-private theorem closedFiniteIndexTopologicalClassGroupIsMulCommutative
-    (F : Type) [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  IsMulCommutative.of_comm (fun a b => mul_comm a b)
+-- Reuse the canonical quotient group already used by finite reciprocity.
+local instance closedFiniteIndexTopologicalClassGroupCommGroup
+    (F : Type u) [Field F] [NumberField F] : CommGroup (IdeleClassGroup F) :=
+  QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
-attribute [local instance] closedFiniteIndexTopologicalClassGroupIsMulCommutative
-
-variable {K : Type} [Field K] [NumberField K]
+variable {K : Type u} [Field K] [NumberField K]
 
 /-- Global reciprocity for the selected class field as a homeomorphic
 multiplicative equivalence `Gal(L / K) ≃ₜ* C_K / H`. -/

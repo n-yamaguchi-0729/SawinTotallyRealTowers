@@ -4,13 +4,23 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalProduct
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValueTopology
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseChange
-import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtension
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.IdeleClassNorm
-import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
+module
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalProduct
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleValueTopology
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseChange
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtension
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.IdeleClassNorm
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Valuation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 
 /-!
 # The cyclotomic valuation on idele classes
@@ -34,6 +44,8 @@ supplies the norm-range field of the concrete henselian valuation data.
 
 
 
+@[expose] public section
+
 open scoped NumberField
 
 noncomputable section
@@ -44,21 +56,21 @@ namespace Reciprocity
 open ClassFormation
 open KummerTheory
 
+attribute [local instance] rationalAbstractFixedFieldFiniteDimensional
+
 /-- Fix the canonical source-group dictionary before constructing the value maps
 and their additive ranges. -/
 @[instance_reducible]
-private noncomputable def cyclotomicValuationIdeleClassCommGroup
+noncomputable local instance cyclotomicValuationIdeleClassCommGroup
     (F : Type) [Field F] [NumberField F] :
     CommGroup (IdeleClassGroup F) :=
   QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
-
-attribute [local instance] cyclotomicValuationIdeleClassCommGroup
 
 /-- Lift a continuous multiplicative map through a quotient group once its
 defining normal subgroup is contained in the kernel.  Keeping the quotient-map
 argument here avoids repeating the same large continuity elaboration for the
 rational and number-field cyclotomic values. -/
-private noncomputable def ideleClassContinuousQuotientLift
+noncomputable def ideleClassContinuousQuotientLift
     {A B : Type*} [Group A] [TopologicalSpace A]
     [Group B] [TopologicalSpace B]
     (N : Subgroup A) [N.Normal] (f : A →ₜ* B)
@@ -89,7 +101,7 @@ private theorem ideleClassContinuousQuotientLift_mk
   exact QuotientGroup.lift_mk N hN a
 
 /-- Principal rational ideles lie in the kernel of the cyclotomic value. -/
-private theorem rationalCyclotomicZHatIdeleValue_principalSubgroup_le_ker :
+theorem rationalCyclotomicZHatIdeleValue_principalSubgroup_le_ker :
     IdeleGroup.principalSubgroup ℚ ≤
       rationalCyclotomicZHatIdeleValue.toMonoidHom.ker := by
   rintro _ ⟨x, rfl⟩
@@ -150,7 +162,7 @@ theorem rationalCyclotomicZHatIdeleClassValueContinuous_mk
 variable (K : Type) [Field K] [NumberField K]
 
 /-- Principal ideles lie in the kernel of the normalized cyclotomic value. -/
-private theorem
+theorem
     normalizedCyclotomicZHatIdeleValue_principalSubgroup_le_ker :
     IdeleGroup.principalSubgroup K ≤
       (normalizedCyclotomicZHatIdeleValueContinuousMul K).toMonoidHom.ker := by
@@ -366,16 +378,21 @@ private theorem
 attribute [local instance]
   numberFieldCyclotomicZHatFiniteLayerNumberField
 
-private structure NumberFieldCyclotomicZHatFiniteLayerArtinData
+/-- A finite-layer Artin map together with its principal-idele and restriction
+identities. -/
+structure NumberFieldCyclotomicZHatFiniteLayerArtinData
     (E :
       FiniteGaloisIntermediateField
         ℚ rationalCyclotomicZHatField) :
     Type where
+  /-- The genuine global Artin map of the finite layer. -/
   toMonoidHom :
     IdeleGroup K →*
       Gal(numberFieldCyclotomicZHatFiniteLayerInCompositum K E / K)
+  /-- The finite-layer Artin map is trivial on principal ideles. -/
   principal (x : Kˣ) :
     toMonoidHom (IdeleGroup.principalIdele K x) = 1
+  /-- Restriction of the compositum Artin map is the finite-layer Artin map. -/
   restriction (a : IdeleGroup K) :
     AlgEquiv.restrictNormalHom
         (numberFieldCyclotomicZHatFiniteLayerInCompositum K E)
@@ -383,7 +400,9 @@ private structure NumberFieldCyclotomicZHatFiniteLayerArtinData
           (numberFieldCyclotomicZHatCompositum K) a) =
       toMonoidHom a
 
-private theorem
+/-- Principal ideles have trivial global Artin symbol in each finite
+cyclotomic layer over the number field. -/
+theorem
     rawGlobalArtinMonoidHom_numberFieldCyclotomicZHatFiniteLayer_principalIdele
     (E :
       FiniteGaloisIntermediateField
@@ -430,7 +449,9 @@ private theorem
       (AlgEquiv.restrictNormalHom
         (numberFieldCyclotomicZHatFiniteLayerInCompositum K E))
 
-private theorem
+/-- Restricting the compositum Artin symbol to a finite layer gives its
+global Artin symbol. -/
+theorem
     rawGlobalArtinMonoidHom_numberFieldCyclotomicZHatFiniteLayer_restriction
     (E :
       FiniteGaloisIntermediateField
@@ -448,7 +469,9 @@ private theorem
     K (numberFieldCyclotomicZHatCompositum K) a
     (numberFieldCyclotomicZHatFiniteGaloisLayerInCompositum K E)
 
-private noncomputable def
+/-- The actual finite-layer Artin map and the identities inherited from the
+cyclotomic compositum Artin map. -/
+noncomputable def
     numberFieldCyclotomicZHatFiniteLayerArtinData
     (E :
       FiniteGaloisIntermediateField
@@ -492,7 +515,8 @@ theorem
   exact
     (numberFieldCyclotomicZHatFiniteLayerArtinData K E).principal x
 
-private theorem
+/-- Principal ideles lie in the kernel of the finite-layer Artin map. -/
+theorem
     numberFieldCyclotomicZHatFiniteLayer_principalSubgroup_le_ker
     (E :
       FiniteGaloisIntermediateField
@@ -692,18 +716,22 @@ theorem normalizedCyclotomicZHatIdeleClassValue_surjective :
 /-- The normalized cyclotomic class value has full value group. -/
 @[simp]
 theorem normalizedCyclotomicZHatIdeleClassValue_range :
-    (normalizedCyclotomicZHatIdeleClassValueContinuous K).toAddMonoidHom.range =
+    AddMonoidHom.range (G := Additive (IdeleClassGroup K)) (N := ZHat)
+        (normalizedCyclotomicZHatIdeleClassValueContinuous K).toAddMonoidHom =
       (⊤ : AddSubgroup ZHat) :=
   AddMonoidHom.range_eq_top_of_surjective
+    (G := Additive (IdeleClassGroup K)) (N := ZHat)
     (normalizedCyclotomicZHatIdeleClassValueContinuous K).toAddMonoidHom
     (normalizedCyclotomicZHatIdeleClassValue_surjective K)
 
 /-- The rational cyclotomic class value has full value group. -/
 @[simp]
 theorem rationalCyclotomicZHatIdeleClassValue_range :
-    rationalCyclotomicZHatIdeleClassValueContinuous.toAddMonoidHom.range =
+    AddMonoidHom.range (G := Additive (IdeleClassGroup ℚ)) (N := ZHat)
+        rationalCyclotomicZHatIdeleClassValueContinuous.toAddMonoidHom =
       (⊤ : AddSubgroup ZHat) :=
   AddMonoidHom.range_eq_top_of_surjective
+    (G := Additive (IdeleClassGroup ℚ)) (N := ZHat)
     rationalCyclotomicZHatIdeleClassValueContinuous.toAddMonoidHom
     rationalCyclotomicZHatIdeleClassValue_surjective
 
@@ -759,7 +787,8 @@ theorem rationalCyclotomicZHatIdeleClassNormComposite_apply
 /-- Exact image of the actual idele-class norm under the rational
 cyclotomic value. -/
 theorem rationalCyclotomicZHatIdeleClassNormComposite_range :
-    (rationalCyclotomicZHatIdeleClassNormComposite K).range =
+    AddMonoidHom.range (G := Additive (IdeleClassGroup K)) (N := ZHat)
+        (rationalCyclotomicZHatIdeleClassNormComposite K) =
       nsmulImage (⊤ : AddSubgroup ZHat)
         (cyclotomicZHatIntersectionDegree K) := by
   ext z
@@ -960,25 +989,6 @@ local instance rationalCyclotomicFiniteAbstractFieldQuotientFinite :
           H.field (ClassFormation.le_baseField H.field)) :=
   H.finite
 
-private theorem rationalAbstractFixedFieldFiniteDimensional :
-    FiniteDimensional ℚ
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) H.field) :=
-  LocalClassFieldTheory.abstractFixedField_finiteDimensional
-    ℚ (SeparableClosure ℚ) H.field H.finite
-
-private theorem rationalAbstractFixedFieldNumberField :
-    NumberField
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) H.field) := by
-  let : FiniteDimensional ℚ
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) H.field) :=
-    rationalAbstractFixedFieldFiniteDimensional H
-  exact NumberField.of_module_finite ℚ
-    (LocalClassFieldTheory.abstractFixedField
-      ℚ (SeparableClosure ℚ) H.field)
-
 /-- For the actual number field fixed by a finite abstract field, the
 actual idele-class norm has cyclotomic image equal to the
 residue-degree multiples of `ZHat`. -/
@@ -988,14 +998,14 @@ theorem
       LocalClassFieldTheory.abstractFixedField
         ℚ (SeparableClosure ℚ) H.field
     let : FiniteDimensional ℚ F :=
-      rationalAbstractFixedFieldFiniteDimensional H
+      rationalAbstractFixedFieldFiniteDimensional H.field
     let : NumberField F :=
-      rationalAbstractFixedFieldNumberField H
-    (rationalCyclotomicZHatIdeleClassNormComposite F).range =
+      NumberField.of_module_finite ℚ F
+    AddMonoidHom.range (G := Additive (IdeleClassGroup F)) (N := ZHat)
+        (rationalCyclotomicZHatIdeleClassNormComposite F) =
       nsmulImage (⊤ : AddSubgroup ZHat)
         (H.residueDegree rationalCyclotomicDegreeData : ℕ) := by
   intro F hfinite hnumberField
-  clear hfinite
   have hdegree :=
     cyclotomicZHatIntersectionDegree_abstractFixedField_eq_residueDegree H
   rw [rationalCyclotomicZHatIdeleClassNormComposite_range]
@@ -1014,8 +1024,6 @@ theorem rationalCyclotomicZHatValuation_normToBase_range :
   let F :=
     LocalClassFieldTheory.abstractFixedField
       ℚ (SeparableClosure ℚ) H.field
-  let : NumberField F :=
-    rationalAbstractFixedFieldNumberField H
   let eF :=
     rationalAbstractFixedFieldIdeleClassEquivFixed H.field
   have heval
@@ -1066,6 +1074,8 @@ theorem rationalCyclotomicZHatValuation_normToBase_range :
 
 end AbstractFixedFieldNormRange
 
+attribute [local instance] rationalCyclotomicFiniteAbstractFieldQuotientFinite
+
 /-- The concrete henselian valuation data on the absolute rational
 idele-class representation, with cyclotomic degree data. -/
 noncomputable def rationalCyclotomicIdeleClassValuationData :
@@ -1101,8 +1111,6 @@ theorem rationalCyclotomicZHatValuation_normToBase_fixed_apply
   let F :=
     LocalClassFieldTheory.abstractFixedField
       ℚ (SeparableClosure ℚ) H.field
-  let : NumberField F :=
-    rationalAbstractFixedFieldNumberField H
   change
     rationalCyclotomicZHatIdeleClassValueContinuous
         (rationalIdeleClassEquivBaseFixed.symm
@@ -1142,8 +1150,6 @@ theorem
   let F :=
     LocalClassFieldTheory.abstractFixedField
       ℚ (SeparableClosure ℚ) H.field
-  let : NumberField F :=
-    rationalAbstractFixedFieldNumberField H
   apply
     zHatMulNat_injective
       (H.residueDegree rationalCyclotomicDegreeData).pos

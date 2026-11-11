@@ -206,7 +206,7 @@ class PipelineTests(unittest.TestCase):
     def test_missing_replay_module_is_rejected(self):
         self.pipeline.manifest = {"roots": ["Nyll.Target.All"], "moduleRows": {"Nyll.Target.All": {}}}
         records = [{"phase": "inventory", "roots": ["Nyll.Target.All"], "loaded_modules": []},
-                   {"phase": "replay", "result": "PASS", "kernel": "official Lean 4.35.0-rc2"}]
+                   {"phase": "replay", "result": "PASS", "kernel": "official Lean 4.35.0"}]
         (self.pipeline.out / "replay.log").write_text("\n".join(map(json.dumps, records)))
         with self.assertRaisesRegex(verify.VerificationError, "omitted"):
             self.pipeline.check_replay()

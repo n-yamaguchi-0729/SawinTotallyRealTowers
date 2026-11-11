@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.HenselLemma
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
-import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Polynomial
-import Mathlib.NumberTheory.RamificationInertia.Inertia
-import Mathlib.NumberTheory.RamificationInertia.Ramification
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.HenselLemma
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.UniqueExtensionIntegralClosure
+public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Polynomial
+public import Mathlib.NumberTheory.RamificationInertia.Inertia
+public import Mathlib.NumberTheory.RamificationInertia.Ramification
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.ChevalleyExtension
 
 /-!
 # Monogeneity over a noncomplete discretely valued field
@@ -20,6 +23,8 @@ representative adjustment , and Nakayama's lemma.
 -/
 
 
+
+@[expose] public section
 
 noncomputable section
 

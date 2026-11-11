@@ -4,16 +4,18 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
-import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianFinite
-import Mathlib.RingTheory.DedekindDomain.IntegralClosure
-import Mathlib.RingTheory.DiscreteValuationRing.TFAE
-import Mathlib.RingTheory.Ideal.GoingUp
-import Mathlib.RingTheory.QuasiFinite.Basic
-import Mathlib.RingTheory.Spectrum.Prime.Topology
-import Mathlib.RingTheory.TensorProduct.Quotient
-import Mathlib.RingTheory.Valuation.Integral
-import Mathlib.LinearAlgebra.TensorProduct.RightExactness
+module
+
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Extensions
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.HenselianFinite
+public import Mathlib.RingTheory.DedekindDomain.IntegralClosure
+public import Mathlib.RingTheory.DiscreteValuationRing.TFAE
+public import Mathlib.RingTheory.Ideal.GoingUp
+public import Mathlib.RingTheory.QuasiFinite.Basic
+public import Mathlib.RingTheory.Spectrum.Prime.Topology
+public import Mathlib.RingTheory.TensorProduct.Quotient
+public import Mathlib.RingTheory.Valuation.Integral
+public import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 
 /-!
 # Integral closures of valuation rings
@@ -22,6 +24,8 @@ This module uses the actual mathlib integral closure
 `integralClosure base.toDVF.valuationSubring L`.  It does not introduce a replacement
 structure.
 -/
+
+@[expose] public section
 
 namespace ValuationTheory
 

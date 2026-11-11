@@ -4,10 +4,12 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
-import Nyll.ValuedFieldTheory.Ramification.LocalField.ResidueInertia
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
-import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
+module
+
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.Core
+public import Nyll.ValuedFieldTheory.Ramification.LocalField.ResidueInertia
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.FiniteUnramified
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
 
 /-!
 # Ramification groups of unramified local extensions
@@ -18,7 +20,11 @@ the actual upper ramification groups of a finite local extension.
 
 
 
+@[expose] public section
+
 noncomputable section
+
+universe u v
 
 namespace RamificationTheory.LocalField
 
@@ -33,7 +39,7 @@ open scoped ValuativeRel
 /-- The inertia group, equivalently the lower ramification group at zero, is
 trivial for an actual finite unramified Galois extension of local fields. -/
 private theorem localLowerRamificationGroup_zero_eq_bot_of_unramifiedValuation
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -53,7 +59,7 @@ private theorem localLowerRamificationGroup_zero_eq_bot_of_unramifiedValuation
 /-- Every nonnegative upper ramification group of an actual finite
 unramified Galois extension of local fields is trivial. -/
 theorem localUpperRamificationGroup_eq_bot_of_unramifiedValuation
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]

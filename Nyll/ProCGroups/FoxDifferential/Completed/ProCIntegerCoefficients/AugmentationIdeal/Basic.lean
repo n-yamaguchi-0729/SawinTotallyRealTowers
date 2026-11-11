@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
-import Mathlib.RingTheory.Ideal.Basic
+module
+
+public import Nyll.ProCGroups.FoxDifferential.Completed.ProCIntegerCoefficients.Core
+public import Mathlib.RingTheory.Ideal.Basic
 
 /-!
 # Fox differential: completed — \(\mathbb{Z}_C\) coefficients — augmentation ideal — basic
@@ -26,6 +28,8 @@ The principal declarations in this module are:
   Each completed group-like generator \([h]-1\) lies in the algebraic standard
   augmentation-generator ideal.
 -/
+
+@[expose] public section
 
 namespace FoxDifferential
 

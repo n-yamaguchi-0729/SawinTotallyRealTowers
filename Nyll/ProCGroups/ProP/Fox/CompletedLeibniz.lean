@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Mathlib.Topology.Algebra.Algebra
-import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
+module
+
+public import Mathlib.Topology.Algebra.Algebra
+public import Nyll.ProCGroups.CompletedGroupAlgebra.UniversalProperty.Basic
 
 /-!
 # Extending the Fox--Leibniz rule to completed group algebras
@@ -15,6 +17,8 @@ values on completed group-like elements.  Applying this uniqueness principle
 in each variable extends a crossed-product identity on the underlying group to
 the right Fox--Leibniz rule on the whole completed group algebra.
 -/
+
+@[expose] public section
 
 open scoped Topology
 

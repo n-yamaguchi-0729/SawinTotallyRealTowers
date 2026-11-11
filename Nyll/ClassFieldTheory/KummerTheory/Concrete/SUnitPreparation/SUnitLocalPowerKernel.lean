@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
-import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
+module
+
+public import Nyll.ClassFieldTheory.KummerTheory.Concrete.SUnitPreparation.SUnitPowerQuotient
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
 
 /-!
 # The local-power kernel of S-units
@@ -15,6 +17,8 @@ Kummer radical.
 -/
 
 
+
+@[expose] public section
 
 open scoped NumberField IsMulCommutative NNReal ValuativeRel
 open NumberField IsDedekindDomain

@@ -4,8 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
-import Nyll.ProCGroups.Generation.Basic
-import Nyll.ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
+module
+
+public import Nyll.ProCGroups.Generation.Basic
+public import Nyll.ProCGroups.ProC.Quotients.LeftQuotientProjectionSections
 
 /-!
 # Quotients by closed normal subgroups
@@ -14,6 +16,8 @@ This file supplies the profinite topology and normalized continuous sections for
 quotients, identifies iterated quotients, proves closedness of quotient images, and transfers
 topological generation between a group, its kernel, and its quotient.
 -/
+
+@[expose] public section
 
 open Set
 open scoped Topology Pointwise
