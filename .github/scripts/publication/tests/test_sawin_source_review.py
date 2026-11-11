@@ -12,7 +12,8 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from public_sawin import refresh_reviewed_source
+from public_sawin import refresh_reviewed_source, library_source_rows
+from public7_sync import imports
 
 
 class ReviewedSawinSourceTests(unittest.TestCase):
@@ -92,6 +93,24 @@ class ReviewedSawinSourceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.refresh()
         self.assertEqual(self.row, before)
+
+
+class SawinManifestBoundaryTests(unittest.TestCase):
+    def test_bundled_tools_and_statement_tests_are_not_library_modules(self):
+        sources = {
+            'Nyll.lean': b'import Nyll.All\n',
+            'Nyll/All.lean': b'import Nyll.SawinTotallyRealTowers.Proof\n',
+            'Nyll/SawinTotallyRealTowers/Proof.lean': b'import Mathlib\n',
+            '.github/scripts/publication/verification/ExportSelected.lean': b'import Export\n',
+            '.github/verification/Inventory.lean': b'import Lean\n',
+            'tests/Statement.lean': b'import Nyll\n',
+            'Unrelated.lean': b'import Nyll\n',
+        }
+        rows = library_source_rows(sources, imports)
+        self.assertEqual(set(rows), {'Nyll', 'Nyll.All', 'Nyll.SawinTotallyRealTowers.Proof'})
+        self.assertEqual({row['owner'] for row in rows.values()}, {'EntryPoint', 'SawinTotallyRealTowers'})
+        self.assertEqual(rows['Nyll']['imports'], ['Nyll.All'])
+        self.assertEqual(rows['Nyll']['sha256'], hashlib.sha256(sources['Nyll.lean']).hexdigest())
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
   "format_version": 1,
   "canonical_repository": "n-yamaguchi-0729/NYLL",
   "repository": "n-yamaguchi-0729/SawinTotallyRealTowers",
-  "source_commit": "02962f97c6d31f3135df09d31463ce24d4d06c86",
+  "source_commit": "362413297e91f5b9f58f3aa7d5d4bb4d0833f027",
   "primaryRoots": [
     "Nyll.SawinTotallyRealTowers.All"
   ],
@@ -1810,7 +1810,7 @@
     ".github/scripts/publication/public_ci.py": "837662160cab5c5e0d1962375b33e130c1781fdeb55872bf7974b7802eba92d9",
     ".github/scripts/publication/public_extract_provenance.py": "b77d0ef75c88785809efecf9249c0d78f1487f121cc126fd2fcb7f84418c1a28",
     ".github/scripts/publication/public_readme_presentation.py": "08d13af578758d43291d1c9386841f20cce0fb00742e924a5c9e5451218f473a",
-    ".github/scripts/publication/public_sawin.py": "f6c17edd52c5c0c91a8ddceebb75404b9bbd40d161af608eae5fccc0e81556eb",
+    ".github/scripts/publication/public_sawin.py": "173d7d44c0657c4d4ecc7f9c8e83fd7a9778c1e447ae6756fa45eb5f80f251f3",
     ".github/scripts/publication/sawin-reviewed-source-updates.json": "b660dc95c4aed142333523dfcdfcf39861259cf3401e90332c67df55748789ad",
     ".github/scripts/publication/tests/test_attribution_revisions.py": "d50723eec7a13535d934a4590bf783a4408f788f6538bc3ac232e5e56d754077",
     ".github/scripts/publication/tests/test_build_stage.py": "6237a145389c883e7da572ebd001cb172b7bcc2bf78c6957a3fc44845cde184d",
@@ -1820,7 +1820,7 @@
     ".github/scripts/publication/tests/test_publication_policy.py": "382a48f7cea01496e638517e5fda1092fe85449bbb1d6ebad97bfdd61b98ba0f",
     ".github/scripts/publication/tests/test_publication_readme.py": "9ac01e5839e422face6c6c6649cf93459bb72021aba11d4bfc1b2ea673d1d19c",
     ".github/scripts/publication/tests/test_readme_presentation.py": "5dd36898516e955bdc715d84f8de9f83e13a29f5ff7021896dea26484744191f",
-    ".github/scripts/publication/tests/test_sawin_source_review.py": "da8678727c3fb83e1c71f7a36a34d267a6045dcd3a54c967ffae442349681729",
+    ".github/scripts/publication/tests/test_sawin_source_review.py": "d4901434b55d98a55e196ed6106b9bfaf1fbbe8c32520751b193d1739fa5a8a8",
     ".github/scripts/publication/verification/ExportSelected.lean": "ba9a2426c26115a1f2843458de7f8d613225720f592c0c325aab9f555727f71f",
     ".github/scripts/publication/verification/Inventory.lean": "942529f562d5fe10b8ff43009b84cb58d39a614a91aec46734931a1ebd951e0b",
     ".github/scripts/publication/verification/README.md": "82ed63583fa98bf4b884bc053a28a5bf7ee0326a4ad68a929ad5e25b9164b567",
@@ -1831,12 +1831,12 @@
     ".github/scripts/publication/workflow_templates/auto-sync.yml": "612f35770d94e8aa31cf6cce6e9791992fa407d241bc7455fcbf6350e80b3a88",
     ".github/verification/README.md": "c6b5282b4fa6594870ff3fcd8555ded9373f84ff5e66661963875a38231603cd",
     ".github/verification/build_stage.py": "5840081cf91c2ac6afb540f19b439a6e008e9f6e8f9c737b2062cf4ced277074",
-    ".github/verification/check_source_closure.py": "9c0644c896fb8779a4a931e8d5a9c51f1d19df663793f4dd50a24ce7fc8cf649",
+    ".github/verification/check_source_closure.py": "98a30290b0a995b5fd869cd45838f486d0b74049de8173bee9e36fc4edece544",
     ".github/verification/generate_manifest.py": "a37aa3a96d83013bf75a0ec4b563e53c725ef3ac07635d75a2997c0cd75dc570",
     ".github/verification/historical-partial-baseline.json": "461dcf210ef68a278f9877316c0d4eb8de477cc05bc7aac4f2857b09d423db62",
     ".github/verification/manifest-config.json": "765cde479a9d3bc818114bf2402e1133061204d33dfd1b22f5502af37dc5271e",
-    ".github/verification/source-manifest.json": "e75f16d52e71ae69f1749e0cebf9062c731c3c8a3f3c865f45c8b2da6f120f56",
-    ".github/verification/verify.py": "43f433925b0b36ffd23718131e55f3ba1331936595efc172ce1297a87ce154d4",
+    ".github/verification/source-manifest.json": "8a7c9beb7d684147c0bc820e4f9ef1f48d4af6187201c07560ec2b2f96730665",
+    ".github/verification/verify.py": "2c6ab50a727352c881d08f8193a675c4e1d7f0951fab4b35bb3ae7b76a2ba833",
     ".github/workflows/sync-nyll.yml": "612f35770d94e8aa31cf6cce6e9791992fa407d241bc7455fcbf6350e80b3a88",
     "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
     "NOTICE": "237b6bcf06a5690906916acb763302557692e0178624268f357b10a82c39920b",
@@ -3629,6 +3629,6 @@
     "lake-manifest.json": "4b28e6382a6f69b7b24b80fc98b11ae2281f620f882623ced9f30bda127f61b3",
     "lakefile.toml": "80ff0d9ed7ef5cbf1b85c9539e3a090581abe3fe3b083f795b80ed8da4480216",
     "lean-toolchain": "ca5f1f601d34c49079e38d7e7041eb0f2a9c227fbc1df0f404820069a052330c",
-    "tests/test_verification.py": "51bd6ebe9f8b7418f3565acbafba4c545e1fbd0facfb5eff1d799f04d98b2883"
+    "tests/test_verification.py": "dbe276b0130bd69e65f448b799a739645b45a5e1e0539ea766f01a68e7f5b059"
   }
 }

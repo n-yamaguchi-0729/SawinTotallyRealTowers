@@ -21,7 +21,7 @@ REQUIRED_DECLARATIONS = [
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
     {'name': SHAFAREVICH_MAIN, 'originModule': SHAFAREVICH_ENTRY, 'kind': 'theorem'},
 ]
-OWNERS = {'ClassFieldTheory': 702, 'EntryPoint': 2, 'GaloisCohomology': 191, 'ProCGroups': 324, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 3, 'ValuedFieldTheory': 294, 'github': 3}
+OWNERS = {'ClassFieldTheory': 702, 'EntryPoint': 2, 'GaloisCohomology': 191, 'ProCGroups': 324, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 3, 'ValuedFieldTheory': 294}
 MATHLIB = '56a005855ea17e0b0958f73ec801ae140b0a1679'
 TOOLCHAIN = 'leanprover/lean4:v4.35.0'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
@@ -59,21 +59,13 @@ def mask_comments_strings(source):
     return ''.join(result)
 
 def source_imports(text):
-    result = []; header = True
-    for number, line in enumerate(mask_comments_strings(text).splitlines(), 1):
-        line = line.strip()
-        if not line: continue
-        found = re.fullmatch(r'(?:(?:public|private|meta)\s+)*import\s+(.+)', line)
-        if found:
-            require(header, f'Import after module header at line {number}')
-            body = found.group(1)
-            if body.startswith('all '): body = body[4:]
-            for module in body.split():
-                require(re.fullmatch(r"[A-Za-z_][A-Za-z0-9_'.]*", module),
-                        f'Unsupported import spelling: {module}')
-                result.append(module)
-        elif line not in ('module', 'prelude'): header = False
-    return result
+    # Share the pinned Lean header grammar with the physical-source audit.
+    from generate_manifest import header_imports
+    entries = header_imports(text)
+    remaining = mask_comments_strings(text)[entries[-1][2] if entries else 0:]
+    require(not re.search(r'(?m)^\s*(?:(?:public|private|meta)\s+)*import\b', remaining),
+            'Import after module header')
+    return [name for name, _, _ in entries]
 
 def audit_rows(root, manifest):
     root = Path(root).resolve(); rows = manifest['moduleRows']; graph = {}

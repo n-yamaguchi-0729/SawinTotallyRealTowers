@@ -67,6 +67,17 @@ class SourceClosureTests(unittest.TestCase):
         text = '/- import Fake.A /- import Fake.B -/ -/\nimport Mathlib.Algebra.Group.Defs\ndef s := "import Fake.C"\n'
         self.assertEqual(source.source_imports(text), ['Mathlib.Algebra.Group.Defs'])
 
+    def test_multiline_public_imports_use_the_shared_header_grammar(self):
+        text = ('module\npublic import\n  Nyll.Proof.Base\n'
+                'public import /- comment\n -/ Mathlib.Algebra.Group.Defs\n'
+                'theorem result : True := True.intro\n')
+        self.assertEqual(source.source_imports(text),
+                         ['Nyll.Proof.Base', 'Mathlib.Algebra.Group.Defs'])
+
+    def test_missing_multiline_import_module_is_rejected(self):
+        with self.assertRaises(ValueError):
+            source.source_imports('module\npublic import\ndef x := 1\n')
+
     def test_late_import_rejected(self):
         with self.assertRaisesRegex(ValueError, 'after'):
             source.source_imports('def x := 1\nimport Mathlib.Algebra.Group.Defs\n')

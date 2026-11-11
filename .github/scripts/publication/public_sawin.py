@@ -40,16 +40,11 @@ def refresh_reviewed_source(row, previous, current, source_commit):
         'commit': source_commit, 'path': row['sourcePath'], 'sourceSHA256': sha(current)}
 
 
-def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
-    """Return only the refreshed pinned manifest and its existing verifier."""
-    if repo.name != "SawinTotallyRealTowers":
-        return {}
-    manifest_path = ".github/verification/source-manifest.json"
-    checker_path = ".github/verification/check_source_closure.py"
-    manifest = json.loads((repo / manifest_path).read_text(encoding="utf-8"))
+def library_source_rows(desired, parse_imports):
+    """Inventory only the mathematical library, excluding bundled Lean tooling."""
     rows = {}
     for path, data in sorted(desired.items()):
-        if not path.endswith(".lean"):
+        if not (path.endswith(".lean") and (path == "Nyll.lean" or path.startswith("Nyll/"))):
             continue
         module = path[:-5].replace("/", ".")
         rows[module] = {
@@ -58,6 +53,17 @@ def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
             "sha256": hashlib.sha256(data).hexdigest(),
             "imports": [name for name, _, _ in parse_imports(data.decode())],
         }
+    return rows
+
+
+def desired_sawin(repo, desired, source_commit, ordered, parse_imports):
+    """Return only the refreshed pinned manifest and its existing verifier."""
+    if repo.name != "SawinTotallyRealTowers":
+        return {}
+    manifest_path = ".github/verification/source-manifest.json"
+    checker_path = ".github/verification/check_source_closure.py"
+    manifest = json.loads((repo / manifest_path).read_text(encoding="utf-8"))
+    rows = library_source_rows(desired, parse_imports)
     owners = dict(sorted(Counter(row["owner"] for row in rows.values()).items()))
     cfg = tomllib.loads(desired["lakefile.toml"].decode())
     mathlib = next(dep["rev"] for dep in cfg["require"] if dep["name"] == "mathlib")
