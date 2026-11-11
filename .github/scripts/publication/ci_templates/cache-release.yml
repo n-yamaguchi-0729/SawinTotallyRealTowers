@@ -35,6 +35,23 @@ jobs:
           lint: 'false'
           use-mathlib-cache: 'false'
           use-github-cache: 'false'
+      - name: Locate final caches from earlier attempts of this run
+        id: earlier
+        env:
+          MODERN_CACHE_PREFIX: ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-${{ github.run_id }}
+          LEGACY_CACHE_PREFIX: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-library-EntryPoint-${{ github.run_id }}
+        run: |
+          python3 -B - <<'PY'
+          import os
+          attempt = int(os.environ['GITHUB_RUN_ATTEMPT'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              for kind, suffix in [('modern', '-all'), ('legacy', '')]:
+                  prefix = os.environ[kind.upper() + '_CACHE_PREFIX']
+                  output.write(kind + '<<END_CACHE_KEYS\n')
+                  for previous in range(attempt - 1, 0, -1):
+                      output.write(f'{prefix}-{previous}{suffix}\n')
+                  output.write('END_CACHE_KEYS\n')
+          PY
       - name: Restore this run's complete modern cache
         if: inputs.cache-kind == 'modern'
         uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
@@ -49,6 +66,7 @@ jobs:
             .lake/build/ir/**/*.o
             .lake/build/ir/**/*.o.*
           key: ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}-all
+          restore-keys: ${{ steps.earlier.outputs.modern }}
           fail-on-cache-miss: true
       - name: Restore this run's complete legacy cache
         if: inputs.cache-kind == 'legacy'
@@ -62,6 +80,7 @@ jobs:
             .lake/build/ir/**/*.bc.hash
             ${{ runner.temp }}/project-build-cache.json
           key: lean-project-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-library-EntryPoint-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: ${{ steps.earlier.outputs.legacy }}
           fail-on-cache-miss: true
       - name: Export source-matched proof files and checksums
         env:
