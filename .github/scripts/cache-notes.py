@@ -7,6 +7,7 @@ https://github.com/n-yamaguchi-0729
 """
 from __future__ import annotations
 import argparse
+import base64
 import json
 import os
 from pathlib import Path
@@ -81,9 +82,18 @@ def update(event, repository, token, api=github_api):
             or release.get('draft') is not False
             or not isinstance(release.get('id'), int)):
         raise ValueError('Release does not match the completed workflow commit')
-    body = render(repository, sha)
-    if release.get('body') != body:
-        api(repository, '/releases/' + str(release['id']), token, {'body': body})
+    toolchain = api(repository, '/contents/lean-toolchain?ref=' + sha, token)
+    if not isinstance(toolchain, dict) or toolchain.get('encoding') != 'base64':
+        raise ValueError('Cannot verify the release commit Lean toolchain')
+    text = base64.b64decode(toolchain['content']).decode('utf-8').strip()
+    match = re.fullmatch(r'leanprover/lean4:v(\d+\.\d+\.\d+(?:-[A-Za-z0-9.-]+)?)', text)
+    if match is None:
+        raise ValueError('Unrecognized release commit Lean toolchain')
+    version = match.group(1)
+    name = f'Lean {version} proof cache - {repository.split("/")[-1]} {sha[:12]} (Linux x86_64)'
+    body = f'Lean {version} prebuilt proof cache (Linux x86_64).\n\n' + render(repository, sha)
+    if release.get('body') != body or release.get('name') != name:
+        api(repository, '/releases/' + str(release['id']), token, {'body': body, 'name': name})
     return True
 
 
