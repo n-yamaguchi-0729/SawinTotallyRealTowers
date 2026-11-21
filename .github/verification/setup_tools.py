@@ -11,7 +11,7 @@ import time
 
 TOOLS = {
     "lean4export": ("https://github.com/leanprover/lean4export.git",
-                    "5a9a355dc6c5fd82b69058d433e2ae2e8dfbf8fe"),
+                    "df81913eee5519d5a88ae5b0fd701b5298cc29ab"),
     "nanoda_lib": ("https://github.com/ammkrn/nanoda_lib.git",
                    "4c544ed4099c8227f07d5de77ad1e69fb0740a27"),
 }
@@ -36,7 +36,8 @@ def main():
         began = time.monotonic()
         with (args.output / "setup.log").open("ab") as log:
             result = subprocess.run(command, cwd=cwd, stdout=log, stderr=subprocess.STDOUT,
-                                    env=dict(os.environ, LEAN_NUM_THREADS="1", CARGO_BUILD_JOBS="1"))
+                                    env=dict(os.environ, ELAN_TOOLCHAIN="leanprover/lean4:v4.36.0",
+                                             LEAN_NUM_THREADS="1", CARGO_BUILD_JOBS="1"))
         row.update(exitCode=result.returncode, completedUtc=utc(),
                    elapsedSeconds=round(time.monotonic() - began, 3))
         if result.returncode:

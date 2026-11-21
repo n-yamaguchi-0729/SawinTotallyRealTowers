@@ -9,14 +9,14 @@
   },
   "exportSelectedSourcePath": ".github/verification/ExportSelected.lean",
   "bundledSHA256": {
-    "Inventory.lean": "604049e984f1810c6a68ecbf253d181d6427e0085699aea18225b4cf356131ea",
-    "ExportSelected.lean": "9370f7f59574d5bd10161ca2588ed270f75ad139ae6393ea217f71a27f12177e",
-    "ReplaySix.lean": "ec6749e484029a3a47471d40dcace4fea3922c8f1bb893f102b0c655f7594bf6"
+    "Inventory.lean": "61047fbea0785527bd6bc463928faf031e1e72307dc89bd0364585e09451e26e",
+    "ExportSelected.lean": "ba9a2426c26115a1f2843458de7f8d613225720f592c0c325aab9f555727f71f",
+    "ReplaySix.lean": "77c16c10928b454769ecd63245904ae6bc154d43fbdbdad08e505be60ef99dfd"
   },
   "preNyllBundledSHA256": {
     "Inventory.lean": "c3c20d5762c945e3de39fa5c2685abf814c3aa02bdc943f4249937611eefa7d2",
     "ExportSelected.lean": "214ca63daef63850b66520e0022b50d78c8020c1883edf91f95325662fd6aed0",
     "ReplaySix.lean": "3c7456f8cec8ba3262725748f42e91af42105c8da6b92267d2d09ccfb15c7e92"
   },
-  "migration": "Only per-file autoImplicit commands were removed; direct wrapper invocations pass -DautoImplicit=false. Proof-checking code is unchanged. Lean 4.35.0 migration updates version labels and comments only; inventory and replay checking logic is unchanged."
+  "migration": "Only per-file autoImplicit commands were removed; direct wrapper invocations pass -DautoImplicit=false. Proof-checking code is unchanged. Lean 4.35.0 migration updates version labels and comments only; inventory and replay checking logic is unchanged. Lean 4.36.0 uses the shared inventory and export wrappers to preserve escaped declaration names and calls the official Lean kernel replay API."
 }

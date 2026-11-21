@@ -1954,7 +1954,7 @@
     ".github/verification/historical-partial-baseline.json": "461dcf210ef68a278f9877316c0d4eb8de477cc05bc7aac4f2857b09d423db62",
     ".github/verification/manifest-config.json": "c5584f1e0ff82fafabe78eda8874e202b7647a78d4500f460d89dbeef0fcb65a",
     ".github/verification/source-manifest.json": "9c274d709d2a0d04a88c13a51fe6a420f5f7a055d85a1b0ef66df0fd3262ed28",
-    ".github/verification/verify.py": "2c6ab50a727352c881d08f8193a675c4e1d7f0951fab4b35bb3ae7b76a2ba833",
+    ".github/verification/verify.py": "2dd47f42d15ffb3c640bf5b98c0d98d01e01a701f8edbecd4ca0be39b627b105",
     ".github/workflows/build-library.yml": "b58f74a6d079f4f58e4f76995ed9214ee8b099c87c7fbe0dbb60b6b76673a8fe",
     ".github/workflows/cache-notes.yml": "4934ca2da6564765b8f1e93053c1b9d9740ccfdcb81c8349dec8ba98dec29f4e",
     ".github/workflows/cache-release.yml": "86e9256871973f51e59b582a59584ca0074dd56ed8dbba7d7fa5f81b720eada3",

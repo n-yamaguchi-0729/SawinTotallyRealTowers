@@ -19,13 +19,13 @@ HERE = Path(__file__).resolve().parent
 ALLOWED = {'propext', 'Classical.choice', 'Quot.sound'}
 ALLOWED_PARTS = {(('str', 'propext'),), (('str', 'Classical'), ('str', 'choice')),
                  (('str', 'Quot'), ('str', 'sound'))}
-LEAN_REV = 'eb6cafb7290e8bd5f2937522d8d804f58f02bafc'
-EXPORT_COMMIT = '5a9a355dc6c5fd82b69058d433e2ae2e8dfbf8fe'
+LEAN_REV = '611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9'
+EXPORT_COMMIT = 'df81913eee5519d5a88ae5b0fd701b5298cc29ab'
 NANODA_COMMIT = '4c544ed4099c8227f07d5de77ad1e69fb0740a27'
 WRAPPERS = {
-    'Inventory.lean': '604049e984f1810c6a68ecbf253d181d6427e0085699aea18225b4cf356131ea',
-    'ExportSelected.lean': '9370f7f59574d5bd10161ca2588ed270f75ad139ae6393ea217f71a27f12177e',
-    'ReplaySix.lean': 'ec6749e484029a3a47471d40dcace4fea3922c8f1bb893f102b0c655f7594bf6',
+    'Inventory.lean': '61047fbea0785527bd6bc463928faf031e1e72307dc89bd0364585e09451e26e',
+    'ExportSelected.lean': 'ba9a2426c26115a1f2843458de7f8d613225720f592c0c325aab9f555727f71f',
+    'ReplaySix.lean': '77c16c10928b454769ecd63245904ae6bc154d43fbdbdad08e505be60ef99dfd',
 }
 COPYRIGHT_HEADER = (
     '/-\n'
@@ -185,7 +185,7 @@ def validate_replay(path, manifest):
     results = [r for r in records if r.get('phase') == 'replay']
     require(len(inventories) == len(results) == 1, 'Missing/duplicate replay records')
     inv = inventories[0]; result = results[0]
-    require(result['result'] == 'PASS' and result['kernel'] == 'official Lean 4.35.0',
+    require(result['result'] == 'PASS' and result['kernel'] == 'official Lean 4.36.0',
             'Official replay did not pass')
     require(inv['roots'] == manifest['roots'], 'Replay root mismatch')
     loaded = inv['loaded_modules']
@@ -392,7 +392,7 @@ class Runner:
         require(result['allSelectedPresent'] and not result['unexpectedAxiomNameParts'],
                 'Export omitted a safe root or introduced an unpermitted axiom')
         lean = result['metadata']['lean']
-        require(lean['version'] == '4.35.0' and lean['githash'] == LEAN_REV,
+        require(lean['version'] == '4.36.0' and lean['githash'] == LEAN_REV,
                 'Exporter Lean identity mismatch')
         self.seal(self.output / 'coverage-report.json')
         return {'completeSafeUnion': True, 'selectedRootCount': len(self.selectors),
@@ -428,7 +428,7 @@ class Runner:
                                               'tests/MartinetStatement.lean'])
             require(self.snapshots(self.project_paths()) == project, 'Input changed during build')
             version = self.stage('lean-version', [self.lake,'env','lean','--version'], True)
-            require('version 4.35.0,' in version and LEAN_REV in version, 'Lean identity mismatch')
+            require('version 4.36.0,' in version and LEAN_REV in version, 'Lean identity mismatch')
             prefix = self.stage('lean-prefix', [self.lake,'env','lean','--print-prefix'], True)
             search = self.stage('lean-search-path', [self.lake,'env','printenv','LEAN_PATH'], True)
             ident = {'version': version, 'prefix': prefix, 'searchPath': search,
