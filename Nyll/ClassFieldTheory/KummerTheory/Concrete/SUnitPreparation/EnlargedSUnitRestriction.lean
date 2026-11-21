@@ -332,7 +332,7 @@ theorem enlargedSUnitKummerEmbeddedExtension_le_cyclicFixedField
       enlargedSUnitKummerCyclicFixedField
         (K := K) (Omega := Omega) E n hmu
         hexponent S sigma := by
-  apply (IntermediateField.le_iff_le _ _).2
+  apply (IntermediateField.le_fixedField_iff_le_fixingSubgroup _ _).2
   rw [
     ← enlargedSUnitKummerRestrictionHom_ker_eq_fixingSubgroup
       (K := K) (Omega := Omega) E n hmu

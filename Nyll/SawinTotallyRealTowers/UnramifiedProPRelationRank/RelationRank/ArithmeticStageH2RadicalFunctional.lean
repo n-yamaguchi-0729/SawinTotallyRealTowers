@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2GlobalLift
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
@@ -47,12 +48,7 @@ local instance arithmeticRadicalFunctionalH2Finite : Finite StageH2 := by
     finiteDimensional_degree_two_of_finite (p := (n : ℕ)) (inferInstance : Finite StageQuotient)
   exact Module.finite_of_finite (ZMod (n : ℕ))
 
-local instance arithmeticRadicalFunctionalTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance arithmeticRadicalFunctionalDiscreteTopology : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance arithmeticRadicalFunctionalH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) := continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- All chosen stage lifts ramify inside one finite set, since the stage H² itself is finite. -/
 theorem arithmeticStageH2RamifiedPlaces_family_finite :

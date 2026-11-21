@@ -376,7 +376,7 @@ theorem padicCompletedUnramifiedValuation_hasExtension
       (padicCompletedUnramifiedCompleteDVF p).valuation := by
   let f := padicCompletedUnramifiedIntegerMap p
   let : IsLocalHom f := by
-    apply ((IsLocalRing.local_hom_TFAE f).out 3 1).mp
+    apply ((IsLocalRing.local_hom_tfae f).out 3 1).mp
     rw [padicCompletedUnramifiedIntegerMap_map_maximalIdeal]
   exact
     valuation_hasExtension_of_local_valuationSubring_map

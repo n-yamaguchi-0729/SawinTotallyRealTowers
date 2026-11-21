@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
@@ -25,7 +26,9 @@ finite-place tensor-norm comparison.
 
 @[expose] public section
 
-open scoped NumberField TensorProduct NumberField.LiesOver
+open scoped NumberField TensorProduct
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 open NumberField
 
 noncomputable section
@@ -157,61 +160,25 @@ theorem infiniteTensorNormSubgroup_eq_localNormSubgroup
   let eExtension :
       E ≃+* w.Completion :=
     eLocalized.toRingEquiv.trans eWField.symm
+  have hLocalized (x : v.1.Completion) :
+      eExtension (algebraMap v.1.Completion E x) =
+        AbsoluteValue.completionMap v.1 u.1 u.2 x := by
+    change eWField.symm (eLocalized (algebraMap v.1.Completion E x)) = _
+    rw [eLocalized.commutes]; rfl
+  let : Algebra v.Completion w.Completion :=
+    AbsoluteValue.Completion.algebraOfLiesOver v.1 w.1
   have hCompatible :
       RingHom.comp
           (algebraMap v.Completion w.Completion)
           eBase =
         RingHom.comp eExtension
           (algebraMap v.1.Completion E) := by
-    have hWrapperCompletionSymm :=
-      ringEquiv_compat_symm
-        eVField eWField (by
-          simpa [u, infinitePlaceAbsoluteValueExtension,
-            eVField, eWField] using
-            (infinitePlaceCompletionAlgEquiv_algebraMap
-              (K := K) (L := L) v w hw))
     apply RingHom.ext
     intro x
-    change
-      algebraMap v.Completion w.Completion
-          (eVField.symm x) =
-        eWField.symm
-          (eLocalized
-            (algebraMap v.1.Completion E x))
-    rw [eLocalized.commutes]
-    exact
-      DFunLike.congr_fun hWrapperCompletionSymm x
-  have hNormTransport :
-      (localNormSubgroup
-          v.1.Completion E).map
-            eVUnits.symm.toMonoidHom =
-        localNormSubgroup
-          v.Completion w.Completion := by
-    ext x
-    constructor
-    · rintro ⟨_, ⟨z, rfl⟩, rfl⟩
-      refine
-        ⟨Units.mapEquiv
-            eExtension.toMulEquiv z, ?_⟩
-      simpa [eBase, eVUnits] using
-        (normUnits_map_ringEquiv
-          eBase eExtension hCompatible z).symm
-    · rintro ⟨z, rfl⟩
-      refine
-        ⟨normUnits v.1.Completion E
-            ((Units.mapEquiv
-              eExtension.toMulEquiv).symm z),
-          ⟨(Units.mapEquiv
-              eExtension.toMulEquiv).symm z, rfl⟩,
-          ?_⟩
-      have hTransport :=
-        normUnits_map_ringEquiv
-          eBase eExtension hCompatible
-          ((Units.mapEquiv
-            eExtension.toMulEquiv).symm z)
-      rw [(Units.mapEquiv
-        eExtension.toMulEquiv).apply_symm_apply] at hTransport
-      simpa [eBase, eVUnits] using hTransport
+    change algebraMap v.Completion w.Completion (eBase x) =
+      eExtension (algebraMap v.1.Completion E x)
+    rw [hLocalized, AbsoluteValue.Completion.algebraMap_apply_of_liesOver v.1 w.1]; rfl
+  have hNormTransport := localNormSubgroup_map_ringEquiv eBase eExtension hCompatible
   rw [hTensorTransport,
     localTensorNormSubgroup_eq_localNormSubgroup
       (K := K) (L := L) v.1 u v.isNontrivial]

@@ -13,7 +13,7 @@ public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalC
 
 The level-zero factor is trivial.  At every positive level, the finite-place
 character specification reduces the claim to the ramified chosen-Artin formula
-proved in `RationalCyclotomicFinitePlaceArtin`.
+proved in `RationalCyclotomicRamifiedArtin`.
 -/
 
 

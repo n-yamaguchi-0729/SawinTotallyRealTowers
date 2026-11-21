@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.HilbertClassFieldRealization
 
 /-!
@@ -30,17 +32,7 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-/-- The shared commutativity provider used by the Hilbert reciprocity leaves. -/
-theorem hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
 
-local instance
-    hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutativeLocal
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
 /-- Inverse norm-residue evaluation transported through a subgroup equality
 and then through an arbitrary multiplicative equivalence. -/
@@ -97,37 +89,20 @@ theorem hilbertClassFieldGlobalReciprocityTransport_globalNormResidue
     hilbertClassFieldGlobalReciprocityTransportEquiv H h f
         (globalNormResidueMonoidHom F E c) =
       f (QuotientGroup.mk' H c) := by
-  have hNormResidue :
-      Additive.ofMul (globalNormResidueMonoidHom F E c) =
-        globalNormResidueEquiv F E
-          (Additive.ofMul
-            (QuotientGroup.mk'
-              (_root_.ideleClassNorm F E).range c)) :=
-    congrArg (fun σ => Additive.ofMul σ)
-      (globalNormResidueMonoidHom_apply F E c)
+  let N := (_root_.ideleClassNorm F E).range
+  let q := QuotientGroup.mk' N c
+  let e := globalNormResidueEquiv F E
+  let t := QuotientGroup.quotientMulEquivOfEq h
+  let g (a : Additive (IdeleClassGroup F ⧸ N)) := f (t a.toMul)
+  let a := Additive.ofMul (globalNormResidueMonoidHom F E c)
+  let b := Additive.ofMul q
+  have hArtin : a = e b := congrArg Additive.ofMul (globalNormResidueMonoidHom_apply F E c)
+  have hTransport := QuotientGroup.quotientMulEquivOfEq_mk h c
   calc
-    _ = f (QuotientGroup.quotientMulEquivOfEq h
-          (Additive.toMul
-            ((globalNormResidueEquiv F E).symm
-              (Additive.ofMul
-                (globalNormResidueMonoidHom F E c))))) := rfl
-    _ = f (QuotientGroup.quotientMulEquivOfEq h
-          (Additive.toMul
-            ((globalNormResidueEquiv F E).symm
-              (globalNormResidueEquiv F E
-                (Additive.ofMul
-                  (QuotientGroup.mk'
-                    (_root_.ideleClassNorm F E).range c)))))) :=
-      congrArg
-        (fun τ =>
-          f (QuotientGroup.quotientMulEquivOfEq h
-            (Additive.toMul
-              ((globalNormResidueEquiv F E).symm τ))))
-        hNormResidue
-    _ = f (QuotientGroup.mk' H c) :=
-      hilbertClassFieldQuotientTransport_inverse_apply_with
-        ((_root_.ideleClassNorm F E).range) H
-        (globalNormResidueEquiv F E) h f c
+    _ = g (e.symm a) := rfl
+    _ = g (e.symm (e b)) := congrArg (g ∘ e.symm) hArtin
+    _ = g b := congrArg g (e.symm_apply_apply b)
+    _ = f (QuotientGroup.mk' H c) := congrArg f hTransport
 
 /-- The transported equivalence and its evaluation theorem, packaged once for
 all four Hilbert class-field specializations. -/

@@ -389,3 +389,20 @@ end DiscreteValuationField
 end
 
 end ValuationTheory
+
+namespace LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation
+
+universe u
+
+/-- The complete-DVF package attached to a standard `ℤᵐ⁰`-valued complete
+discrete valuation. -/
+def completeDVFOfWithZeroValuation
+    {K : Type u} [Field K]
+    (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
+    [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v] :
+    ValuationTheory.DiscreteValuationField.CompleteDVF.{u, 0} K where
+  ValueGroup := WithZero (Multiplicative ℤ)
+  valuation := v
+  instCompleteDiscrete := inferInstance
+
+end LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation

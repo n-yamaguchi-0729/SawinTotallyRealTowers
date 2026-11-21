@@ -78,7 +78,7 @@ action by group automorphisms. -/
 @[reducible]
 noncomputable def relativeIdeleClassMulDistribMulAction :
     MulDistribMulAction (L ≃ₐ[K] L) (ClassGroup K L) := by
-  letI := relativeIdeleMulDistribMulAction K L
+  letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   exact Function.Surjective.mulDistribMulAction
     (QuotientGroup.mk' (principalSubgroup K L))
     (QuotientGroup.mk'_surjective (principalSubgroup K L))
@@ -98,7 +98,8 @@ theorem classInclusion_range_le_galoisFixed :
       galoisFixedClassSubgroup K L := by
   rintro _ ⟨c, rfl⟩
   obtain ⟨a, rfl⟩ :=
-    QuotientGroup.mk_surjective c
+    IdeleGroup.toStandardClass_surjective K c
+  rw [classInclusion_mk]
   intro σ
   change
     σ •
@@ -130,7 +131,7 @@ theorem exists_fixed_representative_of_fixed_class
           (principalSubgroup K L) a ∧
       ∀ σ : L ≃ₐ[K] L, σ • a' = a' := by
   classical
-  let := relativeIdeleMulDistribMulAction K L
+  let := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   have hex :
       ∀ σ : L ≃ₐ[K] L,
         ∃ x : Lˣ,
@@ -243,8 +244,7 @@ theorem galoisFixed_le_classInclusion_range
     K L] at ha'mem
   obtain ⟨b, hb⟩ := ha'mem
   refine
-    ⟨QuotientGroup.mk'
-      (IdeleGroup.principalSubgroup K) b, ?_⟩
+    ⟨IdeleGroup.toStandardClass K b, ?_⟩
   rw [classInclusion_mk, hb]
   exact ha'class
 

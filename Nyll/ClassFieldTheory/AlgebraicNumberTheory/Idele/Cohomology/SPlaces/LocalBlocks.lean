@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FinitePlaceTensorBlock
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Decomposition

@@ -9,21 +9,22 @@ module
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.FieldNorm
+public import Mathlib.Topology.Algebra.Group.Quotient
 
 /-!
 # The norm on ordinary ideles
 
-The relative idele group carries the determinant norm.  The
-scalar-extension equivalence with the ordinary ideles of the extension
-field transports that existing norm to the usual map
-`N_{L/K} : I_L → I_K`.
+The ordinary determinant norm is defined on the standard adele-unit carrier.
+This file expresses that same norm in the restricted-product coordinates still
+used by some consumers, and likewise transports its principal quotient.
 -/
 
 
 
 @[expose] public section
 
-open scoped NumberField
+open scoped NumberField IsMulCommutative
 open NumberField
 
 noncomputable section
@@ -37,13 +38,9 @@ variable
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
 
-/-- The ordinary idele norm `N_{L/K} : I_L → I_K`, transported from
-the determinant norm on the relative idele group. -/
-noncomputable def norm :
-    IdeleGroup L →* IdeleGroup K :=
-  (RelativeIdeleGroup.norm K L).comp
-    (relativeIdeleBaseChangeMulEquiv
-      (K := K) (L := L)).symm.toMonoidHom
+/-- The norm on standard idele groups. -/
+noncomputable abbrev norm : IdeleGroup L →* IdeleGroup K :=
+  NumberField.IdeleGroup.norm K L
 
 @[simp]
 theorem norm_relativeIdeleBaseChangeMulEquiv
@@ -52,7 +49,22 @@ theorem norm_relativeIdeleBaseChangeMulEquiv
         (relativeIdeleBaseChangeMulEquiv
           (K := K) (L := L) z) =
       RelativeIdeleGroup.norm K L z := by
-  simp [norm]
+  rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits]
+  apply Units.ext
+  exact NumberField.AdeleRing.fieldNorm_baseChange K L (z : RelativeAdeleRing K L)
+
+/-- The determinant-norm comparison identifies the relative image with the ordinary norm range. -/
+theorem norm_range_eq_relativeNorm_range :
+    (norm K L).range = (RelativeIdeleGroup.norm K L).range := by
+  let e := relativeIdeleBaseChangeMulEquiv (K := K) (L := L)
+  apply Subgroup.ext
+  intro a
+  constructor
+  · rintro ⟨b, rfl⟩
+    refine ⟨e.symm b, (norm_relativeIdeleBaseChangeMulEquiv K L (e.symm b)).symm.trans ?_⟩
+    exact congrArg (norm K L) (e.apply_symm_apply b)
+  · rintro ⟨b, rfl⟩
+    exact ⟨e b, norm_relativeIdeleBaseChangeMulEquiv K L b⟩
 
 /-- On principal ideles, the ordinary idele norm is induced by the
 field norm. -/
@@ -60,11 +72,9 @@ field norm. -/
 theorem norm_principalIdele
     (x : Lˣ) :
     norm K L (principalIdele L x) =
-      principalIdele K (Units.map (Algebra.norm K) x) := by
-  rw [← relativeIdeleBaseChangeMulEquiv_principalIdele
-    (K := K) (L := L) x]
-  rw [norm_relativeIdeleBaseChangeMulEquiv,
-    RelativeIdeleGroup.norm_principalIdele]
+      principalIdele K (Units.map (Algebra.norm K) x) :=
+  NumberField.IdeleGroup.norm_unitEmbedding K L x
+
 
 end IdeleGroup
 
@@ -75,26 +85,28 @@ variable
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
 
-/-- The ordinary idele-class norm `N_{L/K} : C_L → C_K`. -/
-noncomputable def ideleClassNorm :
+/-- The ordinary idele-class norm (N_{L/K} : C_L → C_K). -/
+noncomputable abbrev ideleClassNorm :
     IdeleClassGroup L →* IdeleClassGroup K :=
-  QuotientGroup.map
-    (IdeleGroup.principalSubgroup L)
-    (IdeleGroup.principalSubgroup K)
-    (IdeleGroup.norm K L)
-    (by
-      rintro _ ⟨x, rfl⟩
-      exact
-        ⟨Units.map (Algebra.norm K) x,
-          (IdeleGroup.norm_principalIdele K L x).symm⟩)
+  NumberField.IdeleClassGroup.norm K L
 
 @[simp]
 theorem ideleClassNorm_mk
     (a : IdeleGroup L) :
-    ideleClassNorm K L
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup L) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (IdeleGroup.norm K L a) :=
-  rfl
+    ideleClassNorm K L (IdeleGroup.toStandardClass L a) =
+      IdeleGroup.toStandardClass K (IdeleGroup.norm K L a) :=
+  NumberField.IdeleClassGroup.norm_mk K L a
+
+/-- The principal quotient sends an ordinary idèle norm to an idèle-class norm. -/
+theorem ideleClassNorm_range_mem_mk_of_mem_ideleNorm_range (a : IdeleGroup K)
+    (ha : a ∈ (IdeleGroup.norm K L).range) :
+    IdeleGroup.toStandardClass K a ∈ (ideleClassNorm K L).range := by
+  obtain ⟨b, rfl⟩ := ha
+  exact ⟨IdeleGroup.toStandardClass L b, ideleClassNorm_mk K L b⟩
+
+/-- The native continuous projection from the idele class group to the quotient
+by the image of the ordinary idele-class norm. -/
+noncomputable def ideleClassNormQuotientContinuousMonoidHom :
+    IdeleClassGroup K →ₜ* (IdeleClassGroup K ⧸ (ideleClassNorm K L).range) :=
+  { QuotientGroup.mk' (ideleClassNorm K L).range with
+    continuous_toFun := QuotientGroup.continuous_mk }

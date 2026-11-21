@@ -21,9 +21,9 @@ REQUIRED_DECLARATIONS = [
     {'name': MARTINET_MAIN, 'originModule': MARTINET_ENTRY, 'kind': 'theorem'},
     {'name': SHAFAREVICH_MAIN, 'originModule': SHAFAREVICH_ENTRY, 'kind': 'theorem'},
 ]
-OWNERS = {'ClassFieldTheory': 702, 'EntryPoint': 2, 'GaloisCohomology': 191, 'ProCGroups': 324, 'SawinTotallyRealTowers': 269, 'SchemeTheory': 3, 'ValuedFieldTheory': 294}
-MATHLIB = '56a005855ea17e0b0958f73ec801ae140b0a1679'
-TOOLCHAIN = 'leanprover/lean4:v4.35.0'
+OWNERS = {'ClassFieldTheory': 779, 'EntryPoint': 2, 'GaloisCohomology': 207, 'ProCGroups': 330, 'SawinTotallyRealTowers': 263, 'SchemeTheory': 3, 'ValuedFieldTheory': 303}
+MATHLIB = 'fc4f59e577feb1a4956671bc04ac18aaaf8cd842'
+TOOLCHAIN = 'leanprover/lean4:v4.36.0'
 EXTERNAL = {'Mathlib', 'Lean', 'Init', 'Std', 'Batteries', 'Aesop', 'Qq', 'Plausible'}
 
 def require(ok, message):

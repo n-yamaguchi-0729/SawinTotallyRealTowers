@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.AbsoluteNormCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.InfinitePlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -142,7 +143,7 @@ private theorem positiveArchimedeanLocalComponent_nnnorm
           ((r : ℝ≥0ˣ) : ℝ) := by
       simpa [e] using congrArg Units.val hcomponent
     apply NNReal.eq
-    simp only [coe_nnnorm]
+    simp only [coe_nnNorm]
     calc
       ‖((positiveArchimedeanLocalComponent v r :
           v.Completionˣ) : v.Completion)‖ =
@@ -184,7 +185,7 @@ private theorem positiveArchimedeanLocalComponent_nnnorm
           (((r : ℝ≥0ˣ) : ℝ) : ℂ) := by
       simpa [e] using congrArg Units.val hcomponent
     apply NNReal.eq
-    simp only [coe_nnnorm]
+    simp only [coe_nnNorm]
     calc
       ‖((positiveArchimedeanLocalComponent v r :
           v.Completionˣ) : v.Completion)‖ =
@@ -379,10 +380,10 @@ theorem positiveArchimedeanSection_absoluteNorm
           (((w₀ (K := K)).mult : ℝ)⁻¹) := by
     simpa [positiveArchimedeanRoot] using hlocal
   have hinfinite :
-      InfiniteIdeleGroup.archimedeanNorm
-          (positiveArchimedeanSection K r).1 =
+      NumberField.InfiniteAdeleRing.absoluteNorm
+          (IdeleGroup.infinitePart (positiveArchimedeanSection K r)) =
         r := by
-    rw [InfiniteIdeleGroup.archimedeanNorm_apply]
+    rw [NumberField.InfiniteAdeleRing.absoluteNorm_apply]
     classical
     rw [Finset.prod_eq_single (w₀ (K := K))]
     · apply Units.ext
@@ -400,8 +401,8 @@ theorem positiveArchimedeanSection_absoluteNorm
           (r : ℝ≥0) InfinitePlace.mult_ne_zero
     · intro v _ hv
       have hcomponent :
-          InfiniteIdeleGroup.component v
-              (positiveArchimedeanSection K r).1 =
+          NumberField.InfiniteAdeleRing.unitComponent v
+              (IdeleGroup.infinitePart (positiveArchimedeanSection K r)) =
             1 := by
         change
           IdeleGroup.infiniteComponent v
@@ -412,13 +413,9 @@ theorem positiveArchimedeanSection_absoluteNorm
       rw [hcomponent, map_one, one_pow]
     · intro h
       exact (h (Finset.mem_univ _)).elim
-  rw [IdeleGroup.absoluteNorm_apply]
-  change
-    FiniteIdeleGroup.absoluteNorm (1 : FiniteIdeleGroup K) *
-        (InfiniteIdeleGroup.archimedeanNorm
-          (positiveArchimedeanSection K r).1)⁻¹ =
-      r⁻¹
-  rw [map_one, hinfinite, one_mul]
+  have hfinite : IdeleGroup.finiteCoordinates (positiveArchimedeanSection K r) = 1 :=
+    IdeleGroup.finiteCoordinates_infinitePlaceIdele _ _
+  rw [IdeleGroup.absoluteNorm_apply, hinfinite, hfinite, map_one, one_mul]
 
 /-- Multiplying an idele by its positive archimedean correction produces an
 idele of absolute norm one. -/

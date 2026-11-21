@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
-public import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogEquiv
+public import Nyll.ValuedFieldTheory.LocalField.Analytic.PrincipalUnitExpLogValues
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicField
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.PadicPowerIndex
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
@@ -249,7 +249,7 @@ theorem padicInt_exists_degree_root_of_mem_maximalIdeal_pow_succ
   have hvalpred : (p - 1 : ℤ_[p]).valuation = 0 := by
     have hvalNat : (((p - 1 : ℕ) : ℤ_[p])).valuation = 0 := by
       rw [LocalFieldTheory.DiscreteValuationField.padicInt_valuation_natCast,
-        padicValNat.eq_zero_of_not_dvd hp_not_dvd_pred]
+        Nat.padicValNat_def, multiplicity_eq_zero_of_not_dvd hp_not_dvd_pred]
     rw [Nat.cast_sub hpone, Nat.cast_one] at hvalNat
     exact hvalNat
   have hpred_qp_ne : (p - 1 : ℤ_[p]) ≠ 0 := by exact_mod_cast hpred_ne
@@ -364,118 +364,6 @@ theorem padicDVR_logExp_level_succ_of_odd
       (k + 1 : ℚ) := by
   apply lt_of_lt_of_le (padicDVR_logExp_level_one_of_odd p hp2)
   exact_mod_cast (Nat.succ_le_succ (Nat.zero_le k))
-
-open _root_.LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation
-  (completeDVFOfWithZeroValuation) in
-/-- At a depth in the convergence range, exponential and logarithm identify
-the multiplicative maximal-ideal power with the higher principal units. -/
-noncomputable def expLogMulEquivOfWithZeroValuation
-    {K : Type*} [Field K]
-    (v : Valuation K (WithZero (Multiplicative ℤ)))
-    [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    [Finite (IsLocalRing.ResidueField v.valuationSubring)] [CharZero K]
-    (hv : Function.Surjective v) (n : ℕ)
-    (hlevel :
-      (DiscreteValuationField.LocalField.ramificationIndexOfWithZeroValuation v : ℚ) /
-          (((DiscreteValuationField.LocalField.ofWithZeroValuation v).residueCharacteristic : ℚ)
-            - 1) <
-        (n : ℚ)) :
-    Multiplicative
-        ((DiscreteValuationField.MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation
-          v).maximalIdeal ^ n :
-          Ideal
-            (completeDVFOfWithZeroValuation v).valuationSubring) ≃*
-      DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup
-        (DiscreteValuationField.MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v)
-        n := by
-  letI : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let P :=
-    DiscreteValuationField.MultiplicativeIntegerValuation.chosenExpLogContinuousMulEquiv
-      v hv n hlevel
-  refine
-    { toFun := fun a => P a
-      invFun := fun u => P.symm u
-      left_inv := ?_
-      right_inv := ?_
-      map_mul' := ?_ }
-  · exact P.left_inv
-  · exact P.right_inv
-  · exact P.map_mul
-
-open _root_.LocalFieldTheory.DiscreteValuationField.LocalField
-  (valuation_natCast_factorial_eq_exp_neg_ramificationIndex_mul_padicValNat) in
-open _root_.LocalFieldTheory.DiscreteValuationField.MultiplicativeIntegerValuation
-  (principalUnitExpLogContinuousMulEquivOfExact_ofWithZeroValuationScaled
-   principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled
-   principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled) in
-open _root_.LocalFieldTheory.DiscreteValuationField.WithZeroValuation
-  (exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective) in
-/-- The underlying field value of the exponential/logarithm equivalence is
-given by the evaluated exponential series. -/
-theorem expLogMulEquivOfWithZeroValuation_fieldVal
-    {K : Type*} [Field K]
-    (v : Valuation K (WithZero (Multiplicative ℤ)))
-    [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v]
-    [Finite (IsLocalRing.ResidueField v.valuationSubring)] [CharZero K]
-    (hv : Function.Surjective v) (n : ℕ)
-    (hlevel :
-      (DiscreteValuationField.LocalField.ramificationIndexOfWithZeroValuation v : ℚ) /
-          (((DiscreteValuationField.LocalField.ofWithZeroValuation v).residueCharacteristic : ℚ)
-            - 1) <
-        (n : ℚ))
-    (a : Multiplicative
-      ((DiscreteValuationField.MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation
-        v).maximalIdeal ^ n :
-        Ideal
-          (DiscreteValuationField.MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation
-          v).valuationSubring)) :
-    let F :=
-      DiscreteValuationField.MultiplicativeIntegerValuation.completeDVFOfWithZeroValuation v
-    let E := expLogMulEquivOfWithZeroValuation v hv n hlevel
-    ((((E a : DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F n) :
-      F.valuationSubringˣ) :
-        F.valuationSubring) : K) =
-      DiscreteValuationField.MultiplicativeIntegerValuation.expSeriesFieldOfWithZeroValuation
-        v (((a.toAdd : F.valuationSubring) : K))
-          (fun m =>
-            Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero m)) := by
-  let : Valued K (WithZero (Multiplicative ℤ)) := Valued.mk' v
-  let p : ℕ :=
-    (LocalFieldTheory.DiscreteValuationField.LocalField.ofWithZeroValuation v).residueCharacteristic
-  let _ : Fact p.Prime := by
-    dsimp [p]
-    infer_instance
-  simp only [expLogMulEquivOfWithZeroValuation]
-  simp only [
-    DiscreteValuationField.MultiplicativeIntegerValuation.chosenExpLogContinuousMulEquiv,
-    principalUnitExpLogContinuousMulEquivOfExact_ofWithZeroValuationScaled,
-    principalUnitExpLogMulEquivOfExact_ofWithZeroValuationScaled]
-  apply
-    principalUnitExpSeries_maximalIdealPow_val_ofWithZeroValuationScaled
-      (v := v) (p := p)
-      (LocalFieldTheory.DiscreteValuationField.LocalField.ramificationIndexOfWithZeroValuation v)
-      n
-  case hπval =>
-    exact Classical.choose_spec
-      (exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
-        v hv)
-  case hπ =>
-    exact
-      DiscreteValuationField.WithZeroValuation.isUniformizer_of_valuation_eq_exp_neg_one
-        v _
-        (Classical.choose_spec
-          (exists_valuationSubring_valuation_eq_exp_neg_one_of_surjective
-            v hv))
-  case hlevel => exact hlevel
-  case hnval =>
-    intro m
-    exact
-      valuation_natCast_factorial_eq_exp_neg_ramificationIndex_mul_padicValNat
-        v m
-  case hcomplete =>
-    exact
-      DiscreteValuationField.WithZeroValuationTopology.completeSpace_ofWithZeroValuation
-        v
 
 /-- For odd `p`, every element of `U^(k+1)` is a
 `((p-1) * p^k)`-th power of an element of `U¹`. -/

@@ -32,9 +32,7 @@ universe u
 variable {p : ℕ}
 variable {P : Type u} [Group P]
 
-local instance linearQuotientTopology (N : Subgroup P) : TopologicalSpace (P ⧸ N) := ⊥
-local instance linearQuotientDiscrete (N : Subgroup P) : DiscreteTopology (P ⧸ N) :=
-  discreteTopology_bot _
+attribute [local instance] discreteQuotientTopology discreteQuotient
 
 /-- Additive presentation of `ZMod p`-valued group characters. -/
 abbrev FiniteCharacter (p : ℕ) (N : Type u) [Monoid N] :=

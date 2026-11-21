@@ -9,7 +9,7 @@ module
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ValuationContinuity
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFinrankTransfer
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
 public import Mathlib.Algebra.Algebra.Basic
@@ -283,14 +283,8 @@ theorem relativeUnramifiedFixedField_residue_finrank :
     relativeUnramifiedFixedField_finiteDimensional K H m hm
   have : FiniteDimensional K N :=
     relativeUnramifiedFixedField_absoluteFiniteDimensional K H m hm
-  have hbase : (H.residueDegree (localResidueDatum K) : ℕ) =
-      @Module.finrank 𝓀[K] 𝓀[F] _ _
-        (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F])) :=
-    localResidueDatum_residueDegree_eq_residueFinrank K H
-  have htop : (E.field.residueDegree (localResidueDatum K) : ℕ) =
-      @Module.finrank 𝓀[K] 𝓀[N] _ _
-        (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[N])) :=
-    localResidueDatum_residueDegree_eq_residueFinrank K E.field
+  have hbase := localResidueDatum_residueDegree_eq_residueFinrank K H
+  have htop := localResidueDatum_residueDegree_eq_residueFinrank K E.field
   have hrelative : (E.residueDegree (localResidueDatum K) : ℕ) = m :=
     (localResidueDatum K).finiteUnramifiedExtension_residueDegree
       (H.toFiniteResidueAbstractField (localResidueDatum K)) m hm
@@ -301,7 +295,8 @@ theorem relativeUnramifiedFixedField_residue_finrank :
   change (E.residueDegree (localResidueDatum K) : ℕ) *
       (H.residueDegree (localResidueDatum K) : ℕ) =
         (E.field.residueDegree (localResidueDatum K) : ℕ) at habstract
-  rw [hrelative, hbase, htop] at habstract
+  have hdegrees :=
+    (congrArg₂ Nat.mul hrelative hbase).symm.trans (habstract.trans htop)
   have : IsScalarTower 𝒪[K] 𝒪[F] 𝒪[N] := valuationInteger_scalarTower K F N
   have : IsScalarTower 𝓀[K] 𝓀[F] 𝓀[N] :=
     valuationResidue_scalarTower 𝒪[K] 𝒪[F] 𝒪[N]
@@ -310,10 +305,8 @@ theorem relativeUnramifiedFixedField_residue_finrank :
       (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F])) := by
     rw [← hbase]
     exact (H.residueDegree (localResidueDatum K)).property
-  apply Nat.eq_of_mul_eq_mul_left hbasePos
-  exact hactual.trans ((Nat.mul_comm
-    (@Module.finrank 𝓀[K] 𝓀[F] _ _
-      (IsLocalRing.ResidueField.instModule (R := 𝒪[K]) (S := 𝒪[F]))) m).trans habstract).symm
+  exact Nat.eq_of_mul_eq_mul_left hbasePos
+    (hactual.trans (hdegrees.symm.trans (Nat.mul_comm m _)))
 
 
 /-- The relative degree-kernel fixed field is unramified for the compatible

@@ -65,8 +65,8 @@ theorem finiteDimensional_and_finrank_degree_two_le_of_inflationRange_embeddings
   have hrank_lt : Module.rank (ZMod p) V < Cardinal.aleph0 :=
     hrank.trans_lt Cardinal.natCast_lt_aleph0
   let b := Module.Free.chooseBasis (ZMod p) V
-  let : Fintype (Module.Free.ChooseBasisIndex (ZMod p) V) :=
-    b.fintypeIndexOfRankLtAleph0 hrank_lt
+  let : Finite (Module.Free.ChooseBasisIndex (ZMod p) V) :=
+    b.finite_index_of_rank_lt_aleph0 hrank_lt
   have hFinite : FiniteDimensional (ZMod p) V :=
     b.finiteDimensional_of_finite
   refine ⟨hFinite, ?_⟩

@@ -41,11 +41,11 @@ theorem hilbertElementaryLayerInAlgebraicClosure_le_maximal
     e.toLinearEquiv.finiteDimensional
   let : IsGalois K EΩ := IsGalois.of_algEquiv e
   let : NumberField EΩ := NumberField.of_module_finite K EΩ
-  have hAbstract : IsEverywhereUnramified K E :=
-    IsEverywhereUnramified.bot
+  have hAbstract : ClassFieldTheory.IsEverywhereUnramified K E :=
+    ClassFieldTheory.IsEverywhereUnramified.bot
       (smallHilbertClassField_isEverywhereUnramified K)
-  have hUnramified : IsEverywhereUnramified K EΩ :=
-    everywhereUnramified_congrTop e hAbstract
+  have hUnramified : ClassFieldTheory.IsEverywhereUnramified K EΩ :=
+    (ClassFieldTheory.isEverywhereUnramified_iff_of_algEquiv K E EΩ e).mp hAbstract
   have hExp : ∀ τ : Gal(EΩ / K), τ ^ p = 1 := by
     intro τ
     let eAut : Gal(E / K) ≃* Gal(EΩ / K) := AlgEquiv.autCongr e

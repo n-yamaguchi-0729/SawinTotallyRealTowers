@@ -109,21 +109,12 @@ original number field is the order of the narrow class group. -/
 theorem bigHilbertClassField_finrank_over_original_eq_narrowClassGroup_card :
     Module.finrank K (bigHilbertClassField K) =
       Nat.card (RayClass.NarrowClassGroup K) := by
-  calc
-    Module.finrank K (bigHilbertClassField K) =
-        (bigHilbertClassFieldNormSubgroup (K := K)).index :=
-      closedFiniteIndexClassField_finrank_eq_index
-        (bigHilbertClassFieldNormSubgroup (K := K))
-        (bigHilbertClassFieldNormSubgroup_isClosed (K := K))
-    _ = Nat.card
-          (IdeleClassGroup K ⧸
-            bigHilbertClassFieldNormSubgroup (K := K)) :=
-      Subgroup.index_eq_card
-        (bigHilbertClassFieldNormSubgroup (K := K))
-    _ = Nat.card (RayClass.NarrowClassGroup K) :=
-      Nat.card_congr
-        (bigHilbertClassFieldQuotientEquivNarrowClassGroup
-          (K := K)).toEquiv
+  have hRank : Module.finrank K (bigHilbertClassField K) =
+      Module.finrank (bigHilbertClassFieldBase K) (bigHilbertClassField K) :=
+    Algebra.finrank_eq_of_equiv_equiv (bigHilbertClassFieldBaseEquiv (K := K)).toRingEquiv
+      (RingEquiv.refl (bigHilbertClassField K)) (RingHom.ext fun x =>
+        (bigHilbertClassField_algebraMap_original K x).symm)
+  exact hRank.trans (bigHilbertClassField_finrank_eq_narrowClassGroup_card (K := K))
 
 /-- The selected big Hilbert class field is Galois over the original
 number field. -/

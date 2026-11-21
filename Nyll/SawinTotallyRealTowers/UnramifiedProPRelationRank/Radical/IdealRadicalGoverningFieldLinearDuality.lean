@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalGoverningField
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicModule
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
+import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Linear Kummer duality for the ideal-radical governing field
@@ -27,8 +28,7 @@ noncomputable section
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance idealRadicalGoverningFieldZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 local instance : IsAbelianGalois
     (IdealRadicalCyclotomicBase F p Fact.out)

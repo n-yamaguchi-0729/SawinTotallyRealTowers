@@ -40,18 +40,7 @@ universe u
 variable {p : ℕ} [Fact p.Prime]
 variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
 
-local instance finiteStagePrimitiveTargetTopology
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    TopologicalSpace
-      ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) := ⊥
-
-local instance finiteStagePrimitiveTargetDiscrete
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    DiscreteTopology
-      ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) :=
-  discreteTopology_bot _
+attribute [local instance] finiteStageTargetTopology finiteStageTargetDiscrete
 
 theorem inflatedTransgressionCochain_apply
     (R : ClosedSubgroup F) [R.Normal]
@@ -119,7 +108,7 @@ theorem homogeneousOneCochainNormalizedValue_inflated_primitive
   have hinv := inflatedHomogeneousOneCochain_invariant R c q q (q * r)
   have hinv' : c.1 q (q * r) = c.1 1 r := by
     convert hinv.symm using 1
-    all_goals group
+    group
   rw [hinv'] at hcpoint
   have htrans :
       (((trivialZModPCochainsMapLifted p (finiteStageQuotientMap R U)).f 2).hom

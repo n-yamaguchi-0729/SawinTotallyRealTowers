@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Kummer.Concrete.ContinuousHilbert90
+public import Nyll.GaloisCohomology.Topology.GaloisRestrictionScalars
 public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.FieldTheory.Normal.Basic
 public import Mathlib.FieldTheory.Normal.Defs
@@ -74,8 +76,7 @@ private theorem exists_relativeAut_of_restrictNormal_eq_one
     exact hσ
   exact ⟨E.fixingSubgroupEquiv ⟨σ, hmem⟩, rfl⟩
 
-variable [FiniteDimensional K L] [IsGalois K L]
-
+variable [IsGalois K L] in
 omit [Normal K E] in
 private theorem exists_unitsInclusion_eq_of_fixed (a : Rep.ofAlgebraAutOnUnits K L)
     (ha : ∀ τ : Gal(L/E), (Rep.ofAlgebraAutOnUnits K L).ρ (τ.restrictScalars K) a = a) :
@@ -84,7 +85,8 @@ private theorem exists_unitsInclusion_eq_of_fixed (a : Rep.ofAlgebraAutOnUnits K
       τ ((show Additive Lˣ from a).toMul : L) = ((show Additive Lˣ from a).toMul : L) := by
     intro τ
     exact congrArg Units.val (ha τ)
-  obtain ⟨b, hb⟩ := (IsGalois.mem_range_algebraMap_iff_fixed (F := E) (E := L)
+  let : IsGalois E L := IsGalois.tower_top_of_isGalois K E L
+  obtain ⟨b, hb⟩ := (InfiniteGalois.mem_range_algebraMap_iff_fixed (k := E) (K := L)
     ((show Additive Lˣ from a).toMul : L)).mpr hfix
   have hb0 : b ≠ 0 := by
     intro h
@@ -94,14 +96,19 @@ private theorem exists_unitsInclusion_eq_of_fixed (a : Rep.ofAlgebraAutOnUnits K
   apply Units.ext
   exact hb
 
-omit [IsGalois K L] in
+private def relativeNormalizedPrimitive
+    (b : Gal(L/K) → Rep.ofAlgebraAutOnUnits K L) (τ : Gal(L/E)) : Lˣ :=
+  (show Additive Lˣ from b (τ.restrictScalars K) - b 1).toMul
+
 private theorem exists_primitive_constant_on_relativeAut
     (c : Gal(E/K) × Gal(E/K) → Rep.ofAlgebraAutOnUnits K E)
     (b : Gal(L/K) → Rep.ofAlgebraAutOnUnits K L)
     (hb : ∀ σ τ : Gal(L/K),
       (Rep.ofAlgebraAutOnUnits K L).ρ σ (b τ) - b (σ * τ) + b σ =
         unitsInclusion K L E
-          (c (AlgEquiv.restrictNormalHom E σ, AlgEquiv.restrictNormalHom E τ))) :
+          (c (AlgEquiv.restrictNormalHom E σ, AlgEquiv.restrictNormalHom E τ)))
+    (hHilbert90 : groupCohomology.IsMulCocycle₁ (relativeNormalizedPrimitive K L E b) →
+      groupCohomology.IsMulCoboundary₁ (relativeNormalizedPrimitive K L E b)) :
     ∃ b' : Gal(L/K) → Rep.ofAlgebraAutOnUnits K L,
       (∀ σ τ : Gal(L/K),
         (Rep.ofAlgebraAutOnUnits K L).ρ σ (b' τ) - b' (σ * τ) + b' σ =
@@ -109,11 +116,11 @@ private theorem exists_primitive_constant_on_relativeAut
             (c (AlgEquiv.restrictNormalHom E σ, AlgEquiv.restrictNormalHom E τ))) ∧
       ∀ τ : Gal(L/E), b' (τ.restrictScalars K) = b' 1 := by
   have h0 : b 1 = unitsInclusion K L E (c (1, 1)) := by
-    simpa only [map_one, Module.End.one_apply, one_mul, sub_self, zero_add] using hb 1 1
+    simpa only [map_one, one_apply_eq_self, one_mul, sub_self, zero_add] using hb 1 1
   have hfixed (τ : Gal(L/E)) :
       (Rep.ofAlgebraAutOnUnits K L).ρ (τ.restrictScalars K) (b 1) = b 1 := by
     rw [h0, unitsInclusion_relative_fixed]
-  let f : Gal(L/E) → Lˣ := fun τ ↦ (show Additive Lˣ from b (τ.restrictScalars K) - b 1).toMul
+  let f := relativeNormalizedPrimitive K L E b
   have hf : groupCohomology.IsMulCocycle₁ f := by
     intro σ τ
     change b ((σ * τ).restrictScalars K) - b 1 =
@@ -130,8 +137,7 @@ private theorem exists_primitive_constant_on_relativeAut
       abel
     rw [heq, map_sub, hfixed]
     abel
-  obtain ⟨β, hβ⟩ :=
-    groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units f hf
+  obtain ⟨β, hβ⟩ := hHilbert90 hf
   let βa : Rep.ofAlgebraAutOnUnits K L := Additive.ofMul β
   let b' : Gal(L/K) → Rep.ofAlgebraAutOnUnits K L :=
     fun σ => b σ - ((Rep.ofAlgebraAutOnUnits K L).ρ σ βa - βa)
@@ -142,7 +148,7 @@ private theorem exists_primitive_constant_on_relativeAut
         (b τ - ((Rep.ofAlgebraAutOnUnits K L).ρ τ βa - βa)) -
       (b (σ * τ) - ((Rep.ofAlgebraAutOnUnits K L).ρ (σ * τ) βa - βa)) +
       (b σ - ((Rep.ofAlgebraAutOnUnits K L).ρ σ βa - βa)) = _
-    rw [map_sub, map_sub, map_mul, Module.End.mul_apply]
+    rw [map_sub, map_sub, map_mul, mul_apply_eq_comp]
     abel
   refine ⟨b', ?_, ?_⟩
   · intro σ τ
@@ -153,9 +159,10 @@ private theorem exists_primitive_constant_on_relativeAut
     change b (τ.restrictScalars K) -
         ((Rep.ofAlgebraAutOnUnits K L).ρ (τ.restrictScalars K) βa - βa) =
       b 1 - ((Rep.ofAlgebraAutOnUnits K L).ρ 1 βa - βa)
-    rw [hβ', map_one, Module.End.one_apply]
+    rw [hβ', map_one, one_apply_eq_self]
     abel
 
+variable [IsGalois K L] in
 private theorem exists_lower_primitive
     (c : Gal(E/K) × Gal(E/K) → Rep.ofAlgebraAutOnUnits K E)
     (hc_snd : ∀ σ : Gal(E/K),
@@ -171,7 +178,7 @@ private theorem exists_lower_primitive
       ∀ σ τ : Gal(E/K),
         (Rep.ofAlgebraAutOnUnits K E).ρ σ (a τ) - a (σ * τ) + a σ = c (σ, τ) := by
   have h0 : b 1 = unitsInclusion K L E (c (1, 1)) := by
-    simpa only [map_one, Module.End.one_apply, one_mul, sub_self, zero_add] using hb 1 1
+    simpa only [map_one, one_apply_eq_self, one_mul, sub_self, zero_add] using hb 1 1
   have hright (σ : Gal(L/K)) (τ : Gal(L/E)) : b (σ * τ.restrictScalars K) = b σ := by
     have h := hb σ (τ.restrictScalars K)
     rw [restrictNormal_restrictScalars, hc_snd,
@@ -222,6 +229,7 @@ private theorem exists_lower_primitive
     hdesc, ← map_mul, hdesc, hdesc]
   simpa only [hσ, hτ] using hb σ τ
 
+variable [FiniteDimensional K L] [IsGalois K L] in
 /-- A primitive of an inflated unit-valued cochain descends to the original
 lower field after the Hilbert 90 correction. The two displayed identities are
 precisely the degree-two cocycle identities involving the identity element. -/
@@ -239,6 +247,31 @@ theorem unitsPrimitiveDescends
       ∀ σ τ : Gal(E/K),
         (Rep.ofAlgebraAutOnUnits K E).ρ σ (a τ) - a (σ * τ) + a σ = c (σ, τ) := by
   obtain ⟨b', hb', hn⟩ := exists_primitive_constant_on_relativeAut K L E c b hb
+    (groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units _)
+  exact exists_lower_primitive K L E c hc_snd hc_fst b' hb' hn
+
+variable [IsGalois K L] in
+/-- For an arbitrary Galois extension, locally constant primitives descend
+by the same correction, using continuous Hilbert 90 on the relative group. -/
+theorem unitsPrimitiveDescends_of_isLocallyConstant
+    (c : Gal(E/K) × Gal(E/K) → Rep.ofAlgebraAutOnUnits K E)
+    (hc_snd : ∀ σ : Gal(E/K),
+      c (σ, 1) = (Rep.ofAlgebraAutOnUnits K E).ρ σ (c (1, 1)))
+    (hc_fst : ∀ σ : Gal(E/K), c (1, σ) = c (1, 1))
+    (b : Gal(L/K) → Rep.ofAlgebraAutOnUnits K L) (hLC : IsLocallyConstant b)
+    (hb : ∀ σ τ : Gal(L/K),
+      (Rep.ofAlgebraAutOnUnits K L).ρ σ (b τ) - b (σ * τ) + b σ =
+        unitsInclusion K L E
+          (c (AlgEquiv.restrictNormalHom E σ, AlgEquiv.restrictNormalHom E τ))) :
+    ∃ a : Gal(E/K) → Rep.ofAlgebraAutOnUnits K E,
+      ∀ σ τ : Gal(E/K),
+        (Rep.ofAlgebraAutOnUnits K E).ρ σ (a τ) - a (σ * τ) + a σ = c (σ, τ) := by
+  let : IsGalois E L := IsGalois.tower_top_of_isGalois K E L
+  obtain ⟨b', hb', hn⟩ := exists_primitive_constant_on_relativeAut K L E c b hb (by
+    intro hf
+    exact KummerTheory.noetherHilbert90_of_isLocallyConstant _ hf
+      ((hLC.comp_continuous (InfiniteGalois.restrictScalarsHom_continuous K E L)).comp
+        (fun w => (show Additive Lˣ from w - b 1).toMul)))
   exact exists_lower_primitive K L E c hc_snd hc_fst b' hb' hn
 
 end

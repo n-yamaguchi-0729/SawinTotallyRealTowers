@@ -144,7 +144,11 @@ theorem discreteContinuousH2AddEquiv_π
     (groupCohomology.shortComplexH2
       (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).moduleCatLeftHomologyData.i).1
     inferInstance
-  rw [ShortComplex.moduleCatCyclesIso_hom_i_apply]
+  have hcycle : SO.moduleCatLeftHomologyData.i
+      (SO.moduleCatCyclesIso.hom ((SO.mapCyclesIso FO).hom zo)) =
+    SO.iCycles ((SO.mapCyclesIso FO).hom zo) :=
+    SO.moduleCatCyclesIso_hom_i_apply ((SO.mapCyclesIso FO).hom zo)
+  rw [hcycle]
   have hSOi : SO.iCycles ((SO.mapCyclesIso FO).hom zo) = (SO.map FO).iCycles zo := by
     change
       (FO.map SO.iCycles) ((SO.mapCyclesIso FO).hom zo) =

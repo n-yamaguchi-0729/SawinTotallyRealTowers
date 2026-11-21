@@ -6,10 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
 public import Nyll.ProCGroups.Abelian.TopologicalAbelianization
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.MathlibTopologyComparison
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
@@ -30,9 +32,6 @@ open GlobalClassFieldTheory.Reciprocity
 
 variable (F : Type) [Field F] (p : ℕ) [Fact p.Prime]
 
-local instance globalReciprocityCharacterTopology : TopologicalSpace (ZMod p) := ⊥
-local instance globalReciprocityCharacterDiscrete : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
 
 variable (chi : Field.absoluteGaloisGroup F →ₜ* Multiplicative (ZMod p))
 
@@ -75,23 +74,20 @@ variable [NumberField F]
 def globalReciprocityIdeleCharacter : IdeleGroup F →ₜ* Multiplicative (ZMod p) :=
   ((globalReciprocityMaximalAbelianCharacter F p chi).comp
     (maximalAbelianGlobalArtin F)).comp
-      { toMonoidHom := QuotientGroup.mk' (IdeleGroup.principalSubgroup F)
-        continuous_toFun := QuotientGroup.continuous_mk }
+      { toMonoidHom := IdeleGroup.toStandardClass F
+        continuous_toFun := IdeleGroup.continuous_toStandardClass F }
 
 @[simp]
 theorem globalReciprocityIdeleCharacter_apply (a : IdeleGroup F) :
     globalReciprocityIdeleCharacter F p chi a =
       globalReciprocityMaximalAbelianCharacter F p chi
         (maximalAbelianGlobalArtin F
-          (QuotientGroup.mk' (IdeleGroup.principalSubgroup F) a)) := rfl
+          (IdeleGroup.toStandardClass F a)) := rfl
 
 /-- Global reciprocity is trivial on every principal idele. -/
 theorem globalReciprocityIdeleCharacter_principal (a : Fˣ) :
     globalReciprocityIdeleCharacter F p chi (IdeleGroup.principalIdele F a) = 1 := by
-  rw [globalReciprocityIdeleCharacter_apply]
-  have h : QuotientGroup.mk' (IdeleGroup.principalSubgroup F)
-      (IdeleGroup.principalIdele F a) = 1 :=
-    (QuotientGroup.eq_one_iff _).2 ⟨a, rfl⟩
-  rw [h, map_one, map_one]
+  rw [globalReciprocityIdeleCharacter_apply, IdeleGroup.toStandardClass_principalIdele,
+    map_one, map_one]
 
 end ClassFieldTower.Martinet.Shafarevich

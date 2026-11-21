@@ -398,12 +398,11 @@ theorem
         KummerTheory.chosenSimpleKummerExtension_chosenFinitePlaceIsUnramified_of_valuation_eq_one
           (K := K) n hnK hmu b w hbVal hnVal
     have hNormTop :
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range = ⊤ := by
+        (RelativeIdeleGroup.classNorm K M).range = ⊤ := by
       apply top_unique
       intro c _
       obtain ⟨a, rfl⟩ :=
-        QuotientGroup.mk'_surjective
-          (IdeleGroup.principalSubgroup K) c
+        IdeleGroup.toStandardClass_surjective K c
       have ha :
           a ∈
             IdeleGroup.supportedAt
@@ -580,30 +579,19 @@ theorem
       refine
         ⟨QuotientGroup.mk'
             (RelativeIdeleGroup.principalSubgroup K M) z, ?_⟩
-      rw [RelativeIdeleGroup.Cohomology.ideleClassNorm_mk, hz]
-      change
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) d =
-          QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a
+      rw [RelativeIdeleGroup.classNorm_mk, hz]
       have hqOne :
-          QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup K) q = 1 :=
-        (QuotientGroup.eq_one_iff q).mpr hq
+          IdeleGroup.toStandardClass K q = 1 :=
+        (IdeleGroup.toStandardClass_eq_one_iff K q).mpr hq
       have hsOne :
-          QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup K)
+          IdeleGroup.toStandardClass K
               (IdeleGroup.principalIdele K (s : Kˣ)) =
             1 :=
-        (QuotientGroup.eq_one_iff
-          (IdeleGroup.principalIdele K (s : Kˣ))).mpr
-            ⟨(s : Kˣ), rfl⟩
+        IdeleGroup.toStandardClass_principalIdele K (s : Kˣ)
       change
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)
+        IdeleGroup.toStandardClass K
             (u * (IdeleGroup.principalIdele K (s : Kˣ))⁻¹) =
-          QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a
+          IdeleGroup.toStandardClass K a
       rw [← huq, map_mul, map_inv, hsOne, map_mul, hqOne]
       simp only [inv_one]
     let : IsCyclic (M ≃ₐ[K] M) := by
@@ -614,7 +602,7 @@ theorem
       IsCyclic.exists_generator (α := M ≃ₐ[K] M)
     have hLower :
         Module.finrank K M ≤
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index :=
+          (RelativeIdeleGroup.classNorm K M).range.index :=
       Cohomology.finrank_le_ideleClassNorm_index
         (K := K) (L := M) sigma hsigma
     have hDegreeLe :

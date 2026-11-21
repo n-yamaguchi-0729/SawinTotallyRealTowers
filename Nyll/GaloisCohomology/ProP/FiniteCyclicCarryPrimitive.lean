@@ -82,7 +82,7 @@ theorem finiteCyclicPrefixNat_card_leftRegularHom (B : Rep.{max u v} R G)
   change B.norm.asHom.hom ((Rep.leftRegularHom B b).hom (MonoidAlgebra.single 1 1)) =
     (Rep.leftRegularHom B b).hom
       ((Rep.leftRegular R G).norm.asHom.hom (MonoidAlgebra.single 1 1)) at h
-  rw [Rep.leftRegularHom_hom_single, one_smul, map_one, Module.End.one_apply] at h
+  rw [Rep.leftRegularHom_hom_single, one_smul, map_one, one_apply_eq_self] at h
   exact h.symm
 
 end Prefix

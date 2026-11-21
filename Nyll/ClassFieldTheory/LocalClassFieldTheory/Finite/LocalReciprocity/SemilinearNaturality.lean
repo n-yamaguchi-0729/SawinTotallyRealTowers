@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.NormRestriction
 
 /-!
@@ -151,7 +152,7 @@ The valuation-extension condition says that the local-field valuation on
 valued-field compatibility needed by norm--restriction, rather than an
 assumption of the desired Artin equality. -/
 theorem abelianLocalArtinMonoidHom_semilinear_conjugation
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field K'] [ValuativeRel K'] [TopologicalSpace K']
@@ -222,14 +223,11 @@ theorem abelianLocalArtinMonoidHom_semilinear_conjugation
     apply Units.ext
     change Algebra.norm K (eK (a : K)) = (a : K)
     have hnorm :=
-      normUnits_mapEquiv
-        K K K K'
-        (RingEquiv.refl K) eK
+      (LocalFieldTheory.normUnits_map_ringEquiv (RingEquiv.refl K) eK
         (by
           apply RingHom.ext
           intro x
-          rfl)
-        a
+          rfl) a).symm
     simpa [normUnits_apply_coe, Units.coe_mapEquiv, Algebra.norm_self] using
       congrArg Units.val hnorm
   have hnaturality :=
@@ -267,7 +265,7 @@ abelian local Artin map.  Concrete consumers should use this opaque generic
 boundary instead of specializing `DFunLike.congr_fun` to a large dependent
 local-field instance tower. -/
 theorem abelianLocalArtinMonoidHom_semilinear_conjugation_apply
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field K'] [ValuativeRel K'] [TopologicalSpace K']
@@ -293,7 +291,7 @@ theorem abelianLocalArtinMonoidHom_semilinear_conjugation_apply
 Artin data.  Keeping the injectivity calculation generic prevents concrete
 finite-place instance towers from entering consumer proof terms. -/
 theorem abelianLocalArtinMonoidHom_eq_one_of_semilinear
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field K'] [ValuativeRel K'] [TopologicalSpace K']
@@ -330,7 +328,7 @@ instance tower behind an opaque generic boundary.  Concrete consumers can
 transport the action on one element without specializing and then reducing
 the full monoid-hom equality. -/
 theorem abelianLocalArtinMonoidHom_semilinear_action
-    (K K' L L' : Type)
+    (K : Type u) (K' : Type v) (L : Type w) (L' : Type x)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field K'] [ValuativeRel K'] [TopologicalSpace K']
@@ -348,10 +346,8 @@ theorem abelianLocalArtinMonoidHom_semilinear_action
     eL (abelianLocalArtinMonoidHom K L u z) =
       abelianLocalArtinMonoidHom K' L'
         (Units.map eK.toMonoidHom u) (eL z) := by
-  have hArtin :=
-    DFunLike.congr_fun
-      (abelianLocalArtinMonoidHom_semilinear_conjugation
-        K K' L L' eK eL hcomm hExt) u
+  have hArtin := abelianLocalArtinMonoidHom_semilinear_conjugation_apply
+    K K' L L' eK eL hcomm hExt u
   calc
     eL (abelianLocalArtinMonoidHom K L u z) =
         semilinearGaloisGroupCongr

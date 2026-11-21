@@ -30,10 +30,7 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ)
 
-local instance finitePlaceUnramifiedH1FamilyModule
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The dependent product of the unramified `H¹` subspaces over all finite places. -/
 abbrev FinitePlaceUnramifiedH1Family : ModuleCat (ZMod p) :=

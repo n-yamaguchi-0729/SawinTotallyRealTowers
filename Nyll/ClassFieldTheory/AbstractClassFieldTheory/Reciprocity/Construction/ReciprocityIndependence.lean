@@ -504,6 +504,7 @@ theorem reciprocityValueOfPrime_eq_reciprocityMap
       below := hPS
       normal := hPSnormal
       finite := hPSfinite
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg
       generator := g
       generates := hg
       unramified := hPSunramified }

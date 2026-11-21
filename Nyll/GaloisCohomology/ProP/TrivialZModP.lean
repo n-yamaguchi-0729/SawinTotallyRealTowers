@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.ContinuousRepresentationUniverseLift
 public import Mathlib.RepresentationTheory.Homological.ContCohomology.Functoriality
 public import Mathlib.Topology.Instances.ZMod
 public import Mathlib.Topology.Algebra.Module.Equiv.Basic
@@ -150,8 +151,7 @@ Mathlib's homogeneous continuous-cochain resolution places its representation ca
 least the universe of the acting group.  This lift therefore supplies the universe-polymorphic
 cohomology coefficient object; `trivialZModP` retains its original small-universe API. -/
 noncomputable def trivialZModPLifted : TopRep.{u} (ZMod p) G := by
-  letI : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) :=
-    ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+  let : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) := ULift.continuousSMul
   exact TopRep.of
     (ContRepresentation.trivial (ZMod p) G (ULift.{u} (ZMod p)))
 
@@ -174,8 +174,7 @@ variable {G H : Type u} [Group G] [TopologicalSpace G]
 /-- Restriction of the universe-lifted trivial coefficient representation. -/
 noncomputable def trivialZModPRestrictionHomLifted (f : H →ₜ* G) :
     TopRep.res f (trivialZModPLifted p G) ⟶ trivialZModPLifted p H := by
-  letI : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) :=
-    ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+  let : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) := ULift.continuousSMul
   exact TopRep.ofHom (.id (π₁ := (trivialZModPLifted p H).ρ))
 
 @[simp]
@@ -281,9 +280,7 @@ section SmallComparison
 variable (p : ℕ) (G : Type)
 variable [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
-local instance continuousSMulULiftZModSmall :
-    ContinuousSMul (ZMod p) (ULift.{0} (ZMod p)) :=
-  ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+attribute [local instance] ULift.continuousSMul
 
 /-- Forget the universe lift on the trivial coefficient representation. -/
 noncomputable def trivialZModPLiftedToSmall :

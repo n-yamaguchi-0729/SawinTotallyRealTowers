@@ -39,11 +39,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicCompletedPrimitiveIrreducibleBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
+attribute [local instance] equalCharacteristicCompletedLevelBaseAlgebra
 
 /-- Coefficientwise extension of the integral primitive polynomial from
 `κ[[T]]` to `(AlgebraicClosure κ)[[T]]`. -/
@@ -157,7 +153,7 @@ theorem equalCharacteristicCompletedIntegralPrimitivePolynomial_isEisensteinAt
   have hmonic : Q.Monic :=
     equalCharacteristicCompletedIntegralPrimitivePolynomial_monic F n
   refine hmonic.isEisensteinAt_of_mem_of_notMem
-    PowerSeries.span_X_isPrime.ne_top ?_ ?_
+    (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X).ne_top ?_ ?_
   · intro i hi
     rw [Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]
     have hcoeff :
@@ -184,7 +180,7 @@ theorem equalCharacteristicCompletedIntegralPrimitivePolynomial_irreducible
     Irreducible (equalCharacteristicCompletedIntegralPrimitivePolynomial F n) := by
   apply
     (equalCharacteristicCompletedIntegralPrimitivePolynomial_isEisensteinAt F n).irreducible
-      PowerSeries.span_X_isPrime
+      (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X)
       (equalCharacteristicCompletedIntegralPrimitivePolynomial_monic F n).isPrimitive
   rw [equalCharacteristicCompletedIntegralPrimitivePolynomial_natDegree]
   exact Nat.mul_pos

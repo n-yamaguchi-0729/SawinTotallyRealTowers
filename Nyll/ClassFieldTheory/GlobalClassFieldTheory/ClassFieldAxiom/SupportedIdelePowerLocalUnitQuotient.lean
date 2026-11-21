@@ -209,8 +209,8 @@ theorem supportedIdelePowerClassMap_surjective
   choose aS hS using fun v : ↥S =>
     QuotientGroup.mk_surjective (q.2 v)
   let alpha : IdeleGroup K :=
-    (ContinuousMulEquiv.piUnits.symm aInf,
-      IdeleGroup.finiteIdeleOfFinset S aS)
+    IdeleGroup.ofComponents (ContinuousMulEquiv.piUnits.symm aInf)
+      (IdeleGroup.finiteIdeleOfFinset S aS)
   have hAlpha :
       alpha ∈
         IdeleGroup.supportedAt
@@ -221,10 +221,9 @@ theorem supportedIdelePowerClassMap_surjective
       intro hvS
       apply hv
       exact Or.inl hvS
-    change
-      IdeleGroup.finiteIdeleOfFinset S aS v ∈
-        (v.adicCompletionIntegers K).units
-    rw [IdeleGroup.finiteIdeleOfFinset_apply_notMem S aS v hvS]
+    dsimp only [alpha]
+    rw [IdeleGroup.finiteCoordinates_ofComponents,
+      IdeleGroup.finiteIdeleOfFinset_apply_notMem S aS v hvS]
     exact Subgroup.one_mem _
   refine ⟨⟨alpha, hAlpha⟩, ?_⟩
   apply Prod.ext
@@ -239,10 +238,8 @@ theorem supportedIdelePowerClassMap_surjective
               w.Completionˣ →* w.Completionˣ).range
             (aInf w) := by
         apply congrArg
-        change
-          ContinuousMulEquiv.piUnits
-              (ContinuousMulEquiv.piUnits.symm aInf) w =
-            aInf w
+        dsimp only [alpha]
+        rw [IdeleGroup.infiniteComponent_apply, IdeleGroup.infinitePart_ofComponents]
         exact congrFun
           (ContinuousMulEquiv.piUnits.apply_symm_apply aInf) w
       _ = q.1 w := hInf w
@@ -259,6 +256,8 @@ theorem supportedIdelePowerClassMap_surjective
                 (v.1.adicCompletion K)ˣ).range
             (aS v) := by
         apply congrArg
+        dsimp only [alpha]
+        rw [IdeleGroup.finiteComponent_apply, IdeleGroup.finiteCoordinates_ofComponents]
         exact IdeleGroup.finiteIdeleOfFinset_apply_mem S aS v
       _ = q.2 v := hS v
 

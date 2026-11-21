@@ -30,12 +30,7 @@ universe u v
 
 namespace ClassFieldTower.Sawin
 
-/-- A finite intermediate extension inherits the original number-field structure. -/
-local instance finiteIntermediateFieldNumberField
-    {K : Type u} {Omega : Type v}
-    [Field K] [NumberField K] [Field Omega] [Algebra K Omega]
-    (E : IntermediateField K Omega) [FiniteDimensional K E] : NumberField E :=
-  NumberField.of_module_finite K E
+attribute [local instance] finiteIntermediateFieldNumberField
 
 /-- The support condition kills inertia in a normal intermediate field at
 every prime above a base prime outside the support. -/

@@ -6,8 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
@@ -38,57 +43,6 @@ variable
     [FiniteDimensional K L]
 
 section LocalTensorDecompositionIntegralComparison
-
-/-- The component of the concrete finite tensor factor in a completion
-above `w`, obtained from the canonical local tensor equivalence. -/
-noncomputable def finitePlaceLocalTensorDecompositionComponent
-    (w : HeightOneSpectrum (𝓞 K))
-    (wL : AbsoluteValueExtension
-      (NumberField.HeightOneSpectrum.adicAbv K w) L)
-    (x : w.adicCompletion K ⊗[K] L) :
-    wL.1.Completion := by
-  let vK :=
-    NumberField.HeightOneSpectrum.adicAbv K w
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial w
-  letI : ∀ u : AbsoluteValueExtension vK L,
-      Algebra vK.Completion u.1.Completion :=
-    fun u =>
-      AbsoluteValue.completionAlgebra vK u.1 u.2
-  exact
-    completionTensorDecomposition_left
-      (K := K) (L := L) vK hvK
-      ((relativeFinitePlaceLocalTensorAlgEquiv
-        (K := K) (L := L) w).symm x) wL
-
-/-- Integrality in the actual product of completion valuation rings
-on the local tensor-product side. -/
-def RelativeLocalTensorDecompositionIntegralAt
-    (w : HeightOneSpectrum (𝓞 K))
-    (x : w.adicCompletion K ⊗[K] L) : Prop :=
-  ∀ wL : AbsoluteValueExtension
-      (NumberField.HeightOneSpectrum.adicAbv K w) L,
-    finitePlaceLocalTensorDecompositionComponent
-        (K := K) (L := L) w wL x ∈
-      absoluteValueCompletionIntegers wL.1
-        (absoluteValueExtension_isNonarchimedean
-          (NumberField.HeightOneSpectrum.adicAbv K w)
-          (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv
-            K w) wL)
-
-/-- A tensor unit is valuation-integral when every completion
-component of it and of its inverse is in the corresponding valuation
-ring. -/
-def RelativeLocalTensorDecompositionIntegralUnitAt
-    (w : HeightOneSpectrum (𝓞 K))
-    (x : (w.adicCompletion K ⊗[K] L)ˣ) : Prop :=
-  RelativeLocalTensorDecompositionIntegralAt
-      (K := K) (L := L) w
-      (x : w.adicCompletion K ⊗[K] L) ∧
-    RelativeLocalTensorDecompositionIntegralAt
-      (K := K) (L := L) w
-      ((x⁻¹ : (w.adicCompletion K ⊗[K] L)ˣ) :
-        w.adicCompletion K ⊗[K] L)
 
 /-- The discriminant of the globally integral scaled relative basis,
 viewed as an algebraic integer of the base field. -/
@@ -211,26 +165,6 @@ theorem mem_integralTensorComparisonBadPlaces_iff
           (K := K) (L := L) := by
   simp [integralTensorComparisonBadPlaces]
 
-omit [NumberField L] in
-/-- The local tensor-decomposition component of a pure tensor has the expected value. -/
-@[simp]
-theorem finitePlaceLocalTensorDecompositionComponent_tmul
-    (w : HeightOneSpectrum (𝓞 K))
-    (wL : AbsoluteValueExtension
-      (NumberField.HeightOneSpectrum.adicAbv K w) L)
-    (a : w.adicCompletion K) (b : L) :
-    finitePlaceLocalTensorDecompositionComponent
-        (K := K) (L := L) w wL (a ⊗ₜ[K] b) =
-      AbsoluteValue.completionMap
-          (NumberField.HeightOneSpectrum.adicAbv K w)
-          wL.1 wL.2
-          ((relativeFinitePlaceCompletionAlgEquiv w).symm a) *
-        AbsoluteValue.toCompletion wL.1 b := by
-  simp [finitePlaceLocalTensorDecompositionComponent,
-    relativeFinitePlaceLocalTensorAlgEquiv,
-    completionTensorDecomposition_left_tmul_apply,
-    AbsoluteValue.toCompletionAlgHom]
-
 omit [NumberField L] [FiniteDimensional K L] in
 /-- A coefficient in the concrete base valuation ring maps to the
 valuation ring of every completion above it. -/
@@ -242,7 +176,7 @@ theorem finitePlaceLocalTensorDecomposition_coefficient_mem_integers
     AbsoluteValue.completionMap
         (NumberField.HeightOneSpectrum.adicAbv K w)
         wL.1 wL.2
-        ((relativeFinitePlaceCompletionAlgEquiv w).symm
+        ((finitePlaceCompletionAlgEquiv w).symm
           (c : w.adicCompletion K)) ∈
       absoluteValueCompletionIntegers wL.1
         (absoluteValueExtension_isNonarchimedean
@@ -254,9 +188,9 @@ theorem finitePlaceLocalTensorDecomposition_coefficient_mem_integers
     ‖AbsoluteValue.completionMap
         (NumberField.HeightOneSpectrum.adicAbv K w)
         wL.1 wL.2
-        ((relativeFinitePlaceCompletionAlgEquiv w).symm
+        ((finitePlaceCompletionAlgEquiv w).symm
           (c : w.adicCompletion K))‖ =
-      ‖(relativeFinitePlaceCompletionAlgEquiv w).symm
+      ‖(finitePlaceCompletionAlgEquiv w).symm
           (c : w.adicCompletion K)‖ :=
         (AbsoluteValue.completionMap_isometry
           (NumberField.HeightOneSpectrum.adicAbv K w)
@@ -266,7 +200,7 @@ theorem finitePlaceLocalTensorDecomposition_coefficient_mem_integers
                 (NumberField.HeightOneSpectrum.adicAbv K w)
                 wL.1 wL.2)) _
     _ = ‖(c : w.adicCompletion K)‖ :=
-      relativeFinitePlaceCompletionAlgEquiv_symm_norm
+      finitePlaceCompletionAlgEquiv_symm_norm
         (K := K) w (c : w.adicCompletion K)
     _ ≤ 1 :=
       norm_le_one_of_mem_adicCompletionIntegers
@@ -291,7 +225,7 @@ theorem finitePlaceLocalTensorDecomposition_basis_mem_integers_of_notMem
             K w) wL) := by
   rw [mem_absoluteValueCompletionIntegers_iff]
   simpa [AbsoluteValue.toCompletion_apply,
-    WithAbs.norm_eq_apply_ofAbs] using
+    AbsoluteValue.Completion.norm_coe, RingEquiv.apply_symm_apply] using
       relativeExtensionBasis_absoluteValue_le_one_of_notMem
         (K := K) (L := L) w hw wL i
 
@@ -372,7 +306,7 @@ theorem scaledRelativeTensorCoordinates_isIntegral_of_localTensorDecompositionIn
       (K := K) (L := L) w x) :
     let vK := NumberField.HeightOneSpectrum.adicAbv K w
     let xA :=
-      (relativeFinitePlaceLocalTensorAlgEquiv
+      (finitePlaceLocalTensorAlgEquiv
         (K := K) (L := L) w).symm x
     let bA :=
       Algebra.TensorProduct.basis vK.Completion
@@ -400,7 +334,7 @@ theorem scaledRelativeTensorCoordinates_isIntegral_of_localTensorDecompositionIn
     fun wL => Module.Free.of_divisionRing
       vK.Completion wL.1.Completion
   let xA : vK.Completion ⊗[K] L :=
-    (relativeFinitePlaceLocalTensorAlgEquiv
+    (finitePlaceLocalTensorAlgEquiv
       (K := K) (L := L) w).symm x
   let bA :=
     Algebra.TensorProduct.basis vK.Completion
@@ -433,7 +367,7 @@ theorem scaledRelativeTensorCoordinates_isIntegral_of_localTensorDecompositionIn
     rw [mem_absoluteValueCompletionIntegers_iff]
     simpa [AbsoluteValue.toCompletionAlgHom,
       AbsoluteValue.toCompletion_apply,
-      WithAbs.norm_eq_apply_ofAbs] using
+      AbsoluteValue.Completion.norm_coe, RingEquiv.apply_symm_apply] using
         scaledRelativeExtensionBasis_absoluteValue_le_one
           (K := K) (L := L) vK hvK wL i
   have hM :
@@ -520,32 +454,28 @@ theorem scaledRelativeTensorCoordinates_isIntegral_of_localTensorDecompositionIn
 /-- The concrete tensor comparison sends a scaled-basis summand to
 the corresponding original-basis summand, with the global scale
 absorbed into its coefficient. -/
-theorem relativeFinitePlaceLocalTensorAlgEquiv_scaled_basis_smul
+theorem finitePlaceLocalTensorAlgEquiv_scaled_basis_smul
     (w : HeightOneSpectrum (𝓞 K))
     (a :
       (NumberField.HeightOneSpectrum.adicAbv K w).Completion)
     (i : RelativeAdeleBasisIndex (K := K) (L := L)) :
-    relativeFinitePlaceLocalTensorAlgEquiv
+    finitePlaceLocalTensorAlgEquiv
         (K := K) (L := L) w
         (a •
           Algebra.TensorProduct.basis
             (NumberField.HeightOneSpectrum.adicAbv K w).Completion
             (scaledRelativeExtensionBasis (K := K) (L := L)) i) =
-      relativeFinitePlaceCompletionAlgEquiv w
+      finitePlaceCompletionAlgEquiv w
           (a * algebraMap K
             (NumberField.HeightOneSpectrum.adicAbv K w).Completion
             (relativeBasisIntegralScaleInK
               (K := K) (L := L))) ⊗ₜ[K]
         relativeExtensionBasis (K := K) (L := L) i := by
-  simp [relativeFinitePlaceLocalTensorAlgEquiv,
-    Algebra.TensorProduct.basis_apply,
+  rw [Algebra.TensorProduct.basis_apply,
     scaledRelativeExtensionBasis_apply,
-    Algebra.smul_def, mul_comm]
-  simpa [Algebra.smul_def] using
-    (TensorProduct.smul_tmul
-      (relativeBasisIntegralScaleInK (K := K) (L := L))
-      (relativeFinitePlaceCompletionAlgEquiv w a)
-      (relativeExtensionBasis (K := K) (L := L) i)).symm
+    TensorProduct.smul_tmul', smul_eq_mul, mul_one,
+    ← TensorProduct.smul_tmul, Algebra.smul_def, mul_comm]
+  rfl
 
 /-- Outside the lattice and discriminant bad places, integrality of
 all local tensor components implies integrality in the original
@@ -569,7 +499,7 @@ theorem localTensorDecompositionIntegral_imp_relativeBasisIntegralAt_of_notMem
   let hvK : IsNonarchimedean (vK : K → ℝ) :=
     NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv K w
   let xA : vK.Completion ⊗[K] L :=
-    (relativeFinitePlaceLocalTensorAlgEquiv
+    (finitePlaceLocalTensorAlgEquiv
       (K := K) (L := L) w).symm x
   let bA :=
     Algebra.TensorProduct.basis vK.Completion
@@ -640,21 +570,21 @@ theorem localTensorDecompositionIntegral_imp_relativeBasisIntegralAt_of_notMem
           (norm_nonneg _) (by positivity)
       _ = 1 := one_mul 1
   have hmapNorm (y : vK.Completion) :
-      ‖relativeFinitePlaceCompletionAlgEquiv w y‖ = ‖y‖ := by
-    change ‖relativeFinitePlaceCompletionRingHom w y‖ = ‖y‖
+      ‖finitePlaceCompletionAlgEquiv w y‖ = ‖y‖ := by
+    change ‖finitePlaceCompletionRingHom w y‖ = ‖y‖
     exact
-      (relativeFinitePlaceCompletionRingHom_isometry w).norm_map_of_map_zero
-        (map_zero (relativeFinitePlaceCompletionRingHom w)) y
+      (finitePlaceCompletionRingHom_isometry w).norm_map_of_map_zero
+        (map_zero (finitePlaceCompletionRingHom w)) y
   let c :
       RelativeAdeleBasisIndex (K := K) (L := L) →
         w.adicCompletionIntegers K :=
     fun i =>
-      ⟨relativeFinitePlaceCompletionAlgEquiv w (cA i),
+      ⟨finitePlaceCompletionAlgEquiv w (cA i),
         mem_adicCompletionIntegers_of_norm_le_one w
           (by rw [hmapNorm]; exact hcANorm i)⟩
   refine ⟨c, ?_⟩
   let e :=
-    relativeFinitePlaceLocalTensorAlgEquiv
+    finitePlaceLocalTensorAlgEquiv
       (K := K) (L := L) w
   calc
     x = e xA := (e.apply_symm_apply x).symm
@@ -670,7 +600,7 @@ theorem localTensorDecompositionIntegral_imp_relativeBasisIntegralAt_of_notMem
           relativeExtensionBasis (K := K) (L := L) i := by
       apply Finset.sum_congr rfl
       intro i _
-      rw [relativeFinitePlaceLocalTensorAlgEquiv_scaled_basis_smul]
+      rw [finitePlaceLocalTensorAlgEquiv_scaled_basis_smul]
 
 /-- The same converse for tensor units, applied to the unit and its
 inverse. -/
@@ -725,3 +655,74 @@ theorem relativeBasisIntegralUnitAt_iff_localTensorDecompositionIntegralUnit_of_
         (K := K) (L := L) w hw⟩
 
 end LocalTensorDecompositionIntegralComparison
+
+omit [NumberField L] in
+/-- An intrinsic finite restricted family has integral chosen-basis coordinates
+for its value and inverse outside a finite set of places. -/
+theorem RelativeFiniteIdeleData.eventually_basisIntegralUnit
+    (a : RelativeFiniteIdeleData (K := K) (L := L)) :
+    ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
+      RelativeBasisIntegralUnitAt (K := K) (L := L) w (a.finite w) := by
+  let : NumberField L := NumberField.of_module_finite K L
+  filter_upwards [a.2,
+    (integralTensorComparisonBadPlaces (K := K) (L := L)).eventually_cofinite_notMem]
+    with w hw hbad
+  exact (relativeBasisIntegralUnitAt_iff_localTensorDecompositionIntegralUnit_of_notMem
+    (K := K) (L := L) w hbad).mpr
+      ((mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
+        (K := K) (L := L) w (a.finite w)).mp hw)
+
+omit [NumberField L] in
+/-- Every coefficient of a finite restricted family is eventually integral. -/
+theorem RelativeFiniteIdeleData.eventually_integral
+    (a : RelativeFiniteIdeleData (K := K) (L := L))
+    (i : RelativeAdeleBasisIndex (K := K) (L := L)) :
+    ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
+      (Algebra.TensorProduct.basis (w.adicCompletion K)
+        (relativeExtensionBasis (K := K) (L := L))).repr
+          (a.finite w : w.adicCompletion K ⊗[K] L) i ∈
+            w.adicCompletionIntegers K :=
+  a.eventually_basisIntegralUnit.mono fun w hw =>
+    relativeBasisIntegralAt_repr_mem w _ hw.1 i
+
+omit [NumberField L] in
+/-- Every coefficient of the inverse of a finite restricted family is eventually integral. -/
+theorem RelativeFiniteIdeleData.eventually_inverse_integral
+    (a : RelativeFiniteIdeleData (K := K) (L := L))
+    (i : RelativeAdeleBasisIndex (K := K) (L := L)) :
+    ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
+      (Algebra.TensorProduct.basis (w.adicCompletion K)
+        (relativeExtensionBasis (K := K) (L := L))).repr
+          (↑((a.finite w)⁻¹) : w.adicCompletion K ⊗[K] L) i ∈
+            w.adicCompletionIntegers K :=
+  a.eventually_basisIntegralUnit.mono fun w hw =>
+    relativeBasisIntegralAt_repr_mem w _ hw.2 i
+
+omit [NumberField L] in
+/-- Assemble the canonical finite restricted product from coefficientwise
+integrality of a family and its inverse. The comparison discards only the
+proved finite discriminant and denominator set. -/
+noncomputable def RelativeFiniteIdeleData.ofBasisData
+    (f : ∀ w : HeightOneSpectrum (𝓞 K), (w.adicCompletion K ⊗[K] L)ˣ)
+    (h : ∀ i : RelativeAdeleBasisIndex (K := K) (L := L),
+      ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
+        (Algebra.TensorProduct.basis (w.adicCompletion K)
+          (relativeExtensionBasis (K := K) (L := L))).repr
+            (f w : w.adicCompletion K ⊗[K] L) i ∈ w.adicCompletionIntegers K)
+    (hinv : ∀ i : RelativeAdeleBasisIndex (K := K) (L := L),
+      ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
+        (Algebra.TensorProduct.basis (w.adicCompletion K)
+          (relativeExtensionBasis (K := K) (L := L))).repr
+            (↑((f w)⁻¹) : w.adicCompletion K ⊗[K] L) i ∈ w.adicCompletionIntegers K) :
+    RelativeFiniteIdeleData (K := K) (L := L) := by
+  letI : NumberField L := NumberField.of_module_finite K L
+  refine ⟨f, ?_⟩
+  filter_upwards [Filter.eventually_all.mpr h, Filter.eventually_all.mpr hinv,
+    (integralTensorComparisonBadPlaces (K := K) (L := L)).eventually_cofinite_notMem]
+    with w hw hwi hbad
+  apply (mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
+    (K := K) (L := L) w (f w)).mpr
+  apply (relativeBasisIntegralUnitAt_iff_localTensorDecompositionIntegralUnit_of_notMem
+    (K := K) (L := L) w hbad).mp
+  exact ⟨(relativeBasisIntegralAt_iff_repr_mem w _).mpr hw,
+    (relativeBasisIntegralAt_iff_repr_mem w _).mpr hwi⟩

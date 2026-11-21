@@ -55,16 +55,18 @@ This is the arithmetic input for the logarithm-series convergence estimate
 `v_p(n) <= log_p n`. -/
 theorem pow_padicValNat_le_self
     [Fact p.Prime] (hn : n ≠ 0) :
-    p ^ padicValNat p n ≤ n :=
-  Nat.le_of_dvd (Nat.pos_iff_ne_zero.mpr hn) pow_padicValNat_dvd
+    p ^ padicValNat p n ≤ n := by
+  rw [Nat.padicValNat_def]
+  exact Nat.le_of_dvd (Nat.pos_iff_ne_zero.mpr hn) (pow_multiplicity_dvd p n)
 
 /-- Arithmetic estimate for the field-unit logarithm in real logarithmic
 form: `v_p(n) <= log_p(n)`. -/
 theorem padicValNat_le_real_logb
     [Fact p.Prime] (n : ℕ) :
     (padicValNat p n : ℝ) ≤ Real.logb p n := by
+  rw [Nat.padicValNat_def]
   exact
-    (Nat.cast_le.mpr (padicValNat_le_nat_log (p := p) n)).trans
+    (Nat.cast_le.mpr (multiplicity_le_nat_log (p := p) n)).trans
       (Real.natLog_le_logb n p)
 
 /-- Asymptotic estimate for the field-unit logarithm:
@@ -183,7 +185,7 @@ theorem tendsto_nat_succ_mul_const_sub_const_mul_logb_atTop
 /-- Exponential-series estimate for the field-unit logarithm:
 for every slope `c > 1`, the linear term `n * c` dominates the factorial
 denominator contribution `v_p(n!)`.  The proof uses mathlib's Legendre-bound
-`padicValNat_factorial_le`; no factorial valuation formula is reproved here. -/
+`multiplicity_factorial_le`; no factorial valuation formula is reproved here. -/
 theorem tendsto_nat_mul_const_sub_padicValNat_factorial_atTop
     [Fact p.Prime] {c : ℝ} (hc : 1 < c) :
     Tendsto
@@ -199,8 +201,8 @@ theorem tendsto_nat_mul_const_sub_padicValNat_factorial_atTop
         (fun n : ℕ =>
           (n : ℝ) * c - (padicValNat p n.factorial : ℝ)) := by
     exact Eventually.of_forall fun n => by
-      have hdenNat : padicValNat p n.factorial ≤ n :=
-        padicValNat_factorial_le (p := p) n
+      have hdenNat : padicValNat p n.factorial ≤ n := by
+        simpa only [Nat.padicValNat_def] using multiplicity_factorial_le (p := p) n
       have hden : (padicValNat p n.factorial : ℝ) ≤ (n : ℝ) :=
         Nat.cast_le.mpr hdenNat
       nlinarith
@@ -213,8 +215,8 @@ theorem padicValNat_factorial_digits
     [Fact p.Prime] (n : ℕ) :
     (p - 1) * padicValNat p n.factorial =
       Nat.ofDigits p (p.digits n) - (p.digits n).sum := by
-  simpa [Nat.ofDigits_digits] using
-    (sub_one_mul_padicValNat_factorial (p := p) n)
+  simpa only [Nat.padicValNat_def, Nat.ofDigits_digits] using
+    (Fact.out : Nat.Prime p).sub_one_mul_multiplicity_factorial (n := n)
 
 /-- Legendre's factorial-valuation formula with the digit expansion written out as an
 indexed sum. -/
@@ -380,10 +382,9 @@ theorem exp_higher_term_integer_valuation_gt
     [Fact p.Prime] {n : ℕ} (hn : 2 ≤ n) {m : ℤ} (hm : 2 ≤ m) :
     m < (n : ℤ) * m - (padicValNat p n.factorial : ℤ) := by
   have hn0 : n ≠ 0 := by omega
-  have hdenNat :
-      padicValNat p n.factorial + 1 ≤ n :=
-    Nat.succ_le_of_lt
-      (padicValNat_factorial_lt_of_ne_zero (p := p) hn0)
+  have hdenNat : padicValNat p n.factorial + 1 ≤ n := by
+    simpa only [Nat.padicValNat_def] using
+      Nat.succ_le_of_lt (multiplicity_factorial_lt_of_ne_zero (p := p) hn0)
   have hden : (padicValNat p n.factorial : ℤ) ≤ (n : ℤ) - 1 := by
     omega
   have hnsub : (1 : ℤ) ≤ (n : ℤ) - 1 := by
@@ -475,7 +476,7 @@ theorem padicValNat_div_sub_one_le_inv_sub_one
       exact_mod_cast hn
     linarith
   have hpowNat : p ^ a ≤ n :=
-    Nat.le_of_dvd (lt_trans Nat.zero_lt_one hn) pow_padicValNat_dvd
+    pow_padicValNat_le_self (ne_of_gt (lt_trans Nat.zero_lt_one hn))
   have hpow : (p : ℚ) ^ a ≤ (n : ℚ) := by
     exact_mod_cast hpowNat
   have hbern :

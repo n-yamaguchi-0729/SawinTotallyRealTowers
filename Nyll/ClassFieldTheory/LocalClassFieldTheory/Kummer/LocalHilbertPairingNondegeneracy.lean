@@ -110,7 +110,7 @@ theorem localHilbertSymbol_left_kernel
       change 1 = e.symm 1
       exact (map_one e.symm).symm
     have haNorm : a ∈ localNormSubgroup K E := by
-      rw [← Universe.abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker]
+      rw [← abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker]
       change sigma = 1
       exact hsigma
     have hmax := maximalKummerNormSubgroup_eq_powMonoidHom_range

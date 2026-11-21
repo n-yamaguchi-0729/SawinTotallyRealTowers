@@ -151,12 +151,18 @@ section CyclotomicExtension
 variable {p k : ℕ} [Fact p.Prime]
 variable {L : Type u} [Field L] [Algebra ℚ_[p] L]
 
-local instance padicCyclotomicTotallyRamifiedAlgebraPadicInt : Algebra ℤ_[p] L :=
+/-- The algebra of p-adic integers induced by the given p-adic field extension. -/
+abbrev padicCyclotomicTotallyRamifiedAlgebraPadicInt : Algebra ℤ_[p] L :=
   ((algebraMap ℚ_[p] L).comp (algebraMap ℤ_[p] ℚ_[p])).toAlgebra
 
-local instance padicCyclotomicTotallyRamifiedScalarTowerPadicInt :
+attribute [local instance] padicCyclotomicTotallyRamifiedAlgebraPadicInt
+
+/-- The induced algebra is compatible with the p-adic field tower. -/
+theorem padicCyclotomicTotallyRamifiedScalarTowerPadicInt :
     IsScalarTower ℤ_[p] ℚ_[p] L :=
   IsScalarTower.of_algebraMap_eq' rfl
+
+attribute [local instance] padicCyclotomicTotallyRamifiedScalarTowerPadicInt
 
 /-- A field generated over `ℚ_[p]` by the displayed primitive root is the
 corresponding cyclotomic extension.  The generation hypothesis only spells

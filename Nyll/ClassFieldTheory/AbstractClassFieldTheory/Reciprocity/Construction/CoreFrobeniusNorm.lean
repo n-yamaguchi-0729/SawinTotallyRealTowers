@@ -494,7 +494,12 @@ noncomputable def frobeniusFixedCosetToClosureCoset
     (by
       intro x y hxy
       rw [QuotientGroup.leftRel_apply] at hxy ⊢
+      change x⁻¹ * y ∈
+        (D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup at hxy
       rw [D.extensionSubgroup_frobeniusFixedField K L hLK σ] at hxy
+      change (QuotientGroup.mk' (D.extensionInertiaWithin K.field L hLK)) (x⁻¹ * y) ∈
+        (D.frobeniusClosure K L hLK σ).toSubgroup at hxy
+      rw [map_mul, map_inv] at hxy
       exact hxy)
 
 /-- Projection bijectively identifies fixed-field cosets with Frobenius-closure cosets. -/
@@ -512,9 +517,16 @@ theorem frobeniusFixedCosetToClosureCoset_bijective
     intro a b hab
     apply Quotient.sound'
     rw [QuotientGroup.leftRel_apply]
+    change a⁻¹ * b ∈
+      (D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup
     rw [D.extensionSubgroup_frobeniusFixedField K L hLK σ]
-    have hrel := QuotientGroup.leftRel_apply.mp (Quotient.exact' hab)
-    exact hrel
+    let f := QuotientGroup.mk' (D.extensionInertiaWithin K.field L hLK)
+    change f (a⁻¹ * b) ∈ (D.frobeniusClosure K L hLK σ).toSubgroup
+    rw [map_mul, map_inv]
+    change (QuotientGroup.mk (f a) :
+      (K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK) ⧸
+        (D.frobeniusClosure K L hLK σ).toSubgroup) = QuotientGroup.mk (f b) at hab
+    exact QuotientGroup.leftRel_apply.mp (Quotient.exact' hab)
   · intro z
     refine Quotient.inductionOn' z ?_
     intro q

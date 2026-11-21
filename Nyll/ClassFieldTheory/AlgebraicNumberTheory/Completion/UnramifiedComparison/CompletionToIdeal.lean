@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 public import Mathlib.RingTheory.Ideal.Quotient.HasFiniteQuotients.Basic

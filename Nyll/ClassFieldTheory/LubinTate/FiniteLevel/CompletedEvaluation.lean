@@ -252,6 +252,19 @@ noncomputable def standardLubinTateEndomorphismEvalAt
   standardLubinTateLevelPowerSeriesEval hπ n x hx
     (standardLubinTateEndomorphism hπ a)
 
+/-- Scalar endomorphism evaluation depends only on the point, not its evaluation witness. -/
+theorem standardLubinTateEndomorphismEvalAt_congr_point
+    {F : LocalField.{u, v} K} {π : F.valuationSubring}
+    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ)
+    (x y : (standardLubinTateLevelCompleteDVF hπ n).valuationSubring)
+    (hx : PowerSeries.HasEval x) (hy : PowerSeries.HasEval y)
+    (hxy : x = y) (a : F.valuationSubring) :
+    standardLubinTateEndomorphismEvalAt hπ n x hx a =
+      standardLubinTateEndomorphismEvalAt hπ n y hy a := by
+  subst y
+  rfl
+
+
 /-- Every evaluated scalar endomorphism remains topologically nilpotent. -/
 theorem standardLubinTateEndomorphismEvalAt_hasEval
     {F : LocalField.{u, v} K} {π : F.valuationSubring}

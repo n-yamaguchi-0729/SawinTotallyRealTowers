@@ -8,6 +8,7 @@ module
 
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportCohomologicalH1Cokernel
 public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # The kernel-dual model of the self-dual cohomological cokernel
@@ -47,13 +48,9 @@ private theorem dualRange_eq_ker_kernelDualRestriction
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance emptySupportCohomologicalKernelZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance emptySupportCohomologicalKernelH1Module
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 local instance finitePlaceRamifiedCharacterQuotientAddCommGroup
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :

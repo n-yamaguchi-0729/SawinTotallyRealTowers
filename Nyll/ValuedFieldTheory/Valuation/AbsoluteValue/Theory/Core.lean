@@ -473,12 +473,8 @@ theorem unitReduction_isLocalHom_maximalIdeal_pow_of_pos
       (IsLocalRing.maximalIdeal (exponentialValuationSubring v)) ^ n ≤
         IsLocalRing.maximalIdeal (exponentialValuationSubring v) :=
     Ideal.pow_le_self hn0
-  exact
-    isLocalHom_of_le_jacobson_bot
-      ((IsLocalRing.maximalIdeal (exponentialValuationSubring v)) ^ n)
-      (hpow_le.trans
-        (IsLocalRing.maximalIdeal_le_jacobson
-          (⊥ : Ideal (exponentialValuationSubring v))))
+  apply isLocalHom_of_le_jacobson
+  rwa [IsLocalRing.ringJacobson_eq_maximalIdeal]
 
 /-- The first-isomorphism-theorem form of the unit quotient modulo `π^n𝒪`. -/
 noncomputable def unitsModPowerIdealEquivOfSurjective {O : Type*} [CommRing O]
@@ -565,8 +561,8 @@ theorem unitReduction_isLocalHom_of_dvr {O : Type*}
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {π : O} (hπ : Irreducible π) {n : ℕ} (hn : 1 ≤ n) :
     IsLocalHom (Ideal.Quotient.mk (uniformizerPowerIdeal π n)) :=
-  isLocalHom_of_le_jacobson_bot (uniformizerPowerIdeal π n)
-    (uniformizerPowerIdeal_le_jacobson_bot hπ hn)
+  isLocalHom_of_le_jacobson
+    (by simpa only [Ideal.jacobson_bot] using uniformizerPowerIdeal_le_jacobson_bot hπ hn)
 
 /-- The graded coefficient map `U⁽ⁿ⁾ → 𝒪/(π)`, `1 + π^n a ↦ a mod π`,
 viewed multiplicatively by tagging the additive residue group as `Multiplicative`.

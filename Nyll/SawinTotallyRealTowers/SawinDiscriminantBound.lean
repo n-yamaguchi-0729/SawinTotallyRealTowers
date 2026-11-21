@@ -38,7 +38,6 @@ theorem discr_natAbs_le_of_sawin_ramification
     (hP : IsPGroup 2 Gal(L/ℚ))
     (hOutside : IsUnramifiedAtFinitePlacesOutside ℚ L sawinRationalPrimeSupport) :
     (NumberField.discr L).natAbs ≤ 255255 ^ Module.finrank ℚ L := by
-  have : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   obtain ⟨a, ha⟩ := hP.exists_card_eq
   rw [IsGalois.card_aut_eq_finrank] at ha
   apply AlgebraicNumberTheory.Discriminant.natAbs_discr_le_pow_of_coprime_support

@@ -15,6 +15,7 @@ public import Mathlib.LinearAlgebra.Pi
 public import Mathlib.Topology.Algebra.Group.Basic
 public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Finite-place ramification restriction of absolute H¹ characters
@@ -37,20 +38,10 @@ open ClassFieldTower.ProP KummerTheory
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceH1RamificationCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finitePlaceH1RamificationCharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
 
-local instance finitePlaceH1RamificationCharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) :=
-  discreteTopology_bot _
-
-local instance finitePlaceH1RamificationModule
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Reinterpret a decomposition-group multiplicative character as an additive continuous
 degree-one character. -/

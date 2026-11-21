@@ -295,14 +295,12 @@ def towerRelativeIdeleEquiv :
   Units.mapEquiv
     (towerRelativeAdeleRingEquiv K M L).toMulEquiv
 
--- Fix the canonical commutativity proof for the tower's tensor-product units.
-local instance : IsMulCommutative (TowerRelativeIdeleGroup K M L) :=
+/-- The unit group of the relative tensor tower is commutative. -/
+instance TowerRelativeIdeleGroup.isMulCommutative :
+    IsMulCommutative (TowerRelativeIdeleGroup K M L) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 local instance : IsMulCommutative (RelativeIdeleGroup.ClassGroup K L) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-local instance : IsMulCommutative (IdeleClassGroup K) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 namespace TowerRelativeIdeleGroup
@@ -396,8 +394,6 @@ theorem norm_transitive_flatten
     RelativeIdeleGroup.norm K M (norm K M L a) =
       RelativeIdeleGroup.norm K L
         (towerRelativeIdeleEquiv K M L a) := by
-  apply
-    (IdeleGroup.equivAdeleRingUnits (K := K)).injective
   apply Units.ext
   change
     Algebra.norm (NumberField.AdeleRing (𝓞 K) K)
@@ -508,8 +504,7 @@ theorem towerCompositeClassNorm_eq_ideleClassNorm
   intro a
   simp only [towerCompositeClassNorm, MonoidHom.comp_apply]
   exact congrArg
-    (QuotientGroup.mk'
-      (IdeleGroup.principalSubgroup K))
+    (IdeleGroup.toStandardClass K)
     (TowerRelativeIdeleGroup.norm_transitive_flatten K M L a)
 
 omit [NumberField M] in

@@ -50,7 +50,7 @@ variable
 module, with its concrete Galois action. -/
 def RelativeIdeleHerbrandQuotientDefined
     (σ : L ≃ₐ[K] L) : Prop :=
-  letI := relativeIdeleMulDistribMulAction K L
+  letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   HerbrandQuotientDefined
     (L ≃ₐ[K] L) (RelativeIdeleGroup K L) σ
 
@@ -58,7 +58,7 @@ def RelativeIdeleHerbrandQuotientDefined
 module, with its concrete restricted Galois action. -/
 def PrincipalIdeleHerbrandQuotientDefined
     (σ : L ≃ₐ[K] L) : Prop :=
-  letI := relativeIdeleMulDistribMulAction K L
+  letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   letI := principalIdeleMulDistribMulAction K L
   HerbrandQuotientDefined
     (L ≃ₐ[K] L)
@@ -82,7 +82,7 @@ theorem ideleClass_herbrandQuotient_eq_card_of_relative_principal_values
       PrincipalIdeleHerbrandQuotientDefined K L σ)
     (q : ℚ) (hq : q ≠ 0)
     (hRelative :
-      letI := relativeIdeleMulDistribMulAction K L
+      letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
       letI : Finite
           (HerbrandH0 (L ≃ₐ[K] L)
             (RelativeIdeleGroup K L)) :=
@@ -95,7 +95,7 @@ theorem ideleClass_herbrandQuotient_eq_card_of_relative_principal_values
           (G := L ≃ₐ[K] L)
           (A := RelativeIdeleGroup K L) σ = q)
     (hPrincipal :
-      letI := relativeIdeleMulDistribMulAction K L
+      letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
       letI := principalIdeleMulDistribMulAction K L
       letI : Finite
           (HerbrandH0 (L ≃ₐ[K] L)
@@ -119,7 +119,7 @@ theorem ideleClass_herbrandQuotient_eq_card_of_relative_principal_values
           (RelativeIdeleGroup.ClassGroup K L)
           _ _ _ _ σ hC.1 hC.2 =
         (Fintype.card (L ≃ₐ[K] L) : ℚ) := by
-  let := relativeIdeleMulDistribMulAction K L
+  let := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   let := principalIdeleMulDistribMulAction K L
   let := ideleClassMulDistribMulAction K L
   let : Finite
@@ -174,7 +174,7 @@ theorem card_le_ideleClassNorm_index_of_relative_principal_values
       PrincipalIdeleHerbrandQuotientDefined K L σ)
     (q : ℚ) (hq : q ≠ 0)
     (hRelative :
-      letI := relativeIdeleMulDistribMulAction K L
+      letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
       letI : Finite
           (HerbrandH0 (L ≃ₐ[K] L)
             (RelativeIdeleGroup K L)) :=
@@ -187,7 +187,7 @@ theorem card_le_ideleClassNorm_index_of_relative_principal_values
           (G := L ≃ₐ[K] L)
           (A := RelativeIdeleGroup K L) σ = q)
     (hPrincipal :
-      letI := relativeIdeleMulDistribMulAction K L
+      letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
       letI := principalIdeleMulDistribMulAction K L
       letI : Finite
           (HerbrandH0 (L ≃ₐ[K] L)
@@ -202,8 +202,8 @@ theorem card_le_ideleClassNorm_index_of_relative_principal_values
           (A := RelativeIdeleGroup.principalSubgroup K L) σ =
         q / (Fintype.card (L ≃ₐ[K] L) : ℚ)) :
     Fintype.card (L ≃ₐ[K] L) ≤
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index := by
-  let := relativeIdeleMulDistribMulAction K L
+      (RelativeIdeleGroup.classNorm K L).range.index := by
+  let := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   let := principalIdeleMulDistribMulAction K L
   let := ideleClassMulDistribMulAction K L
   obtain ⟨hC, hCvalue⟩ :=
@@ -238,7 +238,7 @@ theorem finrank_le_ideleClassNorm_index_of_relative_principal_values
       PrincipalIdeleHerbrandQuotientDefined K L σ)
     (q : ℚ) (hq : q ≠ 0)
     (hRelative :
-      letI := relativeIdeleMulDistribMulAction K L
+      letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
       letI : Finite
           (HerbrandH0 (L ≃ₐ[K] L)
             (RelativeIdeleGroup K L)) :=
@@ -251,7 +251,7 @@ theorem finrank_le_ideleClassNorm_index_of_relative_principal_values
           (G := L ≃ₐ[K] L)
           (A := RelativeIdeleGroup K L) σ = q)
     (hPrincipal :
-      letI := relativeIdeleMulDistribMulAction K L
+      letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
       letI := principalIdeleMulDistribMulAction K L
       letI : Finite
           (HerbrandH0 (L ≃ₐ[K] L)
@@ -266,7 +266,7 @@ theorem finrank_le_ideleClassNorm_index_of_relative_principal_values
           (A := RelativeIdeleGroup.principalSubgroup K L) σ =
         q / (Fintype.card (L ≃ₐ[K] L) : ℚ)) :
     Module.finrank K L ≤
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index := by
+      (RelativeIdeleGroup.classNorm K L).range.index := by
   simpa only [Fintype.card_eq_nat_card,
     IsGalois.card_aut_eq_finrank K L] using
     card_le_ideleClassNorm_index_of_relative_principal_values

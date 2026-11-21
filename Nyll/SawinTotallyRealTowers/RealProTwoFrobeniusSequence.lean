@@ -41,7 +41,6 @@ namespace ClassFieldTower.Sawin
 
 open ProCGroups ProCGroups.Presentations ClassFieldTower.ProP
 
-private local instance frobeniusSequencePrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
 attribute [local instance] maximalRealProPOutside_isGalois
 

@@ -77,7 +77,7 @@ variable [Group G] [TopologicalSpace G]
 variable [Group H] [TopologicalSpace H]
 
 /-- The inclusion of a subgroup, as a continuous monoid homomorphism for the subtype topology. -/
-def subtype (K : Subgroup G) : K →ₜ* G where
+abbrev subtype (K : Subgroup G) : K →ₜ* G where
   toMonoidHom := K.subtype
   continuous_toFun := continuous_subtype_val
 

@@ -38,61 +38,16 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicThetaAtLevelBaseValuationIsNontrivial
-    (F : LocalField.{u, v} K) :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField F.residueField) ℤᵐ⁰).IsNontrivial :=
-  equalCharacteristicCompletedBaseValuationIsNontrivial F.residueField
-
-noncomputable local instance equalCharacteristicThetaAtLevelBaseValuationRankOne
-    (F : LocalField.{u, v} K) :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField F.residueField) ℤᵐ⁰).RankOne :=
-  equalCharacteristicCompletedBaseValuationRankOne F.residueField
-
-noncomputable local instance equalCharacteristicThetaAtLevelBaseNormedField
-    (F : LocalField.{u, v} K) :
-    NontriviallyNormedField
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  equalCharacteristicCompletedBaseNormedField F.residueField
-
-noncomputable local instance equalCharacteristicThetaAtLevelNormedField
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    NontriviallyNormedField (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelNormedField F n
-
-noncomputable local instance equalCharacteristicThetaAtLevelIsUltrametric
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUltrametricDist (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelIsUltrametric F n
-
-noncomputable local instance equalCharacteristicThetaAtLevelCompleteSpace
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelCompleteSpace F n
-
-noncomputable local instance equalCharacteristicThetaAtLevelValued
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Valued (equalCharacteristicCompletedLevelField F n) ℝ≥0 :=
-  equalCharacteristicCompletedLevelValued F n
-
-noncomputable local instance equalCharacteristicThetaAtLevelLinearTopology
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsLinearTopology
-      (Valued.integer (equalCharacteristicCompletedLevelField F n))
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
+attribute [local instance]
+  equalCharacteristicCompletedBaseValuationIsNontrivial
+  equalCharacteristicCompletedBaseValuationRankOne
+  equalCharacteristicCompletedBaseNormedField
+  equalCharacteristicCompletedLevelNormedField
+  equalCharacteristicCompletedLevelIsUltrametric
+  equalCharacteristicCompletedLevelCompleteSpace
+  equalCharacteristicCompletedLevelValued
   valuedIntegerLinearTopology
-
-noncomputable local instance equalCharacteristicThetaAtLevelCompleteInteger
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   valuedIntegerCompleteSpace
-
-noncomputable local instance equalCharacteristicThetaAtLevelUniformAddGroup
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUniformAddGroup
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   valuedIntegerIsUniformAddGroup
 
 /-- The integral inclusion from the completed maximal-unramified base into

@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
@@ -49,6 +51,43 @@ variable {K : Type uK} {L : Type uL}
     [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
 
+private theorem finitePlaceLocalArtinMonoidHom_surjective
+    (v : HeightOneSpectrum (𝓞 K))
+    (w : AbsoluteValueExtension (HeightOneSpectrum.adicAbv K v) L) :
+    Function.Surjective (finitePlaceLocalArtinMonoidHom v w) := by
+  let vK := HeightOneSpectrum.adicAbv K v
+  let E := LocalizedCompletion vK w
+  let := finitePlaceLocalArtinLocalizedAlgebra v w
+  let := finitePlaceLocalArtinFiniteDimensional v w
+  let := finitePlaceLocalArtinIsAbelianGalois v w (inferInstance : FiniteDimensional K L)
+  let := finitePlaceLocalArtinCompletionValuativeRel v
+  let := finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+  dsimp only [finitePlaceLocalArtinMonoidHom, finitePlaceLocalArtinInputMonoidHom]
+  rw [MonoidHom.coe_comp]
+  apply Function.Surjective.comp
+  · apply abelianLocalArtinMonoidHom_surjective
+  · exact (finitePlaceCompletionUnitsContinuousMulEquiv v).symm.surjective
+
+private theorem finitePlaceLocalArtinMonoidHom_ker
+    (v : HeightOneSpectrum (𝓞 K))
+    (w : AbsoluteValueExtension (HeightOneSpectrum.adicAbv K v) L) :
+    let vK := HeightOneSpectrum.adicAbv K v
+    let E := LocalizedCompletion vK w
+    let : Algebra vK.Completion E := finitePlaceLocalArtinLocalizedAlgebra v w
+    (finitePlaceLocalArtinMonoidHom v w).ker =
+      (localNormSubgroup vK.Completion E).map
+        (finitePlaceCompletionUnitsContinuousMulEquiv v).toMonoidHom := by
+  intro vK E
+  let := finitePlaceLocalArtinLocalizedAlgebra v w
+  let := finitePlaceLocalArtinFiniteDimensional v w
+  let := finitePlaceLocalArtinIsAbelianGalois v w (inferInstance : FiniteDimensional K L)
+  let := finitePlaceLocalArtinCompletionValuativeRel v
+  let := finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+  dsimp only [finitePlaceLocalArtinMonoidHom, finitePlaceLocalArtinInputMonoidHom]
+  rw [← MonoidHom.comap_ker, abelianLocalArtinMonoidHom_ker]
+  exact Subgroup.comap_equiv_eq_map_symm'
+    (finitePlaceCompletionUnitsContinuousMulEquiv v).symm.toMulEquiv _
+
 /-- The image of the chosen finite-place Artin homomorphism is exactly
 the chosen decomposition group. -/
 theorem chosenFinitePlaceArtinMonoidHom_range
@@ -57,32 +96,15 @@ theorem chosenFinitePlaceArtinMonoidHom_range
         (K := K) (L := L) v).range =
       finitePlaceDecompositionGroup
         (K := K) (L := L) v := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
+  let vK := HeightOneSpectrum.adicAbv K v
   let w := chosenFinitePlaceExtension (L := L) v
-  let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let : Algebra vK.Completion E := finitePlaceLocalArtinLocalizedAlgebra v w
-  let : FiniteDimensional vK.Completion E := finitePlaceLocalArtinFiniteDimensional v w
-  let : IsAbelianGalois vK.Completion E := finitePlaceLocalArtinIsAbelianGalois v w
-    (inferInstance : FiniteDimensional K L)
-  let : ValuativeRel vK.Completion := finitePlaceLocalArtinCompletionValuativeRel v
-  let : IsNonarchimedeanLocalField vK.Completion :=
-    finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
-  let eD : absoluteValueDecompositionGroup K w.1 ≃* (E ≃ₐ[vK.Completion] E) :=
-    decompositionGroupEquivAlgebraicLocalizationAut vK (RayClass.adicAbv_isNontrivial v) w
-  let eK : vK.Completionˣ ≃* (v.adicCompletion K)ˣ :=
-    finitePlaceCompletionUnitsContinuousMulEquiv v
-  have hLocal : Function.Surjective (finitePlaceLocalArtinMonoidHom v w) := by
-    intro σ
-    obtain ⟨u, hu⟩ :=
-      LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_surjective vK.Completion E σ
-    refine ⟨eK u, ?_⟩
-    rw [finitePlaceLocalArtinMonoidHom_apply_universe]
-    rw [eK.symm_apply_apply]
-    with_reducible exact hu
+  let := finitePlaceLocalArtinLocalizedAlgebra v w
+  let eD := decompositionGroupEquivAlgebraicLocalizationAut
+    vK (RayClass.adicAbv_isNontrivial v) w
+  have hLocal := finitePlaceLocalArtinMonoidHom_surjective v w
   rw [chosenFinitePlaceArtinMonoidHom, finitePlaceArtinMonoidHomOfExtension_factor,
     MonoidHom.range_comp, MonoidHom.range_eq_top.mpr hLocal, ← MonoidHom.range_eq_map]
-  change ((absoluteValueDecompositionGroup K w.1).subtype.comp eD.symm.toMonoidHom).range =
-    absoluteValueDecompositionGroup K w.1
+  dsimp only [finitePlaceLocalToGlobalMonoidHom, finitePlaceDecompositionGroup]
   rw [MonoidHom.range_comp, MonoidHom.range_eq_top.mpr eD.symm.surjective,
     ← MonoidHom.range_eq_map, Subgroup.range_subtype]
 
@@ -95,68 +117,17 @@ theorem chosenFinitePlaceArtinMonoidHom_ker
           (K := K) (L := L) v) =
       chosenFinitePlaceLocalNormSubgroup
         (K := K) (L := L) v := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
+  let vK := HeightOneSpectrum.adicAbv K v
   let w := chosenFinitePlaceExtension (L := L) v
-  let E := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let : Algebra vK.Completion E := finitePlaceLocalArtinLocalizedAlgebra v w
-  let : FiniteDimensional vK.Completion E := finitePlaceLocalArtinFiniteDimensional v w
-  let : IsAbelianGalois vK.Completion E := finitePlaceLocalArtinIsAbelianGalois v w
-    (inferInstance : FiniteDimensional K L)
-  let : ValuativeRel vK.Completion := finitePlaceLocalArtinCompletionValuativeRel v
-  let : IsNonarchimedeanLocalField vK.Completion :=
-    finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
-  let eD : absoluteValueDecompositionGroup K w.1 ≃* (E ≃ₐ[vK.Completion] E) :=
-    decompositionGroupEquivAlgebraicLocalizationAut vK (RayClass.adicAbv_isNontrivial v) w
-  let eK : vK.Completionˣ ≃* (v.adicCompletion K)ˣ :=
-    finitePlaceCompletionUnitsContinuousMulEquiv v
-  let localArtin := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom vK.Completion E
-  have hEval (x : (v.adicCompletion K)ˣ) :
-      chosenFinitePlaceArtinMonoidHom (K := K) (L := L) v x =
-        (absoluteValueDecompositionGroup K w.1).subtype (eD.symm (localArtin (eK.symm x))) := by
-    unfold chosenFinitePlaceArtinMonoidHom
-    have h := finitePlaceArtinMonoidHomOfExtension_apply_universe v w x
-    with_reducible exact h
-  apply SetLike.ext
-  intro x
-  change chosenFinitePlaceArtinMonoidHom (K := K) (L := L) v x = 1 ↔
-    x ∈ (localNormSubgroup vK.Completion E).map eK.toMonoidHom
-  rw [hEval]
-  constructor
-  · intro hx
-    change
-      (absoluteValueDecompositionGroup K w.1).subtype
-          (eD.symm (localArtin (eK.symm x))) = 1 at hx
-    have hxSubgroup :
-        eD.symm (localArtin (eK.symm x)) = 1 := by
-      apply Subtype.coe_injective
-      exact hx
-    have hxLocal :
-        localArtin (eK.symm x) = 1 := by
-      apply eD.symm.injective
-      simpa only [map_one] using hxSubgroup
-    have hxKer :
-        eK.symm x ∈ MonoidHom.ker localArtin :=
-      hxLocal
-    have hxNorm :
-        eK.symm x ∈ localNormSubgroup vK.Completion E := by
-      rw [
-        LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_ker
-      ] at hxKer
-      exact hxKer
-    exact
-      ⟨eK.symm x, hxNorm, eK.apply_symm_apply x⟩
-  · rintro ⟨y, hy, rfl⟩
-    have hyKer :
-        y ∈ MonoidHom.ker localArtin := by
-      rw [
-        LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_ker
-      ]
-      exact hy
-    have hyArtin : localArtin y = 1 := hyKer
-    change
-      (absoluteValueDecompositionGroup K w.1).subtype
-          (eD.symm (localArtin (eK.symm (eK y)))) = 1
-    simp only [eK.symm_apply_apply, hyArtin, map_one]
+  let := finitePlaceLocalArtinLocalizedAlgebra v w
+  let eD := decompositionGroupEquivAlgebraicLocalizationAut
+    vK (RayClass.adicAbv_isNontrivial v) w
+  have hGlobal : Function.Injective (finitePlaceLocalToGlobalMonoidHom v w) := by
+    dsimp only [finitePlaceLocalToGlobalMonoidHom]
+    exact Subtype.coe_injective.comp eD.symm.injective
+  rw [chosenFinitePlaceArtinMonoidHom, finitePlaceArtinMonoidHomOfExtension_factor,
+    MonoidHom.ker_comp_of_injective _ _ hGlobal]
+  exact finitePlaceLocalArtinMonoidHom_ker v w
 
 end Reciprocity
 end GlobalClassFieldTheory

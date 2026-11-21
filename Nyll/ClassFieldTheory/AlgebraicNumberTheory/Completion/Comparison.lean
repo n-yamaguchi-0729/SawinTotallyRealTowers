@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 public import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
@@ -248,13 +252,29 @@ noncomputable def finitePlaceExtensionCompletionRingEquiv
       (HeightOneSpectrum.adicAbv L
         (finitePlaceExtensionCentre
           (K := K) (L := L) v w)).Completion :=
-  UniformSpace.Completion.mapRingEquiv
-    (finitePlaceExtensionWithAbsRingEquiv
-      (K := K) (L := L) v w)
-    (finitePlaceExtensionWithAbsRingEquiv_continuous
-      (K := K) (L := L) v w)
-    (finitePlaceExtensionWithAbsRingEquiv_symm_continuous
-      (K := K) (L := L) v w)
+  (AbsoluteValue.Completion.equiv w.1).trans
+    ((UniformSpace.Completion.mapRingEquiv
+      (finitePlaceExtensionWithAbsRingEquiv (K := K) (L := L) v w)
+      (finitePlaceExtensionWithAbsRingEquiv_continuous (K := K) (L := L) v w)
+      (finitePlaceExtensionWithAbsRingEquiv_symm_continuous (K := K) (L := L) v w)).trans
+      (AbsoluteValue.Completion.equiv
+        (HeightOneSpectrum.adicAbv L (finitePlaceExtensionCentre (K := K) (L := L) v w))).symm)
+
+omit [FiniteDimensional K L] in
+private theorem finitePlaceExtensionCompletionRingEquiv_coe
+    (v : HeightOneSpectrum (𝓞 K))
+    (w : AbsoluteValueExtension (HeightOneSpectrum.adicAbv K v) L) (a : WithAbs w.1) :
+    finitePlaceExtensionCompletionRingEquiv (K := K) (L := L) v w
+        (a : w.1.Completion) =
+      (finitePlaceExtensionWithAbsRingEquiv (K := K) (L := L) v w a :
+        (HeightOneSpectrum.adicAbv L (finitePlaceExtensionCentre (K := K) (L := L) v w)).Completion)
+      := by
+  have h := uniformContinuous_addMonoidHom_of_continuous
+    (finitePlaceExtensionWithAbsRingEquiv_continuous (K := K) (L := L) v w)
+  simp only [finitePlaceExtensionCompletionRingEquiv, RingEquiv.trans_apply,
+    AbsoluteValue.Completion.equiv_apply, AbsoluteValue.Completion.toCompletion_coe,
+    UniformSpace.Completion.mapRingEquiv_apply, UniformSpace.Completion.map_coe h,
+    AbsoluteValue.Completion.equiv_symm_apply, AbsoluteValue.Completion.ofCompletion_coe]
 
 omit [FiniteDimensional K L] in
 @[simp]
@@ -270,21 +290,8 @@ theorem finitePlaceExtensionCompletionRingEquiv_toCompletion
         (HeightOneSpectrum.adicAbv L
           (finitePlaceExtensionCentre
             (K := K) (L := L) v w)) x := by
-  change
-    UniformSpace.Completion.mapRingEquiv
-        (finitePlaceExtensionWithAbsRingEquiv
-          (K := K) (L := L) v w)
-        (finitePlaceExtensionWithAbsRingEquiv_continuous
-          (K := K) (L := L) v w)
-        (finitePlaceExtensionWithAbsRingEquiv_symm_continuous
-          (K := K) (L := L) v w)
-      (((WithAbs.equiv w.1).symm x : WithAbs w.1) :
-        w.1.Completion) = _
-  rw [UniformSpace.Completion.mapRingEquiv_apply,
-    UniformSpace.Completion.map_coe
-      (uniformContinuous_addMonoidHom_of_continuous
-        (finitePlaceExtensionWithAbsRingEquiv_continuous
-          (K := K) (L := L) v w))]
+  rw [AbsoluteValue.toCompletion_apply, finitePlaceExtensionCompletionRingEquiv_coe,
+    AbsoluteValue.toCompletion_apply]
   rfl
 
 omit [FiniteDimensional K L] in
@@ -295,8 +302,17 @@ theorem finitePlaceExtensionCompletionRingEquiv_continuous
       (HeightOneSpectrum.adicAbv K v) L) :
     Continuous
       (finitePlaceExtensionCompletionRingEquiv
-        (K := K) (L := L) v w) :=
-  UniformSpace.Completion.continuous_map
+        (K := K) (L := L) v w) := by
+  have h := (AbsoluteValue.Completion.continuous_ofCompletion
+    (HeightOneSpectrum.adicAbv L (finitePlaceExtensionCentre (K := K) (L := L) v w))).comp
+      ((show Continuous (UniformSpace.Completion.map
+        (finitePlaceExtensionWithAbsRingEquiv (K := K) (L := L) v w)) from
+          UniformSpace.Completion.continuous_map).comp
+        (AbsoluteValue.Completion.continuous_toCompletion w.1))
+  refine h.congr fun x => ?_
+  simp only [Function.comp_apply, finitePlaceExtensionCompletionRingEquiv, RingEquiv.trans_apply,
+    AbsoluteValue.Completion.equiv_apply, AbsoluteValue.Completion.equiv_symm_apply,
+    UniformSpace.Completion.mapRingEquiv_apply]
 
 omit [FiniteDimensional K L] in
 /-- The norm on the standard completion is the positive power of the
@@ -310,8 +326,7 @@ theorem finitePlaceExtensionCompletionRingEquiv_norm
         (K := K) (L := L) v w x‖ =
       ‖x‖ ^ finitePlaceExtensionExponent
         (K := K) (L := L) v w := by
-  refine UniformSpace.Completion.induction_on
-    (α := WithAbs w.1) x ?_ ?_
+  refine AbsoluteValue.Completion.induction_on x ?_ ?_
   · exact isClosed_eq
       (continuous_norm.comp
         (finitePlaceExtensionCompletionRingEquiv_continuous
@@ -321,35 +336,21 @@ theorem finitePlaceExtensionCompletionRingEquiv_norm
           (finitePlaceExtensionExponent_pos
             (K := K) (L := L) v w).le))
   · intro a
-    change
-      ‖UniformSpace.Completion.map
-          (finitePlaceExtensionWithAbsRingEquiv
-            (K := K) (L := L) v w)
-          (a : w.1.Completion)‖ =
-        ‖(a : w.1.Completion)‖ ^
-          finitePlaceExtensionExponent
-            (K := K) (L := L) v w
-    rw [UniformSpace.Completion.map_coe
-        (uniformContinuous_addMonoidHom_of_continuous
-          (finitePlaceExtensionWithAbsRingEquiv_continuous
-            (K := K) (L := L) v w)),
-      UniformSpace.Completion.norm_coe,
-      UniformSpace.Completion.norm_coe,
-      WithAbs.norm_eq_apply_ofAbs,
-      WithAbs.norm_eq_apply_ofAbs]
+    rw [finitePlaceExtensionCompletionRingEquiv_coe, AbsoluteValue.Completion.norm_coe,
+      AbsoluteValue.Completion.norm_coe]
     exact finitePlaceExtension_adicAbv_eq_rpow
       (K := K) (L := L) v w (WithAbs.equiv w.1 a)
 
 /-- The existing comparison from the standard absolute-value completion
 to the concrete adic completion is an isometry. -/
-theorem relativeFinitePlaceCompletionRingEquiv_norm
+theorem finitePlaceCompletionRingEquiv_norm
     (W : HeightOneSpectrum (𝓞 L))
     (x : (HeightOneSpectrum.adicAbv L W).Completion) :
-    ‖relativeFinitePlaceCompletionRingEquiv W x‖ = ‖x‖ := by
-  change ‖relativeFinitePlaceCompletionRingHom W x‖ = ‖x‖
+    ‖finitePlaceCompletionRingEquiv W x‖ = ‖x‖ := by
+  change ‖finitePlaceCompletionRingHom W x‖ = ‖x‖
   exact
-    (relativeFinitePlaceCompletionRingHom_isometry W).norm_map_of_map_zero
-      (map_zero (relativeFinitePlaceCompletionRingHom W)) x
+    (finitePlaceCompletionRingHom_isometry W).norm_map_of_map_zero
+      (map_zero (finitePlaceCompletionRingHom W)) x
 
 /-- The local factor comparison from an exact-extension completion to
 the concrete completion at its centre. -/
@@ -362,7 +363,7 @@ noncomputable def finitePlaceExtensionAdicCompletionRingEquiv
         (K := K) (L := L) v w).adicCompletion L :=
   (finitePlaceExtensionCompletionRingEquiv
     (K := K) (L := L) v w).trans
-    (relativeFinitePlaceCompletionRingEquiv
+    (finitePlaceCompletionRingEquiv
       (finitePlaceExtensionCentre
         (K := K) (L := L) v w))
 
@@ -378,7 +379,7 @@ theorem finitePlaceExtensionAdicCompletionRingEquiv_norm
         (K := K) (L := L) v w := by
   rw [finitePlaceExtensionAdicCompletionRingEquiv,
     RingEquiv.trans_apply,
-    relativeFinitePlaceCompletionRingEquiv_norm,
+    finitePlaceCompletionRingEquiv_norm,
     finitePlaceExtensionCompletionRingEquiv_norm]
 
 omit [FiniteDimensional K L] in
@@ -396,24 +397,8 @@ theorem finitePlaceExtensionAdicCompletionRingEquiv_toCompletion
           (K := K) (L := L) v w) x := by
   rw [finitePlaceExtensionAdicCompletionRingEquiv,
     RingEquiv.trans_apply,
-    finitePlaceExtensionCompletionRingEquiv_toCompletion]
-  change
-    relativeFinitePlaceCompletionRingHom
-        (finitePlaceExtensionCentre
-          (K := K) (L := L) v w)
-        (((WithAbs.equiv
-          (HeightOneSpectrum.adicAbv L
-            (finitePlaceExtensionCentre
-              (K := K) (L := L) v w))).symm x :
-          WithAbs
-            (HeightOneSpectrum.adicAbv L
-              (finitePlaceExtensionCentre
-                (K := K) (L := L) v w))) :
-          (HeightOneSpectrum.adicAbv L
-            (finitePlaceExtensionCentre
-              (K := K) (L := L) v w)).Completion) = _
-  rw [relativeFinitePlaceCompletionRingHom_coe]
-  rfl
+    finitePlaceExtensionCompletionRingEquiv_toCompletion, AbsoluteValue.toCompletion_apply]
+  exact (finitePlaceCompletionRingHom_coe _ _).trans rfl
 
 omit [FiniteDimensional K L] in
 /-- The local factor comparison identifies the valuation ring in the

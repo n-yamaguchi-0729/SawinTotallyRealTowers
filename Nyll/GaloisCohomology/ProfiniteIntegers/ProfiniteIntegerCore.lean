@@ -39,10 +39,6 @@ structure ZHatIndex where
 instance (i : ZHatIndex) : NeZero i.modulus :=
   ⟨Nat.ne_of_gt i.positive⟩
 
-/-- The index associated with a positive modulus. -/
-def zHatIndex (n : ℕ) (hn : 0 < n) : ZHatIndex :=
-  ⟨n, hn⟩
-
 /-- The product of the finite cyclic quotients over all positive moduli. -/
 abbrev ZHatAmbient : Type 0 :=
   ∀ i : ZHatIndex, ZMod i.modulus
@@ -126,13 +122,13 @@ def zHatMulProfiniteGrp : ProfiniteGrp :=
 /-- The canonical continuous reduction `ℤ̂ → ℤ/nℤ`. -/
 def zHatReduction (n : ℕ) (hn : 0 < n) :
     ContinuousAddMonoidHom ZHat (ZMod n) where
-  toFun x := (show ZHatClosureModel from x).1 (zHatIndex n hn)
+  toFun x := (show ZHatClosureModel from x).1 (ZHatIndex.mk n hn)
   map_zero' := rfl
   map_add' _ _ := rfl
   continuous_toFun := by
     change Continuous
-      (fun x : ZHatClosureModel => x.1 (zHatIndex n hn))
-    exact (continuous_apply (zHatIndex n hn)).comp continuous_subtype_val
+      (fun x : ZHatClosureModel => x.1 (ZHatIndex.mk n hn))
+    exact (continuous_apply (ZHatIndex.mk n hn)).comp continuous_subtype_val
 
 /-- Reduction agrees with the ordinary integer cast.  This is the public
 computation rule; it does not expose the closure model used to construct
@@ -166,16 +162,16 @@ theorem zHatReduction_transition {m n : ℕ}
     ZMod.castHom hmn (ZMod m) (zHatReduction n hn x) =
       zHatReduction m hm x := by
   let f : ZHatAmbient → ZMod m :=
-    fun z => ZMod.castHom hmn (ZMod m) (z (zHatIndex n hn))
+    fun z => ZMod.castHom hmn (ZMod m) (z (ZHatIndex.mk n hn))
   let g : ZHatAmbient → ZMod m :=
-    fun z => z (zHatIndex m hm)
+    fun z => z (ZHatIndex.mk m hm)
   have hfg : Set.EqOn f g (zHatIntegerSubring : Set ZHatAmbient) := by
     rintro _ ⟨a, rfl⟩
     exact map_intCast (ZMod.castHom hmn (ZMod m)) a
   have hf : Continuous f :=
-    continuous_of_discreteTopology.comp (continuous_apply (zHatIndex n hn))
+    continuous_of_discreteTopology.comp (continuous_apply (ZHatIndex.mk n hn))
   have hg : Continuous g :=
-    continuous_apply (zHatIndex m hm)
+    continuous_apply (ZHatIndex.mk m hm)
   exact hfg.closure hf hg x.property
 
 /-- The ordinary integers have dense image in their profinite completion. -/

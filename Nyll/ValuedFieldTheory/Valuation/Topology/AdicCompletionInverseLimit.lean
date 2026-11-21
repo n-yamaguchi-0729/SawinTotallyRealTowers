@@ -124,11 +124,8 @@ theorem isLocalHom_quotient_maximalIdeal_pow
   have hpow_le :
       (IsLocalRing.maximalIdeal R) ^ n ≤ IsLocalRing.maximalIdeal R :=
     Ideal.pow_le_self hn0
-  exact
-    isLocalHom_of_le_jacobson_bot
-      ((IsLocalRing.maximalIdeal R) ^ n)
-      (hpow_le.trans
-        (IsLocalRing.maximalIdeal_le_jacobson (⊥ : Ideal R)))
+  apply isLocalHom_of_le_jacobson
+  rwa [IsLocalRing.ringJacobson_eq_maximalIdeal]
 
 /-- The adic inverse-limit equivalence, finite unit quotient form for the maximal-ideal
 filtration of a local ring. -/

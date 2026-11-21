@@ -7,10 +7,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitFixedPoints
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitAbstractFixed
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GaloisExtensionQuotient
 public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
@@ -42,7 +43,7 @@ the bottom intermediate field, transported along mathlib's canonical
 noncomputable def rationalIdeleClassEquivBaseFixed :
     Additive (IdeleClassGroup ℚ) ≃+
       KummerTheory.ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation
+        (ideleClassRepresentation ℚ)
         (baseField
           (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) := by
   let B := (⊥ :
@@ -69,7 +70,7 @@ noncomputable def rationalIdeleClassEquivBaseFixed :
           (AddEquiv.addSubgroupCongr
             (congrArg
               (KummerTheory.ambientFixedAddSubgroup
-                rationalIdeleClassRepresentation)
+                (ideleClassRepresentation ℚ))
               hB)))
 
 /-- Scalar extension between finite rational intermediate fields becomes
@@ -197,7 +198,9 @@ theorem rationalIdeleClassEquivBaseFixed_coe
               (K := ℚ) (L := E)
               (RelativeIdeleGroup.classEmbedding (K := ℚ) (L := B) (M := E)
                 (IntermediateField.inclusion hBE) cB))) = _
-    rw [hclassEmbedding]
+    exact congrArg (fun x : RelativeIdeleGroup.ClassGroup ℚ E =>
+      Additive.ofMul (rationalIntermediateIdeleClassToDirectLimit E
+        (_root_.relativeIdeleClassBaseChangeMulEquiv (K := ℚ) (L := E) x))) hclassEmbedding
   have h4 :
       Additive.ofMul
           (rationalIntermediateIdeleClassToDirectLimit E
@@ -233,7 +236,7 @@ noncomputable local instance rationalAbstractFixedFieldFiniteDimensional
 finite-index closed subgroup is the corresponding fixed part of the
 rational absolute idele-class representation.  This is the closed-subgroup
 endpoint of `rationalIdeleClassEquivFixed`. -/
-noncomputable def rationalAbstractFixedFieldIdeleClassEquivFixed
+noncomputable abbrev rationalAbstractFixedFieldIdeleClassEquivFixed
     (K : ClosedSubgroup
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     [hfinite : Finite
@@ -248,29 +251,8 @@ noncomputable def rationalAbstractFixedFieldIdeleClassEquivFixed
           (LocalClassFieldTheory.abstractFixedField
             ℚ (SeparableClosure ℚ) K)) ≃+
       KummerTheory.ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation K := by
-  letI : FiniteDimensional ℚ
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) K) :=
-    LocalClassFieldTheory.abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hfinite
-  have hclosed :
-      RamificationTheory.closedFixingSubgroup
-          ℚ (SeparableClosure ℚ)
-          (LocalClassFieldTheory.abstractFixedField
-            ℚ (SeparableClosure ℚ) K) =
-        K :=
-    LocalClassFieldTheory.closedFixingSubgroup_abstractFixedField_eq
-      ℚ (SeparableClosure ℚ) K
-  exact
-    (rationalIdeleClassEquivFixed
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) K)).trans
-      (AddEquiv.addSubgroupCongr
-        (congrArg
-          (KummerTheory.ambientFixedAddSubgroup
-            rationalIdeleClassRepresentation)
-          hclosed))
+        (ideleClassRepresentation ℚ) K :=
+  abstractFixedFieldIdeleClassEquivFixed ℚ K
 
 /-- The closed-subgroup fixed-field endpoint has the same underlying
 direct-limit class as the intermediate-field comparison from which it is
@@ -320,37 +302,12 @@ noncomputable def
           (LocalClassFieldTheory.abstractRelativeFixedField
             ℚ (SeparableClosure ℚ) hLK)) ≃+
       KummerTheory.ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation L := by
-  let E :=
-    LocalClassFieldTheory.abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) hLK
-  letI : FiniteDimensional ℚ (E.restrictScalars ℚ) := by
-    change FiniteDimensional ℚ
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) L)
-    change FiniteDimensional ℚ E
-    infer_instance
-  let hclosed :
-      RamificationTheory.closedFixingSubgroup
-          ℚ (SeparableClosure ℚ) (E.restrictScalars ℚ) =
-        L := by
-    change
-      RamificationTheory.closedFixingSubgroup
-          ℚ (SeparableClosure ℚ)
-          (LocalClassFieldTheory.abstractFixedField
-            ℚ (SeparableClosure ℚ) L) =
-        L
-    exact
-      LocalClassFieldTheory.closedFixingSubgroup_abstractFixedField_eq
-        ℚ (SeparableClosure ℚ) L
-  exact
-    (rationalIdeleClassEquivFixed
-      (E.restrictScalars ℚ)).trans
-      (AddEquiv.addSubgroupCongr
-        (congrArg
-          (KummerTheory.ambientFixedAddSubgroup
-            rationalIdeleClassRepresentation)
-          hclosed))
+        (ideleClassRepresentation ℚ) L := by
+  let E := LocalClassFieldTheory.abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
+  let : FiniteDimensional ℚ
+      (LocalClassFieldTheory.abstractFixedField ℚ (SeparableClosure ℚ) L) :=
+    inferInstanceAs (FiniteDimensional ℚ E)
+  exact abstractRelativeFixedFieldIdeleClassEquivFixed ℚ K L hLK
 
 end Reciprocity
 end GlobalClassFieldTheory

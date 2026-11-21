@@ -34,7 +34,9 @@ by the class number.
 
 @[expose] public section
 
-open scoped IsMulCommutative NumberField NumberField.LiesOver
+open scoped IsMulCommutative NumberField
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 
 noncomputable section
 
@@ -51,11 +53,6 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
-/-- Keep norm-range quotient normality out of exported declaration types. -/
-local instance
-    smallHilbertNormCharacterization_ideleClassGroupIsMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
 
 omit [FiniteDimensional K L] in
 /-- At an extension unramified at all infinite places, the determinant
@@ -122,17 +119,17 @@ theorem chosenFinitePlaceIsUnramified_of_no_ramifiedFinitePlaces
   rw [hunramifiedFinite] at hv
   exact Finset.notMem_empty v hv
 
-/-- In an extension unramified at every finite and infinite place,
-every idele integral at all finite places is an actual relative-idele
-norm. -/
+/-- For an everywhere unramified extension, every idèle integral
+at the finite places is an ordinary idèle norm. -/
 theorem
-    integralAtFinitePlaces_le_relativeIdeleNorm_range_of_everywhereUnramified
+    integralAtFinitePlaces_le_ideleNorm_range_of_everywhereUnramified
     [_root_.IsUnramifiedAtInfinitePlaces K L]
     (hunramifiedFinite :
       _root_.ramifiedBaseFinitePlaces
           (K := K) (L := L) = ∅) :
     IdeleGroup.integralAtFinitePlaces (K := K) ≤
-      (RelativeIdeleGroup.norm K L).range := by
+      (IdeleGroup.norm K L).range := by
+  rw [IdeleGroup.norm_range_eq_relativeNorm_range K L]
   intro a ha
   refine
     (_root_.mem_relativeIdeleNorm_range_iff_localTensorNorms
@@ -150,9 +147,8 @@ theorem
         (K := K) (L := L) v
         (chosenFinitePlaceIsUnramified_of_no_ramifiedFinitePlaces
           (K := K) (L := L) hunramifiedFinite v)
-    change a.2 v ∈ (v.adicCompletionIntegers K).units
-    exact
-      (FiniteIdeleGroup.mem_integralSubgroup_iff a.2).1 ha v
+    change IdeleGroup.finiteCoordinates a v ∈ (v.adicCompletionIntegers K).units
+    exact (FiniteIdeleGroup.mem_integralSubgroup_iff (IdeleGroup.finiteCoordinates a)).1 ha v
 
 private theorem integralIdeleClass_mem_ideleClassNorm_range_of_everywhereUnramified
     [_root_.IsUnramifiedAtInfinitePlaces K L]
@@ -161,39 +157,20 @@ private theorem integralIdeleClass_mem_ideleClassNorm_range_of_everywhereUnramif
           (K := K) (L := L) = ∅)
     {a : IdeleGroup K}
     (ha : a ∈ IdeleGroup.integralAtFinitePlaces (K := K)) :
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a ∈
+    IdeleGroup.toStandardClass K a ∈
       (_root_.ideleClassNorm K L).range := by
-  obtain ⟨z, hz⟩ :=
-    integralAtFinitePlaces_le_relativeIdeleNorm_range_of_everywhereUnramified
-      (K := K) (L := L) hunramifiedFinite ha
-  refine
-    ⟨QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
-        (_root_.relativeIdeleBaseChangeMulEquiv
-          (K := K) (L := L) z),
-      ?_⟩
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (IdeleGroup.norm K L
-          (_root_.relativeIdeleBaseChangeMulEquiv
-            (K := K) (L := L) z)) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a
-  rw [IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv, hz]
+  exact ideleClassNorm_range_mem_mk_of_mem_ideleNorm_range K L a
+    (integralAtFinitePlaces_le_ideleNorm_range_of_everywhereUnramified hunramifiedFinite ha)
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 private theorem principalIdeleClass_mem_ideleClassNorm_range
     {a : IdeleGroup K}
     (ha : a ∈ IdeleGroup.principalSubgroup K) :
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a ∈
+    IdeleGroup.toStandardClass K a ∈
       (_root_.ideleClassNorm K L).range := by
   have haOne :
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a = 1 :=
-    (QuotientGroup.eq_one_iff a).2 ha
+      IdeleGroup.toStandardClass K a = 1 :=
+    (IdeleGroup.toStandardClass_eq_one_iff K a).2 ha
   rw [haOne]
   exact ((_root_.ideleClassNorm K L).range).one_mem
 

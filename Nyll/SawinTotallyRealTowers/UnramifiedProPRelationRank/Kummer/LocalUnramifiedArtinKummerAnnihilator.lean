@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange
 
 /-!
@@ -29,14 +30,7 @@ variable (K : Type) [Field K] [CharZero K]
 variable [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance localUnramifiedArtinKummerAnnihilatorTopology :
-    TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance localUnramifiedArtinKummerAnnihilatorDiscreteTopology :
-    DiscreteTopology (ZMod (n : ℕ)) := discreteTopology_bot _
-local instance localUnramifiedArtinKummerAnnihilatorModule
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Pair a local class against intrinsic unramified `H¹` using the actual
 local Artin--Kummer pairing. -/

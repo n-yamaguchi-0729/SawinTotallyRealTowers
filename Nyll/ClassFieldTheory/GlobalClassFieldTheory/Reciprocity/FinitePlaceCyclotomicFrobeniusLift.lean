@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.FrobeniusLift
@@ -64,40 +66,24 @@ namespace Reciprocity
 local instance (p : Nat.Primes) : Fact p.1.Prime :=
   ⟨p.2⟩
 
-local instance rationalCyclotomicFrobeniusLiftPrimePowerNumberField
-    (p : Nat.Primes) (k : ℕ) :
-    NumberField (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  KummerTheory.rationalCyclotomicLevel_numberField
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance rationalCyclotomicFrobeniusLiftPrimePowerFiniteDimensional
-    (p : Nat.Primes) (k : ℕ) :
-    FiniteDimensional ℚ (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  rationalCyclotomicPrincipalPrimeLevelFiniteDimensional
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance rationalCyclotomicFrobeniusLiftPrimePowerIsAbelianGalois
-    (p : Nat.Primes) (k : ℕ) :
-    IsAbelianGalois ℚ (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  rationalCyclotomicLevelIsAbelianGalois
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+attribute [local instance]
+  KummerTheory.rationalCyclotomicPrimePowerNumberField
+  KummerTheory.rationalCyclotomicPrimePowerFiniteDimensional
+  KummerTheory.rationalCyclotomicPrimePowerIsAbelianGalois
 
 noncomputable local instance
     rationalCyclotomicFrobeniusLiftLevelFiniteDimensional
     (m : ℕ+) :
     FiniteDimensional ℚ
       (KummerTheory.rationalCyclotomicLevel m) :=
-  rationalCyclotomicPrincipalPrimeLevelFiniteDimensional m
+  KummerTheory.rationalCyclotomicLevelFiniteDimensional m
 
 noncomputable local instance
     rationalCyclotomicFrobeniusLiftLevelIsAbelianGalois
     (m : ℕ+) :
     IsAbelianGalois ℚ
       (KummerTheory.rationalCyclotomicLevel m) :=
-  rationalCyclotomicLevelIsAbelianGalois m
+  KummerTheory.rationalCyclotomicLevelIsAbelianGalois m
 
 variable
     {K : Type u} {L : Type v} {Ω : Type w}
@@ -812,7 +798,7 @@ theorem MonoidHom.ext_of_eq_on_finitePrimaryComponents
     have hz :
         z ∈ CommGroup.primaryComponent G p.1 := by
       obtain ⟨n, hn⟩ :=
-        P.isPGroup' (y p P)
+        P.isPGroup (y p P)
       refine ⟨n, ?_⟩
       have hu : u ^ p.1 ^ n = 1 := by
         dsimp only [u]

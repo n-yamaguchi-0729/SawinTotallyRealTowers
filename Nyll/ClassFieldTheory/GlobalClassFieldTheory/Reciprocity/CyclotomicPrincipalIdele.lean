@@ -47,52 +47,15 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
--- Keep the prime-power presentation explicit for canonical instance synthesis.
--- Both structures are the existing canonical cyclotomic-level instances.
-local instance rationalCyclotomicPrimePowerNumberField
-    (p : Nat.Primes) (k : ℕ) :
-    NumberField
-      (KummerTheory.rationalCyclotomicLevel
-        ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  KummerTheory.rationalCyclotomicLevel_numberField
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance rationalCyclotomicPrimePowerIsGalois
-    (p : Nat.Primes) (k : ℕ) :
-    IsGalois ℚ
-      (KummerTheory.rationalCyclotomicLevel
-        ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  KummerTheory.rationalCyclotomicLevel_isGalois
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance rationalCyclotomicPrimePowerIsAbelianGalois
-    (p : Nat.Primes) (k : ℕ) :
-  IsAbelianGalois ℚ
-      (KummerTheory.rationalCyclotomicLevel
-        ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  IsAbelianGalois.of_algHom
-    (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩).val
+attribute [local instance]
+  KummerTheory.rationalCyclotomicPrimePowerNumberField
+  KummerTheory.rationalCyclotomicPrimePowerIsGalois
+  KummerTheory.rationalCyclotomicPrimePowerIsAbelianGalois
 
 local instance (p : Nat.Primes) : Fact p.1.Prime :=
   ⟨p.2⟩
 
-noncomputable local instance
-    cyclotomicPrincipalLevelIsAbelianGalois
-    (m : ℕ+) :
-    IsAbelianGalois ℚ
-      (KummerTheory.rationalCyclotomicLevel m) := by
-  have : IsGalois ℚ
-      (KummerTheory.rationalCyclotomicLevel m) :=
-    inferInstance
-  let e :=
-    IsCyclotomicExtension.Rat.galEquivZMod
-      (m : ℕ) (KummerTheory.rationalCyclotomicLevel m)
-  exact
-    { is_comm.comm σ τ := by
-        apply e.injective
-        simp only [map_mul]
-        exact mul_comm _ _ }
+attribute [local instance] KummerTheory.rationalCyclotomicLevelIsAbelianGalois
 
 /-- Every finite subextension of the rational cyclotomic closure is
 contained in one of its internal finite cyclotomic levels.  The proof
@@ -407,14 +370,14 @@ components replaced by one. -/
 def rationalIdeleArchimedeanPart
     (a : IdeleGroup ℚ) :
     IdeleGroup ℚ :=
-  (a.1, 1)
+  IdeleGroup.ofComponents (IdeleGroup.infinitePart a) 1
 
 /-- The finite part of a rational idele, with its archimedean
 component replaced by one. -/
 def rationalIdeleFinitePart
     (a : IdeleGroup ℚ) :
     IdeleGroup ℚ :=
-  (1, a.2)
+  IdeleGroup.ofComponents 1 (IdeleGroup.finiteCoordinates a)
 
 /-- The archimedean part preserves every infinite component. -/
 @[simp]
@@ -423,8 +386,9 @@ theorem rationalIdeleArchimedeanPart_infiniteComponent
     (v : InfinitePlace ℚ) :
     IdeleGroup.infiniteComponent v
         (rationalIdeleArchimedeanPart a) =
-      IdeleGroup.infiniteComponent v a :=
-  rfl
+      IdeleGroup.infiniteComponent v a := by
+  simp only [rationalIdeleArchimedeanPart, IdeleGroup.infiniteComponent_apply,
+    IdeleGroup.infinitePart_ofComponents]
 
 /-- Every finite component of the archimedean part is one. -/
 @[simp]
@@ -433,8 +397,9 @@ theorem rationalIdeleArchimedeanPart_finiteComponent
     (v : HeightOneSpectrum (𝓞 ℚ)) :
     IdeleGroup.finiteComponent v
         (rationalIdeleArchimedeanPart a) =
-      1 :=
-  rfl
+      1 := by
+  simp only [rationalIdeleArchimedeanPart, IdeleGroup.finiteComponent_apply,
+    IdeleGroup.finiteCoordinates_ofComponents, RestrictedProduct.one_apply]
 
 /-- Every infinite component of the finite part is one. -/
 @[simp]
@@ -443,8 +408,9 @@ theorem rationalIdeleFinitePart_infiniteComponent
     (v : InfinitePlace ℚ) :
     IdeleGroup.infiniteComponent v
         (rationalIdeleFinitePart a) =
-      1 :=
-  rfl
+      1 := by
+  simp only [rationalIdeleFinitePart, IdeleGroup.infiniteComponent_apply,
+    IdeleGroup.infinitePart_ofComponents, map_one, Pi.one_apply]
 
 /-- The finite part preserves every finite component. -/
 @[simp]
@@ -453,8 +419,9 @@ theorem rationalIdeleFinitePart_finiteComponent
     (v : HeightOneSpectrum (𝓞 ℚ)) :
     IdeleGroup.finiteComponent v
         (rationalIdeleFinitePart a) =
-      IdeleGroup.finiteComponent v a :=
-  rfl
+      IdeleGroup.finiteComponent v a := by
+  simp only [rationalIdeleFinitePart, IdeleGroup.finiteComponent_apply,
+    IdeleGroup.finiteCoordinates_ofComponents]
 
 private theorem globalArtinMonoidHom_rationalIdeleFinitePart
     {L : Type}
@@ -497,8 +464,9 @@ theorem rationalIdeleArchimedeanPart_mul_finitePart
     rationalIdeleArchimedeanPart a *
         rationalIdeleFinitePart a =
       a := by
-  ext <;> simp [rationalIdeleArchimedeanPart,
-    rationalIdeleFinitePart]
+  apply IdeleGroup.ext_parts <;> simp only [rationalIdeleArchimedeanPart,
+    rationalIdeleFinitePart, map_mul, IdeleGroup.infinitePart_ofComponents,
+    IdeleGroup.finiteCoordinates_ofComponents, mul_one, one_mul]
 
 /-- At a finite abelian layer, the global Artin image of the
 archimedean part of a rational idele has order at most two. -/

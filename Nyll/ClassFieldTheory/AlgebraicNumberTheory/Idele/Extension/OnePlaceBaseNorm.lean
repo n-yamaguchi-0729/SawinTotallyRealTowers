@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Norm
@@ -112,7 +114,7 @@ theorem norm_finitePlaceIdele_finitePlaceBaseUnitExtension
       {W : HeightOneSpectrum (𝓞 L) //
         _root_.finitePlaceBelow (K := K) W = q} :=
     ⟨v, rfl⟩
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext w
     change
@@ -131,8 +133,8 @@ theorem norm_finitePlaceIdele_finitePlaceBaseUnitExtension
     intro W _
     rw [finitePlaceIdele_infiniteComponent]
     exact map_one _
-  · apply Subtype.ext
-    funext r
+  · apply RestrictedProduct.ext
+    intro r
     change
       finiteComponent r
           (norm K L
@@ -235,7 +237,7 @@ theorem norm_finitePlaceIdele_eq_finitePlaceIdele_normUnits
           (v.adicCompletion K) (W.1.adicCompletion L) y) := by
   intro sharedOwner1
   classical
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext w
     change
@@ -251,8 +253,8 @@ theorem norm_finitePlaceIdele_eq_finitePlaceIdele_normUnits
     intro W' _
     rw [finitePlaceIdele_infiniteComponent]
     exact map_one _
-  · apply Subtype.ext
-    funext r
+  · apply RestrictedProduct.ext
+    intro r
     change
       finiteComponent r
           (norm K L (finitePlaceIdele W.1 y)) =
@@ -324,12 +326,21 @@ theorem ideleClassNorm_finitePlaceIdeleClass_eq_normUnits
           (v.adicCompletion K) (W.1.adicCompletion L) y) := by
   intro sharedOwner1
   classical
-  rw [
-    finitePlaceIdeleClass,
-    MonoidHom.coe_comp,
-    Function.comp_apply,
-    _root_.ideleClassNorm_mk,
-    norm_finitePlaceIdele_eq_finitePlaceIdele_normUnits]
-  rfl
+  let qK := toStandardClass K
+  let qL := toStandardClass L
+  let x : (v.adicCompletion K)ˣ :=
+    LocalFieldTheory.normUnits (v.adicCompletion K) (W.1.adicCompletion L) y
+  have hL : finitePlaceIdeleClass W.1 y = qL (finitePlaceIdele W.1 y) :=
+    (toStandardClass_finitePlaceIdele W.1 y).symm
+  have hK : qK (finitePlaceIdele v x) = finitePlaceIdeleClass v x :=
+    toStandardClass_finitePlaceIdele v x
+  have hn : norm K L (finitePlaceIdele W.1 y) = finitePlaceIdele v x :=
+    norm_finitePlaceIdele_eq_finitePlaceIdele_normUnits (K := K) (L := L) v W y
+  calc
+    _ = _root_.ideleClassNorm K L (qL (finitePlaceIdele W.1 y)) :=
+      congrArg (_root_.ideleClassNorm K L) hL
+    _ = qK (norm K L (finitePlaceIdele W.1 y)) := _root_.ideleClassNorm_mk K L _
+    _ = qK (finitePlaceIdele v x) := congrArg qK hn
+    _ = _ := hK
 
 end IdeleGroup

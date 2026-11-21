@@ -11,6 +11,7 @@ public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionKernelCharacter
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Prime-to-index injectivity of continuous degree-two restriction
@@ -39,8 +40,7 @@ universe u
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance h2PrimeIndexCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [LocallyCompactSpace G]
 
@@ -52,14 +52,14 @@ theorem H2CocycleExtension.π_eq_zero_of_restriction_of_index_not_dvd
     (hindex : ¬ p ∣ H.toSubgroup.index)
     (z : Cohomology.trivialZModPCocyclesLifted p G 2)
     (hz : (Cohomology.continuousCohomologyZModPMapLifted p
-      (Cohomology.subgroupInclusion H.toSubgroup) 2).hom
+      (ProCGroups.ContinuousMonoidHom.subtype H.toSubgroup) 2).hom
       (ContinuousCohomology.π (Cohomology.trivialZModPLifted p G) 2 z) = 0) :
     ContinuousCohomology.π (Cohomology.trivialZModPLifted p G) 2 z = 0 := by
   let : H.toSubgroup.FiniteIndex :=
     ⟨fun hzero => hindex (by rw [hzero]; exact dvd_zero p)⟩
   let : LocallyCompactSpace H := H.isClosed.locallyCompactSpace
   obtain ⟨s, hs⟩ := H2CocycleExtension.exists_lift_of_restriction_eq_zero
-    (Cohomology.subgroupInclusion H.toSubgroup) z hz
+    (ProCGroups.ContinuousMonoidHom.subtype H.toSubgroup) z hz
   let E := H2CocycleExtension z
   let EH : OpenSubgroup E := H.comap (H2CocycleExtension.projection z).toMonoidHom
     (H2CocycleExtension.projection z).continuous_toFun
@@ -69,7 +69,7 @@ theorem H2CocycleExtension.π_eq_zero_of_restriction_of_index_not_dvd
       map_mul' := fun _ _ => rfl
       continuous_toFun := Continuous.subtype_mk
         ((H2CocycleExtension.projection z).continuous_toFun.comp continuous_subtype_val) _ }
-  let i : EH →ₜ* E := Cohomology.subgroupInclusion EH.toSubgroup
+  let i : EH →ₜ* E := ProCGroups.ContinuousMonoidHom.subtype EH.toSubgroup
   have hst : (H2CocycleExtension.projection z).comp i =
       (H2CocycleExtension.projection z).comp (s.comp q) := by
     ext e
@@ -132,10 +132,10 @@ theorem continuousH2Restriction_injective_of_index_not_dvd
     (H : OpenSubgroup G)
     (hindex : ¬ p ∣ H.toSubgroup.index) :
     Function.Injective (Cohomology.continuousCohomologyZModPMapLifted p
-      (Cohomology.subgroupInclusion H.toSubgroup) 2).hom := by
+      (ProCGroups.ContinuousMonoidHom.subtype H.toSubgroup) 2).hom := by
   intro x y hxy
   have hzero : (Cohomology.continuousCohomologyZModPMapLifted p
-      (Cohomology.subgroupInclusion H.toSubgroup) 2).hom (x - y) = 0 := by
+      (ProCGroups.ContinuousMonoidHom.subtype H.toSubgroup) 2).hom (x - y) = 0 := by
     rw [map_sub, hxy, sub_self]
   obtain ⟨z, hz⟩ := PresentationH2Aux.homologyπ_surjective
     (Cohomology.trivialZModPLifted p G) 2 (x - y)

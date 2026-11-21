@@ -6,7 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RelativeSupport
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
 
 /-!
 # Integral lattices in relative tensor coordinates
@@ -557,3 +559,50 @@ theorem relativeExtensionBasis_absoluteValue_le_one_of_notMem
   rw [scaledRelativeExtensionBasis_apply,
     Algebra.smul_def, map_mul, hwscale, one_mul] at hscaled
   exact hscaled
+
+omit [NumberField L] in
+/-- Membership in the chosen basis lattice is exactly the coefficient
+integrality needed by the restricted local-product model. -/
+theorem relativeBasisIntegralAt_repr_mem
+    (w : HeightOneSpectrum (𝓞 K))
+    (x : w.adicCompletion K ⊗[K] L)
+    (hx : RelativeBasisIntegralAt
+      (K := K) (L := L) w x)
+    (i : RelativeAdeleBasisIndex (K := K) (L := L)) :
+    (Algebra.TensorProduct.basis
+        (w.adicCompletion K)
+        (relativeExtensionBasis
+          (K := K) (L := L))).repr x i ∈
+      w.adicCompletionIntegers K := by
+  classical
+  rcases hx with ⟨c, rfl⟩
+  simp only [map_sum, Algebra.TensorProduct.basis_repr_tmul,
+    Module.Basis.repr_self, Finsupp.mapRange_single, map_one,
+    Finsupp.smul_single, smul_eq_mul, mul_one,
+    Finsupp.coe_finsetSum, Finset.sum_apply]
+  rw [Finset.sum_eq_single i]
+  · simpa only [Finsupp.single_eq_same] using (c i).property
+  · intro j _ hji
+    exact Finsupp.single_eq_of_ne hji.symm
+  · intro h
+    exact (h (Finset.mem_univ i)).elim
+
+omit [NumberField L] in
+/-- The chosen-basis lattice consists exactly of tensors with integral coefficients. -/
+theorem relativeBasisIntegralAt_iff_repr_mem
+    (w : HeightOneSpectrum (𝓞 K))
+    (x : w.adicCompletion K ⊗[K] L) :
+    RelativeBasisIntegralAt (K := K) (L := L) w x ↔
+      ∀ i : RelativeAdeleBasisIndex (K := K) (L := L),
+        (Algebra.TensorProduct.basis (w.adicCompletion K)
+          (relativeExtensionBasis (K := K) (L := L))).repr x i ∈
+            w.adicCompletionIntegers K := by
+  constructor
+  · exact relativeBasisIntegralAt_repr_mem w x
+  · intro hx
+    classical
+    let b := Algebra.TensorProduct.basis (w.adicCompletion K)
+      (relativeExtensionBasis (K := K) (L := L))
+    refine ⟨fun i => ⟨b.repr x i, hx i⟩, ?_⟩
+    simpa only [b, Algebra.TensorProduct.basis_apply,
+      TensorProduct.smul_tmul', smul_eq_mul, mul_one] using (b.sum_repr x).symm

@@ -161,7 +161,7 @@ theorem finiteKummerCoefficientH2Map_discreteContinuousH1Cup
     (chi psi : ContinuousH1ZMod (p := (p : ℕ)) (G := Gal(L/K))) :
     finiteKummerCoefficientH2Map K L p hmu
         (Cohomology.discreteContinuousH2AddEquiv (R := ℤ)
-          (Cohomology.continuousH1CupProductLifted chi psi)) =
+          (Cohomology.continuousH1CupProductLifted (p := (p : ℕ)) (G := Gal(L/K)) chi psi)) =
       groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K L)
         (finiteKummerCupCoefficientTwoCocycle K L p hmu chi psi) := by
   rw [Cohomology.discreteContinuousH2AddEquiv_continuousH1Cup (R := ℤ)]

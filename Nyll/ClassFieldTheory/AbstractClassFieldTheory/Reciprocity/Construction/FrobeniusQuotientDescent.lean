@@ -99,7 +99,7 @@ noncomputable def frobeniusQuotientRepresentation (D : DegreeData G)
       map_one' := by
         ext a
         change A.ρ (1 : G) a.1 = a.1
-        simp only [map_one, Module.End.one_apply]
+        simp only [map_one, one_apply_eq_self]
       map_mul' := by
         intro q r
         refine Quotient.inductionOn₂' q r ?_
@@ -435,7 +435,7 @@ theorem descend_maximalUnramified_fixed_of_finiteSupport (D : DegreeData G)
   have hfPowFixed (n : ℕ) : A.ρ (f.1 ^ n) aI.1 = aI.1 := by
     induction n with
     | zero =>
-        simp only [pow_zero, map_one, Module.End.one_apply]
+        simp only [pow_zero, map_one, one_apply_eq_self]
     | succ n ih =>
         rw [pow_succ, map_mul]
         change A.ρ (f.1 ^ n) (A.ρ f.1 aI.1) = aI.1

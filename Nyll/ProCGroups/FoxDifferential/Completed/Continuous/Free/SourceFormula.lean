@@ -130,7 +130,7 @@ theorem freeProCZCCompletedFoxBoundary_of_continuousCrossedDifferential
   all_goals
     simp [f, h, betaVec, boundaryVec, beta, toPUnitCoordinates,
       zcCompletedGroupAlgebraBoundary]
-  all_goals rfl
+  rfl
 
 end SourceFormula
 

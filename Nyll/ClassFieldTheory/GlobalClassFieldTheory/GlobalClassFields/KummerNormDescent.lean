@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.LocalResidueArithmetic
@@ -40,7 +42,9 @@ extension and then viewed over the original number field.
 
 @[expose] public section
 
-open scoped BigOperators NumberField NumberField.LiesOver
+open scoped BigOperators NumberField
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 open NumberField IsDedekindDomain
 
 noncomputable section

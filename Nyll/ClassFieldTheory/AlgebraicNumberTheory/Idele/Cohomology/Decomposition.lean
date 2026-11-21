@@ -159,11 +159,17 @@ noncomputable def ideleSupportedAtEquivInfiniteProd
     IdeleGroup.supportedAt (K := F) (S : Set _) ≃*
       InfiniteIdeleGroup F ×
         FiniteIdeleGroup.supportedAt (K := F) (S : Set _) where
-  toFun a := ⟨a.1.1, ⟨a.1.2, a.2⟩⟩
-  invFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-  map_mul' _ _ := rfl
+  toFun a := ⟨IdeleGroup.infinitePart a.1, ⟨IdeleGroup.finiteCoordinates a.1, a.2⟩⟩
+  invFun x := ⟨IdeleGroup.ofComponents x.1 x.2.1, by
+    change IdeleGroup.finiteCoordinates (IdeleGroup.ofComponents x.1 x.2.1) ∈
+      FiniteIdeleGroup.supportedAt (S : Set _)
+    rw [IdeleGroup.finiteCoordinates_ofComponents]
+    exact x.2.2⟩
+  left_inv a := Subtype.ext (IdeleGroup.ofComponents_parts a.1)
+  right_inv x := Prod.ext (IdeleGroup.infinitePart_ofComponents x.1 x.2.1)
+    (Subtype.ext (IdeleGroup.finiteCoordinates_ofComponents x.1 x.2.1))
+  map_mul' a b := Prod.ext (map_mul IdeleGroup.infinitePart a.1 b.1)
+    (Subtype.ext (map_mul IdeleGroup.finiteCoordinates a.1 b.1))
 
 /-- The actual `S`-idele group identified with its complete family of
 archimedean, unrestricted finite, and integral finite local factors. -/
@@ -179,7 +185,7 @@ noncomputable def ideleSupportedAtEquivSPlaceFactors
 theorem ideleSupportedAtEquivSPlaceFactors_infinite
     (S : Finset (HeightOneSpectrum (𝓞 F)))
     (a : IdeleGroup.supportedAt (K := F) (S : Set _)) :
-    (ideleSupportedAtEquivSPlaceFactors S a).1 = a.1.1 :=
+    (ideleSupportedAtEquivSPlaceFactors S a).1 = IdeleGroup.infinitePart a.1 :=
   rfl
 
 @[simp]
@@ -188,7 +194,7 @@ theorem ideleSupportedAtEquivSPlaceFactors_inside
     (a : IdeleGroup.supportedAt (K := F) (S : Set _))
     (v : {v : HeightOneSpectrum (𝓞 F) // v ∈ S}) :
     (ideleSupportedAtEquivSPlaceFactors S a).2.1 v =
-      a.1.2 v.1 :=
+      IdeleGroup.finiteCoordinates a.1 v.1 :=
   rfl
 
 @[simp]
@@ -198,7 +204,7 @@ theorem ideleSupportedAtEquivSPlaceFactors_outside_coe
     (v : {v : HeightOneSpectrum (𝓞 F) // v ∉ S}) :
     ((ideleSupportedAtEquivSPlaceFactors S a).2.2 v :
         (v.1.adicCompletion F)ˣ) =
-      a.1.2 v.1 :=
+      IdeleGroup.finiteCoordinates a.1 v.1 :=
   rfl
 
 section FiniteTensorFamily

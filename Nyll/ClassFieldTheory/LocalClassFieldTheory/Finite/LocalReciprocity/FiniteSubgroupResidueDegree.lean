@@ -6,8 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Frobenius
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.LocalResidueDatum
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 
 /-!
 # Finite local reciprocity: residue degree of a finite abstract field
@@ -24,7 +25,7 @@ original local field.
 universe u
 
 namespace LocalClassFieldTheory
-open CyclicCohomology RamificationTheory ClassFormation
+open RamificationTheory ClassFormation
 
 open LocalFieldTheory
 
@@ -265,9 +266,7 @@ theorem localAbstractFixedResidueIntermediateField_finiteDimensional
     (H : ClosedSubgroup (Gal(SeparableClosure K/K)))
     [Finite
       ((baseField (Gal(SeparableClosure K/K))).toSubgroup ⧸
-        extensionSubgroup
-          (baseField (Gal(SeparableClosure K/K))) H
-          (le_baseField H))] :
+        (H.toSubgroup.subgroupOf (baseField (Gal(SeparableClosure K/K))).toSubgroup))] :
     FiniteDimensional
       (decompositionResidueField K (localSeparableValuationSubring K))
       (localAbstractFixedResidueIntermediateField K H) := by
@@ -309,9 +308,7 @@ noncomputable def localAbstractFixedResidueFiniteGaloisIntermediateField
     (H : ClosedSubgroup (Gal(SeparableClosure K/K)))
     [Finite
       ((baseField (Gal(SeparableClosure K/K))).toSubgroup ⧸
-        extensionSubgroup
-          (baseField (Gal(SeparableClosure K/K))) H
-          (le_baseField H))] :
+        (H.toSubgroup.subgroupOf (baseField (Gal(SeparableClosure K/K))).toSubgroup))] :
     FiniteGaloisIntermediateField
       (decompositionResidueField K (localSeparableValuationSubring K))
       (selectedResidueField (localSeparableValuationSubring K)) := by

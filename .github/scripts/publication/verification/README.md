@@ -5,7 +5,15 @@ including private declarations. All safe declarations, together with their trans
 dependencies, are exported to the pinned NanoDa checker. The official Lean kernel
 also replays the imported environment at trust level zero. The only allowed axioms
 are `propext`, `Classical.choice`, and `Quot.sound`; a source, coverage, axiom, checker,
-or replay failure fails CI. There is no option to skip a verification stage.
+or replay failure fails CI. Full verification retains all of those stages.
+
+NYLL CI explicitly selects the `proof` phase only, at the owner's request. It
+requires the normal Lean build, strict axiom inventory (including sorry rejection),
+complete declaration/export coverage, and NanoDa for every source shard. The
+additional official kernel replay of imported artifacts is not run and is not
+claimed by its phase receipts or cache publication. Normal Lean compilation still
+uses the Lean kernel; imported `.olean` files are not independently replayed by it.
+Other repositories and the local full-verification default are unchanged.
 
 The existing Pro-C Groups, Class Field Theory, and Sawin pipelines remain in place.
 The other four standalone libraries use `proof-check.yml` after their depth builds
@@ -20,7 +28,7 @@ tree and configuration, so dividing the work cannot silently exclude a source fi
 CFT checker wrappers unchanged. `setup_tools.py` pins the exporter and NanoDa Git
 commits. `verify.py` binds sources, tool binaries, and intermediate evidence by hash;
 it runs a normal incremental warning-free build before checking the proof artifacts.
-Build cache hits never replace declaration checks, NanoDa, or kernel replay. The
+Build cache hits never replace declaration checks, NanoDa, or any selected replay. The
 workflow restores the same cache paths and keys as the preceding build jobs.
 
 Every stage records its result and duration. CI displays the active stage once a

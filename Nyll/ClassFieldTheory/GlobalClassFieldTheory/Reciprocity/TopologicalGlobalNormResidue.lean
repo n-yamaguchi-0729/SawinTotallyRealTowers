@@ -6,8 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.UniverseNormConductor
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.TopologicalGlobalNormResidueAbelianization
 public import Mathlib.FieldTheory.KrullTopology
 public import Mathlib.Topology.Algebra.Group.Quotient
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
@@ -40,47 +43,11 @@ universe u v
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-attribute [local instance]
-  globalNormResidueIdeleClassCommGroup globalNormResidueIdeleClassIsMulCommutative
 
 variable
     (K : Type u) (L : Type v) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L]
-
-/-- The native quotient topology on
-`C_K / N_{L/K}(C_L)` is discrete because the genuine ordinary
-idele-class norm range is open. -/
-theorem ideleClassNormQuotient_discreteTopology :
-    DiscreteTopology
-      (IdeleClassGroup K ⧸
-        (_root_.ideleClassNorm K L).range) := by
-  apply QuotientGroup.discreteTopology
-  exact
-    GlobalClassFields.ideleClassNorm_range_isOpen_universe K L
-
-/-- Global norm-residue reciprocity as a homeomorphic multiplicative
-equivalence between the native norm quotient and the finite Krull
-Galois group.  Both directions are continuous in their genuine
-topologies. -/
-noncomputable def globalNormResidueContinuousMulEquiv :
-    (IdeleClassGroup K ⧸
-        (_root_.ideleClassNorm K L).range) ≃ₜ*
-      Gal(L / K) := by
-  let : DiscreteTopology
-      (IdeleClassGroup K ⧸
-        (_root_.ideleClassNorm K L).range) :=
-    ideleClassNormQuotient_discreteTopology K L
-  let e :
-      (IdeleClassGroup K ⧸
-          (_root_.ideleClassNorm K L).range) ≃*
-        Gal(L / K) :=
-    AddEquiv.toMultiplicative
-      (globalNormResidueEquiv K L)
-  exact
-    { e with
-      continuous_toFun := continuous_of_discreteTopology
-      continuous_invFun := continuous_of_discreteTopology }
 
 /-- Evaluation of the topological norm-residue equivalence is the
 existing actual norm-residue equivalence on the same quotient class. -/
@@ -89,7 +56,7 @@ theorem globalNormResidueContinuousMulEquiv_apply
     (c :
       IdeleClassGroup K ⧸
         (_root_.ideleClassNorm K L).range) :
-    globalNormResidueContinuousMulEquiv K L c =
+    standardNumberFieldNormResidueContinuousMulEquiv K L c =
       Additive.toMul
         (globalNormResidueEquiv K L
           (Additive.ofMul c)) := by
@@ -108,7 +75,7 @@ noncomputable def globalReciprocityContinuousMulEquiv :
     Gal(L / K) ≃ₜ*
       (IdeleClassGroup K ⧸
         (_root_.ideleClassNorm K L).range) :=
-  (globalNormResidueContinuousMulEquiv K L).symm
+  (standardNumberFieldNormResidueContinuousMulEquiv K L).symm
 
 /-- Evaluation of topological global reciprocity is the inverse of the
 actual norm-residue equivalence, with no additional choice of an
@@ -122,24 +89,11 @@ theorem globalReciprocityContinuousMulEquiv_apply
           (Additive.ofMul σ)) := by
   rfl
 
-/-- The genuine quotient map
-`C_K → C_K / N_{L/K}(C_L)`, bundled with continuity for the native
-ordinary quotient topology. -/
-noncomputable def ideleClassNormQuotientContinuousMonoidHom :
-    IdeleClassGroup K →ₜ*
-      (IdeleClassGroup K ⧸
-        (_root_.ideleClassNorm K L).range) :=
-  { QuotientGroup.mk'
-      (_root_.ideleClassNorm K L).range with
-    continuous_toFun := QuotientGroup.continuous_mk }
-
 /-- The actual global norm-residue map, bundled as a continuous
 homomorphism on the ordinary idele-class topology. -/
-noncomputable def globalNormResidueContinuousMonoidHom :
+noncomputable abbrev globalNormResidueContinuousMonoidHom :
     IdeleClassGroup K →ₜ* Gal(L / K) :=
-  (ContinuousMonoidHom.toContinuousMonoidHom
-      (globalNormResidueContinuousMulEquiv K L)).comp
-    (ideleClassNormQuotientContinuousMonoidHom K L)
+  standardNumberFieldArtinContinuousMonoidHom K L
 
 /-- Evaluation of the continuous global norm-residue map agrees with
 the existing actual global norm-residue symbol. -/

@@ -49,7 +49,6 @@ theorem sawin_totally_real_tower :
           factors.card = Module.finrank ℚ F ∧
           ∀ p ∈ factors, p.IsMaximal ∧ (q : 𝓞 F) ∈ p := by
   classical
-  let instPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   obtain ⟨primes, L, hGal, _, hInfinite, hL, hprimes, _, hsplit⟩ :=
     exists_sawinInfinite_totallyReal_split_field
   let Q : Set ℕ := Set.range (fun n : ℕ ↦ (primes n).val)

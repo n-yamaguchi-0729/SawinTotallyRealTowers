@@ -68,6 +68,42 @@ theorem degreeTwo_equivariant (X : TopRep.{v} R G)
       (g⁻¹ * (g * x₂))) = z₀.1 (g * x₀) (g * x₁) (g * x₂) at h
   simpa only [inv_mul_cancel_left] using h
 
+section CochainEvaluation
+
+variable
+    {H : Type v} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    {X : TopRep.{v} R G} {Y : TopRep.{v} R H} (r : H →ₜ* G)
+    (φ : TopRep.res r.toMonoidHom X ⟶ Y)
+
+private theorem resolutionMap_evaluate_succ (n : ℕ) (s : resolutionX X (n + 1)) (x : H) :
+    (resolutionMap r φ (n + 1) s) x = resolutionMap r φ n (s (r x)) := by
+  rw [resolutionMap_succ]
+  rfl
+
+private theorem cochainsMap_value (n : ℕ) (w : (homogeneousCochains X).X n) :
+    (((cochainsMap r φ).f n) w).val = resolutionMap r φ (n + 1) w.val := by
+  rw [cochainsMap_f]
+  rfl
+
+private theorem cochainsMap_evaluate_two (w : (homogeneousCochains X).X 2) (a b c : H) :
+    (((cochainsMap r φ).f 2) w).val a b c = φ (w.val (r a) (r b) (r c)) := by
+  rw [cochainsMap_value, resolutionMap_evaluate_succ, resolutionMap_evaluate_succ,
+    resolutionMap_evaluate_succ, resolutionMap_zero]
+
+/-- The inclusion of mapped cycles into cochains is the original cochain map. -/
+theorem cochainOfMappedCocycle (n : ℕ) (z : cocycles X n) :
+    (homogeneousCochains Y).iCycles n (cocyclesMap r φ n z) =
+      ((cochainsMap r φ).f n) ((homogeneousCochains X).iCycles n z) :=
+  ConcreteCategory.congr_hom (HomologicalComplex.cyclesMap_i (cochainsMap r φ) n) z
+
+/-- Evaluating a mapped degree-two cocycle uses the original arguments and coefficient map. -/
+theorem mappedRelativeCocycle_apply (z : cocycles X 2) (a b c : H) :
+    ((homogeneousCochains Y).iCycles 2 (cocyclesMap r φ 2 z)).val a b c =
+      φ (((homogeneousCochains X).iCycles 2 z).val (r a) (r b) (r c)) := by
+  rw [cochainOfMappedCocycle, cochainsMap_evaluate_two]
+
+end CochainEvaluation
+
 /-- Every continuous cohomology class has a homogeneous cocycle representative. -/
 theorem π_surjective (A : TopRep.{v} R G) (n : ℕ) :
     Function.Surjective (π A n) := by

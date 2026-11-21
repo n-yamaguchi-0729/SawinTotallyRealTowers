@@ -6,27 +6,26 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Mathlib.Algebra.MonoidAlgebra.MapDomain
+public import Nyll.ProCGroups.CompletedGroupAlgebra.Basic.InClass.Stage
 public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
 
 /-!
-# Fox differential: completed — coefficient rings — completed group algebra
+# Discrete integral group-algebra families for the Fox differential
 
-The principal declarations in this module are:
-
-- `CompletedGroupAlgebraIndexInClass`
-  The index set for a completed group algebra over finite quotients belonging to a class `C`.
-- `CompletedGroupAlgebraQuotientInClass`
-  The finite quotient of `G` attached to one class-restricted completed-group-algebra stage.
-- `completedGroupAlgebraTransitionInClass_id`
-  Identity case for completedGroupAlgebraTransitionInClass_id.
-- `completedGroupAlgebraTransitionInClass_comp`
-  Composition lemma completedGroupAlgebraTransitionInClass_comp.
+Integral Fox coefficients use the common finite quotient and group-ring stage maps.
+Their inverse system uses discrete stage topologies.
 -/
 
 @[expose] public section
 
 namespace FoxDifferential
+
+open _root_.CompletedGroupAlgebra
+  (CompletedGroupAlgebraIndexInClass CompletedGroupAlgebraQuotientInClass)
+
+open _root_.CompletedGroupAlgebra
+  (CompletedGroupAlgebraStageInClass completedGroupAlgebraTransitionInClass
+    completedGroupAlgebraTransitionInClass_id completedGroupAlgebraTransitionInClass_comp)
 
 open Set
 open ProCGroups
@@ -40,154 +39,49 @@ universe u v w
 
 variable (G : Type u) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
-/-- The index set for a completed group algebra over finite quotients belonging to a class `C`. -/
-abbrev CompletedGroupAlgebraIndexInClass (C : ProCGroups.FiniteGroupClass.{u}) :=
-  OrderDual (OpenNormalSubgroupInClass C G)
-
-/-- The finite quotient of `G` attached to one class-restricted completed-group-algebra stage. -/
-abbrev CompletedGroupAlgebraQuotientInClass
-    (C : ProCGroups.FiniteGroupClass.{u}) (U : CompletedGroupAlgebraIndexInClass G C) : Type _ :=
-  (openNormalSubgroupInClassSystem C G).X U
-
-/-- The discrete group ring over one class-restricted finite quotient of `G`. -/
-abbrev CompletedGroupAlgebraStageInClass
-    (C : ProCGroups.FiniteGroupClass.{u}) (U : CompletedGroupAlgebraIndexInClass G C) : Type _ :=
-  MonoidAlgebra ℤ (CompletedGroupAlgebraQuotientInClass G C U)
-
-/-- The transition map between two class-restricted completed-group-algebra stages. -/
-def completedGroupAlgebraTransitionInClass
-    (C : ProCGroups.FiniteGroupClass.{u})
-    {U V : CompletedGroupAlgebraIndexInClass G C} (hUV : U ≤ V) :
-    CompletedGroupAlgebraStageInClass G C V →+*
-      CompletedGroupAlgebraStageInClass G C U :=
-  MonoidAlgebra.mapDomainRingHom ℤ
-    (OpenNormalSubgroupInClass.map
-      (C := C) (G := G)
-      (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) hUV)
-
-/-- Identity case for completedGroupAlgebraTransitionInClass_id. -/
-@[simp]
-theorem completedGroupAlgebraTransitionInClass_id
-    (C : ProCGroups.FiniteGroupClass.{u}) (U : CompletedGroupAlgebraIndexInClass G C) :
-    completedGroupAlgebraTransitionInClass G C (le_rfl : U ≤ U) = RingHom.id _ := by
-  rw [completedGroupAlgebraTransitionInClass, OpenNormalSubgroupInClass.map_id]
-  exact MonoidAlgebra.mapDomainRingHom_id
-    (R := ℤ) (M := CompletedGroupAlgebraQuotientInClass G C U)
-
-/-- Composition lemma completedGroupAlgebraTransitionInClass_comp. -/
-@[simp]
-theorem completedGroupAlgebraTransitionInClass_comp
-    (C : ProCGroups.FiniteGroupClass.{u})
-    {U V W : CompletedGroupAlgebraIndexInClass G C} (hUV : U ≤ V) (hVW : V ≤ W) :
-    (completedGroupAlgebraTransitionInClass G C hUV).comp
-        (completedGroupAlgebraTransitionInClass G C hVW) =
-      completedGroupAlgebraTransitionInClass G C (hUV.trans hVW) := by
-  unfold completedGroupAlgebraTransitionInClass
-  exact
-    (MonoidAlgebra.mapDomainRingHom_comp (R := ℤ)
-      (OpenNormalSubgroupInClass.map
-        (C := C) (G := G)
-        (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) hUV)
-      (OpenNormalSubgroupInClass.map
-        (C := C) (G := G)
-        (U := OrderDual.ofDual V) (V := OrderDual.ofDual W) hVW)).symm.trans
-      (congrArg (MonoidAlgebra.mapDomainRingHom ℤ)
-        (OpenNormalSubgroupInClass.map_comp
-          (C := C) (G := G)
-          (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) (W := OrderDual.ofDual W)
-          hUV hVW))
-
 /-- The class-restricted inverse system of finite-stage integral group rings. -/
 def completedGroupAlgebraSystemInClass
     (C : ProCGroups.FiniteGroupClass.{u}) :
     InverseSystem (I := CompletedGroupAlgebraIndexInClass G C) where
-  X := CompletedGroupAlgebraStageInClass G C
+  X := CompletedGroupAlgebraStageInClass C ℤ G
   topologicalSpace := fun _ => ⊥
-  map := fun {U V} hUV => completedGroupAlgebraTransitionInClass G C hUV
+  map := fun {U V} hUV => completedGroupAlgebraTransitionInClass C ℤ G hUV
   continuous_map := by
     intro U V hUV
-    let : TopologicalSpace (CompletedGroupAlgebraStageInClass G C U) := ⊥
-    let : TopologicalSpace (CompletedGroupAlgebraStageInClass G C V) := ⊥
-    let : DiscreteTopology (CompletedGroupAlgebraStageInClass G C V) := ⟨rfl⟩
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C ℤ G U) := ⊥
+    let : TopologicalSpace (CompletedGroupAlgebraStageInClass C ℤ G V) := ⊥
+    let : DiscreteTopology (CompletedGroupAlgebraStageInClass C ℤ G V) := ⟨rfl⟩
     exact continuous_of_discreteTopology
   map_id := by
     intro U
     funext x
     exact congrFun
       (congrArg DFunLike.coe
-        (completedGroupAlgebraTransitionInClass_id G C U)) x
+        (completedGroupAlgebraTransitionInClass_id (R := ℤ) (G := G) C U)) x
   map_comp := by
     intro U V W hUV hVW
     funext x
     exact congrFun
       (congrArg DFunLike.coe
-        (completedGroupAlgebraTransitionInClass_comp G C hUV hVW)) x
-
-/-- The quotient ring map from `ℤ[G]` to one class-restricted finite stage. -/
-def completedGroupAlgebraStageMapInClass
-    (C : ProCGroups.FiniteGroupClass.{u}) (U : CompletedGroupAlgebraIndexInClass G C) :
-    MonoidAlgebra ℤ G →+* CompletedGroupAlgebraStageInClass G C U :=
-  MonoidAlgebra.mapDomainRingHom ℤ
-    (openNormalSubgroupInClassProj (C := C) (G := G) U)
-
-/-- Evaluation formula for completedGroupAlgebraStageMapInClass_of. -/
-@[simp]
-theorem completedGroupAlgebraStageMapInClass_of
-    (C : ProCGroups.FiniteGroupClass.{u}) (U : CompletedGroupAlgebraIndexInClass G C) (g : G) :
-    completedGroupAlgebraStageMapInClass G C U (MonoidAlgebra.of ℤ _ g) =
-      MonoidAlgebra.single (openNormalSubgroupInClassProj (C := C) (G := G) U g) 1 := by
-  classical
-  change
-    MonoidAlgebra.mapDomain
-        (openNormalSubgroupInClassProj (C := C) (G := G) U)
-        (MonoidAlgebra.single g 1) =
-      MonoidAlgebra.single (openNormalSubgroupInClassProj (C := C) (G := G) U g) 1
-  exact MonoidAlgebra.mapDomain_single
-
-/-- Compatibility lemma completedGroupAlgebraStageMapInClass_compatible. -/
-@[simp]
-theorem completedGroupAlgebraStageMapInClass_compatible
-    (C : ProCGroups.FiniteGroupClass.{u})
-    {U V : CompletedGroupAlgebraIndexInClass G C} (hUV : U ≤ V) :
-    (completedGroupAlgebraTransitionInClass G C hUV).comp
-        (completedGroupAlgebraStageMapInClass G C V) =
-      completedGroupAlgebraStageMapInClass G C U := by
-  unfold completedGroupAlgebraTransitionInClass completedGroupAlgebraStageMapInClass
-  have hproj :
-      (OpenNormalSubgroupInClass.map
-        (C := C) (G := G)
-        (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) hUV).comp
-          (openNormalSubgroupInClassProj (C := C) (G := G) V) =
-        openNormalSubgroupInClassProj (C := C) (G := G) U := by
-    ext g
-    exact congrFun
-      (openNormalSubgroupInClassProj_compatible
-        (C := C) (G := G) U V hUV) g
-  exact
-    (MonoidAlgebra.mapDomainRingHom_comp (R := ℤ)
-      (OpenNormalSubgroupInClass.map
-        (C := C) (G := G)
-        (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) hUV)
-      (openNormalSubgroupInClassProj (C := C) (G := G) V)).symm.trans
-      (congrArg (MonoidAlgebra.mapDomainRingHom ℤ) hproj)
+        (completedGroupAlgebraTransitionInClass_comp (R := ℤ) (G := G) C hUV hVW)) x
 
 /-- Compatibility for a class-restricted completed group algebra family. -/
 def CompletedGroupAlgebraCompatibleInClass
     (C : ProCGroups.FiniteGroupClass.{u})
     (x : ∀ U : CompletedGroupAlgebraIndexInClass G C,
-      CompletedGroupAlgebraStageInClass G C U) : Prop :=
+      CompletedGroupAlgebraStageInClass C ℤ G U) : Prop :=
   (completedGroupAlgebraSystemInClass G C).Compatible x
 
 /-- The class-restricted completed group algebra as an inverse-limit subtype. -/
 abbrev CompletedGroupAlgebraInClass (C : ProCGroups.FiniteGroupClass.{u}) : Type _ :=
   {x : ∀ U : CompletedGroupAlgebraIndexInClass G C,
-      CompletedGroupAlgebraStageInClass G C U //
+      CompletedGroupAlgebraStageInClass C ℤ G U //
     CompletedGroupAlgebraCompatibleInClass G C x}
 
 /-- Projection from the class-restricted completed group algebra to one finite stage. -/
 def completedGroupAlgebraProjectionInClass
     (C : ProCGroups.FiniteGroupClass.{u}) (U : CompletedGroupAlgebraIndexInClass G C) :
-    CompletedGroupAlgebraInClass G C → CompletedGroupAlgebraStageInClass G C U :=
+    CompletedGroupAlgebraInClass G C → CompletedGroupAlgebraStageInClass C ℤ G U :=
   (completedGroupAlgebraSystemInClass G C).projection U
 
 section ComapInClass

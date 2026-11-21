@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 public import Nyll.GaloisCohomology.Kummer.Concrete.RootCharacters
 public import Mathlib.Algebra.Group.Hom.Basic
@@ -225,13 +227,9 @@ theorem
         Units.map
           (algebraMap K (v.adicCompletion K)).toMonoidHom u := by
     apply Units.ext
-    let x : WithAbs vK :=
-      (WithAbs.equiv vK).symm (u : K)
-    change
-      finitePlaceCompletionRingHom v (x : C) =
-        algebraMap K (v.adicCompletion K) (u : K)
-    rw [finitePlaceCompletionRingHom_coe]
-    rfl
+    change finitePlaceCompletionRingEquiv v (algebraMap K C (u : K)) =
+      algebraMap K (v.adicCompletion K) (u : K)
+    exact (finitePlaceCompletionAlgEquiv v).commutes (u : K)
   have hbeta_val :
       (beta : L) ^ (n : ℕ) =
         algebraMap K L (a : K) := by

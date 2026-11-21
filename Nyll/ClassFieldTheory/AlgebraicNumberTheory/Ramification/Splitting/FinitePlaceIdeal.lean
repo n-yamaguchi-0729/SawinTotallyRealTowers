@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceContraction
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
@@ -150,39 +154,6 @@ theorem finitePlaceSplitsCompletely_iff_stabilizer_eq_bot
     exact congrArg Subtype.val happ
   rw [finitePlaceSplitsCompletely_iff_centre_stabilizer_eq_bot
     (K := K) (L := L) v w, hw]
-
-omit [FiniteDimensional K L] [IsGalois K L] in
-/-- There are finitely many finite places of `L` above a fixed finite
-place of `K`. -/
-theorem finite_finitePlaceBelow_fibre
-    (v : HeightOneSpectrum (𝓞 K)) :
-    Set.Finite
-      {W : HeightOneSpectrum (𝓞 L) |
-        finitePlaceBelow (K := K) W = v} := by
-  apply Set.Finite.of_finite_image
-  · apply
-      (Algebra.QuasiFinite.finite_primesOver
-        (R := 𝓞 K) (S := 𝓞 L) v.asIdeal).subset
-    · rintro I ⟨W, hW, rfl⟩
-      exact
-        ⟨W.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal hW).symm⟩⟩
-  · intro W₁ _ W₂ _ h
-    apply HeightOneSpectrum.ext
-    exact h
-
-omit [FiniteDimensional K L] [IsGalois K L] in
-/-- The inverse image of a finite set of base finite places under
-contraction is finite. -/
-theorem Set.Finite.preimage_finitePlaceBelow
-    {S : Set (HeightOneSpectrum (𝓞 K))}
-    (hS : S.Finite) :
-    {W : HeightOneSpectrum (𝓞 L) |
-      finitePlaceBelow (K := K) W ∈ S}.Finite := by
-  change
-    ((finitePlaceBelow (K := K)) ⁻¹' S).Finite
-  exact hS.preimage'
-    (fun v _ => finite_finitePlaceBelow_fibre
-      (K := K) (L := L) v)
 
 section IntermediateField
 

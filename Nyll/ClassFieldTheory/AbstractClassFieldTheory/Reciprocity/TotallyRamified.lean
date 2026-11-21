@@ -291,8 +291,7 @@ theorem abstractReciprocity_exists_hMinusOne_primitive
       below := E.below
       normal := hnormal
       finite := E.finiteQuotient
-      generator := g
-      generates := hg }
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg }
   have hzero : Limits.IsZero (IntegralGroupCohomology.Universe.tate M (-1)) := by
     simpa only [Ecf,
       FiniteCyclicSubextension.fixedRepresentation] using

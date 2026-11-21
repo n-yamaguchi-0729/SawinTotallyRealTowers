@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageKummerFieldUnitsH2
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
 
@@ -75,7 +76,7 @@ theorem openNormalArithmeticStage_absoluteH2Map_eq_zero
     (Cohomology.continuousCohomologyZModPMapLifted (n : ℕ)
       (openNormalArithmeticStageAbsoluteRestriction F n hpOdd U) 2).hom x = 0 := by
   let : CompactSpace (Field.absoluteGaloisGroup F) :=
-    inferInstanceAs (CompactSpace Gal(AlgebraicClosure F/F))
+    Field.absoluteGaloisGroup.compactSpace F
   obtain ⟨s, hs⟩ := openNormalArithmeticStage_exists_absoluteLift F n hpOdd U hmu
     (degreeTwoCocycleRepresentative x)
   rw [← degreeTwoCocycleRepresentative_π x]

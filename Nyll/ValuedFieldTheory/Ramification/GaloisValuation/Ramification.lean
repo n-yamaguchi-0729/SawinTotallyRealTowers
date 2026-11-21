@@ -886,19 +886,19 @@ structure ValuationActionRamification (G : Type u) [Group G]
   /-- Membership of action quotients at a fixed level is closed under multiplication. -/
   quotient_mul_mem :
     ∀ {n : ℕ} {σ τ : G},
-      ((action σ) probe / probe) ∈ principalUnits.subgroup n →
-      ((action τ) probe / probe) ∈ principalUnits.subgroup n →
-      ((action (σ * τ)) probe / probe) ∈ principalUnits.subgroup n
+      ((action σ) probe / probe) ∈ principalUnits.level n →
+      ((action τ) probe / probe) ∈ principalUnits.level n →
+      ((action (σ * τ)) probe / probe) ∈ principalUnits.level n
   /-- Membership of action quotients at a fixed level is closed under inversion. -/
   quotient_inv_mem :
     ∀ {n : ℕ} {σ : G},
-      ((action σ) probe / probe) ∈ principalUnits.subgroup n →
-      ((action σ⁻¹) probe / probe) ∈ principalUnits.subgroup n
+      ((action σ) probe / probe) ∈ principalUnits.level n →
+      ((action σ⁻¹) probe / probe) ∈ principalUnits.level n
   /-- Membership of action quotients at a fixed level is preserved under conjugation. -/
   quotient_conj_mem :
     ∀ {n : ℕ} {γ σ : G},
-      ((action σ) probe / probe) ∈ principalUnits.subgroup n →
-      ((action (γ * σ * γ⁻¹)) probe / probe) ∈ principalUnits.subgroup n
+      ((action σ) probe / probe) ∈ principalUnits.level n →
+      ((action (γ * σ * γ⁻¹)) probe / probe) ∈ principalUnits.level n
 
 namespace ValuationActionRamification
 
@@ -916,19 +916,19 @@ def actionQuotient (σ : G) : K :=
 
 /-- Defines `actionDepthAtLeast`. -/
 def actionDepthAtLeast (n : ℕ) (σ : G) : Prop :=
-  A.actionQuotient σ ∈ A.principalUnits.subgroup n
+  A.actionQuotient σ ∈ A.principalUnits.level n
 
 /-- States the theorem `actionDepthAtLeast_iff`. -/
 @[simp] theorem actionDepthAtLeast_iff (n : ℕ) (σ : G) :
     A.actionDepthAtLeast n σ ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup n :=
+      A.actionQuotient σ ∈ A.principalUnits.level n :=
   Iff.rfl
 
 /-- States the theorem `actionDepthAtLeast_one`. -/
 theorem actionDepthAtLeast_one (n : ℕ) :
     A.actionDepthAtLeast n 1 := by
   rw [A.actionDepthAtLeast_iff, A.actionQuotient_one]
-  exact (A.principalUnits.subgroup n).one_mem
+  exact (A.principalUnits.level n).one_mem
 
 /-- States the theorem `actionDepthAtLeast_mul`. -/
 theorem actionDepthAtLeast_mul {n : ℕ} {σ τ : G}
@@ -968,7 +968,7 @@ def lowerRamificationGroup (n : ℕ) : Subgroup G where
 principal-unit condition on the action quotient. -/
 theorem mem_lowerRamificationGroup_iff_actionQuotient (n : ℕ) (σ : G) :
     σ ∈ A.lowerRamificationGroup n ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup n :=
+      A.actionQuotient σ ∈ A.principalUnits.level n :=
   (A.mem_lowerRamificationGroup_iff n σ).trans
     (A.actionDepthAtLeast_iff n σ)
 
@@ -988,7 +988,7 @@ instance lowerRamificationGroup_normal_instance (n : ℕ) :
 theorem lowerRamificationGroup_antitone {m n : ℕ} (hmn : m ≤ n) :
     A.lowerRamificationGroup n ≤ A.lowerRamificationGroup m := by
   intro σ hσ
-  exact A.principalUnits.antitone hmn hσ
+  exact A.principalUnits.level_antitone hmn hσ
 
 /-- Package the action-defined groups as a lower ramification filtration. -/
 def toLowerRamificationFiltration : AntitoneNormalSubgroupFiltration G where
@@ -1180,14 +1180,14 @@ theorem mem_wildInertiaSubgroup_iff_actionDepthAtLeast (σ : G) :
 quotient. -/
 theorem mem_inertiaSubgroup_iff_actionQuotient (σ : G) :
     σ ∈ A.inertiaSubgroup ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup 0 :=
+      A.actionQuotient σ ∈ A.principalUnits.level 0 :=
   A.mem_lowerRamificationGroup_iff_actionQuotient 0 σ
 
 /-- Membership in wild inertia, expanded as a principal-unit condition on the
 action quotient. -/
 theorem mem_wildInertiaSubgroup_iff_actionQuotient (σ : G) :
     σ ∈ A.wildInertiaSubgroup ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup 1 :=
+      A.actionQuotient σ ∈ A.principalUnits.level 1 :=
   A.mem_lowerRamificationGroup_iff_actionQuotient 1 σ
 
 /-- States the theorem `wildInertiaSubgroup_le_inertiaSubgroup`. -/
@@ -1278,7 +1278,7 @@ an action-quotient representative in `U^0`. -/
 theorem mem_tameQuotientKernel_iff_exists_actionQuotient_mem_repr
     (q : A.toLowerRamificationFiltration.quotient 1) :
     q ∈ A.toLowerRamificationFiltration.quotientKernelOfLe (Nat.zero_le 1) ↔
-      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.subgroup 0 ∧
+      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.level 0 ∧
         A.toLowerRamificationFiltration.quotientMk 1 σ = q := by
   rw [A.mem_tameQuotientKernel_iff_exists_inertia_repr]
   constructor
@@ -1310,7 +1310,7 @@ quotient `G_0/G_1`, expanded as membership of the action quotient in `U^1`. -/
 theorem tameQuotientMk_eq_one_iff_actionQuotient_mem
     (σ : A.inertiaSubgroup) :
     A.tameQuotientMk σ = 1 ↔
-      A.actionQuotient (σ : G) ∈ A.principalUnits.subgroup 1 :=
+      A.actionQuotient (σ : G) ∈ A.principalUnits.level 1 :=
   (A.tameQuotientMk_eq_one_iff_actionDepthAtLeast σ).trans
     (A.actionDepthAtLeast_iff 1 (σ : G))
 
@@ -1331,7 +1331,7 @@ theorem tameQuotientMk_eq_iff_actionQuotient_div_mem
     (σ τ : A.inertiaSubgroup) :
     A.tameQuotientMk σ = A.tameQuotientMk τ ↔
       A.actionQuotient (((σ / τ : A.inertiaSubgroup) : G)) ∈
-        A.principalUnits.subgroup 1 :=
+        A.principalUnits.level 1 :=
   (A.tameQuotientMk_eq_iff_actionDepthAtLeast_div σ τ).trans
     (A.actionDepthAtLeast_iff 1 (((σ / τ : A.inertiaSubgroup) : G)))
 
@@ -1359,7 +1359,7 @@ theorem tameQuotientMk_eq_iff_actionQuotient_inv_mul_mem
     (σ τ : A.inertiaSubgroup) :
     A.tameQuotientMk σ = A.tameQuotientMk τ ↔
       A.actionQuotient (((τ⁻¹ * σ : A.inertiaSubgroup) : G)) ∈
-        A.principalUnits.subgroup 1 :=
+        A.principalUnits.level 1 :=
   (A.tameQuotientMk_eq_iff_actionDepthAtLeast_inv_mul σ τ).trans
     (A.actionDepthAtLeast_iff 1 (((τ⁻¹ * σ : A.inertiaSubgroup) : G)))
 
@@ -1380,7 +1380,7 @@ theorem quotientMapOfLe_mk_eq_one_iff_actionQuotient_mem {m n : ℕ}
     (hmn : m ≤ n) (σ : G) :
     A.toLowerRamificationFiltration.quotientMapOfLe hmn
         (A.toLowerRamificationFiltration.quotientMk n σ) = 1 ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup m :=
+      A.actionQuotient σ ∈ A.principalUnits.level m :=
   (A.quotientMapOfLe_mk_eq_one_iff_actionDepthAtLeast hmn σ).trans
     (A.actionDepthAtLeast_iff m σ)
 
@@ -1390,7 +1390,7 @@ theorem quotientMapOfLe_mk_mem_ker_iff_actionQuotient_mem {m n : ℕ}
     (hmn : m ≤ n) (σ : G) :
     A.toLowerRamificationFiltration.quotientMk n σ ∈
         (A.toLowerRamificationFiltration.quotientMapOfLe hmn).ker ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup m := by
+      A.actionQuotient σ ∈ A.principalUnits.level m := by
   exact
     (A.toLowerRamificationFiltration.quotientMapOfLe_mk_mem_ker_iff hmn σ).trans
       (A.mem_lowerRamificationGroup_iff_actionQuotient m σ)
@@ -1417,7 +1417,7 @@ theorem quotientMapOfLe_mk_eq_iff_actionQuotient_div_mem {m n : ℕ}
         (A.toLowerRamificationFiltration.quotientMk n σ) =
       A.toLowerRamificationFiltration.quotientMapOfLe hmn
         (A.toLowerRamificationFiltration.quotientMk n τ) ↔
-      A.actionQuotient (σ / τ) ∈ A.principalUnits.subgroup m :=
+      A.actionQuotient (σ / τ) ∈ A.principalUnits.level m :=
   (A.quotientMapOfLe_mk_eq_iff_actionDepthAtLeast_div hmn σ τ).trans
     (A.actionDepthAtLeast_iff m (σ / τ))
 
@@ -1444,7 +1444,7 @@ theorem quotientMapOfLe_mk_eq_iff_actionQuotient_inv_mul_mem {m n : ℕ}
         (A.toLowerRamificationFiltration.quotientMk n σ) =
       A.toLowerRamificationFiltration.quotientMapOfLe hmn
         (A.toLowerRamificationFiltration.quotientMk n τ) ↔
-      A.actionQuotient (τ⁻¹ * σ) ∈ A.principalUnits.subgroup m :=
+      A.actionQuotient (τ⁻¹ * σ) ∈ A.principalUnits.level m :=
   (A.quotientMapOfLe_mk_eq_iff_actionDepthAtLeast_inv_mul hmn σ τ).trans
     (A.actionDepthAtLeast_iff m (τ⁻¹ * σ))
 
@@ -1454,7 +1454,7 @@ theorem quotientMapOfLe_eq_one_iff_exists_actionQuotient_mem_repr
     {m n : ℕ} (hmn : m ≤ n)
     (q : A.toLowerRamificationFiltration.quotient n) :
     A.toLowerRamificationFiltration.quotientMapOfLe hmn q = 1 ↔
-      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.subgroup m ∧
+      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.level m ∧
         A.toLowerRamificationFiltration.quotientMk n σ = q := by
   simpa [toLowerRamificationFiltration_apply,
     mem_lowerRamificationGroup_iff_actionQuotient] using
@@ -1468,7 +1468,7 @@ theorem quotientMapOfLe_mem_ker_iff_exists_actionQuotient_mem_repr
     {m n : ℕ} (hmn : m ≤ n)
     (q : A.toLowerRamificationFiltration.quotient n) :
     q ∈ (A.toLowerRamificationFiltration.quotientMapOfLe hmn).ker ↔
-      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.subgroup m ∧
+      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.level m ∧
         A.toLowerRamificationFiltration.quotientMk n σ = q := by
   simpa [toLowerRamificationFiltration_apply,
     mem_lowerRamificationGroup_iff_actionQuotient] using
@@ -1481,7 +1481,7 @@ theorem mem_quotientKernelOfLe_iff_exists_actionQuotient_mem_repr
     {m n : ℕ} (hmn : m ≤ n)
     (q : A.toLowerRamificationFiltration.quotient n) :
     q ∈ A.toLowerRamificationFiltration.quotientKernelOfLe hmn ↔
-      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.subgroup m ∧
+      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.level m ∧
         A.toLowerRamificationFiltration.quotientMk n σ = q := by
   simpa [toLowerRamificationFiltration_apply,
     mem_lowerRamificationGroup_iff_actionQuotient] using
@@ -1602,7 +1602,7 @@ theorem quotientMapOfLe_mk_mem_quotientKernelOfLe_iff_actionQuotient_mem
     A.toLowerRamificationFiltration.quotientMapOfLe hmn
         (A.toLowerRamificationFiltration.quotientMk n σ) ∈
       A.toLowerRamificationFiltration.quotientKernelOfLe hlm ↔
-      A.actionQuotient σ ∈ A.principalUnits.subgroup l := by
+      A.actionQuotient σ ∈ A.principalUnits.level l := by
   simpa [toLowerRamificationFiltration_apply,
     mem_lowerRamificationGroup_iff_actionQuotient] using
     A.toLowerRamificationFiltration.quotientMapOfLe_mk_mem_quotientKernelOfLe_iff
@@ -1616,7 +1616,7 @@ theorem quotientMapOfLe_mem_quotientKernelOfLe_iff_exists_actionQuotient_mem_rep
     (q : A.toLowerRamificationFiltration.quotient n) :
     A.toLowerRamificationFiltration.quotientMapOfLe hmn q ∈
         A.toLowerRamificationFiltration.quotientKernelOfLe hlm ↔
-      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.subgroup l ∧
+      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.level l ∧
         A.toLowerRamificationFiltration.quotientMk n σ = q := by
   rw [A.toLowerRamificationFiltration.quotientMapOfLe_mem_quotientKernelOfLe_iff
     hlm hmn q]
@@ -1632,7 +1632,7 @@ theorem quotientMapOfLe_eq_iff_exists_actionQuotient_mem_div_repr
     (q r : A.toLowerRamificationFiltration.quotient n) :
     A.toLowerRamificationFiltration.quotientMapOfLe hmn q =
         A.toLowerRamificationFiltration.quotientMapOfLe hmn r ↔
-      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.subgroup m ∧
+      ∃ σ : G, A.actionQuotient σ ∈ A.principalUnits.level m ∧
         A.toLowerRamificationFiltration.quotientMk n σ = q / r := by
   simpa [toLowerRamificationFiltration_apply,
     mem_lowerRamificationGroup_iff_actionQuotient] using
@@ -1696,7 +1696,7 @@ graded piece `G_n/G_{n+1}`, expanded as membership of the action quotient in
 theorem gradedPieceMk_eq_one_iff_actionQuotient_mem
     (n : ℕ) (σ : A.lowerRamificationGroup n) :
     A.toLowerRamificationFiltration.gradedPieceMk n σ = 1 ↔
-      A.actionQuotient (σ : G) ∈ A.principalUnits.subgroup (n + 1) :=
+      A.actionQuotient (σ : G) ∈ A.principalUnits.level (n + 1) :=
   (A.gradedPieceMk_eq_one_iff_actionDepthAtLeast n σ).trans
     (A.actionDepthAtLeast_iff (n + 1) (σ : G))
 
@@ -1722,7 +1722,7 @@ theorem gradedPieceMk_eq_iff_actionQuotient_div_mem
       A.toLowerRamificationFiltration.gradedPieceMk n τ ↔
       A.actionQuotient
           (((σ / τ : A.lowerRamificationGroup n) : G)) ∈
-        A.principalUnits.subgroup (n + 1) :=
+        A.principalUnits.level (n + 1) :=
   (A.gradedPieceMk_eq_iff_actionDepthAtLeast_div n σ τ).trans
     (A.actionDepthAtLeast_iff (n + 1)
       (((σ / τ : A.lowerRamificationGroup n) : G)))
@@ -1750,7 +1750,7 @@ theorem gradedPieceMk_eq_iff_actionQuotient_inv_mul_mem
       A.toLowerRamificationFiltration.gradedPieceMk n τ ↔
       A.actionQuotient
           (((τ⁻¹ * σ : A.lowerRamificationGroup n) : G)) ∈
-        A.principalUnits.subgroup (n + 1) :=
+        A.principalUnits.level (n + 1) :=
   (A.gradedPieceMk_eq_iff_actionDepthAtLeast_inv_mul n σ τ).trans
     (A.actionDepthAtLeast_iff (n + 1)
       (((τ⁻¹ * σ : A.lowerRamificationGroup n) : G)))

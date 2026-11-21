@@ -387,15 +387,15 @@ noncomputable instance principalUnitSubquotientFinite
 /-- The concrete principal-unit filtration as the abstract filtration API. -/
 def toPrincipalUnitFiltration :
     AntitoneSubgroupFiltration F.valuationSubringˣ where
-  subgroup := higherPrincipalUnitGroup F
-  antitone := fun h => higherPrincipalUnitGroup.antitone F h
+  toFun n := higherPrincipalUnitGroup F (OrderDual.ofDual n)
+  monotone' := fun _ _ h => higherPrincipalUnitGroup.antitone F h
 
 /--
-Establishes the identity `(higherPrincipalUnitGroup.toPrincipalUnitFiltration F).subgroup n =
+Establishes the identity `(higherPrincipalUnitGroup.toPrincipalUnitFiltration F).level n =
 higherPrincipalUnitGroup F n`.
 -/
-@[simp] theorem toPrincipalUnitFiltration_subgroup (n : ℕ) :
-    (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).subgroup n =
+@[simp] theorem toPrincipalUnitFiltration_level (n : ℕ) :
+    (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).level n =
       higherPrincipalUnitGroup F n :=
   rfl
 
@@ -1179,7 +1179,7 @@ theorem card_principalUnitSubquotient_one_eq_residue_pow_of_uniformizer
     exact
       higherPrincipalUnitGroup.finite_principalUnitSubquotient_of_finite_residue
         F i j
-  have hN : ∀ i : ℕ, (U.principalUnitSubgroup i).Normal := by
+  have hN : ∀ i : ℕ, (U.level i).Normal := by
     intro i
     change (higherPrincipalUnitGroup F i).Normal
     infer_instance
@@ -1277,31 +1277,31 @@ theorem unitsModPrincipalUnitEquivOfPreserves_mem_principalUnitClassInQuotient_i
     {m n : ℕ} (hmn : m ≤ n)
     (q : F.valuationSubringˣ ⧸ higherPrincipalUnitGroup F n) :
     unitsModPrincipalUnitEquivOfPreserves F e hmem n q ∈
-        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
           m n ↔
       q ∈
-        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
           m n := by
   obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective
     (higherPrincipalUnitGroup F n) q
   have hleft' :
       QuotientGroup.mk' (higherPrincipalUnitGroup F n)
           (valuationSubringUnitEquivOfPreserves F e hmem u) ∈
-        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
           m n ↔
       valuationSubringUnitEquivOfPreserves F e hmem u ∈
         higherPrincipalUnitGroup F m := by
     exact
-      AntitoneSubgroupFiltration.quotient_principalUnitSubgroup_mk_mem_classInQuotient_iff
+      AntitoneSubgroupFiltration.quotient_level_mk_mem_classInQuotient_iff
         (higherPrincipalUnitGroup.toPrincipalUnitFiltration F) hmn
           (valuationSubringUnitEquivOfPreserves F e hmem u)
   have hright' :
       QuotientGroup.mk' (higherPrincipalUnitGroup F n) u ∈
-        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
           m n ↔
       u ∈ higherPrincipalUnitGroup F m := by
     exact
-      AntitoneSubgroupFiltration.quotient_principalUnitSubgroup_mk_mem_classInQuotient_iff
+      AntitoneSubgroupFiltration.quotient_level_mk_mem_classInQuotient_iff
         (higherPrincipalUnitGroup.toPrincipalUnitFiltration F) hmn u
   rw [unitsModPrincipalUnitEquivOfPreserves_mk]
   rw [hleft', hright']
@@ -1322,7 +1322,7 @@ theorem unitsModPrincipalUnitEquivOfPreserves_div_mem_principalUnitClass_one
     (n : ℕ)
     (q : F.valuationSubringˣ ⧸ higherPrincipalUnitGroup F n) :
     unitsModPrincipalUnitEquivOfPreserves F e hmem n q / q ∈
-      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
         1 n := by
   obtain ⟨u, rfl⟩ := QuotientGroup.mk'_surjective
     (higherPrincipalUnitGroup F n) q
@@ -1334,10 +1334,10 @@ theorem unitsModPrincipalUnitEquivOfPreserves_div_mem_principalUnitClass_one
   have hclass' :
       QuotientGroup.mk' (higherPrincipalUnitGroup F n)
           (valuationSubringUnitEquivOfPreserves F e hmem u / u) ∈
-        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+        (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
           1 n := by
     apply
-      AntitoneSubgroupFiltration.principalUnitSubgroupClassInQuotient_mk_mem
+      AntitoneSubgroupFiltration.levelClassInQuotient_mk_mem
         (higherPrincipalUnitGroup.toPrincipalUnitFiltration F)
     exact hdisp
   rw [unitsModPrincipalUnitEquivOfPreserves_mk]
@@ -1345,15 +1345,15 @@ theorem unitsModPrincipalUnitEquivOfPreserves_div_mem_principalUnitClass_one
 
 /-- Therefore every adjacent concrete principal-unit class
 `U^i/U^(i+1)` is finite when the residue field is finite. -/
-theorem finite_principalUnitSubgroupClassInQuotient_of_finite_residue
+theorem finite_levelClassInQuotient_of_finite_residue
     [Finite F.residueField] (i : ℕ) :
     Finite
-      ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+      ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
         i (i + 1)) := by
   have :
       Finite
         (F.valuationSubringˣ ⧸
-          (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroup
+          (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).level
             (i + 1)) := by
     change Finite
       (F.valuationSubringˣ ⧸ higherPrincipalUnitGroup F (i + 1))

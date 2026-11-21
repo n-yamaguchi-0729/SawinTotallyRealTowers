@@ -57,7 +57,7 @@ theorem idealOfLE_eq_maximalIdeal_of_isIntegral
     {M : Type u} [Field M] (R S : ValuationSubring M) (hRS : R ≤ S)
     (hIntegral : (R.inclusion S hRS).IsIntegral) :
     ValuationSubring.idealOfLE R S hRS = IsLocalRing.maximalIdeal R := by
-  exact ((IsLocalRing.local_hom_TFAE (R.inclusion S hRS)).out 1 5).mp
+  exact ((IsLocalRing.local_hom_tfae (R.inclusion S hRS)).out 1 5).mp
     (hIntegral.isLocalHom (by
       intro x y hxy
       apply Subtype.ext

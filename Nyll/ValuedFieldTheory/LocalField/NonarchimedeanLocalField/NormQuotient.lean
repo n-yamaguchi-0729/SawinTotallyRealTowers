@@ -27,10 +27,6 @@ noncomputable section
 
 universe u v w
 
-/-- The norm subgroup N_{L/K}(Lˣ) ≤ Kˣ. -/
-def localNormSubgroup (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] : Subgroup Kˣ :=
-  (normUnits K L).range
-
 /-- Units modulo field norms. -/
 def NormQuotient (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L] : Type u :=
   Kˣ ⧸ localNormSubgroup K L

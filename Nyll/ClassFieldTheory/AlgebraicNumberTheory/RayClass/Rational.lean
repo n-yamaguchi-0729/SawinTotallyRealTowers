@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.PrincipalFractionalIdeal
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Mathlib.Data.Nat.Factorization.Basic
 public import Mathlib.Data.Nat.GCD.BigOperators
@@ -32,6 +33,7 @@ isomorphism with `(ZMod m)ˣ`.
 @[expose] public section
 
 open scoped NumberField
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -119,20 +121,20 @@ theorem mem_rationalFiniteModulus_support_iff
     exact (Rat.HeightOneSpectrum.prime_natGenerator v).factorization_pos_of_dvd hm hdiv |>.ne'
 
 /-- The fractional ideal underlying a rational fractional-ideal unit. -/
-abbrev rationalFractionalIdeal (I : FractionalIdealGroup ℚ) :
+abbrev rationalFractionalIdeal (I : NumberFieldFractionalIdealGroup ℚ) :
     FractionalIdeal (nonZeroDivisors (𝓞 ℚ)) ℚ :=
   I
 
 /-- An arbitrary principal generator of a nonzero rational fractional
 ideal, before choosing its sign. -/
 noncomputable def rawRationalIdealGenerator
-    (I : FractionalIdealGroup ℚ) : ℚ :=
+    (I : NumberFieldFractionalIdealGroup ℚ) : ℚ :=
   Submodule.IsPrincipal.generator
     ((rationalFractionalIdeal I : FractionalIdeal
       (nonZeroDivisors (𝓞 ℚ)) ℚ) : Submodule (𝓞 ℚ) ℚ)
 
 private theorem rawRationalIdealGenerator_ne_zero
-    (I : FractionalIdealGroup ℚ) :
+    (I : NumberFieldFractionalIdealGroup ℚ) :
     rawRationalIdealGenerator I ≠ 0 := by
   apply mt
     (Submodule.IsPrincipal.eq_bot_iff_generator_eq_zero
@@ -142,14 +144,14 @@ private theorem rawRationalIdealGenerator_ne_zero
 
 /-- The unique positive generator of a nonzero rational fractional ideal. -/
 noncomputable def positiveRationalIdealGenerator
-    (I : FractionalIdealGroup ℚ) : ℚ :=
+    (I : NumberFieldFractionalIdealGroup ℚ) : ℚ :=
   if 0 < rawRationalIdealGenerator I then
     rawRationalIdealGenerator I
   else
     -rawRationalIdealGenerator I
 
 theorem positiveRationalIdealGenerator_pos
-    (I : FractionalIdealGroup ℚ) :
+    (I : NumberFieldFractionalIdealGroup ℚ) :
     0 < positiveRationalIdealGenerator I := by
   rw [positiveRationalIdealGenerator]
   split_ifs with h
@@ -159,7 +161,7 @@ theorem positiveRationalIdealGenerator_pos
         (rawRationalIdealGenerator_ne_zero I))
 
 theorem rationalFractionalIdeal_eq_span_positiveGenerator
-    (I : FractionalIdealGroup ℚ) :
+    (I : NumberFieldFractionalIdealGroup ℚ) :
     rationalFractionalIdeal I =
       FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 ℚ))
         (positiveRationalIdealGenerator I) := by
@@ -200,14 +202,14 @@ theorem eq_of_spanSingleton_eq_of_pos
 
 @[simp]
 theorem positiveRationalIdealGenerator_one :
-    positiveRationalIdealGenerator (1 : FractionalIdealGroup ℚ) = 1 := by
+    positiveRationalIdealGenerator (1 : NumberFieldFractionalIdealGroup ℚ) = 1 := by
   apply eq_of_spanSingleton_eq_of_pos
     (positiveRationalIdealGenerator_pos 1) zero_lt_one
   rw [← rationalFractionalIdeal_eq_span_positiveGenerator]
   exact (map_one (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 ℚ)))).symm
 
 theorem positiveRationalIdealGenerator_mul
-    (I J : FractionalIdealGroup ℚ) :
+    (I J : NumberFieldFractionalIdealGroup ℚ) :
     positiveRationalIdealGenerator (I * J) =
       positiveRationalIdealGenerator I *
         positiveRationalIdealGenerator J := by
@@ -223,19 +225,19 @@ theorem positiveRationalIdealGenerator_mul
 
 /-- The positive generator, regarded as a nonzero rational number. -/
 noncomputable def positiveRationalIdealGeneratorUnit
-    (I : FractionalIdealGroup ℚ) : ℚˣ :=
+    (I : NumberFieldFractionalIdealGroup ℚ) : ℚˣ :=
   Units.mk0 (positiveRationalIdealGenerator I)
     (ne_of_gt (positiveRationalIdealGenerator_pos I))
 
 @[simp]
 theorem positiveRationalIdealGeneratorUnit_val
-    (I : FractionalIdealGroup ℚ) :
+    (I : NumberFieldFractionalIdealGroup ℚ) :
     (positiveRationalIdealGeneratorUnit I : ℚ) =
       positiveRationalIdealGenerator I :=
   rfl
 
 theorem toPrincipalIdeal_positiveRationalIdealGeneratorUnit
-    (I : FractionalIdealGroup ℚ) :
+    (I : NumberFieldFractionalIdealGroup ℚ) :
     toPrincipalIdeal (𝓞 ℚ) ℚ
         (positiveRationalIdealGeneratorUnit I) = I := by
   apply Units.ext
@@ -249,12 +251,12 @@ theorem toPrincipalIdeal_positiveRationalIdealGeneratorUnit
 @[simp]
 theorem positiveRationalIdealGeneratorUnit_one :
     positiveRationalIdealGeneratorUnit
-      (1 : FractionalIdealGroup ℚ) = 1 := by
+      (1 : NumberFieldFractionalIdealGroup ℚ) = 1 := by
   apply Units.ext
   exact positiveRationalIdealGenerator_one
 
 theorem positiveRationalIdealGeneratorUnit_mul
-    (I J : FractionalIdealGroup ℚ) :
+    (I J : NumberFieldFractionalIdealGroup ℚ) :
     positiveRationalIdealGeneratorUnit (I * J) =
       positiveRationalIdealGeneratorUnit I *
         positiveRationalIdealGeneratorUnit J := by
@@ -282,7 +284,7 @@ theorem valuation_eq_one_of_principal_count_eq_zero
         (toPrincipalIdeal (𝓞 ℚ) ℚ x :
           FractionalIdeal (nonZeroDivisors (𝓞 ℚ)) ℚ) = 0) :
     v.valuation ℚ (x : ℚ) = 1 := by
-  rw [IdeleGroup.count_toPrincipalIdeal] at hcount
+  rw [FractionalIdeal.count_toPrincipalIdeal] at hcount
   have hlog :
       WithZero.log (v.valuation ℚ (x : ℚ)) = 0 :=
     neg_eq_zero.mp hcount
@@ -343,7 +345,7 @@ theorem positiveGenerator_den_coprime
     {m : ℕ} (hm : m ≠ 0)
     (I : primeToModulusIdeals (rationalModulus m)) :
     Nat.Coprime
-      (positiveRationalIdealGenerator (I : FractionalIdealGroup ℚ)).den m := by
+      (positiveRationalIdealGenerator (I : NumberFieldFractionalIdealGroup ℚ)).den m := by
   rw [Nat.coprime_comm]
   by_contra hcop
   obtain ⟨p, hp, hpm, hpden⟩ :=
@@ -358,11 +360,11 @@ theorem positiveGenerator_den_coprime
     exact hpm
   have hcount := I.property v hv
   rw [← toPrincipalIdeal_positiveRationalIdealGeneratorUnit
-    (I : FractionalIdealGroup ℚ)] at hcount
+    (I : NumberFieldFractionalIdealGroup ℚ)] at hcount
   exact
     (not_dvd_den_of_principal_count_eq_zero
       (positiveRationalIdealGeneratorUnit
-        (I : FractionalIdealGroup ℚ)) v hcount)
+        (I : NumberFieldFractionalIdealGroup ℚ)) v hcount)
       (by
         rw [hvgen]
         exact hpden)
@@ -372,7 +374,7 @@ theorem positiveGenerator_num_coprime
     (I : primeToModulusIdeals (rationalModulus m)) :
     Nat.Coprime
       (positiveRationalIdealGenerator
-        (I : FractionalIdealGroup ℚ)).num.natAbs m := by
+        (I : NumberFieldFractionalIdealGroup ℚ)).num.natAbs m := by
   rw [Nat.coprime_comm]
   by_contra hcop
   obtain ⟨p, hp, hpm, hpnum⟩ :=
@@ -387,11 +389,11 @@ theorem positiveGenerator_num_coprime
     exact hpm
   have hcount := I.property v hv
   rw [← toPrincipalIdeal_positiveRationalIdealGeneratorUnit
-    (I : FractionalIdealGroup ℚ)] at hcount
+    (I : NumberFieldFractionalIdealGroup ℚ)] at hcount
   exact
     (not_dvd_num_of_principal_count_eq_zero
       (positiveRationalIdealGeneratorUnit
-        (I : FractionalIdealGroup ℚ)) v hcount)
+        (I : NumberFieldFractionalIdealGroup ℚ)) v hcount)
       (by
         rw [hvgen]
         exact hpnum)
@@ -512,17 +514,17 @@ noncomputable def primeToIdealResidueHom
     primeToModulusIdeals (rationalModulus m) →* (ZMod m)ˣ where
   toFun I :=
     rationalResidueUnit m
-      (positiveRationalIdealGenerator (I : FractionalIdealGroup ℚ))
+      (positiveRationalIdealGenerator (I : NumberFieldFractionalIdealGroup ℚ))
       (positiveGenerator_num_coprime hm I)
       (positiveGenerator_den_coprime hm I)
   map_one' := by
     change rationalResidueUnit m
       (positiveRationalIdealGenerator
-        (1 : FractionalIdealGroup ℚ)) _ _ = 1
+        (1 : NumberFieldFractionalIdealGroup ℚ)) _ _ = 1
     calc
       rationalResidueUnit m
           (positiveRationalIdealGenerator
-            (1 : FractionalIdealGroup ℚ)) _ _ =
+            (1 : NumberFieldFractionalIdealGroup ℚ)) _ _ =
         rationalResidueUnit m 1
         (by simpa only [Rat.num_one, Int.natAbs_one] using Nat.coprime_one_left m)
         (by simpa only [Rat.den_one] using Nat.coprime_one_left m) :=
@@ -531,9 +533,9 @@ noncomputable def primeToIdealResidueHom
       _ = 1 := rationalResidueUnit_one m
   map_mul' I J := by
     let q :=
-      positiveRationalIdealGenerator (I : FractionalIdealGroup ℚ)
+      positiveRationalIdealGenerator (I : NumberFieldFractionalIdealGroup ℚ)
     let r :=
-      positiveRationalIdealGenerator (J : FractionalIdealGroup ℚ)
+      positiveRationalIdealGenerator (J : NumberFieldFractionalIdealGroup ℚ)
     have hprodnum : Nat.Coprime (q * r).num.natAbs m := by
       rw [← positiveRationalIdealGenerator_mul]
       exact positiveGenerator_num_coprime hm (I * J)
@@ -542,14 +544,14 @@ noncomputable def primeToIdealResidueHom
       exact positiveGenerator_den_coprime hm (I * J)
     change rationalResidueUnit m
         (positiveRationalIdealGenerator
-          ((I : FractionalIdealGroup ℚ) *
-            (J : FractionalIdealGroup ℚ))) _ _ =
+          ((I : NumberFieldFractionalIdealGroup ℚ) *
+            (J : NumberFieldFractionalIdealGroup ℚ))) _ _ =
       rationalResidueUnit m q _ _ * rationalResidueUnit m r _ _
     calc
       rationalResidueUnit m
           (positiveRationalIdealGenerator
-            ((I : FractionalIdealGroup ℚ) *
-              (J : FractionalIdealGroup ℚ))) _ _ =
+            ((I : NumberFieldFractionalIdealGroup ℚ) *
+              (J : NumberFieldFractionalIdealGroup ℚ))) _ _ =
         rationalResidueUnit m (q * r) hprodnum hprodden :=
           rationalResidueUnit_congr m
             (positiveRationalIdealGenerator_mul I J) _ _ _ _
@@ -573,7 +575,7 @@ theorem primeToIdealResidueHom_apply
     primeToIdealResidueHom m hm I =
       rationalResidueUnit m
         (positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ))
+          (I : NumberFieldFractionalIdealGroup ℚ))
         (positiveGenerator_num_coprime hm I)
         (positiveGenerator_den_coprime hm I) :=
   rfl
@@ -606,7 +608,7 @@ theorem principalNat_mem_primeToModulusIdeals
     Rat.HeightOneSpectrum.valuation_equiv_padicValuation v
   have hvval : v.valuation ℚ (a : ℚ) = 1 :=
     hequiv.eq_one_iff_eq_one.mpr hpval
-  rw [IdeleGroup.count_toPrincipalIdeal]
+  rw [FractionalIdeal.count_toPrincipalIdeal]
   change -WithZero.log (v.valuation ℚ (a : ℚ)) = 0
   rw [hvval]
   rfl
@@ -691,7 +693,7 @@ theorem primeToIdealResidueHom_surjective
   refine ⟨I, ?_⟩
   have hgen :
       positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ) = (a : ℚ) := by
+          (I : NumberFieldFractionalIdealGroup ℚ) = (a : ℚ) := by
     exact positiveGenerator_toPrincipalIdeal_nat ha
   have hanum :
       Nat.Coprime ((a : ℚ).num.natAbs) m := by
@@ -702,12 +704,12 @@ theorem primeToIdealResidueHom_surjective
   change
     (rationalResidueUnit m
       (positiveRationalIdealGenerator
-        (I : FractionalIdealGroup ℚ)) _ _ : ZMod m) =
+        (I : NumberFieldFractionalIdealGroup ℚ)) _ _ : ZMod m) =
       (u : ZMod m)
   calc
     (rationalResidueUnit m
         (positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ)) _ _ : ZMod m) =
+          (I : NumberFieldFractionalIdealGroup ℚ)) _ _ : ZMod m) =
       (rationalResidueUnit m (a : ℚ) hanum haden : ZMod m) :=
         congrArg Units.val
           (rationalResidueUnit_congr m hgen _ _ hanum haden)
@@ -727,7 +729,7 @@ def principalLocalIntegralUnit
     (v : HeightOneSpectrum (𝓞 ℚ)) (x : ℚˣ)
     (hx : v.valuation ℚ (x : ℚ) = 1) :
     (v.adicCompletionIntegers ℚ).units :=
-  ⟨(IdeleGroup.principalIdele ℚ x).2 v, by
+  ⟨(IdeleGroup.finiteCoordinates (IdeleGroup.principalIdele ℚ x)) v, by
     rw [HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one]
     have hcomp :=
       IdeleGroup.finiteComponent_principalIdele x v
@@ -748,7 +750,7 @@ higher-unit group. -/
 theorem rationalLocalHigherUnitMap_eq_one_iff
     (v : HeightOneSpectrum (𝓞 ℚ)) (n : ℕ)
     (y : (v.adicCompletionIntegers ℚ).units) :
-    localHigherUnitMap v n y = 1 ↔
+    ClassFieldTheory.rayLocalHigherUnitMap v n y = 1 ↔
       rationalLocalIntegralValue v y - 1 ∈
         (IsLocalRing.maximalIdeal
           (v.adicCompletionIntegers ℚ)) ^ n := by
@@ -776,7 +778,7 @@ theorem principalLocalIntegralValue_coe
         v.adicCompletion ℚ) =
       NumberField.FinitePlace.embedding v (x : ℚ) := by
   change
-    ((((IdeleGroup.principalIdele ℚ x).2 v :
+    ((((IdeleGroup.finiteCoordinates (IdeleGroup.principalIdele ℚ x)) v :
       (v.adicCompletion ℚ)ˣ) : v.adicCompletion ℚ)) =
       NumberField.FinitePlace.embedding v (x : ℚ)
   have hcomp :=
@@ -854,11 +856,11 @@ exactly when its numerator and denominator satisfy the local congruence. -/
 theorem principalFiniteComponent_mem_localHigherUnitGroup_iff
     (v : HeightOneSpectrum (𝓞 ℚ)) (n : ℕ) (x : ℚˣ)
     (hx : v.valuation ℚ (x : ℚ) = 1) :
-    (IdeleGroup.principalIdele ℚ x).2 v ∈
-        localHigherUnitGroup v n ↔
-      localHigherUnitMap v n
+    (IdeleGroup.finiteCoordinates (IdeleGroup.principalIdele ℚ x)) v ∈
+        ClassFieldTheory.rayLocalHigherUnitGroup v n ↔
+      ClassFieldTheory.rayLocalHigherUnitMap v n
         (principalLocalIntegralUnit v x hx) = 1 := by
-  rw [mem_localHigherUnitGroup_iff]
+  rw [ClassFieldTheory.mem_rayLocalHigherUnitGroup_iff_reduction_eq_one]
   constructor
   · rintro ⟨y, hy, hymap⟩
     have hy' :
@@ -972,8 +974,8 @@ prime-power congruence of numerator and denominator. -/
 theorem principalLocalHigherUnit_iff_modEq
     (v : HeightOneSpectrum (𝓞 ℚ)) (n : ℕ) (x : ℚˣ)
     (hx : v.valuation ℚ (x : ℚ) = 1) :
-    (IdeleGroup.principalIdele ℚ x).2 v ∈
-        localHigherUnitGroup v n ↔
+    (IdeleGroup.finiteCoordinates (IdeleGroup.principalIdele ℚ x)) v ∈
+        ClassFieldTheory.rayLocalHigherUnitGroup v n ↔
       (x : ℚ).num ≡ ((x : ℚ).den : ℤ)
         [ZMOD (Rat.HeightOneSpectrum.natGenerator v) ^ n] := by
   rw [principalFiniteComponent_mem_localHigherUnitGroup_iff v n x hx,
@@ -1093,7 +1095,7 @@ theorem primePower_factorization_dvd
 exactly when the rational number is positive. -/
 theorem principalIdele_infinite_mem_iff_pos
     (x : ℚˣ) :
-    (IdeleGroup.principalIdele ℚ x).1 ∈
+    (IdeleGroup.infinitePart (IdeleGroup.principalIdele ℚ x)) ∈
         narrowInfiniteCongruenceSubgroup (K := ℚ) ↔
       0 < (x : ℚ) := by
   rw [mem_narrowInfiniteCongruenceSubgroup_iff]
@@ -1103,10 +1105,16 @@ theorem principalIdele_infinite_mem_iff_pos
       (mem_infinitePositiveSubgroup_iff
         Rat.infinitePlace
         (ContinuousMulEquiv.piUnits
-          (IdeleGroup.principalIdele ℚ x).1
+          (IdeleGroup.infinitePart (IdeleGroup.principalIdele ℚ x))
           Rat.infinitePlace)).1
         (hx Rat.infinitePlace)
         Rat.isReal_infinitePlace
+    change 0 < NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal
+      Rat.isReal_infinitePlace
+      ((NumberField.IdeleGroup.infiniteComponent Rat.infinitePlace
+        (IdeleGroup.principalIdele ℚ x) : Rat.infinitePlace.Completionˣ) :
+        Rat.infinitePlace.Completion) at hpos
+    rw [IdeleGroup.infiniteComponent_principalIdele] at hpos
     change
       0 <
         NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal
@@ -1123,6 +1131,10 @@ theorem principalIdele_infinite_mem_iff_pos
   · intro hx v
     rw [mem_infinitePositiveSubgroup_iff]
     intro hv
+    change 0 < NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal hv
+      ((NumberField.IdeleGroup.infiniteComponent v (IdeleGroup.principalIdele ℚ x) :
+        v.Completionˣ) : v.Completion)
+    rw [IdeleGroup.infiniteComponent_principalIdele]
     change
       0 <
         NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal
@@ -1142,16 +1154,16 @@ theorem principalIdele_positiveGenerator_mem_primeTo_iff_modEq
     (I : primeToModulusIdeals (rationalModulus m)) :
     IdeleGroup.principalIdele ℚ
         (positiveRationalIdealGeneratorUnit
-          (I : FractionalIdealGroup ℚ)) ∈
+          (I : NumberFieldFractionalIdealGroup ℚ)) ∈
         idelePrimeToModulusSubgroup (rationalModulus m) ↔
       (positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ)).num ≡
+          (I : NumberFieldFractionalIdealGroup ℚ)).num ≡
         (positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ)).den
+          (I : NumberFieldFractionalIdealGroup ℚ)).den
         [ZMOD m] := by
   let x :=
     positiveRationalIdealGeneratorUnit
-      (I : FractionalIdealGroup ℚ)
+      (I : NumberFieldFractionalIdealGroup ℚ)
   constructor
   · intro hx
     apply intModEq_of_primePower_modEq hm
@@ -1169,7 +1181,7 @@ theorem principalIdele_positiveGenerator_mem_primeTo_iff_modEq
       exact (Nat.mem_primeFactors.mp p.2).2.1
     have hcount := I.property v hv
     rw [← toPrincipalIdeal_positiveRationalIdealGeneratorUnit
-      (I : FractionalIdealGroup ℚ)] at hcount
+      (I : NumberFieldFractionalIdealGroup ℚ)] at hcount
     have hxval : v.valuation ℚ (x : ℚ) = 1 :=
       valuation_eq_one_of_principal_count_eq_zero x v hcount
     have hlocal :=
@@ -1181,18 +1193,18 @@ theorem principalIdele_positiveGenerator_mem_primeTo_iff_modEq
   · intro hmod
     constructor
     · change
-        (IdeleGroup.principalIdele ℚ x).1 ∈
+        (IdeleGroup.infinitePart (IdeleGroup.principalIdele ℚ x)) ∈
           (Modulus.narrowOfFinite
             (rationalFiniteModulus m)).infiniteCongruenceSubgroup
       rw [Modulus.infiniteCongruenceSubgroup_narrowOfFinite]
       exact
         (principalIdele_infinite_mem_iff_pos x).2
           (positiveRationalIdealGenerator_pos
-            (I : FractionalIdealGroup ℚ))
+            (I : NumberFieldFractionalIdealGroup ℚ))
     · intro v hv
       have hcount := I.property v hv
       rw [← toPrincipalIdeal_positiveRationalIdealGeneratorUnit
-        (I : FractionalIdealGroup ℚ)] at hcount
+        (I : NumberFieldFractionalIdealGroup ℚ)] at hcount
       have hxval : v.valuation ℚ (x : ℚ) = 1 :=
         valuation_eq_one_of_principal_count_eq_zero x v hcount
       apply
@@ -1217,9 +1229,9 @@ theorem mem_principalRayIdealSubgroup_iff_modEq
     (I : primeToModulusIdeals (rationalModulus m)) :
     I ∈ principalRayIdealSubgroup (rationalModulus m) ↔
       (positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ)).num ≡
+          (I : NumberFieldFractionalIdealGroup ℚ)).num ≡
         (positiveRationalIdealGenerator
-          (I : FractionalIdealGroup ℚ)).den
+          (I : NumberFieldFractionalIdealGroup ℚ)).den
         [ZMOD m] := by
   constructor
   · intro hI
@@ -1227,11 +1239,11 @@ theorem mem_principalRayIdealSubgroup_iff_modEq
       (mem_principalRayIdealSubgroup_iff
         (rationalModulus m) I).1 hI
     have hxinf :
-        (IdeleGroup.principalIdele ℚ x).1 ∈
+        (IdeleGroup.infinitePart (IdeleGroup.principalIdele ℚ x)) ∈
           narrowInfiniteCongruenceSubgroup (K := ℚ) := by
       have hxinf' := hx.1
       change
-        (IdeleGroup.principalIdele ℚ x).1 ∈
+        (IdeleGroup.infinitePart (IdeleGroup.principalIdele ℚ x)) ∈
           (Modulus.narrowOfFinite
             (rationalFiniteModulus m)).infiniteCongruenceSubgroup at hxinf'
       rw [Modulus.infiniteCongruenceSubgroup_narrowOfFinite] at hxinf'
@@ -1241,10 +1253,10 @@ theorem mem_principalRayIdealSubgroup_iff_modEq
     have hxgen :
         (x : ℚ) =
           positiveRationalIdealGenerator
-            (I : FractionalIdealGroup ℚ) := by
+            (I : NumberFieldFractionalIdealGroup ℚ) := by
       apply eq_of_spanSingleton_eq_of_pos hxpos
         (positiveRationalIdealGenerator_pos
-          (I : FractionalIdealGroup ℚ))
+          (I : NumberFieldFractionalIdealGroup ℚ))
       calc
         FractionalIdeal.spanSingleton
             (nonZeroDivisors (𝓞 ℚ)) (x : ℚ) =
@@ -1254,17 +1266,17 @@ theorem mem_principalRayIdealSubgroup_iff_modEq
                 (coe_toPrincipalIdeal
                   (R := 𝓞 ℚ) (K := ℚ) x).symm
         _ = rationalFractionalIdeal
-            (I : FractionalIdealGroup ℚ) :=
+            (I : NumberFieldFractionalIdealGroup ℚ) :=
           congrArg rationalFractionalIdeal hideal
         _ = FractionalIdeal.spanSingleton
             (nonZeroDivisors (𝓞 ℚ))
             (positiveRationalIdealGenerator
-              (I : FractionalIdealGroup ℚ)) :=
+              (I : NumberFieldFractionalIdealGroup ℚ)) :=
           rationalFractionalIdeal_eq_span_positiveGenerator
-            (I : FractionalIdealGroup ℚ)
+            (I : NumberFieldFractionalIdealGroup ℚ)
     have hxu :
         x = positiveRationalIdealGeneratorUnit
-          (I : FractionalIdealGroup ℚ) := by
+          (I : NumberFieldFractionalIdealGroup ℚ) := by
       apply Units.ext
       exact hxgen
     apply
@@ -1277,11 +1289,11 @@ theorem mem_principalRayIdealSubgroup_iff_modEq
         (rationalModulus m) I).2
     exact
       ⟨positiveRationalIdealGeneratorUnit
-          (I : FractionalIdealGroup ℚ),
+          (I : NumberFieldFractionalIdealGroup ℚ),
         (principalIdele_positiveGenerator_mem_primeTo_iff_modEq
           hm I).2 hmod,
         toPrincipalIdeal_positiveRationalIdealGeneratorUnit
-          (I : FractionalIdealGroup ℚ)⟩
+          (I : NumberFieldFractionalIdealGroup ℚ)⟩
 
 /-- The residue map on ideals prime to `(m)` has exactly the ray-principal
 ideals as its kernel. -/
@@ -1296,7 +1308,7 @@ theorem primeToIdealResidueHom_ker
   exact
     rationalResidueUnit_eq_one_iff_modEq m
       (positiveRationalIdealGenerator
-        (I : FractionalIdealGroup ℚ))
+        (I : NumberFieldFractionalIdealGroup ℚ))
       (positiveGenerator_num_coprime hm I)
       (positiveGenerator_den_coprime hm I)
 

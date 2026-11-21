@@ -233,9 +233,10 @@ theorem comap_quotientProj {H : Type v} [Group H] [TopologicalSpace H] [Continuo
 def transition {U V : OpenNormalSubgroup G}
     (hUV : (U : Subgroup G) ≤ (V : Subgroup G)) :
     G ⧸ (U : Subgroup G) →ₜ* G ⧸ (V : Subgroup G) :=
-  QuotientGroup.mapₜ (U : Subgroup G) (V : Subgroup G) (ContinuousMonoidHom.id G) (by
-    intro x hx
-    exact hUV hx)
+  QuotientGroup.mapContinuousMonoidHom (N := (U : Subgroup G)) (M := (V : Subgroup G))
+    (ContinuousMonoidHom.id G) (by
+      intro x hx
+      exact hUV hx)
 
 /-- Transition maps send quotient classes to quotient classes. -/
 @[simp]

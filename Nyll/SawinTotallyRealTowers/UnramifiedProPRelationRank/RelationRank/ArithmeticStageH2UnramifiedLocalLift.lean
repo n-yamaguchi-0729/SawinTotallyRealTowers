@@ -26,6 +26,7 @@ No splitting of the extension over the finite decomposition group is required.
 
 @[expose] public section
 
+open ProCGroups.ContinuousMonoidHom (quotientMk)
 open CategoryTheory NumberField IsDedekindDomain
 open scoped NumberField Topology
 
@@ -48,7 +49,7 @@ noncomputable def arithmeticStageFinitePlaceUnramifiedQuotientMap
         finitePlaceAbsoluteInertiaSubgroup F v →ₜ*
       (MaxEverywhereUnramifiedProPGaloisGroup F p ⧸
         (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F p))) :=
-  (quotientProjection
+  (ProCGroups.ContinuousMonoidHom.quotientMk
     (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F p))).comp
       (finitePlaceUnramifiedToMaxEverywhereUnramifiedProP F p v)
 
@@ -60,7 +61,7 @@ noncomputable def arithmeticStageFinitePlaceAbsoluteQuotientMap
     finitePlaceAbsoluteDecompositionGroup F v →ₜ*
       (MaxEverywhereUnramifiedProPGaloisGroup F p ⧸
         (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F p))) :=
-  (quotientProjection
+  (ProCGroups.ContinuousMonoidHom.quotientMk
     (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F p))).comp
       ((absoluteToMaxEverywhereUnramifiedProP F p).comp
         (finitePlaceAbsoluteDecompositionInclusion F v))
@@ -71,7 +72,7 @@ theorem arithmeticStageFinitePlaceUnramifiedQuotientMap_comp
       (MaxEverywhereUnramifiedProPGaloisGroup F p))
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     (arithmeticStageFinitePlaceUnramifiedQuotientMap F p U v).comp
-        (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v)) =
+        (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v)) =
       arithmeticStageFinitePlaceAbsoluteQuotientMap F p U v := by
   ext sigma
   rfl
@@ -142,7 +143,7 @@ noncomputable def arithmeticStageH2AbsoluteLocalLift
     finitePlaceAbsoluteDecompositionGroup F v →ₜ*
       ClassFieldTower.ProP.DegreeTwoCentralExtension xU :=
   (arithmeticStageH2UnramifiedLocalLift F p U xU v).comp
-    (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v))
+    (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v))
 
 /-- The local solution projects to the prescribed finite stage map. -/
 theorem arithmeticStageH2AbsoluteLocalLift_projection
@@ -159,7 +160,7 @@ theorem arithmeticStageH2AbsoluteLocalLift_projection
   ext sigma
   exact DFunLike.congr_fun
     (arithmeticStageH2UnramifiedLocalLift_projection F p U xU v)
-    (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v) sigma)
+    (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v) sigma)
 
 /-- Every absolute inertia element is killed by the constructed local solution. -/
 theorem arithmeticStageH2AbsoluteLocalLift_inertia
@@ -172,8 +173,8 @@ theorem arithmeticStageH2AbsoluteLocalLift_inertia
     (sigma : finitePlaceAbsoluteInertiaSubgroup F v) :
     arithmeticStageH2AbsoluteLocalLift F p U xU v sigma.1 = 1 := by
   change arithmeticStageH2UnramifiedLocalLift F p U xU v
-    (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v) sigma.1) = 1
-  have hq : quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v) sigma.1 = 1 :=
+    (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v) sigma.1) = 1
+  have hq : quotientMk (finitePlaceAbsoluteInertiaSubgroup F v) sigma.1 = 1 :=
     (QuotientGroup.eq_one_iff (N := finitePlaceAbsoluteInertiaSubgroup F v)
       sigma.1).mpr sigma.2
   rw [hq, map_one]

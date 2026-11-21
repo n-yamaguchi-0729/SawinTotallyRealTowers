@@ -6,8 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbsoluteUnitsFixedField
 public import Mathlib.FieldTheory.Galois.Basic
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TateTransport
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
 
@@ -26,8 +27,6 @@ underlying norm quotients.
 
 namespace LocalClassFieldTheory
 open RamificationTheory CyclicCohomology KummerTheory
-
-open LocalFieldTheory
 
 open ClassFormation
 
@@ -151,61 +150,6 @@ theorem abstractRelativeUnitsEquiv_extensionUnitsEquiv
     k Ω K L hLK).apply_symm_apply
       (extensionFixedRepresentationEquiv
         (galoisAmbientUnitsRep k Ω) K L hLK hnormal x)
-
-/-- On a quotient representative, the concrete relative Galois
-automorphism is restriction of the same ambient automorphism. -/
-theorem abstractExtensionQuotientEquivGaloisGroup_mk_apply_val
-    (K L : ClosedSubgroup (Gal(Ω/k)))
-    (hLK : L.toSubgroup ≤ K.toSubgroup)
-    (hnormal : (extensionSubgroup K L hLK).Normal)
-    (σ : K.toSubgroup)
-    (x : abstractRelativeFixedField k Ω hLK) :
-    let := hnormal
-    σ.1 (x : Ω) =
-      (((abstractExtensionQuotientEquivGaloisGroup
-          k Ω K L hLK hnormal
-          (QuotientGroup.mk' (extensionSubgroup K L hLK) σ)) x :
-        abstractRelativeFixedField k Ω hLK) : Ω) := by
-  intro sharedOwner1
-  let : (abstractRelativeFixedField k Ω hLK).fixingSubgroup.Normal :=
-    abstractRelativeFixingSubgroup_normal k Ω K L hLK hnormal
-  let H : ClosedSubgroup (Gal(Ω / abstractFixedField k Ω K)) :=
-    closedFixingSubgroup (abstractFixedField k Ω K) Ω
-      (abstractRelativeFixedField k Ω hLK)
-  let : H.toSubgroup.Normal :=
-    abstractRelativeFixingSubgroup_normal k Ω K L hLK hnormal
-  have hq :
-      abstractExtensionQuotientEquivAmbient k Ω K L hLK hnormal
-          (QuotientGroup.mk' (extensionSubgroup K L hLK) σ) =
-        QuotientGroup.mk'
-          (abstractRelativeFixedField k Ω hLK).fixingSubgroup
-          (abstractSubgroupEquivGaloisGroup k Ω K σ) := by
-    rfl
-  rw [abstractExtensionQuotientEquivGaloisGroup, MulEquiv.trans_apply, hq,
-    MulEquiv.trans_apply]
-  change σ.1 (x : Ω) =
-    ((((IntermediateField.equivOfEq
-      (InfiniteGalois.fixedField_fixingSubgroup
-        (abstractRelativeFixedField k Ω hLK))).autCongr
-      (InfiniteGalois.normalAutEquivQuotient
-        (closedFixingSubgroup (abstractFixedField k Ω K) Ω
-          (abstractRelativeFixedField k Ω hLK))
-        ((abstractSubgroupEquivGaloisGroup k Ω K σ :
-            Gal(Ω / abstractFixedField k Ω K)) :
-          Gal(Ω / abstractFixedField k Ω K) ⧸
-            (abstractRelativeFixedField k Ω hLK).fixingSubgroup))) x :
-      abstractRelativeFixedField k Ω hLK) : Ω)
-  rw [InfiniteGalois.normalAutEquivQuotient_apply,
-    AlgEquiv.autCongr_apply]
-  simp only [AlgEquiv.trans_apply, IntermediateField.equivOfEq_symm,
-    IntermediateField.equivOfEq_apply]
-  change σ.1 (x : Ω) =
-    (((AlgEquiv.restrictNormalHom
-      (IntermediateField.fixedField H.toSubgroup)
-      (abstractSubgroupEquivGaloisGroup k Ω K σ))
-      ⟨(x : Ω), _⟩ : IntermediateField.fixedField H.toSubgroup) : Ω)
-  rw [AlgEquiv.restrictNormalHom_apply]
-  rfl
 
 /-- The abstract coset action on an upper fixed-field unit is the ordinary
 action of the corresponding concrete relative Galois automorphism. -/

@@ -40,14 +40,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-/-- The coefficientwise Laurent-series algebra used by the completed
-unramified base.  It is kept local so importing this file does not change
-global type-class search. -/
-noncomputable local instance equalCharacteristicCompletedPrimitiveActionBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
+attribute [local instance] equalCharacteristicCompletedLevelBaseAlgebra
 
 /-- The coefficientwise Laurent base map into the completed level field. -/
 noncomputable def equalCharacteristicCompletedLevelBaseHom

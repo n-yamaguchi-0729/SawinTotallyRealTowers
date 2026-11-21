@@ -207,8 +207,8 @@ theorem mixed_unitIndex_of_coprime
     F.residueCharacteristic_prime.coprime_iff_not_dvd.mp
       (Fact.out : Nat.Coprime n F.residueCharacteristic).symm
   have hpadic :
-      padicValNat F.residueCharacteristic n = 0 :=
-    padicValNat.eq_zero_of_not_dvd hpnd
+      padicValNat F.residueCharacteristic n = 0 := by
+    simpa only [Nat.padicValNat_def] using multiplicity_eq_zero_of_not_dvd hpnd
   simpa only [F, hpadic, Nat.mul_zero, pow_zero, Nat.mul_one] using
     (mixed_unitIndex v hv (n := n))
 

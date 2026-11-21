@@ -29,10 +29,7 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ)
 
-local instance finitePlaceRamifiedCharacterH1Module
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The ramified local character quotient `H¹(D_v, F_p) / H¹_unr(D_v, F_p)` as a
 `ZMod p`-module object. -/

@@ -85,7 +85,7 @@ theorem powerCommutatorQuotient_finite_of_topologicallyFinitelyGenerated
     exact hab
   have hYK : Y ⊆ (K : Set (powerCommutatorQuotient p G)) := by
     intro y hy
-    change V.carrier (Additive.ofMul y)
+    change Additive.ofMul y ∈ V
     exact Submodule.subset_span (R := ZMod p) (s := Additive.ofMul '' Y)
       ⟨y, hy, rfl⟩
   have hclosure_le : Subgroup.closure Y ≤ K :=

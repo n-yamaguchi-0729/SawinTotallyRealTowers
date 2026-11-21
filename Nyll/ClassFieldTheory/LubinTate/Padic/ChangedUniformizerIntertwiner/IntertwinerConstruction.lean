@@ -526,7 +526,7 @@ theorem padicChangedUniformizerIntertwiner_unique
       let V : (padicCompletedUnramifiedWittRing p)ˣ :=
         padicValuationUnitToCompletedUnramifiedWittUnit p u
       have hpne : (p : padicCompletedUnramifiedWittRing p) ≠ 0 :=
-        WittVector.p_nonzero p (AlgebraicClosure (ZMod p))
+        WittVector.p_ne_zero p (AlgebraicClosure (ZMod p))
       have hpow :
           (p : padicCompletedUnramifiedWittRing p) ^ m =
             (p : padicCompletedUnramifiedWittRing p) ^ (m - 1) *

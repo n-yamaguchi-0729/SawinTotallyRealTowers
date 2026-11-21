@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.ProfiniteIntegerFree
 public import Nyll.ProCGroups.ProP.ContinuousH1
@@ -36,23 +37,15 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance localUnramifiedH1LineTopology : TopologicalSpace (ZMod p) := ⊥
 
-local instance localUnramifiedH1LineDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
-
-local instance localUnramifiedH1LineZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.commRing p).toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 local instance localUnramifiedH1LineAddCommGroup
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
     AddCommGroup (ContinuousH1ZMod (p := p) (G := G)) :=
   ContinuousAddMonoidHom.instAddCommGroup (Additive G) (ZMod p)
 
-local instance localUnramifiedH1LineModule
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 private theorem continuousH1_smul_apply
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]

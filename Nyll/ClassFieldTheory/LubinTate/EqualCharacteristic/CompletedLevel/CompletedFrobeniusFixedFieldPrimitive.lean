@@ -36,12 +36,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance
-    equalCharacteristicCompletedFrobeniusFixedFieldCompletedPrimitiveBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
+attribute [local instance] equalCharacteristicCompletedLevelBaseAlgebra
 
 /-- The completed Frobenius identification level retains the residue characteristic. -/
 theorem equalCharacteristicCompletedFrobeniusIdentificationLevelCharP

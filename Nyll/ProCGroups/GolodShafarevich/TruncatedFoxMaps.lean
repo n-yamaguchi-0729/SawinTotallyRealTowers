@@ -12,6 +12,7 @@ public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Algebra.Group.Action.Defs
 public import Nyll.ProCGroups.CompletedGroupAlgebra.Augmentation.CanonicalAugmentation
 public import Mathlib.LinearAlgebra.Quotient.Pi
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Truncated mod-p Fox maps
@@ -226,8 +227,7 @@ def presentationModPTruncatedFoxBoundary
 
 -- Keep the field's canonical additive structure in this linear-map scope.
 -- The generic nilpotent-group instance can otherwise be chosen first.
-local instance : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 local instance : Module (ZMod p) (ZMod p) := Semiring.toModule
 

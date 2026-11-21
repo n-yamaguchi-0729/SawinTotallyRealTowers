@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.PrincipalFractionalIdeal
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.OrdinaryUnitModP
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Narrow
@@ -24,6 +25,7 @@ ideal-root class map surjects onto class-group power torsion.
 @[expose] public section
 
 open scoped NumberField nonZeroDivisors
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -38,21 +40,21 @@ variable (K : Type*) [Field K] [NumberField K]
 noncomputable def integralUnitToIdealNthPowerRadical
     (n : ℕ+) :
     (𝓞 K)ˣ →* (idealNthPowerRadicalKummerSubgroup K n).1 where
-  toFun u := ⟨RayClass.integralUnitToFieldUnit u, by
+  toFun u := ⟨NumberField.ringUnitToFieldUnit u, by
     change toPrincipalIdeal (𝓞 K) K
-        (RayClass.integralUnitToFieldUnit u) ∈
-      (powMonoidHom (n : ℕ) : FractionalIdealGroup K →*
-        FractionalIdealGroup K).range
+        (NumberField.ringUnitToFieldUnit u) ∈
+      (powMonoidHom (n : ℕ) : NumberFieldFractionalIdealGroup K →*
+        NumberFieldFractionalIdealGroup K).range
     refine ⟨1, ?_⟩
     rw [powMonoidHom_apply, one_pow]
     exact ((RayClass.toPrincipalIdeal_eq_one_iff_mem_integralUnits _).2
       ⟨u, rfl⟩).symm⟩
   map_one' := by
     apply Subtype.ext
-    exact map_one (RayClass.integralUnitToFieldUnit (K := K))
+    exact map_one (NumberField.ringUnitToFieldUnit (K := K))
   map_mul' u v := by
     apply Subtype.ext
-    exact map_mul (RayClass.integralUnitToFieldUnit (K := K)) u v
+    exact map_mul (NumberField.ringUnitToFieldUnit (K := K)) u v
 
 /-- The raw map from integral units to the radical quotient. -/
 noncomputable def integralUnitToIdealNthPowerRadicalQuotient
@@ -98,11 +100,11 @@ theorem integralUnitToIdealNthPowerRadicalQuotient_ker
     apply (mem_restrictedNthPowersSubgroup_iff n
       (idealNthPowerRadicalKummerSubgroup K n)).2
     obtain ⟨v, hv⟩ := hu
-    refine ⟨RayClass.integralUnitToFieldUnit v, ?_⟩
-    change (RayClass.integralUnitToFieldUnit v) ^ (n : ℕ) =
-      RayClass.integralUnitToFieldUnit u
+    refine ⟨NumberField.ringUnitToFieldUnit v, ?_⟩
+    change (NumberField.ringUnitToFieldUnit v) ^ (n : ℕ) =
+      NumberField.ringUnitToFieldUnit u
     rw [← map_pow]
-    exact congrArg (RayClass.integralUnitToFieldUnit (K := K))
+    exact congrArg (NumberField.ringUnitToFieldUnit (K := K))
       (by simpa only [powMonoidHom_apply] using hv)
 
 /-- The injection of ordinary units modulo `n`-th powers into the
@@ -178,7 +180,7 @@ theorem range_ordinaryUnitToIdealRadical_eq_ker_toClassTorsion
     have hclass : ClassGroup.mk K (idealNthRoot K n a) = 1 :=
       congrArg Subtype.val hq
     obtain ⟨b, hb⟩ :=
-      (IdeleGroup.classGroup_mk_eq_one_iff
+      (ClassGroup.mk_eq_one_iff_mem_principal
         (idealNthRoot K n a)).mp hclass
     have hx :
         toPrincipalIdeal (𝓞 K) K (a.1 / b ^ (n : ℕ)) = 1 := by
@@ -197,7 +199,7 @@ theorem range_ordinaryUnitToIdealRadical_eq_ker_toClassTorsion
       (idealNthPowerRadicalKummerSubgroup K n)).2
     refine ⟨b⁻¹, ?_⟩
     change (b⁻¹) ^ (n : ℕ) =
-      RayClass.integralUnitToFieldUnit u / a.1
+      NumberField.ringUnitToFieldUnit u / a.1
     rw [hu]
     rw [div_div, mul_comm (b ^ (n : ℕ)), ← div_div, div_self', one_div, inv_pow]
 

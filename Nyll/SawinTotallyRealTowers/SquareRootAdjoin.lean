@@ -37,7 +37,7 @@ theorem minpoly_squareRoot_of_not_isSquare
     minpoly F α = X ^ 2 - C a := by
   apply Eq.symm
   apply minpoly.eq_of_irreducible_of_monic
-  · apply X_pow_sub_C_irreducible_of_prime Nat.prime_two
+  · apply irreducible_X_pow_sub_C_of_prime Nat.prime_two
     intro b hb
     exact ha ((isSquare_iff_exists_sq a).mpr ⟨b, hb.symm⟩)
   · rw [map_sub, map_pow, aeval_X, aeval_C, hSquare, sub_self]

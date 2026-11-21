@@ -25,7 +25,7 @@ the uniqueness of the finite extension valuation.
 @[expose] public section
 
 namespace LocalClassFieldTheory
-open CyclicCohomology RamificationTheory ClassFormation
+open RamificationTheory ClassFormation
 
 open LocalFieldTheory ValuationTheory
 

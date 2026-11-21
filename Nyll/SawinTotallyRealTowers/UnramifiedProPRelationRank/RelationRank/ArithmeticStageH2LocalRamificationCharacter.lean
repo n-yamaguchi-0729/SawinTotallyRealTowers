@@ -9,6 +9,7 @@ module
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2UnramifiedLocalLift
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # The inertia character of an arithmetic-stage local lift
@@ -43,9 +44,7 @@ variable (s : finitePlaceAbsoluteDecompositionGroup F v →ₜ* DegreeTwoCentral
 variable (hs : (H2CocycleExtension.projection (degreeTwoCocycleRepresentative xU)).comp s =
   arithmeticStageFinitePlaceAbsoluteQuotientMap F p U v)
 
-local instance arithmeticStageH2LocalRamificationCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 /-- The ramification character of a local solution, obtained by subtracting
 the constructed unramified solution and restricting to absolute inertia. -/
@@ -54,7 +53,7 @@ def arithmeticStageH2LocalRamificationCharacter :
   (H2CocycleExtension.liftDifference (degreeTwoCocycleRepresentative xU)
     s (arithmeticStageH2AbsoluteLocalLift F p U xU v)
     (hs.trans (arithmeticStageH2AbsoluteLocalLift_projection F p U xU v).symm)).comp
-      (subgroupInclusion (finitePlaceAbsoluteInertiaSubgroup F v))
+      (ProCGroups.ContinuousMonoidHom.subtype (finitePlaceAbsoluteInertiaSubgroup F v))
 
 /-- On inertia, the character is just the given lift's coefficient coordinate;
 the unramified reference contributes zero. -/
@@ -84,7 +83,7 @@ theorem arithmeticStageH2LocalRamificationCharacter_eq_one_iff :
 with an explicit extension supplied by the difference of the two local lifts. -/
 theorem arithmeticStageH2LocalRamificationCharacter_extends :
     ∃ chi : finitePlaceAbsoluteDecompositionGroup F v →ₜ* Multiplicative (ZMod p),
-      chi.comp (subgroupInclusion (finitePlaceAbsoluteInertiaSubgroup F v)) =
+      chi.comp (ProCGroups.ContinuousMonoidHom.subtype (finitePlaceAbsoluteInertiaSubgroup F v)) =
         arithmeticStageH2LocalRamificationCharacter F p U xU v s hs := by
   exact ⟨H2CocycleExtension.liftDifference (degreeTwoCocycleRepresentative xU)
     s (arithmeticStageH2AbsoluteLocalLift F p U xU v)

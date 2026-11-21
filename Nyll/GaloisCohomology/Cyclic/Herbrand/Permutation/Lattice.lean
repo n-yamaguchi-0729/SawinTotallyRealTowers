@@ -9,6 +9,7 @@ module
 public import Mathlib.Algebra.Module.ZLattice.Basic
 public import Mathlib.LinearAlgebra.FreeModule.Finite.Quotient
 public import Mathlib.LinearAlgebra.Matrix.Gershgorin
+public import Mathlib.LinearAlgebra.Pi
 
 /-!
 # Permutation-stable sublattices
@@ -35,66 +36,58 @@ universe uG uι
 
 variable {G : Type uG} {ι : Type uι}
 
-/-- The linear coordinate permutation attached to a permutation of the
-indexing type. -/
-def coordinatePermutation (σ : Equiv.Perm ι) :
-    (ι → ℝ) ≃ₗ[ℝ] (ι → ℝ) where
-  toFun x i := x (σ.symm i)
-  invFun x i := x (σ i)
-  left_inv x := by
-    funext i
-    exact congrArg x (σ.symm_apply_apply i)
-  right_inv x := by
-    funext i
-    exact congrArg x (σ.apply_symm_apply i)
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
 @[simp]
 theorem coordinatePermutation_apply
     (σ : Equiv.Perm ι) (x : ι → ℝ) (i : ι) :
-    coordinatePermutation σ x i = x (σ.symm i) :=
+    LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) σ x i = x (σ.symm i) :=
   rfl
 
 @[simp]
 theorem coordinatePermutation_refl :
-    coordinatePermutation (Equiv.refl ι) =
+    LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (Equiv.refl ι) =
       LinearEquiv.refl ℝ (ι → ℝ) := by
   ext x i
   rfl
 
 theorem coordinatePermutation_mul
     (σ τ : Equiv.Perm ι) :
-    coordinatePermutation (σ * τ) =
-      (coordinatePermutation τ).trans
-        (coordinatePermutation σ) := by
+    LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (σ * τ) =
+      (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) τ).trans
+        (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) σ) := by
   ext x i
   rfl
 
 @[simp]
 theorem coordinatePermutation_inv
     (σ : Equiv.Perm ι) :
-    coordinatePermutation σ⁻¹ =
-      (coordinatePermutation σ).symm := by
+    LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) σ⁻¹ =
+      (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) σ).symm := by
   rw [show σ⁻¹ = σ.symm from rfl]
-  ext x i
-  rfl
+  apply LinearEquiv.ext
+  intro x
+  apply (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) σ).injective
+  rw [LinearEquiv.apply_symm_apply]
+  funext j
+  change x (σ (σ.symm j)) = x j
+  rw [σ.apply_symm_apply]
 
+/-- A coordinate change sends the unit vector at `i` to the one at `σ i`. -/
 @[simp]
 theorem coordinatePermutation_single
-    [DecidableEq ι] (σ : Equiv.Perm ι) (i : ι) :
-    coordinatePermutation σ (Pi.single i (1 : ℝ)) =
+    (R : Type*) [Semiring R] [DecidableEq ι] (σ : Equiv.Perm ι) (i : ι) :
+    LinearEquiv.piCongrLeft' R (fun _ : ι => R) σ (Pi.single i (1 : R)) =
       Pi.single (σ i) 1 := by
   ext j
+  change (Pi.single i (1 : R) : ι → R) (σ.symm j) =
+    (Pi.single (σ i) (1 : R) : ι → R) j
   by_cases h : j = σ i
   · subst j
-    rw [coordinatePermutation_apply, σ.symm_apply_apply, Pi.single_eq_same,
-      Pi.single_eq_same]
+    rw [σ.symm_apply_apply, Pi.single_eq_same, Pi.single_eq_same]
   · have h' : σ.symm j ≠ i := by
       intro hij
       apply h
       simpa using congrArg σ hij
-    simp [coordinatePermutation_apply, h, h']
+    rw [Pi.single_eq_of_ne h', Pi.single_eq_of_ne h]
 
 section Approximation
 
@@ -162,7 +155,7 @@ representation `ρ`. -/
 def permutationRepresentation
     (ρ : G →* Equiv.Perm ι) (g : G) :
     (ι → ℝ) ≃ₗ[ℝ] (ι → ℝ) :=
-  coordinatePermutation (ρ g)
+  LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)
 
 omit [Fintype G] [Fintype ι] [DecidableEq ι] in
 @[simp]
@@ -170,10 +163,11 @@ theorem permutationRepresentation_one
     (ρ : G →* Equiv.Perm ι) :
     permutationRepresentation ρ 1 =
       LinearEquiv.refl ℝ (ι → ℝ) := by
-  change coordinatePermutation (ρ 1) =
+  change LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ 1) =
     LinearEquiv.refl ℝ (ι → ℝ)
-  rw [map_one]
-  exact coordinatePermutation_refl
+  have h : ρ (1 : G) = Equiv.refl ι := map_one ρ
+  exact (congrArg (fun σ : Equiv.Perm ι => LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) σ) h).trans
+    coordinatePermutation_refl
 
 omit [Fintype G] [Fintype ι] [DecidableEq ι] in
 theorem permutationRepresentation_mul
@@ -181,8 +175,7 @@ theorem permutationRepresentation_mul
     permutationRepresentation ρ (g * h) =
       (permutationRepresentation ρ h).trans
         (permutationRepresentation ρ g) := by
-  simp only [permutationRepresentation, map_mul]
-  exact coordinatePermutation_mul _ _
+  simpa only [permutationRepresentation, map_mul] using coordinatePermutation_mul (ρ g) (ρ h)
 
 /-- Restrict a permutation representation to an invariant lattice. -/
 def permutationLatticeEquiv
@@ -198,18 +191,18 @@ def permutationLatticeEquiv
       hL g⁻¹ x.1 x.2⟩
   left_inv x := by
     apply Subtype.ext
-    change coordinatePermutation (ρ g⁻¹)
-      (coordinatePermutation (ρ g) x.1) = x.1
+    change LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g⁻¹)
+      (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g) x.1) = x.1
     rw [map_inv,
       coordinatePermutation_inv]
-    exact (coordinatePermutation (ρ g)).symm_apply_apply x.1
+    exact (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)).symm_apply_apply x.1
   right_inv x := by
     apply Subtype.ext
-    change coordinatePermutation (ρ g)
-      (coordinatePermutation (ρ g⁻¹) x.1) = x.1
+    change LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)
+      (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g⁻¹) x.1) = x.1
     rw [map_inv,
       coordinatePermutation_inv]
-    exact (coordinatePermutation (ρ g)).apply_symm_apply x.1
+    exact (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)).apply_symm_apply x.1
   map_add' x y := by
     apply Subtype.ext
     exact map_add _ _ _
@@ -722,13 +715,13 @@ theorem basisEquivFunL_symm_coordinatePermutation
       α g (b i) = b (ρ g i))
     (g : G) (x : ι → ℝ) :
     b.equivFunL.symm
-        (coordinatePermutation (ρ g) x) =
+        (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g) x) =
       α g (b.equivFunL.symm x) := by
   classical
   let : Fintype ι := Fintype.ofFinite ι
   have hmaps :
       b.equivFunL.symm.toLinearMap.comp
-          (coordinatePermutation (ρ g)).toLinearMap =
+          (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)).toLinearMap =
         (α g).toLinearMap.comp
           b.equivFunL.symm.toLinearMap := by
     apply (Pi.basisFun ℝ ι).ext
@@ -739,12 +732,12 @@ theorem basisEquivFunL_symm_coordinatePermutation
       exact _root_.Basis.equivFun_symm_single b j
     calc
       b.equivFunL.symm
-          (coordinatePermutation (ρ g)
+          (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)
             (Pi.single i 1)) =
           b.equivFunL.symm
             (Pi.single (ρ g i) 1) :=
         congrArg b.equivFunL.symm
-          (coordinatePermutation_single (ρ g) i)
+          (coordinatePermutation_single ℝ (ρ g) i)
       _ = b (ρ g i) := hsingle (ρ g i)
       _ = α g (b i) := (hb g i).symm
       _ = α g
@@ -793,7 +786,7 @@ theorem exists_complete_permutationSublattice_of_basis
         permutationRepresentation ρ g x ∈ Lc := by
     intro g x hx
     change b.equivFunL.symm
-      (coordinatePermutation (ρ g) x) ∈ L
+      (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g) x) ∈ L
     rw [basisEquivFunL_symm_coordinatePermutation
       b ρ α hb]
     apply hL g
@@ -835,7 +828,7 @@ theorem exists_complete_permutationSublattice_of_basis
     basisEquivFunL_symm_coordinatePermutation
       b ρ α hb g (bc i : ι → ℝ)
   have hcoord' :
-      coordinatePermutation (ρ g) (bc i : ι → ℝ) =
+      LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g) (bc i : ι → ℝ) =
         (bc (ρ g i) : ι → ℝ) := by
     simpa only [permutationRepresentation, bc] using hcoord
   change
@@ -844,7 +837,7 @@ theorem exists_complete_permutationSublattice_of_basis
   calc
     α g (e.symm (bc i : ι → ℝ)) =
         b.equivFunL.symm
-          (coordinatePermutation (ρ g)
+          (LinearEquiv.piCongrLeft' ℝ (fun _ : ι => ℝ) (ρ g)
             (bc i : ι → ℝ)) := hintertwine.symm
     _ = b.equivFunL.symm
         (bc (ρ g i) : ι → ℝ) :=

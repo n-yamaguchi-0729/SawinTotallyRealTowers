@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Mathlib.GroupTheory.SpecificGroups.Cyclic.Basic
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.ArchimedeanPowerIndex
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
@@ -57,6 +59,8 @@ noncomputable section
 universe u v w x
 
 namespace GlobalClassFieldTheory.ClassFieldAxiom
+
+open scoped NumberField
 
 open CyclicCohomology
 open CyclicCohomology.ProfiniteCohomology.Herbrand
@@ -111,11 +115,6 @@ theorem ideleClassHerbrandH0_pow_finrank_eq_one
 
 section NormQuotientCommutativity
 
-local instance cyclicNormBase_isMulCommutative
-    (A : Type*) [Field A] [NumberField A] :
-    IsMulCommutative (IdeleClassGroup A) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
 /-- The concrete class-norm quotient `C_K / N C_L` has exponent dividing
 `[L:K]`. -/
 theorem ideleClassNormQuotient_pow_finrank_eq_one
@@ -123,7 +122,7 @@ theorem ideleClassNormQuotient_pow_finrank_eq_one
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-    (q : RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) :
+    (q : RelativeIdeleGroup.ClassNormQuotient K L) :
     q ^ Module.finrank K L = 1 := by
   let :=
     RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
@@ -173,7 +172,7 @@ theorem ideleClassNormQuotient_pow_injective_of_coprime
     (d : ℕ)
     (hd : d.Coprime (Module.finrank K L)) :
     Function.Injective
-      (fun q : RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L => q ^ d) := by
+      (fun q : RelativeIdeleGroup.ClassNormQuotient K L => q ^ d) := by
   let :=
     RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction K L
   let e :=
@@ -249,8 +248,8 @@ noncomputable def actualPushoutNormQuotientMap
     [FiniteDimensional K M] [FiniteDimensional K L]
     [FiniteDimensional M N] [FiniteDimensional L N]
     [IsGalois K M] :
-    RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L →
-      RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M N :=
+    RelativeIdeleGroup.ClassNormQuotient K L →
+      RelativeIdeleGroup.ClassNormQuotient M N :=
   fun q =>
     intermediateClassNormQuotientBaseChangeMulEquiv
       K M N (pushoutNormQuotientMap K M L N q)
@@ -271,12 +270,12 @@ theorem actualPushoutNormQuotientMap_mk
     [FiniteDimensional K M] [FiniteDimensional K L]
     [FiniteDimensional M N] [FiniteDimensional L N]
     [IsGalois K M]
-    (c : IdeleClassGroup K) :
+    (c : NumberField.IdeleClassGroup (𝓞 K) K) :
     actualPushoutNormQuotientMap K M L N
         (QuotientGroup.mk'
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range c) =
+          (RelativeIdeleGroup.classNorm K L).range c) =
       QuotientGroup.mk'
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm M N).range
+        (RelativeIdeleGroup.classNorm M N).range
         (_root_.relativeIdeleClassBaseChangeMulEquiv
           (K := K) (L := M)
           (RelativeIdeleGroup.classInclusion K M c)) := by
@@ -337,12 +336,12 @@ theorem ideleClassNormQuotient_card_le_actualPushout
     [FiniteDimensional K M] [FiniteDimensional K L]
     [FiniteDimensional M N] [FiniteDimensional L N]
     [IsGalois K L] [IsGalois K M]
-    [Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M N)]
+    [Finite (RelativeIdeleGroup.ClassNormQuotient M N)]
     (hcoprime :
       (Module.finrank K M).Coprime
         (Module.finrank K L)) :
-    Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
-      Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M N) :=
+    Nat.card (RelativeIdeleGroup.ClassNormQuotient K L) ≤
+      Nat.card (RelativeIdeleGroup.ClassNormQuotient M N) :=
   Nat.card_le_card_of_injective
     (actualPushoutNormQuotientMap K M L N)
     (actualPushoutNormQuotientMap_injective_of_coprime
@@ -359,7 +358,7 @@ private theorem ideleClassNorm_index_le_prime_of_finrank_eq_native
     [FiniteDimensional K L] [IsGalois K L]
     (p : ℕ) (hp : p.Prime)
     (hdegree : Module.finrank K L = p) :
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index ≤ p := by
+    (RelativeIdeleGroup.classNorm K L).range.index ≤ p := by
   let : NeZero p := ⟨hp.ne_zero⟩
   let M := KummerTheory.PrimeCyclotomicBase K p
   let N := KummerTheory.PrimeCyclotomicPushout K L p
@@ -383,9 +382,9 @@ private theorem ideleClassNorm_index_le_prime_of_finrank_eq_native
       K L p hp hdegree
   let n : ℕ+ := ⟨p, hp.pos⟩
   have hTargetIndex :
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm M N).range.index = p := by
+      (RelativeIdeleGroup.classNorm M N).range.index = p := by
     calc
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm M N).range.index =
+      (RelativeIdeleGroup.classNorm M N).range.index =
           Module.finrank M N := by
         simpa only [M, N, n] using
           (ideleClassNorm_index_eq_finrank_primePowerKummer
@@ -400,20 +399,20 @@ private theorem ideleClassNorm_index_le_prime_of_finrank_eq_native
           K L p hp hdegree
   have hTargetCard :
       Nat.card
-          (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M N) =
+          (RelativeIdeleGroup.ClassNormQuotient M N) =
         p := by
     rw [← Subgroup.index_eq_card]
     exact hTargetIndex
   let :
-      Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M N) :=
+      Finite (RelativeIdeleGroup.ClassNormQuotient M N) :=
     Nat.finite_of_card_ne_zero (by
       rw [hTargetCard]
       exact hp.ne_zero)
   rw [Subgroup.index_eq_card]
   calc
-    Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+    Nat.card (RelativeIdeleGroup.ClassNormQuotient K L) ≤
         Nat.card
-          (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M N) :=
+          (RelativeIdeleGroup.ClassNormQuotient M N) :=
       ideleClassNormQuotient_card_le_actualPushout
         K M L N
         (KummerTheory.primeCyclotomicBase_finrank_coprime
@@ -433,25 +432,11 @@ theorem ideleClassNormQuotient_card_le_actual_tower_mul
     [IsScalarTower K M L]
     [FiniteDimensional K M] [FiniteDimensional M L]
     [IsGalois K M]
-    [Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L)]
-    [Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M)] :
-    Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
-      Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) *
-        Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) := by
-  let : Finite (RelativeIdeleGroup.ClassNormQuotient M L) := by
-    change
-      Finite
-        (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L)
-    infer_instance
-  let : Finite (RelativeIdeleGroup.ClassNormQuotient K M) := by
-    change
-      Finite
-        (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M)
-    infer_instance
-  change
+    [Finite (RelativeIdeleGroup.ClassNormQuotient M L)]
+    [Finite (RelativeIdeleGroup.ClassNormQuotient K M)] :
     Nat.card (RelativeIdeleGroup.ClassNormQuotient K L) ≤
       Nat.card (RelativeIdeleGroup.ClassNormQuotient M L) *
-        Nat.card (RelativeIdeleGroup.ClassNormQuotient K M)
+        Nat.card (RelativeIdeleGroup.ClassNormQuotient K M) := by
   let e :=
     intermediateClassNormQuotientBaseChangeMulEquiv
       K M L
@@ -481,27 +466,27 @@ private theorem relativeIdeleClassNorm_index_eq_finrank_cyclic_native
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [IsCyclic (L ≃ₐ[K] L)] :
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index =
+    (RelativeIdeleGroup.classNorm K L).range.index =
       Module.finrank K L := by
   classical
   induction hfinrank : Module.finrank K L using
       Nat.strong_induction_on generalizing K L with
-  | h degree ih =>
+  | ind degree ih =>
     by_cases hdegreeOne : Module.finrank K L = 1
     · have hsurjective :
           Function.Surjective
-            (RelativeIdeleGroup.Cohomology.ideleClassNorm K L) := by
+            (RelativeIdeleGroup.classNorm K L) := by
         intro c
         refine
           ⟨RelativeIdeleGroup.classInclusion K L c, ?_⟩
         calc
-          RelativeIdeleGroup.Cohomology.ideleClassNorm K L
+          RelativeIdeleGroup.classNorm K L
                 (RelativeIdeleGroup.classInclusion K L c) =
               c ^ Module.finrank K L :=
             ideleClassNorm_classInclusion K L c
           _ = c := by rw [hdegreeOne, pow_one]
       have hRange :
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range = ⊤ :=
+          (RelativeIdeleGroup.classNorm K L).range = ⊤ :=
         MonoidHom.range_eq_top.mpr hsurjective
       rw [hRange, Subgroup.index_top, ← hfinrank, hdegreeOne]
     · have hdegreeLarge :
@@ -554,11 +539,11 @@ private theorem relativeIdeleClassNorm_index_eq_finrank_cyclic_native
           Module.finrank M L < degree := by
         exact hTopLt.trans_eq hfinrank
       have hTopIndex :
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm M L).range.index =
+          (RelativeIdeleGroup.classNorm M L).range.index =
             Module.finrank M L :=
         ih (Module.finrank M L) hTopLtDegree M L rfl
       have hBaseUpper :
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index ≤
+          (RelativeIdeleGroup.classNorm K M).range.index ≤
             Module.finrank K M := by
         rw [hBaseDegree]
         exact
@@ -568,46 +553,46 @@ private theorem relativeIdeleClassNorm_index_eq_finrank_cyclic_native
         IsCyclic.exists_generator (α := M ≃ₐ[K] M)
       have hBaseLower :
           Module.finrank K M ≤
-            (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index :=
+            (RelativeIdeleGroup.classNorm K M).range.index :=
         _root_.GlobalClassFieldTheory.Cohomology.finrank_le_ideleClassNorm_index
           (K := K) (L := M) sigmaM hsigmaM
       have hBaseIndex :
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index =
+          (RelativeIdeleGroup.classNorm K M).range.index =
             Module.finrank K M :=
         le_antisymm hBaseUpper hBaseLower
       have hTopCard :
           Nat.card
-              (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) =
+              (RelativeIdeleGroup.ClassNormQuotient M L) =
             Module.finrank M L := by
         rw [← Subgroup.index_eq_card]
         exact hTopIndex
       have hBaseCard :
           Nat.card
-              (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) =
+              (RelativeIdeleGroup.ClassNormQuotient K M) =
             Module.finrank K M := by
         rw [← Subgroup.index_eq_card]
         exact hBaseIndex
       let :
-          Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) :=
+          Finite (RelativeIdeleGroup.ClassNormQuotient M L) :=
         Nat.finite_of_card_ne_zero (by
           rw [hTopCard]
           exact Nat.ne_of_gt Module.finrank_pos)
       let :
-          Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) :=
+          Finite (RelativeIdeleGroup.ClassNormQuotient K M) :=
         Nat.finite_of_card_ne_zero (by
           rw [hBaseCard]
           exact Nat.ne_of_gt Module.finrank_pos)
       have hUpperCard :
           Nat.card
-              (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+              (RelativeIdeleGroup.ClassNormQuotient K L) ≤
             Module.finrank K L := by
         calc
           Nat.card
-                (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+                (RelativeIdeleGroup.ClassNormQuotient K L) ≤
               Nat.card
-                  (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) *
+                  (RelativeIdeleGroup.ClassNormQuotient M L) *
                 Nat.card
-                  (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) :=
+                  (RelativeIdeleGroup.ClassNormQuotient K M) :=
             ideleClassNormQuotient_card_le_actual_tower_mul
               K M L
           _ =
@@ -618,7 +603,7 @@ private theorem relativeIdeleClassNorm_index_eq_finrank_cyclic_native
             rw [Nat.mul_comm,
               Module.finrank_mul_finrank K M L]
       have hUpper :
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index ≤
+          (RelativeIdeleGroup.classNorm K L).range.index ≤
             Module.finrank K L := by
         rw [Subgroup.index_eq_card]
         exact hUpperCard
@@ -626,7 +611,7 @@ private theorem relativeIdeleClassNorm_index_eq_finrank_cyclic_native
         IsCyclic.exists_generator (α := L ≃ₐ[K] L)
       have hLower :
           Module.finrank K L ≤
-            (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index :=
+            (RelativeIdeleGroup.classNorm K L).range.index :=
         _root_.GlobalClassFieldTheory.Cohomology.finrank_le_ideleClassNorm_index
           (K := K) (L := L) sigma hsigma
       exact (le_antisymm hUpper hLower).trans hfinrank
@@ -680,7 +665,7 @@ private theorem ordinaryIdeleClassNorm_range_eq_cohomology
     [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L] :
     (_root_.ideleClassNorm K L).range =
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range :=
+      (RelativeIdeleGroup.classNorm K L).range :=
   ordinaryIdeleClassNorm_range_eq_relative
 
 /-- The relative-coordinate norm subgroup has the same index in the
@@ -691,7 +676,7 @@ theorem relativeIdeleClassNorm_index_eq_finrank_cyclic
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [IsCyclic (L ≃ₐ[K] L)] :
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index =
+    (RelativeIdeleGroup.classNorm K L).range.index =
       Module.finrank K L := by
   rw [← ordinaryIdeleClassNorm_range_eq_cohomology K L]
   exact ideleClassNorm_index_eq_finrank_cyclic K L
@@ -704,7 +689,7 @@ theorem ideleClassNorm_index_le_prime_of_finrank_eq
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     (p : ℕ) (hp : p.Prime) (hdegree : Module.finrank K L = p) :
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index ≤ p := by
+    (RelativeIdeleGroup.classNorm K L).range.index ≤ p := by
   have : Fact p.Prime := ⟨hp⟩
   have : IsCyclic (L ≃ₐ[K] L) :=
     isCyclic_of_prime_card ((IsGalois.card_aut_eq_finrank K L).trans hdegree)
@@ -721,21 +706,11 @@ theorem relativeIdeleClassNormQuotient_finite_of_actual_tower
     [IsScalarTower K M L]
     [FiniteDimensional K M] [FiniteDimensional M L]
     [IsGalois K M]
-    [Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L)]
-    [Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M)] :
-    Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) := by
+    [Finite (RelativeIdeleGroup.ClassNormQuotient M L)]
+    [Finite (RelativeIdeleGroup.ClassNormQuotient K M)] :
+    Finite (RelativeIdeleGroup.ClassNormQuotient K L) := by
   let : IsMulCommutative (RelativeIdeleGroup.ClassGroup K M) :=
     ⟨⟨fun a b => mul_comm a b⟩⟩
-  let : Finite (RelativeIdeleGroup.ClassNormQuotient M L) := by
-    change
-      Finite
-        (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L)
-    infer_instance
-  let : Finite (RelativeIdeleGroup.ClassNormQuotient K M) := by
-    change
-      Finite
-        (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M)
-    infer_instance
   change Finite (RelativeIdeleGroup.ClassNormQuotient K L)
   let e :=
     intermediateClassNormQuotientBaseChangeMulEquiv
@@ -776,13 +751,13 @@ private theorem
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
-    Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ∧
-      Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+    Finite (RelativeIdeleGroup.ClassNormQuotient K L) ∧
+      Nat.card (RelativeIdeleGroup.ClassNormQuotient K L) ≤
         Module.finrank K L := by
   classical
   induction hfinrank : Module.finrank K L using
       Nat.strong_induction_on generalizing K L with
-  | h degree ih =>
+  | ind degree ih =>
     by_cases hdegreeOne : Module.finrank K L = 1
     · have hAutCard :
           Nat.card (L ≃ₐ[K] L) = 1 := by
@@ -792,14 +767,14 @@ private theorem
       let : IsCyclic (L ≃ₐ[K] L) := inferInstance
       have hCard :
           Nat.card
-              (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) =
+              (RelativeIdeleGroup.ClassNormQuotient K L) =
             1 := by
         rw [← Subgroup.index_eq_card,
           relativeIdeleClassNorm_index_eq_finrank_cyclic K L,
           hdegreeOne]
       let :
           Finite
-            (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) :=
+            (RelativeIdeleGroup.ClassNormQuotient K L) :=
         Nat.finite_of_card_ne_zero (by
           rw [hCard]
           exact one_ne_zero)
@@ -850,46 +825,46 @@ private theorem
           Module.finrank K M < degree :=
         hBaseLt.trans_eq hfinrank
       have hBaseData :
-          Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) ∧
+          Finite (RelativeIdeleGroup.ClassNormQuotient K M) ∧
             Nat.card
-                (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) ≤
+                (RelativeIdeleGroup.ClassNormQuotient K M) ≤
               Module.finrank K M :=
         ih (Module.finrank K M) hBaseLtDegree K M rfl
       let :
           Finite
-            (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) :=
+            (RelativeIdeleGroup.ClassNormQuotient K M) :=
         hBaseData.1
       have hTopCard :
           Nat.card
-              (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) =
+              (RelativeIdeleGroup.ClassNormQuotient M L) =
             Module.finrank M L := by
         rw [← Subgroup.index_eq_card]
         exact relativeIdeleClassNorm_index_eq_finrank_cyclic M L
       let :
           Finite
-            (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) :=
+            (RelativeIdeleGroup.ClassNormQuotient M L) :=
         Nat.finite_of_card_ne_zero (by
           rw [hTopCard]
           exact Nat.ne_of_gt Module.finrank_pos)
       let :
           Finite
-            (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) :=
+            (RelativeIdeleGroup.ClassNormQuotient K L) :=
         relativeIdeleClassNormQuotient_finite_of_actual_tower
           K M L
       refine ⟨inferInstance, ?_⟩
       calc
         Nat.card
-              (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+              (RelativeIdeleGroup.ClassNormQuotient K L) ≤
             Nat.card
-                (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient M L) *
+                (RelativeIdeleGroup.ClassNormQuotient M L) *
               Nat.card
-                (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) :=
+                (RelativeIdeleGroup.ClassNormQuotient K M) :=
           ideleClassNormQuotient_card_le_actual_tower_mul
             K M L
         _ =
             Module.finrank M L *
               Nat.card
-                (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K M) := by
+                (RelativeIdeleGroup.ClassNormQuotient K M) := by
           rw [hTopCard]
         _ ≤ Module.finrank M L * Module.finrank K M :=
           Nat.mul_le_mul_left _ hBaseData.2
@@ -907,8 +882,8 @@ theorem relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
-    Finite (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ∧
-      Nat.card (RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient K L) ≤
+    Finite (RelativeIdeleGroup.ClassNormQuotient K L) ∧
+      Nat.card (RelativeIdeleGroup.ClassNormQuotient K L) ≤
         Module.finrank K L := by
   let : Small.{0} K := ClassFieldTheory.numberField_small K
   let : Small.{0} L := ClassFieldTheory.numberField_small L
@@ -928,24 +903,25 @@ theorem relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian
   have hsmall := relativeIdeleClassNormQuotient_finite_and_card_le_finrank_abelian_native
     (Shrink.{0} K) (Shrink.{0} L)
   have hsmallOrdinary :
-      Finite (IdeleClassGroup (Shrink.{0} K) ⧸
+      Finite (NumberField.IdeleClassGroup (𝓞 (Shrink.{0} K)) (Shrink.{0} K) ⧸
         (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range) ∧
-      Nat.card (IdeleClassGroup (Shrink.{0} K) ⧸
+      Nat.card (NumberField.IdeleClassGroup (𝓞 (Shrink.{0} K)) (Shrink.{0} K) ⧸
         (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range) ≤
           Module.finrank (Shrink.{0} K) (Shrink.{0} L) := by
-    simpa only [RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient,
+    simpa only [RelativeIdeleGroup.ClassNormQuotient,
       ordinaryIdeleClassNorm_range_eq_cohomology] using hsmall
-  have : Finite (IdeleClassGroup (Shrink.{0} K) ⧸
+  have : Finite (NumberField.IdeleClassGroup (𝓞 (Shrink.{0} K)) (Shrink.{0} K) ⧸
       (_root_.ideleClassNorm (Shrink.{0} K) (Shrink.{0} L)).range) := hsmallOrdinary.1
   have hdegree : Module.finrank (Shrink.{0} K) (Shrink.{0} L) = Module.finrank K L := by
     rw [← IsGalois.card_aut_eq_finrank, ← IsGalois.card_aut_eq_finrank]
     exact Nat.card_congr (HasseArf.shrinkGalEquiv K L)
-  have hordinary : Finite (IdeleClassGroup K ⧸ (_root_.ideleClassNorm K L).range) ∧
-      Nat.card (IdeleClassGroup K ⧸ (_root_.ideleClassNorm K L).range) ≤
+  have hordinary :
+      Finite (NumberField.IdeleClassGroup (𝓞 K) K ⧸ (_root_.ideleClassNorm K L).range) ∧
+      Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ (_root_.ideleClassNorm K L).range) ≤
         Module.finrank K L :=
     ⟨Finite.of_injective e e.injective,
       (Nat.card_congr e.toEquiv).trans_le (hsmallOrdinary.2.trans_eq hdegree)⟩
-  simpa only [RelativeIdeleGroup.Cohomology.IdeleClassNormQuotient,
+  simpa only [RelativeIdeleGroup.ClassNormQuotient,
     ordinaryIdeleClassNorm_range_eq_cohomology] using hordinary
 
 /-- Finiteness of the actual ordinary idele-class norm quotient of a finite
@@ -956,7 +932,7 @@ theorem ideleClassNormQuotient_finite_abelian
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
     Finite
-      (IdeleClassGroup K ⧸
+      (NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K L).range) := by
   rw [ordinaryIdeleClassNorm_range_eq_relative]
   exact
@@ -972,7 +948,7 @@ theorem ideleClassNormQuotient_card_le_finrank_abelian
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsAbelianGalois K L] :
     Nat.card
-        (IdeleClassGroup K ⧸
+        (NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K L).range) ≤
       Module.finrank K L := by
   rw [ordinaryIdeleClassNorm_range_eq_relative]
@@ -1045,7 +1021,7 @@ theorem ideleClass_lowDegree_card_eq_finrank_cyclic
       Nat.card
             (HerbrandH0 (L ≃ₐ[K] L)
               (RelativeIdeleGroup.ClassGroup K L)) =
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range.index :=
+          (RelativeIdeleGroup.classNorm K L).range.index :=
         (RelativeIdeleGroup.Cohomology.ideleClassNorm_index_eq_herbrandH0_card
           K L).symm
       _ = Module.finrank K L :=
@@ -1259,7 +1235,7 @@ theorem principalIdelesHerbrandHMinusOne_subsingleton
     let :=
       LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
     let :=
-      RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     let :=
       RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
     Subsingleton
@@ -1288,7 +1264,7 @@ theorem principalIdelesHerbrandHMinusOne_card_eq_one
     (σ : L ≃ₐ[K] L)
     (hσ : ∀ τ : L ≃ₐ[K] L, τ ∈ Subgroup.zpowers σ) :
     letI :=
-      RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     letI :=
       RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
     Nat.card
@@ -1297,7 +1273,7 @@ theorem principalIdelesHerbrandHMinusOne_card_eq_one
   let :=
     LocalClassFieldTheory.galoisGroupFieldUnitsMulDistribMulAction K L
   let :=
-    RelativeIdeleGroup.Cohomology.relativeIdeleMulDistribMulAction K L
+    RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   let :=
     RelativeIdeleGroup.Cohomology.principalIdeleMulDistribMulAction K L
   let :

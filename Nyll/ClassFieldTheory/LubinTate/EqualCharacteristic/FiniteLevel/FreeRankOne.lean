@@ -41,62 +41,11 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-/-- All coefficients visible at division level `n + 1`.  In contrast with the
-unit parameters used for the primitive roots in the uniformizer norm identity, the constant
-coefficient is allowed to vanish; this is necessary to parametrize every
-division point. -/
-structure equalCharacteristicLubinTateParameter
-    (F : LocalField.{u, v} K) (n : ℕ) where
-  /-- The coefficients in degrees `0` through `n` of the represented truncated series. -/
-  coeff : Fin (n + 1) → F.residueField
-
-/-- A Lubin–Tate parameter evaluates to its finite coefficient function. -/
-instance equalCharacteristicLubinTateParameter_coeFun
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CoeFun (equalCharacteristicLubinTateParameter F n)
-      (fun _ => Fin (n + 1) → F.residueField) :=
-  ⟨equalCharacteristicLubinTateParameter.coeff⟩
-
-/-- Construct a finite parameter from its coefficient function. -/
-def equalCharacteristicLubinTateParameterOfFunction
-    (F : LocalField.{u, v} K) (n : ℕ)
-    (coeff : Fin (n + 1) → F.residueField) :
-    equalCharacteristicLubinTateParameter F n :=
-  ⟨coeff⟩
-
-/-- Comparison with the raw finite coefficient function. -/
-def equalCharacteristicLubinTateParameterEquiv
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    equalCharacteristicLubinTateParameter F n ≃
-      (Fin (n + 1) → F.residueField) where
-  toFun := equalCharacteristicLubinTateParameter.coeff
-  invFun := equalCharacteristicLubinTateParameterOfFunction F n
-  left_inv a := by cases a; rfl
-  right_inv _ := rfl
-
-/-- Lubin–Tate parameters are equal when all their coefficients agree. -/
-@[ext]
-theorem equalCharacteristicLubinTateParameter_ext
-    (F : LocalField.{u, v} K) (n : ℕ)
-    {a b : equalCharacteristicLubinTateParameter F n}
-    (hcoeff : a.coeff = b.coeff) :
-    a = b := by
-  cases a
-  cases b
-  cases hcoeff
-  rfl
-
-/-- The finite coefficient parameter space is finite. -/
-instance equalCharacteristicLubinTateParameter_finite
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Finite (equalCharacteristicLubinTateParameter F n) :=
-  Finite.of_equiv (Fin (n + 1) → F.residueField)
-    (equalCharacteristicLubinTateParameterEquiv F n).symm
-
-/-- The canonical polynomial representative of a finite parameter. -/
+/-- The canonical polynomial representative of the coefficients at division level `n + 1`.
+The constant coefficient may vanish, so these functions parametrize all division points. -/
 noncomputable def equalCharacteristicLubinTateParameterSeries
     (F : LocalField.{u, v} K) (n : ℕ)
-    (a : equalCharacteristicLubinTateParameter F n) :
+    (a : Fin (n + 1) → F.residueField) :
     F.residueField⟦X⟧ :=
   PowerSeries.mk fun i =>
     if hi : i < n + 1 then a ⟨i, hi⟩ else 0
@@ -105,7 +54,7 @@ noncomputable def equalCharacteristicLubinTateParameterSeries
 @[simp]
 theorem equalCharacteristicLubinTateParameterSeries_coeff
     (F : LocalField.{u, v} K) (n : ℕ)
-    (a : equalCharacteristicLubinTateParameter F n)
+    (a : Fin (n + 1) → F.residueField)
     (i : Fin (n + 1)) :
     PowerSeries.coeff i
         (equalCharacteristicLubinTateParameterSeries F n a) = a i := by
@@ -118,7 +67,7 @@ theorem equalCharacteristicLubinTateParameterSeries_coeff
 noncomputable def equalCharacteristicLubinTateParameterRoot
     (F : LocalField.{u, v} K)
     [CharP K F.residueCharacteristic]
-    (n : ℕ) (a : equalCharacteristicLubinTateParameter F n) :
+    (n : ℕ) (a : Fin (n + 1) → F.residueField) :
     equalCharacteristicLubinTateAmbientTorsionAddSubgroup F
       (equalCharacteristicSeparableUniformizer F) (n + 1) :=
   ⟨equalCharacteristicLubinTateAmbientBracket F
@@ -140,7 +89,6 @@ theorem equalCharacteristicLubinTateParameterRoot_injective
     (n : ℕ) :
     Function.Injective (equalCharacteristicLubinTateParameterRoot F n) := by
   intro a b hab
-  apply equalCharacteristicLubinTateParameter_ext F n
   funext i
   have hvalue :
       (equalCharacteristicLubinTateParameterRoot F n a).1 =
@@ -152,14 +100,6 @@ theorem equalCharacteristicLubinTateParameterRoot_injective
       (equalCharacteristicLubinTateParameterSeries F n b) hvalue
       i (Nat.le_of_lt_succ i.isLt)
   simpa using hcoeff
-
-/-- The full finite parameter type has `q^(n+1)` elements. -/
-theorem equalCharacteristicLubinTateParameter_natCard
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Nat.card (equalCharacteristicLubinTateParameter F n) =
-      Nat.card F.residueField ^ (n + 1) := by
-  rw [Nat.card_congr (equalCharacteristicLubinTateParameterEquiv F n),
-    Nat.card_fun, Nat.card_fin]
 
 /-- Level `n + 1` torsion is exactly the root set of the corresponding
 division polynomial. -/
@@ -231,7 +171,7 @@ theorem equalCharacteristicLubinTateParameterRoot_bijective
     [CharP K F.residueCharacteristic]
     (n : ℕ) :
     Function.Bijective (equalCharacteristicLubinTateParameterRoot F n) := by
-  let := Fintype.ofFinite (equalCharacteristicLubinTateParameter F n)
+  let := Fintype.ofFinite (Fin (n + 1) → F.residueField)
   let := Fintype.ofFinite
     (equalCharacteristicLubinTateAmbientTorsionAddSubgroup F
       (equalCharacteristicSeparableUniformizer F) (n + 1))
@@ -239,11 +179,11 @@ theorem equalCharacteristicLubinTateParameterRoot_bijective
     (equalCharacteristicLubinTateParameterRoot F n)).mpr
   refine ⟨equalCharacteristicLubinTateParameterRoot_injective F n, ?_⟩
   calc
-    Fintype.card (equalCharacteristicLubinTateParameter F n) =
-        Nat.card (equalCharacteristicLubinTateParameter F n) := by
+    Fintype.card (Fin (n + 1) → F.residueField) =
+        Nat.card (Fin (n + 1) → F.residueField) := by
       rw [Nat.card_eq_fintype_card]
-    _ = Nat.card F.residueField ^ (n + 1) :=
-      equalCharacteristicLubinTateParameter_natCard F n
+    _ = Nat.card F.residueField ^ (n + 1) := by
+      rw [Nat.card_fun, Nat.card_fin]
     _ = Nat.card
         (equalCharacteristicLubinTateAmbientTorsionAddSubgroup F
           (equalCharacteristicSeparableUniformizer F) (n + 1)) :=

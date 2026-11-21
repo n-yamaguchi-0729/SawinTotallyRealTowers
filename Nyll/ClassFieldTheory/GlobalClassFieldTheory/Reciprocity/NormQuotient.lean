@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
@@ -22,6 +23,7 @@ global norm-residue-symbol constructions.
 @[expose] public section
 
 open scoped NumberField
+open IsDedekindDomain
 
 noncomputable section
 
@@ -31,39 +33,29 @@ namespace Reciprocity
 variable
     (K L : Type*) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
-    [FiniteDimensional K L]
 
-local instance normQuotientIdeleClassGroupIsMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-/-- The composite from ideles to the canonical class norm quotient
-`C_K / N_{L/K} C_L`. -/
+/-- The norm class of an idèle in the standard principal quotient. -/
 def globalNormClassFromIdele :
     IdeleGroup K →*
-      IdeleClassGroup K ⧸
-        (_root_.ideleClassNorm K L).range :=
-  (QuotientGroup.mk'
-      (_root_.ideleClassNorm K L).range).comp
-    (QuotientGroup.mk'
-      (IdeleGroup.principalSubgroup K))
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸ (NumberField.IdeleClassGroup.norm K L).range :=
+  (QuotientGroup.mk' (NumberField.IdeleClassGroup.norm K L).range).comp
+    (IdeleGroup.toStandardClass K)
 
-omit [FiniteDimensional K L] in
-/-- The map from ideles to the class norm quotient factors through
-`C_K`, so it kills every principal idele. -/
+/-- The norm class of a one-place idèle uses the original standard insertion. -/
+theorem globalNormClassFromIdele_finitePlaceIdele (v : HeightOneSpectrum (𝓞 K))
+    (a : (v.adicCompletion K)ˣ) :
+    globalNormClassFromIdele K L (IdeleGroup.finitePlaceIdele v a) =
+      QuotientGroup.mk' (NumberField.IdeleClassGroup.norm K L).range
+        (NumberField.IdeleClassGroup.ofAdicCompletion (𝓞 K) K v a) := by
+  rw [globalNormClassFromIdele, MonoidHom.comp_apply,
+    IdeleGroup.toStandardClass_finitePlaceIdele]
+
+/-- The canonical norm quotient kills principal idèles. -/
 @[simp]
-theorem globalNormClassFromIdele_principalIdele
-    (x : Kˣ) :
-    globalNormClassFromIdele K L
-        (IdeleGroup.principalIdele K x) = 1 := by
-  rw [globalNormClassFromIdele, MonoidHom.comp_apply]
-  have hclass :
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K)
-          (IdeleGroup.principalIdele K x) = 1 :=
-    (QuotientGroup.eq_one_iff
-      (IdeleGroup.principalIdele K x)).2 ⟨x, rfl⟩
-  rw [hclass, map_one]
+theorem globalNormClassFromIdele_principalIdele (x : Kˣ) :
+    globalNormClassFromIdele K L (IdeleGroup.principalIdele K x) = 1 := by
+  rw [globalNormClassFromIdele, MonoidHom.comp_apply, IdeleGroup.toStandardClass_principalIdele,
+    map_one]
 
 end Reciprocity
 end GlobalClassFieldTheory

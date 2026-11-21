@@ -206,15 +206,6 @@ theorem standardLubinTateEndomorphismValue_add
     (standardLubinTatePrimitivePointInteger hπ n)
     (standardLubinTatePrimitivePointInteger_hasEval hπ n) a b
 
-private theorem standardLubinTateEndomorphismEvalAt_eq_of_point_eq
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ)
-    (x y : (standardLubinTateLevelCompleteDVF hπ n).valuationSubring)
-    (hx : PowerSeries.HasEval x) (hy : PowerSeries.HasEval y)
-    (hxy : x = y) (a : F.valuationSubring) :
-    standardLubinTateEndomorphismEvalAt hπ n x hx a =
-      standardLubinTateEndomorphismEvalAt hπ n y hy a := by
-  subst y
-  rfl
 
 /-- Every standard scalar endomorphism fixes the zero point. -/
 theorem standardLubinTateEndomorphismEvalAt_zero_point
@@ -269,7 +260,7 @@ theorem standardLubinTateEndomorphismEvalAt_unit_injective
         standardLubinTateEndomorphismEvalAt hπ n uy huy
           ((u⁻¹ : F.valuationSubringˣ) : F.valuationSubring) := by
       apply
-        standardLubinTateEndomorphismEvalAt_eq_of_point_eq
+        standardLubinTateEndomorphismEvalAt_congr_point
           hπ n ux uy hux huy
       exact hxy
     _ =
@@ -447,7 +438,7 @@ theorem standardLubinTateEndomorphismValue_eq_zero_iff_mem_maximalIdeal_pow
           standardLubinTateEndomorphismEvalAt hπ n 0
             PowerSeries.HasEval.zero d := by
         apply
-          standardLubinTateEndomorphismEvalAt_eq_of_point_eq
+          standardLubinTateEndomorphismEvalAt_congr_point
             hπ n
         exact hkill
       _ = 0 :=
@@ -567,7 +558,7 @@ theorem
             (standardLubinTatePrimitivePointIntegerAction_hasEval hπ n w)
             ((w⁻¹ : F.valuationSubringˣ) : F.valuationSubring) := by
               apply
-                standardLubinTateEndomorphismEvalAt_eq_of_point_eq
+                standardLubinTateEndomorphismEvalAt_congr_point
                   hπ n
               exact huw
       _ =
@@ -599,7 +590,7 @@ theorem
             (standardLubinTatePrimitivePointInteger_hasEval hπ n)
             (w : F.valuationSubring) := by
               apply
-                standardLubinTateEndomorphismEvalAt_eq_of_point_eq
+                standardLubinTateEndomorphismEvalAt_congr_point
                   hπ n
               exact hfixed
       _ = standardLubinTatePrimitivePointIntegerAction hπ n w := rfl
@@ -792,7 +783,7 @@ theorem standardLubinTatePrimitiveRootAction_isRoot
           standardLubinTateEndomorphismEvalAt hπ n 0
             PowerSeries.HasEval.zero (u : F.valuationSubring) := by
         apply
-          standardLubinTateEndomorphismEvalAt_eq_of_point_eq
+          standardLubinTateEndomorphismEvalAt_congr_point
             hπ n
         exact hkillLambda
       _ = 0 :=

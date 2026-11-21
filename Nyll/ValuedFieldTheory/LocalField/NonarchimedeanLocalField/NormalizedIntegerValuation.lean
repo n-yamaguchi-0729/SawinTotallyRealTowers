@@ -53,6 +53,36 @@ theorem localIntegerValuation_apply (x : K) :
         (ValuativeRel.valuation K x) :=
   rfl
 
+/-- Normalizing the two value groups preserves extension of valuations. -/
+theorem localIntegerValuation_hasExtension
+    (L : Type v) [Field L] [Algebra K L]
+    [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
+    [Valuation.HasExtension (ValuativeRel.valuation K)
+      (ValuativeRel.valuation L)] :
+    (localIntegerValuation K).HasExtension (localIntegerValuation L) := by
+  apply Valuation.HasExtension.ofComapInteger
+  ext x
+  change
+    IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt L
+        (ValuativeRel.valuation L (algebraMap K L x)) ≤ 1 ↔
+      IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K
+        (ValuativeRel.valuation K x) ≤ 1
+  have hK (y : K) :
+      IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K
+          (ValuativeRel.valuation K y) ≤ 1 ↔ ValuativeRel.valuation K y ≤ 1 := by
+    simpa only [map_one] using
+      (map_le_map_iff (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt K)
+        (a := ValuativeRel.valuation K y) (b := 1))
+  have hL (y : L) :
+      IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt L
+          (ValuativeRel.valuation L y) ≤ 1 ↔ ValuativeRel.valuation L y ≤ 1 := by
+    simpa only [map_one] using
+      (map_le_map_iff (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt L)
+        (a := ValuativeRel.valuation L y) (b := 1))
+  rw [hK, hL]
+  exact Valuation.HasExtension.val_map_le_one_iff
+    (ValuativeRel.valuation K) (ValuativeRel.valuation L) x
+
 /-- The valuation in the canonical complete-DVF package is the original local valuation. -/
 theorem localCompleteDVF_valuation_eq :
     (localCompleteDVF K).valuation = ValuativeRel.valuation K := by

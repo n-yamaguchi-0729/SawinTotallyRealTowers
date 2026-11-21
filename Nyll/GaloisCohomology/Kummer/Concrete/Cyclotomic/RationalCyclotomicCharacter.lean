@@ -79,15 +79,8 @@ theorem rationalCyclotomicCharacterPrimeProduct_apply
 
 section PrimePowerCharacter
 
--- Expose the exact prime-power index to instance synthesis. Both
--- proposition-valued instances are supplied by the existing canonical factories.
-local instance primePowerLevelNumberField (p : Nat.Primes) (k : ℕ) :
-    NumberField (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  rationalCyclotomicLevel_numberField ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance primePowerLevelIsGalois (p : Nat.Primes) (k : ℕ) :
-    IsGalois ℚ (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  rationalCyclotomicLevel_isGalois ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+attribute [local instance] rationalCyclotomicPrimePowerNumberField
+  rationalCyclotomicPrimePowerIsGalois
 
 /-- Reduction of the `p`-coordinate modulo `p ^ k` is the standard
 mathlib character of the finite internal cyclotomic level. -/

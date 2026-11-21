@@ -42,9 +42,8 @@ abbrev centralizerOf (g : G) : Subgroup G :=
 Membership in the centralizer of a subset is equivalent to the displayed commutation condition.
 -/
 @[simp] theorem mem_centralizerOf_iff {x g : G} :
-    x ∈ centralizerOf g ↔ x * g = g * x := by
-  simpa [centralizerOf, centralizer] using
-    (Subgroup.mem_centralizer_singleton_iff (g := g) (k := x))
+    x ∈ centralizerOf g ↔ x * g = g * x :=
+  Subgroup.mem_centralizer_singleton_iff
 
 /-- Centralizing an element implies centralizing each of its natural powers. -/
 theorem mem_centralizerOf_pow_of_mem {x y : G} (hy : y ∈ centralizerOf x) (n : ℕ) :

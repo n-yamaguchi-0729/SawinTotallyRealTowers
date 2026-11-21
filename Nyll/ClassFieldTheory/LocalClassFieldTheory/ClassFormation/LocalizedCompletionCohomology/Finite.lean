@@ -91,7 +91,7 @@ theorem localHerbrandH0Finite
       (tateCohomology
         (Rep.ofAlgebraAutOnUnits vK.Completion
           (LocalizedCompletion vK w)) 0) :=
-    hcard.finiteH0
+    hcard.finiteH0_original
   exact Finite.of_equiv
     (Multiplicative
       (tateCohomology
@@ -150,10 +150,8 @@ theorem localHerbrandHMinusOneFinite
   let : Finite
       (tateCohomology
         (Rep.ofAlgebraAutOnUnits vK.Completion
-          (LocalizedCompletion vK w)) (-1)) := by
-    apply Nat.finite_of_card_ne_zero
-    rw [hcard.cardHminusOne]
-    exact one_ne_zero
+          (LocalizedCompletion vK w)) (-1)) :=
+    hcard.finiteHminusOne_original
   exact Finite.of_equiv
     (tateCohomology
       (Rep.ofAlgebraAutOnUnits vK.Completion

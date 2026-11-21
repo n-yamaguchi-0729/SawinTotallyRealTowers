@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianConductorRamification
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianLocalConductorComparison
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorInfinitePart
@@ -41,7 +42,9 @@ and the chosen local Artin map on one-place ideles.
 
 @[expose] public section
 
-open scoped NumberField NumberField.LiesOver
+open scoped NumberField
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 
 noncomputable section
 
@@ -64,7 +67,7 @@ private theorem
     (v : HeightOneSpectrum (𝓞 K))
     (x : (v.adicCompletion K)ˣ)
     (hx :
-      x ∈ RayClass.localHigherUnitGroup v
+      x ∈ ClassFieldTheory.rayLocalHigherUnitGroup v
         (ideleClassNormNarrowFiniteConductor
           (K := K) (L := L) v)) :
     IdeleGroup.finitePlaceIdeleClass v x ∈
@@ -79,7 +82,7 @@ private theorem
           (K := K) (L := L))) v
   refine ⟨x, ?_, rfl⟩
   change
-    x ∈ RayClass.localHigherUnitGroup v
+    x ∈ ClassFieldTheory.rayLocalHigherUnitGroup v
       (ideleClassNormNarrowFiniteConductor
         (K := K) (L := L) v)
   exact hx
@@ -87,7 +90,7 @@ private theorem
 private theorem
     narrowFiniteHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup
     (v : HeightOneSpectrum (𝓞 K)) :
-    RayClass.localHigherUnitGroup v
+    ClassFieldTheory.rayLocalHigherUnitGroup v
         (ideleClassNormNarrowFiniteConductor
           (K := K) (L := L) v) ≤
       _root_.chosenFinitePlaceLocalNormSubgroup
@@ -334,7 +337,7 @@ private theorem infiniteTensorNormSubgroup_ne_top_of_isRamified
     · rintro ⟨_, ⟨z, rfl⟩, rfl⟩
       refine ⟨eComplexUnits.symm z, ?_⟩
       exact
-        (LocalClassFieldTheory.normUnits_map_ringEquiv
+        (LocalFieldTheory.normUnits_map_ringEquiv
           eRealField.symm eComplexField.symm
           hCompletionCompatibleSymm z).symm
     · rintro ⟨z, rfl⟩
@@ -347,7 +350,7 @@ private theorem infiniteTensorNormSubgroup_ne_top_of_isRamified
             normUnits v.Completion w.Completion
               (eComplexUnits.symm (eComplexUnits z)) := by
           exact
-            LocalClassFieldTheory.normUnits_map_ringEquiv
+            LocalFieldTheory.normUnits_map_ringEquiv
               eRealField.symm eComplexField.symm
               hCompletionCompatibleSymm
               (eComplexUnits z)

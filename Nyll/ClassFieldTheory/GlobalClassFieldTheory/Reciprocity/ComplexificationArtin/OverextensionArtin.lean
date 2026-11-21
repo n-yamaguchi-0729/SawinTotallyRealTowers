@@ -34,9 +34,6 @@ universe u v w x
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-attribute [local instance]
-  globalNormResidueIdeleClassCommGroup
-  globalNormResidueIdeleClassIsMulCommutative
 
 /-- Injectivity and one distinguished value identify maps into a target
 whose remaining values are unique. -/
@@ -223,10 +220,8 @@ noncomputable def
           (K := K) (L := L) v) /
         (ramifiedInfinitePlaceRealFixedField
           (K := K) (L := L) v hRamified)) :=
-  QuotientGroup.lift
-    (IdeleGroup.principalSubgroup
-      (ramifiedInfinitePlaceRealFixedField
-        (K := K) (L := L) v hRamified))
+  IdeleGroup.liftToStandardClass (ramifiedInfinitePlaceRealFixedField
+        (K := K) (L := L) v hRamified)
     (globalArtinMonoidHom
       (K :=
         ramifiedInfinitePlaceRealFixedField
@@ -256,10 +251,8 @@ theorem
           (K := K) (L := L) v hRamified)) :
     ramifiedInfinitePlaceOverextensionIdeleClassArtinMonoidHom
         (K := K) (L := L) v hRamified
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup
-            (ramifiedInfinitePlaceRealFixedField
-              (K := K) (L := L) v hRamified))
+        (IdeleGroup.toStandardClass (ramifiedInfinitePlaceRealFixedField
+              (K := K) (L := L) v hRamified)
           a) =
       globalArtinMonoidHom
         (K :=
@@ -270,7 +263,7 @@ theorem
             (K := K) (L := L) v)
         a := by
   rw [ramifiedInfinitePlaceOverextensionIdeleClassArtinMonoidHom]
-  exact QuotientGroup.lift_mk _ _ _
+  exact IdeleGroup.liftToStandardClass_toStandardClass _ _ _ a
 
 omit [NumberField K] [FiniteDimensional K L] in
 /-- The descended special-overextension Artin map kills every
@@ -294,22 +287,8 @@ theorem
             (K := K) (L := L) v)
           c) =
       1 := by
-  refine QuotientGroup.induction_on c ?_
-  intro a
-  change
-    ramifiedInfinitePlaceOverextensionIdeleClassArtinMonoidHom
-        (K := K) (L := L) v hRamified
-        (_root_.ideleClassNorm
-          (ramifiedInfinitePlaceRealFixedField
-            (K := K) (L := L) v hRamified)
-          (infinitePlaceComplexificationOverfield
-            (K := K) (L := L) v)
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup
-              (infinitePlaceComplexificationOverfield
-                (K := K) (L := L) v))
-            a)) =
-      1
+  obtain ⟨a, rfl⟩ := IdeleGroup.toStandardClass_surjective
+    (infinitePlaceComplexificationOverfield (K := K) (L := L) v) c
   rw [_root_.ideleClassNorm_mk,
     ramifiedInfinitePlaceOverextensionIdeleClassArtinMonoidHom_mk]
   exact
@@ -408,10 +387,8 @@ theorem
       IdeleClassGroup
         (ramifiedInfinitePlaceRealFixedField
           (K := K) (L := L) v hRamified) :=
-    QuotientGroup.mk'
-      (IdeleGroup.principalSubgroup
-        (ramifiedInfinitePlaceRealFixedField
-          (K := K) (L := L) v hRamified))
+    IdeleGroup.toStandardClass (ramifiedInfinitePlaceRealFixedField
+          (K := K) (L := L) v hRamified)
       a
   refine
     ⟨QuotientGroup.mk c, ?_⟩
@@ -692,10 +669,8 @@ theorem
           (K := K) (L := L) v hRamified)
         (infinitePlaceComplexificationOverfield
           (K := K) (L := L) v)
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup
-            (ramifiedInfinitePlaceRealFixedField
-              (K := K) (L := L) v hRamified))
+        (IdeleGroup.toStandardClass (ramifiedInfinitePlaceRealFixedField
+              (K := K) (L := L) v hRamified)
           a) =
       globalArtinMonoidHom
         (K :=
@@ -708,10 +683,8 @@ theorem
   exact
     (ramifiedInfinitePlaceOverextensionIdeleClassArtinMonoidHom_eq_globalNormResidue_apply
       (K := K) (L := L) v hRamified
-      (QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup
-          (ramifiedInfinitePlaceRealFixedField
-            (K := K) (L := L) v hRamified))
+      (IdeleGroup.toStandardClass (ramifiedInfinitePlaceRealFixedField
+            (K := K) (L := L) v hRamified)
         a)).symm.trans
       (ramifiedInfinitePlaceOverextensionIdeleClassArtinMonoidHom_mk
         (K := K) (L := L) v hRamified a)
@@ -751,10 +724,8 @@ theorem
           (K := K) (L := L) v hRamified)
         (infinitePlaceComplexificationOverfield
           (K := K) (L := L) v)
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup
-            (ramifiedInfinitePlaceRealFixedField
-              (K := K) (L := L) v hRamified))
+        (IdeleGroup.toStandardClass (ramifiedInfinitePlaceRealFixedField
+              (K := K) (L := L) v hRamified)
           (IdeleGroup.infinitePlaceIdele w x)) =
       chosenInfinitePlaceArtinMonoidHom
         (K :=

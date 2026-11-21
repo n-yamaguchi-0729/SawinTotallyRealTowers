@@ -314,7 +314,7 @@ theorem equalCharacteristicChangedIntegralPrimitivePolynomial_isEisensteinAt
   have hmonic : Q.Monic :=
     equalCharacteristicChangedIntegralPrimitivePolynomial_monic F a n
   refine hmonic.isEisensteinAt_of_mem_of_notMem
-    PowerSeries.span_X_isPrime.ne_top ?_ ?_
+    (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X).ne_top ?_ ?_
   · intro i hi
     rw [Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]
     have hcoeff :
@@ -338,7 +338,7 @@ theorem equalCharacteristicChangedIntegralPrimitivePolynomial_irreducible
     Irreducible (equalCharacteristicChangedIntegralPrimitivePolynomial F a n) := by
   apply (equalCharacteristicChangedIntegralPrimitivePolynomial_isEisensteinAt
     F a n).irreducible
-    PowerSeries.span_X_isPrime
+    (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X)
     (equalCharacteristicChangedIntegralPrimitivePolynomial_monic F a n).isPrimitive
   rw [equalCharacteristicChangedIntegralPrimitivePolynomial_natDegree]
   exact Nat.mul_pos

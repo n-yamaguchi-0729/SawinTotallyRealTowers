@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceDecompositionAdicEquiv
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAbsoluteArtinAction
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinSemilinear
@@ -53,7 +57,7 @@ noncomputable def finitePlaceAlgebraicClosureToAbsoluteCompletion :
     change _ = finitePlaceCompletionAlgebraicClosureRingEquiv F v
       (algebraMap (HeightOneSpectrum.adicAbv F v).Completion _ (algebraMap F _ x))
     rw [finitePlaceCompletionAlgebraicClosureRingEquiv_algebraMap,
-      (relativeFinitePlaceCompletionAlgEquiv v).commutes]
+      (finitePlaceCompletionAlgEquiv v).commutes]
 
 /-- The same embedding intertwines the actual decomposition action. -/
 theorem finitePlaceAlgebraicClosureToAbsoluteCompletion_action
@@ -86,13 +90,11 @@ theorem finitePlaceAlgebraicClosureToAbsoluteCompletion_action
   rw [he] at h
   exact h
 
-local instance finitePlaceAbsoluteCompatibilitySourceValuativeRel :
-    ValuativeRel (HeightOneSpectrum.adicAbv F v).Completion :=
-  finitePlaceLocalArtinCompletionValuativeRel v
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel
 
-local instance finitePlaceAbsoluteCompatibilitySourceLocalField :
-    IsNonarchimedeanLocalField (HeightOneSpectrum.adicAbv F v).Completion :=
-  finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField
 
 /-- An actual local Artin representative restricts to the one-place maximal
 abelian global Artin value. -/
@@ -138,12 +140,11 @@ theorem finitePlaceAbsoluteArtin_lift_maximalAbelian
       (congrArg (fun x : SeparableClosure F ↦ (x : AlgebraicClosure F)) hM)
   exact hrestriction.trans hglobal
 
-local instance finitePlaceAbsoluteCompatibilityTargetValuativeRel :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
 
-local instance finitePlaceAbsoluteCompatibilityTargetLocalField :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
 
 /-- The actual completion comparison sends an Artin representative to one
 for the concrete adic completion. -/
@@ -160,7 +161,7 @@ theorem finitePlaceCompletionArtin_lift
       Field.absoluteGaloisGroupAbelianization (v.adicCompletion F)) =
       absoluteLocalArtinMap (v.adicCompletion F) a := by
   let C := (HeightOneSpectrum.adicAbv F v).Completion
-  let c := (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+  let c := (finitePlaceCompletionAlgEquiv v).toRingEquiv
   have h := absoluteLocalArtinMap_semilinear_lift C (v.adicCompletion F) c
     (finitePlaceCompletionAlgebraicClosureRingEquiv F v)
     (finitePlaceCompletionAlgebraicClosureRingEquiv_algebraMap F v)
@@ -176,11 +177,6 @@ theorem finitePlaceCompletionArtin_lift
 
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceAbsoluteCompatibilityCharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
-
-local instance finitePlaceAbsoluteCompatibilityCharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) := discreteTopology_bot _
 
 /-- Actual global--local Artin compatibility evaluated by a continuous mod-`p`
 character of the maximal abelian global extension. -/

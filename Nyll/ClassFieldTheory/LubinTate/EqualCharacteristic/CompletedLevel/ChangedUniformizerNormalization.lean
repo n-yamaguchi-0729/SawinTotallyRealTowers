@@ -71,7 +71,7 @@ theorem equalCharacteristicChangedLaurentUniformizerInteger_irreducible
       ((a : F.residueField⟦X⟧) * PowerSeries.X))
   have hprime : Irreducible
       ((a : F.residueField⟦X⟧) * PowerSeries.X) :=
-    (irreducible_isUnit_mul a.isUnit).2 PowerSeries.X_irreducible
+    (irreducible_isUnit_mul a.isUnit).2 PowerSeries.irreducible_X
   exact hprime.map
     (powerSeriesEquivLaurentValuativeInteger F.residueField)
 

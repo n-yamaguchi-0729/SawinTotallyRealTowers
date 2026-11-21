@@ -49,34 +49,6 @@ def shrinkOpenFiniteIndexOrderIso :
     ClassFieldTheory.OpenFiniteIndexSubgroup (Shrink.{0} K) ≃o
       ClassFieldTheory.OpenFiniteIndexSubgroup K := by
   intro sharedOwner1
-  let e := shrinkUnitsContinuousMulEquiv K
-  exact {
-    toEquiv := {
-      toFun := fun H => ⟨H.1.map e.toMulEquiv.toMonoidHom, by
-        change IsOpen (e '' (H.1 : Set (Shrink.{0} K)ˣ))
-        exact e.toHomeomorph.isOpenMap _ H.2.1, by
-        let : H.1.FiniteIndex := H.2.2
-        exact Subgroup.FiniteIndex.map_of_surjective H.1 e.surjective⟩
-      invFun := fun H => ⟨H.1.map e.symm.toMulEquiv.toMonoidHom, by
-        change IsOpen (e.symm '' (H.1 : Set Kˣ))
-        exact e.symm.toHomeomorph.isOpenMap _ H.2.1, by
-        let : H.1.FiniteIndex := H.2.2
-        exact Subgroup.FiniteIndex.map_of_surjective H.1 e.symm.surjective⟩
-      left_inv := by
-        intro H
-        apply Subtype.ext
-        exact (e.toMulEquiv.mapSubgroup).symm_apply_apply H.1
-      right_inv := by
-        intro H
-        apply Subtype.ext
-        exact (e.toMulEquiv.mapSubgroup).apply_symm_apply H.1
-    }
-    map_rel_iff' := by
-      intro H J
-      change e '' (H.1 : Set (Shrink.{0} K)ˣ) ⊆
-          e '' (J.1 : Set (Shrink.{0} K)ˣ) ↔
-        (H.1 : Set (Shrink.{0} K)ˣ) ⊆ J.1
-      exact Set.image_subset_image_iff e.injective
-  }
+  exact OpenFiniteIndexGroupSubgroup.map (shrinkUnitsContinuousMulEquiv K)
 
 end LocalFieldTheory

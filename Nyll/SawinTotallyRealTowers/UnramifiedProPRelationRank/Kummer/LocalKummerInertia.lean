@@ -6,11 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 public import Nyll.GaloisCohomology.Kummer.Concrete.SimpleExtension
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Intrinsic inertia and local Kummer characters
@@ -32,15 +35,8 @@ open ClassFieldTower.ProP KummerTheory LocalClassFieldTheory
 
 variable (p : ℕ) [Fact p.Prime]
 
-local instance localKummerInertiaTopology : TopologicalSpace (ZMod p) := ⊥
-local instance localKummerInertiaDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
-local instance localKummerInertiaZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.commRing p).toAddCommGroup
-local instance localKummerInertiaH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ZMod.addCommGroup
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Continuous `H¹` is transported covariantly along a topological group equivalence. -/
 noncomputable def continuousH1ZModCongr

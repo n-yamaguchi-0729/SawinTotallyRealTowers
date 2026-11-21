@@ -10,6 +10,7 @@ public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuo
 public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
 public import Nyll.GaloisCohomology.Cyclic.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.TateFixedCycles
 public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
 public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
 
@@ -92,6 +93,39 @@ def tateUnitsH0IsoInvariantsQuotient (K L : Type)
     (Submodule.Quotient.equiv _ _ eK hboundary).toModuleIso
   exact TateCohomology.isoZeroBoundary A ≪≫
     S.moduleCatHomologyIso ≪≫ eQ
+
+/-- The native quotient comparison retains the same invariant unit. -/
+theorem tateUnitsH0IsoInvariantsQuotient_fixedClass (K L : Type)
+    [Field K] [Field L] [Algebra K L] [Fintype Gal(L/K)]
+    (x : unitsInvariantSubmodule K L) :
+    (tateUnitsH0IsoInvariantsQuotient K L).hom
+        (TateCohomology.fixedClass (Rep.ofAlgebraAutOnUnits K L) x) =
+      (unitsTateH0NormSubmodule K L).mkQ x := by
+  let A := Rep.ofAlgebraAutOnUnits K L
+  let S : ShortComplex (ModuleCat ℤ) :=
+    .mk A.norm.asHom.toModuleCatHom (groupCohomology.d₀₁ A) (Rep.norm_comp_d_eq_zero A)
+  let z : LinearMap.ker S.g.hom := ⟨x.val, by
+    change x.val ∈ LinearMap.ker (groupCohomology.d₀₁ A).hom
+    rw [groupCohomology.d₀₁_ker_eq_invariants]
+    exact x.property⟩
+  have hz : (TateCohomology.isoZeroBoundary A).hom (TateCohomology.fixedClass A x) =
+      S.homologyπ (S.moduleCatCyclesIso.inv z) := TateCohomology.isoZeroBoundary_fixedCycle A x
+  obtain ⟨eQ, he, hmk⟩ :
+      ∃ eQ : S.moduleCatLeftHomologyData.H ≅
+          ModuleCat.of ℤ (unitsInvariantSubmodule K L ⧸ unitsTateH0NormSubmodule K L),
+        tateUnitsH0IsoInvariantsQuotient K L =
+          TateCohomology.isoZeroBoundary A ≪≫ S.moduleCatHomologyIso ≪≫ eQ ∧
+        eQ.hom (S.moduleCatLeftHomologyData.π z) = (unitsTateH0NormSubmodule K L).mkQ x :=
+    ⟨_, rfl, rfl⟩
+  rw [he]
+  change eQ.hom (S.moduleCatHomologyIso.hom
+    ((TateCohomology.isoZeroBoundary A).hom (TateCohomology.fixedClass A x))) = _
+  rw [hz, ShortComplex.π_moduleCatCyclesIso_hom_apply]
+  let zK : S.moduleCatLeftHomologyData.K := z
+  have hcycle : S.moduleCatCyclesIso.hom (S.moduleCatCyclesIso.inv zK) = zK :=
+    Iso.inv_hom_id_apply S.moduleCatCyclesIso zK
+  exact (congrArg (fun y : S.moduleCatLeftHomologyData.K =>
+    eQ.hom (S.moduleCatLeftHomologyData.π y)) hcycle).trans hmk
 
 /-- The actual integral Tate object has the invariant-unit quotient in arbitrary
 field universes. Scalar transport retains the unit carrier and its Galois action. -/

@@ -79,12 +79,12 @@ theorem infinitePlaceIdeleClass_range_le_congruenceSubgroup_of_not_mem
     change
       IdeleGroup.finiteComponent w
           (IdeleGroup.infinitePlaceIdele v.1 x) ∈
-        RayClass.localHigherUnitGroup w (m.finitePart w)
+        ClassFieldTheory.rayLocalHigherUnitGroup w (m.finitePart w)
     rw [IdeleGroup.infinitePlaceIdele_finiteComponent]
     exact Subgroup.one_mem _
 
 private theorem eraseRealPlace_isDefiningModulus_of_range_le
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (m : RayClass.Modulus K)
     (hm : IsDefiningModulus H m)
     (v : RayClass.RealPlace K)
@@ -93,8 +93,8 @@ private theorem eraseRealPlace_isDefiningModulus_of_range_le
   classical
   let m' : RayClass.Modulus K := m.eraseRealPlace v
   change IsDefiningModulus H m'
-  let q : IdeleGroup K →* IdeleClassGroup K :=
-    QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
+  let q : IdeleGroup K →* NumberField.IdeleClassGroup (𝓞 K) K :=
+    IdeleGroup.toStandardClass K
   rw [IsDefiningModulus, RayClass.Modulus.congruenceSubgroup,
     Subgroup.map_le_iff_le_comap]
   apply sup_le
@@ -132,7 +132,7 @@ private theorem eraseRealPlace_isDefiningModulus_of_range_le
             exact Finset.mem_erase.mpr ⟨hwv, hw⟩
           have haw :=
             (RayClass.Modulus.mem_infiniteCongruenceSubgroup_iff
-              m' a.1).1 ha'.1 w hw'
+              m' (IdeleGroup.infinitePart a)).1 ha'.1 w hw'
           have hwv' : w.1 ≠ v.1 := by
             intro h
             exact hwv (Subtype.ext h)
@@ -149,11 +149,12 @@ private theorem eraseRealPlace_isDefiningModulus_of_range_le
       · rw [RayClass.mem_finiteCongruenceSubgroup_iff]
         intro w
         have haw :
-            a.2 w ∈ RayClass.localHigherUnitGroup w (m.finitePart w) := by
+            IdeleGroup.finiteCoordinates a w ∈
+              ClassFieldTheory.rayLocalHigherUnitGroup w (m.finitePart w) := by
           simpa [m'] using ha'.2 w
         change
           IdeleGroup.finiteComponent w b ∈
-            RayClass.localHigherUnitGroup w (m.finitePart w)
+            ClassFieldTheory.rayLocalHigherUnitGroup w (m.finitePart w)
         dsimp only [b]
         rw [map_mul, map_inv]
         dsimp only [s]
@@ -173,7 +174,7 @@ private theorem eraseRealPlace_isDefiningModulus_of_range_le
   · intro a ha
     change q a ∈ H
     have hqa : q a = 1 :=
-      (QuotientGroup.eq_one_iff a).2 ha
+      (IdeleGroup.toStandardClass_eq_one_iff K a).2 ha
     rw [hqa]
     exact H.one_mem
 
@@ -181,7 +182,7 @@ private theorem eraseRealPlace_isDefiningModulus_of_range_le
 defining-modulus property exactly when the whole one-place idèle-class
 image is already contained in the target subgroup. -/
 theorem eraseRealPlace_isDefiningModulus_iff
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (m : RayClass.Modulus K)
     (v : RayClass.RealPlace K) :
     IsDefiningModulus H (m.eraseRealPlace v) ↔
@@ -206,7 +207,7 @@ theorem eraseRealPlace_isDefiningModulus_iff
 property when every corresponding one-place idèle-class image is contained
 in the target subgroup. -/
 theorem eraseRealPlaces_isDefiningModulus_of_ranges_le
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (m : RayClass.Modulus K)
     (hm : IsDefiningModulus H m)
     (s : Finset (RayClass.RealPlace K))

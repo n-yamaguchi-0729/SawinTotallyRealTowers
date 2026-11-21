@@ -33,9 +33,17 @@ universe u
 variable {p : ℕ}
 variable {P : Type u} [Group P]
 
-local instance quotientTopology (N : Subgroup P) : TopologicalSpace (P ⧸ N) := ⊥
-local instance quotientDiscrete (N : Subgroup P) : DiscreteTopology (P ⧸ N) :=
+/-- Discrete quotient topology for factor sets of abstract groups. -/
+@[instance_reducible]
+def discreteQuotientTopology (N : Subgroup P) : TopologicalSpace (P ⧸ N) := ⊥
+
+attribute [local instance] discreteQuotientTopology
+
+/-- The chosen quotient topology used for finite transgression is discrete. -/
+theorem discreteQuotient (N : Subgroup P) : DiscreteTopology (P ⧸ N) :=
   discreteTopology_bot _
+
+attribute [local instance] discreteQuotient
 
 /-- The factor of the chosen quotient representatives. -/
 noncomputable def quotientSectionFactor (N : Subgroup P) [N.Normal]

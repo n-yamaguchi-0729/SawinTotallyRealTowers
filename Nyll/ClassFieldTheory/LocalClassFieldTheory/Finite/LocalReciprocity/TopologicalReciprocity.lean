@@ -19,9 +19,11 @@ public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 public import Mathlib.RingTheory.Finiteness.Small
 public import Mathlib.FieldTheory.Galois.Basic
 public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkOpenSubgroups
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ShrinkTransport
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormSubgroupFunctoriality
 
 /-!
 # Topological finite local reciprocity
@@ -57,18 +59,18 @@ universe u v
 
 /-- The norm map restricted to valuation-ring units upstairs. -/
 private def integerUnitNormMap
-    (K L : Type u) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [ValuativeRel L] : 𝒪[L]ˣ →* Kˣ :=
   (LocalFieldTheory.normUnits K L).comp (integerUnitsToFieldUnits L)
 
 /-- The image of valuation-ring units under the field norm. -/
 private def integerUnitNormSubgroup
-    (K L : Type u) [Field K] [Field L] [Algebra K L]
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [ValuativeRel L] : Subgroup Kˣ :=
   MonoidHom.range (integerUnitNormMap K L)
 
 private theorem integerUnitNormSubgroup_isCompact
-    (K L : Type u) [NontriviallyNormedField K] [NormedField L]
+    (K : Type u) (L : Type v) [NontriviallyNormedField K] [NormedField L]
     [NormedAlgebra K L] [FiniteDimensional K L] [CompleteSpace K]
     [ValuativeRel L] [CompactSpace 𝒪[L]] :
     IsCompact (integerUnitNormSubgroup K L : Set Kˣ) := by
@@ -81,7 +83,7 @@ private theorem integerUnitNormSubgroup_isCompact
   simpa only [Set.image_univ] using himage
 
 private theorem integerUnitNormSubgroup_eq_localNormSubgroup_inf_baseUnits
-    (K L : Type u)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -134,7 +136,7 @@ private theorem integerUnitNormSubgroup_eq_localNormSubgroup_inf_baseUnits
     rw [hb, hy]
 
 private theorem localNormSubgroup_isOpen_of_compatibleLocalField
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [NontriviallyNormedField K] [NormedField L] [NormedAlgebra K L]
     [CompleteSpace K]
     [ValuativeRel K] [IsNonarchimedeanLocalField K]
@@ -156,11 +158,11 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
     apply Nat.finite_of_card_ne_zero
     rw [IsGalois.card_aut_eq_finrank K L]
     exact Nat.ne_of_gt Module.finrank_pos
-  let : Finite (Abelianization (Gal(L / K))) :=
-    Finite.of_surjective Abelianization.of QuotientGroup.mk_surjective
+  let : Finite (Group.Abelianization (Gal(L / K))) :=
+    Finite.of_surjective Group.Abelianization.of QuotientGroup.mk_surjective
   let : Finite (NormQuotient K L) :=
     Finite.of_equiv
-      (Abelianization (Gal(L / K)))
+      (Group.Abelianization (Gal(L / K)))
       (abelianizationEquivNormQuotient K L).toEquiv
   let : Finite (Kˣ ⧸ localNormSubgroup K L) := by
     change Finite (NormQuotient K L)
@@ -223,161 +225,41 @@ private theorem localNormSubgroup_isOpen_of_compatibleLocalField
   rw [hintersection] at hx
   exact hx.1
 
-open _root_.ValuationTheory.DiscreteValuationField.Valuation (
-  valuationSubring_isIntegralClosure_of_isIntegral
-) in
 /-- The norm subgroup of a finite Galois extension of a nonarchimedean local
 field is open in the native topology of the base-field unit group. -/
-private theorem localNormSubgroup_isOpen_native
-    (K L : Type) [Field K] [Field L] [Algebra K L]
-    [FiniteDimensional K L] [IsGalois K L]
-    [ValuativeRel K] [TopologicalSpace K]
-    [IsNonarchimedeanLocalField K] :
-    IsOpen (localNormSubgroup K L : Set Kˣ) := by
-  let : UniformSpace K := IsTopologicalAddGroup.rightUniformSpace K
-  let : IsUniformAddGroup K := isUniformAddGroup_of_addCommGroup
-  let : (Valued.v : Valuation K
-      (ValuativeRel.ValueGroupWithZero K)).RankOne :=
-    { hom' := ValuativeRel.IsRankLeOne.nonempty.some.emb (R := K) |>.comp
-        MonoidWithZeroHom.ValueGroup₀.embedding
-      strictMono' := ValuativeRel.IsRankLeOne.nonempty.some.strictMono.comp
-        MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
-  let : NontriviallyNormedField K :=
-    Valued.toNontriviallyNormedField
-      (L := K) (Γ₀ := ValuativeRel.ValueGroupWithZero K)
-  let : NontriviallyNormedField L :=
-    spectralNorm.nontriviallyNormedField K L
-  let : NormedAlgebra K L := spectralNorm.normedAlgebra K L
-  let : CompleteSpace L := spectralNorm.completeSpace K L
-  let : LocallyCompactSpace L :=
-    LocallyCompactSpace.of_finiteDimensional_of_complete K L
-  let : IsUltrametricDist L :=
-    ⟨fun x y z => by
-      change ‖x - z‖ ≤ max ‖x - y‖ ‖y - z‖
-      rw [← sub_add_sub_cancel x y z]
-      exact isNonarchimedean_spectralNorm
-        (K := K) (L := L) (x - y) (y - z)⟩
-  let : Valued L ℝ≥0 := NormedField.toValued
-  let vL : Valuation L ℝ≥0 := Valued.v
-  let : vL.IsNontrivial :=
-    (inferInstance : (NormedField.valuation (K := L)).IsNontrivial)
-  let : ValuativeRel L := ValuativeRel.ofValuation vL
-  let : vL.Compatible := Valuation.Compatible.ofValuation vL
-  let : ValuativeRel.IsNontrivial L :=
-    (ValuativeRel.isNontrivial_iff_isNontrivial vL).2 inferInstance
-  let : IsValuativeTopology L :=
-    isValuativeTopology_of_valued_ofValuation L ℝ≥0
-  let : IsNonarchimedeanLocalField L :=
-    { toIsValuativeTopology := inferInstance
-      toLocallyCompactSpace := inferInstance
-      toIsNontrivial := inferInstance }
-  let : (ValuativeRel.valuation K).HasExtension
-      (ValuativeRel.valuation L) := by
-    apply Valuation.HasExtension.ofComapInteger
-    ext x
-    change ValuativeRel.valuation L (algebraMap K L x) ≤ 1 ↔
-      ValuativeRel.valuation K x ≤ 1
-    rw [← (ValuativeRel.valuation L).vle_one_iff, vL.vle_one_iff]
-    change spectralNorm K L (algebraMap K L x) ≤ 1 ↔
-      ValuativeRel.valuation K x ≤ 1
-    rw [spectralNorm_extends]
-    exact Valued.toNormedField.norm_le_one_iff
-  let : Algebra.IsIntegral 𝒪[K] 𝒪[L] := ⟨by
-    intro y
-    apply IsIntegral.tower_bot
-      (R := 𝒪[K]) (A := 𝒪[L]) (B := L)
-      (Subring.subtype_injective (ValuativeRel.valuation L).integer)
-    have hyv : vL (y : L) ≤ 1 := by
-      apply (vL.vle_one_iff).1
-      apply ((ValuativeRel.valuation L).vle_one_iff).2
-      exact y.property
-    have hynorm : ‖(y : L)‖ ≤ 1 := by
-      have hynormNN : ‖(y : L)‖₊ ≤ 1 := by
-        simpa [vL, NormedField.valuation_apply] using hyv
-      exact_mod_cast hynormNN
-    change spectralNorm K L (y : L) ≤ 1 at hynorm
-    have hcoeffNorm :
-        ∀ n : ℕ, ‖(minpoly K (y : L)).coeff n‖ ≤ 1 :=
-      (spectralValue_le_one_iff
-        (minpoly.monic (Algebra.IsIntegral.isIntegral (y : L)))).1
-        (by simpa [spectralNorm] using hynorm)
-    have hcoeff :
-        (↑(minpoly K (y : L)).coeffs : Set K) ⊆
-          (ValuativeRel.valuation K).integer := by
-      intro c hc
-      obtain ⟨n, _hn, rfl⟩ := Polynomial.mem_coeffs_iff.mp hc
-      exact ((ValuativeRel.valuation K).mem_integer_iff _).2
-        (Valued.toNormedField.norm_le_one_iff.mp (hcoeffNorm n))
-    let p : Polynomial 𝒪[K] :=
-      (minpoly K (y : L)).toSubring
-        (ValuativeRel.valuation K).integer hcoeff
-    refine ⟨p, ?_, ?_⟩
-    · exact (Polynomial.monic_toSubring
-        (minpoly K (y : L)) (ValuativeRel.valuation K).integer hcoeff).2
-          (minpoly.monic (Algebra.IsIntegral.isIntegral (y : L)))
-    · have hmaproot :
-          Polynomial.aeval (y : L)
-            (p.map (algebraMap 𝒪[K] K)) = 0 := by
-        dsimp only [p]
-        rw [show algebraMap 𝒪[K] K =
-          (ValuativeRel.valuation K).integer.subtype from rfl,
-          Polynomial.map_toSubring]
-        exact minpoly.aeval K (y : L)
-      rwa [Polynomial.aeval_map_algebraMap K (y : L) p] at hmaproot⟩
-  let : Algebra.IsIntegral
-      (ValuativeRel.valuation K).valuationSubring
-      (ValuativeRel.valuation L).valuationSubring := by
-    change Algebra.IsIntegral 𝒪[K] 𝒪[L]
-    infer_instance
-  let hIntegralClosure : IsIntegralClosure
-      (ValuativeRel.valuation L).valuationSubring
-      (ValuativeRel.valuation K).valuationSubring L :=
-    valuationSubring_isIntegralClosure_of_isIntegral
-      (ValuativeRel.valuation K) (ValuativeRel.valuation L)
-  let : IsIntegralClosure 𝒪[L] 𝒪[K] L := by
-    change IsIntegralClosure
-      (ValuativeRel.valuation L).valuationSubring
-      (ValuativeRel.valuation K).valuationSubring L
-    exact hIntegralClosure
-  exact localNormSubgroup_isOpen_of_compatibleLocalField K L
-
-/-- The norm image is open in the topology of the original local field.
-The same field equivalences transport the algebra embedding, norm subgroup and unit topology. -/
 theorem localNormSubgroup_isOpen
     (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
     IsOpen (localNormSubgroup K L : Set Kˣ) := by
-  let : Small.{0} K := smallLocalField K
-  let : Small.{0} L := Module.Finite.small K L
-  let : Algebra (Shrink.{0} K) (Shrink.{0} L) := HasseArf.shrinkAlgebra K L
-  have : FiniteDimensional (Shrink.{0} K) (Shrink.{0} L) :=
-    HasseArf.shrink_finiteDimensional K L
-  have : IsGalois (Shrink.{0} K) (Shrink.{0} L) :=
-    IsGalois.of_equiv_equiv (f := (Shrink.ringEquiv K).symm)
-      (g := (Shrink.ringEquiv L).symm) (HasseArf.shrinkAlgebra_commutes K L)
-  let : ValuativeRel (Shrink.{0} K) := shrinkLocalFieldValuativeRel K
-  have : IsNonarchimedeanLocalField (Shrink.{0} K) :=
-    shrinkLocalField_isNonarchimedeanLocalField K
-  let e : (Shrink.{0} K)ˣ ≃ₜ* Kˣ := shrinkUnitsContinuousMulEquiv K
-  have hmap : (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L)).map
-      e.toMulEquiv.toMonoidHom = localNormSubgroup K L := by
-    change (ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K) (Shrink.{0} L)).map
-      (Units.mapEquiv (Shrink.ringEquiv K).toMulEquiv).toMonoidHom =
-        ClassFieldTheory.fieldNormSubgroup K L
-    apply ClassFieldTheory.fieldNormSubgroup_map_ringEquiv
-      (Shrink.ringEquiv K) (Shrink.ringEquiv L)
-    apply RingHom.ext
-    intro x
-    exact (HasseArf.shrinkAlgebra_apply K L x).symm
-  have hopen : IsOpen
-      (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L) : Set (Shrink.{0} K)ˣ) :=
-    localNormSubgroup_isOpen_native (Shrink.{0} K) (Shrink.{0} L)
-  rw [← hmap]
-  change IsOpen (e ''
-    (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L) : Set (Shrink.{0} K)ˣ))
-  exact e.toHomeomorph.isOpenMap _ hopen
+  let : NontriviallyNormedField K := localFieldNontriviallyNormedField K
+  let : IsUltrametricDist K := localFieldIsUltrametricDist K
+  let : NontriviallyNormedField L := finiteExtensionSpectralNormedField K L
+  let : NormedAlgebra K L := spectralNorm.normedAlgebra K L
+  let : ValuativeRel L := finiteExtensionSpectralValuativeRel K L
+  let : IsNonarchimedeanLocalField L := finiteExtensionSpectralIsNonarchimedeanLocalField K L
+  let : (ValuativeRel.valuation K).HasExtension (ValuativeRel.valuation L) :=
+    finiteExtensionSpectralValuation_hasExtension K L
+  let : IsIntegralClosure 𝒪[L] 𝒪[K] L := localCompleteDVF_integerRing_isIntegralClosure K L
+  exact localNormSubgroup_isOpen_of_compatibleLocalField K L
+
+/-- A finite separable extension has open norm image. The norm image of its
+finite normal closure is an open subgroup contained in it. -/
+theorem localNormSubgroup_isOpen_of_isSeparable
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
+    [FiniteDimensional K L] [Algebra.IsSeparable K L]
+    [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] :
+    IsOpen (localNormSubgroup K L : Set Kˣ) := by
+  let i := AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L
+  let E := i.fieldRange
+  let F := IntermediateField.normalClosure K E (SeparableClosure K)
+  let : FiniteDimensional K E := i.equivFieldRange.toLinearEquiv.finiteDimensional
+  let : FiniteDimensional K F := normalClosure.is_finiteDimensional K E (SeparableClosure K)
+  let : IsGalois K F := IsGalois.normalClosure K E (SeparableClosure K)
+  let j : E →ₐ[K] F := IntermediateField.inclusion (IntermediateField.le_normalClosure E)
+  exact Subgroup.isOpen_mono (normSubgroup_le_of_algHom K L F (j.comp i.equivFieldRange.toAlgHom))
+    (localNormSubgroup_isOpen K F)
 
 /-- The native quotient topology on the finite norm quotient is discrete. -/
 theorem normQuotient_discrete
@@ -393,15 +275,9 @@ theorem normQuotient_discrete
 
 end NormSubgroupTopology
 
-section TopologicalReciprocity
-
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
-  [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
-  [FiniteDimensional K L] [IsGalois K L]
-
 /-- A discrete group has a closed commutator subgroup. -/
 theorem commutator_topologicalClosure_eq
-    (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+    (G : Type*) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [DiscreteTopology G] :
     Subgroup.topologicalClosure (commutator G) = commutator G := by
   apply le_antisymm
@@ -410,12 +286,22 @@ theorem commutator_topologicalClosure_eq
 
 /-- For a finite-dimensional Galois extension, algebraic and topological
 abelianization agree as multiplicative groups. -/
-noncomputable def topologicalAbelianization_finite_equiv :
-    Abelianization (Gal(L / K)) ≃* TopologicalAbelianization (Gal(L / K)) := by
+noncomputable def topologicalAbelianization_finite_equiv
+    (K L : Type*) [Field K] [Field L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L] :
+    Group.Abelianization (Gal(L / K)) ≃* TopologicalAbelianization (Gal(L / K)) := by
   let h : Subgroup.topologicalClosure (commutator (Gal(L / K))) =
       commutator (Gal(L / K)) :=
     commutator_topologicalClosure_eq (Gal(L / K))
   exact QuotientGroup.quotientMulEquivOfEq h.symm
+
+section TopologicalReciprocity
+
+universe u v
+
+variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
+  [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+  [FiniteDimensional K L] [IsGalois K L]
 
 /-- Finite local reciprocity as a homeomorphic group isomorphism from the
 norm quotient to the topological abelianization of the Krull Galois group. -/

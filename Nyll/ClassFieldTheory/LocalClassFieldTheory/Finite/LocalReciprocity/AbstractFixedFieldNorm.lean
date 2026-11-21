@@ -34,8 +34,10 @@ open LocalFieldTheory
 
 noncomputable section
 
+universe u v
+
 open scoped ValuativeRel
-variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
+variable (K : Type u) (Ω : Type v) [Field K] [Field Ω] [Algebra K Ω]
   [IsGalois K Ω] [IsSepClosed Ω]
 
 /-- The underlying value of a relative norm is unchanged when its two
@@ -43,8 +45,8 @@ closed-subgroup indices and its fixed coefficient are transported along
 equalities.  Keeping this congruence explicit avoids dependent rewriting
 through the inclusion proof carried by `relativeNorm`. -/
 theorem relativeNorm_coe_eq_of_closedSubgroup_eq
-    {G : Type} [Group G] [TopologicalSpace G]
-    (A : Rep ℤ G)
+    {G : Type u} [Group G] [TopologicalSpace G]
+    (A : Rep.{v} ℤ G)
     (B B' C C' : ClosedSubgroup G)
     (hCB : C.toSubgroup ≤ B.toSubgroup)
     (hC'B' : C'.toSubgroup ≤ B'.toSubgroup)
@@ -115,7 +117,7 @@ theorem normToBase_abstractFixedFieldUnit_val_of_isSeparable
 /-- The base normalized valuation of the abstract norm is the ordinary
 normalized valuation of the concrete field norm. -/
 theorem localBaseValuation_normToBase_abstractFixedFieldUnit
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : ClosedSubgroup (Gal(SeparableClosure K/K)))
     [Finite ((baseField (Gal(SeparableClosure K/K))).toSubgroup ⧸
@@ -178,7 +180,7 @@ theorem localBaseValuation_normToBase_abstractFixedFieldUnit
 
 /-- The residue module of a valued extension is its canonical quotient module. -/
 noncomputable local instance fixedFieldNormResidueModule
-    (k l : Type) [Field k] [Field l] [ValuativeRel k] [ValuativeRel l]
+    (k : Type u) (l : Type v) [Field k] [Field l] [ValuativeRel k] [ValuativeRel l]
     [Algebra k l]
     [Valuation.HasExtension (ValuativeRel.valuation k) (ValuativeRel.valuation l)] :
     Module 𝓀[k] 𝓀[l] :=
@@ -188,7 +190,7 @@ noncomputable local instance fixedFieldNormResidueModule
 base valuation after the abstract class-formation norm is exactly the actual residue-degree
 multiple of the base value group. -/
 theorem localBaseValuation_comp_normToBase_range_eq_residueFinrank
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : ClosedSubgroup (Gal(SeparableClosure K/K)))
     [Finite ((baseField (Gal(SeparableClosure K/K))).toSubgroup ⧸

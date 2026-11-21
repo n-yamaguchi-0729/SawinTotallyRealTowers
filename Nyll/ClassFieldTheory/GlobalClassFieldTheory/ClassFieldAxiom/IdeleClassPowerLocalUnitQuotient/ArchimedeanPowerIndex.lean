@@ -42,19 +42,19 @@ group. -/
 def ideleClassPowerLocalUnitSubgroup
     (n : ℕ+)
     (S T : Finset (HeightOneSpectrum (𝓞 K))) :
-    Subgroup (IdeleClassGroup K) :=
+    Subgroup (NumberField.IdeleClassGroup (𝓞 K) K) :=
   (idelePowerLocalUnitSubgroup (K := K) n S T).map
-    (QuotientGroup.mk' (IdeleGroup.principalSubgroup K))
+    (IdeleGroup.toStandardClass K)
 
 /-- Elementwise form of `C_K(S,T)=h(S,T)Kˣ/Kˣ`. -/
 theorem mem_ideleClassPowerLocalUnitSubgroup_iff
     (n : ℕ+)
     (S T : Finset (HeightOneSpectrum (𝓞 K)))
-    (c : IdeleClassGroup K) :
+    (c : NumberField.IdeleClassGroup (𝓞 K) K) :
     c ∈ ideleClassPowerLocalUnitSubgroup (K := K) n S T ↔
       ∃ a : IdeleGroup K,
         a ∈ idelePowerLocalUnitSubgroup (K := K) n S T ∧
-          QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a = c := by
+          IdeleGroup.toStandardClass K a = c := by
   rfl
 
 /-- The quotient whose cardinality is the index
@@ -62,7 +62,7 @@ theorem mem_ideleClassPowerLocalUnitSubgroup_iff
 abbrev IdeleClassPowerLocalUnitQuotient
     (n : ℕ+)
     (S T : Finset (HeightOneSpectrum (𝓞 K))) :=
-  IdeleClassGroup K ⧸
+  NumberField.IdeleClassGroup (𝓞 K) K ⧸
     ideleClassPowerLocalUnitSubgroup (K := K) n S T
 
 omit [NumberField K] in

@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -46,8 +47,8 @@ theorem ideleFiniteValuationDefectHom_eq_one_of_supportedAt_empty
     ideleFiniteValuationDefectHom K p a = 1 := by
   funext v
   apply Multiplicative.toAdd.injective
-  change -((FiniteIdeleGroup.localOrder v (a.2 v)).toAdd : ZMod p) = 0
-  rw [(FiniteIdeleGroup.localOrder_eq_zero_iff v (a.2 v)).2
+  change -((FiniteIdeleGroup.localOrder v (IdeleGroup.finiteCoordinates a v)).toAdd : ZMod p) = 0
+  rw [(FiniteIdeleGroup.localOrder_eq_zero_iff v (IdeleGroup.finiteCoordinates a v)).2
     ((IdeleGroup.mem_supportedAt_iff ∅ a).1 ha v (Set.notMem_empty v))]
   simp only [Int.cast_zero, neg_zero]
 
@@ -107,10 +108,6 @@ theorem finitePlaceIdele_mem_supportedAt_empty_of_integral
   · rw [finitePlaceIdele_finiteComponent_of_ne v w a hw]
     exact Subgroup.one_mem _
 
-local instance ideleValuationCharacterTopology : TopologicalSpace (ZMod p) := ⊥
-
-local instance ideleValuationCharacterDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
 
 /-- An algebraic valuation functional, evaluated on the finite valuations of an idele. -/
 def ideleValuationCharacterMonoidHom

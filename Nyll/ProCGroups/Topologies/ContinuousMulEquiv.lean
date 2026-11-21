@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Mathlib.Algebra.Group.Subgroup.Map
 public import Mathlib.Algebra.Group.End
 public import Mathlib.GroupTheory.QuotientGroup.Basic
 public import Mathlib.Topology.Algebra.ContinuousMonoidHom
@@ -182,3 +184,63 @@ value.
 end ContinuousMonoidHom
 
 end ProCGroups
+
+namespace ClosedSubgroup
+
+variable {G H : Type*}
+  [Group G] [TopologicalSpace G]
+  [Group H] [TopologicalSpace H]
+
+/-- Transport a closed subgroup along a continuous multiplicative
+equivalence. -/
+noncomputable def mapContinuousMulEquiv
+    (e : G ≃ₜ* H) (S : ClosedSubgroup G) : ClosedSubgroup H where
+  toSubgroup := e.toMulEquiv.mapSubgroup S.toSubgroup
+  isClosed' := by
+    change IsClosed (e '' (S : Set G))
+    exact e.toHomeomorph.isClosedMap (S : Set G) S.isClosed'
+
+/-- A continuous multiplicative equivalence induces an order equivalence on
+closed subgroups. -/
+noncomputable def orderIsoMapContinuousMulEquiv
+    (e : G ≃ₜ* H) : ClosedSubgroup G ≃o ClosedSubgroup H where
+  toFun := mapContinuousMulEquiv e
+  invFun := mapContinuousMulEquiv e.symm
+  left_inv S := by
+    apply ClosedSubgroup.toSubgroup_injective
+    change
+      e.symm.toMulEquiv.mapSubgroup
+          (e.toMulEquiv.mapSubgroup S.toSubgroup) =
+        S.toSubgroup
+    exact e.toMulEquiv.mapSubgroup.left_inv S.toSubgroup
+  right_inv T := by
+    apply ClosedSubgroup.toSubgroup_injective
+    change
+      e.toMulEquiv.mapSubgroup
+          (e.symm.toMulEquiv.mapSubgroup T.toSubgroup) =
+        T.toSubgroup
+    exact e.toMulEquiv.mapSubgroup.right_inv T.toSubgroup
+  map_rel_iff' {S T} := by
+    change
+      e.toMulEquiv.mapSubgroup S.toSubgroup ≤
+          e.toMulEquiv.mapSubgroup T.toSubgroup ↔
+        S.toSubgroup ≤ T.toSubgroup
+    exact e.toMulEquiv.mapSubgroup.le_iff_le
+
+/-- The order-dual form of closed-subgroup transport. -/
+noncomputable def orderDualIsoMapContinuousMulEquiv
+    (e : G ≃ₜ* H) :
+    (ClosedSubgroup G)ᵒᵈ ≃o (ClosedSubgroup H)ᵒᵈ :=
+  (orderIsoMapContinuousMulEquiv e).dual
+
+/-- Transport carries the underlying closed set to its image under the equivalence. -/
+@[simp]
+theorem coe_mapContinuousMulEquiv
+    (e : G ≃ₜ* H) (S : ClosedSubgroup G) :
+    (mapContinuousMulEquiv e S : Set H) = e '' (S : Set G) := by
+  change
+    (↑(Subgroup.map e.toMonoidHom S.toSubgroup) : Set H) =
+      e.toMonoidHom '' (S : Set G)
+  exact Subgroup.coe_map e.toMonoidHom S.toSubgroup
+
+end ClosedSubgroup

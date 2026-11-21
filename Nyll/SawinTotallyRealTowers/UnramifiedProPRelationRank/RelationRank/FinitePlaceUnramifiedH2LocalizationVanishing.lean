@@ -6,10 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Localization
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceAbsoluteInertiaKernel
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 public import Nyll.ProCGroups.Topologies.QuotientMaps
+import Nyll.SawinTotallyRealTowers.FinitePlaceFrobenius
 
 /-!
 # Vanishing of localized unramified degree-two classes
@@ -77,6 +79,15 @@ theorem finitePlaceUnramifiedToMaxEverywhereUnramifiedProP_mk
       absoluteToMaxEverywhereUnramifiedProP F p sigma.1 := by
   rfl
 
+omit [Fact p.Prime] in
+private theorem degreeTwoCohomology_subsingleton_of_equiv
+    {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+    [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
+    (e : G ≃ₜ* H) (h : Subsingleton (continuousCohomologyZModPLifted p H 2)) :
+    Subsingleton (continuousCohomologyZModPLifted p G 2) := by
+  let hom := (continuousCohomologyZModPLiftedLinearEquiv (p := p) e 2).symm
+  exact ⟨fun x y => hom.injective (h.elim (hom x) (hom y))⟩
+
 /-- The degree-two cohomology of the unramified quotient selected at a finite
 place is trivial. -/
 theorem finitePlaceUnramifiedQuotientH2_subsingleton
@@ -85,24 +96,9 @@ theorem finitePlaceUnramifiedQuotientH2_subsingleton
       (continuousCohomologyZModPLifted p
         (finitePlaceAbsoluteDecompositionGroup F v ⧸
           finitePlaceAbsoluteInertiaSubgroup F v) 2) := by
-  let vF := NumberField.HeightOneSpectrum.adicAbv F v
-  let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  let _ : Valued vF.Completion NNReal :=
-    finitePlaceCompletionValued vF hvFna
-  let _ : ValuativeRel vF.Completion :=
-    finitePlaceCompletionValuativeRel vF hvFna
-  let _ : IsNonarchimedeanLocalField vF.Completion :=
-    finitePlaceNormCompletionIsNonarchimedeanLocalField F v
-  let e := continuousCohomologyZModPLiftedLinearEquiv (p := p)
-    (finitePlaceUnramifiedQuotientContinuousMulEquiv F v) 2
-  constructor
-  intro x y
-  apply e.symm.injective
-  exact @Subsingleton.elim
-    (continuousCohomologyZModPLifted p
-      (LocalUnramifiedGaloisQuotient vF.Completion) 2)
-    (localUnramifiedQuotientH2_subsingleton vF.Completion p)
-    (e.symm x) (e.symm y)
+  exact degreeTwoCohomology_subsingleton_of_equiv p
+    (ClassFieldTower.Sawin.finitePlaceUnramifiedDegreeEquiv F v)
+    (ClassFieldTower.Cohomology.ProfiniteInteger.degree_two_subsingleton (p := p))
 
 /-- Each finite-place localization of a degree-two class inflated from the
 maximal everywhere-unramified pro-`p` quotient vanishes. -/
@@ -112,7 +108,7 @@ theorem absoluteUnramifiedH2LocalizationFamily_component_eq_zero
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     absoluteUnramifiedH2LocalizationFamily F p x v = 0 := by
   rw [absoluteUnramifiedH2LocalizationFamily_component]
-  let q := quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v)
+  let q := ProCGroups.ContinuousMonoidHom.quotientMk (finitePlaceAbsoluteInertiaSubgroup F v)
   let f := finitePlaceUnramifiedToMaxEverywhereUnramifiedProP F p v
   have hfactor :
       (absoluteToMaxEverywhereUnramifiedProP F p).comp

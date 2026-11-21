@@ -6,11 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitNorm
+
 public import Mathlib.FieldTheory.Galois.Basic
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Basic
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Trace
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.Lift
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedPrincipalUnits.NormSide
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedPrincipalUnits.Basic
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedPrincipalUnits.Trace
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedPrincipalUnits.Lift
 
 /-! Provides the public declarations in the
 `LocalClassFieldTheory.Finite.Unramified.ResidueNorm` Lean module. -/
@@ -85,7 +87,7 @@ theorem residueUnitsMap_normIntegerUnits_eq_galoisGroup_residue_prod_of_isIntegr
           (galoisGroupResidueFieldEquivOfIsIntegralClosure K L σ).toMulEquiv
           (integerUnitsToResidueUnits L u)) := by
   rw [residueUnitsMap_integerUnitsToResidueUnits K L (normIntegerUnits K L u)]
-  rw [integerUnitsMap_normIntegerUnits_eq_galoisGroup_prod_of_isIntegralClosure K L u]
+  rw [LocalFieldTheory.integerUnitsMap_normIntegerUnits_eq_prod_gal K L u]
   rw [map_prod]
   apply Finset.prod_congr rfl
   intro σ _

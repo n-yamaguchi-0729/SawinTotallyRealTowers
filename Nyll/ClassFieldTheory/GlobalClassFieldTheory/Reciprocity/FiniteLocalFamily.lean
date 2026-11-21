@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.NormQuotient
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
@@ -42,7 +44,7 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
     (∏ v : ↥S, finitePlaceIdele v.1 (a v)) =
       IdeleGroup.ideleOfFiniteLocalFamily S a := by
   classical
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext w
     change
@@ -59,8 +61,9 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
       exact finitePlaceIdele_infiniteComponent v.1 w (a v)
     have hright :
         IdeleGroup.infiniteComponent w
-            (IdeleGroup.ideleOfFiniteLocalFamily S a) = 1 :=
-      rfl
+            (IdeleGroup.ideleOfFiniteLocalFamily S a) = 1 := by
+      simp only [IdeleGroup.ideleOfFiniteLocalFamily, IdeleGroup.infiniteComponent_apply,
+        IdeleGroup.infinitePart_ofComponents, map_one, Pi.one_apply]
     rw [hright]
     simp_rw [hfactor]
     exact Finset.prod_const_one
@@ -69,7 +72,7 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
     change
       IdeleGroup.finiteComponent w
           (∏ v : ↥S, finitePlaceIdele v.1 (a v)) =
-        (IdeleGroup.ideleOfFiniteLocalFamily S a).2 w
+        IdeleGroup.finiteCoordinates (IdeleGroup.ideleOfFiniteLocalFamily S a) w
     rw [map_prod]
     by_cases hw : w ∈ S
     · let vw : ↥S := ⟨w, hw⟩
@@ -81,9 +84,10 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
                 simpa [vw] using
                   finitePlaceIdele_finiteComponent_same
                     w (a vw)
-          _ = (IdeleGroup.ideleOfFiniteLocalFamily S a).2 w :=
-            (IdeleGroup.finiteIdeleOfFinset_apply_mem
-              S a vw).symm
+          _ = IdeleGroup.finiteCoordinates (IdeleGroup.ideleOfFiniteLocalFamily S a) w :=
+            by
+              rw [IdeleGroup.ideleOfFiniteLocalFamily, IdeleGroup.finiteCoordinates_ofComponents]
+              exact (IdeleGroup.finiteIdeleOfFinset_apply_mem S a vw).symm
       · intro b _ hbw
         apply finitePlaceIdele_finiteComponent_of_ne
         intro h
@@ -104,9 +108,10 @@ theorem prod_finitePlaceIdele_eq_ideleOfFiniteLocalFamily
               apply hw
               rw [h]
               exact v.2
-        _ = (IdeleGroup.ideleOfFiniteLocalFamily S a).2 w :=
-          (IdeleGroup.finiteIdeleOfFinset_apply_notMem
-            S a w hw).symm
+        _ = IdeleGroup.finiteCoordinates (IdeleGroup.ideleOfFiniteLocalFamily S a) w :=
+          by
+            rw [IdeleGroup.ideleOfFiniteLocalFamily, IdeleGroup.finiteCoordinates_ofComponents,
+              IdeleGroup.finiteIdeleOfFinset_apply_notMem S a w hw]
 
 /-- Applying any multiplicative global symbol to a finite local family
 gives the product of the one-place symbols. -/
@@ -124,18 +129,7 @@ section NormQuotient
 
 variable
     (L : Type*) [Field L] [NumberField L] [Algebra K L]
-    [FiniteDimensional K L]
 
-local instance finiteLocalFamilyIdeleClassGroupIsMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-local instance finiteLocalFamilyIdeleClassGroupCommGroup :
-    CommGroup (IdeleClassGroup K) :=
-  open scoped IsMulCommutative in
-  inferInstance
-
-omit [FiniteDimensional K L] in
 /-- The finite-support product formula for the global
 norm-quotient symbol. -/
 theorem globalNormClass_finiteLocalFamily

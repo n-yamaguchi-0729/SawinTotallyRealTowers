@@ -6,9 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.InfinitePlaceModel
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
@@ -25,7 +25,7 @@ the local tensor decomposition, equivariantly for the full Galois action.
 
 @[expose] public section
 
-open scoped NumberField TensorProduct NumberField.LiesOver
+open scoped NumberField TensorProduct
 open NumberField
 
 noncomputable section
@@ -43,91 +43,6 @@ variable
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L]
-
-/-- The wrapper completion at an infinite place as a `K`-algebra
-equivalence with the underlying absolute-value completion. -/
-def infinitePlaceCompletionAlgEquiv
-    (w : InfinitePlace K) :
-    w.Completion ≃ₐ[K] w.1.Completion where
-  __ := InfinitePlace.Completion.equiv w
-  commutes' _ := rfl
-
-omit [NumberField L] in
-/-- The canonical comparisons from concrete infinite-place completions to
-absolute-value completions commute with the completion maps in a tower of
-number fields. -/
-theorem infinitePlaceCompletionAlgEquiv_algebraMap
-    (v : InfinitePlace K) (w : InfinitePlace L)
-    (hw : w.comap (algebraMap K L) = v) :
-    let _ : w.1.LiesOver v.1 :=
-      ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
-    let u : AbsoluteValueExtension v.1 L :=
-      ⟨w.1, fun x =>
-        congrArg (fun q : InfinitePlace K => q.1 x) hw⟩
-    let _ : Algebra v.1.Completion u.1.Completion :=
-      AbsoluteValue.completionAlgebra v.1 u.1 u.2
-    RingHom.comp
-        (algebraMap v.1.Completion u.1.Completion)
-        (infinitePlaceCompletionAlgEquiv v).toRingEquiv =
-      RingHom.comp
-        (infinitePlaceCompletionAlgEquiv w).toRingEquiv
-        (algebraMap v.Completion w.Completion) := by
-  intro hLiesOver u completionAlgebra
-  ext x
-  refine InfinitePlace.Completion.induction_on v x ?_ ?_
-  · exact
-      isClosed_eq
-        ((AbsoluteValue.completionMap_isometry
-            v.1 w.1 u.2).continuous.comp
-          (InfinitePlace.Completion.continuous_toCompletion v))
-        ((InfinitePlace.Completion.continuous_toCompletion w).comp
-          (NumberField.LiesOver.continuous_completionMap v w))
-  · intro y
-    have hy :
-        (y : v.1.Completion) =
-          algebraMap K v.1.Completion
-            (WithAbs.equiv v.1 y) := by
-      rw [← AbsoluteValue.toCompletion_eq_algebraMap,
-        AbsoluteValue.toCompletion_apply, RingEquiv.symm_apply_apply]
-    change
-      AbsoluteValue.completionMap v.1 u.1 u.2
-          (y : v.1.Completion) =
-        (NumberField.LiesOver.completionMap
-          (v := v) (w := w)
-          (y : v.Completion)).toCompletion
-    rw [NumberField.LiesOver.completionMap_coe]
-    rw [hy, AbsoluteValue.completionMap_coe]
-    rfl
-
-/-- Base change of the first tensor factor from the concrete
-archimedean completion to the absolute-value completion. -/
-noncomputable def infinitePlaceLocalTensorAlgEquiv
-    (w : InfinitePlace K) :
-    w.Completion ⊗[K] L ≃ₐ[K]
-      LocalTensorAlgebra (L := L) w.1 :=
-  Algebra.TensorProduct.congr
-    (infinitePlaceCompletionAlgEquiv w)
-    (AlgEquiv.refl : L ≃ₐ[K] L)
-
-omit [NumberField K] [NumberField L] [FiniteDimensional K L] in
-/-- The concrete-to-absolute completion comparison acts componentwise
-on a pure tensor. -/
-@[simp]
-theorem infinitePlaceLocalTensorAlgEquiv_tmul
-    (w : InfinitePlace K) (a : w.Completion) (x : L) :
-    infinitePlaceLocalTensorAlgEquiv
-        (K := K) (L := L) w (a ⊗ₜ[K] x) =
-      infinitePlaceCompletionAlgEquiv w a ⊗ₜ[K] x := by
-  rfl
-
-/-- The induced multiplicative equivalence on local tensor units. -/
-noncomputable def infinitePlaceLocalTensorUnitsEquiv
-    (w : InfinitePlace K) :
-    (w.Completion ⊗[K] L)ˣ ≃*
-      (LocalTensorAlgebra (L := L) w.1)ˣ :=
-  Units.mapEquiv
-    (infinitePlaceLocalTensorAlgEquiv
-      (K := K) (L := L) w).toMulEquiv
 
 omit [NumberField K] [NumberField L] [FiniteDimensional K L] in
 /-- Completion comparison commutes with conjugation on the second

@@ -125,7 +125,7 @@ theorem nonempty_algHom_of_normSubgroup_le
       (intrinsicFiniteAbstractBase K) AL AM).2 hAbs
   have hRange : AlgHom.fieldRange iL ≤ AlgHom.fieldRange iM := by
     rw [← InfiniteGalois.fixedField_fixingSubgroup (AlgHom.fieldRange iM)]
-    apply (IntermediateField.le_iff_le
+    apply (IntermediateField.le_fixedField_iff_le_fixingSubgroup
       (AlgHom.fieldRange iM).fixingSubgroup (AlgHom.fieldRange iL)).2
     exact hALAM
   exact ⟨(finiteGaloisFieldRangeEquivOfEmbedding K M iM).symm.toAlgHom.comp
@@ -148,11 +148,11 @@ theorem exists_uniformizerPrincipalSubgroup_le_normSubgroup
     apply Nat.finite_of_card_ne_zero
     rw [IsGalois.card_aut_eq_finrank K L]
     exact Nat.ne_of_gt Module.finrank_pos
-  let : Finite (Abelianization (Gal(L / K))) :=
-    Finite.of_surjective Abelianization.of QuotientGroup.mk_surjective
+  let : Finite (Group.Abelianization (Gal(L / K))) :=
+    Finite.of_surjective Group.Abelianization.of QuotientGroup.mk_surjective
   let : Finite (NormQuotient K L) :=
     Finite.of_equiv
-      (Abelianization (Gal(L / K)))
+      (Group.Abelianization (Gal(L / K)))
       (abelianizationEquivNormQuotient K L).toEquiv
   let : Finite (Kˣ ⧸ localNormSubgroup K L) := by
     change Finite (NormQuotient K L)

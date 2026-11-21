@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -35,17 +36,11 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finiteSupportReciprocityTopology : TopologicalSpace (ZMod p) := ⊥
-local instance finiteSupportReciprocityDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
-local instance finiteSupportReciprocityValuativeRel (v : HeightOneSpectrum (𝓞 F)) :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
-local instance finiteSupportReciprocityLocalField (v : HeightOneSpectrum (𝓞 F)) :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
-local instance finiteSupportReciprocityH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) := continuousH1ZModModule
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 variable (S : Finset (HeightOneSpectrum (𝓞 F)))
 variable (chi : ∀ v : ↥S, ContinuousH1ZMod (p := p)
@@ -158,10 +153,17 @@ theorem finiteSupportLocalReciprocityIdeleCharacter_finitePlace
       if hv : v ∈ S then localReciprocityUnitCharacter (v.adicCompletion F) p (chi ⟨v, hv⟩) a
       else 1 := by
   classical
-  by_cases hv : v ∈ S
-  · rw [dite_eq_left hv]
-    exact finiteSupportLocalReciprocityIdeleCharacter_finitePlace_mem F p S chi ⟨v, hv⟩ a
-  · rw [dite_eq_right hv]
+  split
+  · rename_i hv
+    let w : (↥S) := ⟨v, hv⟩
+    rw [finiteSupportLocalReciprocityIdeleCharacter_apply, Finset.prod_eq_single w]
+    · rw [IdeleGroup.finitePlaceIdele_finiteComponent_same]
+    · intro t _ ht
+      rw [IdeleGroup.finitePlaceIdele_finiteComponent_of_ne v t.1 a
+        (fun h ↦ ht (Subtype.ext h)), map_one]
+    · intro hw
+      exact (hw (Finset.mem_univ w)).elim
+  · rename_i hv
     exact finiteSupportLocalReciprocityIdeleCharacter_finitePlace_notMem F p S chi v hv a
 
 /-- Every archimedean-place embedding is killed by a family supported at

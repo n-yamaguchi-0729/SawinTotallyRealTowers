@@ -117,7 +117,7 @@ theorem localHerbrandHMinusOne_card_eq_one
       Nat.card_congr
         (localHerbrandHMinusOneEquivUnitsTateHminusOne
           vK hvK w σ hgen)
-    _ = 1 := hcard.cardHminusOne
+    _ = 1 := hcard.cardHminusOne_original
 
 
 end LocalTateComparison

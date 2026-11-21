@@ -40,7 +40,7 @@ surjectivity properties for the Kummer prime set.
 
 @[expose] public section
 
-open scoped NumberField NNReal IsMulCommutative
+open scoped NumberField NNReal IsMulCommutative WithZero
 open NumberField IsDedekindDomain
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
@@ -143,8 +143,8 @@ theorem mem_powMonoidHom_range_adicCompletionIntegers_iff
                   (v.adicCompletion K)ˣ) :
                 v.adicCompletion K)) =
           1 :=
-      (HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one
-        (K := K) (v := v)).mp x.isUnit
+      ((Valuation.valuationSubring.integers
+        (Valued.v : Valuation (v.adicCompletion K) ℤᵐ⁰)).isUnit_iff_valuation_eq_one).mp x.isUnit
     have hyValPow :
         Valued.v (((y ^ (n : ℕ) : (v.adicCompletion K)ˣ) :
           v.adicCompletion K)) = 1 := by

@@ -55,7 +55,7 @@ theorem finiteExtensionAbsoluteH2Restriction_injective
       change ¬ p ∣ (openSubgroupOfFiniteExtension F i).toSubgroup.index
       rw [openSubgroupOfFiniteExtension_index_eq_finrank]
       exact hdegree)
-  have hj : j.comp k = subgroupInclusion H.toSubgroup := by
+  have hj : j.comp k = ProCGroups.ContinuousMonoidHom.subtype H.toSubgroup := by
     ext sigma
     change (e (e.symm sigma) : Field.absoluteGaloisGroup F) = sigma.1
     rw [e.apply_symm_apply]

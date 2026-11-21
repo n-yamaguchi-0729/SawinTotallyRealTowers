@@ -111,9 +111,7 @@ theorem comap_principalSubgroup :
   · rintro ⟨x, hx⟩
     have htensor :
         adeleInclusion K L
-            ((IdeleGroup.equivAdeleRingUnits (K := K) a :
-              (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-              NumberField.AdeleRing (𝓞 K) K) =
+            (a : NumberField.AdeleRing (𝓞 K) K) =
           fieldInclusion K L (x : L) := by
       exact congrArg Units.val hx.symm
     obtain ⟨k, hkA, hkL⟩ :=
@@ -126,14 +124,11 @@ theorem comap_principalSubgroup :
       exact x.ne_zero this
     let y : Kˣ := Units.mk0 k hk
     refine ⟨y, ?_⟩
-    apply (IdeleGroup.equivAdeleRingUnits (K := K)).injective
     apply Units.ext
     change
       algebraMap K
           (NumberField.AdeleRing (𝓞 K) K) k =
-        ((IdeleGroup.equivAdeleRingUnits (K := K) a :
-          (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-          NumberField.AdeleRing (𝓞 K) K)
+        (a : NumberField.AdeleRing (𝓞 K) K)
     exact hkA.symm
   · rintro ⟨y, rfl⟩
     refine ⟨Units.map (algebraMap K L) y, ?_⟩
@@ -142,47 +137,37 @@ theorem comap_principalSubgroup :
 /-- Inclusion of ideles descends to inclusion of idele classes. -/
 def classInclusion :
     IdeleClassGroup K →* ClassGroup K L :=
-  QuotientGroup.map
-    (IdeleGroup.principalSubgroup K)
-    (principalSubgroup K L)
-    (inclusion K L)
-    (by
-      rw [← comap_principalSubgroup K L])
+  IdeleGroup.liftToStandardClass K
+    ((QuotientGroup.mk' (principalSubgroup K L)).comp (inclusion K L)) (by
+      intro a ha
+      apply (QuotientGroup.eq_one_iff (inclusion K L a)).mpr
+      change a ∈ (principalSubgroup K L).comap (inclusion K L)
+      rw [comap_principalSubgroup K L]
+      exact ha)
 
 omit [NumberField L] [FiniteDimensional K L] in
 @[simp]
 theorem classInclusion_mk (a : IdeleGroup K) :
-    classInclusion K L
-        (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a) =
-      QuotientGroup.mk' (principalSubgroup K L)
-        (inclusion K L a) :=
-  rfl
+    classInclusion K L (IdeleGroup.toStandardClass K a) =
+      QuotientGroup.mk' (principalSubgroup K L) (inclusion K L a) :=
+  IdeleGroup.liftToStandardClass_toStandardClass K _ _ a
 
-/-- The determinant norm on relative ideles, descended to their
-relative idele-class presentation. -/
+/-- The determinant norm on relative ideles, descended to idele classes. -/
 noncomputable def classNorm :
     ClassGroup K L →* IdeleClassGroup K :=
-  QuotientGroup.map
-    (principalSubgroup K L)
-    (IdeleGroup.principalSubgroup K)
-    (RelativeIdeleGroup.norm K L)
-    (by
+  QuotientGroup.lift (principalSubgroup K L)
+    ((IdeleGroup.toStandardClass K).comp (RelativeIdeleGroup.norm K L)) (by
       rintro _ ⟨x, rfl⟩
-      refine
-        ⟨Units.map (Algebra.norm K) x, ?_⟩
-      exact
-        (RelativeIdeleGroup.norm_principalIdele
-          K L x).symm)
+      change IdeleGroup.toStandardClass K
+        (RelativeIdeleGroup.norm K L (principalIdele K L x)) = 1
+      rw [RelativeIdeleGroup.norm_principalIdele, IdeleGroup.toStandardClass_principalIdele])
 
 omit [NumberField L] in
 @[simp]
 theorem classNorm_mk
     (a : RelativeIdeleGroup K L) :
-    classNorm K L
-        (QuotientGroup.mk' (principalSubgroup K L) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (RelativeIdeleGroup.norm K L a) :=
+    classNorm K L (QuotientGroup.mk' (principalSubgroup K L) a) =
+      IdeleGroup.toStandardClass K (RelativeIdeleGroup.norm K L a) :=
   rfl
 
 /-- The norm quotient in the relative idele-class presentation. -/
@@ -194,17 +179,15 @@ omit [NumberField L] [FiniteDimensional K L] in
 theorem classInclusion_injective :
     Function.Injective (classInclusion K L) := by
   rw [← MonoidHom.ker_eq_bot_iff]
-  unfold classInclusion
-  rw [QuotientGroup.ker_map,
-    comap_principalSubgroup K L]
-  ext z
-  constructor
-  · rintro ⟨a, ha, rfl⟩
-    exact (QuotientGroup.eq_one_iff a).2 ha
-  · intro hz
-    have hz1 : z = 1 := Subgroup.mem_bot.mp hz
-    obtain ⟨a, rfl⟩ :=
-      QuotientGroup.mk_surjective z
-    exact ⟨a, (QuotientGroup.eq_one_iff a).1 hz1, rfl⟩
+  ext c
+  obtain ⟨a, rfl⟩ := IdeleGroup.toStandardClass_surjective K c
+  rw [MonoidHom.mem_ker, classInclusion_mk, Subgroup.mem_bot,
+    IdeleGroup.toStandardClass_eq_one_iff]
+  change ((inclusion K L a : RelativeIdeleGroup K L) : ClassGroup K L) = 1 ↔
+    a ∈ IdeleGroup.principalSubgroup K
+  rw [QuotientGroup.eq_one_iff]
+  change a ∈ (principalSubgroup K L).comap (inclusion K L) ↔
+    a ∈ IdeleGroup.principalSubgroup K
+  rw [comap_principalSubgroup K L]
 
 end RelativeIdeleGroup

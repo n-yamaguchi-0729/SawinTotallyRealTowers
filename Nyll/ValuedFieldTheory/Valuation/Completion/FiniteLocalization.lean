@@ -110,7 +110,7 @@ theorem absoluteValueExtension_localizationTensorHom_surjective
   let : Module.Finite vK.Completion f.toLinearMap.range :=
     Module.Finite.range f.toLinearMap
   have hrangeClosed : IsClosed (f.toLinearMap.range : Set w.1.Completion) :=
-    Submodule.closed_of_finiteDimensional
+    Submodule.isClosed_of_finiteDimensional
       (𝕜 := vK.Completion) f.toLinearMap.range
   have hdense : DenseRange
       (AbsoluteValue.toCompletion w.1) :=

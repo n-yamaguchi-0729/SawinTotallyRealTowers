@@ -6,10 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Algebra.Group.Subgroup.Ker
 public import Mathlib.Algebra.Order.Floor.Ring
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Conductor
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
 public import Nyll.ValuedFieldTheory.Ramification.Filtration
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.StandardOpenSubgroups
 
@@ -40,11 +41,12 @@ theorem Universe.abelianLocalArtinMonoidHom_restrict
     [FiniteDimensional K E] [FiniteDimensional K F]
     [IsAbelianGalois K E] [IsAbelianGalois K F] :
     (intermediateFieldRestrictNormalHom E F hEF).comp
-        (Universe.abelianLocalArtinMonoidHom K F) =
-      Universe.abelianLocalArtinMonoidHom K E := by
+        (abelianLocalArtinMonoidHom K F) =
+      abelianLocalArtinMonoidHom K E := by
   apply MonoidHom.ext
   intro a
-  exact DFunLike.congr_fun (Universe.abelianLocalArtinMap_restrict K E F hEF) a
+  rw [← abelianLocalArtinMap_toMonoidHom K F, ← abelianLocalArtinMap_toMonoidHom K E]
+  exact DFunLike.congr_fun (LocalClassFieldTheory.abelianLocalArtinMap_restrict K E F hEF) a
 
 /-- The image of the `n`-th principal-unit group under finite Abelian local
 reciprocity. -/
@@ -54,7 +56,7 @@ def artinPrincipalUnitGroup
     [IsNonarchimedeanLocalField K]
     [FiniteDimensional K L] [IsAbelianGalois K L]
     (n : ℕ) : Subgroup (Gal(L / K)) :=
-  (LocalFieldTheory.fieldPrincipalUnits K n).map (Universe.abelianLocalArtinMonoidHom K L)
+  (LocalFieldTheory.fieldPrincipalUnits K n).map (abelianLocalArtinMonoidHom K L)
 
 /-- At native universes this is literally the image under the original selected Artin map. -/
 theorem artinPrincipalUnitGroup_eq_nativeArtinImage
@@ -63,8 +65,7 @@ theorem artinPrincipalUnitGroup_eq_nativeArtinImage
     [FiniteDimensional K L] [IsAbelianGalois K L] (n : ℕ) :
     artinPrincipalUnitGroup K L n =
       (fieldPrincipalUnits K n).map (abelianLocalArtinMonoidHom K L) := by
-  unfold artinPrincipalUnitGroup
-  rw [Universe.abelianLocalArtinMonoidHom_eq_native]
+  rfl
 
 /-- The Artin images of principal units form an antitone filtration. -/
 theorem artinPrincipalUnitGroup_antitone
@@ -86,22 +87,8 @@ theorem artinPrincipalUnitGroup_eq_bot_iff
     (n : ℕ) :
     artinPrincipalUnitGroup K L n = ⊥ ↔
       localConductorExponent K L ≤ n := by
-  rw [localConductorExponent_le_iff]
-  constructor
-  · intro h x hx
-    rw [← Universe.abelianLocalArtinMonoidHom_ker K L, MonoidHom.mem_ker]
-    have hmem :
-        Universe.abelianLocalArtinMonoidHom K L x ∈
-          artinPrincipalUnitGroup K L n :=
-      ⟨x, hx, rfl⟩
-    rw [h] at hmem
-    exact hmem
-  · intro h
-    apply le_antisymm
-    · rintro y ⟨x, hx, rfl⟩
-      rw [← Universe.abelianLocalArtinMonoidHom_ker K L] at h
-      exact h hx
-    · exact bot_le
+  rw [artinPrincipalUnitGroup, Subgroup.map_eq_bot_iff,
+    abelianLocalArtinMonoidHom_ker, localConductorExponent_le_iff]
 
 /-- Before the conductor exponent the Artin image of principal units is
 nontrivial, and only then. -/

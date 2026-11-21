@@ -46,78 +46,19 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicDirectBracketBaseValuationIsNontrivial
-    (F : LocalField.{u, v} K) :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField F.residueField) ℤᵐ⁰).IsNontrivial :=
-  equalCharacteristicCompletedBaseValuationIsNontrivial F.residueField
-
-noncomputable local instance equalCharacteristicDirectBracketBaseValuationRankOne
-    (F : LocalField.{u, v} K) :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField F.residueField) ℤᵐ⁰).RankOne :=
-  equalCharacteristicCompletedBaseValuationRankOne F.residueField
-
-noncomputable local instance equalCharacteristicDirectBracketBaseNormedField
-    (F : LocalField.{u, v} K) :
-    NontriviallyNormedField
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  equalCharacteristicCompletedBaseNormedField F.residueField
-
-noncomputable local instance equalCharacteristicDirectBracketLevelNormedField
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    NontriviallyNormedField (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelNormedField F n
-
-noncomputable local instance equalCharacteristicDirectBracketLevelIsUltrametric
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUltrametricDist (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelIsUltrametric F n
-
-noncomputable local instance equalCharacteristicDirectBracketLevelCompleteSpace
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelCompleteSpace F n
-
-noncomputable local instance equalCharacteristicDirectBracketLevelValued
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Valued (equalCharacteristicCompletedLevelField F n) ℝ≥0 :=
-  equalCharacteristicCompletedLevelValued F n
-
-noncomputable local instance equalCharacteristicDirectBracketIntegerLinearTopology
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsLinearTopology
-      (Valued.integer (equalCharacteristicCompletedLevelField F n))
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
+attribute [local instance]
+  equalCharacteristicCompletedBaseValuationIsNontrivial
+  equalCharacteristicCompletedBaseValuationRankOne
+  equalCharacteristicCompletedBaseNormedField
+  equalCharacteristicCompletedLevelNormedField
+  equalCharacteristicCompletedLevelIsUltrametric
+  equalCharacteristicCompletedLevelCompleteSpace
+  equalCharacteristicCompletedLevelValued
   valuedIntegerLinearTopology
-
-noncomputable local instance equalCharacteristicDirectBracketIntegerCompleteSpace
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   valuedIntegerCompleteSpace
-
-noncomputable local instance equalCharacteristicDirectBracketIntegerUniformAddGroup
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUniformAddGroup
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   valuedIntegerIsUniformAddGroup
-
-private noncomputable local instance
-    equalCharacteristicDirectBracketCoefficientUniformSpace
-    (F : LocalField.{u, v} K) :
-    UniformSpace ((AlgebraicClosure F.residueField)⟦X⟧) := ⊥
-
-private theorem equalCharacteristicDirectBracketCoefficientHom_continuous
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Continuous (equalCharacteristicCompletedLevelCoefficientHom F n) :=
-  equalCharacteristicCompletedLevelCoefficientHom_continuous F n
-
-private noncomputable local instance equalCharacteristicDirectBracketCoefficientAlgebra
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Algebra ((AlgebraicClosure F.residueField)⟦X⟧)
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
-  (equalCharacteristicCompletedLevelCoefficientHom F n).toAlgebra
+  equalCharacteristicThetaCoefficientUniformSpace
+  equalCharacteristicThetaAtLevelCoefficientAlgebra
 
 /-- Genuine analytic value of the standard formal bracket at the `i`-th
 point of the source orbit. -/
@@ -130,39 +71,6 @@ noncomputable def equalCharacteristicCompletedDirectBracketAtSourceIterate
     (equalCharacteristicDirectThetaSourceIterateInteger F n i)
     (equalCharacteristicDirectThetaSourceIterateInteger_hasEval F n i)
     (equalCharacteristicCompletedDirectBracket a)
-
-private theorem equalCharacteristicDirectBracketEvaluation_hasEval_of_hasSubst
-    (F : LocalField.{u, v} K) (n : ℕ)
-    (x : Valued.integer (equalCharacteristicCompletedLevelField F n))
-    (hx : PowerSeries.HasEval x)
-    (a : ((AlgebraicClosure F.residueField)⟦X⟧)⟦X⟧)
-    (ha : PowerSeries.HasSubst a) :
-    PowerSeries.HasEval
-      (equalCharacteristicCompletedLevelEvaluation F n x hx a) :=
-  equalCharacteristicCompletedLevelEvaluation_hasEval_of_hasSubst F n x hx a ha
-
-private theorem equalCharacteristicDirectBracketEvaluation_subst
-    (F : LocalField.{u, v} K) (n : ℕ)
-    (x : Valued.integer (equalCharacteristicCompletedLevelField F n))
-    (hx : PowerSeries.HasEval x)
-    (a f : ((AlgebraicClosure F.residueField)⟦X⟧)⟦X⟧)
-    (ha : PowerSeries.HasSubst a)
-    (haEval : PowerSeries.HasEval
-      (equalCharacteristicCompletedLevelEvaluation F n x hx a)) :
-    equalCharacteristicCompletedLevelEvaluation F n x hx
-        (PowerSeries.subst a f) =
-      equalCharacteristicCompletedLevelEvaluation F n
-        (equalCharacteristicCompletedLevelEvaluation F n x hx a) haEval f :=
-  equalCharacteristicCompletedLevelEvaluation_subst_at F n x hx a f ha haEval
-
-private theorem equalCharacteristicCompletedLevelEvaluation_eq_of_point_eq
-    (F : LocalField.{u, v} K) (n : ℕ)
-    (x y : Valued.integer (equalCharacteristicCompletedLevelField F n))
-    (hx : PowerSeries.HasEval x) (hy : PowerSeries.HasEval y)
-    (hxy : x = y) :
-    equalCharacteristicCompletedLevelEvaluation F n x hx =
-      equalCharacteristicCompletedLevelEvaluation F n y hy :=
-  equalCharacteristicCompletedLevelEvaluation_congr F n x y hx hy hxy
 
 private theorem equalCharacteristicCompletedLevelCoefficientHom_C_base
     (F : LocalField.{u, v} K) (n : ℕ) (c : F.residueField) :
@@ -224,9 +132,9 @@ theorem equalCharacteristicCompletedDirectBracketAtSourceIterate_recursion
     equalCharacteristicCompletedLubinTateSeries_hasSubst _
   have hEeval : PowerSeries.HasEval
       (equalCharacteristicCompletedLevelEvaluation F n x hx E) :=
-    equalCharacteristicDirectBracketEvaluation_hasEval_of_hasSubst
+    equalCharacteristicCompletedLevelEvaluation_hasEval_of_hasSubst
       F n x hx E hE
-  have hsubst := equalCharacteristicDirectBracketEvaluation_subst F n x hx
+  have hsubst := equalCharacteristicCompletedLevelEvaluation_subst_at F n x hx
     E H hE hEeval
   have hformal := congrArg
     (equalCharacteristicCompletedLevelEvaluation F n x hx)
@@ -250,7 +158,7 @@ theorem equalCharacteristicCompletedDirectBracketAtSourceIterate_recursion
         hsubst
       _ = _ := by
         exact DFunLike.congr_fun
-          (equalCharacteristicCompletedLevelEvaluation_eq_of_point_eq F n
+          (equalCharacteristicCompletedLevelEvaluation_congr F n
             (equalCharacteristicCompletedLevelEvaluation F n x hx E)
             (equalCharacteristicDirectThetaSourceIterateInteger F n (i + 1))
             hEeval
@@ -298,7 +206,7 @@ theorem equalCharacteristicCompletedDirectBracketAtSourceIterate_eq_ambient
       let hx := equalCharacteristicDirectThetaSourceIterateInteger_hasEval F n i
       let H := equalCharacteristicCompletedDirectBracket a
       have heval := DFunLike.congr_fun
-        (equalCharacteristicCompletedLevelEvaluation_eq_of_point_eq F n
+        (equalCharacteristicCompletedLevelEvaluation_congr F n
           x 0 hx PowerSeries.HasEval.zero hxi) H
       change ((equalCharacteristicCompletedLevelEvaluation F n x hx H :
         Valued.integer (equalCharacteristicCompletedLevelField F n)) :
@@ -311,7 +219,7 @@ theorem equalCharacteristicCompletedDirectBracketAtSourceIterate_eq_ambient
           PowerSeries.coe_eval₂Hom]
         apply HasSum.unique
           (PowerSeries.hasSum_eval₂
-            (equalCharacteristicDirectBracketCoefficientHom_continuous F n)
+            (equalCharacteristicCompletedLevelCoefficientHom_continuous F n)
             PowerSeries.HasEval.zero H)
         have hterm :
             (fun d : ℕ ↦

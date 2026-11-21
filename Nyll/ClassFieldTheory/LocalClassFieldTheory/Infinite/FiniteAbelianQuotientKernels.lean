@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletionCriteria
+public import Nyll.ProCGroups.Completion.TopologicalCriteria
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkLocalClassification
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 
@@ -50,7 +50,7 @@ noncomputable def absoluteAbelianRestriction
   let r : intrinsicAbsoluteGalois K →* Gal(E / K) :=
     AlgEquiv.restrictNormalHom E
   have hcomm : commutator (intrinsicAbsoluteGalois K) ≤ r.ker :=
-    Abelianization.commutator_subset_ker r
+    Group.Abelianization.commutator_le_ker r
   have hkerClosed : IsClosed (r.ker : Set (intrinsicAbsoluteGalois K)) := by
     rw [IntermediateField.restrictNormalHom_ker]
     exact IntermediateField.fixingSubgroup_isClosed E
@@ -204,8 +204,7 @@ theorem separableAbsoluteLocalArtinMap_preimage_cofinal
         (localAbsoluteAbelianProfinite K)
         (separableAbsoluteLocalArtinMap K) N ≤ H := by
   let Hnative : ClassFieldTheory.OpenFiniteIndexSubgroup K :=
-    ⟨H.toOpenNormalSubgroup.toSubgroup,
-      H.toOpenNormalSubgroup.isOpen', H.finiteIndex'⟩
+    ⟨H.toOpenNormalSubgroup.toOpenSubgroup, H.finiteIndex'⟩
   obtain ⟨E, hE⟩ := (shrinkFiniteAbelianFieldNormSubgroupOrderIso K).surjective
     (OrderDual.toDual Hnative)
   refine ⟨absoluteAbelianRestrictionKernel K E.1, ?_⟩
@@ -221,7 +220,7 @@ theorem separableAbsoluteLocalArtinMap_preimage_cofinal
     (shrinkFiniteAbelianFieldNormSubgroupOrderIso_apply K E).symm.trans
       (congrArg
         (fun J : (ClassFieldTheory.OpenFiniteIndexSubgroup K)ᵒᵈ =>
-          (OrderDual.ofDual J).1) hE)
+          (OrderDual.ofDual J).1.toSubgroup) hE)
   change E.normSubgroup ≤ H.toOpenNormalSubgroup.toSubgroup
   rw [hsubgroup]
 

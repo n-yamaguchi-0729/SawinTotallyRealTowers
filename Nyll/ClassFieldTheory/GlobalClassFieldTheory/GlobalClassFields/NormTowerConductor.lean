@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
@@ -46,14 +48,6 @@ namespace GlobalClassFields
 
 open NumberField
 
-/-- The canonical commutativity witness used to form ordinary norm quotients. -/
-theorem normTowerIdeleClassIsMulCommutative
-    {F : Type u} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-attribute [local instance] normTowerIdeleClassIsMulCommutative
-
 /-- Quotient commutativity follows by lifting representatives through the
 canonical quotient map, without constructing another group dictionary. -/
 private theorem normTowerQuotientIsMulCommutative
@@ -76,8 +70,8 @@ private theorem normTowerQuotientIsMulCommutative
 subgroups are normal when forming the second quotient. -/
 theorem normTowerIdeleClassQuotientIsMulCommutative
     {F : Type u} [Field F] [NumberField F]
-    (N : Subgroup (IdeleClassGroup F)) :
-    IsMulCommutative (IdeleClassGroup F ⧸ N) :=
+    (N : Subgroup (NumberField.IdeleClassGroup (𝓞 F) F)) :
+    IsMulCommutative (NumberField.IdeleClassGroup (𝓞 F) F ⧸ N) :=
   normTowerQuotientIsMulCommutative N
 
 attribute [local instance] normTowerIdeleClassQuotientIsMulCommutative
@@ -119,9 +113,9 @@ theorem ideleClassNorm_range_le_of_tower :
 /-- The quotient transition induced by norm transitivity in a finite
 field tower. -/
 def ideleClassNormQuotientTowerMap :
-    (IdeleClassGroup K ⧸
+    (NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K L).range) →*
-      (IdeleClassGroup K ⧸
+      (NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K M).range) :=
   QuotientGroup.map
     ((_root_.ideleClassNorm K L).range)
@@ -136,7 +130,7 @@ omit [IsGalois K M] [IsGalois K L] in
 class modulo the intermediate norm subgroup. -/
 @[simp]
 theorem ideleClassNormQuotientTowerMap_mk
-    (x : IdeleClassGroup K) :
+    (x : NumberField.IdeleClassGroup (𝓞 K) K) :
     ideleClassNormQuotientTowerMap
         (K := K) (M := M) (L := L)
         (QuotientGroup.mk'
@@ -166,7 +160,7 @@ noncomputable def
     RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite
           (ideleClassNormNarrowFiniteConductor (K := K) (L := L))) →*
-      IdeleClassGroup K ⧸
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K M).range :=
   (ideleClassNormQuotientTowerMap
       (K := K) (M := M) (L := L)).comp
@@ -180,7 +174,7 @@ subgroup. -/
 @[simp]
 theorem
     narrowFiniteConductorRayClassGroupToIntermediateIdeleClassNormQuotient_mk
-    (x : IdeleClassGroup K) :
+    (x : NumberField.IdeleClassGroup (𝓞 K) K) :
     narrowFiniteConductorRayClassGroupToIntermediateIdeleClassNormQuotient
         (K := K) (M := M) (L := L)
         (QuotientGroup.mk'
@@ -234,7 +228,7 @@ theorem ideleClassNormQuotientTowerMap_ker :
     (QuotientGroup.ker_map
       (N := ((_root_.ideleClassNorm K L).range))
       ((_root_.ideleClassNorm K M).range)
-      (MonoidHom.id (IdeleClassGroup K))
+      (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K))
       (fun _ hx =>
         ideleClassNorm_range_le_of_tower
           (K := K) (M := M) (L := L) hx)).trans
@@ -246,13 +240,13 @@ theorem ideleClassNormQuotientTowerMap_ker :
 /-- Quotienting the top norm quotient by the image of the intermediate
 norm subgroup gives the intermediate norm quotient. -/
 def ideleClassNormQuotientModuloIntermediateEquiv :
-    ((IdeleClassGroup K ⧸
+    ((NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K L).range) ⧸
         Subgroup.map
           (QuotientGroup.mk'
             ((_root_.ideleClassNorm K L).range))
           ((_root_.ideleClassNorm K M).range)) ≃*
-      (IdeleClassGroup K ⧸
+      (NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K M).range) :=
   (QuotientGroup.quotientMulEquivOfEq
       (ideleClassNormQuotientTowerMap_ker
@@ -318,7 +312,7 @@ order and the order of the intermediate norm quotient. -/
 theorem
     ideleClassNormQuotient_card_eq_intermediateNormImage_card_mul_baseNormQuotient_card :
     Nat.card
-        (IdeleClassGroup K ⧸
+        (NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K L).range) =
       Nat.card
           (Subgroup.map
@@ -326,7 +320,7 @@ theorem
               ((_root_.ideleClassNorm K L).range))
             ((_root_.ideleClassNorm K M).range)) *
         Nat.card
-          (IdeleClassGroup K ⧸
+          (NumberField.IdeleClassGroup (𝓞 K) K ⧸
             (_root_.ideleClassNorm K M).range) := by
   let f :=
     ideleClassNormQuotientTowerMap
@@ -336,7 +330,7 @@ theorem
       (K := K) (M := M) (L := L)
   calc
     Nat.card
-        (IdeleClassGroup K ⧸
+        (NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K L).range) =
         Nat.card (MonoidHom.ker f) *
           (MonoidHom.ker f).index :=
@@ -346,7 +340,7 @@ theorem
       rw [Subgroup.index_ker f]
     _ = Nat.card (MonoidHom.ker f) *
         Nat.card
-          (IdeleClassGroup K ⧸
+          (NumberField.IdeleClassGroup (𝓞 K) K ⧸
             (_root_.ideleClassNorm K M).range) := by
       rw [f.range_eq_top_of_surjective hf, Subgroup.card_top]
     _ = Nat.card
@@ -355,7 +349,7 @@ theorem
               ((_root_.ideleClassNorm K L).range))
             ((_root_.ideleClassNorm K M).range)) *
         Nat.card
-          (IdeleClassGroup K ⧸
+          (NumberField.IdeleClassGroup (𝓞 K) K ⧸
             (_root_.ideleClassNorm K M).range) := by
       rw [ideleClassNormQuotientTowerMap_ker
         (K := K) (M := M) (L := L)]
@@ -365,10 +359,10 @@ omit [IsGalois K M] [IsGalois K L] in
 order. -/
 theorem ideleClassNormQuotient_card_dvd_of_tower :
     Nat.card
-        (IdeleClassGroup K ⧸
+        (NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K M).range) ∣
       Nat.card
-        (IdeleClassGroup K ⧸
+        (NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K L).range) := by
   simpa only [Subgroup.index_eq_card] using
     Subgroup.index_dvd_of_le

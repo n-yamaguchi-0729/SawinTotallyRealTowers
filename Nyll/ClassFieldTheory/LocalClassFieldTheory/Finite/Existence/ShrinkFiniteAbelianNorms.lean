@@ -7,8 +7,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkFiniteAbelianFields
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
-public import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.FieldNormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Norm subgroups under a small change of local base field
@@ -39,14 +39,14 @@ theorem shrinkIntermediateField_normSubgroup_map
       shrinkIntermediateField_finiteDimensional K E
     (E.normSubgroup).map
         (Units.mapEquiv (Shrink.ringEquiv K).symm.toMulEquiv).toMonoidHom =
-      ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K)
+      localNormSubgroup (Shrink.{0} K)
         (shrinkIntermediateField K E.1) := by
   intro sharedOwner1 sharedOwner2 sharedOwner3
-  change (ClassFieldTheory.fieldNormSubgroup K E.1).map
+  change (localNormSubgroup K E.1).map
       (Units.mapEquiv (Shrink.ringEquiv K).symm.toMulEquiv).toMonoidHom =
-    ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K)
+    localNormSubgroup (Shrink.{0} K)
       (shrinkIntermediateField K E.1)
-  exact ClassFieldTheory.fieldNormSubgroup_map_ringEquiv
+  exact LocalFieldTheory.localNormSubgroup_map_ringEquiv
     (Shrink.ringEquiv K).symm
     (shrinkIntermediateFieldRingEquiv K E.1)
     (shrinkIntermediateFieldRingEquiv_commutes K E.1)

@@ -19,7 +19,8 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Mathlib.Analysis.Normed.Ring.WithAbs
 public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
-public import Mathlib.RingTheory.DedekindDomain.AdicValuation
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Completion
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Valuation
 public import Mathlib.Topology.Algebra.GroupCompletion
 public import Mathlib.Topology.Algebra.UniformRing
 public import Mathlib.NumberTheory.Padics.HeightOneSpectrum
@@ -27,6 +28,7 @@ public import Mathlib.NumberTheory.NumberField.Basic
 public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 public import Mathlib.Topology.Instances.ZMod
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # The local value at three of the negative-three character
@@ -47,8 +49,7 @@ noncomputable section
 namespace ClassFieldTower.Sawin
 open ClassFieldTower.Martinet.Shafarevich
 
-local instance negativeThreeLocalRadicalZModAddCommGroup : AddCommGroup (ZMod 2) :=
-  (ZMod.commRing 2).toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 /-- The character of the actual field ℚ(√−3), evaluated through global
 reciprocity on the three-adic unit −1, is nontrivial. -/
@@ -87,7 +88,7 @@ theorem negativeThreeCharacter_three_neg_one_ne_one :
   have hIntegral : P ∈ IdeleGroup.integralAtFinitePlaces (K := ℚ) := by
     have h := IdeleGroup.principalRingUnit_mem_integralAtFinitePlaces
       (K := ℚ) (-1 : (𝓞 ℚ)ˣ)
-    have he : InfiniteIdeleGroup.ringUnitToFieldUnit (K := ℚ)
+    have he : NumberField.ringUnitToFieldUnit (K := ℚ)
         (-1 : (𝓞 ℚ)ˣ) = (-1 : ℚˣ) := by
       apply Units.ext
       change algebraMap (𝓞 ℚ) ℚ (-1) = -1
@@ -95,29 +96,35 @@ theorem negativeThreeCharacter_three_neg_one_ne_one :
     rw [he] at h
     exact h
   let u : ∀ v : HeightOneSpectrum (𝓞 ℚ), (v.adicCompletionIntegers ℚ).units :=
-    fun v => ⟨P.2 v, hIntegral v⟩
+    fun v => ⟨IdeleGroup.finiteCoordinates P v, hIntegral v⟩
   have hFiniteP : δ (integralFiniteIdeleContinuousHom ℚ u) = 1 :=
     ideleCharacter_integralFinite_eq_one ℚ (2 : ℕ+) δ hfinite u
-  have hSplit : P = IdeleGroup.infinitePlaceIdele Rat.infinitePlace (-1) *
-      integralFiniteIdeleContinuousHom ℚ u := by
-    apply Prod.ext
-    · apply ContinuousMulEquiv.piUnits.injective
+  have hArch : IdeleGroup.ofComponents (IdeleGroup.infinitePart P) 1 =
+      IdeleGroup.infinitePlaceIdele Rat.infinitePlace (-1) := by
+    apply IdeleGroup.ext_parts
+    · rw [IdeleGroup.infinitePart_ofComponents]
+      apply ContinuousMulEquiv.piUnits.injective
       funext v
       rw [Subsingleton.elim v Rat.infinitePlace]
       change IdeleGroup.infiniteComponent Rat.infinitePlace P =
         IdeleGroup.infiniteComponent Rat.infinitePlace
-          (IdeleGroup.infinitePlaceIdele Rat.infinitePlace (-1)) * 1
-      rw [IdeleGroup.infinitePlaceIdele_infiniteComponent_same, mul_one]
+          (IdeleGroup.infinitePlaceIdele Rat.infinitePlace (-1))
+      rw [IdeleGroup.infinitePlaceIdele_infiniteComponent_same]
       apply Units.ext
       change ((IdeleGroup.infiniteComponent Rat.infinitePlace
         (IdeleGroup.principalIdele ℚ (-1 : ℚˣ))) : Rat.infinitePlace.Completion) = -1
-      rw [IdeleGroup.infiniteComponent_principalIdele]
-      apply InfinitePlace.Completion.ext
-      change ((WithAbs.toAbs Rat.infinitePlace.1
-        (-1 : ℚ)) : Rat.infinitePlace.1.Completion) = -1
-      rw [WithAbs.toAbs_neg, WithAbs.toAbs_one,
-        UniformSpace.Completion.coe_neg, UniformSpace.Completion.coe_one]
-    · exact (one_mul P.2).symm
+      rw [IdeleGroup.infiniteComponent_principalIdele, Units.coe_neg_one]
+      have hMap : algebraMap ℚ Rat.infinitePlace.Completion (-1) = -1 := by
+        rw [map_neg, map_one]
+      rw [AbsoluteValue.Completion.algebraMap_def, WithAbs.algebraMap_right_apply,
+        Algebra.algebraMap_self_apply] at hMap
+      exact hMap
+    · rw [IdeleGroup.finiteCoordinates_ofComponents,
+        IdeleGroup.finiteCoordinates_infinitePlaceIdele]
+  have hSplit : P = IdeleGroup.infinitePlaceIdele Rat.infinitePlace (-1) *
+      integralFiniteIdeleContinuousHom ℚ u := by
+    exact (integralFiniteIdeleContinuousHom_split ℚ P hIntegral).trans
+      (congrArg (· * integralFiniteIdeleContinuousHom ℚ u) hArch)
   have hrInfinite : r (IdeleGroup.infinitePlaceIdele Rat.infinitePlace (-1)) = 1 := by
     change (∏ v : ↥S, ψ (IdeleGroup.finitePlaceIdele v.1
       (IdeleGroup.finiteComponent v.1

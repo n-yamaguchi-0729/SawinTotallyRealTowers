@@ -42,90 +42,6 @@ universe u v
 variable {K : Type u} {Omega : Type v}
   [Field K] [Field Omega] [Algebra K Omega]
 
-section AbstractToConcrete
-
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
-  [FiniteDimensional K L] [IsGalois K L]
-
-/-- The finite abstract norm class represented by a base-field unit in an
-explicit separable-closure realization. -/
-def embeddedBaseNormClass
-    (i : L →ₐ[K] SeparableClosure K) (a : Kˣ) :
-    FiniteNormQuotient (intrinsicAbsoluteUnits K) (intrinsicAbstractBase K)
-      (finiteGaloisAbstractExtensionOfEmbedding K L i).field
-      (finiteGaloisAbstractExtensionOfEmbedding K L i).below :=
-  finiteNormClass (intrinsicAbsoluteUnits K) (intrinsicAbstractBase K)
-    (finiteGaloisAbstractExtensionOfEmbedding K L i).field
-    (finiteGaloisAbstractExtensionOfEmbedding K L i).below
-    (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)
-      (Additive.ofMul a))
-
-/-- Before specializing the local datum, the concrete norm-residue symbol is
-the abstract norm-residue class transported through the canonical quotient
-equivalence.  This pointwise transport formula expresses abstract
-restriction naturality as a statement about actual field automorphisms. -/
-theorem concreteNormResidueSymbolOfEmbedding_eq_abstract
-    (i : L →ₐ[K] SeparableClosure K)
-    (D : DegreeData (intrinsicAbsoluteGalois K))
-    (v : ValuationData D (intrinsicAbsoluteUnits K))
-    (hcf : SatisfiesClassFieldAxiom (intrinsicAbsoluteUnits K)) (a : Kˣ) :
-    concreteNormResidueSymbolOfEmbedding K L i D v hcf a =
-      (finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
-        K L i).abelianizationCongr
-        (Additive.toMul
-          (D.normResidueSymbol (intrinsicAbsoluteUnits K) v hcf (intrinsicFiniteAbstractBase K)
-            (finiteGaloisAbstractExtensionOfEmbedding K L i)
-            (embeddedBaseNormClass K L i a))) := by
-  let Eabs := finiteGaloisAbstractExtensionOfEmbedding K L i
-  let q := finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
-  let xabs := embeddedBaseNormClass K L i a
-  let z := D.normResidueSymbol (intrinsicAbsoluteUnits K) v hcf
-    (intrinsicFiniteAbstractBase K) Eabs xabs
-  have hnorm :
-      finiteNormQuotientEquivEmbeddedNormQuotient
-          K (SeparableClosure K) L i xabs =
-        Additive.ofMul
-          (normClass K L a) := by
-    convert
-      finiteNormQuotientEquivEmbeddedNormQuotient_finiteNormClass_baseUnit
-        K L i a using 1 <;> rfl
-  have hsource :
-      MulEquiv.toAdditive q.abelianizationCongr.symm
-          (Additive.ofMul (q.abelianizationCongr (Additive.toMul z))) = z := by
-    apply Additive.toMul.injective
-    exact q.abelianizationCongr.symm_apply_apply (Additive.toMul z)
-  have hforward :
-      concreteReciprocityAddEquivOfEmbedding K L i D v hcf
-          (Additive.ofMul (q.abelianizationCongr (Additive.toMul z))) =
-        Additive.ofMul
-          (normClass K L a) := by
-    change finiteNormQuotientEquivEmbeddedNormQuotient
-        K (SeparableClosure K) L i
-        (D.abstractReciprocityEquiv (intrinsicAbsoluteUnits K) v hcf
-          (intrinsicFiniteAbstractBase K) Eabs
-          (MulEquiv.toAdditive q.abelianizationCongr.symm
-            (Additive.ofMul
-              (q.abelianizationCongr (Additive.toMul z))))) = _
-    rw [hsource]
-    change finiteNormQuotientEquivEmbeddedNormQuotient
-        K (SeparableClosure K) L i
-        (D.abstractReciprocityEquiv (intrinsicAbsoluteUnits K) v hcf
-          (intrinsicFiniteAbstractBase K) Eabs
-          ((D.abstractReciprocityEquiv
-            (intrinsicAbsoluteUnits K) v hcf (intrinsicFiniteAbstractBase K) Eabs).symm xabs)) = _
-    rw [(D.abstractReciprocityEquiv
-      (intrinsicAbsoluteUnits K) v hcf (intrinsicFiniteAbstractBase K) Eabs).apply_symm_apply,
-      hnorm]
-  change (concreteReciprocityEquivOfEmbedding K L i D v hcf).symm
-      (normClass K L a) =
-    q.abelianizationCongr (Additive.toMul z)
-  apply (concreteReciprocityEquivOfEmbedding K L i D v hcf).injective
-  rw [(concreteReciprocityEquivOfEmbedding
-    K L i D v hcf).apply_symm_apply]
-  exact (congrArg Additive.toMul hforward).symm
-
-end AbstractToConcrete
-
 section IntermediateRestriction
 
 variable (K : Type) [Field K]
@@ -135,13 +51,13 @@ variable (K : Type) [Field K]
 private theorem commGroup_abelianizationCongr_of
     {G H : Type*} [Group G] [CommGroup H]
     (q : G ≃* H) (x : G) :
-    (Abelianization.equivOfComm (H := H)).symm
-        (q.abelianizationCongr (Abelianization.of x)) =
+    (Group.Abelianization.equivOfComm (H := H)).symm
+        (q.abelianizationCongr (Group.Abelianization.of x)) =
       q x := by
   exact
-    (congrArg (Abelianization.equivOfComm (H := H)).symm
-      (abelianizationCongr_of q x)).trans
-      ((Abelianization.equivOfComm (H := H)).symm_apply_apply (q x))
+    (congrArg (Group.Abelianization.equivOfComm (H := H)).symm
+      (Group.abelianizationCongr_of q x)).trans
+      ((Group.Abelianization.equivOfComm (H := H)).symm_apply_apply (q x))
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 private theorem intermediateFieldRestrict_abstractQuotient_mk
@@ -199,11 +115,11 @@ private theorem intermediateFieldRestrict_abstractAbelianization_of_mk
     [IsAbelianGalois K E] [IsAbelianGalois K F]
     (sigma : (intrinsicAbstractBase K).toSubgroup) :
     intermediateFieldRestrictNormalHom E F hEF
-        ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+        ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
           ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
             K F F.val).abelianizationCongr
-              (Abelianization.of (QuotientGroup.mk sigma)))) =
-      (Abelianization.equivOfComm (H := Gal(E / K))).symm
+              (Group.Abelianization.of (QuotientGroup.mk sigma)))) =
+      (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding
           K E E.val).abelianizationCongr
             (normResidueNaturalityAbelianizedRestriction
@@ -213,7 +129,7 @@ private theorem intermediateFieldRestrict_abstractAbelianization_of_mk
               (finiteGaloisAbstractExtensionOfEmbedding K E E.val).below
               (finiteGaloisAbstractExtensionOfEmbedding K F F.val).below
               le_rfl (embeddedAbstractExtension_field_le K E F hEF)
-              (Abelianization.of (QuotientGroup.mk sigma)))) := by
+              (Group.Abelianization.of (QuotientGroup.mk sigma)))) := by
   let B := intrinsicAbstractBase K
   let EE := finiteGaloisAbstractExtensionOfEmbedding K E E.val
   let EF := finiteGaloisAbstractExtensionOfEmbedding K F F.val
@@ -223,17 +139,17 @@ private theorem intermediateFieldRestrict_abstractAbelianization_of_mk
       normResidueNaturalityAbelianizedRestriction
           B B EE.field EF.field EE.below EF.below le_rfl
           (embeddedAbstractExtension_field_le K E F hEF)
-          (Abelianization.of (QuotientGroup.mk sigma)) =
-        Abelianization.of
+          (Group.Abelianization.of (QuotientGroup.mk sigma)) =
+        Group.Abelianization.of
           (QuotientGroup.mk (Subgroup.inclusion le_rfl sigma)) :=
     normResidueNaturalityAbelianizedRestriction_of_mk
       B B EE.field EF.field EE.below EF.below le_rfl
       (embeddedAbstractExtension_field_le K E F hEF) sigma
   calc
     intermediateFieldRestrictNormalHom E F hEF
-        ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+        ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
           (qF.abelianizationCongr
-            (Abelianization.of (QuotientGroup.mk sigma)))) =
+            (Group.Abelianization.of (QuotientGroup.mk sigma)))) =
       intermediateFieldRestrictNormalHom E F hEF
         (qF (QuotientGroup.mk sigma)) :=
       congrArg (intermediateFieldRestrictNormalHom E F hEF)
@@ -241,20 +157,20 @@ private theorem intermediateFieldRestrict_abstractAbelianization_of_mk
           qF (QuotientGroup.mk sigma))
     _ = qE (QuotientGroup.mk (Subgroup.inclusion le_rfl sigma)) :=
       intermediateFieldRestrict_abstractQuotient_mk K E F hEF sigma
-    _ = (Abelianization.equivOfComm (H := Gal(E / K))).symm
+    _ = (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         (qE.abelianizationCongr
-          (Abelianization.of
+          (Group.Abelianization.of
             (QuotientGroup.mk (Subgroup.inclusion le_rfl sigma)))) :=
       (commGroup_abelianizationCongr_of qE
         (QuotientGroup.mk (Subgroup.inclusion le_rfl sigma))).symm
-    _ = (Abelianization.equivOfComm (H := Gal(E / K))).symm
+    _ = (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         (qE.abelianizationCongr
           (normResidueNaturalityAbelianizedRestriction
             B B EE.field EF.field EE.below EF.below le_rfl
             (embeddedAbstractExtension_field_le K E F hEF)
-            (Abelianization.of (QuotientGroup.mk sigma)))) :=
+            (Group.Abelianization.of (QuotientGroup.mk sigma)))) :=
       congrArg
-        (fun w => (Abelianization.equivOfComm
+        (fun w => (Group.Abelianization.equivOfComm
           (H := Gal(E / K))).symm (qE.abelianizationCongr w))
         hrestriction.symm
 
@@ -263,13 +179,13 @@ private theorem intermediateFieldRestrict_abstractAbelianization
     (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
     [FiniteDimensional K E] [FiniteDimensional K F]
     [IsAbelianGalois K E] [IsAbelianGalois K F]
-    (z : Abelianization
+    (z : Group.Abelianization
       (finiteGaloisAbstractExtensionOfEmbedding K F F.val).extensionQuotient) :
     intermediateFieldRestrictNormalHom E F hEF
-        ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+        ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
           ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K F F.val).abelianizationCongr
             z)) =
-      (Abelianization.equivOfComm (H := Gal(E / K))).symm
+      (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K E E.val).abelianizationCongr
           (normResidueNaturalityAbelianizedRestriction
             (intrinsicAbstractBase K) (intrinsicAbstractBase K)
@@ -297,10 +213,10 @@ theorem concreteNormResidueAutomorphism_restrict
     (v : ValuationData D (intrinsicAbsoluteUnits K))
     (hcf : SatisfiesClassFieldAxiom (intrinsicAbsoluteUnits K)) (a : Kˣ) :
     intermediateFieldRestrictNormalHom E F hEF
-        ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+        ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
           (concreteNormResidueSymbolOfEmbedding
             K F F.val D v hcf a)) =
-      (Abelianization.equivOfComm (H := Gal(E / K))).symm
+      (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         (concreteNormResidueSymbolOfEmbedding
           K E E.val D v hcf a) := by
   let B := intrinsicAbstractBase K
@@ -384,25 +300,25 @@ theorem concreteNormResidueAutomorphism_restrict
     concreteNormResidueSymbolOfEmbedding_eq_abstract
       K E E.val D v hcf a]
   change intermediateFieldRestrictNormalHom E F hEF
-      ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+      ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
         (qF.abelianizationCongr (Additive.toMul zF))) =
-    (Abelianization.equivOfComm (H := Gal(E / K))).symm
+    (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
       (qE.abelianizationCongr (Additive.toMul zE))
   calc
     intermediateFieldRestrictNormalHom E F hEF
-        ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+        ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
           (qF.abelianizationCongr (Additive.toMul zF))) =
-      (Abelianization.equivOfComm (H := Gal(E / K))).symm
+      (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         (qE.abelianizationCongr
           (normResidueNaturalityAbelianizedRestriction
             B B EE.field EF.field EE.below EF.below le_rfl hFE
             (Additive.toMul zF))) :=
       intermediateFieldRestrict_abstractAbelianization
         K E F hEF (Additive.toMul zF)
-    _ = (Abelianization.equivOfComm (H := Gal(E / K))).symm
+    _ = (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         (qE.abelianizationCongr (Additive.toMul zE)) :=
       congrArg
-        (fun w => (Abelianization.equivOfComm
+        (fun w => (Group.Abelianization.equivOfComm
           (H := Gal(E / K))).symm (qE.abelianizationCongr w)) hz
 
 /-- Restriction naturality for the canonical local norm-residue symbol,
@@ -412,9 +328,9 @@ theorem localArtinAutomorphism_restrict
     [FiniteDimensional K E] [FiniteDimensional K F]
     [IsAbelianGalois K E] [IsAbelianGalois K F] (a : Kˣ) :
     intermediateFieldRestrictNormalHom E F hEF
-        ((Abelianization.equivOfComm (H := Gal(F / K))).symm
+        ((Group.Abelianization.equivOfComm (H := Gal(F / K))).symm
           (localArtinMonoidHom K F a)) =
-      (Abelianization.equivOfComm (H := Gal(E / K))).symm
+      (Group.Abelianization.equivOfComm (H := Gal(E / K))).symm
         (localArtinMonoidHom K E a) := by
   rw [localArtinMonoidHom_eq_of_embedding K F F.val,
     localArtinMonoidHom_eq_of_embedding K E E.val]

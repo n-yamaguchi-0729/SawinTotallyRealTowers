@@ -6,8 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.FieldTheory.RestrictionQuotient
 public import Nyll.GaloisCohomology.GroupTheory.CoefficientRingEquivalence
 public import Nyll.GaloisCohomology.Cyclic.IntegralCoefficientCohomology
+public import Nyll.GaloisCohomology.Cyclic.IntegralHilbert90
 public import Nyll.GaloisCohomology.Kummer.QuotientTwoCocycle
 public import Nyll.GaloisCohomology.ProP.FiniteCyclicH2CoefficientNorm
 public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Hilbert90
@@ -47,23 +49,14 @@ multiplicative cocycle and its field-unit primitive. -/
 theorem liftedGaloisUnitsH1_subsingleton
     (K : Type v) (L : Type u) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] :
     Subsingleton (groupCohomology (liftedGaloisUnitsRep K L) 1) := by
-  have hz (x : groupCohomology (liftedGaloisUnitsRep K L) 1) : x = 0 := by
-    refine groupCohomology.H1_induction_on x ?_
-    intro c
-    apply (groupCohomology.H1π_eq_zero_iff c).mpr
-    have hc : groupCohomology.IsMulCocycle₁
-        (fun σ : Gal(L/K) => (show Additive Lˣ from c σ).toMul) := by
-      intro σ τ
-      exact congrArg (fun z : Additive Lˣ => z.toMul)
-        ((groupCohomology.mem_cocycles₁_iff c).mp c.property σ τ)
-    obtain ⟨b, hb⟩ :=
-      groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units
-        (fun σ : Gal(L/K) => (show Additive Lˣ from c σ).toMul) hc
-    refine ⟨Additive.ofMul b, ?_⟩
-    funext σ
-    apply Additive.toMul.injective
-    exact hb σ
-  exact ⟨fun x y => (hz x).trans (hz y).symm⟩
+  have hzero : Limits.IsZero
+      (IntegralGroupCohomology.cohomology (Rep.ofAlgebraAutOnUnits K L) 1) :=
+    Limits.IsZero.of_iso (IntegralGroupCohomology.Universe.unitsH1_isZero K L)
+      (IntegralGroupCohomology.Universe.cohomologyIsoCommon
+        (Rep.ofAlgebraAutOnUnits K L) 1).symm
+  have hsub : Subsingleton (IntegralGroupCohomology.cohomology (Rep.ofAlgebraAutOnUnits K L) 1) :=
+    ModuleCat.subsingleton_of_isZero hzero
+  exact hsub
 
 /-- Inclusion of intermediate-field units with the transported integer scalar action. -/
 def liftedUnitsInclusionLinear
@@ -141,16 +134,11 @@ theorem liftedUnitsToInvariants_bijective : Function.Bijective (liftedUnitsToInv
         τ ((show Additive Lˣ from a.val).toMul : L) =
           ((show Additive Lˣ from a.val).toMul : L) :=
       congrArg Units.val (a.property (E.fixingSubgroupEquiv.symm τ))
-    obtain ⟨b, hb⟩ := (IsGalois.mem_range_algebraMap_iff_fixed
-      (F := E) (E := L) ((show Additive Lˣ from a.val).toMul : L)).mpr hfix
-    have hb0 : b ≠ 0 := by
-      intro h
-      apply Units.ne_zero (show Additive Lˣ from a.val).toMul
-      rw [← hb, h, map_zero]
-    refine ⟨Additive.ofMul (Units.mk0 b hb0), ?_⟩
-    apply Subtype.ext
-    apply Units.ext
-    exact hb
+    obtain ⟨b, hb⟩ := exists_unit_map_eq_of_fixed K L E
+      (show Additive Lˣ from a.val).toMul hfix
+    refine ⟨Additive.ofMul b, Subtype.ext ?_⟩
+    exact congrArg Additive.ofMul hb
+
 
 /-- The lower-field units are precisely the upper-field units fixed by the
 actual relative automorphisms. -/
@@ -160,12 +148,6 @@ def liftedFiniteGaloisUnitsInvariantsEquiv :
   LinearEquiv.ofBijective (liftedUnitsToInvariants K L E) (liftedUnitsToInvariants_bijective K L E)
 
 variable [Normal K E]
-
-/-- The actual restriction quotient identified with the lower-field Galois group. -/
-def liftedRestrictionQuotientEquiv :
-    Gal(L/K) ⧸ (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker ≃* Gal(E/K) :=
-  QuotientGroup.quotientKerEquivOfSurjective (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E)
-    (AlgEquiv.restrictNormalHom_surjective L (F := K) (K₁ := E))
 
 /-- Lower-field units identified with units fixed by the kernel of restriction. -/
 def liftedUnitsToKernelInvariantsEquiv :
@@ -181,9 +163,9 @@ theorem liftedUnitsInvariants_equivariant (g : Gal(E/K)) :
         (liftedGaloisUnitsRep K E).ρ g =
       ((liftedGaloisUnitsRep K L).quotientToInvariants
         (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker).ρ
-          ((liftedRestrictionQuotientEquiv K L E).symm g) ∘ₗ
+          ((restrictionQuotientEquiv K L E).symm g) ∘ₗ
         (liftedUnitsToKernelInvariantsEquiv K L E).toLinearMap := by
-  obtain ⟨q, rfl⟩ := (liftedRestrictionQuotientEquiv K L E).surjective g
+  obtain ⟨q, rfl⟩ := (restrictionQuotientEquiv K L E).surjective g
   rw [MulEquiv.symm_apply_apply]
   induction q using QuotientGroup.induction_on with
   | H σ =>
@@ -194,7 +176,7 @@ theorem liftedUnitsInvariants_equivariant (g : Gal(E/K)) :
     exact σ.restrictNormal_commutes E ((show Additive Eˣ from a).toMul : E)
 
 private def liftedUnitsInvariantsRepHom :
-    Rep.res (liftedRestrictionQuotientEquiv K L E).toMonoidHom (liftedGaloisUnitsRep K E) ⟶
+    Rep.res (restrictionQuotientEquiv K L E).toMonoidHom (liftedGaloisUnitsRep K E) ⟶
       (liftedGaloisUnitsRep K L).quotientToInvariants
         (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker := by
   apply Rep.ofHom
@@ -215,7 +197,7 @@ def liftedFiniteGaloisUnitsQuotientCohomologyIso (n : ℕ) :
       groupCohomology
         ((liftedGaloisUnitsRep K L).quotientToInvariants
           (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker) n :=
-  groupCohomology.mapIso (liftedRestrictionQuotientEquiv K L E).symm
+  groupCohomology.mapIso (restrictionQuotientEquiv K L E).symm
     (liftedUnitsToKernelInvariantsEquiv K L E) (liftedUnitsInvariants_equivariant K L E) n
 
 /-- The fixed-coefficient comparison intertwines quotient inflation with the
@@ -225,7 +207,7 @@ theorem liftedFiniteGaloisUnitsQuotientCohomologyIso_inflation :
       (groupCohomology.infNatTrans (ULift.{u} ℤ)
         (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker 2).app
         (liftedGaloisUnitsRep K L) = liftedFiniteGaloisUnitsH2Inflation K L E := by
-  change groupCohomology.map (liftedRestrictionQuotientEquiv K L E).toMonoidHom
+  change groupCohomology.map (restrictionQuotientEquiv K L E).toMonoidHom
       (liftedUnitsInvariantsRepHom K L E) 2 ≫
     groupCohomology.map (QuotientGroup.mk' (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker)
       (Rep.ofHom ((liftedGaloisUnitsRep K L).ρ.quotientToInvariants_lift
@@ -233,7 +215,7 @@ theorem liftedFiniteGaloisUnitsQuotientCohomologyIso_inflation :
     groupCohomology.map (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E)
       (liftedFiniteGaloisUnitsInflationRepHom K L E) 2
   refine (groupCohomology.map_comp
-    (liftedRestrictionQuotientEquiv K L E).toMonoidHom
+    (restrictionQuotientEquiv K L E).toMonoidHom
     (QuotientGroup.mk' (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker)
     (liftedUnitsInvariantsRepHom K L E)
     (Rep.ofHom ((liftedGaloisUnitsRep K L).ρ.quotientToInvariants_lift

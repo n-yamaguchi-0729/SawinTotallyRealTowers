@@ -83,7 +83,7 @@ theorem finiteCyclicBarToPeriodicZero_generator (x : Fin 0 → G) :
   change Representation.freeLift (Rep.leftRegular R G).ρ
       (fun _ : Fin 0 → G => MonoidAlgebra.single (1 : G) (1 : R))
         (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
-  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
+  rw [Representation.freeLift_single_single, map_one, one_apply_eq_self, one_smul]
 
 @[simp]
 theorem finiteCyclicBarToPeriodicOne_generator
@@ -94,7 +94,7 @@ theorem finiteCyclicBarToPeriodicOne_generator
   change Representation.freeLift (Rep.leftRegular R G).ρ
       (fun y : Fin 1 → G => finiteCyclicGeneratorPrefix (R := R) g hg (y 0))
         (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
-  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
+  rw [Representation.freeLift_single_single, map_one, one_apply_eq_self, one_smul]
 
 @[simp]
 theorem finiteCyclicBarToPeriodicTwo_generator
@@ -106,7 +106,7 @@ theorem finiteCyclicBarToPeriodicTwo_generator
       (fun y : Fin 2 → G => finiteCyclicCarry g hg (y 0) (y 1) •
         MonoidAlgebra.single (1 : G) (1 : R))
         (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
-  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
+  rw [Representation.freeLift_single_single, map_one, one_apply_eq_self, one_smul]
 
 @[simp]
 theorem finiteCyclicBarToPeriodicThree_generator
@@ -119,7 +119,7 @@ theorem finiteCyclicBarToPeriodicThree_generator
       (fun y : Fin 3 → G => finiteCyclicCarry g hg (y 1) (y 2) •
         finiteCyclicGeneratorPrefix (R := R) g hg (y 0))
         (Finsupp.single x (MonoidAlgebra.single 1 1)) = _
-  rw [Representation.freeLift_single_single, map_one, Module.End.one_apply, one_smul]
+  rw [Representation.freeLift_single_single, map_one, one_apply_eq_self, one_smul]
 
 /-- The degree-one comparison square. -/
 theorem finiteCyclicBarToPeriodicOne_comm

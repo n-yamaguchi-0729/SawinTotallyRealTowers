@@ -8,6 +8,8 @@ module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLocalComparison
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorInfinitePart
+public import Mathlib.Data.Finset.Lattice.Fold
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
@@ -44,7 +46,7 @@ theorem rayClassFiniteCongruenceSubgroup_antitone
       RayClass.finiteCongruenceSubgroup m := by
   intro a ha v
   exact
-    RayClass.localHigherUnitGroup_antitone
+    ClassFieldTheory.rayLocalHigherUnitGroup_antitone
       (K := K) v (hmn v) (ha v)
 
 /-- Infinite idèle congruence subgroups are contravariant in the full
@@ -87,7 +89,7 @@ theorem rayClassCongruenceSubgroup_antitone
 /-- Once a modulus defines a subgroup, every larger modulus also
 defines it. -/
 theorem isDefiningModulus_mono
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     {m n : RayClass.Modulus K}
     (hm : IsDefiningModulus H m)
     (hmn : m ≤ n) :
@@ -188,6 +190,45 @@ theorem narrowFiniteConductor_sup_le_inf
       J.narrowFiniteConductor_antitone (H.sup J) (by
         change J.1 ≤ H.1 ⊔ J.1
         exact le_sup_right)
+
+/-- The full conductor of an intersection is the least common multiple,
+including the union of the required real places. -/
+theorem fullConductor_inf (H J : ConductorialSubgroup K) :
+    (H.inf J).fullConductor = H.fullConductor ⊔ J.fullConductor := by
+  classical
+  apply RayClass.Modulus.ext
+  · exact H.narrowFiniteConductor_inf J
+  · apply Finset.ext
+    intro v
+    change v ∈ (H.inf J).fullConductorInfinitePart ↔
+      v ∈ H.fullConductorInfinitePart ∪ J.fullConductorInfinitePart
+    rw [Finset.mem_union, mem_fullConductorInfinitePart_iff,
+      mem_fullConductorInfinitePart_iff, mem_fullConductorInfinitePart_iff]
+    change ¬ (IdeleGroup.infinitePlaceIdeleClass v.1).range ≤ H.1 ⊓ J.1 ↔ _
+    rw [le_inf_iff, not_and_or]
+
+/-- A finite intersection of actual conductorial subgroups has full conductor
+equal to the finite least common multiple of their full conductors. -/
+theorem fullConductor_eq_finset_sup
+    {ι : Type*} (H : ConductorialSubgroup K) (J : ι → ConductorialSubgroup K)
+    (s : Finset ι) (hH : H.1 = ⨅ i ∈ s, (J i).1) :
+    H.fullConductor = s.sup (fun i => (J i).fullConductor) := by
+  apply le_antisymm
+  · apply (H.isDefiningModulus_iff_fullConductor_le _).mp
+    change (s.sup fun i => (J i).fullConductor).congruenceSubgroup ≤ H.1
+    rw [hH]
+    apply le_iInf
+    intro i
+    apply le_iInf
+    intro hi
+    exact ((J i).isDefiningModulus_iff_fullConductor_le _).mpr
+      (Finset.le_sup (f := fun i => (J i).fullConductor) hi)
+  · apply Finset.sup_le
+    intro i hi
+    apply ((J i).isDefiningModulus_iff_fullConductor_le _).mp
+    apply H.fullConductor_isDefiningModulus.trans
+    rw [hH]
+    exact iInf_le_of_le i (iInf_le _ hi)
 
 end ConductorialSubgroup
 

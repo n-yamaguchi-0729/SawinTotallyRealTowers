@@ -36,13 +36,9 @@ universe u
 variable {p : ℕ}
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
-local instance continuousH1CupContinuousSMulULiftZMod :
-    ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) :=
-  ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+attribute [local instance] ULift.continuousSMul
 
-local instance continuousH1CupModule :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The homogeneous degree-two cochain underlying the cup of two canonical
 continuous degree-one character cocycles. -/

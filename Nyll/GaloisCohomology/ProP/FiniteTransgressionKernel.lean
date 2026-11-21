@@ -36,9 +36,7 @@ universe u
 variable {p : ℕ}
 variable {P : Type u} [Group P]
 
-local instance kernelQuotientTopology (N : Subgroup P) : TopologicalSpace (P ⧸ N) := ⊥
-local instance kernelQuotientDiscrete (N : Subgroup P) : DiscreteTopology (P ⧸ N) :=
-  discreteTopology_bot _
+attribute [local instance] discreteQuotientTopology discreteQuotient
 
 /-- The kernel residue left after removing the chosen quotient representative. -/
 noncomputable def quotientSectionResidue (N : Subgroup P) [N.Normal]
@@ -229,13 +227,13 @@ theorem homogeneousOneCochainNormalizedValue_primitive
   have hinv := homogeneousOneCochain_invariant N c q q (q * r)
   have hinv' : c.1 q (q * r) = c.1 1 r := by
     convert hinv.symm using 1
-    all_goals group
+    group
   rw [hinv'] at hcpoint
   have htrans : (transgressionHomogeneousCochain N χ).1 1 q (q * r) =
       ULift.up (transgressionFactor N χ q r) := by
     rw [transgressionHomogeneousCochain_apply]
     congr 1
-    all_goals group
+    group
   rw [htrans] at hcpoint
   let e : ULift.{u} (ZMod p) ≃ₗ[ZMod p] ZMod p := ULift.moduleEquiv
   change e (c.1 1 r) - e (c.1 1 (q * r)) + e (c.1 1 q) =

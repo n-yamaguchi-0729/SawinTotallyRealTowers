@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteDiscreteKernelField
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaFixedUnramified
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
@@ -25,6 +27,8 @@ are installed, with all field algebra structures inherited canonically.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open NumberField IsDedekindDomain
 open scoped NumberField
@@ -52,6 +56,7 @@ theorem exists_maxEverywhereUnramifiedProP_factor_of_inertia_trivial
   let _ : NumberField M := NumberField.of_module_finite F M
   have hPM : IsPGroup p Gal(M/F) := absoluteDiscreteKernelField_isPGroup F s p hP
   have hfin : IsUnramifiedAtFinitePlaces F M := by
+    apply (IsUnramifiedAtFinitePlaces.iff_forall_above F M).2
     apply finitePlacesUnramified_of_absoluteInertiaFixes F M
     intro v sigma x
     have hker : (sigma.1.1 : Gal(AlgebraicClosure F/F)) ∈ M.fixingSubgroup := by

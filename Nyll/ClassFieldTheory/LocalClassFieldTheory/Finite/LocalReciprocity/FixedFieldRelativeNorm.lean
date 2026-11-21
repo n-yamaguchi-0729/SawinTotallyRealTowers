@@ -8,8 +8,10 @@ module
 
 public import Mathlib.FieldTheory.Galois.Basic
 public import Mathlib.FieldTheory.PrimitiveElement
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Norm
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SeparableNormProduct
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Relative norms on actual fixed fields
@@ -31,14 +33,16 @@ open scoped BigOperators
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation LocalClassFieldTheory
 
-variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
+variable (k : Type u₁) (Ω : Type u₂) [Field k] [Field Ω] [Algebra k Ω]
   [IsGalois k Ω] [IsSepClosed Ω]
 
 noncomputable local instance finiteSeparableAlgHomFintypeRelative
-    {F E T : Type} [Field F] [Field E] [Field T]
+    {F : Type u₁} {E : Type u₂} {T : Type u₃} [Field F] [Field E] [Field T]
     [Algebra F E] [Algebra F T]
     [FiniteDimensional F E] [Algebra.IsSeparable F E] :
     Fintype (E →ₐ[F] T) :=

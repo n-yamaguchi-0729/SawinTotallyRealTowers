@@ -10,6 +10,7 @@ import json
 import io
 from pathlib import Path
 import sys
+import subprocess
 import tarfile
 import tempfile
 import unittest
@@ -81,6 +82,32 @@ class ScopeTests(unittest.TestCase):
         self.put("Nyll.Base.Result", "import Nyll\n")
         with self.assertRaisesRegex(ValueError, "global aggregate"):
             scope.partition(self.root, self.full, self.config)
+
+    def test_matrix_requires_both_phases_for_each_source_shard(self):
+        output = self.root / "plan"
+        with patch.object(sys, "argv", ["scope.py", "--root", str(self.root),
+                "--config", str(self.root / "config.json"), "--output", str(output), "--partition"]), \
+             patch.object(scope.generate_manifest, "load_json", return_value=self.config), \
+             patch.object(scope.generate_manifest, "analyze", return_value=(self.full,
+                 {"staticPassed": True, "allPhysicalSourcesMapped": True})), \
+             redirect_stdout(StringIO()):
+            scope.main()
+        matrix = json.loads((output / "matrix.json").read_text())
+        self.assertEqual(set(matrix["shard"]), {"Base", "Target"})
+        self.assertEqual(matrix["phase"], ["proof", "replay"])
+
+    def test_proof_only_preserves_every_source_shard(self):
+        output = self.root / "plan"
+        with patch.object(sys, "argv", ["scope.py", "--root", str(self.root),
+                "--config", str(self.root / "config.json"), "--output", str(output), "--partition", "--proof-only"]), \
+             patch.object(scope.generate_manifest, "load_json", return_value=self.config), \
+             patch.object(scope.generate_manifest, "analyze", return_value=(self.full,
+                 {"staticPassed": True, "allPhysicalSourcesMapped": True})), \
+             redirect_stdout(StringIO()):
+            scope.main()
+        matrix = json.loads((output / "matrix.json").read_text())
+        self.assertEqual(set(matrix["shard"]), {"Base", "Target"})
+        self.assertEqual(matrix["phase"], ["proof"])
 
     def test_comments_do_not_hide_body_or_join_tokens(self):
         self.assertEqual(scope.pure_imports("/- outer -- text /- nested -/ -/ import A -- end\n"), ["A"])
@@ -192,6 +219,86 @@ class PipelineTests(unittest.TestCase):
             with self.assertRaisesRegex(verify.VerificationError, "omitted"):
                 self.pipeline.check_physical_snapshot()
 
+    def run_phase_fixture(self, phase, *, missing=None, failing=None):
+        """Exercise orchestration without invoking a compiler or accepting a fake proof."""
+        output = self.root / (phase + "-" + str(missing) + "-" + str(failing))
+        args = Namespace(**{**vars(self.pipeline.args), "output": output, "phase": phase})
+        pipeline = verify.Pipeline(args)
+        calls = []
+
+        def inputs():
+            pipeline.manifest = {"roots": ["Nyll"]}
+            pipeline.lean = Path("lean")
+            pipeline.scope_path = output / "scope.json"
+            pipeline.export_core_dir = Path("exporter")
+            pipeline.selectors = ["checked"]
+            pipeline.selector_path = output / "safe-union.txt"
+            (output / "inputs.json").write_text("{}")
+
+        def stage(name, *args, **kwargs):
+            calls.append((name, args, kwargs))
+            if name == missing:
+                return
+            pipeline.stages.append({"stage": name, "passed": name != failing})
+            if name == failing:
+                raise verify.VerificationError("rejected " + name)
+
+        with patch.object(pipeline, "inputs", side_effect=inputs), \
+             patch.object(pipeline, "stage", side_effect=stage), \
+             patch.object(pipeline, "capture", return_value="search"), \
+             patch.object(pipeline, "guard", return_value="fixed") as guard, \
+             patch.object(pipeline, "check_physical_snapshot") as snapshot, \
+             redirect_stderr(StringIO()):
+            code = pipeline.execute()
+        return code, json.loads((output / "final.json").read_text()), calls, guard, snapshot
+
+    def test_default_full_path_keeps_every_gate_and_full_pass(self):
+        self.assertEqual(self.pipeline.phase, "full")
+        code, receipt, calls, guard, snapshot = self.run_phase_fixture("full")
+        self.assertEqual(code, 0)
+        self.assertEqual([row[0] for row in calls],
+                         ["build", "inventory", "selection", "export", "coverage", "nanoda", "replay"])
+        self.assertTrue(receipt["passed"] and receipt["fullPassed"] and receipt["phasePassed"])
+        guard.assert_called_once()
+        snapshot.assert_called_once()
+
+    def test_phase_receipts_cannot_claim_full_verification(self):
+        for phase, expected in (("proof", ["build", "inventory", "selection", "export", "coverage", "nanoda"]),
+                                ("replay", ["build", "replay"])):
+            with self.subTest(phase=phase):
+                code, receipt, calls, guard, snapshot = self.run_phase_fixture(phase)
+                self.assertEqual(code, 0)
+                self.assertEqual([row[0] for row in calls], expected)
+                self.assertEqual(receipt["requiredStages"], expected)
+                self.assertTrue(receipt["phasePassed"])
+                self.assertFalse(receipt["passed"] or receipt["fullPassed"])
+                self.assertEqual(receipt["status"], "phase_finished")
+                self.assertTrue(all("validate" in row[2] for row in calls
+                                    if row[0] in ("inventory", "selection", "coverage", "nanoda", "replay")))
+                guard.assert_called_once()
+                snapshot.assert_called_once()
+
+    def test_missing_or_failed_phase_stage_is_rejected(self):
+        for phase, stages in verify.PHASE_STAGES.items():
+            for stage in stages:
+                for error in ("missing", "failing"):
+                    with self.subTest(phase=phase, stage=stage, error=error):
+                        code, receipt, _, _, _ = self.run_phase_fixture(phase, **{error: stage})
+                        self.assertEqual(code, 1)
+                        self.assertFalse(receipt["passed"] or receipt["fullPassed"] or receipt["phasePassed"])
+                        self.assertEqual(receipt["status"], "failed")
+
+    def test_arbitrary_phase_cannot_skip_verification(self):
+        args = Namespace(**{**vars(self.pipeline.args), "phase": "skip"})
+        with self.assertRaisesRegex(verify.VerificationError, "Invalid verification phase"):
+            verify.Pipeline(args)
+        argv = [arg for flag in ("package-root", "manifest", "config", "output",
+                    "exporter-checkout", "nanoda-checkout", "nanoda-binary")
+                for arg in ("--" + flag, "unused")]
+        with redirect_stderr(StringIO()), self.assertRaises(SystemExit) as error:
+            verify.main([*argv, "--phase", "skip"])
+        self.assertEqual(error.exception.code, 2)
+
     def test_nanoda_must_report_completion_without_skips(self):
         self.pipeline.selectors = ["theorem1", "theorem2"]
         logfile = self.pipeline.out / "nanoda.log"
@@ -206,7 +313,7 @@ class PipelineTests(unittest.TestCase):
     def test_missing_replay_module_is_rejected(self):
         self.pipeline.manifest = {"roots": ["Nyll.Target.All"], "moduleRows": {"Nyll.Target.All": {}}}
         records = [{"phase": "inventory", "roots": ["Nyll.Target.All"], "loaded_modules": []},
-                   {"phase": "replay", "result": "PASS", "kernel": "official Lean 4.35.0"}]
+                   {"phase": "replay", "result": "PASS", "kernel": "official Lean 4.36.0"}]
         (self.pipeline.out / "replay.log").write_text("\n".join(map(json.dumps, records)))
         with self.assertRaisesRegex(verify.VerificationError, "omitted"):
             self.pipeline.check_replay()
@@ -269,6 +376,26 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("--shard", template)
         self.assertIn("github.event.repository.private == false", template)
         self.assertIn("if: always()", template)
+
+    def test_split_phase_workflow_is_fail_closed_and_names_artifacts_separately(self):
+        template = (PACKAGE / "ci_templates/proof-check.yml").read_text()
+        canonical = PACKAGE.parents[1] / "workflows/proof-check.yml"
+        if canonical.is_file():  # The three legacy repositories keep their own verifier.
+            self.assertEqual(template, canonical.read_text())
+        self.assertIn('matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}', template)
+        self.assertIn('needs: [plan, verify]', template)
+        self.assertIn('--phase "$VERIFY_PHASE"', template)
+        self.assertIn('proof-check-${{ matrix.shard }}-${{ matrix.phase }}-', template)
+        self.assertIn('-${{ matrix.shard }}-${{ matrix.phase }}', template)
+        self.assertNotIn('continue-on-error', template)
+        self.assertIn('timeout-minutes: 360', template)
+        # Execute the actual final gate: all non-success outcomes must fail.
+        gate = template.split('          set -euo pipefail\n')[-1]
+        for plan in ('success', 'failure', 'cancelled', 'skipped'):
+            for verify_result in ('success', 'failure', 'cancelled', 'skipped'):
+                result = subprocess.run(['bash', '-c', 'set -euo pipefail\n' + gate],
+                    env={'PLAN_RESULT': plan, 'VERIFY_RESULT': verify_result}, capture_output=True)
+                self.assertEqual(result.returncode == 0, plan == verify_result == 'success')
 
     def test_preserves_three_existing_verification_workflows(self):
         self.assertEqual(public_ci.VERIFICATION_REPOS,

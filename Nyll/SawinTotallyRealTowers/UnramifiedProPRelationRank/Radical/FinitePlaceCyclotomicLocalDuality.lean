@@ -38,36 +38,14 @@ local instance finitePlaceCyclotomicLocalDualityNumberField :
     NumberField (FinitePlaceCyclotomicBase F (p : ℕ)) :=
   NumberField.of_module_finite F (FinitePlaceCyclotomicBase F (p : ℕ))
 
-local instance finitePlaceCyclotomicLocalDualityValuativeRel
-    (v : HeightOneSpectrum
-      (NumberField.RingOfIntegers
-        (FinitePlaceCyclotomicBase F (p : ℕ)))) :
-    ValuativeRel
-      (v.adicCompletion (FinitePlaceCyclotomicBase F (p : ℕ))) :=
-  finitePlaceAdicCompletionValuativeRel
-    (FinitePlaceCyclotomicBase F (p : ℕ)) v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
 
-local instance finitePlaceCyclotomicLocalDualityIsNonarchimedeanLocalField
-    (v : HeightOneSpectrum
-      (NumberField.RingOfIntegers
-        (FinitePlaceCyclotomicBase F (p : ℕ)))) :
-    IsNonarchimedeanLocalField
-      (v.adicCompletion (FinitePlaceCyclotomicBase F (p : ℕ))) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField
-    (FinitePlaceCyclotomicBase F (p : ℕ)) v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
 
-local instance finitePlaceCyclotomicLocalDualityH1Topology :
-    TopologicalSpace (ZMod (p : ℕ)) := ⊥
 
-local instance finitePlaceCyclotomicLocalDualityH1DiscreteTopology :
-    DiscreteTopology (ZMod (p : ℕ)) :=
-  discreteTopology_bot _
-
-local instance finitePlaceCyclotomicLocalDualityH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (p : ℕ))
-      (ContinuousH1ZMod (p := (p : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The local Artin--Kummer pairing on continuous `H¹` of a cyclotomic
 finite-place completion. -/

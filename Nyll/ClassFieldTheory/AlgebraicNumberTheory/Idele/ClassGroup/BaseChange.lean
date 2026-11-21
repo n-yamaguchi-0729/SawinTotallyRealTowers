@@ -282,6 +282,8 @@ theorem pushoutTowerClassNorm_inclusion
         (RelativeIdeleGroup.classNorm K L c) := by
   refine QuotientGroup.induction_on c ?_
   intro a
+  rw [← QuotientGroup.mk'_apply (RelativeIdeleGroup.principalSubgroup K L) a,
+    RelativeIdeleGroup.classNorm_mk, RelativeIdeleGroup.classInclusion_mk]
   change
     QuotientGroup.mk'
         (RelativeIdeleGroup.principalSubgroup K M)
@@ -331,16 +333,9 @@ theorem ideleClassNorm_classInclusion
     RelativeIdeleGroup.classNorm K M
         (RelativeIdeleGroup.classInclusion K M c) =
       c ^ Module.finrank K M := by
-  refine QuotientGroup.induction_on c ?_
+  refine IdeleGroup.toStandardClass_induction_on K c ?_
   intro a
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (RelativeIdeleGroup.norm K M
-          (RelativeIdeleGroup.inclusion K M a)) =
-      (QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a) ^
-          Module.finrank K M
+  rw [RelativeIdeleGroup.classInclusion_mk, RelativeIdeleGroup.classNorm_mk]
   rw [RelativeIdeleGroup.norm_inclusion, map_pow]
 
 /-- Change the chosen intermediate field in the tower presentation of

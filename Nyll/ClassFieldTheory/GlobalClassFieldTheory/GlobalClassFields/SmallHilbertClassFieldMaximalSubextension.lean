@@ -27,6 +27,8 @@ inside the selected field.
 
 @[expose] public section
 
+open ClassFieldTheory
+
 universe u v
 
 open scoped NumberField
@@ -39,45 +41,13 @@ namespace GlobalClassFields
 open ClassFormation KummerTheory
 open IdealClassFieldTheory LocalClassFieldTheory NumberField Reciprocity
 
-/-- Fix the canonical quotient structure at the boundary between ordinary
-idele classes and additive fixed subgroups. -/
-@[instance_reducible]
-private noncomputable def smallHilbertMaximalSubextensionIdeleClassCommGroup
-    (F : Type*) [Field F] [NumberField F] :
-    CommGroup (IdeleClassGroup F) :=
-  QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
-
-attribute [local instance] smallHilbertMaximalSubextensionIdeleClassCommGroup
-
-private structure SmallHilbertTransportedAddSubgroupData
-    {A : Type*} {B : Type*} [AddGroup A] [AddGroup B]
-    (e : A ≃+ B) (H : AddSubgroup A) where
-  subgroup : AddSubgroup B
-  map_symm : subgroup.map e.symm.toAddMonoidHom = H
-
-private def smallHilbertTransportedAddSubgroupData
-    {A : Type*} {B : Type*} [AddGroup A] [AddGroup B]
-    (e : A ≃+ B) (H : AddSubgroup A) :
-    SmallHilbertTransportedAddSubgroupData e H where
-  subgroup := H.map e.toAddMonoidHom
-  map_symm :=
-    (AddSubgroup.map_symm_eq_iff_map_eq
-      (K := H) (H := H.map e.toAddMonoidHom) (e := e)).2 rfl
-
-private theorem smallHilbertAddSubgroup_eq_of_map_symm_eq
-    {A : Type*} {B : Type*} [AddGroup A] [AddGroup B]
-    (e : A ≃+ B) (H J : AddSubgroup B)
-    (h : H.map e.symm.toAddMonoidHom =
-      J.map e.symm.toAddMonoidHom) :
-    H = J := by
-  exact AddSubgroup.map_injective e.symm.injective h
 
 /-- The fixed-field idèle-class equivalence at the selected small-Hilbert
 base, named once so later subgroup comparisons do not reconstruct it. -/
 private noncomputable def smallHilbertClassFieldMaximalIdeleClassEquiv
     (K : Type u) [Field K] [NumberField K] :
     Additive (IdeleClassGroup (smallHilbertClassFieldBase K)) ≃+
-      ambientFixedAddSubgroup rationalIdeleClassRepresentation
+      ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
         (smallHilbertClassFieldBaseSubgroup K) :=
   rationalAbstractFixedFieldIdeleClassEquivFixed
     (smallHilbertClassFieldBaseSubgroup K)
@@ -90,31 +60,16 @@ private noncomputable def smallHilbertClassFieldMaximalIntrinsicNormSubgroup
   (smallHilbertClassFieldNormSubgroup
     (K := smallHilbertClassFieldBase K)).toAddSubgroup
 
-private noncomputable def smallHilbertClassFieldMaximalTransportData
-    (K : Type u) [Field K] [NumberField K] :
-    SmallHilbertTransportedAddSubgroupData
-      (smallHilbertClassFieldMaximalIdeleClassEquiv K)
-      (smallHilbertClassFieldMaximalIntrinsicNormSubgroup K) :=
-  smallHilbertTransportedAddSubgroupData
-    (smallHilbertClassFieldMaximalIdeleClassEquiv K)
-    (smallHilbertClassFieldMaximalIntrinsicNormSubgroup K)
-
 /-- A short typed name for the transported intrinsic subgroup used below.
 Keeping this endpoint opaque prevents the fixed-field aliases from being
 re-elaborated when the inverse transport is applied. -/
 private noncomputable def smallHilbertClassFieldMaximalNormEndpoint
     (K : Type u) [Field K] [NumberField K] :
     AddSubgroup
-      (ambientFixedAddSubgroup rationalIdeleClassRepresentation
+      (ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
         (smallHilbertClassFieldBaseSubgroup K)) :=
-  (smallHilbertClassFieldMaximalTransportData K).subgroup
-
-private theorem smallHilbertClassFieldMaximalNormEndpoint_map_symm
-    (K : Type u) [Field K] [NumberField K] :
-    (smallHilbertClassFieldMaximalNormEndpoint K).map
-        (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
-      smallHilbertClassFieldMaximalIntrinsicNormSubgroup K :=
-  (smallHilbertClassFieldMaximalTransportData K).map_symm
+  (smallHilbertClassFieldMaximalIntrinsicNormSubgroup K).map
+    (smallHilbertClassFieldMaximalIdeleClassEquiv K).toAddMonoidHom
 
 private theorem smallHilbertClassFieldMaximalNormEndpoint_eq_public
     (K : Type u) [Field K] [NumberField K] :
@@ -129,7 +84,7 @@ idèle-class group gives the named intrinsic subgroup. -/
 private theorem smallHilbertClassFieldMaximalNormSubgroup_map_symm
     (K : Type u) [Field K] [NumberField K] :
     ((smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation).map
+        (ideleClassRepresentation ℚ)).map
       (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
         smallHilbertClassFieldMaximalIntrinsicNormSubgroup K := by
   let L :=
@@ -146,12 +101,12 @@ private theorem smallHilbertClassFieldMaximalNormSubgroup_map_symm
           L.field L.below) :=
     L.finite
   calc
-    (L.normSubgroup rationalIdeleClassRepresentation).map
+    (L.normSubgroup (ideleClassRepresentation ℚ)).map
         e.symm.toAddMonoidHom =
       (_root_.ideleClassNorm
         F (smallHilbertClassField K)).range.toAddSubgroup := by
       change
-        (finiteNormSubgroup rationalIdeleClassRepresentation
+        (finiteNormSubgroup (ideleClassRepresentation ℚ)
             (smallHilbertClassFieldBaseSubgroup K)
             L.field L.below).map
             e.symm.toAddMonoidHom =
@@ -171,40 +126,16 @@ private theorem smallHilbertClassFieldMaximalNormSubgroup_map_symm
           (smallHilbertClassField_ideleClassNorm_range_eq_intrinsic
             (K := K))
 
-/-- Both subgroups have the same inverse image under the fixed-field
-idèle-class equivalence. -/
-private theorem smallHilbertClassFieldMaximalNormSubgroup_map_eq_endpoint_map
-    (K : Type u) [Field K] [NumberField K] :
-    ((smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation).map
-      (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
-      (smallHilbertClassFieldMaximalNormEndpoint K).map
-        (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom := by
-  calc
-    ((smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation).map
-        (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom =
-      smallHilbertClassFieldMaximalIntrinsicNormSubgroup K :=
-        smallHilbertClassFieldMaximalNormSubgroup_map_symm K
-    _ = (smallHilbertClassFieldMaximalNormEndpoint K).map
-        (smallHilbertClassFieldMaximalIdeleClassEquiv K).symm.toAddMonoidHom :=
-      (smallHilbertClassFieldMaximalNormEndpoint_map_symm K).symm
-
 private theorem smallHilbertClassFieldMaximalNormSubgroup_eq_endpoint
     (K : Type u) [Field K] [NumberField K] :
     (smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation =
+        (ideleClassRepresentation ℚ) =
       smallHilbertClassFieldMaximalNormEndpoint K := by
-  exact
-    smallHilbertAddSubgroup_eq_of_map_symm_eq
-      (A := Additive (IdeleClassGroup (smallHilbertClassFieldBase K)))
-      (B := ambientFixedAddSubgroup rationalIdeleClassRepresentation
-        (smallHilbertClassFieldBaseSubgroup K))
-      (e := smallHilbertClassFieldMaximalIdeleClassEquiv K)
-      (H := (smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation)
-      (J := smallHilbertClassFieldMaximalNormEndpoint K)
-      (h := smallHilbertClassFieldMaximalNormSubgroup_map_eq_endpoint_map K)
+  exact ((AddSubgroup.map_symm_eq_iff_map_eq
+    (K := smallHilbertClassFieldMaximalIntrinsicNormSubgroup K)
+    (H := (smallHilbertClassFieldSubextension K).normSubgroup (ideleClassRepresentation ℚ))
+    (e := smallHilbertClassFieldMaximalIdeleClassEquiv K)).1
+    (smallHilbertClassFieldMaximalNormSubgroup_map_symm K)).symm
 
 /-- The selected small Hilbert class-field subextension realizes exactly
 the intrinsic small-Hilbert norm subgroup in the rational absolute class
@@ -213,13 +144,13 @@ formation. -/
 theorem smallHilbertClassFieldSubextension_normSubgroup
     (K : Type u) [Field K] [NumberField K] :
     (smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation =
+        (ideleClassRepresentation ℚ) =
       smallHilbertNormSubgroupInRationalClassFormation
         (numberFieldTowerFiniteAbstractField K
           (smallHilbertClassFieldNormAmbient K)) := by
   calc
     (smallHilbertClassFieldSubextension K).normSubgroup
-        rationalIdeleClassRepresentation =
+        (ideleClassRepresentation ℚ) =
       smallHilbertClassFieldMaximalNormEndpoint K :=
         smallHilbertClassFieldMaximalNormSubgroup_eq_endpoint K
     _ = smallHilbertNormSubgroupInRationalClassFormation

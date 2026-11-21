@@ -28,9 +28,10 @@ Artin factors.
 @[expose] public section
 
 open scoped BigOperators IsMulCommutative NumberField
-  NumberField.LiesOver
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 open NumberField IsDedekindDomain
-open IdeleGroup RelativeIdeleGroup
+open IdeleGroup
 
 noncomputable section
 
@@ -87,78 +88,6 @@ theorem globalArtinMonoidHom_apply
   unfold infinitePlaceGlobalArtinMonoidHom
   rw [MonoidHom.finsetProd_apply]
   rfl
-
-/-- The preliminary global Artin homomorphism of `L / K` kills every
-actual relative-idele norm from `L`.  At each finite and infinite place
-this is exactly the corresponding local reciprocity kernel theorem. -/
-@[simp]
-theorem globalArtinMonoidHom_relativeIdeleNorm_eq_one
-    (z : RelativeIdeleGroup K L) :
-    globalArtinMonoidHom
-        (K := K) (L := L)
-        (RelativeIdeleGroup.norm K L z) =
-      1 := by
-  rw [globalArtinMonoidHom_apply]
-  have hnorm :
-      RelativeIdeleGroup.norm K L z ∈
-        (RelativeIdeleGroup.norm K L).range :=
-    ⟨z, rfl⟩
-  have hinfinite :
-      (∏ v : InfinitePlace K,
-        chosenInfinitePlaceArtinMonoidHom
-          (K := K) (L := L) v
-          (IdeleGroup.infiniteComponent v
-            (RelativeIdeleGroup.norm K L z))) =
-        1 := by
-    apply Finset.prod_eq_one
-    intro v _
-    apply MonoidHom.mem_ker.mp
-    rw [chosenInfinitePlaceArtinMonoidHom_ker
-      (K := K) (L := L) v]
-    exact
-      _root_.infiniteComponent_mem_infiniteTensorNormSubgroup_of_mem_relativeNorm_range
-          (K := K) (L := L)
-          (RelativeIdeleGroup.norm K L z) hnorm v
-  have hfinite :
-      (∏ᶠ v : HeightOneSpectrum (𝓞 K),
-        chosenFinitePlaceArtinMonoidHom
-          (K := K) (L := L) v
-          (IdeleGroup.finiteComponent v
-            (RelativeIdeleGroup.norm K L z))) =
-        1 := by
-    apply finprod_eq_one_of_forall_eq_one
-    intro v
-    apply MonoidHom.mem_ker.mp
-    rw [chosenFinitePlaceArtinMonoidHom_ker
-      (K := K) (L := L) v]
-    exact
-      _root_.relativeIdeleNorm_finiteComponent_mem_chosenLocalNormSubgroup
-          (K := K) (L := L) v z
-  rw [hinfinite, hfinite, mul_one]
-
-/-- The preliminary global Artin homomorphism kills the ordinary idele
-norm `N_{L/K} : I_L → I_K`.  This is the relative-idele kernel theorem
-above, transported by the canonical scalar-extension equivalence used in
-the definition of `IdeleGroup.norm`. -/
-@[simp]
-theorem globalArtinMonoidHom_ideleNorm_eq_one
-    (a : IdeleGroup L) :
-    globalArtinMonoidHom
-        (K := K) (L := L)
-        (IdeleGroup.norm K L a) =
-      1 := by
-  change
-    globalArtinMonoidHom
-        (K := K) (L := L)
-        (RelativeIdeleGroup.norm K L
-          ((relativeIdeleBaseChangeMulEquiv
-            (K := K) (L := L)).symm a)) =
-      1
-  exact
-    globalArtinMonoidHom_relativeIdeleNorm_eq_one
-      (K := K) (L := L)
-      ((relativeIdeleBaseChangeMulEquiv
-        (K := K) (L := L)).symm a)
 
 /-- The actual global Artin symbol after an ordinary idele norm, expanded
 simultaneously at all archimedean and finite places.  The factors are
@@ -458,6 +387,19 @@ theorem finitePlaceDecompositionGroup_le_globalArtinMonoidHom_range
     ⟨finitePlaceIdele v x,
       globalArtinMonoidHom_finitePlaceIdele
         (K := K) (L := L) v x⟩
+
+/-- The ordinary idèle norm belongs to the reciprocity kernel at every place. -/
+@[simp]
+theorem globalArtinMonoidHom_ideleNorm_eq_one (a : IdeleGroup L) :
+    globalArtinMonoidHom (K := K) (L := L) (IdeleGroup.norm K L a) = 1 := by
+  let r : (L ≃ₐ[L] L) →* (L ≃ₐ[K] L) :=
+    (AlgEquiv.restrictNormalHom L).comp (AlgEquiv.restrictScalarsHom K)
+  let z : L ≃ₐ[L] L := globalArtinMonoidHom (K := L) (L := L) a
+  have hz : z = 1 := Subsingleton.elim _ _
+  have h : r z = globalArtinMonoidHom (K := K) (L := L) (IdeleGroup.norm K L a) :=
+    DFunLike.congr_fun
+      (globalArtinMonoidHom_norm_restriction (K := K) (L := L) (K' := L) (L' := L)) a
+  exact h.symm.trans ((congrArg r hz).trans (map_one r))
 
 end GeneralMaps
 

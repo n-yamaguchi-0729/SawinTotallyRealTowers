@@ -61,7 +61,7 @@ theorem abstractReciprocity_sylow_lowerQuotient_isPGroup
           (L.intermediateField (P : Subgroup L.extensionQuotient)) L.field
           (L.field_le_intermediateField
             (P : Subgroup L.extensionQuotient))) := by
-  exact P.isPGroup'.of_equiv
+  exact P.isPGroup.of_equiv
     (L.lowerQuotientEquiv (P : Subgroup L.extensionQuotient)).symm
 
 section SylowSolvability
@@ -118,11 +118,11 @@ theorem abstractReciprocity_sylow_intermediateDegree_eq_index
   change (extensionSubgroup K
     (L.intermediateField (P : Subgroup L.extensionQuotient))
       (L.intermediateField_le_base (P : Subgroup L.extensionQuotient))).index = _
-  rw [L.extensionSubgroup_intermediateField_eq
-    (P : Subgroup L.extensionQuotient)]
-  exact (P : Subgroup L.extensionQuotient).index_comap_of_surjective
-    (QuotientGroup.mk'_surjective
-      (extensionSubgroup K L.field L.below))
+  exact (congrArg (fun J : Subgroup K.toSubgroup => J.index)
+    (L.extensionSubgroup_intermediateField_eq
+      (P : Subgroup L.extensionQuotient))).trans
+        ((P : Subgroup L.extensionQuotient).index_comap_of_surjective
+          (QuotientGroup.mk'_surjective (extensionSubgroup K L.field L.below)))
 
 /-- Hence the actual degree `[M:K]` is prime to the chosen Sylow prime
 `p`, as asserted. -/
@@ -154,7 +154,7 @@ theorem sylowAddSubgroup_le_nsmul_range_of_coprime
       (nsmulAddMonoidHom (α := B) n).range := by
   intro x hx
   let xS : S := ⟨Multiplicative.ofAdd x, hx⟩
-  let e : S ≃ S := S.isPGroup'.powEquiv hn.symm
+  let e : S ≃ S := S.isPGroup.powEquiv hn.symm
   let yS : S := e.symm xS
   refine ⟨yS.1.toAdd, ?_⟩
   have hy : yS ^ n = xS := e.apply_symm_apply xS

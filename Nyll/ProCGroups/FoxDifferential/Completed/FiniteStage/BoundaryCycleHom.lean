@@ -6,14 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.BoundaryCycles
+public import Nyll.ProCGroups.FoxDifferential.Completed.FiniteStage.RelationModule
 
 /-!
 # Fox differential: completed — finite stage — boundary cycle hom
 
 The principal declarations in this module are:
 
-- `foxAlgebraicStageSourceKernel`
+- `foxAlgebraicStageRelationGroup`
   The kernel of the finite source-to-target quotient \(F/[N,N]N^n \to F/N\).
 - `foxAlgebraicStageSourceKernelDerivativeAddHom`
   The descended finite-stage Fox derivative, restricted to the source quotient kernel, is an
@@ -40,17 +40,12 @@ universe u
 variable {X : Type u} [DecidableEq X]
 variable (N : Subgroup (FreeGroup X)) [N.Normal] (n : ℕ)
 
-/-- The kernel of the finite source-to-target quotient \(F/[N,N]N^n \to F/N\). -/
-abbrev foxAlgebraicStageSourceKernel : Type u :=
-  (foxCommutatorPowerQuotientMapToNormalQuotient
-    (F := FreeGroup X) N n).ker
-
 /--
 The descended finite-stage Fox derivative, restricted to the source quotient kernel, is an
 additive homomorphism.
 -/
 def foxAlgebraicStageSourceKernelDerivativeAddHom :
-    Additive (foxAlgebraicStageSourceKernel (X := X) N n) →+
+    Additive (foxAlgebraicStageRelationGroup (X := X) N n) →+
       foxAlgebraicStageCoordinateVector (X := X) N n where
   toFun q :=
     foxAlgebraicStageQuotientDerivativeVector (X := X) N n (Additive.toMul q).1
@@ -80,7 +75,7 @@ homomorphism.
 -/
 @[simp]
 theorem foxAlgebraicStageSourceKernelDerivativeAddHom_of
-    (q : foxAlgebraicStageSourceKernel (X := X) N n) :
+    (q : foxAlgebraicStageRelationGroup (X := X) N n) :
     foxAlgebraicStageSourceKernelDerivativeAddHom (X := X) N n (Additive.ofMul q) =
       foxAlgebraicStageQuotientDerivativeVector (X := X) N n q.1 :=
   rfl
@@ -100,11 +95,11 @@ theorem foxAlgebraicStageSourceKernelDerivativeAddHom_range_eq :
   · intro hv
     rcases hv with ⟨q, hq, rfl⟩
     exact ⟨Additive.ofMul
-      (⟨q, hq⟩ : foxAlgebraicStageSourceKernel (X := X) N n), rfl⟩
+      (⟨q, hq⟩ : foxAlgebraicStageRelationGroup (X := X) N n), rfl⟩
 
 /-- The source-kernel derivative map, with codomain restricted to finite Fox boundary cycles. -/
 def foxAlgebraicStageSourceKernelDerivativeToBoundaryCycles [Fintype X] :
-    Additive (foxAlgebraicStageSourceKernel (X := X) N n) →+
+    Additive (foxAlgebraicStageRelationGroup (X := X) N n) →+
       foxAlgebraicStageBoundaryCycleSubmodule (X := X) N n where
   toFun q :=
     ⟨foxAlgebraicStageQuotientDerivativeVector (X := X) N n (Additive.toMul q).1,
@@ -138,7 +133,7 @@ finite-stage quotient derivative vector.
 -/
 @[simp]
 theorem foxAlgebraicStageSourceKernelDerivativeToBoundaryCycles_val
-    [Fintype X] (q : foxAlgebraicStageSourceKernel (X := X) N n) :
+    [Fintype X] (q : foxAlgebraicStageRelationGroup (X := X) N n) :
     (foxAlgebraicStageSourceKernelDerivativeToBoundaryCycles (X := X) N n
       (Additive.ofMul q) : foxAlgebraicStageCoordinateVector (X := X) N n) =
       foxAlgebraicStageQuotientDerivativeVector (X := X) N n q.1 :=
@@ -157,7 +152,7 @@ theorem foxAlgebraicStageBoundaryCyclesCovered_iff_surj_derivativeToBoundaryCycl
   · intro hcover y
     rcases hcover y.2 with ⟨q, hq, hqy⟩
     refine ⟨Additive.ofMul
-      (⟨q, hq⟩ : foxAlgebraicStageSourceKernel (X := X) N n), ?_⟩
+      (⟨q, hq⟩ : foxAlgebraicStageRelationGroup (X := X) N n), ?_⟩
     apply Subtype.ext
     simpa using hqy
   · intro hsurj v hv

@@ -168,8 +168,8 @@ private theorem liftedPowerCommutatorFixedField_le_hilbert
   let : IsAbelianGalois F L :=
     IsAbelianGalois.tower_bot F L
       (liftedPowerCommutatorFixedField F p)
-  have hLunramified : IsEverywhereUnramified F L :=
-    IsEverywhereUnramified.bot C.everywhereUnramified
+  have hLunramified : ClassFieldTheory.IsEverywhereUnramified F L :=
+    ClassFieldTheory.IsEverywhereUnramified.bot C.everywhereUnramified
   have hLexp : ∀ σ : Gal(L / F), σ ^ p = 1 := by
     intro σ
     obtain ⟨τ, rfl⟩ :=

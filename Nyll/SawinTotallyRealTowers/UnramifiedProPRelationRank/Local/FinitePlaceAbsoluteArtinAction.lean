@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalAbsoluteArtinEmbedding
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Conjugation
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
@@ -58,13 +60,11 @@ theorem finitePlaceLocalArtin_toAlgebraicLocalization
 
 variable (v : HeightOneSpectrum (RingOfIntegers F))
 
-local instance finitePlaceAbsoluteArtinActionValuativeRel :
-    ValuativeRel (NumberField.HeightOneSpectrum.adicAbv F v).Completion :=
-  finitePlaceLocalArtinCompletionValuativeRel v
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel
 
-local instance finitePlaceAbsoluteArtinActionLocalField :
-    IsNonarchimedeanLocalField (NumberField.HeightOneSpectrum.adicAbv F v).Completion :=
-  finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField
 
 /-- Every absolute Artin representative acts through the actual global
 finite-place Artin map on an embedded finite abelian extension. -/
@@ -74,21 +74,22 @@ theorem finitePlaceAbsoluteArtin_lift_action
     (a : (v.adicCompletion F)ˣ)
     (sigma : Gal(AlgebraicClosure
       (NumberField.HeightOneSpectrum.adicAbv F
-        v).Completion/(NumberField.HeightOneSpectrum.adicAbv F v).Completion))
-    (hsigma : (QuotientGroup.mk
-        (show Field.absoluteGaloisGroup
-          (NumberField.HeightOneSpectrum.adicAbv F v).Completion from sigma) :
-        Field.absoluteGaloisGroupAbelianization
-          (NumberField.HeightOneSpectrum.adicAbv F v).Completion) =
-      absoluteLocalArtinMap (NumberField.HeightOneSpectrum.adicAbv F v).Completion
-        (finitePlaceLocalArtinInput v a)) (z : L) :
-    sigma (i z) = i (chosenFinitePlaceArtinMonoidHom (K := F) (L := L) v a z) := by
+        v).Completion/(NumberField.HeightOneSpectrum.adicAbv F v).Completion)) :
+    let C := (NumberField.HeightOneSpectrum.adicAbv F v).Completion
+    let : ValuativeRel C := finitePlaceLocalArtinCompletionValuativeRel v
+    let : IsNonarchimedeanLocalField C :=
+      finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+    let input := finitePlaceLocalArtinInput v a
+    ∀ (_hsigma : (QuotientGroup.mk (show Field.absoluteGaloisGroup C from sigma) :
+        Field.absoluteGaloisGroupAbelianization C) = absoluteLocalArtinMap C input)
+      (z : L),
+      sigma (i z) = i (chosenFinitePlaceArtinMonoidHom (K := F) (L := L) v a z) := by
+  intro C baseValuation baseLocalField input hsigma z
   let vF := NumberField.HeightOneSpectrum.adicAbv F v
   let hv := RayClass.adicAbv_isNontrivial v
   let w : AbsoluteValueExtension vF L :=
     ⟨absoluteValueExtension_pullback vF hv i,
       absoluteValueExtension_pullback_extends vF hv i⟩
-  let C := vF.Completion
   let E := LocalizedCompletion vF w
   let _ : Algebra C E := finitePlaceLocalArtinLocalizedAlgebra v w
   let _ : FiniteDimensional C E := finitePlaceLocalArtinFiniteDimensional v w
@@ -96,25 +97,17 @@ theorem finitePlaceAbsoluteArtin_lift_action
     finitePlaceLocalArtinIsAbelianGalois v w (inferInstance : FiniteDimensional F L)
   let j : E →ₐ[C] AlgebraicClosure C :=
     absoluteValueExtension_localizationEmbeddingOfPullback vF hv w i rfl
-  have hj (x : L) :
-      j (AbsoluteValue.toAlgebraicLocalization vF w.1 w.2 x) = i x :=
+  let localize := AbsoluteValue.toAlgebraicLocalization vF w.1 w.2
+  have hj (x : L) : j (localize x) = i x :=
     absoluteValueExtension_localizationEmbeddingOfPullback_toLocalization
       vF hv w i rfl x
-  have hrep : (QuotientGroup.mk (show Field.absoluteGaloisGroup C from sigma) :
-      Field.absoluteGaloisGroupAbelianization C) =
-      absoluteLocalArtinMap C (finitePlaceLocalArtinInput v a) := by
-    with_reducible exact hsigma
-  have h := absoluteLocalArtinMap_lift_action C E j (finitePlaceLocalArtinInput v a)
-    sigma hrep (AbsoluteValue.toAlgebraicLocalization vF w.1 w.2 z)
+  have h := absoluteLocalArtinMap_lift_action C E j input sigma hsigma (localize z)
   have haction := (congrArg sigma (hj z)).symm.trans h
   have hlocal := finitePlaceLocalArtinMonoidHom_apply_normalized_at
-    (K := F) (L := L) v w a
-    (AbsoluteValue.toAlgebraicLocalization vF w.1 w.2 z)
-  have hplace : finitePlaceArtinMonoidHomOfExtension (K := F) (L := L) v w a z =
-      chosenFinitePlaceArtinMonoidHom (K := F) (L := L) v a z :=
-    congrArg (fun f : (v.adicCompletion F)ˣ →* Gal(L/F) => f a z)
-      (finitePlaceArtinMonoidHomOfExtension_eq v w
-        (chosenFinitePlaceExtension (L := L) v))
+    (K := F) (L := L) v w a (localize z)
+  have hArtin := finitePlaceArtinMonoidHomOfExtension_eq v w
+    (chosenFinitePlaceExtension (L := L) v)
+  have hplace := DFunLike.congr_fun (DFunLike.congr_fun hArtin a) z
   have hlocalization := hlocal.symm.trans
     (finitePlaceLocalArtin_toAlgebraicLocalization F L v w a z)
   have hglobal := (congrArg j hlocalization).trans

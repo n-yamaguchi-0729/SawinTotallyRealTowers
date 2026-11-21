@@ -114,21 +114,21 @@ theorem rational_factorization_over_support
           (le_max_right r.num.natAbs r.den)
           (le_max_left (max r.num.natAbs r.den) p.1))
   have hnumNat :=
-    Nat.prod_pow_prime_padicValNat
+    Nat.prod_pow_prime_multiplicity
       r.num.natAbs hnum0 B hnum_lt
   have hdenNat :=
-    Nat.prod_pow_prime_padicValNat
+    Nat.prod_pow_prime_multiplicity
       r.den hden0 B hden_lt
   have hnum :
       (∏ q ∈ s,
-        (q : ℚ) ^ padicValNat q r.num.natAbs) =
+        (q : ℚ) ^ multiplicity q r.num.natAbs) =
           (r.num.natAbs : ℚ) := by
-    norm_cast
+    exact_mod_cast hnumNat
   have hden :
       (∏ q ∈ s,
-        (q : ℚ) ^ padicValNat q r.den) =
+        (q : ℚ) ^ multiplicity q r.den) =
           (r.den : ℚ) := by
-    norm_cast
+    exact_mod_cast hdenNat
   have hsign :
       (r.num : ℚ) =
         (((r.num.sign : ℤ) : ℚ)) * (r.num.natAbs : ℚ) := by
@@ -148,8 +148,8 @@ theorem rational_factorization_over_support
     calc
       (∏ q ∈ s, (q : ℚ) ^ padicValRat q r) =
           ∏ q ∈ s,
-            (q : ℚ) ^ padicValNat q r.num.natAbs /
-              (q : ℚ) ^ padicValNat q r.den := by
+            (q : ℚ) ^ multiplicity q r.num.natAbs /
+              (q : ℚ) ^ multiplicity q r.den := by
         apply Finset.prod_congr rfl
         intro q hq
         have hqprime : q.Prime :=
@@ -159,9 +159,9 @@ theorem rational_factorization_over_support
           zpow_natCast, zpow_natCast]
       _ =
           (∏ q ∈ s,
-              (q : ℚ) ^ padicValNat q r.num.natAbs) /
+              (q : ℚ) ^ multiplicity q r.num.natAbs) /
             ∏ q ∈ s,
-              (q : ℚ) ^ padicValNat q r.den := by
+              (q : ℚ) ^ multiplicity q r.den := by
         rw [Finset.prod_div_distrib]
       _ = (r.num.natAbs : ℚ) / (r.den : ℚ) := by
         rw [hnum, hden]
@@ -248,7 +248,7 @@ def padicIntUnitOfRat
     ℤ_[p.1]ˣ :=
   PadicInt.mkUnits (u := (y : ℚ_[p.1])) (by
     rw [Padic.eq_padicNorm,
-      padicNorm.eq_zpow_of_nonzero hy, hval]
+      padicNorm.eq_zpow_of_ne_zero hy, hval]
     simp only [neg_zero, zpow_zero, Rat.cast_one])
 
 /-- The underlying `p`-adic number of `padicIntUnitOfRat` is the original
@@ -395,7 +395,7 @@ theorem padicValRat_rationalPrime_succ
       (Nat.coprime_self_add_right.mpr
         (Nat.coprime_one_right p.1))
   rw [padicValRat.of_nat,
-    padicValNat.eq_zero_of_not_dvd hnot]
+    multiplicity_eq_zero_of_not_dvd hnot]
   norm_num
 
 /-- A positive natural number greater than one, prime to `p`, gives a

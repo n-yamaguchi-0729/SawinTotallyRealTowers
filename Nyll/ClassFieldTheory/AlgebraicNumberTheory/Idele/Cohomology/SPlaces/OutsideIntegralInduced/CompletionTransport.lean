@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion

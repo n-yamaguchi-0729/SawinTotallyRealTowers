@@ -6,8 +6,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldCorrespondence
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.NumberFieldArtinTransport
 public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.ClosedFixingSubgroup
 
@@ -64,28 +71,8 @@ theorem exists_numberFieldEmbeddingComparisonAutomorphism
     {F : Type u} [Field F] [NumberField F]
     (i j : F →ₐ[ℚ] SeparableClosure ℚ) :
     ∃ σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ,
-      ∀ x : F, σ (i x) = j x := by
-  let hAlgebra : Algebra F (SeparableClosure ℚ) :=
-    rationalEmbeddingSeparableClosureAlgebra i
-  let hScalarTower : IsScalarTower ℚ F (SeparableClosure ℚ) :=
-    IsScalarTower.of_algebraMap_eq' i.comp_algebraMap.symm
-  let hSeparable : Algebra.IsSeparable F (SeparableClosure ℚ) :=
-    Algebra.isSeparable_tower_top_of_isSeparable
-      ℚ F (SeparableClosure ℚ)
-  obtain ⟨φ, hφ⟩ :=
-    (IsSepClosed.surjective_domRestrict_of_isSeparable
-      (K := ℚ) (L := F)
-      (M := SeparableClosure ℚ)
-      (E := SeparableClosure ℚ)) j
-  let σ : SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ :=
-    AlgEquiv.ofBijective φ
-      (Normal.toIsAlgebraic.algHom_bijective₂
-        φ (AlgHom.id ℚ (SeparableClosure ℚ))).1
-  refine ⟨σ, ?_⟩
-  intro x
-  have hx :=
-    congrArg (fun ψ : F →ₐ[ℚ] SeparableClosure ℚ => ψ x) hφ
-  exact hx
+      ∀ x : F, σ (i x) = j x :=
+  exists_separableClosureEmbeddingComparisonAutomorphism i j
 
 /-- The canonical comparison automorphism between two rational
 embeddings of one number field into the fixed separable closure. -/
@@ -158,10 +145,6 @@ theorem conjugateClosedFixingSubgroup_embeddingRange
 
 section EmbeddedNumberFieldRealization
 
-local instance numberFieldEmbeddedIdeleClassGroupIsMulCommutative
-    {F : Type u} [Field F] [NumberField F]
-    : IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
 
 local instance numberFieldEmbeddedIdeleClassSubgroupNormal
     {F : Type u} [Field F] [NumberField F]
@@ -559,7 +542,7 @@ noncomputable def numberFieldEmbeddedIdeleClassEquivAmbientFixed
     (j : L →ₐ[ℚ] SeparableClosure ℚ) :
     Additive (IdeleClassGroup K) ≃+
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation
+        (ideleClassRepresentation ℚ)
         (numberFieldEmbeddedBaseSubgroup K L j) := by
   let H := numberFieldEmbeddedBaseSubgroup K L j
   exact
@@ -574,7 +557,7 @@ noncomputable def
     numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ) :
-    FiniteNormQuotient rationalIdeleClassRepresentation
+    FiniteNormQuotient (ideleClassRepresentation ℚ)
         (numberFieldEmbeddedBaseSubgroup K L j)
         (numberFieldEmbeddedTopSubgroup K L j)
         (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j) ≃+
@@ -599,41 +582,17 @@ noncomputable def
     fixedFieldEquiv.trans
       (MulEquiv.toAdditive actualFieldEquiv.symm)
 
-private theorem numberFieldEmbeddedOrdinaryNormQuotientCongr_symm_mk
-    {K₀ : Type u} {L₀ : Type v} {K₁ : Type w} {L₁ : Type x}
-    [Field K₀] [NumberField K₀]
-    [Field L₀] [NumberField L₀] [Algebra K₀ L₀]
-    [Field K₁] [NumberField K₁]
-    [Field L₁] [NumberField L₁] [Algebra K₁ L₁]
-    (eK : K₀ ≃ₐ[ℚ] K₁)
-    (eL : L₀ ≃ₐ[ℚ] L₁)
-    (h : ∀ x : K₀,
-      eL (algebraMap K₀ L₀ x) =
-        algebraMap K₁ L₁ (eK x))
-    (c : IdeleClassGroup K₁) :
-    (ordinaryIdeleClassNormQuotientCongrOfAlgEquiv eK eL h).symm
-        (QuotientGroup.mk'
-          (_root_.ideleClassNorm K₁ L₁).range c) =
-      QuotientGroup.mk'
-        (_root_.ideleClassNorm K₀ L₀).range
-        ((ideleClassCongr eK).symm c) := by
-  let e := ordinaryIdeleClassNormQuotientCongrOfAlgEquiv eK eL h
-  apply e.injective
-  rw [e.apply_symm_apply,
-    ordinaryIdeleClassNormQuotientCongrOfAlgEquiv_mk,
-    MulEquiv.apply_symm_apply]
-
 private noncomputable def numberFieldEmbeddedFiniteNormClassPublicValue
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     Additive
       (IdeleClassGroup K ⧸
         (_root_.ideleClassNorm K L).range) :=
     numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient
         K L j
-        (finiteNormClass rationalIdeleClassRepresentation
+        (finiteNormClass (ideleClassRepresentation ℚ)
           (numberFieldEmbeddedBaseSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j)
@@ -642,7 +601,7 @@ private noncomputable def numberFieldEmbeddedFiniteNormClassPublicValue
 private noncomputable def numberFieldEmbeddedFiniteNormClassExpectedValue
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     Additive
       (IdeleClassGroup K ⧸
@@ -657,7 +616,7 @@ private noncomputable def
     numberFieldEmbeddedFiniteNormClassDirectComparisonValue
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     Additive
       (IdeleClassGroup K ⧸
@@ -679,14 +638,14 @@ private noncomputable def
   exact
     MulEquiv.toAdditive actualFieldEquiv.symm
       (fixedFieldEquiv
-        (finiteNormClass rationalIdeleClassRepresentation
+        (finiteNormClass (ideleClassRepresentation ℚ)
           H J hJH a))
 
 private theorem
     numberFieldEmbeddedFiniteNormClassPublicValue_eq_directComparison
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     numberFieldEmbeddedFiniteNormClassPublicValue K L j a =
       numberFieldEmbeddedFiniteNormClassDirectComparisonValue K L j a := by
@@ -698,7 +657,7 @@ private theorem
 private noncomputable def numberFieldEmbeddedActualNormClassRepresentativeValue
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     Additive
       (IdeleClassGroup K ⧸
@@ -724,7 +683,7 @@ private theorem
     numberFieldEmbeddedFiniteNormClassDirectComparison_eq_actualValue
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     numberFieldEmbeddedFiniteNormClassDirectComparisonValue K L j a =
       numberFieldEmbeddedActualNormClassRepresentativeValue K L j a := by
@@ -747,7 +706,7 @@ private theorem
 private theorem numberFieldEmbeddedActualNormClassRepresentativeValue_eq_expected
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     numberFieldEmbeddedActualNormClassRepresentativeValue K L j a =
       numberFieldEmbeddedFiniteNormClassExpectedValue K L j a := by
@@ -777,7 +736,7 @@ private theorem numberFieldEmbeddedActualNormClassRepresentativeValue_eq_expecte
             (numberFieldEmbeddedAbstractBaseFieldEquiv K L j)).symm c))
   exact
     congrArg Additive.ofMul
-      (numberFieldEmbeddedOrdinaryNormQuotientCongr_symm_mk
+      (ordinaryIdeleClassNormQuotientCongrOfAlgEquiv_symm_mk
         (numberFieldEmbeddedAbstractBaseFieldEquiv K L j)
         (numberFieldEmbeddedAbstractTopFieldEquiv K L j)
         (numberFieldEmbeddedAbstractFieldEquiv_algebraMap K L j) c)
@@ -789,10 +748,10 @@ theorem
     numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient_finiteNormClass
     [FiniteDimensional K L] [IsGalois K L]
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (a : ambientFixedAddSubgroup rationalIdeleClassRepresentation
+    (a : ambientFixedAddSubgroup (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)) :
     numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient K L j
-        (finiteNormClass rationalIdeleClassRepresentation
+        (finiteNormClass (ideleClassRepresentation ℚ)
           (numberFieldEmbeddedBaseSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j) a) =
@@ -822,7 +781,7 @@ theorem
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
     (c : IdeleClassGroup K) :
     numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient K L j
-        (finiteNormClass rationalIdeleClassRepresentation
+        (finiteNormClass (ideleClassRepresentation ℚ)
           (numberFieldEmbeddedBaseSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j)
@@ -845,15 +804,15 @@ noncomputable def
     numberFieldEmbeddedAbelianizedExtensionQuotientEquivGaloisGroup
     (j : L →ₐ[ℚ] SeparableClosure ℚ) :
     Additive
-      (Abelianization
+      (Group.Abelianization
         (numberFieldEmbeddedFiniteGaloisSubextension K L j).extensionQuotient) ≃+
       Additive Gal(L / K) :=
   MulEquiv.toAdditive
     ((MulEquiv.abelianizationCongr
       (numberFieldEmbeddedExtensionQuotientEquivGaloisGroup K L j)).trans
-        (Abelianization.equivOfComm :
+        (Group.Abelianization.equivOfComm :
           Gal(L / K) ≃*
-            Abelianization Gal(L / K)).symm)
+            Group.Abelianization Gal(L / K)).symm)
 
 /-- The actual global norm-residue equivalence constructed from an
 explicit compatible embedding of a finite abelian number-field
@@ -865,17 +824,17 @@ noncomputable def globalNormResidueEquivOfEmbedding
           (_root_.ideleClassNorm K L).range) ≃+
       Additive Gal(L / K) := by
   let eNorm :
-      FiniteNormQuotient rationalIdeleClassRepresentation
+      FiniteNormQuotient (ideleClassRepresentation ℚ)
           (numberFieldEmbeddedBaseSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup K L j)
           (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j) ≃+
         Additive
-          (Abelianization
+          (Group.Abelianization
             (numberFieldEmbeddedFiniteGaloisSubextension K L j).extensionQuotient) :=
-    rationalCyclotomicDegreeData.normResidueSymbol
-      rationalIdeleClassRepresentation
-      rationalCyclotomicIdeleClassValuationData
-      rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+    (numberFieldCyclotomicDegreeData ℚ).normResidueSymbol
+      (ideleClassRepresentation ℚ)
+      (numberFieldCyclotomicIdeleClassValuationData ℚ)
+      (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
       (numberFieldEmbeddedFiniteAbstractField K L j)
       (numberFieldEmbeddedFiniteGaloisSubextension K L j)
   exact
@@ -888,7 +847,7 @@ noncomputable def globalNormResidueEquivOfEmbedding
 /-- The explicit-embedding norm-residue equivalence on a finite norm class. -/
 theorem globalNormResidueEquivOfEmbedding_finiteNormClass
     (j : L →ₐ[ℚ] SeparableClosure ℚ)
-    (x : FiniteNormQuotient rationalIdeleClassRepresentation
+    (x : FiniteNormQuotient (ideleClassRepresentation ℚ)
       (numberFieldEmbeddedBaseSubgroup K L j)
       (numberFieldEmbeddedTopSubgroup K L j)
       (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j)) :
@@ -897,13 +856,13 @@ theorem globalNormResidueEquivOfEmbedding_finiteNormClass
           K L j x) =
       numberFieldEmbeddedAbelianizedExtensionQuotientEquivGaloisGroup K L j
         (rationalCyclotomicDegreeData.normResidueSymbol
-          rationalIdeleClassRepresentation
+          (ideleClassRepresentation ℚ)
           rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
           (numberFieldEmbeddedFiniteAbstractField K L j)
           (numberFieldEmbeddedFiniteGaloisSubextension K L j) x) := by
   simp only [globalNormResidueEquivOfEmbedding, AddEquiv.trans_apply,
-    AddEquiv.symm_apply_apply]
+    AddEquiv.symm_apply_apply, numberFieldCyclotomicNormResidueSymbol_rat]
 
 /-- The global norm-residue homomorphism obtained from an explicit
 compatible embedding. -/
@@ -933,39 +892,30 @@ theorem globalNormResidueMonoidHomOfEmbedding_apply
         (numberFieldEmbeddedAbelianizedExtensionQuotientEquivGaloisGroup
           K L j
           (rationalCyclotomicDegreeData.normResidueSymbol
-            rationalIdeleClassRepresentation
+            (ideleClassRepresentation ℚ)
             rationalCyclotomicIdeleClassValuationData
-            rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+            (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
             (numberFieldEmbeddedFiniteAbstractField K L j)
             (numberFieldEmbeddedFiniteGaloisSubextension K L j)
-            (finiteNormClass rationalIdeleClassRepresentation
+            (finiteNormClass (ideleClassRepresentation ℚ)
               (numberFieldEmbeddedBaseSubgroup K L j)
               (numberFieldEmbeddedTopSubgroup K L j)
               (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j)
               (numberFieldEmbeddedIdeleClassEquivAmbientFixed
                 K L j (Additive.ofMul c))))) := by
-  have hclass :=
-    numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient_ideleClass
-      K L j c
-  change
-    Additive.toMul
-      (numberFieldEmbeddedAbelianizedExtensionQuotientEquivGaloisGroup
-        K L j
-        (rationalCyclotomicDegreeData.normResidueSymbol
-          rationalIdeleClassRepresentation
-          rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
-          (numberFieldEmbeddedFiniteAbstractField K L j)
-          (numberFieldEmbeddedFiniteGaloisSubextension K L j)
-          ((numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient
-            K L j).symm
-            (Additive.ofMul
-              (QuotientGroup.mk'
-                (_root_.ideleClassNorm K L).range c))))) =
-      _
-  rw [← hclass,
-    (numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient
-      K L j).symm_apply_apply]
+  let x := finiteNormClass (ideleClassRepresentation ℚ)
+    (numberFieldEmbeddedBaseSubgroup K L j) (numberFieldEmbeddedTopSubgroup K L j)
+    (numberFieldEmbeddedTopSubgroup_le_baseSubgroup K L j)
+    (numberFieldEmbeddedIdeleClassEquivAmbientFixed K L j (Additive.ofMul c))
+  let e := globalNormResidueEquivOfEmbedding K L j
+  let f := numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient K L j
+  let q := QuotientGroup.mk' (_root_.ideleClassNorm K L).range c
+  have hclass : f x = Additive.ofMul q :=
+    numberFieldEmbeddedFiniteNormQuotientEquivIdeleClassNormQuotient_ideleClass K L j c
+  have he := globalNormResidueEquivOfEmbedding_finiteNormClass K L j x
+  have hf : globalNormResidueMonoidHomOfEmbedding K L j c = (e (Additive.ofMul q)).toMul := rfl
+  exact hf.trans ((congrArg (fun y => (e y).toMul) hclass.symm).trans
+    (congrArg Additive.toMul he))
 
 omit [FiniteDimensional K L] [IsAbelianGalois K L] in
 /-- The ambient-fixed idèle-class transport for the standard embedding is
@@ -995,12 +945,12 @@ private theorem numberFieldTowerNormResidueValue_eq_embedded_standard
     (c : IdeleClassGroup K) :
     numberFieldTowerAbelianizedExtensionQuotientEquivGaloisGroup K L
         (rationalCyclotomicDegreeData.normResidueSymbol
-          rationalIdeleClassRepresentation
+          (ideleClassRepresentation ℚ)
           rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
           (numberFieldTowerReciprocityFiniteAbstractField K L)
           (numberFieldTowerFiniteGaloisSubextension K L)
-          (finiteNormClass rationalIdeleClassRepresentation
+          (finiteNormClass (ideleClassRepresentation ℚ)
             (numberFieldTowerBaseSubgroup K L)
             (numberFieldTowerTopSubgroup L)
             (numberFieldTowerTopSubgroup_le_baseSubgroup K L)
@@ -1008,14 +958,14 @@ private theorem numberFieldTowerNormResidueValue_eq_embedded_standard
       numberFieldEmbeddedAbelianizedExtensionQuotientEquivGaloisGroup
         K L (numberFieldSeparableClosureEmbedding L)
         (rationalCyclotomicDegreeData.normResidueSymbol
-          rationalIdeleClassRepresentation
+          (ideleClassRepresentation ℚ)
           rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
           (numberFieldEmbeddedFiniteAbstractField K L
             (numberFieldSeparableClosureEmbedding L))
           (numberFieldEmbeddedFiniteGaloisSubextension K L
             (numberFieldSeparableClosureEmbedding L))
-          (finiteNormClass rationalIdeleClassRepresentation
+          (finiteNormClass (ideleClassRepresentation ℚ)
             (numberFieldEmbeddedBaseSubgroup K L
               (numberFieldSeparableClosureEmbedding L))
             (numberFieldEmbeddedTopSubgroup K L
@@ -1197,43 +1147,6 @@ local instance abstractFixedFieldRelativeQuotientIsMulCommutative :
     IsMulCommutative L.extensionQuotient :=
   L.commutative
 
-noncomputable local instance abstractFixedFieldFiniteDimensional :
-    FiniteDimensional ℚ
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field) :=
-  abstractFixedField_finiteDimensional
-    ℚ (SeparableClosure ℚ) K.field K.finite
-
-noncomputable local instance abstractRelativeFixedFieldFiniteDimensional :
-    FiniteDimensional
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  abstractRelativeFixedField_finiteDimensional
-    ℚ (SeparableClosure ℚ)
-    K.field L.field L.below K.finite L.finite
-
-local instance abstractFixedFieldRelativeScalarTower :
-    IsScalarTower ℚ
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-
-noncomputable local instance abstractRelativeFixedFieldAbsoluteFiniteDimensional :
-    FiniteDimensional ℚ
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  FiniteDimensional.trans ℚ
-    (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-    (abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below)
-
-noncomputable local instance abstractFixedFieldNumberField :
-    NumberField
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field) :=
-  NumberField.of_module_finite ℚ
-    (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-
 /-- The lower fixed idèle-class group is commutative.  Naming the mixin
 before the public quotient declarations avoids delayed normality synthesis
 inside their definition bodies. -/
@@ -1244,33 +1157,7 @@ local instance
         (abstractFixedField ℚ (SeparableClosure ℚ) K.field)) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
-noncomputable local instance abstractRelativeFixedFieldNumberField :
-    NumberField
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  NumberField.of_module_finite ℚ
-    (abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below)
-
-/-- Use the same explicit Galois witness as the fixed-field quotient
-comparison.  Deriving it through `IsAbelianGalois` produces an equivalent
-but much larger dependent instance path. -/
-noncomputable local instance
-    abstractRelativeFixedFieldIsGalois :
-    IsGalois
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  abstractRelativeFixedField_isGalois
-    ℚ (SeparableClosure ℚ)
-    K.field L.field L.below L.normal
-
-noncomputable local instance abstractRelativeFixedFieldIsAbelianGalois :
-    IsAbelianGalois
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  finiteAbelianSubextensionAbstractRelativeFixedFieldIsAbelianGalois L
+attribute [local instance] ordinaryIdeleClassNormExtensionIsGalois
 
 /-- Use one opaque normality witness for the actual fixed-field norm range.
 This keeps every occurrence of its quotient group on the same instance path. -/
@@ -1292,7 +1179,7 @@ noncomputable def
       abstractRelativeFixedField
         ℚ (SeparableClosure ℚ) L.below
     Additive
-        (Abelianization
+        (Group.Abelianization
           (FiniteGaloisSubextension.extensionQuotient
             L.toFiniteGaloisExtension)) ≃+
       Additive (Gal(E / F)) := by
@@ -1306,9 +1193,9 @@ noncomputable def
         K.field L.field L.below L.normal)
   exact
     MulEquiv.toAdditive
-      ((Abelianization.equivOfComm :
+      ((Group.Abelianization.equivOfComm :
           L.extensionQuotient ≃*
-            Abelianization L.extensionQuotient).symm.trans e)
+            Group.Abelianization L.extensionQuotient).symm.trans e)
 
 /-- The actual fixed-field global norm-residue equivalence
 
@@ -1328,14 +1215,14 @@ noncomputable def abstractFixedFieldGlobalNormResidueEquiv :
       Additive (Gal(E / F)) := by
   intro F E
   let eNorm :
-      FiniteNormQuotient rationalIdeleClassRepresentation
+      FiniteNormQuotient (ideleClassRepresentation ℚ)
           K.field L.field L.below ≃+
         Additive
-          (Abelianization L.toFiniteGaloisExtension.extensionQuotient) :=
-    rationalCyclotomicDegreeData.normResidueSymbol
-      rationalIdeleClassRepresentation
-      rationalCyclotomicIdeleClassValuationData
-      rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (Group.Abelianization L.toFiniteGaloisExtension.extensionQuotient) :=
+    (numberFieldCyclotomicDegreeData ℚ).normResidueSymbol
+      (ideleClassRepresentation ℚ)
+      (numberFieldCyclotomicIdeleClassValuationData ℚ)
+      (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
       K L.toFiniteGaloisExtension
   exact
     (rationalFiniteNormQuotientEquivIdeleClassNormQuotient
@@ -1347,7 +1234,7 @@ noncomputable def abstractFixedFieldGlobalNormResidueEquiv :
 /-- The abstract finite norm-residue equivalence with its dependent source
 instance fixed to the public finite norm quotient. -/
 noncomputable def abstractFixedFieldFiniteNormResidueGaloisEquiv :
-    FiniteNormQuotient rationalIdeleClassRepresentation
+    FiniteNormQuotient (ideleClassRepresentation ℚ)
         K.field L.field L.below ≃+
       Additive
         (Gal(
@@ -1355,16 +1242,16 @@ noncomputable def abstractFixedFieldFiniteNormResidueGaloisEquiv :
             ℚ (SeparableClosure ℚ) L.below) /
           (abstractFixedField ℚ (SeparableClosure ℚ) K.field))) := by
   letI : AddCommGroup
-      (FiniteNormQuotient rationalIdeleClassRepresentation
+      (FiniteNormQuotient (ideleClassRepresentation ℚ)
         K.field L.field L.below) :=
-    finiteNormQuotientAddCommGroup rationalIdeleClassRepresentation
+    finiteNormQuotientAddCommGroup (ideleClassRepresentation ℚ)
       K.field L.field L.below
   exact
     @AddEquiv.trans
-      (FiniteNormQuotient rationalIdeleClassRepresentation
+      (FiniteNormQuotient (ideleClassRepresentation ℚ)
         K.field L.field L.below)
       (Additive
-        (Abelianization
+        (Group.Abelianization
           L.toFiniteGaloisExtension.extensionQuotient))
       (Additive
         (Gal(
@@ -1372,10 +1259,10 @@ noncomputable def abstractFixedFieldFiniteNormResidueGaloisEquiv :
             ℚ (SeparableClosure ℚ) L.below) /
           (abstractFixedField ℚ (SeparableClosure ℚ) K.field))))
       inferInstance inferInstance inferInstance
-      (rationalCyclotomicDegreeData.normResidueSymbol
-        rationalIdeleClassRepresentation
-        rationalCyclotomicIdeleClassValuationData
-        rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+      ((numberFieldCyclotomicDegreeData ℚ).normResidueSymbol
+        (ideleClassRepresentation ℚ)
+        (numberFieldCyclotomicIdeleClassValuationData ℚ)
+        (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
         K L.toFiniteGaloisExtension)
       (abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup
         K L)
@@ -1391,12 +1278,12 @@ noncomputable def ambientFixedGlobalNormResidueAddMonoidHom :
       abstractRelativeFixedField
         ℚ (SeparableClosure ℚ) L.below
     ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation K.field →+
+        (ideleClassRepresentation ℚ) K.field →+
       Additive (Gal(E / F)) := by
   intro F E
   exact
     (abstractFixedFieldFiniteNormResidueGaloisEquiv K L).toAddMonoidHom.comp
-      (finiteNormClassHom rationalIdeleClassRepresentation
+      (finiteNormClassHom (ideleClassRepresentation ℚ)
         K.field L.field L.below)
 
 /-- The ordinary idele class group of the lower fixed field, transported
@@ -1407,7 +1294,7 @@ noncomputable def abstractFixedFieldIdeleClassToAmbientFixedMonoidHom :
     IdeleClassGroup F →*
       Multiplicative
         (ambientFixedAddSubgroup
-          rationalIdeleClassRepresentation K.field) :=
+          (ideleClassRepresentation ℚ) K.field) :=
   (rationalAbstractFixedFieldIdeleClassEquivFixed
     K.field).toAddMonoidHom.toMultiplicativeRight
 
@@ -1425,25 +1312,26 @@ noncomputable def abstractFixedFieldGlobalNormResidueMonoidHom :
     (abstractFixedFieldIdeleClassToAmbientFixedMonoidHom K)
 
 /-- Pointwise form of the ambient fixed-part norm-residue homomorphism. -/
-private theorem ambientFixedGlobalNormResidueAddMonoidHom_apply
+theorem ambientFixedGlobalNormResidueAddMonoidHom_apply
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation K.field) :
+        (ideleClassRepresentation ℚ) K.field) :
     ambientFixedGlobalNormResidueAddMonoidHom K L a =
       abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup
         K L
         (rationalCyclotomicDegreeData.normResidueSymbol
-          rationalIdeleClassRepresentation
+          (ideleClassRepresentation ℚ)
           rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
           K L.toFiniteGaloisExtension
-          (finiteNormClass rationalIdeleClassRepresentation
+          (finiteNormClass (ideleClassRepresentation ℚ)
             K.field L.field L.below a)) := by
   change
     abstractFixedFieldFiniteNormResidueGaloisEquiv K L
-        (finiteNormClass rationalIdeleClassRepresentation
+        (finiteNormClass (ideleClassRepresentation ℚ)
           K.field L.field L.below a) = _
-  rfl
+  simp only [abstractFixedFieldFiniteNormResidueGaloisEquiv, AddEquiv.trans_apply,
+    numberFieldCyclotomicNormResidueSymbol_rat]
 
 /-- Pointwise form of the transported fixed-field norm-residue homomorphism. -/
 private theorem abstractFixedFieldGlobalNormResidueMonoidHom_apply :
@@ -1466,7 +1354,7 @@ actual fixed-field norm-residue value. -/
 theorem abstractFixedFieldGlobalNormResidueMonoidHom_fixed_apply
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation K.field) :
+        (ideleClassRepresentation ℚ) K.field) :
     abstractFixedFieldGlobalNormResidueMonoidHom K L
         (Additive.toMul
           ((rationalAbstractFixedFieldIdeleClassEquivFixed
@@ -1490,16 +1378,15 @@ finite norm class vanishes. -/
 private theorem ambientFixedGlobalNormResidueAddMonoidHom_eq_zero_iff
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation K.field) :
+        (ideleClassRepresentation ℚ) K.field) :
     ambientFixedGlobalNormResidueAddMonoidHom K L a = 0 ↔
-      finiteNormClass rationalIdeleClassRepresentation
+      finiteNormClass (ideleClassRepresentation ℚ)
         K.field L.field L.below a = 0 := by
-  rw [ambientFixedGlobalNormResidueAddMonoidHom_apply]
   change
     abstractFixedFieldFiniteNormResidueGaloisEquiv K L
-        (finiteNormClass rationalIdeleClassRepresentation
+        (finiteNormClass (ideleClassRepresentation ℚ)
         K.field L.field L.below a) = 0 ↔
-      finiteNormClass rationalIdeleClassRepresentation
+      finiteNormClass (ideleClassRepresentation ℚ)
         K.field L.field L.below a = 0
   exact
     (abstractFixedFieldFiniteNormResidueGaloisEquiv K L).map_eq_zero_iff
@@ -1512,7 +1399,7 @@ private theorem
       (abstractFixedField ℚ (SeparableClosure ℚ) K.field)) :
     (rationalAbstractFixedFieldIdeleClassEquivFixed K.field)
           (Additive.ofMul c) ∈
-        finiteNormSubgroup rationalIdeleClassRepresentation
+        finiteNormSubgroup (ideleClassRepresentation ℚ)
           K.field L.field L.below ↔
       c ∈
         (_root_.ideleClassNorm
@@ -1521,7 +1408,7 @@ private theorem
             ℚ (SeparableClosure ℚ) L.below)).range := by
   let eK := rationalAbstractFixedFieldIdeleClassEquivFixed K.field
   let S :=
-    finiteNormSubgroup rationalIdeleClassRepresentation
+    finiteNormSubgroup (ideleClassRepresentation ℚ)
       K.field L.field L.below
   let N :=
     (_root_.ideleClassNorm
@@ -1588,16 +1475,16 @@ theorem abstractFixedFieldGlobalNormResidueMonoidHom_eq_one_iff
           ((rationalAbstractFixedFieldIdeleClassEquivFixed K.field)
             (Additive.ofMul c)) = 0 :=
       toMul_eq_one
-    _ ↔ finiteNormClass rationalIdeleClassRepresentation
+    _ ↔ finiteNormClass (ideleClassRepresentation ℚ)
           K.field L.field L.below
           ((rationalAbstractFixedFieldIdeleClassEquivFixed K.field)
             (Additive.ofMul c)) = 0 :=
       ambientFixedGlobalNormResidueAddMonoidHom_eq_zero_iff K L _
     _ ↔ (rationalAbstractFixedFieldIdeleClassEquivFixed K.field)
           (Additive.ofMul c) ∈
-          finiteNormSubgroup rationalIdeleClassRepresentation
+          finiteNormSubgroup (ideleClassRepresentation ℚ)
             K.field L.field L.below :=
-      finiteNormClass_eq_zero_iff rationalIdeleClassRepresentation
+      finiteNormClass_eq_zero_iff (ideleClassRepresentation ℚ)
         K.field L.field L.below _
     _ ↔ c ∈
           (_root_.ideleClassNorm
@@ -1615,10 +1502,12 @@ private theorem ambientFixedGlobalNormResidueAddMonoidHom_surjective :
   obtain ⟨z, hz⟩ :=
     (abstractFixedFieldFiniteNormResidueGaloisEquiv K L).surjective y
   obtain ⟨a, ha⟩ :=
-    finiteNormClass_surjective rationalIdeleClassRepresentation
+    finiteNormClass_surjective (ideleClassRepresentation ℚ)
       K.field L.field L.below z
   refine ⟨a, ?_⟩
-  rw [ambientFixedGlobalNormResidueAddMonoidHom_apply, ha]
+  change abstractFixedFieldFiniteNormResidueGaloisEquiv K L
+    (finiteNormClass (ideleClassRepresentation ℚ) K.field L.field L.below a) = y
+  rw [ha]
   exact hz
 
 /-- The fixed-field global norm-residue homomorphism is surjective

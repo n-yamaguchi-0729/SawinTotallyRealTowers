@@ -57,7 +57,7 @@ abelianization.
 -/
 def kernelAbelianizationToProfiniteKernelAbelianizationHom
     (psi : ContinuousMonoidHom G H) :
-    Abelianization (ProfiniteKernelSubgroup psi) →*
+    Group.Abelianization (ProfiniteKernelSubgroup psi) →*
       ProfiniteKernelAbelianization psi :=
   QuotientGroup.lift
     (commutator (ProfiniteKernelSubgroup psi))
@@ -76,7 +76,7 @@ abelianization.
 -/
 def kernelAbelianizationToProfiniteKernelAbelianization
     (psi : ContinuousMonoidHom G H) :
-    Additive (Abelianization (ProfiniteKernelSubgroup psi)) →+
+    Additive (Group.Abelianization (ProfiniteKernelSubgroup psi)) →+
       ProfiniteKernelAbelianizationAdd psi :=
   (kernelAbelianizationToProfiniteKernelAbelianizationHom
     (G := G) (H := H) psi).toAdditive
@@ -90,7 +90,7 @@ topological closure of the commutator subgroup.
 theorem kernelAbelianizationToProfiniteKernelAbelianization_of
     (psi : ContinuousMonoidHom G H) (n : ProfiniteKernelSubgroup psi) :
     kernelAbelianizationToProfiniteKernelAbelianization
-        (G := G) (H := H) psi (Additive.ofMul (Abelianization.of n)) =
+        (G := G) (H := H) psi (Additive.ofMul (Group.Abelianization.of n)) =
       Additive.ofMul
         (QuotientGroup.mk'
           (Subgroup.closedCommutator (ProfiniteKernelSubgroup psi)) n) := by
@@ -106,7 +106,7 @@ theorem kernelAbelianizationToProfiniteKernelAbelianization_surjective
       (kernelAbelianizationToProfiniteKernelAbelianization
         (G := G) (H := H) psi) := by
   intro x
-  change ∃ y : Additive (Abelianization (ProfiniteKernelSubgroup psi)),
+  change ∃ y : Additive (Group.Abelianization (ProfiniteKernelSubgroup psi)),
     Additive.ofMul
       (kernelAbelianizationToProfiniteKernelAbelianizationHom
         (G := G) (H := H) psi (Additive.toMul y)) = x
@@ -114,7 +114,7 @@ theorem kernelAbelianizationToProfiniteKernelAbelianization_surjective
       (Subgroup.closedCommutator (ProfiniteKernelSubgroup psi))
       (Additive.toMul x) with
     ⟨n, hn⟩
-  refine ⟨Additive.ofMul (Abelianization.of n), ?_⟩
+  refine ⟨Additive.ofMul (Group.Abelianization.of n), ?_⟩
   apply Additive.toMul.injective
   change
     QuotientGroup.mk'

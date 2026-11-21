@@ -8,6 +8,7 @@ module
 
 public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Core
 public import Mathlib.RingTheory.DedekindDomain.Different
+public import Nyll.ValuedFieldTheory.Ramification.Different.Powers
 
 /-!
 # Different and codifferent for valued finite extensions
@@ -223,6 +224,19 @@ theorem differentIdealOfFiniteSeparable_ne_bot
       (FractionRing target.valuationSubring) :=
     (fractionRing_isSeparable_of_finite_separable base target)
   exact (differentIdeal_ne_bot base target)
+
+/-- The actual different of a finite separable complete-DVF extension is a natural
+power of the target maximal ideal. The exponent is obtained from its nonzero
+integral ideal, without an extra ramification hypothesis. -/
+theorem differentIdealOfFiniteSeparable_eq_maximalIdeal_pow
+    [Algebra.IsSeparable K L]
+    [IsScalarTower base.valuationSubring target.valuationSubring L] :
+    ∃ d : ℕ, differentIdealOfFiniteSeparable base target =
+      IsLocalRing.maximalIdeal target.valuationSubring ^ d := by
+  let : IsDiscreteValuationRing target.valuationSubring :=
+    target.toDVF.valuationSubring_isDiscreteValuationRing
+  exact RamificationTheory.DiscreteValuationRing.ideal_eq_maximalIdeal_pow
+    target.valuationSubring (differentIdealOfFiniteSeparable_ne_bot base target)
 
 /-- The local different/codifferent relation specialized to the valuation
 rings. -/

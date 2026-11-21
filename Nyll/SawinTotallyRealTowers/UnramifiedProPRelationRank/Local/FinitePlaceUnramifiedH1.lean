@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 public import Nyll.ProCGroups.ProP.ContinuousH1
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
@@ -37,10 +39,7 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ)
 
-local instance finitePlaceUnramifiedH1Module
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The chosen absolute-value extension at a finite place is nonarchimedean. -/
 theorem finitePlaceAbsoluteValueExtension_nonarchimedean
@@ -83,7 +82,7 @@ def finitePlaceAbsoluteInertiaInclusion
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     finitePlaceAbsoluteInertiaSubgroup F v →ₜ*
       finitePlaceAbsoluteDecompositionGroup F v :=
-  subgroupInclusion (finitePlaceAbsoluteInertiaSubgroup F v)
+  ProCGroups.ContinuousMonoidHom.subtype (finitePlaceAbsoluteInertiaSubgroup F v)
 
 @[simp]
 theorem finitePlaceAbsoluteInertiaInclusion_apply

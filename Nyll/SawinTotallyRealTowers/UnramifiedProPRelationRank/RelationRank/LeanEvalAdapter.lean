@@ -53,7 +53,7 @@ theorem isEverywhereUnramified_iff_explicitPredicate
     (F : Type u) (M : Type v)
     [Field F] [Field M] [NumberField F] [NumberField M]
     [Algebra F M] :
-    IsEverywhereUnramified F M ↔ ExplicitIsEverywhereUnramified F M :=
+    ClassFieldTheory.IsEverywhereUnramified F M ↔ ExplicitIsEverywhereUnramified F M :=
   isEverywhereUnramified_iff_explicit
 
 /-- The maximal compositum written with the explicit benchmark predicate. -/

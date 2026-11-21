@@ -50,6 +50,6 @@ theorem exists_int_eq_of_squarefree_mul_sq_eq_int
     apply hd x.den
     simpa only [pow_two] using hdenDvd
   have hdenOne : x.den = 1 := Nat.isUnit_iff.mp hdenUnit
-  exact ⟨x.num, (Rat.coe_int_num_of_den_eq_one hdenOne).symm⟩
+  exact ⟨x.num, (Rat.intCast_num_of_den_eq_one hdenOne).symm⟩
 
 end ClassFieldTower.Sawin

@@ -6,11 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportIdeleCorrection
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAbsoluteArtinCompatibility
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAdicInertiaTransport
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceReciprocityUnramifiedUnits
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Global characters with prescribed finite inertia values
@@ -33,22 +35,13 @@ open ClassFieldTower.ProP GlobalClassFieldTheory.Reciprocity LocalClassFieldTheo
 variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime]
 
-local instance finiteSupportInertiaCorrectionZModAddCommGroup :
-    AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finiteSupportInertiaCorrectionTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance finiteSupportInertiaCorrectionDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance finiteSupportInertiaCorrectionValuative (v : HeightOneSpectrum (𝓞 F)) :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
-local instance finiteSupportInertiaCorrectionLocalField (v : HeightOneSpectrum (𝓞 F)) :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
-local instance finiteSupportInertiaCorrectionH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 private theorem localReciprocityUnitCharacter_sub_eq_one
     (v : HeightOneSpectrum (𝓞 F))

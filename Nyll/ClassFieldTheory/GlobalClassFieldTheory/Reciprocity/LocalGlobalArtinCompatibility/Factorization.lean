@@ -7,10 +7,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.FinitePadicAuxiliaryField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueAbelianizationNaturality
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.OnePlaceNormKernel
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
@@ -94,10 +94,6 @@ private theorem exists_finitePlacePrimary_localGlobalRepresentative
     (σ :
       absoluteValueDecompositionGroup K
         (chosenFinitePlaceExtension (L := L) v).1)
-    (hgenerate :
-      Subgroup.closure
-          ({σ.1} : Set (Gal(L/K))) =
-        ⊤)
     (hprimary :
       σ.1 ∈
         CommGroup.primaryComponent
@@ -107,21 +103,10 @@ private theorem exists_finitePlacePrimary_localGlobalRepresentative
           (K := K) (L := L) v z = σ.1 ∧
       globalNormResidueMonoidHom K L
           (IdeleGroup.finitePlaceIdeleClass v z) = σ.1 := by
-  let : Algebra K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseAlgebra K L
-  let : Algebra L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureTopAlgebra L
-  let : IsScalarTower K L (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureScalarTower K L
-  let : IsScalarTower ℚ K (SeparableClosure ℚ) :=
-    numberFieldTowerSeparableClosureBaseScalarTower K L
   let := numberFieldTowerExtensionSubgroup_normal K L
-  obtain
-      ⟨τ, hτσ, hτdecomposition, hτdegree,
-        _hfinite, _hbase, _hintersection, _hcontainment,
-        n, hn, hdegree⟩ :=
-    exists_finitePlacePrimaryCyclotomicAuxiliaryFixedField
-      (K := K) (L := L) v p σ hgenerate hprimary
+  obtain ⟨τ, hτσ, hτdecomposition, hτdegree, n, hn, hdegree⟩ :=
+    exists_numberFieldTowerFinitePadicLift_of_finitePlace
+      (K := K) (L := L) v p σ
   have hprimaryQuotient :
       numberFieldTowerFiniteQuotientCoordinate
           (K := K) (L := L) τ ∈
@@ -242,7 +227,7 @@ theorem
     (σ :
       absoluteValueDecompositionGroup K
         (chosenFinitePlaceExtension (L := L) v).1)
-    (hgenerate :
+    (_hgenerate :
       Subgroup.closure ({σ.1} : Set (Gal(L/K))) = ⊤)
     (hprimary :
       σ.1 ∈ CommGroup.primaryComponent (Gal(L/K)) p.1)
@@ -254,7 +239,7 @@ theorem
         (IdeleGroup.finitePlaceIdeleClass v x) = σ.1 := by
   obtain ⟨z, hlocal, hglobal⟩ :=
     exists_finitePlacePrimary_localGlobalRepresentative
-      (K := K) (L := L) v p σ hgenerate hprimary
+      (K := K) (L := L) v p σ hprimary
   exact
     (globalNormResidue_finitePlaceIdeleClass_eq_of_localArtin_eq
       (K := K) (L := L) v x z (hx.trans hlocal.symm)).trans hglobal
@@ -322,273 +307,8 @@ theorem finitePlaceGlobalNormResidueFactor_comp_rangeRestrict
         g.rangeRestrict_surjective)
       ⟨f, hker⟩
 
-/-- Pointwise norm/restriction naturality, with the coercion from the
-homomorphism equality normalized once outside the descent construction. -/
-private theorem globalNormResidueMonoidHomOfEmbedding_norm_restriction_apply
-    (K : Type u) (K' : Type w) (L : Type v) (L' : Type x)
-    [Field K] [NumberField K]
-    [Field K'] [NumberField K']
-    [Field L] [NumberField L]
-    [Field L'] [NumberField L']
-    [Algebra K K'] [Algebra K L] [Algebra K L']
-    [Algebra K' L'] [Algebra L L']
-    [IsScalarTower K K' L'] [IsScalarTower K L L']
-    [FiniteDimensional K L] [IsAbelianGalois K L]
-    [FiniteDimensional K' L'] [IsAbelianGalois K' L']
-    [FiniteDimensional K K'] [IsGalois K K']
-    (j : L' →ₐ[ℚ] SeparableClosure ℚ)
-    (c : IdeleClassGroup K') :
-    ((AlgEquiv.restrictNormalHom L).comp
-        (AlgEquiv.restrictScalarsHom K))
-          (globalNormResidueMonoidHomOfEmbedding K' L' j c) =
-      globalNormResidueMonoidHomOfEmbedding K L
-        (j.comp (IsScalarTower.toAlgHom ℚ L L'))
-        (_root_.ideleClassNorm K K' c) := by
-  exact
-    DFunLike.congr_fun
-      (globalNormResidueMonoidHomOfEmbedding_norm_restriction
-        (K := K) (L := L) (K' := K') (L' := L') j) c
-
-/-- Norming one upper representative down a finite Galois base-change
-transports both its chosen local Artin value and its global norm-residue
-value.  All fields and places are explicit here, so no constructed
-fixed-field tower occurs in the declaration type. -/
-private opaque exists_finitePlaceNormDescent_localGlobalRepresentative
-    {M : Type w}
-    [Field M] [NumberField M]
-    [Algebra K M] [FiniteDimensional K M] [IsGalois K M]
-    [Algebra M L] [FiniteDimensional M L] [IsAbelianGalois M L]
-    [IsScalarTower K M L]
-    (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
-    (W : IsDedekindDomain.HeightOneSpectrum (𝓞 M))
-    (hWbelow : finitePlaceBelow (K := K) W = v)
-    (σM : Gal(L/M)) (σG : Gal(L/K))
-    (hrestrict :
-      ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K)) σM = σG)
-    (y : (W.adicCompletion M)ˣ)
-    (hy :
-      chosenFinitePlaceArtinMonoidHom
-          (K := M) (L := L) W y = σM)
-    (hglobalM :
-      globalNormResidueMonoidHom M L
-          (IdeleGroup.finitePlaceIdeleClass W y) = σM) :
-    ∃ z : (v.adicCompletion K)ˣ,
-      chosenFinitePlaceArtinMonoidHom
-          (K := K) (L := L) v z = σG ∧
-      globalNormResidueMonoidHom K L
-          (IdeleGroup.finitePlaceIdeleClass v z) = σG := by
-  let Wover :
-      {W' : IsDedekindDomain.HeightOneSpectrum (𝓞 M) //
-        finitePlaceBelow (K := K) W' = v} :=
-    ⟨W, hWbelow⟩
-  let :
-      Algebra (v.adicCompletion K) (W.adicCompletion M) :=
-    (finitePlaceAdicCompletionMap K M v Wover).toAlgebra
-  let z : (v.adicCompletion K)ˣ :=
-    LocalFieldTheory.normUnits
-      (v.adicCompletion K) (W.adicCompletion M) y
-  have hlocalNorm :
-      chosenFinitePlaceArtinMonoidHom
-          (K := K) (L := L) v z =
-        σG := by
-    have hnat :=
-      DFunLike.congr_fun
-        (chosenFinitePlaceArtinMonoidHom_norm_restriction_of_below_eq
-          (K := K) (L := L) (K' := M) (L' := L)
-          v W hWbelow) y
-    change
-      chosenFinitePlaceArtinMonoidHom (K := K) (L := L) v
-          (LocalFieldTheory.normUnits
-            (v.adicCompletion K) (W.adicCompletion M) y) =
-        σG
-    calc
-      chosenFinitePlaceArtinMonoidHom (K := K) (L := L) v
-          (LocalFieldTheory.normUnits
-            (v.adicCompletion K) (W.adicCompletion M) y) =
-        ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K))
-            (chosenFinitePlaceArtinMonoidHom
-              (K := M) (L := L) W y) := by
-                simpa only [MonoidHom.coe_comp, Function.comp_apply]
-                  using hnat.symm
-      _ = ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K)) σM :=
-        congrArg
-          (((AlgEquiv.restrictNormalHom L).comp
-            (AlgEquiv.restrictScalarsHom K)) : Gal(L / M) →* Gal(L / K)) hy
-      _ = σG := hrestrict
-  let j : L →ₐ[ℚ] SeparableClosure ℚ :=
-    AlgebraicNumberTheory.numberFieldSeparableClosureEmbedding L
-  have hjLower :
-      j.comp (IsScalarTower.toAlgHom ℚ L L) =
-        AlgebraicNumberTheory.numberFieldSeparableClosureEmbedding L := by
-    apply AlgHom.ext
-    intro a
-    rfl
-  have hnormClass :
-      _root_.ideleClassNorm K M
-          (IdeleGroup.finitePlaceIdeleClass W y) =
-        IdeleGroup.finitePlaceIdeleClass v z := by
-    simpa only [Wover, z] using
-      (IdeleGroup.ideleClassNorm_finitePlaceIdeleClass_eq_normUnits
-        (K := K) (L := M) v Wover y)
-  have hglobalNorm :
-      globalNormResidueMonoidHom K L
-          (IdeleGroup.finitePlaceIdeleClass v z) =
-        σG := by
-    calc
-      globalNormResidueMonoidHom K L
-          (IdeleGroup.finitePlaceIdeleClass v z) =
-          globalNormResidueMonoidHom K L
-            (_root_.ideleClassNorm K M
-              (IdeleGroup.finitePlaceIdeleClass W y)) :=
-        congrArg (globalNormResidueMonoidHom K L) hnormClass.symm
-      _ = globalNormResidueMonoidHomOfEmbedding K L
-          (j.comp (IsScalarTower.toAlgHom ℚ L L))
-          (_root_.ideleClassNorm K M
-            (IdeleGroup.finitePlaceIdeleClass W y)) := by
-        rw [hjLower,
-          ← globalNormResidueMonoidHom_eq_ofEmbedding_standard]
-      _ = ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K))
-          (globalNormResidueMonoidHomOfEmbedding M L j
-            (IdeleGroup.finitePlaceIdeleClass W y)) := by
-        apply Eq.symm
-        apply
-          globalNormResidueMonoidHomOfEmbedding_norm_restriction_apply
-      _ = ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K))
-          (globalNormResidueMonoidHom M L
-            (IdeleGroup.finitePlaceIdeleClass W y)) := by
-        exact congrArg
-          ((AlgEquiv.restrictNormalHom L).comp
-            (AlgEquiv.restrictScalarsHom K))
-          (DFunLike.congr_fun
-            (globalNormResidueMonoidHom_eq_ofEmbedding_standard
-              (K := M) (L := L))
-            (IdeleGroup.finitePlaceIdeleClass W y)).symm
-      _ = ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K)) σM :=
-        congrArg
-          ((AlgEquiv.restrictNormalHom L).comp
-            (AlgEquiv.restrictScalarsHom K)) hglobalM
-      _ = σG := hrestrict
-  exact ⟨z, hlocalNorm, hglobalNorm⟩
-
-/-- A primary generator at an explicit upper place can first be realized
-by the auxiliary construction and then normed through an explicit base
-change.  This short bridge keeps the auxiliary witness out of the
-cyclic-fixed-field construction. -/
-private opaque exists_finitePlacePrimaryNormDescent_localGlobalRepresentative
-    {M : Type w}
-    [Field M] [NumberField M]
-    [Algebra K M] [FiniteDimensional K M] [IsGalois K M]
-    [Algebra M L] [FiniteDimensional M L] [IsAbelianGalois M L]
-    [IsScalarTower K M L]
-    (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
-    (W : IsDedekindDomain.HeightOneSpectrum (𝓞 M))
-    (hWbelow : finitePlaceBelow (K := K) W = v)
-    (p : Nat.Primes)
-    (δM :
-      absoluteValueDecompositionGroup M
-        (chosenFinitePlaceExtension (L := L) W).1)
-    (hgenerate :
-      Subgroup.closure ({δM.1} : Set (Gal(L/M))) = ⊤)
-    (hprimary :
-      δM.1 ∈ CommGroup.primaryComponent (Gal(L/M)) p.1)
-    (σG : Gal(L/K))
-    (hrestrict :
-      ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K)) δM.1 = σG) :
-    ∃ z : (v.adicCompletion K)ˣ,
-      chosenFinitePlaceArtinMonoidHom
-          (K := K) (L := L) v z = σG ∧
-      globalNormResidueMonoidHom K L
-          (IdeleGroup.finitePlaceIdeleClass v z) = σG := by
-  obtain ⟨y, hy, hglobalM⟩ :=
-    exists_finitePlacePrimary_localGlobalRepresentative
-      (K := M) (L := L) W p δM hgenerate hprimary
-  exact
-    exists_finitePlaceNormDescent_localGlobalRepresentative
-      (K := K) (L := L) v W hWbelow
-      δM.1 σG hrestrict y hy hglobalM
-
-/-- Cyclic fixed-field descent turns a primary decomposition
-automorphism into a lower representative without exposing the constructed
-field tower in the declaration type. -/
-private opaque exists_finitePlacePrimary_cyclicFixedFieldRepresentative
-    (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
-    (p : Nat.Primes)
-    (δ :
-      absoluteValueDecompositionGroup K
-        (chosenFinitePlaceExtension (L := L) v).1)
-    (hprimary :
-      δ.1 ∈ CommGroup.primaryComponent (Gal(L/K)) p.1) :
-    ∃ z : (v.adicCompletion K)ˣ,
-      chosenFinitePlaceArtinMonoidHom
-          (K := K) (L := L) v z = δ.1 ∧
-      globalNormResidueMonoidHom K L
-          (IdeleGroup.finitePlaceIdeleClass v z) = δ.1 := by
-  let σG : Gal(L / K) := δ.1
-  let M := automorphismCyclicFixedField σG
-  let : NumberField M := NumberField.of_module_finite K M
-  let W := automorphismCyclicFixedPlace v σG
-  let σM : Gal(L / M) := automorphismOverCyclicFixedField σG
-  have hσMdecomposition :
-      σM ∈
-        absoluteValueDecompositionGroup M
-          (chosenFinitePlaceExtension (L := L) W).1 := by
-    exact
-      automorphismOverCyclicFixedField_mem_chosenFinitePlaceDecompositionGroup
-        (K := K) (L := L) v δ
-  let δM :
-      absoluteValueDecompositionGroup M
-        (chosenFinitePlaceExtension (L := L) W).1 :=
-    ⟨σM, hσMdecomposition⟩
-  have hσMrestrict : σM.restrictScalars K = σG :=
-    automorphismOverCyclicFixedField_restrictScalars σG
-  have hσMprimary :
-      σM ∈ CommGroup.primaryComponent (Gal(L / M)) p.1 := by
-    obtain ⟨n, hn⟩ := hprimary
-    have hnG : σG ^ (p.1 ^ n) = 1 := hn
-    refine ⟨n, ?_⟩
-    apply AlgEquiv.restrictScalars_injective K
-    change
-      (AlgEquiv.restrictScalarsHom K) (σM ^ (p.1 ^ n)) =
-        (AlgEquiv.restrictScalarsHom K) (1 : Gal(L / M))
-    rw [
-      map_pow,
-      AlgEquiv.restrictScalarsHom_apply,
-      hσMrestrict,
-      hnG,
-      map_one
-    ]
-  have hWbelow : finitePlaceBelow (K := K) W = v :=
-    finitePlaceBelow_automorphismCyclicFixedPlace
-      (K := K) (L := L) v σG
-  have hrestrictσM :
-      ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K)) σM =
-        σG := by
-    simpa only [
-      MonoidHom.coe_comp,
-      Function.comp_apply,
-      AlgEquiv.restrictNormalHom_id,
-      MonoidHom.id_apply,
-      AlgEquiv.restrictScalarsHom_apply
-    ] using hσMrestrict
-  exact
-    exists_finitePlacePrimaryNormDescent_localGlobalRepresentative
-      (K := K) (L := L) v W hWbelow p δM
-      (automorphismOverCyclicFixedField_generates σG)
-      hσMprimary σG hrestrictσM
-
-/-- On every primary component of the actual decomposition-group
-image, the one-place global norm-residue factor is the tautological
-inclusion.  An arbitrary primary element is reduced to the cyclic
-extension cut out by that element, where the auxiliary-field theorem
-above applies to its genuine generator. -/
+/-- The one-place global norm-residue factor is the subgroup inclusion on each primary component.
+The auxiliary lift is taken directly at the original place and primary automorphism. -/
 theorem finitePlaceGlobalNormResidueFactor_eq_subtype_on_primary
     (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     (p : ℕ) (hp : Fact p.Prime)
@@ -628,7 +348,7 @@ theorem finitePlaceGlobalNormResidueFactor_eq_subtype_on_primary
     exact ⟨n, congrArg Subtype.val hn⟩
   let pPrime : Nat.Primes := ⟨p, hp.out⟩
   obtain ⟨z, hlocal, hglobal⟩ :=
-    exists_finitePlacePrimary_cyclicFixedFieldRepresentative
+    exists_finitePlacePrimary_localGlobalRepresentative
       (K := K) (L := L) v pPrime δ hσprimary
   have hfactor :=
     DFunLike.congr_fun

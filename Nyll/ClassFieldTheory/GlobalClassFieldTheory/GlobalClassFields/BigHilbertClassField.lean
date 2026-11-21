@@ -74,6 +74,21 @@ def bigHilbertClassFieldQuotientEquivNarrowClassGroup :
       RayClass.NarrowClassGroup K :=
   RayClass.rayClassGroupNarrowZeroEquivNarrowClassGroup
 
+/-- On an idele representative, the big-Hilbert quotient equivalence is
+the canonical representative in the narrow class group. -/
+@[simp]
+theorem bigHilbertClassFieldQuotientEquivNarrowClassGroup_mk
+    (a : IdeleGroup K) :
+    bigHilbertClassFieldQuotientEquivNarrowClassGroup
+        (K := K)
+        (QuotientGroup.mk'
+          (bigHilbertClassFieldNormSubgroup (K := K))
+          (IdeleGroup.toStandardClass K a)) =
+      QuotientGroup.mk'
+        (RayClass.narrowDenominator (K := K)) a := by
+  exact RayClass.rayClassGroupEquivIdeleQuotient_mk_mk
+    (RayClass.Modulus.narrowOfFinite (0 : RayClass.FiniteModulus K)) a
+
 /-- The narrow modulus with zero finite part is a defining modulus for the
 big-Hilbert norm subgroup. -/
 theorem bigHilbertClassFieldNormSubgroup_isDefiningModulus :

@@ -10,6 +10,7 @@ public import Mathlib.SetTheory.Cardinal.Finite
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.FieldUnitsHerbrand
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.IntegerUnitsHerbrand
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.NormalBasisCohomology
+public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
 
 /-!
 # The local class-field axiom
@@ -34,7 +35,11 @@ open scoped ValuativeRel
 open IsNonarchimedeanLocalField
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
+section Arithmetic
+
+universe u
+
+variable (K L : Type u) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
   [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
@@ -91,14 +96,40 @@ private theorem localIntegerUnitsHerbrandQuotient_eq_one
       (localIntegerUnitsHerbrandDefined K L g hg).2 = 1 :=
   Classical.choose_spec (exists_localIntegerUnitsHerbrandDefinedAndEqOne K L g hg)
 
+/-- The spectral local-field structures yield the integral Tate cardinalities on the
+original field units, using the same specified generator throughout. -/
+theorem localFieldUnits_integralTate_card_of_generator
+    (g : Gal(L/K))
+    (hg : ∀ σ : Gal(L/K), σ ∈ Subgroup.zpowers g) :
+    Nat.card (IntegralGroupCohomology.Universe.tate (Rep.ofAlgebraAutOnUnits K L) 0) =
+        Module.finrank K L ∧
+      Nat.card (IntegralGroupCohomology.Universe.tate (Rep.ofAlgebraAutOnUnits K L) (-1)) =
+        1 :=
+  fieldUnits_integralTate_card_of_integerUnits_herbrand_eq_one K L g hg
+    (localIntegerUnitsHerbrandDefined K L g hg)
+    (localIntegerUnitsHerbrandQuotient_eq_one K L g hg)
+
+end Arithmetic
+
+variable (K L : Type) [Field K] [Field L] [Algebra K L]
+  [FiniteDimensional K L] [IsGalois K L]
+  [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+  [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
+  [IsNonarchimedeanLocalField L]
+  [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
+  [IsIntegralClosure 𝒪[L] 𝒪[K] L] [Module.Finite 𝒪[K] 𝒪[L]]
+
 /-- Finiteness of actual unit Tate `H⁰`, produced from the same local
 normal-basis witness as the cardinality theorem. -/
 theorem localFieldUnitsTateH0FiniteOfGenerator
     (g : Gal(L/K))
     (hg : ∀ sigma : Gal(L / K), sigma ∈ Subgroup.zpowers g) :
     Finite (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) :=
-  unitsTateH0FiniteOfIntegerUnitsHerbrand K L g hg
-    (localIntegerUnitsHerbrandDefined K L g hg)
+  Nat.finite_of_card_ne_zero
+    (((IntegralGroupCohomology.Universe.card_tate_eq_original
+      (Rep.ofAlgebraAutOnUnits K L) 0).symm.trans
+      (localFieldUnits_integralTate_card_of_generator K L g hg).1).trans_ne
+      Module.finrank_pos.ne')
 
 /-- The local class-field-axiom theorem for a specified generator of the cyclic Galois group. -/
 theorem localFieldUnits_tate_card_of_generator
@@ -107,9 +138,10 @@ theorem localFieldUnits_tate_card_of_generator
     letI := localFieldUnitsTateH0FiniteOfGenerator K L g hg
     Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) = Module.finrank K L ∧
       Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) = 1 := by
-  exact fieldUnits_tate_card_of_integerUnits_herbrand_eq_one
-    K L g hg (localIntegerUnitsHerbrandDefined K L g hg)
-      (localIntegerUnitsHerbrandQuotient_eq_one K L g hg)
+  let M := Rep.ofAlgebraAutOnUnits K L
+  have h := localFieldUnits_integralTate_card_of_generator K L g hg
+  exact ⟨(IntegralGroupCohomology.Universe.card_tate_eq_original M 0).symm.trans h.1,
+    (IntegralGroupCohomology.Universe.card_tate_eq_original M (-1)).symm.trans h.2⟩
 
 /-- States the theorem `localFieldUnitsTateH0FiniteOfIsCyclic`. -/
 theorem localFieldUnitsTateH0FiniteOfIsCyclic

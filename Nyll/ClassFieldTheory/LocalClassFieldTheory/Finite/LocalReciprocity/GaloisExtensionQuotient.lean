@@ -162,5 +162,18 @@ def baseFixingExtensionQuotientEquivGaloisGroup
         (IntermediateField.equivOfEq
           (InfiniteGalois.fixedField_fixingSubgroup E))))
 
+/-- Provides the instance `baseFixingExtensionQuotient_finite`. -/
+noncomputable instance baseFixingExtensionQuotient_finite
+    (E : IntermediateField K Ω) [FiniteDimensional K E] [IsGalois K E] :
+    Finite ((closedFixingSubgroup K Ω
+        (⊥ : IntermediateField K Ω)).toSubgroup ⧸
+      extensionSubgroup
+        (closedFixingSubgroup K Ω (⊥ : IntermediateField K Ω))
+        (closedFixingSubgroup K Ω E)
+        (fixingSubgroupLeBase K Ω E)) :=
+  (baseFixingExtensionQuotientEquivGaloisGroup K Ω E).toEquiv.finite_iff.mpr
+    inferInstance
+
+
 end
 end LocalClassFieldTheory

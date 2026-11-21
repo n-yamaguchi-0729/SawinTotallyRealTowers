@@ -17,9 +17,11 @@ Only explicitly selected safe declarations are roots. Dependencies are handled b
 private def canonicalName (label spelling : String) : IO Name := do
   let some name := Syntax.decodeNameLit ("`" ++ spelling)
     | throw (IO.userError s!"Invalid {label}: {spelling}")
-  unless name.toString == spelling do
+  -- `Name.toString` deliberately leaves macro scopes unescaped for display.
+  -- Selectors must instead round trip every original string/numeric component.
+  unless Name.toStringWithSep "." true name == spelling do
     throw (IO.userError s!"Non-roundtripping {label}: {spelling}")
-  unless Syntax.decodeNameLit ("`" ++ name.toString) == some name do
+  unless Syntax.decodeNameLit ("`" ++ Name.toStringWithSep "." true name) == some name do
     throw (IO.userError s!"Name roundtrip failed for {label}: {spelling}")
   return name
 

@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
+public import Nyll.GaloisCohomology.Cyclic.TateFixedCycles
 
 /-!
 # Degree-zero Tate cohomology and the norm quotient
@@ -104,6 +105,27 @@ def H0TateUnitsIsoNormQuotient (K L : Type)
   let := AlgEquiv.fintype K L
   exact (IntegralGroupCohomology.tateIsoOriginal (Rep.ofAlgebraAutOnUnits K L) 0).symm ≪≫
     (integralH0TateUnitsAddEquivNormQuotient K L).toIntLinearEquiv.toModuleIso
+
+/-- The native norm-quotient route evaluates on the actual fixed-unit class. -/
+theorem H0TateUnitsIsoNormQuotient_fixedClass (K L : Type)
+    [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
+    (x : unitsInvariantSubmodule K L) :
+    let := AlgEquiv.fintype K L
+    (H0TateUnitsIsoNormQuotient K L).hom
+        (TateCohomology.fixedClass (Rep.ofAlgebraAutOnUnits K L) x) =
+      Additive.ofMul (normClass K L (Additive.toMul (invariantsUnitsAddEquivBaseUnits K L x))) := by
+  intro hFintype
+  let A := Rep.ofAlgebraAutOnUnits K L
+  have hx : (tateUnitsH0IsoInvariantsQuotient K L).inv
+      (Submodule.Quotient.mk x) = TateCohomology.fixedClass A x := by
+    change (tateUnitsH0IsoInvariantsQuotient K L).inv
+      ((unitsTateH0NormSubmodule K L).mkQ x) = _
+    rw [← tateUnitsH0IsoInvariantsQuotient_fixedClass K L x, Iso.hom_inv_id_apply]
+  have h := integralUnitsTateClass_original K L x
+  rw [hx] at h
+  change integralH0TateUnitsAddEquivNormQuotient K L
+    ((IntegralGroupCohomology.tateIsoOriginal A 0).inv (TateCohomology.fixedClass A x)) = _
+  rw [h, integralH0TateUnitsAddEquivNormQuotient_class]
 
 /-- The original literal-integer comparison is the specialization of the
 actual integral norm-quotient comparison. -/

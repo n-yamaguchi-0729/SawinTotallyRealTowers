@@ -57,7 +57,6 @@ theorem maximalRealProTwo_generatorRank :
     maximalRealProPOutside 2 sawinRationalPrimeSupport
   let G : Type := M ≃ₐ[ℚ] M
   let : IsGalois ℚ M := maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
-  let : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   let : (closedPowerCommutator 2 G).Normal := closedPowerCommutator_normal 2 G
   let : IsClosed (closedPowerCommutator 2 G : Set G) :=
     isClosed_closedPowerCommutator 2 G

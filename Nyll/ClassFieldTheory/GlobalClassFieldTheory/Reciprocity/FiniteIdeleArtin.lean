@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceContraction
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.Algebra.FinprodFibers
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Core
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -107,14 +111,14 @@ theorem finitePlaceArtinFactors_hasFiniteMulSupport
           (K := K) (L := L) v
           (IdeleGroup.finiteComponent v a)) := by
   let S : Set (HeightOneSpectrum (𝓞 K)) :=
-    {v | a.2 v ∉ (v.adicCompletionIntegers K).units}
+    {v | IdeleGroup.finiteCoordinates a v ∉ (v.adicCompletionIntegers K).units}
   let T : Set (HeightOneSpectrum (𝓞 K)) :=
     {v | ∃ W : HeightOneSpectrum (𝓞 L),
       W.asIdeal.LiesOver v.asIdeal ∧
         ¬ Algebra.IsUnramifiedAt (𝓞 K) W.asIdeal}
   have hS : S.Finite :=
     Filter.eventually_cofinite.mp
-      (FiniteIdeleGroup.eventually_mem_localUnits a.2)
+      (FiniteIdeleGroup.eventually_mem_localUnits (IdeleGroup.finiteCoordinates a))
   have hT : T.Finite :=
     AlgebraicNumberTheory.Ramification.finite_ramified_base_heightOne_primes
       (𝓞 K) (𝓞 L)
@@ -444,7 +448,7 @@ theorem finitePlaceNormArtinFactors_hasFiniteMulSupport
             (W.adicCompletion M)
             (IdeleGroup.finiteComponent W a))) := by
   let S : Set (HeightOneSpectrum (𝓞 M)) :=
-    {W | a.2 W ∉ (W.adicCompletionIntegers M).units}
+    {W | IdeleGroup.finiteCoordinates a W ∉ (W.adicCompletionIntegers M).units}
   let T : Set (HeightOneSpectrum (𝓞 K)) :=
     {v | ∃ V : HeightOneSpectrum (𝓞 L),
       V.asIdeal.LiesOver v.asIdeal ∧
@@ -453,7 +457,7 @@ theorem finitePlaceNormArtinFactors_hasFiniteMulSupport
     {W | finitePlaceBelow (K := K) W ∈ T}
   have hS : S.Finite :=
     Filter.eventually_cofinite.mp
-      (FiniteIdeleGroup.eventually_mem_localUnits a.2)
+      (FiniteIdeleGroup.eventually_mem_localUnits (IdeleGroup.finiteCoordinates a))
   have hT : T.Finite :=
     AlgebraicNumberTheory.Ramification.finite_ramified_base_heightOne_primes
       (𝓞 K) (𝓞 L)

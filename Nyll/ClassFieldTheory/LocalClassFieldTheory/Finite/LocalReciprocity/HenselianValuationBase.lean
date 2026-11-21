@@ -34,7 +34,9 @@ open ClassFormation
 
 noncomputable section
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+universe u
+
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 local notation "G" => Gal(SeparableClosure K / K)

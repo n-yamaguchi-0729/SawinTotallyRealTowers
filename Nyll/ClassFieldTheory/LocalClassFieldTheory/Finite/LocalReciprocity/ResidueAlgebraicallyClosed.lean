@@ -28,7 +28,7 @@ namespace LocalClassFieldTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 variable {Omega : Type u} [Field Omega] [IsAlgClosed Omega]
 
@@ -80,11 +80,11 @@ theorem valuationSubring_residueField_isAlgClosed
   rw [← hqmap]
   simp [Polynomial.eval_map, hxrootA]
 
-/-! ## Residues under a purely inseparable ambient extension -/
+/-! ## Residue maps for pullback valuation rings -/
 
-section PurelyInseparableComap
+section Comap
 
-variable {F Omega : Type u} [Field F] [Field Omega] [Algebra F Omega]
+variable {F : Type v} {Omega : Type u} [Field F] [Field Omega] [Algebra F Omega]
 
 /-- The inclusion from the pullback of a valuation ring to the ambient
 valuation ring. -/
@@ -148,6 +148,14 @@ noncomputable def valuationSubringComapResidueMap
         (IsLocalRing.residue (A.comap (algebraMap F Omega)) x) =
       IsLocalRing.residue A (valuationSubringComapMap (F := F) A x) :=
   rfl
+
+end Comap
+
+/-! ## Residues under a purely inseparable ambient extension -/
+
+section PurelyInseparableComap
+
+variable {F Omega : Type u} [Field F] [Field Omega] [Algebra F Omega]
 
 /-- A purely inseparable extension remains purely inseparable after passing
 to the residue fields of a valuation ring and its pullback.  In positive

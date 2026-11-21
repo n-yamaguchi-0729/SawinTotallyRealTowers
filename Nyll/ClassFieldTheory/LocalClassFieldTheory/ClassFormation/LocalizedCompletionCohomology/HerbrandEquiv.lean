@@ -11,6 +11,7 @@ public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Localiz
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.CompMulEquiv
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Induced
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.FieldUnits
 public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
 public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
 public import Nyll.GaloisCohomology.Cyclic.TateH0.Main
@@ -81,23 +82,11 @@ noncomputable def localHerbrandH0EquivUnitsTateH0
   let e :=
     decompositionGroupEquivAlgebraicLocalizationAut
       vK hvK w
-  let eTate :
-      (unitsInvariantSubmodule vK.Completion
-          (LocalizedCompletion vK w) ⧸
-        unitsTateH0NormSubmodule vK.Completion
-          (LocalizedCompletion vK w)) ≃+
-        tateCohomology
-          (Rep.ofAlgebraAutOnUnits vK.Completion
-            (LocalizedCompletion vK w)) 0 :=
-    (tateUnitsH0IsoInvariantsQuotient
-      vK.Completion
-      (LocalizedCompletion vK w)).symm.toLinearEquiv.toAddEquiv
-  exact
-    (herbrandH0CompMulEquiv
-      (A := (LocalizedCompletion vK w)ˣ) e).trans
-      ((herbrandH0MulEquivInvariantsNormQuotient
-        vK.Completion (LocalizedCompletion vK w)).trans
-          eTate.toMultiplicative)
+  exact (herbrandH0CompMulEquiv (A := (LocalizedCompletion vK w)ˣ) e).trans
+    (AddEquiv.toMultiplicativeRight
+      (tateH0IsoHerbrandH0
+        (G := Gal(LocalizedCompletion vK w / vK.Completion))
+        (A := (LocalizedCompletion vK w)ˣ)).symm.toLinearEquiv.toAddEquiv)
 
 /-- Degree-minus-one multiplicative Herbrand cohomology for a decomposition
 group identified with degree-minus-one Tate cohomology of localized units. -/
@@ -188,23 +177,9 @@ noncomputable def localHerbrandH0EquivNormQuotient
       NormQuotient vK.Completion
         (LocalizedCompletion vK w) := by
   intro hK hSMulK hCompletion hGlobal hTower hFinite hGalois hFintype hAction
-  let e0 :=
-    localHerbrandH0EquivUnitsTateH0 vK hvK w
-  let eAdd :
-      tateCohomology
-          (Rep.ofAlgebraAutOnUnits vK.Completion
-            (LocalizedCompletion vK w)) 0 ≃+
-        Additive
-          (NormQuotient vK.Completion
-            (LocalizedCompletion vK w)) :=
-    (H0TateUnitsIsoNormQuotient
-      vK.Completion
-      (LocalizedCompletion vK w)).toLinearEquiv.toAddEquiv
-  exact e0.trans <|
-    eAdd.toMultiplicative.trans <|
-      MulEquiv.multiplicativeAdditive
-        (NormQuotient vK.Completion
-          (LocalizedCompletion vK w))
+  exact (herbrandH0CompMulEquiv (A := (LocalizedCompletion vK w)ˣ)
+    (decompositionGroupEquivAlgebraicLocalizationAut vK hvK w)).trans
+      (herbrandH0UnitsEquivNormQuotient vK.Completion (LocalizedCompletion vK w))
 
 
 end LocalTateComparison

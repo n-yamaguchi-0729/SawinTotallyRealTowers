@@ -46,7 +46,7 @@ noncomputable def Internal.principalUnitQuotientCarrierToFull
     Internal.principalUnitQuotientCarrier F n →*
       F.valuationSubringˣ ⧸
         (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) (n + 1) :=
-  ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+  ((higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
       1 (n + 1)).subtype.comp
     ((higherPrincipalUnitGroup.toPrincipalUnitFiltration
       F).principalUnitSubquotientEquivClassInQuotientOfLe
@@ -89,12 +89,12 @@ finite unit quotient. -/
 def Internal.principalUnitToClassInFullQuotient
     (F : CompleteDVF.{u, v} K) (n : ℕ) :
     (LocalFieldTheory.DiscreteValuationField.CompleteDVF.higherPrincipalUnitGroup F) 1 →*
-      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).principalUnitSubgroupClassInQuotient
+      (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).levelClassInQuotient
         1 (n + 1) where
   toFun x :=
     ⟨QuotientGroup.mk (x : F.valuationSubringˣ),
       (higherPrincipalUnitGroup.toPrincipalUnitFiltration
-        F).principalUnitSubgroupClassInQuotient_mk_mem
+        F).levelClassInQuotient_mk_mem
         x.property⟩
   map_one' := by ext; rfl
   map_mul' x y := by ext; rfl

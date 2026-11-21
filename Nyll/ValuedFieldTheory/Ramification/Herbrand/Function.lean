@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Mathlib.SetTheory.Cardinal.Finite
+public import Mathlib.GroupTheory.Coset.Card
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.Ramification
 public import Mathlib.Algebra.Order.Floor.Ring
 public import Mathlib.Topology.Order.MonotoneContinuity
@@ -372,6 +373,58 @@ theorem inverseHerbrandFunction_strictMono : StrictMono (inverseHerbrandFunction
   intro s t hst
   apply (herbrandFunction_strictMono F).lt_iff_lt.mp
   simpa using hst
+
+/-- The inverse Herbrand function sends each nonnegative integer to an
+integer. This uses divisibility by the lower-group order on the interval
+containing the inverse value. -/
+theorem inverseHerbrandFunction_nat_eq_natFloor (n : ℕ) :
+    inverseHerbrandFunction F (n : ℝ) = (⌊inverseHerbrandFunction F (n : ℝ)⌋₊ : ℝ) := by
+  let s := inverseHerbrandFunction F (n : ℝ)
+  let m := ⌊s⌋₊
+  let d := Nat.card (F.lower (m + 1))
+  have hzero : inverseHerbrandFunction F 0 = 0 := by
+    simpa only [herbrandFunction_zero] using inverseHerbrandFunction_herbrandFunction F 0
+  have hs : 0 ≤ s := hzero ▸
+    (inverseHerbrandFunction_strictMono F).monotone (Nat.cast_nonneg n)
+  have hm : (m : ℝ) ≤ s := Nat.floor_le hs
+  have hnext : s < (m : ℝ) + 1 := Nat.lt_floor_add_one s
+  obtain ⟨a, ha⟩ : d ∣ Nat.card (F.lower 0) :=
+    Subgroup.card_dvd_of_le (F.antitone (Nat.zero_le (m + 1)))
+  have hdiv : d ∣ ∑ i ∈ Finset.range m, Nat.card (F.lower (i + 1)) := by
+    apply Finset.dvd_sum
+    intro i hi
+    exact Subgroup.card_dvd_of_le
+      (F.antitone (Nat.succ_le_succ (Finset.mem_range.mp hi).le))
+  obtain ⟨b, hb⟩ := hdiv
+  have hsum : (∑ i ∈ Finset.range m, (Nat.card (F.lower (i + 1)) : ℝ)) = (d : ℝ) * b := by
+    rw [← Nat.cast_sum, hb, Nat.cast_mul]
+  have hbase : (Nat.card (F.lower 0) : ℝ) ≠ 0 :=
+    Nat.cast_ne_zero.mpr (Nat.ne_of_gt Finite.card_pos)
+  have hd : (d : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.ne_of_gt Finite.card_pos)
+  have hvalue : (n : ℝ) =
+      ((∑ i ∈ Finset.range m, (Nat.card (F.lower (i + 1)) : ℝ)) + (s - m) * d) /
+        Nat.card (F.lower 0) :=
+    (herbrandFunction_inverseHerbrandFunction F (n : ℝ)).symm.trans
+      (herbrandFunction_eq_card_sum_of_mem_Icc F m hm hnext.le)
+  have hscaled := (eq_div_iff hbase).mp hvalue
+  rw [hsum, ha, Nat.cast_mul] at hscaled
+  have hdiff : (n : ℝ) * a = b + (s - m) := by
+    apply mul_right_cancel₀ hd
+    calc
+      _ = (n : ℝ) * ((d : ℝ) * a) := by ring
+      _ = (d : ℝ) * b + (s - m) * d := hscaled
+      _ = _ := by ring
+  let k : ℤ := (n : ℤ) * a - b
+  have hk : (k : ℝ) = s - m := by
+    push_cast [k]
+    linarith only [hdiff]
+  have hnonneg : (0 : ℝ) ≤ (k : ℝ) := by rw [hk]; exact sub_nonneg.mpr hm
+  have hlt : (k : ℝ) < 1 := by rw [hk]; linarith only [hnext]
+  have hnonneg' : 0 ≤ k := by exact_mod_cast hnonneg
+  have hlt' : k < 1 := by exact_mod_cast hlt
+  have hzero' : k = 0 := by omega
+  apply sub_eq_zero.mp
+  rw [← hk, hzero', Int.cast_zero]
 
 /-- States the theorem `inverseHerbrandFunction_surjective`. -/
 theorem inverseHerbrandFunction_surjective : Function.Surjective (inverseHerbrandFunction F) := by

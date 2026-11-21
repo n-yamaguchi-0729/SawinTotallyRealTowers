@@ -10,6 +10,7 @@ public import Mathlib.Algebra.Group.Equiv.TypeTags
 public import Mathlib.GroupTheory.QuotientGroup.Defs
 public import Mathlib.RingTheory.Norm.Transitivity
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.TateComparison
 public import Nyll.GaloisCohomology.Cyclic.TateH0.Invariants
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormQuotient
 
@@ -38,16 +39,8 @@ variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
 representation are the same additive group. -/
 def additiveFixedUnitsEquivInvariants :
     Additive (fixedSubgroup (Gal(L / K)) Lˣ) ≃+
-      unitsInvariantSubmodule K L where
-  toFun x := ⟨Additive.ofMul ((Additive.toMul x : fixedSubgroup (Gal(L / K)) Lˣ) : Lˣ), by
-    intro σ
-    exact congrArg Additive.ofMul ((Additive.toMul x).property σ)⟩
-  invFun x := Additive.ofMul ⟨Additive.toMul (x : Additive Lˣ), by
-    intro σ
-    exact Additive.ofMul.injective (x.property σ)⟩
-  left_inv x := rfl
-  right_inv x := rfl
-  map_add' x y := rfl
+      unitsInvariantSubmodule K L :=
+  fixedSubgroupAddEquivInvariants (G₀ := Gal(L / K)) (A₀ := Lˣ)
 
 end LocalClassFieldTheory
 

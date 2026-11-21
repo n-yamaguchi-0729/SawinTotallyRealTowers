@@ -51,7 +51,7 @@ private theorem linearIndependent_of_triangular_evaluation
   have hzero : ∀ m : ℕ, ∀ hm : m < n, a ⟨m, hm⟩ = 0 := by
     intro m
     induction m using Nat.strong_induction_on with
-    | h m ih =>
+    | ind m ih =>
       intro hm
       let j : Fin n := ⟨m, hm⟩
       have heval : ∑ l, a l * v l (x j) = 0 := by

@@ -38,28 +38,10 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicDirectTargetBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
-
-noncomputable local instance equalCharacteristicDirectTargetLevelAlgebra
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedLevelField F n) :=
-  RingHom.toAlgebra
-    ((algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)
-        (equalCharacteristicCompletedLevelField F n)).comp
-      (algebraMap F.residueField⸨X⸩
-        (equalCharacteristicCompletedUnramifiedField F.residueField)))
-
-local instance equalCharacteristicDirectTargetScalarTower
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsScalarTower F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField)
-      (equalCharacteristicCompletedLevelField F n) :=
-  IsScalarTower.of_algebraMap_eq' rfl
+attribute [local instance]
+  equalCharacteristicCompletedLevelBaseAlgebra
+  equalCharacteristicCompletedLevelLaurentAlgebra
+  equalCharacteristicCompletedLevelScalarTower
 
 /-- The direct analytic target parameter is exactly the image of the
 changed Laurent uniformizer `uT`. -/

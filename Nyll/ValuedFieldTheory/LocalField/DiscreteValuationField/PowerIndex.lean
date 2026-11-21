@@ -473,9 +473,9 @@ theorem card_principalUnit_nthPowerQuotient_eq_subquotient_of_image_eq
     CompleteDVF.higherPrincipalUnitGroup.toPrincipalUnitFiltration
       F
   let : Finite
-      (U.principalUnitSubgroup 1 ⧸
-        (U.principalUnitSubgroup m).subgroupOf
-          (U.principalUnitSubgroup 1)) :=
+      (U.level 1 ⧸
+        (U.level m).subgroupOf
+          (U.level 1)) :=
     Finite.of_equiv (U.principalUnitSubquotient 1 m)
       (U.principalUnitSubquotientConcreteEquiv 1 m).toEquiv
   calc
@@ -484,9 +484,9 @@ theorem card_principalUnit_nthPowerQuotient_eq_subquotient_of_image_eq
           (powMonoidHom n : ((CompleteDVF.higherPrincipalUnitGroup F) 1) →*
             ((CompleteDVF.higherPrincipalUnitGroup F) 1)).range) =
         Nat.card
-          (U.principalUnitSubgroup 1 ⧸
-            (U.principalUnitSubgroup m).subgroupOf
-              (U.principalUnitSubgroup 1)) := by
+          (U.level 1 ⧸
+            (U.level m).subgroupOf
+              (U.level 1)) := by
       exact Nat.card_congr
         (QuotientGroup.quotientMulEquivOfEq hpow).toEquiv
     _ = Nat.card (U.principalUnitSubquotient 1 m) :=

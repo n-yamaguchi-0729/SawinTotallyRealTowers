@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerAnnihilator
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
 
@@ -33,22 +34,13 @@ open ClassFieldTower.ProP KummerTheory
 variable (K : Type) [Field K] [NumberField K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance finitePlaceUnramifiedArtinKummerTopology :
-    TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance finitePlaceUnramifiedArtinKummerDiscreteTopology :
-    DiscreteTopology (ZMod (n : ℕ)) := discreteTopology_bot _
-local instance finitePlaceUnramifiedArtinKummerModule
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
-local instance finitePlaceUnramifiedArtinKummerValuativeRel
-    (v : HeightOneSpectrum (𝓞 K)) : ValuativeRel (v.adicCompletion K) :=
-  finitePlaceAdicCompletionValuativeRel K v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
 
-local instance finitePlaceUnramifiedArtinKummerLocalField
-    (v : HeightOneSpectrum (𝓞 K)) : IsNonarchimedeanLocalField (v.adicCompletion K) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField K v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
 
 omit [Fact ((n : ℕ).Prime)] in
 /-- A global primitive root remains primitive in the actual finite-place

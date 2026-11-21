@@ -718,7 +718,7 @@ theorem forgetDistinguishedLog_injective :
     intro v
     have hv := congrFun (congrArg Prod.snd hxy) v
     exact
-      (div_left_inj'
+      (div_left_inj₀
         (finiteLogWeight_ne_zero (K := K) S v)).mp hv
   apply Subtype.ext
   funext p

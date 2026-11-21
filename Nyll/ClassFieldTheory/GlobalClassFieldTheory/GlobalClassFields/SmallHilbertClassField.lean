@@ -11,6 +11,7 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Topology
 public import Mathlib.NumberTheory.NumberField.ClassNumber
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.MathlibTopologyComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
@@ -39,20 +40,13 @@ open NumberField
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/-- Fix the canonical commutative idèle-class structure used by the Hilbert
-class-field quotients in this module. -/
-local instance smallHilbertClassFieldIdeleClassGroupIsMulCommutative
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
 
-/-- The norm subgroup defining the small Hilbert class field.  The
-principal subgroup is included before passing to the idele class group so
-that the third-isomorphism equivalence applies literally. -/
+/-- The norm subgroup defining the small Hilbert class field is the image
+of the integral-principal subgroup of ideles. -/
 def smallHilbertClassFieldNormSubgroup :
     Subgroup (IdeleClassGroup K) :=
   Subgroup.map
-    (QuotientGroup.mk' (IdeleGroup.principalSubgroup K))
+    (IdeleGroup.toStandardClass K)
     (IdeleGroup.integralAtFinitePlaces (K := K) ⊔
       IdeleGroup.principalSubgroup K)
 
@@ -61,13 +55,30 @@ class group. -/
 def smallHilbertClassFieldQuotientEquivClassGroup :
     IdeleClassGroup K ⧸
         smallHilbertClassFieldNormSubgroup (K := K) ≃*
-      ClassGroup (𝓞 K) :=
-  (QuotientGroup.quotientQuotientEquivQuotient
-      (IdeleGroup.principalSubgroup K)
-      (IdeleGroup.integralAtFinitePlaces (K := K) ⊔
-        IdeleGroup.principalSubgroup K)
-      le_sup_right).trans
-    (IdeleGroup.quotientIntegralSupPrincipalEquiv (K := K))
+      ClassGroup (𝓞 K) := by
+  have hprincipal : IdeleGroup.principalSubgroup K ≤ (IdeleGroup.idealClass (K := K)).ker := by
+    rintro _ ⟨x, rfl⟩
+    exact IdeleGroup.idealClass_principalIdele x
+  let f : IdeleClassGroup K →* ClassGroup (𝓞 K) :=
+    IdeleGroup.liftToStandardClass K (IdeleGroup.idealClass (K := K)) hprincipal
+  have hcomp : f.comp (IdeleGroup.toStandardClass K) = IdeleGroup.idealClass (K := K) := by
+    apply MonoidHom.ext
+    intro a
+    exact IdeleGroup.liftToStandardClass_toStandardClass K (IdeleGroup.idealClass (K := K))
+      hprincipal a
+  have hker : smallHilbertClassFieldNormSubgroup (K := K) = f.ker := by
+    apply Subgroup.comap_injective (IdeleGroup.toStandardClass_surjective K)
+    rw [smallHilbertClassFieldNormSubgroup, Subgroup.comap_map_eq,
+      IdeleGroup.toStandardClass_ker, sup_eq_left.mpr le_sup_right,
+      MonoidHom.comap_ker, hcomp]
+    exact IdeleGroup.ordinaryIdealClassSubgroup_eq_ker
+  have hsurj : Function.Surjective f := by
+    intro c
+    obtain ⟨a, rfl⟩ := IdeleGroup.idealClass_surjective c
+    exact ⟨IdeleGroup.toStandardClass K a,
+      DFunLike.congr_fun hcomp a⟩
+  exact (QuotientGroup.quotientMulEquivOfEq hker).trans
+    (QuotientGroup.quotientKerEquivOfSurjective f hsurj)
 
 /-- The small-Hilbert norm subgroup is open. -/
 theorem smallHilbertClassFieldNormSubgroup_isOpen :
@@ -80,7 +91,7 @@ theorem smallHilbertClassFieldNormSubgroup_isOpen :
         IdeleGroup.integralAtFinitePlaces (K := K) :=
     by
       intro a ha
-      change a.2 ∈ FiniteIdeleGroup.integralSubgroup (K := K)
+      change IdeleGroup.finiteCoordinates a ∈ FiniteIdeleGroup.integralSubgroup (K := K)
       rw [← RayClass.finiteCongruenceSubgroup_zero (K := K)]
       exact ha.2
   have hden :
@@ -97,7 +108,7 @@ theorem smallHilbertClassFieldNormSubgroup_isOpen :
     Subgroup.isOpen_mono hden
       (RayClass.isOpen_ideleCongruenceSubgroup 0)
   rw [smallHilbertClassFieldNormSubgroup, Subgroup.coe_map]
-  exact QuotientGroup.isOpenMap_coe _ hopen
+  exact IdeleGroup.isOpenMap_toStandardClass K _ hopen
 
 /-- The small-Hilbert norm subgroup is closed. -/
 theorem smallHilbertClassFieldNormSubgroup_isClosed :
@@ -157,7 +168,7 @@ theorem smallHilbertClassFieldNormSubgroup_isDefiningModulus :
       (0 : RayClass.Modulus K).ideleCongruenceSubgroup ≤
         IdeleGroup.integralAtFinitePlaces (K := K) := by
     intro a ha
-    change a.2 ∈ FiniteIdeleGroup.integralSubgroup (K := K)
+    change IdeleGroup.finiteCoordinates a ∈ FiniteIdeleGroup.integralSubgroup (K := K)
     rw [← RayClass.finiteCongruenceSubgroup_zero (K := K)]
     exact ha.2
   rw [IsDefiningModulus,

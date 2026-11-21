@@ -93,6 +93,8 @@ def main():
     parser.add_argument("--config", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--partition", action="store_true")
+    parser.add_argument("--proof-only", action="store_true",
+                        help="Require NanoDa and axiom/coverage audits, without optional official replay")
     args = parser.parse_args()
     config = generate_manifest.load_json(args.config)
     manifest, report = generate_manifest.analyze(args.root, config)
@@ -104,7 +106,9 @@ def main():
     keys = list(partition(args.root, manifest, config)) if args.partition else ["all"]
     # The matrix is derived from the exact current source, never a maintained list
     # which could silently omit a newly added library.
-    plan = {"shard": keys}
+    # Every shard retains NanoDa and the axiom/coverage audit. Official replay
+    # is additionally required unless the caller explicitly selects proof-only.
+    plan = {"shard": keys, "phase": ["proof"] if args.proof_only else ["proof", "replay"]}
     (args.output / "matrix.json").write_text(json.dumps(plan) + "\n")
     print(json.dumps(plan))
 

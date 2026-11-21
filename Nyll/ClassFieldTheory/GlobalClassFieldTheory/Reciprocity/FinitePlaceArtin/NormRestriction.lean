@@ -6,8 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.CrossLocalRestriction
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.NormRestriction
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalizedCompletionCohomology.Algebra
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
@@ -131,10 +133,10 @@ private theorem finitePlaceArtinConcreteNormUnits
   let D := vK'.Completion
   let eC :
       C ≃+* v.adicCompletion K :=
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+    (finitePlaceCompletionAlgEquiv v).toRingEquiv
   let eD :
       D ≃+* W.adicCompletion K' :=
-    (relativeFinitePlaceCompletionAlgEquiv W).toRingEquiv
+    (finitePlaceCompletionAlgEquiv W).toRingEquiv
   let eCUnits :
       Cˣ ≃* (v.adicCompletion K)ˣ :=
     finitePlaceCompletionUnitsContinuousMulEquiv v
@@ -258,7 +260,8 @@ private theorem finitePlaceArtinHasExtension_of_norm
   rw [hTargetNormNN, ← hSourceNormNN]
   exact_mod_cast hBaseNorm (eC x)
 
-private theorem finitePlaceArtinCompletionHasExtension
+/-- The actual map of normalized completions extends the original valuation relation. -/
+theorem finitePlaceArtinCompletionHasExtension
     {K' : Type uKp}
     [Field K'] [NumberField K'] [Algebra K K']
     (v : HeightOneSpectrum (𝓞 K))
@@ -298,10 +301,10 @@ private theorem finitePlaceArtinCompletionHasExtension
   intro vK vK' C D
   let eC :
       C ≃+* v.adicCompletion K :=
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+    (finitePlaceCompletionAlgEquiv v).toRingEquiv
   let eD :
       D ≃+* W.adicCompletion K' :=
-    (relativeFinitePlaceCompletionAlgEquiv W).toRingEquiv
+    (finitePlaceCompletionAlgEquiv W).toRingEquiv
   let concreteBaseMap :
       v.adicCompletion K →+* W.adicCompletion K' :=
     finitePlaceAdicCompletionMap K K' v ⟨W, hW⟩
@@ -336,12 +339,12 @@ private theorem finitePlaceArtinCompletionHasExtension
     finitePlaceArtinHasExtension_of_norm
       eC eD concreteBaseMap
       (by intro x; rfl)
-      (relativeFinitePlaceCompletionAlgEquiv_symm_norm W)
+      (finitePlaceCompletionAlgEquiv_symm_norm W)
       (fun x =>
-        (relativeFinitePlaceCompletionRingHom_isometry
+        (finitePlaceCompletionRingHom_isometry
           v).norm_map_of_map_zero
             (map_zero
-              (relativeFinitePlaceCompletionRingHom v)) x)
+              (finitePlaceCompletionRingHom v)) x)
       (finitePlaceAdicCompletionMap_norm_le_one_iff
         K K' v ⟨W, hW⟩)
       (fun _ => rfl)
@@ -365,13 +368,13 @@ private theorem finitePlaceLocalArtin_norm_restriction_apply
     (y : Dˣ) :
     AlgEquiv.restrictNormalHom E
         ((AlgEquiv.restrictScalarsHom C)
-          (LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
+          (LocalClassFieldTheory.abelianLocalArtinMonoidHom
             D E' y)) =
-      LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom C E
-        (LocalFieldTheory.normUnits C D y) :=
-  DFunLike.congr_fun
-    (LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_norm_restriction
-      C D E E') y
+      LocalClassFieldTheory.abelianLocalArtinMonoidHom C E
+        (LocalFieldTheory.normUnits C D y) := by
+  simpa only [MonoidHom.comp_apply] using
+    DFunLike.congr_fun
+      (LocalClassFieldTheory.abelianLocalArtinMonoidHom_norm_restriction C D E E') y
 
 private abbrev finitePlaceNormLocalizedAut
     (F : Type uF) (M : Type uM) [Field F] [Field M] [Algebra F M]
@@ -596,7 +599,7 @@ private noncomputable def finitePlaceNormLowerArtin
 private noncomputable def finitePlaceNormUpperRawArtin
     (y : Dₙˣ) :
     finitePlaceNormLocalizedAut K' L' W w' :=
-  @LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom Dₙ Eₙ'
+  @LocalClassFieldTheory.abelianLocalArtinMonoidHom Dₙ Eₙ'
     (inferInstance : Field Dₙ) (inferInstance : Field Eₙ')
     (finitePlaceLocalArtinLocalizedAlgebra W w')
     (finitePlaceLocalArtinCompletionValuativeRel W) (inferInstance : TopologicalSpace Dₙ)
@@ -608,7 +611,7 @@ private noncomputable def finitePlaceNormLowerRawArtin
     (hW : finitePlaceBelow (K := K) W = v)
     (y : Dₙˣ) :
     finitePlaceNormLocalizedAut K L v w :=
-  @LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom Cₙ Eₙ
+  @LocalClassFieldTheory.abelianLocalArtinMonoidHom Cₙ Eₙ
     (inferInstance : Field Cₙ) (inferInstance : Field Eₙ)
     (finitePlaceLocalArtinLocalizedAlgebra v w)
     (finitePlaceLocalArtinCompletionValuativeRel v) (inferInstance : TopologicalSpace Cₙ)
@@ -732,8 +735,8 @@ private theorem finitePlaceNormRawArtin_naturality
   let hGaloisE : IsGalois Cₙ Eₙ :=
     (inferInstance : IsAbelianGalois Cₙ Eₙ).toIsGalois
   let : Normal Cₙ Eₙ := hGaloisE.to_normal
-  let upper := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom Dₙ Eₙ'
-  let lower := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom Cₙ Eₙ
+  let upper := LocalClassFieldTheory.abelianLocalArtinMonoidHom Dₙ Eₙ'
+  let lower := LocalClassFieldTheory.abelianLocalArtinMonoidHom Cₙ Eₙ
   have hUpper : finitePlaceNormUpperRawArtin W w' y = upper y := by
     simp only [finitePlaceNormUpperRawArtin, upper]
   have hLower : finitePlaceNormLowerRawArtin v W w hW y =

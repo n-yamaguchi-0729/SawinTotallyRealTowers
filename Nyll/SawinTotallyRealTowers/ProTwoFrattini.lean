@@ -33,7 +33,6 @@ universe u v
 
 namespace ClassFieldTower.Sawin
 
-private local instance twoPrime : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
 private theorem frattini_eq_bot_of_card_two
     (Q : Type v) [Group Q] (hCard : Nat.card Q = 2) : frattini Q = ⊥ := by

@@ -21,7 +21,7 @@ public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.NormTop
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.LocalAbsoluteData
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupOrderEmbedding
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteGaloisRealization
 public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
 public import Nyll.GaloisCohomology.Kummer.Abstract.KummerDelta
@@ -449,10 +449,10 @@ theorem finiteAbelianNormSubgroupMap_surjective_of_charP
     (p : ℕ) [Fact p.Prime] [CharP K p] :
     Function.Surjective (finiteAbelianNormSubgroupMap K) := by
   intro H
-  let : H.subgroup.FiniteIndex := H.finiteIndex
+  let : H.1.toSubgroup.FiniteIndex := H.2
   apply exists_finiteAbelianNormSubgroup_eq_of_normOpen K H
   exact openFiniteIndexSubgroup_isNormOpen_of_charP
-    K p H.subgroup H.isOpen
+    K p H.1.toSubgroup H.1.isOpen
 
 /-- Positive-characteristic local existence as an order isomorphism: finite
 abelian subextensions correspond to ordinary open finite-index subgroups of

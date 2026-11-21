@@ -79,7 +79,7 @@ theorem equalCharacteristicLaurentUniformizerInteger_irreducible
   change Irreducible
     (powerSeriesEquivLaurentValuativeInteger F.residueField
       (PowerSeries.X : F.residueField⟦X⟧))
-  exact PowerSeries.X_irreducible.map
+  exact PowerSeries.irreducible_X.map
     (powerSeriesEquivLaurentValuativeInteger F.residueField)
 
 /-- The Laurent parameter as a nonzero field unit. -/

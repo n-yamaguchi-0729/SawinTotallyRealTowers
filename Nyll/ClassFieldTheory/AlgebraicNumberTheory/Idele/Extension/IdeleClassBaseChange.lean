@@ -69,10 +69,8 @@ noncomputable def relativeIdeleClassBaseChangeMulEquiv :
   QuotientGroup.congr
     (RelativeIdeleGroup.principalSubgroup K L)
     (IdeleGroup.principalSubgroup L)
-    (relativeIdeleBaseChangeMulEquiv
-      (K := K) (L := L))
-    (relativeIdelePrincipalSubgroup_map_baseChange
-      (K := K) (L := L))
+    (relativeIdeleBaseChangeMulEquiv (K := K) (L := L))
+    relativeIdelePrincipalSubgroup_map_baseChange
 
 @[simp]
 theorem relativeIdeleClassBaseChangeMulEquiv_mk
@@ -81,8 +79,7 @@ theorem relativeIdeleClassBaseChangeMulEquiv_mk
         (K := K) (L := L)
         (QuotientGroup.mk'
           (RelativeIdeleGroup.principalSubgroup K L) z) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
+      IdeleGroup.toStandardClass L
         (relativeIdeleBaseChangeMulEquiv
           (K := K) (L := L) z) :=
   rfl
@@ -96,9 +93,12 @@ theorem relativeIdeleClassBaseChangeMulEquiv_classInclusion
         (K := K) (L := L)
         (RelativeIdeleGroup.classInclusion K L c) =
       ideleClassExtension K L c := by
-  refine QuotientGroup.induction_on c ?_
+  refine IdeleGroup.toStandardClass_induction_on K c ?_
   intro a
-  rfl
+  rw [RelativeIdeleGroup.classInclusion_mk,
+    relativeIdeleClassBaseChangeMulEquiv_mk, ideleClassExtension_mk]
+  exact congrArg (IdeleGroup.toStandardClass L)
+    (IdeleGroup.extension_eq_relative K L a).symm
 
 /-- Homomorphism form of the compatibility between relative class
 inclusion and ordinary idele-class extension. -/

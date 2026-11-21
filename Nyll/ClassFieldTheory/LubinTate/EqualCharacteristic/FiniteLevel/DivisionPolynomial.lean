@@ -40,14 +40,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-/-- The Laurent-series division field has the positive residue characteristic. -/
-instance equalCharacteristicDivisionBaseCharP
-    (F : LocalField.{u, v} K)
-    [CharP K F.residueCharacteristic] :
-    CharP F.residueField⸨X⸩ F.residueCharacteristic :=
-  charP_of_injective_algebraMap
-    (algebraMap F.residueField F.residueField⸨X⸩).injective
-    F.residueCharacteristic
+attribute [instance] equalCharacteristicLaurentCharP
 
 /-- The chosen separable closure of the division field has the same characteristic. -/
 instance equalCharacteristicDivisionClosureCharP

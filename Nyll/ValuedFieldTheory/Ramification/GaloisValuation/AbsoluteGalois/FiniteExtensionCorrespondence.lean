@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Mathlib.SetTheory.Cardinal.Finite
+public import Nyll.GaloisCohomology.Topology.GaloisConjugation
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-! Provides the public declarations in the

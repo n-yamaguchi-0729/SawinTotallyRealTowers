@@ -342,7 +342,7 @@ theorem
         (Fin 1 → Multiplicative (ZMod (n : ℕ)))) :
     let : NumberField E :=
       NumberField.of_module_finite K E
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index =
+    (RelativeIdeleGroup.classNorm K E).range.index =
       Module.finrank K E := by
   intro sharedOwner1
   classical
@@ -444,7 +444,7 @@ theorem
   have hSub :
       ideleClassPowerLocalUnitSubgroup
           (K := K) n S' T ≤
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range :=
+        (RelativeIdeleGroup.classNorm K E).range :=
     ideleClassPowerLocalUnitSubgroup_le_ideleClassNorm_range
       (K := K) (L := E) n 1 eG S' T
       harch hT hAway
@@ -460,23 +460,23 @@ theorem
         Module.finrank K E
     exact hClassCard
   have hIndexDvd :
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index ∣
+      (RelativeIdeleGroup.classNorm K E).range.index ∣
         (ideleClassPowerLocalUnitSubgroup
           (K := K) n S' T).index :=
     Subgroup.index_dvd_of_le hSub
   have hDvd :
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index ∣
+      (RelativeIdeleGroup.classNorm K E).range.index ∣
         Module.finrank K E := by
     simpa only [hPowerIndex] using hIndexDvd
   have hUpper :
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index ≤
+      (RelativeIdeleGroup.classNorm K E).range.index ≤
         Module.finrank K E :=
     Nat.le_of_dvd Module.finrank_pos hDvd
   obtain ⟨sigma, hsigma⟩ :=
     IsCyclic.exists_generator (α := Gal(E/K))
   have hLower :
       Module.finrank K E ≤
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index :=
+        (RelativeIdeleGroup.classNorm K E).range.index :=
     Cohomology.finrank_le_ideleClassNorm_index
       (K := K) (L := E) sigma hsigma
   exact le_antisymm hUpper hLower
@@ -498,7 +498,7 @@ theorem ideleClassNorm_index_eq_finrank_primePowerKummer
         (Fin 1 → Multiplicative (ZMod (n : ℕ)))) :
     let : NumberField E :=
       NumberField.of_module_finite K E
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index =
+    (RelativeIdeleGroup.classNorm K E).range.index =
       Module.finrank K E := by
   intro sharedOwner1
   classical
@@ -531,8 +531,8 @@ theorem ideleClassNorm_index_eq_finrank_primePowerKummer
       (K := K) (Omega := SeparableClosure K) R n hmu
       p v hp hv hn eG'
   calc
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index =
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K R).range.index :=
+    (RelativeIdeleGroup.classNorm K E).range.index =
+        (RelativeIdeleGroup.classNorm K R).range.index :=
       (ideleClassNorm_index_algEquiv
         (K := K) e).symm
     _ = Module.finrank K R := hR

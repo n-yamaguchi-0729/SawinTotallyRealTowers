@@ -143,9 +143,7 @@ theorem henselianRing_map_algebraMap_of_moduleFinite_of_base_isPrecomplete
     [HenselianRing R I] [IsPrecomplete I R] :
     HenselianRing S (I.map (algebraMap R S)) := by
   have hHausdorff : IsHausdorff I R :=
-    IsHausdorff.of_le_jacobson
-      (R := R) (M := R) (I := I)
-      (show I ≤ Ideal.jacobson (⊥ : Ideal R) from HenselianRing.jac)
+    IsHausdorff.of_le_jacobson (R := R) (M := R) (I := I) HenselianRing.jac
   let : IsAdicComplete I R :=
     { toIsHausdorff := hHausdorff
       toIsPrecomplete := inferInstance }

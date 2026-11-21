@@ -6,9 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseSemilinearNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
@@ -188,6 +190,32 @@ theorem
     finitePlaceConjugateLocalizedCompletionAlgEquiv_toAlgebraicLocalization,
     g.apply_symm_apply]
 
+private theorem eq_of_conjugate_actions
+    {A B C : Type*} (i : A → B) (j : A → C) (e : C → B)
+    (g ρ ρ' : A → A) (τ : B → B) (τ' : C → C)
+    (hi : Function.Injective i) (hg : Function.Surjective g)
+    (hcomm : Function.Commute g ρ')
+    (he : ∀ x, e (j x) = i (g x))
+    (ht : ∀ x, e (τ' x) = τ (e x))
+    (hρ : ∀ x, τ (i x) = i (ρ x))
+    (hρ' : ∀ x, τ' (j x) = j (ρ' x)) : ∀ x, ρ' x = ρ x := by
+  intro x
+  obtain ⟨y, rfl⟩ := hg x
+  apply hi
+  calc
+    i (ρ' (g y)) = i (g (ρ' y)) := congrArg i (hcomm y).symm
+    _ = e (j (ρ' y)) := (he _).symm
+    _ = e (τ' (j y)) := congrArg e (hρ' y).symm
+    _ = τ (e (j y)) := ht _
+    _ = τ (i (g y)) := congrArg τ (he y)
+    _ = i (ρ (g y)) := hρ _
+
+private theorem autCongr_apply_image
+    {R A B : Type*} [CommSemiring R] [Semiring A] [Semiring B]
+    [Algebra R A] [Algebra R B] (e : A ≃ₐ[R] B) (t : A ≃ₐ[R] A) (x : A) :
+    e (t x) = AlgEquiv.autCongr e t (e x) :=
+  (congrArg (fun y : A => e (t y)) (e.symm_apply_apply x)).symm
+
 /-- Conjugation of a place intertwines the two localization
 decomposition-group identifications on each local automorphism. -/
 theorem finitePlaceDecompositionTransport_conjugate_apply
@@ -223,7 +251,7 @@ theorem finitePlaceDecompositionTransport_conjugate_apply
           (eDwc.symm tauC) =
         (absoluteValueDecompositionGroup K w.1).subtype
           (eDw.symm (AlgEquiv.autCongr e tauC)) := by
-  intro vK wc hvK
+  intro vK wc hvK Ew Ewc e eDw eDwc tauC
   let hwK :=
     AbsoluteValue.extensionCompletionAlgebra
       (K := K) w.1
@@ -236,103 +264,34 @@ theorem finitePlaceDecompositionTransport_conjugate_apply
   let : SMul K wc.1.Completion := hwcK.toSMul
   let : Algebra vK.Completion wc.1.Completion :=
     AbsoluteValue.completionAlgebra vK wc.1 wc.2
-  let Ew := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let Ewc := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wc
-  let e :=
-    finitePlaceConjugateLocalizedCompletionAlgEquiv
-      (K := K) (L := L) v w g
-  let eDw :
-      absoluteValueDecompositionGroup K w.1 ≃*
-        (Ew ≃ₐ[vK.Completion] Ew) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vK hvK w
-  let eDwc :
-      absoluteValueDecompositionGroup K wc.1 ≃*
-        (Ewc ≃ₐ[vK.Completion] Ewc) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vK hvK wc
-  change
-    ∀ tauC : Ewc ≃ₐ[vK.Completion] Ewc,
-      (absoluteValueDecompositionGroup K wc.1).subtype
-          (eDwc.symm tauC) =
-        (absoluteValueDecompositionGroup K w.1).subtype
-          (eDw.symm (AlgEquiv.autCongr e tauC))
-  intro tauC
+  let : Algebra vK.Completion Ew := finitePlaceLocalArtinLocalizedAlgebra v w
+  let : Algebra vK.Completion Ewc := finitePlaceLocalArtinLocalizedAlgebra v wc
   let tau := AlgEquiv.autCongr e tauC
   let rhoC : absoluteValueDecompositionGroup K wc.1 :=
     eDwc.symm tauC
   let rho : absoluteValueDecompositionGroup K w.1 :=
     eDw.symm tau
-  change (rhoC.1 : L ≃ₐ[K] L) =
-    (rho.1 : L ≃ₐ[K] L)
+  let i := AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
+  let j := AbsoluteValue.toAlgebraicLocalization vK wc.1 wc.2
+  have hcomm : Function.Commute g (rhoC.1 : L ≃ₐ[K] L) := by
+    intro z
+    have h := (inferInstance : IsMulCommutative (L ≃ₐ[K] L)).is_comm.comm g rhoC.1
+    exact DFunLike.congr_fun h z
+  have he := finitePlaceConjugateLocalizedCompletionAlgEquiv_toAlgebraicLocalization v w g
+  have ht (z : Ewc) : e (tauC z) = tau (e z) :=
+    autCongr_apply_image e tauC z
+  have hρ (z : L) : tau (i z) = i (rho.1 z) := by
+    have hEval := DFunLike.congr_fun (eDw.apply_symm_apply tau) (i z)
+    exact hEval.symm.trans
+      (localizationRamificationGroups_decompositionGroupEquiv_toLocalization vK hvK w rho z)
+  have hρC (z : L) : tauC (j z) = j (rhoC.1 z) := by
+    have hEval := DFunLike.congr_fun (eDwc.apply_symm_apply tauC) (j z)
+    exact hEval.symm.trans
+      (localizationRamificationGroups_decompositionGroupEquiv_toLocalization
+        vK hvK wc rhoC z)
   apply AlgEquiv.ext
-  intro z
-  apply
-    (AbsoluteValue.toAlgebraicLocalization
-      vK w.1 w.2).injective
-  have hcomm :
-      g ((rhoC.1 : L ≃ₐ[K] L) (g.symm z)) =
-        (rhoC.1 : L ≃ₐ[K] L) z := by
-    have hg :
-        g * (rhoC.1 : L ≃ₐ[K] L) =
-          (rhoC.1 : L ≃ₐ[K] L) * g :=
-      (inferInstance :
-        IsMulCommutative (L ≃ₐ[K] L)).is_comm.comm _ _
-    calc
-      g ((rhoC.1 : L ≃ₐ[K] L) (g.symm z)) =
-          (g * (rhoC.1 : L ≃ₐ[K] L)) (g.symm z) := rfl
-      _ = ((rhoC.1 : L ≃ₐ[K] L) * g) (g.symm z) :=
-        DFunLike.congr_fun hg (g.symm z)
-      _ = (rhoC.1 : L ≃ₐ[K] L) (g (g.symm z)) := rfl
-      _ = (rhoC.1 : L ≃ₐ[K] L) z := by
-        rw [g.apply_symm_apply]
-  calc
-    AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
-        ((rhoC.1 : L ≃ₐ[K] L) z) =
-      AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
-        (g ((rhoC.1 : L ≃ₐ[K] L) (g.symm z))) := by
-          rw [hcomm]
-    _ = e
-        (AbsoluteValue.toAlgebraicLocalization vK wc.1 wc.2
-          ((rhoC.1 : L ≃ₐ[K] L) (g.symm z))) := by
-          rw [
-            finitePlaceConjugateLocalizedCompletionAlgEquiv_toAlgebraicLocalization]
-    _ = e
-        (eDwc rhoC
-          (AbsoluteValue.toAlgebraicLocalization
-            vK wc.1 wc.2 (g.symm z))) := by
-          rw [localizationRamificationGroups_decompositionGroupEquiv_toLocalization]
-    _ = e
-        (tauC
-          (AbsoluteValue.toAlgebraicLocalization
-            vK wc.1 wc.2 (g.symm z))) := by
-          rw [eDwc.apply_symm_apply]
-    _ = (AlgEquiv.autCongr e tauC)
-        (AbsoluteValue.toAlgebraicLocalization
-          vK w.1 w.2 z) := by
-          change
-            e
-                (tauC
-                  (AbsoluteValue.toAlgebraicLocalization
-                    vK wc.1 wc.2 (g.symm z))) =
-              e
-                (tauC
-                  (e.symm
-                    (AbsoluteValue.toAlgebraicLocalization
-                      vK w.1 w.2 z)))
-          rw [
-            finitePlaceConjugateLocalizedCompletionAlgEquiv_symm_toAlgebraicLocalization]
-    _ = tau
-        (AbsoluteValue.toAlgebraicLocalization
-          vK w.1 w.2 z) := by
-          rfl
-    _ = eDw rho
-        (AbsoluteValue.toAlgebraicLocalization
-          vK w.1 w.2 z) := by
-          rw [eDw.apply_symm_apply]
-    _ = AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
-        ((rho.1 : L ≃ₐ[K] L) z) := by
-          rw [localizationRamificationGroups_decompositionGroupEquiv_toLocalization]
+  exact eq_of_conjugate_actions i j e g rho.1 rhoC.1 tau tauC
+    i.injective g.surjective hcomm he ht hρ hρC
 
 /-- Conjugation of a place intertwines the two localization
 decomposition-group identifications after inclusion in the global
@@ -376,6 +335,28 @@ theorem finitePlaceDecompositionTransport_conjugate
     finitePlaceDecompositionTransport_conjugate_apply
       (K := K) (L := L) v w g tauC
 
+private theorem finitePlaceLocalArtinMonoidHom_comp_normalization
+    (v : HeightOneSpectrum (𝓞 K))
+    (w : AbsoluteValueExtension (HeightOneSpectrum.adicAbv K v) L) :
+    let vK := HeightOneSpectrum.adicAbv K v
+    let E := LocalizedCompletion vK w
+    let a := finitePlaceLocalArtinLocalizedAlgebra v w
+    finitePlaceLocalArtinMonoidHom v w =
+      (@abelianLocalArtinMonoidHom vK.Completion E _ _ a
+        (finitePlaceLocalArtinCompletionValuativeRel v) _
+        (finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v)
+        (finitePlaceLocalArtinFiniteDimensional v w)
+        (finitePlaceLocalArtinIsAbelianGalois v w inferInstance)).comp
+          (finitePlaceLocalArtinInputMonoidHom v) := by
+  dsimp only [finitePlaceLocalArtinMonoidHom]
+
+private theorem comp_eq_of_composed_maps
+    {X A B C : Type*} [Monoid X] [Monoid A] [Monoid B] [Monoid C]
+    {i : X →* A} {s : A →* B} {t : A →* C} {e : B →* C}
+    {f : X →* B} {g : X →* C}
+    (hf : f = s.comp i) (hg : g = t.comp i) (he : e.comp s = t) : e.comp f = g := by
+  rw [hf, ← MonoidHom.comp_assoc, he, hg]
+
 /-- Local Artin maps are natural under the localized-completion
 equivalence induced by conjugating a finite-place extension. -/
 theorem finitePlaceLocalArtinMonoidHom_conjugate
@@ -399,41 +380,18 @@ theorem finitePlaceLocalArtinMonoidHom_conjugate
           (K := K) (L := L) v wc) =
       finitePlaceLocalArtinMonoidHom
         (K := K) (L := L) v w := by
-  intro vK wc Ew Ewc sharedOwner5 sharedOwner6
-  let : FiniteDimensional vK.Completion Ew :=
-    finitePlaceLocalArtinFiniteDimensional v w
-  let : FiniteDimensional vK.Completion Ewc :=
-    finitePlaceLocalArtinFiniteDimensional v wc
-  let : IsAbelianGalois vK.Completion Ew :=
-    finitePlaceLocalArtinIsAbelianGalois v w
-      (inferInstance : FiniteDimensional K L)
-  let : IsAbelianGalois vK.Completion Ewc :=
-    finitePlaceLocalArtinIsAbelianGalois v wc
-      (inferInstance : FiniteDimensional K L)
-  let : ValuativeRel vK.Completion :=
-    finitePlaceLocalArtinCompletionValuativeRel v
-  let : IsNonarchimedeanLocalField vK.Completion :=
-    finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
-  let e :=
-    finitePlaceConjugateLocalizedCompletionAlgEquiv
-      (K := K) (L := L) v w g
-  let input := finitePlaceLocalArtinInputMonoidHom v
-  let source := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom vK.Completion Ewc
-  let target := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom vK.Completion Ew
-  let conjugate := (AlgEquiv.autCongr e).toMonoidHom
-  have hsource : finitePlaceLocalArtinMonoidHom v wc = source.comp input := by
-    unfold finitePlaceLocalArtinMonoidHom
-    with_reducible rfl
-  have htarget : finitePlaceLocalArtinMonoidHom v w = target.comp input := by
-    unfold finitePlaceLocalArtinMonoidHom
-    with_reducible rfl
-  have h := LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_autCongr
-    vK.Completion Ewc Ew e
-  calc
-    _ = conjugate.comp (source.comp input) := congrArg conjugate.comp hsource
-    _ = (conjugate.comp source).comp input := (MonoidHom.comp_assoc _ _ _).symm
-    _ = target.comp input := congrArg (fun f => f.comp input) h
-    _ = _ := htarget.symm
+  intro vK wc Ew Ewc sharedOwner5 sharedOwner6 e
+  let := finitePlaceLocalArtinFiniteDimensional v w
+  let := finitePlaceLocalArtinFiniteDimensional v wc
+  let := finitePlaceLocalArtinIsAbelianGalois v w (inferInstance : FiniteDimensional K L)
+  let := finitePlaceLocalArtinIsAbelianGalois v wc (inferInstance : FiniteDimensional K L)
+  let := finitePlaceLocalArtinCompletionValuativeRel v
+  let := finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
+  have hsource := finitePlaceLocalArtinMonoidHom_comp_normalization v wc
+  have htarget := finitePlaceLocalArtinMonoidHom_comp_normalization v w
+  have h := LocalClassFieldTheory.abelianLocalArtinMonoidHom_autCongr vK.Completion Ewc Ew e
+  have hFinal := comp_eq_of_composed_maps hsource htarget h
+  exact hFinal
 
 /-- Conjugating the chosen extension of a finite place does not change
 its Artin homomorphism when the global extension is abelian. -/
@@ -448,72 +406,19 @@ theorem finitePlaceArtinMonoidHomOfExtension_conjugate
           (NumberField.HeightOneSpectrum.adicAbv K v) w g) =
       finitePlaceArtinMonoidHomOfExtension
         (K := K) (L := L) v w := by
-  let vK := NumberField.HeightOneSpectrum.adicAbv K v
+  let vK := HeightOneSpectrum.adicAbv K v
   let wc := absoluteValueExtensionConjugate vK w g
-  let hvK : vK.IsNontrivial :=
-    RayClass.adicAbv_isNontrivial v
-  let hwK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) w.1
-  let : SMul K w.1.Completion := hwK.toSMul
-  let : Algebra vK.Completion w.1.Completion :=
-    AbsoluteValue.completionAlgebra vK w.1 w.2
-  let hwcK :=
-    AbsoluteValue.extensionCompletionAlgebra
-      (K := K) wc.1
-  let : SMul K wc.1.Completion := hwcK.toSMul
-  let : Algebra vK.Completion wc.1.Completion :=
-    AbsoluteValue.completionAlgebra vK wc.1 wc.2
-  let Ew := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK w
-  let Ewc := AlgebraicNumberTheory.Valuations.LocalizedCompletion vK wc
-  let e :=
-    finitePlaceConjugateLocalizedCompletionAlgEquiv
-      (K := K) (L := L) v w g
-  let eDw :
-      absoluteValueDecompositionGroup K w.1 ≃*
-        (Ew ≃ₐ[vK.Completion] Ew) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vK hvK w
-  let eDwc :
-      absoluteValueDecompositionGroup K wc.1 ≃*
-        (Ewc ≃ₐ[vK.Completion] Ewc) :=
-    decompositionGroupEquivAlgebraicLocalizationAut
-      vK hvK wc
-  have htransport :=
-    finitePlaceDecompositionTransport_conjugate
-      (K := K) (L := L) v w g
-  have hlocal :=
-    finitePlaceLocalArtinMonoidHom_conjugate
-      (K := K) (L := L) v w g
-  change
-    ((absoluteValueDecompositionGroup K wc.1).subtype.comp
-        eDwc.symm.toMonoidHom).comp
-        (finitePlaceLocalArtinMonoidHom
-          (K := K) (L := L) v wc) =
-      ((absoluteValueDecompositionGroup K w.1).subtype.comp
-        eDw.symm.toMonoidHom).comp
-        (finitePlaceLocalArtinMonoidHom
-          (K := K) (L := L) v w)
-  calc
-    _ =
-        (((absoluteValueDecompositionGroup K w.1).subtype.comp
-            eDw.symm.toMonoidHom).comp
-          (AlgEquiv.autCongr e).toMonoidHom).comp
-            (finitePlaceLocalArtinMonoidHom
-              (K := K) (L := L) v wc) :=
-      congrArg
-        (fun f => f.comp
-          (finitePlaceLocalArtinMonoidHom
-            (K := K) (L := L) v wc))
-        htransport
-    _ =
-        ((absoluteValueDecompositionGroup K w.1).subtype.comp
-          eDw.symm.toMonoidHom).comp
-            ((AlgEquiv.autCongr e).toMonoidHom.comp
-              (finitePlaceLocalArtinMonoidHom
-                (K := K) (L := L) v wc)) := by
-      rfl
-    _ = _ := by rw [hlocal]
+  let : Algebra vK.Completion (LocalizedCompletion vK w) :=
+    finitePlaceLocalArtinLocalizedAlgebra v w
+  let : Algebra vK.Completion (LocalizedCompletion vK wc) :=
+    finitePlaceLocalArtinLocalizedAlgebra v wc
+  let e := finitePlaceConjugateLocalizedCompletionAlgEquiv v w g
+  have hTransport : finitePlaceLocalToGlobalMonoidHom v wc =
+      (finitePlaceLocalToGlobalMonoidHom v w).comp (AlgEquiv.autCongr e).toMonoidHom := by
+    simpa only [finitePlaceLocalToGlobalMonoidHom] using
+      (finitePlaceDecompositionTransport_conjugate v w g)
+  rw [finitePlaceArtinMonoidHomOfExtension_factor, finitePlaceArtinMonoidHomOfExtension_factor]
+  rw [hTransport, MonoidHom.comp_assoc, finitePlaceLocalArtinMonoidHom_conjugate v w g]
 
 /-- The finite-place Artin homomorphism is independent of the chosen
 extension of the base place in an abelian extension. -/

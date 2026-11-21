@@ -46,7 +46,7 @@ noncomputable def powerCommutatorQuotientLift
       rintro _ ⟨g, rfl⟩
       change f (g ^ p) = 1
       rw [map_pow, hA]
-    · exact Abelianization.commutator_subset_ker f.toMonoidHom
+    · exact Group.Abelianization.commutator_le_ker f.toMonoidHom
   · change IsClosed (f ⁻¹' ({1} : Set A))
     exact isClosed_singleton.preimage f.continuous_toFun
 

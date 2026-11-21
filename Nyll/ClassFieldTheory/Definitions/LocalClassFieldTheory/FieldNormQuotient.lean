@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.FieldNormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 /-!
@@ -16,6 +16,8 @@ public import Mathlib.GroupTheory.QuotientGroup.Basic
 
 
 @[expose] public section
+
+open LocalFieldTheory (localNormSubgroup)
 
 noncomputable section
 
@@ -27,6 +29,6 @@ universe u v
 abbrev FieldNormQuotient
     (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] :=
-  Kˣ ⧸ fieldNormSubgroup K L
+  Kˣ ⧸ localNormSubgroup K L
 
 end ClassFieldTheory

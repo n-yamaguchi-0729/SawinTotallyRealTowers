@@ -87,21 +87,42 @@ theorem ideleCharacter_two_infinite_eq_one
     (chi : IdeleGroup F →ₜ* Multiplicative (ZMod 2))
     (hsign : ∀ v : InfinitePlace F, v.IsReal →
       chi (IdeleGroup.infinitePlaceIdele v (-1)) = 1)
-    (a : InfiniteIdeleGroup F) : chi (a, 1) = 1 := by
+    (a : InfiniteIdeleGroup F) : chi (IdeleGroup.ofComponents a 1) = 1 := by
   classical
   let e : InfiniteIdeleGroup F ≃ₜ* (∀ v : InfinitePlace F, v.Completionˣ) :=
     ContinuousMulEquiv.piUnits
   let f : (∀ v : InfinitePlace F, v.Completionˣ) →* IdeleGroup F :=
-    e.symm.toMonoidHom.prod (1 : (∀ v : InfinitePlace F, v.Completionˣ) →*
-      FiniteIdeleGroup F)
-  have hfa : f (e a) = (a, 1) := by
-    apply Prod.ext
-    · exact e.symm_apply_apply a
-    · rfl
+    IdeleGroup.componentsEquiv.symm.toMonoidHom.comp
+      (e.symm.toMonoidHom.prod (1 : (∀ v : InfinitePlace F, v.Completionˣ) →* FiniteIdeleGroup F))
+  have hf (x : ∀ v : InfinitePlace F, v.Completionˣ) : f x = IdeleGroup.ofComponents (e.symm x) 1 :=
+    IdeleGroup.componentsEquiv_symm_apply _
+  have hfa : f (e a) = IdeleGroup.ofComponents a 1 := by
+    rw [hf, e.symm_apply_apply]
   rw [← hfa, ← Finset.univ_prod_mulSingle (e a), map_prod, map_prod]
   apply Finset.prod_eq_one
   intro v hv
-  change chi (IdeleGroup.infinitePlaceIdele v (e a v)) = 1
+  let u := e a v
+  have hv' : f (Pi.mulSingle v u) = IdeleGroup.infinitePlaceIdele v u := by
+    rw [hf]
+    apply IdeleGroup.ext_parts
+    · rw [IdeleGroup.infinitePart_ofComponents]
+      apply e.injective
+      funext w
+      change e (e.symm (Pi.mulSingle v u)) w =
+        IdeleGroup.infiniteComponent w (IdeleGroup.infinitePlaceIdele v u)
+      rw [e.apply_symm_apply]
+      by_cases hw : w = v
+      · subst w
+        rw [Pi.mulSingle_eq_same, IdeleGroup.infinitePlaceIdele_infiniteComponent_same]
+      · rw [Pi.mulSingle_eq_of_ne hw,
+          IdeleGroup.infinitePlaceIdele_infiniteComponent_of_ne v w u hw]
+    · rw [IdeleGroup.finiteCoordinates_ofComponents]
+      apply RestrictedProduct.ext
+      intro w
+      change (1 : (w.adicCompletion F)ˣ) =
+        IdeleGroup.finiteCoordinates (IdeleGroup.infinitePlaceIdele v u) w
+      rw [← IdeleGroup.finiteComponent_apply, IdeleGroup.infinitePlaceIdele_finiteComponent]
+  rw [hv']
   exact ideleCharacter_two_infinitePlace_eq_one F chi.toMonoidHom v (hsign v) (e a v)
 
 /-- Real-sign and finite integral-unit triviality kill the full integral idele subgroup. -/
@@ -114,13 +135,13 @@ theorem ideleCharacter_two_integral_eq_one
     (a : IdeleGroup F) (ha : a ∈ IdeleGroup.integralAtFinitePlaces (K := F)) :
     chi a = 1 := by
   let u : ∀ v : HeightOneSpectrum (𝓞 F), (v.adicCompletionIntegers F).units :=
-    fun v ↦ ⟨a.2 v, ha v⟩
+    fun v ↦ ⟨IdeleGroup.finiteCoordinates a v, ha v⟩
   have hfin := ideleCharacter_integralFinite_eq_one F (2 : ℕ+) chi hfinite u
-  have hsplit : a = (a.1, 1) * integralFiniteIdeleContinuousHom F u := by
-    apply Prod.ext
-    · exact (mul_one _).symm
-    · exact (one_mul _).symm
-  rw [hsplit, map_mul, ideleCharacter_two_infinite_eq_one F chi hsign a.1, one_mul]
+  have hsplit := integralFiniteIdeleContinuousHom_split F a ha
+  change a = IdeleGroup.ofComponents (IdeleGroup.infinitePart a) 1 *
+    integralFiniteIdeleContinuousHom F u at hsplit
+  rw [hsplit, map_mul, ideleCharacter_two_infinite_eq_one F chi hsign (IdeleGroup.infinitePart a),
+    one_mul]
   exact hfin
 
 /-- The actual fractional-ideal map then kills principal ideles of ideal-square

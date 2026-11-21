@@ -35,11 +35,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicHigherUnitFixedBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  equalCharacteristicCompletedFrobeniusFixedBaseAlgebra F
+attribute [local instance] equalCharacteristicCompletedLevelBaseAlgebra
 
 /-- States the theorem
 `equalCharacteristicCompletedFrobeniusAlgEquiv_primitiveRoot_fixed_of_mem_higherUnit`. -/

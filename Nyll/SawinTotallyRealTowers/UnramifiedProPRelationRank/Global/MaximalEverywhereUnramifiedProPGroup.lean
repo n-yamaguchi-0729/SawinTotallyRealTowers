@@ -11,6 +11,7 @@ public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.Maxi
 public import Nyll.ProCGroups.ProC.InverseLimits.Predicates
 public import Nyll.ProCGroups.Profinite.OpenSubgroups
 public import Nyll.ProCGroups.ProC.OpenNormalSubgroups.ProCGroup
+public import Mathlib.FieldTheory.Galois.Infinite
 
 /-!
 # The maximal everywhere-unramified pro-p Galois group

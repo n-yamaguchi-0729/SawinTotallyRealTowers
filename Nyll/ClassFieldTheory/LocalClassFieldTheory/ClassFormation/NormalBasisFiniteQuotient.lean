@@ -63,8 +63,8 @@ theorem exists_principalUnits_le_chosenNormalBasisPrincipalUnitSet :
 `U_L^m ≤ V`. -/
 def integerUnitsModPrincipalUnitsToSubgroupQuotient
     (m : Nat) (V : Subgroup 𝒪[L]ˣ) (h : principalUnits L m ≤ V) :
-    IntegerUnitsModPrincipalUnitsAtLevel L m →* (𝒪[L]ˣ ⧸ V) :=
-  integerUnitsModPrincipalUnitsAtLevelLift m (QuotientGroup.mk' V)
+    IntegerUnitsPrincipalQuot L m →* (𝒪[L]ˣ ⧸ V) :=
+  integerUnitsPrincipalQuotLift m (QuotientGroup.mk' V)
     (by
       intro a ha
       rw [MonoidHom.mem_ker]
@@ -80,7 +80,7 @@ theorem integerUnitsModPrincipalUnitsToSubgroupQuotient_surjective
   intro q
   refine Quotient.inductionOn' q ?_
   intro a
-  refine ⟨integerUnitsModPrincipalUnitsAtLevelMk L m a, ?_⟩
+  refine ⟨integerUnitsPrincipalQuotMk L m a, ?_⟩
   rfl
 
 /-- A quotient by a subgroup containing an ordinary principal-unit level is
@@ -88,7 +88,7 @@ finite. -/
 theorem finite_chosenNormalBasisIntegerUnitsQuotient_of_principalUnits_le
     (m : Nat) (V : Subgroup 𝒪[L]ˣ) (h : principalUnits L m ≤ V) :
     Finite (𝒪[L]ˣ ⧸ V) := by
-  let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L m) :=
+  let : Finite (IntegerUnitsPrincipalQuot L m) :=
     integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L m
   exact Finite.of_surjective
     (integerUnitsModPrincipalUnitsToSubgroupQuotient L m V h)

@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandFiniteness
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.UniverseFiniteness
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
 
 /-!
@@ -35,7 +36,9 @@ open scoped ValuativeRel
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 open IsNonarchimedeanLocalField
 
-variable (K L : Type) [Field K] [ValuativeRel K]
+universe u
+
+variable (K L : Type u) [Field K] [ValuativeRel K]
   [Field L] [ValuativeRel L] [TopologicalSpace L]
   [IsNonarchimedeanLocalField L] [Algebra K L] [FiniteDimensional K L]
   [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
@@ -114,7 +117,7 @@ theorem valuationHerbrand_multiplicativity_of_integerUnits_defined
             (galoisGroupValueGroupMulDistribMulAction K L) g hZ.1 hZ.2 := by
   intro sharedOwner1 sharedOwner2 sharedOwner3 hZ
   let hseq := valuationHerbrand_shortExact K L
-  let hField := herbrandQuotientDefined_middle_of_left_right
+  let hField := Universe.herbrandQuotientDefined_middle_of_left_right
     (G := Gal(L / K))
     (A := (ValuativeRel.valuation L).integerˣ)
     (B := Lˣ) (C := Multiplicative Int)
@@ -133,7 +136,7 @@ theorem valuationHerbrand_multiplicativity_of_integerUnits_defined
       (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) := hZ.1
   let : Finite
       (HerbrandHMinusOne (Gal(L / K)) (Multiplicative Int) g) := hZ.2
-  exact herbrandQuotient_multiplicative_of_shortExact
+  exact Universe.herbrandQuotient_multiplicative_of_shortExact
     (G := Gal(L / K))
     (A := (ValuativeRel.valuation L).integerˣ)
     (B := Lˣ) (C := Multiplicative Int)

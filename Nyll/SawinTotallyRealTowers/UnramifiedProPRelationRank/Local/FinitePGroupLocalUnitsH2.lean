@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FiniteCyclicLocalUnitsH2
+public import Nyll.GaloisCohomology.GroupTheory.FiniteExactSequence
 public import Nyll.GaloisCohomology.GroupTheory.PGroupGaloisTower
 public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
 public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsCohomologyTransport
@@ -43,26 +44,6 @@ namespace ClassFieldTower.Martinet.Shafarevich
 
 open ClassFieldTower.Cohomology LocalFieldTheory
 
-private theorem finite_natCard_le_mul_of_ker_le_range
-    {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
-    (f : A →+ B) (g : B →+ C) (h : g.ker ≤ f.range)
-    [Finite A] [Finite C] :
-    Finite B ∧ Nat.card B ≤ Nat.card A * Nat.card C := by
-  have : Finite f.range := Finite.of_surjective f.rangeRestrict f.rangeRestrict_surjective
-  have : Finite g.ker := Finite.of_injective
-    (AddSubgroup.inclusion h) (AddSubgroup.inclusion_injective h)
-  have hFinite : Finite B := g.finite_iff_finite_ker_range.mpr
-    ⟨inferInstance, inferInstance⟩
-  have hKer : Nat.card g.ker ≤ Nat.card A :=
-    (Nat.card_le_card_of_injective (AddSubgroup.inclusion h)
-      (AddSubgroup.inclusion_injective h)).trans
-      (Nat.card_le_card_of_surjective f.rangeRestrict f.rangeRestrict_surjective)
-  have hRange : Nat.card g.range ≤ Nat.card C :=
-    Nat.card_le_card_of_injective (fun x : g.range ↦ (x : C)) Subtype.val_injective
-  refine ⟨hFinite, ?_⟩
-  rw [← g.ker.card_mul_index, AddSubgroup.index_ker]
-  exact Nat.mul_le_mul hKer hRange
-
 private theorem finiteCyclicLocalUnitsH2_finite_card
     (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
@@ -90,7 +71,7 @@ theorem finitePGroupLocalUnitsH2_finite_natCard_le_finrank
       Nat.card (groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2) ≤ finrank K L := by
   generalize hn : finrank K L = n
   induction n using Nat.strong_induction_on generalizing L with
-  | h n ih =>
+  | ind n ih =>
     rcases subsingleton_or_nontrivial Gal(L/K) with hTrivial | hNontrivial
     · have : Subsingleton (groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2) :=
         ModuleCat.isZero_iff_subsingleton.mp
@@ -119,7 +100,7 @@ theorem finitePGroupLocalUnitsH2_finite_natCard_le_finrank
         (finiteGaloisUnitsH2Restriction K L E).hom.toAddMonoidHom
       have hExact : g.ker ≤ f.range :=
         finiteGaloisUnitsH2Restriction_ker_le_inflation_range K L E
-      obtain ⟨hFinite, hBound⟩ := finite_natCard_le_mul_of_ker_le_range f g hExact
+      obtain ⟨hFinite, hBound⟩ := f.finite_natCard_le_mul_of_ker_le_range g hExact
       refine ⟨hFinite, ?_⟩
       calc
         Nat.card (groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2) ≤

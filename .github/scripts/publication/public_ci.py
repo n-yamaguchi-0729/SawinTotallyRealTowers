@@ -206,6 +206,12 @@ def desired_ci(repo, record):
         desired[".github/workflows/proof-check.yml"] = (TEMPLATES / "proof-check.yml").read_bytes()
         desired[".github/workflows/lean.yml"] = library_workflow(ordered).encode()
     if name in VERIFICATION_REPOS:
+        # Legacy runners retain their invocation/configuration, but these two
+        # portable wrappers have one canonical owner. Keep name escaping fixes
+        # in both inventory production and selector consumption on every sync.
+        for filename in ("Inventory.lean", "ExportSelected.lean"):
+            desired[directory + "/" + filename] = (
+                TEMPLATES.parent / "verification" / filename).read_bytes()
         desired[".github/workflows/build-library.yml"] = (TEMPLATES / "build-library.yml").read_bytes()
         desired[".github/workflows/lean.yml"] = legacy_workflow(
             (repo / ".github/workflows/lean.yml").read_text(), library_stages(ordered)).encode()

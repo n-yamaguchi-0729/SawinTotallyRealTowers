@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.Equiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Equiv
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 public import Mathlib.RingTheory.Norm.Basic
@@ -13,13 +15,13 @@ public import Mathlib.RingTheory.TensorProduct.Maps
 public import Mathlib.RingTheory.DedekindDomain.Ideal.Lemmas
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.EmbeddingNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # Relative idele classes under an isomorphic realization
@@ -58,25 +60,6 @@ variable
     [Field K] [NumberField K]
     [Field L] [Algebra K L]
     [Field M] [Algebra K M]
-
-/-- A base-field algebra equivalence between two realizations of a finite
-extension induces the canonical equivalence between their relative adele
-algebras. -/
-noncomputable def relativeAdeleCongr
-    (e : L ≃ₐ[K] M) :
-    RelativeAdeleRing K L ≃ₐ[
-      NumberField.AdeleRing (𝓞 K) K]
-      RelativeAdeleRing K M :=
-  Algebra.TensorProduct.congr AlgEquiv.refl e
-
-@[simp]
-theorem relativeAdeleCongr_tmul
-    (e : L ≃ₐ[K] M)
-    (a : NumberField.AdeleRing (𝓞 K) K)
-    (x : L) :
-    relativeAdeleCongr (K := K) e (a ⊗ₜ[K] x) =
-      a ⊗ₜ[K] e x :=
-  rfl
 
 /-- The canonical transport of relative ideles along an isomorphic
 realization of the top field. -/
@@ -230,12 +213,6 @@ theorem relativeIdeleCongr_norm
     RelativeIdeleGroup.norm K M
         (relativeIdeleCongr (K := K) e a) =
       RelativeIdeleGroup.norm K L a := by
-  apply
-    (IdeleGroup.equivAdeleRingUnits
-      (K := K)).injective
-  simp only [RelativeIdeleGroup.norm,
-    MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom,
-    MulEquiv.apply_symm_apply]
   apply Units.ext
   change
     Algebra.norm
@@ -266,12 +243,10 @@ theorem relativeIdeleClassCongr_ideleClassNorm
   refine QuotientGroup.induction_on c ?_
   intro a
   change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
+    IdeleGroup.toStandardClass K
         (RelativeIdeleGroup.norm K M
           (relativeIdeleCongr (K := K) e a)) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
+      IdeleGroup.toStandardClass K
         (RelativeIdeleGroup.norm K L a)
   rw [relativeIdeleCongr_norm (K := K) e a]
 
@@ -317,78 +292,6 @@ variable
     {K : Type u} {M : Type w}
     [Field K] [NumberField K] [Algebra ℚ K]
     [Field M] [NumberField M] [Algebra ℚ M]
-
-/-- The canonical transport of ordinary adele rings along an equivalence
-of number fields.  It is the existing relative-adele transport over `ℚ`,
-conjugated by the relative-to-ordinary scalar-extension equivalences. -/
-noncomputable def adeleCongr
-    (e : K ≃ₐ[ℚ] M) :
-    NumberField.AdeleRing (𝓞 K) K ≃+*
-      NumberField.AdeleRing (𝓞 M) M :=
-  (relativeAdeleBaseChangeRingEquiv
-      (K := ℚ) (L := K)).symm |>.trans
-    ((relativeAdeleCongr (K := ℚ) e).toRingEquiv.trans
-      (relativeAdeleBaseChangeRingEquiv
-        (K := ℚ) (L := M)))
-
-/-- The relative-to-ordinary scalar-extension comparison is natural for
-transport of the top number field. -/
-theorem relativeAdeleBaseChangeRingEquiv_relativeAdeleCongr
-    (e : K ≃ₐ[ℚ] M)
-    (z : RelativeAdeleRing ℚ K) :
-    relativeAdeleBaseChangeRingEquiv
-        (K := ℚ) (L := M)
-        (relativeAdeleCongr (K := ℚ) e z) =
-      adeleCongr e
-        (relativeAdeleBaseChangeRingEquiv
-          (K := ℚ) (L := K) z) := by
-  change
-    relativeAdeleBaseChangeRingEquiv
-        (K := ℚ) (L := M)
-        (relativeAdeleCongr (K := ℚ) e z) =
-      relativeAdeleBaseChangeRingEquiv
-        (K := ℚ) (L := M)
-        (relativeAdeleCongr (K := ℚ) e
-          ((relativeAdeleBaseChangeRingEquiv
-            (K := ℚ) (L := K)).symm
-            (relativeAdeleBaseChangeRingEquiv
-              (K := ℚ) (L := K) z)))
-  rw [RingEquiv.symm_apply_apply]
-
-/-- Transport of ordinary adeles carries the diagonal field embedding to
-the diagonal field embedding. -/
-@[simp]
-theorem adeleCongr_algebraMap
-    (e : K ≃ₐ[ℚ] M)
-    (x : K) :
-    adeleCongr e
-        (algebraMap K
-          (NumberField.AdeleRing (𝓞 K) K) x) =
-      algebraMap M
-        (NumberField.AdeleRing (𝓞 M) M) (e x) := by
-  have hx :
-      (relativeAdeleBaseChangeRingEquiv
-          (K := ℚ) (L := K)).symm
-          (algebraMap K
-            (NumberField.AdeleRing (𝓞 K) K) x) =
-        (1 : NumberField.AdeleRing (𝓞 ℚ) ℚ) ⊗ₜ[ℚ] x := by
-    apply
-      (relativeAdeleBaseChangeRingEquiv
-        (K := ℚ) (L := K)).injective
-    rw [RingEquiv.apply_symm_apply,
-      relativeAdeleBaseChangeRingEquiv_fieldInclusion]
-  change
-    relativeAdeleBaseChangeRingEquiv
-        (K := ℚ) (L := M)
-        (relativeAdeleCongr (K := ℚ) e
-          ((relativeAdeleBaseChangeRingEquiv
-            (K := ℚ) (L := K)).symm
-              (algebraMap K
-                (NumberField.AdeleRing (𝓞 K) K) x))) =
-      algebraMap M
-        (NumberField.AdeleRing (𝓞 M) M) (e x)
-  rw [hx, relativeAdeleCongr_tmul,
-    relativeAdeleBaseChangeRingEquiv_fieldInclusion]
 
 /-- The permutation of finite places induced by an equivalence of number
 fields. -/
@@ -551,12 +454,8 @@ theorem adeleCongr_finiteComponent
 /-- The canonical transport of ordinary ideles along an equivalence of
 number fields.  It is obtained from the existing relative-idele transport
 over `ℚ` and the canonical relative-to-ordinary base-change equivalences. -/
-noncomputable def ideleCongr
-    (e : K ≃ₐ[ℚ] M) :
-    IdeleGroup K ≃* IdeleGroup M :=
-  (IdeleGroup.equivAdeleRingUnits (K := K)).trans
-    ((Units.mapEquiv (adeleCongr e).toMulEquiv).trans
-      (IdeleGroup.equivAdeleRingUnits (K := M)).symm)
+noncomputable abbrev ideleCongr (e : K ≃ₐ[ℚ] M) : IdeleGroup K ≃* IdeleGroup M :=
+  NumberField.IdeleGroup.congr e
 
 /-- The relative-to-ordinary scalar-extension comparison is natural for
 transport of relative ideles along an equivalence of their top fields. -/
@@ -569,13 +468,8 @@ theorem relativeIdeleBaseChangeMulEquiv_relativeIdeleCongr
       ideleCongr e
         (relativeIdeleBaseChangeMulEquiv
           (K := ℚ) (L := K) a) := by
-  apply
-    (IdeleGroup.equivAdeleRingUnits
-      (K := M)).injective
-  rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits]
-  simp only [ideleCongr, MulEquiv.trans_apply,
-    MulEquiv.apply_symm_apply,
-    relativeIdeleBaseChangeMulEquiv_eq_ringUnits]
+  rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits (K := ℚ) (L := M),
+    relativeIdeleBaseChangeMulEquiv_eq_ringUnits (K := ℚ) (L := K)]
   apply Units.ext
   exact
     relativeAdeleBaseChangeRingEquiv_relativeAdeleCongr
@@ -613,10 +507,7 @@ theorem ideleCongr_finiteComponent
   apply Units.ext
   exact
     adeleCongr_finiteComponent e
-      (((IdeleGroup.equivAdeleRingUnits
-        (K := K) a :
-          (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-        NumberField.AdeleRing (𝓞 K) K))
+      ((a : NumberField.AdeleRing (𝓞 K) K))
       W
 
 omit [NumberField K] in
@@ -754,9 +645,6 @@ theorem ideleCongr_principalIdele
     ideleCongr e (IdeleGroup.principalIdele K x) =
       IdeleGroup.principalIdele M
         (Units.mapEquiv e.toMulEquiv x) := by
-  apply
-    (IdeleGroup.equivAdeleRingUnits
-      (K := M)).injective
   apply Units.ext
   exact adeleCongr_algebraMap e (x : K)
 
@@ -802,17 +690,11 @@ theorem ordinaryIdealClassSubgroup_map_congr
       IdeleGroup.principalSubgroup M
   exact idelePrincipalSubgroup_map_congr e
 
-/-- The canonical transport of ordinary idele classes along an equivalence
-of number fields.  This descends `ideleCongr`; it does not introduce a
-second idele-class quotient. -/
-noncomputable def ideleClassCongr
+/-- The canonical transport of idele classes along an equivalence of number fields. -/
+noncomputable abbrev ideleClassCongr
     (e : K ≃ₐ[ℚ] M) :
     IdeleClassGroup K ≃* IdeleClassGroup M :=
-  QuotientGroup.congr
-    (IdeleGroup.principalSubgroup K)
-    (IdeleGroup.principalSubgroup M)
-    (ideleCongr e)
-    (idelePrincipalSubgroup_map_congr e)
+  NumberField.IdeleClassGroup.congr e
 
 /-- The ordinary idele-class transport is induced by `ideleCongr` on
 quotient representatives. -/
@@ -821,12 +703,10 @@ theorem ideleClassCongr_mk
     (e : K ≃ₐ[ℚ] M)
     (a : IdeleGroup K) :
     ideleClassCongr e
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup M)
+        (IdeleGroup.toStandardClass K a) =
+      IdeleGroup.toStandardClass M
         (ideleCongr e a) :=
-  rfl
+  NumberField.IdeleClassGroup.congr_mk e a
 
 /-- The relative-to-ordinary scalar-extension comparison is natural for
 transport of relative idèle classes along an equivalence of their top
@@ -905,20 +785,16 @@ used by the small Hilbert class field. -/
 theorem ordinaryIdealClassSubgroup_image_map_ideleClassCongr
     (e : K ≃ₐ[ℚ] M) :
     (Subgroup.map
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K))
+        (IdeleGroup.toStandardClass K)
         (IdeleGroup.ordinaryIdealClassSubgroup (K := K))).map
           (ideleClassCongr e).toMonoidHom =
       Subgroup.map
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup M))
+        (IdeleGroup.toStandardClass M)
         (IdeleGroup.ordinaryIdealClassSubgroup (K := M)) := by
   have hcomp :
       (ideleClassCongr e).toMonoidHom.comp
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)) =
-        (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup M)).comp
+          (IdeleGroup.toStandardClass K) =
+        (IdeleGroup.toStandardClass M).comp
           (ideleCongr e).toMonoidHom := by
     ext a
     exact ideleClassCongr_mk e a
@@ -941,8 +817,8 @@ private theorem
       infinitePlaceBelow_self (K := K) W
     let : W.1.LiesOver V.1 := ⟨rfl⟩
     change
-      NumberField.LiesOver.completionMap
-          (v := V) (w := W) (a.1 V) =
+      AbsoluteValue.Completion.map
+          V.1 W.1 (a.1 V) =
         a.1 W
     subst V
     exact
@@ -1006,22 +882,12 @@ theorem rationalIdeleExtension_eq_ideleCongr
       (ideleCongr e).toMonoidHom := by
   apply MonoidHom.ext
   intro a
-  change
-    relativeIdeleBaseChangeMulEquiv
-        (K := ℚ) (L := M)
-        (RelativeIdeleGroup.inclusion ℚ M a) =
-      ideleCongr e a
-  apply
-    (IdeleGroup.equivAdeleRingUnits
-      (K := M)).injective
-  rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits]
+  change IdeleGroup.extension ℚ M a = ideleCongr e a
+  rw [IdeleGroup.extension_eq_relative, relativeIdeleBaseChangeMulEquiv_eq_ringUnits]
   apply Units.ext
   exact
     rationalAdeleExtension_eq_adeleCongr e
-      ((IdeleGroup.equivAdeleRingUnits
-        (K := ℚ) a :
-          (NumberField.AdeleRing (𝓞 ℚ) ℚ)ˣ) :
-        NumberField.AdeleRing (𝓞 ℚ) ℚ)
+      (a : NumberField.AdeleRing (𝓞 ℚ) ℚ)
 
 /-- Scalar extension from `ℚ` to a realization algebra-equivalent to
 `ℚ` is the canonical transport of ordinary idele classes. -/
@@ -1031,17 +897,13 @@ theorem rationalIdeleClassExtension_eq_ideleClassCongr
       (ideleClassCongr e).toMonoidHom := by
   apply MonoidHom.ext
   intro c
-  refine QuotientGroup.induction_on c ?_
+  refine IdeleGroup.toStandardClass_induction_on ℚ c ?_
   intro a
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup M)
-        (IdeleGroup.extension ℚ M a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup M)
-        (ideleCongr e a)
+  change ideleClassExtension ℚ M (IdeleGroup.toStandardClass ℚ a) =
+    ideleClassCongr e (IdeleGroup.toStandardClass ℚ a)
+  rw [ideleClassExtension_mk, ideleClassCongr_mk]
   exact congrArg
-    (QuotientGroup.mk' (IdeleGroup.principalSubgroup M))
+    (IdeleGroup.toStandardClass M)
     (DFunLike.congr_fun
       (rationalIdeleExtension_eq_ideleCongr e) a)
 
@@ -1430,9 +1292,6 @@ theorem relativeIdeleCongrOfAlgEquiv_norm
     ideleCongr eK (RelativeIdeleGroup.norm K L a) =
       RelativeIdeleGroup.norm K' L'
         (relativeIdeleCongrOfAlgEquiv eK eL h a) := by
-  apply
-    (IdeleGroup.equivAdeleRingUnits
-      (K := K')).injective
   apply Units.ext
   exact
     relativeAdeleCongrOfAlgEquiv_norm
@@ -1458,9 +1317,11 @@ theorem relativeIdeleClassCongrOfAlgEquiv_ideleClassNorm
           eK eL h c) := by
   refine QuotientGroup.induction_on c ?_
   intro a
+  rw [← QuotientGroup.mk'_apply (RelativeIdeleGroup.principalSubgroup K L) a,
+    RelativeIdeleGroup.classNorm_mk, ideleClassCongr_mk,
+    relativeIdeleClassCongrOfAlgEquiv_mk, RelativeIdeleGroup.classNorm_mk]
   exact congrArg
-    (QuotientGroup.mk'
-      (IdeleGroup.principalSubgroup K'))
+    (IdeleGroup.toStandardClass K')
     (relativeIdeleCongrOfAlgEquiv_norm eK eL h a)
 
 omit [IsGalois K L] [IsGalois K' L'] in
@@ -1518,11 +1379,6 @@ theorem ordinaryIdeleClassNorm_range_map_congrOfAlgEquiv
       eK eL h
 
 -- Fix the canonical commutativity proof used by the norm-range quotients.
-local instance normIdeleClassGroup_isMulCommutative
-    (F : Type u) [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  IsMulCommutative.of_comm (fun a b => mul_comm a b)
-
 /-- Compatible equivalences of finite Galois number-field extensions
 induce the canonical equivalence of their ordinary idele-class norm
 quotients. -/
@@ -1563,6 +1419,33 @@ theorem ordinaryIdeleClassNormQuotientCongrOfAlgEquiv_mk
         (_root_.ideleClassNorm K' L').range
         (ideleClassCongr eK c) :=
   rfl
+
+/-- The inverse transport of actual norm quotients sends a representative
+through the inverse of the same idele-class equivalence. -/
+@[simp]
+theorem ordinaryIdeleClassNormQuotientCongrOfAlgEquiv_symm_mk
+    {K₀ : Type u} {L₀ : Type v} {K₁ : Type w} {L₁ : Type x}
+    [Field K₀] [NumberField K₀]
+    [Field L₀] [NumberField L₀] [Algebra K₀ L₀]
+    [Field K₁] [NumberField K₁]
+    [Field L₁] [NumberField L₁] [Algebra K₁ L₁]
+    (eK : K₀ ≃ₐ[ℚ] K₁)
+    (eL : L₀ ≃ₐ[ℚ] L₁)
+    (h : ∀ x : K₀,
+      eL (algebraMap K₀ L₀ x) =
+        algebraMap K₁ L₁ (eK x))
+    (c : IdeleClassGroup K₁) :
+    (ordinaryIdeleClassNormQuotientCongrOfAlgEquiv eK eL h).symm
+        (QuotientGroup.mk'
+          (_root_.ideleClassNorm K₁ L₁).range c) =
+      QuotientGroup.mk'
+        (_root_.ideleClassNorm K₀ L₀).range
+        ((ideleClassCongr eK).symm c) := by
+  let e := ordinaryIdeleClassNormQuotientCongrOfAlgEquiv eK eL h
+  apply e.injective
+  rw [e.apply_symm_apply,
+    ordinaryIdeleClassNormQuotientCongrOfAlgEquiv_mk,
+    MulEquiv.apply_symm_apply]
 
 end Norm
 

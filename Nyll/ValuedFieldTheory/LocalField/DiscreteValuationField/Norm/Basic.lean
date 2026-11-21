@@ -27,98 +27,57 @@ universe u v
 
 namespace DiscreteValuationField
 
-/-- A multiplicative group valuation with values in additive integers. -/
-structure MultiplicativeIntegerValuation (G : Type u) [Group G] where
-  /-- The integer valuation of a group element. -/
-  val : G → ℤ
-  /-- The identity has valuation zero. -/
-  map_one : val 1 = 0
-  /-- Valuation turns multiplication into integer addition. -/
-  map_mul : ∀ x y : G, val (x * y) = val x + val y
+/-- An integer-valued group valuation is the standard homomorphism to
+the additive integers written multiplicatively. -/
+abbrev MultiplicativeIntegerValuation (G : Type u) [Group G] :=
+  G →* Multiplicative ℤ
 
 namespace MultiplicativeIntegerValuation
 
 variable {G : Type u} [Group G] (V : MultiplicativeIntegerValuation G)
 
-/-- Establishes the identity `V.val (1 : G) = 0`. -/
-@[simp] theorem val_one : V.val (1 : G) = 0 :=
-  V.map_one
+/-- The integer coordinate of the valuation homomorphism. -/
+abbrev val (x : G) : ℤ := Multiplicative.toAdd (V x)
 
-/-- `val` satisfies the multiplication formula `V.val (x * y) = V.val x + V.val y`. -/
+/-- The identity has integer valuation zero. -/
+@[simp] theorem val_one : V.val (1 : G) = 0 :=
+  congrArg Multiplicative.toAdd (map_one V)
+
+/-- Multiplication adds integer valuations. -/
 @[simp] theorem val_mul (x y : G) :
     V.val (x * y) = V.val x + V.val y :=
-  V.map_mul x y
+  congrArg Multiplicative.toAdd (map_mul V x y)
 
-/-- The integer-valued valuation as a multiplicative homomorphism to the
-additive group of integers written multiplicatively. -/
-def valuationHom : G →* Multiplicative ℤ where
-  toFun x := Multiplicative.ofAdd (V.val x)
-  map_one' := by
-    simp [V.val_one]
-  map_mul' x y := by
-    rw [V.val_mul, ofAdd_add]
+/-- The valuation homomorphism, with no reconstruction of its group laws. -/
+abbrev valuationHom : G →* Multiplicative ℤ := V
 
-/--
-The defining evaluation formula for `valuationHom` is `V.valuationHom x = Multiplicative.ofAdd
-(V.val x)`.
--/
-@[simp] theorem valuationHom_apply (x : G) :
-    V.valuationHom x = Multiplicative.ofAdd (V.val x) :=
-  rfl
+/-- The valuation homomorphism and its integer coordinate have the same value. -/
+theorem valuationHom_apply (x : G) :
+    V.valuationHom x = Multiplicative.ofAdd (V.val x) := rfl
 
-/-- Characterizes `x ∈ V.valuationHom.ker` by the equivalent condition `V.val x = 0`. -/
+/-- The kernel is exactly the set of elements of integer valuation zero. -/
 theorem mem_valuationHom_ker_iff (x : G) :
-    x ∈ V.valuationHom.ker ↔ V.val x = 0 := by
-  change V.valuationHom x = 1 ↔ V.val x = 0
-  rw [V.valuationHom_apply]
-  constructor
-  · intro hx
-    exact Multiplicative.ofAdd.injective (by simpa using hx)
-  · intro hx
-    exact congrArg Multiplicative.ofAdd hx
+    x ∈ V.valuationHom.ker ↔ V.val x = 0 := Iff.rfl
 
-/-- `val` satisfies the inverse formula `V.val x⁻¹ = -V.val x`. -/
+/-- Inversion negates integer valuation. -/
 @[simp] theorem val_inv (x : G) :
-    V.val x⁻¹ = -V.val x := by
-  have h := V.map_mul x x⁻¹
-  have h' : V.val x + V.val x⁻¹ = 0 := by
-    simpa [V.map_one] using h.symm
-  exact eq_neg_iff_add_eq_zero.2 (by simpa [add_comm] using h')
+    V.val x⁻¹ = -V.val x :=
+  congrArg Multiplicative.toAdd (map_inv V x)
 
-/-- `val` satisfies the division formula `V.val (x / y) = V.val x - V.val y`. -/
+/-- Division subtracts integer valuations. -/
 @[simp] theorem val_div (x y : G) :
-    V.val (x / y) = V.val x - V.val y := by
-  rw [div_eq_mul_inv, V.val_mul, V.val_inv, sub_eq_add_neg]
+    V.val (x / y) = V.val x - V.val y :=
+  congrArg Multiplicative.toAdd (map_div V x y)
 
-/-- `val` satisfies the natural-power formula `V.val (x ^ n) = (n : ℤ) * V.val x`. -/
+/-- Natural powers scale integer valuation. -/
 @[simp] theorem val_pow (x : G) (n : ℕ) :
     V.val (x ^ n) = (n : ℤ) * V.val x := by
-  induction n with
-  | zero =>
-      rw [pow_zero, V.val_one, Nat.cast_zero, zero_mul]
-  | succ n ih =>
-      calc
-        V.val (x ^ Nat.succ n) = V.val (x ^ n * x) := by
-            rw [pow_succ]
-        _ = V.val (x ^ n) + V.val x := V.val_mul _ _
-        _ = (n : ℤ) * V.val x + V.val x := by
-            rw [ih]
-        _ = ((n : ℤ) + 1) * V.val x := by
-            rw [add_mul, one_mul]
-        _ = (Nat.succ n : ℤ) * V.val x := by
-            rw [Nat.cast_succ]
+  simp only [val, map_pow, toAdd_pow, nsmul_eq_mul]
 
-/-- `val` satisfies the integer-power formula `V.val (x ^ n) = n * V.val x`. -/
+/-- Integer powers scale integer valuation. -/
 @[simp] theorem val_zpow (x : G) (n : ℤ) :
     V.val (x ^ n) = n * V.val x := by
-  cases n with
-  | ofNat n =>
-      rw [Int.ofNat_eq_natCast, zpow_natCast, V.val_pow]
-  | negSucc n =>
-      rw [zpow_negSucc, V.val_inv, V.val_pow]
-      change -(((n + 1 : ℕ) : ℤ) * V.val x) =
-        -(((n + 1 : ℕ) : ℤ)) * V.val x
-      rw [neg_mul]
+  simp only [val, map_zpow, toAdd_zpow, zsmul_eq_mul, Int.cast_id]
 
 /-- Establishes the identity `V.val x⁻¹ = 0`. -/
 theorem val_inv_eq_zero_of_val_eq_zero {x : G} (hx : V.val x = 0) :
@@ -168,17 +127,8 @@ theorem val_eq_zero_of_zpow_eq_one (x : G) {n : ℤ}
   have hv : V.val (x ^ n) = 0 := by rw [hpow, V.val_one]
   exact (V.val_zpow_eq_zero_iff_of_ne_zero x hn).1 hv
 
-/-- Elements of valuation zero. -/
-def zeroSubgroup : Subgroup G where
-  carrier := {x | V.val x = 0}
-  one_mem' := V.val_one
-  mul_mem' := by
-    intro x y hx hy
-    change V.val (x * y) = 0
-    rw [V.map_mul, hx, hy, add_zero]
-  inv_mem' := by
-    intro x hx
-    exact V.val_inv_eq_zero_of_val_eq_zero hx
+/-- Elements of valuation zero form the kernel of the same homomorphism. -/
+abbrev zeroSubgroup : Subgroup G := V.ker
 
 /-- Characterizes `x ∈ V.zeroSubgroup` by the equivalent condition `V.val x = 0`. -/
 @[simp] theorem mem_zeroSubgroup_iff (x : G) :
@@ -187,19 +137,11 @@ def zeroSubgroup : Subgroup G where
 
 /-- Establishes the identity `V.valuationHom.ker = V.zeroSubgroup`. -/
 theorem valuationHom_ker_eq_zeroSubgroup :
-    V.valuationHom.ker = V.zeroSubgroup := by
-  ext x
-  rw [V.mem_valuationHom_ker_iff, V.mem_zeroSubgroup_iff]
-
-/-- The subgroup appearing in `(V.zeroSubgroup).Normal` is normal. -/
-instance zeroSubgroup_normal : (V.zeroSubgroup).Normal := by
-  rw [← V.valuationHom_ker_eq_zeroSubgroup]
-  infer_instance
+    V.valuationHom.ker = V.zeroSubgroup := rfl
 
 /-- The value subgroup of an integer-valued valuation.  It is the range of the
 valuation homomorphism `valuationHom`. -/
-def valueSubgroup : Subgroup (Multiplicative ℤ) :=
-  V.valuationHom.range
+abbrev valueSubgroup : Subgroup (Multiplicative ℤ) := V.range
 
 /--
 Characterizes `n ∈ V.valueSubgroup` by the equivalent condition `∃ x : G, V.valuationHom x = n`.

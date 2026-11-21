@@ -136,9 +136,8 @@ theorem algebraicLocalizationAbsoluteValue_toAlgebraicLocalization
     algebraicLocalizationAbsoluteValue vK wL hw
         (toAlgebraicLocalization vK wL hw x) = wL x := by
   intro sharedOwner1
-  change ‖((WithAbs.equiv wL).symm x : wL.Completion)‖ = wL x
-  rw [UniformSpace.Completion.norm_coe]
-  rfl
+  change completionAbsoluteValue wL (toCompletion wL x) = wL x
+  rw [toCompletion_eq_algebraMap, completionAbsoluteValue_coe]
 
 /-- The copy of `K` obtained through `L` agrees with its copy through the
 completed base field. -/

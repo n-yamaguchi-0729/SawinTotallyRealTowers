@@ -81,8 +81,8 @@ private theorem valuationAt_baseField_coe
   change v.dividedAt (FiniteAbstractField.base G) x = v.toAddMonoidHom x
   rw [hdivided]
   let : Finite ((baseField G).toSubgroup ⧸
-      extensionSubgroup (baseField G) (baseField G) le_rfl) := by
-    simpa [FiniteAbstractField.base] using (FiniteAbstractField.base G).finite
+      extensionSubgroup (baseField G) (baseField G) le_rfl) :=
+    (FiniteAbstractField.base G).finite
   change v.toAddMonoidHom
       (relativeNorm A (baseField G) (baseField G)
         (le_baseField (baseField G)) x) = v.toAddMonoidHom x

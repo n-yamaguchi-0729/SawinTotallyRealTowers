@@ -44,10 +44,7 @@ variable {sourceData :
   FreeProC.EpimorphicallyFreeProCGroupOnConvergingSetData.{u, u}
     (FiniteGroupClass.pGroup p)}
 
-local instance presentationUpperContinuousH1Module
-    {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 namespace PresentationH2Aux
 

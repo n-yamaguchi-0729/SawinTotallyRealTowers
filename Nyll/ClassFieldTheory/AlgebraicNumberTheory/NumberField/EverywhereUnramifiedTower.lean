@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
 public import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
 
 /-!
@@ -24,26 +25,15 @@ open scoped NumberField
 
 universe u v w
 
-/-- A number-field extension is everywhere unramified when it is
-unramified at every finite prime and at every infinite place. -/
-structure IsEverywhereUnramified
-    (K : Type u) (L : Type v)
-    [Field K] [NumberField K]
-    [Field L] [NumberField L] [Algebra K L] : Prop where
-  /-- The extension is unramified at every finite prime. -/
-  finitePlaces : IsUnramifiedAtFinitePlaces K L
-  /-- The extension is unramified at every infinite place. -/
-  infinitePlaces : IsUnramifiedAtInfinitePlaces K L
-
-namespace IsEverywhereUnramified
+namespace ClassFieldTheory.IsEverywhereUnramified
 
 /-- The identity extension is everywhere unramified. -/
 theorem refl
     (K : Type u) [Field K] [NumberField K] :
     IsEverywhereUnramified K K where
-  finitePlaces :=
+  left :=
     IsUnramifiedAtFinitePlaces.refl K
-  infinitePlaces :=
+  right :=
     inferInstance
 
 variable
@@ -59,14 +49,14 @@ theorem trans
     (hkK : IsEverywhereUnramified k K)
     (hKF : IsEverywhereUnramified K F) :
     IsEverywhereUnramified k F where
-  finitePlaces :=
+  left :=
     IsUnramifiedAtFinitePlaces.trans
-      hkK.finitePlaces hKF.finitePlaces
-  infinitePlaces := by
+      hkK.1 hKF.1
+  right := by
     let : IsUnramifiedAtInfinitePlaces k K :=
-      hkK.infinitePlaces
+      hkK.2
     let : IsUnramifiedAtInfinitePlaces K F :=
-      hKF.infinitePlaces
+      hKF.2
     exact
       IsUnramifiedAtInfinitePlaces.trans k K F
 
@@ -76,11 +66,11 @@ field. -/
 theorem top
     (hkF : IsEverywhereUnramified k F) :
     IsEverywhereUnramified K F where
-  finitePlaces :=
-    IsUnramifiedAtFinitePlaces.top hkF.finitePlaces
-  infinitePlaces := by
+  left :=
+    IsUnramifiedAtFinitePlaces.top hkF.1
+  right := by
     let : IsUnramifiedAtInfinitePlaces k F :=
-      hkF.infinitePlaces
+      hkF.2
     exact
       IsUnramifiedAtInfinitePlaces.top k K F
 
@@ -90,12 +80,12 @@ the bottom. -/
 theorem bot
     (hkF : IsEverywhereUnramified k F) :
     IsEverywhereUnramified k K where
-  finitePlaces :=
-    IsUnramifiedAtFinitePlaces.bot hkF.finitePlaces
-  infinitePlaces := by
+  left :=
+    IsUnramifiedAtFinitePlaces.bot hkF.1
+  right := by
     let : IsUnramifiedAtInfinitePlaces k F :=
-      hkF.infinitePlaces
+      hkF.2
     exact
       IsUnramifiedAtInfinitePlaces.bot k K F
 
-end IsEverywhereUnramified
+end ClassFieldTheory.IsEverywhereUnramified

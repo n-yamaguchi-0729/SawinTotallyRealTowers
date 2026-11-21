@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ConductorLattice
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.FullModulus
 
@@ -36,13 +38,6 @@ open NumberField
 
 variable {K : Type u} [Field K] [NumberField K]
 
-/-- Fix the canonical commutative structure used to infer normality of
-subgroups of the idèle class group in this module. -/
-local instance
-    conductorRayClassMaximality_ideleClassGroupIsMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
 namespace ConductorialSubgroup
 
 /-- The canonical quotient map from the ray class group at the exact
@@ -51,7 +46,7 @@ noncomputable def narrowFiniteConductorRayClassGroupToQuotient
     (H : ConductorialSubgroup K) :
     RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor) →*
-      IdeleClassGroup K ⧸ H.1 :=
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1 :=
   QuotientGroup.map
     (RayClass.Modulus.congruenceSubgroup
       (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor))
@@ -70,7 +65,7 @@ idèle-class representative. -/
 @[simp]
 theorem narrowFiniteConductorRayClassGroupToQuotient_mk
     (H : ConductorialSubgroup K)
-    (c : IdeleClassGroup K) :
+    (c : NumberField.IdeleClassGroup (𝓞 K) K) :
     H.narrowFiniteConductorRayClassGroupToQuotient
       (QuotientGroup.mk'
           (RayClass.Modulus.congruenceSubgroup
@@ -108,12 +103,12 @@ theorem narrowFiniteConductorRayClassGroupToQuotient_ker
       (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)
   let M := H.1
   change
-    (QuotientGroup.map N M (MonoidHom.id (IdeleClassGroup K)) _).ker =
+    (QuotientGroup.map N M (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K)) _).ker =
       Subgroup.map (QuotientGroup.mk' N) M
   simpa only [Subgroup.comap_id] using
     (QuotientGroup.ker_map (N := N) M
-      (MonoidHom.id (IdeleClassGroup K))
-      (show N ≤ Subgroup.comap (MonoidHom.id (IdeleClassGroup K)) M from
+      (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K))
+      (show N ≤ Subgroup.comap (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K)) M from
         fun _ hx => H.narrowFiniteConductor_isDefiningModulus hx))
 
 /-- Quotienting the exact narrow finite conductor ray class group by the
@@ -128,7 +123,7 @@ noncomputable def
             (RayClass.Modulus.congruenceSubgroup
               (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)))
           H.1) ≃*
-      IdeleClassGroup K ⧸ H.1 :=
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1 :=
   (QuotientGroup.quotientMulEquivOfEq
       H.narrowFiniteConductorRayClassGroupToQuotient_ker.symm).trans
     (QuotientGroup.quotientKerEquivOfSurjective
@@ -149,7 +144,7 @@ theorem
               (RayClass.Modulus.congruenceSubgroup
                 (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)))
             H.1) *
-        Nat.card (IdeleClassGroup K ⧸ H.1) := by
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) := by
   let f := H.narrowFiniteConductorRayClassGroupToQuotient
   have hf : Function.Surjective f :=
     H.narrowFiniteConductorRayClassGroupToQuotient_surjective
@@ -162,7 +157,7 @@ theorem
     _ = Nat.card (MonoidHom.ker f) * Nat.card f.range := by
       rw [Subgroup.index_ker f]
     _ = Nat.card (MonoidHom.ker f) *
-        Nat.card (IdeleClassGroup K ⧸ H.1) := by
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) := by
       rw [f.range_eq_top_of_surjective hf, Subgroup.card_top]
     _ =
         Nat.card
@@ -171,14 +166,14 @@ theorem
                 (RayClass.Modulus.congruenceSubgroup
                   (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)))
               H.1) *
-          Nat.card (IdeleClassGroup K ⧸ H.1) := by
+          Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) := by
       rw [H.narrowFiniteConductorRayClassGroupToQuotient_ker]
 
 /-- The order of `C_K / H` divides the ray class number at the exact
 narrow finite conductor of `H`. -/
 theorem ideleClassQuotient_card_dvd_narrowFiniteConductorRayClassGroup_card
     (H : ConductorialSubgroup K) :
-      Nat.card (IdeleClassGroup K ⧸ H.1) ∣
+      Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) ∣
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) := by
   simpa only [Subgroup.index_eq_card] using
@@ -191,7 +186,7 @@ theorem narrowFiniteConductorRayClassGroupToQuotient_injective_iff_card_eq
     Function.Injective H.narrowFiniteConductorRayClassGroupToQuotient ↔
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1) := by
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) := by
   let f := H.narrowFiniteConductorRayClassGroupToQuotient
   have hfSurjective : Function.Surjective f :=
     H.narrowFiniteConductorRayClassGroupToQuotient_surjective
@@ -213,10 +208,10 @@ noncomputable def narrowFiniteConductorRayClassGroupEquivQuotientOfCardEq
     (hcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1)) :
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1)) :
     RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor) ≃*
-      IdeleClassGroup K ⧸ H.1 :=
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1 :=
   MulEquiv.ofBijective
     H.narrowFiniteConductorRayClassGroupToQuotient
     ⟨H.narrowFiniteConductorRayClassGroupToQuotient_injective_iff_card_eq.2
@@ -231,8 +226,8 @@ theorem narrowFiniteConductorRayClassGroupEquivQuotientOfCardEq_mk
     (hcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1))
-    (c : IdeleClassGroup K) :
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1))
+    (c : NumberField.IdeleClassGroup (𝓞 K) K) :
     H.narrowFiniteConductorRayClassGroupEquivQuotientOfCardEq
         hcard
       (QuotientGroup.mk'
@@ -251,7 +246,7 @@ theorem
       (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor) ↔
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1) := by
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) := by
   constructor
   · intro hH
     calc
@@ -262,7 +257,7 @@ theorem
         (Subgroup.index_eq_card _).symm
       _ = H.1.index := by
         rw [← hH]
-      _ = Nat.card (IdeleClassGroup K ⧸ H.1) :=
+      _ = Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) :=
         Subgroup.index_eq_card H.1
   · intro hcard
     let f := H.narrowFiniteConductorRayClassGroupToQuotient
@@ -298,11 +293,11 @@ theorem
     (hHcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1))
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1))
     (hJcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite J.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ J.1)) :
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ J.1)) :
     H.1 = J.1 := by
   calc
     H.1 = RayClass.Modulus.congruenceSubgroup
@@ -328,13 +323,13 @@ def ideleClassQuotientEquivOfNarrowFiniteConductorsEqOfRayClassGroupCardsEqQuoti
     (hHcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1))
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1))
     (hJcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite J.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ J.1)) :
-    (IdeleClassGroup K ⧸ H.1) ≃*
-      (IdeleClassGroup K ⧸ J.1) :=
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ J.1)) :
+    (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1) ≃*
+      (NumberField.IdeleClassGroup (𝓞 K) K ⧸ J.1) :=
   QuotientGroup.quotientMulEquivOfEq
     (H.subgroups_eq_of_narrowFiniteConductors_eq_of_rayClassGroup_cards_eq_quotient_cards
       J hconductor hHcard hJcard)
@@ -349,12 +344,12 @@ theorem
     (hHcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite H.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ H.1))
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ H.1))
     (hJcard :
       Nat.card (RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite J.narrowFiniteConductor)) =
-        Nat.card (IdeleClassGroup K ⧸ J.1))
-    (c : IdeleClassGroup K) :
+        Nat.card (NumberField.IdeleClassGroup (𝓞 K) K ⧸ J.1))
+    (c : NumberField.IdeleClassGroup (𝓞 K) K) :
     H.ideleClassQuotientEquivOfNarrowFiniteConductorsEqOfRayClassGroupCardsEqQuotientCards
         J hconductor hHcard hJcard
         (QuotientGroup.mk' H.1 c) =

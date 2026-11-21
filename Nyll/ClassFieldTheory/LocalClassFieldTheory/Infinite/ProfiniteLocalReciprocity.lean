@@ -9,8 +9,9 @@ module
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.FiniteAbelianQuotientKernels
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.LocalMultiplicativeCompletion
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtin
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteGaloisAbelianization
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.TopologicalAbelianizationCongr
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.MathlibAbsoluteAbelianization
+public import Nyll.ProCGroups.Abelian.TopologicalAbelianization
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.FiniteExtensionCorrespondence
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
@@ -43,45 +44,31 @@ open LocalFieldTheory RamificationTheory
 variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
-/-- Restriction to the separable closure gives the canonical topological
-identification between the usual and separable absolute Galois groups. -/
-noncomputable def standardToSeparableAbsoluteGaloisEquiv :
-    _root_.Field.absoluteGaloisGroup K ≃ₜ* intrinsicAbsoluteGalois K :=
-  RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv K
-
-/-- The induced canonical identification from the separable absolute
-topological abelianization to Mathlib's usual one. -/
-noncomputable def separableToStandardAbsoluteAbelianizationEquiv :
-    TopologicalAbelianization (intrinsicAbsoluteGalois K) ≃ₜ*
-      _root_.Field.absoluteGaloisGroupAbelianization K :=
-  (topologicalAbelianizationCongr
-    (standardToSeparableAbsoluteGaloisEquiv K)).symm
-
 /-- The separable model makes the standard absolute abelianization totally disconnected. -/
 noncomputable instance standardLocalAbsoluteAbelianization_totallyDisconnectedSpace :
     TotallyDisconnectedSpace
       (_root_.Field.absoluteGaloisGroupAbelianization K) :=
   Homeomorph.totallyDisconnectedSpace
-    (separableToStandardAbsoluteAbelianizationEquiv K).toHomeomorph
+    (absoluteGaloisGroupAbelianizationEquivSeparable K).symm.toHomeomorph
 
 /-- The standard absolute abelianization is compact via the separable-model equivalence. -/
 noncomputable instance standardLocalAbsoluteAbelianization_compactSpace :
     CompactSpace (_root_.Field.absoluteGaloisGroupAbelianization K) :=
   Homeomorph.compactSpace
-    (separableToStandardAbsoluteAbelianizationEquiv K).toHomeomorph
+    (absoluteGaloisGroupAbelianizationEquivSeparable K).symm.toHomeomorph
 
 /-- The standard absolute abelianization is Hausdorff via the separable-model equivalence. -/
 noncomputable instance standardLocalAbsoluteAbelianization_t2Space :
     T2Space (_root_.Field.absoluteGaloisGroupAbelianization K) :=
   by
-    have htarget : T2Space Gal(localMaximalAbelianExtension K / K) :=
+    have htarget : T2Space Gal(maximalAbelianExtension K / K) :=
       krullTopology_t2
     have hsource : T2Space
         (TopologicalAbelianization (intrinsicAbsoluteGalois K)) :=
       @Homeomorph.t2Space _ _ _ _ htarget
-        (localAbsoluteAbelianizationEquiv K).symm.toHomeomorph
+        (absoluteTopologicalAbelianizationEquivMaximalAbelianGalois K).symm.toHomeomorph
     exact @Homeomorph.t2Space _ _ _ _ hsource
-      (separableToStandardAbsoluteAbelianizationEquiv K).toHomeomorph
+      (absoluteGaloisGroupAbelianizationEquivSeparable K).symm.toHomeomorph
 
 /-- The usual absolute Galois topological abelianization, packaged as a stable
 profinite group. -/
@@ -161,7 +148,7 @@ noncomputable def separableToStandardAbsoluteAbelianizationHom :
     localAbsoluteAbelianProfinite K →ₜ*
       standardLocalAbsoluteAbelianProfinite K :=
   ContinuousMonoidHom.toContinuousMonoidHom
-    (separableToStandardAbsoluteAbelianizationEquiv K)
+    (absoluteGaloisGroupAbelianizationEquivSeparable K).symm
 
 /-- The absolute local Artin map with Mathlib's usual algebraic-closure
 absolute Galois group as target. -/
@@ -170,24 +157,24 @@ noncomputable def absoluteLocalArtinMap :
   (separableToStandardAbsoluteAbelianizationHom K).comp
     (separableAbsoluteLocalArtinMap K)
 
-/-- Transporting the separable Artin map to the standard model gives the absolute Artin map. -/
+/-- Transporting the absolute Artin value to the separable closure recovers its value there. -/
 @[simp]
-theorem separableToStandardAbsoluteAbelianizationEquiv_symm_artinMap
+theorem absoluteGaloisGroupAbelianizationEquivSeparable_artinMap
     (a : Kˣ) :
-    (separableToStandardAbsoluteAbelianizationEquiv K).symm
+    absoluteGaloisGroupAbelianizationEquivSeparable K
         (absoluteLocalArtinMap K a) =
       separableAbsoluteLocalArtinMap K a := by
   change
-    (separableToStandardAbsoluteAbelianizationEquiv K).symm
-        (separableToStandardAbsoluteAbelianizationEquiv K
+    absoluteGaloisGroupAbelianizationEquivSeparable K
+        ((absoluteGaloisGroupAbelianizationEquivSeparable K).symm
           (separableAbsoluteLocalArtinMap K a)) =
       separableAbsoluteLocalArtinMap K a
-  exact (separableToStandardAbsoluteAbelianizationEquiv K).symm_apply_apply _
+  exact (absoluteGaloisGroupAbelianizationEquivSeparable K).apply_symm_apply _
 
 /-- The usual absolute local Artin map has dense image. -/
 theorem absoluteLocalArtinMap_denseRange :
     DenseRange (absoluteLocalArtinMap K) := by
-  let e := separableToStandardAbsoluteAbelianizationEquiv K
+  let e := (absoluteGaloisGroupAbelianizationEquivSeparable K).symm
   change DenseRange (fun a => e (separableAbsoluteLocalArtinMap K a))
   exact e.surjective.denseRange.comp
     (separableAbsoluteLocalArtinMap_denseRange K) e.continuous
@@ -262,7 +249,7 @@ theorem profiniteLocalReciprocityHom_eq_transport :
   apply ContinuousMonoidHom.ext
   intro a
   change
-    separableToStandardAbsoluteAbelianizationEquiv K
+    (absoluteGaloisGroupAbelianizationEquivSeparable K).symm
         (separableProfiniteLocalReciprocityHom K
           (topologicalProfiniteCompletionMap Kˣ a)) =
       absoluteLocalArtinMap K a
@@ -273,7 +260,7 @@ theorem profiniteLocalReciprocityHom_eq_transport :
 theorem profiniteLocalReciprocityHom_injective :
     Function.Injective (profiniteLocalReciprocityHom K) := by
   rw [profiniteLocalReciprocityHom_eq_transport K]
-  exact (separableToStandardAbsoluteAbelianizationEquiv K).injective.comp
+  exact (absoluteGaloisGroupAbelianizationEquivSeparable K).symm.injective.comp
     (separableProfiniteLocalReciprocityHom_injective K)
 
 /-- **Profinite local reciprocity.** The topological profinite completion of
@@ -390,7 +377,7 @@ of its finite quotients, after transport from the fixed separable closure. -/
 noncomputable def standardAbsoluteGaloisAbelianizationLimitEquiv :
     ContinuousMulEquiv (standardLocalAbsoluteAbelianProfinite K)
       (absoluteFiniteArtinLimit K) :=
-  (separableToStandardAbsoluteAbelianizationEquiv K).symm.trans
+  (absoluteGaloisGroupAbelianizationEquivSeparable K).trans
     (absoluteGaloisAbelianizationLimitEquiv K)
 
 /-- Every finite projection of the absolute Artin map is its corresponding
@@ -401,10 +388,10 @@ theorem absoluteLocalArtinMap_finiteProjection
     (N : OpenNormalSubgroup (localAbsoluteAbelianProfinite K))
     (a : Units K) :
     QuotientGroup.mk' N.toSubgroup
-        ((separableToStandardAbsoluteAbelianizationEquiv K).symm
+        (absoluteGaloisGroupAbelianizationEquivSeparable K
           (absoluteLocalArtinMap K a)) =
       absoluteFiniteArtinMap K N a := by
-  rw [separableToStandardAbsoluteAbelianizationEquiv_symm_artinMap]
+  rw [absoluteGaloisGroupAbelianizationEquivSeparable_artinMap]
   exact separableAbsoluteLocalArtinMap_finiteProjection K N a
 
 end LocalClassFieldTheory

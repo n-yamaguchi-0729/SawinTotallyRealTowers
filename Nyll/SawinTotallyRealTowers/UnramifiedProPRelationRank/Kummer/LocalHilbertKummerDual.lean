@@ -11,6 +11,7 @@ public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Kummer.LocalHilbertPai
 public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Algebra.Module.Defs
 public import Mathlib.Algebra.Module.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-! # The local Hilbert pairing as a linear dual embedding -/
 
@@ -26,8 +27,7 @@ variable (L : Type) [Field L] [CharZero L]
 variable [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance localHilbertDualCanonicalZModAddCommGroup : AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 /-- A primitive root identifies the `n`-th roots of unity with additive `ZMod n`. -/
 noncomputable def localNthRootsEquivMultiplicativeZMod

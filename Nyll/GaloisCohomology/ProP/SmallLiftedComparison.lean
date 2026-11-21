@@ -51,9 +51,7 @@ noncomputable def continuousCohomologyZModPLiftedSmallLinearEquiv (n : ℕ) :
       continuousCohomologyZModP p G n :=
   (continuousCohomologyZModPLiftedSmallIso p G n).toContinuousLinearEquiv.toLinearEquiv
 
-local instance continuousH1ZModModuleSmallComparison :
-    Module (ZMod p) (ClassFieldTower.ProP.ContinuousH1ZMod (p := p) (G := G)) :=
-  ClassFieldTower.ProP.continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The cochain comparison forgets only the actual coefficient universe lift. -/
 @[simp]
@@ -85,8 +83,8 @@ theorem trivialZModPLiftedSmallIso_cocyclesMap_cocycleOfH1Lifted
 theorem continuousCohomologyZModPLiftedSmallLinearEquiv_h1
     (χ : ClassFieldTower.ProP.ContinuousH1ZMod (p := p) (G := G)) :
     continuousCohomologyZModPLiftedSmallLinearEquiv p G 1
-        (continuousH1ZModEquivContinuousCohomologyLifted χ) =
-      continuousH1ZModEquivContinuousCohomology χ := by
+        ((continuousH1ZModEquivContinuousCohomologyLifted (p := p) (G := G)) χ) =
+      (continuousH1ZModEquivContinuousCohomology (p := p) (G₀ := G)) χ := by
   change ContinuousCohomology.map (ContinuousMonoidHom.id G)
       (trivialZModPLiftedSmallIso p G).hom 1
       (ContinuousCohomology.π (trivialZModPLifted p G) 1 (cocycleOfH1Lifted χ)) =
@@ -111,14 +109,14 @@ theorem continuousCohomologyZModPLiftedSmallLinearEquiv_h1
 /-- Recovering a character commutes with forgetting the coefficient universe lift. -/
 theorem continuousH1ZModEquivContinuousCohomology_symm_liftedSmall
     (x : continuousCohomologyZModPLifted p G 1) :
-    continuousH1ZModEquivContinuousCohomology.symm
+    (continuousH1ZModEquivContinuousCohomology (p := p) (G₀ := G)).symm
         (continuousCohomologyZModPLiftedSmallLinearEquiv p G 1 x) =
-      continuousH1ZModEquivContinuousCohomologyLifted.symm x := by
-  apply continuousH1ZModEquivContinuousCohomology.injective
+      (continuousH1ZModEquivContinuousCohomologyLifted (p := p) (G := G)).symm x := by
+  apply (continuousH1ZModEquivContinuousCohomology (p := p) (G₀ := G)).injective
   rw [LinearEquiv.apply_symm_apply]
   simpa only [LinearEquiv.apply_symm_apply] using
     continuousCohomologyZModPLiftedSmallLinearEquiv_h1 p G
-      (continuousH1ZModEquivContinuousCohomologyLifted.symm x)
+      ((continuousH1ZModEquivContinuousCohomologyLifted (p := p) (G := G)).symm x)
 
 /-- Small and lifted trivial coefficients give the same cohomological dimension. -/
 theorem continuousCohomologyZModPLiftedSmall_finrank_eq (n : ℕ) :

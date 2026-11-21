@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+public import Nyll.GaloisCohomology.Topology.GaloisConjugation
+
 public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteGeneration
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure
@@ -19,10 +23,10 @@ public import Mathlib.Topology.Instances.ZMod
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.GaloisCohomology.ProP.ContinuousH1Bridge
 public import Nyll.GaloisCohomology.ProP.TrivialZModP
-public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalization
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Finite-place comparison of natural and intrinsic-local Kummer H¹
@@ -110,22 +114,11 @@ end PowerClassLocalization
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceCyclotomicComparisonCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finitePlaceCyclotomicComparisonFiniteDimensional :
-    FiniteDimensional F (FinitePlaceCyclotomicBase F p) :=
-  finiteDimensional_idealRadicalCyclotomicBase
-    F p (Fact.out : p.Prime)
+attribute [local instance] cyclotomicBaseFiniteDimensional cyclotomicBaseNumberField
 
-local instance finitePlaceCyclotomicComparisonNumberField :
-    NumberField (FinitePlaceCyclotomicBase F p) :=
-  NumberField.of_module_finite F (FinitePlaceCyclotomicBase F p)
-
-local instance finitePlaceCyclotomicComparisonH1Module
-    {q : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 private theorem fieldAlgebra_isTorsionFree_forCyclotomicComparison
     {K L : Type} [Field K] [Field L] [Algebra K L] :
@@ -185,7 +178,7 @@ noncomputable def finitePlaceCompletionAbsoluteGaloisSemilinearCongr
       Field.absoluteGaloisGroup (v.adicCompletion K) := by
   let C := (NumberField.HeightOneSpectrum.adicAbv K v).Completion
   let C' := v.adicCompletion K
-  let c : C ≃+* C' := (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+  let c : C ≃+* C' := (finitePlaceCompletionAlgEquiv v).toRingEquiv
   exact absoluteGaloisSemilinearCongrContinuousMonoidHom C C' c
 
 /-- The selected decomposition group mapped to the absolute Galois group of
@@ -233,7 +226,7 @@ noncomputable def finitePlaceAlgebraicClosureEmbeddingData
   letI hK := AbsoluteValue.extensionCompletionAlgebra (K := K) w.1
   letI : SMul K w.1.Completion := hK.toSMul
   letI := AbsoluteValue.completionAlgebra vK w.1 w.2
-  let c := relativeFinitePlaceCompletionAlgEquiv v
+  let c := finitePlaceCompletionAlgEquiv v
   letI : Module.IsTorsionFree vK.Completion
       (AlgebraicClosure vK.Completion) := by
     exact fieldAlgebra_isTorsionFree_forCyclotomicComparison
@@ -435,7 +428,8 @@ noncomputable def finitePlaceAbsoluteMuPH1AdicCoordinate
     continuousCohomology 1 (finitePlaceAbsoluteMuPTopRep K p v) →ₗ[ZMod p]
       ContinuousH1ZMod
         (p := p) (G := finitePlaceAbsoluteDecompositionGroup K v) :=
-  ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology.symm.toLinearMap.comp
+  (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology
+    (p := p) (G₀ := finitePlaceAbsoluteDecompositionGroup K v)).symm.toLinearMap.comp
     (ContinuousCohomology.map
       (ContinuousMonoidHom.id (finitePlaceAbsoluteDecompositionGroup K v))
       (finitePlaceAbsoluteMuPAdicCoordinateHom K p v hmu) 1).hom.toLinearMap
@@ -669,7 +663,8 @@ theorem finitePlaceAbsoluteMuPH1AdicCoordinate_kummerClass
         (finitePlaceAbsoluteKummerMuPH1Class K p v a) =
       finitePlaceAdicKummerH1OfGlobalUnit K p v hmu a := by
   change
-    ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology.symm
+    (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology
+      (p := p) (G₀ := finitePlaceAbsoluteDecompositionGroup K v)).symm
       (ContinuousCohomology.map
         (ContinuousMonoidHom.id (finitePlaceAbsoluteDecompositionGroup K v))
         (finitePlaceAbsoluteMuPAdicCoordinateHom K p v hmu) 1
@@ -679,7 +674,8 @@ theorem finitePlaceAbsoluteMuPH1AdicCoordinate_kummerClass
     ConcreteCategory.comp_apply]
   rw [finitePlaceAbsoluteMuPCocyclesMap_kummer_eq_adic]
   exact
-    ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology.symm_apply_apply _
+    (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology
+      (p := p) (G₀ := finitePlaceAbsoluteDecompositionGroup K v)).symm_apply_apply _
 
 /-- The comparison on a represented global power class. -/
 theorem finitePlaceAbsoluteMuPKummerH1LinearMap_compare_adic_mk

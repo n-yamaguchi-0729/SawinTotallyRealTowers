@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.LogConvergence
 
 /-!
@@ -962,16 +963,6 @@ theorem hasSum_formalLogOnePlusProductArgument_logDegree_monomialValue_pair_sigm
       hasSum_formalLogOnePlusProductArgument_pow_monomialValue_pair_mul_left
         K (PowerSeries.coeff q (PowerSeries.log K)) x y q
   exact HasSum.sigma_of_hasSum houter hinner hsigma
-
-/-- The complete-DVF package attached to a standard `ℤᵐ⁰`-valued complete
-discrete valuation. -/
-def completeDVFOfWithZeroValuation
-    (v : _root_.Valuation K (WithZero (Multiplicative ℤ)))
-    [ValuationTheory.DiscreteValuationField.Valuation.IsCompleteDiscrete v] :
-    CompleteDVF.{u, 0} K where
-  ValueGroup := WithZero (Multiplicative ℤ)
-  valuation := v
-  instCompleteDiscrete := inferInstance
 
 open _root_.ValuationTheory.DiscreteValuationField.Valuation (
   mem_maximalIdeal_pow_iff_valuation_le_uniformizer_pow

@@ -43,37 +43,11 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicChangedCompletedBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
-
-/-- The completed unramified base retains the residue characteristic. -/
-theorem equalCharacteristicChangedCompletedBaseCharP
-    (F : LocalField.{u, v} K)
-    [CharP K F.residueCharacteristic] :
-    CharP (equalCharacteristicCompletedUnramifiedField F.residueField)
-      F.residueCharacteristic :=
-  equalCharacteristicCompletedLevelBaseCharP F
-
-noncomputable local instance equalCharacteristicChangedCompletedBaseValuationIsNontrivial
-    (k : Type v) [Field k] :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰).IsNontrivial :=
-  equalCharacteristicCompletedBaseValuationIsNontrivial k
-
-noncomputable local instance equalCharacteristicChangedCompletedBaseValuationRankOne
-    (k : Type v) [Field k] :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰).RankOne :=
-  equalCharacteristicCompletedBaseValuationRankOne k
-
-noncomputable local instance equalCharacteristicChangedCompletedBaseNormedField
-    (k : Type v) [Field k] :
-    NontriviallyNormedField
-      (equalCharacteristicCompletedUnramifiedField k) :=
-  equalCharacteristicCompletedBaseNormedField k
+attribute [local instance]
+  equalCharacteristicCompletedLevelBaseAlgebra
+  equalCharacteristicCompletedBaseValuationIsNontrivial
+  equalCharacteristicCompletedBaseValuationRankOne
+  equalCharacteristicCompletedBaseNormedField
 
 /-- The source unit is `u⁻¹`; hence its parameter is `u⁻¹T`, in the
 orientation of the theta intertwining relation. -/

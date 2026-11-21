@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
 public import Mathlib.Algebra.Group.Subgroup.Pointwise
 public import Mathlib.Topology.Algebra.Group.Pointwise
@@ -327,11 +328,15 @@ def intersectionGalois (L₁ L₂ : FiniteAbelianSubextension K) :
   field := intersectionField L₁ L₂
   below := intersectionField_below L₁ L₂
   normal := by
+    change (extensionSubgroup K (intersectionField L₁ L₂)
+      (intersectionField_below L₁ L₂)).Normal
     rw [extensionSubgroup_intersectionField]
     let : (extensionSubgroup K L₁.field L₁.below).Normal := L₁.normal
     let : (extensionSubgroup K L₂.field L₂.below).Normal := L₂.normal
     exact Subgroup.sup_normal _ _
   finite := by
+    change Finite (K.toSubgroup ⧸ extensionSubgroup K (intersectionField L₁ L₂)
+      (intersectionField_below L₁ L₂))
     rw [extensionSubgroup_intersectionField]
     let : (extensionSubgroup K L₁.field L₁.below).FiniteIndex :=
       @Subgroup.finiteIndex_of_finite_quotient K.toSubgroup _

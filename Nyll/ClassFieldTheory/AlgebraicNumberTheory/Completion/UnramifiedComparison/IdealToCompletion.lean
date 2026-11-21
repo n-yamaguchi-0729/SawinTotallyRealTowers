@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.IntegerRingComparison
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationIdeal
 public import Nyll.ValuedFieldTheory.Valuation.LocalRingEquiv
@@ -134,14 +136,7 @@ noncomputable def chosenFinitePlaceCompletionIntegralUniformizer
       eBaseField (πCompletion : vF.Completion) =
         (πConcrete : v.adicCompletion F) at happ
     rw [happ]
-    let x : WithAbs vF :=
-      (WithAbs.equiv vF).symm (π : F)
-    change
-      (π : v.adicCompletion F) =
-        finitePlaceCompletionRingHom v
-          (x : vF.Completion)
-    rw [finitePlaceCompletionRingHom_coe]
-    rfl
+    exact (finitePlaceCompletionRingEquiv_toCompletion v (π : F)).symm
   have hπCompletionMaximal :
       πCompletion ∈
         (IsLocalRing.maximalIdeal

@@ -164,6 +164,8 @@ def finiteUnramifiedExtension (D : DegreeData G) [IsTopologicalGroup G]
   below := unramifiedExtensionOfDegree_le D K f hf
   normal := inferInstance
   finite := by
+    change Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field
+      (unramifiedExtensionOfDegree D K f hf) (unramifiedExtensionOfDegree_le D K f hf))
     rw [extensionSubgroup_unramifiedExtensionOfDegree D K f hf]
     let : NeZero f := ⟨Nat.ne_of_gt hf⟩
     let : Finite (Multiplicative (ZMod f)) := by

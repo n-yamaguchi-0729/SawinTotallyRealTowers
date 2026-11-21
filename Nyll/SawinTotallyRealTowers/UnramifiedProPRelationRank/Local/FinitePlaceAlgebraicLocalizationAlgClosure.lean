@@ -6,13 +6,17 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+public import Nyll.GaloisCohomology.Topology.GaloisConjugation
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AlgebraicLocalizationTopology
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalizedValuation
 public import Mathlib.Analysis.Normed.Field.Dense
 public import Mathlib.FieldTheory.AlgebraicClosure
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
-public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.AlgebraicLocalization
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
@@ -294,6 +298,8 @@ noncomputable def
     HilbertRamification.absoluteValueDecompositionGroup K w.1 ≃ₜ*
       Field.absoluteGaloisGroup vK.Completion := by
   intro hK sharedOwner2 sharedOwner3
+  let : IsAlgClosure K L := ⟨inferInstance, inferInstance⟩
+  let : IsGalois K L := IsAlgClosure.isGalois K L
   let E := AbsoluteValue.algebraicLocalization vK w.1 w.2
   letI : Module.IsTorsionFree vK.Completion E :=
     by exact fieldAlgebra_isTorsionFree

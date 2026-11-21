@@ -20,7 +20,6 @@ abstract field `Σ`.  Thus `G_Σ` is the inverse image of `Γ` under
 
 namespace ClassFormation
 
-open CyclicCohomology
 
 
 
@@ -35,7 +34,7 @@ namespace DegreeData
 def frobeniusFixedSubgroupWithin (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) : Subgroup K.field.toSubgroup :=
   (D.frobeniusClosure K L hLK σ).toSubgroup.comap
     (QuotientGroup.mk' (D.extensionInertiaWithin K.field L hLK))
@@ -47,7 +46,7 @@ theorem mem_frobeniusFixedSubgroupWithin_iff (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) (k : K.field.toSubgroup) :
     k ∈ D.frobeniusFixedSubgroupWithin K L hLK σ ↔
       QuotientGroup.mk k ∈
@@ -59,7 +58,7 @@ theorem frobeniusFixedSubgroupWithin_isClosed (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     IsClosed
       (D.frobeniusFixedSubgroupWithin K L hLK σ : Set K.field.toSubgroup) := by
@@ -76,7 +75,7 @@ a closed subgroup of the ambient group `G`. -/
 def frobeniusFixedField (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) : ClosedSubgroup G where
   toSubgroup :=
     (D.frobeniusFixedSubgroupWithin K L hLK σ).map
@@ -94,7 +93,7 @@ theorem mem_frobeniusFixedField_iff (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) (g : G) :
     g ∈ D.frobeniusFixedField K L hLK σ ↔
       ∃ k : K.field.toSubgroup,
@@ -105,7 +104,7 @@ theorem mem_frobeniusFixedField_iff (D : DegreeData G)
 theorem frobeniusFixedField_le (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     (D.frobeniusFixedField K L hLK σ).toSubgroup ≤ K.field.toSubgroup := by
   rintro g ⟨k, _, rfl⟩
@@ -117,10 +116,9 @@ theorem extensionSubgroup_frobeniusFixedField (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
-    extensionSubgroup K.field (D.frobeniusFixedField K L hLK σ)
-        (D.frobeniusFixedField_le K L hLK σ) =
+    ((D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup) =
       D.frobeniusFixedSubgroupWithin K L hLK σ := by
   ext k
   change
@@ -141,7 +139,7 @@ theorem extensionInertiaWithin_le_frobeniusFixedSubgroupWithin
     (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     D.extensionInertiaWithin K.field L hLK ≤
       D.frobeniusFixedSubgroupWithin K L hLK σ := by
@@ -156,13 +154,13 @@ theorem fieldInertia_le_frobeniusFixedField (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     (D.fieldInertia L).toSubgroup ≤
       (D.frobeniusFixedField K L hLK σ).toSubgroup := by
   intro g hg
   let k : K.field.toSubgroup := ⟨g, hLK hg.1⟩
-  have hkE : k ∈ extensionSubgroup K.field L hLK := hg.1
+  have hkE : k ∈ (L.toSubgroup.subgroupOf K.field.toSubgroup) := hg.1
   have hkI : k ∈ D.fieldInertiaWithin K.field := hg.2
   exact ⟨k,
     D.extensionInertiaWithin_le_frobeniusFixedSubgroupWithin
@@ -174,13 +172,12 @@ theorem frobeniusFixedField_finite (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
-    [hLfinite : Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
+    [hLfinite : Finite (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))]
     (σ : D.FrobeniusElements K L hLK) :
     Finite
       (K.field.toSubgroup ⧸
-        extensionSubgroup K.field (D.frobeniusFixedField K L hLK σ)
-          (D.frobeniusFixedField_le K L hLK σ)) := by
+        ((D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup)) := by
   let N := D.extensionInertiaWithin K.field L hLK
   let Q := K.field.toSubgroup ⧸ N
   let Γ : Subgroup Q :=
@@ -198,8 +195,7 @@ theorem frobeniusFixedField_finite (D : DegreeData G)
     exact hΓ
   apply Nat.finite_of_card_ne_zero
   change
-    (extensionSubgroup K.field (D.frobeniusFixedField K L hLK σ)
-      (D.frobeniusFixedField_le K L hLK σ)).index ≠ 0
+    (((D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup)).index ≠ 0
   rw [D.extensionSubgroup_frobeniusFixedField K L hLK σ]
   exact hS
 
@@ -208,8 +204,8 @@ def frobeniusFixedFiniteExtension (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
-    [hLfinite : Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
+    [hLfinite : Finite (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))]
     (σ : D.FrobeniusElements K L hLK) :
     FiniteAbstractExtension G where
   field := D.frobeniusFixedField K L hLK σ
@@ -225,13 +221,12 @@ theorem frobeniusFixedField_index_le_extensionIndex_of_exponent_eq_one
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
-    [hLfinite : Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
+    [hLfinite : Finite (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))]
     (σ : D.FrobeniusElements K L hLK)
     (hσ : D.frobeniusExponent K L hLK σ = 1) :
-    (extensionSubgroup K.field (D.frobeniusFixedField K L hLK σ)
-        (D.frobeniusFixedField_le K L hLK σ)).index ≤
-      (extensionSubgroup K.field L hLK).index := by
+    (((D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup)).index ≤
+      (L.toSubgroup.subgroupOf K.field.toSubgroup).index := by
   let N := D.extensionInertiaWithin K.field L hLK
   let Q := K.field.toSubgroup ⧸ N
   let Γ : Subgroup Q :=
@@ -239,7 +234,7 @@ theorem frobeniusFixedField_index_le_extensionIndex_of_exponent_eq_one
   let S : Subgroup K.field.toSubgroup :=
     D.frobeniusFixedSubgroupWithin K L hLK σ
   rw [D.extensionSubgroup_frobeniusFixedField K L hLK σ]
-  change S.index ≤ (extensionSubgroup K.field L hLK).index
+  change S.index ≤ (L.toSubgroup.subgroupOf K.field.toSubgroup).index
   rw [show S = Γ.comap (QuotientGroup.mk' N) by rfl]
   rw [Subgroup.index_comap_of_surjective Γ
     (QuotientGroup.mk'_surjective N)]
@@ -255,7 +250,7 @@ theorem frobeniusFixedSubgroupWithin_inf_fieldInertiaWithin
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     D.frobeniusFixedSubgroupWithin K L hLK σ ⊓
         D.fieldInertiaWithin K.field =
@@ -298,7 +293,7 @@ theorem frobeniusFixedField_fieldInertia (D : DegreeData G)
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     D.fieldInertia (D.frobeniusFixedField K L hLK σ) =
       D.fieldInertia L := by
@@ -318,7 +313,7 @@ theorem frobeniusFixedField_fieldInertia (D : DegreeData G)
   · intro hg
     let k : K.field.toSubgroup := ⟨g, hLK hg.1⟩
     have hgdeg : D.degree g = 1 := hg.2
-    have hkE : k ∈ extensionSubgroup K.field L hLK := hg.1
+    have hkE : k ∈ (L.toSubgroup.subgroupOf K.field.toSubgroup) := hg.1
     have hkI : k ∈ D.fieldInertiaWithin K.field := hgdeg
     have hkS : k ∈ D.frobeniusFixedSubgroupWithin K L hLK σ :=
       D.extensionInertiaWithin_le_frobeniusFixedSubgroupWithin
@@ -331,7 +326,7 @@ theorem frobeniusFixedSubgroupWithin_normalizedDegree_image
     (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     (D.frobeniusFixedSubgroupWithin K L hLK σ).map
         (D.normalizedDegree K).toMonoidHom =
@@ -360,7 +355,7 @@ private theorem frobeniusFixedField_mappedRelIndex (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     ((D.frobeniusFixedField K L hLK σ).toSubgroup.map
         D.degree.toMonoidHom).relIndex
@@ -429,8 +424,8 @@ theorem frobeniusFixedField_residueDegreeOverBase (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
-    [hLfinite : Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
+    [hLfinite : Finite (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))]
     (σ : D.FrobeniusElements K L hLK) :
     ((D.frobeniusFixedFiniteExtension K L hLK σ).residueDegree D : ℕ) =
       D.frobeniusExponent K L hLK σ := by
@@ -447,7 +442,7 @@ theorem frobeniusFixedField_relativeResidueQuotientFinite
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     Finite
       (↥(K.field.toSubgroup.map D.degree.toMonoidHom) ⧸
@@ -467,7 +462,7 @@ noncomputable def frobeniusFixedResidueField (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     FiniteResidueAbstractField D := by
   letI := D.frobeniusFixedField_relativeResidueQuotientFinite K L hLK σ
@@ -481,7 +476,7 @@ theorem frobeniusFixedResidueField_residueDegree (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     ((D.frobeniusFixedResidueField K L hLK σ).residueDegree : ℕ) =
       D.frobeniusExponent K L hLK σ * (K.residueDegree : ℕ) := by
@@ -516,7 +511,7 @@ theorem frobeniusFixedResidueField_residueDegree (D : DegreeData G)
 def frobeniusFixedFieldToClosure (D : DegreeData G) [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     (D.frobeniusFixedField K L hLK σ).toSubgroup →*
       D.frobeniusClosure K L hLK σ where
@@ -525,8 +520,7 @@ def frobeniusFixedFieldToClosure (D : DegreeData G) [IsTopologicalGroup G]
       Subgroup.inclusion (D.frobeniusFixedField_le K L hLK σ) s
     refine ⟨QuotientGroup.mk k, ?_⟩
     have hk : k ∈
-        extensionSubgroup K.field (D.frobeniusFixedField K L hLK σ)
-          (D.frobeniusFixedField_le K L hLK σ) := s.2
+        ((D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup) := s.2
     rw [D.extensionSubgroup_frobeniusFixedField K L hLK σ] at hk
     exact hk
   map_one' := by
@@ -543,7 +537,7 @@ theorem frobeniusFixedFieldToClosure_apply (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK)
     (s : (D.frobeniusFixedField K L hLK σ).toSubgroup) :
     (D.frobeniusFixedFieldToClosure K L hLK σ s).1 =
@@ -557,7 +551,7 @@ theorem frobeniusFixedFieldToClosure_surjective (D : DegreeData G)
     [IsTopologicalGroup G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     Function.Surjective (D.frobeniusFixedFieldToClosure K L hLK σ) := by
   intro a
@@ -580,7 +574,7 @@ theorem frobeniusFixedFieldToClosure_ker (D : DegreeData G)
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     (D.frobeniusFixedFieldToClosure K L hLK σ).ker =
       D.fieldInertiaWithin (D.frobeniusFixedField K L hLK σ) := by
@@ -589,8 +583,7 @@ theorem frobeniusFixedFieldToClosure_ker (D : DegreeData G)
     Subgroup.inclusion (D.frobeniusFixedField_le K L hLK σ) s
   have hkS : k ∈ D.frobeniusFixedSubgroupWithin K L hLK σ := by
     have hk : k ∈
-        extensionSubgroup K.field (D.frobeniusFixedField K L hLK σ)
-          (D.frobeniusFixedField_le K L hLK σ) := s.2
+        ((D.frobeniusFixedField K L hLK σ).toSubgroup.subgroupOf K.field.toSubgroup) := s.2
     rw [D.extensionSubgroup_frobeniusFixedField K L hLK σ] at hk
     exact hk
   constructor
@@ -616,7 +609,7 @@ def frobeniusFixedFieldQuotientEquiv (D : DegreeData G)
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     ((D.frobeniusFixedField K L hLK σ).toSubgroup ⧸
         D.fieldInertiaWithin (D.frobeniusFixedField K L hLK σ)) ≃*
@@ -634,7 +627,7 @@ theorem frobeniusFixedFieldQuotientEquiv_mk (D : DegreeData G)
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK)
     (s : (D.frobeniusFixedField K L hLK σ).toSubgroup) :
     D.frobeniusFixedFieldQuotientEquiv K L hLK σ
@@ -648,7 +641,7 @@ theorem frobeniusFixedField_normalizedDegree_compatibility (D : DegreeData G)
     [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK)
     (s : (D.frobeniusFixedField K L hLK σ).toSubgroup) :
     D.fixedFieldNormalizedDegree K L hLK σ
@@ -692,7 +685,7 @@ theorem frobeniusFixedFieldQuotientEquiv_degree (D : DegreeData G)
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK)
     (q : (D.frobeniusFixedField K L hLK σ).toSubgroup ⧸
       D.fieldInertiaWithin (D.frobeniusFixedField K L hLK σ)) :
@@ -712,7 +705,7 @@ theorem frobeniusFixedField_frobenius_eq_inClosure (D : DegreeData G)
     [TotallyDisconnectedSpace G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ : D.FrobeniusElements K L hLK) :
     D.frobeniusFixedFieldQuotientEquiv K L hLK σ
         (D.frobenius (D.frobeniusFixedResidueField K L hLK σ)) =

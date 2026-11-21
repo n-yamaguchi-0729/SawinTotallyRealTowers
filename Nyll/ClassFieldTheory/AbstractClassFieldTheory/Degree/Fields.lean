@@ -7,8 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Mathlib.GroupTheory.QuotientGroup.Basic
-public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
-public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Indices
 public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 
@@ -25,7 +24,6 @@ ambient profinite group.
 
 namespace ClassFormation
 
-open CyclicCohomology
 
 
 
@@ -238,7 +236,7 @@ namespace AbstractExtension
 projection packages the proof-dependent `subgroupOf` construction behind the
 extension object. -/
 def subgroup (E : AbstractExtension G) : Subgroup E.base.toSubgroup :=
-  extensionSubgroup E.base E.field E.below
+  (E.field.toSubgroup.subgroupOf E.base.toSubgroup)
 
 /-- The actual relative coset space of an abstract extension. -/
 def quotient (E : AbstractExtension G) : Type u :=
@@ -466,7 +464,7 @@ structure GaloisSubextension (K : ClosedSubgroup G) where
   /-- The top-field subgroup is contained in the base-field subgroup. -/
   below : field.toSubgroup ≤ K.toSubgroup
   /-- The relative subgroup is normal in the base-field subgroup. -/
-  normal : (extensionSubgroup K field below).Normal
+  normal : (field.toSubgroup.subgroupOf K.toSubgroup).Normal
 
 namespace GaloisSubextension
 
@@ -482,7 +480,7 @@ def toAbstractExtension (L : GaloisSubextension K) :
 /-- The actual quotient represented by a Galois subextension.  This is a
 named object boundary rather than a transparent abbreviation. -/
 def extensionQuotient (L : GaloisSubextension K) : Type u :=
-  K.toSubgroup ⧸ extensionSubgroup K L.field L.below
+  K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)
 
 /-- Structural unramifiedness of a Galois subextension. -/
 def IsUnramified (L : GaloisSubextension K) (D : DegreeData G) : Prop :=
@@ -494,27 +492,27 @@ def IsTotallyRamified (L : GaloisSubextension K) (D : DegreeData G) : Prop :=
 
 /-- A Galois subextension has a normal subgroup inside its base subgroup. -/
 instance extensionSubgroup_normalInstance (L : GaloisSubextension K) :
-    (extensionSubgroup K L.field L.below).Normal :=
+    (L.field.toSubgroup.subgroupOf K.toSubgroup).Normal :=
   L.normal
 
 /-- The group structure transported across the named quotient boundary. -/
 instance extensionQuotient_groupInstance (L : GaloisSubextension K) :
     Group L.extensionQuotient := by
   change Group
-    (K.toSubgroup ⧸ extensionSubgroup K L.field L.below)
+    (K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup))
   infer_instance
 
 /-- Comparison with the quotient presentation used by the underlying group
 library. -/
 def extensionQuotientMulEquiv (L : GaloisSubextension K) :
     L.extensionQuotient ≃*
-      (K.toSubgroup ⧸ extensionSubgroup K L.field L.below) :=
+      (K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)) :=
   MulEquiv.refl _
 
 /-- The canonical quotient projection for a Galois subextension. -/
 def extensionQuotientMk (L : GaloisSubextension K) :
     K.toSubgroup →* L.extensionQuotient :=
-  QuotientGroup.mk' (extensionSubgroup K L.field L.below)
+  QuotientGroup.mk' (L.field.toSubgroup.subgroupOf K.toSubgroup)
 
 /-- The named quotient projection agrees with `QuotientGroup.mk` under the
 comparison equivalence. -/
@@ -523,7 +521,7 @@ theorem extensionQuotientMk_apply (L : GaloisSubextension K)
     (k : K.toSubgroup) :
     L.extensionQuotientMulEquiv (L.extensionQuotientMk k) =
       (QuotientGroup.mk k :
-        K.toSubgroup ⧸ extensionSubgroup K L.field L.below) :=
+        K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)) :=
   rfl
 
 /-- Eliminate a Galois quotient without exposing a chosen representative. -/
@@ -533,7 +531,7 @@ protected theorem extensionQuotient_inductionOn
     (mk : ∀ k : K.toSubgroup, motive (L.extensionQuotientMk k)) :
     motive q := by
   exact @Quotient.inductionOn' K.toSubgroup
-    (QuotientGroup.leftRel (extensionSubgroup K L.field L.below))
+    (QuotientGroup.leftRel (L.field.toSubgroup.subgroupOf K.toSubgroup))
     motive q mk
 
 /-- Unramifiedness is the canonical inertia-containment condition. -/
@@ -563,8 +561,7 @@ structure FiniteAbstractExtension (G : Type*) [Group G] [TopologicalSpace G]
   finiteQuotient :
     Finite
       (toAbstractExtension.base.toSubgroup ⧸
-        extensionSubgroup toAbstractExtension.base toAbstractExtension.field
-          toAbstractExtension.below)
+        (toAbstractExtension.field.toSubgroup.subgroupOf toAbstractExtension.base.toSubgroup))
 
 namespace FiniteAbstractExtension
 
@@ -572,7 +569,7 @@ variable (E : FiniteAbstractExtension G)
 
 /-- The subgroup of the base represented by a finite extension. -/
 def subgroup : Subgroup E.base.toSubgroup :=
-  extensionSubgroup E.base E.field E.below
+  (E.field.toSubgroup.subgroupOf E.base.toSubgroup)
 
 /-- The finite extension's actual relative coset space. -/
 def quotient : Type u :=
@@ -585,7 +582,7 @@ object. -/
 def ofInclusion (field base : ClosedSubgroup G)
     (below : field.toSubgroup ≤ base.toSubgroup)
     [hfinite : Finite
-      (base.toSubgroup ⧸ extensionSubgroup base field below)] :
+      (base.toSubgroup ⧸ (field.toSubgroup.subgroupOf base.toSubgroup))] :
     FiniteAbstractExtension G where
   field := field
   base := base
@@ -595,14 +592,14 @@ def ofInclusion (field base : ClosedSubgroup G)
 /-- The field endpoint of an extension bundled from an inclusion is the supplied field. -/
 @[simp] theorem ofInclusion_field (field base : ClosedSubgroup G)
     (below : field.toSubgroup ≤ base.toSubgroup)
-    [Finite (base.toSubgroup ⧸ extensionSubgroup base field below)] :
+    [Finite (base.toSubgroup ⧸ (field.toSubgroup.subgroupOf base.toSubgroup))] :
     (ofInclusion field base below).field = field :=
   rfl
 
 /-- The base endpoint of an extension bundled from an inclusion is the supplied base. -/
 @[simp] theorem ofInclusion_base (field base : ClosedSubgroup G)
     (below : field.toSubgroup ≤ base.toSubgroup)
-    [Finite (base.toSubgroup ⧸ extensionSubgroup base field below)] :
+    [Finite (base.toSubgroup ⧸ (field.toSubgroup.subgroupOf base.toSubgroup))] :
     (ofInclusion field base below).base = base :=
   rfl
 
@@ -652,13 +649,13 @@ maps. -/
 instance representedQuotientFinite :
     Finite
       (E.base.toSubgroup ⧸
-        extensionSubgroup E.base E.field E.below) :=
+        (E.field.toSubgroup.subgroupOf E.base.toSubgroup)) :=
   E.finiteQuotient
 
 private theorem degreeCardinal_lt_aleph0 :
     E.toAbstractExtension.degreeCardinal < Cardinal.aleph0 := by
   change Cardinal.mk
-      (E.base.toSubgroup ⧸ extensionSubgroup E.base E.field E.below) <
+      (E.base.toSubgroup ⧸ (E.field.toSubgroup.subgroupOf E.base.toSubgroup)) <
     Cardinal.aleph0
   exact Cardinal.lt_aleph0_of_finite _
 
@@ -784,7 +781,7 @@ general natural-valued degree definition. -/
 /-- The index of the represented extension subgroup is the finite extension
 degree. -/
 @[simp] theorem extensionSubgroup_index_eq_degree :
-    (extensionSubgroup E.base E.field E.below).index = (E.degree : ℕ) := by
+    (E.field.toSubgroup.subgroupOf E.base.toSubgroup).index = (E.degree : ℕ) := by
   rw [Subgroup.index, E.degree_coe]
   rfl
 
@@ -872,9 +869,9 @@ of its positive natural degree. -/
     E.toAbstractExtension.degreeCardinal =
       ((E.degree : ℕ) : Cardinal) := by
   change Cardinal.mk
-      (E.base.toSubgroup ⧸ extensionSubgroup E.base E.field E.below) =
+      (E.base.toSubgroup ⧸ (E.field.toSubgroup.subgroupOf E.base.toSubgroup)) =
     (Nat.card
-      (E.base.toSubgroup ⧸ extensionSubgroup E.base E.field E.below) : Cardinal)
+      (E.base.toSubgroup ⧸ (E.field.toSubgroup.subgroupOf E.base.toSubgroup)) : Cardinal)
   simpa [quotient, subgroup] using
     ((Nat.cast_card :
       (Nat.card E.quotient : Cardinal) = Cardinal.mk E.quotient).symm)
@@ -929,13 +926,13 @@ variable (T : FiniteTower G)
 /-- The upper relative quotient in a finite tower is finite. -/
 instance topQuotientFinite :
     Finite (T.middle.toSubgroup ⧸
-      extensionSubgroup T.middle T.top T.top_le_middle) :=
+      (T.top.toSubgroup.subgroupOf T.middle.toSubgroup)) :=
   T.finiteTopQuotient
 
 /-- The lower relative quotient in a finite tower is finite. -/
 instance baseQuotientFinite :
     Finite (T.base.toSubgroup ⧸
-      extensionSubgroup T.base T.middle T.middle_le_base) :=
+      (T.middle.toSubgroup.subgroupOf T.base.toSubgroup)) :=
   T.finiteBaseQuotient
 
 /-- The upper finite extension represented by a finite tower. -/
@@ -1003,7 +1000,7 @@ structure FiniteResidueAbstractExtension (D : DegreeData G) where
   finiteQuotient :
     Finite
       (base.field.toSubgroup ⧸
-        extensionSubgroup base.field field.field below)
+        (field.field.toSubgroup.subgroupOf base.field.toSubgroup))
 
 namespace FiniteResidueAbstractExtension
 
@@ -1018,7 +1015,7 @@ noncomputable def ofInclusion (D : DegreeData G)
     (below : field.toSubgroup ≤ base.field.toSubgroup)
     [finiteQuotient : Finite
       (base.field.toSubgroup ⧸
-        extensionSubgroup base.field field below)] :
+        (field.toSubgroup.subgroupOf base.field.toSubgroup))] :
     FiniteResidueAbstractExtension D where
   field := {
     field := field
@@ -1052,7 +1049,7 @@ def toFiniteAbstractExtension (E : FiniteResidueAbstractExtension D) :
 instance (E : FiniteResidueAbstractExtension D) :
     Finite
       (E.base.field.toSubgroup ⧸
-        extensionSubgroup E.base.field E.field.field E.below) :=
+        (E.field.field.toSubgroup.subgroupOf E.base.field.toSubgroup)) :=
   E.finiteQuotient
 
 /-- The positive relative degree. -/
@@ -1099,7 +1096,7 @@ structure FiniteAbstractField (G : Type u) [Group G] [TopologicalSpace G] where
   field : ClosedSubgroup G
   /-- The field has finite degree over the distinguished base. -/
   finite : Finite ((baseField G).toSubgroup ⧸
-    extensionSubgroup (baseField G) field (le_baseField field))
+    (field.toSubgroup.subgroupOf (baseField G).toSubgroup))
 
 namespace FiniteAbstractField
 
@@ -1119,17 +1116,14 @@ noncomputable def base (G : Type u) [Group G] [TopologicalSpace G] :
     FiniteAbstractField G where
   field := baseField G
   finite := by
-    let : (extensionSubgroup (baseField G) (baseField G)
-        (le_baseField (baseField G))).Normal := by
-      rw [show extensionSubgroup (baseField G) (baseField G)
-          (le_baseField (baseField G)) = ⊤ by
+    let : (((baseField G).toSubgroup.subgroupOf (baseField G).toSubgroup)).Normal := by
+      rw [show ((baseField G).toSubgroup.subgroupOf (baseField G).toSubgroup) = ⊤ by
         ext x
         exact Iff.rfl]
       infer_instance
     let : Subsingleton
         ((baseField G).toSubgroup ⧸
-          extensionSubgroup (baseField G) (baseField G)
-            (le_baseField (baseField G))) := by
+          ((baseField G).toSubgroup.subgroupOf (baseField G).toSubgroup)) := by
       constructor
       intro x y
       refine Quotient.inductionOn₂' x y ?_
@@ -1150,7 +1144,7 @@ def toFiniteAbstractExtension (K : FiniteAbstractField G) :
 /-- A finite abstract field supplies finiteness of its quotient over the distinguished base. -/
 instance (K : FiniteAbstractField G) :
     Finite ((baseField G).toSubgroup ⧸
-      extensionSubgroup (baseField G) K.field (le_baseField K.field)) :=
+      (K.field.toSubgroup.subgroupOf (baseField G).toSubgroup)) :=
   K.finite
 
 /-- A finite field over the distinguished base has a finite absolute residue
@@ -1215,7 +1209,7 @@ structure FiniteAbstractFieldExtension (G : Type u)
   finiteQuotient :
     Finite
       (base.field.toSubgroup ⧸
-        extensionSubgroup base.field field.field below)
+        (field.field.toSubgroup.subgroupOf base.field.toSubgroup))
 
 namespace FiniteAbstractFieldExtension
 
@@ -1228,7 +1222,7 @@ noncomputable def ofInclusion (field : ClosedSubgroup G)
     (below : field.toSubgroup ≤ base.field.toSubgroup)
     [finiteQuotient : Finite
       (base.field.toSubgroup ⧸
-        extensionSubgroup base.field field below)] :
+        (field.toSubgroup.subgroupOf base.field.toSubgroup))] :
     FiniteAbstractFieldExtension G where
   field := {
     field := field
@@ -1245,12 +1239,11 @@ noncomputable def ofInclusion (field : ClosedSubgroup G)
       apply Cardinal.mul_lt_aleph0
       · change Cardinal.mk
           (base.field.toSubgroup ⧸
-            extensionSubgroup base.field field below) < Cardinal.aleph0
+            (field.toSubgroup.subgroupOf base.field.toSubgroup)) < Cardinal.aleph0
         exact Cardinal.lt_aleph0_of_finite _
       · change Cardinal.mk
           ((baseField G).toSubgroup ⧸
-            extensionSubgroup (baseField G) base.field
-              (le_baseField base.field)) < Cardinal.aleph0
+            (base.field.toSubgroup.subgroupOf (baseField G).toSubgroup)) < Cardinal.aleph0
         exact Cardinal.lt_aleph0_of_finite _ }
   base := base
   below := below
@@ -1301,7 +1294,7 @@ theorem residueDegree_eq_degree_of_isUnramified
 instance (E : FiniteAbstractFieldExtension G) :
     Finite
       (E.base.field.toSubgroup ⧸
-        extensionSubgroup E.base.field E.field.field E.below) :=
+        (E.field.field.toSubgroup.subgroupOf E.base.field.toSubgroup)) :=
   E.finiteQuotient
 
 /-- Canonically enrich both endpoints with their finite residue quotients. -/

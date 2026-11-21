@@ -45,11 +45,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicChangedCompletedPrimitiveActionBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
+attribute [local instance] equalCharacteristicCompletedLevelBaseAlgebra
 
 /-- The image of the source unit `u⁻¹` in
 `(AlgebraicClosure κ)[[T]]`. -/
@@ -179,7 +175,7 @@ theorem equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_isEisenst
   have hmonic : Q.Monic :=
     equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_monic F u n
   refine hmonic.isEisensteinAt_of_mem_of_notMem
-    PowerSeries.span_X_isPrime.ne_top ?_ ?_
+    (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X).ne_top ?_ ?_
   · intro i hi
     rw [Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]
     have hcoeff :
@@ -209,7 +205,7 @@ theorem equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_irreducib
   apply
     (equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_isEisensteinAt
       F u n).irreducible
-      PowerSeries.span_X_isPrime
+      (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X)
       (equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_monic
         F u n).isPrimitive
   rw [equalCharacteristicChangedCompletedIntegralPrimitivePolynomial_natDegree]

@@ -6,13 +6,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.FieldNormSubgroup
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
 /-!
 # Predicate for field norms
 -/
 
 @[expose] public section
+
+open LocalFieldTheory (localNormSubgroup)
 
 noncomputable section
 
@@ -25,6 +27,6 @@ def IsFieldNorm
     (K : Type u) (L : Type v)
     [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
     (x : Kˣ) : Prop :=
-  x ∈ fieldNormSubgroup K L
+  x ∈ localNormSubgroup K L
 
 end ClassFieldTheory

@@ -30,6 +30,8 @@ unramifiedness at every finite prime.
 
 @[expose] public section
 
+open ClassFieldTheory
+
 universe u v
 
 open scoped NumberField
@@ -54,6 +56,7 @@ theorem isUnramifiedAtFinitePlaces_of_normRange_eq_bigHilbertNormSubgroup
       (_root_.ideleClassNorm K L).range =
         bigHilbertClassFieldNormSubgroup (K := K)) :
     IsUnramifiedAtFinitePlaces K L := by
+  apply (IsUnramifiedAtFinitePlaces.iff_forall_above K L).mpr
   apply
     (ideleClassNorm_narrowFiniteConductor_eq_zero_iff_all_finitePlaces_unramified
       (K := K) (L := L)).1
@@ -74,6 +77,7 @@ theorem isUnramifiedAtFinitePlaces_of_normRange_eq_smallHilbertNormSubgroup
       (_root_.ideleClassNorm K L).range =
         smallHilbertClassFieldNormSubgroup (K := K)) :
     IsUnramifiedAtFinitePlaces K L := by
+  apply (IsUnramifiedAtFinitePlaces.iff_forall_above K L).mpr
   apply
     (ideleClassNorm_narrowFiniteConductor_eq_zero_iff_all_finitePlaces_unramified
       (K := K) (L := L)).1
@@ -109,13 +113,10 @@ theorem isUnramifiedAtInfinitePlaces_of_normRange_eq_smallHilbertNormSubgroup
     refine
       ⟨IdeleGroup.infinitePlaceIdele v x, ?_, rfl⟩
     apply Subgroup.mem_sup_left
-    refine
-      (FiniteIdeleGroup.mem_integralSubgroup_iff
-        (IdeleGroup.infinitePlaceIdele v x).2).2 ?_
-    intro w
-    exact
-      (IdeleGroup.infinitePlaceIdele_finiteComponent v w x).symm ▸
-        (w.adicCompletionIntegers K).units.one_mem
+    change IdeleGroup.finiteCoordinates (IdeleGroup.infinitePlaceIdele v x) ∈
+      FiniteIdeleGroup.integralSubgroup (K := K)
+    rw [IdeleGroup.finiteCoordinates_infinitePlaceIdele]
+    exact Subgroup.one_mem _
   rw [hnorm]
   exact hxSmall
 
@@ -126,10 +127,10 @@ theorem isEverywhereUnramified_of_normRange_eq_smallHilbertNormSubgroup
       (_root_.ideleClassNorm K L).range =
         smallHilbertClassFieldNormSubgroup (K := K)) :
     IsEverywhereUnramified K L where
-  finitePlaces :=
+  left :=
     isUnramifiedAtFinitePlaces_of_normRange_eq_smallHilbertNormSubgroup
       hnorm
-  infinitePlaces :=
+  right :=
     isUnramifiedAtInfinitePlaces_of_normRange_eq_smallHilbertNormSubgroup
       hnorm
 
@@ -142,7 +143,7 @@ private theorem ramifiedBaseFinitePlaces_eq_empty_of_isUnramifiedAtFinitePlaces
   obtain ⟨P, _hP, hP⟩ :=
     (_root_.mem_ramifiedBaseFinitePlaces_iff
       (K := K) (L := L) v).1 hv
-  exact hP (hunramified P)
+  exact hP (hunramified.atPrime P)
 
 variable (K : Type u) [Field K] [NumberField K]
 

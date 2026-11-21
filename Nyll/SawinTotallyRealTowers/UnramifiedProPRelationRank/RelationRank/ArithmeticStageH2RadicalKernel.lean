@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportInertiaCorrection
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteInertiaUnramifiedFactor
@@ -37,16 +38,13 @@ local notation "StageQuotient" => MaxEverywhereUnramifiedProPGaloisGroup F (n : 
   (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))
 local notation "StageH2" => continuousCohomologyZModPLifted (n : ℕ) StageQuotient 2
 
-local instance arithmeticRadicalKernelTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance arithmeticRadicalKernelDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
 
 /-- Vanishing of the actual ideal-radical functional forces the stage
 class to vanish in the maximal everywhere-unramified pro-p group. -/
 theorem arithmeticStageH2RadicalFunctional_eq_zero_imp_inflation_eq_zero
     (x : StageH2) (hx : arithmeticStageH2RadicalFunctional F n hpOdd U x = 0) :
     (continuousCohomologyZModPMapLifted (n : ℕ)
-      (quotientProjection (U : Subgroup
+      (ProCGroups.ContinuousMonoidHom.quotientMk (U : Subgroup
         (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))) 2).hom x = 0 := by
   classical
   let S := arithmeticStageH2UniformRamifiedPlaces F n hpOdd U
@@ -97,7 +95,7 @@ theorem arithmeticStageH2RadicalFunctional_eq_zero_imp_inflation_eq_zero
       (arithmeticStageH2AbsoluteGlobalLift F n hpOdd U x) gamma).trans
       (arithmeticStageH2AbsoluteGlobalLift_projection F n hpOdd U x)
   have htproj : (H2CocycleExtension.projection z).comp t =
-      quotientProjection (U : Subgroup
+      ProCGroups.ContinuousMonoidHom.quotientMk (U : Subgroup
         (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ))) := by
     ext tau
     obtain ⟨sigma, rfl⟩ := absoluteToMaxEverywhereUnramifiedProP_surjective F (n : ℕ) tau
@@ -105,7 +103,7 @@ theorem arithmeticStageH2RadicalFunctional_eq_zero_imp_inflation_eq_zero
       (DFunLike.congr_fun hproj sigma)
   rw [← degreeTwoCocycleRepresentative_π x]
   exact H2CocycleExtension.restriction_eq_zero_of_lift
-    (quotientProjection (U : Subgroup
+    (ProCGroups.ContinuousMonoidHom.quotientMk (U : Subgroup
       (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))) z t htproj
 
 end ClassFieldTower.Martinet.Shafarevich

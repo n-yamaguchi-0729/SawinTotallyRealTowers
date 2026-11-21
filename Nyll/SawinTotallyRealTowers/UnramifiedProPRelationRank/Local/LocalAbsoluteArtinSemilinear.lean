@@ -89,30 +89,32 @@ theorem absoluteLocalArtinMap_semilinear_lift
       absoluteLocalArtinMap K' (Units.map c.toMonoidHom a) := by
   let tau := semilinearGaloisGroupCongr K K'
     (AlgebraicClosure K) (AlgebraicClosure K') c e he sigma
+  let rho := RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv
+    K' tau
   let a' := Units.map c.toMonoidHom a
-  apply (separableToStandardAbsoluteAbelianizationEquiv K').symm.injective
-  rw [separableToStandardAbsoluteAbelianizationEquiv_symm_artinMap]
-  change (QuotientGroup.mk (standardToSeparableAbsoluteGaloisEquiv K' tau) :
+  apply (absoluteGaloisGroupAbelianizationEquivSeparable K').injective
+  rw [absoluteGaloisGroupAbelianizationEquivSeparable_artinMap]
+  change (QuotientGroup.mk rho :
     localAbsoluteAbelianProfinite K') = separableAbsoluteLocalArtinMap K' a'
   apply (absoluteGaloisAbelianizationLimitEquiv K').injective
   apply Subtype.ext
   funext N
   change QuotientGroup.mk' N.toSubgroup
-    (QuotientGroup.mk (standardToSeparableAbsoluteGaloisEquiv K' tau) :
+    (QuotientGroup.mk rho :
       localAbsoluteAbelianProfinite K') =
     QuotientGroup.mk' N.toSubgroup (separableAbsoluteLocalArtinMap K' a')
   apply (absoluteFiniteQuotientEquiv K' N).injective
   change absoluteFiniteQuotientEquiv K' N
       (QuotientGroup.mk (QuotientGroup.mk
-        (standardToSeparableAbsoluteGaloisEquiv K' tau) : localAbsoluteAbelianProfinite K')) =
+        rho : localAbsoluteAbelianProfinite K')) =
     absoluteFiniteQuotientEquiv K' N
       (QuotientGroup.mk' N.toSubgroup (separableAbsoluteLocalArtinMap K' a'))
   rw [absoluteFiniteQuotientEquiv_mk_mk, separableAbsoluteLocalArtinMap_finiteProjection]
   change AlgEquiv.restrictNormalHom (absoluteFiniteQuotientField K' N)
-      (standardToSeparableAbsoluteGaloisEquiv K' tau) =
+      rho =
     absoluteFiniteQuotientEquiv K' N ((absoluteFiniteQuotientEquiv K' N).symm
-      (Universe.abelianLocalArtinMap K' (absoluteFiniteQuotientField K' N) a'))
-  rw [ContinuousMulEquiv.apply_symm_apply, Universe.abelianLocalArtinMap_eq_native]
+      (LocalClassFieldTheory.abelianLocalArtinMap K' (absoluteFiniteQuotientField K' N) a'))
+  rw [ContinuousMulEquiv.apply_symm_apply]
   let E := absoluteFiniteQuotientField K' N
   have hmap : abelianLocalArtinMap K' E a' = abelianLocalArtinMonoidHom K' E a' := by
     change (abelianLocalArtinMap K' E).toMonoidHom a' = _
@@ -122,7 +124,7 @@ theorem absoluteLocalArtinMap_semilinear_lift
   let i : E →ₐ[K'] AlgebraicClosure K' :=
     (separableClosure K' (AlgebraicClosure K')).val.comp E.val
   have hr := congrArg (fun x : SeparableClosure K' ↦ (x : AlgebraicClosure K'))
-    (AlgEquiv.restrictNormal_commutes (standardToSeparableAbsoluteGaloisEquiv K' tau) E z)
+    (AlgEquiv.restrictNormal_commutes rho E z)
   exact hr.trans
     (absoluteLocalArtin_semilinear_finite_action K K' c e he hc a sigma hsigma E i z)
 

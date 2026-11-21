@@ -46,9 +46,6 @@ theorem finiteDimensional_and_finrank_le_idealPowerRadicalModPDual_of_injective
               NumberField.InfinitePlace.nrComplexPlaces F - 1) +
             (if ∃ ζ : F, IsPrimitiveRoot ζ p then 1 else 0)) := by
   classical
-  let _ : AddCommGroup (ZMod p) :=
-    (ZMod.instField p).toDivisionRing.toAddCommGroup
-  let _ : Module (ZMod p) (ZMod p) := Semiring.toModule
   let : FiniteDimensional (ZMod p)
       (Module.Dual (ZMod p) (idealPowerRadicalModP F p)) :=
     idealPowerRadicalModPDual_finiteDimensional F p

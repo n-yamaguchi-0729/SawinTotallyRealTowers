@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceAutomorphism
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.LogLattice
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.Permutation.LatticeHerbrand
 public import Mathlib.NumberTheory.NumberField.InfinitePlace.Ramification
@@ -37,14 +38,6 @@ variable
     (K L : Type*) [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
 
-/-- The permutation of finite places induced by a Galois automorphism. -/
-noncomputable def finitePlaceEquiv
-    (σ : L ≃ₐ[K] L) :
-    HeightOneSpectrum (𝓞 L) ≃
-      HeightOneSpectrum (𝓞 L) :=
-  HeightOneSpectrum.equivOfRingEquiv
-    (NumberField.RingOfIntegers.mapAlgEquiv σ).toRingEquiv
-
 /-- Transport of ideals along a ring automorphism, as a multiplicative
 equivalence. -/
 noncomputable def idealMapMulEquiv
@@ -62,77 +55,6 @@ theorem idealMapMulEquiv_apply
     (e : R ≃+* R) (I : Ideal R) :
     idealMapMulEquiv e I = I.map e :=
   rfl
-
-omit [NumberField K] [NumberField L] in
-@[simp]
-theorem finitePlaceEquiv_asIdeal
-    (σ : L ≃ₐ[K] L)
-    (v : HeightOneSpectrum (𝓞 L)) :
-    (finitePlaceEquiv K L σ v).asIdeal =
-      v.asIdeal.map
-        (NumberField.RingOfIntegers.mapAlgEquiv σ).toRingEquiv := by
-  ext x
-  exact Ideal.symm_apply_mem_of_equiv_iff
-
-omit [NumberField K] [NumberField L] in
-@[simp]
-theorem finitePlaceEquiv_one
-    (v : HeightOneSpectrum (𝓞 L)) :
-    finitePlaceEquiv K L (1 : L ≃ₐ[K] L) v = v := by
-  apply HeightOneSpectrum.ext
-  ext x
-  change
-    NumberField.RingOfIntegers.mapRingHom (1 : L ≃ₐ[K] L).symm.toRingHom x ∈
-        v.asIdeal ↔
-      x ∈ v.asIdeal
-  have hx :
-      NumberField.RingOfIntegers.mapRingHom (1 : L ≃ₐ[K] L).symm.toRingHom x =
-        x := by
-    apply NumberField.RingOfIntegers.ext
-    rfl
-  rw [hx]
-
-omit [NumberField K] [NumberField L] in
-@[simp]
-theorem finitePlaceEquiv_mul
-    (σ τ : L ≃ₐ[K] L)
-    (v : HeightOneSpectrum (𝓞 L)) :
-    finitePlaceEquiv K L (σ * τ) v =
-      finitePlaceEquiv K L σ
-        (finitePlaceEquiv K L τ v) := by
-  apply HeightOneSpectrum.ext
-  ext x
-  change
-    NumberField.RingOfIntegers.mapRingHom (σ * τ).symm.toRingHom x ∈
-        v.asIdeal ↔
-      NumberField.RingOfIntegers.mapRingHom τ.symm.toRingHom
-          (NumberField.RingOfIntegers.mapRingHom σ.symm.toRingHom x) ∈
-        v.asIdeal
-  have hx :
-      NumberField.RingOfIntegers.mapRingHom (σ * τ).symm.toRingHom x =
-        NumberField.RingOfIntegers.mapRingHom τ.symm.toRingHom
-          (NumberField.RingOfIntegers.mapRingHom σ.symm.toRingHom x) := by
-    apply NumberField.RingOfIntegers.ext
-    rfl
-  rw [hx]
-
-omit [NumberField K] [NumberField L] in
-@[simp]
-theorem finitePlaceEquiv_inv_apply
-    (σ : L ≃ₐ[K] L)
-    (v : HeightOneSpectrum (𝓞 L)) :
-    finitePlaceEquiv K L σ
-        (finitePlaceEquiv K L σ⁻¹ v) = v := by
-  rw [← finitePlaceEquiv_mul, mul_inv_cancel, finitePlaceEquiv_one]
-
-/-- The actual Galois action on finite places of `L`. -/
-@[reducible]
-noncomputable def finitePlaceMulAction :
-    MulAction (L ≃ₐ[K] L)
-      (HeightOneSpectrum (𝓞 L)) where
-  smul σ v := finitePlaceEquiv K L σ v
-  one_smul := finitePlaceEquiv_one K L
-  mul_smul := finitePlaceEquiv_mul K L
 
 omit [NumberField K] in
 /-- The integral adic valuation is invariant under simultaneous transport

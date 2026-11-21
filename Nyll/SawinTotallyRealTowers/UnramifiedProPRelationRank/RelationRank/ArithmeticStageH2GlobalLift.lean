@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicAbsoluteH2Vanishing
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2LocalRamificationCharacter
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteDiscreteRamificationSupport
@@ -27,6 +28,7 @@ and finite-stage certificates are inherited from the existing sources.
 
 @[expose] public section
 
+open ProCGroups.ContinuousMonoidHom (quotientMk)
 open NumberField IsDedekindDomain
 open scoped NumberField
 noncomputable section
@@ -46,7 +48,7 @@ def arithmeticStageAbsoluteQuotientMap :
     Field.absoluteGaloisGroup F →ₜ*
       (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ) ⧸
         (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))) :=
-  (quotientProjection (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))).comp
+  (quotientMk (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))).comp
     (absoluteToMaxEverywhereUnramifiedProP F (n : ℕ))
 
 include hpOdd
@@ -57,12 +59,12 @@ theorem arithmeticStageH2_exists_absoluteGlobalLift :
       (H2CocycleExtension.projection (degreeTwoCocycleRepresentative xU)).comp s =
         arithmeticStageAbsoluteQuotientMap F n U := by
   let : CompactSpace (Field.absoluteGaloisGroup F) :=
-    inferInstanceAs (CompactSpace Gal(AlgebraicClosure F/F))
+    Field.absoluteGaloisGroup.compactSpace F
   apply H2CocycleExtension.exists_lift_of_restriction_eq_zero
     (arithmeticStageAbsoluteQuotientMap F n U) (degreeTwoCocycleRepresentative xU)
   rw [degreeTwoCocycleRepresentative_π]
   change (continuousCohomologyZModPMapLifted (n : ℕ)
-    ((quotientProjection (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))).comp
+    ((quotientMk (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))).comp
       (absoluteToMaxEverywhereUnramifiedProP F (n : ℕ))) 2).hom xU = 0
   rw [continuousCohomologyZModPMapLifted_comp]
   exact openNormalQuotient_absoluteH2Inflation_eq_zero_of_odd F n hpOdd U xU

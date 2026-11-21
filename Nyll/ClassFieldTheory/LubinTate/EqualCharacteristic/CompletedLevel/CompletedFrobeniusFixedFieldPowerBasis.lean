@@ -33,12 +33,7 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance
-    equalCharacteristicCompletedFrobeniusFixedFieldCompletedPowerBasisBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
+attribute [local instance] equalCharacteristicCompletedLevelBaseAlgebra
 
 /-- Defines `equalCharacteristicDirectThetaCompletedPowerBasis`. -/
 noncomputable def equalCharacteristicDirectThetaCompletedPowerBasis

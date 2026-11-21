@@ -52,7 +52,7 @@ noncomputable def chosenSimpleKummerNormResidueAutomorphism
     chosenSimpleKummerExtension_finiteDimensional K n hnK b
   letI : IsAbelianGalois K E :=
     chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-  exact Universe.abelianLocalArtinMonoidHom K E
+  exact abelianLocalArtinMonoidHom K E
 
 /-- On small fields the automorphism used by the general construction is
 exactly the original native Artin automorphism, with the same chosen radical. -/
@@ -69,7 +69,7 @@ theorem chosenSimpleKummerNormResidueAutomorphism_eq_native
     chosenSimpleKummerNormResidueAutomorphism K n hnK hmu b =
       LocalClassFieldTheory.abelianLocalArtinMonoidHom K E := by
   intro E sharedFinite sharedGalois
-  exact Universe.abelianLocalArtinMonoidHom_eq_native K E
+  rfl
 
 /-- The local Hilbert symbol `(a,b)ₙ`, valued in the actual subgroup
 `μₙ(K)`. -/
@@ -213,9 +213,9 @@ theorem chosenSimpleKummerNormResidueAutomorphism_ker
     chosenSimpleKummerExtension_finiteDimensional K n hnK b
   let : IsAbelianGalois K E :=
     chosenSimpleKummerExtension_isAbelianGalois K n hnK hmu b
-  change (Universe.abelianLocalArtinMonoidHom K E).ker =
+  change (abelianLocalArtinMonoidHom K E).ker =
     LocalFieldTheory.localNormSubgroup K E
-  exact Universe.abelianLocalArtinMonoidHom_ker K E
+  exact abelianLocalArtinMonoidHom_ker K E
 
 /-- Every norm from `K(ⁿ√b)` is killed by the Hilbert-symbol character. -/
 theorem localNormSubgroup_le_localHilbertSymbolHom_ker

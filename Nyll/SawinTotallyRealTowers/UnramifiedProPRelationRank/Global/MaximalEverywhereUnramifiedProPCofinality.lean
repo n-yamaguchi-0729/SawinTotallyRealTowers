@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPFiniteSupport
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 
@@ -18,6 +19,8 @@ compositum to containment in one bundled extension.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open scoped NumberField
 

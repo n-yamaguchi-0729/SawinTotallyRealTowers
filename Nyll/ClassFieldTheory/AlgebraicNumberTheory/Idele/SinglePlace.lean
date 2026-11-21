@@ -12,8 +12,9 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduc
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Approximation
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Components
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 
 /-!
 # Ideles supported at one place
@@ -37,92 +38,14 @@ namespace IdeleGroup
 
 variable {K : Type*} [Field K] [NumberField K]
 
-open scoped Classical in
-/-- The dependent archimedean value which is `x` at `v` and `1`
-elsewhere. -/
-def infinitePlaceValue
-    (v : InfinitePlace K)
-    (x : v.Completionˣ) :
-    (w : InfinitePlace K) → w.Completionˣ :=
-  Pi.mulSingle
-    (M := fun u : InfinitePlace K ↦ u.Completionˣ)
-    v x
-
-omit [NumberField K] in
-@[simp]
-private theorem infinitePlaceValue_same
-    (v : InfinitePlace K)
-    (x : v.Completionˣ) :
-    infinitePlaceValue v x v = x := by
-  classical
-  exact Pi.mulSingle_eq_same
-    (M := fun u : InfinitePlace K ↦ u.Completionˣ) v x
-
-omit [NumberField K] in
-@[simp]
-private theorem infinitePlaceValue_of_ne
-    (v w : InfinitePlace K)
-    (x : v.Completionˣ)
-    (h : w ≠ v) :
-    infinitePlaceValue v x w = 1 := by
-  classical
-  exact Pi.mulSingle_eq_of_ne
-    (M := fun u : InfinitePlace K ↦ u.Completionˣ) h x
-
-/-- The idele whose `v`-component is prescribed and whose other
-components are `1`, for an archimedean place `v`. -/
-def infinitePlaceIdele
-    (v : InfinitePlace K) :
-    v.Completionˣ →* IdeleGroup K where
-  toFun x :=
-    (ContinuousMulEquiv.piUnits.symm
-      (infinitePlaceValue v x), 1)
-  map_one' := by
-    classical
-    have hvalue : infinitePlaceValue v 1 = 1 :=
-      Pi.mulSingle_one (M := fun w : InfinitePlace K => w.Completionˣ) v
-    apply Prod.ext
-    · change
-        ContinuousMulEquiv.piUnits.symm
-            (infinitePlaceValue v 1) = 1
-      rw [hvalue, map_one]
-    · rfl
-  map_mul' x y := by
-    classical
-    have hvalue :
-        infinitePlaceValue v (x * y) =
-          infinitePlaceValue v x * infinitePlaceValue v y :=
-      Pi.mulSingle_mul (f := fun w : InfinitePlace K => w.Completionˣ) v x y
-    apply Prod.ext
-    · change
-        ContinuousMulEquiv.piUnits.symm
-            (infinitePlaceValue v (x * y)) =
-          ContinuousMulEquiv.piUnits.symm
-              (infinitePlaceValue v x) *
-            ContinuousMulEquiv.piUnits.symm
-              (infinitePlaceValue v y)
-      rw [hvalue, map_mul]
-    · exact (one_mul 1).symm
+/-- The infinite one-place map into the standard idèle group. -/
+abbrev infinitePlaceIdele (v : InfinitePlace K) : v.Completionˣ →* IdeleGroup K :=
+  NumberField.IdeleGroup.ofCompletion (𝓞 K) K v
 
 /-- Inserting a unit at one archimedean place is continuous. -/
-theorem continuous_infinitePlaceIdele
-    (v : InfinitePlace K) :
-    Continuous (infinitePlaceIdele v) := by
-  classical
-  change Continuous
-    (fun x : v.Completionˣ ↦
-      (ContinuousMulEquiv.piUnits.symm
-        (infinitePlaceValue v x), 1))
-  have hvalue :
-      Continuous
-        (fun x : v.Completionˣ ↦
-          infinitePlaceValue v x) := by
-    simpa only [infinitePlaceValue] using
-      (continuous_mulSingle
-        (A := fun u : InfinitePlace K ↦ u.Completionˣ) v)
-  exact
-    (ContinuousMulEquiv.piUnits.symm.continuous.comp
-      hvalue).prodMk continuous_const
+theorem continuous_infinitePlaceIdele (v : InfinitePlace K) :
+    Continuous (infinitePlaceIdele v) :=
+  NumberField.IdeleGroup.continuous_ofCompletion v
 
 /-- The continuous homomorphism inserting a unit at one archimedean place. -/
 def infinitePlaceIdeleContinuous
@@ -145,13 +68,8 @@ theorem infinitePlaceIdele_infiniteComponent_same
     (v : InfinitePlace K)
     (x : v.Completionˣ) :
     IdeleGroup.infiniteComponent v
-        (infinitePlaceIdele v x) = x := by
-  change
-    ContinuousMulEquiv.piUnits
-        (ContinuousMulEquiv.piUnits.symm
-          (infinitePlaceValue v x)) v = x
-  rw [ContinuousMulEquiv.piUnits.apply_symm_apply]
-  exact infinitePlaceValue_same v x
+        (infinitePlaceIdele v x) = x :=
+  NumberField.IdeleGroup.infiniteComponent_ofCompletion_same v x
 
 /-- An archimedean one-place idele has component one at every other
 archimedean place. -/
@@ -161,13 +79,8 @@ theorem infinitePlaceIdele_infiniteComponent_of_ne
     (x : v.Completionˣ)
     (h : w ≠ v) :
     IdeleGroup.infiniteComponent w
-        (infinitePlaceIdele v x) = 1 := by
-  change
-    ContinuousMulEquiv.piUnits
-        (ContinuousMulEquiv.piUnits.symm
-          (infinitePlaceValue v x)) w = 1
-  rw [ContinuousMulEquiv.piUnits.apply_symm_apply]
-  exact infinitePlaceValue_of_ne v w x h
+        (infinitePlaceIdele v x) = 1 :=
+  NumberField.IdeleGroup.infiniteComponent_ofCompletion_of_ne v w x h
 
 /-- An archimedean one-place idele has component one at every finite
 place. -/
@@ -177,77 +90,34 @@ theorem infinitePlaceIdele_finiteComponent
     (w : HeightOneSpectrum (𝓞 K))
     (x : v.Completionˣ) :
     IdeleGroup.finiteComponent w
-        (infinitePlaceIdele v x) = 1 := by
-  rfl
+        (infinitePlaceIdele v x) = 1 :=
+  NumberField.IdeleGroup.finiteComponent_ofCompletion v x w
+
+/-- The finite coordinates of a pure archimedean idèle are trivial. -/
+@[simp]
+theorem finiteCoordinates_infinitePlaceIdele
+    (v : InfinitePlace K) (x : v.Completionˣ) :
+    finiteCoordinates (infinitePlaceIdele v x) = 1 := by
+  apply RestrictedProduct.ext
+  intro w
+  exact infinitePlaceIdele_finiteComponent v w x
 
 /-- Insert one archimedean-place element and then pass to the idele
 class group. -/
-def infinitePlaceIdeleClass
+abbrev infinitePlaceIdeleClass
     (v : InfinitePlace K) :
     v.Completionˣ →* IdeleClassGroup K :=
-  (QuotientGroup.mk'
-    (IdeleGroup.principalSubgroup K)).comp
-      (infinitePlaceIdele v)
-
-open scoped Classical in
-/-- The dependent local value which is `x` at `v` and `1` elsewhere. -/
-def finitePlaceValue
-    (v : HeightOneSpectrum (𝓞 K))
-    (x : (v.adicCompletion K)ˣ)
-    (w : HeightOneSpectrum (𝓞 K)) :
-    (w.adicCompletion K)ˣ :=
-  Pi.mulSingle (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) v x w
+  NumberField.IdeleClassGroup.ofCompletion (𝓞 K) K v
 
 @[simp]
-private theorem finitePlaceValue_same
-    (v : HeightOneSpectrum (𝓞 K))
-    (x : (v.adicCompletion K)ˣ) :
-    finitePlaceValue v x v = x := by
-  classical
-  exact Pi.mulSingle_eq_same
-    (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) v x
+theorem toStandardClass_infinitePlaceIdele
+    (v : InfinitePlace K) (x : v.Completionˣ) :
+    toStandardClass K (infinitePlaceIdele v x) = infinitePlaceIdeleClass v x := rfl
 
-@[simp]
-private theorem finitePlaceValue_of_ne
-    (v w : HeightOneSpectrum (𝓞 K))
-    (x : (v.adicCompletion K)ˣ)
-    (h : w ≠ v) :
-    finitePlaceValue v x w = 1 := by
-  classical
-  exact Pi.mulSingle_eq_of_ne
-    (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) h x
-
-/-- The idele whose `v`-component is prescribed and whose other
-components are `1`. -/
-def finitePlaceIdele
-    (v : HeightOneSpectrum (𝓞 K)) :
-    (v.adicCompletion K)ˣ →* IdeleGroup K where
-  toFun x :=
-    (1,
-      ⟨finitePlaceValue v x, by
-        have hAway :
-            ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-              w ≠ v := Filter.eventually_cofinite_ne v
-        filter_upwards [hAway] with w hw
-        rw [finitePlaceValue_of_ne v w x hw]
-        exact Subgroup.one_mem _⟩)
-  map_one' := by
-    classical
-    apply Prod.ext
-    · rfl
-    · apply RestrictedProduct.ext
-      intro w
-      exact congrFun
-        (Pi.mulSingle_one (M := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ) v) w
-  map_mul' x y := by
-    classical
-    apply Prod.ext
-    · exact (one_mul 1).symm
-    · apply RestrictedProduct.ext
-      intro w
-      exact congrFun
-        (Pi.mulSingle_mul (f := fun u : HeightOneSpectrum (𝓞 K) => (u.adicCompletion K)ˣ)
-          v x y) w
+/-- The finite one-place map into the standard idèle group. -/
+abbrev finitePlaceIdele (v : HeightOneSpectrum (𝓞 K)) :
+    (v.adicCompletion K)ˣ →* IdeleGroup K :=
+  NumberField.IdeleGroup.ofAdicCompletion (𝓞 K) K v
 
 /-- A finite-place idele recovers its prescribed component at the
 supporting place. -/
@@ -257,7 +127,7 @@ theorem finitePlaceIdele_finiteComponent_same
     (x : (v.adicCompletion K)ˣ) :
     IdeleGroup.finiteComponent v
         (finitePlaceIdele v x) = x :=
-  finitePlaceValue_same v x
+  NumberField.IdeleGroup.finiteComponent_ofAdicCompletion_same v x
 
 /-- A finite-place idele has component one at every other finite place. -/
 @[simp]
@@ -267,7 +137,7 @@ theorem finitePlaceIdele_finiteComponent_of_ne
     (h : w ≠ v) :
     IdeleGroup.finiteComponent w
         (finitePlaceIdele v x) = 1 :=
-  finitePlaceValue_of_ne v w x h
+  NumberField.IdeleGroup.finiteComponent_ofAdicCompletion_of_ne v w x h
 
 /-- A finite-place idele has component one at every infinite place. -/
 @[simp]
@@ -276,17 +146,30 @@ theorem finitePlaceIdele_infiniteComponent
     (w : InfinitePlace K)
     (x : (v.adicCompletion K)ˣ) :
     IdeleGroup.infiniteComponent w
-        (finitePlaceIdele v x) = 1 := by
-  rfl
+        (finitePlaceIdele v x) = 1 :=
+  NumberField.IdeleGroup.infiniteComponent_ofAdicCompletion v x w
+
+/-- The archimedean part of a finite-place idèle is trivial. -/
+@[simp]
+theorem infinitePart_finitePlaceIdele
+    (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
+    infinitePart (finitePlaceIdele v x) = 1 := by
+  apply ContinuousMulEquiv.piUnits.injective
+  funext w
+  rw [map_one]
+  exact finitePlaceIdele_infiniteComponent v w x
 
 /-- Insert one finite-place element and then pass to the idele class
 group. -/
-def finitePlaceIdeleClass
+abbrev finitePlaceIdeleClass
     (v : HeightOneSpectrum (𝓞 K)) :
     (v.adicCompletion K)ˣ →* IdeleClassGroup K :=
-  (QuotientGroup.mk'
-    (IdeleGroup.principalSubgroup K)).comp
-      (finitePlaceIdele v)
+  NumberField.IdeleClassGroup.ofAdicCompletion (𝓞 K) K v
+
+@[simp]
+theorem toStandardClass_finitePlaceIdele
+    (v : HeightOneSpectrum (𝓞 K)) (x : (v.adicCompletion K)ˣ) :
+    toStandardClass K (finitePlaceIdele v x) = finitePlaceIdeleClass v x := rfl
 
 end IdeleGroup
 
@@ -328,45 +211,9 @@ private theorem relativeInfinitePlaceValue_of_ne
 
 /-- Restricted local tensor data supported at one archimedean place. -/
 noncomputable def relativeInfinitePlaceData
-    (v : InfinitePlace K)
-    (z : (v.Completion ⊗[K] L)ˣ) :
-    RelativeLocalIdeleData (K := K) (L := L) where
-  infinite w := relativeInfinitePlaceValue (L := L) v z w
-  finite _ := 1
-  eventually_integral i := by
-    have hBase :=
-      (relativeIdeleToLocalData
-        (K := K) (L := L)
-        (1 : RelativeIdeleGroup K L)).eventually_integral i
-    filter_upwards [hBase] with w hw
-    have hOne :
-        (relativeIdeleToLocalData
-          (K := K) (L := L)
-          (1 : RelativeIdeleGroup K L)).finite w = 1 := by
-      change
-        RelativeIdeleGroup.finiteComponent
-            (K := K) (L := L) w
-            (1 : RelativeIdeleGroup K L) = 1
-      exact map_one _
-    rw [hOne] at hw
-    exact hw
-  eventually_inverse_integral i := by
-    have hBase :=
-      (relativeIdeleToLocalData
-        (K := K) (L := L)
-        (1 : RelativeIdeleGroup K L)).eventually_inverse_integral i
-    filter_upwards [hBase] with w hw
-    have hOne :
-        (relativeIdeleToLocalData
-          (K := K) (L := L)
-          (1 : RelativeIdeleGroup K L)).finite w = 1 := by
-      change
-        RelativeIdeleGroup.finiteComponent
-            (K := K) (L := L) w
-            (1 : RelativeIdeleGroup K L) = 1
-      exact map_one _
-    rw [hOne] at hw
-    exact hw
+    (v : InfinitePlace K) (z : (v.Completion ⊗[K] L)ˣ) :
+    RelativeLocalIdeleData (K := K) (L := L) :=
+  ⟨relativeInfinitePlaceValue (L := L) v z, 1⟩
 
 /-- A relative idele supported at the single archimedean place `v`. -/
 def relativeInfinitePlaceIdele
@@ -453,53 +300,12 @@ theorem relativeFinitePlaceValue_of_ne
 
 /-- Restricted local data supported at one finite place. -/
 noncomputable def relativeFinitePlaceData
-    (v : HeightOneSpectrum (𝓞 K))
-    (z : (v.adicCompletion K ⊗[K] L)ˣ) :
-    RelativeLocalIdeleData (K := K) (L := L) where
-  infinite _ := 1
-  finite w := relativeFinitePlaceValue (L := L) v z w
-  eventually_integral i := by
-    have hBase :=
-      (relativeIdeleToLocalData
-        (K := K) (L := L)
-        (1 : RelativeIdeleGroup K L)).eventually_integral i
-    have hAway :
-        ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-          w ≠ v := Filter.eventually_cofinite_ne v
-    filter_upwards [hBase, hAway] with w hw hne
-    have hOne :
-        (relativeIdeleToLocalData
-          (K := K) (L := L)
-          (1 : RelativeIdeleGroup K L)).finite w = 1 := by
-      change
-        RelativeIdeleGroup.finiteComponent
-            (K := K) (L := L) w
-            (1 : RelativeIdeleGroup K L) = 1
-      exact map_one _
-    rw [hOne] at hw
-    simpa [relativeFinitePlaceValue_of_ne
-      (L := L) v w z hne] using hw
-  eventually_inverse_integral i := by
-    have hBase :=
-      (relativeIdeleToLocalData
-        (K := K) (L := L)
-        (1 : RelativeIdeleGroup K L)).eventually_inverse_integral i
-    have hAway :
-        ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-          w ≠ v := Filter.eventually_cofinite_ne v
-    filter_upwards [hBase, hAway] with w hw hne
-    have hOne :
-        (relativeIdeleToLocalData
-          (K := K) (L := L)
-          (1 : RelativeIdeleGroup K L)).finite w = 1 := by
-      change
-        RelativeIdeleGroup.finiteComponent
-            (K := K) (L := L) w
-            (1 : RelativeIdeleGroup K L) = 1
-      exact map_one _
-    rw [hOne] at hw
-    simpa [relativeFinitePlaceValue_of_ne
-      (L := L) v w z hne] using hw
+    (v : HeightOneSpectrum (𝓞 K)) (z : (v.adicCompletion K ⊗[K] L)ˣ) :
+    RelativeLocalIdeleData (K := K) (L := L) :=
+  ⟨1, ⟨relativeFinitePlaceValue (L := L) v z, by
+    filter_upwards [Filter.eventually_cofinite_ne v] with w hw
+    rw [relativeFinitePlaceValue_of_ne (L := L) v w z hw]
+    exact one_mem _⟩⟩
 
 /-- A relative idele supported at the single finite place `v`. -/
 def relativeFinitePlaceIdele

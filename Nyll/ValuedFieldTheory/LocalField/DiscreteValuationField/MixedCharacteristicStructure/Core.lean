@@ -364,8 +364,8 @@ noncomputable def mixed_firstPrincipalUnitFiniteQuotientSetup
   let projection : M →ₗ[R] q := F.principalUnitQuotientProjectionLinear n
   let U := CompleteDVF.higherPrincipalUnitGroup.toPrincipalUnitFiltration
     F.toCompleteDVF
-  let quotientKernel := (U.principalUnitSubgroup (n + 1)).subgroupOf
-    (U.principalUnitSubgroup 1)
+  let quotientKernel := (U.level (n + 1)).subgroupOf
+    (U.level 1)
   have hsur : Function.Surjective projection := by
     intro y
     obtain ⟨x, hx⟩ :=

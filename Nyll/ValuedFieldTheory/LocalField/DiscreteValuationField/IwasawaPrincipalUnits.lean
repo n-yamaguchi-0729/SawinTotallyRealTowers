@@ -1573,14 +1573,17 @@ theorem iwasawaPrimeToPPart_spec
   have hm0 : m ≠ 0 := Nat.ne_zero_of_lt (lt_of_lt_of_le Nat.zero_lt_one hm)
   have hp0 : p ≠ 0 := F.residueCharacteristic_prime.ne_zero
   have hpPow0 : p ^ s ≠ 0 := pow_ne_zero s hp0
-  have hdiv : p ^ s ∣ m := pow_padicValNat_dvd
+  have hdiv : p ^ s ∣ m := by
+    simpa only [s, Nat.padicValNat_def] using pow_multiplicity_dvd p m
   have heq : n * p ^ s = m := Nat.div_mul_cancel hdiv
   have hnpos : 1 ≤ n := by
     have hle : p ^ s ≤ m := Nat.le_of_dvd (lt_of_lt_of_le Nat.zero_lt_one hm) hdiv
     exact Nat.div_pos hle (Nat.zero_lt_of_ne_zero hpPow0)
   have hnot : ¬ p ∣ n := by
     intro hpn
-    apply pow_succ_padicValNat_not_dvd (p := p) hm0
+    have hnext : ¬ p ^ (s + 1) ∣ m := by
+      simpa only [s, Nat.padicValNat_def] using pow_succ_multiplicity_not_dvd (p := p) hm0
+    apply hnext
     obtain ⟨c, hc⟩ := hpn
     refine ⟨c, ?_⟩
     calc
@@ -1610,13 +1613,13 @@ theorem iwasawaDepth_eq_iff
   have hpe : ¬ p ∣ e.1 :=
     F.residueCharacteristic_prime.coprime_iff_not_dvd.mp e.property.2.symm
   have hvd : padicValNat p (d.1 * p ^ s) = s := by
-    rw [padicValNat.mul hd0 (pow_ne_zero s
+    rw [Nat.padicValNat_def, Nat.multiplicity_mul hd0 (pow_ne_zero s
       F.residueCharacteristic_prime.ne_zero),
-      padicValNat.eq_zero_of_not_dvd hpd, padicValNat.prime_pow, zero_add]
+      multiplicity_eq_zero_of_not_dvd hpd, Nat.multiplicity_prime_pow, zero_add]
   have hve : padicValNat p (e.1 * p ^ t) = t := by
-    rw [padicValNat.mul he0 (pow_ne_zero t
+    rw [Nat.padicValNat_def, Nat.multiplicity_mul he0 (pow_ne_zero t
       F.residueCharacteristic_prime.ne_zero),
-      padicValNat.eq_zero_of_not_dvd hpe, padicValNat.prime_pow, zero_add]
+      multiplicity_eq_zero_of_not_dvd hpe, Nat.multiplicity_prime_pow, zero_add]
   constructor
   · intro hdepth
     have hst : s = t := by

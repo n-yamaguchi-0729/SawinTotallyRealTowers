@@ -37,38 +37,12 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicFrobeniusContinuityBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
-
-noncomputable local instance
-    equalCharacteristicFrobeniusContinuityBaseValuationIsNontrivial
-    (k : Type v) [Field k] :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰).IsNontrivial :=
-  equalCharacteristicCompletedBaseValuationIsNontrivial k
-
-noncomputable local instance
-    equalCharacteristicFrobeniusContinuityBaseValuationRankOne
-    (k : Type v) [Field k] :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰).RankOne :=
-  equalCharacteristicCompletedBaseValuationRankOne k
-
-@[reducible]
-noncomputable local instance equalCharacteristicFrobeniusContinuityBaseNormedField
-    (k : Type v) [Field k] :
-    NontriviallyNormedField
-      (equalCharacteristicCompletedUnramifiedField k) :=
-  equalCharacteristicCompletedBaseNormedField k
-
-@[reducible]
-noncomputable local instance equalCharacteristicFrobeniusContinuityLevelNormedField
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    NontriviallyNormedField (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelNormedField F n
+attribute [local instance]
+  equalCharacteristicCompletedLevelBaseAlgebra
+  equalCharacteristicCompletedBaseValuationIsNontrivial
+  equalCharacteristicCompletedBaseValuationRankOne
+  equalCharacteristicCompletedBaseNormedField
+  equalCharacteristicCompletedLevelNormedField
 
 /-- Base arithmetic Frobenius preserves the rank-one norm. -/
 private theorem equalCharacteristicCompletedFrobeniusBase_norm

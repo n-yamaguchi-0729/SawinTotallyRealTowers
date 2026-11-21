@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
@@ -32,12 +33,6 @@ open KummerTheory
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceH1CharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
-
-local instance finitePlaceH1CharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) :=
-  discreteTopology_bot _
 
 /-- Every mod-`p` character of a finite-place decomposition subgroup has exponent dividing `p`. -/
 theorem finitePlaceDecompositionContinuousZModCharacter_pow_eq_one

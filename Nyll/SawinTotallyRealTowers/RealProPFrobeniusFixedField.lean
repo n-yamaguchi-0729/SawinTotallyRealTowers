@@ -7,10 +7,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusCut
+public import Nyll.GaloisCohomology.Topology.GaloisConjugation
 public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
 public import Nyll.ProCGroups.Presentations.Profinite
 public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
-public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 public import Mathlib.FieldTheory.Galois.Infinite
 public import Mathlib.FieldTheory.Galois.Profinite
 public import Mathlib.FieldTheory.Galois.Basic

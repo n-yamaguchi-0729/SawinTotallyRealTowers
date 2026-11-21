@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanHilbert90
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.InfinitePlaceTensorBlock
 public import Mathlib.Basic.Real.Sign
@@ -40,7 +41,6 @@ universe u v w z
 open AlgebraicNumberTheory.Valuations
 open HilbertRamification
 open NumberField
-open scoped NumberField.LiesOver
 
 section NormComparisons
 
@@ -65,16 +65,14 @@ is the real numbers. -/
 def absoluteCompletionRingEquivReal
     (v : InfinitePlace K) (hv : v.IsReal) :
     v.1.Completion ≃+* ℝ :=
-  (InfinitePlace.Completion.equiv v).symm.trans
-    (InfinitePlace.Completion.ringEquivRealOfIsReal hv)
+  InfinitePlace.Completion.ringEquivRealOfIsReal hv
 
 /-- The underlying absolute-value completion of a complex infinite
 place is the complex numbers. -/
 def absoluteCompletionRingEquivComplex
     (v : InfinitePlace K) (hv : v.IsComplex) :
     v.1.Completion ≃+* ℂ :=
-  (InfinitePlace.Completion.equiv v).symm.trans
-    (InfinitePlace.Completion.ringEquivComplexOfIsComplex hv)
+  InfinitePlace.Completion.ringEquivComplexOfIsComplex hv
 
 omit [NumberField K] [NumberField L] [FiniteDimensional K L]
     [IsGalois K L] in
@@ -108,27 +106,6 @@ theorem absoluteValueDecompositionGroup_eq_infinitePlaceStabilizer
           (w := σ • w) (v := w)).1 hσ
     simpa using
       (absoluteValueDecompositionGroup K w.1).inv_mem hσi
-
-/-- Field norms commute with compatible changes of both the base and
-extension fields. -/
-theorem normUnits_map_ringEquiv
-    {K : Type u} {L : Type v} {K' : Type w} {L' : Type z}
-    [Field K] [Field L] [Field K'] [Field L']
-    [Algebra K L] [Algebra K' L']
-    (eK : K ≃+* K') (eL : L ≃+* L')
-    (he :
-      RingHom.comp (algebraMap K' L') eK =
-        RingHom.comp eL (algebraMap K L))
-    (x : Lˣ) :
-    Units.mapEquiv eK.toMulEquiv (normUnits K L x) =
-      normUnits K' L'
-        (Units.mapEquiv eL.toMulEquiv x) := by
-  apply Units.ext
-  change
-    eK (Algebra.norm K (x : L)) =
-      Algebra.norm K' (eL (x : L))
-  rw [Algebra.norm_eq_of_equiv_equiv eK eL he]
-  exact eK.apply_symm_apply _
 
 /-- Compatibility of a square of ring equivalences is symmetric. -/
 theorem ringEquiv_compat_symm
@@ -266,9 +243,11 @@ def infiniteCompletionNormQuotientEquivRealComplex
     (hv : v.IsReal) (hwc : w.IsComplex) :
     let _ : w.1.LiesOver v.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
+    let _ : Algebra v.Completion w.Completion :=
+      AbsoluteValue.Completion.algebraOfLiesOver v.1 w.1
     NormQuotient v.Completion w.Completion ≃*
       NormQuotient ℝ ℂ := by
-  intro placeLiesOver
+  intro placeLiesOver completionAlgebra
   have :
       NumberField.ComplexEmbedding.LiesOver
         (InfinitePlace.Completion.extensionEmbedding w)
@@ -353,81 +332,35 @@ def absoluteCompletionNormQuotientEquivRealComplex
         v.embedding :=
     (InfinitePlace.LiesOver.embedding_liesOver_of_isReal
       w hv).over
-  have hCompletionEmbedding :
-      ∀ x : v.1.Completion,
-        InfinitePlace.Completion.extensionEmbedding w
-            ((InfinitePlace.Completion.equiv w).symm
-              (AbsoluteValue.completionMap
-                v.1 w.1
-                (infinitePlaceAbsoluteValueExtension
-                  v w hw).2 x)) =
-          InfinitePlace.Completion.extensionEmbedding v
-            ((InfinitePlace.Completion.equiv v).symm x) := by
-    intro x
-    refine
-      UniformSpace.Completion.induction_on
-        (α := WithAbs v.1) x ?_ ?_
-    · exact
-        isClosed_eq
-          ((InfinitePlace.Completion.isometry_extensionEmbedding
-              w).continuous.comp
-            ((InfinitePlace.Completion.continuous_ofCompletion
-              w).comp
-              (AbsoluteValue.completionMap_isometry
-                v.1 w.1
-                (infinitePlaceAbsoluteValueExtension
-                  v w hw).2).continuous))
-          ((InfinitePlace.Completion.isometry_extensionEmbedding
-              v).continuous.comp
-            (InfinitePlace.Completion.continuous_ofCompletion v))
-    · intro y
-      have hy :
-          (y : v.1.Completion) =
-            algebraMap K v.1.Completion
-              (WithAbs.equiv v.1 y) := by
-        rw [← AbsoluteValue.toCompletion_eq_algebraMap,
-          AbsoluteValue.toCompletion_apply, RingEquiv.symm_apply_apply]
-      have hmap :
-          AbsoluteValue.completionMap v.1 w.1
-              (infinitePlaceAbsoluteValueExtension v w hw).2
-              (y : v.1.Completion) =
-            AbsoluteValue.toCompletion w.1
-              (algebraMap K L (WithAbs.equiv v.1 y)) :=
-        (congrArg
+  have hCompletionEmbedding (x : v.1.Completion) :
+      InfinitePlace.Completion.extensionEmbedding w
           (AbsoluteValue.completionMap v.1 w.1
-            (infinitePlaceAbsoluteValueExtension v w hw).2) hy).trans
-          (AbsoluteValue.completionMap_coe v.1 w.1
-            (infinitePlaceAbsoluteValueExtension v w hw).2
-            (WithAbs.equiv v.1 y))
-      have hwEmbedding :
-          InfinitePlace.Completion.extensionEmbedding w
-              ((InfinitePlace.Completion.equiv w).symm
-                (AbsoluteValue.toCompletion w.1
-                  (algebraMap K L (WithAbs.equiv v.1 y)))) =
-            w.embedding (algebraMap K L (WithAbs.equiv v.1 y)) :=
-        (InfinitePlace.Completion.extensionEmbedding_coe w
-          ((WithAbs.equiv w.1).symm
-            (algebraMap K L (WithAbs.equiv v.1 y)))).trans
-          (congrArg w.embedding
-            ((WithAbs.equiv w.1).apply_symm_apply
-              (algebraMap K L (WithAbs.equiv v.1 y))))
-      exact
-        (congrArg (fun z : w.1.Completion =>
-          InfinitePlace.Completion.extensionEmbedding w
-            ((InfinitePlace.Completion.equiv w).symm z)) hmap).trans
-          (hwEmbedding.trans
-            ((DFunLike.congr_fun hEmbedding (WithAbs.equiv v.1 y)).trans
-              (InfinitePlace.Completion.extensionEmbedding_coe v y).symm))
-  exact
-    normQuotientEquivOfRingEquiv
-      (absoluteCompletionRingEquivReal v hv)
-      (absoluteCompletionRingEquivComplex w hwc)
-      (by
-        ext x
-        exact
-          (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv
-            ((InfinitePlace.Completion.equiv v).symm x)).trans
-            (hCompletionEmbedding x).symm)
+            (infinitePlaceAbsoluteValueExtension v w hw).2 x) =
+        InfinitePlace.Completion.extensionEmbedding v x := by
+    refine AbsoluteValue.Completion.induction_on x ?_ ?_
+    · exact isClosed_eq
+        ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp
+          (AbsoluteValue.completionMap_isometry v.1 w.1
+            (infinitePlaceAbsoluteValueExtension v w hw).2).continuous)
+        (InfinitePlace.Completion.isometry_extensionEmbedding v).continuous
+    · intro y
+      have hy : (y : v.1.Completion) = algebraMap K v.1.Completion (WithAbs.equiv v.1 y) := by
+        rw [← AbsoluteValue.toCompletion_eq_algebraMap, AbsoluteValue.toCompletion_apply,
+          RingEquiv.symm_apply_apply]
+      have hmap := (congrArg (AbsoluteValue.completionMap v.1 w.1
+        (infinitePlaceAbsoluteValueExtension v w hw).2) hy).trans
+        (AbsoluteValue.completionMap_coe v.1 w.1 (infinitePlaceAbsoluteValueExtension v w hw).2
+          (WithAbs.equiv v.1 y))
+      rw [hmap, AbsoluteValue.toCompletion_apply, InfinitePlace.Completion.extensionEmbedding_coe w,
+        InfinitePlace.Completion.extensionEmbedding_coe v]
+      exact (congrArg w.embedding ((WithAbs.equiv w.1).apply_symm_apply
+        (algebraMap K L (WithAbs.equiv v.1 y)))).trans
+        (DFunLike.congr_fun hEmbedding (WithAbs.equiv v.1 y))
+  exact normQuotientEquivOfRingEquiv
+    (absoluteCompletionRingEquivReal v hv) (absoluteCompletionRingEquivComplex w hwc) (by
+      ext x
+      exact (InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv x).trans
+        (hCompletionEmbedding x).symm)
 
 /-- The sign of a nonzero real number, regarded as an integral unit. -/
 def realUnitsSign : ℝˣ →* ℤˣ :=

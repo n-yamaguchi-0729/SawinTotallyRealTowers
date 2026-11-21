@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePGroupLocalUnitsH2Structure
 public import Nyll.GaloisCohomology.ProP.MultiplicativeInducedShapiro
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
@@ -51,9 +54,7 @@ local instance fieldH2InducedAction (v : HeightOneSpectrum (𝓞 K)) :
     MulDistribMulAction Gal(L / K) (ChosenFinitePlaceLocalPlaceBlock (K := K) (L := L) v) :=
   chosenFinitePlaceLocalPlaceBlockAction (K := K) (L := L) v
 
-local instance fieldH2TensorAction (v : HeightOneSpectrum (𝓞 K)) :
-    MulDistribMulAction Gal(L / K) (v.adicCompletion K ⊗[K] L)ˣ :=
-  scalarTensorUnitsAction (K := K) (L := L) (A := v.adicCompletion K)
+attribute [local instance] finitePlaceScalarTensorUnitsAction
 
 /-- The tensor-unit representation is the actual induced local-place representation. -/
 noncomputable def finiteTensorRepIsoInduced

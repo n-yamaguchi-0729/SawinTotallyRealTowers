@@ -47,7 +47,7 @@ variable {K : Type*} [Field K] [NumberField K]
 /-- If a global defining modulus exists, then at every finite place some
 higher-unit class subgroup is already contained in the given subgroup. -/
 theorem exists_localDefiningExponent
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (h : ∃ m, IsDefiningModulus H m)
     (v : HeightOneSpectrum (𝓞 K)) :
     ∃ n : ℕ,
@@ -109,7 +109,7 @@ open scoped Classical in
 /-- Replacing one finite exponent of a defining modulus, while retaining its
 selected real places, again gives a defining modulus. -/
 theorem replaceFiniteExponent_definingModulus
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (m : RayClass.Modulus K)
     (hm : IsDefiningModulus H m)
     (v : HeightOneSpectrum (𝓞 K))
@@ -120,22 +120,22 @@ theorem replaceFiniteExponent_definingModulus
   let m' : RayClass.Modulus K :=
     m.replaceFinitePart (m.finitePart.update v n)
   change IsDefiningModulus H m'
-  let q : IdeleGroup K →* IdeleClassGroup K :=
-    QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
+  let q : IdeleGroup K →* NumberField.IdeleClassGroup (𝓞 K) K :=
+    IdeleGroup.toStandardClass K
   rw [IsDefiningModulus, RayClass.Modulus.congruenceSubgroup,
     Subgroup.map_le_iff_le_comap]
   apply sup_le
   · intro a ha
     have ha' := (RayClass.Modulus.mem_ideleCongruenceSubgroup_iff m' a).1 ha
     let s : IdeleGroup K :=
-      IdeleGroup.finitePlaceIdele v (a.2 v)
+      IdeleGroup.finitePlaceIdele v (IdeleGroup.finiteCoordinates a v)
     let b : IdeleGroup K := a * s⁻¹
     have hav :
-        a.2 v ∈ RayClass.localHigherUnitGroup v n := by
+        IdeleGroup.finiteCoordinates a v ∈ ClassFieldTheory.rayLocalHigherUnitGroup v n := by
       simpa [m', RayClass.Modulus.replaceFinitePart] using ha'.2 v
     have hsH : q s ∈ H := by
       apply hn
-      exact ⟨a.2 v, hav, rfl⟩
+      exact ⟨IdeleGroup.finiteCoordinates a v, hav, rfl⟩
     have hbCong : b ∈ m.ideleCongruenceSubgroup := by
       rw [RayClass.Modulus.mem_ideleCongruenceSubgroup_iff]
       refine ⟨?_, ?_⟩
@@ -143,7 +143,7 @@ theorem replaceFiniteExponent_definingModulus
         intro w
         have haw :=
           (RayClass.Modulus.mem_infiniteCongruenceSubgroup_iff_local
-            m' a.1).1 ha'.1 w
+            m' (IdeleGroup.infinitePart a)).1 ha'.1 w
         have hlocal :
             m'.localInfiniteCongruenceSubgroup w =
               m.localInfiniteCongruenceSubgroup w := by
@@ -162,7 +162,7 @@ theorem replaceFiniteExponent_definingModulus
         by_cases hw : w = v
         · subst w
           change IdeleGroup.finiteComponent v b ∈
-            RayClass.localHigherUnitGroup v (m.finitePart v)
+            ClassFieldTheory.rayLocalHigherUnitGroup v (m.finitePart v)
           dsimp only [b]
           rw [map_mul, map_inv]
           dsimp only [s]
@@ -175,12 +175,12 @@ theorem replaceFiniteExponent_definingModulus
             simp [m', RayClass.Modulus.replaceFinitePart, hw]
           rw [hupdate] at haw
           change IdeleGroup.finiteComponent w b ∈
-            RayClass.localHigherUnitGroup w (m.finitePart w)
+            ClassFieldTheory.rayLocalHigherUnitGroup w (m.finitePart w)
           dsimp only [b]
           rw [map_mul, map_inv]
           dsimp only [s]
           rw [IdeleGroup.finitePlaceIdele_finiteComponent_of_ne
-              v w (a.2 v) hw,
+              v w (IdeleGroup.finiteCoordinates a v) hw,
             inv_one, mul_one,
             IdeleGroup.finiteComponent_apply]
           exact haw
@@ -197,7 +197,7 @@ theorem replaceFiniteExponent_definingModulus
   · intro a ha
     change q a ∈ H
     have hqa : q a = 1 :=
-      (QuotientGroup.eq_one_iff a).2 ha
+      (IdeleGroup.toStandardClass_eq_one_iff K a).2 ha
     rw [hqa]
     exact H.one_mem
 

@@ -36,11 +36,6 @@ open Reciprocity
 
 variable {K : Type u} [Field K] [NumberField K]
 
-local instance
-    smallHilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
 /-- The actual norm range of the selected small Hilbert class field is
 the intrinsic small-Hilbert norm subgroup of its actual base field. -/
@@ -124,9 +119,7 @@ theorem smallHilbertClassFieldGaloisEquivClassGroup_idele
         (globalNormResidueMonoidHom
           (smallHilbertClassFieldBase K)
           (smallHilbertClassField K)
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup
-              (smallHilbertClassFieldBase K)) a)) =
+          (IdeleGroup.toStandardClass (smallHilbertClassFieldBase K) a)) =
       smallHilbertClassGroupCongr
         (smallHilbertClassFieldBaseEquiv (K := K)).symm
         (IdeleGroup.idealClass a) := by
@@ -138,9 +131,7 @@ theorem smallHilbertClassFieldGaloisEquivClassGroup_idele
             (QuotientGroup.mk'
               (smallHilbertClassFieldNormSubgroup
                 (K := smallHilbertClassFieldBase K))
-              (QuotientGroup.mk'
-                (IdeleGroup.principalSubgroup
-                  (smallHilbertClassFieldBase K)) a))) :=
+              (IdeleGroup.toStandardClass (smallHilbertClassFieldBase K) a))) :=
       (smallHilbertClassFieldReciprocityData (K := K)).2 _
     _ = _ :=
       congrArg

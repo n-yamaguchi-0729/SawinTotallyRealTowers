@@ -99,6 +99,24 @@ theorem residueField_algebraMap_residue (K : Type u) (L : Type v)
       IsLocalRing.residue 𝒪[L] (algebraMap 𝒪[K] 𝒪[L] x) :=
   rfl
 
+/-- The actual residue maps of a tower of extended valuations compose. -/
+theorem residueField_isScalarTower_of_valuationExtension
+    (K L N : Type*) [Field K] [Field L] [Field N]
+    [ValuativeRel K] [ValuativeRel L] [ValuativeRel N]
+    [Algebra K L] [Algebra K N] [Algebra L N] [IsScalarTower K L N]
+    [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
+    [Valuation.HasExtension (ValuativeRel.valuation L) (ValuativeRel.valuation N)]
+    [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation N)] :
+    IsScalarTower 𝓀[K] 𝓀[L] 𝓀[N] := by
+  apply IsScalarTower.of_algebraMap_eq
+  intro x
+  obtain ⟨a, rfl⟩ := IsLocalRing.residue_surjective x
+  rw [residueField_algebraMap_residue K N, residueField_algebraMap_residue K L,
+    residueField_algebraMap_residue L N]
+  apply congrArg (IsLocalRing.residue 𝒪[N])
+  apply Subtype.ext
+  exact IsScalarTower.algebraMap_apply K L N (a : K)
+
 /-- The induced map on residue-field unit groups. -/
 def residueUnitsMapOfValuationExtension (K : Type u) (L : Type v) [Field K] [ValuativeRel K]
     [Field L] [ValuativeRel L] [Algebra K L]

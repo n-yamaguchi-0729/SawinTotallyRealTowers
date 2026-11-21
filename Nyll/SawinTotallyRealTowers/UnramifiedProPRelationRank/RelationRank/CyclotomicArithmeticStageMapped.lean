@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.MathlibUnramifiedInterface
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.CyclotomicArithmeticStage
 
 /-!
@@ -81,7 +82,8 @@ def cyclotomicArithmeticStageMappedExtension
       isGalois := IsGalois.of_algEquiv i
       numberField := hnumber
       isPGroup := (cyclotomicArithmeticStage_isPGroup F p hpOdd U).of_equiv (AlgEquiv.autCongr i)
-      everywhereUnramified := everywhereUnramified_congrTop i
+      everywhereUnramified :=
+        (ClassFieldTheory.isEverywhereUnramified_iff_of_algEquiv _ _ _ i).mp
         (cyclotomicArithmeticStage_everywhereUnramified F p hpOdd U) }
 
 @[simp] theorem cyclotomicArithmeticStageMappedExtension_field

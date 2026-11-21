@@ -33,28 +33,10 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicCompletedFrobeniusBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  laurentSeriesCoefficientAlgebra
-
-noncomputable local instance equalCharacteristicCompletedFrobeniusLevelAlgebra
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedLevelField F n) :=
-  RingHom.toAlgebra
-    ((algebraMap (equalCharacteristicCompletedUnramifiedField F.residueField)
-        (equalCharacteristicCompletedLevelField F n)).comp
-      (algebraMap F.residueField⸨X⸩
-        (equalCharacteristicCompletedUnramifiedField F.residueField)))
-
-local instance equalCharacteristicCompletedFrobeniusScalarTower
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsScalarTower F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField)
-      (equalCharacteristicCompletedLevelField F n) :=
-  IsScalarTower.of_algebraMap_eq' rfl
+attribute [local instance]
+  equalCharacteristicCompletedLevelBaseAlgebra
+  equalCharacteristicCompletedLevelLaurentAlgebra
+  equalCharacteristicCompletedLevelScalarTower
 
 /-- The completed theta-intertwining theorem completed lift fixes every element of the embedded
 Laurent

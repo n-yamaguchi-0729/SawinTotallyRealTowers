@@ -7,12 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Mathlib.FieldTheory.Galois.Basic
+public import Nyll.GaloisCohomology.Topology.GaloisConjugation
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedExtensionQuotient
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedInertiaComparison
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.FixedFieldNormQuotient
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.FixedFieldSpecialization
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.IntrinsicBaseEquivalence
-public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.ContinuousQuotientEquiv
+public import Nyll.ProCGroups.Topologies.ContinuousQuotientEquiv
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
@@ -32,6 +33,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -40,7 +43,7 @@ open scoped ValuativeRel
 inertia subgroup of a fixed field with its ambient extension inertia
 subgroup. -/
 theorem map_intrinsicExtensionInertia_eq_ambientFixedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K))
@@ -151,7 +154,7 @@ theorem intrinsicBaseEquivAmbientFixedField_continuous
 ambient separable closure is continuous. -/
 theorem
     intrinsicBaseEquivAmbientEmbeddedField_continuous
-    (K F : Type) [Field K] [Field F]
+    (K : Type u₁) (F : Type u₂) [Field K] [Field F]
     [Algebra K F] [FiniteDimensional K F] [Algebra.IsSeparable K F]
     (i : F →ₐ[K] SeparableClosure K) :
     let : Algebra F (SeparableClosure F) :=
@@ -285,7 +288,7 @@ theorem
 multiplicative equivalence. -/
 noncomputable def
     intrinsicBaseContinuousEquivAmbientEmbeddedField
-    (K F : Type) [Field K] [Field F]
+    (K : Type u₁) (F : Type u₂) [Field K] [Field F]
     [Algebra K F] [FiniteDimensional K F] [Algebra.IsSeparable K F]
     (i : F →ₐ[K] SeparableClosure K) :
     let : Algebra F (SeparableClosure F) :=
@@ -315,7 +318,7 @@ noncomputable def
 multiplicative equivalence between the quotients by extension inertia. -/
 noncomputable def
     intrinsicFrobeniusQuotientContinuousEquivAmbientEmbeddedField
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -397,7 +400,7 @@ noncomputable def
           H₀ J₀ hJH := by
     exact map_intrinsicExtensionInertia_eq_ambientEmbeddedField K F E j e
   exact
-    LocalFieldTheory.QuotientGroup.continuousCongr
+    ProCGroups.QuotientGroup.congrₜ
       ((localResidueDatum F).extensionInertiaWithin
         (intrinsicAbstractBase F) EI.field EI.below)
       ((localResidueDatum K).extensionInertiaWithin
@@ -416,7 +419,7 @@ noncomputable def
 degree of extension Frobenius classes. -/
 theorem
     intrinsicFrobeniusQuotientContinuousEquivAmbientEmbeddedField_normalizedDegree
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -505,7 +508,7 @@ theorem
         QuotientGroup.mk
           (intrinsicBaseEquivAmbientEmbeddedField K F i e tau) := by
     exact
-      LocalFieldTheory.QuotientGroup.continuousCongr_mk
+      ProCGroups.QuotientGroup.congrₜ_mk
         _ _ _ _ tau
   rw [hquotientMk,
     (localResidueDatum K).extensionNormalizedDegree_mk,
@@ -516,7 +519,7 @@ theorem
 intrinsic separable closure of `F` to the ambient separable closure of `K`. -/
 noncomputable def
     intrinsicFrobeniusElementToAmbientEmbeddedField
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -604,7 +607,7 @@ noncomputable def
 equivalence and the corresponding quotient-to-Galois equivalences. -/
 theorem
     intrinsicExtensionRestriction_compatibility_ambientEmbeddedField
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -682,7 +685,7 @@ theorem
         QuotientGroup.mk
           (intrinsicBaseEquivAmbientEmbeddedField K F i e tau) := by
     exact
-      LocalFieldTheory.QuotientGroup.continuousCongr_mk
+      ProCGroups.QuotientGroup.congrₜ_mk
         _ _ _ _ tau
   have hAmbientRestriction :
       (localResidueDatum K).extensionRestriction
@@ -736,7 +739,7 @@ and ambient quotient--Galois equivalences, with restriction of the original
 intrinsic lift. -/
 theorem
     intrinsicFrobeniusRestriction_compatibility_ambientEmbeddedField
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -784,7 +787,7 @@ theorem
             extensionSubgroup
               (intrinsicAbstractBase F) EI.field EI.below) :=
         EI.finite
-      letI hTargetNormal :
+      letI _hTargetNormal :
           (extensionSubgroup H₀ J₀ hJH).Normal :=
         ambientEmbeddedExtensionSubgroup_normal K F E j e
       letI _hTargetFinite : Finite
@@ -826,7 +829,7 @@ theorem
 
 section EmbeddedFrobeniusTransport
 
-variable (K F E : Type)
+variable (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -1081,7 +1084,7 @@ theorem
         QuotientGroup.mk
           (intrinsicBaseEquivAmbientEmbeddedField K F i e tau) := by
     exact
-      LocalFieldTheory.QuotientGroup.continuousCongr_mk
+      ProCGroups.QuotientGroup.congrₜ_mk
         _ _ _ _ tau
   rw [hquotientMk] at htransport
   change
@@ -1234,6 +1237,7 @@ noncomputable def
       have htauExtension :
           tau ∈ extensionSubgroup
             RF.field SF hSFB := by
+        change tau ∈ SF.toSubgroup.subgroupOf RF.field.toSubgroup
         rw [(localResidueDatum F).extensionSubgroup_frobeniusFixedField
           RF EI.field EI.below sigma]
         exact htauInternal
@@ -1279,6 +1283,7 @@ noncomputable def
           K F E j e sigma tau).1 htauInternal
       have hrhoExtension :
           psi tau ∈ extensionSubgroup RH.field SH hSHH := by
+        change psi tau ∈ SH.toSubgroup.subgroupOf RH.field.toSubgroup
         rw [(localResidueDatum K).extensionSubgroup_frobeniusFixedField
           RH J₀ hJH sigmaH]
         exact hrhoInternal
@@ -1341,6 +1346,7 @@ theorem
         let RF :=
           (intrinsicFiniteAbstractBase F).toFiniteResidueAbstractField
             (localResidueDatum F)
+        let : (EI.field.toSubgroup.subgroupOf RF.field.toSubgroup).Normal := EI.normal
         (localResidueDatum F).FrobeniusElements
           RF EI.field EI.below)
       (x :
@@ -1353,6 +1359,7 @@ theorem
         let RF :=
           (intrinsicFiniteAbstractBase F).toFiniteResidueAbstractField
             (localResidueDatum F)
+        let : (EI.field.toSubgroup.subgroupOf RF.field.toSubgroup).Normal := EI.normal
         let SF :=
           (localResidueDatum F).frobeniusFixedField
             RF EI.field EI.below sigma

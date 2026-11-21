@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension

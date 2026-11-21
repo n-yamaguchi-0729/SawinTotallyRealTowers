@@ -42,7 +42,7 @@ theorem openNormalArithmeticStage_supportedIdeleH2_subsingleton :
     Subsingleton (groupCohomology (Rep.ofMulDistribMulAction Gal(StageField / F) J) 2) :=
   everywhereUnramifiedSupportedIdeleH2_subsingleton F StageField
     (openNormalArithmeticStage_chosenFinitePlaceIsUnramified F p hpOdd U)
-    (fun v ↦ (openNormalArithmeticStage F p hpOdd U).everywhereUnramified.infinitePlaces.1
+    (fun v ↦ (openNormalArithmeticStage F p hpOdd U).everywhereUnramified.2.1
       (chosenInfinitePlaceAbove (L := StageField) v))
 
 /-- Every two-cocycle in the arithmetic stage's everywhere-integral

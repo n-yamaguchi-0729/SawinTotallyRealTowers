@@ -291,6 +291,126 @@ theorem completedGroupAlgebraTransitionInClass_algebraMap
       MonoidAlgebra.single 1 r
   rw [MonoidAlgebra.mapDomain_single, map_one]
 
+/-- The quotient map from the abstract group algebra \(R[G]\) to one \(C\)-indexed finite stage. -/
+def completedGroupAlgebraStageMapInClass
+    (C : ProCGroups.FiniteGroupClass.{v}) (R : Type u) (G : Type v) [CommRing R]
+    [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
+    (U : CompletedGroupAlgebraIndexInClass G C) :
+    MonoidAlgebra R G →+* CompletedGroupAlgebraStageInClass C R G U :=
+  MonoidAlgebra.mapDomainRingHom R
+    (openNormalSubgroupInClassProj (C := C) (G := G) U)
+
+/--
+At a \(C\)-indexed stage \(U\), the quotient map sends the group-like element of \(g\) to the
+singleton at the image of \(g\) in \(G/U\), with coefficient \(1\).
+-/
+@[simp]
+theorem completedGroupAlgebraStageMapInClass_of
+    (C : ProCGroups.FiniteGroupClass.{v}) (U : CompletedGroupAlgebraIndexInClass G C)
+    (g : G) :
+    completedGroupAlgebraStageMapInClass C R G U (MonoidAlgebra.of R G g) =
+      MonoidAlgebra.single (openNormalSubgroupInClassProj (C := C) (G := G) U g) 1 := by
+  change
+    MonoidAlgebra.mapDomain
+        (openNormalSubgroupInClassProj (C := C) (G := G) U)
+        (MonoidAlgebra.single g 1) =
+      MonoidAlgebra.single
+        (openNormalSubgroupInClassProj (C := C) (G := G) U g) 1
+  exact MonoidAlgebra.mapDomain_single
+
+/--
+At a \(C\)-indexed stage \(U\), the quotient map sends the singleton at \(g\) with coefficient
+\(r\) to the singleton at the image of \(g\) in \(G/U\), with coefficient \(r\).
+-/
+theorem completedGroupAlgebraStageMapInClass_single
+    (C : ProCGroups.FiniteGroupClass.{v}) (U : CompletedGroupAlgebraIndexInClass G C)
+    (g : G) (r : R) :
+    completedGroupAlgebraStageMapInClass C R G U (MonoidAlgebra.single g r) =
+      MonoidAlgebra.single (openNormalSubgroupInClassProj (C := C) (G := G) U g) r := by
+  change
+    MonoidAlgebra.mapDomain
+        (openNormalSubgroupInClassProj (C := C) (G := G) U)
+        (MonoidAlgebra.single g r) =
+      MonoidAlgebra.single
+        (openNormalSubgroupInClassProj (C := C) (G := G) U g) r
+  exact MonoidAlgebra.mapDomain_single
+
+/-- The \(C\)-indexed quotient-stage map preserves scalar multiplication by elements of \(R\). -/
+theorem completedGroupAlgebraStageMapInClass_smul
+    (C : ProCGroups.FiniteGroupClass.{v}) (U : CompletedGroupAlgebraIndexInClass G C)
+    (r : R) (x : MonoidAlgebra R G) :
+    completedGroupAlgebraStageMapInClass C R G U (r • x) =
+      r • completedGroupAlgebraStageMapInClass C R G U x := by
+  rw [Algebra.smul_def, Algebra.smul_def, map_mul]
+  congr 1
+  change
+    MonoidAlgebra.mapDomain
+        (openNormalSubgroupInClassProj (C := C) (G := G) U)
+        (MonoidAlgebra.single 1 r) =
+      MonoidAlgebra.single 1 r
+  rw [MonoidAlgebra.mapDomain_single,
+    (openNormalSubgroupInClassProj (C := C) (G := G) U).map_one]
+
+/--
+The \(C\)-indexed quotient-stage map commutes with the canonical embeddings of scalars from
+\(R\).
+-/
+theorem completedGroupAlgebraStageMapInClass_algebraMap
+    (C : ProCGroups.FiniteGroupClass.{v}) (U : CompletedGroupAlgebraIndexInClass G C)
+    (r : R) :
+    completedGroupAlgebraStageMapInClass C R G U (algebraMap R (MonoidAlgebra R G) r) =
+      algebraMap R (CompletedGroupAlgebraStageInClass C R G U) r := by
+  change
+    MonoidAlgebra.mapDomain
+        (openNormalSubgroupInClassProj (C := C) (G := G) U)
+        (MonoidAlgebra.single 1 r) =
+      MonoidAlgebra.single 1 r
+  rw [MonoidAlgebra.mapDomain_single,
+    (openNormalSubgroupInClassProj (C := C) (G := G) U).map_one]
+
+/-- The quotient map \(R[G]\to R[G/U]\) is surjective for every \(C\)-indexed stage \(U\). -/
+theorem completedGroupAlgebraStageMapInClass_surjective
+    (C : ProCGroups.FiniteGroupClass.{v}) (U : CompletedGroupAlgebraIndexInClass G C) :
+    Function.Surjective (completedGroupAlgebraStageMapInClass C R G U) := by
+  classical
+  intro x
+  obtain ⟨y, hy⟩ :=
+    Finsupp.mapDomain_surjective (M := R)
+      (openNormalSubgroupInClassProj_surjective (C := C) (G := G) U) x.coeff
+  refine ⟨MonoidAlgebra.ofCoeff y, ?_⟩
+  apply MonoidAlgebra.coeff_injective
+  exact hy
+
+/--
+The class-restricted completed group-algebra stage map is compatible with transition maps and
+coordinate projections for the completed group algebra.
+-/
+@[simp]
+theorem completedGroupAlgebraStageMapInClass_compatible
+    (C : ProCGroups.FiniteGroupClass.{v})
+    {U V : CompletedGroupAlgebraIndexInClass G C} (hUV : U ≤ V) :
+    (completedGroupAlgebraTransitionInClass C R G hUV).comp
+        (completedGroupAlgebraStageMapInClass C R G V) =
+      completedGroupAlgebraStageMapInClass C R G U := by
+  unfold completedGroupAlgebraTransitionInClass completedGroupAlgebraStageMapInClass
+  have hproj :
+      (OpenNormalSubgroupInClass.map
+        (C := C) (G := G)
+        (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) hUV).comp
+          (openNormalSubgroupInClassProj (C := C) (G := G) V) =
+        openNormalSubgroupInClassProj (C := C) (G := G) U := by
+    ext g
+    exact congrFun
+      (openNormalSubgroupInClassProj_compatible
+        (C := C) (G := G) U V hUV) g
+  exact
+    (MonoidAlgebra.mapDomainRingHom_comp (R := R)
+      (OpenNormalSubgroupInClass.map
+        (C := C) (G := G)
+        (U := OrderDual.ofDual U) (V := OrderDual.ofDual V) hUV)
+      (openNormalSubgroupInClassProj (C := C) (G := G) V)).symm.trans
+      (congrArg (MonoidAlgebra.mapDomainRingHom R) hproj)
+
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 end InClass

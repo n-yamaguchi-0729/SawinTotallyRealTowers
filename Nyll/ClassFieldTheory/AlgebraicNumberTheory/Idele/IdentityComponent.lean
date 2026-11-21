@@ -11,6 +11,7 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormOneCompact
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
 public import Nyll.GaloisCohomology.Topology.TotallyDisconnectedQuotients
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.MathlibTopologyComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
 
@@ -72,7 +73,7 @@ noncomputable instance ideleClassComponentQuotientTotallyDisconnectedSpace :
 /-- The positive archimedean norm section, passed to the idele class group. -/
 noncomputable def ideleClassPositiveArchimedeanSection :
     ℝ≥0ˣ →* IdeleClassGroup K :=
-  (QuotientGroup.mk' (IdeleGroup.principalSubgroup K)).comp
+  (IdeleGroup.toStandardClass K).comp
     (IdeleGroup.positiveArchimedeanSection K)
 
 /-- The positive archimedean section of the idele class group, with its
@@ -81,7 +82,7 @@ noncomputable def ideleClassPositiveArchimedeanSectionContinuous :
     ℝ≥0ˣ →ₜ* IdeleClassGroup K where
   __ := ideleClassPositiveArchimedeanSection K
   continuous_toFun :=
-    QuotientGroup.continuous_mk.comp
+    (IdeleGroup.continuous_toStandardClass K).comp
       (IdeleGroup.positiveArchimedeanSectionContinuous K).continuous_toFun
 
 @[simp]
@@ -170,7 +171,7 @@ noncomputable def ideleClassNormOneCorrection
     IdeleClassGroup.normOneSubgroup (K := K) :=
   let correction : IdeleGroup.normOneSubgroup (K := K) :=
     IdeleGroup.positiveArchimedeanNormOneCorrection K a
-  ⟨QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
+  ⟨IdeleGroup.toStandardClass K
       (correction : IdeleGroup K),
     (IdeleClassGroup.mk_mem_normOneSubgroup_iff
       (K := K) (correction : IdeleGroup K)).2 correction.property⟩
@@ -178,7 +179,7 @@ noncomputable def ideleClassNormOneCorrection
 @[simp]
 theorem coe_ideleClassNormOneCorrection (a : IdeleGroup K) :
     (ideleClassNormOneCorrection K a : IdeleClassGroup K) =
-      QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
+      IdeleGroup.toStandardClass K
         (IdeleGroup.positiveArchimedeanNormOneCorrection K a) :=
   rfl
 
@@ -186,7 +187,7 @@ theorem coe_ideleClassNormOneCorrection (a : IdeleGroup K) :
 its positive archimedean norm section. -/
 theorem ideleClass_mk_eq_normOneCorrection_mul_positiveSection_inv
     (a : IdeleGroup K) :
-    QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a =
+    IdeleGroup.toStandardClass K a =
       (ideleClassNormOneCorrection K a : IdeleClassGroup K) *
         (ideleClassPositiveArchimedeanSection K
           (IdeleGroup.absoluteNorm a))⁻¹ := by
@@ -194,7 +195,7 @@ theorem ideleClass_mk_eq_normOneCorrection_mul_positiveSection_inv
     ideleClassPositiveArchimedeanSection, MonoidHom.comp_apply]
   simpa only [map_mul, map_inv] using
     congrArg
-      (QuotientGroup.mk' (IdeleGroup.principalSubgroup K))
+      (IdeleGroup.toStandardClass K)
       (IdeleGroup.eq_positiveArchimedeanNormOneCorrection_mul_section_inv
         (K := K) a)
 
@@ -215,7 +216,7 @@ theorem ideleClassNormOneToComponentQuotient_surjective :
   obtain ⟨c, rfl⟩ :=
     QuotientGroup.mk'_surjective (ideleClassIdentityComponent K) z
   obtain ⟨a, rfl⟩ :=
-    QuotientGroup.mk'_surjective (IdeleGroup.principalSubgroup K) c
+    IdeleGroup.toStandardClass_surjective K c
   let n : IdeleClassGroup.normOneSubgroup (K := K) :=
     ideleClassNormOneCorrection K a
   refine ⟨n, ?_⟩
@@ -231,7 +232,7 @@ theorem ideleClassNormOneToComponentQuotient_surjective :
     QuotientGroup.mk' (ideleClassIdentityComponent K)
         (n : IdeleClassGroup K) =
       QuotientGroup.mk' (ideleClassIdentityComponent K)
-        (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a)
+        (IdeleGroup.toStandardClass K a)
   symm
   rw [ideleClass_mk_eq_normOneCorrection_mul_positiveSection_inv]
   rw [map_mul, map_inv, hsection]
@@ -254,3 +255,26 @@ theorem ideleClassIdentityComponent_le_ker
     (f : IdeleClassGroup K →ₜ* H) :
     ideleClassIdentityComponent K ≤ f.ker :=
   f.connectedComponentOfOne_le_ker
+
+/-- An open idèle-class subgroup has finite index because its discrete
+quotient is a quotient of the compact component group. -/
+theorem ideleClassOpenSubgroup_finiteIndex (H : Subgroup (IdeleClassGroup K))
+    (hH : IsOpen (H : Set (IdeleClassGroup K))) : H.FiniteIndex := by
+  let : H.Normal := H.normal_of_isMulCommutative
+  let : DiscreteTopology (IdeleClassGroup K ⧸ H) := QuotientGroup.discreteTopology hH
+  let q : IdeleClassGroup K →ₜ* (IdeleClassGroup K ⧸ H) :=
+    { QuotientGroup.mk' H with continuous_toFun := QuotientGroup.continuous_mk }
+  have hI := ideleClassIdentityComponent_le_ker K q
+  let g := QuotientGroup.lift (ideleClassIdentityComponent K) q.toMonoidHom hI
+  have hg : Continuous g :=
+    (QuotientGroup.isQuotientMap_mk (ideleClassIdentityComponent K)).continuous_iff.2
+      (q.continuous.congr fun c =>
+        (QuotientGroup.lift_mk (ideleClassIdentityComponent K) hI c).symm)
+  have hs : Function.Surjective g := by
+    intro z
+    obtain ⟨c, rfl⟩ := QuotientGroup.mk'_surjective H z
+    exact ⟨QuotientGroup.mk' (ideleClassIdentityComponent K) c, rfl⟩
+  let : CompactSpace (IdeleClassGroup K ⧸ H) :=
+    Function.Surjective.compactSpace hg hs
+  let : Finite (IdeleClassGroup K ⧸ H) := finite_of_compact_of_discrete
+  exact Subgroup.finiteIndex_of_finite_quotient

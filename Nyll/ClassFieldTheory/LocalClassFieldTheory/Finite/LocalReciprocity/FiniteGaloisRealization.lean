@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.FiniteAbelianCompositum
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.NormalFieldRange
 public import Mathlib.SetTheory.Cardinal.Finite
 public import Mathlib.FieldTheory.SeparableClosure
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
@@ -39,32 +41,6 @@ variable (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
 
 /-! ## Realization relative to an explicit embedding -/
-
-/-- The embedded copy of `L` determined by an explicit embedding into the
-fixed separable closure.  Keeping the embedding visible is what makes the
-canonicity argument in the finite local reciprocity theorem meaningful. -/
-def finiteGaloisFieldRangeOfEmbedding
-    (i : L →ₐ[K] SeparableClosure K) :
-    IntermediateField K (SeparableClosure K) :=
-  AlgHom.fieldRange i
-
-/-- An explicit embedding identifies `L` with its field range. -/
-def finiteGaloisFieldRangeEquivOfEmbedding
-    (i : L →ₐ[K] SeparableClosure K) :
-    L ≃ₐ[K] finiteGaloisFieldRangeOfEmbedding K L i :=
-  AlgEquiv.ofInjectiveField i
-
-/-- The image of an embedded finite Galois extension is again Galois over the base field. -/
-noncomputable instance finiteGaloisFieldRangeOfEmbedding_isGalois
-    (i : L →ₐ[K] SeparableClosure K) :
-    IsGalois K (finiteGaloisFieldRangeOfEmbedding K L i) :=
-  IsGalois.of_algEquiv (finiteGaloisFieldRangeEquivOfEmbedding K L i)
-
-/-- The image of an embedded finite extension is finite-dimensional over the base field. -/
-noncomputable instance finiteGaloisFieldRangeOfEmbedding_finiteDimensional
-    (i : L →ₐ[K] SeparableClosure K) :
-    FiniteDimensional K (finiteGaloisFieldRangeOfEmbedding K L i) :=
-  (finiteGaloisFieldRangeEquivOfEmbedding K L i).toLinearEquiv.finiteDimensional
 
 /-- The closed fixing subgroup attached to an explicit realization of
 `L/K` in the separable closure. -/
@@ -172,29 +148,6 @@ theorem finiteGaloisExtensionSubgroupOfEmbedding_index_eq_finrank
 
 /-! ## The chosen realization -/
 
-/-- The embedded copy of `L` inside the fixed separable closure. -/
-def finiteGaloisFieldRange : IntermediateField K (SeparableClosure K) :=
-  finiteGaloisFieldRangeOfEmbedding K L
-    (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)
-
-/-- The chosen embedding identifies `L` with its actual field range. -/
-def finiteGaloisFieldRangeEquiv :
-    L ≃ₐ[K] finiteGaloisFieldRange K L :=
-  finiteGaloisFieldRangeEquivOfEmbedding K L
-    (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)
-
-/-- The canonical realization of a finite Galois extension is Galois over the base field. -/
-instance finiteGaloisFieldRange_isGalois :
-    IsGalois K (finiteGaloisFieldRange K L) :=
-  finiteGaloisFieldRangeOfEmbedding_isGalois K L
-    (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)
-
-/-- The canonical realization of a finite extension is finite-dimensional over the base field. -/
-instance finiteGaloisFieldRange_finiteDimensional :
-    FiniteDimensional K (finiteGaloisFieldRange K L) :=
-  finiteGaloisFieldRangeOfEmbedding_finiteDimensional K L
-    (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)
-
 /-- The concrete closed subgroup of the absolute separable Galois group
 attached to `L/K`. -/
 def finiteGaloisClosedFixingSubgroup :
@@ -209,15 +162,15 @@ instance finiteGaloisExtensionSubgroup_normal :
         (⊥ : IntermediateField K (SeparableClosure K)))
       (finiteGaloisClosedFixingSubgroup K L)
       (fixingSubgroupLeBase K (SeparableClosure K)
-        (finiteGaloisFieldRange K L))).Normal := by
+        (AlgebraicNumberTheory.finiteGaloisFieldRange K L))).Normal := by
   change
     (extensionSubgroup
       (closedFixingSubgroup K (SeparableClosure K)
         (⊥ : IntermediateField K (SeparableClosure K)))
       (closedFixingSubgroup K (SeparableClosure K)
-        (finiteGaloisFieldRange K L))
+        (AlgebraicNumberTheory.finiteGaloisFieldRange K L))
       (fixingSubgroupLeBase K (SeparableClosure K)
-        (finiteGaloisFieldRange K L))).Normal
+        (AlgebraicNumberTheory.finiteGaloisFieldRange K L))).Normal
   infer_instance
 
 /-- The actual coefficient group fixed by the concrete subgroup attached to
@@ -251,7 +204,7 @@ def finiteGaloisAbstractQuotientEquivGaloisGroup :
           (⊥ : IntermediateField K (SeparableClosure K)))
         (finiteGaloisClosedFixingSubgroup K L)
         (fixingSubgroupLeBase K (SeparableClosure K)
-          (finiteGaloisFieldRange K L))) ≃*
+          (AlgebraicNumberTheory.finiteGaloisFieldRange K L))) ≃*
       Gal(L / K) :=
   finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L
     (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)
@@ -263,7 +216,7 @@ theorem finiteGaloisExtensionSubgroup_index_eq_finrank :
         (⊥ : IntermediateField K (SeparableClosure K)))
       (finiteGaloisClosedFixingSubgroup K L)
       (fixingSubgroupLeBase K (SeparableClosure K)
-        (finiteGaloisFieldRange K L))).index =
+        (AlgebraicNumberTheory.finiteGaloisFieldRange K L))).index =
       Module.finrank K L :=
   finiteGaloisExtensionSubgroupOfEmbedding_index_eq_finrank K L
     (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)

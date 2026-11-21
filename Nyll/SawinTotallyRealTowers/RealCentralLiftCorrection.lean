@@ -21,6 +21,7 @@ public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRan
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.FinitePlaceUnramifiedH2LocalizationVanishing
 public import Nyll.ProCGroups.Topologies.QuotientMaps
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Removing unwanted inertia and real conjugation from cocycle lifts
@@ -34,6 +35,7 @@ inertia and the real value without changing the projected homomorphism.
 
 @[expose] public section
 
+open ProCGroups.ContinuousMonoidHom (quotientMk)
 open scoped NumberField Topology
 open NumberField IsDedekindDomain
 
@@ -44,8 +46,7 @@ namespace ClassFieldTower.Sawin
 open ClassFieldTower.Cohomology ClassFieldTower.ProP
 open ClassFieldTower.Martinet.Shafarevich ProCGroups
 
-local instance realCentralLiftCanonicalZModAddCommGroup : AddCommGroup (ZMod 2) :=
-  (ZMod.instField 2).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 /-- The actual unramified local quotient supplies an inertia-trivial solution
 of every cocycle embedding problem whose base map kills inertia. -/
@@ -71,13 +72,13 @@ theorem exists_inertia_trivial_local_cocycle_lift
         (finitePlaceAbsoluteDecompositionGroup F v ⧸
           finitePlaceAbsoluteInertiaSubgroup F v) 2)
       (finitePlaceUnramifiedQuotientH2_subsingleton F p v) _ _)
-  refine ⟨t.comp (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v)), ?_, ?_⟩
+  refine ⟨t.comp (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v)), ?_, ?_⟩
   · ext σ
     exact DFunLike.congr_fun ht
-      (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v) σ)
+      (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v) σ)
   · intro σ hσ
-    change t (quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v) σ) = 1
-    rw [show quotientProjection (finitePlaceAbsoluteInertiaSubgroup F v) σ = 1 from
+    change t (quotientMk (finitePlaceAbsoluteInertiaSubgroup F v) σ) = 1
+    rw [show quotientMk (finitePlaceAbsoluteInertiaSubgroup F v) σ = 1 from
       (QuotientGroup.eq_one_iff (N := finitePlaceAbsoluteInertiaSubgroup F v) σ).mpr hσ,
       map_one]
 

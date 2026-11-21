@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Topological.QuotientTransport
 
 /-!
@@ -33,9 +35,6 @@ namespace GlobalClassFields
 open Reciprocity
 
 -- Reuse the canonical quotient group already used by finite reciprocity.
-local instance closedFiniteIndexTopologicalClassGroupCommGroup
-    (F : Type u) [Field F] [NumberField F] : CommGroup (IdeleClassGroup F) :=
-  QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
 
 variable {K : Type u} [Field K] [NumberField K]
 

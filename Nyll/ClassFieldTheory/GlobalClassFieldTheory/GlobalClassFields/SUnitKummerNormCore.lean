@@ -234,11 +234,6 @@ theorem
         K n hnK hmu b
     let : NumberField M :=
       NumberField.of_module_finite K M
-    let : (RelativeIdeleGroup.principalSubgroup K M).Normal :=
-      ⟨fun x hx g => by
-        have hconj : g * x * g⁻¹ = x := by
-          rw [mul_comm g x, mul_assoc, mul_inv_cancel, mul_one]
-        rwa [hconj]⟩
     have hSplitS :
         ∀ w : HeightOneSpectrum (𝓞 K), w ∈ S' →
           _root_.FinitePlaceSplitsCompletely
@@ -291,13 +286,12 @@ theorem
         KummerTheory.chosenSimpleKummerExtension_chosenFinitePlaceIsUnramified_of_valuation_eq_one
           (K := K) n hnK hmu b w hbVal hnVal
     have hNormTop :
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range =
+        (_root_.ideleClassNorm K M).range =
           ⊤ := by
       apply top_unique
       intro c _
       obtain ⟨a, rfl⟩ :=
-        QuotientGroup.mk'_surjective
-          (IdeleGroup.principalSubgroup K) c
+        IdeleGroup.toStandardClass_surjective K c
       have ha :
           a ∈
             IdeleGroup.supportedAt
@@ -338,39 +332,25 @@ theorem
               (K := K)
               (S' : Set (HeightOneSpectrum (𝓞 K))) u).mp
                 hu w (by simpa using hwS)
-      have huNorm :
-          u ∈ (RelativeIdeleGroup.norm K M).range :=
-        (_root_.mem_relativeIdeleNorm_range_iff_localTensorNorms
-          (K := K) (L := M) u).2
-            ⟨hInfinite, hFinite⟩
+      have huNorm : u ∈ (IdeleGroup.norm K M).range := by
+        rw [IdeleGroup.norm_range_eq_relativeNorm_range K M]
+        exact (_root_.mem_relativeIdeleNorm_range_iff_localTensorNorms
+          (K := K) (L := M) u).2 ⟨hInfinite, hFinite⟩
       obtain ⟨z, hz⟩ := huNorm
-      refine
-        ⟨QuotientGroup.mk'
-            (RelativeIdeleGroup.principalSubgroup K M) z, ?_⟩
-      rw [RelativeIdeleGroup.Cohomology.ideleClassNorm_mk, hz]
-      change
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) u =
-          QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a
+      refine ⟨IdeleGroup.toStandardClass M z, ?_⟩
+      rw [_root_.ideleClassNorm_mk, hz]
       have hqOne :
-          QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup K) q = 1 :=
-        (QuotientGroup.eq_one_iff q).mpr hq
+          IdeleGroup.toStandardClass K q = 1 :=
+        (IdeleGroup.toStandardClass_eq_one_iff K q).mpr hq
       rw [← huq, map_mul, hqOne]
       exact
         (mul_one
-          (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) u :
+          (IdeleGroup.toStandardClass K u :
             IdeleClassGroup K)).symm
     have hLower :
         Module.finrank K M ≤
-          (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index :=
-      le_of_eq (by
-        have hrange : (_root_.ideleClassNorm K M).range =
-            (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range :=
-          ordinaryIdeleClassNorm_range_eq_relative
-        rw [← hrange]
-        exact (Reciprocity.ideleClassNorm_index_eq_finrank_abelian K M).symm)
+          (_root_.ideleClassNorm K M).range.index :=
+      le_of_eq (Reciprocity.ideleClassNorm_index_eq_finrank_abelian K M).symm
     have hDegreeLe :
         Module.finrank K M ≤ 1 := by
       simpa only [hNormTop, Subgroup.index_top] using hLower

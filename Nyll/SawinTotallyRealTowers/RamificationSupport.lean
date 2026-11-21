@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedTower
 public import Mathlib.NumberTheory.RamificationInertia.Unramified
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
@@ -21,6 +22,8 @@ extensions of even degree; real places are a separate condition.
 
 @[expose] public section
 
+open ClassFieldTheory
+
 open scoped NumberField
 open NumberField IsDedekindDomain
 
@@ -29,6 +32,13 @@ noncomputable section
 universe u v w
 
 namespace ClassFieldTower.Sawin
+
+/-- A finite intermediate extension inherits the original number-field structure. -/
+theorem finiteIntermediateFieldNumberField
+    {K : Type u} {Ω : Type v}
+    [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
+    (E : IntermediateField K Ω) [FiniteDimensional K E] : NumberField E :=
+  NumberField.of_module_finite K E
 
 /-- All finite places above the complement of `S` are unramified.
 Finiteness of `S` is unnecessary for the tower properties below. -/
@@ -60,6 +70,7 @@ theorem mono {S T : Set (HeightOneSpectrum (𝓞 K))}
 theorem empty_iff :
     IsUnramifiedAtFinitePlacesOutside K L ∅ ↔
       IsUnramifiedAtFinitePlaces K L := by
+  rw [IsUnramifiedAtFinitePlaces.iff_forall_above K L]
   constructor
   · intro h P
     exact h P (Set.notMem_empty (finitePlaceBelow (K := K) P))
@@ -73,7 +84,7 @@ theorem refl (K : Type u) [Field K] [NumberField K]
     (S : Set (HeightOneSpectrum (𝓞 K))) :
     IsUnramifiedAtFinitePlacesOutside K K S := by
   intro P _hP
-  exact IsUnramifiedAtFinitePlaces.refl K P
+  exact (IsUnramifiedAtFinitePlaces.refl K).atPrime P
 
 section Tower
 

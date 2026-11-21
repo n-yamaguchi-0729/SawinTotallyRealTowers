@@ -19,7 +19,6 @@ normalized degrees are positive natural numbers and add under products.
 
 namespace ClassFormation
 
-open CyclicCohomology
 
 
 
@@ -32,8 +31,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G]
 /-- Multiplication in this construction's Frobenius semigroup. -/
 def frobeniusMul (D : DegreeData G) (K : FiniteResidueAbstractField D)
     (L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (CyclicCohomology.extensionSubgroup (G := G)
-      K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ τ : D.FrobeniusElements K L hLK) :
     D.FrobeniusElements K L hLK := by
   let m := D.frobeniusExponent K L hLK σ
@@ -52,8 +50,7 @@ representatives.
 instance frobeniusElementsMul (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (CyclicCohomology.extensionSubgroup (G := G)
-      K.field L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal] :
     Mul (D.FrobeniusElements K L hLK) :=
   ⟨D.frobeniusMul K L hLK⟩
 
@@ -62,8 +59,7 @@ instance frobeniusElementsMul (D : DegreeData G)
 theorem frobeniusMul_coe (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (CyclicCohomology.extensionSubgroup (G := G)
-      K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ τ : D.FrobeniusElements K L hLK) :
     (σ * τ).1 = σ.1 * τ.1 :=
   rfl
@@ -72,8 +68,7 @@ theorem frobeniusMul_coe (D : DegreeData G)
 instance frobeniusElementsSemigroup (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (CyclicCohomology.extensionSubgroup (G := G)
-      K.field L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal] :
     Semigroup (D.FrobeniusElements K L hLK) where
   mul_assoc σ τ υ := by
     apply Subtype.ext
@@ -89,8 +84,7 @@ D.extensionNormalizedDegree K L hLK τ.1`.
 theorem extensionNormalizedDegree_frobenius_mul (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (CyclicCohomology.extensionSubgroup (G := G)
-      K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ τ : D.FrobeniusElements K L hLK) :
     D.extensionNormalizedDegree K L hLK (σ * τ).1 =
       D.extensionNormalizedDegree K L hLK σ.1 *

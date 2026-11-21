@@ -6,8 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
 public import Nyll.GaloisCohomology.ProP.MultiplicativeProductH2
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.UnramifiedFinitePlaceIntegralBlockH2
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Brauer.SupportedIdeleH2Localization
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Brauer.UnramifiedFinitePlaceIntegralBlockH2
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedInfinitePlaceBlockH2
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 
@@ -20,10 +23,8 @@ their products, and the actual equivariant S-place factor decomposition
 identifies the result with the relative idele subgroup integral at every
 finite place. No unproved Shapiro or restricted-product glue is assumed.
 
-The six component actions below have pairwise distinct coefficient types:
-three factor families and their products. The seventh action is the
-supported-idele subgroup action. Each canonical action is fixed once,
-with no alternative tower or repeated statement/proof setup.
+The supported subgroup and its factors retain the actions of the common
+S-place decomposition.
 -/
 
 @[expose] public section
@@ -50,26 +51,8 @@ local notation "Ain" => (fun v : {v : V // v ∈ S} ↦
 local notation "Aout" => (fun v : {v : V // v ∉ S} ↦
   relativeLocalTensorDecompositionIntegralUnitSubgroup (K := K) (L := L) (Subtype.val v))
 
-local instance supportedH2InfiniteAction (v : InfinitePlace K) :
-    MulDistribMulAction Gal(L / K) (A∞ v) :=
-  scalarTensorUnitsAction (K := K) (L := L) (A := v.Completion)
-
-local instance supportedH2InfiniteProductAction : MulDistribMulAction Gal(L / K) (∀ v, A∞ v) :=
-  piMulDistribMulAction Gal(L / K) A∞
-
-local instance supportedH2InsideAction (v : {v : V // v ∈ S}) :
-    MulDistribMulAction Gal(L / K) (Ain v) :=
-  scalarTensorUnitsAction (K := K) (L := L) (A := v.1.adicCompletion K)
-
-local instance supportedH2InsideProductAction : MulDistribMulAction Gal(L / K) (∀ v, Ain v) :=
-  piMulDistribMulAction Gal(L / K) Ain
-
-local instance supportedH2OutsideAction (v : {v : V // v ∉ S}) :
-    MulDistribMulAction Gal(L / K) (Aout v) :=
-  relativeLocalTensorDecompositionIntegralUnitSubgroupAction (K := K) (L := L) v.1
-
-local instance supportedH2OutsideProductAction : MulDistribMulAction Gal(L / K) (∀ v, Aout v) :=
-  piMulDistribMulAction Gal(L / K) Aout
+attribute [local instance] scalarTensorUnitsAction finitePlaceScalarTensorUnitsAction
+  relativeLocalTensorDecompositionIntegralUnitSubgroupAction piMulDistribMulAction
 
 omit [NumberField L] in
 /-- All actual S-place factors for empty finite support have zero H² in
@@ -95,10 +78,9 @@ theorem everywhereUnramifiedEmptySPlaceFactorsH2_subsingleton
   exact prodMultiplicativeH2_subsingleton (G := Gal(L / K))
     (∀ v, A∞ v) ((∀ v, Ain v) × (∀ v, Aout v))
 
-local instance supportedH2IdeleAction : MulDistribMulAction Gal(L / K)
-    (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S) :=
-  relativeIdeleLocalTensorDecompositionSupportedSubgroupAction (K := K) (L := L) S
+attribute [local instance] relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
 
+omit [NumberField L] in
 /-- The subgroup of actual relative ideles integral at every finite
 place has zero H² in an everywhere-unramified extension. -/
 theorem everywhereUnramifiedSupportedIdeleH2_subsingleton
@@ -107,24 +89,10 @@ theorem everywhereUnramifiedSupportedIdeleH2_subsingleton
     Subsingleton (groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
       (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S)) 2) := by
   let _ := everywhereUnramifiedEmptySPlaceFactorsH2_subsingleton K L hfin hinf
-  let e := relativeIdeleSupportedEquivSPlaceFactors (K := K) (L := L) S
-  let i : Rep.ofMulDistribMulAction Gal(L / K)
-        (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S) ≅
-      Rep.ofMulDistribMulAction Gal(L / K)
-        (RelativeIdeleSPlaceFactors (K := K) (L := L) S) :=
-    Rep.mkIso (Representation.Equiv.mk e.toAdditive.toIntLinearEquiv (by
-      intro g
-      apply LinearMap.ext
-      intro x
-      exact congrArg Additive.ofMul
-        (relativeIdeleSupportedComponents_smul (K := K) (L := L) S g x.toMul)))
-  let hi : groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
-        (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S)) 2 ≅
-      groupCohomology (Rep.ofMulDistribMulAction Gal(L / K)
-        (RelativeIdeleSPlaceFactors (K := K) (L := L) S)) 2 :=
-    (groupCohomology.functor ℤ Gal(L / K) 2).mapIso i
+  let hi := supportedSPlaceCohomologyIso K L S
   exact Function.Injective.subsingleton hi.toLinearEquiv.injective
 
+omit [NumberField L] in
 /-- A supported idele two-cocycle has an actual supported idele
 one-cochain primitive. -/
 theorem everywhereUnramifiedSupportedIdeleTwoCocycle_isCoboundary

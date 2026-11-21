@@ -6,9 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.AbsoluteNormCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
 public import Mathlib.Analysis.Normed.Group.Uniform
-public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 
@@ -25,7 +26,7 @@ reciprocity.
 
 @[expose] public section
 
-open scoped BigOperators NumberField NumberField.LiesOver
+open scoped BigOperators NumberField
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -46,21 +47,9 @@ private theorem infinitePlaceCompletionMap_isometry
     (W : InfinitePlace L)
     [W.1.LiesOver v₀.1] :
     Isometry
-      (NumberField.LiesOver.completionMap
-        (v := v₀) (w := W)) := by
-  refine AddMonoidHomClass.isometry_of_norm
-    (NumberField.LiesOver.completionMap v₀ W) ?_
-  intro x
-  refine InfinitePlace.Completion.induction_on v₀ x ?_ ?_
-  · exact isClosed_eq
-      (continuous_norm.comp (NumberField.LiesOver.continuous_completionMap v₀ W))
-      continuous_norm
-  · intro y
-    rw [NumberField.LiesOver.completionMap_coe]
-    simpa only [InfinitePlace.Completion.norm_coe, WithAbs.norm_eq_apply_ofAbs,
-      WithAbs.equiv_apply, InfinitePlace.coe_apply] using
-      (InfinitePlace.LiesOver.isometry_algebraMap W v₀).norm_map_of_map_zero
-        (map_zero (algebraMap (WithAbs v₀.1) (WithAbs W.1))) y
+      (AbsoluteValue.Completion.map
+        v₀.1 W.1) :=
+  AbsoluteValue.Completion.isometry_map v₀.1 W.1
 
 omit [NumberField L] in
 /-- Mapping a unit along an infinite-place completion map preserves its
@@ -72,21 +61,21 @@ private theorem nnnormUnitHom_infinitePlaceCompletionMap
     (x : v₀.Completionˣ) :
     nnnormUnitHom W.Completion
         (Units.map
-          (NumberField.LiesOver.completionMap
-            (v := v₀) (w := W)) x) =
+          (AbsoluteValue.Completion.map
+            v₀.1 W.1) x) =
       nnnormUnitHom v₀.Completion x := by
   apply Units.ext
   change
-    ‖NumberField.LiesOver.completionMap
-        (v := v₀) (w := W) (x : v₀.Completion)‖₊ =
+    ‖AbsoluteValue.Completion.map
+        v₀.1 W.1 (x : v₀.Completion)‖₊ =
       ‖(x : v₀.Completion)‖₊
   apply NNReal.eq
   exact
     (infinitePlaceCompletionMap_isometry
       (K := K) (L := L) v₀ W).norm_map_of_map_zero
       (map_zero
-        (NumberField.LiesOver.completionMap
-          (v := v₀) (w := W)))
+        (AbsoluteValue.Completion.map
+          v₀.1 W.1))
       (x : v₀.Completion)
 
 /-- The fiber of restriction of infinite places is the set of places
@@ -224,9 +213,9 @@ private theorem infinitePlaceFiber_mult_sum
 the extension. -/
 theorem archimedeanNorm_extension
     (a : IdeleGroup K) :
-    InfiniteIdeleGroup.archimedeanNorm
-        (extension K L a).1 =
-      InfiniteIdeleGroup.archimedeanNorm a.1 ^
+    NumberField.InfiniteAdeleRing.absoluteNorm
+        (IdeleGroup.infinitePart (extension K L a)) =
+      NumberField.InfiniteAdeleRing.absoluteNorm (IdeleGroup.infinitePart a) ^
         Module.finrank K L := by
   classical
   have hlocal (W : InfinitePlace L) :
@@ -243,8 +232,8 @@ theorem archimedeanNorm_extension
       nnnormUnitHom_infinitePlaceCompletionMap
         (K := K) (L := L) v₀ W
         (infiniteComponent v₀ a)
-  rw [InfiniteIdeleGroup.archimedeanNorm_apply,
-    InfiniteIdeleGroup.archimedeanNorm_apply]
+  rw [NumberField.InfiniteAdeleRing.absoluteNorm_apply,
+    NumberField.InfiniteAdeleRing.absoluteNorm_apply]
   change
     (∏ W : InfinitePlace L,
         nnnormUnitHom W.Completion
@@ -348,16 +337,16 @@ theorem absoluteNorm_extension
     finiteAbsoluteNorm_extension,
     archimedeanNorm_extension]
   calc
-    FiniteIdeleGroup.absoluteNorm a.2 ^ Module.finrank K L *
-          (InfiniteIdeleGroup.archimedeanNorm a.1 ^
+    FiniteIdeleGroup.absoluteNorm (IdeleGroup.finiteCoordinates a) ^ Module.finrank K L *
+          (NumberField.InfiniteAdeleRing.absoluteNorm (IdeleGroup.infinitePart a) ^
             Module.finrank K L)⁻¹ =
-        FiniteIdeleGroup.absoluteNorm a.2 ^ Module.finrank K L *
-          (InfiniteIdeleGroup.archimedeanNorm a.1)⁻¹ ^
+        FiniteIdeleGroup.absoluteNorm (IdeleGroup.finiteCoordinates a) ^ Module.finrank K L *
+          (NumberField.InfiniteAdeleRing.absoluteNorm (IdeleGroup.infinitePart a))⁻¹ ^
             Module.finrank K L := by
       rw [inv_pow]
     _ =
-        (FiniteIdeleGroup.absoluteNorm a.2 *
-          (InfiniteIdeleGroup.archimedeanNorm a.1)⁻¹) ^
+        (FiniteIdeleGroup.absoluteNorm (IdeleGroup.finiteCoordinates a) *
+          (NumberField.InfiniteAdeleRing.absoluteNorm (IdeleGroup.infinitePart a))⁻¹) ^
             Module.finrank K L := by
       rw [mul_pow]
 
@@ -366,7 +355,7 @@ extension has absolute norm equal to the extension degree power of the
 original absolute norm. -/
 theorem absoluteNorm_relativeIdeleBaseChange_inclusion_of_finite_eq_one
     (a : IdeleGroup ℚ)
-    (ha : a.2 = 1) :
+    (ha : (IdeleGroup.finiteCoordinates a) = 1) :
     absoluteNorm
         (_root_.relativeIdeleBaseChangeMulEquiv
           (K := ℚ) (L := L)
@@ -375,7 +364,7 @@ theorem absoluteNorm_relativeIdeleBaseChange_inclusion_of_finite_eq_one
   change
     absoluteNorm (extension ℚ L a) =
       absoluteNorm a ^ Module.finrank ℚ L
-  have hfinite : (extension ℚ L a).2 = 1 := by
+  have hfinite : (IdeleGroup.finiteCoordinates (extension ℚ L a)) = 1 := by
     apply RestrictedProduct.ext
     intro W
     change finiteComponent W (extension ℚ L a) = 1
@@ -385,7 +374,7 @@ theorem absoluteNorm_relativeIdeleBaseChange_inclusion_of_finite_eq_one
           (finitePlaceAdicCompletionMap ℚ L
             (_root_.finitePlaceBelow (K := ℚ) W)
             ⟨W, rfl⟩).toMonoidHom
-          (a.2 (_root_.finitePlaceBelow (K := ℚ) W)) =
+          ((IdeleGroup.finiteCoordinates a) (_root_.finitePlaceBelow (K := ℚ) W)) =
         1
     rw [ha]
     exact map_one _
@@ -393,7 +382,7 @@ theorem absoluteNorm_relativeIdeleBaseChange_inclusion_of_finite_eq_one
     map_one, one_mul,
     archimedeanNorm_extension (K := ℚ) (L := L)]
   simpa only [map_one, one_mul] using
-    (inv_pow (InfiniteIdeleGroup.archimedeanNorm a.1)
+    (inv_pow (NumberField.InfiniteAdeleRing.absoluteNorm (IdeleGroup.infinitePart a))
       (Module.finrank ℚ L)).symm
 
 

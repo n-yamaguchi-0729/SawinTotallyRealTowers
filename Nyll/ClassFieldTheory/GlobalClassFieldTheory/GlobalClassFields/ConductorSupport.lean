@@ -97,7 +97,7 @@ theorem localHigherUnitClassSubgroup_zero_le_ideleClassNorm_range_of_chosenUnram
   apply
     _root_.adicCompletionIntegerUnits_le_chosenFinitePlaceLocalNormSubgroup
       (K := K) (L := L) v hunram
-  rw [← RayClass.localHigherUnitGroup_zero]
+  rw [← ClassFieldTheory.rayLocalHigherUnitGroup_zero]
   exact hx
 
 /-- Algebraic unramifiedness at a finite prime forces the zeroth local

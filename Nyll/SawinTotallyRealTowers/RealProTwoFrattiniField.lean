@@ -38,7 +38,6 @@ theorem maximalRealProTwo_frattini_fixedField :
   let M : IntermediateField ℚ (AlgebraicClosure ℚ) :=
     maximalRealProPOutside 2 sawinRationalPrimeSupport
   let : IsGalois ℚ M := maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
-  let : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   let I : Type := {U : OpenNormalSubgroup (M ≃ₐ[ℚ] M) //
     (U : Subgroup (M ≃ₐ[ℚ] M)).index = 2}
   have hFrattini : ClassFieldTower.ProP.profiniteFrattini (M ≃ₐ[ℚ] M) =

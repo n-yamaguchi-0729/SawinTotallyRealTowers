@@ -49,20 +49,6 @@ def permutationMulAction
     rw [map_mul]
     rfl
 
-/-- Coordinate permutation over the integers. -/
-def intCoordinatePermutation (σ : Equiv.Perm ι) :
-    (ι → ℤ) ≃ₗ[ℤ] (ι → ℤ) where
-  toFun x i := x (σ.symm i)
-  invFun x i := x (σ i)
-  left_inv x := by
-    funext i
-    exact congrArg x (σ.symm_apply_apply i)
-  right_inv x := by
-    funext i
-    exact congrArg x (σ.apply_symm_apply i)
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
 section IntegralPermutationBasis
 
 variable [Fintype G] [Group G] [Fintype ι] [DecidableEq ι]
@@ -79,13 +65,13 @@ theorem basisEquivFun_symm_intCoordinatePermutation [Finite ι]
       α g (b i) = b (ρ g i))
     (g : G) (x : ι → ℤ) :
     b.equivFun.symm
-        (intCoordinatePermutation (ρ g) x) =
+        (LinearEquiv.piCongrLeft' ℤ (fun _ : ι => ℤ) (ρ g) x) =
       α g (b.equivFun.symm x) := by
   classical
   let : Fintype ι := Fintype.ofFinite ι
   have hmaps :
       b.equivFun.symm.toLinearMap.comp
-          (intCoordinatePermutation (ρ g)).toLinearMap =
+          (LinearEquiv.piCongrLeft' ℤ (fun _ : ι => ℤ) (ρ g)).toLinearMap =
         (α g).toLinearMap.comp
           b.equivFun.symm.toLinearMap := by
     apply (Pi.basisFun ℤ ι).ext
@@ -96,20 +82,11 @@ theorem basisEquivFun_symm_intCoordinatePermutation [Finite ι]
       exact _root_.Basis.equivFun_symm_single b j
     calc
       b.equivFun.symm
-          (intCoordinatePermutation (ρ g)
+          (LinearEquiv.piCongrLeft' ℤ (fun _ : ι => ℤ) (ρ g)
             (Pi.single i 1)) =
           b.equivFun.symm
-            (Pi.single (ρ g i) 1) := by
-              congr 1
-              ext j
-              by_cases h : j = ρ g i
-              · subst j
-                simp [intCoordinatePermutation]
-              · have h' : (ρ g).symm j ≠ i := by
-                  intro hij
-                  apply h
-                  simpa using congrArg (ρ g) hij
-                simp [intCoordinatePermutation, h, h']
+            (Pi.single (ρ g i) 1) :=
+              congrArg b.equivFun.symm (coordinatePermutation_single ℤ (ρ g) i)
       _ = b (ρ g i) := hsingle (ρ g i)
       _ = α g (b i) := (hb g i).symm
       _ = α g
@@ -549,7 +526,7 @@ theorem permutationSublatticeBasisMulEquivFunctions_equivariant
     rfl
   rw [map_inv, hinv]
   have hcoord' :
-      (intCoordinatePermutation (ρ g)
+      (LinearEquiv.piCongrLeft' ℤ (fun _ : ι => ℤ) (ρ g)
         (b.equivFun (Multiplicative.toAdd x))) i =
         b.equivFun (g • Multiplicative.toAdd x) i := by
     simpa only [LinearEquiv.apply_symm_apply,

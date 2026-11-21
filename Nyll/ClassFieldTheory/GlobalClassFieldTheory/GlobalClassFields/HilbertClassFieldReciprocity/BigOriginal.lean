@@ -36,11 +36,6 @@ open Reciprocity
 
 variable {K : Type u} [Field K] [NumberField K]
 
-local instance
-    bigHilbertClassFieldReciprocityOverOriginalIsMulCommutative
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
 /-- Over the original number field scalar structure, the actual norm
 range of the selected big Hilbert class field is exactly the intrinsic
@@ -136,13 +131,12 @@ theorem bigHilbertClassFieldGaloisEquivNarrowClassGroupOverOriginal_idele
         (K := K)
         (globalNormResidueMonoidHom K
           (bigHilbertClassField K)
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a)) =
+          (IdeleGroup.toStandardClass K a)) =
       QuotientGroup.mk'
         (RayClass.narrowDenominator (K := K)) a := by
   exact
     ((bigHilbertClassFieldReciprocityOverOriginalData (K := K)).2
-      (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a)).trans
+      (IdeleGroup.toStandardClass K a)).trans
       (bigHilbertClassFieldQuotientEquivNarrowClassGroup_mk
         (K := K) a)
 

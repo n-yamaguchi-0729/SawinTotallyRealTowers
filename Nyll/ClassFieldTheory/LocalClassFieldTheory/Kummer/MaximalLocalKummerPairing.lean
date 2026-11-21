@@ -55,7 +55,7 @@ noncomputable def maximalLocalKummerNormResidueAutomorphism
   letI : IsAbelianGalois K E :=
     kummerRadicalExtension_isAbelianGalois
       (K := K) (Omega := SeparableClosure K) n hmu Delta.1
-  exact Universe.abelianLocalArtinMonoidHom K E
+  exact abelianLocalArtinMonoidHom K E
 
 /-- Evaluate the maximal Kummer character at a local Artin automorphism. -/
 noncomputable def maximalLocalKummerPairingSource

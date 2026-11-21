@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
 public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
 public import Mathlib.FieldTheory.AbsoluteGaloisGroup
@@ -112,8 +113,7 @@ def absoluteRealProPOutsideQuotientEquiv (p : ℕ)
   let : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ
   let : IsGalois ℚ (maximalRealProPOutside p T) := maximalRealProPOutside_isGalois p T
   let : CompactSpace (Field.absoluteGaloisGroup ℚ) :=
-    inferInstanceAs
-      (CompactSpace (AlgebraicClosure ℚ ≃ₐ[ℚ] AlgebraicClosure ℚ))
+    Field.absoluteGaloisGroup.compactSpace ℚ
   let f := absoluteToMaximalRealProPOutside p T
   let e := QuotientGroup.quotientKerEquivOfSurjective f.toMonoidHom
     (absoluteToMaximalRealProPOutside_surjective p T)

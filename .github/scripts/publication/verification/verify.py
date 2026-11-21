@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Mandatory serial build → inventory → export → nanoda → official kernel replay.
 
-No skip-stage or relaxed-axiom option is provided.
+The default verifies every stage. CI may run two mandatory phases in separate jobs;
+a phase receipt never claims full verification. No relaxed-axiom option is provided.
 """
 import argparse
 from collections import Counter
@@ -19,9 +20,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "ci_templates"))
 import generate_manifest
 from scope import select_scope
 
-LEAN = "leanprover/lean4:v4.35.0"
-LEAN_COMMIT = "eb6cafb7290e8bd5f2937522d8d804f58f02bafc"
-EXPORT_COMMIT = "5a9a355dc6c5fd82b69058d433e2ae2e8dfbf8fe"
+LEAN = "leanprover/lean4:v4.36.0"
+LEAN_COMMIT = "611c117bfaf7b7ae1cfcf246ce6fba31e8f509e9"
+EXPORT_COMMIT = "df81913eee5519d5a88ae5b0fd701b5298cc29ab"
 NANODA_COMMIT = "4c544ed4099c8227f07d5de77ad1e69fb0740a27"
 ALLOWED = {"propext", "Classical.choice", "Quot.sound"}
 ALLOWED_PARTS = {(("str", "propext"),), (("str", "Classical"), ("str", "choice")),
@@ -30,6 +31,11 @@ WRAPPERS = ("Inventory.lean", "ExportSelected.lean", "ReplayKernel.lean")
 INVENTORY_FILES = ("summary.json", "declarations.jsonl",
                    "exceptional-declarations.jsonl", "modules.json")
 HERE = Path(__file__).resolve().parent
+PHASE_STAGES = {
+    "full": ["build", "inventory", "selection", "export", "coverage", "nanoda", "replay"],
+    "proof": ["build", "inventory", "selection", "export", "coverage", "nanoda"],
+    "replay": ["build", "replay"],
+}
 
 
 class VerificationError(RuntimeError):
@@ -196,6 +202,8 @@ def export_coverage(exported, inventory, selectors):
 class Pipeline:
     def __init__(self, args):
         self.args = args
+        self.phase = getattr(args, "phase", "full")
+        require(self.phase in PHASE_STAGES, "Invalid verification phase")
         self.root = args.package_root.resolve()
         self.manifest_path = args.manifest.resolve()
         self.config_path = args.config.resolve()
@@ -246,7 +254,7 @@ class Pipeline:
         # Bind all built exporter olean parts, including server/private companions.
         self.paths += sorted(core_dir.rglob("*.olean*"))
         version = self.capture(["lake", "env", "lean", "--version"])
-        require("version 4.35.0," in version and LEAN_COMMIT in version, "Active Lean version mismatch")
+        require("version 4.36.0," in version and LEAN_COMMIT in version, "Active Lean version mismatch")
         prefix = Path(self.capture(["lake", "env", "lean", "--print-prefix"])).resolve()
         self.lean = prefix / "bin/lean"
         require(self.lean.is_file(), "Missing active Lean executable")
@@ -262,7 +270,7 @@ class Pipeline:
         self.baseline = {str(p): digest(p) for p in self.paths}
         self.provenance.update(leanVersion=version, leanExecutable=str(self.lean),
                                sourceCommit=self.capture(["git", "rev-parse", "HEAD"]),
-                               shard=self.args.shard, fullModuleManifest=self.full_manifest,
+                               shard=self.args.shard, phase=self.phase, fullModuleManifest=self.full_manifest,
                                fileSha256=self.baseline, moduleManifest=self.manifest)
         write_json(self.out / "inputs.json", self.provenance)
         self.sealed[str(self.out / "inputs.json")] = digest(self.out / "inputs.json")
@@ -402,7 +410,7 @@ class Pipeline:
         require(self.coverage["allSelectedPresent"], "Export omitted selected declarations")
         require(not self.coverage["unexpectedAxiomNameParts"], "Export has unpermitted structural axiom")
         lean = self.coverage["metadata"]["lean"]
-        require(lean["version"] == "4.35.0" and lean["githash"] == LEAN_COMMIT, "Exporter version mismatch")
+        require(lean["version"] == "4.36.0" and lean["githash"] == LEAN_COMMIT, "Exporter version mismatch")
         return {"completeSafeUnion": True, "selectedRootCount": len(self.selectors)}
 
     def check_nanoda(self):
@@ -422,7 +430,7 @@ class Pipeline:
         imports = [r for r in records if r.get("phase") == "inventory"]
         require(len(completed) == len(imports) == 1 and completed[0].get("result") == "PASS",
                 "Missing official kernel replay completion")
-        require(completed[0].get("kernel") == "official Lean 4.35.0", "Replay kernel identity mismatch")
+        require(completed[0].get("kernel") == "official Lean 4.36.0", "Replay kernel identity mismatch")
         require(imports[0]["roots"] == self.manifest["roots"], "Replay root mismatch")
         require(set(self.manifest["moduleRows"]) <= set(imports[0]["loaded_modules"]),
                 "Replay omitted physical manifest modules")
@@ -435,44 +443,50 @@ class Pipeline:
         require(not self.out.exists(), "Output directory already exists; choose a fresh run directory")
         self.out.mkdir(parents=True)
         start = time.monotonic()
-        final = {"passed": False, "status": "started", "startedUtc": utc(), "exitCode": None}
+        final = {"passed": False, "fullPassed": False, "phasePassed": False,
+                 "phase": self.phase, "requiredStages": PHASE_STAGES[self.phase],
+                 "status": "started", "startedUtc": utc(), "exitCode": None}
         write_json(self.out / "final.json", final)
         code = 1
         try:
             self.inputs()
             roots = self.manifest["roots"]
             self.stage("build", ["lake", "--no-ansi", "--rehash", "--wfail", "build", *roots])
-            self.stage("inventory", ["lake", "env", str(self.lean), "-j1", "-DautoImplicit=false", "--run",
-                       str(HERE / "Inventory.lean"), str(self.scope_path), str(self.out)],
-                       validate=self.check_inventory,
-                       artifacts=[self.out / n for n in INVENTORY_FILES])
-            self.stage("selection", validate=self.select_union,
-                       artifacts=[self.out / "safe-union.txt"])
-            search = self.capture(["lake", "env", "printenv", "LEAN_PATH"])
-            self.exported = self.out / "selected.ndjson"
-            export_env = {"LEAN_PATH": search + os.pathsep + str(self.export_core_dir)}
-            self.stage("export", [str(self.lean), "-j1", "-DautoImplicit=false", "--run", str(HERE / "ExportSelected.lean"),
-                       str(self.selector_path), *roots], output=self.exported, environment=export_env)
-            self.stage("coverage", validate=self.check_export, artifacts=[self.out / "coverage-report.json"])
-            config = {"export_file_path": str(self.exported), "use_stdin": False,
-                      "permitted_axioms": sorted(ALLOWED), "unpermitted_axiom_hard_error": True,
-                      "unsafe_permit_all_axioms": False, "num_threads": 1,
-                      "nat_extension": True, "string_extension": True, "pp_declars": [],
-                      "unknown_pp_declar_hard_error": True, "print_success_message": True,
-                      "print_axioms": True, "pp_to_stdout": True}
-            config_path = self.out / "nanoda-config.json"
-            write_json(config_path, config)
-            self.sealed[str(config_path)] = digest(config_path)
-            self.stage("nanoda", [str(self.nanoda), str(config_path)], validate=self.check_nanoda)
-            self.stage("replay", ["lake", "env", str(self.lean), "-j1", "-DautoImplicit=false", "--run",
-                       str(HERE / "ReplayKernel.lean"), *roots], validate=self.check_replay)
+            if self.phase in ("full", "proof"):
+                self.stage("inventory", ["lake", "env", str(self.lean), "-j1", "-DautoImplicit=false", "--run",
+                           str(HERE / "Inventory.lean"), str(self.scope_path), str(self.out)],
+                           validate=self.check_inventory,
+                           artifacts=[self.out / n for n in INVENTORY_FILES])
+                self.stage("selection", validate=self.select_union,
+                           artifacts=[self.out / "safe-union.txt"])
+                search = self.capture(["lake", "env", "printenv", "LEAN_PATH"])
+                self.exported = self.out / "selected.ndjson"
+                export_env = {"LEAN_PATH": search + os.pathsep + str(self.export_core_dir)}
+                self.stage("export", [str(self.lean), "-j1", "-DautoImplicit=false", "--run", str(HERE / "ExportSelected.lean"),
+                           str(self.selector_path), *roots], output=self.exported, environment=export_env)
+                self.stage("coverage", validate=self.check_export, artifacts=[self.out / "coverage-report.json"])
+                config = {"export_file_path": str(self.exported), "use_stdin": False,
+                          "permitted_axioms": sorted(ALLOWED), "unpermitted_axiom_hard_error": True,
+                          "unsafe_permit_all_axioms": False, "num_threads": 1,
+                          "nat_extension": True, "string_extension": True, "pp_declars": [],
+                          "unknown_pp_declar_hard_error": True, "print_success_message": True,
+                          "print_axioms": True, "pp_to_stdout": True}
+                config_path = self.out / "nanoda-config.json"
+                write_json(config_path, config)
+                self.sealed[str(config_path)] = digest(config_path)
+                self.stage("nanoda", [str(self.nanoda), str(config_path)], validate=self.check_nanoda)
+            if self.phase in ("full", "replay"):
+                self.stage("replay", ["lake", "env", str(self.lean), "-j1", "-DautoImplicit=false", "--run",
+                           str(HERE / "ReplayKernel.lean"), *roots], validate=self.check_replay)
             self.guard()
             self.check_physical_snapshot()
             require([r["stage"] for r in self.stages] ==
-                    ["build", "inventory", "selection", "export", "coverage", "nanoda", "replay"]
+                    PHASE_STAGES[self.phase]
                     and all(r["passed"] for r in self.stages), "Missing mandatory successful stage")
-            final.update(passed=True, status="finished", inputsSha256=digest(self.out / "inputs.json"),
-                         safeSelectedDeclarations=len(self.selectors))
+            final.update(passed=self.phase == "full", fullPassed=self.phase == "full",
+                         phasePassed=True, status="finished" if self.phase == "full" else "phase_finished",
+                         inputsSha256=digest(self.out / "inputs.json"),
+                         safeSelectedDeclarations=len(self.selectors) if self.phase != "replay" else None)
             code = 0
         except BaseException as error:
             final.update(status="failed", error=str(error))
@@ -490,6 +504,8 @@ def main(argv=None):
     for flag in ("package-root", "manifest", "config", "output", "exporter-checkout", "nanoda-checkout", "nanoda-binary"):
         parser.add_argument("--" + flag, type=Path, required=True)
     parser.add_argument("--shard", default="all")
+    parser.add_argument("--phase", choices=tuple(PHASE_STAGES), default="full",
+                        help="CI runs both proof and replay; only full can issue a full PASS receipt")
     args = parser.parse_args(argv)
     try:
         return Pipeline(args).execute()

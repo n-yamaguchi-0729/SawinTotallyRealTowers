@@ -100,7 +100,7 @@ theorem padicCompletedUnramifiedFrobenius_fixed_iff
     let c : W := a * (u⁻¹ : Wˣ)
     have hpW : (p : W) ≠ 0 := by
       exact
-        WittVector.p_nonzero p
+        WittVector.p_ne_zero p
           (AlgebraicClosure (ZMod p))
     have hpE :
         algebraMap W E ((p : W) ^ m) ≠ 0 := by

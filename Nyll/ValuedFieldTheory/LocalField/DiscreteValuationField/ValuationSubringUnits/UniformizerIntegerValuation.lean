@@ -137,12 +137,15 @@ noncomputable def multiplicativeIntegerValuationOfUniformizer
     (F : CompleteDVF.{u, v} K)
     {π : F.valuationSubring} (hπ : F.valuation.IsUniformizer (π : K)) :
     MultiplicativeIntegerValuation Kˣ where
-  val x := (uniformizerValueExponent F) hπ x
-  map_one := by
+  toFun x := Multiplicative.ofAdd ((uniformizerValueExponent F) hπ x)
+  map_one' := by
+    apply Multiplicative.ext
+    change uniformizerValueExponent F hπ (1 : Kˣ) = 0
     apply ((uniformizerValueUnit_zpow_inj F) hπ).1
     rw [(uniformizerValueUnit_zpow_uniformizerValueExponent_eq_fieldUnitValueUnit F),
       fieldUnitValueUnit_one, zpow_zero]
-  map_mul x y := by
+  map_mul' x y := by
+    apply Multiplicative.ext
     apply ((uniformizerValueUnit_zpow_inj F) hπ).1
     calc
       (uniformizerValueUnit F) hπ ^

@@ -100,6 +100,36 @@ noncomputable instance rationalCyclotomicLevel_numberField
   IsCyclotomicExtension.numberField
     {(n : ℕ)} ℚ (rationalCyclotomicLevel n)
 
+/-- A finite cyclotomic level is finite-dimensional over the rationals. -/
+theorem rationalCyclotomicLevelFiniteDimensional (n : ℕ+) :
+    FiniteDimensional ℚ (rationalCyclotomicLevel n) :=
+  IsCyclotomicExtension.finiteDimensional {(n : ℕ)} ℚ (rationalCyclotomicLevel n)
+
+/-- The actual finite cyclotomic level is abelian Galois. -/
+theorem rationalCyclotomicLevelIsAbelianGalois (n : ℕ+) :
+    IsAbelianGalois ℚ (rationalCyclotomicLevel n) :=
+  IsCyclotomicExtension.isAbelianGalois {(n : ℕ)} ℚ (rationalCyclotomicLevel n)
+
+/-- The number-field structure with an explicit prime-power index for local inference. -/
+theorem rationalCyclotomicPrimePowerNumberField (p : Nat.Primes) (k : ℕ) :
+    NumberField (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
+  rationalCyclotomicLevel_numberField ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+
+/-- Finite-dimensionality with an explicit prime-power index for local inference. -/
+theorem rationalCyclotomicPrimePowerFiniteDimensional (p : Nat.Primes) (k : ℕ) :
+    FiniteDimensional ℚ (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
+  rationalCyclotomicLevelFiniteDimensional ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+
+/-- The Galois property with an explicit prime-power index for local inference. -/
+theorem rationalCyclotomicPrimePowerIsGalois (p : Nat.Primes) (k : ℕ) :
+    IsGalois ℚ (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
+  rationalCyclotomicLevel_isGalois ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+
+/-- The abelian Galois property with an explicit prime-power index for local inference. -/
+theorem rationalCyclotomicPrimePowerIsAbelianGalois (p : Nat.Primes) (k : ℕ) :
+    IsAbelianGalois ℚ (rationalCyclotomicLevel ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
+  rationalCyclotomicLevelIsAbelianGalois ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+
 /-- Every unit modulo `m` is realized on all `m`-th roots of unity
 by an automorphism of the separable closure of `ℚ`. -/
 theorem exists_separableClosureRatAutomorphism_pow_of_unit

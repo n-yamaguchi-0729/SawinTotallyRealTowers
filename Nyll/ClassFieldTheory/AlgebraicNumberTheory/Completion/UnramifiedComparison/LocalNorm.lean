@@ -6,9 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ChosenLocalization
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.Norm
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Unramified.PrincipalUnits.NormSide
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.UnramifiedPrincipalUnits.NormSide
 
 /-!
 # Local norms at an unramified chosen finite place

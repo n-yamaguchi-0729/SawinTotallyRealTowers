@@ -51,19 +51,6 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
-/-- The natural Galois action on relative ideles, upgraded from the
-existing multiplicative action to an action by group automorphisms. -/
-@[reducible]
-noncomputable def relativeIdeleMulDistribMulAction :
-    MulDistribMulAction (L ≃ₐ[K] L)
-      (RelativeIdeleGroup K L) where
-  __ := RelativeIdeleGroup.relativeIdeleMulAction K L
-  smul_one σ :=
-    map_one (RelativeIdeleGroup.conjugationIdele K L σ)
-  smul_mul σ a b :=
-    map_mul
-      (RelativeIdeleGroup.conjugationIdele K L σ) a b
-
 omit [NumberField L] [FiniteDimensional K L] [IsGalois K L] in
 theorem principalRelativeIdele_smul_mem
     (σ : L ≃ₐ[K] L)
@@ -85,7 +72,7 @@ upgraded to an action by group automorphisms. -/
 noncomputable def ideleClassMulDistribMulAction :
     MulDistribMulAction (L ≃ₐ[K] L)
       (RelativeIdeleGroup.ClassGroup K L) := by
-  letI := relativeIdeleMulDistribMulAction K L
+  letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   exact
     stableQuotientMulDistribMulAction
       (RelativeIdeleGroup.principalSubgroup K L)
@@ -97,51 +84,18 @@ relative ideles. -/
 noncomputable def principalIdeleMulDistribMulAction :
     MulDistribMulAction (L ≃ₐ[K] L)
       (RelativeIdeleGroup.principalSubgroup K L) := by
-  letI := relativeIdeleMulDistribMulAction K L
+  letI := RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   exact
     stableSubgroupMulDistribMulAction
       (RelativeIdeleGroup.principalSubgroup K L)
       (principalRelativeIdele_smul_mem K L)
-
-/-- The norm on relative ideles, descended through principal ideles to
-the actual idele class groups. -/
-noncomputable def ideleClassNorm :
-    RelativeIdeleGroup.ClassGroup K L →*
-      IdeleClassGroup K :=
-  QuotientGroup.map
-    (RelativeIdeleGroup.principalSubgroup K L)
-    (IdeleGroup.principalSubgroup K)
-    (RelativeIdeleGroup.norm K L)
-    (by
-      rintro _ ⟨x, rfl⟩
-      refine
-        ⟨Units.map (Algebra.norm K) x, ?_⟩
-      exact
-        (RelativeIdeleGroup.norm_principalIdele
-          K L x).symm)
-
-omit [NumberField L] [IsGalois K L] in
-@[simp]
-theorem ideleClassNorm_mk
-    (a : RelativeIdeleGroup K L) :
-    ideleClassNorm K L
-        (QuotientGroup.mk'
-          (RelativeIdeleGroup.principalSubgroup K L) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (RelativeIdeleGroup.norm K L a) :=
-  rfl
-
-/-- The concrete norm quotient `C_K / N_{L/K} C_L`. -/
-abbrev IdeleClassNormQuotient :=
-  IdeleClassGroup K ⧸ (ideleClassNorm K L).range
 
 section Actions
 
 local instance :
     MulDistribMulAction (L ≃ₐ[K] L)
       (RelativeIdeleGroup K L) :=
-  relativeIdeleMulDistribMulAction K L
+  RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
 
 local instance :
     MulDistribMulAction (L ≃ₐ[K] L)
@@ -236,11 +190,13 @@ the actual relative idele class group. -/
 theorem classInclusion_ideleClassNorm_eq_tateNorm
     (c : RelativeIdeleGroup.ClassGroup K L) :
     RelativeIdeleGroup.classInclusion K L
-        (ideleClassNorm K L c) =
+        (classNorm K L c) =
       tateNorm (L ≃ₐ[K] L)
         (RelativeIdeleGroup.ClassGroup K L) c := by
   refine QuotientGroup.induction_on c ?_
   intro a
+  rw [← QuotientGroup.mk'_apply (RelativeIdeleGroup.principalSubgroup K L) a,
+    classNorm_mk, RelativeIdeleGroup.classInclusion_mk]
   change
     QuotientGroup.mk'
         (RelativeIdeleGroup.principalSubgroup K L)
@@ -338,7 +294,7 @@ omit [NumberField L] in
 /-- Under Galois descent, the image of the class norm is exactly the
 Tate-norm subgroup of the fixed idele classes. -/
 theorem ideleClassNorm_range_map_equivFixed :
-    (ideleClassNorm K L).range.map
+    (classNorm K L).range.map
         (baseIdeleClassEquivFixed K L).toMonoidHom =
       (tateNormSubgroup (L ≃ₐ[K] L)
         (RelativeIdeleGroup.ClassGroup K L)).subgroupOf
@@ -349,7 +305,7 @@ theorem ideleClassNorm_range_map_equivFixed :
   · rintro ⟨c, ⟨d, rfl⟩, rfl⟩
     change
       RelativeIdeleGroup.classInclusion K L
-          (ideleClassNorm K L d) ∈
+          (classNorm K L d) ∈
         tateNormSubgroup (L ≃ₐ[K] L)
           (RelativeIdeleGroup.ClassGroup K L)
     exact
@@ -363,7 +319,7 @@ theorem ideleClassNorm_range_map_equivFixed :
           (RelativeIdeleGroup.ClassGroup K L) at hx
     rcases hx with ⟨d, hd⟩
     refine
-      ⟨ideleClassNorm K L d, ⟨d, rfl⟩, ?_⟩
+      ⟨classNorm K L d, ⟨d, rfl⟩, ?_⟩
     apply Subtype.ext
     exact
       (classInclusion_ideleClassNorm_eq_tateNorm
@@ -375,12 +331,12 @@ idele-class norm.  Injectivity of `C_K → C_L` is the descent input. -/
 theorem ideleClass_normKernelSubgroup_eq_ker :
     normKernelSubgroup (L ≃ₐ[K] L)
         (RelativeIdeleGroup.ClassGroup K L) =
-      MonoidHom.ker (ideleClassNorm K L) := by
+      MonoidHom.ker (classNorm K L) := by
   ext c
   change
     tateNorm (L ≃ₐ[K] L)
           (RelativeIdeleGroup.ClassGroup K L) c = 1 ↔
-      ideleClassNorm K L c = 1
+      classNorm K L c = 1
   constructor
   · intro hc
     apply RelativeIdeleGroup.classInclusion_injective K L
@@ -409,21 +365,17 @@ noncomputable def ideleClassHerbrandHMinusOneEquiv
 
 section NormQuotientIdentification
 
-local instance ideleClassNormQuotient_baseIsMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
 /-- The degree-zero Tate group of the actual idele class group is the
 class-norm quotient `C_K / N_{L/K} C_L`. -/
 noncomputable def ideleClassHerbrandH0EquivNormQuotient :
     HerbrandH0 (L ≃ₐ[K] L)
         (RelativeIdeleGroup.ClassGroup K L) ≃*
-      IdeleClassNormQuotient K L :=
+      ClassNormQuotient K L :=
   (HerbrandH0.equiv
     (G := L ≃ₐ[K] L)
     (A := RelativeIdeleGroup.ClassGroup K L)).trans
       (QuotientGroup.congr
-        (ideleClassNorm K L).range
+        (classNorm K L).range
         ((tateNormSubgroup (L ≃ₐ[K] L)
           (RelativeIdeleGroup.ClassGroup K L)).subgroupOf
             (fixedSubgroup (L ≃ₐ[K] L)
@@ -436,7 +388,7 @@ omit [NumberField L] in
 cohomology group.  This statement is valid without silently assigning a
 positive finite index to an infinite quotient. -/
 theorem ideleClassNorm_index_eq_herbrandH0_card :
-    (ideleClassNorm K L).range.index =
+    (classNorm K L).range.index =
       Nat.card
         (HerbrandH0 (L ≃ₐ[K] L)
           (RelativeIdeleGroup.ClassGroup K L)) := by

@@ -6,8 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.Equiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Equiv
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquivAdeleTopology
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.FiniteMathlibTopologyComparison
 public import Mathlib.Topology.Algebra.Group.Quotient
 public import Mathlib.Topology.Algebra.Group.Units
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
@@ -33,11 +34,6 @@ variable {K : Type u} {M : Type v}
   [Field K] [NumberField K] [Algebra ℚ K]
   [Field M] [NumberField M] [Algebra ℚ M]
 
-/-- Reversing the field equivalence reverses the adelic transport. -/
-theorem adeleCongr_symm (e : K ≃ₐ[ℚ] M) :
-    (adeleCongr e).symm = adeleCongr e.symm := by
-  rfl
-
 /-- Adelic field-isomorphism transport is a topological group equivalence. -/
 noncomputable def adeleCongrContinuousMulEquiv (e : K ≃ₐ[ℚ] M) :
     NumberField.AdeleRing (𝓞 K) K ≃ₜ*
@@ -50,12 +46,47 @@ noncomputable def adeleCongrContinuousMulEquiv (e : K ≃ₐ[ℚ] M) :
   rw [adeleCongr_symm]
   exact continuous_adeleCongr e.symm
 
+namespace NumberField.IdeleGroup
+
+/-- Continuous field transport is the units functor on the same adelic map. -/
+noncomputable def congrContinuousMulEquiv (e : K ≃ₐ[ℚ] M) :
+    NumberField.IdeleGroup (𝓞 K) K ≃ₜ* NumberField.IdeleGroup (𝓞 M) M :=
+  Units.mapContinuousMulEquiv (adeleCongrContinuousMulEquiv e)
+
+/-- The topological equivalence retains the canonical algebraic map. -/
+theorem congrContinuousMulEquiv_toMulEquiv (e : K ≃ₐ[ℚ] M) :
+    (congrContinuousMulEquiv e).toMulEquiv = congr e := rfl
+
+end NumberField.IdeleGroup
+
+namespace NumberField.IdeleClassGroup
+
+/-- The standard principal-quotient equivalence with its quotient topology. -/
+noncomputable def congrContinuousMulEquiv (e : K ≃ₐ[ℚ] M) :
+    NumberField.IdeleClassGroup (𝓞 K) K ≃ₜ* NumberField.IdeleClassGroup (𝓞 M) M := by
+  refine
+    { toMulEquiv := congr e
+      continuous_toFun := ?_
+      continuous_invFun := ?_ }
+  · apply (QuotientGroup.isQuotientMap_mk
+      (NumberField.IdeleGroup.principalSubgroup (𝓞 K) K)).continuous_iff.mpr
+    exact QuotientGroup.continuous_mk.comp
+      (NumberField.IdeleGroup.congrContinuousMulEquiv e).continuous
+  · apply (QuotientGroup.isQuotientMap_mk
+      (NumberField.IdeleGroup.principalSubgroup (𝓞 M) M)).continuous_iff.mpr
+    exact QuotientGroup.continuous_mk.comp
+      (NumberField.IdeleGroup.congrContinuousMulEquiv e).symm.continuous
+
+/-- The continuous class equivalence retains the canonical quotient map. -/
+theorem congrContinuousMulEquiv_toMulEquiv (e : K ≃ₐ[ℚ] M) :
+    (congrContinuousMulEquiv e).toMulEquiv = congr e := rfl
+
+end NumberField.IdeleClassGroup
+
 /-- The existing idèle transport is an equivalence of topological groups. -/
 noncomputable def ideleCongrContinuousMulEquiv (e : K ≃ₐ[ℚ] M) :
     IdeleGroup K ≃ₜ* IdeleGroup M :=
-  (IdeleGroup.equivAdeleRingUnitsContinuousMulEquiv K).trans
-    ((Units.mapContinuousMulEquiv (adeleCongrContinuousMulEquiv e)).trans
-      (IdeleGroup.equivAdeleRingUnitsContinuousMulEquiv M).symm)
+  NumberField.IdeleGroup.congrContinuousMulEquiv e
 
 /-- The topological and algebraic transports of idèles agree. -/
 @[simp]
@@ -64,31 +95,11 @@ theorem ideleCongrContinuousMulEquiv_apply
     ideleCongrContinuousMulEquiv e a = ideleCongr e a :=
   rfl
 
-/-- The existing idèle-class transport is an equivalence of topological
-groups. -/
-noncomputable def ideleClassCongrContinuousMulEquiv
+/-- The canonical continuous transport of idele classes. -/
+noncomputable abbrev ideleClassCongrContinuousMulEquiv
     (e : K ≃ₐ[ℚ] M) :
-    IdeleClassGroup K ≃ₜ* IdeleClassGroup M := by
-  refine
-    { toMulEquiv := ideleClassCongr e
-      continuous_toFun := ?_
-      continuous_invFun := ?_ }
-  · apply (QuotientGroup.isQuotientMap_mk
-      (IdeleGroup.principalSubgroup K)).continuous_iff.mpr
-    have h : Continuous (fun a : IdeleGroup K =>
-        QuotientGroup.mk' (IdeleGroup.principalSubgroup M)
-          (ideleCongr e a)) :=
-      QuotientGroup.continuous_mk.comp
-        (ideleCongrContinuousMulEquiv e).continuous
-    exact h.congr (fun a => (ideleClassCongr_mk e a).symm)
-  · apply (QuotientGroup.isQuotientMap_mk
-      (IdeleGroup.principalSubgroup M)).continuous_iff.mpr
-    have h : Continuous (fun a : IdeleGroup M =>
-        QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
-          ((ideleCongr e).symm a)) :=
-      QuotientGroup.continuous_mk.comp
-        (ideleCongrContinuousMulEquiv e).symm.continuous
-    exact h.congr (fun _ => rfl)
+    IdeleClassGroup K ≃ₜ* IdeleClassGroup M :=
+  NumberField.IdeleClassGroup.congrContinuousMulEquiv e
 
 /-- The topological and algebraic transports of idèle classes agree. -/
 @[simp]

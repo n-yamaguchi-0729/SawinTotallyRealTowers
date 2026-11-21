@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
@@ -27,21 +29,19 @@ open NumberField IsDedekindDomain LocalClassFieldTheory GlobalClassFieldTheory.R
 variable (F : Type) [Field F] [NumberField F]
 variable (v : HeightOneSpectrum (RingOfIntegers F))
 
-local instance finitePlaceCompletionCompatibilitySourceValuativeRel :
-    ValuativeRel (HeightOneSpectrum.adicAbv F v).Completion :=
-  finitePlaceLocalArtinCompletionValuativeRel v
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel
 
-local instance finitePlaceCompletionCompatibilityTargetValuativeRel :
-    ValuativeRel (v.adicCompletion F) :=
-  finitePlaceAdicCompletionValuativeRel F v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
 
 /-- The canonical completion equivalence preserves the actual valuation relation. -/
 theorem finitePlaceCompletion_semilinearValuationCompatible :
     SemilinearValuationCompatible (HeightOneSpectrum.adicAbv F v).Completion
-      (v.adicCompletion F) (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv := by
+      (v.adicCompletion F) (finitePlaceCompletionAlgEquiv v).toRingEquiv := by
   let C := (HeightOneSpectrum.adicAbv F v).Completion
   let C' := v.adicCompletion F
-  let c := (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+  let c := (finitePlaceCompletionAlgEquiv v).toRingEquiv
   let _ : Algebra C C' := c.toRingHom.toAlgebra
   change (ValuativeRel.valuation C).HasExtension (ValuativeRel.valuation C')
   constructor
@@ -52,8 +52,8 @@ theorem finitePlaceCompletion_semilinearValuationCompatible :
   change ‖x‖₊ ≤ ‖y‖₊ ↔
     (Valued.v : Valuation C' (WithZero (Multiplicative ℤ))) (c x) ≤ Valued.v (c y)
   rw [← Valued.toNormedField.norm_le_iff]
-  change ‖x‖ ≤ ‖y‖ ↔ ‖relativeFinitePlaceCompletionRingEquiv v x‖ ≤
-    ‖relativeFinitePlaceCompletionRingEquiv v y‖
-  rw [relativeFinitePlaceCompletionRingEquiv_norm, relativeFinitePlaceCompletionRingEquiv_norm]
+  change ‖x‖ ≤ ‖y‖ ↔ ‖finitePlaceCompletionRingEquiv v x‖ ≤
+    ‖finitePlaceCompletionRingEquiv v y‖
+  rw [finitePlaceCompletionRingEquiv_norm, finitePlaceCompletionRingEquiv_norm]
 
 end ClassFieldTower.Martinet.Shafarevich

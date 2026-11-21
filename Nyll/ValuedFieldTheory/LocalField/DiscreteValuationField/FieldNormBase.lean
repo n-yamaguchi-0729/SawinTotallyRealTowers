@@ -148,7 +148,7 @@ subgroup for `M/L`. -/
 theorem baseUnitsMap_pow_finrank_mem_fieldNormSubgroup_tower
     (x : Kˣ) :
     baseUnitsMap (K := K) (L := L) x ^ Module.finrank L M ∈
-      fieldNormSubgroup L M :=
+      localNormSubgroup L M :=
   fieldNormSubgroup_pow_finrank_mem L M
     (baseUnitsMap (K := K) (L := L) x)
 
@@ -157,7 +157,7 @@ theorem baseUnitsMap_pow_finrank_mem_fieldNormSubgroup_tower
 `[M : L]`-th power. -/
 theorem pow_finrank_mem_fieldNormSubgroup_of_mem_baseUnitsImage_tower
     {x : Lˣ} (hx : x ∈ baseUnitsImageSubgroup (K := K) (L := L)) :
-    x ^ Module.finrank L M ∈ fieldNormSubgroup L M := by
+    x ^ Module.finrank L M ∈ localNormSubgroup L M := by
   rcases hx with ⟨y, hy⟩
   rw [← hy]
   exact baseUnitsMap_pow_finrank_mem_fieldNormSubgroup_tower
@@ -167,7 +167,7 @@ theorem pow_finrank_mem_fieldNormSubgroup_of_mem_baseUnitsImage_tower
 subgroup for `M/L`. -/
 theorem poweredBaseUnitsImageSubgroup_le_fieldNormSubgroup :
     poweredBaseUnitsImageSubgroup (K := K) (L := L) (M := M) ≤
-      fieldNormSubgroup L M := by
+      localNormSubgroup L M := by
   intro x hx
   rcases hx with ⟨y, hyS, hyx⟩
   rw [← hyx]
@@ -205,11 +205,11 @@ variable [Algebra K M] [IsScalarTower K L M] [Module.Free L M]
 the common-top field-norm subgroup `N_{M/K}(Mˣ)`. -/
 theorem normPoweredBaseUnitsImageSubgroup_le_fieldNormSubgroup_top :
     normPoweredBaseUnitsImageSubgroup (K := K) (L := L) (M := M) ≤
-      fieldNormSubgroup K M := by
+      localNormSubgroup K M := by
   intro x hx
   rcases hx with ⟨y, hyS, hyx⟩
   have hyNorm :
-      y ∈ fieldNormSubgroup L M :=
+      y ∈ localNormSubgroup L M :=
     poweredBaseUnitsImageSubgroup_le_fieldNormSubgroup
       (K := K) (L := L) (M := M) hyS
   rcases hyNorm with ⟨z, hz⟩

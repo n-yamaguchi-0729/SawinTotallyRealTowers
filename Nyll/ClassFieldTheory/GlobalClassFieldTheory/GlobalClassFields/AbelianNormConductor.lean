@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteRestrictedProductBaseChange
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.UnramifiedConductor
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.NormConductor
@@ -259,8 +262,9 @@ theorem
           vK.Completion E :=
       (LocalClassFieldTheory.isUnramifiedValuedExtension_iff_localConductorExponent_eq_zero
         vK.Completion E).2 hlocalConductor
-    simpa [_root_.ChosenFinitePlaceIsUnramified] using
-      hunramified
+    dsimp (config := { instances := true, zetaDelta := true }) only
+      [_root_.ChosenFinitePlaceIsUnramified, inferInstance] at hunramified ⊢
+    with_reducible exact hunramified
   · intro hunramified
     exact
       ideleClassNormLocalHigherUnitExponent_eq_zero_of_chosenUnramified

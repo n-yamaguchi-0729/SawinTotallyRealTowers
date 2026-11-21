@@ -39,40 +39,24 @@ namespace Reciprocity
 local instance (p : Nat.Primes) : Fact p.1.Prime :=
   ⟨p.2⟩
 
-local instance rationalCyclotomicPrincipalProductPrimePowerNumberField
-    (p : Nat.Primes) (k : ℕ) :
-    NumberField (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  KummerTheory.rationalCyclotomicLevel_numberField
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance rationalCyclotomicPrincipalProductPrimePowerFiniteDimensional
-    (p : Nat.Primes) (k : ℕ) :
-    FiniteDimensional ℚ (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  rationalCyclotomicPrincipalPrimeLevelFiniteDimensional
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
-
-local instance rationalCyclotomicPrincipalProductPrimePowerIsAbelianGalois
-    (p : Nat.Primes) (k : ℕ) :
-    IsAbelianGalois ℚ (KummerTheory.rationalCyclotomicLevel
-      ⟨p.1 ^ k, pow_pos p.2.pos k⟩) :=
-  rationalCyclotomicLevelIsAbelianGalois
-    ⟨p.1 ^ k, pow_pos p.2.pos k⟩
+attribute [local instance]
+  KummerTheory.rationalCyclotomicPrimePowerNumberField
+  KummerTheory.rationalCyclotomicPrimePowerFiniteDimensional
+  KummerTheory.rationalCyclotomicPrimePowerIsAbelianGalois
 
 noncomputable local instance
     rationalCyclotomicPrincipalProductLevelFiniteDimensional
     (m : ℕ+) :
     FiniteDimensional ℚ
       (KummerTheory.rationalCyclotomicLevel m) :=
-  rationalCyclotomicPrincipalPrimeLevelFiniteDimensional m
+  KummerTheory.rationalCyclotomicLevelFiniteDimensional m
 
 noncomputable local instance
     rationalCyclotomicPrincipalProductLevelIsAbelianGalois
     (m : ℕ+) :
     IsAbelianGalois ℚ
       (KummerTheory.rationalCyclotomicLevel m) :=
-  rationalCyclotomicPrincipalPrimeLevelIsAbelianGalois m
+  KummerTheory.rationalCyclotomicLevelIsAbelianGalois m
 
 /-- The finite product of the genuine chosen local Artin characters of a
 rational principal idele is the reduction of its rational sign. -/

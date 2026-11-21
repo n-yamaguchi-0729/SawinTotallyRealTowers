@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.RationalCyclotomicPrincipalProduct
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.InfiniteOnePlaceBaseNorm
 public import Mathlib.NumberTheory.NumberField.CMField
@@ -30,7 +30,6 @@ open scoped BigOperators IsMulCommutative NumberField
 open NumberField IsDedekindDomain
 open IdeleGroup
 
-open scoped NumberField.LiesOver
 
 noncomputable section
 
@@ -86,7 +85,7 @@ noncomputable instance
 noncomputable local instance
     rationalComplexificationCyclotomicField_finiteDimensional :
     FiniteDimensional ℚ rationalComplexificationCyclotomicField :=
-  rationalCyclotomicPrincipalPrimeLevelFiniteDimensional
+  KummerTheory.rationalCyclotomicLevelFiniteDimensional
     rationalComplexificationCyclotomicOrder
 
 noncomputable local instance
@@ -98,7 +97,7 @@ noncomputable local instance
 noncomputable local instance
     rationalComplexificationCyclotomicField_isAbelianGalois :
     IsAbelianGalois ℚ rationalComplexificationCyclotomicField :=
-  rationalCyclotomicPrincipalPrimeLevelIsAbelianGalois
+  KummerTheory.rationalCyclotomicLevelIsAbelianGalois
     rationalComplexificationCyclotomicOrder
 
 /-- The complex number `I` is a primitive fourth root of unity. -/
@@ -277,6 +276,8 @@ theorem
     chosenInfinitePlaceAbove_comap (L := E) v
   let : w.1.LiesOver v.1 :=
     ⟨congrArg (fun q : InfinitePlace ℚ => q.1) hw⟩
+  let : Algebra v.Completion w.Completion :=
+    AbsoluteValue.Completion.algebraOfLiesOver v.1 w.1
   intro htrivial
   have hnorm :
       IdeleGroup.infiniteComponent v

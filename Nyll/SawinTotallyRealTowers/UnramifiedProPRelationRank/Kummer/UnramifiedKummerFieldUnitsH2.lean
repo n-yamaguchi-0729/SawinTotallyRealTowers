@@ -8,7 +8,7 @@ module
 
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.EverywhereUnramifiedSupportedIdeleH2
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Brauer.FiniteFieldUnitsIdelePrimitive
 
 /-!
 # Kummer H² dies in field units at an unramified p-extension
@@ -43,7 +43,7 @@ local instance kummerFieldUnitsH2SupportedAction : MulDistribMulAction Gal(L / K
 
 local instance kummerFieldUnitsH2IdeleAction :
     MulDistribMulAction Gal(L/K) (RelativeIdeleGroup K L) :=
-  relativeIdeleMulDistribMulAction K L
+  RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
 
 /-- Actual inclusion of everywhere-integral ideles into relative ideles,
 as a morphism of the canonical Galois representations. -/

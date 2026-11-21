@@ -78,11 +78,12 @@ theorem absoluteLocalArtinMap_lift_action
   let j : L →ₐ[K] SeparableClosure K :=
     i.codRestrict (separableClosure K (AlgebraicClosure K)).toSubalgebra fun x ↦
       (Algebra.IsSeparable.isSeparable K x).map i i.injective
-  let tau := standardToSeparableAbsoluteGaloisEquiv K sigma
+  let tau := RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv
+    K sigma
   have htau : (QuotientGroup.mk tau : localAbsoluteAbelianProfinite K) =
       separableAbsoluteLocalArtinMap K a := by
-    have h := congrArg (separableToStandardAbsoluteAbelianizationEquiv K).symm hsigma
-    rw [separableToStandardAbsoluteAbelianizationEquiv_symm_artinMap] at h
+    have h := congrArg (absoluteGaloisGroupAbelianizationEquivSeparable K) hsigma
+    rw [absoluteGaloisGroupAbelianizationEquivSeparable_artinMap] at h
     exact h
   exact congrArg (fun x : SeparableClosure K ↦ (x : AlgebraicClosure K))
     (separableAbsoluteLocalArtinMap_lift_action K L j a tau htau z)

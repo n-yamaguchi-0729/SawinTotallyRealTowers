@@ -128,7 +128,7 @@ theorem standardLubinTateUnitParameter_natCard
     F.valuationSubringˣ ⧸
       CompleteDVF.higherPrincipalUnitGroup D (n + 1)
   let H : Subgroup Q :=
-    U.principalUnitSubgroupClassInQuotient 1 (n + 1)
+    U.levelClassInQuotient 1 (n + 1)
   have hlevel : 1 ≤ n + 1 := by omega
   obtain ⟨π, hπ⟩ := F.exists_uniformizer
   have hquotient :

@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalAbsoluteKummer
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalModule
@@ -31,12 +32,6 @@ open KummerTheory
 variable (K : Type*) [Field K] [NumberField K]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance idealPowerRadicalLinearCharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
-
-local instance idealPowerRadicalLinearCharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) :=
-  discreteTopology_bot _
 
 /-- The inclusion of ideal-power radical classes into all absolute power classes, linearized
 over `ZMod p`. -/

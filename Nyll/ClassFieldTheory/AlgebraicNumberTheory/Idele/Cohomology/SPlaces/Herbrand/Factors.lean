@@ -45,34 +45,33 @@ local-block family. -/
 noncomputable def
     relativeUnrestrictedSPlaceFactorsHerbrandH0EquivLocalBlockFamily
     (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    @HerbrandH0 (L ≃ₐ[K] L)
-        (RelativeUnrestrictedSPlaceFactors
-          (K := K) (L := L) S)
-        _ _ _
-        (relativeUnrestrictedSPlaceFactorsAction
-          (K := K) (L := L) S) ≃*
-      @HerbrandH0 (L ≃ₐ[K] L)
-        (LocalBlockFamily
-          (relativeUnrestrictedSPlaceDatum
-            (K := K) (L := L) S))
-        _ _ _
-        (localBlockFamilyAction
-          (relativeUnrestrictedSPlaceDatum
-            (K := K) (L := L) S)) := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
-  letI sourceAction :=
-    relativeUnrestrictedSPlaceFactorsAction
-      (K := K) (L := L) S
-  letI targetAction :=
-    localBlockFamilyAction d
-  exact
-    herbrandH0EquivariantMulEquiv
-      (relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily
-        (K := K) (L := L) S)
-      (relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily_smul
-        (K := K) (L := L) S)
+    let d := relativeUnrestrictedSPlaceDatum (K := K) (L := L) S
+    let A := RelativeUnrestrictedSPlaceFactors (K := K) (L := L) S
+    let B := LocalBlockFamily d
+    let aGroup : CommGroup A := Pi.commGroup
+    let bGroup : CommGroup B := Pi.commGroup
+    let aAction := relativeUnrestrictedSPlaceFactorsAction (K := K) (L := L) S
+    let bAction := localBlockFamilyAction d
+    @HerbrandH0 (L ≃ₐ[K] L) A AlgEquiv.aut (AlgEquiv.fintype K L) aGroup aAction ≃*
+      @HerbrandH0 (L ≃ₐ[K] L) B AlgEquiv.aut (AlgEquiv.fintype K L) bGroup bAction := by
+  intro d A B aGroup bGroup aAction bAction
+  let e :
+      @MulEquiv A B aGroup.toMulOneClass.toMulOne.toMul bGroup.toMulOneClass.toMulOne.toMul := by
+    dsimp (config := { instances := true, zetaDelta := true }) only
+      [A, B, d, aGroup, bGroup, Pi.commGroup, Pi.group, Pi.divInvMonoid, Pi.commMonoid,
+        Pi.monoid, Pi.mulOneClass, Pi.semigroup, Monoid.toMulOneClass, MulOneClass.toMulOne,
+        MulOne.toMul]
+    with_reducible exact relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily (K := K) (L := L) S
+  have he (g : L ≃ₐ[K] L) (x : A) :
+      e (aAction.smul g x) = bAction.smul g (e x) := by
+    dsimp (config := { instances := true, zetaDelta := true }) only
+      [e, id, A, B, d, aGroup, bGroup, Pi.commGroup, Pi.group,
+        Pi.divInvMonoid, Pi.commMonoid, Pi.monoid, Pi.mulOneClass, Pi.semigroup,
+        Monoid.toMulOneClass, MulOneClass.toMulOne, MulOne.toMul]
+    with_reducible exact
+      relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily_smul (K := K) (L := L) S g x
+  exact @herbrandH0EquivariantMulEquiv (L ≃ₐ[K] L) A B
+    AlgEquiv.aut (AlgEquiv.fintype K L) aGroup bGroup aAction bAction e he
 
 omit [NumberField L] in
 /-- The equivariant realization by local blocks identifies degree-minus-one
@@ -82,34 +81,33 @@ noncomputable def
     relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneEquivLocalBlockFamily
     (S : Finset (HeightOneSpectrum (𝓞 K)))
     (σ : L ≃ₐ[K] L) :
-    @HerbrandHMinusOne (L ≃ₐ[K] L)
-        (RelativeUnrestrictedSPlaceFactors
-          (K := K) (L := L) S)
-        _ _ _
-        (relativeUnrestrictedSPlaceFactorsAction
-          (K := K) (L := L) S) σ ≃*
-      @HerbrandHMinusOne (L ≃ₐ[K] L)
-        (LocalBlockFamily
-          (relativeUnrestrictedSPlaceDatum
-            (K := K) (L := L) S))
-        _ _ _
-        (localBlockFamilyAction
-          (relativeUnrestrictedSPlaceDatum
-            (K := K) (L := L) S)) σ := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
-  letI sourceAction :=
-    relativeUnrestrictedSPlaceFactorsAction
-      (K := K) (L := L) S
-  letI targetAction :=
-    localBlockFamilyAction d
-  exact
-    herbrandHMinusOneEquivariantMulEquiv
-      (relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily
-        (K := K) (L := L) S)
-      (relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily_smul
-        (K := K) (L := L) S) σ
+    let d := relativeUnrestrictedSPlaceDatum (K := K) (L := L) S
+    let A := RelativeUnrestrictedSPlaceFactors (K := K) (L := L) S
+    let B := LocalBlockFamily d
+    let aGroup : CommGroup A := Pi.commGroup
+    let bGroup : CommGroup B := Pi.commGroup
+    let aAction := relativeUnrestrictedSPlaceFactorsAction (K := K) (L := L) S
+    let bAction := localBlockFamilyAction d
+    @HerbrandHMinusOne (L ≃ₐ[K] L) A AlgEquiv.aut (AlgEquiv.fintype K L) aGroup aAction σ ≃*
+      @HerbrandHMinusOne (L ≃ₐ[K] L) B AlgEquiv.aut (AlgEquiv.fintype K L) bGroup bAction σ := by
+  intro d A B aGroup bGroup aAction bAction
+  let e :
+      @MulEquiv A B aGroup.toMulOneClass.toMulOne.toMul bGroup.toMulOneClass.toMulOne.toMul := by
+    dsimp (config := { instances := true, zetaDelta := true }) only
+      [A, B, d, aGroup, bGroup, Pi.commGroup, Pi.group, Pi.divInvMonoid, Pi.commMonoid,
+        Pi.monoid, Pi.mulOneClass, Pi.semigroup, Monoid.toMulOneClass, MulOneClass.toMulOne,
+        MulOne.toMul]
+    with_reducible exact relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily (K := K) (L := L) S
+  have he (g : L ≃ₐ[K] L) (x : A) :
+      e (aAction.smul g x) = bAction.smul g (e x) := by
+    dsimp (config := { instances := true, zetaDelta := true }) only
+      [e, id, A, B, d, aGroup, bGroup, Pi.commGroup, Pi.group,
+        Pi.divInvMonoid, Pi.commMonoid, Pi.monoid, Pi.mulOneClass, Pi.semigroup,
+        Monoid.toMulOneClass, MulOneClass.toMulOne, MulOne.toMul]
+    with_reducible exact
+      relativeUnrestrictedSPlaceFactorsEquivLocalBlockFamily_smul (K := K) (L := L) S g x
+  exact @herbrandHMinusOneEquivariantMulEquiv (L ≃ₐ[K] L) A B
+    AlgEquiv.aut (AlgEquiv.fintype K L) aGroup bGroup aAction bAction e he σ
 
 omit [NumberField L] in
 /-- Degree-zero cohomology of the actual unrestricted tensor factors is
@@ -126,23 +124,11 @@ theorem relativeUnrestrictedSPlaceFactorsHerbrandH0Finite
       (HerbrandH0 (L ≃ₐ[K] L)
         (RelativeUnrestrictedSPlaceFactors
           (K := K) (L := L) S)) := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
   intro sourceAction
-  let targetAction :=
-    localBlockFamilyAction d
-  let targetFinite : Finite
-      (HerbrandH0 (L ≃ₐ[K] L)
-        (LocalBlockFamily d)) :=
-    relativeUnrestrictedLocalBlockFamilyHerbrandH0Finite
-      S σ hgen
-  exact
-    Finite.of_equiv
-      (HerbrandH0 (L ≃ₐ[K] L)
-        (LocalBlockFamily d))
-      (relativeUnrestrictedSPlaceFactorsHerbrandH0EquivLocalBlockFamily
-        (K := K) (L := L) S).symm.toEquiv
+  let := relativeUnrestrictedLocalBlockFamilyHerbrandH0Finite (K := K) (L := L) S σ hgen
+  let equiv := relativeUnrestrictedSPlaceFactorsHerbrandH0EquivLocalBlockFamily
+    (K := K) (L := L) S
+  exact Finite.of_equiv _ equiv.symm.toEquiv
 
 omit [NumberField L] in
 /-- Degree-minus-one cohomology of the actual unrestricted tensor
@@ -159,23 +145,11 @@ theorem relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneFinite
       (HerbrandHMinusOne (L ≃ₐ[K] L)
         (RelativeUnrestrictedSPlaceFactors
           (K := K) (L := L) S) σ) := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
   intro sourceAction
-  let targetAction :=
-    localBlockFamilyAction d
-  let targetFinite : Finite
-      (HerbrandHMinusOne (L ≃ₐ[K] L)
-        (LocalBlockFamily d) σ) :=
-    relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOneFinite
-      S σ hgen
-  exact
-    Finite.of_equiv
-      (HerbrandHMinusOne (L ≃ₐ[K] L)
-        (LocalBlockFamily d) σ)
-      (relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneEquivLocalBlockFamily
-        (K := K) (L := L) S σ).symm.toEquiv
+  let := relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOneFinite (K := K) (L := L) S σ hgen
+  let equiv := relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneEquivLocalBlockFamily
+    (K := K) (L := L) S σ
+  exact Finite.of_equiv _ equiv.symm.toEquiv
 
 omit [NumberField L] in
 /-- Degree zero for the actual unrestricted factors: its
@@ -186,10 +160,10 @@ theorem
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let :=
       relativeUnrestrictedSPlaceFactorsAction
         (K := K) (L := L) S
-    letI : Finite
+    let : Finite
         (HerbrandH0 (L ≃ₐ[K] L)
           (RelativeUnrestrictedSPlaceFactors
             (K := K) (L := L) S)) :=
@@ -202,41 +176,12 @@ theorem
       ∏ i,
         relativeUnrestrictedSPlaceLocalDegree
           (K := K) (L := L) S i := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
-  let sourceAction :=
-    relativeUnrestrictedSPlaceFactorsAction
-      (K := K) (L := L) S
-  let targetAction :=
-    localBlockFamilyAction d
-  let sourceFinite : Finite
-      (HerbrandH0 (L ≃ₐ[K] L)
-        (RelativeUnrestrictedSPlaceFactors
-          (K := K) (L := L) S)) :=
-    relativeUnrestrictedSPlaceFactorsHerbrandH0Finite
-      S σ hgen
-  let targetFinite : Finite
-      (HerbrandH0 (L ≃ₐ[K] L)
-        (LocalBlockFamily d)) :=
-    relativeUnrestrictedLocalBlockFamilyHerbrandH0Finite
-      S σ hgen
-  calc
-    Nat.card
-        (HerbrandH0 (L ≃ₐ[K] L)
-          (RelativeUnrestrictedSPlaceFactors
-            (K := K) (L := L) S)) =
-      Nat.card
-        (HerbrandH0 (L ≃ₐ[K] L)
-          (LocalBlockFamily d)) :=
-      Nat.card_congr
-        (relativeUnrestrictedSPlaceFactorsHerbrandH0EquivLocalBlockFamily
-          (K := K) (L := L) S).toEquiv
-    _ = ∏ i,
-        relativeUnrestrictedSPlaceLocalDegree
-          (K := K) (L := L) S i :=
-      relativeUnrestrictedLocalBlockFamilyHerbrandH0_card_eq_product
-        S σ hgen
+  intro sourceAction sourceFinite
+  let equiv := relativeUnrestrictedSPlaceFactorsHerbrandH0EquivLocalBlockFamily
+    (K := K) (L := L) S
+  have localCardinality :=
+    relativeUnrestrictedLocalBlockFamilyHerbrandH0_card_eq_product (K := K) (L := L) S σ hgen
+  exact (Nat.card_congr equiv.toEquiv).trans localCardinality
 
 omit [NumberField L] in
 /-- Degree minus one for the actual unrestricted factors:
@@ -247,10 +192,10 @@ theorem
     (σ : L ≃ₐ[K] L)
     (hgen : ∀ τ : L ≃ₐ[K] L,
       τ ∈ Subgroup.zpowers σ) :
-    letI :=
+    let :=
       relativeUnrestrictedSPlaceFactorsAction
         (K := K) (L := L) S
-    letI : Finite
+    let : Finite
         (HerbrandHMinusOne (L ≃ₐ[K] L)
           (RelativeUnrestrictedSPlaceFactors
             (K := K) (L := L) S) σ) :=
@@ -260,39 +205,12 @@ theorem
         (HerbrandHMinusOne (L ≃ₐ[K] L)
           (RelativeUnrestrictedSPlaceFactors
             (K := K) (L := L) S) σ) = 1 := by
-  let d :=
-    relativeUnrestrictedSPlaceDatum
-      (K := K) (L := L) S
-  let sourceAction :=
-    relativeUnrestrictedSPlaceFactorsAction
-      (K := K) (L := L) S
-  let targetAction :=
-    localBlockFamilyAction d
-  let sourceFinite : Finite
-      (HerbrandHMinusOne (L ≃ₐ[K] L)
-        (RelativeUnrestrictedSPlaceFactors
-          (K := K) (L := L) S) σ) :=
-    relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneFinite
-      S σ hgen
-  let targetFinite : Finite
-      (HerbrandHMinusOne (L ≃ₐ[K] L)
-        (LocalBlockFamily d) σ) :=
-    relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOneFinite
-      S σ hgen
-  calc
-    Nat.card
-        (HerbrandHMinusOne (L ≃ₐ[K] L)
-          (RelativeUnrestrictedSPlaceFactors
-            (K := K) (L := L) S) σ) =
-      Nat.card
-        (HerbrandHMinusOne (L ≃ₐ[K] L)
-          (LocalBlockFamily d) σ) :=
-      Nat.card_congr
-        (relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneEquivLocalBlockFamily
-          (K := K) (L := L) S σ).toEquiv
-    _ = 1 :=
-      relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOne_card_eq_one
-        S σ hgen
+  intro sourceAction sourceFinite
+  let equiv := relativeUnrestrictedSPlaceFactorsHerbrandHMinusOneEquivLocalBlockFamily
+    (K := K) (L := L) S σ
+  have localCardinality :=
+    relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOne_card_eq_one (K := K) (L := L) S σ hgen
+  exact (Nat.card_congr equiv.toEquiv).trans localCardinality
 
 omit [NumberField L] in
 /-- The Herbrand quotient formula for the actual unrestricted tensor factors. -/

@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.GaloisCohomology.Kummer.AbsoluteMuPTopRep
 public import Nyll.GaloisCohomology.Kummer.Concrete.GaloisCohomology
 public import Nyll.GaloisCohomology.Topology.AlgebraicGaloisOrbits

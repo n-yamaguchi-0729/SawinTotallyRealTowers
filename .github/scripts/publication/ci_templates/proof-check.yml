@@ -9,6 +9,9 @@ on:
       partition:
         type: boolean
         default: false
+      kernel-replay:
+        type: boolean
+        default: true
       cache-prefix:
         type: string
         default: proof-build-v4
@@ -31,10 +34,12 @@ jobs:
         env:
           SCOPE_CONFIG: ${{ inputs.config }}
           PARTITION: ${{ inputs.partition }}
+          KERNEL_REPLAY: ${{ inputs.kernel-replay }}
         run: |
           set -euo pipefail
           args=()
           if [[ "$PARTITION" == true ]]; then args+=(--partition); fi
+          if [[ "$KERNEL_REPLAY" == false ]]; then args+=(--proof-only); fi
           python3 -B .github/scripts/publication/verification/scope.py \
             --root . --config "$SCOPE_CONFIG" --output "$RUNNER_TEMP/scope" "${args[@]}"
           echo "matrix=$(cat "$RUNNER_TEMP/scope/matrix.json")" >> "$GITHUB_OUTPUT"
@@ -53,7 +58,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
-    name: Verify ${{ matrix.shard }}
+    name: Verify ${{ matrix.shard }} (${{ matrix.phase }})
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
@@ -61,6 +66,7 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
       SCOPE_CONFIG: ${{ inputs.config }}
       VERIFY_SHARD: ${{ matrix.shard }}
+      VERIFY_PHASE: ${{ matrix.phase }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -104,7 +110,7 @@ jobs:
             .lake/build/ir/**/*.bc.hash
             .lake/build/ir/**/*.o
             .lake/build/ir/**/*.o.*
-          key: ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-verification-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.shard }}
+          key: ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-verification-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.shard }}-${{ matrix.phase }}
           restore-keys: |
             ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}-
             ${{ inputs.cache-prefix }}-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
@@ -113,12 +119,12 @@ jobs:
           python3 -B .github/scripts/publication/verification/setup_tools.py \
             --checkouts "$RUNNER_TEMP/verification-tools" \
             --output "$RUNNER_TEMP/verification/setup"
-      - name: Audit declarations, check NanoDa, and replay the official Lean kernel
+      - name: Run the mandatory verification phase
         run: |
           python3 -u -B .github/scripts/publication/verification/verify.py \
             --package-root "$GITHUB_WORKSPACE" \
             --manifest "$RUNNER_TEMP/verification/modules.json" \
-            --config "$SCOPE_CONFIG" --shard "$VERIFY_SHARD" \
+            --config "$SCOPE_CONFIG" --shard "$VERIFY_SHARD" --phase "$VERIFY_PHASE" \
             --output "$RUNNER_TEMP/verification/checks" \
             --exporter-checkout "$RUNNER_TEMP/verification-tools/lean4export" \
             --nanoda-checkout "$RUNNER_TEMP/verification-tools/nanoda_lib" \
@@ -127,9 +133,24 @@ jobs:
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
-          name: proof-check-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: proof-check-${{ matrix.shard }}-${{ matrix.phase }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/verification/
             !${{ runner.temp }}/verification/checks/selected.ndjson
           if-no-files-found: error
           retention-days: 14
+
+  complete:
+    name: Require every configured verification phase for every source shard
+    needs: [plan, verify]
+    if: always() && github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Reject missing, failed, skipped, or cancelled phases
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          VERIFY_RESULT: ${{ needs.verify.result }}
+        run: |
+          set -euo pipefail
+          test "$PLAN_RESULT" = success
+          test "$VERIFY_RESULT" = success

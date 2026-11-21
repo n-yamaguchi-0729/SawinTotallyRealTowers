@@ -38,7 +38,6 @@ open AlgebraicNumberTheory.PrimeSelection
 
 universe u
 
-private local instance deepFrobeniusPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
 /-- Outside any finite set and the six ramified primes, a rational prime
 congruent to one modulo four has an actual Frobenius lift of any requested

@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.Algebra.FinprodFibers
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
@@ -17,6 +19,7 @@ public import Mathlib.RingTheory.Ideal.Norm.RelNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.DivisorAbsoluteNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 
@@ -32,7 +35,8 @@ finite positive norm under scalar extension.
 
 @[expose] public section
 
-open scoped BigOperators NNReal NumberField NumberField.LiesOver
+open scoped BigOperators NNReal NumberField
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -65,7 +69,7 @@ private theorem finiteAbsoluteNorm_eq_finprod
     (a : FiniteIdeleGroup K) :
     FiniteIdeleGroup.absoluteNorm a =
       ∏ᶠ v : HeightOneSpectrum (𝓞 K),
-        FiniteIdeleGroup.primeNorm v ^
+        NumberField.finitePrimeNorm v ^
           (FiniteIdeleGroup.localOrder v (a v)).toAdd := by
   classical
   let e := (FiniteIdeleGroup.valuationVector a).toAdd
@@ -77,7 +81,7 @@ private theorem finiteAbsoluteNorm_eq_finprod
   have hsupport :
       mulSupport
           (fun v : HeightOneSpectrum (𝓞 K) =>
-            FiniteIdeleGroup.primeNorm v ^ e v) ⊆
+            NumberField.finitePrimeNorm v ^ e v) ⊆
         e.support := by
     intro v hv
     by_contra hmem
@@ -87,22 +91,22 @@ private theorem finiteAbsoluteNorm_eq_finprod
   rw [FiniteIdeleGroup.absoluteNorm_apply]
   change
     e.prod
-        (fun v n => FiniteIdeleGroup.primeNorm v ^ n) =
+        (fun v n => NumberField.finitePrimeNorm v ^ n) =
       ∏ᶠ v : HeightOneSpectrum (𝓞 K),
-        FiniteIdeleGroup.primeNorm v ^
+        NumberField.finitePrimeNorm v ^
           (FiniteIdeleGroup.localOrder v (a v)).toAdd
   calc
     e.prod
-          (fun v n => FiniteIdeleGroup.primeNorm v ^ n) =
+          (fun v n => NumberField.finitePrimeNorm v ^ n) =
         ∏ v ∈ e.support,
-          FiniteIdeleGroup.primeNorm v ^ e v := rfl
+          NumberField.finitePrimeNorm v ^ e v := rfl
     _ =
         ∏ᶠ v : HeightOneSpectrum (𝓞 K),
-          FiniteIdeleGroup.primeNorm v ^ e v :=
+          NumberField.finitePrimeNorm v ^ e v :=
       (finprod_eq_prod_of_mulSupport_subset _ hsupport).symm
     _ =
         ∏ᶠ v : HeightOneSpectrum (𝓞 K),
-          FiniteIdeleGroup.primeNorm v ^
+          NumberField.finitePrimeNorm v ^
             (FiniteIdeleGroup.localOrder v (a v)).toAdd :=
       finprod_congr fun v => by rw [heval]
 
@@ -113,8 +117,8 @@ theorem primeNorm_above
     (v₀ : HeightOneSpectrum (𝓞 K))
     (W : {W : HeightOneSpectrum (𝓞 L) //
       _root_.finitePlaceBelow (K := K) W = v₀}) :
-    FiniteIdeleGroup.primeNorm W.1 =
-      FiniteIdeleGroup.primeNorm v₀ ^
+    NumberField.finitePrimeNorm W.1 =
+      NumberField.finitePrimeNorm v₀ ^
         W.1.asIdeal.inertiaDeg (𝓞 K) := by
   let : W.1.asIdeal.LiesOver v₀.asIdeal := by
     constructor
@@ -208,42 +212,41 @@ theorem finiteComponentOrder_norm
 norm. -/
 theorem finiteAbsoluteNorm_norm
     (a : IdeleGroup L) :
-    FiniteIdeleGroup.absoluteNorm (norm K L a).2 =
-      FiniteIdeleGroup.absoluteNorm a.2 := by
+    FiniteIdeleGroup.absoluteNorm (IdeleGroup.finiteCoordinates (norm K L a)) =
+      FiniteIdeleGroup.absoluteNorm (IdeleGroup.finiteCoordinates a) := by
   classical
   rw [finiteAbsoluteNorm_eq_finprod
-      (K := K) ((norm K L a).2),
+      (K := K) ((IdeleGroup.finiteCoordinates (norm K L a))),
     finiteAbsoluteNorm_eq_finprod
-      (K := L) a.2]
+      (K := L) (IdeleGroup.finiteCoordinates a)]
   have hfinite :
       HasFiniteMulSupport
         (fun W : HeightOneSpectrum (𝓞 L) =>
-          FiniteIdeleGroup.primeNorm W ^
+          NumberField.finitePrimeNorm W ^
             (FiniteIdeleGroup.localOrder W
               (finiteComponent W a)).toAdd) := by
-    refine
-      ((FiniteIdeleGroup.valuationVector a.2).toAdd.support.finite_toSet).subset
-        ?_
+    refine ((FiniteIdeleGroup.valuationVector
+      (finiteCoordinates a)).toAdd.support.finite_toSet).subset ?_
     intro W hW
     by_contra hmem
     have hzero :
       (FiniteIdeleGroup.localOrder W
           (finiteComponent W a)).toAdd = 0 := by
-      change (FiniteIdeleGroup.valuationVector a.2).toAdd W = 0
+      change (FiniteIdeleGroup.valuationVector (IdeleGroup.finiteCoordinates a)).toAdd W = 0
       exact Finsupp.notMem_support_iff.mp hmem
     apply hW
-    change FiniteIdeleGroup.primeNorm W ^
+    change NumberField.finitePrimeNorm W ^
       (FiniteIdeleGroup.localOrder W (finiteComponent W a)).toAdd = 1
     rw [hzero, zpow_zero]
   calc
     (∏ᶠ v₀ : HeightOneSpectrum (𝓞 K),
-        FiniteIdeleGroup.primeNorm v₀ ^
+        NumberField.finitePrimeNorm v₀ ^
           (FiniteIdeleGroup.localOrder v₀
             (finiteComponent v₀ (norm K L a))).toAdd) =
         ∏ᶠ v₀ : HeightOneSpectrum (𝓞 K),
           ∏ᶠ W : {W : HeightOneSpectrum (𝓞 L) //
               _root_.finitePlaceBelow (K := K) W = v₀},
-            FiniteIdeleGroup.primeNorm W.1 ^
+            NumberField.finitePrimeNorm W.1 ^
               (FiniteIdeleGroup.localOrder W.1
                 (finiteComponent W.1 a)).toAdd := by
       apply finprod_congr
@@ -267,10 +270,10 @@ theorem finiteAbsoluteNorm_norm
           (finitePlaceAdicCompletionMap
             K L v₀ W).toAlgebra
       calc
-        FiniteIdeleGroup.primeNorm v₀ ^
+        NumberField.finitePrimeNorm v₀ ^
               (FiniteIdeleGroup.localOrder v₀
                 (finiteComponent v₀ (norm K L a))).toAdd =
-            FiniteIdeleGroup.primeNorm v₀ ^
+            NumberField.finitePrimeNorm v₀ ^
               (∑ W : {W : HeightOneSpectrum (𝓞 L) //
                     _root_.finitePlaceBelow (K := K) W = v₀},
                 (W.1.asIdeal.inertiaDeg (𝓞 K) : ℤ) *
@@ -280,13 +283,13 @@ theorem finiteAbsoluteNorm_norm
         _ =
             ∏ W : {W : HeightOneSpectrum (𝓞 L) //
                 _root_.finitePlaceBelow (K := K) W = v₀},
-              FiniteIdeleGroup.primeNorm v₀ ^
+              NumberField.finitePrimeNorm v₀ ^
                 ((W.1.asIdeal.inertiaDeg (𝓞 K) : ℤ) *
                   (FiniteIdeleGroup.localOrder W.1
                     (finiteComponent W.1 a)).toAdd) := by
           simpa using
             zpow_finset_sum
-              (FiniteIdeleGroup.primeNorm v₀)
+              (NumberField.finitePrimeNorm v₀)
               Finset.univ
               (fun W : {W : HeightOneSpectrum (𝓞 L) //
                   _root_.finitePlaceBelow (K := K) W = v₀} =>
@@ -296,7 +299,7 @@ theorem finiteAbsoluteNorm_norm
         _ =
             ∏ W : {W : HeightOneSpectrum (𝓞 L) //
                 _root_.finitePlaceBelow (K := K) W = v₀},
-              FiniteIdeleGroup.primeNorm W.1 ^
+              NumberField.finitePrimeNorm W.1 ^
                 (FiniteIdeleGroup.localOrder W.1
                   (finiteComponent W.1 a)).toAdd := by
           apply Finset.prod_congr rfl
@@ -306,19 +309,19 @@ theorem finiteAbsoluteNorm_norm
         _ =
             ∏ᶠ W : {W : HeightOneSpectrum (𝓞 L) //
                 _root_.finitePlaceBelow (K := K) W = v₀},
-              FiniteIdeleGroup.primeNorm W.1 ^
+              NumberField.finitePrimeNorm W.1 ^
                 (FiniteIdeleGroup.localOrder W.1
                   (finiteComponent W.1 a)).toAdd :=
           (finprod_eq_prod_of_fintype _).symm
     _ =
         ∏ᶠ W : HeightOneSpectrum (𝓞 L),
-          FiniteIdeleGroup.primeNorm W ^
+          NumberField.finitePrimeNorm W ^
             (FiniteIdeleGroup.localOrder W
               (finiteComponent W a)).toAdd :=
       finprod_over_fibers
         (_root_.finitePlaceBelow (K := K))
         (fun W : HeightOneSpectrum (𝓞 L) =>
-          FiniteIdeleGroup.primeNorm W ^
+          NumberField.finitePrimeNorm W ^
             (FiniteIdeleGroup.localOrder W
               (finiteComponent W a)).toAdd)
         hfinite
@@ -328,11 +331,11 @@ omit [FiniteDimensional K L] in
 to the degree of the number-field extension. -/
 theorem fractionalIdealAbsoluteNorm_extension_prime
     (v₀ : HeightOneSpectrum (𝓞 K)) :
-    FractionalIdealGroup.absoluteNorm
+    NumberField.fractionalIdealAbsoluteNorm
         (FractionalIdealGroup.extension K L
-          (FractionalIdealGroup.prime v₀)) =
-      FractionalIdealGroup.absoluteNorm
-          (FractionalIdealGroup.prime v₀) ^
+          (finitePrimeFractionalIdeal v₀)) =
+      NumberField.fractionalIdealAbsoluteNorm
+          (finitePrimeFractionalIdeal v₀) ^
         Module.finrank K L := by
   let : Algebra
       (FractionRing (𝓞 K)) (FractionRing (𝓞 L)) :=
@@ -365,16 +368,16 @@ theorem fractionalIdealAbsoluteNorm_extension_prime
   have hFractional :
       FractionalIdeal.absNorm
           ((FractionalIdealGroup.extension K L
-              (FractionalIdealGroup.prime v₀) :
-                FractionalIdealGroup L) :
+              (finitePrimeFractionalIdeal v₀) :
+                NumberFieldFractionalIdealGroup L) :
             FractionalIdeal (nonZeroDivisors (𝓞 L)) L) =
         FractionalIdeal.absNorm
-            ((FractionalIdealGroup.prime v₀ :
-                FractionalIdealGroup K) :
+            ((finitePrimeFractionalIdeal v₀ :
+                NumberFieldFractionalIdealGroup K) :
               FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^
           Module.finrank K L := by
     have hprime :
-        ((FractionalIdealGroup.prime v₀ : FractionalIdealGroup K) :
+        ((finitePrimeFractionalIdeal v₀ : NumberFieldFractionalIdealGroup K) :
           FractionalIdeal (nonZeroDivisors (𝓞 K)) K) =
           (v₀.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) := rfl
     rw [FractionalIdealGroup.extension_prime_val,
@@ -386,12 +389,12 @@ theorem fractionalIdealAbsoluteNorm_extension_prime
   change
     ((FractionalIdeal.absNorm
         ((FractionalIdealGroup.extension K L
-            (FractionalIdealGroup.prime v₀) :
-              FractionalIdealGroup L) :
+            (finitePrimeFractionalIdeal v₀) :
+              NumberFieldFractionalIdealGroup L) :
           FractionalIdeal (nonZeroDivisors (𝓞 L)) L) : ℚ) : ℝ) =
       ((FractionalIdeal.absNorm
-          ((FractionalIdealGroup.prime v₀ :
-              FractionalIdealGroup K) :
+          ((finitePrimeFractionalIdeal v₀ :
+              NumberFieldFractionalIdealGroup K) :
             FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℚ) : ℝ) ^
         Module.finrank K L
   exact_mod_cast hFractional
@@ -400,39 +403,41 @@ omit [FiniteDimensional K L] in
 /-- Extension of a nonzero fractional ideal raises its positive absolute
 norm to the degree of the number-field extension. -/
 private theorem fractionalIdealAbsoluteNorm_extension
-    (I : FractionalIdealGroup K) :
-    FractionalIdealGroup.absoluteNorm
+    (I : NumberFieldFractionalIdealGroup K) :
+    NumberField.fractionalIdealAbsoluteNorm
         (FractionalIdealGroup.extension K L I) =
-      FractionalIdealGroup.absoluteNorm I ^
+      NumberField.fractionalIdealAbsoluteNorm I ^
         Module.finrank K L := by
   let left :
-      FractionalIdealGroup K →* ℝ≥0ˣ :=
-    (FractionalIdealGroup.absoluteNorm (K := L)).comp
+      NumberFieldFractionalIdealGroup K →* ℝ≥0ˣ :=
+    (NumberField.fractionalIdealAbsoluteNorm (K := L)).comp
       (FractionalIdealGroup.extension K L)
   let right :
-      FractionalIdealGroup K →* ℝ≥0ˣ :=
+      NumberFieldFractionalIdealGroup K →* ℝ≥0ˣ :=
     (powMonoidHom (Module.finrank K L) :
       ℝ≥0ˣ →* ℝ≥0ˣ).comp
-        (FractionalIdealGroup.absoluteNorm (K := K))
+        (NumberField.fractionalIdealAbsoluteNorm (K := K))
   have hprime (v₀ : HeightOneSpectrum (𝓞 K)) :
-      left (FractionalIdealGroup.prime v₀) =
-        right (FractionalIdealGroup.prime v₀) := by
+      left (finitePrimeFractionalIdeal v₀) =
+        right (finitePrimeFractionalIdeal v₀) := by
     simpa only [left, right, MonoidHom.comp_apply,
       powMonoidHom_apply] using
       fractionalIdealAbsoluteNorm_extension_prime
         (K := K) (L := L) v₀
   obtain ⟨e, rfl⟩ :=
-    FractionalIdealGroup.factorization_surjective
+    NumberFieldFractionalIdealGroup.factorization_surjective
       (K := K) I
   change
-    left (FractionalIdealGroup.factorization e) =
-      right (FractionalIdealGroup.factorization e)
-  rw [FractionalIdealGroup.factorization,
+    left (NumberFieldFractionalIdealGroup.factorization e) =
+      right (NumberFieldFractionalIdealGroup.factorization e)
+  rw [NumberFieldFractionalIdealGroup.factorization,
+    ClassFieldTheory.FractionalIdealFactorization.factorization,
     MonoidHom.mk'_apply, map_finsuppProd,
     map_finsuppProd]
   apply Finsupp.prod_congr
   intro v₀ _
-  simpa only [FractionalIdealGroup.primePowerHom,
+  simpa only [ClassFieldTheory.FractionalIdealFactorization.primePowerHom,
+    finitePrimeFractionalIdeal,
     MonoidHom.mk'_apply, toAdd_ofAdd, map_zpow] using
     congrArg
       (fun z : ℝ≥0ˣ => z ^ e.toAdd v₀)
@@ -443,13 +448,13 @@ of the number-field extension. -/
 theorem finiteAbsoluteNorm_extension
     (a : IdeleGroup K) :
     FiniteIdeleGroup.absoluteNorm
-        (extension K L a).2 =
-      FiniteIdeleGroup.absoluteNorm a.2 ^
+        (IdeleGroup.finiteCoordinates (extension K L a)) =
+      FiniteIdeleGroup.absoluteNorm (IdeleGroup.finiteCoordinates a) ^
         Module.finrank K L := by
   rw [FiniteIdeleGroup.absoluteNorm_eq_fractionalIdealAbsoluteNorm,
-    show FiniteIdeleGroup.fractionalIdeal (extension K L a).2 =
+    show FiniteIdeleGroup.fractionalIdeal (IdeleGroup.finiteCoordinates (extension K L a)) =
       FractionalIdealGroup.extension K L
-        (FiniteIdeleGroup.fractionalIdeal a.2) by
+        (FiniteIdeleGroup.fractionalIdeal (IdeleGroup.finiteCoordinates a)) by
       change IdeleGroup.fractionalIdeal (extension K L a) =
         FractionalIdealGroup.extension K L
           (IdeleGroup.fractionalIdeal a)

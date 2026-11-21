@@ -36,8 +36,8 @@ variable {K : Type*} [Field K] [NumberField K]
 /-- The image in `C_K` of the `n`-th higher-unit group at `v`. -/
 def localHigherUnitClassSubgroup
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
-    Subgroup (IdeleClassGroup K) :=
-  (localHigherUnitGroup v n).map
+    Subgroup (NumberField.IdeleClassGroup (𝓞 K) K) :=
+  (ClassFieldTheory.rayLocalHigherUnitGroup v n).map
     (IdeleGroup.finitePlaceIdeleClass v)
 
 /-- A one-place higher-unit condition is contained in the corresponding
@@ -52,7 +52,8 @@ theorem localHigherUnitClassSubgroup_le_congruenceSubgroup
     IdeleGroup.finitePlaceIdeleClass v x ∈
       m.congruenceSubgroup
   rw [Modulus.congruenceSubgroup]
-  refine ⟨IdeleGroup.finitePlaceIdele v x, ?_, rfl⟩
+  refine ⟨IdeleGroup.finitePlaceIdele v x, ?_,
+    IdeleGroup.toStandardClass_finitePlaceIdele v x⟩
   apply Subgroup.mem_sup_left
   rw [Modulus.mem_ideleCongruenceSubgroup_iff]
   refine
@@ -62,18 +63,18 @@ theorem localHigherUnitClassSubgroup_le_congruenceSubgroup
   change
     IdeleGroup.finiteComponent w
         (IdeleGroup.finitePlaceIdele v x) ∈
-      localHigherUnitGroup w (m.finitePart w)
+      ClassFieldTheory.rayLocalHigherUnitGroup w (m.finitePart w)
   by_cases hw : w = v
   · subst w
     rw [IdeleGroup.finitePlaceIdele_finiteComponent_same]
     change
       x ∈
-        (localHigherUnitGroup v (m.finitePart v) :
+        (ClassFieldTheory.rayLocalHigherUnitGroup v (m.finitePart v) :
           Set (v.adicCompletion K)ˣ)
     exact hx
   · rw [
       IdeleGroup.finitePlaceIdele_finiteComponent_of_ne
         v w x hw]
-    exact (localHigherUnitGroup w (m.finitePart w)).one_mem
+    exact (ClassFieldTheory.rayLocalHigherUnitGroup w (m.finitePart w)).one_mem
 
 end RayClass

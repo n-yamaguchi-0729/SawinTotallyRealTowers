@@ -49,7 +49,6 @@ namespace ClassFieldTower.Sawin
 open ProCGroups ProCGroups.FreeProC ProCGroups.Generation ProCGroups.FiniteGeneration
 open ClassFieldTower.ProP
 
-private instance : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
 /-- The constructed free pro-2 group on five generators. -/
 noncomputable def sawinFreeProTwoSource :

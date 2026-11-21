@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.NormalEmbeddingRange
 public import Mathlib.FieldTheory.Galois.Abelian
 public import Mathlib.FieldTheory.Galois.Profinite
 public import Mathlib.FieldTheory.IsSepClosed
@@ -132,14 +133,14 @@ theorem finiteAbelianIntermediateField_le_maximalAbelianExtension
     (E : IntermediateField K (SeparableClosure K))
     [FiniteDimensional K E] [IsAbelianGalois K E] :
     E ≤ maximalAbelianExtension K := by
-  rw [maximalAbelianExtension, IntermediateField.le_iff_le]
+  rw [maximalAbelianExtension, IntermediateField.le_fixedField_iff_le_fixingSubgroup]
   change
     (commutator Gal(SeparableClosure K / K)).topologicalClosure ≤
       E.fixingSubgroup
   apply Subgroup.topologicalClosure_minimal
   · rw [← E.restrictNormalHom_ker]
     exact
-      Abelianization.commutator_subset_ker
+      Group.Abelianization.commutator_le_ker
         (AlgEquiv.restrictNormalHom
           (F := K) (K₁ := SeparableClosure K) E)
   · exact E.fixingSubgroup_isClosed
@@ -170,9 +171,7 @@ noncomputable def finiteAbelianExtensionInMaximalAbelianExtension
     [FiniteDimensional K L] [IsAbelianGalois K L] :
     FiniteGaloisIntermediateField K (maximalAbelianExtension K) :=
   let j := finiteAbelianExtensionEmbeddingIntoMaximalAbelianExtension K L
-  { toIntermediateField := j.fieldRange
-    finiteDimensional := j.equivFieldRange.toLinearEquiv.finiteDimensional
-    isGalois := IsGalois.of_algEquiv j.equivFieldRange }
+  j.finiteGaloisFieldRange
 
 /-- The selected finite layer is canonically equivalent to the original
 finite abelian extension. -/

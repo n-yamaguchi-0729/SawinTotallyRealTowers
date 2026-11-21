@@ -57,18 +57,6 @@ theorem mk_eq_one_iff
       x ∈ Subgroup.closedCommutator G := by
   exact QuotientGroup.eq_one_iff (N := Subgroup.closedCommutator G) x
 
-/-- In a commutative \(T_1\) topological group, the closed commutator subgroup is trivial. -/
-@[simp] theorem closedCommutator_eq_bot_of_commGroup_t1
-    (G : Type u) [TopologicalSpace G] [CommGroup G] [IsTopologicalGroup G] [T1Space G] :
-    Subgroup.closedCommutator G = ⊥ := by
-  have hcomm : commutator G = ⊥ := by
-    rw [commutator_eq_bot_iff_center_eq_top, CommGroup.center_eq_top]
-  rw [Subgroup.closedCommutator, hcomm]
-  ext x
-  change x ∈ closure ({(1 : G)} : Set G) ↔ x = 1
-  rw [closure_singleton]
-  simp only [Set.mem_singleton_iff]
-
 /-- The canonical map to the topological abelianization is surjective. -/
 theorem surjective_mk
     (G : Type u) [TopologicalSpace G] [Group G] [IsTopologicalGroup G] :
@@ -316,7 +304,7 @@ theorem injective_mk_of_commGroup
     {G : Type u} [TopologicalSpace G] [CommGroup G] [IsTopologicalGroup G] [T1Space G] :
     Function.Injective (mk G) := by
   rw [← MonoidHom.ker_eq_bot_iff]
-  rw [ker_mk, closedCommutator_eq_bot_of_commGroup_t1]
+  rw [ker_mk, Subgroup.closedCommutator_eq_bot_of_commGroup_t1]
 
 /-- The canonical continuous equivalence for commutative \(T_1\) groups. -/
 noncomputable def continuousMulEquivOfCommGroup

@@ -40,7 +40,9 @@ open scoped ValuativeRel
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 open IsNonarchimedeanLocalField
 
-variable (K L : Type) [Field K] [Field L] [Algebra K L]
+universe u
+
+variable (K L : Type u) [Field K] [Field L] [Algebra K L]
   [FiniteDimensional K L] [IsGalois K L]
   [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [ValuativeRel L]

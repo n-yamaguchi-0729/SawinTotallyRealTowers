@@ -6,14 +6,19 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.GaloisAction
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceContraction
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceAutomorphism
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NormalClosure
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.Basic
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.AbsoluteValueConjugacy
 public import Mathlib.RingTheory.Ideal.GoingUp
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Nonarchimedean
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Theory.AbsoluteValues
 
@@ -48,56 +53,6 @@ variable
     {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
-
-/-- Contraction of a finite place of `L` to a finite place of `K`. -/
-noncomputable def finitePlaceBelow
-    (W : HeightOneSpectrum (𝓞 L)) :
-    HeightOneSpectrum (𝓞 K) where
-  asIdeal := W.asIdeal.under (𝓞 K)
-  isPrime := inferInstance
-  ne_bot :=
-    HilbertRamification.Dedekind.ringOfIntegers_under_ne_bot
-      (E := K) (F := L) W.asIdeal
-
-@[simp]
-theorem finitePlaceBelow_asIdeal
-    (W : HeightOneSpectrum (𝓞 L)) :
-    (finitePlaceBelow (K := K) W).asIdeal =
-      W.asIdeal.under (𝓞 K) :=
-  rfl
-
-/-- Contracting a finite place along the identity extension fixes it. -/
-@[simp]
-theorem finitePlaceBelow_self
-    (W : HeightOneSpectrum (𝓞 K)) :
-    finitePlaceBelow (K := K) W = W := by
-  apply HeightOneSpectrum.ext
-  change
-    W.asIdeal.comap (algebraMap (𝓞 K) (𝓞 K)) =
-      W.asIdeal
-  rw [Algebra.algebraMap_self, Ideal.comap_id]
-
-section Tower
-
-variable {M : Type w}
-    [Field M] [NumberField M]
-    [Algebra K M] [Algebra M L]
-    [IsScalarTower K M L]
-
-/-- Contraction of finite places is transitive in a tower of number
-fields. -/
-@[simp]
-theorem finitePlaceBelow_finitePlaceBelow
-    (W : HeightOneSpectrum (𝓞 L)) :
-    finitePlaceBelow (K := K)
-        (finitePlaceBelow (K := M) W) =
-      finitePlaceBelow (K := K) W := by
-  apply HeightOneSpectrum.ext
-  exact
-    Ideal.under_under
-      (A := 𝓞 K) (B := 𝓞 M) (C := 𝓞 L) W.asIdeal
-
-end Tower
 
 section Centre
 

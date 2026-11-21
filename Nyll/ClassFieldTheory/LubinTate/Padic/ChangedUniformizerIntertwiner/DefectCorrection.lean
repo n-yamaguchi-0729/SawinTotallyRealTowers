@@ -191,7 +191,7 @@ theorem padicCompletedMultiplicativeSeries_order
   constructor
   · rw [padicCompletedMultiplicativeSeries_coeff_one]
     exact
-      WittVector.p_nonzero p (AlgebraicClosure (ZMod p))
+      WittVector.p_ne_zero p (AlgebraicClosure (ZMod p))
   · intro i hi
     have hi0 : i = 0 := by omega
     subst i

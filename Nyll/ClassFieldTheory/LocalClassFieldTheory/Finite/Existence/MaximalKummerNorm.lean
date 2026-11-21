@@ -116,11 +116,11 @@ theorem powMonoidHom_range_le_maximalKummerNormSubgroup
   intro x hx
   obtain ⟨y, rfl⟩ :=
     (MonoidHom.mem_range (G := Kˣ)).1 hx
-  rw [← Universe.abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker,
+  rw [← abelianLocalArtinMonoidHom_ker K E, MonoidHom.mem_ker,
     powMonoidHom_apply, map_pow]
   exact kummerRadicalExtension_galois_pow_eq_one
     (K := K) (Omega := Omega) n hmu Delta.1
-      (Universe.abelianLocalArtinMonoidHom K E y)
+      (abelianLocalArtinMonoidHom K E y)
 
 /-- If the base field contains the `n`-th roots of unity, the norm subgroup
 of the maximal exponent-`n` Kummer extension is exactly `Kˣⁿ`. -/

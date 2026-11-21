@@ -186,7 +186,7 @@ theorem powerSeriesEquivLaurentInteger_coe
 theorem powerSeriesEquivLaurentInteger_X_irreducible :
     Irreducible
       (powerSeriesEquivLaurentInteger k (PowerSeries.X : k⟦X⟧)) :=
-  PowerSeries.X_irreducible.map (powerSeriesEquivLaurentInteger k)
+  PowerSeries.irreducible_X.map (powerSeriesEquivLaurentInteger k)
 
 /-- The canonical integer ring attached to the valuative relation induced by
 the Laurent valuation is the native valued-field integer ring. -/
@@ -236,7 +236,7 @@ theorem powerSeriesEquivLaurentValuativeInteger_X_irreducible :
       (powerSeriesEquivLaurentValuativeInteger k
         (PowerSeries.X : k⟦X⟧)) := by
   intro sharedOwner1
-  exact PowerSeries.X_irreducible.map
+  exact PowerSeries.irreducible_X.map
     (powerSeriesEquivLaurentValuativeInteger k)
 
 /-- The native valuation ring of a Laurent series field over a finite field

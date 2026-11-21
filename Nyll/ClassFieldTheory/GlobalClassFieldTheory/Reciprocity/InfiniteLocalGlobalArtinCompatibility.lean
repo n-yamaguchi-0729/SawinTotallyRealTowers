@@ -15,7 +15,7 @@ public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.Complexif
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.RamifiedOverextension
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.OverextensionArtin
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.ComplexificationArtin.InfinitePlaceCompatibility
-public import Mathlib.NumberTheory.NumberField.Completion.LiesOverInstances
+public import Mathlib.NumberTheory.NumberField.Completion.InfinitePlace
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -51,9 +51,8 @@ variable
     [FiniteDimensional K L] [IsAbelianGalois K L]
 
 omit [IsAbelianGalois K L] in
-/-- A determinant norm at one infinite place gives an actual global
-idele-class norm.  The witness is the relative idele supported at that
-place, transported to an ordinary idele of the extension field. -/
+/-- A determinant norm at one infinite place gives an ordinary idèle-class
+norm through the one-place inclusion. -/
 theorem infinitePlaceIdeleClass_mem_ideleClassNorm_range_of_mem_infiniteTensorNorm
     (v : InfinitePlace K)
     (x : v.Completionˣ)
@@ -62,27 +61,8 @@ theorem infinitePlaceIdeleClass_mem_ideleClassNorm_range_of_mem_infiniteTensorNo
         (K := K) (L := L) v) :
     IdeleGroup.infinitePlaceIdeleClass v x ∈
       (_root_.ideleClassNorm K L).range := by
-  have hnorm :
-      IdeleGroup.infinitePlaceIdele v x ∈
-        ideleNormSubgroup (K := K) (L := L) :=
-    (infinitePlaceIdele_mem_ideleNormSubgroup_iff
-      (K := K) (L := L) v x).2 hx
-  obtain ⟨z, hz⟩ := hnorm
-  refine
-    ⟨QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
-        (_root_.relativeIdeleBaseChangeMulEquiv
-          (K := K) (L := L) z), ?_⟩
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (IdeleGroup.norm K L
-          (_root_.relativeIdeleBaseChangeMulEquiv
-            (K := K) (L := L) z)) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (IdeleGroup.infinitePlaceIdele v x)
-  rw [IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv, hz]
+  have hnorm := (infinitePlaceIdele_mem_ideleNormSubgroup_iff (K := K) (L := L) v x).2 hx
+  exact ideleClassNorm_range_mem_mk_of_mem_ideleNorm_range K L (infinitePlaceIdele v x) hnorm
 
 omit [FiniteDimensional K L] in
 /-- Triviality of the actual chosen infinite-place Artin symbol is
@@ -244,7 +224,6 @@ theorem infinitePlaceIdeleClass_mem_ideleClassNorm_range_iff_of_unramified
           (K := K) (L := L) v hUnramified) x
   rw [hcompat]
 
-open scoped NumberField.LiesOver in
 omit [FiniteDimensional K L] in
 /-- At an actually ramified real place, negative one is not a local
 determinant norm.  This is the concrete real/complex norm obstruction:
@@ -262,6 +241,8 @@ theorem neg_one_not_mem_infiniteTensorNormSubgroup_of_ramified
     chosenInfinitePlaceAbove_comap (L := L) v
   let chosenInfinitePlaceLiesOver : w.1.LiesOver v.1 :=
     ⟨congrArg (fun q : InfinitePlace K => q.1) hw⟩
+  let : Algebra v.Completion w.Completion :=
+    AbsoluteValue.Completion.algebraOfLiesOver v.1 w.1
   rw [infiniteTensorNormSubgroup_eq_localNormSubgroup
     (K := K) (L := L) v w hw]
   rintro ⟨z, hz⟩

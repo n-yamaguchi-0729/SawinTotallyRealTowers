@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
 public import Nyll.SawinTotallyRealTowers.AbsoluteRealProPRestriction
 public import Nyll.SawinTotallyRealTowers.FiniteRealPExtension
@@ -13,7 +14,6 @@ public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside
 public import Nyll.SawinTotallyRealTowers.RamificationSupport
 public import Nyll.SawinTotallyRealTowers.RealCompositum
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteDiscreteKernelField
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceH2Localization
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaFixedUnramified

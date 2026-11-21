@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.Support
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RelativeSupport
 
 /-!
 # Coordinate assembly for relative adeles
@@ -157,7 +157,7 @@ noncomputable def relativeIdeleOfCoefficientFamilies
           (K := K) (L := L) a *
         relativeAdeleOfCoefficients
           (K := K) (L := L) b = 1) :
-    RelativeIdeleGroup K L :=
+    (RelativeAdeleRing K L)ˣ :=
   Units.mkOfMulEqOne
     (relativeAdeleOfCoefficients
       (K := K) (L := L) a)
@@ -178,7 +178,7 @@ theorem relativeIdeleOfCoefficientFamilies_coe
           (K := K) (L := L) b = 1) :
     ((relativeIdeleOfCoefficientFamilies
         (K := K) (L := L) a b hab :
-      RelativeIdeleGroup K L) :
+      (RelativeAdeleRing K L)ˣ) :
         RelativeAdeleRing K L) =
       relativeAdeleOfCoefficients
         (K := K) (L := L) a :=

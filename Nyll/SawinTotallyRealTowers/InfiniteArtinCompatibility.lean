@@ -6,11 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.AbsoluteRealKernelField
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalAbelianFiniteProjection
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteAbelianization
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
@@ -133,11 +133,14 @@ theorem absoluteInfinitePlaceArtinNegOne_maximalAbelian
   have hprojection : AlgEquiv.restrictNormalHom E
       (maximalAbelianGlobalArtin F (IdeleGroup.infinitePlaceIdeleClass v (-1 : v.Completionˣ))) =
       chosenInfinitePlaceArtinMonoidHom (K := F) (L := E) v (-1 : v.Completionˣ) := by
-    have hfinite := maximalAbelianGlobalArtin_finiteProjection F
-      (IdeleGroup.infinitePlaceIdele v (-1 : v.Completionˣ)) E
-    simp only [IdeleGroup.infinitePlaceIdeleClass, MonoidHom.comp_apply]
-    rw [hfinite]
-    apply globalArtinMonoidHom_infinitePlaceIdele (K := F) (L := E)
+    let x : v.Completionˣ := -1
+    let a := IdeleGroup.infinitePlaceIdele v x
+    have hc : IdeleGroup.infinitePlaceIdeleClass v x = IdeleGroup.toStandardClass F a :=
+      (IdeleGroup.toStandardClass_infinitePlaceIdele v x).symm
+    let f (b : IdeleClassGroup F) := AlgEquiv.restrictNormalHom E (maximalAbelianGlobalArtin F b)
+    have hFinite := maximalAbelianGlobalArtin_finiteProjection F a E
+    exact (congrArg f hc).trans (hFinite.trans
+      (globalArtinMonoidHom_infinitePlaceIdele (K := F) (L := E) v x))
   rw [hprojection]
   let i : E →ₐ[F] AlgebraicClosure F :=
     (separableClosure F (AlgebraicClosure F)).val.comp

@@ -33,31 +33,6 @@ variable (K L : Type) [Field K] [NumberField K]
 variable [Field L] [NumberField L] [Algebra K L]
 variable [FiniteDimensional K L] [IsGalois K L]
 
-omit [NumberField K] [NumberField L] [IsGalois K L] in
-private theorem localNormSubgroup_eq_globalFieldNormSubgroup :
-    localNormSubgroup K L = globalFieldNormSubgroup K L :=
-  rfl
-
-/-- The global norm quotient used by cyclic unit cohomology, identified with
-the source of the concrete Hasse norm diagonal. -/
-noncomputable def finiteCyclicNormQuotientEquivGlobalNormQuotient :
-    NormQuotient K L ≃*
-      Kˣ ⧸ globalFieldNormSubgroup K L :=
-  normQuotientEquivOfSubgroupEq K L
-    (globalFieldNormSubgroup K L)
-    (localNormSubgroup_eq_globalFieldNormSubgroup K L)
-
-omit [NumberField K] [NumberField L] [IsGalois K L] in
-@[simp]
-theorem finiteCyclicNormQuotientEquivGlobalNormQuotient_normClass
-    (a : Kˣ) :
-    finiteCyclicNormQuotientEquivGlobalNormQuotient K L
-        (normClass K L a) =
-      QuotientGroup.mk' (globalFieldNormSubgroup K L) a := by
-  exact normQuotientEquivOfSubgroupEq_normClass K L
-    (globalFieldNormSubgroup K L)
-    (localNormSubgroup_eq_globalFieldNormSubgroup K L) a
-
 /-- Degree-two cyclic unit cohomology localized at all places through the
 concrete Hasse norm diagonal. -/
 noncomputable def finiteCyclicUnitsH2HasseLocalization
@@ -69,7 +44,7 @@ noncomputable def finiteCyclicUnitsH2HasseLocalization
           allPlaceLocalNormCondition (K := K) (L := L)) :=
   (hasseNormDiagonal K L).toAdditive.comp
     ((MulEquiv.toAdditive
-      (finiteCyclicNormQuotientEquivGlobalNormQuotient K L)).toAddMonoidHom.comp
+      (normQuotientConcreteEquiv K L)).toAddMonoidHom.comp
         (finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom.hom.toAddMonoidHom)
 
 /-- On a normalized carry class with base-field coefficient, Hasse
@@ -95,7 +70,7 @@ theorem finiteCyclicUnitsH2HasseLocalization_carry_baseUnit
   apply Additive.toMul.injective
   change
     hasseNormDiagonal K L
-        (finiteCyclicNormQuotientEquivGlobalNormQuotient K L
+        (normQuotientConcreteEquiv K L
           (Additive.toMul
             ((finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom
               (groupCohomology.H2π (Rep.ofAlgebraAutOnUnits K L)
@@ -108,9 +83,9 @@ theorem finiteCyclicUnitsH2HasseLocalization_carry_baseUnit
   rw [finiteCyclicUnitsH2IsoNormQuotient_carry_baseUnit]
   change
     hasseNormDiagonal K L
-        (finiteCyclicNormQuotientEquivGlobalNormQuotient K L
+        (normQuotientConcreteEquiv K L
           (normClass K L a)) = _
-  rw [finiteCyclicNormQuotientEquivGlobalNormQuotient_normClass]
+  rw [normQuotientConcreteEquiv_normClass]
   exact hasseNormDiagonal_mk a
 
 /-- Hasse's norm theorem makes the cyclic unit-H² localization map
@@ -123,7 +98,7 @@ theorem finiteCyclicUnitsH2HasseLocalization_injective
   let : IsCyclic (Gal(L / K)) :=
     isCyclic_of_generator g hg
   exact (hasseNormDiagonal_injective_cyclic K L).comp
-    ((finiteCyclicNormQuotientEquivGlobalNormQuotient K L).injective.comp
+    ((normQuotientConcreteEquiv K L).injective.comp
       (ConcreteCategory.bijective_of_isIso
         (finiteCyclicUnitsH2IsoNormQuotient K L g hg).hom).1)
 

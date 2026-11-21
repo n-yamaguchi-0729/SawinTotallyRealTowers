@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Algebra.Group.Subgroup.Ker
 public import Mathlib.RingTheory.Norm.Transitivity
 
 /-!
@@ -43,6 +44,10 @@ theorem normUnits_apply_coe (x : Lˣ) :
     ((normUnits K L x : Kˣ) : K) = Algebra.norm K (x : L) :=
   rfl
 
+/-- The image of the field norm on unit groups. -/
+def localNormSubgroup : Subgroup Kˣ :=
+  (normUnits K L).range
+
 /-- Field norms on unit groups are transitive in a tower. -/
 theorem normUnits_tower
     (K : Type u) (M : Type v) (L : Type w)
@@ -52,6 +57,16 @@ theorem normUnits_tower
     normUnits K M (normUnits M L x) = normUnits K L x := by
   apply Units.ext
   exact Algebra.norm_norm
+
+/-- A norm down a tower already lies in the norm subgroup of each intermediate field. -/
+theorem localNormSubgroup_le_of_tower
+    (K : Type u) (M : Type v) (L : Type w)
+    [Field K] [Field M] [Field L]
+    [Algebra K M] [Algebra M L] [Algebra K L]
+    [IsScalarTower K M L] [Module.Free M L] :
+    localNormSubgroup K L ≤ localNormSubgroup K M := by
+  rintro x ⟨y, rfl⟩
+  exact ⟨normUnits M L y, normUnits_tower K M L y⟩
 
 end
 

@@ -8,6 +8,7 @@ module
 
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceRamifiedCharacterQuotient
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Self-dual empty-support cohomological H¹ cokernel
@@ -36,13 +37,9 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance emptySupportCohomologicalH1ZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance emptySupportCohomologicalH1Module
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Restriction at `v`, followed by passage to the ramified local character quotient. -/
 noncomputable def finitePlaceAbsoluteH1RamifiedQuotient

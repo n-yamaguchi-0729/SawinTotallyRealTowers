@@ -9,6 +9,7 @@ module
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.Induced
 public import Nyll.GaloisCohomology.Cyclic.IntegralShapiro
 public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseShapiro
+public import Nyll.GaloisCohomology.GroupTheory.ShapiroEvaluation
 public import Nyll.GaloisCohomology.Cyclic.IntegralShapiroComparison
 public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Shapiro
 public import Mathlib.RepresentationTheory.Homological.GroupCohomology.Functoriality
@@ -105,6 +106,33 @@ noncomputable def multiplicativeInducedCohomologyIso (i : ℕ) :
       groupCohomology (Rep.ofMulDistribMulAction H B) i :=
   (groupCohomology.functor ℤ G i).mapIso (multiplicativeInducedRepIsoCoind H B) ≪≫
     groupCohomology.coindIso (Rep.ofMulDistribMulAction H B) i
+
+/-- Evaluation at one on the actual induced multiplicative module. -/
+def multiplicativeInducedEvaluation :
+    Rep.res H.subtype (Rep.ofMulDistribMulAction G (InducedModule (B := B) H)) ⟶
+      Rep.ofMulDistribMulAction H B :=
+  (Rep.resFunctor H.subtype).map (multiplicativeInducedRepIsoCoind H B).hom ≫
+    Rep.coindEvaluation H.subtype (Rep.ofMulDistribMulAction H B)
+
+private theorem coindShapiro_comp_repIso {A : Rep ℤ H} {M : Rep ℤ G}
+    (e : M ≅ Rep.coind H.subtype A) (i : ℕ) :
+    ((groupCohomology.functor ℤ G i).mapIso e ≪≫ groupCohomology.coindIso A i).hom =
+      groupCohomology.map H.subtype
+        ((Rep.resFunctor H.subtype).map e.hom ≫ Rep.coindEvaluation H.subtype A) i := by
+  change (groupCohomology.functor ℤ G i).map e.hom ≫ (groupCohomology.coindIso A i).hom = _
+  rw [groupCohomology.functor_map, groupCohomology.coindIso_hom_eq_map]
+  exact (groupCohomology.map_comp (MonoidHom.id G) H.subtype e.hom
+    (Rep.coindEvaluation H.subtype A) i).symm
+
+/-- Shapiro for the actual multiplicative block restricts and evaluates the original cochain. -/
+theorem multiplicativeInducedCohomologyIso_hom_eq_map (i : ℕ) :
+    (multiplicativeInducedCohomologyIso H B i).hom =
+      groupCohomology.map H.subtype (multiplicativeInducedEvaluation H B) i :=
+  coindShapiro_comp_repIso H (multiplicativeInducedRepIsoCoind H B) i
+
+/-- The additive version of evaluation returns the same original value at one. -/
+theorem multiplicativeInducedEvaluation_apply (x : Additive (InducedModule (B := B) H)) :
+    multiplicativeInducedEvaluation H B x = Additive.ofMul (x.toMul.1 1) := rfl
 
 /-- The existing independent-universe Shapiro map recovers the original selected induced map. -/
 theorem multiplicativeInducedIntegralCohomologyIso_cohomologyIsoOriginal (i : ℕ) :

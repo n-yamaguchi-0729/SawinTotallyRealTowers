@@ -78,7 +78,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
   let m : RayClass.Modulus K :=
     RayClass.modulusInsideClosedFiniteIndex H hclosed
   let q : IdeleGroup K →* IdeleClassGroup K :=
-    QuotientGroup.mk' (IdeleGroup.principalSubgroup K)
+    IdeleGroup.toStandardClass K
   rintro _ ⟨a, ha, rfl⟩
   have ha' :=
     (mem_idelePowerLocalUnitSubgroup_iff
@@ -87,16 +87,13 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
   choose bS hbS using
     fun v : ↥S => ha'.2.1 v.1 v.2
   let b : IdeleGroup K :=
-    (ContinuousMulEquiv.piUnits.symm bInf,
-      IdeleGroup.finiteIdeleOfFinset S bS)
+    IdeleGroup.ofComponents (ContinuousMulEquiv.piUnits.symm bInf)
+      (IdeleGroup.finiteIdeleOfFinset S bS)
   let u : IdeleGroup K :=
     a * (b ^ (n : ℕ))⁻¹
   have hbInfComponent (w : InfinitePlace K) :
       IdeleGroup.infiniteComponent w b = bInf w := by
-    change
-      ContinuousMulEquiv.piUnits
-          (ContinuousMulEquiv.piUnits.symm bInf) w =
-        bInf w
+    simp only [IdeleGroup.infiniteComponent_apply, b, IdeleGroup.infinitePart_ofComponents]
     exact congrFun
       (ContinuousMulEquiv.piUnits.apply_symm_apply bInf) w
   have hbInfPow (w : InfinitePlace K) :
@@ -106,6 +103,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
   have hbFiniteComponent
       (v : ↥S) :
       IdeleGroup.finiteComponent v.1 b = bS v := by
+    simp only [IdeleGroup.finiteComponent_apply, b, IdeleGroup.finiteCoordinates_ofComponents]
     exact IdeleGroup.finiteIdeleOfFinset_apply_mem S bS v
   have hbFinitePow
       (v : ↥S) :
@@ -113,7 +111,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
         IdeleGroup.finiteComponent v.1 a := by
     exact hbS v
   have huInfinite :
-      u.1 ∈ m.infiniteCongruenceSubgroup := by
+      IdeleGroup.infinitePart u ∈ m.infiniteCongruenceSubgroup := by
     rw [RayClass.Modulus.mem_infiniteCongruenceSubgroup_iff_local]
     intro w
     have huComponent :
@@ -132,7 +130,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
     rw [huComponent]
     exact Subgroup.one_mem _
   have huFinite :
-      u.2 ∈ RayClass.finiteCongruenceSubgroup m.finitePart := by
+      IdeleGroup.finiteCoordinates u ∈ RayClass.finiteCongruenceSubgroup m.finitePart := by
     classical
     rw [RayClass.mem_finiteCongruenceSubgroup_iff]
     intro v
@@ -154,7 +152,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
             rw [hbFiniteComponent vS, hbFinitePow vS]
             exact mul_inv_cancel _
       change IdeleGroup.finiteComponent v u ∈
-        RayClass.localHigherUnitGroup v (m.finitePart v)
+        ClassFieldTheory.rayLocalHigherUnitGroup v (m.finitePart v)
       rw [huComponent]
       exact Subgroup.one_mem _
     · have hmv : m.finitePart v = 0 := by
@@ -162,6 +160,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
         exact hv (hS (Finsupp.mem_support_iff.mpr hmv))
       have hbComponent :
           IdeleGroup.finiteComponent v b = 1 := by
+        simp only [IdeleGroup.finiteComponent_apply, b, IdeleGroup.finiteCoordinates_ofComponents]
         exact
           IdeleGroup.finiteIdeleOfFinset_apply_notMem
             S bS v hv
@@ -171,8 +170,8 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
         simp only [u, map_mul, map_inv, map_pow,
           hbComponent, one_pow, inv_one, mul_one]
       change IdeleGroup.finiteComponent v u ∈
-        RayClass.localHigherUnitGroup v (m.finitePart v)
-      rw [hmv, RayClass.localHigherUnitGroup_zero,
+        ClassFieldTheory.rayLocalHigherUnitGroup v (m.finitePart v)
+      rw [hmv, ClassFieldTheory.rayLocalHigherUnitGroup_zero,
         huComponent]
       exact ha'.2.2 v (by simpa only [Finset.union_empty] using hv)
   have huCongruence :
@@ -190,9 +189,6 @@ theorem ideleClassPowerLocalUnitSubgroup_le_closedFiniteIndexSubgroup
   have hbPowH : q (b ^ (n : ℕ)) ∈ H := by
     change q (b ^ H.index) ∈ H
     rw [map_pow]
-    let : IsMulCommutative (IdeleClassGroup K) :=
-      ⟨⟨fun x y => mul_comm x y⟩⟩
-    let : H.Normal := H.normal_of_isMulCommutative
     exact H.pow_index_mem (q b)
   have haDecomposition :
       a = b ^ (n : ℕ) * u := by

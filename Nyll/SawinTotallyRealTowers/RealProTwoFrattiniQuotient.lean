@@ -50,7 +50,6 @@ noncomputable def maximalRealProTwo_powerCommutatorQuotientEquiv :
   let M : IntermediateField ℚ (AlgebraicClosure ℚ) :=
     maximalRealProPOutside 2 sawinRationalPrimeSupport
   let : IsGalois ℚ M := maximalRealProPOutside_isGalois 2 sawinRationalPrimeSupport
-  let : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   let N : ClosedSubgroup (M ≃ₐ[ℚ] M) :=
     ⟨closedPowerCommutator 2 (M ≃ₐ[ℚ] M),
       isClosed_closedPowerCommutator 2 (M ≃ₐ[ℚ] M)⟩

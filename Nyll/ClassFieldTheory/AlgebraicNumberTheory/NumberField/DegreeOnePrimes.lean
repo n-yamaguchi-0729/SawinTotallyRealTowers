@@ -33,7 +33,7 @@ prime ideal whose residue degree is one. -/
 theorem exists_degreeOnePrime_of_dvd_minpoly_eval
     (K : Type*) [Field K] [NumberField K]
     (θ : 𝓞 K) (q : ℕ) [Fact q.Prime]
-    (hGood : ¬ q ∣ RingOfIntegers.exponent θ)
+    (hGood : ¬ q ∣ NumberField.RingOfIntegers.exponent θ)
     (n : ℤ) (hn : (q : ℤ) ∣ (minpoly ℤ θ).eval n) :
     ∃ P : Ideal (𝓞 K), P.IsPrime ∧
       P.LiesOver (Ideal.span ({(q : ℤ)} : Set ℤ)) ∧
@@ -48,7 +48,7 @@ theorem exists_degreeOnePrime_of_dvd_minpoly_eval
       ((Int.castRingHom (ZMod q)) n) = 0
     rw [Polynomial.eval₂_at_apply]
     exact (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr hn
-  have hFactor : X - C (n : ZMod q) ∈ RingOfIntegers.monicFactorsMod θ q := by
+  have hFactor : X - C (n : ZMod q) ∈ NumberField.RingOfIntegers.monicFactorsMod θ q := by
     change X - C (n : ZMod q) ∈ (UniqueFactorizationMonoid.normalizedFactors f).toFinset
     rw [Multiset.mem_toFinset, Polynomial.mem_normalizedFactors_iff hf]
     exact ⟨Polynomial.irreducible_X_sub_C _, Polynomial.monic_X_sub_C _,
@@ -70,7 +70,7 @@ theorem exists_unramified_degreeOnePrime_not_mem
         W.asIdeal.inertiaDeg ℤ = 1 ∧ Algebra.IsUnramifiedAt ℤ W.asIdeal := by
   classical
   obtain ⟨θ, hθ⟩ := exists_integral_primitive_element K
-  have hExp : RingOfIntegers.exponent θ ≠ 0 := integralPrimitive_exponent_ne_zero K θ hθ
+  have hExp : NumberField.RingOfIntegers.exponent θ ≠ 0 := integralPrimitive_exponent_ne_zero K θ hθ
   let : Algebra (FractionRing ℤ) (FractionRing (𝓞 K)) :=
     FractionRing.liftAlgebra ℤ (FractionRing (𝓞 K))
   have hRam := AlgebraicNumberTheory.Ramification.finite_ramified_heightOne_primes ℤ (𝓞 K)
@@ -79,9 +79,9 @@ theorem exists_unramified_degreeOnePrime_not_mem
   let ram : Finset ℕ := hRamFinite.toFinset
   obtain ⟨q, hq, hqBad, n, _, hqn⟩ := exists_prime_not_mem_dvd_eval
     (minpoly ℤ θ) (minpoly.natDegree_pos θ.isIntegral).ne'
-    (bad ∪ (RingOfIntegers.exponent θ).divisors ∪ ram)
+    (bad ∪ (NumberField.RingOfIntegers.exponent θ).divisors ∪ ram)
   have : Fact q.Prime := ⟨hq⟩
-  have hGood : ¬ q ∣ RingOfIntegers.exponent θ := by
+  have hGood : ¬ q ∣ NumberField.RingOfIntegers.exponent θ := by
     intro hdiv
     apply hqBad
     exact Finset.mem_union_left _ (Finset.mem_union_right _ (Nat.mem_divisors.mpr ⟨hdiv, hExp⟩))

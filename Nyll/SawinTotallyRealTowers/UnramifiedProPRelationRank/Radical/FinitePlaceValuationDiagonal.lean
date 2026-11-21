@@ -87,11 +87,11 @@ variable (K : Type*) [Field K] [NumberField K]
 variable (p : ℕ) [Fact p.Prime]
 variable (v : HeightOneSpectrum (𝓞 K))
 
-local instance : ValuativeRel (v.adicCompletion K) :=
-  finitePlaceAdicCompletionValuativeRel K v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
 
-local instance : IsNonarchimedeanLocalField (v.adicCompletion K) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField K v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
 
 /-- Intrinsic local normalization is the distinguished adic valuation. -/
 theorem finitePlaceLocalIntegerValuation_eq :

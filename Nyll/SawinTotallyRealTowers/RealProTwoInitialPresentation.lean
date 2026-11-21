@@ -29,7 +29,6 @@ namespace ClassFieldTower.Sawin
 
 open ProCGroups ClassFieldTower.ProP
 
-private local instance initialPresentationPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
 attribute [local instance] maximalRealProPOutside_isGalois
 

@@ -83,26 +83,25 @@ automorphism of the metric completion of `(L,w)`. -/
 def valuationPreservingCompletionRingEquiv
     (σ : L ≃ₐ[K] L) (hσ : ∀ x : L, w.1 (σ x) = w.1 x) :
     w.1.Completion ≃+* w.1.Completion :=
-  UniformSpace.Completion.mapRingEquiv
-    (valuationPreservingWithAbsRingEquiv vK w σ)
-    (valuationPreservingWithAbsRingEquiv_isometry vK w σ hσ).continuous
-    (valuationPreservingWithAbsRingEquiv_symm_isometry vK w σ hσ).continuous
+  (AbsoluteValue.Completion.equiv w.1).trans
+    ((UniformSpace.Completion.mapRingEquiv
+      (valuationPreservingWithAbsRingEquiv vK w σ)
+      (valuationPreservingWithAbsRingEquiv_isometry vK w σ hσ).continuous
+      (valuationPreservingWithAbsRingEquiv_symm_isometry vK w σ hσ).continuous).trans
+      (AbsoluteValue.Completion.equiv w.1).symm)
 
 @[simp] theorem valuationPreservingCompletionRingEquiv_toCompletion
     (σ : L ≃ₐ[K] L) (hσ : ∀ x : L, w.1 (σ x) = w.1 x) (x : L) :
     valuationPreservingCompletionRingEquiv vK w σ hσ
         (AbsoluteValue.toCompletion w.1 x) =
       AbsoluteValue.toCompletion w.1 (σ x) := by
-  change
-    UniformSpace.Completion.mapRingEquiv
-          (valuationPreservingWithAbsRingEquiv vK w σ)
-          (valuationPreservingWithAbsRingEquiv_isometry vK w σ hσ).continuous
-          (valuationPreservingWithAbsRingEquiv_symm_isometry vK w σ hσ).continuous
-        (((WithAbs.equiv w.1).symm x : WithAbs w.1) : w.1.Completion) = _
-  rw [UniformSpace.Completion.mapRingEquiv_apply,
+  rw [AbsoluteValue.toCompletion_apply, AbsoluteValue.toCompletion_apply,
+    valuationPreservingCompletionRingEquiv, RingEquiv.trans_apply, RingEquiv.trans_apply,
+    AbsoluteValue.Completion.equiv_apply, AbsoluteValue.Completion.toCompletion_coe,
+    UniformSpace.Completion.mapRingEquiv_apply,
     UniformSpace.Completion.map_coe
-      (valuationPreservingWithAbsRingEquiv_isometry
-        vK w σ hσ).uniformContinuous]
+      (valuationPreservingWithAbsRingEquiv_isometry vK w σ hσ).uniformContinuous,
+    AbsoluteValue.Completion.equiv_symm_apply, AbsoluteValue.Completion.ofCompletion_coe]
   rfl
 
 /-- The extended automorphism fixes the embedded completed base field. -/
@@ -117,16 +116,20 @@ theorem valuationPreservingCompletionRingEquiv_completionMap
         valuationPreservingCompletionRingEquiv vK w σ hσ
           (AbsoluteValue.completionMap vK w.1 w.2 y)) =
         AbsoluteValue.completionMap vK w.1 w.2 := by
-    apply UniformSpace.Completion.ext
-    · exact UniformSpace.Completion.continuous_map.comp
-        (AbsoluteValue.completionMap_isometry vK w.1 w.2).continuous
+    apply AbsoluteValue.Completion.ext
+    · simp only [valuationPreservingCompletionRingEquiv, RingEquiv.trans_apply,
+        AbsoluteValue.Completion.equiv_apply, UniformSpace.Completion.mapRingEquiv_apply,
+        AbsoluteValue.Completion.equiv_symm_apply]
+      exact (AbsoluteValue.Completion.continuous_ofCompletion w.1).comp
+        (UniformSpace.Completion.continuous_map.comp
+          ((AbsoluteValue.Completion.continuous_toCompletion w.1).comp
+            (AbsoluteValue.completionMap_isometry vK w.1 w.2).continuous))
     · exact (AbsoluteValue.completionMap_isometry vK w.1 w.2).continuous
     · intro y
       have hy : (y : vK.Completion) =
           algebraMap K vK.Completion (WithAbs.equiv vK y) := by
-        rw [← AbsoluteValue.toCompletion_eq_algebraMap]
-        exact congrArg (fun z : WithAbs vK => (z : vK.Completion))
-          ((WithAbs.equiv vK).symm_apply_apply y).symm
+        rw [← AbsoluteValue.toCompletion_eq_algebraMap, AbsoluteValue.toCompletion_apply,
+          RingEquiv.symm_apply_apply]
       rw [hy, AbsoluteValue.completionMap_coe]
       change
         valuationPreservingCompletionRingEquiv vK w σ hσ

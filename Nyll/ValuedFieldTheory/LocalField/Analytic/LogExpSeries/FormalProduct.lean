@@ -1082,26 +1082,23 @@ theorem formalLogOnePlusProduct_alternating_sum_choose_eq_zero
       (∑ m ∈ Finset.range (a + 1),
         ((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ) *
           (Nat.choose (a + b - 1 - m) (a - 1) : ℚ)) =
-        Polynomial.coeff
-          (∑ m ∈ Finset.range (a + 1),
-            C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
-              P ^ (a + b - 1 - m)) (a - 1) := by
+        (∑ m ∈ Finset.range (a + 1),
+          C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
+            P ^ (a + b - 1 - m)).coeff (a - 1) := by
     have hsumcoeff :
-        Polynomial.coeff
-          (∑ m ∈ Finset.range (a + 1),
-            C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
-              P ^ (a + b - 1 - m)) (a - 1) =
+        (∑ m ∈ Finset.range (a + 1),
+          C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
+            P ^ (a + b - 1 - m)).coeff (a - 1) =
           ∑ m ∈ Finset.range (a + 1),
-            Polynomial.coeff
-              (C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
-                P ^ (a + b - 1 - m)) (a - 1) := by
+            (C (((-1 : ℚ) ^ m) * (Nat.choose a m : ℚ)) *
+              P ^ (a + b - 1 - m)).coeff (a - 1) := by
       rw [Polynomial.finsetSum_coeff]
     rw [hsumcoeff]
     apply Finset.sum_congr rfl
     intro m hm
     rw [Polynomial.coeff_C_mul]
     have hpowcoeff :
-        Polynomial.coeff (P ^ (a + b - 1 - m)) (a - 1) =
+        (P ^ (a + b - 1 - m)).coeff (a - 1) =
           (Nat.choose (a + b - 1 - m) (a - 1) : ℚ) := by
       dsimp [P]
       rw [Polynomial.coeff_X_add_one_pow]

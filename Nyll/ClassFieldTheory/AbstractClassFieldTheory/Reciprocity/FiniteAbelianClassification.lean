@@ -546,7 +546,7 @@ theorem classFieldCandidate_field_le
     (E : FiniteGaloisSubextension K) (A : Rep.{v} ℤ G)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
-      Additive (Abelianization E.extensionQuotient)) :
+      Additive (Group.Abelianization E.extensionQuotient)) :
     E.field.toSubgroup ≤
       (ClassFormation.FiniteGaloisSubextension.classFieldCandidate A E H rE).field.toSubgroup := by
   rw [classFieldCandidate_field A E H rE]
@@ -559,7 +559,7 @@ theorem classFieldCandidate_restriction_eq_one_iff
     (E : FiniteGaloisSubextension K) (A : Rep.{v} ℤ G)
     (H : AddSubgroup (ambientFixedAddSubgroup A K))
     (rE : FiniteNormQuotient A K E.field E.below ≃+
-      Additive (Abelianization E.extensionQuotient))
+      Additive (Group.Abelianization E.extensionQuotient))
     (q : E.extensionQuotient) :
     abstractReciprocityRestriction K
         (ClassFormation.FiniteGaloisSubextension.classFieldCandidate A E H rE).field E.field
@@ -585,11 +585,14 @@ theorem classFieldCandidate_restriction_eq_one_iff
           (E.intermediateField_le_base S) :=
       (mem_extensionSubgroup_iff K (E.intermediateField S)
         (E.intermediateField_le_base S) k).2 hkIntermediate
-    rw [E.extensionSubgroup_intermediateField_eq S] at hkIntermediateSubgroup
-    exact hkIntermediateSubgroup
+    have hsub := congrArg (fun J : Subgroup K.toSubgroup => k ∈ J)
+      (E.extensionSubgroup_intermediateField_eq S)
+    exact hsub.mp hkIntermediateSubgroup
   · intro hkS
-    have hkIntermediateSubgroup : k ∈ E.intermediateSubgroup S := hkS
-    rw [← E.extensionSubgroup_intermediateField_eq S] at hkIntermediateSubgroup
+    have hsub := congrArg (fun J : Subgroup K.toSubgroup => k ∈ J)
+      (E.extensionSubgroup_intermediateField_eq S)
+    have hkIntermediateSubgroup : k ∈ extensionSubgroup K (E.intermediateField S)
+        (E.intermediateField_le_base S) := hsub.mpr hkS
     have hkIntermediate : k.1 ∈ (E.intermediateField S).toSubgroup :=
       (mem_extensionSubgroup_iff K (E.intermediateField S)
         (E.intermediateField_le_base S) k).1 hkIntermediateSubgroup
@@ -611,9 +614,9 @@ private theorem classFieldCandidate_normSubgroup_eq_of_reciprocity
     (H : AddSubgroup (ambientFixedAddSubgroup A K.field))
     (hEH : ClassFormation.FiniteGaloisSubextension.normSubgroup A E ≤ H)
     (rE : FiniteNormQuotient A K.field E.field E.below ≃+
-      Additive (Abelianization E.extensionQuotient))
+      Additive (Group.Abelianization E.extensionQuotient))
     (hcompatE : ∀ q : E.extensionQuotient,
-      rE.symm (Additive.ofMul (Abelianization.of q)) =
+      rE.symm (Additive.ofMul (Group.Abelianization.of q)) =
         D.finiteReciprocityHom A v hAxiom K E.field E.below
           (Additive.ofMul q))
     (hbijM : Function.Bijective
@@ -642,11 +645,11 @@ private theorem classFieldCandidate_normSubgroup_eq_of_reciprocity
     reciprocityClass_mem_preimageSubgroup_iff A E H hEH rE a
   let zE : FiniteNormQuotient A K.field E.field E.below :=
     finiteNormClass A K.field E.field E.below a
-  let ab : Additive (Abelianization E.extensionQuotient) := rE zE
+  let ab : Additive (Group.Abelianization E.extensionQuotient) := rE zE
   let q : E.extensionQuotient := Quotient.out ab.toMul
   let zM : FiniteNormQuotient A K.field M.field M.below :=
     finiteNormClass A K.field M.field M.below a
-  have hab : Additive.ofMul (Abelianization.of q) = ab := by
+  have hab : Additive.ofMul (Group.Abelianization.of q) = ab := by
     apply Additive.ext
     exact Quotient.out_eq' ab.toMul
   have hrecE :
@@ -857,7 +860,7 @@ theorem classFieldCandidate_normSubgroup_eq
   let rE := D.normResidueSymbol A v hcf K E
   let M := ClassFormation.FiniteGaloisSubextension.classFieldCandidate A E H rE
   have hcompatE (q : E.extensionQuotient) :
-      rE.symm (Additive.ofMul (Abelianization.of q)) =
+      rE.symm (Additive.ofMul (Group.Abelianization.of q)) =
         D.finiteReciprocityHom A v hAxiom K E.field E.below
           (Additive.ofMul q) := by
     simpa only [rE, DegreeData.normResidueSymbol, AddEquiv.symm_symm] using

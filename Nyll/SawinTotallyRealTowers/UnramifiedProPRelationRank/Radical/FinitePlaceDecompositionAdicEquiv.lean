@@ -6,9 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+public import Nyll.GaloisCohomology.Topology.GaloisConjugation
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicMuPKummerComparison
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.SemilinearNaturality
-public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 
 /-!
 # The actual decomposition--adic Galois equivalence
@@ -53,14 +55,14 @@ noncomputable def finitePlaceCompletionAlgebraicClosureRingEquiv
     (v : HeightOneSpectrum (RingOfIntegers F)) :
     AlgebraicClosure (NumberField.HeightOneSpectrum.adicAbv F v).Completion ≃+*
       AlgebraicClosure (v.adicCompletion F) :=
-  IsAlgClosure.equivOfEquiv _ _ (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+  IsAlgClosure.equivOfEquiv _ _ (finitePlaceCompletionAlgEquiv v).toRingEquiv
 
 @[simp] theorem finitePlaceCompletionAlgebraicClosureRingEquiv_algebraMap
     (v : HeightOneSpectrum (RingOfIntegers F))
     (x : (NumberField.HeightOneSpectrum.adicAbv F v).Completion) :
     finitePlaceCompletionAlgebraicClosureRingEquiv F v (algebraMap _ _ x) =
       algebraMap (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F))
-        (relativeFinitePlaceCompletionAlgEquiv v x) :=
+        (finitePlaceCompletionAlgEquiv v x) :=
   IsAlgClosure.equivOfEquiv_algebraMap _ _ _ _
 
 /-- The completion-model comparison, with its explicit continuous inverse. -/
@@ -72,7 +74,7 @@ noncomputable def finitePlaceCompletionAbsoluteGaloisContinuousMulEquiv
   let C := (NumberField.HeightOneSpectrum.adicAbv F v).Completion
   let C' := v.adicCompletion F
   let c : C ≃+* C' :=
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+    (finitePlaceCompletionAlgEquiv v).toRingEquiv
   let e : AlgebraicClosure C ≃+* AlgebraicClosure C' :=
     finitePlaceCompletionAlgebraicClosureRingEquiv F v
   let g := LocalClassFieldTheory.semilinearGaloisGroupCongr C C'

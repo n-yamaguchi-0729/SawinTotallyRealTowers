@@ -6,8 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterFixedField
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedArtinKummerRange
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Unramified local reciprocity and the valuation line
@@ -33,15 +35,8 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance localReciprocityUnramifiedTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance localReciprocityUnramifiedDiscreteTopology : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance localReciprocityUnramifiedZModAddCommGroup : AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.commRing (n : ℕ)).toAddCommGroup
-local instance localReciprocityUnramifiedH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ZMod.addCommGroup
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Every unramified character evaluates through normalized valuation.
 The scalar is the finite character's actual arithmetic Frobenius value. -/

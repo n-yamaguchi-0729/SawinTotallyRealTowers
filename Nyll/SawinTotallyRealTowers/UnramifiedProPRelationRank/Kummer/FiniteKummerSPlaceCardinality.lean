@@ -95,10 +95,7 @@ variable (K L : Type) [Field K] [NumberField K]
 variable [Field L] [NumberField L] [Algebra K L]
 variable [FiniteDimensional K L] [IsGalois K L]
 
-local instance finiteKummerSPlaceCardinalityTensorAction
-    (v : HeightOneSpectrum (𝓞 K)) :
-    MulDistribMulAction Gal(L / K) (v.adicCompletion K ⊗[K] L)ˣ :=
-  scalarTensorUnitsAction (K := K) (L := L) (A := v.adicCompletion K)
+attribute [local instance] finitePlaceScalarTensorUnitsAction
 
 /-- The actual localized Kummer image lies in the product of the local
 n-torsion groups, so it is finite with at most `n ^ S.card` elements. -/

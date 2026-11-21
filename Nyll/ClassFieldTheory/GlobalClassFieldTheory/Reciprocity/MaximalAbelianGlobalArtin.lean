@@ -46,7 +46,7 @@ representative recovers the infinite global Artin map. -/
 @[simp]
 theorem maximalAbelianGlobalArtin_mk (a : IdeleGroup K) :
     maximalAbelianGlobalArtin K
-        (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a) =
+        (IdeleGroup.toStandardClass K a) =
       infiniteGlobalArtinMonoidHom K (maximalAbelianExtension K) a :=
   infiniteGlobalIdeleClassArtinMonoidHom_mk
     (K := K) (Ω := maximalAbelianExtension K) a
@@ -61,7 +61,7 @@ theorem maximalAbelianGlobalArtin_finiteProjection
     let : NumberField E := NumberField.of_module_finite K E
     AlgEquiv.restrictNormalHom E
         (maximalAbelianGlobalArtin K
-          (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) a)) =
+          (IdeleGroup.toStandardClass K a)) =
       globalArtinMonoidHom (K := K) (L := E) a := by
   intro sharedOwner1
   rw [maximalAbelianGlobalArtin_mk]

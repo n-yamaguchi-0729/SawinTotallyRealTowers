@@ -171,13 +171,15 @@ noncomputable instance baseFixingExtensionQuotient_finite_of_isSeparable
 
 end CosetsAndEmbeddings
 
-variable (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
+universe u v w
+
+variable (K : Type u) (Ω : Type v) [Field K] [Field Ω] [Algebra K Ω]
   [IsGalois K Ω] [IsSepClosed Ω]
 
 section NormAsProduct
 
 noncomputable local instance finiteSeparableAlgHomFintype
-    {k F T : Type} [Field k] [Field F] [Field T]
+    {k : Type u} {F : Type v} {T : Type w} [Field k] [Field F] [Field T]
     [Algebra k F] [Algebra k T]
     [FiniteDimensional k F] [Algebra.IsSeparable k F] :
     Fintype (F →ₐ[k] T) :=

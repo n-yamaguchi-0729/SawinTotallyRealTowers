@@ -9,6 +9,7 @@ module
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedArtinKummerLocalization
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # The empty-support unramified Artin--Kummer cokernel
@@ -38,9 +39,7 @@ open KummerTheory
 variable (K : Type) [Field K] [NumberField K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance emptySupportArtinKummerCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 /-- The kernel of actual unramified Artin--Kummer localization agrees
 with the kernel of arithmetic finite-valuation localization. -/

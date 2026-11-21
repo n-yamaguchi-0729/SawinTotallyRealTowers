@@ -100,7 +100,7 @@ theorem localHerbrandH0_card_eq_localDegree
       (tateCohomology
         (Rep.ofAlgebraAutOnUnits vK.Completion
           (LocalizedCompletion vK w)) 0) :=
-    hcard.finiteH0
+    hcard.finiteH0_original
   calc
     Nat.card
         (HerbrandH0
@@ -120,7 +120,7 @@ theorem localHerbrandH0_card_eq_localDegree
             (LocalizedCompletion vK w)) 0) := rfl
     _ = Module.finrank vK.Completion
         (LocalizedCompletion vK w) :=
-      hcard.cardH0
+      hcard.cardH0_original
 
 
 end LocalTateComparison

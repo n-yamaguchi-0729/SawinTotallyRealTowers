@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalTopology
+public import Nyll.ClassFieldTheory.Definitions.ConductorsAndRayClassFields.RayLocalHigherUnitGroup
 
 /-!
 # Finite ray-modulus data
@@ -34,70 +35,6 @@ namespace RayClass
 dividing the modulus. -/
 abbrev FiniteModulus (K : Type*) [Field K] [NumberField K] :=
   HeightOneSpectrum (𝓞 K) →₀ ℕ
-
-/-- Reduction of local integral units modulo the `n`-th power of the maximal
-ideal. -/
-def localHigherUnitMap
-    (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
-    (v.adicCompletionIntegers K).units →*
-      ((v.adicCompletionIntegers K) ⧸
-        (IsLocalRing.maximalIdeal
-          (v.adicCompletionIntegers K)) ^ n)ˣ :=
-  (Units.map
-      (Ideal.Quotient.mk
-        ((IsLocalRing.maximalIdeal
-          (v.adicCompletionIntegers K)) ^ n)).toMonoidHom).comp
-    (v.adicCompletionIntegers K).toSubmonoid.unitsEquivUnitsType.toMonoidHom
-
-/-- The local higher unit group `U_v^(n)`. -/
-def localHigherUnitGroup
-    (v : HeightOneSpectrum (𝓞 K)) (n : ℕ) :
-    Subgroup (v.adicCompletion K)ˣ :=
-  Subgroup.map
-    (v.adicCompletionIntegers K).units.subtype
-    (localHigherUnitMap v n).ker
-
-theorem mem_localHigherUnitGroup_iff
-    (v : HeightOneSpectrum (𝓞 K)) (n : ℕ)
-    (x : (v.adicCompletion K)ˣ) :
-    x ∈ localHigherUnitGroup v n ↔
-      ∃ y : (v.adicCompletionIntegers K).units,
-        (y : (v.adicCompletion K)ˣ) = x ∧
-        localHigherUnitMap v n y = 1 := by
-  rw [localHigherUnitGroup, Subgroup.mem_map]
-  constructor
-  · rintro ⟨y, hy, rfl⟩
-    exact ⟨y, rfl, MonoidHom.mem_ker.mp hy⟩
-  · rintro ⟨y, rfl, hy⟩
-    exact ⟨y, MonoidHom.mem_ker.mpr hy, rfl⟩
-
-/-- The zeroth higher unit group is the full group of local integral
-units. -/
-theorem localHigherUnitGroup_zero
-    (v : HeightOneSpectrum (𝓞 K)) :
-    localHigherUnitGroup v 0 =
-      (v.adicCompletionIntegers K).units := by
-  ext x
-  rw [mem_localHigherUnitGroup_iff]
-  constructor
-  · rintro ⟨y, rfl, _hy⟩
-    exact y.property
-  · intro hx
-    let y : (v.adicCompletionIntegers K).units := ⟨x, hx⟩
-    refine ⟨y, rfl, ?_⟩
-    change Units.map
-      (Ideal.Quotient.mk
-        ((IsLocalRing.maximalIdeal
-          (v.adicCompletionIntegers K)) ^ 0)).toMonoidHom
-        ((v.adicCompletionIntegers K).toSubmonoid.unitsEquivUnitsType y) =
-      1
-    let : Subsingleton
-        ((v.adicCompletionIntegers K) ⧸
-          (IsLocalRing.maximalIdeal
-            (v.adicCompletionIntegers K)) ^ 0) :=
-      Ideal.Quotient.subsingleton_iff.mpr (by rw [pow_zero, Ideal.one_eq_top])
-    apply Units.ext
-    exact Subsingleton.elim _ _
 
 /-- Positivity at a real infinite place.  At a complex place the condition
 is vacuous, so this is the whole local multiplicative group. -/
@@ -133,18 +70,18 @@ theorem mem_infinitePositiveSubgroup_iff
 /-- The finite idele congruence subgroup attached to a modulus. -/
 def finiteCongruenceSubgroup (m : FiniteModulus K) :
     Subgroup (FiniteIdeleGroup K) where
-  carrier := {a | ∀ v, a v ∈ localHigherUnitGroup v (m v)}
-  one_mem' v := (localHigherUnitGroup v (m v)).one_mem
+  carrier := {a | ∀ v, a v ∈ ClassFieldTheory.rayLocalHigherUnitGroup v (m v)}
+  one_mem' v := (ClassFieldTheory.rayLocalHigherUnitGroup v (m v)).one_mem
   mul_mem' ha hb v :=
-    (localHigherUnitGroup v (m v)).mul_mem (ha v) (hb v)
+    (ClassFieldTheory.rayLocalHigherUnitGroup v (m v)).mul_mem (ha v) (hb v)
   inv_mem' ha v :=
-    (localHigherUnitGroup v (m v)).inv_mem (ha v)
+    (ClassFieldTheory.rayLocalHigherUnitGroup v (m v)).inv_mem (ha v)
 
 @[simp]
 theorem mem_finiteCongruenceSubgroup_iff
     (m : FiniteModulus K) (a : FiniteIdeleGroup K) :
     a ∈ finiteCongruenceSubgroup m ↔
-      ∀ v, a v ∈ localHigherUnitGroup v (m v) :=
+      ∀ v, a v ∈ ClassFieldTheory.rayLocalHigherUnitGroup v (m v) :=
   Iff.rfl
 
 /-- Ideles positive at every real infinite place. -/

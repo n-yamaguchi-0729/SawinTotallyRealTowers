@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
@@ -23,17 +24,11 @@ open ClassFieldTower.ProP
 
 variable (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime]
 
-local instance finiteDecompositionRadicalTopology : TopologicalSpace (ZMod p) := ⊥
-local instance finiteDecompositionRadicalDiscrete : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
-local instance finiteDecompositionRadicalValuative (v : HeightOneSpectrum (𝓞 F)) :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
-local instance finiteDecompositionRadicalLocalField (v : HeightOneSpectrum (𝓞 F)) :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
-local instance finiteDecompositionRadicalModule
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) := continuousH1ZModModule
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 variable (S : Finset (HeightOneSpectrum (𝓞 F)))
 

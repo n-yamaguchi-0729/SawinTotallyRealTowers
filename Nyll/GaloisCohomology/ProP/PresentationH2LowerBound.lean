@@ -14,6 +14,7 @@ public import Nyll.GaloisCohomology.ProP.RelationRankH1
 public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Algebra.Module.ZMod
 public import Mathlib.LinearAlgebra.Dimension.Finite
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Relation rank as a lower bound for presentation target H²
@@ -40,23 +41,11 @@ universe u
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance presentationH2LowerCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
-local instance lowerBoundStageTargetTopology
-    {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    TopologicalSpace ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) := ⊥
-
-local instance lowerBoundStageTargetDiscrete
-    {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    DiscreteTopology ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) :=
-  discreteTopology_bot _
+attribute [local instance] finiteStageTargetTopology finiteStageTargetDiscrete
 
 /-- A nonempty relation family realizing the least relation count gives independent target H²
 classes. -/

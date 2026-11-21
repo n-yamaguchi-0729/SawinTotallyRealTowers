@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedProPCompositum
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.UnramifiedKummerFieldUnitsH2
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
@@ -52,7 +54,7 @@ theorem finiteUnramifiedExtension_absoluteH2Map_eq_zero
     (Cohomology.continuousCohomologyZModPMapLifted (n : ℕ)
       (finiteUnramifiedExtensionAbsoluteRestriction F n E) 2).hom x = 0 := by
   let : CompactSpace (Field.absoluteGaloisGroup F) :=
-    inferInstanceAs (CompactSpace Gal(AlgebraicClosure F/F))
+    Field.absoluteGaloisGroup.compactSpace F
   let D := finiteUnramifiedExtensionFiniteGaloisField F n E
   let z := degreeTwoCocycleRepresentative x
   let c := normalizedFiniteKummerTwoCocycle F n D z
@@ -60,8 +62,8 @@ theorem finiteUnramifiedExtension_absoluteH2Map_eq_zero
     F E.field n hmu E.isPGroup
     (fun _ => by
       apply chosenFinitePlaceIsUnramified_of_isUnramifiedAt
-      exact E.everywhereUnramified.finitePlaces _)
-    (fun v => E.everywhereUnramified.infinitePlaces.1
+      exact E.everywhereUnramified.1.atPrime _)
+    (fun v => E.everywhereUnramified.2.1
       (chosenInfinitePlaceAbove (L := E.field) v)) c
   obtain ⟨s, hs⟩ := exists_absoluteLift_of_finiteKummerTwoCocycle_boundary F n D hmu z b hb
   rw [← degreeTwoCocycleRepresentative_π x]

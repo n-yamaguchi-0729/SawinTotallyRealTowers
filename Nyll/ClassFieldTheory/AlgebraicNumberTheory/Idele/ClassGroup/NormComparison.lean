@@ -12,7 +12,8 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.Embedd
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.GaloisClassNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.RelativeNormComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
@@ -74,31 +75,6 @@ theorem classEmbedding_mk
         (RelativeIdeleGroup.ideleEmbedding f a) :=
   rfl
 
-/-- The Galois product formula after descent to relative idele classes. -/
-theorem classInclusion_ideleClassNorm_eq_prod_conjugates
-    [IsGalois K L]
-    (c : RelativeIdeleGroup.ClassGroup K L) :
-    RelativeIdeleGroup.classInclusion K L
-        (RelativeIdeleGroup.classNorm K L c) =
-      ∏ σ : L ≃ₐ[K] L, σ • c := by
-  refine QuotientGroup.induction_on c ?_
-  intro a
-  change
-    QuotientGroup.mk'
-        (RelativeIdeleGroup.principalSubgroup K L)
-        (RelativeIdeleGroup.inclusion K L
-          (RelativeIdeleGroup.norm K L a)) =
-      ∏ σ : L ≃ₐ[K] L,
-        QuotientGroup.mk'
-          (RelativeIdeleGroup.principalSubgroup K L)
-          (σ • a)
-  rw [RelativeIdeleGroup.inclusion_norm_eq_prod_conjugates]
-  exact map_prod
-    (QuotientGroup.mk'
-      (RelativeIdeleGroup.principalSubgroup K L))
-    (fun σ : L ≃ₐ[K] L => σ • a)
-    Finset.univ
-
 variable [Algebra L M] [IsScalarTower K L M] [IsGalois K M]
 
 local instance fixingSubextensionQuotientFintype :
@@ -118,6 +94,8 @@ theorem classInclusion_ideleClassNorm_eq_prod_embeddings
         RelativeIdeleGroup.classEmbedding f c := by
   refine QuotientGroup.induction_on c ?_
   intro a
+  rw [← QuotientGroup.mk'_apply (RelativeIdeleGroup.principalSubgroup K L) a,
+    RelativeIdeleGroup.classNorm_mk, RelativeIdeleGroup.classInclusion_mk]
   change
     QuotientGroup.mk'
         (RelativeIdeleGroup.principalSubgroup K M)
@@ -172,29 +150,6 @@ variable
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [IsGalois K L]
-
-omit [IsGalois K L] in
-/-- The relative determinant norm is the ordinary idele-class norm after
-the canonical base-change equivalence. -/
-@[simp]
-theorem ordinaryIdeleClassNorm_relativeIdeleClassBaseChange
-    (c : RelativeIdeleGroup.ClassGroup K L) :
-    _root_.ideleClassNorm K L
-        (relativeIdeleClassBaseChangeMulEquiv
-          (K := K) (L := L) c) =
-      RelativeIdeleGroup.classNorm K L c := by
-  refine QuotientGroup.induction_on c ?_
-  intro a
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (IdeleGroup.norm K L
-          (relativeIdeleBaseChangeMulEquiv
-            (K := K) (L := L) a)) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (RelativeIdeleGroup.norm K L a)
-  rw [IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv]
 
 omit [IsGalois K L] in
 /-- The ordinary and relative presentations define the same norm subgroup

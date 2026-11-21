@@ -27,6 +27,8 @@ vanishing to equality in the completed differential module.
 
 namespace CrowellExactSequence
 
+open _root_.CompletedGroupAlgebra (CompletedGroupAlgebraQuotientInClass)
+
 noncomputable section
 
 open scoped Topology

@@ -6,11 +6,14 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceAlgebraicLocalizationAlgClosure
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalUnramifiedH2Vanishing
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationInertiaAlgEquiv
-public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.ContinuousQuotientEquiv
+public import Nyll.ProCGroups.Topologies.ContinuousQuotientEquiv
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.AbsoluteGalois.InfiniteGaloisCorrespondence
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.LocalizationRamificationGroups
@@ -297,6 +300,41 @@ theorem localResidueDegree_ker_eq_valuationInertiaGroupInAut
     rw [← htau_eq]
     exact htau_ker
 
+private theorem finitePlaceDecompositionTransport_abs_apply
+    (F : Type) [Field F] [NumberField F]
+    (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
+    (sigma : finitePlaceAbsoluteDecompositionGroup F v) :
+    let vF := NumberField.HeightOneSpectrum.adicAbv F v
+    let w := finitePlaceAbsoluteValueExtension F v
+    let hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
+    let : SMul F w.1.Completion := hF.toSMul
+    let := AbsoluteValue.completionAlgebra vF w.1 w.2
+    finitePlaceDecompositionGroupContinuousMulEquivAbsoluteGaloisGroup F v sigma =
+      AlgEquiv.autCongr
+        (absoluteValueAlgebraicLocalizationAlgEquivAlgebraicClosure vF
+          (RayClass.adicAbv_isNontrivial v)
+          (NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v) w)
+        (decompositionGroupEquivAlgebraicLocalizationAut
+          vF (RayClass.adicAbv_isNontrivial v) w sigma) := by
+  intro vF w hF smulF completionAlgebra
+  dsimp only [finitePlaceDecompositionGroupContinuousMulEquivAbsoluteGaloisGroup,
+    absoluteValueDecompositionGroupContinuousMulEquivAbsoluteGaloisGroup,
+    absoluteValueAlgebraicLocalizationAlgEquivAlgebraicClosure,
+    ContinuousMulEquiv.trans_apply,
+    decompositionGroupContinuousMulEquivAlgebraicLocalizationAut,
+    Field.absoluteGaloisGroup, Field.instGroupAbsoluteGaloisGroup,
+    Field.instTopologicalSpaceAbsoluteGaloisGroup, ContinuousMulEquiv.coe_mk]; rfl
+
+private theorem finitePlaceDecompositionTransport_sep_apply
+    (F : Type) [Field F] [NumberField F]
+    (v : HeightOneSpectrum (NumberField.RingOfIntegers F))
+    (sigma : finitePlaceAbsoluteDecompositionGroup F v) :
+    finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup F v sigma =
+      RamificationTheory.Field.absoluteGaloisGroup.separableClosureMulEquiv
+        (NumberField.HeightOneSpectrum.adicAbv F v).Completion
+        (finitePlaceDecompositionGroupContinuousMulEquivAbsoluteGaloisGroup F v sigma) :=
+  rfl
+
 /-- The B17 finite-place comparison followed by restriction to the separable
 closure is conjugation by the corresponding composite algebra equivalence. -/
 theorem finitePlaceDecompositionTransport_apply
@@ -305,21 +343,17 @@ theorem finitePlaceDecompositionTransport_apply
     (sigma : finitePlaceAbsoluteDecompositionGroup F v) :
     let vF := NumberField.HeightOneSpectrum.adicAbv F v
     let w := finitePlaceAbsoluteValueExtension F v
-    letI hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
-    letI : SMul F w.1.Completion := hF.toSMul
-    letI := AbsoluteValue.completionAlgebra vF w.1 w.2
+    let hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
+    let : SMul F w.1.Completion := hF.toSMul
+    let := AbsoluteValue.completionAlgebra vF w.1 w.2
     finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
         F v sigma =
       AlgEquiv.autCongr
         (finitePlaceAlgebraicLocalizationAlgEquivSeparableClosure F v)
         (decompositionGroupEquivAlgebraicLocalizationAut
           vF (RayClass.adicAbv_isNontrivial v) w sigma) := by
-  intro vF
+  intro vF w hF smulF completionAlgebra
   let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
-  let w := finitePlaceAbsoluteValueExtension F v
-  let hF := AbsoluteValue.extensionCompletionAlgebra (K := F) w.1
-  let _ : SMul F w.1.Completion := hF.toSMul
-  let _ := AbsoluteValue.completionAlgebra vF w.1 w.2
   let E := AbsoluteValue.algebraicLocalization vF w.1 w.2
   let _ : Module.IsTorsionFree vF.Completion E :=
     fieldAlgebra_isTorsionFree_forInertiaTransport
@@ -334,19 +368,13 @@ theorem finitePlaceDecompositionTransport_apply
   let eAS : AlgebraicClosure vF.Completion ≃ₐ[vF.Completion]
       SeparableClosure vF.Completion :=
     algebraicClosureAlgEquivSeparableClosure vF.Completion
-  change
-    RamificationTheory.Field.absoluteGaloisGroup.separableClosureMulEquiv
-        vF.Completion
-        (AlgEquiv.autCongr eEA
-          (decompositionGroupEquivAlgebraicLocalizationAut
-            vF (RayClass.adicAbv_isNontrivial v) w sigma)) =
-      AlgEquiv.autCongr (eEA.trans eAS)
-        (decompositionGroupEquivAlgebraicLocalizationAut
-          vF (RayClass.adicAbv_isNontrivial v) w sigma)
-  rw [← autCongr_algebraicClosureAlgEquivSeparableClosure]
-  exact DFunLike.congr_fun (AlgEquiv.autCongr_trans eEA eAS)
-    (decompositionGroupEquivAlgebraicLocalizationAut
-      vF (RayClass.adicAbv_isNontrivial v) w sigma)
+  let sigmaE :=
+    decompositionGroupEquivAlgebraicLocalizationAut vF (RayClass.adicAbv_isNontrivial v) w sigma
+  have hAbs := finitePlaceDecompositionTransport_abs_apply F v sigma
+  have hSep := finitePlaceDecompositionTransport_sep_apply F v sigma
+  have hConj := DFunLike.congr_fun (AlgEquiv.autCongr_trans eEA eAS) sigmaE
+  rw [← autCongr_algebraicClosureAlgEquivSeparableClosure] at hSep
+  exact hSep.trans ((congrArg (AlgEquiv.autCongr eAS) hAbs).trans hConj)
 
 /-- The chosen finite-place comparison detects exactly the original absolute
 inertia elements. -/
@@ -531,7 +559,7 @@ noncomputable def finitePlaceUnramifiedQuotientContinuousMulEquiv
       LocalUnramifiedGaloisQuotient vF.Completion := by
   intro vF hvFna sharedOwner3 sharedOwner4 sharedOwner5
   exact
-    LocalFieldTheory.QuotientGroup.continuousCongr
+    ProCGroups.QuotientGroup.congrₜ
       (finitePlaceAbsoluteInertiaSubgroup F v)
       (MonoidHom.ker (localResidueDegree vF.Completion).toMonoidHom)
       (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
@@ -558,7 +586,7 @@ theorem finitePlaceUnramifiedQuotientContinuousMulEquiv_mk
         (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
           F v sigma) := by
   intro vF hvFna sharedOwner3 sharedOwner4 sharedOwner5
-  exact LocalFieldTheory.QuotientGroup.continuousCongr_mk
+  exact ProCGroups.QuotientGroup.congrₜ_mk
     (finitePlaceAbsoluteInertiaSubgroup F v)
     (MonoidHom.ker (localResidueDegree vF.Completion).toMonoidHom)
     (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup

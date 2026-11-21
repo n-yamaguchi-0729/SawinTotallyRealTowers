@@ -851,6 +851,10 @@ noncomputable def
     numberFieldTowerFinitePadicCyclicFixedSubgroup_extension_normal
       (K := K) (L := L) p τ
   finite := by
+    change Finite ((numberFieldTowerBaseSubgroup K L).toSubgroup ⧸
+      extensionSubgroup (numberFieldTowerBaseSubgroup K L)
+        (numberFieldTowerFinitePadicCyclicFixedSubgroup (K := K) (L := L) p τ)
+        (numberFieldTowerFinitePadicCyclicFixedSubgroup_le_baseSubgroup (K := K) (L := L) p τ))
     rw [
       numberFieldTowerFinitePadicCyclicFixedSubgroup_extensionSubgroup
         (K := K) (L := L) p τ]

@@ -9,6 +9,7 @@ module
 public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
 public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PrimeElements
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
 public import Nyll.GaloisCohomology.Cyclic.TateComparison
 public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
@@ -40,28 +41,30 @@ section Generic
 
 variable {G : Type u} [Group G] [TopologicalSpace G]
 
-/-- A finite cyclic extension of a bundled finite abstract field.  The
-generator and its cyclicity proof travel with the finite normal extension. -/
-structure FiniteCyclicSubextension (K : FiniteAbstractField G) where
-  /-- The closed subgroup representing the top field. -/
-  field : ClosedSubgroup G
-  /-- The top-field subgroup is contained in the base-field subgroup. -/
-  below : field.toSubgroup ≤ K.field.toSubgroup
-  /-- The top-field subgroup is normal inside the base-field subgroup. -/
-  normal : (extensionSubgroup K.field field below).Normal
-  /-- The relative Galois quotient is finite. -/
-  finite : Finite (K.field.toSubgroup ⧸
-    extensionSubgroup K.field field below)
-  /-- A chosen generator of the relative Galois quotient. -/
-  generator : K.field.toSubgroup ⧸ extensionSubgroup K.field field below
-  /-- Every quotient element is a power of the chosen generator. -/
-  generates : ∀ x, x ∈ Subgroup.zpowers generator
+/-- A finite cyclic extension of a bundled finite abstract field.
+Cyclicity is intrinsic; computations supply their generator explicitly. -/
+structure FiniteCyclicSubextension (K : FiniteAbstractField G)
+    extends FiniteGaloisSubextension K.field where
+  /-- The relative Galois quotient is cyclic, without a chosen generator. -/
+  cyclic : IsCyclic (K.field.toSubgroup ⧸ extensionSubgroup K.field field below)
 
 namespace FiniteCyclicSubextension
 
 variable {K : FiniteAbstractField G}
 
-/-- Forget the cyclic generator and normality, retaining the underlying finite
+/-- A finite cyclic subextension is determined by its closed subgroup. -/
+@[ext]
+theorem ext {E₁ E₂ : FiniteCyclicSubextension K}
+    (h : E₁.field = E₂.field) : E₁ = E₂ := by
+  cases E₁ with
+  | mk L₁ h₁ =>
+    cases E₂ with
+    | mk L₂ h₂ =>
+      have hL : L₁ = L₂ := FiniteGaloisSubextension.ext h
+      cases hL
+      rfl
+
+/-- Forget cyclicity and normality, retaining the underlying finite
 abstract extension. -/
 @[implicit_reducible]
 def toFiniteAbstractExtension (E : FiniteCyclicSubextension K) :
@@ -100,6 +103,11 @@ instance (E : FiniteCyclicSubextension K) :
     Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
   E.finite
 
+/-- A finite cyclic subextension supplies intrinsic cyclicity of its quotient. -/
+instance (E : FiniteCyclicSubextension K) :
+    IsCyclic (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
+  E.cyclic
+
 /-- The finite quotient of a cyclic subextension carries its canonical `Fintype`. -/
 noncomputable instance (E : FiniteCyclicSubextension K) :
     Fintype (K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :=
@@ -119,11 +127,15 @@ end Generic
 variable {G : Type u} [Group G] [TopologicalSpace G]
 variable {D : DegreeData G} {A : Rep.{v} ℤ G}
 
-/-- A finite cyclic extension together with the assertion that it is
-unramified for the fixed degree datum. -/
+/-- A finite unramified cyclic extension with a chosen generator for the
+unramified norm and Frobenius computations. -/
 structure FiniteUnramifiedCyclicExtension
     (D : DegreeData G) (K : FiniteAbstractField G)
     extends FiniteCyclicSubextension K where
+  /-- The chosen generator used in the unramified computations. -/
+  generator : K.field.toSubgroup ⧸ extensionSubgroup K.field field below
+  /-- Every quotient element is a power of the chosen generator. -/
+  generates : ∀ x, x ∈ Subgroup.zpowers generator
   /-- The underlying finite cyclic extension is unramified for `D`. -/
   unramified : toFiniteCyclicSubextension.IsUnramified D
 
@@ -275,7 +287,7 @@ noncomputable def unitRepresentationOverK
       map_one' := by
         ext u
         change A.ρ (1 : G) u.1.1 = u.1.1
-        simp only [map_one, Module.End.one_apply]
+        simp only [map_one, one_apply_eq_self]
       map_mul' := by
         intro k₁ k₂
         ext u

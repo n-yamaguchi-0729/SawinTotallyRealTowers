@@ -8,7 +8,8 @@ module
 
 public import Mathlib.SetTheory.Cardinal.Finite
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.CohomologyBridge
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.Hilbert90
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.IntegralTateComparison
+public import Nyll.GaloisCohomology.Cyclic.MultiplicativeHilbert90
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValuationHerbrand
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ValueGroupCohomology
 
@@ -35,6 +36,106 @@ noncomputable section
 open scoped ValuativeRel
 open CyclicCohomology.ProfiniteCohomology.Herbrand
 open IsNonarchimedeanLocalField
+
+/-- Hilbert 90 kills each degree-minus-one representative for the original unit action. -/
+theorem fieldUnits_herbrandHMinusOne_card_of_generator
+    (K L : Type*) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
+    (g : Gal(L/K)) (hg : ∀ σ : Gal(L/K), σ ∈ Subgroup.zpowers g) :
+    let _ := galoisGroupFieldUnitsMulDistribMulAction K L
+    Nat.card (HerbrandHMinusOne (Gal(L/K)) Lˣ g) = 1 := by
+  intro unitsAction
+  have heq (q : HerbrandHMinusOne (Gal(L/K)) Lˣ g) : q = 1 := by
+    obtain ⟨a, rfl⟩ := HerbrandHMinusOne.mk_surjective (G := Gal(L/K)) (A := Lˣ) g q
+    apply (HerbrandHMinusOne.mk_eq_one_iff g a).2
+    obtain ⟨b, hb⟩ := exists_unit_coboundary_of_tateNorm_eq_one g hg a.1 a.2
+    refine ⟨b, ?_⟩
+    change g • b * b⁻¹ = a.1
+    exact (div_eq_mul_inv _ _).symm.trans hb
+  let : Subsingleton (HerbrandHMinusOne (Gal(L/K)) Lˣ g) :=
+    ⟨fun x y => (heq x).trans (heq y).symm⟩
+  exact Nat.card_unique
+
+section Arithmetic
+
+universe u
+
+variable (K L : Type u) [Field K] [ValuativeRel K]
+  [Field L] [ValuativeRel L] [TopologicalSpace L]
+  [IsNonarchimedeanLocalField L] [Algebra K L] [FiniteDimensional K L]
+  [IsGalois K L]
+  [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
+  [IsIntegralClosure (ValuativeRel.valuation L).integer
+    (ValuativeRel.valuation K).integer L]
+
+/-- Final Herbrand calculation for the local class-field axiom.  Multiplicativity for the
+valuation sequence, the normal-basis result `h(G,O_Lˣ)=1`, the value-group
+calculation, and Hilbert 90 imply the two asserted cardinalities for the
+actual Tate cohomology of `Lˣ`. -/
+theorem fieldUnits_integralTate_card_of_integerUnits_herbrand_eq_one
+    (g : Gal(L/K))
+    (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
+    (hU :
+      letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+      HerbrandQuotientDefined (Gal(L / K))
+        (ValuativeRel.valuation L).integerˣ g)
+    (hU_one :
+      letI := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+      @herbrandQuotient (Gal(L / K))
+          (ValuativeRel.valuation L).integerˣ _ _ _
+          (galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L)
+          g hU.1 hU.2 = 1) :
+    Nat.card (IntegralGroupCohomology.Universe.tate (Rep.ofAlgebraAutOnUnits K L) 0) =
+        Module.finrank K L ∧
+      Nat.card (IntegralGroupCohomology.Universe.tate (Rep.ofAlgebraAutOnUnits K L) (-1)) =
+        1 := by
+  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
+  let := galoisGroupFieldUnitsMulDistribMulAction K L
+  let := galoisGroupValueGroupMulDistribMulAction K L
+  let hZ : HerbrandQuotientDefined
+      (Gal(L / K)) (Multiplicative Int) g :=
+    galoisGroupValueGroup_herbrandQuotientDefined K L g
+  rcases valuationHerbrand_multiplicativity_of_integerUnits_defined
+      K L g hg hU with ⟨hField, hmult⟩
+  let : Finite (HerbrandH0 (Gal(L / K)) Lˣ) := hField.1
+  let : Finite (HerbrandHMinusOne (Gal(L / K)) Lˣ g) := hField.2
+  let : Finite
+      (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) := hZ.1
+  let : Finite
+      (HerbrandHMinusOne (Gal(L / K)) (Multiplicative Int) g) := hZ.2
+  have hZ0 :
+      Nat.card (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) =
+        Module.finrank K L :=
+    galoisGroupValueGroup_herbrandH0_card_eq_finrank K L
+  have hZm1 :
+      Nat.card (HerbrandHMinusOne
+        (Gal(L / K)) (Multiplicative Int) g) = 1 :=
+    galoisGroupValueGroup_herbrandHMinusOne_card_eq_one K L g
+  have hZ_one :
+      @herbrandQuotient (Gal(L / K)) (Multiplicative Int) _ _ _
+          (galoisGroupValueGroupMulDistribMulAction K L) g hZ.1 hZ.2 =
+        (Module.finrank K L : ℚ) := by
+    rw [herbrandQuotient_eq_card_ratio, hZ0, hZm1, Nat.cast_one, div_one]
+  have hm1_field : Nat.card (HerbrandHMinusOne (Gal(L/K)) Lˣ g) = 1 :=
+    fieldUnits_herbrandHMinusOne_card_of_generator K L g hg
+  have hField_quotient :
+      @herbrandQuotient (Gal(L / K)) Lˣ _ _ _
+          (galoisGroupFieldUnitsMulDistribMulAction K L)
+          g hField.1 hField.2 = (Module.finrank K L : ℚ) := by
+    rw [hmult, hU_one, hZ_one, one_mul]
+  have h0_field_rat :
+      (Nat.card (HerbrandH0 (Gal(L / K)) Lˣ) : ℚ) =
+        (Module.finrank K L : ℚ) := by
+    rw [← hField_quotient, herbrandQuotient_eq_card_ratio, hm1_field,
+      Nat.cast_one, div_one]
+  have h0_field :
+      Nat.card (HerbrandH0 (Gal(L / K)) Lˣ) = Module.finrank K L := by
+    exact_mod_cast h0_field_rat
+  let e0 := integralTateH0EquivHerbrandH0 (A := Lˣ) g hg
+  let em := integralTateHMinusOneEquivHerbrandHMinusOne (A := Lˣ) g hg
+  exact ⟨(Nat.card_congr e0.toEquiv).trans h0_field,
+    (Nat.card_congr em.toEquiv).trans hm1_field⟩
+
+end Arithmetic
 
 variable (K L : Type) [Field K] [ValuativeRel K]
   [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -65,10 +166,7 @@ theorem unitsTateH0FiniteOfIntegerUnitsHerbrand
   exact Finite.of_equiv (HerbrandH0 (Gal(L / K)) Lˣ)
     (herbrandH0EquivTateCohomologyZero K L)
 
-/-- Final Herbrand calculation for the local class-field axiom.  Multiplicativity for the
-valuation sequence, the normal-basis result `h(G,O_Lˣ)=1`, the value-group
-calculation, and Hilbert 90 imply the two asserted cardinalities for the
-actual Tate cohomology of `Lˣ`. -/
+/-- The original universe-zero Tate groups have the same field-unit cardinalities. -/
 theorem fieldUnits_tate_card_of_integerUnits_herbrand_eq_one
     (g : Gal(L/K))
     (hg : ∀ σ : Gal(L / K), σ ∈ Subgroup.zpowers g)
@@ -85,57 +183,10 @@ theorem fieldUnits_tate_card_of_integerUnits_herbrand_eq_one
     letI := unitsTateH0FiniteOfIntegerUnitsHerbrand K L g hg hU
     Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) = Module.finrank K L ∧
       Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) = 1 := by
-  let := galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure K L
-  let := galoisGroupFieldUnitsMulDistribMulAction K L
-  let := galoisGroupValueGroupMulDistribMulAction K L
-  let hZ : HerbrandQuotientDefined
-      (Gal(L / K)) (Multiplicative Int) g :=
-    galoisGroupValueGroup_herbrandQuotientDefined K L g
-  rcases valuationHerbrand_multiplicativity_of_integerUnits_defined
-      K L g hg hU with ⟨hField, hmult⟩
-  let : Finite (HerbrandH0 (Gal(L / K)) Lˣ) := hField.1
-  let : Finite (HerbrandHMinusOne (Gal(L / K)) Lˣ g) := hField.2
-  let : Finite
-      (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) := hZ.1
-  let : Finite
-      (HerbrandHMinusOne (Gal(L / K)) (Multiplicative Int) g) := hZ.2
-  have hZ0 :
-      Nat.card (HerbrandH0 (Gal(L / K)) (Multiplicative Int)) =
-        Module.finrank K L :=
-    galoisGroupValueGroup_herbrandH0_card_eq_finrank K L
-  have hZm1 :
-      Nat.card (HerbrandHMinusOne
-        (Gal(L / K)) (Multiplicative Int) g) = 1 :=
-    galoisGroupValueGroup_herbrandHMinusOne_card_eq_one K L g
-  have hZ_one :
-      @herbrandQuotient (Gal(L / K)) (Multiplicative Int) _ _ _
-          (galoisGroupValueGroupMulDistribMulAction K L) g hZ.1 hZ.2 =
-        (Module.finrank K L : ℚ) := by
-    rw [herbrandQuotient_eq_card_ratio, hZ0, hZm1, Nat.cast_one, div_one]
-  have hm1_actual :
-      Nat.card (tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1)) = 1 :=
-    unitsTateHminusOne_card_eq_one K L g hg
-  have hm1_field :
-      Nat.card (HerbrandHMinusOne (Gal(L / K)) Lˣ g) = 1 := by
-    exact (Nat.card_congr
-      (herbrandHminusOneEquivUnitsTateHminusOne K L g hg)).trans hm1_actual
-  have hField_quotient :
-      @herbrandQuotient (Gal(L / K)) Lˣ _ _ _
-          (galoisGroupFieldUnitsMulDistribMulAction K L)
-          g hField.1 hField.2 = (Module.finrank K L : ℚ) := by
-    rw [hmult, hU_one, hZ_one, one_mul]
-  have h0_field_rat :
-      (Nat.card (HerbrandH0 (Gal(L / K)) Lˣ) : ℚ) =
-        (Module.finrank K L : ℚ) := by
-    rw [← hField_quotient, herbrandQuotient_eq_card_ratio, hm1_field,
-      Nat.cast_one, div_one]
-  have h0_field :
-      Nat.card (HerbrandH0 (Gal(L / K)) Lˣ) = Module.finrank K L := by
-    exact_mod_cast h0_field_rat
-  constructor
-  · exact
-      (Nat.card_congr (herbrandH0EquivTateCohomologyZero K L)).symm.trans h0_field
-  · exact hm1_actual
+  let M := Rep.ofAlgebraAutOnUnits K L
+  have h := fieldUnits_integralTate_card_of_integerUnits_herbrand_eq_one K L g hg hU hU_one
+  exact ⟨(IntegralGroupCohomology.Universe.card_tate_eq_original M 0).symm.trans h.1,
+    (IntegralGroupCohomology.Universe.card_tate_eq_original M (-1)).symm.trans h.2⟩
 
 end
 end LocalClassFieldTheory

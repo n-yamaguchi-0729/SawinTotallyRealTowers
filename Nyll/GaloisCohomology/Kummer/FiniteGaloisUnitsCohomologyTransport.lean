@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.FieldTheory.RestrictionQuotient
 public import Nyll.GaloisCohomology.Kummer.FiniteGaloisUnitsH2Inflation
 public import Nyll.GaloisCohomology.Kummer.QuotientTwoCocycle
 public import Mathlib.Algebra.Category.ModuleCat.Basic
@@ -79,16 +80,11 @@ theorem unitsToInvariants_bijective : Function.Bijective (unitsToInvariants K L 
         τ ((show Additive Lˣ from a.val).toMul : L) =
           ((show Additive Lˣ from a.val).toMul : L) :=
       congrArg Units.val (a.property (E.fixingSubgroupEquiv.symm τ))
-    obtain ⟨b, hb⟩ := (IsGalois.mem_range_algebraMap_iff_fixed
-      (F := E) (E := L) ((show Additive Lˣ from a.val).toMul : L)).mpr hfix
-    have hb0 : b ≠ 0 := by
-      intro h
-      apply Units.ne_zero (show Additive Lˣ from a.val).toMul
-      rw [← hb, h, map_zero]
-    refine ⟨Additive.ofMul (Units.mk0 b hb0), ?_⟩
-    apply Subtype.ext
-    apply Units.ext
-    exact hb
+    obtain ⟨b, hb⟩ := exists_unit_map_eq_of_fixed K L E
+      (show Additive Lˣ from a.val).toMul hfix
+    refine ⟨Additive.ofMul b, Subtype.ext ?_⟩
+    exact congrArg Additive.ofMul hb
+
 
 /-- The lower-field units are precisely the upper-field units fixed by the
 actual relative automorphisms. -/
@@ -98,12 +94,6 @@ def finiteGaloisUnitsInvariantsEquiv :
   LinearEquiv.ofBijective (unitsToInvariants K L E) (unitsToInvariants_bijective K L E)
 
 variable [Normal K E]
-
-/-- The quotient by the restriction kernel identifies with the lower-field Galois group. -/
-def restrictionQuotientEquiv :
-    Gal(L/K) ⧸ (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E).ker ≃* Gal(E/K) :=
-  QuotientGroup.quotientKerEquivOfSurjective (AlgEquiv.restrictNormalHom (F := K) (K₁ := L) E)
-    (AlgEquiv.restrictNormalHom_surjective L (F := K) (K₁ := E))
 
 /-- The lower-field units identify with the units invariant under the restriction kernel. -/
 def unitsToKernelInvariantsEquiv :

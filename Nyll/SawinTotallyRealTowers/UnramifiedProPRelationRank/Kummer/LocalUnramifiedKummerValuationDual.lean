@@ -8,6 +8,7 @@ module
 
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalUnramifiedKummerHilbertValuation
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # The valuation dual of an unramified Kummer class
@@ -33,7 +34,7 @@ section Valuation
 
 variable (p : ℕ) [Fact p.Prime]
 
-local instance : AddCommGroup (ZMod p) := (ZMod.commRing p).toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 local instance : Module (ZMod p) (ZMod p) := Semiring.toModule
 
 /-- Reduced normalized valuation on local power classes. -/
@@ -99,8 +100,7 @@ end Valuation
 variable [CharZero K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance : AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.commRing (n : ℕ)).toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 /-- The scalar of an unramified Kummer Hilbert character in the normalized
 valuation coordinate. -/

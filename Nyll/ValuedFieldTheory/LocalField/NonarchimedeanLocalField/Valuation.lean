@@ -41,10 +41,13 @@ def multiplicativeIntegerValuation
     (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
     MultiplicativeIntegerValuation Kˣ where
-  val x := LocalFieldTheory.IsNonarchimedeanLocalField.v K (Additive.ofMul x)
-  map_one := by
+  toFun x := Multiplicative.ofAdd
+    (LocalFieldTheory.IsNonarchimedeanLocalField.v K (Additive.ofMul x))
+  map_one' := by
+    apply Multiplicative.ext
     exact LocalFieldTheory.IsNonarchimedeanLocalField.v_one K
-  map_mul x y := by
+  map_mul' x y := by
+    apply Multiplicative.ext
     exact LocalFieldTheory.IsNonarchimedeanLocalField.v_mul K x y
 
 /-- The multiplicative integer valuation records the additive integer exponent of the original
@@ -64,7 +67,7 @@ theorem multiplicativeIntegerValuation_surjective
   intro n
   rcases LocalFieldTheory.IsNonarchimedeanLocalField.v_surjective K n with ⟨x, hx⟩
   refine ⟨Additive.toMul x, ?_⟩
-  simpa [multiplicativeIntegerValuation] using hx
+  exact (multiplicativeIntegerValuation_val K (Additive.toMul x)).trans hx
 
 /-- A nonarchimedean local field has a multiplicative element of normalized value one
 for the value-group API. -/

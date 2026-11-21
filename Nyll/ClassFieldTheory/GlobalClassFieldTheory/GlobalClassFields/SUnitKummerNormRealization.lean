@@ -110,7 +110,7 @@ theorem fullSUnitKummerExtension_ideleClassNormRange_eq_powerLocalUnit
   have hPowerLeRelative :
       ideleClassPowerLocalUnitSubgroup
           (K := K) n S ∅ ≤
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range := by
+        (RelativeIdeleGroup.classNorm K E).range := by
     apply
       ideleClassPowerLocalUnitSubgroup_le_ideleClassNorm_range
         (K := K) (L := E) n r eG S ∅ harch

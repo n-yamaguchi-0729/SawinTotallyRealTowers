@@ -6,17 +6,17 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionMap
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
-public import Mathlib.NumberTheory.RamificationInertia.Valuation
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Ramification
 public import Mathlib.RingTheory.RamificationInertia.Ramification
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.Completion
 
 /-!
@@ -58,7 +58,7 @@ noncomputable def finitePlaceExtensionAdicCompletionMap
       (K := K) (L := L) w a).toRingHom.comp
     ((AbsoluteValue.completionMap
       (HeightOneSpectrum.adicAbv K w) a.1 a.2).comp
-      (relativeFinitePlaceCompletionAlgEquiv w).symm.toRingHom)
+      (finitePlaceCompletionAlgEquiv w).symm.toRingHom)
 
 /-- The exact-extension completion map agrees with the field embedding
 on elements of the base number field. -/
@@ -73,22 +73,22 @@ theorem finitePlaceExtensionAdicCompletionMap_coe
         (finitePlaceExtensionCentre
           (K := K) (L := L) w a).adicCompletion L) := by
   have hcomparison :
-      (relativeFinitePlaceCompletionAlgEquiv w).symm
+      (finitePlaceCompletionAlgEquiv w).symm
           (x : w.adicCompletion K) =
         algebraMap K
           (HeightOneSpectrum.adicAbv K w).Completion x := by
     change
-      (relativeFinitePlaceCompletionAlgEquiv w).symm
+      (finitePlaceCompletionAlgEquiv w).symm
           (algebraMap K (w.adicCompletion K) x) =
         algebraMap K
           (HeightOneSpectrum.adicAbv K w).Completion x
-    exact (relativeFinitePlaceCompletionAlgEquiv w).symm.commutes x
+    exact (finitePlaceCompletionAlgEquiv w).symm.commutes x
   change
     finitePlaceExtensionAdicCompletionRingEquiv
         (K := K) (L := L) w a
         (AbsoluteValue.completionMap
           (HeightOneSpectrum.adicAbv K w) a.1 a.2
-          ((relativeFinitePlaceCompletionAlgEquiv w).symm
+          ((finitePlaceCompletionAlgEquiv w).symm
             (x : w.adicCompletion K))) =
       _
   rw [hcomparison,
@@ -105,12 +105,12 @@ theorem finitePlaceExtensionAdicCompletionMap_continuous
     Continuous
       (finitePlaceExtensionAdicCompletionMap K L w a) := by
   have hrelative :
-      Isometry (relativeFinitePlaceCompletionAlgEquiv w).symm :=
+      Isometry (finitePlaceCompletionAlgEquiv w).symm :=
     AddMonoidHomClass.isometry_of_norm
-      (relativeFinitePlaceCompletionAlgEquiv w).symm
-      (relativeFinitePlaceCompletionAlgEquiv_symm_norm w)
+      (finitePlaceCompletionAlgEquiv w).symm
+      (finitePlaceCompletionAlgEquiv_symm_norm w)
   exact
-    ((relativeFinitePlaceCompletionRingHom_isometry
+    ((finitePlaceCompletionRingHom_isometry
       (finitePlaceExtensionCentre
         (K := K) (L := L) w a)).continuous.comp
       (finitePlaceExtensionCompletionRingEquiv_continuous
@@ -214,19 +214,19 @@ theorem finitePlaceAdicCompletionMap_moduleFinite
         (K := K) (L := L) w a).1.adicCompletion L) :=
     Algebra.toModule
   let : Algebra (w.adicCompletion K) vK.Completion :=
-    (relativeFinitePlaceCompletionAlgEquiv w).symm.toRingHom.toAlgebra
+    (finitePlaceCompletionAlgEquiv w).symm.toRingHom.toAlgebra
   let : Algebra vK.Completion a.1.Completion :=
     AbsoluteValue.completionAlgebra vK a.1 a.2
   let : Algebra (w.adicCompletion K) a.1.Completion :=
     ((algebraMap vK.Completion a.1.Completion).comp
-      (relativeFinitePlaceCompletionAlgEquiv w).symm.toRingHom).toAlgebra
+      (finitePlaceCompletionAlgEquiv w).symm.toRingHom).toAlgebra
   let : IsScalarTower
       (w.adicCompletion K) vK.Completion a.1.Completion :=
     IsScalarTower.of_algebraMap_eq' rfl
   let : Module.Finite (w.adicCompletion K) vK.Completion :=
     Module.Finite.of_surjective
       (Algebra.linearMap (w.adicCompletion K) vK.Completion)
-      (relativeFinitePlaceCompletionAlgEquiv w).symm.surjective
+      (finitePlaceCompletionAlgEquiv w).symm.surjective
   let : Module.Finite vK.Completion a.1.Completion :=
     completionModuleFinite vK hvK a
   let : Module.Finite (w.adicCompletion K) a.1.Completion :=
@@ -264,7 +264,7 @@ theorem finitePlaceExtensionAdicCompletionMap_norm
         (K := K) (L := L) w a
         (AbsoluteValue.completionMap
           (HeightOneSpectrum.adicAbv K w) a.1 a.2
-          ((relativeFinitePlaceCompletionAlgEquiv w).symm x))‖ =
+          ((finitePlaceCompletionAlgEquiv w).symm x))‖ =
       _
   rw [
     finitePlaceExtensionAdicCompletionRingEquiv_norm,
@@ -273,7 +273,7 @@ theorem finitePlaceExtensionAdicCompletionMap_norm
         (map_zero
           (AbsoluteValue.completionMap
             (HeightOneSpectrum.adicAbv K w) a.1 a.2)),
-    relativeFinitePlaceCompletionAlgEquiv_symm_norm]
+    finitePlaceCompletionAlgEquiv_symm_norm]
 
 /-- The canonical map between concrete adic completions preserves the
 valuation ring, expressed by the norm bound defining its unit ball. -/

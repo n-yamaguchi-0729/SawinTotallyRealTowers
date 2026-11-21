@@ -67,17 +67,6 @@ section FiniteGaloisIntermediate
 
 variable (E : IntermediateField K Ω) [FiniteDimensional K E] [IsGalois K E]
 
-/-- Provides the instance `baseFixingExtensionQuotient_finite`. -/
-noncomputable instance baseFixingExtensionQuotient_finite :
-    Finite ((closedFixingSubgroup K Ω
-        (⊥ : IntermediateField K Ω)).toSubgroup ⧸
-      extensionSubgroup
-        (closedFixingSubgroup K Ω (⊥ : IntermediateField K Ω))
-        (closedFixingSubgroup K Ω E)
-        (fixingSubgroupLeBase K Ω E)) :=
-  (baseFixingExtensionQuotientEquivGaloisGroup K Ω E).toEquiv.finite_iff.mpr
-    inferInstance
-
 omit [FiniteDimensional K E] in
 /-- States the theorem `relativeCosetAction_intermediateFieldUnit_val`. -/
 theorem relativeCosetAction_intermediateFieldUnit_val

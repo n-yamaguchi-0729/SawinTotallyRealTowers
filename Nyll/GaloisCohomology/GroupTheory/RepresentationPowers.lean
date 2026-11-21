@@ -31,7 +31,7 @@ theorem rep_action_pow_eq_iterate {R : Type u} [Group R]
     (B : Rep.{v} ℤ R) (g : R) (n : ℕ) (x : B.V) :
     B.ρ (g ^ n) x = ((B.ρ g)^[n]) x := by
   let : Module ℤ B.V := B.hV2
-  rw [map_pow, Module.End.coe_pow]
+  rw [map_pow, FunLike.coe_pow_eq_iterate]
 
 /-- Every nonnegative power fixes an element fixed by the original group
 element. -/

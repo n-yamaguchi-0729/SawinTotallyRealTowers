@@ -38,20 +38,6 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L]
 
-/-- The natural action on relative ideles, upgraded to an action by
-group automorphisms for the restricted-product comparison. -/
-@[reducible]
-noncomputable def relativeIdeleRestrictedMulDistribMulAction :
-    MulDistribMulAction
-      (L ≃ₐ[K] L) (RelativeIdeleGroup K L) where
-  __ := RelativeIdeleGroup.relativeIdeleMulAction K L
-  smul_one σ :=
-    map_one
-      (RelativeIdeleGroup.conjugationIdele K L σ)
-  smul_mul σ a b :=
-    map_mul
-      (RelativeIdeleGroup.conjugationIdele K L σ) a b
-
 section ScalarTensor
 
 variable
@@ -150,6 +136,13 @@ theorem scalarTensorUnitsAction_coe
 
 end ScalarTensor
 
+/-- Galois conjugation on the units of a finite-place tensor factor. -/
+@[instance_reducible]
+noncomputable def finitePlaceScalarTensorUnitsAction (v : HeightOneSpectrum (𝓞 K)) :
+    MulDistribMulAction (L ≃ₐ[K] L) (v.adicCompletion K ⊗[K] L)ˣ :=
+  scalarTensorUnitsAction (K := K) (L := L) (A := v.adicCompletion K)
+
+
 omit [NumberField L] [FiniteDimensional K L] in
 /-- Infinite-place evaluation commutes with Galois conjugation. -/
 theorem relativeAdeleInfiniteComponent_conjugation
@@ -233,7 +226,7 @@ noncomputable def relativeLocalIdeleDataMulDistribMulAction :
         (K := K) (L := L)) := by
   letI : MulDistribMulAction
       (L ≃ₐ[K] L) (RelativeIdeleGroup K L) :=
-    relativeIdeleRestrictedMulDistribMulAction
+    RelativeIdeleGroup.relativeIdeleMulDistribMulAction
       (K := K) (L := L)
   let e :=
     relativeIdeleMulEquivLocalData
@@ -269,7 +262,7 @@ theorem relativeIdeleMulEquivLocalData_smul
     (σ : L ≃ₐ[K] L)
     (z : RelativeIdeleGroup K L) :
     let :=
-      relativeIdeleRestrictedMulDistribMulAction
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction
         (K := K) (L := L)
     let :=
       relativeLocalIdeleDataMulDistribMulAction
@@ -300,7 +293,7 @@ theorem RelativeLocalIdeleData.infinite_smul
     (a : RelativeLocalIdeleData (K := K) (L := L))
     (w : InfinitePlace K) :
     let :=
-      relativeIdeleRestrictedMulDistribMulAction
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction
         (K := K) (L := L)
     let :=
       relativeLocalIdeleDataMulDistribMulAction
@@ -327,7 +320,7 @@ theorem RelativeLocalIdeleData.finite_smul
     (a : RelativeLocalIdeleData (K := K) (L := L))
     (w : HeightOneSpectrum (𝓞 K)) :
     let :=
-      relativeIdeleRestrictedMulDistribMulAction
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction
         (K := K) (L := L)
     let :=
       relativeLocalIdeleDataMulDistribMulAction

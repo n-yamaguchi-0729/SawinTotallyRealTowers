@@ -11,6 +11,7 @@ public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRan
 public import Nyll.GaloisCohomology.ProP.H2InflationRangeBound
 public import Mathlib.LinearAlgebra.Dimension.LinearMap
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Embedding actual finite-stage inflation ranges in the radical dual
@@ -32,9 +33,7 @@ open ClassFieldTower.Cohomology ClassFieldTower.Martinet ProCGroups ProCGroups.P
 variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 
-local instance arithmeticStageH2RadicalEmbeddingCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 include hpOdd
 

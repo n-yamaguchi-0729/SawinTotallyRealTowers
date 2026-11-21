@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlace
@@ -242,6 +244,14 @@ theorem exists_principal_quotient_mem_localNormSubgroups
     infinitePositiveSubgroup_le_infiniteTensorNormSubgroup
       (K := K) (L := L) w (hinfinite w)
 
+private theorem forall_of_finset_and_complement {α : Type*}
+    (s : Finset α) (P : α → Prop) (inside : ∀ a : ↥s, P a.1)
+    (outside : ∀ a ∉ s, P a) (a : α) : P a := by
+  classical
+  by_cases ha : a ∈ s
+  · exact inside ⟨a, ha⟩
+  · exact outside a ha
+
 /-- If all finite places outside a finite set split completely, one
 principal correction makes a given idele a determinant norm locally at
 every finite and infinite place. -/
@@ -269,11 +279,14 @@ theorem exists_principal_quotient_locallyNormEverywhere_of_splitsOutside
   obtain ⟨x, hfinite, hinfinite⟩ :=
     exists_principal_quotient_mem_localNormSubgroups
       (K := K) (L := L) S a
-  refine ⟨x, ?_, hinfinite⟩
-  intro v
-  by_cases hv : v ∈ S
-  · exact hfinite ⟨v, hv⟩
-  · rw [
-      chosenFinitePlaceLocalNormSubgroup_eq_top_of_splitsCompletely
-        (K := K) (L := L) v (hsplit v hv)]
-    exact Subgroup.mem_top _
+  let locallyNorm (v : HeightOneSpectrum (𝓞 K)) : Prop :=
+    IdeleGroup.finiteComponent v a *
+      (IdeleGroup.finiteComponent v (IdeleGroup.principalIdele K x))⁻¹ ∈
+        chosenFinitePlaceLocalNormSubgroup (K := K) (L := L) v
+  have hsubset : ∀ v : ↥S, locallyNorm v.1 := hfinite
+  refine ⟨x, forall_of_finset_and_complement S locallyNorm hsubset ?_, hinfinite⟩
+  intro v hv
+  dsimp only [locallyNorm]
+  rw [chosenFinitePlaceLocalNormSubgroup_eq_top_of_splitsCompletely
+    (K := K) (L := L) v (hsplit v hv)]
+  exact Subgroup.mem_top _

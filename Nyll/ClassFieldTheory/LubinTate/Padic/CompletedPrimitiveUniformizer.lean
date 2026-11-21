@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.PolynomialIdeal
+
 public import Nyll.ClassFieldTheory.LubinTate.Padic.CompletedChangedUniformizerPrimitive
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
 public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
@@ -60,15 +62,6 @@ private noncomputable local instance
   let target := padicCompletedLevelCompleteDVF p n
   have hadic : IsAdic target.maximalIdeal := rfl
   exact (hadic.isAdicComplete_iff.mp target.isAdicComplete).2
-
-private theorem completedPolynomial_eval₂_mem_ideal_of_coeff_mem
-    {R S : Type*} [CommSemiring R] [CommSemiring S]
-    (f : R →+* S) (I : Ideal S) (P : Polynomial R) (z : S)
-    (hcoeff : ∀ i, f (P.coeff i) ∈ I) :
-    P.eval₂ f z ∈ I := by
-  rw [Polynomial.eval₂_eq_sum_range]
-  exact Ideal.sum_mem _ fun i _ =>
-    Ideal.mul_mem_right (z ^ i) I (hcoeff i)
 
 private theorem
     padicCompletedPrimitiveRootInteger_addVal_and_ramificationIndex
@@ -178,7 +171,7 @@ private theorem
       exact 𝔭.zero_mem
   have hR_eval_mem_map :
       R.eval₂ j root ∈ Ideal.map j 𝔭 :=
-    completedPolynomial_eval₂_mem_ideal_of_coeff_mem
+    Polynomial.eval₂_mem_ideal_of_coeff_mem
       j (Ideal.map j 𝔭) R root
       (fun i => Ideal.mem_map_of_mem j (hRcoeff i))
   have hmap :
@@ -210,7 +203,7 @@ private theorem
     exact hRcoeff (i + 1)
   let tail := R.divX.eval₂ j root
   have htail_mem_map : tail ∈ Ideal.map j 𝔭 :=
-    completedPolynomial_eval₂_mem_ideal_of_coeff_mem
+    Polynomial.eval₂_mem_ideal_of_coeff_mem
       j (Ideal.map j 𝔭) R.divX root
       (fun i => Ideal.mem_map_of_mem j (hdivCoeff i))
   have htail_mem_pow : tail ∈ 𝔓 ^ e := by
@@ -549,7 +542,7 @@ private theorem
     exact hRcoeff (i + 1)
   let tail := R.divX.eval₂ j θ
   have htail_mem_map : tail ∈ Ideal.map j 𝔭 :=
-    completedPolynomial_eval₂_mem_ideal_of_coeff_mem
+    Polynomial.eval₂_mem_ideal_of_coeff_mem
       j (Ideal.map j 𝔭) R.divX θ
       (fun i => Ideal.mem_map_of_mem j (hdivCoeff i))
   have htail_mem_pow : tail ∈ 𝔓 ^ e := by

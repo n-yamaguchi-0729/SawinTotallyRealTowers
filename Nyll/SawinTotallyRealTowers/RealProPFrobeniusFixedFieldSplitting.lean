@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusFixedField
 public import Nyll.SawinTotallyRealTowers.RealProPFrobeniusCut
 public import Nyll.SawinTotallyRealTowers.RealProPFrobenius

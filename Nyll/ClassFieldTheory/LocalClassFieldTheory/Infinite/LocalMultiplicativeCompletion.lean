@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.ProfiniteCompletion
+public import Nyll.ProCGroups.Completion.Topological
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.MultiplicativeDecomposition
 public import Mathlib.Data.ZMod.Basic
 public import Batteries.Tactic.Init

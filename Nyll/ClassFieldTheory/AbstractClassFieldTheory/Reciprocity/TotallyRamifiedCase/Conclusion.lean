@@ -46,6 +46,8 @@ theorem abstractReciprocity_cyclicTotallyRamified_exponent_eq_zero
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G)
     (E : FiniteCyclicSubextension K)
+    (g : K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below)
+    (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (hTot : E.IsTotallyRamified D)
     (k : ℕ)
     (hk : k < (E.toFiniteAbstractExtension.degree : ℕ))
@@ -56,7 +58,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_exponent_eq_zero
           (K.toFiniteResidueAbstractField D)
           E.toFiniteGaloisSubextension
           hTot
-          E.galoisGenerator)))
+          (E.galoisGenerator g))))
     (piL : ambientFixedAddSubgroup A E.field) :
     let L := E.toFiniteAbstractFieldExtension.field
     let KR := K.toFiniteResidueAbstractField D
@@ -74,7 +76,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_exponent_eq_zero
         (KR.field.toSubgroup ⧸
           extensionSubgroup KR.field LG.field LG.below) :=
       LG.finite
-    let q := E.galoisGenerator
+    let q := E.galoisGenerator g
     let hLGTot := hTot
     let σ := D.chosenDegreeOneFrobeniusLiftOfFiniteTotallyRamified
       KR LG hLGTot q
@@ -105,7 +107,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_exponent_eq_zero
       (K.field.toSubgroup ⧸
         extensionSubgroup K.field LG.field LG.below) at h
     exact h
-  let q := E.galoisGenerator
+  let q := E.galoisGenerator g
   let hLGTot := hTot
   let hKRabsolute : Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) KR.field (le_baseField KR.field)) := by
@@ -155,7 +157,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_exponent_eq_zero
       finiteQuotient := hNfinite }
   obtain ⟨x, hx⟩ :=
     v.abstractReciprocity_cyclicTotallyRamified_fixedSource hcf
-      K E hTot k piSigma piL w hpiL hnorm
+      K E g hg hTot k piSigma piL w hpiL hnorm
   have hkLower : k < (N.toFiniteAbstractExtension.degree : ℕ) := by
     rw [D.abstractReciprocityTotallyRamifiedLowerDegree_eq
       KR LG hLGTot q]
@@ -179,6 +181,8 @@ theorem abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_injective
     (hTot : E.IsTotallyRamified D) :
     Function.Injective
       (D.finiteReciprocityHom A v hAxiom K E.field E.below) := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator
+    (α := K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below)
   let L := E.toFiniteAbstractFieldExtension.field
   let KR := K.toFiniteResidueAbstractField D
   let LG := E.toFiniteGaloisSubextension
@@ -194,8 +198,8 @@ theorem abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_injective
       (K.field.toSubgroup ⧸
         extensionSubgroup K.field LG.field LG.below) at h
     exact h
-  let q := E.galoisGenerator
-  let qRaw := E.generator
+  let q := E.galoisGenerator g
+  let qRaw := g
   let hLGTot := hTot
   let hKRabsolute : Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) KR.field (le_baseField KR.field)) := by
@@ -222,7 +226,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_injective
   rw [injective_iff_map_eq_zero]
   intro x hx
   obtain ⟨i, hi, _⟩ :=
-    IsCyclic.unique_zpow_zmod (a := qRaw) E.generates x.toMul
+    IsCyclic.unique_zpow_zmod (a := qRaw) hg x.toMul
   let k : ℕ := i.val
   have hcard : Fintype.card Q = (EF.degree : ℕ) := by
     calc
@@ -249,7 +253,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_injective
           (D.frobeniusRestriction_chosenDegreeOneFrobeniusLiftOfFiniteTotallyRamified_underlying
             KR LG hLGTot q).trans
             (E.toFiniteGaloisSubextension.extensionQuotientMulEquiv.apply_symm_apply
-              E.generator))
+              g))
       piSigma (v.chosenPrimeElement_isPrime SigmaF)] at hx
   have hclass :
       finiteNormClass A K.field E.field E.below
@@ -278,7 +282,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_injective
       k piSigma piL (v.chosenPrimeElement_isPrime SigmaF)
       (v.chosenPrimeElement_isPrime L) hclass
   have hkzero := v.abstractReciprocity_cyclicTotallyRamified_exponent_eq_zero
-    hcf K E hTot k hk piSigma piL
+    hcf K E g hg hTot k hk piSigma piL
       w (v.chosenPrimeElement_isPrime L) hnorm
   rw [hxrepr, hkzero, zero_nsmul]
 
@@ -293,19 +297,21 @@ theorem abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_bijective
     (hTot : E.IsTotallyRamified D) :
     Function.Bijective
       (D.finiteReciprocityHom A v hAxiom K E.field E.below) := by
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator
+    (α := K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below)
   let EF := E.toFiniteAbstractExtension
   let hEbaseAbsolute : Finite ((baseField G).toSubgroup ⧸
-      extensionSubgroup (baseField G) EF.base (le_baseField EF.base)) := by
-    simpa [EF, FiniteCyclicSubextension.toFiniteAbstractExtension] using K.finite
+      extensionSubgroup (baseField G) EF.base (le_baseField EF.base)) :=
+    K.finite
   let : Finite (FiniteNormQuotient A K.field E.field E.below) :=
     finiteNormQuotient_finite_of_classFieldAxiom
-      A hcf EF E.normal E.generator E.generates
+      A hcf EF E.normal g hg
   apply (Nat.bijective_iff_injective_and_card
     (D.finiteReciprocityHom A v hAxiom K E.field E.below)).2
   exact ⟨v.abstractReciprocity_cyclicTotallyRamified_finiteReciprocityHom_injective
       hcf hAxiom K E hTot,
     cyclicReciprocity_card_equality
-      A hcf EF E.normal E.generator E.generates⟩
+      A hcf EF E.normal g hg⟩
 
 end ValuationData
 

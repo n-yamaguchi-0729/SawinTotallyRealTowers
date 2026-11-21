@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 public import Nyll.ClassFieldTheory.Algebra.TensorNormTransport
 public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
@@ -79,19 +81,14 @@ theorem exists_relativeIdele_norm_eq_of_localTensorPreimages
     ∃ z : RelativeIdeleGroup K L,
       RelativeIdeleGroup.norm K L z = a := by
   let d : RelativeLocalIdeleData (K := K) (L := L) :=
-    { infinite := zInfinite
-      finite := zFinite
-      eventually_integral := fun i =>
-        hIntegral.mono fun w hw =>
-          relativeBasisIntegralAt_repr_mem
-            (K := K) (L := L) w _ hw.1 i
-      eventually_inverse_integral := fun i =>
-        hIntegral.mono fun w hw =>
-          relativeBasisIntegralAt_repr_mem
-            (K := K) (L := L) w _ hw.2 i }
+    RelativeLocalIdeleData.ofBasisData zInfinite zFinite
+      (fun i => hIntegral.mono fun w hw =>
+        relativeBasisIntegralAt_repr_mem (K := K) (L := L) w _ hw.1 i)
+      (fun i => hIntegral.mono fun w hw =>
+        relativeBasisIntegralAt_repr_mem (K := K) (L := L) w _ hw.2 i)
   refine
     ⟨relativeIdeleOfLocalData (K := K) (L := L) d, ?_⟩
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext w
     change
@@ -252,7 +249,7 @@ theorem mem_relativeIdeleNorm_range_iff_localTensorNorms_native
           IdeleGroup.finiteComponent w a ∈
             (w.adicCompletionIntegers K).units := by
       simpa [IdeleGroup.finiteComponent_apply] using
-        FiniteIdeleGroup.eventually_mem_localUnits a.2
+        FiniteIdeleGroup.eventually_mem_localUnits (IdeleGroup.finiteCoordinates a)
     have hIntegral :
         ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
           RelativeBasisIntegralUnitAt
@@ -323,8 +320,7 @@ theorem mem_relativeIdeleNorm_range_iff_localTensorNorms
           Units.mapEquiv eA.toMulEquiv (IdeleGroup.infiniteComponent w a) := by
         apply Units.ext
         exact adeleCongr_infiniteComponent eK
-          (((IdeleGroup.equivAdeleRingUnits (K := K) a :
-            (NumberField.AdeleRing (𝓞 K) K)ˣ) : NumberField.AdeleRing (𝓞 K) K)) W
+          ((a : NumberField.AdeleRing (𝓞 K) K)) W
       rw [hc]
       exact hnorm
     have hf : ∀ W : HeightOneSpectrum (𝓞 (Shrink.{0} K)),

@@ -9,10 +9,13 @@ module
 public import Mathlib.SetTheory.Cardinal.Finite
 public import Nyll.GaloisCohomology.Cyclic.GaloisCohomology
 public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
+public import Nyll.GaloisCohomology.Cyclic.TateH0.Main
 public import Nyll.GaloisCohomology.Cyclic.TateH0.NormImage
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
+public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.FixedCycles
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.FieldUnits
 public import Nyll.GaloisCohomology.Cyclic.TateComparison
+public import Nyll.GaloisCohomology.Cyclic.TateFixedCycles
 
 /-!
 # The actual low-degree Tate quotients as Herbrand quotients
@@ -114,16 +117,6 @@ def quotientMulEquivOfSurjectiveAdditiveQuotient
   exact
     (QuotientGroup.quotientMulEquivOfEq hker.symm).trans
       (QuotientGroup.quotientKerEquivOfSurjective f hsurj)
-
-/-- Forget the type tags in an equivalence whose codomain is the
-multiplicative form of an additive group. -/
-def mulEquivMultiplicativeToEquiv
-    {G B : Type*} [Group G] [AddCommGroup B]
-    (e : G ≃* Multiplicative B) : G ≃ B where
-  toFun q := Multiplicative.toAdd (e q)
-  invFun q := e.symm (Multiplicative.ofAdd q)
-  left_inv q := e.left_inv q
-  right_inv q := e.right_inv (Multiplicative.ofAdd q)
 
 /-- Additive quotient map from fixed units to invariant units modulo norms. -/
 def additiveFixedUnitToInvariantsNormQuotientHom
@@ -242,9 +235,36 @@ degree-zero Tate cohomology. -/
 def herbrandH0EquivTateCohomologyZero [Fintype (Gal(L/K))] :
     HerbrandH0 (Gal(L / K)) Lˣ ≃
       tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0 :=
-  (mulEquivMultiplicativeToEquiv
-      (herbrandH0MulEquivInvariantsNormQuotient K L)).trans
-    (tateUnitsH0IsoInvariantsQuotient K L).symm.toLinearEquiv.toEquiv
+  Additive.ofMul.trans
+    (tateH0IsoHerbrandH0 (G := Gal(L / K)) (A := Lˣ)).symm.toLinearEquiv.toEquiv
+
+/-- The generic comparison preserves the actual fixed-unit representative. -/
+theorem herbrandH0EquivTateCohomologyZero_mk [Fintype (Gal(L/K))]
+    (a : fixedSubgroup Gal(L/K) Lˣ) :
+    herbrandH0EquivTateCohomologyZero K L (HerbrandH0.mk a) =
+      (tateComplex (Rep.ofAlgebraAutOnUnits K L)).homologyπ 0
+        (tateH0FixedCycle a) := by
+  let e := tateH0IsoHerbrandH0 (G := Gal(L / K)) (A := Lˣ)
+  let t := (tateComplex (Rep.ofAlgebraAutOnUnits K L)).homologyπ 0 (tateH0FixedCycle a)
+  have he : e.hom t = Additive.ofMul (HerbrandH0.mk a) := tateH0IsoHerbrandH0_fixedCycle a
+  exact (congrArg (fun z => e.inv z) he.symm).trans (Iso.hom_inv_id_apply e t)
+
+/-- The direct Herbrand norm comparison used at completions and globally is
+the original Tate route on every fixed unit and hence on the whole quotient. -/
+theorem herbrandH0UnitsEquivNormQuotient_tate [FiniteDimensional K L] [IsGalois K L] :
+    let := AlgEquiv.fintype K L
+    ∀ a : HerbrandH0 (Gal(L / K)) Lˣ,
+      Additive.toMul ((H0TateUnitsIsoNormQuotient K L).hom
+        (herbrandH0EquivTateCohomologyZero K L a)) = herbrandH0UnitsEquivNormQuotient K L a := by
+  intro hFintype a
+  obtain ⟨b, rfl⟩ := HerbrandH0.mk_surjective a
+  let x := additiveFixedUnitsEquivInvariants K L (Additive.ofMul b)
+  have hx : herbrandH0EquivTateCohomologyZero K L (HerbrandH0.mk b) =
+      TateCohomology.fixedClass (Rep.ofAlgebraAutOnUnits K L) x :=
+    herbrandH0EquivTateCohomologyZero_mk K L b
+  rw [hx]
+  exact (congrArg Additive.toMul (H0TateUnitsIsoNormQuotient_fixedClass K L x)).trans
+      (herbrandH0UnitsEquivNormQuotient_mk K L b).symm
 
 /-- Cardinality transport from the concrete Herbrand quotient to mathlib's
 degree-zero Tate cohomology. -/
@@ -254,230 +274,6 @@ theorem cardinalMk_herbrandH0_fieldUnits_eq_tateCohomology_zero
       Cardinal.mk (tateCohomology (Rep.ofAlgebraAutOnUnits K L) 0) :=
   Cardinal.mk_congr (herbrandH0EquivTateCohomologyZero K L)
 
-/-- Subtraction by the identity in the actual unit representation is the
-multiplicative coboundary `x ↦ g•x/x`. -/
-theorem unitsRhoSub_toMul_eq_sigmaMinusOne
-    (g : Gal(L/K)) (x : Lˣ) :
-    (Additive.toMul ((Rep.ofAlgebraAutOnUnits K L).ρ g (Additive.ofMul x)) : Lˣ) * x⁻¹ =
-      sigmaMinusOne (Gal(L / K)) Lˣ g x := by
-  rfl
-
-/-- Multiplicative norm-one units and the kernel of the norm on the actual
-unit representation are the same additive group. -/
-def additiveNormKernelEquivUnitsNormKer [Fintype (Gal(L/K))] :
-    Additive (normKernelSubgroup (Gal(L / K)) Lˣ) ≃+
-      LinearMap.ker (unitsNormLinearMap K L) where
-  toFun x := ⟨Additive.ofMul
-      ((Additive.toMul x : normKernelSubgroup (Gal(L / K)) Lˣ) : Lˣ), by
-    apply Additive.toMul.injective
-    change Additive.toMul
-      (unitsNormLinearMap K L (Additive.ofMul
-        ((Additive.toMul x : normKernelSubgroup (Gal(L / K)) Lˣ) : Lˣ))) = 1
-    rw [unitsNormLinearMap_toMul_eq_tateNorm K L
-      ((Additive.toMul x : normKernelSubgroup (Gal(L / K)) Lˣ) : Lˣ)]
-    exact (Additive.toMul x).property⟩
-  invFun x := Additive.ofMul ⟨Additive.toMul (x : Additive Lˣ), by
-    change tateNorm (Gal(L / K)) Lˣ (Additive.toMul (x : Additive Lˣ)) = 1
-    rw [← unitsNormLinearMap_toMul_eq_tateNorm K L
-      (Additive.toMul (x : Additive Lˣ))]
-    have hx := congrArg Additive.toMul x.property
-    exact hx⟩
-  left_inv x := rfl
-  right_inv x := rfl
-  map_add' x y := rfl
-
-/-- The norm-kernel equivalence preserves the underlying unit. -/
-theorem additiveNormKernelEquivUnitsNormKer_apply_coe [Fintype (Gal(L/K))]
-    (x : Additive (normKernelSubgroup (Gal(L/K)) Lˣ)) :
-    (additiveNormKernelEquivUnitsNormKer K L x : Additive Lˣ) =
-      Additive.ofMul ((Additive.toMul x : normKernelSubgroup (Gal(L/K)) Lˣ) : Lˣ) :=
-  rfl
-
-/-- The actual additive differential `ρ(g)-1`, with codomain restricted to
-the kernel of the norm. -/
-def unitsRhoSubToNormKerLinearMap [Fintype (Gal(L/K))]
-    (g : Gal(L/K)) :
-    Additive Lˣ →ₗ[ℤ] LinearMap.ker (unitsNormLinearMap K L) :=
-  ((Rep.ofAlgebraAutOnUnits K L).ρ g - LinearMap.id).codRestrict
-    (LinearMap.ker (unitsNormLinearMap K L)) (by
-      intro x
-      change unitsNormLinearMap K L
-        ((Rep.ofAlgebraAutOnUnits K L).ρ g x - x) = 0
-      change (Rep.ofAlgebraAutOnUnits K L).norm.asHom.hom
-        ((Rep.ofAlgebraAutOnUnits K L).ρ g x - x) = 0
-      rw [map_sub]
-      apply sub_eq_zero.mpr
-      change Representation.norm (Rep.ofAlgebraAutOnUnits K L).ρ
-        ((Rep.ofAlgebraAutOnUnits K L).ρ g x) =
-          Representation.norm (Rep.ofAlgebraAutOnUnits K L).ρ x
-      exact Representation.norm_self_apply (Rep.ofAlgebraAutOnUnits K L).ρ g x)
-
-/-- Restricting the differential's codomain leaves its value unchanged. -/
-theorem unitsRhoSubToNormKerLinearMap_apply_coe [Fintype (Gal(L/K))]
-    (g : Gal(L/K)) (x : Additive Lˣ) :
-    (unitsRhoSubToNormKerLinearMap K L g x : Additive Lˣ) =
-      Sub.sub (α := Additive Lˣ) ((Rep.ofAlgebraAutOnUnits K L).ρ g x) x :=
-  rfl
-
-/-- Additive quotient map from the multiplicative norm kernel to the
-standard boundary presentation of degree-minus-one Tate cohomology. -/
-def additiveNormKernelToUnitsBoundaryQuotientHom
-    [Fintype (Gal(L/K))] (g : Gal(L/K)) :
-    Additive (normKernelSubgroup (Gal(L / K)) Lˣ) →+
-      LinearMap.ker (unitsNormLinearMap K L) ⧸
-        LinearMap.range (unitsRhoSubToNormKerLinearMap K L g) :=
-  additiveEquivToQuotientHom
-    (additiveNormKernelEquivUnitsNormKer K L)
-    (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g))
-
-/-- Multiplicative form of the standard boundary quotient map. -/
-def normKernelToUnitsBoundaryQuotientMonoidHom
-    [Fintype (Gal(L/K))] (g : Gal(L/K)) :
-    normKernelSubgroup (Gal(L / K)) Lˣ →*
-      Multiplicative
-        (LinearMap.ker (unitsNormLinearMap K L) ⧸
-          LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)) :=
-  additiveHomToMultiplicativeHom
-    (additiveNormKernelToUnitsBoundaryQuotientHom K L g)
-
-/-- The kernel of the standard boundary quotient map is the augmentation
-subgroup generated by `ρ(g)-1`. -/
-theorem normKernelToUnitsBoundaryQuotientMonoidHom_ker
-    [Fintype (Gal(L/K))] (g : Gal(L/K)) :
-    kernelOfAdditiveQuotientHom
-        (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g))
-        (normKernelToUnitsBoundaryQuotientMonoidHom K L g) =
-      (augmentationSubgroup (Gal(L / K)) Lˣ g).subgroupOf
-        (normKernelSubgroup (Gal(L / K)) Lˣ) := by
-  ext x
-  constructor
-  · intro hx
-    have hx0 := congrArg Multiplicative.toAdd hx
-    change
-      (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)).mkQ
-          (additiveNormKernelEquivUnitsNormKer K L (Additive.ofMul x)) =
-        0 at hx0
-    have hxmem :
-        additiveNormKernelEquivUnitsNormKer K L (Additive.ofMul x) ∈
-          LinearMap.range (unitsRhoSubToNormKerLinearMap K L g) :=
-      (Submodule.Quotient.mk_eq_zero
-        (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g))).1 hx0
-    rcases hxmem with ⟨y, hy⟩
-    change (x : Lˣ) ∈ augmentationSubgroup (Gal(L / K)) Lˣ g
-    refine ⟨Additive.toMul y, ?_⟩
-    have hy' := congrArg
-      (fun z : LinearMap.ker (unitsNormLinearMap K L) =>
-        Additive.toMul (z : Additive Lˣ)) hy
-    simp only [additiveNormKernelEquivUnitsNormKer_apply_coe] at hy'
-    change
-      (Additive.toMul ((Rep.ofAlgebraAutOnUnits K L).ρ g y) : Lˣ) *
-        (Additive.toMul y)⁻¹ = (x : Lˣ) at hy'
-    rw [sigmaMinusOneHom_apply,
-      ← unitsRhoSub_toMul_eq_sigmaMinusOne K L g (Additive.toMul y)]
-    exact hy'
-  · intro hx
-    change (x : Lˣ) ∈ augmentationSubgroup (Gal(L / K)) Lˣ g at hx
-    rcases hx with ⟨y, hy⟩
-    apply Multiplicative.toAdd.injective
-    change
-      (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)).mkQ
-          (additiveNormKernelEquivUnitsNormKer K L (Additive.ofMul x)) =
-        0
-    apply (Submodule.Quotient.mk_eq_zero
-      (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g))).2
-    refine ⟨Additive.ofMul y, ?_⟩
-    apply Subtype.ext
-    apply Additive.toMul.injective
-    simp only [additiveNormKernelEquivUnitsNormKer_apply_coe]
-    change
-      (Additive.toMul ((Rep.ofAlgebraAutOnUnits K L).ρ g (Additive.ofMul y)) : Lˣ) * y⁻¹ =
-        (x : Lˣ)
-    rw [unitsRhoSub_toMul_eq_sigmaMinusOne K L g y]
-    exact hy
-
-/-- Every class of the standard boundary quotient has a representative in
-the multiplicative norm kernel. -/
-theorem normKernelToUnitsBoundaryQuotientMonoidHom_surjective
-    [Fintype (Gal(L/K))] (g : Gal(L/K)) :
-    Function.Surjective
-      (normKernelToUnitsBoundaryQuotientMonoidHom K L g) := by
-  intro q
-  rcases Submodule.mkQ_surjective
-      (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g))
-      (Multiplicative.toAdd q) with ⟨z, hz⟩
-  let x : normKernelSubgroup (Gal(L / K)) Lˣ :=
-    Additive.toMul ((additiveNormKernelEquivUnitsNormKer K L).symm z)
-  refine ⟨x, ?_⟩
-  apply Multiplicative.toAdd.injective
-  change
-    (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)).mkQ
-        (additiveNormKernelEquivUnitsNormKer K L (Additive.ofMul x)) =
-        Multiplicative.toAdd q
-  calc
-    _ = (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)).mkQ z := by
-      apply congrArg
-        (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)).mkQ
-      change additiveNormKernelEquivUnitsNormKer K L
-        ((additiveNormKernelEquivUnitsNormKer K L).symm z) = z
-      exact (additiveNormKernelEquivUnitsNormKer K L).apply_symm_apply z
-    _ = Multiplicative.toAdd q := hz
-
-/-- The multiplicative Herbrand quotient is the standard additive boundary
-quotient used by mathlib's finite-cyclic Tate complex. -/
-def herbrandHminusOneMulEquivUnitsBoundaryQuotient
-    [Fintype (Gal(L/K))] (g : Gal(L/K)) :
-    HerbrandHMinusOne (Gal(L / K)) Lˣ g ≃*
-      Multiplicative
-        (LinearMap.ker (unitsNormLinearMap K L) ⧸
-          LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)) :=
-  (HerbrandHMinusOne.equiv (G := Gal(L / K)) (A := Lˣ) g).trans
-    (quotientMulEquivOfSurjectiveAdditiveQuotient
-      (LinearMap.range (unitsRhoSubToNormKerLinearMap K L g))
-      ((augmentationSubgroup (Gal(L / K)) Lˣ g).subgroupOf
-        (normKernelSubgroup (Gal(L / K)) Lˣ))
-      (normKernelToUnitsBoundaryQuotientMonoidHom K L g)
-      (normKernelToUnitsBoundaryQuotientMonoidHom_ker K L g)
-      (normKernelToUnitsBoundaryQuotientMonoidHom_surjective K L g))
-
-/-- Type-level comparison with the standard boundary quotient. -/
-def herbrandHminusOneEquivUnitsBoundaryQuotient
-    [Fintype (Gal(L/K))] (g : Gal(L/K)) :
-    HerbrandHMinusOne (Gal(L / K)) Lˣ g ≃
-      LinearMap.ker (unitsNormLinearMap K L) ⧸
-        LinearMap.range (unitsRhoSubToNormKerLinearMap K L g) :=
-  mulEquivMultiplicativeToEquiv
-    (herbrandHminusOneMulEquivUnitsBoundaryQuotient K L g)
-
-/-- Mathlib's degree-minus-one Tate object is its standard finite-cyclic
-boundary quotient `ker N / im(ρ(g)-1)`. -/
-noncomputable def unitsTateHminusOneIsoBoundaryQuotient
-    [FiniteDimensional K L] (g : Gal(L/K))
-    (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
-    tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1) ≅
-      ModuleCat.of ℤ
-        (LinearMap.ker (unitsNormLinearMap K L) ⧸
-          LinearMap.range (unitsRhoSubToNormKerLinearMap K L g)) := by
-  letI : IsCyclic (Gal(L / K)) :=
-    CyclicCohomology.isCyclic_of_generator g hg
-  letI : CommGroup (Gal(L / K)) := IsCyclic.commGroup
-  let T :=
-    Rep.FiniteCyclicGroup.subCompNormHom (Rep.ofAlgebraAutOnUnits K L) g
-  have hmap :
-      T.moduleCatToCycles =
-          unitsRhoSubToNormKerLinearMap K L g := by
-    ext x
-    rfl
-  have e := T.moduleCatHomologyIso
-  change
-    T.homology ≅
-      ModuleCat.of ℤ
-        (LinearMap.ker (unitsNormLinearMap K L) ⧸
-          LinearMap.range
-            T.moduleCatToCycles) at e
-  rw [hmap] at e
-  exact TateCohomology.isoFiniteCyclicNegOne (Rep.ofAlgebraAutOnUnits K L) g hg ≪≫
-    e
-
 /-- Genuine comparison of the multiplicative `H⁻¹` quotient
 for field units with Mathlib's actual Tate `H⁻¹` object. -/
 noncomputable def herbrandHminusOneEquivUnitsTateHminusOne
@@ -485,8 +281,27 @@ noncomputable def herbrandHminusOneEquivUnitsTateHminusOne
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
     HerbrandHMinusOne (Gal(L / K)) Lˣ g ≃
       tateCohomology (Rep.ofAlgebraAutOnUnits K L) (-1) :=
-  (herbrandHminusOneEquivUnitsBoundaryQuotient K L g).trans
-    (unitsTateHminusOneIsoBoundaryQuotient K L g hg).symm.toLinearEquiv.toEquiv
+  Additive.ofMul.trans
+    (tateHMinusOneIsoHerbrandHMinusOne (G := Gal(L / K)) (A := Lˣ)
+      g hg).symm.toLinearEquiv.toEquiv
+
+/-- The field-unit comparison retains the class of the original norm-kernel
+unit and uses the given generator for the augmentation boundary. -/
+theorem herbrandHminusOneEquivUnitsTateHminusOne_mk
+    [FiniteDimensional K L] (g : Gal(L/K))
+    (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g)
+    (a : normKernelSubgroup (Gal(L / K)) Lˣ) :
+    let M := Rep.ofAlgebraAutOnUnits K L
+    let z : LinearMap.ker M.ρ.norm :=
+      (normKernelCyclesAddEquiv (G := Gal(L / K)) (A := Lˣ)).symm (Additive.ofMul a)
+    herbrandHminusOneEquivUnitsTateHminusOne K L g hg (HerbrandHMinusOne.mk g a) =
+      TateCohomology.normKernelClass M z := by
+  intro M z
+  let e := tateHMinusOneIsoHerbrandHMinusOne (G := Gal(L / K)) (A := Lˣ) g hg
+  let t := TateCohomology.normKernelClass M z
+  have he : e.hom t = Additive.ofMul (HerbrandHMinusOne.mk g a) :=
+    tateHMinusOneIsoHerbrandHMinusOne_normKernelClass g hg a
+  exact (congrArg (fun w => e.inv w) he.symm).trans (Iso.hom_inv_id_apply e t)
 
 /-- Cardinality transport from the concrete Herbrand `H⁻¹` quotient to
 the actual Tate `H⁻¹` object.  The statement is valid without introducing an

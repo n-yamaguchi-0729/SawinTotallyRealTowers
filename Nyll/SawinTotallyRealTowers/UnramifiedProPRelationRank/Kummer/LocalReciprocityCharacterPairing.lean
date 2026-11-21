@@ -41,15 +41,9 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance localReciprocityPairingCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance localReciprocityCharacterTopology : TopologicalSpace (ZMod p) := ⊥
-local instance localReciprocityCharacterDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
-local instance localReciprocityCharacterH1Module :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := Field.absoluteGaloisGroup K)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- A continuous character descends through the closed commutator subgroup. -/
 noncomputable def localReciprocityAbelianCharacter
@@ -58,7 +52,7 @@ noncomputable def localReciprocityAbelianCharacter
   let f := characterOfH1 chi
   apply ProCGroups.QuotientGroup.liftₜ _ f
   exact Subgroup.topologicalClosure_minimal _
-    (Abelianization.commutator_subset_ker f.toMonoidHom)
+    (Group.Abelianization.commutator_le_ker f.toMonoidHom)
     (ProCGroups.ContinuousMonoidHom.isClosed_ker f)
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in

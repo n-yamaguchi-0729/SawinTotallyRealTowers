@@ -6,11 +6,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidue
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleArtin
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceCyclotomicFrobeniusLift
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.NumberFieldArtinTransport
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PadicCyclicClosure
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.BaseComparison.EmbeddedExtensionQuotient
 public import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.ValuationSubring
@@ -384,6 +388,130 @@ theorem automorphismOverCyclicFixedField_mem_chosenFinitePlaceArtin_range
     automorphismOverCyclicFixedField_mem_chosenFinitePlaceDecompositionGroup
       (K := K) (L := L) v σ
 
+section ExactDecompositionRestriction
+
+variable {F : Type u} {E : Type v} {Ω : Type w} [Field F] [Field E] [Field Ω]
+    [Algebra F E] [Algebra F Ω] [Algebra E Ω] [IsScalarTower F E Ω] [Normal F E]
+
+/-- Restriction to the decomposition group of a specified lower absolute value. -/
+def absoluteValueDecompositionGroupRestrictionTo (wΩ : AbsoluteValue Ω ℝ)
+    (wE : AbsoluteValue E ℝ)
+    (hw : wΩ.comp (f := algebraMap E Ω) (algebraMap E Ω).injective = wE) :
+    absoluteValueDecompositionGroup F wΩ →* absoluteValueDecompositionGroup F wE := by
+  let r := absoluteValueDecompositionGroupRestrictionHom (K := F) (L := E) wΩ
+  have h := congrArg (absoluteValueDecompositionGroup F) hw
+  exact (Subgroup.inclusion (le_of_eq h)).comp r
+
+/-- The restriction to the specified absolute value keeps the normal-field restriction. -/
+theorem absoluteValueDecompositionGroupRestrictionTo_coe (wΩ : AbsoluteValue Ω ℝ)
+    (wE : AbsoluteValue E ℝ)
+    (hw : wΩ.comp (f := algebraMap E Ω) (algebraMap E Ω).injective = wE)
+    (τ : absoluteValueDecompositionGroup F wΩ) :
+    (absoluteValueDecompositionGroupRestrictionTo (F := F) wΩ wE hw τ).1 =
+      AlgEquiv.restrictNormalHom E τ.1 :=
+  rfl
+
+/-- The map to the chosen lower decomposition group is surjective in a Galois tower. -/
+theorem absoluteValueDecompositionGroupRestrictionTo_surjective [IsGalois F Ω]
+    (v : AbsoluteValue F ℝ) (hv : v.IsNontrivial) (wΩ : AbsoluteValueExtension v Ω)
+    (wE : AbsoluteValue E ℝ)
+    (hw : wΩ.1.comp (f := algebraMap E Ω) (algebraMap E Ω).injective = wE) :
+    Function.Surjective (absoluteValueDecompositionGroupRestrictionTo (F := F) wΩ.1 wE hw) := by
+  subst wE
+  intro σ
+  obtain ⟨τ, hτ⟩ := absoluteValueDecompositionGroupRestrictionHom_surjective
+    (L := E) v hv wΩ σ
+  refine ⟨τ, Subtype.ext ?_⟩
+  exact congrArg (fun s : absoluteValueDecompositionGroup F
+    (wΩ.1.comp (f := algebraMap E Ω) (algebraMap E Ω).injective) => s.val) hτ
+
+variable {Ω' : Type x} [Field Ω'] [Algebra F Ω']
+
+/-- Conjugating by a field equivalence identifies the decomposition group of a pulled-back
+absolute value with the decomposition group of the original absolute value. -/
+def absoluteValueDecompositionGroupEquivPullback
+    (e : Ω ≃ₐ[F] Ω') (w : AbsoluteValue Ω' ℝ) :
+    absoluteValueDecompositionGroup F
+        (w.comp (f := e.toRingEquiv.toRingHom) e.injective) ≃*
+      absoluteValueDecompositionGroup F w where
+  toFun σ := ⟨AlgEquiv.autCongr e σ.1, fun x => by
+    change w (e (σ.1 (e.symm x))) < 1 ↔ w x < 1
+    have h := σ.2 (e.symm x)
+    change w (e (σ.1 (e.symm x))) < 1 ↔ w (e (e.symm x)) < 1 at h
+    simpa only [e.apply_symm_apply] using h⟩
+  invFun τ := ⟨(AlgEquiv.autCongr e).symm τ.1, fun x => by
+    change w (e (e.symm (τ.1 (e x)))) < 1 ↔ w (e x) < 1
+    rw [e.apply_symm_apply]
+    exact τ.2 (e x)⟩
+  left_inv σ := Subtype.ext ((AlgEquiv.autCongr e).symm_apply_apply σ.1)
+  right_inv τ := Subtype.ext ((AlgEquiv.autCongr e).apply_symm_apply τ.1)
+  map_mul' σ τ := Subtype.ext (map_mul (AlgEquiv.autCongr e) σ.1 τ.1)
+
+/-- Pulling back the chosen place along a compatible closure equivalence retains the exact
+action on the original finite upper field. -/
+theorem absoluteValueDecompositionGroupRestrictionTo_pullback
+    [Algebra E Ω'] [IsScalarTower F E Ω']
+    (e : Ω ≃ₐ[F] Ω') (w : AbsoluteValue Ω' ℝ) (wE : AbsoluteValue E ℝ)
+    (he : ∀ x : E, e (algebraMap E Ω x) = algebraMap E Ω' x)
+    (hw : w.comp (f := algebraMap E Ω') (algebraMap E Ω').injective = wE)
+    (hw₀ : (w.comp (f := e.toRingEquiv.toRingHom) e.injective).comp
+      (f := algebraMap E Ω) (algebraMap E Ω).injective = wE)
+    (σ : absoluteValueDecompositionGroup F
+      (w.comp (f := e.toRingEquiv.toRingHom) e.injective)) :
+    absoluteValueDecompositionGroupRestrictionTo (F := F) w wE hw
+        (absoluteValueDecompositionGroupEquivPullback e w σ) =
+      absoluteValueDecompositionGroupRestrictionTo (F := F)
+        (w.comp (f := e.toRingEquiv.toRingHom) e.injective) wE hw₀ σ := by
+  apply Subtype.ext
+  rw [absoluteValueDecompositionGroupRestrictionTo_coe,
+    absoluteValueDecompositionGroupRestrictionTo_coe]
+  apply AlgEquiv.ext
+  intro x
+  apply (algebraMap E Ω').injective
+  let τ := AlgEquiv.autCongr e σ.val
+  change algebraMap E Ω' ((AlgEquiv.restrictNormalHom E τ) x) =
+    algebraMap E Ω' ((AlgEquiv.restrictNormalHom E σ.val) x)
+  calc
+    _ = τ (algebraMap E Ω' x) := τ.restrictNormal_commutes E x
+    _ = τ (e (algebraMap E Ω x)) := congrArg τ (he x).symm
+    _ = e (σ.val (algebraMap E Ω x)) := by
+      change e (σ.val (e.symm (e (algebraMap E Ω x)))) = _
+      rw [e.symm_apply_apply]
+    _ = e (algebraMap E Ω ((AlgEquiv.restrictNormalHom E σ.val) x)) :=
+      congrArg e (σ.val.restrictNormal_commutes E x).symm
+    _ = _ := he _
+
+end ExactDecompositionRestriction
+
+omit [NumberField L] [FiniteDimensional K L] in
+/-- The originally chosen finite place of `L` extends to the separable closure of
+`K`, and restriction from its decomposition group is surjective. -/
+theorem exists_intrinsicFinitePlaceDecompositionRestriction_surjective
+    (v : HeightOneSpectrum (𝓞 K)) :
+    let i := separableEmbeddingIntoSeparableClosure K L
+    let _ : Algebra L (SeparableClosure K) := i.toRingHom.toAlgebra
+    let _ : IsScalarTower K L (SeparableClosure K) :=
+      IsScalarTower.of_algebraMap_eq' i.comp_algebraMap.symm
+    let wL := chosenFinitePlaceExtension (L := L) v
+    ∃ wΩ : AbsoluteValueExtension (NumberField.HeightOneSpectrum.adicAbv K v)
+        (SeparableClosure K),
+      ∃ hw : wΩ.1.comp (f := algebraMap L (SeparableClosure K))
+          (algebraMap L (SeparableClosure K)).injective = wL.1,
+        Function.Surjective
+          (absoluteValueDecompositionGroupRestrictionTo (F := K) wΩ.1 wL.1 hw) := by
+  intro i hAlg hTower wL
+  let : Algebra.IsAlgebraic L (SeparableClosure K) :=
+    Algebra.IsAlgebraic.tower_top (K := K) L
+  let a := NumberField.HeightOneSpectrum.adicAbv K v
+  have ha : a.IsNontrivial := RayClass.adicAbv_isNontrivial v
+  let wΩ : AbsoluteValueExtension a (SeparableClosure K) :=
+    wL.extendToAlgebraicallyClosed a ha
+  have hw : wΩ.1.comp (f := algebraMap L (SeparableClosure K))
+      (algebraMap L (SeparableClosure K)).injective = wL.1 := by
+    ext x
+    exact AbsoluteValueExtension.extendToAlgebraicallyClosed_algebraMap a ha wL x
+  exact ⟨wΩ, hw, absoluteValueDecompositionGroupRestrictionTo_surjective a ha wΩ wL.1 hw⟩
+
 /-- Restriction from the decomposition group in the common compatible
 rational separable closure to the decomposition group at the chosen
 finite place of `L`.
@@ -406,40 +534,8 @@ noncomputable def finitePlaceSeparableClosureDecompositionRestriction
     absoluteValueDecompositionGroup K wΩ.1 →*
       absoluteValueDecompositionGroup K wL.1 := by
   intro baseAlgebra topAlgebra scalarTower wL wΩ
-  exact
-    { toFun := fun τ =>
-        ⟨AlgEquiv.restrictNormalHom L τ.1,
-          by
-            intro x
-            rw [
-              ←
-                numberFieldTowerFinitePlaceExtensionToSeparableClosure_algebraMap
-                  K L v wL
-                    ((AlgEquiv.restrictNormalHom L τ.1) x),
-              ←
-                numberFieldTowerFinitePlaceExtensionToSeparableClosure_algebraMap
-                  K L v wL x]
-            have hcomm :
-                algebraMap L (SeparableClosure ℚ)
-                    ((AlgEquiv.restrictNormalHom L τ.1) x) =
-                  τ.1 (algebraMap L (SeparableClosure ℚ) x) := by
-              exact AlgEquiv.restrictNormal_commutes τ.1 L x
-            rw [hcomm]
-            exact τ.2 (algebraMap L (SeparableClosure ℚ) x)⟩
-      map_one' := by
-        apply Subtype.ext
-        exact
-          map_one
-            (AlgEquiv.restrictNormalHom
-              (F := K) (K₁ := SeparableClosure ℚ) L)
-      map_mul' := by
-        intro τ η
-        apply Subtype.ext
-        exact
-          map_mul
-            (AlgEquiv.restrictNormalHom
-              (F := K) (K₁ := SeparableClosure ℚ) L)
-            τ.1 η.1 }
+  exact absoluteValueDecompositionGroupRestrictionTo wΩ.1 wL.1
+    (numberFieldTowerFinitePlaceExtensionToSeparableClosure_restrict K L v wL)
 
 omit [FiniteDimensional K L] in
 /-- On underlying automorphisms, the compatible finite-place
@@ -463,7 +559,10 @@ theorem finitePlaceSeparableClosureDecompositionRestriction_coe
       Gal(L / K)) =
       AlgEquiv.restrictNormalHom L τ.1 := by
   intro baseAlgebra topAlgebra scalarTower τ
-  rfl
+  let wL := chosenFinitePlaceExtension (L := L) v
+  let wΩ := numberFieldTowerFinitePlaceExtensionToSeparableClosure K L v wL
+  exact absoluteValueDecompositionGroupRestrictionTo_coe wΩ.1 wL.1
+    (numberFieldTowerFinitePlaceExtensionToSeparableClosure_restrict K L v wL) τ
 
 omit [FiniteDimensional K L] in
 /-- The compatible separable-closure restriction is onto the actual
@@ -488,42 +587,9 @@ theorem finitePlaceSeparableClosureDecompositionRestriction_surjective
   let wΩ :=
     numberFieldTowerFinitePlaceExtensionToSeparableClosure
       K L v wL
-  let r :=
-    absoluteValueDecompositionGroupRestrictionHom
-      (K := K) (L := L) (Ω := SeparableClosure ℚ) wΩ.1
-  have hr : Function.Surjective r :=
-    absoluteValueDecompositionGroupRestrictionHom_surjective
-      (K := K) (L := L) (Ω := SeparableClosure ℚ)
-      (NumberField.HeightOneSpectrum.adicAbv K v)
-      (RayClass.adicAbv_isNontrivial v) wΩ
-  have hw :
-      wΩ.1.comp
-          (f := algebraMap L (SeparableClosure ℚ))
-          (algebraMap L (SeparableClosure ℚ)).injective =
-        wL.1 :=
-    numberFieldTowerFinitePlaceExtensionToSeparableClosure_restrict
-      K L v wL
-  let σToRestricted :
-      absoluteValueDecompositionGroup K wL.1 →
-      absoluteValueDecompositionGroup K
-        (wΩ.1.comp
-          (f := algebraMap L (SeparableClosure ℚ))
-          (algebraMap L (SeparableClosure ℚ)).injective) :=
-    fun σ =>
-      ⟨σ.1, by
-        simpa only [hw] using σ.2⟩
-  intro σ
-  obtain ⟨τ, hτ⟩ := hr (σToRestricted σ)
-  refine ⟨τ, ?_⟩
-  apply Subtype.ext
-  change (r τ).1 = (σToRestricted σ).1
-  exact congrArg
-    (fun ρ :
-      absoluteValueDecompositionGroup K
-        (wΩ.1.comp
-          (f := algebraMap L (SeparableClosure ℚ))
-          (algebraMap L (SeparableClosure ℚ)).injective) => ρ.1)
-    hτ
+  exact absoluteValueDecompositionGroupRestrictionTo_surjective
+    (NumberField.HeightOneSpectrum.adicAbv K v) (RayClass.adicAbv_isNontrivial v) wΩ wL.1
+    (numberFieldTowerFinitePlaceExtensionToSeparableClosure_restrict K L v wL)
 
 /-- Scalar restriction embeds the decomposition group over `L` into
 the compatible decomposition group over `K`. -/
@@ -1318,18 +1384,52 @@ theorem
             (K := K) (L := L) v p τ =
           (Multiplicative.ofAdd (1 : ℤ_[p.1])) ^ n := by
   intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 wΩ
-  exact
-    exists_positivePadicDegree_lift_of_surjective
-      p
-      (finitePlaceSeparableClosureDecompositionRestriction
-        (K := K) (L := L) v)
-      (finitePlaceSeparableClosureDecompositionRestriction_surjective
-        (K := K) (L := L) v)
-      (finitePlaceSeparableClosurePadicCyclotomicDegree
-        (K := K) (L := L) v p)
-      (finitePlaceSeparableClosureRestrictionKernel_padicDegree_isOpen
-        (K := K) (L := L) v p)
-      σ
+  let i := separableEmbeddingIntoSeparableClosure K L
+  let : Algebra L (SeparableClosure K) := i.toRingHom.toAlgebra
+  let : IsScalarTower K L (SeparableClosure K) :=
+    IsScalarTower.of_algebraMap_eq' i.comp_algebraMap.symm
+  let e := numberFieldTowerCompatibleClosureEquiv K L
+  let wL := chosenFinitePlaceExtension (L := L) v
+  let a := NumberField.HeightOneSpectrum.adicAbv K v
+  let w₀ : AbsoluteValueExtension a (SeparableClosure K) :=
+    ⟨wΩ.1.comp (f := e.toRingEquiv.toRingHom) e.injective, fun x => by
+      change wΩ.1 (e (algebraMap K (SeparableClosure K) x)) = a x
+      rw [e.commutes]
+      exact wΩ.2 x⟩
+  have he (x : L) : e (algebraMap L (SeparableClosure K) x) =
+      algebraMap L (SeparableClosure ℚ) x :=
+    numberFieldTowerCompatibleClosureEquiv_apply_top K L x
+  have hw := numberFieldTowerFinitePlaceExtensionToSeparableClosure_restrict K L v wL
+  have hw₀ : w₀.1.comp (f := algebraMap L (SeparableClosure K))
+      (algebraMap L (SeparableClosure K)).injective = wL.1 := by
+    ext x
+    change wΩ.1 (e (algebraMap L (SeparableClosure K) x)) = wL.1 x
+    rw [he x]
+    exact numberFieldTowerFinitePlaceExtensionToSeparableClosure_algebraMap K L v wL x
+  let j := absoluteValueDecompositionGroupEquivPullback e wΩ.1
+  let r := finitePlaceSeparableClosureDecompositionRestriction (K := K) (L := L) v
+  let d := finitePlaceSeparableClosurePadicCyclotomicDegree (K := K) (L := L) v p
+  let r₀ := absoluteValueDecompositionGroupRestrictionTo (F := K) w₀.1 wL.1 hw₀
+  let d₀ := d.comp j.toMonoidHom
+  have hr₀ : Function.Surjective r₀ :=
+    absoluteValueDecompositionGroupRestrictionTo_surjective a
+      (RayClass.adicAbv_isNontrivial v) w₀ wL.1 hw₀
+  have hcomp (s : absoluteValueDecompositionGroup K w₀.1) : r (j s) = r₀ s :=
+    absoluteValueDecompositionGroupRestrictionTo_pullback e wΩ.1 wL.1 he hw hw₀ s
+  have himage : r₀.ker.map d₀ = r.ker.map d := by
+    ext z
+    constructor
+    · rintro ⟨s, hs, rfl⟩
+      exact ⟨j s, MonoidHom.mem_ker.mpr ((hcomp s).trans (MonoidHom.mem_ker.mp hs)), rfl⟩
+    · rintro ⟨s, hs, rfl⟩
+      obtain ⟨s₀, rfl⟩ := j.surjective s
+      exact ⟨s₀, MonoidHom.mem_ker.mpr ((hcomp s₀).symm.trans (MonoidHom.mem_ker.mp hs)), rfl⟩
+  have hopen : IsOpen
+      (((r₀.ker.map d₀).toAddSubgroup' : AddSubgroup ℤ_[p.1]) : Set ℤ_[p.1]) := by
+    rw [himage]
+    exact finitePlaceSeparableClosureRestrictionKernel_padicDegree_isOpen (K := K) (L := L) v p
+  obtain ⟨s, hs, n, hn, hd⟩ := exists_positivePadicDegree_lift_of_surjective p.1 r₀ hr₀ d₀ hopen σ
+  exact ⟨j s, (hcomp s).trans hs, n, hn, hd⟩
 
 end Reciprocity
 end GlobalClassFieldTheory

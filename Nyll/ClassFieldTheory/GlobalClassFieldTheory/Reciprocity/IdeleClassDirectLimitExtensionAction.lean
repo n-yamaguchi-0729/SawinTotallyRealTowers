@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtension
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimit
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
@@ -33,7 +34,7 @@ open LocalClassFieldTheory
 open CyclicCohomology
 
 attribute [local instance]
-  rationalIdeleClassDirectLimitSMul rationalAbstractFixedFieldFiniteDimensional
+  ideleClassDirectLimitSMul rationalAbstractFixedFieldFiniteDimensional
   rationalAbstractTowerClassGroupCommGroup
 
 /-- The fixed-part comparison intertwines an automorphism of a finite
@@ -48,7 +49,7 @@ theorem rationalIdeleClassEquivFixed_action_coe
       ((τ x : E) : SeparableClosure ℚ) =
         σ (x : SeparableClosure ℚ))
     (c : RelativeIdeleGroup.ClassGroup ℚ E) :
-    rationalIdeleClassRepresentation.ρ σ
+    (ideleClassRepresentation ℚ).ρ σ
         (rationalIdeleClassEquivFixed E
           (Additive.ofMul
             (_root_.relativeIdeleClassBaseChangeMulEquiv
@@ -82,7 +83,7 @@ theorem rationalIdeleClassEquivFixed_ambientAlgEquiv
       ((e x : F) : SeparableClosure ℚ) =
         σ (x : SeparableClosure ℚ))
     (c : IdeleClassGroup E) :
-    rationalIdeleClassRepresentation.ρ σ
+    (ideleClassRepresentation ℚ).ρ σ
         (rationalIdeleClassEquivFixed E
           (Additive.ofMul c)).1 =
       (rationalIdeleClassEquivFixed F
@@ -220,7 +221,7 @@ private theorem
       MulEquiv.toAdditive
         (_root_.relativeIdeleClassBaseChangeMulEquiv
           (K := ℚ) (L := E))
-    rationalIdeleClassRepresentation.ρ σ
+    (ideleClassRepresentation ℚ).ρ σ
         (eFixed (eRelative c)).1 =
       (eFixed
         (eRelative
@@ -297,12 +298,12 @@ private theorem
           (Additive.ofMul
             (τ₀ • Additive.toMul c))).symm
   calc
-    rationalIdeleClassRepresentation.ρ σ
+    (ideleClassRepresentation ℚ).ρ σ
         (eFixed (eRelative c)).1 =
-        rationalIdeleClassRepresentation.ρ σ
+        (ideleClassRepresentation ℚ).ρ σ
           (rationalIdeleClassEquivFixed
             E₀ (Additive.ofMul cQ)).1 :=
-      congrArg (rationalIdeleClassRepresentation.ρ σ) hLeft
+      congrArg ((ideleClassRepresentation ℚ).ρ σ) hLeft
     _ = (rationalIdeleClassEquivFixed
           E₀
           (Additive.ofMul
@@ -326,7 +327,7 @@ private theorem
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (σ : K.toSubgroup)
-    (x : (extensionFixedRepresentation rationalIdeleClassRepresentation
+    (x : (extensionFixedRepresentation (ideleClassRepresentation ℚ)
       K L hLK hnormal).V) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
@@ -344,11 +345,11 @@ private theorem
     let : NumberField F := NumberField.of_module_finite ℚ F
     let : NumberField E := NumberField.of_module_finite ℚ E
     let M :=
-      extensionFixedRepresentation rationalIdeleClassRepresentation
+      extensionFixedRepresentation (ideleClassRepresentation ℚ)
         K L hLK hnormal
     let eAmbient :=
       extensionFixedRepresentationEquiv
-        rationalIdeleClassRepresentation K L hLK hnormal
+        (ideleClassRepresentation ℚ) K L hLK hnormal
     let eFixed :=
       rationalAbstractRelativeFixedFieldIdeleClassEquivFixedOfFiniteDimensional K L hLK
     let eRelative :=
@@ -377,11 +378,11 @@ private theorem
     change FiniteDimensional ℚ E
     infer_instance
   let M :=
-    extensionFixedRepresentation rationalIdeleClassRepresentation
+    extensionFixedRepresentation (ideleClassRepresentation ℚ)
       K L hLK hnormal
   let eAmbient :=
     extensionFixedRepresentationEquiv
-      rationalIdeleClassRepresentation K L hLK hnormal
+      (ideleClassRepresentation ℚ) K L hLK hnormal
   let eFixed :=
     rationalAbstractRelativeFixedFieldIdeleClassEquivFixedOfFiniteDimensional K L hLK
   let eRelative :=
@@ -421,28 +422,28 @@ private theorem
     (eAmbient
         (M.ρ
           (QuotientGroup.mk' (extensionSubgroup K L hLK) σ) x)).1 =
-        relativeCosetAction rationalIdeleClassRepresentation
+        relativeCosetAction (ideleClassRepresentation ℚ)
           K L hLK (eAmbient x)
           (QuotientGroup.mk'
             (extensionSubgroup K L hLK) σ) :=
       extensionFixedRepresentation_action_coe
-        rationalIdeleClassRepresentation K L hLK hnormal
+        (ideleClassRepresentation ℚ) K L hLK hnormal
           (QuotientGroup.mk'
             (extensionSubgroup K L hLK) σ) x
     _ =
-        rationalIdeleClassRepresentation.ρ σ.1
+        (ideleClassRepresentation ℚ).ρ σ.1
           (eAmbient x).1 := by
       change
-        relativeCosetAction rationalIdeleClassRepresentation
+        relativeCosetAction (ideleClassRepresentation ℚ)
             K L hLK (eAmbient x) (QuotientGroup.mk σ) =
-          rationalIdeleClassRepresentation.ρ σ.1
+          (ideleClassRepresentation ℚ).ρ σ.1
             (eAmbient x).1
       exact
         relativeCosetAction_mk
-          rationalIdeleClassRepresentation K L hLK
+          (ideleClassRepresentation ℚ) K L hLK
           (eAmbient x) σ
     _ =
-        rationalIdeleClassRepresentation.ρ σ.1
+        (ideleClassRepresentation ℚ).ρ σ.1
           (eFixed (eRelative c)).1 := by
       rw [hc]
     _ =
@@ -491,18 +492,46 @@ private theorem rationalTowerRelativeIdeleClassBaseChangeAddEquiv_smul
     towerRelativeIdeleClassBaseChangeMulEquiv_smul
       ℚ F E τ (Additive.toMul c)
 
-private theorem addEquiv_trans_symm_trans_symm_trans_apply_eq
-    {V A B C D : Type*}
-    [Add V] [Add A] [Add B] [Add C] [Add D]
-    (eV : V ≃+ D) (eB : B ≃+ D)
-    (eA : A ≃+ B) (eC : A ≃+ C)
-    {y : V} {z : A} {w : C}
-    (h : eV y = eB (eA z))
-    (ht : eC z = w) :
-    (((eV.trans eB.symm).trans eA.symm).trans eC) y = w := by
-  change eC (eA.symm (eB.symm (eV y))) = w
-  rw [h, eB.symm_apply_apply, eA.symm_apply_apply]
-  exact ht
+private theorem rationalAbstractExtensionIdeleClassEquiv_apply
+    (K L : ClosedSubgroup
+      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
+    (hLK : L.toSubgroup ≤ K.toSubgroup)
+    (hnormal : (extensionSubgroup K L hLK).Normal)
+    [hKfinite : Finite
+      ((baseField
+        (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)).toSubgroup ⧸
+        extensionSubgroup
+          (baseField
+            (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
+          K (le_baseField K))]
+    [hfinite : Finite
+      (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
+    (x : (extensionFixedRepresentation (ideleClassRepresentation ℚ)
+      K L hLK hnormal).V) :
+    let F := abstractFixedField ℚ (SeparableClosure ℚ) K
+    let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
+    let := hnormal
+    let : FiniteDimensional ℚ F :=
+      abstractFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K hKfinite
+    let : FiniteDimensional F E :=
+      abstractRelativeFixedField_finiteDimensional
+        ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
+    let : IsScalarTower ℚ F E :=
+      IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
+    let : FiniteDimensional ℚ E :=
+      FiniteDimensional.trans ℚ F E
+    let : NumberField F := NumberField.of_module_finite ℚ F
+    let : NumberField E := NumberField.of_module_finite ℚ E
+    let e := extensionFixedRepresentationEquiv
+      (ideleClassRepresentation ℚ) K L hLK hnormal
+    let eFixed : Additive (IdeleClassGroup E) ≃+
+        KummerTheory.ambientFixedAddSubgroup (ideleClassRepresentation ℚ) L :=
+      rationalAbstractRelativeFixedFieldIdeleClassEquivFixedOfFiniteDimensional K L hLK
+    let eOrd := MulEquiv.toAdditive
+      (_root_.relativeIdeleClassBaseChangeMulEquiv (K := F) (L := E))
+    rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal x =
+      eOrd.symm (eFixed.symm (e x)) := rfl
 
 private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
     (K L : ClosedSubgroup
@@ -519,7 +548,7 @@ private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (σ : K.toSubgroup)
-    (x : (extensionFixedRepresentation rationalIdeleClassRepresentation
+    (x : (extensionFixedRepresentation (ideleClassRepresentation ℚ)
       K L hLK hnormal).V) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
@@ -542,21 +571,14 @@ private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
     letI : MulDistribMulAction (E ≃ₐ[F] E)
         (RelativeIdeleGroup.ClassGroup F E) :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction F E
-    rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
-        ((extensionFixedRepresentation rationalIdeleClassRepresentation
-          K L hLK hnormal).ρ
-            (QuotientGroup.mk'
-              (extensionSubgroup K L hLK) σ) x) =
-      (Rep.ofMulDistribMulAction (E ≃ₐ[F] E)
-        (RelativeIdeleGroup.ClassGroup F E)).ρ
-          (abstractExtensionQuotientEquivGaloisGroup
-            ℚ (SeparableClosure ℚ) K L hLK hnormal
-            (QuotientGroup.mk'
-              (extensionSubgroup K L hLK) σ))
-          (rationalAbstractExtensionIdeleClassEquiv
-            K L hLK hnormal x) := by
-  intro F E sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6 sharedOwner7 sharedOwner8
-    sharedOwner9
+    let q : K.toSubgroup ⧸ extensionSubgroup K L hLK := QuotientGroup.mk σ
+    let M := extensionFixedRepresentation (ideleClassRepresentation ℚ) K L hLK hnormal
+    let EClass := Additive (RelativeIdeleGroup.ClassGroup F E)
+    let c : M → EClass := rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
+    let τ : E ≃ₐ[F] E :=
+      abstractExtensionQuotientEquivGaloisGroup ℚ (SeparableClosure ℚ) K L hLK hnormal q
+    c (M.ρ q x) = Additive.ofMul (τ • (c x).toMul) := by
+  intro F E hN hF hE hTower hQE hNF hNE q M EClass c₀ τ₁
   let : FiniteDimensional ℚ (E.restrictScalars ℚ) := by
     change FiniteDimensional ℚ
       (abstractFixedField ℚ (SeparableClosure ℚ) L)
@@ -568,16 +590,13 @@ private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
   let : MulDistribMulAction (E ≃ₐ[F] E)
       (RelativeIdeleGroup.ClassGroup F E) :=
     RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction F E
-  let M :=
-    extensionFixedRepresentation rationalIdeleClassRepresentation
-      K L hLK hnormal
   let eAmbient :=
     extensionFixedRepresentationEquiv
-      rationalIdeleClassRepresentation K L hLK hnormal
+      (ideleClassRepresentation ℚ) K L hLK hnormal
   let eFixed :
       Additive (IdeleClassGroup E) ≃+
         KummerTheory.ambientFixedAddSubgroup
-          rationalIdeleClassRepresentation L :=
+          (ideleClassRepresentation ℚ) L :=
     rationalAbstractRelativeFixedFieldIdeleClassEquivFixedOfFiniteDimensional K L hLK
   let eRelative :
       Additive (RelativeIdeleGroup.ClassGroup ℚ E) ≃+
@@ -594,33 +613,39 @@ private theorem rationalAbstractExtensionIdeleClassEquiv_action_mk
       (MulEquiv.toAdditive
         (towerRelativeIdeleClassBaseChangeMulEquiv
           ℚ F E))
-  let eQ :=
-    abstractExtensionQuotientEquivGaloisGroup
-      ℚ (SeparableClosure ℚ) K L hLK hnormal
-  let τ : E ≃ₐ[F] E :=
-    eQ (QuotientGroup.mk' (extensionSubgroup K L hLK) σ)
+  let τ : E ≃ₐ[F] E := τ₁
   let τ₀ : E ≃ₐ[ℚ] E := τ.restrictScalars ℚ
   let c : Additive (RelativeIdeleGroup.ClassGroup ℚ E) :=
     eRelative.symm (eFixed.symm (eAmbient x))
-  change
-    (((eAmbient.trans eFixed.symm).trans eRelative.symm).trans eTower)
-        (M.ρ
-          (QuotientGroup.mk'
-            (extensionSubgroup K L hLK) σ) x) =
-      Additive.ofMul
-        (τ • Additive.toMul
-          (eTower
-            (eRelative.symm
-              (eFixed.symm (eAmbient x)))))
-  apply addEquiv_trans_symm_trans_symm_trans_apply_eq
-      eAmbient eFixed eRelative eTower
-      (z := Additive.ofMul (τ₀ • Additive.toMul c))
-  · exact
-      rationalAbstractExtensionIdeleClassEquiv_action_fixed_mk
-        K L hLK hnormal σ x
-  · simpa only [eTower, τ₀, c] using
-      (rationalTowerRelativeIdeleClassBaseChangeAddEquiv_smul
-        F E τ c)
+  let eOrd := MulEquiv.toAdditive
+    (_root_.relativeIdeleClassBaseChangeMulEquiv (K := F) (L := E))
+  have hcompat (d : Additive (RelativeIdeleGroup.ClassGroup ℚ E)) :
+      eOrd (eTower d) = eRelative d := by
+    apply Additive.toMul.injective
+    exact relativeIdeleClassBaseChangeMulEquiv_tower ℚ F E (Additive.toMul d)
+  have hself : eOrd.symm (eFixed.symm (eAmbient x)) = eTower c := by
+    exact eOrd.injective ((eOrd.apply_symm_apply (eFixed.symm (eAmbient x))).trans
+      ((eRelative.apply_symm_apply (eFixed.symm (eAmbient x))).symm.trans (hcompat c).symm))
+  have hEval (a : M) : c₀ a = eOrd.symm (eFixed.symm (eAmbient a)) :=
+    rationalAbstractExtensionIdeleClassEquiv_apply K L hLK hnormal a
+  let d : Additive (RelativeIdeleGroup.ClassGroup ℚ E) :=
+    Additive.ofMul (τ₀ • Additive.toMul c)
+  have haction : eAmbient (M.ρ q x) = eFixed (eRelative d) :=
+    rationalAbstractExtensionIdeleClassEquiv_action_fixed_mk K L hLK hnormal σ x
+  have hTower : eTower d = Additive.ofMul (τ • (eTower c).toMul) :=
+    rationalTowerRelativeIdeleClassBaseChangeAddEquiv_smul F E τ c
+  have hx : c₀ x = eTower c := (hEval x).trans hself
+  have hrel : eOrd.symm (eRelative d) = eTower d :=
+    (eOrd.symm_apply_eq).mpr (hcompat d).symm
+  calc
+    c₀ (M.ρ q x) = eOrd.symm (eFixed.symm (eAmbient (M.ρ q x))) := hEval _
+    _ = eOrd.symm (eFixed.symm (eFixed (eRelative d))) :=
+      congrArg (fun u => eOrd.symm (eFixed.symm u)) haction
+    _ = eOrd.symm (eRelative d) := congrArg eOrd.symm (eFixed.symm_apply_apply (eRelative d))
+    _ = eTower d := hrel
+    _ = Additive.ofMul (τ • (eTower c).toMul) := hTower
+    _ = Additive.ofMul (τ • (c₀ x).toMul) :=
+      congrArg (fun u : EClass => Additive.ofMul (τ • u.toMul)) hx.symm
 
 /-- The abstract quotient action on the rational absolute idele-class
 representation becomes the ordinary Galois action on the relative idele
@@ -640,7 +665,7 @@ theorem rationalAbstractExtensionIdeleClassEquiv_action
     [hfinite : Finite
       (K.toSubgroup ⧸ extensionSubgroup K L hLK)]
     (q : K.toSubgroup ⧸ extensionSubgroup K L hLK)
-    (x : (extensionFixedRepresentation rationalIdeleClassRepresentation
+    (x : (extensionFixedRepresentation (ideleClassRepresentation ℚ)
       K L hLK hnormal).V) :
     let F := abstractFixedField ℚ (SeparableClosure ℚ) K
     let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
@@ -664,7 +689,7 @@ theorem rationalAbstractExtensionIdeleClassEquiv_action
         (RelativeIdeleGroup.ClassGroup F E) :=
       RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction F E
     rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
-        ((extensionFixedRepresentation rationalIdeleClassRepresentation
+        ((extensionFixedRepresentation (ideleClassRepresentation ℚ)
           K L hLK hnormal).ρ q x) =
       (Rep.ofMulDistribMulAction (E ≃ₐ[F] E)
         (RelativeIdeleGroup.ClassGroup F E)).ρ

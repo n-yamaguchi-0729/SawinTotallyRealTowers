@@ -6,12 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalFieldExtension
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.SeparableNormValuation
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedIntegerValuation
-public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.ValuedTopology
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.NormalizedValue
 public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.FiniteExtension.Uniqueness
 public import Mathlib.RingTheory.RamificationInertia.Inertia
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.Basic
@@ -45,175 +46,6 @@ noncomputable section
 namespace FiniteIdeleGroup
 
 universe u v w
-
-private lemma withZeroMultiplicativeInt_le_exp_neg_one_of_lt_one
-    (γ : WithZero (Multiplicative ℤ)) (hγ : γ < 1) :
-    γ ≤ WithZero.exp (-1 : ℤ) := by
-  cases γ using WithZero.recZeroCoe with
-  | zero =>
-      exact bot_le
-  | coe γ =>
-      rw [WithZero.exp_eq_coe_ofAdd, WithZero.coe_le_coe]
-      rw [← Multiplicative.toAdd_le]
-      change Multiplicative.toAdd γ ≤ (-1 : ℤ)
-      have hγ' : Multiplicative.toAdd γ < (0 : ℤ) := by
-        have : γ < (1 : Multiplicative ℤ) := by
-          simpa using hγ
-        change
-          Multiplicative.toAdd γ <
-            Multiplicative.toAdd (1 : Multiplicative ℤ)
-        exact Multiplicative.toAdd_lt.mpr this
-      omega
-
-/-- A surjective standard integer valuation gives the same normalized
-integer value as the intrinsic local-field valuation. -/
-private theorem normalizedValue_eq_withZeroLog_of_surjective
-    (F : Type w)
-    [Field F] [ValuativeRel F] [TopologicalSpace F]
-    [IsNonarchimedeanLocalField F]
-    (ν : Valuation F (WithZero (Multiplicative ℤ)))
-    [ν.Compatible]
-    (hν : Function.Surjective ν)
-    (x : Fˣ) :
-    LocalFieldTheory.IsNonarchimedeanLocalField.v F
-        (Additive.ofMul x) =
-      WithZero.log (ν (x : F)) := by
-  let ν₀ := ValuativeRel.valuation F
-  have hEquiv : ν₀.IsEquiv ν :=
-    ValuativeRel.isEquiv ν₀ ν
-  obtain ⟨π, hπ⟩ :=
-    hν (WithZero.exp (-1 : ℤ))
-  have hπ0 : π ≠ 0 := by
-    intro h
-    rw [h, map_zero] at hπ
-    exact WithZero.exp_ne_zero hπ.symm
-  let ϖ : Fˣ := Units.mk0 π hπ0
-  have hπlt : ν π < 1 := by
-    rw [hπ, ← WithZero.exp_zero, WithZero.exp_lt_exp]
-    omega
-  have hπIntrinsicLt : ν₀ π < 1 :=
-    hEquiv.lt_one_iff_lt_one.mpr hπlt
-  have hπIntrinsicMax :
-      ∀ γ : ValuativeRel.ValueGroupWithZero F,
-        γ < 1 → γ ≤ ν₀ π := by
-    intro γ hγ
-    obtain ⟨y, hy⟩ :=
-      ValuativeRel.valuation_surjective γ
-    have hylt : ν y < 1 := by
-      apply hEquiv.lt_one_iff_lt_one.mp
-      simpa [ν₀, hy]
-    have hyle : ν y ≤ ν π := by
-      rw [hπ]
-      exact
-        withZeroMultiplicativeInt_le_exp_neg_one_of_lt_one
-          (ν y) hylt
-    have hyle' : ν₀ y ≤ ν₀ π :=
-      hEquiv.le_iff_le.mpr hyle
-    simpa [ν₀, hy] using hyle'
-  let φ :=
-    _root_.IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt F
-  have hφπ :
-      φ (ν₀ π) = WithZero.exp (-1 : ℤ) := by
-    apply le_antisymm
-    · exact
-        withZeroMultiplicativeInt_le_exp_neg_one_of_lt_one
-          (φ (ν₀ π)) (by
-            have h := φ.strictMono hπIntrinsicLt
-            simpa [φ] using h)
-    · let γ : ValuativeRel.ValueGroupWithZero F :=
-        φ.symm (WithZero.exp (-1 : ℤ))
-      have hγlt : γ < 1 := by
-        have hneg :
-            WithZero.exp (-1 : ℤ) <
-              (1 : WithZero (Multiplicative ℤ)) := by
-          rw [← WithZero.exp_zero, WithZero.exp_lt_exp]
-          omega
-        have h := φ.symm.strictMono hneg
-        simpa [γ, φ] using h
-      have hγle := hπIntrinsicMax γ hγlt
-      have hmap := φ.toOrderIso.monotone hγle
-      rw [← φ.apply_symm_apply (WithZero.exp (-1 : ℤ))]
-      exact hmap
-  have hϖValue :
-      LocalFieldTheory.IsNonarchimedeanLocalField.v F
-          (Additive.ofMul ϖ) = -1 := by
-    rw [LocalFieldTheory.IsNonarchimedeanLocalField.v_apply]
-    apply (WithZero.toAdd_unzero_eq_iff _ (-1 : ℤ)).2
-    change
-      φ (ν₀ ((ϖ : Fˣ) : F)) =
-        ((Multiplicative.ofAdd (-1 : ℤ) :
-            Multiplicative ℤ) :
-          WithZero (Multiplicative ℤ))
-    change
-      φ (ν₀ π) =
-        ((Multiplicative.ofAdd (-1 : ℤ) :
-            Multiplicative ℤ) :
-          WithZero (Multiplicative ℤ))
-    simpa only [WithZero.exp_eq_coe_ofAdd] using hφπ
-  let n : ℤ := WithZero.log (ν (x : F))
-  let y : Fˣ := x * ϖ ^ n
-  have hxν0 : ν (x : F) ≠ 0 :=
-    (Valuation.ne_zero_iff ν).2 x.ne_zero
-  have hyν : ν (y : F) = 1 := by
-    have hϖν : ν (ϖ : F) = WithZero.exp (-1 : ℤ) := by
-      simpa [ϖ] using hπ
-    calc
-      ν (y : F) =
-          ν (x : F) * ν (ϖ : F) ^ n := by
-            simp [y]
-      _ =
-          WithZero.exp n * WithZero.exp (-1 : ℤ) ^ n := by
-            rw [← WithZero.exp_log hxν0]
-            rw [hϖν]
-      _ =
-          WithZero.exp n *
-            WithZero.exp (n • (-1 : ℤ)) := by
-              rw [WithZero.exp_zsmul]
-      _ = WithZero.exp (n + n • (-1 : ℤ)) := by
-            rw [WithZero.exp_add]
-      _ = 1 := by
-            rw [zsmul_eq_mul, Int.cast_id, mul_neg, mul_one, add_neg_cancel, WithZero.exp_zero]
-  have hyInvν : ν ((y⁻¹ : Fˣ) : F) = 1 := by
-    rw [Units.val_inv_eq_inv_val, map_inv₀, hyν, inv_one]
-  have hyMem : (y : F) ∈ 𝒪[F] := by
-    change ν₀ (y : F) ≤ 1
-    exact hEquiv.le_one_iff_le_one.mpr (by rw [hyν])
-  have hyInvMem : ((y⁻¹ : Fˣ) : F) ∈ 𝒪[F] := by
-    change ν₀ ((y⁻¹ : Fˣ) : F) ≤ 1
-    exact hEquiv.le_one_iff_le_one.mpr (by rw [hyInvν])
-  let yInteger : 𝒪[F]ˣ :=
-    { val := ⟨(y : F), hyMem⟩
-      inv := ⟨((y⁻¹ : Fˣ) : F), hyInvMem⟩
-      val_inv := Subtype.ext y.val_inv
-      inv_val := Subtype.ext y.inv_val }
-  have hyField :
-      LocalFieldTheory.IsNonarchimedeanLocalField.integerUnitsToFieldUnits
-          F yInteger =
-        y := by
-    apply Units.ext
-    rfl
-  have hyValue :
-      LocalFieldTheory.IsNonarchimedeanLocalField.v F
-          (Additive.ofMul y) = 0 := by
-    rw [← hyField]
-    exact
-      LocalFieldTheory.IsNonarchimedeanLocalField.v_integerUnitsToFieldUnits
-        F yInteger
-  have hdecomp : y * ϖ ^ (-n) = x := by
-    rw [show y = x * ϖ ^ n by rfl, mul_assoc, zpow_neg,
-      mul_inv_cancel, mul_one]
-  have hdecompValue :=
-    congrArg
-      (fun z : Fˣ =>
-        LocalFieldTheory.IsNonarchimedeanLocalField.v F
-          (Additive.ofMul z))
-      hdecomp
-  rw [LocalFieldTheory.IsNonarchimedeanLocalField.v_mul,
-    hyValue,
-    LocalFieldTheory.IsNonarchimedeanLocalField.v_zpow,
-    hϖValue] at hdecompValue
-  dsimp [n] at hdecompValue ⊢
-  linarith
 
 /-- Identity on the underlying field gives the equivalence between the
 intrinsic valuation ring and the distinguished valued-field integer ring. -/
@@ -318,82 +150,22 @@ theorem localOrder_normUnits
     simpa [E, νE] using
       W.1.valuedAdicCompletion_surjective L
   let : ValuativeRel F :=
-    ValuativeRel.ofValuation νF
+    ClassFieldTheory.finitePlaceCompletionValuativeRel K v₀
   let : ValuativeRel E :=
-    ValuativeRel.ofValuation νE
-  let : νF.Compatible :=
-    Valuation.Compatible.ofValuation νF
-  let : νE.Compatible :=
-    Valuation.Compatible.ofValuation νE
-  let : νF.IsNontrivial := by
-    obtain ⟨π, hπ⟩ :=
-      hνF (WithZero.exp (-1 : ℤ))
-    refine ⟨⟨π, ?_, ?_⟩⟩
-    · rw [hπ]
-      exact WithZero.exp_ne_zero
-    · rw [hπ]
-      change
-        WithZero.exp (-1 : ℤ) ≠
-          WithZero.exp (0 : ℤ)
-      exact WithZero.exp_injective.ne (by omega)
-  let : νE.IsNontrivial := by
-    obtain ⟨π, hπ⟩ :=
-      hνE (WithZero.exp (-1 : ℤ))
-    refine ⟨⟨π, ?_, ?_⟩⟩
-    · rw [hπ]
-      exact WithZero.exp_ne_zero
-    · rw [hπ]
-      change
-        WithZero.exp (-1 : ℤ) ≠
-          WithZero.exp (0 : ℤ)
-      exact WithZero.exp_injective.ne (by omega)
-  let : ValuativeRel.IsNontrivial F :=
-    (ValuativeRel.isNontrivial_iff_isNontrivial νF).2
-      inferInstance
-  let : ValuativeRel.IsNontrivial E :=
-    (ValuativeRel.isNontrivial_iff_isNontrivial νE).2
-      inferInstance
-  let : IsValuativeTopology F :=
-    LocalFieldTheory.isValuativeTopology_of_valued_ofValuation
-      F (WithZero (Multiplicative ℤ))
-  let : IsValuativeTopology E :=
-    LocalFieldTheory.isValuativeTopology_of_valued_ofValuation
-      E (WithZero (Multiplicative ℤ))
+    ClassFieldTheory.finitePlaceCompletionValuativeRel L W.1
+  let : νF.Compatible := Valuation.Compatible.ofValuation νF
+  let : νE.Compatible := Valuation.Compatible.ofValuation νE
   let : IsNonarchimedeanLocalField F :=
-    { toIsValuativeTopology := inferInstance
-      toLocallyCompactSpace := inferInstance
-      toIsNontrivial := inferInstance }
+    ClassFieldTheory.finitePlaceCompletionIsNonarchimedeanLocalField K v₀
   let : IsNonarchimedeanLocalField E :=
-    { toIsValuativeTopology := inferInstance
-      toLocallyCompactSpace := inferInstance
-      toIsNontrivial := inferInstance }
+    ClassFieldTheory.finitePlaceCompletionIsNonarchimedeanLocalField L W.1
   let ν₀F := ValuativeRel.valuation F
   let ν₀E := ValuativeRel.valuation E
   let : W.1.asIdeal.LiesOver v₀.asIdeal := by
     constructor
     exact congrArg HeightOneSpectrum.asIdeal W.2.symm
-  let : ν₀F.HasExtension ν₀E := by
-    apply Valuation.HasExtension.ofComapInteger
-    ext z
-    change
-      ν₀E (algebraMap F E z) ≤ 1 ↔
-        ν₀F z ≤ 1
-    rw [(ValuativeRel.isEquiv ν₀E νE).le_one_iff_le_one,
-      (ValuativeRel.isEquiv ν₀F νF).le_one_iff_le_one]
-    have hmap :
-        νE (algebraMap F E z) =
-          νF z ^
-            W.1.asIdeal.ramificationIdx (𝓞 K) := by
-      have h :=
-        finitePlaceAdicCompletionMap_valued
-          K L v₀ W z
-      rw [Ideal.ramificationIdx'_eq_ramificationIdx
-        v₀.asIdeal W.1.asIdeal v₀.ne_bot] at h
-      exact h
-    rw [hmap,
-      pow_le_one_iff
-        (W.1.asIdeal.ramificationIdx_pos
-          (𝓞 K)).ne']
+  let : ν₀F.HasExtension ν₀E :=
+    ClassFieldTheory.finitePlaceCompletion_hasExtension K L v₀ W
   let : Algebra 𝒪[F] E :=
     Algebra.ofSubsemiring 𝒪[F]
   let : IsIntegralClosure 𝒪[E] 𝒪[F] E :=
@@ -402,10 +174,10 @@ theorem localOrder_normUnits
     LocalClassFieldTheory.v_normUnits_eq_residue_finrank_mul_of_isSeparable
       F E x
   rw [
-    normalizedValue_eq_withZeroLog_of_surjective
+    LocalFieldTheory.normalizedValue_eq_withZeroLog_of_surjective
       F νF hνF
         (LocalFieldTheory.normUnits F E x),
-    normalizedValue_eq_withZeroLog_of_surjective
+    LocalFieldTheory.normalizedValue_eq_withZeroLog_of_surjective
       E νE hνE x
   ] at hNormValue
   have hResidueDegree :

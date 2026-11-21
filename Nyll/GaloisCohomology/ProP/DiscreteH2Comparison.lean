@@ -195,7 +195,8 @@ theorem discreteH2MappedShortComplexIso_cyclesMap_cochain
 /-- The discrete comparison sends the continuous cup to the ordinary cup class. -/
 theorem discreteContinuousH2AddEquiv_continuousH1Cup
     (chi psi : ContinuousH1ZMod (p := p) (G := Q)) :
-    discreteContinuousH2AddEquiv (R := R) (continuousH1CupProductLifted chi psi) =
+    discreteContinuousH2AddEquiv (R := R)
+        (continuousH1CupProductLifted (p := p) (G := Q) chi psi) =
       ordinaryH1CupClass (R := R) chi psi := by
   change
     (discreteContinuousH2AddCommGrpIso (R := R) (p := p) (Q := Q)).hom
@@ -206,8 +207,6 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
         (ordinaryH1CupTwoCocycle (R := R) chi psi)
   apply (ConcreteCategory.bijective_of_isIso (groupCohomology.H2Iso
     (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom).1
-  simp only [groupCohomology.H2π, CategoryTheory.ConcreteCategory.comp_apply,
-    groupCohomology.π_comp_H2Iso_hom_apply, Iso.inv_hom_id_apply]
   let cupClassMapped :
       (continuousCochainsToAddCommGrp p).obj
         (((trivialZModPCochainsLifted p Q).sc 2).homology) :=
@@ -218,6 +217,18 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
   let FO := (ordinaryCochainsToAddCommGrp R)
   let cupCycle : SO.moduleCatLeftHomologyData.K :=
     ordinaryH1CupTwoCocycle (R := R) chi psi
+  have hOrd : (groupCohomology.H2Iso
+      (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom
+        (groupCohomology.H2π
+          (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)) cupCycle) =
+      SO.moduleCatLeftHomologyData.π cupCycle := by
+    let A := ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q)
+    let w := (groupCohomology.isoCocycles₂ A).inv cupCycle
+    change (groupCohomology.H2Iso A).hom (groupCohomology.π A 2 w) = _
+    exact (groupCohomology.π_comp_H2Iso_hom_apply A w).trans
+      (congrArg SO.moduleCatLeftHomologyData.π
+        (Iso.inv_hom_id_apply (groupCohomology.isoCocycles₂ A) cupCycle))
+  rw [hOrd]
   change
     (groupCohomology.H2Iso
       (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).hom
@@ -368,7 +379,11 @@ theorem discreteContinuousH2AddEquiv_continuousH1Cup
     (groupCohomology.shortComplexH2
       (ordinaryTrivialZModPLifted (R := R) (p := p) (Q := Q))).moduleCatLeftHomologyData.i).1
     inferInstance
-  rw [ShortComplex.moduleCatCyclesIso_hom_i_apply]
+  have hcycle : SO.moduleCatLeftHomologyData.i
+      (SO.moduleCatCyclesIso.hom ((SO.mapCyclesIso FO).hom zo)) =
+    SO.iCycles ((SO.mapCyclesIso FO).hom zo) :=
+    SO.moduleCatCyclesIso_hom_i_apply ((SO.mapCyclesIso FO).hom zo)
+  rw [hcycle]
   have hSOi : SO.iCycles ((SO.mapCyclesIso FO).hom zo) = (SO.map FO).iCycles zo := by
     change
       (FO.map SO.iCycles) ((SO.mapCyclesIso FO).hom zo) =

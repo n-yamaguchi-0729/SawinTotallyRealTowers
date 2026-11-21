@@ -24,6 +24,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -33,7 +35,7 @@ extension inertia for `E / F` is equivalent to membership in the corresponding
 ambient extension-inertia subgroup. -/
 theorem
     intrinsicExtensionInertia_iff_ambientEmbeddedField
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -165,7 +167,7 @@ theorem
 subgroup for `E / F` onto the corresponding ambient extension-inertia subgroup. -/
 theorem
     map_intrinsicExtensionInertia_eq_ambientEmbeddedField
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]

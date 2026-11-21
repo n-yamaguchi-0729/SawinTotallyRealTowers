@@ -123,11 +123,11 @@ theorem Internal.card_principalUnitQuotientCarrier_eq_residueCharacteristic_pow
         (higherPrincipalUnitGroup.toPrincipalUnitFiltration
             F.toCompleteDVF).principalUnitSubquotient 1 (n + 1) ≃
           ((higherPrincipalUnitGroup.toPrincipalUnitFiltration
-              F.toCompleteDVF).principalUnitSubgroup 1 ⧸
+              F.toCompleteDVF).level 1 ⧸
             ((higherPrincipalUnitGroup.toPrincipalUnitFiltration
-              F.toCompleteDVF).principalUnitSubgroup (n + 1)).subgroupOf
+              F.toCompleteDVF).level (n + 1)).subgroupOf
                 ((higherPrincipalUnitGroup.toPrincipalUnitFiltration
-                  F.toCompleteDVF).principalUnitSubgroup 1))
+                  F.toCompleteDVF).level 1))
       exact
         (AntitoneSubgroupFiltration.principalUnitSubquotientConcreteEquiv
           (higherPrincipalUnitGroup.toPrincipalUnitFiltration F.toCompleteDVF)

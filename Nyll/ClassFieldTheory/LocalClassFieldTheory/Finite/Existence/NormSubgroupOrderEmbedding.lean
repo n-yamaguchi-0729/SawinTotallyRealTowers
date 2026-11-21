@@ -382,10 +382,10 @@ theorem finiteAbelianNormSubgroup_finiteIndex
     apply Nat.finite_of_card_ne_zero
     rw [IsGalois.card_aut_eq_finrank K E]
     exact Nat.ne_of_gt Module.finrank_pos
-  let : Finite (Abelianization (Gal(E / K))) :=
-    Finite.of_surjective Abelianization.of QuotientGroup.mk_surjective
+  let : Finite (Group.Abelianization (Gal(E / K))) :=
+    Finite.of_surjective Group.Abelianization.of QuotientGroup.mk_surjective
   let : Finite (NormQuotient K E) :=
-    Finite.of_equiv (Abelianization (Gal(E / K)))
+    Finite.of_equiv (Group.Abelianization (Gal(E / K)))
       (abelianizationEquivNormQuotient K E).toEquiv
   let : Finite (Kˣ ⧸ localNormSubgroup K E) := by
     change Finite (NormQuotient K E)
@@ -398,8 +398,8 @@ norm subgroup, with native openness and finite index recorded. -/
 noncomputable def finiteAbelianNormSubgroupMap :
     FiniteAbelianSubextension (intrinsicAbstractBase K) →
       OpenFiniteIndexSubgroup K :=
-  fun L ↦ ⟨finiteAbelianNormSubgroup K L,
-    finiteAbelianNormSubgroup_isOpen K L,
+  fun L ↦ ⟨⟨finiteAbelianNormSubgroup K L,
+    finiteAbelianNormSubgroup_isOpen K L⟩,
     finiteAbelianNormSubgroup_finiteIndex K L⟩
 
 /-- States the theorem `finiteAbelianNormSubgroupMap_injective`. -/
@@ -422,7 +422,7 @@ theorem finiteAbelianNormSubgroupMap_injective :
     map_finiteAbelianNormSubgroup_eq_additiveNormSubgroup]
   have hsub : finiteAbelianNormSubgroup K L₁ =
       finiteAbelianNormSubgroup K L₂ :=
-    congrArg OpenFiniteIndexSubgroup.subgroup hL
+    congrArg (fun H : OpenFiniteIndexSubgroup K => H.1.toSubgroup) hL
   exact congrArg Subgroup.toAddSubgroup hsub
 
 /-- The order reversal for finite abelian subextensions, expressed for the actual fixed fields and

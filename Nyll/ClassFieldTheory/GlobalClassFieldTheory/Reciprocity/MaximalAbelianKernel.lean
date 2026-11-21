@@ -8,7 +8,8 @@ module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerAlgEquivNaturality
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdentityComponent
-public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldOriginalField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldConstruction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtinBaseEquiv
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianGlobalArtin
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
@@ -158,34 +159,15 @@ theorem maximalAbelianGlobalArtin_ker :
         _ = H :=
           closedFiniteIndexClassField_ideleClassNorm_range
             (K := K) H hHclosed
-    obtain ⟨a, rfl⟩ :=
-      QuotientGroup.mk'_surjective
-        (IdeleGroup.principalSubgroup K) c
-    have hFiniteArtin :
-        globalIdeleClassArtinMonoidHom
-            (K := K) (L := E)
-            (QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup K) a) = 1 := by
-      rw [globalIdeleClassArtinMonoidHom_mk,
-        ← maximalAbelianGlobalArtin_finiteProjection K a E]
+    have hFiniteArtin : globalNormResidueMonoidHom K E c = 1 := by
+      rw [← infiniteGlobalIdeleClassArtinMonoidHom_finiteProjection c E]
       change
         (AlgEquiv.restrictNormalHom
           (F := K) (K₁ := maximalAbelianExtension K) E)
-            ((maximalAbelianGlobalArtin K).toMonoidHom
-              (QuotientGroup.mk'
-                (IdeleGroup.principalSubgroup K) a)) = 1
-      calc
-        _ = (AlgEquiv.restrictNormalHom
-              (F := K) (K₁ := maximalAbelianExtension K) E) 1 :=
-          congrArg
-            (AlgEquiv.restrictNormalHom
-              (F := K) (K₁ := maximalAbelianExtension K) E) hc
-        _ = 1 := map_one _
-    have hNormMem :
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a ∈
-          (_root_.ideleClassNorm K E).range :=
-      (globalIdeleClassArtinMonoidHom_eq_one_iff
+            ((maximalAbelianGlobalArtin K).toMonoidHom c) = 1
+      rw [hc, map_one]
+    have hNormMem : c ∈ (_root_.ideleClassNorm K E).range :=
+      (globalNormResidueMonoidHom_eq_one_iff
         (K := K) (L := E) _).mp hFiniteArtin
     rw [hNormE] at hNormMem
     exact hcH hNormMem

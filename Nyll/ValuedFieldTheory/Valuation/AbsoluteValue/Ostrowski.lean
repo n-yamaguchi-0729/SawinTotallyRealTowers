@@ -242,8 +242,10 @@ private theorem ostrowski_ratCauSeqMapWithAbs_zero_of_real_rpow
         Rat.AbsoluteValue.real q ^ s) :
     ostrowski_ratCauSeqMapWithAbs_of_real_rpow
       (K := K) v s hs hnorm (0 : CauSeq ℚ (abs : ℚ → ℚ)) = 0 := by
-  ext n
-  simp [ostrowski_ratCauSeqMapWithAbs_of_real_rpow]
+  apply CauSeq.ext
+  intro n
+  change Rat.castHom (WithAbs v) 0 = 0
+  exact (Rat.castHom (WithAbs v)).map_zero
 
 @[simp]
 private theorem ostrowski_ratCauSeqMapWithAbs_one_of_real_rpow
@@ -254,8 +256,10 @@ private theorem ostrowski_ratCauSeqMapWithAbs_one_of_real_rpow
         Rat.AbsoluteValue.real q ^ s) :
     ostrowski_ratCauSeqMapWithAbs_of_real_rpow
       (K := K) v s hs hnorm (1 : CauSeq ℚ (abs : ℚ → ℚ)) = 1 := by
-  ext n
-  simp [ostrowski_ratCauSeqMapWithAbs_of_real_rpow]
+  apply CauSeq.ext
+  intro n
+  change Rat.castHom (WithAbs v) 1 = 1
+  exact (Rat.castHom (WithAbs v)).map_one
 
 @[simp]
 private theorem ostrowski_ratCauSeqMapWithAbs_add_of_real_rpow

@@ -142,7 +142,7 @@ theorem padicChangedUniformizerRotation_coeff_zero_ne_zero
         (padicValuationUnitToCompletedUnramifiedWittUnit p u))).coeff 0 ≠ 0 := by
   simpa only [WittVector.frobeniusRotation,
     WittVector.coeff_mk, WittVector.frobeniusRotationCoeff] using
-    (WittVector.RecursionBase.solution_nonzero p
+    (WittVector.RecursionBase.solution_ne_zero p
       (completedUnramifiedWittUnit_coeff_zero_ne_zero p 1)
       (completedUnramifiedWittUnit_coeff_zero_ne_zero p
         (padicValuationUnitToCompletedUnramifiedWittUnit p u)))

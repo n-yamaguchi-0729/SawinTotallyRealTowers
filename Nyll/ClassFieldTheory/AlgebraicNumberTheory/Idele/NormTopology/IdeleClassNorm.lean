@@ -7,9 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.ArchimedeanNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.Continuity
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.StandardNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.FieldNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdealClass
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
 # The ordinary norm on idele classes
@@ -27,69 +31,39 @@ open NumberField
 
 noncomputable section
 
-namespace IdeleClassGroup
+namespace NumberField.IdeleClassGroup
 
 universe u v
 
-variable
-    (K : Type u) (L : Type v)
-    [Field K] [NumberField K]
-    [Field L] [NumberField L]
-    [Algebra K L] [FiniteDimensional K L]
+variable (K : Type u) (L : Type v)
+  [Field K] [NumberField K] [Field L] [NumberField L]
+  [Algebra K L] [FiniteDimensional K L]
 
-/-- The ordinary idèle-class norm preserves the absolute idèle norm. -/
-theorem absoluteNorm_ideleClassNorm
-    (c : IdeleClassGroup L) :
-    absoluteNorm (_root_.ideleClassNorm K L c) =
-      absoluteNorm c := by
-  refine QuotientGroup.induction_on c ?_
-  intro a
-  change
-    absoluteNorm
-        (_root_.ideleClassNorm K L
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup L) a)) =
-      absoluteNorm
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup L) a)
-  rw [_root_.ideleClassNorm_mk,
-    absoluteNorm_mk, absoluteNorm_mk,
-    IdeleGroup.absoluteNorm_norm]
+/-- The standard quotient norm preserves the absolute norm of idele classes. -/
+theorem absoluteNorm_norm (c : IdeleClassGroup (𝓞 L) L) :
+    absoluteNorm (norm K L c) = absoluteNorm c := by
+  refine QuotientGroup.induction_on c (fun a => ?_)
+  change absoluteNorm (norm K L (QuotientGroup.mk'
+    (IdeleGroup.principalSubgroup (𝓞 L) L) a)) =
+      absoluteNorm (QuotientGroup.mk' (IdeleGroup.principalSubgroup (𝓞 L) L) a)
+  rw [norm_mk, absoluteNorm_mk, absoluteNorm_mk, IdeleGroup.absoluteNorm_norm]
 
-/-- The ordinary idele-class norm carries norm-one idele classes to
-norm-one idele classes. -/
-theorem ideleClassNorm_mem_normOneSubgroup
-    (c : IdeleClassGroup L)
-    (hc : c ∈ normOneSubgroup (K := L)) :
-    _root_.ideleClassNorm K L c ∈
-      normOneSubgroup (K := K) := by
-  change
-    absoluteNorm (_root_.ideleClassNorm K L c) = 1
-  change absoluteNorm c = 1 at hc
-  rw [absoluteNorm_ideleClassNorm]
-  exact hc
+/-- The field norm restricts to a map of the standard norm-one class subgroups. -/
+def normOneNorm : normOneSubgroup (K := L) →* normOneSubgroup (K := K) :=
+  ((norm K L).comp (normOneSubgroup (K := L)).subtype).codRestrict
+    (normOneSubgroup (K := K)) (fun c =>
+      show absoluteNorm (norm K L c.1) = 1 from
+        (absoluteNorm_norm K L c.1).trans c.2)
 
-/-- The ordinary idele-class norm restricted to the norm-one idele-class
-groups. -/
-noncomputable def normOneNorm :
-    normOneSubgroup (K := L) →*
-      normOneSubgroup (K := K) :=
-  ((_root_.ideleClassNorm K L).comp
-      (normOneSubgroup (K := L)).subtype).codRestrict
-    (normOneSubgroup (K := K))
-    (fun c =>
-      ideleClassNorm_mem_normOneSubgroup
-        K L c.1 c.2)
-
-/-- Coercing the restricted norm-one map recovers the ordinary idèle-class norm. -/
+/-- The map on norm-one classes is the ordinary norm on the underlying classes. -/
 @[simp]
-theorem normOneNorm_apply
-    (c : normOneSubgroup (K := L)) :
-    (normOneNorm K L c : IdeleClassGroup K) =
-      _root_.ideleClassNorm K L c.1 :=
-  rfl
+theorem normOneNorm_apply (c : normOneSubgroup (K := L)) :
+    (normOneNorm K L c : IdeleClassGroup (𝓞 K) K) = norm K L c.1 := rfl
 
+/-- The restricted norm on standard classes is continuous for the subgroup topology. -/
+theorem normOneNorm_continuous : Continuous (normOneNorm K L) :=
+  ((norm_continuous K L).comp continuous_subtype_val).subtype_mk _
 
-end IdeleClassGroup
+end NumberField.IdeleClassGroup
 
 end

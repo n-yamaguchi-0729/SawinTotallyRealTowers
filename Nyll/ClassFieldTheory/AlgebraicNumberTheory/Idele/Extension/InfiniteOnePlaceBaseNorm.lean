@@ -52,9 +52,8 @@ noncomputable def infinitePlaceBaseUnitExtension
     ⟨rfl⟩
   exact
     Units.map
-      (NumberField.LiesOver.completionMap
-        (v := _root_.infinitePlaceBelow (K := K) W)
-        (w := W)).toMonoidHom
+      (AbsoluteValue.Completion.map
+        (_root_.infinitePlaceBelow (K := K) W).1 W.1).toMonoidHom
 
 /-- The actual completion map carries negative one to negative one. -/
 @[simp]
@@ -78,7 +77,7 @@ noncomputable def infinitePlaceCompletionDegree
   let v := _root_.infinitePlaceBelow (K := K) W
   letI : W.1.LiesOver v.1 := ⟨rfl⟩
   letI : Algebra v.Completion W.Completion :=
-    (NumberField.LiesOver.completionMap (v := v) (w := W)).toAlgebra
+    AbsoluteValue.Completion.algebraOfLiesOver v.1 W.1
   exact Module.finrank v.Completion W.Completion
 
 /-- The idele norm of a base-completion unit supported at one
@@ -102,7 +101,7 @@ theorem norm_infinitePlaceIdele_infinitePlaceBaseUnitExtension
       {U : InfinitePlace L //
         _root_.infinitePlaceBelow (K := K) U = v} :=
     ⟨W, rfl⟩
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext r
     change
@@ -123,15 +122,15 @@ theorem norm_infinitePlaceIdele_infinitePlaceBaseUnitExtension
       · rw [infinitePlaceIdele_infiniteComponent_same]
         let : W.1.LiesOver v.1 := ⟨rfl⟩
         let : Algebra v.Completion W.Completion :=
-          (NumberField.LiesOver.completionMap (v := v) (w := W)).toAlgebra
+          AbsoluteValue.Completion.algebraOfLiesOver v.1 W.1
         have hmap :
             algebraMap v.Completion W.Completion =
-              NumberField.LiesOver.completionMap (v := v) (w := W) :=
-          RingHom.algebraMap_toAlgebra _
+              AbsoluteValue.Completion.map v.1 W.1 :=
+          AbsoluteValue.Completion.algebraMap_eq_of_liesOver v.1 W.1
         change
           LocalFieldTheory.normUnits v.Completion W.Completion
               (Units.map
-                (NumberField.LiesOver.completionMap (v := v) (w := W)).toMonoidHom
+                (AbsoluteValue.Completion.map v.1 W.1).toMonoidHom
                 x) =
             x ^ Module.finrank v.Completion W.Completion
         rw [← hmap]
@@ -219,7 +218,7 @@ theorem norm_infinitePlaceIdele_infinitePlaceBaseUnitExtension_of_isUnramified
   let v := _root_.infinitePlaceBelow (K := K) W
   let : W.1.LiesOver v.1 := ⟨rfl⟩
   let : Algebra v.Completion W.Completion :=
-    (NumberField.LiesOver.completionMap (v := v) (w := W)).toAlgebra
+    AbsoluteValue.Completion.algebraOfLiesOver v.1 W.1
   have hDegree :
       Module.finrank v.Completion W.Completion = 1 :=
     InfinitePlace.IsUnramified.finrank_eq_one
@@ -263,18 +262,8 @@ theorem ideleClassNorm_infinitePlaceIdeleClass_infinitePlaceBaseUnitExtension_of
             (K := K) (L := L) W x)) =
       infinitePlaceIdeleClass
         (_root_.infinitePlaceBelow (K := K) W) x := by
-  change
-    _root_.ideleClassNorm K L
-        (QuotientGroup.mk'
-          (principalSubgroup L)
-          (infinitePlaceIdele W
-            (infinitePlaceBaseUnitExtension
-              (K := K) (L := L) W x))) =
-      QuotientGroup.mk'
-        (principalSubgroup K)
-        (infinitePlaceIdele
-          (_root_.infinitePlaceBelow (K := K) W) x)
-  rw [
+  rw [← toStandardClass_infinitePlaceIdele W,
+    ← toStandardClass_infinitePlaceIdele (_root_.infinitePlaceBelow (K := K) W),
     _root_.ideleClassNorm_mk,
     norm_infinitePlaceIdele_infinitePlaceBaseUnitExtension_of_isUnramified
       (K := K) (L := L) W hW x]

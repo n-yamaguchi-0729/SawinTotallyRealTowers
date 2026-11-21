@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 
@@ -36,6 +37,6 @@ theorem openNormalArithmeticStage_chosenFinitePlaceIsUnramified
     ChosenFinitePlaceIsUnramified
       (K := F) (L := (openNormalArithmeticStage F p hpOdd U).field) v := by
   apply chosenFinitePlaceIsUnramified_of_isUnramifiedAt
-  exact (openNormalArithmeticStage F p hpOdd U).everywhereUnramified.finitePlaces _
+  exact (openNormalArithmeticStage F p hpOdd U).everywhereUnramified.1.atPrime _
 
 end ClassFieldTower.Martinet.Shafarevich

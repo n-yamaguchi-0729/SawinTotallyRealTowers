@@ -9,6 +9,7 @@ module
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2RadicalFunctional
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # The actual global character measuring nonadditivity of chosen lifts
@@ -32,9 +33,7 @@ variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 variable (U : OpenNormalSubgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))
 
-local instance arithmeticStageH2AdditionCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 local notation "StageQuotient" => MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ) ⧸
   (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))

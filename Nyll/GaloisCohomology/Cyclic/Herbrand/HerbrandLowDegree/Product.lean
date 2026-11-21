@@ -151,9 +151,7 @@ variable {ι : Type uι} (A : ι → Type uA)
 variable [∀ i, CommGroup (A i)]
 variable [∀ i, MulDistribMulAction G (A i)]
 
-local instance :
-    MulDistribMulAction G (∀ i, A i) :=
-  piMulDistribMulAction G A
+attribute [local instance] piMulDistribMulAction
 
 /-- Fixed points of a product are products of fixed points. -/
 def fixedPiEquiv :

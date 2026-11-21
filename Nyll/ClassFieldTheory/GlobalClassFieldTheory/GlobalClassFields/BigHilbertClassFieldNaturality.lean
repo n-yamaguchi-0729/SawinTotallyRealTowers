@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.Equiv
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.AlgEquiv
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.BigHilbertClassField
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
@@ -30,7 +31,9 @@ group, with formulas on genuine idele representatives.
 
 @[expose] public section
 
-open scoped NumberField NumberField.LiesOver TensorProduct
+open scoped NumberField TensorProduct
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 
 noncomputable section
 
@@ -44,18 +47,6 @@ variable
     [Field K] [NumberField K]
     [Field M] [NumberField M]
 
-private theorem bigHilbertClassFieldQuotientEquivNarrowClassGroup_mk
-    (a : IdeleGroup K) :
-    bigHilbertClassFieldQuotientEquivNarrowClassGroup
-        (K := K)
-        (QuotientGroup.mk'
-          (bigHilbertClassFieldNormSubgroup (K := K))
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a)) =
-      QuotientGroup.mk'
-        (RayClass.narrowDenominator (K := K)) a :=
-  rfl
-
 private noncomputable def infinitePlaceCompletionCongrHom
     (e : K ≃ₐ[ℚ] M)
     (W : InfinitePlace M) :
@@ -68,8 +59,8 @@ private noncomputable def infinitePlaceCompletionCongrHom
   letI : W.1.LiesOver v.1 :=
     ⟨rfl⟩
   exact
-    NumberField.LiesOver.completionMap
-      (v := v) (w := W)
+    AbsoluteValue.Completion.map
+      v.1 W.1
 
 private theorem infinitePlaceCompletionCongrHom_algebraMap
     (e : K ≃ₐ[ℚ] M)
@@ -85,26 +76,14 @@ private theorem infinitePlaceCompletionCongrHom_algebraMap
   let : W.1.LiesOver v.1 :=
     ⟨rfl⟩
   change
-    NumberField.LiesOver.completionMap
-        (v := v) (w := W)
+    AbsoluteValue.Completion.map
+        v.1 W.1
         (algebraMap K v.Completion x) =
       algebraMap M W.Completion
         (algebraMap K M x)
-  have hx :
-      algebraMap K v.Completion x =
-        ((WithAbs.toAbs v.1 x : WithAbs v.1) :
-          v.Completion) :=
-    rfl
-  rw [hx,
-    NumberField.LiesOver.completionMap_coe
-      (v := v) (w := W)]
-  apply InfinitePlace.Completion.ext
-  rw [
-    InfinitePlace.Completion.algebraMap_toCompletion,
-    UniformSpace.Completion.algebraMap_def]
-  simp only [WithAbs.algebraMap_left_apply,
-    WithAbs.algebraMap_right_apply,
-    Algebra.algebraMap_self_apply]
+  simpa only [AbsoluteValue.Completion.algebraMap_def, WithAbs.algebraMap_right_apply,
+    Algebra.algebraMap_self_apply, WithAbs.map_apply, WithAbs.ofAbs_toAbs] using
+    (AbsoluteValue.Completion.map_coe v.1 W.1 (WithAbs.toAbs v.1 x))
 
 private theorem
     relativeAdeleBaseChangeRingEquiv_relativeAdeleCongr_infiniteComponent_tmul
@@ -127,8 +106,8 @@ private theorem
   change
     (relativeAdeleBaseChangeRingEquiv
         (K := ℚ) (L := M) (b ⊗ₜ[ℚ] e x)).1 W =
-      NumberField.LiesOver.completionMap
-        (v := v) (w := W)
+      AbsoluteValue.Completion.map
+        v.1 W.1
         ((relativeAdeleBaseChangeRingEquiv
           (K := ℚ) (L := K) (b ⊗ₜ[ℚ] x)).1 v)
   let qv :=
@@ -151,8 +130,8 @@ private theorem
   let : W.1.LiesOver qv.1 :=
     ⟨congrArg (fun q : InfinitePlace ℚ => q.1) hq.symm⟩
   have hxMap :
-      NumberField.LiesOver.completionMap
-          (v := v) (w := W)
+      AbsoluteValue.Completion.map
+          v.1 W.1
           (algebraMap K v.Completion x) =
         algebraMap M W.Completion (e x) := by
     simpa only [infinitePlaceCompletionCongrHom] using
@@ -161,22 +140,22 @@ private theorem
       (qv' : InfinitePlace ℚ)
       (h : qv' = qW)
       [v.1.LiesOver qv'.1] :
-      NumberField.LiesOver.completionMap
-            (v := qW) (w := W) (b.1 qW) *
+      AbsoluteValue.Completion.map
+            qW.1 W.1 (b.1 qW) *
           algebraMap M W.Completion (e x) =
-        NumberField.LiesOver.completionMap
-            (v := v) (w := W)
-            (NumberField.LiesOver.completionMap
-                (v := qv') (w := v) (b.1 qv') *
+        AbsoluteValue.Completion.map
+            v.1 W.1
+            (AbsoluteValue.Completion.map
+                qv'.1 v.1 (b.1 qv') *
               algebraMap K v.Completion x) := by
     subst qv'
     have hcomp :
-        NumberField.LiesOver.completionMap
-            (v := v) (w := W)
-            (NumberField.LiesOver.completionMap
-              (v := qW) (w := v) (b.1 qW)) =
-          NumberField.LiesOver.completionMap
-            (v := qW) (w := W) (b.1 qW) := by
+        AbsoluteValue.Completion.map
+            v.1 W.1
+            (AbsoluteValue.Completion.map
+              qW.1 v.1 (b.1 qW)) =
+          AbsoluteValue.Completion.map
+            qW.1 W.1 (b.1 qW) := by
       convert
         (infinitePlaceCompletionMap_comp_apply
           (K := ℚ) (M := K) (L := M) W (b.1 qW)) using 1
@@ -241,12 +220,7 @@ private theorem ideleCongr_infiniteComponent
         (IdeleGroup.infiniteComponent
           (W.comap e.toRingHom) a) := by
   apply Units.ext
-  exact
-    adeleCongr_infiniteComponent e
-      (((IdeleGroup.equivAdeleRingUnits
-        (K := K) a :
-          (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-        NumberField.AdeleRing (𝓞 K) K)) W
+  exact adeleCongr_infiniteComponent e (a : NumberField.AdeleRing (𝓞 K) K) W
 
 private theorem
     infinitePlaceCompletionCongrHom_extensionEmbeddingOfIsReal
@@ -272,12 +246,12 @@ private theorem
       W (hW.comap e.toRingHom)
   have hComplex :
       InfinitePlace.Completion.extensionEmbedding W
-          (NumberField.LiesOver.completionMap
-            (v := v) (w := W) x) =
+          (AbsoluteValue.Completion.map
+            v.1 W.1 x) =
         InfinitePlace.Completion.extensionEmbedding v x := by
-    exact
-      InfinitePlace.Completion.liesOver_extensionEmbedding_apply
-        (v := v) (w := W)
+    have h := InfinitePlace.Completion.liesOver_extensionEmbedding_apply
+      (v := v) (w := W) (φ := InfinitePlace.Completion.extensionEmbedding W) (x := x)
+    rwa [AbsoluteValue.Completion.algebraMap_apply_of_liesOver v.1 W.1] at h
   apply Complex.ofReal_injective
   simpa only [
     InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply,
@@ -332,9 +306,9 @@ private theorem
 private theorem ideleCongr_mem_infiniteCongruenceSubgroup_iff
     (e : K ≃ₐ[ℚ] M)
     (a : IdeleGroup K) :
-    (ideleCongr e a).1 ∈
+    IdeleGroup.infinitePart (ideleCongr e a) ∈
         RayClass.narrowInfiniteCongruenceSubgroup (K := M) ↔
-      a.1 ∈
+      IdeleGroup.infinitePart a ∈
         RayClass.narrowInfiniteCongruenceSubgroup (K := K) := by
   rw [RayClass.mem_narrowInfiniteCongruenceSubgroup_iff,
     RayClass.mem_narrowInfiniteCongruenceSubgroup_iff]
@@ -389,15 +363,15 @@ private theorem ideleCongr_mem_ideleCongruenceSubgroup_zero_iff
   have hfinite :=
     ideleCongr_mem_integralAtFinitePlaces_iff e a
   change
-    (ideleCongr e a).2 ∈
+    IdeleGroup.finiteCoordinates (ideleCongr e a) ∈
           FiniteIdeleGroup.integralSubgroup (K := M) ↔
-      a.2 ∈
+      IdeleGroup.finiteCoordinates a ∈
         FiniteIdeleGroup.integralSubgroup (K := K) at hfinite
   have hfiniteZero :
-      (ideleCongr e a).2 ∈
+      IdeleGroup.finiteCoordinates (ideleCongr e a) ∈
             RayClass.finiteCongruenceSubgroup
               (0 : RayClass.FiniteModulus M) ↔
-        a.2 ∈
+        IdeleGroup.finiteCoordinates a ∈
           RayClass.finiteCongruenceSubgroup
             (0 : RayClass.FiniteModulus K) := by
     simpa only [RayClass.finiteCongruenceSubgroup_zero] using
@@ -462,10 +436,8 @@ theorem bigHilbertClassFieldNormSubgroup_map_ideleClassCongr
       bigHilbertClassFieldNormSubgroup (K := M) := by
   have hcomp :
       (ideleClassCongr e).toMonoidHom.comp
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)) =
-        (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup M)).comp
+          (IdeleGroup.toStandardClass K) =
+        (IdeleGroup.toStandardClass M).comp
           (ideleCongr e).toMonoidHom := by
     ext a
     exact ideleClassCongr_mk e a
@@ -577,8 +549,7 @@ theorem bigHilbertNarrowClassGroupCongr_mk
         bigHilbertClassFieldNormSubgroup (K := K) :=
     QuotientGroup.mk'
       (bigHilbertClassFieldNormSubgroup (K := K))
-      (QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a)
+      (IdeleGroup.toStandardClass K a)
   calc
     bigHilbertNarrowClassGroupCongr e
           (QuotientGroup.mk'

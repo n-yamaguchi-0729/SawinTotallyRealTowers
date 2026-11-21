@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadicalSelmer
 
@@ -31,12 +32,6 @@ open KummerTheory
 
 variable (K : Type*) [Field K] [NumberField K]
 
-local instance idealRadicalCharacterTopology (n : ℕ) :
-    TopologicalSpace (Multiplicative (ZMod n)) := ⊥
-
-local instance idealRadicalCharacterDiscreteTopology (n : ℕ) :
-    DiscreteTopology (Multiplicative (ZMod n)) :=
-  discreteTopology_bot _
 
 /-- The inclusion of the empty-support Selmer group into the full group of
 power classes. -/

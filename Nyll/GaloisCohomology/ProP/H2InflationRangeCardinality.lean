@@ -11,6 +11,7 @@ public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Algebra.Module.Pi
 public import Mathlib.Algebra.Module.Defs
 public import Mathlib.FieldTheory.Finiteness
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Cardinality bounds on finite-stage degree-two inflation
@@ -33,8 +34,7 @@ universe u
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance h2InflationRangeCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 

@@ -6,8 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceDecompositionAdicEquiv
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FinitePlaceH1RamificationLocalization
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Actual absolute-character restriction to the adic completion
@@ -29,19 +31,10 @@ open ClassFieldTower.ProP
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceH1AdicCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finitePlaceH1AdicCharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
 
-local instance finitePlaceH1AdicCharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) := discreteTopology_bot _
-
-local instance finitePlaceH1AdicModule
-    {q : ℕ} {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Transport decomposition-group `H¹` through the actual inverse localization. -/
 noncomputable def finitePlaceDecompositionH1ToAdic

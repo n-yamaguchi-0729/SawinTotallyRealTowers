@@ -103,7 +103,7 @@ theorem normalizedPrimitiveValue_mul
   have hinv := homogeneousOneCochain_leftInvariant c g g (g * h)
   have hinv' : c.1 g (g * h) = c.1 1 h := by
     convert hinv.symm using 1
-    all_goals group
+    group
   rw [hinv'] at hcpoint
   have hnorm : normalizedCocycle z g h =
       (((Cohomology.trivialZModPCochainsLifted p G).iCycles 2).hom z).1

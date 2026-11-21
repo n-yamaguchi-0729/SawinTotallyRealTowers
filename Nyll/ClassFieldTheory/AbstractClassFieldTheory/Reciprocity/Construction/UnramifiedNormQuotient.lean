@@ -349,6 +349,7 @@ theorem unramifiedNormQuotientValuation_injective
         below := hLK
         normal := hnormal
         finite := hfinite
+        cyclic := CyclicCohomology.isCyclic_of_generator g hg
         generator := g
         generates := hg
         unramified := hUnramified }

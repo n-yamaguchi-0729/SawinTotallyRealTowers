@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Core
-public import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientReps
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitQuotients
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.GaloisIntegerRing
 public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.IdealQuotients
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.Basic
@@ -31,14 +31,14 @@ open scoped ValuativeRel
 /-- The natural projection `𝒪_Kˣ/U_K^m → 𝒪_Kˣ/U_K^n` for `n ≤ m`. -/
 def integerUnitsModPrincipalUnitsMapOfLe
     (K : Type u) [Field K] [ValuativeRel K] {n m : Nat} (hnm : n ≤ m) :
-    IntegerUnitsModPrincipalUnitsAtLevel K m →*
-      IntegerUnitsModPrincipalUnitsAtLevel K n :=
-  integerUnitsModPrincipalUnitsAtLevelLift m
-    (integerUnitsModPrincipalUnitsAtLevelMk K n)
+    IntegerUnitsPrincipalQuot K m →*
+      IntegerUnitsPrincipalQuot K n :=
+  integerUnitsPrincipalQuotLift m
+    (integerUnitsPrincipalQuotMk K n)
     (by
       intro x hx
       rw [MonoidHom.mem_ker,
-        integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff]
+        integerUnitsPrincipalQuotMk_eq_one_iff]
       exact principalUnits_antitone K hnm hx)
 
 /-- The level-change map sends a unit class to the class of the same unit. -/
@@ -47,16 +47,16 @@ theorem integerUnitsModPrincipalUnitsMapOfLe_mk
     (K : Type u) [Field K] [ValuativeRel K] {n m : Nat} (hnm : n ≤ m)
     (x : 𝒪[K]ˣ) :
     integerUnitsModPrincipalUnitsMapOfLe K hnm
-        (integerUnitsModPrincipalUnitsAtLevelMk K m x) =
-      integerUnitsModPrincipalUnitsAtLevelMk K n x :=
-  integerUnitsModPrincipalUnitsAtLevelLift_mk m
-    (integerUnitsModPrincipalUnitsAtLevelMk K n) _ x
+        (integerUnitsPrincipalQuotMk K m x) =
+      integerUnitsPrincipalQuotMk K n x :=
+  integerUnitsPrincipalQuotLift_mk m
+    (integerUnitsPrincipalQuotMk K n) _ x
 
 /-- The successive projection `𝒪_Kˣ/U_K^(n+1) → 𝒪_Kˣ/U_K^n`. -/
 def integerUnitsModPrincipalUnitsSuccMap
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat) :
-    IntegerUnitsModPrincipalUnitsAtLevel K (n + 1) →*
-      IntegerUnitsModPrincipalUnitsAtLevel K n :=
+    IntegerUnitsPrincipalQuot K (n + 1) →*
+      IntegerUnitsPrincipalQuot K n :=
   integerUnitsModPrincipalUnitsMapOfLe K (Nat.le_succ n)
 
 /-- The successor-level map sends a unit representative to its successor quotient class. -/
@@ -65,8 +65,8 @@ theorem integerUnitsModPrincipalUnitsSuccMap_mk
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat)
     (x : 𝒪[K]ˣ) :
     integerUnitsModPrincipalUnitsSuccMap K n
-        (integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) x) =
-      integerUnitsModPrincipalUnitsAtLevelMk K n x :=
+        (integerUnitsPrincipalQuotMk K (n + 1) x) =
+      integerUnitsPrincipalQuotMk K n x :=
   integerUnitsModPrincipalUnitsMapOfLe_mk K (Nat.le_succ n) x
 
 /-- The map to the successor principal-unit quotient is surjective. -/
@@ -74,26 +74,26 @@ theorem integerUnitsModPrincipalUnitsSuccMap_surjective
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat) :
     Function.Surjective (integerUnitsModPrincipalUnitsSuccMap K n) := by
   intro q
-  refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn n
+  refine IntegerUnitsPrincipalQuot.inductionOn n
     (motive := fun q => ∃ a, integerUnitsModPrincipalUnitsSuccMap K n a = q)
     q ?_
   intro x
-  exact ⟨integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) x,
+  exact ⟨integerUnitsPrincipalQuotMk K (n + 1) x,
     integerUnitsModPrincipalUnitsSuccMap_mk K n x⟩
 
 /-- The induced homomorphism on the finite quotient `𝒪_Kˣ/U_K^n`. -/
 def integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv
     (K : Type u) [Field K] [ValuativeRel K]
     (n : Nat) (e : 𝒪[K] ≃+* 𝒪[K]) :
-    IntegerUnitsModPrincipalUnitsAtLevel K n →*
-      IntegerUnitsModPrincipalUnitsAtLevel K n :=
-  integerUnitsModPrincipalUnitsAtLevelLift n
-    ((integerUnitsModPrincipalUnitsAtLevelMk K n).comp
+    IntegerUnitsPrincipalQuot K n →*
+      IntegerUnitsPrincipalQuot K n :=
+  integerUnitsPrincipalQuotLift n
+    ((integerUnitsPrincipalQuotMk K n).comp
       (Units.mapEquiv e.toMulEquiv).toMonoidHom)
     (by
       intro u hu
       rw [MonoidHom.mem_ker, MonoidHom.comp_apply,
-        integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff]
+        integerUnitsPrincipalQuotMk_eq_one_iff]
       exact principalUnits_integerRingEquiv_mem_self K n e u hu)
 
 /-- An integer-ring equivalence maps a unit quotient class via its representative. -/
@@ -102,11 +102,11 @@ theorem integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv_mk
     (K : Type u) [Field K] [ValuativeRel K]
     (n : Nat) (e : 𝒪[K] ≃+* 𝒪[K]) (u : 𝒪[K]ˣ) :
     integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e
-        (integerUnitsModPrincipalUnitsAtLevelMk K n u) =
-      integerUnitsModPrincipalUnitsAtLevelMk K n
+        (integerUnitsPrincipalQuotMk K n u) =
+      integerUnitsPrincipalQuotMk K n
         (Units.mapEquiv e.toMulEquiv u) :=
-  integerUnitsModPrincipalUnitsAtLevelLift_mk n
-    ((integerUnitsModPrincipalUnitsAtLevelMk K n).comp
+  integerUnitsPrincipalQuotLift_mk n
+    ((integerUnitsPrincipalQuotMk K n).comp
       (Units.mapEquiv e.toMulEquiv).toMonoidHom) _ u
 
 /-- A valuation-integer-ring equivalence descends to the finite quotient
@@ -114,13 +114,13 @@ theorem integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv_mk
 def integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv
     (K : Type u) [Field K] [ValuativeRel K]
     (n : Nat) (e : 𝒪[K] ≃+* 𝒪[K]) :
-    IntegerUnitsModPrincipalUnitsAtLevel K n ≃*
-      IntegerUnitsModPrincipalUnitsAtLevel K n where
+    IntegerUnitsPrincipalQuot K n ≃*
+      IntegerUnitsPrincipalQuot K n where
   toFun := integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e
   invFun := integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e.symm
   left_inv := by
     intro x
-    refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn n
+    refine IntegerUnitsPrincipalQuot.inductionOn n
       (motive := fun x =>
         integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e.symm
             (integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e x) = x)
@@ -133,10 +133,10 @@ def integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv
       apply Units.ext
       exact e.symm_apply_apply (u : 𝒪[K])
     exact congrArg
-      (integerUnitsModPrincipalUnitsAtLevelMk K n) h
+      (integerUnitsPrincipalQuotMk K n) h
   right_inv := by
     intro x
-    refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn n
+    refine IntegerUnitsPrincipalQuot.inductionOn n
       (motive := fun x =>
         integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e
             (integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e.symm x) = x)
@@ -149,7 +149,7 @@ def integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv
       apply Units.ext
       exact e.apply_symm_apply (u : 𝒪[K])
     exact congrArg
-      (integerUnitsModPrincipalUnitsAtLevelMk K n) h
+      (integerUnitsPrincipalQuotMk K n) h
   map_mul' := by
     intro x y
     exact map_mul (integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv K n e) x y
@@ -160,8 +160,8 @@ theorem integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv_mk
     (K : Type u) [Field K] [ValuativeRel K]
     (n : Nat) (e : 𝒪[K] ≃+* 𝒪[K]) (u : 𝒪[K]ˣ) :
     integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv K n e
-        (integerUnitsModPrincipalUnitsAtLevelMk K n u) =
-      integerUnitsModPrincipalUnitsAtLevelMk K n
+        (integerUnitsPrincipalQuotMk K n u) =
+      integerUnitsPrincipalQuotMk K n
         (Units.mapEquiv e.toMulEquiv u) :=
   integerUnitsModPrincipalUnitsMapOfIntegerRingEquiv_mk K n e u
 
@@ -170,14 +170,14 @@ theorem integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv_mk
 def principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat) :
     PrincipalUnitsSuccQuot K n →*
-      IntegerUnitsModPrincipalUnitsAtLevel K (n + 1) :=
+      IntegerUnitsPrincipalQuot K (n + 1) :=
   principalUnitsSuccQuotLift n
-    ((integerUnitsModPrincipalUnitsAtLevelMk K (n + 1)).comp
+    ((integerUnitsPrincipalQuotMk K (n + 1)).comp
       (principalUnits K n).subtype)
     (by
       intro u hu
       rw [MonoidHom.mem_ker, MonoidHom.comp_apply,
-        integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff]
+        integerUnitsPrincipalQuotMk_eq_one_iff]
       exact hu)
 
 /-- The principal-unit quotient map sends a representative to its integer-unit class. -/
@@ -187,9 +187,9 @@ theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_mk
     (u : principalUnits K n) :
     principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc K n
         (principalUnitsSuccQuotMk K n u) =
-      integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) (u : 𝒪[K]ˣ) :=
+      integerUnitsPrincipalQuotMk K (n + 1) (u : 𝒪[K]ˣ) :=
   principalUnitsSuccQuotLift_mk n
-    ((integerUnitsModPrincipalUnitsAtLevelMk K (n + 1)).comp
+    ((integerUnitsPrincipalQuotMk K (n + 1)).comp
       (principalUnits K n).subtype) _ u
 
 /-- The principal-unit inclusion followed by the successor map is the canonical quotient map. -/
@@ -203,14 +203,14 @@ theorem integerUnitsSuccMap_comp_principalUnitsSuccQuot
       ((integerUnitsModPrincipalUnitsSuccMap K n).comp
         (principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc K n)) q =
           (1 : PrincipalUnitsSuccQuot K n →*
-            IntegerUnitsModPrincipalUnitsAtLevel K n) q)
+            IntegerUnitsPrincipalQuot K n) q)
     q ?_
   intro u
   rw [MonoidHom.comp_apply,
     principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_mk,
     integerUnitsModPrincipalUnitsSuccMap_mk]
-  change integerUnitsModPrincipalUnitsAtLevelMk K n (u : 𝒪[K]ˣ) = 1
-  rw [integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff]
+  change integerUnitsPrincipalQuotMk K n (u : 𝒪[K]ˣ) = 1
+  rw [integerUnitsPrincipalQuotMk_eq_one_iff]
   exact u.2
 
 /-- Exactness of `U_K^n/U_K^(n+1) → 𝒪_Kˣ/U_K^(n+1) → 𝒪_Kˣ/U_K^n`
@@ -228,7 +228,7 @@ theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_range_eq_ker
     rfl
   · intro hq
     revert hq
-    refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn (n + 1)
+    refine IntegerUnitsPrincipalQuot.inductionOn (n + 1)
       (motive := fun q =>
         q ∈ MonoidHom.ker (integerUnitsModPrincipalUnitsSuccMap K n) →
           q ∈ MonoidHom.range
@@ -236,7 +236,7 @@ theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_range_eq_ker
       q ?_
     intro x hq
     have hx : x ∈ principalUnits K n := by
-      exact (integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff K n x).1
+      exact (integerUnitsPrincipalQuotMk_eq_one_iff K n x).1
         (by simpa using hq)
     let u : principalUnits K n := ⟨x, hx⟩
     exact ⟨principalUnitsSuccQuotMk K n u, by
@@ -251,12 +251,12 @@ theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_injective
   obtain ⟨v, rfl⟩ := principalUnitsSuccQuotMk_surjective K n y
   apply (principalUnitsSuccQuotMk_eq_iff_div_mem K n u v).2
   have hq :
-      integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) (u : 𝒪[K]ˣ) =
-        integerUnitsModPrincipalUnitsAtLevelMk K (n + 1) (v : 𝒪[K]ˣ) := by
+      integerUnitsPrincipalQuotMk K (n + 1) (u : 𝒪[K]ˣ) =
+        integerUnitsPrincipalQuotMk K (n + 1) (v : 𝒪[K]ˣ) := by
     simpa only [principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_mk] using hxy
   have hmem :
       ((u : 𝒪[K]ˣ) / (v : 𝒪[K]ˣ)) ∈ principalUnits K (n + 1) :=
-    (integerUnitsModPrincipalUnitsAtLevelMk_eq_iff_div_mem K (n + 1)
+    (integerUnitsPrincipalQuotMk_eq_iff_div_mem K (n + 1)
       (u : 𝒪[K]ˣ) (v : 𝒪[K]ˣ)).1 hq
   change ((u / v : principalUnits K n) : 𝒪[K]ˣ) ∈ principalUnits K (n + 1)
   simpa using hmem
@@ -264,7 +264,7 @@ theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_injective
 /-- A unit maps to the identity at the successor level exactly when it has a principal-unit lift. -/
 theorem integerUnitsModPrincipalUnitsSuccMap_eq_one_iff_exists
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat)
-    (x : IntegerUnitsModPrincipalUnitsAtLevel K (n + 1)) :
+    (x : IntegerUnitsPrincipalQuot K (n + 1)) :
     integerUnitsModPrincipalUnitsSuccMap K n x = 1 ↔
       ∃ y : PrincipalUnitsSuccQuot K n,
         principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc K n y = x := by
@@ -280,8 +280,8 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) (σ : Gal(L/K)) :
-    IntegerUnitsModPrincipalUnitsAtLevel L n ≃*
-      IntegerUnitsModPrincipalUnitsAtLevel L n :=
+    IntegerUnitsPrincipalQuot L n ≃*
+      IntegerUnitsPrincipalQuot L n :=
   integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv L n
     (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ)
 
@@ -294,8 +294,8 @@ theorem galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure_mk
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) (σ : Gal(L/K)) (u : 𝒪[L]ˣ) :
     galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n σ
-        (integerUnitsModPrincipalUnitsAtLevelMk L n u) =
-      integerUnitsModPrincipalUnitsAtLevelMk L n
+        (integerUnitsPrincipalQuotMk L n u) =
+      integerUnitsPrincipalQuotMk L n
         (Units.mapEquiv
           (galoisGroupIntegerRingEquivOfIsIntegralClosure K L σ).toMulEquiv u) :=
   integerUnitsModPrincipalUnitsMapEquivOfIntegerRingEquiv_mk L n
@@ -310,12 +310,12 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) :
     Gal(L / K) →*
-      (IntegerUnitsModPrincipalUnitsAtLevel L n ≃*
-        IntegerUnitsModPrincipalUnitsAtLevel L n) where
+      (IntegerUnitsPrincipalQuot L n ≃*
+        IntegerUnitsPrincipalQuot L n) where
   toFun := galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n
   map_one' := by
     ext x
-    refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn n
+    refine IntegerUnitsPrincipalQuot.inductionOn n
       (motive := fun x =>
         galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure
             K L n 1 x = x)
@@ -326,7 +326,7 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure
   map_mul' := by
     intro σ τ
     ext x
-    refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn n
+    refine IntegerUnitsPrincipalQuot.inductionOn n
       (motive := fun x =>
         galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure
             K L n (σ * τ) x =
@@ -338,12 +338,12 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure
     intro u
     rw [galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure_mk]
     change
-      integerUnitsModPrincipalUnitsAtLevelMk L n
+      integerUnitsPrincipalQuotMk L n
           (Units.mapEquiv
             (galoisGroupIntegerRingEquivOfIsIntegralClosure K L (σ * τ)).toMulEquiv u) =
         galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n σ
           (galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n τ
-            (integerUnitsModPrincipalUnitsAtLevelMk L n u))
+            (integerUnitsPrincipalQuotMk L n u))
     rw [
       galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure_mk,
       galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure_mk]
@@ -358,13 +358,13 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosu
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) :
-    MulDistribMulAction (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) where
+    MulDistribMulAction (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) where
   smul σ x := galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n σ x
   one_smul := by
     intro x
     change galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n 1 x = x
-    have h := congrArg (fun e : IntegerUnitsModPrincipalUnitsAtLevel L n ≃*
-        IntegerUnitsModPrincipalUnitsAtLevel L n => e x)
+    have h := congrArg (fun e : IntegerUnitsPrincipalQuot L n ≃*
+        IntegerUnitsPrincipalQuot L n => e x)
       (map_one (galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure K L n))
     exact h
   mul_smul := by
@@ -373,8 +373,8 @@ def galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosu
         (σ * τ) x =
       galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n σ
         (galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n τ x)
-    have h := congrArg (fun e : IntegerUnitsModPrincipalUnitsAtLevel L n ≃*
-        IntegerUnitsModPrincipalUnitsAtLevel L n => e x)
+    have h := congrArg (fun e : IntegerUnitsPrincipalQuot L n ≃*
+        IntegerUnitsPrincipalQuot L n => e x)
       (map_mul (galoisGroupIntegerUnitsModPrincipalUnitsMapEquivHomOfIsIntegralClosure K L n)
         σ τ)
     exact h
@@ -392,7 +392,7 @@ theorem galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralC
     [Algebra K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
-    (n : Nat) (σ : Gal(L/K)) (x : IntegerUnitsModPrincipalUnitsAtLevel L n) :
+    (n : Nat) (σ : Gal(L/K)) (x : IntegerUnitsPrincipalQuot L n) :
     letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L n
     σ • x = galoisGroupIntegerUnitsModPrincipalUnitsMapEquivOfIsIntegralClosure K L n σ x :=
@@ -406,7 +406,7 @@ theorem integerUnitsModPrincipalUnitsSuccMap_galoisGroup_of_isIntegralClosure
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
     [IsIntegralClosure 𝒪[L] 𝒪[K] L]
     (n : Nat) (σ : Gal(L/K))
-    (x : IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) :
+    (x : IntegerUnitsPrincipalQuot L (n + 1)) :
     let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L (n + 1)
     let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
@@ -414,7 +414,7 @@ theorem integerUnitsModPrincipalUnitsSuccMap_galoisGroup_of_isIntegralClosure
     integerUnitsModPrincipalUnitsSuccMap L n (σ • x) =
       σ • integerUnitsModPrincipalUnitsSuccMap L n x := by
   intro sharedOwner1 sharedOwner2
-  refine IntegerUnitsModPrincipalUnitsAtLevel.inductionOn (n + 1)
+  refine IntegerUnitsPrincipalQuot.inductionOn (n + 1)
     (motive := fun x =>
       integerUnitsModPrincipalUnitsSuccMap L n (σ • x) =
         σ • integerUnitsModPrincipalUnitsSuccMap L n x)
@@ -459,21 +459,21 @@ theorem principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc_galoisGroup_of
 /-- The quotient `𝒪_Kˣ/U_K^0` is finite because `U_K^0 = 𝒪_Kˣ`. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_finite_zero
     (K : Type u) [Field K] [ValuativeRel K] :
-    Finite (IntegerUnitsModPrincipalUnitsAtLevel K 0) := by
+    Finite (IntegerUnitsPrincipalQuot K 0) := by
   let : Finite (𝒪[K]ˣ ⧸ principalUnits K 0) := by
     rw [principalUnits_zero]
     infer_instance
   exact Finite.of_equiv (𝒪[K]ˣ ⧸ principalUnits K 0)
-    (integerUnitsModPrincipalUnitsAtLevelConcreteEquiv K 0).symm.toEquiv
+    (integerUnitsPrincipalQuotConcreteEquiv K 0).symm.toEquiv
 
 /-- The initial nontrivial quotient `𝒪_Kˣ/U_K^1` is finite via
 `𝒪_Kˣ/U_K^1 ≃ 𝓀_Kˣ`. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_finite_one_of_isNonarchimedeanLocalField
     (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
-    Finite (IntegerUnitsModPrincipalUnitsAtLevel K 1) := by
-  let e : IntegerUnitsModPrincipalUnitsAtLevel K 1 ≃* ResidueUnits K :=
-    (integerUnitsModPrincipalUnitsAtLevelConcreteEquiv K 1).trans
+    Finite (IntegerUnitsPrincipalQuot K 1) := by
+  let e : IntegerUnitsPrincipalQuot K 1 ≃* ResidueUnits K :=
+    (integerUnitsPrincipalQuotConcreteEquiv K 1).trans
       ((integerUnitsModPrincipalUnitsConcreteEquiv K).symm.trans
         (integerUnitsModPrincipalUnitsEquivResidueUnits K))
   exact Finite.of_equiv (ResidueUnits K) e.symm.toEquiv
@@ -483,8 +483,8 @@ the next finite quotient is finite. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_finite_succ_of_finite
     (K : Type u) [Field K] [ValuativeRel K] (n : Nat)
     [Finite (PrincipalUnitsSuccQuot K n)]
-    [Finite (IntegerUnitsModPrincipalUnitsAtLevel K n)] :
-    Finite (IntegerUnitsModPrincipalUnitsAtLevel K (n + 1)) := by
+    [Finite (IntegerUnitsPrincipalQuot K n)] :
+    Finite (IntegerUnitsPrincipalQuot K (n + 1)) := by
   let i := principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc K n
   have : Finite i.range :=
     Finite.of_surjective
@@ -505,7 +505,7 @@ nonarchimedean local field. -/
 theorem integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField
     (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] (n : Nat) :
-    Finite (IntegerUnitsModPrincipalUnitsAtLevel K n) := by
+    Finite (IntegerUnitsPrincipalQuot K n) := by
   induction n with
   | zero =>
       exact integerUnitsModPrincipalUnitsAtLevel_finite_zero K
@@ -527,9 +527,9 @@ theorem integerUnitsModPrincipalUnitsAtLevel_herbrandH0_finite_of_isNonarchimede
     [Fintype (Gal(L/K))] (n : Nat) :
     let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := by
+      (Gal(L / K)) (IntegerUnitsPrincipalQuot L n)) := by
   intro sharedOwner1
-  let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
+  let : Finite (IntegerUnitsPrincipalQuot L n) :=
     integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
   infer_instance
 
@@ -542,9 +542,9 @@ theorem integerUnitsModPrincipalUnitsAtLevel_herbrandHMinusOne_finite_of_isNonar
     [Fintype (Gal(L/K))] (n : Nat) (σ : Gal(L/K)) :
     let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
     Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := by
+      (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) σ) := by
   intro sharedOwner1
-  let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
+  let : Finite (IntegerUnitsPrincipalQuot L n) :=
     integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
   infer_instance
 
@@ -558,13 +558,13 @@ theorem integerUnitsModPrincipalUnitsAtLevel_herbrandQuotient_eq_one_of_isNonarc
     [Fintype (Gal(L/K))] (n : Nat) (σ : Gal(L/K))
     (hgen : ∀ g : Gal(L / K), g ∈ Subgroup.zpowers σ) :
     let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
-    let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
+    let : Finite (IntegerUnitsPrincipalQuot L n) :=
       integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
     CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
-      (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ = 1 := by
+      (G := Gal(L / K)) (A := IntegerUnitsPrincipalQuot L n) σ = 1 := by
   intro sharedOwner1 sharedOwner2
   exact CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient_finite_module_eq_one
-    (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ hgen
+    (G := Gal(L / K)) (A := IntegerUnitsPrincipalQuot L n) σ hgen
 
 /-- GC Herbrand multiplicativity specialized to the actual finite principal-unit
 quotient tower
@@ -588,22 +588,22 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L (n + 1)
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1))))
     (hBm :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L (n + 1)
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1)) σ))
     (hC0 :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L n
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L n)))
     (hCm :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L n
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ)) :
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) σ)) :
     let := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
     let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L (n + 1)
@@ -613,26 +613,26 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_
     let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
         (Gal(L / K)) (PrincipalUnitsSuccQuot L n) σ) := hAm
     let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))) := hB0
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1))) := hB0
     let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ) := hBm
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1)) σ) := hBm
     let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := hC0
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L n)) := hC0
     let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := hCm
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) σ) := hCm
     CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
-        (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ =
+        (G := Gal(L / K)) (A := IntegerUnitsPrincipalQuot L (n + 1)) σ =
       CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
           (G := Gal(L / K)) (A := PrincipalUnitsSuccQuot L n) σ *
         CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
-          (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ := by
+          (G := Gal(L / K)) (A := IntegerUnitsPrincipalQuot L n) σ := by
   intro sharedOwner1 sharedOwner2 sharedOwner3 sharedOwner4 sharedOwner5 sharedOwner6
     sharedOwner7 sharedOwner8 sharedOwner9
   exact CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient_exact_multiplicative
     (G := Gal(L / K))
     (A := PrincipalUnitsSuccQuot L n)
-    (B := IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))
-    (C := IntegerUnitsModPrincipalUnitsAtLevel L n)
+    (B := IntegerUnitsPrincipalQuot L (n + 1))
+    (C := IntegerUnitsPrincipalQuot L n)
     (principalUnitsSuccQuotToIntegerUnitsModPrincipalUnitsSucc L n)
     (integerUnitsModPrincipalUnitsSuccMap L n)
     (by
@@ -671,22 +671,22 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_eq_one_of_isIntegralC
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L (n + 1)
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1))))
     (hBm :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L (n + 1)
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1)) σ))
     (hC0 :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L n
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L n)))
     (hCm :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
         K L n
       Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ))
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) σ))
     (hA :
       letI := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
       letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
@@ -698,19 +698,19 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_eq_one_of_isIntegralC
     (hC :
       letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure K L n
       letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-          (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := hC0
+          (Gal(L / K)) (IntegerUnitsPrincipalQuot L n)) := hC0
       letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-          (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := hCm
+          (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) σ) := hCm
       CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
-        (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L n) σ = 1) :
+        (G := Gal(L / K)) (A := IntegerUnitsPrincipalQuot L n) σ = 1) :
     letI := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
       K L (n + 1)
     letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))) := hB0
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1))) := hB0
     letI : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-        (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ) := hBm
+        (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1)) σ) := hBm
     CyclicCohomology.ProfiniteCohomology.Herbrand.herbrandQuotient
-      (G := Gal(L / K)) (A := IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ = 1 := by
+      (G := Gal(L / K)) (A := IntegerUnitsPrincipalQuot L (n + 1)) σ = 1 := by
   let := galoisGroupPrincipalUnitsSuccQuotMulDistribMulActionOfIsIntegralClosure K L n
   let := galoisGroupIntegerUnitsModPrincipalUnitsMulDistribMulActionOfIsIntegralClosure
     K L (n + 1)
@@ -720,13 +720,13 @@ theorem integerUnitsModPrincipalUnitsSucc_herbrandQuotient_eq_one_of_isIntegralC
   let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
       (Gal(L / K)) (PrincipalUnitsSuccQuot L n) σ) := hAm
   let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1))) := hB0
+      (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1))) := hB0
   let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L (n + 1)) σ) := hBm
+      (Gal(L / K)) (IntegerUnitsPrincipalQuot L (n + 1)) σ) := hBm
   let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandH0
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n)) := hC0
+      (Gal(L / K)) (IntegerUnitsPrincipalQuot L n)) := hC0
   let : Finite (CyclicCohomology.ProfiniteCohomology.Herbrand.HerbrandHMinusOne
-      (Gal(L / K)) (IntegerUnitsModPrincipalUnitsAtLevel L n) σ) := hCm
+      (Gal(L / K)) (IntegerUnitsPrincipalQuot L n) σ) := hCm
   rw [integerUnitsModPrincipalUnitsSucc_herbrandQuotient_exact_multiplicative_of_isIntegralClosure
     K L n σ hgen hA0 hAm hB0 hBm hC0 hCm, hA, hC, one_mul]
 

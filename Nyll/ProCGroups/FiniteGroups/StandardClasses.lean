@@ -526,10 +526,10 @@ theorem exists_prime_power_orderOf_gt_padicValNat_of_zpow_ne_one
       (hℓdiv_order.trans (orderOf_dvd_natCard g))
   let σ : ℕ := padicValNat ℓ (orderOf g)
   have hltpadic : padicValNat ℓ n.natAbs < σ := by
-    simpa [σ, Nat.factorization_def _ hℓprime] using hℓlt
+    simpa only [σ, Nat.padicValNat_def, Nat.factorization_def _ hℓprime] using hℓlt
   have hσpos : 0 < σ := lt_of_le_of_lt (Nat.zero_le _) hltpadic
   have hσdvd : ℓ ^ σ ∣ orderOf g := by
-    simpa [σ] using (pow_padicValNat_dvd (p := ℓ) (n := orderOf g))
+    simpa only [σ, Nat.padicValNat_def] using pow_multiplicity_dvd ℓ (orderOf g)
   exact ⟨ℓ, σ, hℓprime, hσpos, hℓsigma, hltpadic, hσdvd⟩
 
 end

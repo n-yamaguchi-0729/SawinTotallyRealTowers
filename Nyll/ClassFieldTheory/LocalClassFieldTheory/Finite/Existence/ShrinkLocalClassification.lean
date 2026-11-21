@@ -47,7 +47,7 @@ def shrinkFiniteAbelianFieldNormSubgroupOrderIso :
 actual field-norm subgroup. -/
 theorem shrinkFiniteAbelianFieldNormSubgroupOrderIso_apply
     (E : ClassFieldTheory.FiniteAbelianLocalExtension K) :
-    (OrderDual.ofDual (shrinkFiniteAbelianFieldNormSubgroupOrderIso K E)).1 =
+    (OrderDual.ofDual (shrinkFiniteAbelianFieldNormSubgroupOrderIso K E)).1.toSubgroup =
       E.normSubgroup := by
   let : Small.{0} K := nonarchimedeanLocalField_small K
   let : ValuativeRel (Shrink.{0} K) := shrinkLocalFieldValuativeRel K
@@ -69,7 +69,7 @@ theorem shrinkFiniteAbelianFieldNormSubgroupOrderIso_apply
   rw [heq] at hnorm
   change ((OrderDual.ofDual
     (LocalClassFieldTheory.finiteAbelianFieldNormSubgroupOrderIso
-      (Shrink.{0} K) F)).1.map
+      (Shrink.{0} K) F)).1.toSubgroup.map
         (shrinkUnitsContinuousMulEquiv K).toMulEquiv.toMonoidHom) = E.normSubgroup
   rw [hsmall]
   change (F.normSubgroup.map

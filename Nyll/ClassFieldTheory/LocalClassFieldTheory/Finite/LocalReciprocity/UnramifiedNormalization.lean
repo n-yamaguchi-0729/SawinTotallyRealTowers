@@ -35,38 +35,26 @@ Frobenius, both algebraically and in the topological abelianization.
 
 noncomputable section
 
+universe u v w
+
 namespace LocalClassFieldTheory
 
 open scoped IsMulCommutative ValuativeRel
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 
-private abbrev G (K : Type) [Field K] :=
+private abbrev G (K : Type u) [Field K] :=
   intrinsicAbsoluteGalois K
 
-private abbrev A (K : Type) [Field K] : Rep ℤ (G K) :=
+private abbrev A (K : Type u) [Field K] : Rep.{u} ℤ (G K) :=
   intrinsicAbsoluteUnits K
 
-private abbrev B (K : Type) [Field K] : ClosedSubgroup (G K) :=
+private abbrev B (K : Type u) [Field K] : ClosedSubgroup (G K) :=
   intrinsicAbstractBase K
-
-private def extensionQuotientEquivOfEq
-    {Γ : Type} [Group Γ] [TopologicalSpace Γ]
-    {K L K' L' : ClosedSubgroup Γ}
-    (hLK : L.toSubgroup ≤ K.toSubgroup)
-    (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
-    (hK : K = K') (hL : L = L') :
-    (K.toSubgroup ⧸ extensionSubgroup K L hLK) ≃
-      (K'.toSubgroup ⧸ extensionSubgroup K' L' hL'K') := by
-  subst K'
-  subst L'
-  have hp : hLK = hL'K' := Subsingleton.elim _ _
-  subst hL'K'
-  exact Equiv.refl _
 
 section BasePrime
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 private theorem localHenselianValuation_valuationAt_baseUnit
@@ -169,7 +157,7 @@ end BasePrime
 
 section UnramifiedPrimeClass
 
-variable (K L : Type)
+variable (K : Type u) (L : Type v)
   [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
@@ -206,7 +194,7 @@ omit [IsUniformAddGroup L] in
 the arithmetic Frobenius class. -/
 theorem localArtinMonoidHom_localAbstractPrimeFieldUnit :
     localArtinMonoidHom K L (localAbstractPrimeFieldUnit K) =
-      Abelianization.of
+      Group.Abelianization.of
         (arithmeticFrobeniusOfUnramifiedValuation K L) := by
   let i := AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L
   let D := localResidueDatum K
@@ -215,35 +203,21 @@ theorem localArtinMonoidHom_localAbstractPrimeFieldUnit :
   let E := finiteGaloisAbstractExtensionOfEmbedding K L i
   let Kbase := intrinsicFiniteAbstractBase K
   let KR := Kbase.toFiniteResidueAbstractField D
-  let hEfinite : Finite ((B K).toSubgroup ⧸
-      extensionSubgroup (B K) E.field E.below) :=
+  let : (extensionSubgroup Kbase.field E.field E.below).Normal := E.normal
+  let : (extensionSubgroup KR.field E.field E.below).Normal := E.normal
+  let : Finite (Kbase.field.toSubgroup ⧸ extensionSubgroup Kbase.field E.field E.below) :=
     E.finite
-  let hKbaseEfinite : Finite (Kbase.field.toSubgroup ⧸
-      extensionSubgroup Kbase.field E.field E.below) := by
-    exact Finite.of_equiv
-      ((B K).toSubgroup ⧸
-        extensionSubgroup (B K) E.field E.below)
-      (extensionQuotientEquivOfEq
-        (K := B K) (L := E.field)
-        (K' := Kbase.field) (L' := E.field)
-        E.below E.below rfl rfl)
-  let hKREfinite : Finite (KR.field.toSubgroup ⧸
-      extensionSubgroup KR.field E.field E.below) := by
-    exact Finite.of_equiv
-      ((B K).toSubgroup ⧸
-        extensionSubgroup (B K) E.field E.below)
-      (extensionQuotientEquivOfEq
-        (K := B K) (L := E.field)
-        (K' := KR.field) (L' := E.field)
-        E.below E.below rfl rfl)
-  let sigma := D.chosenUnramifiedFrobeniusLift KR E.field E.below
+  let : Finite (KR.field.toSubgroup ⧸ extensionSubgroup KR.field E.field E.below) :=
+    E.finite
+  let sigma : D.FrobeniusElements KR E.field E.below :=
+    D.chosenUnramifiedFrobeniusLift KR E.field E.below
   let q := D.unramifiedFrobenius KR E.field E.below
   have hUnramified : E.IsUnramified D := by
     simpa only [D, E, B] using
       finiteGaloisAbstractExtensionOfEmbedding_isUnramified K L i
-  let S := D.frobeniusFixedField KR E.field E.below sigma
-  let hSB := D.frobeniusFixedField_le
-    KR E.field E.below sigma
+  let S : ClosedSubgroup (G K) := D.frobeniusFixedField KR E.field E.below sigma
+  let hSB : S.toSubgroup ≤ (B K).toSubgroup :=
+    D.frobeniusFixedField_le KR E.field E.below sigma
   let hSBfinite :
       Finite ((B K).toSubgroup ⧸
         extensionSubgroup (B K) S hSB) :=
@@ -258,16 +232,12 @@ theorem localArtinMonoidHom_localAbstractPrimeFieldUnit :
   let pi : ambientFixedAddSubgroup (A K) S :=
     fixedFieldInclusion (A K) (B K) S hSB
       (v.chosenPrimeElement Kbase)
-  have hpi : v.IsPrimeElement Sfinite pi := by
-    simpa only [Kbase, KR, sigma, S, hSB, Sfinite, pi] using
-      v.unramifiedFrobenius_includedPrime_isPrime
-        Kbase E.field E.below hUnramified
+  have hpi : v.IsPrimeElement Sfinite pi :=
+    v.unramifiedFrobenius_includedPrime_isPrime Kbase E.field E.below hUnramified
   have hnorm :
       relativeNorm (A K) (B K) S hSB pi =
-        v.chosenPrimeElement Kbase := by
-    simpa only [Kbase, KR, sigma, S, hSB, pi] using
-      v.unramifiedFrobenius_primeNorm
-        Kbase E.field E.below hUnramified
+        v.chosenPrimeElement Kbase :=
+    v.unramifiedFrobenius_primeNorm Kbase E.field E.below hUnramified
   let e := baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)
   let xNorm : Kˣ :=
     Additive.toMul
@@ -290,7 +260,7 @@ theorem localArtinMonoidHom_localAbstractPrimeFieldUnit :
     concreteNormResidueSymbolOfEmbedding K L i D v hcf
         (Additive.toMul
           (e.symm (relativeNorm (A K) (B K) S hSB pi))) =
-      Abelianization.of
+      Group.Abelianization.of
         (finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i q)
     at hsymbol
   rw [hx, ← localArtinMonoidHom_eq_of_embedding K L i] at hsymbol
@@ -338,13 +308,13 @@ theorem abelianizationEquivNormQuotient_symm_eq_unramifiedLocalReciprocityIso :
     simpa [zsmul_eq_mul] using hm
   have hcanonical :
       (abelianizationEquivNormQuotient K L).symm p =
-        Abelianization.of
+        Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L) := by
     change localArtinMonoidHom K L (localAbstractPrimeFieldUnit K) = _
     exact localArtinMonoidHom_localAbstractPrimeFieldUnit K L
   have hactual :
       unramifiedLocalReciprocityIso K L p =
-        Abelianization.of
+        Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L) := by
     change unramifiedLocalReciprocityIso K L
       (normClass K L (localAbstractPrimeFieldUnit K)) =
@@ -379,14 +349,14 @@ omit [IsUniformAddGroup L] in
 theorem localArtinMonoidHom_inverseIntegerRingUniformizerFieldUnit :
     localArtinMonoidHom K L
         (inverseIntegerRingUniformizerFieldUnit K) =
-      Abelianization.of
+      Group.Abelianization.of
         (arithmeticFrobeniusOfUnramifiedValuation K L) := by
   rw [localArtinMonoidHom_eq_unramifiedLocalArtinMap K L]
   change
     unramifiedLocalReciprocityIso K L
         (normClass K L
           (inverseIntegerRingUniformizerFieldUnit K)) =
-      Abelianization.of
+      Group.Abelianization.of
         (arithmeticFrobeniusOfUnramifiedValuation K L)
   exact
     unramifiedLocalReciprocityIso_inverseIntegerRingUniformizerFieldUnit
@@ -396,7 +366,7 @@ omit [IsUniformAddGroup L] in
 /-- Full unramified Artin formula for the canonical local norm-residue symbol. -/
 theorem localArtinMonoidHom_eq_frobenius_zpow (x : Kˣ) :
     localArtinMonoidHom K L x =
-      (Abelianization.of
+      (Group.Abelianization.of
         (arithmeticFrobeniusOfUnramifiedValuation K L)) ^
           LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K
             (Additive.ofMul x) := by
@@ -411,7 +381,7 @@ class of arithmetic Frobenius raised to its normalized valuation. -/
 theorem localArtinMap_eq_frobenius_zpow (x : Kˣ) :
     localArtinMap K L x =
       (topologicalAbelianization_finite_equiv K L
-        (Abelianization.of
+        (Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L))) ^
             LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K
               (Additive.ofMul x) := by
@@ -421,7 +391,7 @@ theorem localArtinMap_eq_frobenius_zpow (x : Kˣ) :
   change
     (((topologicalAbelianization_finite_equiv K L).symm.toMonoidHom.comp
       (localArtinMap K L).toMonoidHom) x) =
-        (Abelianization.of
+        (Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L)) ^
             LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K
               (Additive.ofMul x)
@@ -435,14 +405,14 @@ the topological abelianization. -/
 theorem localArtinMap_localAbstractPrimeFieldUnit :
     localArtinMap K L (localAbstractPrimeFieldUnit K) =
       topologicalAbelianization_finite_equiv K L
-        (Abelianization.of
+        (Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L)) := by
   apply (topologicalAbelianization_finite_equiv K L).symm.injective
   rw [(topologicalAbelianization_finite_equiv K L).symm_apply_apply]
   change
     (((topologicalAbelianization_finite_equiv K L).symm.toMonoidHom.comp
       (localArtinMap K L).toMonoidHom) (localAbstractPrimeFieldUnit K)) =
-        Abelianization.of
+        Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L)
   rw [localArtinMap_toMonoidHom]
   exact localArtinMonoidHom_localAbstractPrimeFieldUnit K L
@@ -453,7 +423,7 @@ omit [IsUniformAddGroup L] in
 theorem localArtinMap_uniformizer :
     localArtinMap K L (inverseIntegerRingUniformizerFieldUnit K) =
       topologicalAbelianization_finite_equiv K L
-        (Abelianization.of
+        (Group.Abelianization.of
           (arithmeticFrobeniusOfUnramifiedValuation K L)) := by
   rw [localArtinMap_eq_frobenius_zpow,
     LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap_apply,
@@ -485,7 +455,7 @@ end UnramifiedPrimeClass
 
 section AbelianUnramifiedPrimeClass
 
-variable (K L : Type)
+variable (K : Type u) (L : Type v)
   [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
@@ -511,10 +481,30 @@ theorem abelianLocalArtinMonoidHom_eq_frobenius_zpow (x : Kˣ) :
       (fun σ : Gal(L / K) =>
         σ ^ LocalFieldTheory.IsNonarchimedeanLocalField.valuationMap K
           (Additive.ofMul x))
-      ((Abelianization.equivOfComm (H := Gal(L / K))).symm_apply_apply
+      ((Group.Abelianization.equivOfComm (H := Gal(L / K))).symm_apply_apply
         (arithmeticFrobeniusOfUnramifiedValuation K L))
 
 end AbelianUnramifiedPrimeClass
+
+/-- A homomorphic image of unramified local reciprocity is the corresponding Frobenius power. -/
+theorem mappedAbelianLocalArtin_eq_frobenius_zpow
+    {F : Type u} {E : Type v} {G : Type w}
+    [Field F] [ValuativeRel F] [TopologicalSpace F]
+    [IsNonarchimedeanLocalField F]
+    [Field E] [ValuativeRel E] [UniformSpace E] [IsUniformAddGroup E]
+    [IsNonarchimedeanLocalField E]
+    [Algebra F E] [FiniteDimensional F E] [IsAbelianGalois F E]
+    [Valuation.HasExtension
+      (ValuativeRel.valuation F) (ValuativeRel.valuation E)]
+    [IsNonarchimedeanLocalField.IsUnramifiedValuedExtension F E]
+    [Group G]
+    (f : (E ≃ₐ[F] E) →* G) (x : Fˣ) :
+    f (LocalClassFieldTheory.abelianLocalArtinMonoidHom F E x) =
+      (f (arithmeticFrobeniusOfUnramifiedValuation F E)) ^
+        IsNonarchimedeanLocalField.valuationMap F
+          (Additive.ofMul x) := by
+  rw [LocalClassFieldTheory.abelianLocalArtinMonoidHom_eq_frobenius_zpow,
+    map_zpow]
 
 end LocalClassFieldTheory
 
@@ -525,7 +515,7 @@ open scoped ValuativeRel
 /-- The canonical Artin map of an abelian unramified local extension is
 arithmetic Frobenius raised to the normalized valuation. -/
 theorem finiteAbelianLocalArtinMap_eq_frobenius_zpow
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
@@ -550,7 +540,7 @@ theorem finiteAbelianLocalArtinMap_eq_frobenius_zpow
 /-- Every element of normalized valuation one maps to arithmetic Frobenius;
 there is no further choice of an Artin map at this finite level. -/
 theorem finiteAbelianLocalArtinMap_uniformizer
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]
@@ -571,7 +561,7 @@ on the residue field by the arithmetic `q`-power Frobenius. This states the
 normalization through the reduction of integral elements, without exposing
 the implementation's chosen residue-field automorphism in the conclusion. -/
 theorem finiteAbelianLocalArtinMap_inverseUniformizer_residue_pow
-    (K L : Type)
+    (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field L] [ValuativeRel L] [UniformSpace L] [IsUniformAddGroup L]

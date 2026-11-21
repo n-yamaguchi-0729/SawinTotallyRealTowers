@@ -6,9 +6,16 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceContraction
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.Comparison
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedProduct
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
@@ -308,118 +315,6 @@ theorem relativeLocalTensorDecompositionIntegralUnitAt_iff_aboveAdic
         (finitePlaceLocalTensorDecompositionUnitsComponent
           (K := K) (L := L) w u x)).1 h
 
-/-- Cofinite quantification over finite places of `L` is equivalent to
-cofinite quantification over finite places of `K`, uniformly over every
-place above the chosen base place. -/
-theorem eventually_finitePlace_iff_eventually_all_above
-    (P : ∀ _W : HeightOneSpectrum (𝓞 L), Prop) :
-    (∀ᶠ W : HeightOneSpectrum (𝓞 L) in Filter.cofinite, P W) ↔
-      ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-        ∀ W : {W : HeightOneSpectrum (𝓞 L) //
-          finitePlaceBelow (K := K) W = w},
-          P W.1 := by
-  constructor
-  · intro h
-    have hbad :
-        {W : HeightOneSpectrum (𝓞 L) | ¬ P W}.Finite :=
-      Filter.eventually_cofinite.mp h
-    have himage :
-        (finitePlaceBelow (K := K) ''
-          {W : HeightOneSpectrum (𝓞 L) | ¬ P W}).Finite :=
-      hbad.image _
-    apply Filter.eventually_cofinite.mpr
-    apply himage.subset
-    intro w hw
-    simp only [Set.mem_ofPred_eq] at hw
-    rw [Set.mem_image]
-    push Not at hw
-    rcases hw with ⟨W, hW⟩
-    exact ⟨W.1, hW, W.2⟩
-  · intro h
-    have hfibre (w : HeightOneSpectrum (𝓞 K)) :
-        Finite {W : HeightOneSpectrum (𝓞 L) //
-          finitePlaceBelow (K := K) W = w} := by
-      let : Fintype
-          (AbsoluteValueExtension
-            (HeightOneSpectrum.adicAbv K w) L) :=
-        completionTensorDecomposition_extensionFintype
-          (HeightOneSpectrum.adicAbv K w)
-          (RayClass.adicAbv_isNontrivial w)
-      exact
-        Finite.of_equiv
-          (AbsoluteValueExtension
-            (HeightOneSpectrum.adicAbv K w) L)
-          (finitePlaceExtensionEquivAbove
-            (K := K) (L := L) w)
-    have htendsto :
-        Filter.Tendsto
-          (finitePlaceBelow (K := K))
-          Filter.cofinite Filter.cofinite :=
-      Filter.Tendsto.cofinite_of_finite_preimage_singleton
-        (f := finitePlaceBelow (K := K) (L := L))
-        fun w => by
-          change
-            {W : HeightOneSpectrum (𝓞 L) |
-              finitePlaceBelow (K := K) W = w}.Finite
-          exact Set.finite_coe_iff.mp (hfibre w)
-    filter_upwards [htendsto.eventually h] with W hW
-    exact hW ⟨W, rfl⟩
-
-/-- The finite part of the relative restricted local product.  This is
-the source model whose flattening is the ordinary finite idele group of
-`L`. -/
-structure RelativeFiniteIdeleData where
-  /-- The unit in each finite local tensor factor. -/
-  finite :
-    ∀ w : HeightOneSpectrum (𝓞 K),
-      (w.adicCompletion K ⊗[K] L)ˣ
-  /-- Every basis coordinate of the finite component is integral at
-  all but finitely many places. -/
-  eventually_integral :
-    ∀ i : RelativeAdeleBasisIndex (K := K) (L := L),
-      ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-        (Algebra.TensorProduct.basis
-            (w.adicCompletion K)
-            (relativeExtensionBasis
-              (K := K) (L := L))).repr
-            (finite w : w.adicCompletion K ⊗[K] L) i ∈
-          w.adicCompletionIntegers K
-  /-- Every basis coordinate of the inverse finite component is integral
-  at all but finitely many places. -/
-  eventually_inverse_integral :
-    ∀ i : RelativeAdeleBasisIndex (K := K) (L := L),
-      ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-        (Algebra.TensorProduct.basis
-            (w.adicCompletion K)
-            (relativeExtensionBasis
-              (K := K) (L := L))).repr
-            (↑((finite w)⁻¹) :
-              w.adicCompletion K ⊗[K] L) i ∈
-          w.adicCompletionIntegers K
-
-omit [NumberField L] in
-/-- Relative finite idele data are equal when their finite components
-are equal. -/
-@[ext]
-theorem RelativeFiniteIdeleData.ext
-    {a b : RelativeFiniteIdeleData (K := K) (L := L)}
-    (hfinite : a.finite = b.finite) :
-    a = b := by
-  cases a
-  cases b
-  cases hfinite
-  rfl
-
-/-- Adjoin the trivial infinite family, so that the established relative
-idele support theorem can be applied to finite restricted data. -/
-noncomputable def RelativeFiniteIdeleData.toLocalData
-    (a : RelativeFiniteIdeleData (K := K) (L := L)) :
-    RelativeLocalIdeleData (K := K) (L := L) where
-  infinite _ := 1
-  finite := a.finite
-  eventually_integral := a.eventually_integral
-  eventually_inverse_integral := a.eventually_inverse_integral
-
 /-- A finite relative restricted family is integral in every concrete
 completion factor over almost every base finite place. -/
 theorem RelativeFiniteIdeleData.eventually_aboveAdicUnit
@@ -430,19 +325,11 @@ theorem RelativeFiniteIdeleData.eventually_aboveAdicUnit
         finitePlaceTensorUnitsEquivAboveAdic
             (K := K) (L := L) w (a.finite w) W ∈
           (W.1.adicCompletionIntegers L).units := by
-  let z : RelativeIdeleGroup K L :=
-    relativeIdeleOfLocalData
-      (K := K) (L := L) a.toLocalData
-  filter_upwards [
-    (relativeIdeleLocalTensorDecompositionSupport
-      (K := K) (L := L) z).eventually_cofinite_notMem] with w hw
-  apply
-    (relativeLocalTensorDecompositionIntegralUnitAt_iff_aboveAdic
-      (K := K) (L := L) w (a.finite w)).mp
-  have hz :=
-    relativeIdele_finiteComponent_localTensorDecompositionIntegralUnit_of_notMem
-      (K := K) (L := L) z w hw
-  simpa [z, RelativeFiniteIdeleData.toLocalData] using hz
+  filter_upwards [a.2] with w hw
+  exact (relativeLocalTensorDecompositionIntegralUnitAt_iff_aboveAdic
+    (K := K) (L := L) w (a.finite w)).mp
+      ((mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
+        (K := K) (L := L) w (a.finite w)).mp hw)
 
 /-- Flatten a finite relative restricted family into an ordinary finite
 idele of `L`. -/
@@ -484,15 +371,12 @@ noncomputable def finiteIdeleRelativeTensorFamily
   (relativeFiniteTensorPiMulEquiv
     (K := K) (L := L)).symm (fun W => y W)
 
-/-- The pulled-back tensor family is basis-integral, together with its
-inverse, at almost every finite place of `K`. -/
-theorem finiteIdeleRelativeTensorFamily_eventually_basisIntegralUnit
+/-- Pullback preserves the intrinsic integral-unit condition at almost every base place. -/
+theorem finiteIdeleRelativeTensorFamily_eventually_integralUnit
     (y : FiniteIdeleGroup L) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
-      RelativeBasisIntegralUnitAt
-        (K := K) (L := L) w
-        (finiteIdeleRelativeTensorFamily
-          (K := K) (L := L) y w) := by
+      finiteIdeleRelativeTensorFamily (K := K) (L := L) y w ∈
+        relativeLocalTensorDecompositionIntegralUnitSubgroup (K := K) (L := L) w := by
   have habove :
       ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
         ∀ W : {W : HeightOneSpectrum (𝓞 L) //
@@ -503,13 +387,9 @@ theorem finiteIdeleRelativeTensorFamily_eventually_basisIntegralUnit
       (fun W => y W ∈
         (W.adicCompletionIntegers L).units)).mp
       (FiniteIdeleGroup.eventually_mem_localUnits y)
-  filter_upwards [
-    habove,
-    (integralTensorComparisonBadPlaces
-      (K := K) (L := L)).eventually_cofinite_notMem] with w hw hbad
-  apply
-    (relativeBasisIntegralUnitAt_iff_localTensorDecompositionIntegralUnit_of_notMem
-      (K := K) (L := L) w hbad).mpr
+  filter_upwards [habove] with w hw
+  apply (mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
+    (K := K) (L := L) w _).mpr
   apply
     (relativeLocalTensorDecompositionIntegralUnitAt_iff_aboveAdic
       (K := K) (L := L) w
@@ -530,20 +410,18 @@ theorem finiteIdeleRelativeTensorFamily_eventually_basisIntegralUnit
 data. -/
 noncomputable def finiteIdeleToRelativeFiniteIdeleData
     (y : FiniteIdeleGroup L) :
-    RelativeFiniteIdeleData (K := K) (L := L) where
-  finite :=
-    finiteIdeleRelativeTensorFamily
-      (K := K) (L := L) y
-  eventually_integral i :=
-    (finiteIdeleRelativeTensorFamily_eventually_basisIntegralUnit
-      (K := K) (L := L) y).mono fun w hw =>
-        relativeBasisIntegralAt_repr_mem
-          (K := K) (L := L) w _ hw.1 i
-  eventually_inverse_integral i :=
-    (finiteIdeleRelativeTensorFamily_eventually_basisIntegralUnit
-      (K := K) (L := L) y).mono fun w hw =>
-        relativeBasisIntegralAt_repr_mem
-          (K := K) (L := L) w _ hw.2 i
+    RelativeFiniteIdeleData (K := K) (L := L) :=
+  ⟨finiteIdeleRelativeTensorFamily (K := K) (L := L) y,
+    finiteIdeleRelativeTensorFamily_eventually_integralUnit (K := K) (L := L) y⟩
+
+/-- The pulled-back family also has integral basis coordinates outside the
+proved finite comparison set. -/
+theorem finiteIdeleRelativeTensorFamily_eventually_basisIntegralUnit
+    (y : FiniteIdeleGroup L) :
+    ∀ᶠ w : HeightOneSpectrum (𝓞 K) in Filter.cofinite,
+      RelativeBasisIntegralUnitAt (K := K) (L := L) w
+        (finiteIdeleRelativeTensorFamily (K := K) (L := L) y w) :=
+  (finiteIdeleToRelativeFiniteIdeleData (K := K) (L := L) y).eventually_basisIntegralUnit
 
 /-- The finite relative restricted product is the ordinary finite idele
 group of the extension field. -/
@@ -579,20 +457,18 @@ noncomputable def relativeFiniteIdeleEquiv :
       (relativeFiniteTensorPiMulEquiv
         (K := K) (L := L)).apply_symm_apply (fun W => y W)
 
-/-- The transported group structure on the finite relative restricted
-product. -/
-noncomputable instance relativeFiniteIdeleDataGroup :
-    Group (RelativeFiniteIdeleData (K := K) (L := L)) :=
-  (relativeFiniteIdeleEquiv
-    (K := K) (L := L)).group
-
 /-- The finite restricted-product comparison as a multiplicative
 equivalence. -/
 noncomputable def relativeFiniteIdeleMulEquiv :
     RelativeFiniteIdeleData (K := K) (L := L) ≃*
-      FiniteIdeleGroup L :=
-  (relativeFiniteIdeleEquiv
-    (K := K) (L := L)).mulEquiv
+      FiniteIdeleGroup L where
+  __ := relativeFiniteIdeleEquiv (K := K) (L := L)
+  map_mul' a b := by
+    apply Subtype.ext
+    change relativeFiniteTensorPiMulEquiv (K := K) (L := L) (a.finite * b.finite) =
+      relativeFiniteTensorPiMulEquiv (K := K) (L := L) a.finite *
+        relativeFiniteTensorPiMulEquiv (K := K) (L := L) b.finite
+    exact (relativeFiniteTensorPiMulEquiv (K := K) (L := L)).map_mul a.finite b.finite
 
 /-- The relative finite idele equivalence agrees with the underlying
 finite-idele map. -/

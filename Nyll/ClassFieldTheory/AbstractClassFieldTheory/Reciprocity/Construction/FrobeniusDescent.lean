@@ -22,7 +22,6 @@ restriction and degree.
 
 namespace ClassFormation
 
-open CyclicCohomology
 
 
 
@@ -36,9 +35,9 @@ namespace DegreeData
 def extensionImageInInertiaQuotient (D : DegreeData G)
     (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
-    [hLnormal : (extensionSubgroup K L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal] :
     Subgroup (K.toSubgroup ⧸ D.extensionInertiaWithin K L hLK) :=
-  (extensionSubgroup K L hLK).map
+  (L.toSubgroup.subgroupOf K.toSubgroup).map
     (QuotientGroup.mk' (D.extensionInertiaWithin K L hLK))
 
 /-- The image of `G_L` in `G_K / I_L` is closed.  This is the compact-image
@@ -47,15 +46,15 @@ theorem extensionImageInInertiaQuotient_isClosed
     (D : DegreeData G) [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     [hLfinite : Finite
-      (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)] :
+      (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))] :
     IsClosed (D.extensionImageInInertiaQuotient K.field L hLK : Set
       (K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK)) := by
   let : IsClosed
       (D.extensionInertiaWithin K.field L hLK : Set K.field.toSubgroup) :=
     D.extensionInertiaWithin_isClosed K L hLK
-  let E := extensionSubgroup K.field L hLK
+  let E := (L.toSubgroup.subgroupOf K.field.toSubgroup)
   have hEclosed : IsClosed (E : Set K.field.toSubgroup) := by
     have hcarrier : (E : Set K.field.toSubgroup) =
         ((fun x : K.field.toSubgroup => (x : G)) ⁻¹' (L : Set G)) := by
@@ -81,21 +80,21 @@ theorem frobeniusFixedField_le_of_inertia_le_of_lift_mem
     (D : DegreeData G) [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L M : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    (hMK : M.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    (_hMK : M.toSubgroup ≤ K.field.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     [hMfinite : Finite
-      (K.field.toSubgroup ⧸ extensionSubgroup K.field M hMK)]
+      (K.field.toSubgroup ⧸ (M.toSubgroup.subgroupOf K.field.toSubgroup))]
     (σ : D.FrobeniusElements K L hLK)
     (hI : D.extensionInertiaWithin K.field L hLK ≤
-      extensionSubgroup K.field M hMK)
+      (M.toSubgroup.subgroupOf K.field.toSubgroup))
     (s : K.field.toSubgroup)
-    (hsM : s ∈ extensionSubgroup K.field M hMK)
+    (hsM : s ∈ (M.toSubgroup.subgroupOf K.field.toSubgroup))
     (hsσ : (QuotientGroup.mk s :
       K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK) = σ.1) :
     (D.frobeniusFixedField K L hLK σ).toSubgroup ≤
       M.toSubgroup := by
   let H := D.extensionInertiaWithin K.field L hLK
-  let E := extensionSubgroup K.field M hMK
+  let E := (M.toSubgroup.subgroupOf K.field.toSubgroup)
   let Q := K.field.toSubgroup ⧸ H
   let J : Subgroup Q := E.map (QuotientGroup.mk' H)
   let : IsClosed (H : Set K.field.toSubgroup) :=
@@ -142,15 +141,15 @@ theorem frobeniusFixedField_le_of_restriction_eq_one
     (D : DegreeData G) [IsTopologicalGroup G] [CompactSpace G] [T2Space G]
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     [hLfinite : Finite
-      (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)]
+      (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))]
     (σ : D.FrobeniusElements K L hLK)
     (hσ : D.frobeniusRestriction K L hLK σ = 1) :
     (D.frobeniusFixedField K L hLK σ).toSubgroup ≤
       L.toSubgroup := by
   let H := D.extensionInertiaWithin K.field L hLK
-  let E := extensionSubgroup K.field L hLK
+  let E := (L.toSubgroup.subgroupOf K.field.toSubgroup)
   let Q := K.field.toSubgroup ⧸ H
   let J : Subgroup Q := D.extensionImageInInertiaQuotient K.field L hLK
   have hσJ : σ.1 ∈ J := by
@@ -158,7 +157,7 @@ theorem frobeniusFixedField_le_of_restriction_eq_one
     have hkq : QuotientGroup.mk k = σ.1 := Quotient.out_eq' σ.1
     have hkE : k ∈ E := by
       have hq : (QuotientGroup.mk k :
-          K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK) = 1 := by
+          K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup)) = 1 := by
         change D.extensionRestriction K.field L hLK
           (QuotientGroup.mk k : K.field.toSubgroup ⧸ H) = 1
         rw [hkq]
@@ -190,7 +189,7 @@ theorem extensionRestriction_normalizedDegree_joint_injective
     (D : DegreeData G) (K : FiniteResidueAbstractField D)
     (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal] :
     Function.Injective (fun q :
         K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK =>
       (D.extensionRestriction K.field L hLK q,
@@ -201,9 +200,9 @@ theorem extensionRestriction_normalizedDegree_joint_injective
   apply QuotientGroup.eq.mpr
   have hRestriction : QuotientGroup.mk a =
       (QuotientGroup.mk b :
-        K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK) := by
+        K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup)) := by
     exact congrArg Prod.fst hab
-  have hExtension : a⁻¹ * b ∈ extensionSubgroup K.field L hLK :=
+  have hExtension : a⁻¹ * b ∈ (L.toSubgroup.subgroupOf K.field.toSubgroup) :=
     QuotientGroup.eq.mp hRestriction
   have hDegree : D.normalizedDegree K a =
       D.normalizedDegree K b :=
@@ -221,7 +220,7 @@ theorem extensionRestriction_normalizedDegree_joint_injective
 theorem frobeniusRestriction_mul (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (σ τ : D.FrobeniusElements K L hLK) :
     D.frobeniusRestriction K L hLK (σ * τ) =
       D.frobeniusRestriction K L hLK σ *
@@ -237,7 +236,7 @@ theorem frobenius_eq_of_restriction_eq_of_degree_eq
     (D : DegreeData G) (K : FiniteResidueAbstractField D)
     (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     {σ τ : D.FrobeniusElements K L hLK}
     (hRestriction :
       D.frobeniusRestriction K L hLK σ =

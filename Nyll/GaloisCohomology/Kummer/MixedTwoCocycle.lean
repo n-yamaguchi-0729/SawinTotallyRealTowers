@@ -104,7 +104,7 @@ theorem exists_mixedTwoCocycle_correction
     dsimp only [B]
     rw [hqLeft, haLeft]
     change A.ρ ((n : G) * (a g : G)) (beta (q g)) - z ((n : G) * (a g : G), s (q g)) = _
-    rw [map_mul, Module.End.mul_apply, map_sub, hc]
+    rw [map_mul, mul_apply_eq_comp, map_sub, hc]
     abel
   have hBsection (x : G ⧸ S) : B (s x) = beta x := by
     have haS : a (s x) = 1 := by
@@ -114,11 +114,11 @@ theorem exists_mixedTwoCocycle_correction
     dsimp only [B]
     rw [hs, haS]
     change A.ρ 1 (beta x) - z (1, s x) = beta x
-    rw [map_one, Module.End.one_apply, hzLeft, sub_zero]
+    rw [map_one, one_apply_eq_self, hzLeft, sub_zero]
   have hBrightSection (x : G ⧸ S) (n : S) :
       B (s x * (n : G)) = beta x - z (s x, (n : G)) := by
     let ns : S := ⟨s x * (n : G) * (s x)⁻¹,
-      Subgroup.Normal.conj_mem inferInstance (n : G) n.property (s x)⟩
+      Subgroup.Normal.conj_mem (n : G) n.property (s x)⟩
     have hns : (ns : G) * s x = s x * (n : G) := by
       dsimp only [ns]
       rw [inv_mul_cancel_right]

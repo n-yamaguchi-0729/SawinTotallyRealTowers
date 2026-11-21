@@ -185,7 +185,7 @@ def quotientMapOfLECont
     {G : Type u} [Group G] [TopologicalSpace G]
     (M N : Subgroup G) [M.Normal] [N.Normal] (hMN : M ≤ N) :
     G ⧸ M →ₜ* G ⧸ N :=
-  QuotientGroup.mapₜ M N (ContinuousMonoidHom.id G) (by
+  QuotientGroup.mapContinuousMonoidHom (N := M) (M := N) (ContinuousMonoidHom.id G) (by
     intro g hg
     exact hMN hg)
 
@@ -199,9 +199,10 @@ group homomorphism.
     (quotientMapOfLECont (G := G) M N hMN).toMonoidHom =
       quotientMapOfLE (G := G) M N hMN :=
   by
-    exact QuotientGroup.mapₜ_toMonoidHom M N (ContinuousMonoidHom.id G) (by
-      intro g hg
-      exact hMN hg)
+    exact QuotientGroup.mapContinuousMonoidHom_toMonoidHom (N := M) (M := N)
+      (ContinuousMonoidHom.id G) (by
+        intro g hg
+        exact hMN hg)
 
 /-- Evaluation of the continuous quotient map induced by inclusion on a quotient class. -/
 @[simp] theorem quotientMapOfLECont_mk
@@ -211,7 +212,7 @@ group homomorphism.
   change quotientMapOfLECont (G := G) M N hMN (QuotientGroup.mk' M g) =
     QuotientGroup.mk' N g
   simpa [quotientMapOfLECont] using
-    (QuotientGroup.mapₜ_apply_mk
+    (QuotientGroup.mapContinuousMonoidHom_apply_mk
       (N := M) (M := N) (f := ContinuousMonoidHom.id G)
       (hNM := by
         intro g hg

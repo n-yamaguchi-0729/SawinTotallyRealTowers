@@ -6,10 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalMaximalAbelianRestriction
 public import Nyll.ProCGroups.ProP.ContinuousH1
-public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MaximalAbelianKernel
-public import Nyll.ProCGroups.Topologies.QuotientMaps
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.Characters
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.MathlibGlobalArtinNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.MaximalAbelianBaseEquiv
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.MathlibTopologyComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
@@ -33,54 +36,42 @@ open ClassFieldTower.ProP GlobalClassFieldTheory.Reciprocity
 
 variable (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime]
 
-local instance ideleGlobalLiftTopology : TopologicalSpace (ZMod p) := ⊥
-local instance ideleGlobalLiftDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
 
 variable (chi : IdeleGroup F →ₜ* Multiplicative (ZMod p))
 variable (hchi : ∀ a : Fˣ, chi (IdeleGroup.principalIdele F a) = 1)
 
 /-- Descent of a principal-trivial continuous character to the actual idele class group. -/
 def ideleCharacterClassLift : IdeleClassGroup F →ₜ* Multiplicative (ZMod p) :=
-  ProCGroups.QuotientGroup.liftₜ (IdeleGroup.principalSubgroup F) chi (by
+  IdeleGroup.liftContinuousToStandardClass F chi (by
     rintro _ ⟨a, rfl⟩
     exact hchi a)
 
 @[simp]
 theorem ideleCharacterClassLift_mk (a : IdeleGroup F) :
     ideleCharacterClassLift F p chi hchi
-      (QuotientGroup.mk' (IdeleGroup.principalSubgroup F) a) = chi a := rfl
+      (IdeleGroup.toStandardClass F a) = chi a := by
+  exact IdeleGroup.liftContinuousToStandardClass_toStandardClass F chi _ a
 
-/-- The character kills the connected component because its target is discrete. -/
-def ideleCharacterComponentLift :
-    ideleClassComponentQuotient F →ₜ* Multiplicative (ZMod p) :=
-  ProCGroups.QuotientGroup.liftₜ (ideleClassIdentityComponent F)
-    (ideleCharacterClassLift F p chi hchi)
-    (ideleClassIdentityComponent_le_ker F (ideleCharacterClassLift F p chi hchi))
-
-@[simp]
-theorem ideleCharacterComponentLift_mk (c : IdeleClassGroup F) :
-    ideleCharacterComponentLift F p chi hchi
-      (QuotientGroup.mk' (ideleClassIdentityComponent F) c) =
-      ideleCharacterClassLift F p chi hchi c := rfl
-
-/-- The character transported through the actual component-quotient reciprocity isomorphism. -/
-def ideleCharacterMaximalAbelianLift :
+/-- The general finite-character correspondence, specialized to the existing
+prime target and the maximal-abelian presentation used by the tower argument. -/
+noncomputable def ideleCharacterMaximalAbelianLift :
     Gal(maximalAbelianExtension F / F) →ₜ* Multiplicative (ZMod p) :=
-  (ideleCharacterComponentLift F p chi hchi).comp
+  (mathlibIdeleClassCharacterLift F (ideleCharacterClassLift F p chi hchi)).comp
     (ContinuousMonoidHom.toContinuousMonoidHom
-      (ideleClassComponentQuotientEquivMaximalAbelianGalois F).symm)
+      (ClassFieldTheory.mathlibAbelianizationToMaximal F).symm)
 
 /-- Reciprocity sends an idele class back to the value of its descended character. -/
 theorem ideleCharacterMaximalAbelianLift_artin (c : IdeleClassGroup F) :
     ideleCharacterMaximalAbelianLift F p chi hchi (maximalAbelianGlobalArtin F c) =
       ideleCharacterClassLift F p chi hchi c := by
-  rw [← ideleClassComponentQuotientEquivMaximalAbelianGalois_mk F c]
-  change ideleCharacterComponentLift F p chi hchi
-      ((ideleClassComponentQuotientEquivMaximalAbelianGalois F).symm
-        (ideleClassComponentQuotientEquivMaximalAbelianGalois F
-          (QuotientGroup.mk' (ideleClassIdentityComponent F) c))) = _
-  rw [ContinuousMulEquiv.symm_apply_apply, ideleCharacterComponentLift_mk]
+  let targetEquiv := ClassFieldTheory.mathlibAbelianizationToMaximal F
+  have hArtin : targetEquiv.symm (maximalAbelianGlobalArtin F c) =
+      mathlibGlobalArtin F c := by
+    apply targetEquiv.injective
+    rw [targetEquiv.apply_symm_apply, mathlibGlobalArtin_toMaximal]
+  change mathlibIdeleClassCharacterLift F (ideleCharacterClassLift F p chi hchi)
+    (targetEquiv.symm (maximalAbelianGlobalArtin F c)) = _
+  rw [hArtin, mathlibIdeleClassCharacterLift_artin]
 
 /-- A principal-trivial idele character gives an actual absolute Galois character. -/
 def ideleCharacterGlobalLift :

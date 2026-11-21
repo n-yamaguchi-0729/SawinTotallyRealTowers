@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Construction
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClosedFiniteIndexClassFieldReciprocity.Algebraic.Evaluation
 
@@ -31,9 +33,6 @@ namespace GlobalClassFields
 
 open Reciprocity
 
-attribute [local instance]
-  globalNormResidueIdeleClassCommGroup
-  globalNormResidueIdeleClassIsMulCommutative
 
 variable {K : Type u} [Field K] [NumberField K]
 

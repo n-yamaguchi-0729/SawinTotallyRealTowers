@@ -158,6 +158,17 @@ theorem inverseHerbrandFunctionOfUniqueExtension_strictMono
     (lowerRamificationFiltrationOfUniqueExtension
       (base := base) (target := target) huniq)
 
+/-- For the actual finite ramification filtration the inverse Herbrand
+value has integral lower depth at each nonnegative integral upper step. -/
+theorem inverseHerbrandFunctionOfUniqueExtension_nat_eq_natFloor
+    (huniq : DiscreteValuationField.DVF.HasUniqueValuationExtension.{u, v, w, x, x}
+      base target) (n : ℕ) :
+    inverseHerbrandFunctionOfUniqueExtension (base := base) (target := target) huniq (n : ℝ) =
+      (⌊inverseHerbrandFunctionOfUniqueExtension
+        (base := base) (target := target) huniq (n : ℝ)⌋₊ : ℝ) :=
+  DiscreteValuationField.AntitoneNormalSubgroupFiltration.inverseHerbrandFunction_nat_eq_natFloor
+    (lowerRamificationFiltrationOfUniqueExtension (base := base) (target := target) huniq) n
+
 /-- The upper ramification group defined through the inverse Herbrand function
 under the noncomplete standing assumptions: `G^t = G_{psi(t)}`. -/
 def upperRamificationGroupOfUniqueExtension

@@ -8,7 +8,8 @@ module
 
 public import Nyll.ClassFieldTheory.Algebra.RestrictedProduct.Valuation
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
-public import Mathlib.RingTheory.DedekindDomain.Factorization
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMapCore
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.NumberFieldFractionalIdealFactorization
 public import Mathlib.RingTheory.ClassGroup.Basic
 
 /-!
@@ -26,6 +27,7 @@ the kernel with the ideles integral at every finite place.
 @[expose] public section
 
 open scoped NumberField RestrictedProduct WithZero
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -131,141 +133,21 @@ theorem valuationVector_surjective :
 
 end FiniteIdeleGroup
 
-/-- The group of nonzero fractional ideals of a number field. -/
-abbrev FractionalIdealGroup (K : Type*) [Field K] [NumberField K] :=
-  (FractionalIdeal (nonZeroDivisors (𝓞 K)) K)ˣ
-
-namespace FractionalIdealGroup
-
-/-- The fractional ideal represented by a finite prime. -/
-def prime (v : HeightOneSpectrum (𝓞 K)) :
-    FractionalIdealGroup K :=
-  Units.mk0 (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
-    (FractionalIdeal.coeIdeal_ne_zero.mpr v.ne_bot)
-
-/-- The homomorphism sending an integer exponent to the corresponding
-power of a finite prime. -/
-def primePowerHom (v : HeightOneSpectrum (𝓞 K)) :
-    Multiplicative ℤ →* FractionalIdealGroup K :=
-  MonoidHom.mk' (fun n => prime v ^ n.toAdd) fun m n => by
-    simp only [toAdd_mul, zpow_add]
-
-/-- Reconstruct a fractional ideal from its finitely supported vector
-of prime exponents. -/
-def factorization :
-    Multiplicative (HeightOneSpectrum (𝓞 K) →₀ ℤ) →*
-      FractionalIdealGroup K :=
-  MonoidHom.mk' (fun exps =>
-      exps.toAdd.prod fun v n => primePowerHom v (Multiplicative.ofAdd n))
-    fun a b => by
-      exact Finsupp.prod_hom_add_index (fun v => primePowerHom v)
-
-@[simp]
-theorem factorization_val (exps :
-    Multiplicative (HeightOneSpectrum (𝓞 K) →₀ ℤ)) :
-    ((factorization exps : FractionalIdealGroup K) :
-      FractionalIdeal (nonZeroDivisors (𝓞 K)) K) =
-      exps.toAdd.prod fun v n =>
-        (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ n := by
-  classical
-  simp only [factorization, Finsupp.prod, primePowerHom, prime, MonoidHom.mk'_apply, toAdd_ofAdd,
-    Units.coe_prod, Units.val_zpow_eq_zpow_val, Units.val_mk0]
-
-theorem finite_count_support (I : FractionalIdealGroup K) :
-    {v : HeightOneSpectrum (𝓞 K) |
-      FractionalIdeal.count K v
-        (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ≠ 0}.Finite :=
-  Filter.eventually_cofinite.mp
-    (FractionalIdeal.finite_factors
-      (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K))
-
-/-- The finitely supported vector of prime exponents of a nonzero
-fractional ideal. -/
-def countVector (I : FractionalIdealGroup K) :
-    HeightOneSpectrum (𝓞 K) →₀ ℤ :=
-  Finsupp.onFinset (finite_count_support I).toFinset
-    (fun v => FractionalIdeal.count K v
-      (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K))
-    (fun v hv => by
-      rw [Set.Finite.mem_toFinset]
-      exact hv)
-
-@[simp]
-theorem countVector_apply (I : FractionalIdealGroup K)
-    (v : HeightOneSpectrum (𝓞 K)) :
-    countVector I v =
-      FractionalIdeal.count K v
-        (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) :=
-  rfl
-
-@[simp]
-theorem count_factorization (exps :
-    Multiplicative (HeightOneSpectrum (𝓞 K) →₀ ℤ))
-    (v : HeightOneSpectrum (𝓞 K)) :
-    FractionalIdeal.count K v
-      ((factorization exps : FractionalIdealGroup K) :
-        FractionalIdeal (nonZeroDivisors (𝓞 K)) K) =
-      exps.toAdd v := by
-  rw [factorization_val]
-  exact FractionalIdeal.count_finsuppProd K v exps.toAdd
-
-theorem ext_count {I J : FractionalIdealGroup K}
-    (h : ∀ v : HeightOneSpectrum (𝓞 K),
-      FractionalIdeal.count K v
-        (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) =
-      FractionalIdeal.count K v
-        (J : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) :
-    I = J := by
-  apply Units.ext
-  rw [← FractionalIdeal.finprod_heightOneSpectrum_factorization'
-      K (Units.ne_zero I),
-    ← FractionalIdeal.finprod_heightOneSpectrum_factorization'
-      K (Units.ne_zero J)]
-  exact finprod_congr fun v => congrArg
-    (fun n : ℤ =>
-      (v.asIdeal : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) ^ n) (h v)
-
-theorem factorization_injective :
-    Function.Injective (factorization (K := K)) := by
-  intro a b hab
-  apply Multiplicative.ext
-  ext v
-  rw [← count_factorization a v, ← count_factorization b v, hab]
-
-theorem factorization_surjective :
-    Function.Surjective (factorization (K := K)) := by
-  intro I
-  refine ⟨Multiplicative.ofAdd (countVector I), ?_⟩
-  apply ext_count
-  intro v
-  rw [count_factorization]
-  change countVector I v =
-    FractionalIdeal.count K v
-      (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
-  exact countVector_apply I v
-
-/-- Multiplicative unique factorization of nonzero fractional ideals by
-finite primes. -/
-def factorizationEquiv :
-    Multiplicative (HeightOneSpectrum (𝓞 K) →₀ ℤ) ≃*
-      FractionalIdealGroup K :=
-  MulEquiv.ofBijective (factorization (K := K))
-    ⟨factorization_injective, factorization_surjective⟩
-
-end FractionalIdealGroup
 
 namespace FiniteIdeleGroup
 
 /-- The fractional ideal attached to a finite idele. -/
-def fractionalIdeal :
-    FiniteIdeleGroup K →* FractionalIdealGroup K :=
-  (FractionalIdealGroup.factorizationEquiv (K := K)).toMonoidHom.comp
-    (valuationVector (K := K))
+def fractionalIdeal : FiniteIdeleGroup K →* NumberFieldFractionalIdealGroup K :=
+  NumberFieldFractionalIdealGroup.factorizationEquiv.toMonoidHom.comp valuationVector
 
-theorem fractionalIdeal_surjective :
-    Function.Surjective (fractionalIdeal (K := K)) :=
-  (FractionalIdealGroup.factorizationEquiv (K := K)).surjective.comp
-    valuationVector_surjective
+/-- The ideal map is evaluated by the normalized valuation vector. -/
+theorem fractionalIdeal_eq_factorization (a : FiniteIdeleGroup K) :
+    fractionalIdeal a =
+      NumberFieldFractionalIdealGroup.factorizationEquiv (valuationVector a) :=
+  rfl
+
+theorem fractionalIdeal_surjective : Function.Surjective (fractionalIdeal (K := K)) :=
+  NumberFieldFractionalIdealGroup.factorizationEquiv.surjective.comp valuationVector_surjective
 
 /-- Finite ideles integral at every finite place. -/
 def integralSubgroup : Subgroup (FiniteIdeleGroup K) :=
@@ -279,29 +161,20 @@ theorem mem_integralSubgroup_iff (a : FiniteIdeleGroup K) :
         a v ∈ (v.adicCompletionIntegers K).units :=
   Iff.rfl
 
-theorem fractionalIdeal_ker :
-    (fractionalIdeal (K := K)).ker = integralSubgroup := by
-  apply Subgroup.ext
-  intro a
-  have hv := RestrictedProduct.DiscreteValuation.valuationVector_eq_one_iff
+theorem fractionalIdeal_ker : (fractionalIdeal (K := K)).ker = integralSubgroup := by
+  ext a
+  change NumberFieldFractionalIdealGroup.factorizationEquiv (valuationVector a) = 1 ↔
+    a ∈ integralSubgroup
+  rw [← map_one (NumberFieldFractionalIdealGroup.factorizationEquiv (K := K)),
+    MulEquiv.apply_eq_iff_eq]
+  exact RestrictedProduct.DiscreteValuation.valuationVector_eq_one_iff
     (fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) a
-  change valuationVector a = 1 ↔ a ∈ integralSubgroup at hv
-  constructor
-  · intro ha
-    apply hv.1
-    apply (FractionalIdealGroup.factorizationEquiv (K := K)).injective
-    change fractionalIdeal a = FractionalIdealGroup.factorizationEquiv 1
-    rw [map_one]
-    exact ha
-  · intro ha
-    change FractionalIdealGroup.factorizationEquiv (valuationVector a) = 1
-    rw [hv.2 ha, map_one]
 
 /-- The ideal group as the quotient of finite ideles by the everywhere
 integral finite ideles. -/
 def quotientIntegralEquiv :
     FiniteIdeleGroup K ⧸ integralSubgroup ≃*
-      FractionalIdealGroup K := by
+      NumberFieldFractionalIdealGroup K := by
   rw [← fractionalIdeal_ker]
   exact QuotientGroup.quotientKerEquivOfSurjective
     fractionalIdeal fractionalIdeal_surjective
@@ -310,56 +183,36 @@ end FiniteIdeleGroup
 
 namespace IdeleGroup
 
-/-- The fractional ideal attached to an idele. The archimedean components
-do not contribute. -/
-def fractionalIdeal :
-    IdeleGroup K →* FractionalIdealGroup K :=
-  (FiniteIdeleGroup.fractionalIdeal (K := K)).comp
-    (MonoidHom.snd _ _)
+/-- The fractional ideal attached to an idele. The archimedean
+components do not contribute. -/
+abbrev fractionalIdeal : IdeleGroup K →* NumberFieldFractionalIdealGroup K :=
+  NumberField.IdeleGroup.fractionalIdeal (R := 𝓞 K) (K := K)
 
-theorem fractionalIdeal_surjective :
-    Function.Surjective (fractionalIdeal (K := K)) := by
-  intro I
-  obtain ⟨a, rfl⟩ :=
-    FiniteIdeleGroup.fractionalIdeal_surjective (K := K) I
-  exact ⟨(1, a), rfl⟩
+theorem fractionalIdeal_surjective : Function.Surjective (fractionalIdeal (K := K)) :=
+  NumberField.IdeleGroup.fractionalIdeal_surjective (R := 𝓞 K) (K := K)
 
-/-- Ideles integral at every finite place; this is the subgroup
-`I_K^{S∞}`. -/
-def integralAtFinitePlaces : Subgroup (IdeleGroup K) :=
-  Subgroup.comap (MonoidHom.snd _ _)
-    (FiniteIdeleGroup.integralSubgroup (K := K))
+/-- Ideles integral at every finite place. -/
+abbrev integralAtFinitePlaces : Subgroup (IdeleGroup K) :=
+  NumberField.IdeleGroup.integralAtFinitePlaces (R := 𝓞 K) (K := K)
 
-theorem fractionalIdeal_ker :
-    (fractionalIdeal (K := K)).ker = integralAtFinitePlaces := by
-  ext a
-  change FiniteIdeleGroup.fractionalIdeal a.2 = 1 ↔
-    a.2 ∈ FiniteIdeleGroup.integralSubgroup
-  rw [← MonoidHom.mem_ker,
-    FiniteIdeleGroup.fractionalIdeal_ker]
+theorem fractionalIdeal_ker : (fractionalIdeal (K := K)).ker = integralAtFinitePlaces :=
+  NumberField.IdeleGroup.fractionalIdeal_ker (R := 𝓞 K) (K := K)
 
 /-- The ideal group as the quotient of all ideles by those integral at
 every finite place. -/
 def quotientIntegralEquiv :
     IdeleGroup K ⧸ integralAtFinitePlaces ≃*
-      FractionalIdealGroup K := by
+      NumberFieldFractionalIdealGroup K := by
   rw [← fractionalIdeal_ker]
   exact QuotientGroup.quotientKerEquivOfSurjective
     fractionalIdeal fractionalIdeal_surjective
 
-/-- The canonical surjection from ideles to the ordinary ideal class
-group. -/
-def idealClass :
-    IdeleGroup K →* ClassGroup (𝓞 K) :=
-  (ClassGroup.mk K).comp (fractionalIdeal (K := K))
+/-- The canonical surjection from ideles to the ordinary ideal class group. -/
+abbrev idealClass : IdeleGroup K →* ClassGroup (𝓞 K) :=
+  NumberField.IdeleGroup.idealClass (R := 𝓞 K) (K := K)
 
-theorem idealClass_surjective :
-    Function.Surjective (idealClass (K := K)) := by
-  intro c
-  induction c using ClassGroup.induction (R := 𝓞 K) K with
-  | h I =>
-      obtain ⟨a, ha⟩ := fractionalIdeal_surjective (K := K) I
-      exact ⟨a, by simp only [idealClass, MonoidHom.coe_comp, Function.comp_apply, ha]⟩
+theorem idealClass_surjective : Function.Surjective (idealClass (K := K)) :=
+  NumberField.IdeleGroup.idealClass_surjective (R := 𝓞 K) (K := K)
 
 /-- A quotient form of the ideal-class map. The following results identify
 this kernel with `I_K^{S∞} Kˣ`. -/

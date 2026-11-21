@@ -55,22 +55,15 @@ noncomputable section
 namespace ClassFieldTower.Sawin
 open ClassFieldTower.Martinet.Shafarevich ClassFieldTower.ProP
 
-private local instance realCharacterExistenceCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod 2) :=
-  (ZMod.instField 2).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-private local instance radicalExistenceValuative
-    (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
 
-private local instance radicalExistenceLocalField
-    (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
 
-private local instance radicalExistenceH1Module
-    {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod 2) (ContinuousH1ZMod (p := 2) (G := G)) := continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 section LocalValues
 variable (F : Type) [Field F] [NumberField F]

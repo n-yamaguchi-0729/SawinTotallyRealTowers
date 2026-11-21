@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Mathlib.GroupTheory.Index
+public import Nyll.ProCGroups.Topologies.OpenFiniteIndexSubgroup
 public import Mathlib.Topology.Algebra.Group.Units
 
 /-!
@@ -20,9 +20,10 @@ namespace ClassFieldTheory
 universe u
 
 /-- An open finite-index subgroup of the multiplicative group `Kˣ`.  The
-inherited order is ordinary subgroup inclusion. -/
+inherited order is ordinary subgroup inclusion. The underlying subgroup is
+`H.1.toSubgroup`, openness is `H.1.isOpen`, and finite index is `H.2`. -/
 abbrev OpenFiniteIndexSubgroup
     (K : Type u) [Field K] [TopologicalSpace K] :=
-  { H : Subgroup Kˣ // IsOpen (H : Set Kˣ) ∧ H.FiniteIndex }
+  OpenFiniteIndexGroupSubgroup Kˣ
 
 end ClassFieldTheory

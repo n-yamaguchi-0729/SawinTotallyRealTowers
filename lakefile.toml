@@ -16,7 +16,8 @@ weak.linter.mathlibStandardSet = true
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "56a005855ea17e0b0958f73ec801ae140b0a1679"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "fc4f59e577feb1a4956671bc04ac18aaaf8cd842"
 
 # All sources share one library configuration and the package-wide checks.
 [[lean_lib]]

@@ -52,10 +52,10 @@ private noncomputable def conductorNormQuotientEquivGalois
     [Field L] [Algebra K L] [FiniteDimensional K L] [IsAbelianGalois K L] :
     NormQuotient K L ≃* Gal(L / K) :=
   (QuotientGroup.quotientMulEquivOfEq
-    (Universe.abelianLocalArtinMonoidHom_ker K L).symm).trans
+    (abelianLocalArtinMonoidHom_ker K L).symm).trans
       (QuotientGroup.quotientKerEquivOfSurjective
-        (Universe.abelianLocalArtinMonoidHom K L)
-        (Universe.abelianLocalArtinMonoidHom_surjective K L))
+        (abelianLocalArtinMonoidHom K L)
+        (abelianLocalArtinMonoidHom_surjective K L))
 
 /-- The norm quotient of a finite abelian local extension is finite. -/
 theorem normQuotientFiniteOfIsAbelianGalois
@@ -104,10 +104,10 @@ noncomputable def
               (R := 𝒪[K])
               (S := 𝒪[L])) : ℤ) * vL.val x := by
     intro x
-    simpa [vK, vL, multiplicativeIntegerValuation] using
-      (v_normUnits_eq_residue_finrank_mul_of_isGalois K L x)
-  have hzero :
-      vK.zeroSubgroup ≤ LocalFieldTheory.DiscreteValuationField.fieldNormSubgroup K L := by
+    change v K (Additive.ofMul (LocalFieldTheory.normUnits K L x)) =
+      (Module.finrank 𝓀[K] 𝓀[L] : ℤ) * v L (Additive.ofMul x)
+    exact v_normUnits_eq_residue_finrank_mul_of_isGalois K L x
+  have hzero : vK.zeroSubgroup ≤ localNormSubgroup K L := by
     intro x hx
     have hxval : valuationMap K (Additive.ofMul x) = 0 := by
       change vK.val x = 0 at hx
@@ -118,14 +118,8 @@ noncomputable def
     have hxU : x ∈ LocalFieldTheory.fieldPrincipalUnits K 0 := by
       rw [← hu]
       exact ⟨u, by rw [LocalFieldTheory.principalUnits_zero]; exact Subgroup.mem_top u, rfl⟩
-    have hxnorm := hU hxU
-    simpa [LocalFieldTheory.DiscreteValuationField.fieldNormSubgroup,
-      localNormSubgroup] using hxnorm
-  have hsub : localNormSubgroup K L =
-      LocalFieldTheory.DiscreteValuationField.fieldNormSubgroup K L := by
-    rfl
-  exact (normQuotientEquivOfSubgroupEq K L
-      (LocalFieldTheory.DiscreteValuationField.fieldNormSubgroup K L) hsub).trans
+    exact hU hxU
+  exact (normQuotientConcreteEquiv K L).trans
     (LocalFieldTheory.DiscreteValuationField.fieldNormQuotientEquivZMod
       K L vK vL
         (@Module.finrank 𝓀[K] 𝓀[L] _ _

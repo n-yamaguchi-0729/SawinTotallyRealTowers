@@ -6,8 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.LocalIntrinsicUnramifiedH1Line
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Transport of unramified first-cohomology characters at a finite place
@@ -33,19 +36,10 @@ open LocalClassFieldTheory
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceUnramifiedH1TransportTopology :
-    TopologicalSpace (ZMod p) := ⊥
 
-local instance finitePlaceUnramifiedH1TransportDiscreteTopology :
-    DiscreteTopology (ZMod p) := discreteTopology_bot _
+attribute [local instance] ZMod.addCommGroup
 
-local instance finitePlaceUnramifiedH1TransportZModAddCommGroup :
-    AddCommGroup (ZMod p) := (ZMod.commRing p).toAddCommGroup
-
-local instance finitePlaceUnramifiedH1TransportModule
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Pull back continuous additive characters along a continuous group equivalence. -/
 def continuousH1PullbackAddHom

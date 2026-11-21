@@ -6,7 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.MathlibUnramifiedInterface
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
 public import Mathlib.RingTheory.Etale.Finite
 public import Mathlib.RingTheory.Finiteness.ModuleFinitePresentation
@@ -25,6 +27,8 @@ finite étale algebras of rings of integers.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open scoped NumberField
 
@@ -47,31 +51,6 @@ theorem finitePlaceUnramifiedness_iff_explicitRamificationIdx
           P.ramificationIdx (𝓞 K) = 1 :=
   isUnramifiedAtFinitePlaces_iff_ramificationIdx_eq_one
 
-/-- Unramifiedness at every finite place is equivalent to formal
-unramifiedness of the corresponding extension of rings of integers. -/
-theorem finitePlaceUnramifiedness_iff_formallyUnramified
-    {K : Type u} {L : Type v}
-    [Field K] [NumberField K]
-    [Field L] [NumberField L]
-    [Algebra K L] :
-    IsUnramifiedAtFinitePlaces K L ↔
-      Algebra.FormallyUnramified (𝓞 K) (𝓞 L) := by
-  constructor
-  · intro h
-    rw [Algebra.formallyUnramified_iff_forall]
-    intro P
-    by_cases hP : P.asIdeal = ⊥
-    · simpa only [hP] using
-        (Algebra.isUnramifiedAt_bot (R := 𝓞 K) (S := 𝓞 L))
-    · exact h
-        { asIdeal := P.asIdeal
-          isPrime := P.isPrime
-          ne_bot := hP }
-  · intro h
-    let hFormal : Algebra.FormallyUnramified (𝓞 K) (𝓞 L) := h
-    let _ := hFormal
-    exact finitePlaceUnramifiedness_of_formallyUnramified
-
 /-- Finite-place unramifiedness makes the extension of rings of integers
 étale. -/
 theorem finitePlaceUnramifiedness_to_etale
@@ -91,7 +70,7 @@ theorem finitePlaceUnramifiedness_to_etale
     inferInstance
   let _ := hAlgebraPresentation
   let hFormal : Algebra.FormallyUnramified (𝓞 K) (𝓞 L) :=
-    finitePlaceUnramifiedness_iff_formallyUnramified.mp h
+    h
   let _ := hFormal
   exact Algebra.Etale.of_formallyUnramified_of_flat
 
@@ -139,9 +118,9 @@ theorem everywhereUnramified_iff_explicitClauses
   · intro h
     exact
       ⟨finitePlaceUnramifiedness_iff_explicitRamificationIdx.mp
-          h.finitePlaces,
+          h.1,
         infinitePlaceUnramifiedness_iff_explicitRealLifts.mp
-          h.infinitePlaces⟩
+          h.2⟩
   · rintro ⟨hFinite, hInfinite⟩
     exact everywhereUnramified_of_finitePlaces_of_infinitePlaces
       (finitePlaceUnramifiedness_iff_explicitRamificationIdx.mpr hFinite)

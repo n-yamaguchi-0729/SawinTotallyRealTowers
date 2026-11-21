@@ -45,8 +45,10 @@ component needed after applying the Henselian ideal to any module. -/
 theorem ideal_smul_top_le_module_jacobson_of_henselianRing
     {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     {I : Ideal R} [HenselianRing R I] :
-    I • (⊤ : Submodule R M) ≤ Module.jacobson R M :=
-  ideal_smul_top_le_module_jacobson_of_le_jacobson_bot HenselianRing.jac
+    I • (⊤ : Submodule R M) ≤ Module.jacobson R M := by
+  apply ideal_smul_top_le_module_jacobson_of_le_jacobson_bot
+  rw [Ideal.jacobson_bot]
+  exact HenselianRing.jac
 
 /-- Algebra form of `ideal_smul_top_le_module_jacobson_of_henselianRing`: the
 base Henselian ideal mapped into an algebra lies in the module Jacobson radical
@@ -98,8 +100,9 @@ theorem ideal_map_le_jacobson_bot_of_le_jacobson_bot_of_moduleFinite
     simpa [Ideal.smul_top_eq_map] using hyideal
   have hbot :
       (⊤ : Submodule R (S ⧸ Q)) = ⊥ :=
-    Submodule.eq_bot_of_le_smul_of_le_jacobson_bot I
-      (⊤ : Submodule R (S ⧸ Q)) Module.Finite.fg_top htop hI
+    Submodule.eq_bot_of_le_smul_of_le_jacobson I
+      (⊤ : Submodule R (S ⧸ Q)) Module.Finite.fg_top htop
+      (by simpa only [Ideal.jacobson_bot] using hI)
   exact (top_ne_bot : (⊤ : Submodule R (S ⧸ Q)) ≠ ⊥) hbot
 
 /-- Henselian-ring version of
@@ -107,9 +110,10 @@ theorem ideal_map_le_jacobson_bot_of_le_jacobson_bot_of_moduleFinite
 theorem ideal_map_le_jacobson_bot_of_henselianRing_of_moduleFinite
     {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     [Module.Finite R S] {I : Ideal R} [HenselianRing R I] :
-    I.map (algebraMap R S) ≤ Ideal.jacobson (⊥ : Ideal S) :=
-  ideal_map_le_jacobson_bot_of_le_jacobson_bot_of_moduleFinite
-    (R := R) (S := S) (I := I) HenselianRing.jac
+    I.map (algebraMap R S) ≤ Ideal.jacobson (⊥ : Ideal S) := by
+  apply ideal_map_le_jacobson_bot_of_le_jacobson_bot_of_moduleFinite
+  rw [Ideal.jacobson_bot]
+  exact HenselianRing.jac
 
 /-- In a Noetherian finite algebra over a Henselian pair, the extended
 Henselian ideal is adically Hausdorff. -/
@@ -120,8 +124,10 @@ theorem isHausdorff_map_algebraMap_of_henselianRing_of_moduleFinite
     IsHausdorff (I.map (algebraMap R S)) S :=
   IsHausdorff.of_le_jacobson
     (R := S) (M := S) (I := I.map (algebraMap R S))
-    (ideal_map_le_jacobson_bot_of_henselianRing_of_moduleFinite
-      (R := R) (S := S) (I := I))
+    (by
+      simpa only [Ideal.jacobson_bot] using
+        (ideal_map_le_jacobson_bot_of_henselianRing_of_moduleFinite
+          (R := R) (S := S) (I := I)))
 
 /-- Pulling back an adic power submodule along a linear equivalence gives the
 corresponding adic power submodule on the source. -/
@@ -308,9 +314,7 @@ theorem isHausdorff_maximalIdeal (F : HenselianDVF.{u, v} K) :
     IsHausdorff.of_le_jacobson
       (R := F.valuationSubring) (M := F.valuationSubring)
       (I := F.maximalIdeal)
-      (show F.maximalIdeal ≤
-          Ideal.jacobson (⊥ : Ideal F.valuationSubring) from
-        HenselianRing.jac)
+      HenselianRing.jac
 
 /-- A precomplete Henselian DVF valuation ring is adically complete at its
 maximal ideal, since separatedness is automatic. -/

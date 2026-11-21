@@ -52,24 +52,10 @@ private theorem ringHom_apply_eq_of_powerBasis
   have h : phiAlg = fAlg := pb.algHom_ext hgen
   exact DFunLike.congr_fun h x
 
-@[reducible] noncomputable local instance equalCharacteristicHigherUnitMapBaseAlgebra
-    (F : LocalField.{u, v} K) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField) :=
-  equalCharacteristicCompletedLevelBaseAlgebra F
-
-@[reducible] noncomputable local instance equalCharacteristicHigherUnitMapLevelAlgebra
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Algebra F.residueField⸨X⸩
-      (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelLaurentAlgebra F n
-
-local instance equalCharacteristicHigherUnitMapScalarTower
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsScalarTower F.residueField⸨X⸩
-      (equalCharacteristicCompletedUnramifiedField F.residueField)
-      (equalCharacteristicCompletedLevelField F n) :=
-  IsScalarTower.of_algebraMap_eq' rfl
+attribute [local instance]
+  equalCharacteristicCompletedLevelBaseAlgebra
+  equalCharacteristicCompletedLevelLaurentAlgebra
+  equalCharacteristicCompletedLevelScalarTower
 
 /-- The finite Lubin--Tate level embeds into its completed level as a ring. -/
 noncomputable def higherUnitLevelMapRingHom

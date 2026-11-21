@@ -6,12 +6,15 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.NormLocalOrder
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
@@ -34,7 +37,9 @@ uses the topological-group structure to obtain continuity everywhere.
 
 @[expose] public section
 
-open scoped BigOperators NumberField NumberField.LiesOver
+open scoped BigOperators NumberField
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -203,8 +208,7 @@ private noncomputable def integralInfiniteNormComponents
         _root_.infinitePlaceBelow (K := K) W = v₀},
         Algebra v₀.Completion W.1.Completion :=
       fun W =>
-        (NumberField.LiesOver.completionMap
-          (v := v₀) (w := W.1)).toAlgebra
+        AbsoluteValue.Completion.algebraOfLiesOver v₀.1 W.1.1
     exact
       ∏ W : {W : InfinitePlace L //
           _root_.infinitePlaceBelow (K := K) W = v₀},
@@ -221,8 +225,7 @@ private theorem infinitePlace_normUnits_continuous
     let : W.1.1.LiesOver v₀.1 :=
       ⟨congrArg (fun q : InfinitePlace K => q.1) W.2⟩
     let : Algebra v₀.Completion W.1.Completion :=
-      (NumberField.LiesOver.completionMap
-        (v := v₀) (w := W.1)).toAlgebra
+      AbsoluteValue.Completion.algebraOfLiesOver v₀.1 W.1.1
     Continuous
       (LocalFieldTheory.normUnits v₀.Completion W.1.Completion) := by
   intro sharedOwner1 sharedOwner2
@@ -281,7 +284,7 @@ private theorem infinitePlace_normUnits_continuous
           eBaseUnits (LocalFieldTheory.normUnits v₀.Completion W.1.Completion x) =
               LocalFieldTheory.normUnits ℝ ℝ (eExtensionUnits x) := by
             simpa only [eBaseUnits, eExtensionUnits] using
-              (LocalClassFieldTheory.normUnits_map_ringEquiv
+              (LocalFieldTheory.normUnits_map_ringEquiv
                 eBase eExtension hCompatible x)
           _ = eBaseUnits
               (eBaseUnits.symm
@@ -337,7 +340,7 @@ private theorem infinitePlace_normUnits_continuous
           eBaseUnits (LocalFieldTheory.normUnits v₀.Completion W.1.Completion x) =
               LocalFieldTheory.normUnits ℝ ℂ (eExtensionUnits x) := by
             simpa only [eBaseUnits, eExtensionUnits] using
-              (LocalClassFieldTheory.normUnits_map_ringEquiv
+              (LocalFieldTheory.normUnits_map_ringEquiv
                 eBase eExtension hCompatible x)
           _ = eBaseUnits
               (eBaseUnits.symm
@@ -407,7 +410,7 @@ private theorem infinitePlace_normUnits_continuous
           eBaseUnits (LocalFieldTheory.normUnits v₀.Completion W.1.Completion x) =
               LocalFieldTheory.normUnits ℂ ℂ (eExtensionUnits x) := by
             simpa only [eBaseUnits, eExtensionUnits] using
-              (LocalClassFieldTheory.normUnits_map_ringEquiv
+              (LocalFieldTheory.normUnits_map_ringEquiv
                 eBase eExtension hCompatible x)
           _ = eBaseUnits
               (eBaseUnits.symm
@@ -463,7 +466,7 @@ private theorem infinitePlace_normUnits_continuous
           eBaseUnits (LocalFieldTheory.normUnits v₀.Completion W.1.Completion x) =
               LocalFieldTheory.normUnits ℂ ℂ (eExtensionUnits x) := by
             simpa only [eBaseUnits, eExtensionUnits] using
-              (LocalClassFieldTheory.normUnits_map_ringEquiv
+              (LocalFieldTheory.normUnits_map_ringEquiv
                 eBase eExtension hCompatible x)
           _ = eBaseUnits
               (eBaseUnits.symm
@@ -492,8 +495,7 @@ private theorem integralInfiniteNormComponents_continuous :
       _root_.infinitePlaceBelow (K := K) W = v₀},
       Algebra v₀.Completion W.1.Completion :=
     fun W =>
-      (NumberField.LiesOver.completionMap
-        (v := v₀) (w := W.1)).toAlgebra
+      AbsoluteValue.Completion.algebraOfLiesOver v₀.1 W.1.1
   apply continuous_finsetProd Finset.univ
   intro W _
   exact
@@ -510,23 +512,23 @@ private def integralIdeleEmbedding
         (∀ v₀ : HeightOneSpectrum (𝓞 F),
           (v₀.adicCompletionIntegers F).units)) →
       IdeleGroup F :=
-  Prod.map id
+  fun a => ofComponents a.1
     (RestrictedProduct.structureMap
       (fun v₀ : HeightOneSpectrum (𝓞 F) =>
         (v₀.adicCompletion F)ˣ)
       (fun v₀ : HeightOneSpectrum (𝓞 F) =>
         ((v₀.adicCompletionIntegers F).units :
           Set (v₀.adicCompletion F)ˣ))
-      Filter.cofinite)
+      Filter.cofinite a.2)
 
 /-- The integral-idele chart is an open subspace of the idele group. -/
 private theorem integralIdeleEmbedding_isOpenEmbedding
     (F : Type w) [Field F] [NumberField F] :
     Topology.IsOpenEmbedding (integralIdeleEmbedding F) := by
   exact
-    Topology.IsOpenEmbedding.id.prodMap
-      (RestrictedProduct.isOpenEmbedding_structureMap
-        (isOpen_finiteLocalUnits F))
+    isOpenEmbedding_ofComponents.comp
+      (Topology.IsOpenEmbedding.id.prodMap
+        (RestrictedProduct.isOpenEmbedding_structureMap (isOpen_finiteLocalUnits F)))
 
 /-- The finite part of the norm on the integral chart is the restricted
 product structure map of the finite local norm products. -/
@@ -535,7 +537,7 @@ private theorem norm_integralIdeleEmbedding_finite
       InfiniteIdeleGroup L ×
         (∀ W : HeightOneSpectrum (𝓞 L),
           (W.adicCompletionIntegers L).units)) :
-    (norm K L (integralIdeleEmbedding L a)).2 =
+    finiteCoordinates (norm K L (integralIdeleEmbedding L a)) =
       RestrictedProduct.structureMap
         (fun v₀ : HeightOneSpectrum (𝓞 K) =>
           (v₀.adicCompletion K)ˣ)
@@ -573,6 +575,7 @@ private theorem norm_integralIdeleEmbedding_finite
           (v₀.adicCompletion K) (W.1.adicCompletion L)
           ((W.1.adicCompletionIntegers L).units.subtype (a.2 W.1))
   rw [finiteComponent_norm_eq_prod]
+  simp only [integralIdeleEmbedding, finiteComponent_apply, finiteCoordinates_ofComponents]
   rfl
 
 /-- The infinite part of the norm on the integral chart is the product of
@@ -582,12 +585,13 @@ private theorem norm_integralIdeleEmbedding_infinite
       InfiniteIdeleGroup L ×
         (∀ W : HeightOneSpectrum (𝓞 L),
           (W.adicCompletionIntegers L).units)) :
-    (norm K L (integralIdeleEmbedding L a)).1 =
+    infinitePart (norm K L (integralIdeleEmbedding L a)) =
       ContinuousMulEquiv.piUnits.symm
         (integralInfiniteNormComponents K L a) := by
   classical
   apply ContinuousMulEquiv.piUnits.injective
   funext v₀
+  rw [ContinuousMulEquiv.apply_symm_apply]
   let : ∀ W : {W : InfinitePlace L //
       _root_.infinitePlaceBelow (K := K) W = v₀},
       W.1.1.LiesOver v₀.1 :=
@@ -622,7 +626,7 @@ private theorem norm_integralIdeleEmbedding_infinite
     exact congrArg (fun h : Fintype _ => h.elems)
       (Subsingleton.elim _ _)
   rw [hUniv]
-  rfl
+  simp only [integralIdeleEmbedding, infiniteComponent_apply, infinitePart_ofComponents]
 
 /-- The actual idele norm is continuous on the open integral-idele chart. -/
 private theorem norm_comp_integralIdeleEmbedding_continuous :
@@ -635,9 +639,9 @@ private theorem norm_comp_integralIdeleEmbedding_continuous :
             (W.adicCompletionIntegers L).units)) →
         IdeleGroup K :=
     fun a =>
-      (ContinuousMulEquiv.piUnits.symm
-          (integralInfiniteNormComponents K L a),
-        RestrictedProduct.structureMap
+      ofComponents (ContinuousMulEquiv.piUnits.symm
+          (integralInfiniteNormComponents K L a))
+        (RestrictedProduct.structureMap
           (fun v₀ : HeightOneSpectrum (𝓞 K) =>
             (v₀.adicCompletion K)ˣ)
           (fun v₀ : HeightOneSpectrum (𝓞 K) =>
@@ -665,14 +669,16 @@ private theorem norm_comp_integralIdeleEmbedding_continuous :
       (isOpen_finiteLocalUnits K)).continuous.comp
         (integralFiniteNormComponents_continuous K L)
   have hTarget : Continuous target :=
-    hInfinite.prodMk hFinite
+    continuous_ofComponents.comp (hInfinite.prodMk hFinite)
   rw [show
       ((norm K L : IdeleGroup L → IdeleGroup K) ∘
           integralIdeleEmbedding L) = target by
     funext a
-    apply Prod.ext
-    · exact norm_integralIdeleEmbedding_infinite K L a
-    · exact norm_integralIdeleEmbedding_finite K L a]
+    apply ext_parts
+    · simpa only [Function.comp_apply, target, infinitePart_ofComponents] using
+        norm_integralIdeleEmbedding_infinite K L a
+    · simpa only [Function.comp_apply, target, finiteCoordinates_ofComponents] using
+        norm_integralIdeleEmbedding_finite K L a]
   exact hTarget
 
 /-- The norm on the idele group of a finite extension is continuous. -/
@@ -705,11 +711,14 @@ theorem norm_continuous :
               (∀ W : HeightOneSpectrum (𝓞 L),
                 (W.adicCompletionIntegers L).units)) =
           (1 : IdeleGroup L) := by
-      apply Prod.ext
-      · rfl
-      · apply RestrictedProduct.ext
-        intro W
-        rfl
+      change ofComponents (1 : InfiniteIdeleGroup L)
+        (RestrictedProduct.structureMap _ _ Filter.cofinite 1) = 1
+      rw [show RestrictedProduct.structureMap _ _ Filter.cofinite 1 =
+        (1 : FiniteIdeleGroup L) by
+          apply RestrictedProduct.ext
+          intro v
+          rfl]
+      exact ofComponents_one
     rw [hOne] at hAtChart
     exact hAtChart
   exact continuous_of_continuousAt_one (norm K L) hAt

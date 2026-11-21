@@ -30,7 +30,7 @@ universe u
 /-- Every number field can be represented by a type in universe zero. -/
 theorem numberField_small (F : Type u) [Field F] [NumberField F] :
     Small.{0} F := by
-  let : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ)
+  let : Countable F := Countable.of_moduleFinite (R := ℚ)
   infer_instance
 
 /-- The shrunk model of a number field remains a number field. -/

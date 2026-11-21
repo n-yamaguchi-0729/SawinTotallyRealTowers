@@ -23,7 +23,7 @@ For a finite abelian extension `L / K`, only finitely many finite local
 Artin factors of an idele are nontrivial.  Keeping precisely those finite
 components, together with every infinite component, gives an idele with
 finite one-place support.  The quotient of the original idele by this
-approximation is an actual relative-idele norm: outside the retained
+approximation belongs to the ordinary idèle norm range: outside the retained
 finite set this follows from the local Artin kernel theorem, and at the
 retained and infinite places it follows because the quotient component is
 one.
@@ -48,13 +48,6 @@ universe u v
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-/-- Supply the canonical commutativity used by the finite-support norm quotient. -/
-theorem artinFiniteSupportIdeleClassIsMulCommutative
-    {F : Type u} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-attribute [local instance] artinFiniteSupportIdeleClassIsMulCommutative
 
 variable
     {K : Type u} {L : Type v}
@@ -229,15 +222,12 @@ theorem artinFiniteSupportApproximation_finiteComponent_of_notMem
 open _root_.GlobalClassFieldTheory.ClassFieldAxiom (
   relativeIdeleNorm_range_eq_allPlaceLocalNormCondition
 ) in
-/-- The quotient of an idele by its finite-support Artin approximation
-is an actual relative-idele norm. -/
-theorem
-    artinFiniteSupportApproximation_remainder_mem_relativeIdeleNorm_range
-    (a : IdeleGroup K) :
-    a * (artinFiniteSupportApproximation
-        (K := K) (L := L) a)⁻¹ ∈
-      (RelativeIdeleGroup.norm K L).range := by
-  rw [
+/-- The quotient of an idèle by its finite-support Artin approximation
+is an ordinary idèle norm. -/
+theorem artinFiniteSupportApproximation_remainder_mem_ideleNorm_range (a : IdeleGroup K) :
+    a * (artinFiniteSupportApproximation (K := K) (L := L) a)⁻¹ ∈
+      (IdeleGroup.norm K L).range := by
+  rw [IdeleGroup.norm_range_eq_relativeNorm_range K L,
     relativeIdeleNorm_range_eq_allPlaceLocalNormCondition]
   constructor
   · rw [_root_.GlobalClassFieldTheory.ClassFieldAxiom.allFinitePlaceLocalNormCondition]
@@ -293,29 +283,14 @@ theorem
     exact Subgroup.one_mem _
 
 omit [IsAbelianGalois K L] in
-/-- The canonical idele-class norm quotient kills every actual
-relative-idele norm. -/
+/-- The canonical norm quotient sends ordinary idèle norms to one. -/
 @[simp]
-theorem globalNormClassFromIdele_relativeIdeleNorm_eq_one
-    (z : RelativeIdeleGroup K L) :
-    globalNormClassFromIdele K L
-        (RelativeIdeleGroup.norm K L z) =
-      1 := by
-  change
-    QuotientGroup.mk'
-        (_root_.ideleClassNorm K L).range
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K)
-          (RelativeIdeleGroup.norm K L z)) =
-      1
-  apply (QuotientGroup.eq_one_iff _).2
-  refine
-    ⟨QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
-        (relativeIdeleBaseChangeMulEquiv
-          (K := K) (L := L) z), ?_⟩
-  rw [_root_.ideleClassNorm_mk,
-    IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv]
+theorem globalNormClassFromIdele_ideleNorm_eq_one (z : IdeleGroup L) :
+    globalNormClassFromIdele K L (IdeleGroup.norm K L z) = 1 := by
+  change QuotientGroup.mk' (NumberField.IdeleClassGroup.norm K L).range
+      (IdeleGroup.toStandardClass K (IdeleGroup.norm K L z)) = 1
+  rw [← _root_.ideleClassNorm_mk]
+  exact (QuotientGroup.eq_one_iff _).2 ⟨IdeleGroup.toStandardClass L z, rfl⟩
 
 /-- The global Artin value of an idele is already determined by its
 finite-support Artin approximation. -/
@@ -326,7 +301,7 @@ theorem globalArtinMonoidHom_eq_artinFiniteSupportApproximation
         (artinFiniteSupportApproximation
           (K := K) (L := L) a) := by
   obtain ⟨z, hz⟩ :=
-    artinFiniteSupportApproximation_remainder_mem_relativeIdeleNorm_range
+    artinFiniteSupportApproximation_remainder_mem_ideleNorm_range
       (K := K) (L := L) a
   have hquotient :
       globalArtinMonoidHom (K := K) (L := L)
@@ -335,7 +310,7 @@ theorem globalArtinMonoidHom_eq_artinFiniteSupportApproximation
         1 := by
     rw [← hz]
     exact
-      globalArtinMonoidHom_relativeIdeleNorm_eq_one
+      globalArtinMonoidHom_ideleNorm_eq_one
         (K := K) (L := L) z
   have hmul :
       globalArtinMonoidHom (K := K) (L := L) a *
@@ -355,7 +330,7 @@ theorem globalNormClassFromIdele_eq_artinFiniteSupportApproximation
         (artinFiniteSupportApproximation
           (K := K) (L := L) a) := by
   obtain ⟨z, hz⟩ :=
-    artinFiniteSupportApproximation_remainder_mem_relativeIdeleNorm_range
+    artinFiniteSupportApproximation_remainder_mem_ideleNorm_range
       (K := K) (L := L) a
   have hquotient :
       globalNormClassFromIdele K L
@@ -364,7 +339,7 @@ theorem globalNormClassFromIdele_eq_artinFiniteSupportApproximation
         1 := by
     rw [← hz]
     exact
-      globalNormClassFromIdele_relativeIdeleNorm_eq_one
+      globalNormClassFromIdele_ideleNorm_eq_one
         (K := K) (L := L) z
   have hmul :
       globalNormClassFromIdele K L a *

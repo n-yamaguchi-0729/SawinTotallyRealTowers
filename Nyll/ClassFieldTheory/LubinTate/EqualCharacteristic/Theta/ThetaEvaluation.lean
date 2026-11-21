@@ -37,24 +37,10 @@ namespace EqualCharacteristic
 
 variable (k : Type u) [Field k] [Finite k]
 
-omit [Finite k] in
-noncomputable local instance equalCharacteristicThetaEvaluationCoefficientUniformSpace :
-    UniformSpace (AlgebraicClosure k) := ⊥
-
-noncomputable local instance equalCharacteristicThetaEvaluationLinearTopology :
-    IsLinearTopology
-      (Valued.integer (equalCharacteristicCompletedUnramifiedField k))
-      (Valued.integer (equalCharacteristicCompletedUnramifiedField k)) :=
+attribute [local instance]
+  equalCharacteristicCoefficientUniformSpace
   valuedIntegerLinearTopology
-
-noncomputable local instance equalCharacteristicThetaEvaluationCompleteSpace :
-    CompleteSpace
-      (Valued.integer (equalCharacteristicCompletedUnramifiedField k)) :=
   valuedIntegerCompleteSpace
-
-noncomputable local instance equalCharacteristicThetaEvaluationUniformAddGroup :
-    IsUniformAddGroup
-      (Valued.integer (equalCharacteristicCompletedUnramifiedField k)) :=
   valuedIntegerIsUniformAddGroup
 
 /-- The analytic value of the theta series at a topologically nilpotent

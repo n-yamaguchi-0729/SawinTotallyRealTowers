@@ -163,7 +163,7 @@ theorem baseChangedLmul_eq
             LinearMap.baseChange_tmul, AlgHom.toLinearMap_apply, Algebra.coe_lmul_eq_mul,
             TensorProduct.AlgebraTensorModule.lift_apply, TensorProduct.lift.tmul,
             LinearMap.coe_restrictScalars, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.smul_apply,
-            LinearMap.baseChangeHom_apply, Algebra.smul_def, Module.End.mul_apply,
+            LinearMap.baseChangeHom_apply, Algebra.smul_def, mul_apply_eq_comp,
             LinearMap.mul_apply_apply, Module.algebraMap_end_apply,
             Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply,
             Algebra.TensorProduct.tmul_mul_tmul, mul_comm, mul_one]
@@ -353,8 +353,7 @@ theorem inclusion_norm_eq_prod_conjugates
     inclusion K L (norm K L a) =
       ∏ σ : L ≃ₐ[K] L, σ • a := by
   apply Units.ext
-  simp only [inclusion, norm, MonoidHom.comp_apply,
-    Units.coe_map, Units.coe_prod,
+  simp only [inclusion, norm, Units.coe_map, Units.coe_prod,
     smul_def, conjugationIdele_coe]
   exact adeleInclusion_norm_eq_prod_conjugates
     (K := K) (L := L) (a : RelativeAdeleRing K L)

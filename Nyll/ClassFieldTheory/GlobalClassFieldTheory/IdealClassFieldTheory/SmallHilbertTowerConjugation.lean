@@ -6,14 +6,18 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Algebra.Group.Subgroup.Map
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassFormation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.FiniteAbelianClassFieldCorrespondence
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertNormCharacterization
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.SmallHilbertClassFieldNaturality
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.IdealClassFieldTheory.PrincipalIdealTower
-public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicDegreeOnNumberField
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitExtensionAction
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
 public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
@@ -33,6 +37,8 @@ Hilbert class field with the original field.
 
 @[expose] public section
 
+open ClassFieldTheory
+
 universe uG uA
 
 open scoped NumberField
@@ -44,13 +50,6 @@ namespace IdealClassFieldTheory
 
 open ClassFormation KummerTheory
 open GlobalClassFields LocalClassFieldTheory Reciprocity
-
-private theorem addSubgroup_map_map_eq_of_comp_eq
-    {A B C : Type*} [AddGroup A] [AddGroup B] [AddGroup C]
-    (S : AddSubgroup A) (f : A →+ B) (g : B →+ C) (h : A →+ C)
-    (hcomp : g.comp f = h) :
-    (S.map f).map g = S.map h := by
-  rw [AddSubgroup.map_map, hcomp]
 
 private theorem addSubgroup_map_le_of_le_map_symm
     {A B : Type*} [AddGroup A] [AddGroup B]
@@ -73,10 +72,9 @@ private theorem addSubgroup_map_eq_of_comp_eq_of_map_eq
     (hcomp : t.comp e = e.comp g) (hg : S.map g = S) :
     (S.map e).map t = S.map e := by
   calc
-    (S.map e).map t = S.map (e.comp g) :=
-      addSubgroup_map_map_eq_of_comp_eq S e t (e.comp g) hcomp
-    _ = (S.map g).map e :=
-      (addSubgroup_map_map_eq_of_comp_eq S g e (e.comp g) rfl).symm
+    (S.map e).map t = S.map (e.comp g) := by
+      rw [AddSubgroup.map_map, hcomp]
+    _ = (S.map g).map e := by rw [AddSubgroup.map_map]
     _ = S.map e := congrArg (fun H => H.map e) hg
 
 private theorem subgroup_toAddSubgroup_map_toAdditive_eq_self
@@ -177,7 +175,7 @@ private noncomputable def conjugateFixedAddEquiv
             exact congrArg (fun φ => φ a.1)
               (map_mul A.ρ s s⁻¹).symm
       _ = a.1 := by
-        simp only [mul_inv_cancel, map_one, Module.End.one_apply]
+        simp only [mul_inv_cancel, map_one, one_apply_eq_self]
   right_inv := by
     intro b
     apply Subtype.ext
@@ -188,7 +186,7 @@ private noncomputable def conjugateFixedAddEquiv
             exact congrArg (fun φ => φ b.1)
               (map_mul A.ρ s⁻¹ s).symm
       _ = b.1 := by
-        simp only [inv_mul_cancel, map_one, Module.End.one_apply]
+        simp only [inv_mul_cancel, map_one, one_apply_eq_self]
   map_add' := by
     intro a b
     apply Subtype.ext
@@ -456,78 +454,7 @@ local instance smallHilbertTowerRelativeQuotientFinite
           K.field L.field L.below) :=
   L.finite
 
-noncomputable local instance smallHilbertTowerBaseFiniteDimensional
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) :
-    FiniteDimensional ℚ
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field) :=
-  abstractFixedField_finiteDimensional
-    ℚ (SeparableClosure ℚ) K.field K.finite
-
-noncomputable local instance smallHilbertTowerRelativeFiniteDimensional
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension K.field) :
-    FiniteDimensional
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  abstractRelativeFixedField_finiteDimensional
-    ℚ (SeparableClosure ℚ)
-    K.field L.field L.below K.finite L.finite
-
-local instance smallHilbertTowerScalarTower
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension K.field) :
-    IsScalarTower ℚ
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)
-
-noncomputable local instance smallHilbertTowerAbsoluteFiniteDimensional
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension K.field) :
-    FiniteDimensional ℚ
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  FiniteDimensional.trans ℚ
-    (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-    (abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below)
-
-noncomputable local instance smallHilbertTowerBaseNumberField
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) :
-    NumberField
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field) :=
-  NumberField.of_module_finite ℚ
-    (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-
-noncomputable local instance smallHilbertTowerRelativeNumberField
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension K.field) :
-    NumberField
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  NumberField.of_module_finite ℚ
-    (abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ) L.below)
-
-noncomputable local instance smallHilbertTowerRelativeIsGalois
-    (K : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension K.field) :
-    IsGalois
-      (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
-      (abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below) :=
-  abstractRelativeFixedField_isGalois
-    ℚ (SeparableClosure ℚ)
-    K.field L.field L.below L.normal
+attribute [local instance] GlobalClassFields.ordinaryIdeleClassNormExtensionIsGalois
 
 /-- The ordinary small-Hilbert norm subgroup of an actual fixed field,
 transported into the fixed part of the rational absolute idele-class
@@ -537,7 +464,7 @@ noncomputable def smallHilbertNormSubgroupInRationalClassFormation
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) :
     AddSubgroup
       (ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation K.field) :=
+        (ideleClassRepresentation ℚ) K.field) :=
   (smallHilbertClassFieldNormSubgroup
     (K := abstractFixedField
       ℚ (SeparableClosure ℚ) K.field)).toAddSubgroup.map
@@ -548,7 +475,7 @@ private theorem finiteAbelianNormSubgroup_map_fixedIdeleClassEquiv_symm
     (K : FiniteAbstractField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (L : FiniteAbelianSubextension K.field) :
-    (L.normSubgroup rationalIdeleClassRepresentation).map
+    (L.normSubgroup (ideleClassRepresentation ℚ)).map
         (rationalAbstractFixedFieldIdeleClassEquivFixed
           K.field).symm.toAddMonoidHom =
       (_root_.ideleClassNorm
@@ -556,8 +483,8 @@ private theorem finiteAbelianNormSubgroup_map_fixedIdeleClassEquiv_symm
           ℚ (SeparableClosure ℚ) K.field)
         (abstractRelativeFixedField
           ℚ (SeparableClosure ℚ) L.below)).range.toAddSubgroup := by
-  simpa only [ordinaryIdeleClassNormSubgroup] using
-    (ordinaryIdeleClassNormSubgroup_eq_actualNormRange K L)
+  exact map_rationalFiniteNormSubgroup_eq_ordinaryIdeleClassNormRange_concrete
+    (hKfinite := K.finite) (hfinite := L.finite) K.field L.field L.below L.normal
 
 private theorem
     smallHilbertNormSubgroupInRationalClassFormation_le_normSubgroup_of_fixedFieldNormRange
@@ -574,7 +501,7 @@ private theorem
           (abstractRelativeFixedField
             ℚ (SeparableClosure ℚ) L.below)).range) :
     smallHilbertNormSubgroupInRationalClassFormation K ≤
-      L.normSubgroup rationalIdeleClassRepresentation := by
+      L.normSubgroup (ideleClassRepresentation ℚ) := by
   let F :=
     abstractFixedField ℚ (SeparableClosure ℚ) K.field
   let e :=
@@ -583,10 +510,10 @@ private theorem
     (smallHilbertClassFieldNormSubgroup
       (K := F)).toAddSubgroup
   change H.map e.toAddMonoidHom ≤
-      L.normSubgroup rationalIdeleClassRepresentation
+      L.normSubgroup (ideleClassRepresentation ℚ)
   apply
     addSubgroup_map_le_of_le_map_symm
-      H (L.normSubgroup rationalIdeleClassRepresentation) e
+      H (L.normSubgroup (ideleClassRepresentation ℚ)) e
   rw [finiteAbelianNormSubgroup_map_fixedIdeleClassEquiv_symm K L]
   exact fun c hc => hordinary hc
 
@@ -610,7 +537,7 @@ theorem
           (L := abstractRelativeFixedField
             ℚ (SeparableClosure ℚ) L.below) = ∅ →
         smallHilbertNormSubgroupInRationalClassFormation K ≤
-          L.normSubgroup rationalIdeleClassRepresentation := by
+          L.normSubgroup (ideleClassRepresentation ℚ) := by
   let F :=
     abstractFixedField ℚ (SeparableClosure ℚ) K.field
   let E :=
@@ -638,7 +565,7 @@ theorem everywhereUnramifiedFiniteAbelianSubextension_le_smallHilbertClassField
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (L P : FiniteAbelianSubextension K.field)
     (hL :
-      L.normSubgroup rationalIdeleClassRepresentation =
+      L.normSubgroup (ideleClassRepresentation ℚ) =
         smallHilbertNormSubgroupInRationalClassFormation K) :
     IsEverywhereUnramified
         (abstractFixedField ℚ (SeparableClosure ℚ) K.field)
@@ -648,8 +575,8 @@ theorem everywhereUnramifiedFiniteAbelianSubextension_le_smallHilbertClassField
   classical
   have hclassification :=
     FiniteAbelianSubextension.le_iff_normSubgroup_le
-      rationalCyclotomicIdeleClassValuationData
-      rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+      (numberFieldCyclotomicIdeleClassValuationData ℚ)
+      (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
       K P L
   let F :=
     abstractFixedField ℚ (SeparableClosure ℚ) K.field
@@ -660,12 +587,12 @@ theorem everywhereUnramifiedFiniteAbelianSubextension_le_smallHilbertClassField
   apply hclassification.2
   have hsmall :=
     smallHilbertNormSubgroupInRationalClassFormation_le_normSubgroup_of_everywhereUnramified
-      K P hunramified.infinitePlaces (by
+      K P hunramified.2 (by
         apply Finset.eq_empty_iff_forall_notMem.mpr
         intro v hv
         rw [_root_.mem_ramifiedBaseFinitePlaces_iff] at hv
         obtain ⟨Q, _hQ, hQramified⟩ := hv
-        exact hQramified (hunramified.finitePlaces Q))
+        exact hQramified (hunramified.1.atPrime Q))
   intro c hc
   exact hsmall (hL ▸ hc)
 
@@ -750,7 +677,7 @@ theorem rationalSmallHilbertFixedPart_conjugation
       NumberField.of_module_finite ℚ E
     ∀ c : Additive (IdeleClassGroup E),
     stableBaseConjugationHom
-        rationalIdeleClassRepresentation L s
+        (ideleClassRepresentation ℚ) L s
         (rationalAbstractFixedFieldIdeleClassEquivFixed
           L.field c) =
       rationalAbstractFixedFieldIdeleClassEquivFixed
@@ -771,7 +698,7 @@ theorem rationalSmallHilbertFixedPart_conjugation
     Additive.ofMul
       (ideleClassCongr τ (Additive.toMul c))
   have haction :
-      rationalIdeleClassRepresentation.ρ s.1⁻¹
+      (ideleClassRepresentation ℚ).ρ s.1⁻¹
           (rationalIdeleClassEquivFixed E c).1 =
         (rationalIdeleClassEquivFixed E cτ).1 := by
     simpa only [cτ, ofMul_toMul] using
@@ -779,15 +706,15 @@ theorem rationalSmallHilbertFixedPart_conjugation
         s.1⁻¹ τ hστ (Additive.toMul c))
   have hstable
       (a : ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation L.field) :
+        (ideleClassRepresentation ℚ) L.field) :
       ((stableBaseConjugationHom
-          rationalIdeleClassRepresentation L s a :
+          (ideleClassRepresentation ℚ) L s a :
         ambientFixedAddSubgroup
-          rationalIdeleClassRepresentation L.field) :
-      rationalIdeleClassRepresentation.V) =
-      rationalIdeleClassRepresentation.ρ s.1⁻¹ a.1 := by
+          (ideleClassRepresentation ℚ) L.field) :
+      (ideleClassRepresentation ℚ).V) =
+      (ideleClassRepresentation ℚ).ρ s.1⁻¹ a.1 := by
     exact stableBaseConjugationHom_coe
-      rationalIdeleClassRepresentation L s a
+      (ideleClassRepresentation ℚ) L s a
   have hcoe (z : Additive (IdeleClassGroup E)) :
       (rationalAbstractFixedFieldIdeleClassEquivFixed L.field
           (hfinite := hLfinite) z).1 =
@@ -799,7 +726,7 @@ theorem rationalSmallHilbertFixedPart_conjugation
     (hstable
       (rationalAbstractFixedFieldIdeleClassEquivFixed
         L.field (hfinite := hLfinite) c)).trans
-      ((congrArg (rationalIdeleClassRepresentation.ρ s.1⁻¹)
+      ((congrArg ((ideleClassRepresentation ℚ).ρ s.1⁻¹)
         (hcoe c)).trans
         (haction.trans (hcoe cτ).symm))
 
@@ -840,7 +767,7 @@ private theorem rationalSmallHilbertFixedPart_conjugation_comp
     let : NumberField E :=
       NumberField.of_module_finite ℚ E
     (stableBaseConjugationHom
-        rationalIdeleClassRepresentation L s).comp
+        (ideleClassRepresentation ℚ) L s).comp
         (rationalAbstractFixedFieldIdeleClassEquivFixed
           L.field).toAddMonoidHom =
       (rationalAbstractFixedFieldIdeleClassEquivFixed
@@ -853,7 +780,7 @@ private theorem rationalSmallHilbertFixedPart_conjugation_comp
   intro c
   change
     stableBaseConjugationHom
-        rationalIdeleClassRepresentation L s
+        (ideleClassRepresentation ℚ) L s
         (rationalAbstractFixedFieldIdeleClassEquivFixed L.field c) =
       rationalAbstractFixedFieldIdeleClassEquivFixed L.field
         (Additive.ofMul
@@ -888,7 +815,7 @@ private theorem
           (rationalAbstractFixedFieldIdeleClassEquivFixed
             L.field).toAddMonoidHom).map
         (stableBaseConjugationHom
-          rationalIdeleClassRepresentation L s) =
+          (ideleClassRepresentation ℚ) L s) =
       (smallHilbertClassFieldNormSubgroup
         (K := E)).toAddSubgroup.map
           (rationalAbstractFixedFieldIdeleClassEquivFixed
@@ -903,7 +830,7 @@ private theorem
         (ideleClassCongr
           (smallHilbertBaseConjugationAutomorphism K L s)).toMonoidHom)
       (stableBaseConjugationHom
-        rationalIdeleClassRepresentation L s)
+        (ideleClassRepresentation ℚ) L s)
       (rationalSmallHilbertFixedPart_conjugation_comp K L s)
       (smallHilbertClassFieldNormSubgroup_toAddSubgroup_map_ideleClassCongr
         E (smallHilbertBaseConjugationAutomorphism K L s))
@@ -918,7 +845,7 @@ theorem smallHilbertNormSubgroupInRationalClassFormation_map_conjugation
     (smallHilbertNormSubgroupInRationalClassFormation
         (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field).map
         (stableBaseConjugationHom
-          rationalIdeleClassRepresentation L s) =
+          (ideleClassRepresentation ℚ) L s) =
       smallHilbertNormSubgroupInRationalClassFormation
         (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field := by
   exact
@@ -935,7 +862,7 @@ theorem smallHilbertClassField_conjugateSubextension_eq_self
     (L : FiniteAbelianSubextension K.field)
     (M : FiniteAbelianSubextension L.field)
     (hM :
-      M.normSubgroup rationalIdeleClassRepresentation =
+      M.normSubgroup (ideleClassRepresentation ℚ) =
         smallHilbertNormSubgroupInRationalClassFormation
           (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field)
     (s : K.field.toSubgroup) :
@@ -943,18 +870,18 @@ theorem smallHilbertClassField_conjugateSubextension_eq_self
   let Ms :=
     conjugateFiniteAbelianSubextensionOverBase L M s
   have hnorm :
-      Ms.normSubgroup rationalIdeleClassRepresentation =
-        M.normSubgroup rationalIdeleClassRepresentation := by
+      Ms.normSubgroup (ideleClassRepresentation ℚ) =
+        M.normSubgroup (ideleClassRepresentation ℚ) := by
     calc
-      Ms.normSubgroup rationalIdeleClassRepresentation =
+      Ms.normSubgroup (ideleClassRepresentation ℚ) =
           (M.normSubgroup
-            rationalIdeleClassRepresentation).map
+            (ideleClassRepresentation ℚ)).map
               (stableBaseConjugationHom
-                rationalIdeleClassRepresentation L s) := by
+                (ideleClassRepresentation ℚ) L s) := by
         exact
           conjugateFiniteAbelianSubextensionOverBase_normSubgroup
-            rationalIdeleClassRepresentation L M s
-      _ = M.normSubgroup rationalIdeleClassRepresentation := by
+            (ideleClassRepresentation ℚ) L M s
+      _ = M.normSubgroup (ideleClassRepresentation ℚ) := by
         rw [hM]
         exact
           smallHilbertNormSubgroupInRationalClassFormation_map_conjugation
@@ -962,13 +889,13 @@ theorem smallHilbertClassField_conjugateSubextension_eq_self
   change Ms = M
   apply
     FiniteAbelianSubextension.normSubgroupMap_injective
-      rationalCyclotomicIdeleClassValuationData
-      rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+      (numberFieldCyclotomicIdeleClassValuationData ℚ)
+      (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
       (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field
   apply Subtype.ext
   change
-    Ms.normSubgroup rationalIdeleClassRepresentation =
-      M.normSubgroup rationalIdeleClassRepresentation
+    Ms.normSubgroup (ideleClassRepresentation ℚ) =
+      M.normSubgroup (ideleClassRepresentation ℚ)
   exact hnorm
 
 /-- Field-level conjugation stability of the upper small Hilbert class
@@ -979,7 +906,7 @@ theorem smallHilbertClassField_conjugate_eq_self
     (L : FiniteAbelianSubextension K.field)
     (M : FiniteAbelianSubextension L.field)
     (hM :
-      M.normSubgroup rationalIdeleClassRepresentation =
+      M.normSubgroup (ideleClassRepresentation ℚ) =
         smallHilbertNormSubgroupInRationalClassFormation
           (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field)
     (s : K.field.toSubgroup) :
@@ -1003,7 +930,7 @@ noncomputable def smallHilbertClassFieldGaloisSubextension
     (L : FiniteAbelianSubextension K.field)
     (M : FiniteAbelianSubextension L.field)
     (hM :
-      M.normSubgroup rationalIdeleClassRepresentation =
+      M.normSubgroup (ideleClassRepresentation ℚ) =
         smallHilbertNormSubgroupInRationalClassFormation
           (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field) :
     FiniteGaloisSubextension K.field :=
@@ -1019,7 +946,7 @@ theorem smallHilbertTowerBase_le_maximalAbelianSubextension
     (L : FiniteAbelianSubextension K.field)
     (M : FiniteAbelianSubextension L.field)
     (hM :
-      M.normSubgroup rationalIdeleClassRepresentation =
+      M.normSubgroup (ideleClassRepresentation ℚ) =
         smallHilbertNormSubgroupInRationalClassFormation
           (L.toFiniteGaloisExtension.toFiniteAbstractFieldExtension).field) :
     L ≤
@@ -1047,7 +974,7 @@ theorem
     (L : FiniteAbelianSubextension K.field)
     (P : FiniteGaloisSubextension K.field)
     (hL :
-      L.normSubgroup rationalIdeleClassRepresentation =
+      L.normSubgroup (ideleClassRepresentation ℚ) =
         smallHilbertNormSubgroupInRationalClassFormation K) :
     let F :=
       abstractFixedField ℚ (SeparableClosure ℚ) K.field

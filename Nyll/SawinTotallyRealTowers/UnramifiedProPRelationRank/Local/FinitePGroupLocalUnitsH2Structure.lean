@@ -51,22 +51,21 @@ private theorem standardUnramified_isCyclic (d : ℕ) (hd : 0 < d) :
   have : Module.Finite 𝒪[K] 𝒪[M] := localCompleteDVF_integerRing_moduleFinite K M
   exact isCyclic_galoisGroup_of_unramifiedValuation K M
 
-private theorem intermediateFieldUnitsH2_isAddCyclic
-    (F : IntermediateField K (SeparableClosure K))
-    [FiniteDimensional K F] [IsGalois K F]
+private theorem intermediateFieldUnitsH2_isAddCyclic_of_compositum
+    (F M : IntermediateField K (SeparableClosure K))
+    [FiniteDimensional K F] [IsGalois K F] [FiniteDimensional K M] [IsGalois K M]
+    [IsCyclic Gal(M/K)] (hdegree : Module.finrank K F ≤ Module.finrank K M)
     (p : ℕ) [Fact p.Prime] (hP : IsPGroup p Gal(F/K)) :
-    IsAddCyclic (groupCohomology (Rep.ofAlgebraAutOnUnits K F) 2) := by
-  let : NontriviallyNormedField F := finiteExtensionSpectralNormedField K F
-  let : ValuativeRel F := finiteExtensionSpectralValuativeRel K F
+    let : NontriviallyNormedField F := finiteExtensionSpectralNormedField K F
+    let : ValuativeRel F := finiteExtensionSpectralValuativeRel K F
+    let : Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation F) :=
+      finiteExtensionSpectralValuation_hasExtension K F
+    let m := (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K]
+    ∀ he : 0 < m,
+      M ≤ relativeUnramifiedFixedField K (finiteAbstractFieldOfGaloisIntermediateField K F) m he →
+      IsAddCyclic (groupCohomology (Rep.ofAlgebraAutOnUnits K F) 2) := by
+  intro spectralNormF valuationF extendsF m he hMN
   have : IsNonarchimedeanLocalField F := finiteExtensionSpectralIsNonarchimedeanLocalField K F
-  have : Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation F) :=
-    finiteExtensionSpectralValuation_hasExtension K F
-  let M : IntermediateField K (SeparableClosure K) :=
-    localFiniteUnramifiedField K (Module.finrank K F) Module.finrank_pos
-  have : IsCyclic Gal(M/K) :=
-    standardUnramified_isCyclic K (Module.finrank K F) Module.finrank_pos
-  obtain ⟨he, hsup⟩ := relativeUnramifiedFixedField_ramification_eq_sup_sameDegree K F
-  let m : ℕ := (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K]
   let H := finiteAbstractFieldOfGaloisIntermediateField K F
   let N : IntermediateField K (SeparableClosure K) := relativeUnramifiedFixedField K H m he
   have : FiniteDimensional K N := relativeUnramifiedFixedField_absoluteFiniteDimensional K H m he
@@ -87,19 +86,33 @@ private theorem intermediateFieldUnitsH2_isAddCyclic
   have : Module.Finite 𝒪[F] 𝒪[N] := localCompleteDVF_integerRing_moduleFinite F N
   have : IsUnramifiedValuedExtension F N :=
     relativeUnramifiedFixedField_actual_isUnramifiedValuedExtension K F m he
-  have hMN : M ≤ N := by
-    change M ≤ relativeUnramifiedFixedField K H m he
-    rw [hsup]
-    exact le_sup_right
   let : Algebra M N := (IntermediateField.inclusion hMN).toRingHom.toAlgebra
   have : IsScalarTower K M N :=
     IsScalarTower.of_algHom (IntermediateField.inclusion hMN)
-  have hd : Module.finrank F N ∣ (𝓂[F] : Ideal 𝒪[F]).ramificationIdx 𝒪[K] :=
+  have hd : Module.finrank F N ∣ m :=
     (relativeUnramifiedFixedField_actual_finrank K F m he).dvd
-  have hdegree : Module.finrank K F ≤ Module.finrank K M :=
-    (localFiniteUnramifiedField_finrank K (Module.finrank K F) Module.finrank_pos).symm.le
   exact finitePGroupLocalUnitsH2_isAddCyclic_of_unramified_tower
     K F M N p hP hd hdegree
+
+private theorem intermediateFieldUnitsH2_isAddCyclic
+    (F : IntermediateField K (SeparableClosure K))
+    [FiniteDimensional K F] [IsGalois K F]
+    (p : ℕ) [Fact p.Prime] (hP : IsPGroup p Gal(F/K)) :
+    IsAddCyclic (groupCohomology (Rep.ofAlgebraAutOnUnits K F) 2) := by
+  let : NontriviallyNormedField F := finiteExtensionSpectralNormedField K F
+  let : ValuativeRel F := finiteExtensionSpectralValuativeRel K F
+  have : IsNonarchimedeanLocalField F := finiteExtensionSpectralIsNonarchimedeanLocalField K F
+  have : Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation F) :=
+    finiteExtensionSpectralValuation_hasExtension K F
+  obtain ⟨he, hsup⟩ := relativeUnramifiedFixedField_ramification_eq_sup_sameDegree K F
+  let M := localFiniteUnramifiedField K (Module.finrank K F) Module.finrank_pos
+  have : IsCyclic Gal(M/K) :=
+    standardUnramified_isCyclic K (Module.finrank K F) Module.finrank_pos
+  have hdegree : Module.finrank K F ≤ Module.finrank K M :=
+    (localFiniteUnramifiedField_finrank K (Module.finrank K F) Module.finrank_pos).symm.le
+  have hinclude : M ≤ F ⊔ M := le_sup_right
+  exact intermediateFieldUnitsH2_isAddCyclic_of_compositum K F M hdegree p hP he
+    (hsup.symm ▸ hinclude)
 
 /-- Unit-coefficient H² of every finite local Galois p-extension is cyclic. -/
 theorem finitePGroupLocalUnitsH2_isAddCyclic

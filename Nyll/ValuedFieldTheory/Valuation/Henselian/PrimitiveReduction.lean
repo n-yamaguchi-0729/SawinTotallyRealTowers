@@ -238,13 +238,13 @@ theorem exists_primitive_irreducible_lift_of_irreducible
   let q : Polynomial V :=
     ∑ n ∈ p.support, Polynomial.monomial n (coeffV n)
   have hqcoeffV (n : ℕ) : q.coeff n = coeffV n := by
-    by_cases hn : n ∈ p.support
-    · have hcoeffne : p.coeff n ≠ 0 :=
-        Polynomial.mem_support_iff.mp hn
-      simp [q, Polynomial.coeff_monomial, coeffV, hn, hcoeffne]
-    · have hcoeffzero : p.coeff n = 0 :=
-        Polynomial.notMem_support_iff.mp hn
-      simp [q, Polynomial.coeff_monomial, coeffV, hn, hcoeffzero]
+    dsimp only [q]
+    rw [Polynomial.finsetSum_coeff, Finset.sum_eq_single n]
+    · exact Polynomial.coeff_monomial_same n (coeffV n)
+    · intro j _ hj
+      exact Polynomial.coeff_monomial_of_ne _ hj.symm
+    · intro hn
+      simp only [Polynomial.coeff_monomial_same, coeffV, dite_eq_right hn]
   have hqcoeff (n : ℕ) :
       ((q.coeff n : V) : K) = p.coeff n / a := by
     rw [hqcoeffV]

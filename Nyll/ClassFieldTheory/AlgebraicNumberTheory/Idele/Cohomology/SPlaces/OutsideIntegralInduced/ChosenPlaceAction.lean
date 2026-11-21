@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Spine
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Action
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.LocalInduction.Equiv
@@ -174,16 +176,11 @@ theorem
         vK
         (RayClass.adicAbv_isNontrivial w₀)
         w
-    let _ : MulDistribMulAction
-        (Gal(E / vK.Completion)) 𝒪[E]ˣ :=
-      galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure
-        vK.Completion E
-    ∀ (σ : absoluteValueDecompositionGroup K w.1)
-      (x : 𝒪[E]ˣ),
+    let localAction : MulDistribMulAction (Gal(E / vK.Completion)) 𝒪[E]ˣ :=
+      galoisGroupIntegerUnitsMulDistribMulActionOfIsIntegralClosure vK.Completion E
+    ∀ (σ : absoluteValueDecompositionGroup K w.1) (x : 𝒪[E]ˣ),
       (chosenFinitePlaceDecompositionGroupIntegerUnitsAction
-        (K := K) (L := L) w₀).smul σ x =
-        (MulDistribMulAction.compHom
-          𝒪[E]ˣ eLocal.toMonoidHom).smul σ x := by
+        (K := K) (L := L) w₀).smul σ x = localAction.smul (eLocal σ) x := by
   intro vK w E eLocal localAction σ x
   rfl
 

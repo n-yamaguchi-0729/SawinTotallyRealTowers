@@ -94,22 +94,9 @@ theorem valuedIntegerIsUniformAddGroup
     IsUniformAddGroup (Valued.integer K) :=
   (Valued.integer K).toAddSubgroup.isUniformAddGroup
 
-noncomputable local instance valuedIntegerLinearTopologyInstance
-    {K : Type u} {Γ : Type v} [Field K]
-    [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] :
-    IsLinearTopology (Valued.integer K) (Valued.integer K) :=
+attribute [local instance]
   valuedIntegerLinearTopology
-
-noncomputable local instance valuedIntegerCompleteSpaceInstance
-    {K : Type u} {Γ : Type v} [Field K]
-    [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] [CompleteSpace K] :
-    CompleteSpace (Valued.integer K) :=
   valuedIntegerCompleteSpace
-
-noncomputable local instance valuedIntegerIsUniformAddGroupInstance
-    {K : Type u} {Γ : Type v} [Field K]
-    [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] :
-    IsUniformAddGroup (Valued.integer K) :=
   valuedIntegerIsUniformAddGroup
 
 omit [Finite k] in
@@ -142,7 +129,7 @@ theorem equalCharacteristicCoefficientFrobenius_fixed_iff
     have hpolyne :
         (Polynomial.X ^ Nat.card k - Polynomial.X : k[X]) ≠ 0 := by
       rw [Nat.card_eq_fintype_card]
-      exact FiniteField.X_pow_card_sub_X_ne_zero k Fintype.one_lt_card
+      exact Polynomial.X_pow_sub_X_ne_zero (R := k) Fintype.one_lt_card
     have hminsplit : (minpoly k x).Splits :=
       hsplit.of_dvd hpolyne hdiv
     exact hxint.mem_range_algebraMap_of_minpoly_splits (K := k) (by

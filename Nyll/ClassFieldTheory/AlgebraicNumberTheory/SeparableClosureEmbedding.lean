@@ -69,6 +69,23 @@ noncomputable def separableEmbeddingIntoSeparableClosure :
     L →ₐ[K] SeparableClosure K :=
   IsSepClosed.lift
 
+/-- Two embeddings of a separable extension into the chosen separable
+closure differ by an automorphism of that closure. -/
+theorem exists_separableClosureEmbeddingComparisonAutomorphism
+    {K : Type u} {L : Type v} [Field K] [Field L] [Algebra K L]
+    [Algebra.IsSeparable K L] (i j : L →ₐ[K] SeparableClosure K) :
+    ∃ σ : Gal(SeparableClosure K/K), ∀ x : L, σ (i x) = j x := by
+  let : Algebra L (SeparableClosure K) := i.toRingHom.toAlgebra
+  let : IsScalarTower K L (SeparableClosure K) :=
+    IsScalarTower.of_algebraMap_eq' i.comp_algebraMap.symm
+  let : Algebra.IsSeparable L (SeparableClosure K) :=
+    Algebra.isSeparable_tower_top_of_isSeparable K L (SeparableClosure K)
+  obtain ⟨f, hf⟩ := (IsSepClosed.surjective_domRestrict_of_isSeparable
+    (K := K) (L := L) (M := SeparableClosure K) (E := SeparableClosure K)) j
+  exact ⟨AlgEquiv.ofBijective f
+    (Normal.toIsAlgebraic.algHom_bijective₂ f (AlgHom.id K (SeparableClosure K))).1,
+    fun x => congrArg (fun g : L →ₐ[K] SeparableClosure K => g x) hf⟩
+
 variable (K : Type*) [Field K] [NumberField K]
 
 /-- A chosen `ℚ`-embedding of a number field into mathlib's fixed

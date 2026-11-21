@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.LocalValuationKummerDual
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteKummerH1Linear
@@ -42,32 +43,22 @@ variable (p : ℕ) [Fact p.Prime]
 abbrev FinitePlaceCyclotomicBase :=
   IdealRadicalCyclotomicBase F p (Fact.out : p.Prime)
 
-local instance cyclotomicBaseFiniteDimensional :
+/-- The cyclotomic base is finite over the original number field. -/
+theorem cyclotomicBaseFiniteDimensional :
     FiniteDimensional F (FinitePlaceCyclotomicBase F p) :=
   finiteDimensional_idealRadicalCyclotomicBase
     F p (Fact.out : p.Prime)
 
-local instance cyclotomicBaseNumberField : NumberField (FinitePlaceCyclotomicBase F p) :=
+attribute [local instance] cyclotomicBaseFiniteDimensional
+
+/-- The cyclotomic base carries the induced number-field structure. -/
+theorem cyclotomicBaseNumberField : NumberField (FinitePlaceCyclotomicBase F p) :=
   NumberField.of_module_finite F (FinitePlaceCyclotomicBase F p)
 
-local instance finitePlaceCyclotomicKummerCharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
+attribute [local instance] cyclotomicBaseNumberField
 
-local instance finitePlaceCyclotomicKummerCharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) :=
-  discreteTopology_bot _
 
-local instance finitePlaceCyclotomicKummerH1Topology (q : ℕ) :
-    TopologicalSpace (ZMod q) := ⊥
-
-local instance finitePlaceCyclotomicKummerH1DiscreteTopology (q : ℕ) :
-    DiscreteTopology (ZMod q) :=
-  discreteTopology_bot _
-
-local instance finitePlaceCyclotomicKummerH1Module
-    {q : ℕ} {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- A primitive `p`-th root in the cyclotomic base stays primitive in every finite-place
 completion. -/

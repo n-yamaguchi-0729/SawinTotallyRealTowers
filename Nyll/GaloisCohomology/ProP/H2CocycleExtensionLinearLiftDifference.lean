@@ -10,6 +10,7 @@ public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLinearLifts
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionLiftDifference
 public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Difference calculations for linear and character-corrected lifts
@@ -33,8 +34,7 @@ universe u v w
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance linearLiftDifferenceCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {Q : Type u} [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q]
 variable {H : Type v} [Group H] [TopologicalSpace H]
 
@@ -92,8 +92,8 @@ theorem twistByCharacter_kills_subgroup_iff
     (chi : H →ₜ* Multiplicative (ZMod p))
     (N : Subgroup H) (ht : N ≤ t.toMonoidHom.ker) :
     N ≤ (twistByCharacter z s chi).toMonoidHom.ker ↔
-      (liftDifference z s t hst).comp (subgroupInclusion N) =
-        chi.comp (subgroupInclusion N) := by
+      (liftDifference z s t hst).comp (ProCGroups.ContinuousMonoidHom.subtype N) =
+        chi.comp (ProCGroups.ContinuousMonoidHom.subtype N) := by
   rw [← liftDifference_restrict_eq_one_iff z (twistByCharacter z s chi) t
     ((twistByCharacter_projection z s chi).trans hst) N ht,
     twistByCharacter_liftDifference z s t hst chi]

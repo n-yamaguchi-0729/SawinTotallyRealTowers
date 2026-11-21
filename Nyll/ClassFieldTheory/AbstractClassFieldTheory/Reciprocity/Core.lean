@@ -11,6 +11,7 @@ public import Nyll.GaloisCohomology.Cyclic.IntegralNormKernelVanishing
 public import Nyll.GaloisCohomology.Cyclic.IntegralUniverseCohomology
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainNaturality
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.MainTransfer
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.CyclicNormQuotient
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
@@ -93,8 +94,7 @@ private theorem classFieldAxiom_unramifiedUnits_hMinusOne
       below := hLK
       normal := hnormal
       finite := inferInstance
-      generator := g
-      generates := hg }
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg }
   have hMzero : Limits.IsZero (IntegralGroupCohomology.Universe.tate M (-1)) :=
     by
       simpa [Kcf, Ecf,
@@ -297,8 +297,7 @@ private theorem classFieldAxiom_unramifiedUnits_hZero
       below := E.below
       normal := hnormal
       finite := E.finiteQuotient
-      generator := g
-      generates := hg }
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg }
   let hEcfTateFinite :
       Finite (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0) :=
     (hcf Kcf Ecf).finiteTateHZero
@@ -870,13 +869,13 @@ abelianization.  This is the factor map used in the first reduction once the fin
 equivalence supplies the reciprocity homomorphism. -/
 def abstractReciprocityAbelianizationFactor
     {Q : Type*} {B : Type*} [Group Q] [AddCommGroup B]
-    (f : Additive Q →+ B) : Additive (Abelianization Q) →+ B := by
+    (f : Additive Q →+ B) : Additive (Group.Abelianization Q) →+ B := by
   let fMul : Q →* Multiplicative B :=
     { toFun := fun q => Multiplicative.ofAdd (f (Additive.ofMul q))
       map_one' := f.map_zero
       map_mul' := f.map_add }
-  let fAb : Abelianization Q →* Multiplicative B :=
-    Abelianization.lift fMul
+  let fAb : Group.Abelianization Q →* Multiplicative B :=
+    Group.Abelianization.lift fMul
   exact
     { toFun := fun q => Multiplicative.toAdd (fAb q.toMul)
       map_zero' := fAb.map_one
@@ -884,16 +883,16 @@ def abstractReciprocityAbelianizationFactor
 
 /--
 Establishes the identity `abstractReciprocityAbelianizationFactor f (Additive.ofMul
-(Abelianization.of q)) = f (Additive.ofMul q)`.
+(Group.Abelianization.of q)) = f (Additive.ofMul q)`.
 -/
 @[simp]
 theorem abstractReciprocityAbelianizationFactor_of
     {Q : Type*} {B : Type*} [Group Q] [AddCommGroup B]
     (f : Additive Q →+ B) (q : Q) :
     abstractReciprocityAbelianizationFactor f
-        (Additive.ofMul (Abelianization.of q)) =
+        (Additive.ofMul (Group.Abelianization.of q)) =
       f (Additive.ofMul q) := by
-  exact Abelianization.lift_apply_of
+  exact Group.Abelianization.lift_apply_of
     ({ toFun := fun q => Multiplicative.ofAdd (f (Additive.ofMul q))
        map_one' := f.map_zero
        map_mul' := f.map_add } : Q →* Multiplicative B) q
@@ -907,10 +906,10 @@ def abstractReciprocityAbelianizedRestriction
     [hLnormal :
       (extensionSubgroup K L (hLM.trans hMK)).Normal]
     [hMnormal : (extensionSubgroup K M hMK).Normal] :
-    Abelianization
+    Group.Abelianization
         (K.toSubgroup ⧸ extensionSubgroup K L (hLM.trans hMK)) →*
-      Abelianization (K.toSubgroup ⧸ extensionSubgroup K M hMK) :=
-  Abelianization.map (abstractReciprocityRestriction K M L hLM hMK)
+      Group.Abelianization (K.toSubgroup ⧸ extensionSubgroup K M hMK) :=
+  Group.Abelianization.map (abstractReciprocityRestriction K M L hLM hMK)
 
 /-- The identity `N_{M/K} ∘ i = [M:K]` used in the Sylow argument of the
 first reduction.  Here `i` is the actual inclusion of finite norm

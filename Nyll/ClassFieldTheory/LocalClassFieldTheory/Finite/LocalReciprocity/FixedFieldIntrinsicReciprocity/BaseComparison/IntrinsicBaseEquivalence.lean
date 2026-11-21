@@ -27,6 +27,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -83,7 +85,7 @@ theorem ambientEmbeddedAbsoluteQuotientFinite
 /-- On the intrinsic base, the normalized degree from the local residue datum
 agrees with the local residue degree of the underlying automorphism. -/
 theorem intrinsicBase_normalizedDegree_eq_localResidueDegree
-    (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
+    (F : Type u₁) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F]
     (τ : (intrinsicAbstractBase F).toSubgroup) :
     (localResidueDatum F).normalizedDegree
@@ -104,7 +106,7 @@ theorem intrinsicBase_normalizedDegree_eq_localResidueDegree
 /-- Transport along a separable-closure equivalence identifies the intrinsic
 normalized degree over a finite fixed field with the ambient normalized degree. -/
 theorem intrinsicBase_normalizedDegree_eq_ambientFixedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K)) :
@@ -522,7 +524,7 @@ theorem
 the intrinsic local residue datum and the ambient finite abstract field. -/
 theorem
     intrinsicBase_normalizedDegree_eq_ambientEmbeddedField
-    (K F : Type)
+    (K : Type u₁) (F : Type u₂)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]

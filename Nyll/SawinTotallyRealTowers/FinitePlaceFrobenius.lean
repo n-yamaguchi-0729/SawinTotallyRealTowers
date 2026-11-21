@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceInertiaTransport
 public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteIntegerCore
 public import Nyll.ProCGroups.Generation.Basic
@@ -49,6 +50,22 @@ def finitePlaceUnramifiedDegreeEquiv :
   exact (finitePlaceUnramifiedQuotientContinuousMulEquiv F v).trans
     (localUnramifiedQuotientContinuousMulEquiv vF.Completion)
 
+private theorem finitePlaceUnramifiedDegreeEquiv_apply
+    (x : finitePlaceAbsoluteDecompositionGroup F v ⧸ finitePlaceAbsoluteInertiaSubgroup F v) :
+    let vF := NumberField.HeightOneSpectrum.adicAbv F v
+    let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
+    let : Valued vF.Completion NNReal := finitePlaceCompletionValued vF hvFna
+    let : ValuativeRel vF.Completion := finitePlaceCompletionValuativeRel vF hvFna
+    let : IsNonarchimedeanLocalField vF.Completion :=
+      finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+    finitePlaceUnramifiedDegreeEquiv F v x =
+      localUnramifiedQuotientContinuousMulEquiv vF.Completion
+        (finitePlaceUnramifiedQuotientContinuousMulEquiv F v x) := by
+  intro vF hvFna hValued hValuative hLocal
+  dsimp (config := { instances := true, zetaDelta := true }) only
+    [finitePlaceUnramifiedDegreeEquiv, ContinuousMulEquiv.trans_apply,
+      vF, hvFna, hValued, hValuative, hLocal]
+
 /-- Decomposition transport and unramified quotient coordinates preserve the
 actual local residue degree of each original automorphism. -/
 theorem finitePlaceUnramifiedDegreeEquiv_mk
@@ -59,17 +76,18 @@ theorem finitePlaceUnramifiedDegreeEquiv_mk
     let : ValuativeRel vF.Completion := finitePlaceCompletionValuativeRel vF hvFna
     let : IsNonarchimedeanLocalField vF.Completion :=
       finitePlaceNormCompletionIsNonarchimedeanLocalField F v
-    finitePlaceUnramifiedDegreeEquiv F v
-      (QuotientGroup.mk' (finitePlaceAbsoluteInertiaSubgroup F v) sigma) =
-      LocalClassFieldTheory.localResidueDegree vF.Completion
-        (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
-          F v sigma) := by
-  intro vF hvFna hValued hValuative hLocal
-  change localUnramifiedQuotientContinuousMulEquiv vF.Completion
-    (finitePlaceUnramifiedQuotientContinuousMulEquiv F v
-      (QuotientGroup.mk' (finitePlaceAbsoluteInertiaSubgroup F v) sigma)) = _
-  rw [finitePlaceUnramifiedQuotientContinuousMulEquiv_mk,
-    localUnramifiedQuotientContinuousMulEquiv_mk]
+    let C := vF.Completion
+    let x := QuotientGroup.mk' (finitePlaceAbsoluteInertiaSubgroup F v) sigma
+    let sigmaLocal := finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
+      F v sigma
+    finitePlaceUnramifiedDegreeEquiv F v x =
+      LocalClassFieldTheory.localResidueDegree C sigmaLocal := by
+  intro vF hvFna hValued hValuative hLocal C x sigmaLocal
+  dsimp (config := { instances := true, zetaDelta := true }) only
+    [C, x, sigmaLocal, vF, hvFna, hValued, hValuative, hLocal]
+  rw [finitePlaceUnramifiedDegreeEquiv_apply,
+    finitePlaceUnramifiedQuotientContinuousMulEquiv_mk]
+  exact localUnramifiedQuotientContinuousMulEquiv_mk _ _
 
 /-- The residue-degree-one class of arithmetic Frobenius. -/
 def finitePlaceArithmeticFrobeniusClass :
@@ -98,6 +116,44 @@ theorem finitePlaceArithmeticFrobeniusLift_degree :
   exact (finitePlaceUnramifiedDegreeEquiv F v).apply_symm_apply _
 
 open LocalClassFieldTheory RamificationTheory.HilbertRamification.ValuationSubring in
+private theorem residueAction_apply_pow_card_of_degree_one
+    (C : Type) [Field C] [ValuativeRel C] [TopologicalSpace C]
+    [IsNonarchimedeanLocalField C] (sigma : Gal(SeparableClosure C/C))
+    (hdegree : localResidueDegree C sigma = Multiplicative.ofAdd (1 : ZHat))
+    (x : selectedResidueField (localSeparableValuationSubring C)) :
+    localSeparableResidueAlgAction C sigma x =
+      x ^ Fintype.card (decompositionResidueField C (localSeparableValuationSubring C)) := by
+  have : Algebra.IsAlgebraic
+      (decompositionResidueField C (localSeparableValuationSubring C))
+      (selectedResidueField (localSeparableValuationSubring C)) :=
+    (decompositionResidueExtension_normal (K := C)
+      (localSeparableValuationSubring C)).toIsAlgebraic
+  exact apply_eq_pow_card_of_residueAbsoluteDegreeIn
+    (decompositionResidueField C (localSeparableValuationSubring C))
+    (selectedResidueField (localSeparableValuationSubring C))
+    (localSeparableResidueAlgAction C sigma) hdegree x
+
+open LocalClassFieldTheory in
+private theorem arithmeticFrobeniusClass_has_local_degree_one
+    (sigma : finitePlaceAbsoluteDecompositionGroup F v)
+    (hsigma : QuotientGroup.mk' (finitePlaceAbsoluteInertiaSubgroup F v) sigma =
+      finitePlaceArithmeticFrobeniusClass F v) :
+    let vF := NumberField.HeightOneSpectrum.adicAbv F v
+    let hvFna := NumberField.HeightOneSpectrum.isNonarchimedean_adicAbv F v
+    let : Valued vF.Completion NNReal := finitePlaceCompletionValued vF hvFna
+    let : ValuativeRel vF.Completion := finitePlaceCompletionValuativeRel vF hvFna
+    let : IsNonarchimedeanLocalField vF.Completion :=
+      finitePlaceNormCompletionIsNonarchimedeanLocalField F v
+    localResidueDegree vF.Completion
+      (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup F v sigma) =
+      Multiplicative.ofAdd (1 : ZHat) := by
+  intro vF hvFna hValued hValuative hLocal
+  dsimp (config := { instances := true, zetaDelta := true }) only
+    [vF, hvFna, hValued, hValuative, hLocal]
+  rw [← finitePlaceUnramifiedDegreeEquiv_mk F v sigma, hsigma]
+  exact (finitePlaceUnramifiedDegreeEquiv F v).apply_symm_apply _
+
+open LocalClassFieldTheory RamificationTheory.HilbertRamification.ValuationSubring in
 /-- Any representative of the arithmetic Frobenius class acts on the actual
 residue algebraic closure by the residue-cardinality power. In particular, this
 action is independent of the representative, and has the arithmetic orientation. -/
@@ -119,22 +175,11 @@ theorem finitePlaceResidueAction_of_arithmeticFrobeniusClass
           (decompositionResidueField vF.Completion
             (localSeparableValuationSubring vF.Completion)) := by
   intro vF hvFna hValued hValuative hLocal x
-  have : Algebra.IsAlgebraic
-      (decompositionResidueField vF.Completion (localSeparableValuationSubring vF.Completion))
-      (selectedResidueField (localSeparableValuationSubring vF.Completion)) :=
-    (decompositionResidueExtension_normal (K := vF.Completion)
-      (localSeparableValuationSubring vF.Completion)).toIsAlgebraic
-  have hdegree : localResidueDegree vF.Completion
-      (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
-        F v sigma) = Multiplicative.ofAdd (1 : ZHat) := by
-    rw [← finitePlaceUnramifiedDegreeEquiv_mk F v sigma, hsigma]
-    exact (finitePlaceUnramifiedDegreeEquiv F v).apply_symm_apply _
-  exact apply_eq_pow_card_of_residueAbsoluteDegreeIn
-    (decompositionResidueField vF.Completion (localSeparableValuationSubring vF.Completion))
-    (selectedResidueField (localSeparableValuationSubring vF.Completion))
-    (localSeparableResidueAlgAction vF.Completion
-      (finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup F v sigma))
-    hdegree x
+  let C := vF.Completion
+  let sigmaLocal := finitePlaceDecompositionGroupContinuousMulEquivSeparableAbsoluteGaloisGroup
+    F v sigma
+  exact residueAction_apply_pow_card_of_degree_one C sigmaLocal
+    (arithmeticFrobeniusClass_has_local_degree_one F v sigma hsigma) x
 
 /-- The chosen Frobenius class generates the whole unramified decomposition quotient. -/
 theorem finitePlaceArithmeticFrobeniusClass_topologicallyGenerates :

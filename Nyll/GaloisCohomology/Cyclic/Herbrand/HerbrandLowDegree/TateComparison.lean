@@ -155,37 +155,25 @@ theorem repSigmaMinusOne_toMul
   rw [toMul_sub]
   exact div_eq_mul_inv _ _
 
+/-- The fixed subgroup and the invariant vectors of its actual additive
+representation contain the same elements, in independent universes. -/
+def fixedSubgroupAddEquivInvariants {G₀ : Type u} {A₀ : Type w}
+    [Group G₀] [CommGroup A₀] [MulDistribMulAction G₀ A₀] :
+    Additive (fixedSubgroup G₀ A₀) ≃+ (Rep.ofMulDistribMulAction G₀ A₀).ρ.invariants where
+  toFun x := ⟨Additive.ofMul x.toMul.val, fun g => congrArg Additive.ofMul (x.toMul.property g)⟩
+  invFun x := Additive.ofMul ⟨x.val.toMul, fun g => Additive.ofMul.injective (x.property g)⟩
+  left_inv := fun _ => rfl
+  right_inv := fun _ => rfl
+  map_add' := fun _ _ => rfl
+
 /-- Degree-zero group-cohomology cycles identify with the arithmetic fixed subgroup. -/
 def fixedCyclesAddEquiv :
     LinearMap.ker
         (groupCohomology.d₀₁ (Rep.ofMulDistribMulAction G A)).hom ≃+
-      Additive (fixedSubgroup G A) where
-  toFun x :=
-    Additive.ofMul
-      ⟨x.1.toMul, by
-        have hx : x.1 ∈ (Rep.ofMulDistribMulAction G A).ρ.invariants := by
-          rw [← groupCohomology.d₀₁_ker_eq_invariants]
-          exact x.2
-        intro g
-        apply Additive.ofMul.injective
-        exact hx g⟩
-  invFun x :=
-    ⟨Additive.ofMul x.toMul.1, by
-      rw [groupCohomology.d₀₁_ker_eq_invariants]
-      intro g
-      apply Additive.ofMul.injective
-      exact x.toMul.2 g⟩
-  left_inv x := by
-    apply Subtype.ext
-    rfl
-  right_inv x := by
-    apply Additive.ofMul.injective
-    apply Subtype.ext
-    rfl
-  map_add' x y := by
-    apply Additive.ofMul.injective
-    apply Subtype.ext
-    rfl
+      Additive (fixedSubgroup G A) :=
+  (LinearEquiv.ofEq _ _
+    (groupCohomology.d₀₁_ker_eq_invariants (Rep.ofMulDistribMulAction G A))).toAddEquiv.trans
+      (fixedSubgroupAddEquivInvariants (G₀ := G) (A₀ := A)).symm
 
 /-- Mathlib's degree-zero Tate cohomology is the arithmetic fixed-point
 quotient by the norm image used by `HerbrandH0`. -/

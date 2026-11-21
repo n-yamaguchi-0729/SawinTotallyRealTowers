@@ -211,7 +211,7 @@ theorem map_proCResidualCore_eq_of_surjective
   let φₜ : G →ₜ* H :=
     { toMonoidHom := φ
       continuous_toFun := hφ }
-  let βₜ : G ⧸ R →ₜ* H ⧸ N := QuotientGroup.mapₜ R N φₜ hRle
+  let βₜ : G ⧸ R →ₜ* H ⧸ N := QuotientGroup.mapContinuousMonoidHom (N := R) (M := N) φₜ hRle
   let β : G ⧸ R →* H ⧸ N := βₜ.toMonoidHom
   have hβsurj : Function.Surjective β := by
     have hmkφ_surj : Function.Surjective (QuotientGroup.mk ∘ φ : G → H ⧸ N) := by

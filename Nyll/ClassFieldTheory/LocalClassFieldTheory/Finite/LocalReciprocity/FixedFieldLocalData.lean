@@ -33,28 +33,53 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁
+
 open scoped NNReal Pointwise ValuativeRel
 open ClassFormation LocalFieldTheory RamificationTheory CyclicCohomology
 open RamificationTheory.HilbertRamification.ValuationSubring
 
+universe u v w z
+
 /-- The concrete fixed field of a finite abstract local extension. -/
 abbrev finiteFixedField
-    (K : Type) [Field K]
+    (K : Type u) [Field K]
     (H : FiniteAbstractField (Gal(SeparableClosure K/K))) :
-    Type :=
+    Type u :=
   abstractFixedField K (SeparableClosure K) H.field
 
-local instance finiteFixedFieldSeparableClosureAlgebra
-    (K : Type) [Field K]
-    (H : FiniteAbstractField (Gal(SeparableClosure K/K))) :
-    Algebra (finiteFixedField K H)
-      (SeparableClosure (finiteFixedField K H)) :=
-  (separableClosure (finiteFixedField K H)
-    (AlgebraicClosure (finiteFixedField K H))).algebra
+attribute [local instance] finiteFixedFieldSeparableClosureAlgebra
+
+section SpectralStructure
+
+variable (K : Type u) [Field K]
+  (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
+
+local notation "F" => finiteFixedField K H
+
+/-- The actual fixed field has the degree of its finite abstract extension. -/
+local instance finiteFixedFieldFiniteDimensional : FiniteDimensional K F :=
+  abstractFixedField_finiteDimensional K (SeparableClosure K) H.field H.finite
+
+variable [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+
+/-- The actual fixed field with the spectral norm over the original local base. -/
+@[reducible] noncomputable local instance finiteFixedFieldNormedField : NontriviallyNormedField F :=
+  finiteExtensionSpectralNormedField K F
+
+/-- The valuative relation induced by the fixed field's spectral norm. -/
+@[reducible] noncomputable local instance finiteFixedFieldValuativeRel : ValuativeRel F :=
+  finiteExtensionSpectralValuativeRel K F
+
+/-- The fixed field is local for its spectral topology and valuative relation. -/
+noncomputable local instance finiteFixedFieldLocalField : IsNonarchimedeanLocalField F :=
+  finiteExtensionSpectralIsNonarchimedeanLocalField K F
+
+end SpectralStructure
 
 @[reducible]
 private def valuationSubringEquivOfComapEq
-    {L M : Type} [Field L] [Field M]
+    {L : Type u} {M : Type v} [Field L] [Field M]
     (A : ValuationSubring M) (B : ValuationSubring L)
     (e : L ≃+* M) (h : B = A.comap e.toRingHom) :
     B ≃+* A where
@@ -73,7 +98,7 @@ private def valuationSubringEquivOfComapEq
   map_add' x y := Subtype.ext (map_add e (x : L) (y : L))
 
 private theorem semilinearConjugate_commutes
-    {k k' Omega Omega' : Type}
+    {k : Type u} {k' : Type v} {Omega : Type w} {Omega' : Type z}
     [Field k] [Field k'] [Field Omega] [Field Omega']
     [Algebra k Omega] [Algebra k' Omega']
     (tau : k ≃+* k') (e : Omega ≃+* Omega')
@@ -95,7 +120,7 @@ attribute [local instance] fixedFieldNormResidueModule in
 /-- On a finite fixed field, the normalized valuation induced by the local
 class formation is the ordinary normalized local-field valuation. -/
 theorem localHenselianValuation_valuationAt_abstractFixedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (x : (abstractFixedField K (SeparableClosure K) H.field)ˣ) :
@@ -220,7 +245,7 @@ open _root_.ValuationTheory.DiscreteValuationField.Valuation (
 separable local extension identifies the two uniquely extended local
 valuation rings. -/
 theorem localSeparableValuationSubring_eq_comap_finiteExtensionEquiv
-    (K F : Type)
+    (K : Type u) (F : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -265,7 +290,7 @@ theorem localSeparableValuationSubring_eq_comap_finiteExtensionEquiv
 extension, the ambient selected valuation ring is stabilized by the whole
 absolute Galois group of the extension field. -/
 theorem localSeparableDecompositionGroup_eq_top_finiteExtensionEquiv
-    (K F : Type)
+    (K : Type u) (F : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -325,7 +350,7 @@ theorem localSeparableDecompositionGroup_eq_top_finiteExtensionEquiv
 /-- A finite type structure on the decomposition residue field of a finite extension. -/
 @[implicit_reducible]
 noncomputable def finiteExtensionDecompositionResidueFintype
-    (K F : Type)
+    (K : Type u) (F : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -371,7 +396,7 @@ unchanged after moving its separable closure into the ambient separable
 closure of the base field. -/
 theorem
     localResidueDegree_eq_residueAbsoluteDegreeIn_finiteExtensionEquiv
-    (K F : Type)
+    (K : Type u) (F : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -389,9 +414,14 @@ theorem
       ⟨inferInstance, inferInstance⟩
     ∀ (e : SeparableClosure F ≃ₐ[F] SeparableClosure K)
       (sigma : Gal(SeparableClosure F / F)),
-      letI : Fintype (decompositionResidueField F
+      let : Fintype (decompositionResidueField F
           (localSeparableValuationSubring K)) :=
         finiteExtensionDecompositionResidueFintype K F i e
+      let : Algebra.IsAlgebraic
+          (decompositionResidueField F (localSeparableValuationSubring K))
+          (selectedResidueField (localSeparableValuationSubring K)) :=
+        (decompositionResidueExtension_normal (K := F)
+          (localSeparableValuationSubring K)).toIsAlgebraic
       localResidueDegree F sigma =
         residueAbsoluteDegreeIn
           (decompositionResidueField F
@@ -403,10 +433,7 @@ theorem
             (localSeparableDecompositionGroup_eq_top_finiteExtensionEquiv
               K F i e)
             (AlgEquiv.autCongr e sigma)) := by
-  intro sharedOwner1 sharedOwner2 sharedOwner3 e sigma
-  let : Fintype (decompositionResidueField F
-      (localSeparableValuationSubring K)) :=
-    finiteExtensionDecompositionResidueFintype K F i e
+  intro sharedOwner1 sharedOwner2 sharedOwner3 e sigma _residueFintype _residueAlgebraic
   let A := localSeparableValuationSubring K
   let AF := localSeparableValuationSubring F
   let C := (ValuativeRel.valuation F).valuationSubring
@@ -415,8 +442,6 @@ theorem
   let kAF := decompositionResidueField F AF
   let OmegaA := selectedResidueField A
   let OmegaF := selectedResidueField AF
-  let : Algebra.IsAlgebraic kA OmegaA :=
-    (decompositionResidueExtension_normal (K := F) A).toIsAlgebraic
   have hAcomap :
       A.comap (algebraMap F (SeparableClosure K)) = C := by
     change A.comap i.toRingHom =
@@ -531,7 +556,7 @@ theorem
 local fields and separable closures that carries the selected extension
 valuation ring to the selected extension valuation ring. -/
 theorem localResidueDegree_semilinear_conjugation
-    (K F : Type)
+    (K : Type u) (F : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -703,7 +728,7 @@ open _root_.ValuationTheory.DiscreteValuationField.Valuation (
 finite fixed field `F` to the original ambient separable closure identifies
 the two uniquely extended local valuation rings. -/
 theorem localSeparableValuationSubring_eq_comap_abstractFixedFieldEquiv
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
     (e : SeparableClosure (finiteFixedField K H) ≃ₐ[
@@ -774,7 +799,7 @@ canonically equivalent to the residue intermediate field attached to the
 finite fixing subgroup, compatibly with their embeddings into the selected
 residue field. -/
 private theorem exists_abstractFixedFieldResidueEquiv
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField (Gal(SeparableClosure K / K)))
     [FiniteDimensional K (finiteFixedField K H)]
@@ -906,7 +931,7 @@ private theorem exists_abstractFixedFieldResidueEquiv
   simp [bar]
 
 private theorem residueAbsoluteDegreeIn_eq_normalizedDegree_abstractFixedFieldEquiv
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     [FiniteDimensional K (finiteFixedField K H)]
@@ -1021,7 +1046,7 @@ the original ambient separable closure identifies its intrinsic local
 residue degree with the normalized degree on the corresponding abstract
 field. -/
 theorem localResidueDegree_eq_normalizedDegree_abstractFixedFieldEquiv
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField (Gal(SeparableClosure K/K)))
     (e : SeparableClosure (finiteFixedField K H) ≃ₐ[finiteFixedField K H] SeparableClosure K)
@@ -1094,7 +1119,7 @@ fixed-field comparison does not require the extension field itself to be
 definitionally a fixed-field subtype. -/
 theorem
     localResidueDegree_eq_normalizedDegree_finiteExtensionEquiv
-    (K F : Type)
+    (K : Type u) (F : Type v)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -1128,7 +1153,7 @@ theorem
               (AlgHom.fieldRange i)⟩
         let Bbase : Bases :=
           ⟨baseField G, le_baseField H₀⟩
-        let Q : Bases → Type := fun B =>
+        let Q : Bases → Type u := fun B =>
           B.1.toSubgroup ⧸ extensionSubgroup B.1 H₀ B.2
         have hBase : Bfix = Bbase := by
           apply Subtype.ext

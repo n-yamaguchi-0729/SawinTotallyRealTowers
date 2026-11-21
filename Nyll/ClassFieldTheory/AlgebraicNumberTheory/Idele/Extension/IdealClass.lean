@@ -6,15 +6,18 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.AdeleBaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
-public import Mathlib.NumberTheory.RamificationInertia.Valuation
+public import Mathlib.RingTheory.DedekindDomain.AdicValuation.Ramification
 public import Mathlib.RingTheory.ClassGroup.ExtendedHom
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.IdealMap
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.FieldInclusion
 
 /-!
 # Extension of ideles and ideal classes
@@ -31,6 +34,7 @@ ideal classes.
 @[expose] public section
 
 open scoped NumberField TensorProduct nonZeroDivisors
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -112,11 +116,13 @@ theorem localOrder_finitePlaceAdicCompletionMap
 
 namespace FractionalIdealGroup
 
+open ClassFieldTheory.NumberFieldFractionalIdealGroup
+
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Extension of nonzero fractional ideals along the inclusion of number
 fields. -/
 noncomputable def extension :
-    FractionalIdealGroup K →* FractionalIdealGroup L :=
+    NumberFieldFractionalIdealGroup K →* NumberFieldFractionalIdealGroup L :=
   Units.map
     (FractionalIdeal.extendedHom L (𝓞 L)).toMonoidHom
 
@@ -125,7 +131,7 @@ omit [FiniteDimensional K L] [IsGalois K L] in
 associated with the mapped integral ideal. -/
 theorem extension_prime_val
     (w : HeightOneSpectrum (𝓞 K)) :
-    ((extension K L (prime w) : FractionalIdealGroup L) :
+    ((extension K L (finitePrimeFractionalIdeal w) : NumberFieldFractionalIdealGroup L) :
       FractionalIdeal (nonZeroDivisors (𝓞 L)) L) =
       (w.asIdeal.map (algebraMap (𝓞 K) (𝓞 L)) :
         FractionalIdeal (nonZeroDivisors (𝓞 L)) L) := by
@@ -144,7 +150,7 @@ theorem count_extension_prime
     (W : HeightOneSpectrum (𝓞 L))
     (hW : _root_.finitePlaceBelow (K := K) W = w) :
     FractionalIdeal.count L W
-      ((extension K L (prime w) : FractionalIdealGroup L) :
+      ((extension K L (finitePrimeFractionalIdeal w) : NumberFieldFractionalIdealGroup L) :
         FractionalIdeal (nonZeroDivisors (𝓞 L)) L) =
       (w.asIdeal.ramificationIdx' W.asIdeal : ℤ) := by
   let : W.asIdeal.LiesOver w.asIdeal := by
@@ -154,7 +160,7 @@ theorem count_extension_prime
       w.asIdeal.map (algebraMap (𝓞 K) (𝓞 L)) ≠ ⊥ :=
     Ideal.map_ne_bot_of_ne_bot w.ne_bot
   rw [extension_prime_val,
-    FractionalIdeal.count_coe L W hmap,
+    FractionalIdeal.count_coeIdeal L W hmap,
     Ideal.count_associates_factors_eq
       hmap W.isPrime W.ne_bot]
   norm_cast
@@ -172,13 +178,13 @@ theorem count_extension_prime_ne
     (W : HeightOneSpectrum (𝓞 L))
     (hW : _root_.finitePlaceBelow (K := K) W ≠ w) :
     FractionalIdeal.count L W
-      ((extension K L (prime w) : FractionalIdealGroup L) :
+      ((extension K L (finitePrimeFractionalIdeal w) : NumberFieldFractionalIdealGroup L) :
         FractionalIdeal (nonZeroDivisors (𝓞 L)) L) = 0 := by
   have hmap :
       w.asIdeal.map (algebraMap (𝓞 K) (𝓞 L)) ≠ ⊥ :=
     Ideal.map_ne_bot_of_ne_bot w.ne_bot
   rw [extension_prime_val,
-    FractionalIdeal.count_coe L W hmap,
+    FractionalIdeal.count_coeIdeal L W hmap,
     Ideal.count_associates_factors_eq
       hmap W.isPrime W.ne_bot]
   norm_cast
@@ -202,7 +208,7 @@ theorem count_extension_factorization
     (W : HeightOneSpectrum (𝓞 L)) :
     FractionalIdeal.count L W
       ((extension K L
-          (factorization exps) : FractionalIdealGroup L) :
+          (factorization exps) : NumberFieldFractionalIdealGroup L) :
         FractionalIdeal (nonZeroDivisors (𝓞 L)) L) =
       ((_root_.finitePlaceBelow
           (K := K) W).asIdeal.ramificationIdx' W.asIdeal : ℤ) *
@@ -213,19 +219,20 @@ theorem count_extension_factorization
       (((extension K L)
         (exps.toAdd.prod fun v n =>
           primePowerHom v (Multiplicative.ofAdd n)) :
-          FractionalIdealGroup L) :
+          NumberFieldFractionalIdealGroup L) :
         FractionalIdeal (nonZeroDivisors (𝓞 L)) L) = _
   rw [Finsupp.prod, map_prod]
-  simp only [primePowerHom, MonoidHom.mk'_apply,
-    toAdd_ofAdd, map_zpow]
+  have hp (v : HeightOneSpectrum (𝓞 K)) (n : ℤ) :
+      primePowerHom v (Multiplicative.ofAdd n) = finitePrimeFractionalIdeal v ^ n := rfl
+  simp only [hp, map_zpow]
   have hcoe :
       (((∏ v ∈ exps.toAdd.support,
-          extension K L (prime v) ^ exps.toAdd v) :
-            FractionalIdealGroup L) :
+          extension K L (finitePrimeFractionalIdeal v) ^ exps.toAdd v) :
+            NumberFieldFractionalIdealGroup L) :
           FractionalIdeal (nonZeroDivisors (𝓞 L)) L) =
         ∏ v ∈ exps.toAdd.support,
-          (((extension K L (prime v) :
-            FractionalIdealGroup L) :
+          (((extension K L (finitePrimeFractionalIdeal v) :
+            NumberFieldFractionalIdealGroup L) :
               FractionalIdeal (nonZeroDivisors (𝓞 L)) L) ^
             exps.toAdd v) := by
     simp only [Units.coe_prod, Units.val_zpow_eq_zpow_val]
@@ -258,16 +265,16 @@ theorem count_extension_factorization
         simpa [h] using hv
   · intro v hv
     exact zpow_ne_zero _ (Units.ne_zero
-      (extension K L (prime v)))
+      (extension K L (finitePrimeFractionalIdeal v)))
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 /-- Extension multiplies the exponent at `W` by the ramification index
 over the place below `W`. -/
 theorem count_extension
-    (I : FractionalIdealGroup K)
+    (I : NumberFieldFractionalIdealGroup K)
     (W : HeightOneSpectrum (𝓞 L)) :
     FractionalIdeal.count L W
-      ((extension K L I : FractionalIdealGroup L) :
+      ((extension K L I : NumberFieldFractionalIdealGroup L) :
         FractionalIdeal (nonZeroDivisors (𝓞 L)) L) =
       ((_root_.finitePlaceBelow
           (K := K) W).asIdeal.ramificationIdx' W.asIdeal : ℤ) *
@@ -286,14 +293,14 @@ ideal class group. -/
 @[simp]
 theorem classGroup_mk_extension_prime
     (w : HeightOneSpectrum (𝓞 K)) :
-    ClassGroup.mk L (extension K L (prime w)) =
+    ClassGroup.mk L (extension K L (finitePrimeFractionalIdeal w)) =
       ClassGroup.extendedHom (𝓞 K) (𝓞 L)
-        (ClassGroup.mk K (prime w)) := by
+        (ClassGroup.mk K (finitePrimeFractionalIdeal w)) := by
   let w₀ : (Ideal (𝓞 K))⁰ :=
     ⟨w.asIdeal,
       mem_nonZeroDivisors_iff_ne_zero.mpr w.ne_bot⟩
   have hw :
-      prime w = FractionalIdeal.mk0 K w₀ := by
+      finitePrimeFractionalIdeal w = FractionalIdeal.mk0 K w₀ := by
     apply Units.ext
     rfl
   rw [hw, ClassGroup.mk_mk0,
@@ -309,7 +316,7 @@ omit [FiniteDimensional K L] [IsGalois K L] in
 the ideal class group. -/
 @[simp]
 theorem classGroup_mk_extension
-    (I : FractionalIdealGroup K) :
+    (I : NumberFieldFractionalIdealGroup K) :
     ClassGroup.mk L (extension K L I) =
       ClassGroup.extendedHom (𝓞 K) (𝓞 L)
         (ClassGroup.mk K I) := by
@@ -317,12 +324,12 @@ theorem classGroup_mk_extension
     factorization_surjective (K := K) I
   change
     ((ClassGroup.mk L).comp (extension K L))
-        (factorization exps) =
+        (exps.toAdd.prod fun v n => primePowerHom v (Multiplicative.ofAdd n)) =
       ((ClassGroup.extendedHom (𝓞 K) (𝓞 L)).comp
-        (ClassGroup.mk K)) (factorization exps)
-  rw [factorization, MonoidHom.mk'_apply, Finsupp.prod]
-  simp only [map_prod, primePowerHom, MonoidHom.mk'_apply,
-    toAdd_ofAdd, MonoidHom.comp_apply, map_zpow,
+        (ClassGroup.mk K)) (exps.toAdd.prod fun v n => primePowerHom v (Multiplicative.ofAdd n))
+  have hp (v : HeightOneSpectrum (𝓞 K)) (n : ℤ) :
+      primePowerHom v (Multiplicative.ofAdd n) = finitePrimeFractionalIdeal v ^ n := rfl
+  simp only [Finsupp.prod, map_prod, hp, map_zpow, MonoidHom.comp_apply,
     classGroup_mk_extension_prime]
 
 end FractionalIdealGroup
@@ -374,12 +381,18 @@ end ClassGroup
 
 namespace IdeleGroup
 
-/-- The usual extension map on ideles, constructed through the relative
-tensor-product presentation. -/
-noncomputable def extension :
-    IdeleGroup K →* IdeleGroup L :=
-  relativeIdeleBaseChangeMulEquiv.toMonoidHom.comp
-    (RelativeIdeleGroup.inclusion K L)
+/-- Scalar inclusion on standard ideles. -/
+noncomputable abbrev extension : IdeleGroup K →* IdeleGroup L :=
+  NumberField.IdeleGroup.fieldInclusion K L
+
+omit [IsGalois K L] in
+/-- The standard inclusion has the same tensor representative as the relative model. -/
+theorem extension_eq_relative (a : IdeleGroup K) :
+    extension K L a = relativeIdeleBaseChangeMulEquiv
+      (K := K) (L := L) (RelativeIdeleGroup.inclusion K L a) := by
+  rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits]
+  apply Units.ext
+  rfl
 
 omit [IsGalois K L] in
 theorem extension_infiniteComponent
@@ -392,8 +405,8 @@ theorem extension_infiniteComponent
         _root_.infinitePlaceBelow (K := K) W
       letI : W.1.LiesOver v.1 := ⟨rfl⟩
       Units.map
-        (NumberField.LiesOver.completionMap
-          (v := v) (w := W))
+        (AbsoluteValue.Completion.map
+          v.1 W.1)
         (infiniteComponent v a) := by
   let : Algebra.IsIntegral K L :=
     Algebra.IsIntegral.of_finite K L
@@ -404,14 +417,12 @@ theorem extension_infiniteComponent
   let : W.1.LiesOver v.1 := ⟨rfl⟩
   apply Units.ext
   change
-    (ContinuousMulEquiv.piUnits (extension K L a).1 W :
+    (ContinuousMulEquiv.piUnits (IdeleGroup.infinitePart (extension K L a)) W :
       W.Completion) = _
-  change
-    (ContinuousMulEquiv.piUnits
-      (_root_.relativeIdeleBaseChangeMulEquiv
-        (K := K) (L := L)
-        (RelativeIdeleGroup.inclusion K L a)).1 W :
-      W.Completion) = _
+  have he := congrArg (fun b : IdeleGroup L =>
+    (ContinuousMulEquiv.piUnits (IdeleGroup.infinitePart b) W : W.Completion))
+    (extension_eq_relative K L a)
+  refine he.trans ?_
   rw [_root_.relativeIdeleBaseChangeMulEquiv_infinite]
   let f :=
     _root_.relativeInfiniteTensorPiMulEquiv
@@ -435,8 +446,8 @@ theorem extension_infiniteComponent
         (K := K) (L := L) v
         ((infiniteComponent v a : v.Completion) ⊗ₜ[K] (1 : L))
         ⟨W, rfl⟩ =
-      NumberField.LiesOver.completionMap
-        (v := v) (w := W)
+      AbsoluteValue.Completion.map
+        v.1 W.1
         (infiniteComponent v a : v.Completion)
   simpa only [map_one, mul_one] using
     (_root_.infinitePlaceTensorRingEquivAbove_tmul
@@ -457,12 +468,10 @@ theorem extension_finiteComponent
           ⟨W, rfl⟩).toMonoidHom
         (finiteComponent
           (_root_.finitePlaceBelow (K := K) W) a) := by
-  change (extension K L a).2 W = _
-  rw [extension, MonoidHom.comp_apply]
-  change
-    (relativeIdeleBaseChangeMulEquiv
-      (K := K) (L := L)
-      (RelativeIdeleGroup.inclusion K L a)).2 W = _
+  change (IdeleGroup.finiteCoordinates (extension K L a)) W = _
+  have he := congrArg (fun b : IdeleGroup L => IdeleGroup.finiteCoordinates b W)
+    (extension_eq_relative K L a)
+  refine he.trans ?_
   rw [
     relativeIdeleBaseChangeMulEquiv_finite,
     _root_.relativeFiniteIdeleToFiniteIdele_apply,
@@ -510,27 +519,27 @@ theorem fractionalIdeal_extension
     fractionalIdeal (extension K L a) =
       FractionalIdealGroup.extension K L
         (fractionalIdeal a) := by
-  apply FractionalIdealGroup.ext_count
+  apply NumberFieldFractionalIdealGroup.ext_count
   intro W
   rw [FractionalIdealGroup.count_extension]
   change
     FractionalIdeal.count L W
-        (((FractionalIdealGroup.factorization (K := L))
+        (((NumberFieldFractionalIdealGroup.factorization (K := L))
           (FiniteIdeleGroup.valuationVector
-            (extension K L a).2) : FractionalIdealGroup L) :
+            (IdeleGroup.finiteCoordinates (extension K L a))) : NumberFieldFractionalIdealGroup L) :
           FractionalIdeal
             (nonZeroDivisors (𝓞 L)) L) =
       ((_root_.finitePlaceBelow
           (K := K) W).asIdeal.ramificationIdx' W.asIdeal : ℤ) *
         FractionalIdeal.count K
           (_root_.finitePlaceBelow (K := K) W)
-          (((FractionalIdealGroup.factorization (K := K))
-            (FiniteIdeleGroup.valuationVector a.2) :
-              FractionalIdealGroup K) :
+          (((NumberFieldFractionalIdealGroup.factorization (K := K))
+            (FiniteIdeleGroup.valuationVector (IdeleGroup.finiteCoordinates a)) :
+              NumberFieldFractionalIdealGroup K) :
             FractionalIdeal
               (nonZeroDivisors (𝓞 K)) K)
-  rw [FractionalIdealGroup.count_factorization,
-    FractionalIdealGroup.count_factorization]
+  rw [NumberFieldFractionalIdealGroup.count_factorization,
+    NumberFieldFractionalIdealGroup.count_factorization]
   exact extension_localOrder K L a W
 
 omit [IsGalois K L] in
@@ -574,56 +583,10 @@ theorem extension_principalIdele (x : Kˣ) :
     extension K L (principalIdele K x) =
       principalIdele L
         (Units.map (algebraMap K L).toMonoidHom x) := by
-  rw [extension, MonoidHom.comp_apply,
-    RelativeIdeleGroup.inclusion_principalIdele]
-  apply Prod.ext
-  · apply Units.ext
-    funext W
-    change
-      _root_.infinitePlaceTensorUnitsEquivAbove
-          (K := K) (L := L)
-          (_root_.infinitePlaceBelow (K := K) W)
-          ((_root_.relativeIdeleToLocalData
-            (K := K) (L := L)
-            (RelativeIdeleGroup.principalIdele K L
-              (Units.map (algebraMap K L).toMonoidHom x))).infinite
-              (_root_.infinitePlaceBelow (K := K) W))
-          ⟨W, rfl⟩ =
-        algebraMap L W.Completion
-          (algebraMap K L (x : K))
-    rw [_root_.relativeIdeleToLocalData_infinite]
-    rw [RelativeIdeleGroup.infiniteComponent_principalIdele]
-    rw [
-      _root_.infinitePlaceTensorUnitsEquivAbove_localFieldIdeleInclusion]
-    rfl
-  · change
-      (relativeIdeleBaseChangeMulEquiv
-        (K := K) (L := L)
-        (RelativeIdeleGroup.principalIdele K L
-          (Units.map (algebraMap K L).toMonoidHom x))).2 =
-        (principalIdele L
-          (Units.map (algebraMap K L).toMonoidHom x)).2
-    rw [relativeIdeleBaseChangeMulEquiv_finite]
-    apply RestrictedProduct.ext
-    intro W
-    rw [_root_.relativeFiniteIdeleToFiniteIdele_apply,
-      _root_.relativeFiniteTensorPiMulEquiv_apply]
-    change
-      _root_.finitePlaceTensorUnitsEquivAboveAdic
-          (K := K) (L := L)
-          (_root_.finitePlaceBelow (K := K) W)
-          ((_root_.relativeIdeleToLocalData
-            (K := K) (L := L)
-            (RelativeIdeleGroup.principalIdele K L
-              (Units.map (algebraMap K L).toMonoidHom x))).finite
-              (_root_.finitePlaceBelow (K := K) W))
-          ⟨W, rfl⟩ =
-        Units.map (FinitePlace.embedding (K := L) W)
-          (Units.map (algebraMap K L).toMonoidHom x)
-    rw [_root_.relativeIdeleToLocalData_finite]
-    rw [RelativeIdeleGroup.finiteComponent_principalIdele]
-    rw [
-      _root_.finitePlaceTensorUnitsEquivAboveAdic_localFieldIdeleInclusion]
+  rw [extension_eq_relative K L (principalIdele K x),
+    RelativeIdeleGroup.inclusion_principalIdele,
+    relativeIdeleBaseChangeMulEquiv_principalIdele]
+  rfl
 
 /-- Extension of ideles along the identity field extension is the
 identity homomorphism. -/
@@ -632,7 +595,7 @@ theorem extension_self :
     extension K K = MonoidHom.id (IdeleGroup K) := by
   apply MonoidHom.ext
   intro a
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext W
     change
@@ -645,15 +608,15 @@ theorem extension_self :
         (hv : v = W)
         [hov : W.1.LiesOver v.1] :
         Units.map
-            (NumberField.LiesOver.completionMap
-              (v := v) (w := W)).toMonoidHom
+            (AbsoluteValue.Completion.map
+              v.1 W.1).toMonoidHom
             (infiniteComponent v a) =
           infiniteComponent W a := by
       subst v
       apply Units.ext
       change
-        NumberField.LiesOver.completionMap
-            (v := W) (w := W)
+        AbsoluteValue.Completion.map
+            W.1 W.1
             (infiniteComponent W a : W.Completion) =
           (infiniteComponent W a : W.Completion)
       exact
@@ -700,20 +663,20 @@ theorem extension_self :
         rfl
         (_root_.finitePlaceBelow_self (K := K) W)
 
-/-- Extension of ideles is functorial in a tower of finite Galois
+omit [IsGalois K L] in
+/-- Extension of ideles is functorial in a tower of finite field
 extensions. -/
 theorem extension_comp
     (M : Type w)
     [Field M] [NumberField M]
     [Algebra K M] [Algebra M L]
     [IsScalarTower K M L]
-    [FiniteDimensional K M] [FiniteDimensional M L]
-    [IsGalois K M] [IsGalois M L] :
+    [FiniteDimensional K M] [FiniteDimensional M L] :
     (extension M L).comp (extension K M) =
       extension K L := by
   apply MonoidHom.ext
   intro a
-  apply Prod.ext
+  apply IdeleGroup.ext_parts
   · apply ContinuousMulEquiv.piUnits.injective
     funext W
     change
@@ -734,26 +697,26 @@ theorem extension_comp
         [hWV : W.1.LiesOver V.1]
         [hWv : W.1.LiesOver v.1] :
         Units.map
-            (NumberField.LiesOver.completionMap
-              (v := V) (w := W)).toMonoidHom
+            (AbsoluteValue.Completion.map
+              V.1 W.1).toMonoidHom
             (Units.map
-              (NumberField.LiesOver.completionMap
-                (v := v') (w := V)).toMonoidHom
+              (AbsoluteValue.Completion.map
+                v'.1 V.1).toMonoidHom
               (infiniteComponent v' a)) =
           Units.map
-            (NumberField.LiesOver.completionMap
-              (v := v) (w := W)).toMonoidHom
+            (AbsoluteValue.Completion.map
+              v.1 W.1).toMonoidHom
             (infiniteComponent v a) := by
       subst v'
       apply Units.ext
       change
-        NumberField.LiesOver.completionMap
-            (v := V) (w := W)
-            (NumberField.LiesOver.completionMap
-              (v := v) (w := V)
+        AbsoluteValue.Completion.map
+            V.1 W.1
+            (AbsoluteValue.Completion.map
+              v.1 V.1
               (infiniteComponent v a : v.Completion)) =
-          NumberField.LiesOver.completionMap
-            (v := v) (w := W)
+          AbsoluteValue.Completion.map
+            v.1 W.1
             (infiniteComponent v a : v.Completion)
       exact
         _root_.infinitePlaceCompletionMap_comp_apply
@@ -819,29 +782,17 @@ theorem extension_comp
 
 end IdeleGroup
 
-/-- The usual extension map on idele classes. -/
-noncomputable def ideleClassExtension :
+/-- The usual extension map on the Mathlib idele classes. -/
+noncomputable abbrev ideleClassExtension :
     IdeleClassGroup K →* IdeleClassGroup L :=
-  QuotientGroup.map
-    (IdeleGroup.principalSubgroup K)
-    (IdeleGroup.principalSubgroup L)
-    (IdeleGroup.extension K L)
-    (by
-      rintro _ ⟨x, rfl⟩
-      exact
-        ⟨Units.map (algebraMap K L).toMonoidHom x,
-          (IdeleGroup.extension_principalIdele K L x).symm⟩)
+  NumberField.IdeleClassGroup.fieldInclusion K L
 
-omit [IsGalois K L] in
+omit [FiniteDimensional K L] [IsGalois K L] in
 @[simp]
 theorem ideleClassExtension_mk (a : IdeleGroup K) :
-    ideleClassExtension K L
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
-        (IdeleGroup.extension K L a) :=
-  rfl
+    ideleClassExtension K L (IdeleGroup.toStandardClass K a) =
+      IdeleGroup.toStandardClass L (IdeleGroup.extension K L a) :=
+  NumberField.IdeleClassGroup.fieldInclusion_mk K L a
 
 /-- Extension of idele classes along the identity field extension is
 the identity homomorphism. -/
@@ -851,51 +802,45 @@ theorem ideleClassExtension_self :
       MonoidHom.id (IdeleClassGroup K) := by
   apply MonoidHom.ext
   intro c
-  refine QuotientGroup.induction_on c ?_
+  refine IdeleGroup.toStandardClass_induction_on K c ?_
   intro a
   change
     ideleClassExtension K K
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a
+        (IdeleGroup.toStandardClass K a) =
+      IdeleGroup.toStandardClass K a
   rw [ideleClassExtension_mk,
     IdeleGroup.extension_self]
   rfl
 
+omit [IsGalois K L] in
 /-- Extension of idele classes is functorial in a tower of finite
-Galois extensions. -/
+field extensions. -/
 theorem ideleClassExtension_comp
     (M : Type w)
     [Field M] [NumberField M]
     [Algebra K M] [Algebra M L]
     [IsScalarTower K M L]
-    [FiniteDimensional K M] [FiniteDimensional M L]
-    [IsGalois K M] [IsGalois M L] :
+    [FiniteDimensional K M] [FiniteDimensional M L] :
     (ideleClassExtension M L).comp
         (ideleClassExtension K M) =
       ideleClassExtension K L := by
   apply MonoidHom.ext
   intro c
-  refine QuotientGroup.induction_on c ?_
+  refine IdeleGroup.toStandardClass_induction_on K c ?_
   intro a
   change
     ideleClassExtension M L
         (ideleClassExtension K M
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a)) =
+          (IdeleGroup.toStandardClass K a)) =
       ideleClassExtension K L
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a)
+        (IdeleGroup.toStandardClass K a)
   rw [ideleClassExtension_mk,
     ideleClassExtension_mk,
     ideleClassExtension_mk]
   change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
+    IdeleGroup.toStandardClass L
         (((IdeleGroup.extension M L).comp
           (IdeleGroup.extension K M)) a) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L)
+      IdeleGroup.toStandardClass L
         (IdeleGroup.extension K L a)
   rw [IdeleGroup.extension_comp]

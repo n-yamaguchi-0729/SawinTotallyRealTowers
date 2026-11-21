@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.InfinitePlaceTensorNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNormComponents
@@ -36,7 +37,8 @@ local homomorphism, is trivial.
 @[expose] public section
 
 open scoped BigOperators IsMulCommutative NumberField
-  NumberField.LiesOver
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 open NumberField IsDedekindDomain
 open IdeleGroup RelativeIdeleGroup
 
@@ -167,6 +169,24 @@ noncomputable def chosenInfinitePlaceArtinMonoidHom
       (L := L) v)
     (chosenInfinitePlaceAbove_comap
       (L := L) v)
+
+omit [NumberField K] [NumberField L] in
+/-- Every archimedean Artin value has square one. -/
+theorem chosenInfinitePlaceArtinMonoidHom_sq
+    (v : InfinitePlace K) (x : v.Completionˣ) :
+    chosenInfinitePlaceArtinMonoidHom (K := K) (L := L) v x ^ 2 = 1 := by
+  let w := chosenInfinitePlaceAbove (L := L) v
+  have hw : w.comap (algebraMap K L) = v := chosenInfinitePlaceAbove_comap (L := L) v
+  change infinitePlaceArtinMonoidHomOfPlace v w hw x ^ 2 = 1
+  by_cases hunramified : w.IsUnramified K
+  · rw [infinitePlaceArtinMonoidHomOfPlace_eq_one_of_isUnramified v w hw hunramified]
+    exact one_pow _
+  · have hv : v.IsReal := hw ▸ (show w.IsRamified K from hunramified).isReal
+    rw [infinitePlaceArtinMonoidHomOfPlace_apply_of_isRamified v w hw hunramified hv]
+    split_ifs
+    · exact one_pow _
+    · rw [pow_two]
+      exact ramifiedInfinitePlaceConjugation_sq w hunramified
 
 omit [NumberField K] [NumberField L] in
 /-- At a ramified real place, the actual chosen local Artin symbol of
@@ -484,7 +504,7 @@ theorem infinitePlace_normUnits_real_complex_pos
     ext z
     simp [eReal, eComplex]
   have hNorm :=
-    LocalClassFieldTheory.normUnits_map_ringEquiv
+    LocalFieldTheory.normUnits_map_ringEquiv
       eReal eComplex hCompatible x
   have hNormVal := congrArg Units.val hNorm
   change
@@ -555,7 +575,7 @@ theorem infinitePlace_normUnits_real_real
     Units.map_id,
     MonoidHom.id_apply
   ] using
-    LocalClassFieldTheory.normUnits_map_ringEquiv
+    LocalFieldTheory.normUnits_map_ringEquiv
       eBase eExtension hCompatible x
 
 omit [NumberField L] in
@@ -960,6 +980,27 @@ theorem chosenInfinitePlaceArtinMonoidHom_continuous
       (LocalClassFieldTheory.realUnitsSign_continuous.comp hMap)
 
 omit [NumberField K] [NumberField L] in
+/-- The archimedean Artin symbol at a complex place is trivial. -/
+theorem chosenInfinitePlaceArtinMonoidHom_eq_one_of_isComplex
+    (v : InfinitePlace K) (hv : v.IsComplex) (x : v.Completionˣ) :
+    chosenInfinitePlaceArtinMonoidHom (K := K) (L := L) v x = 1 := by
+  let w := chosenInfinitePlaceAbove (L := L) v
+  have hw : w.comap (algebraMap K L) = v :=
+    chosenInfinitePlaceAbove_comap (L := L) v
+  have hwUnramified : w.IsUnramified K := by
+    apply InfinitePlace.isUnramified_iff.mpr
+    apply Or.inr
+    rw [hw]
+    exact hv
+  have hwUnramified' :
+      (chosenInfinitePlaceAbove (L := L) v).IsUnramified K := by
+    simpa only [w] using hwUnramified
+  unfold chosenInfinitePlaceArtinMonoidHom
+  unfold infinitePlaceArtinMonoidHomOfPlace
+  rw [dite_eq_left hwUnramified']
+  rfl
+
+omit [NumberField K] [NumberField L] in
 /-- A positive element at a real place has trivial archimedean Artin
 symbol. -/
 theorem chosenInfinitePlaceArtinMonoidHom_eq_one_of_real_pos
@@ -1161,7 +1202,7 @@ theorem chosenInfinitePlaceArtinMonoidHom_ker
         refine ⟨eComplexUnits.symm z, ?_⟩
         simpa [completionUnitsEquivRealUnits,
           eComplexUnits] using
-          (LocalClassFieldTheory.normUnits_map_ringEquiv
+          (LocalFieldTheory.normUnits_map_ringEquiv
             eRealField.symm eComplexField.symm
             hCompletionCompatibleSymm z).symm
       · rintro ⟨z, rfl⟩
@@ -1183,7 +1224,7 @@ theorem chosenInfinitePlaceArtinMonoidHom_ker
               (Units.mapEquiv eComplexField.symm.toMulEquiv
                 (eComplexUnits z)) := by
               simpa [completionUnitsEquivRealUnits] using
-                LocalClassFieldTheory.normUnits_map_ringEquiv
+                LocalFieldTheory.normUnits_map_ringEquiv
                   eRealField.symm eComplexField.symm
                   hCompletionCompatibleSymm
                   (eComplexUnits z)

@@ -134,8 +134,7 @@ theorem henselFactorization_correction_congruence_symm_span_singleton
   have hneg :
       -((A - B).coeff i) ∈ Ideal.span ({π} : Set R) :=
     (Ideal.span ({π} : Set R)).neg_mem (hcong i)
-  convert hneg using 1
-  simp [Polynomial.coeff_sub]
+  simpa only [← Polynomial.coeff_neg, neg_sub] using hneg
 
 /-- the algebraic power-improvement step: if
 `f - g h = π^n f_n` and the chosen correction satisfies

@@ -49,13 +49,10 @@ universe u v
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance closedKernelFamilyCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
 
-local instance kernelFamilyH1Module
-    {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := H)) := continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Independent invariant characters of a closed subgroup in the Frattini subgroup
 are bounded in number by the quotient's degree-two cohomology dimension. -/

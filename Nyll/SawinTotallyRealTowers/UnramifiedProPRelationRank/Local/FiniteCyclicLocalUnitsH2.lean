@@ -68,10 +68,10 @@ noncomputable def finiteCyclicLocalUnitsH2IsoAbelianizedArtin
     (g : Gal(L/K))
     (hg : ∀ x : Gal(L / K), x ∈ Subgroup.zpowers g) :
     groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2 ≅
-      ModuleCat.of Int (Additive (Abelianization (Gal(L / K)))) := by
+      ModuleCat.of Int (Additive (Group.Abelianization (Gal(L / K)))) := by
   let eArtin :
       Additive (NormQuotient K L) ≃+
-        Additive (Abelianization (Gal(L / K))) :=
+        Additive (Group.Abelianization (Gal(L / K))) :=
     (abelianizationEquivNormQuotient K L).symm.toAdditive
   exact
     finiteCyclicUnitsH2IsoNormQuotient K L g hg ≪≫
@@ -93,9 +93,9 @@ noncomputable def finiteCyclicLocalUnitsH2AddEquivGalois
     CyclicCohomology.isCyclic_of_generator g hg
   letI : CommGroup (Gal(L / K)) := IsCyclic.commGroup
   let eCyclic :
-      Additive (Abelianization (Gal(L / K))) ≃+
+      Additive (Group.Abelianization (Gal(L / K))) ≃+
         Additive (Gal(L / K)) :=
-    (Abelianization.equivOfComm (H := Gal(L / K))).symm.toAdditive
+    (Group.Abelianization.equivOfComm (H := Gal(L / K))).symm.toAdditive
   exact
     (finiteCyclicLocalUnitsH2IsoAbelianizedArtin K L g hg).toLinearEquiv.toAddEquiv.trans
       eCyclic

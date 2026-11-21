@@ -29,6 +29,20 @@ namespace ClassFormation
 
 noncomputable section
 
+/-- The canonical homomorphism from integers into profinite integers is injective. -/
+theorem zHat_intCast_injective : Function.Injective (Int.cast : ℤ → ZHat) := by
+  intro a b hab
+  apply sub_eq_zero.mp
+  have hz : ((a - b : ℤ) : ZHat) = 0 := by rw [Int.cast_sub, hab, sub_self]
+  let n := (a - b).natAbs + 1
+  have hn : 0 < n := Nat.succ_pos _
+  have hr : ((a - b : ℤ) : ZMod n) = 0 := by
+    have h := congrArg (zHatReduction n hn) hz
+    simpa only [zHatReduction_intCast, map_zero] using h
+  apply Int.eq_zero_of_dvd_of_natAbs_lt_natAbs
+    ((ZMod.intCast_zmod_eq_zero_iff_dvd (a - b) n).mp hr)
+  simpa only [Int.natAbs_natCast] using Nat.lt_succ_self (a - b).natAbs
+
 /-- Distinct natural powers of the canonical positive generator of `ℤ̂` are
 distinct.  This common exponent-uniqueness fact is independent of the later
 reciprocity constructions that use it. -/

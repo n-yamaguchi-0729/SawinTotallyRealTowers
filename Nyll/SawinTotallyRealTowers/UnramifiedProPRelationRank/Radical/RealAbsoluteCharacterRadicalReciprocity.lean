@@ -31,6 +31,7 @@ public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 public import Mathlib.Topology.Instances.ZMod
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Real-split quadratic characters annihilate the finite-support radical
@@ -53,8 +54,7 @@ open ClassFieldTower.ProP KummerTheory
 
 variable (F : Type) [Field F] [NumberField F]
 
-local instance realAbsoluteCanonicalZModAddCommGroup : AddCommGroup (ZMod 2) :=
-  (ZMod.instField 2).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 private theorem two_finite_restriction_principal_radical
     (S : Finset (HeightOneSpectrum (𝓞 F)))

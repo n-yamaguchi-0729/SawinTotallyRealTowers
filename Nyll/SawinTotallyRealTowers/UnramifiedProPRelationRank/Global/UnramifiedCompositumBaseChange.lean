@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
 public import Mathlib.FieldTheory.Galois.Basic
@@ -24,6 +26,8 @@ is supplied by the concrete compositum construction at the application.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open NumberField
 open scoped NumberField
@@ -81,6 +85,7 @@ theorem compositumBaseChange_finitePlaceUnramifiedness
   let r := IntermediateField.restrictRestrictAlgEquivMapHom K A B M
   have hr : Function.Injective r :=
     compositumBaseChange_restriction_injective K A B M hsup
+  apply (IsUnramifiedAtFinitePlaces.iff_forall_above B M).2
   intro Q
   let _ : Q.asIdeal.IsPrime := Q.isPrime
   let _ : Q.asIdeal.IsMaximal := Q.isPrime.isMaximal Q.ne_bot
@@ -95,7 +100,7 @@ theorem compositumBaseChange_finitePlaceUnramifiedness
   let _ : QA.IsMaximal := (inferInstance : QA.IsPrime).isMaximal hQA0
   have hI : HilbertRamification.Dedekind.inertiaGroup QA Gal(A / K) = ⊥ :=
     HilbertRamification.Dedekind.inertiaGroup_eq_bot_of_isUnramifiedAt QA
-      (hA ⟨QA, inferInstance, hQA0⟩)
+      (hA.atPrime ⟨QA, inferInstance, hQA0⟩)
   rw [← Subgroup.mem_bot, ← hI]
   rw [HilbertRamification.Dedekind.mem_inertiaGroup_iff]
   intro x

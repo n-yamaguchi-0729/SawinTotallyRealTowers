@@ -231,6 +231,7 @@ theorem universalNormDescent_fixedTower_solution
       below := hTS
       normal := hTSnormal
       finite := tower.finiteQuotient
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg
       generator := g
       generates := hg
       unramified := hTSunramified }

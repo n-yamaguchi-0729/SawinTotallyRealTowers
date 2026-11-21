@@ -33,18 +33,7 @@ universe u
 variable {p : ℕ} [Fact p.Prime]
 variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
 
-local instance finiteStageKernelTargetTopology
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    TopologicalSpace
-      ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) := ⊥
-
-local instance finiteStageKernelTargetDiscrete
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    DiscreteTopology
-      ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) :=
-  discreteTopology_bot _
+attribute [local instance] finiteStageTargetTopology finiteStageTargetDiscrete
 
 theorem finiteStageQuotientMap_out
     (R : ClosedSubgroup F) [R.Normal]
@@ -175,7 +164,7 @@ theorem exists_continuous_extension_of_inflatedFiniteTransgressionClass_eq_zero
     (hpull : χbar.comp (finiteStageImageMap R U) = χ.toMonoidHom)
     (hzero : inflatedFiniteTransgressionClass R U χbar hχbar = 0) :
     ∃ ψ : F →ₜ* Multiplicative (ZMod p),
-      ψ.comp (subgroupInclusion (R : Subgroup F)) = χ := by
+      ψ.comp (ProCGroups.ContinuousMonoidHom.subtype (R : Subgroup F)) = χ := by
   obtain ⟨c, hc⟩ :=
     exists_primitive_of_inflatedFiniteTransgressionClass_eq_zero
       R U χbar hχbar hzero

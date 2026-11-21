@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.PolynomialIdeal
+
 public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveTorsion
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.RamificationAddVal
 public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.AddVal
@@ -496,15 +498,6 @@ private theorem
         chosenStandardLubinTatePrimitiveRoot hπ n
   exact standardLubinTateLevelGenerator_coe hπ n
 
-private theorem polynomial_eval₂_mem_ideal_of_coeff_mem
-    {R S : Type*} [CommSemiring R] [CommSemiring S]
-    (f : R →+* S) (I : Ideal S) (P : Polynomial R) (z : S)
-    (hcoeff : ∀ i, f (P.coeff i) ∈ I) :
-    P.eval₂ f z ∈ I := by
-  rw [Polynomial.eval₂_eq_sum_range]
-  exact Ideal.sum_mem _ fun i _ =>
-    Ideal.mul_mem_right (z ^ i) I (hcoeff i)
-
 /-- The integral primitive polynomial annihilates the primitive point in the
 valuation ring of the standard finite level. -/
 theorem standardLubinTatePrimitivePointInteger_aeval
@@ -588,7 +581,7 @@ private theorem
       congrArg (fun S : Polynomial F.residueField => S.coeff i) hRmap
   have hR_eval_mem_map :
       R.eval₂ j lambda ∈ Ideal.map j p :=
-    polynomial_eval₂_mem_ideal_of_coeff_mem j (Ideal.map j p) R lambda
+    Polynomial.eval₂_mem_ideal_of_coeff_mem j (Ideal.map j p) R lambda
       (fun i => Ideal.mem_map_of_mem j (hRcoeff i))
   have hmap :
       Ideal.map j p = P ^ e := by
@@ -631,7 +624,7 @@ private theorem
     exact hRcoeff (i + 1)
   let tail := R.divX.eval₂ j lambda
   have htail_mem_map : tail ∈ Ideal.map j p :=
-    polynomial_eval₂_mem_ideal_of_coeff_mem j (Ideal.map j p) R.divX
+    Polynomial.eval₂_mem_ideal_of_coeff_mem j (Ideal.map j p) R.divX
       lambda (fun i => Ideal.mem_map_of_mem j (hdivCoeff i))
   have htail_mem_pow : tail ∈ P ^ e := by
     rw [← hmap]

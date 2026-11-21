@@ -48,7 +48,7 @@ private theorem absoluteMuPLinearEquivZMod_symm_coe_intCast
       ((hzetaUnit.zmodEquivZPowers (i : ZMod p)).toMul : Kˣ) =
     finiteKummerCoefficientRootUnit K (AlgebraicClosure K)
       p hmu ^ i
-  rw [hzetaUnit.zmodEquivZPowers_apply_coe_int]
+  rw [hzetaUnit.zmodEquivZPowers_apply_intCast]
   change Units.map (algebraMap K (AlgebraicClosure K)).toMonoidHom
       ((hzeta.isUnit p.ne_zero).unit' ^ i) = _
   rw [map_zpow]

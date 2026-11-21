@@ -125,16 +125,16 @@ theorem exists_finiteAbelianNormSubgroup_eq_of_normOpen
     (H : OpenFiniteIndexSubgroup K)
     (hnormOpen :
       IsNormOpen (intrinsicAbsoluteUnits K) (intrinsicAbstractBase K)
-        ((H.subgroup.toAddSubgroup.map
+        ((H.1.toSubgroup.toAddSubgroup.map
           (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).toAddMonoidHom :
           AddSubgroup (ambientFixedAddSubgroup (intrinsicAbsoluteUnits K)
             (intrinsicAbstractBase K))) : Set _)) :
     ∃ L, finiteAbelianNormSubgroupMap K L = H := by
-  let : H.subgroup.FiniteIndex := H.finiteIndex
+  let : H.1.toSubgroup.FiniteIndex := H.2
   let Habs : AddSubgroup
       (ambientFixedAddSubgroup (intrinsicAbsoluteUnits K)
         (intrinsicAbstractBase K)) :=
-    H.subgroup.toAddSubgroup.map
+    H.1.toSubgroup.toAddSubgroup.map
       (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).toAddMonoidHom
   have hopen :
       IsNormOpen (intrinsicAbsoluteUnits K) (intrinsicAbstractBase K)
@@ -148,7 +148,7 @@ theorem exists_finiteAbelianNormSubgroup_eq_of_normOpen
       (separableClosureUnits_isClassFormation K)
       (intrinsicFiniteAbstractBase K) Hopen
   refine ⟨L, ?_⟩
-  apply OpenFiniteIndexSubgroup.ext
+  apply OpenFiniteIndexGroupSubgroup.ext
   have habs : L.normSubgroup (intrinsicAbsoluteUnits K) = Habs :=
     congrArg Subtype.val hL
   have hmapped := congrArg
@@ -163,7 +163,7 @@ theorem exists_finiteAbelianNormSubgroup_eq_of_normOpen
   rw [map_finiteAbelianNormSubgroup_eq_additiveNormSubgroup] at hmapped
   have hcancel :
       Habs.map (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K)).symm.toAddMonoidHom =
-        H.subgroup.toAddSubgroup := by
+        H.1.toSubgroup.toAddSubgroup := by
     ext x
     constructor
     · rintro ⟨y, ⟨z, hz, rfl⟩, rfl⟩
@@ -176,7 +176,7 @@ theorem exists_finiteAbelianNormSubgroup_eq_of_normOpen
   intro x
   change Additive.ofMul x ∈ additiveNormSubgroup K
       (abstractFixedField K (SeparableClosure K) L.field) ↔
-    Additive.ofMul x ∈ H.subgroup.toAddSubgroup
+    Additive.ofMul x ∈ H.1.toSubgroup.toAddSubgroup
   exact Iff.of_eq (congrArg
     (fun S : AddSubgroup (Additive Kˣ) => Additive.ofMul x ∈ S) hmapped)
 
@@ -191,9 +191,9 @@ theorem finiteAbelianNormSubgroupMap_surjective_of_normOpen
             (intrinsicAbstractBase K))) : Set _)) :
     Function.Surjective (finiteAbelianNormSubgroupMap K) := by
   intro H
-  let : H.subgroup.FiniteIndex := H.finiteIndex
+  let : H.1.toSubgroup.FiniteIndex := H.2
   apply exists_finiteAbelianNormSubgroup_eq_of_normOpen K H
-  exact hnormOpen H.subgroup
+  exact hnormOpen H.1.toSubgroup
 
 omit [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K] in

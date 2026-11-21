@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.OpenFiniteIndexSubgroup
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntrinsicAbsoluteData
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteAbelianClassification
@@ -32,43 +33,11 @@ namespace LocalClassFieldTheory
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation LocalClassFieldTheory
 
-/-- An open finite-index subgroup of the ordinary topological group `Kˣ`.
-
-This is a genuine public object rather than a transparent subtype alias: its
-topological and finite-index contracts remain available without exposing a
-particular nested-pair representation. -/
-structure OpenFiniteIndexSubgroup
-    (K : Type) [Field K] [TopologicalSpace K] where
-  /-- The underlying subgroup of field units. -/
-  subgroup : Subgroup Kˣ
-  /-- The underlying subgroup is open in the unit-group topology. -/
-  isOpen : IsOpen (subgroup : Set Kˣ)
-  /-- The underlying subgroup has finite index. -/
-  finiteIndex : subgroup.FiniteIndex
-
-namespace OpenFiniteIndexSubgroup
-
-variable {K : Type} [Field K] [TopologicalSpace K]
-
-/-- Provides this instance. -/
-instance : Coe (OpenFiniteIndexSubgroup K) (Subgroup Kˣ) :=
-  ⟨OpenFiniteIndexSubgroup.subgroup⟩
-
-/-- States the theorem `ext`. -/
-@[ext]
-theorem ext {H H' : OpenFiniteIndexSubgroup K}
-    (h : H.subgroup = H'.subgroup) : H = H' := by
-  cases H
-  cases H'
-  cases h
-  rfl
-
-/-- Provides this instance. -/
-instance : PartialOrder (OpenFiniteIndexSubgroup K) :=
-  PartialOrder.lift OpenFiniteIndexSubgroup.subgroup
-    (fun _ _ h ↦ OpenFiniteIndexSubgroup.ext h)
-
-end OpenFiniteIndexSubgroup
+/-- The internal local-existence interface uses the same open-subgroup
+carrier as the public classification. -/
+abbrev OpenFiniteIndexSubgroup
+    (K : Type u) [Field K] [TopologicalSpace K] :=
+  ClassFieldTheory.OpenFiniteIndexSubgroup K
 
 /-- Normality over the abstract base fixing group makes the represented
 fixed field Galois over the concrete local base field. -/

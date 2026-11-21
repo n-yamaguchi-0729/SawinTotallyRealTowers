@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
+public import Nyll.ClassFieldTheory.Definitions.ConductorsAndRayClassFields.RayClassModulus
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 
 /-!
@@ -29,10 +30,6 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 namespace RayClass
-
-/-- A real infinite place of a number field. -/
-abbrev RealPlace (K : Type*) [Field K] [NumberField K] :=
-  {v : InfinitePlace K // v.IsReal}
 
 /-- A ray modulus consists of its finite part and the selected real places
 at which the positivity condition is imposed. -/
@@ -329,21 +326,21 @@ theorem infiniteCongruenceSubgroup_narrowOfFinite (f : FiniteModulus K) :
 /-- The idèle congruence subgroup attached to a full ray modulus. -/
 def ideleCongruenceSubgroup (m : Modulus K) :
     Subgroup (IdeleGroup K) :=
-  m.infiniteCongruenceSubgroup.prod
+  IdeleGroup.partsSubgroup m.infiniteCongruenceSubgroup
     (finiteCongruenceSubgroup m.finitePart)
 
 @[simp]
 theorem mem_ideleCongruenceSubgroup_iff
     (m : Modulus K) (a : IdeleGroup K) :
     a ∈ m.ideleCongruenceSubgroup ↔
-      a.1 ∈ m.infiniteCongruenceSubgroup ∧
-        a.2 ∈ finiteCongruenceSubgroup m.finitePart :=
+      (IdeleGroup.infinitePart a) ∈ m.infiniteCongruenceSubgroup ∧
+        (IdeleGroup.finiteCoordinates a) ∈ finiteCongruenceSubgroup m.finitePart :=
   Iff.rfl
 
 /-- Selecting every real place recovers the narrow idèle congruence subgroup. -/
 theorem ideleCongruenceSubgroup_narrowOfFinite (f : FiniteModulus K) :
     (narrowOfFinite f).ideleCongruenceSubgroup =
-      (narrowInfiniteCongruenceSubgroup (K := K)).prod
+      IdeleGroup.partsSubgroup (narrowInfiniteCongruenceSubgroup (K := K))
         (finiteCongruenceSubgroup f) := by
   simp only [ideleCongruenceSubgroup, finitePart_narrowOfFinite]
   rw [infiniteCongruenceSubgroup_narrowOfFinite]
@@ -351,32 +348,58 @@ theorem ideleCongruenceSubgroup_narrowOfFinite (f : FiniteModulus K) :
 /-- The ray congruence subgroup of the idèle class group attached to a full
 modulus. -/
 def congruenceSubgroup (m : Modulus K) :
-    Subgroup (IdeleClassGroup K) :=
+    Subgroup (NumberField.IdeleClassGroup (𝓞 K) K) :=
   Subgroup.map
-    (QuotientGroup.mk' (IdeleGroup.principalSubgroup K))
+    (IdeleGroup.toStandardClass K)
     (m.ideleCongruenceSubgroup ⊔ IdeleGroup.principalSubgroup K)
-
-/-- The full ray congruence subgroup is normal in the idèle class group. -/
-instance congruenceSubgroup_normal (m : Modulus K) :
-    m.congruenceSubgroup.Normal := by
-  let : IsMulCommutative (IdeleClassGroup K) := ⟨⟨fun a b => mul_comm a b⟩⟩
-  exact Subgroup.normal_of_isMulCommutative _
 
 end Modulus
 
 /-- The ray class group attached to a full modulus. -/
 abbrev RayClassGroup (m : Modulus K) :=
-  IdeleClassGroup K ⧸ m.congruenceSubgroup
+  NumberField.IdeleClassGroup (𝓞 K) K ⧸ m.congruenceSubgroup
+
+/-- The projection to ray classes kills exactly the join of congruence and principal idèles. -/
+theorem rayClassProjection_ker (m : Modulus K) :
+    ((QuotientGroup.mk' m.congruenceSubgroup).comp (IdeleGroup.toStandardClass K)).ker =
+      m.ideleCongruenceSubgroup ⊔ IdeleGroup.principalSubgroup K := by
+  rw [← MonoidHom.comap_ker, QuotientGroup.ker_mk', Modulus.congruenceSubgroup]
+  apply Subgroup.comap_map_eq_self
+  rw [IdeleGroup.toStandardClass_ker]
+  exact le_sup_right
 
 /-- The ray class group is equivalently the idèle group modulo the product
 of its congruence subgroup with the principal idèles. -/
 def rayClassGroupEquivIdeleQuotient (m : Modulus K) :
     RayClassGroup m ≃*
       IdeleGroup K ⧸
-        (m.ideleCongruenceSubgroup ⊔ IdeleGroup.principalSubgroup K) :=
-  QuotientGroup.quotientQuotientEquivQuotient
-    (IdeleGroup.principalSubgroup K)
-    (m.ideleCongruenceSubgroup ⊔ IdeleGroup.principalSubgroup K)
-    le_sup_right
+        (m.ideleCongruenceSubgroup ⊔ IdeleGroup.principalSubgroup K) := by
+  let f := (QuotientGroup.mk' m.congruenceSubgroup).comp (IdeleGroup.toStandardClass K)
+  let e := QuotientGroup.quotientKerEquivOfSurjective f
+    ((QuotientGroup.mk'_surjective m.congruenceSubgroup).comp
+      (IdeleGroup.toStandardClass_surjective K))
+  exact e.symm.trans (QuotientGroup.quotientMulEquivOfEq (rayClassProjection_ker m))
+
+/-- The idèle-class/full-idèle ray-class equivalence evaluates on a
+double quotient representative by forgetting the intermediate
+principal-idèle quotient. -/
+@[simp]
+theorem rayClassGroupEquivIdeleQuotient_mk_mk
+    (m : RayClass.Modulus K)
+    (a : IdeleGroup K) :
+    RayClass.rayClassGroupEquivIdeleQuotient m
+        (QuotientGroup.mk'
+          (RayClass.Modulus.congruenceSubgroup m)
+          (IdeleGroup.toStandardClass K a)) =
+      QuotientGroup.mk'
+        (RayClass.Modulus.ideleCongruenceSubgroup m ⊔
+          IdeleGroup.principalSubgroup K) a := by
+  let f := (QuotientGroup.mk' m.congruenceSubgroup).comp (IdeleGroup.toStandardClass K)
+  let e := QuotientGroup.quotientKerEquivOfSurjective f
+    ((QuotientGroup.mk'_surjective m.congruenceSubgroup).comp
+      (IdeleGroup.toStandardClass_surjective K))
+  change QuotientGroup.quotientMulEquivOfEq (rayClassProjection_ker m)
+    (e.symm (e (QuotientGroup.mk a))) = QuotientGroup.mk a
+  rw [MulEquiv.symm_apply_apply, QuotientGroup.quotientMulEquivOfEq_mk]
 
 end RayClass

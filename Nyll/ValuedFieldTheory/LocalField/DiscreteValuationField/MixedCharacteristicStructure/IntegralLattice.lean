@@ -1055,7 +1055,10 @@ theorem principalUnitQuotientProjectionLinear_ker
               F.toCompleteDVF n) = 0 at hx'
         exact hx'
       have hxtomul := congrArg Additive.toMul hxadd
-      simpa using hxtomul
+      change (QuotientGroup.mk (Additive.toMul x) :
+        CompleteDVF.higherPrincipalUnitGroup.Internal.principalUnitQuotientCarrier
+          F.toCompleteDVF n) = 1 at hxtomul
+      exact hxtomul
     have hxmem : ((Additive.toMul x :
         CompleteDVF.higherPrincipalUnitGroup (F.toCompleteDVF) 1) :
           F.toCompleteDVF.valuationSubringˣ) ∈

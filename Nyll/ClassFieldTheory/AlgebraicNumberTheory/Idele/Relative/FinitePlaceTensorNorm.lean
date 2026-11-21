@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.TensorNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
@@ -52,46 +54,6 @@ variable {K : Type u} {L : Type v}
     [Field K] [NumberField K]
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
-
-/-- The canonical completion comparison as a `K`-algebra
-equivalence. -/
-noncomputable def finitePlaceCompletionAlgEquiv
-    (v : HeightOneSpectrum (𝓞 K)) :
-    (NumberField.HeightOneSpectrum.adicAbv K v).Completion ≃ₐ[K]
-      v.adicCompletion K where
-  __ := finitePlaceCompletionRingEquiv v
-  commutes' x := by
-    change
-      finitePlaceCompletionRingHom v
-          (((WithAbs.equiv
-            (NumberField.HeightOneSpectrum.adicAbv K v)).symm x :
-              WithAbs
-                (NumberField.HeightOneSpectrum.adicAbv K v)) :
-            (NumberField.HeightOneSpectrum.adicAbv K v).Completion) =
-        algebraMap K (v.adicCompletion K) x
-    rw [finitePlaceCompletionRingHom_coe]
-    rfl
-
-/-- Base change of the first tensor factor gives the concrete tensor
-algebra at `v`. -/
-noncomputable def finitePlaceLocalTensorAlgEquiv
-    (v : HeightOneSpectrum (𝓞 K)) :
-    LocalTensorAlgebra (L := L)
-        (NumberField.HeightOneSpectrum.adicAbv K v) ≃ₐ[K]
-      v.adicCompletion K ⊗[K] L :=
-  Algebra.TensorProduct.congr
-    (finitePlaceCompletionAlgEquiv v)
-    (AlgEquiv.refl : L ≃ₐ[K] L)
-
-/-- The induced equivalence on tensor-algebra unit groups. -/
-noncomputable def finitePlaceLocalTensorUnitsEquiv
-    (v : HeightOneSpectrum (𝓞 K)) :
-    (LocalTensorAlgebra (L := L)
-      (NumberField.HeightOneSpectrum.adicAbv K v))ˣ ≃*
-      (v.adicCompletion K ⊗[K] L)ˣ :=
-  Units.mapEquiv
-    (finitePlaceLocalTensorAlgEquiv
-      (K := K) (L := L) v).toMulEquiv
 
 omit [NumberField L] [IsGalois K L] in
 /-- The completed-base comparison intertwines the two determinant norm

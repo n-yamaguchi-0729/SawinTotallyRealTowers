@@ -97,6 +97,32 @@ def galoisGroupResidueAlgEquivOfIsIntegralClosure (K : Type u) (L : Type v)
   __ := galoisGroupResidueFieldEquivOfIsIntegralClosure K L σ
   commutes' := galoisGroupResidueFieldEquivOfIsIntegralClosure_algebraMap K L σ
 
+/-- The residue action of the restriction to a normal intermediate field
+commutes with the literal residue-field inclusion. -/
+theorem galoisGroupResidue_restrictNormal_commutes
+    (K E M N : Type*) [Field K] [Field E] [Field M] [Field N]
+    [Algebra K E] [Algebra K M] [Algebra K N] [Algebra E N] [Algebra M N]
+    [IsScalarTower K E N] [IsScalarTower K M N] [Normal K M]
+    [ValuativeRel K] [ValuativeRel E] [ValuativeRel M] [ValuativeRel N]
+    [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation M)]
+    [Valuation.HasExtension (ValuativeRel.valuation E) (ValuativeRel.valuation N)]
+    [Valuation.HasExtension (ValuativeRel.valuation M) (ValuativeRel.valuation N)]
+    [IsIntegralClosure 𝒪[M] 𝒪[K] M] [IsIntegralClosure 𝒪[N] 𝒪[E] N]
+    (σ : Gal(N/E)) (x : 𝓀[M]) :
+    algebraMap 𝓀[M] 𝓀[N] (galoisGroupResidueAlgEquivOfIsIntegralClosure K M
+      ((σ.restrictScalars K).restrictNormal M) x) =
+      galoisGroupResidueAlgEquivOfIsIntegralClosure E N σ (algebraMap 𝓀[M] 𝓀[N] x) := by
+  obtain ⟨a, rfl⟩ := IsLocalRing.residue_surjective x
+  change algebraMap 𝓀[M] 𝓀[N] (galoisGroupResidueFieldEquivOfIsIntegralClosure K M
+    ((σ.restrictScalars K).restrictNormal M) (IsLocalRing.residue 𝒪[M] a)) =
+      galoisGroupResidueFieldEquivOfIsIntegralClosure E N σ
+        (algebraMap 𝓀[M] 𝓀[N] (IsLocalRing.residue 𝒪[M] a))
+  rw [galoisGroupResidueFieldEquivOfIsIntegralClosure_residue, residueField_algebraMap_residue,
+    residueField_algebraMap_residue, galoisGroupResidueFieldEquivOfIsIntegralClosure_residue]
+  apply congrArg (IsLocalRing.residue 𝒪[N])
+  apply Subtype.ext
+  exact (σ.restrictScalars K).restrictNormal_commutes M (a : M)
+
 /-- Actual integral-closure residue action as a group homomorphism. -/
 def galoisGroupResidueAlgEquivHomOfIsIntegralClosure (K : Type u) (L : Type v)
     [Field K] [ValuativeRel K] [Field L] [ValuativeRel L] [Algebra K L]

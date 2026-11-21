@@ -55,7 +55,7 @@ theorem minpoly_quadraticClosureRoot (d : ℚ) (hd : ¬ IsSquare d) :
     minpoly ℚ (quadraticClosureRoot d) = X ^ 2 - C d := by
   apply Eq.symm
   apply minpoly.eq_of_irreducible_of_monic
-  · apply X_pow_sub_C_irreducible_of_prime Nat.prime_two
+  · apply irreducible_X_pow_sub_C_of_prime Nat.prime_two
     intro b hb
     exact hd ((isSquare_iff_exists_sq d).mpr ⟨b, hb.symm⟩)
   · rw [map_sub, map_pow, aeval_X, aeval_C, quadraticClosureRoot_sq, sub_self]

@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.PrincipalFractionalIdeal
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealPowerRadical
 public import Mathlib.RingTheory.DedekindDomain.SelmerGroup
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
@@ -21,6 +22,7 @@ ideal with the empty-support Selmer condition on its Kummer class.
 @[expose] public section
 
 open scoped NumberField nonZeroDivisors WithZero
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -34,10 +36,10 @@ variable (K : Type*) [Field K] [NumberField K]
 private theorem count_toPrincipalIdeal_eq_neg_valuationOfNeZero
     (a : Kˣ) (v : HeightOneSpectrum (𝓞 K)) :
     FractionalIdeal.count K v
-        ((toPrincipalIdeal (𝓞 K) K a : FractionalIdealGroup K) :
+        ((toPrincipalIdeal (𝓞 K) K a : NumberFieldFractionalIdealGroup K) :
           FractionalIdeal (nonZeroDivisors (𝓞 K)) K) =
       -(v.valuationOfNeZero a).toAdd := by
-  rw [IdeleGroup.count_toPrincipalIdeal]
+  rw [FractionalIdeal.count_toPrincipalIdeal]
   have h := congrArg WithZero.log (v.valuationOfNeZero_eq a)
   congr 1
   calc
@@ -82,7 +84,7 @@ theorem mem_idealNthPowerRadicalKummerSubgroup_iff_valuation
               (n : ℕ)) := by
                 rw [FractionalIdeal.count_pow]
         _ = FractionalIdeal.count K v
-            ((toPrincipalIdeal (𝓞 K) K a : FractionalIdealGroup K) :
+            ((toPrincipalIdeal (𝓞 K) K a : NumberFieldFractionalIdealGroup K) :
               FractionalIdeal (nonZeroDivisors (𝓞 K)) K) := by
                 rw [← Units.val_pow_eq_pow_val, hI]
         _ = _ := count_toPrincipalIdeal_eq_neg_valuationOfNeZero K a v
@@ -90,22 +92,22 @@ theorem mem_idealNthPowerRadicalKummerSubgroup_iff_valuation
       ⟨_, hcount.symm⟩
     simpa using hneg
   · intro h
-    let c := FractionalIdealGroup.countVector
+    let c := NumberFieldFractionalIdealGroup.countVector
       (toPrincipalIdeal (𝓞 K) K a)
     let d := c.mapRange (fun z : ℤ ↦ z / (n : ℤ)) (Int.zero_ediv _)
-    refine ⟨FractionalIdealGroup.factorization
+    refine ⟨NumberFieldFractionalIdealGroup.factorization
       (K := K) (Multiplicative.ofAdd d), ?_⟩
-    apply FractionalIdealGroup.ext_count
+    apply NumberFieldFractionalIdealGroup.ext_count
     intro v
     rw [powMonoidHom_apply, Units.val_pow_eq_pow_val,
       FractionalIdeal.count_pow,
-      FractionalIdealGroup.count_factorization]
+      NumberFieldFractionalIdealGroup.count_factorization]
     change (n : ℤ) * (c v / (n : ℤ)) =
       FractionalIdeal.count K v
-        ((toPrincipalIdeal (𝓞 K) K a : FractionalIdealGroup K) :
+        ((toPrincipalIdeal (𝓞 K) K a : NumberFieldFractionalIdealGroup K) :
           FractionalIdeal (nonZeroDivisors (𝓞 K)) K)
     have hc : (n : ℤ) ∣ c v := by
-      rw [FractionalIdealGroup.countVector_apply,
+      rw [NumberFieldFractionalIdealGroup.countVector_apply,
         count_toPrincipalIdeal_eq_neg_valuationOfNeZero K]
       simpa using h v
     exact Int.mul_ediv_cancel' hc

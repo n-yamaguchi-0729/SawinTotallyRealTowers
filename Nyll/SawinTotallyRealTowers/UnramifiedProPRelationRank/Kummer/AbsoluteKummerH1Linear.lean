@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.GaloisCohomology.Kummer.Concrete.AbsoluteKummerH1
 public import Nyll.GaloisCohomology.Kummer.Concrete.SUnitPreparation.PrimePowerKernelCoordinates
 
@@ -29,11 +30,6 @@ open KummerTheory
 variable (K : Type*) [Field K]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance absoluteKummerLinearCharacterTopology :
-    TopologicalSpace (Multiplicative (ZMod p)) := ⊥
-local instance absoluteKummerLinearCharacterDiscreteTopology :
-    DiscreteTopology (Multiplicative (ZMod p)) :=
-  discreteTopology_bot _
 
 omit [Fact p.Prime] in
 /-- Every absolute power class modulo `p`-th powers has exponent dividing `p`. -/

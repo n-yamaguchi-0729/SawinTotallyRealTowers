@@ -36,9 +36,7 @@ variable (A : ι → Type uA)
 variable [∀ i, CommGroup (A i)]
 variable [∀ i, MulDistribMulAction G (A i)]
 
-local instance :
-    MulDistribMulAction G (∀ i, A i) :=
-  piMulDistribMulAction G A
+attribute [local instance] piMulDistribMulAction
 
 /-- The Herbrand quotient of a finite dependent product is the product of
 the component Herbrand quotients. -/

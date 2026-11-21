@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCyclotomicKummerH1
 public import Mathlib.LinearAlgebra.Dual.Lemmas
 
@@ -31,26 +32,10 @@ open ClassFieldTower.ProP KummerTheory
 variable (F : Type) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance finitePlaceCyclotomicH1ValuationDualFiniteDimensional :
-    FiniteDimensional F (FinitePlaceCyclotomicBase F p) :=
-  finiteDimensional_idealRadicalCyclotomicBase
-    F p (Fact.out : p.Prime)
+attribute [local instance] cyclotomicBaseFiniteDimensional cyclotomicBaseNumberField
 
-local instance finitePlaceCyclotomicH1ValuationDualNumberField :
-    NumberField (FinitePlaceCyclotomicBase F p) :=
-  NumberField.of_module_finite F (FinitePlaceCyclotomicBase F p)
 
-local instance finitePlaceCyclotomicH1ValuationDualTopology (q : ℕ) :
-    TopologicalSpace (ZMod q) := ⊥
-
-local instance finitePlaceCyclotomicH1ValuationDualDiscreteTopology (q : ℕ) :
-    DiscreteTopology (ZMod q) :=
-  discreteTopology_bot _
-
-local instance finitePlaceCyclotomicH1ValuationDualModule
-    {q : ℕ} {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The dual of the intrinsic-local Kummer valuation coordinate. -/
 noncomputable def finitePlaceCyclotomicCompletionH1ValuationDualEmbedding

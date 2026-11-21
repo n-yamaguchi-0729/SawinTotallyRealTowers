@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.GaloisCohomology.ProP.TrivialZModP
 public import Nyll.GaloisCohomology.Kummer.AbsoluteMuPTopRep
 public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
@@ -108,8 +109,7 @@ noncomputable def absoluteMuPTopRepTrivialIsoLifted
     (hmu : (primitiveRoots p K).Nonempty) :
     absoluteMuPTopRep K p ≅
       trivialZModPLifted p (Field.absoluteGaloisGroup K) := by
-  letI : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) :=
-    ContinuousSMul.induced ULift.moduleEquiv.toLinearMap
+  let : ContinuousSMul (ZMod p) (ULift.{u} (ZMod p)) := ULift.continuousSMul
   let e : AbsoluteMuP K p ≃L[ZMod p] ULift.{u} (ZMod p) :=
     (absoluteMuPContinuousLinearEquivZMod K p hmu).trans
       (ContinuousLinearEquiv.ulift : ULift.{u} (ZMod p) ≃L[ZMod p] ZMod p).symm

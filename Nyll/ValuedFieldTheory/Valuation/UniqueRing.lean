@@ -190,7 +190,7 @@ theorem valuationSubringMapOfHasExtension_isLocalHom
     (hW : V.valuation.HasExtension W.valuation) :
     IsLocalHom (valuationSubringMapOfHasExtension V W hW) := by
   let : V.valuation.HasExtension W.valuation := hW
-  apply ((IsLocalRing.local_hom_TFAE
+  apply ((IsLocalRing.local_hom_tfae
     (valuationSubringMapOfHasExtension V W hW)).out 5 1).mp
   ext x
   rw [Ideal.mem_comap, W.valuation_lt_one_iff, V.valuation_lt_one_iff]

@@ -499,7 +499,7 @@ theorem existsUnique_continuous_log
     convert
       continuous_principalUnitLogSeriesHomOfWithZeroValuationScaled
         (v := v) (p := p) e hnK hnval hcomplete using 1
-    all_goals rfl
+    rfl
   rcases F.exists_uniformizer with ⟨π, hπ⟩
   let d :=
     fieldUnitsEquivRootsPrincipalUnitsUniformizer_of_completeDVF
@@ -520,7 +520,7 @@ theorem existsUnique_continuous_log
     convert
       continuous_fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_ofWithZeroValuation
         v hπ using 1
-    all_goals rfl
+    rfl
   have hL : Continuous L := by
     exact
       (continuous_fieldUnitDecompositionLogHomWithUniformizerValue

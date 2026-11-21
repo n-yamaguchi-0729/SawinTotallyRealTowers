@@ -544,12 +544,12 @@ theorem inducedCoordinateProduct_section (σ : G)
 
 end InducedCoordinates
 
-section InducedHerbrandH0
+section InducedHerbrand
 
 variable [CommGroup G] [Fintype G] [CommGroup B]
 variable (H : Subgroup G) [MulDistribMulAction H B]
 
-local instance : Fintype H := Fintype.ofFinite H
+local instance inducedSubgroupFintype : Fintype H := Fintype.ofFinite H
 
 /-- Norm compatibility under evaluation:
 `ev₁(N_G f) = N_H(∏_{G/H} f)`. -/
@@ -705,15 +705,6 @@ noncomputable def inducedHerbrandH0Equiv (σ : G)
         simpa [e] using hx
       rw [hx1]
       exact NG.one_mem)
-
-end InducedHerbrandH0
-
-section InducedHerbrandHMinusOne
-
-variable [CommGroup G] [Fintype G] [CommGroup B]
-variable (H : Subgroup G) [MulDistribMulAction H B]
-
-local instance : Fintype H := Fintype.ofFinite H
 
 omit [Fintype G] in
 local instance [Finite G] : NeZero H.index := ⟨by
@@ -1112,7 +1103,7 @@ noncomputable def inducedHerbrandHMinusOneEquiv
           H σ hgen x.1
       exact congrArg Subtype.val hx)
 
-end InducedHerbrandHMinusOne
+end InducedHerbrand
 
 section FiniteCyclicGroup
 

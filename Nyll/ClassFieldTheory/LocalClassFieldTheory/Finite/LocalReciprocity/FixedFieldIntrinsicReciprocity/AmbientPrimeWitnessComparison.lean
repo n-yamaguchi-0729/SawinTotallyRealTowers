@@ -27,6 +27,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -35,7 +37,7 @@ open scoped ValuativeRel
 Galois element under the concrete local Artin map. -/
 theorem
     ambientEmbeddedPrimeWitness_local
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -48,7 +50,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     localArtinMonoidHom F E
         (ambientEmbeddedPrimeWitness K F E j e z) =
       z := by
@@ -117,7 +119,7 @@ theorem
     exact hSourceFinite
   let RH :=
     H.toFiniteResidueAbstractField (localResidueDatum K)
-  let zF : Abelianization EI.extensionQuotient :=
+  let zF : Group.Abelianization EI.extensionQuotient :=
     qF.abelianizationCongr.symm z
   let q :=
     Classical.choose (QuotientGroup.mk_surjective zF)
@@ -276,7 +278,7 @@ theorem
           (localResidueDatum F)
           (localHenselianValuation F)
           (separableClosureUnits_isClassFormation F) xPrime =
-        Abelianization.of (qF q) := by
+        Group.Abelianization.of (qF q) := by
     have hprime :=
       concreteNormResidueSymbolOfEmbedding_apply_primeNorm
         F E jI
@@ -288,9 +290,9 @@ theorem
           simpa only [RF, SF, hSFB] using hnormF.symm)
     exact hprime
   have hqz :
-      qF.abelianizationCongr (Abelianization.of q) = z := by
+      qF.abelianizationCongr (Group.Abelianization.of q) = z := by
     calc
-      qF.abelianizationCongr (Abelianization.of q) =
+      qF.abelianizationCongr (Group.Abelianization.of q) =
           qF.abelianizationCongr zF :=
         congrArg qF.abelianizationCongr hq
       _ = z :=
@@ -302,7 +304,7 @@ theorem
           (localHenselianValuation F)
           (separableClosureUnits_isClassFormation F) xPrime = z := by
     rw [hconcretePrime, ← hqz]
-    exact (abelianizationCongr_of qF q).symm
+    exact (Group.abelianizationCongr_of qF q).symm
   have hxWitness :
       ambientEmbeddedPrimeWitness K F E j e z = xPrime := by
     rfl
@@ -316,7 +318,7 @@ theorem
 norm-residue symbol formula. -/
 theorem
     ambientEmbeddedPrimeWitness_symbol
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -329,7 +331,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     ambientEmbeddedPrimeSymbolProperty K F E j e z := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
@@ -408,7 +410,7 @@ theorem
     exact hSourceFinite
   let RH :=
     H.toFiniteResidueAbstractField (localResidueDatum K)
-  let zF : Abelianization EI.extensionQuotient :=
+  let zF : Group.Abelianization EI.extensionQuotient :=
     qF.abelianizationCongr.symm z
   let q :=
     Classical.choose (QuotientGroup.mk_surjective zF)
@@ -581,7 +583,7 @@ theorem
           H₀ J₀ hJH (Additive.ofMul xPrime0) =
         Additive.ofMul
           (q₀.abelianizationCongr
-            (Abelianization.of qAmbient)) := by
+            (Group.Abelianization.of qAmbient)) := by
     exact
       abstractFixedFieldNormResidueSymbol_eq_of_transportedValuationOneUnit
         K F LF H J₀ hJH sigmaH
@@ -608,7 +610,7 @@ theorem
               (ambientEmbeddedPrimeWitness K F E j e z))) =
         Additive.ofMul
           (q₀.abelianizationCongr
-            (Abelianization.of qAmbient)) := by
+            (Group.Abelianization.of qAmbient)) := by
     exact
       (congrArg
         (fun y : F₀ˣ =>
@@ -626,7 +628,7 @@ theorem
 its ambient Frobenius target. -/
 theorem
     ambientEmbeddedPrimeTransportValue_eq_target
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -639,7 +641,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     ambientEmbeddedPrimeTransportValue K F E j e z =
       ambientEmbeddedPrimeTarget K F E j e z := by
   have hsymbol :=
@@ -653,7 +655,7 @@ theorem
 Galois element. -/
 theorem
     ambientEmbeddedPrimeTarget_eq
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -666,7 +668,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     ambientEmbeddedPrimeTarget K F E j e z = z := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
@@ -736,7 +738,7 @@ theorem
     exact hSourceFinite
   let RH :=
     H.toFiniteResidueAbstractField (localResidueDatum K)
-  let zF : Abelianization EI.extensionQuotient :=
+  let zF : Group.Abelianization EI.extensionQuotient :=
     qF.abelianizationCongr.symm z
   let q :=
     Classical.choose (QuotientGroup.mk_surjective zF)
@@ -766,9 +768,9 @@ theorem
           K F E j e sigma
       _ = qF q := congrArg qF hsigma
   have hqz :
-      qF.abelianizationCongr (Abelianization.of q) = z := by
+      qF.abelianizationCongr (Group.Abelianization.of q) = z := by
     calc
-      qF.abelianizationCongr (Abelianization.of q) =
+      qF.abelianizationCongr (Group.Abelianization.of q) =
           qF.abelianizationCongr zF :=
         congrArg qF.abelianizationCongr hq
       _ = z :=
@@ -776,26 +778,26 @@ theorem
   have htarget :
       ambientEmbeddedPrimeTarget K F E j e z =
         qE.abelianizationCongr
-          (Abelianization.of qAmbient) := by
+          (Group.Abelianization.of qAmbient) := by
     rfl
   rw [htarget]
   calc
     qE.abelianizationCongr
-        (Abelianization.of qAmbient) =
-        Abelianization.of (qE qAmbient) :=
-      abelianizationCongr_of qE qAmbient
-    _ = Abelianization.of (qF q) :=
-      congrArg Abelianization.of hrestriction
+        (Group.Abelianization.of qAmbient) =
+        Group.Abelianization.of (qE qAmbient) :=
+      Group.abelianizationCongr_of qE qAmbient
+    _ = Group.Abelianization.of (qF q) :=
+      congrArg Group.Abelianization.of hrestriction
     _ = qF.abelianizationCongr
-          (Abelianization.of q) :=
-      (abelianizationCongr_of qF q).symm
+          (Group.Abelianization.of q) :=
+      (Group.abelianizationCongr_of qF q).symm
     _ = z := hqz
 
 /-- The ambient norm-residue value of the chosen prime witness is the
 prescribed abelianized Galois element. -/
 theorem
     ambientEmbeddedPrimeWitness_ambient
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -808,7 +810,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     ambientEmbeddedNormResidueAbelianElement K F E j e
         (ambientEmbeddedPrimeWitness K F E j e z) =
       z := by

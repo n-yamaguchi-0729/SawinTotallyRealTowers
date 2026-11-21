@@ -25,6 +25,11 @@ larger than the degree-one statement needed by the tower argument.
 
 open scoped Topology commutatorElement
 
+/-- The additive structure of the standard residue ring for local instance scopes. -/
+@[instance_reducible]
+def ZMod.addCommGroup (p : ℕ) : AddCommGroup (ZMod p) :=
+  (ZMod.commRing p).toAddCommGroup
+
 namespace ClassFieldTower.ProP
 
 universe u
@@ -48,8 +53,7 @@ downstream files activate it once per section. -/
     change p • f g = 0
     rw [nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
-local instance : Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] continuousH1ZModModule
 
 /-- Reinterpret an additive degree-one class as a multiplicative character. -/
 def characterOfH1 (f : ContinuousH1ZMod (p := p) (G := G)) :

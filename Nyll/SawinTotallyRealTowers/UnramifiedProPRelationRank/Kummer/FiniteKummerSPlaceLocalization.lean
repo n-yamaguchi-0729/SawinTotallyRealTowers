@@ -8,8 +8,8 @@ module
 
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.SupportedSPlaceFactorsH2Localization
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteRootIdeleSupport
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteFieldUnitsIdelePrimitive
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.FiniteIdeleH2Injection
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Brauer.FiniteFieldUnitsIdelePrimitive
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Brauer.FiniteIdeleH2Injection
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
 public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
@@ -40,15 +40,8 @@ open CyclicCohomology.ProfiniteCohomology.Herbrand
 variable (K L : Type) [Field K] [NumberField K]
 variable [Field L] [NumberField L] [Algebra K L] [FiniteDimensional K L]
 
-local instance finiteKummerSPlaceSupportedAction
-    (S : Finset (HeightOneSpectrum (𝓞 K))) :
-    MulDistribMulAction Gal(L / K)
-      (relativeIdeleLocalTensorDecompositionSupportedSubgroup (K := K) (L := L) S) :=
-  relativeIdeleLocalTensorDecompositionSupportedSubgroupAction (K := K) (L := L) S
-
-local instance finiteKummerSPlaceIdeleAction :
-    MulDistribMulAction Gal(L / K) (RelativeIdeleGroup K L) :=
-  relativeIdeleMulDistribMulAction K L
+attribute [local instance] relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
+  RelativeIdeleGroup.relativeIdeleMulDistribMulAction
 
 /-- Roots of unity mapped into any prescribed finite idele support. -/
 def finiteKummerSSupportedIdeleRepHom
@@ -99,9 +92,7 @@ theorem finiteKummerSSupportedIdeleRepHom_factor
 
 variable [IsGalois K L]
 
-local instance finiteKummerSPlaceTensorAction (v : HeightOneSpectrum (𝓞 K)) :
-    MulDistribMulAction Gal(L / K) (v.adicCompletion K ⊗[K] L)ˣ :=
-  scalarTensorUnitsAction (K := K) (L := L) (A := v.adicCompletion K)
+attribute [local instance] finitePlaceScalarTensorUnitsAction
 
 /-- The actual finite Kummer class localized at the finite tensor blocks
 in the chosen exceptional support. -/

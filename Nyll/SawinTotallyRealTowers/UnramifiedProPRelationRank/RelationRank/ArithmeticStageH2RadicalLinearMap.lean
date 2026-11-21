@@ -6,11 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.ArithmeticStageH2AdditionDifference
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportDecompositionRadicalPairing
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceUnramifiedRadicalPairing
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.AbsoluteCharacterRadicalReciprocity
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Linearity of the actual arithmetic-stage radical obstruction
@@ -35,20 +37,13 @@ variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 variable (U : OpenNormalSubgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))
 
-local instance stageRadicalLinearCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
 local notation "StageQuotient" => MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ) ⧸
   (U : Subgroup (MaxEverywhereUnramifiedProPGaloisGroup F (n : ℕ)))
 local notation "StageH2" => continuousCohomologyZModPLifted (n : ℕ) StageQuotient 2
 
-local instance stageRadicalLinearTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance stageRadicalLinearDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance stageRadicalLinearH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) := continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The actual chosen-lift radical obstruction is additive. -/
 theorem arithmeticStageH2RadicalFunctional_add (x y : StageH2) :

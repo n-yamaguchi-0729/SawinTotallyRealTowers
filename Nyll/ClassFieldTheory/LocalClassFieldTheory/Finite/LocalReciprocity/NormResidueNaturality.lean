@@ -7,6 +7,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidue
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.GeneralTowerNaturality
+public import Nyll.ValuedFieldTheory.Ramification.GaloisValuation.IntermediateFieldRestriction
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.IntermediateFieldNormResidueNaturality
 
 /-!
@@ -27,19 +29,7 @@ namespace LocalClassFieldTheory
 open LocalFieldTheory
 open RamificationTheory
 
-variable (K : Type*) [Field K] in
-/-- Restriction between the actual Galois groups of two finite intermediate
-fields, bundled as a continuous homomorphism for their finite Krull
-topologies. -/
-noncomputable def intermediateFieldRestrictContinuous
-    (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
-    [FiniteDimensional K E] [FiniteDimensional K F]
-    [IsGalois K E] [IsGalois K F] :
-    Gal(F / K) →ₜ* Gal(E / K) :=
-  { intermediateFieldRestrictNormalHom E F hEF with
-    continuous_toFun := continuous_of_discreteTopology }
-
-variable (K : Type) [Field K]
+variable (K : Type*) [Field K]
   [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /-- Finite Artin homomorphisms commute with restriction along a
@@ -51,9 +41,11 @@ theorem abelianLocalArtinMonoidHom_restrict
     (intermediateFieldRestrictNormalHom E F hEF).comp
         (abelianLocalArtinMonoidHom K F) =
       abelianLocalArtinMonoidHom K E := by
-  apply MonoidHom.ext
-  intro a
-  exact localArtinAutomorphism_restrict K E F hEF a
+  let : Algebra E F := RingHom.toAlgebra (IntermediateField.inclusion hEF).toRingHom
+  let : IsScalarTower K E F := IsScalarTower.of_algebraMap_eq' rfl
+  change (AlgEquiv.restrictNormalHom E).comp (abelianLocalArtinMonoidHom K F) =
+    abelianLocalArtinMonoidHom K E
+  exact abelianLocalArtinMonoidHom_restrict_tower K E F
 
 /-- The continuous actual finite Artin maps commute with restriction along
 a tower of finite abelian intermediate fields. -/
@@ -61,7 +53,7 @@ theorem abelianLocalArtinMap_restrict
     (E F : IntermediateField K (SeparableClosure K)) (hEF : E ≤ F)
     [FiniteDimensional K E] [FiniteDimensional K F]
     [IsAbelianGalois K E] [IsAbelianGalois K F] :
-    (intermediateFieldRestrictContinuous K E F hEF).comp
+    (RamificationTheory.intermediateFieldRestrictContinuous K E F hEF).comp
         (abelianLocalArtinMap K F) =
       abelianLocalArtinMap K E := by
   apply ContinuousMonoidHom.ext

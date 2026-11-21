@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPTopRep
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Mathlib.FieldTheory.Normal.Defs
 public import Mathlib.Topology.Algebra.Group.Quotient
 public import Nyll.SawinTotallyRealTowers.MaximalRealProPOutside

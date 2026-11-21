@@ -6,11 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.NormalEmbeddingRange
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedGeometricRestriction
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleClassSystem
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueNaturality
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 
 /-!
 # Cyclotomic unramified local--global compatibility
@@ -41,7 +43,6 @@ private def composeMonoidHom
   g.comp f
 
 attribute [local instance]
-  rationalSeparableClosureAlgebra
   naturalityAbstractFixedFieldBaseQuotientFinite
   naturalityAbstractFixedFieldRelativeQuotientFinite
   naturalityAbstractFixedFieldFiniteDimensional
@@ -51,48 +52,6 @@ attribute [local instance]
   naturalityAbstractFixedFieldNumberField
   naturalityAbstractRelativeFixedFieldNumberField
   naturalityAbstractRelativeFixedFieldIsAbelianGalois
-
-@[reducible]
-noncomputable local instance
-    abstractFixedFieldFiniteIdeleGroupGroup
-    (H : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) :
-    Group
-      (FiniteIdeleGroup
-        (LocalClassFieldTheory.abstractFixedField
-          ℚ (SeparableClosure ℚ) H.field)) :=
-  RestrictedProduct.instGroupCoeOfSubgroupClass
-    (fun v : IsDedekindDomain.HeightOneSpectrum
-      (𝓞 (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) H.field)) =>
-      (v.adicCompletion
-        (LocalClassFieldTheory.abstractFixedField
-          ℚ (SeparableClosure ℚ) H.field))ˣ)
-
-@[reducible]
-noncomputable local instance
-    abstractFixedFieldIdeleGroupGroup
-    (H : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) :
-    Group
-      (IdeleGroup
-        (LocalClassFieldTheory.abstractFixedField
-          ℚ (SeparableClosure ℚ) H.field)) :=
-  Prod.instGroup
-
-@[reducible]
-noncomputable local instance
-    abstractFixedFieldIdeleClassGroupGroup
-    (H : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ)) :
-    Group
-      (IdeleClassGroup
-        (LocalClassFieldTheory.abstractFixedField
-          ℚ (SeparableClosure ℚ) H.field)) :=
-  QuotientGroup.Quotient.group
-    (IdeleGroup.principalSubgroup
-      (LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) H.field))
 
 private theorem
     restrictNormalHom_comp_infiniteGlobalArtinMonoidHom_of_tower
@@ -108,10 +67,7 @@ private theorem
   intro a
   let j : E →ₐ[K] Ω := IsScalarTower.toAlgHom K E Ω
   let G : FiniteGaloisIntermediateField K Ω :=
-    { toIntermediateField := j.fieldRange
-      finiteDimensional :=
-        j.equivFieldRange.toLinearEquiv.finiteDimensional
-      isGalois := IsGalois.of_algEquiv j.equivFieldRange }
+    j.finiteGaloisFieldRange
   let _ : FiniteDimensional K G := G.finiteDimensional
   let _ : NumberField G :=
     NumberField.of_module_finite K G
@@ -146,63 +102,6 @@ private theorem
       DFunLike.congr_fun
         (globalArtinMonoidHom_restrict_tower
           (K := K) (L := G) (E := E)) a
-
-private theorem
-    abstractFixedFieldCyclotomicFiniteRestriction_comp_infiniteGlobalArtinMonoidHom
-    (H : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (L : FiniteAbelianSubextension H.field)
-    (hUnramified :
-      L.toFiniteGaloisExtension.IsUnramified
-        rationalCyclotomicDegreeData) :
-    let F :=
-      LocalClassFieldTheory.abstractFixedField
-        ℚ (SeparableClosure ℚ) H.field
-    let E :=
-      LocalClassFieldTheory.abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ) L.below
-    let U :=
-      LocalClassFieldTheory.abstractRelativeFixedField
-        ℚ (SeparableClosure ℚ)
-        (rationalCyclotomicFieldInertia_le H.field)
-    let _ : NumberField F :=
-      cyclotomicUnramifiedGeometricBaseNumberField H
-    let _ : NumberField E :=
-      cyclotomicUnramifiedGeometricRelativeNumberField H L
-    let _ : Algebra F E := E.algebra'
-    let _ : Algebra F U := U.algebra'
-    let _ : IsAbelianGalois F E :=
-      cyclotomicUnramifiedGeometricRelativeIsAbelianGalois H L
-    let _ : IsAbelianGalois F U :=
-      cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
-    let _ : Algebra E U :=
-      abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra
-        H L hUnramified
-    let _ : @IsScalarTower F E U
-        Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
-      IsScalarTower.of_algHom
-        (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion
-          H L hUnramified)
-    (abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom
-        H L hUnramified).comp
-        (infiniteGlobalArtinMonoidHom F U).toMonoidHom =
-      globalArtinMonoidHom (K := F) (L := E) := by
-  intro F E U fNumberField eNumberField fEAlgebra fUAlgebra fEIsAbelianGalois fUIsAbelianGalois
-    eUAlgebra fEUTower
-  calc
-    (abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom
-        H L hUnramified).comp
-        (infiniteGlobalArtinMonoidHom F U).toMonoidHom =
-      (AlgEquiv.restrictNormalHom E).comp
-        (infiniteGlobalArtinMonoidHom F U).toMonoidHom :=
-      congrArg
-        (fun f => f.comp
-          (infiniteGlobalArtinMonoidHom F U).toMonoidHom)
-        (abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom_eq_restrictNormalHom
-          H L hUnramified)
-    _ = globalArtinMonoidHom (K := F) (L := E) :=
-      restrictNormalHom_comp_infiniteGlobalArtinMonoidHom_of_tower
-        F E U
 
 private theorem
     abstractFixedFieldGlobalNormResidueMonoidHom_eq_cyclotomicRestrictionComp
@@ -254,20 +153,6 @@ private theorem
     abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom_mk
       H (IdeleGroup.finitePlaceIdele v x)
 
-private theorem globalArtinMonoidHom_comp_finitePlaceIdele
-    (K E : Type) [Field K] [NumberField K]
-    [Field E] [NumberField E] [Algebra K E]
-    [IsAbelianGalois K E]
-    (v : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
-    (globalArtinMonoidHom (K := K) (L := E)).comp
-        (IdeleGroup.finitePlaceIdele v) =
-      chosenFinitePlaceArtinMonoidHom
-        (K := K) (L := E) v := by
-  apply MonoidHom.ext
-  intro x
-  exact globalArtinMonoidHom_finitePlaceIdele
-    (K := K) (L := E) v x
-
 /-- The cyclotomic construction of fixed-field reciprocity satisfies
 finite-place local--global compatibility on every finite unramified
 abelian subextension. -/
@@ -288,51 +173,51 @@ theorem
     let E :=
       LocalClassFieldTheory.abstractRelativeFixedField
         ℚ (SeparableClosure ℚ) L.below
+    let v₀ : IsDedekindDomain.HeightOneSpectrum (𝓞 F) := v
     (abstractFixedFieldGlobalNormResidueMonoidHom H L).comp
-        (IdeleGroup.finitePlaceIdeleClass v) =
-      chosenFinitePlaceArtinMonoidHom
-        (K := F) (L := E) v := by
-  intro F E
-  let U :=
-    LocalClassFieldTheory.abstractRelativeFixedField
-      ℚ (SeparableClosure ℚ)
-      (rationalCyclotomicFieldInertia_le H.field)
-  let fUIsAbelianGalois : IsAbelianGalois F U :=
-    abstractFixedFieldCyclotomic_isAbelianGalois H
-  let finiteIdele := IdeleGroup.finitePlaceIdele v
-  let finiteIdeleClass := IdeleGroup.finitePlaceIdeleClass v
-  let restriction :=
-    abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom
-      H L hUnramified
-  let ideleClassArtin :=
-    abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H
+        (IdeleGroup.finitePlaceIdeleClass v₀) =
+      chosenFinitePlaceArtinMonoidHom (K := F) (L := E) v₀ := by
+  intro F E v₀
+  apply MonoidHom.ext
+  intro x
+  let x₀ : (v₀.adicCompletion F)ˣ := x
+  let a : IdeleGroup F := IdeleGroup.finitePlaceIdele v₀ x₀
+  let c : IdeleClassGroup F := IdeleGroup.finitePlaceIdeleClass v₀ x₀
+  let finiteArtin : IdeleGroup F →* Gal(E/F) := globalArtinMonoidHom (K := F) (L := E)
+  have h₄ := globalArtinMonoidHom_finitePlaceIdele (K := F) (L := E) v₀ x₀
+  let U := LocalClassFieldTheory.abstractRelativeFixedField ℚ (SeparableClosure ℚ)
+    (rationalCyclotomicFieldInertia_le H.field)
+  let : Algebra F U := U.algebra'
+  let : IsAbelianGalois F U := cyclotomicUnramifiedGeometricMaximalIsAbelianGalois H
+  let : Algebra E U := abstractFixedFieldCyclotomicFiniteUnramifiedInclusionAlgebra H L hUnramified
+  let : @IsScalarTower F E U Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
+    IsScalarTower.of_algHom (abstractFixedFieldCyclotomicFiniteUnramifiedInclusion H L hUnramified)
+  let restriction := abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom H L hUnramified
+  let ideleClassArtin := abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H
   let infiniteArtin := infiniteGlobalArtinMonoidHom F U
-  calc
-    (abstractFixedFieldGlobalNormResidueMonoidHom H L).comp
-          finiteIdeleClass =
-        (restriction.comp ideleClassArtin).comp
-          finiteIdeleClass :=
-      congrArg
-        (fun f => f.comp finiteIdeleClass)
-        (abstractFixedFieldGlobalNormResidueMonoidHom_eq_cyclotomicRestrictionComp
-          H L hUnramified)
-    _ = restriction.comp
-          (ideleClassArtin.comp finiteIdeleClass) := rfl
-    _ = restriction.comp
-          (infiniteArtin.toMonoidHom.comp finiteIdele) :=
-      congrArg (fun f => restriction.comp f)
-        (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom_comp_finitePlaceIdeleClass
-          H v)
-    _ = (restriction.comp infiniteArtin.toMonoidHom).comp
-          finiteIdele := rfl
-    _ = (globalArtinMonoidHom (K := F) (L := E)).comp
-          finiteIdele :=
-      congrArg (fun f => f.comp finiteIdele)
-        (abstractFixedFieldCyclotomicFiniteRestriction_comp_infiniteGlobalArtinMonoidHom
-          H L hUnramified)
-    _ = chosenFinitePlaceArtinMonoidHom
-          (K := F) (L := E) v :=
-      globalArtinMonoidHom_comp_finitePlaceIdele F E v
+  have h₁ : abstractFixedFieldGlobalNormResidueMonoidHom H L c =
+      restriction (ideleClassArtin c) := DFunLike.congr_fun
+    (abstractFixedFieldGlobalNormResidueMonoidHom_eq_cyclotomicRestrictionComp H L hUnramified) c
+  have h₂ : ideleClassArtin c = infiniteArtin a := DFunLike.congr_fun
+    (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom_comp_finitePlaceIdeleClass H v) x
+  have h₃ : restriction (infiniteArtin a) = finiteArtin a := by
+    have hRestriction := abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom_eq_restrictNormalHom
+      H L hUnramified
+    have hTower := restrictNormalHom_comp_infiniteGlobalArtinMonoidHom_of_tower F E U
+    have hr := congrArg (fun f : Gal(U/F) →* Gal(E/F) => f (infiniteArtin a)) hRestriction
+    have ht := DFunLike.congr_fun hTower a
+    exact hr.trans ht
+  let value : Gal(E/F) := restriction (infiniteArtin a)
+  have hMiddle : restriction (ideleClassArtin c) = value :=
+    congrArg (fun z : Gal(U/F) => restriction z) h₂
+  have hLeft : abstractFixedFieldGlobalNormResidueMonoidHom H L c = value :=
+    h₁.trans hMiddle
+  have hRight := h₃.trans h₄
+  have h := hLeft.trans hRight
+  dsimp only [c, x₀] at h
+  refine (MonoidHom.comp_apply (abstractFixedFieldGlobalNormResidueMonoidHom H L)
+    (IdeleGroup.finitePlaceIdeleClass v₀) x).trans ?_
+  exact h
 
 /-- The canonical inclusion realization of a finite unramified abstract
 fixed-field extension satisfies finite-place local--global compatibility. -/

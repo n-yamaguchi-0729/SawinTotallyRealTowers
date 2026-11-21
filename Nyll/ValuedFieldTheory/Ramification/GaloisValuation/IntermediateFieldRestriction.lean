@@ -7,6 +7,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Mathlib.FieldTheory.Galois.Basic
+public import Mathlib.FieldTheory.KrullTopology
+public import Mathlib.Topology.Algebra.ContinuousMonoidHom
 public import Mathlib.Algebra.Algebra.Equiv
 
 /-!
@@ -71,5 +73,16 @@ theorem intermediateFieldRestrictNormalHom_equiv_commutes
   change sigma (e.symm (IntermediateField.inclusion hEF x)) =
     e.symm (e (sigma (e.symm (IntermediateField.inclusion hEF x))))
   rw [e.symm_apply_apply]
+
+/-- Restriction between two finite Galois intermediate fields is continuous
+for their Krull topologies. The ambient field may have an independent universe. -/
+noncomputable def intermediateFieldRestrictContinuous
+    (K : Type u) {Omega : Type v} [Field K] [Field Omega] [Algebra K Omega]
+    (E F : IntermediateField K Omega) (hEF : E ≤ F)
+    [FiniteDimensional K E] [FiniteDimensional K F]
+    [IsGalois K E] [IsGalois K F] :
+    Gal(F / K) →ₜ* Gal(E / K) :=
+  { intermediateFieldRestrictNormalHom E F hEF with
+    continuous_toFun := continuous_of_discreteTopology }
 
 end RamificationTheory

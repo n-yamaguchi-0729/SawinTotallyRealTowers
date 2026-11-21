@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceContraction
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.Reassociation
@@ -19,6 +21,7 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseCh
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.LocalComponent
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SPlaces
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SUnit.GaloisAction
 
 /-!
 # A sufficiently large unramified support for the idele-class calculation
@@ -557,3 +560,42 @@ theorem isUnramifiedAt_of_notMem_ideleClassHerbrandSupport
   rw [mem_ramifiedBaseFinitePlaces_iff]
   refine ⟨W, ?_, hram⟩
   exact ⟨(congrArg HeightOneSpectrum.asIdeal hW).symm⟩
+
+namespace GlobalClassFieldTheory.Cohomology
+
+open CyclicCohomology.ProfiniteCohomology.Herbrand
+
+variable {K L : Type}
+  [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
+  [FiniteDimensional K L] [IsGalois K L]
+
+/-- Finiteness of the low Tate groups of the `S`-unit module for the
+support pulled back from `K`. -/
+def AboveSUnitHerbrandQuotientDefined
+    (S : Finset (HeightOneSpectrum (𝓞 K)))
+    (σ : L ≃ₐ[K] L) : Prop :=
+  letI :=
+    sUnitMulDistribMulAction K L
+      (finitePlacesAbove (K := K) (L := L) S)
+      (finitePlacesAbove_isGaloisStable
+        (K := K) (L := L) S)
+  HerbrandQuotientDefined
+    (L ≃ₐ[K] L)
+    (SUnitGroup (K := L)
+      (finitePlacesAbove (K := K) (L := L) S)) σ
+
+/-- Finiteness of the low Tate groups of the supported relative-idele
+module. -/
+def RelativeIdeleSupportedHerbrandQuotientDefined
+    (S : Finset (HeightOneSpectrum (𝓞 K)))
+    (σ : L ≃ₐ[K] L) : Prop :=
+  letI :=
+    relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
+      (K := K) (L := L) S
+  HerbrandQuotientDefined
+    (L ≃ₐ[K] L)
+    (relativeIdeleLocalTensorDecompositionSupportedSubgroup
+      (K := K) (L := L) S) σ
+
+
+end GlobalClassFieldTheory.Cohomology

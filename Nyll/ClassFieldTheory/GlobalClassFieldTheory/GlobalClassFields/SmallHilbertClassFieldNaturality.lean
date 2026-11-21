@@ -35,8 +35,6 @@ namespace GlobalClassFields
 
 open NumberField
 
-attribute [local instance]
-  hilbertClassFieldComparison_ideleClassGroupIsMulCommutative
 
 variable
     {K M : Type*}
@@ -143,8 +141,7 @@ theorem smallHilbertClassGroupCongr_idealClass
         smallHilbertClassFieldNormSubgroup (K := K) :=
     QuotientGroup.mk'
       (smallHilbertClassFieldNormSubgroup (K := K))
-      (QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a)
+      (IdeleGroup.toStandardClass K a)
   calc
     smallHilbertClassGroupCongr e
           (IdeleGroup.idealClass a) =

@@ -6,8 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.EverywhereUnramifiedTower
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FiniteUnramifiedEtaleBridge
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.MathlibUnramifiedInterface
+public import Mathlib.RingTheory.Etale.Basic
 
 /-!
 # Everywhere-unramified bridges for number fields
@@ -18,6 +21,8 @@ equivalence of top fields and supplies odd-degree Galois constructors.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open scoped NumberField
 
@@ -36,9 +41,8 @@ theorem everywhereUnramified_of_finitePlaces_of_infinitePlaces
     [Algebra K L]
     (hFinite : IsUnramifiedAtFinitePlaces K L)
     (hInfinite : IsUnramifiedAtInfinitePlaces K L) :
-    IsEverywhereUnramified K L where
-  finitePlaces := hFinite
-  infinitePlaces := hInfinite
+    IsEverywhereUnramified K L :=
+  ⟨hFinite, hInfinite⟩
 
 /-- The finite-place predicate is equivalent to the ramification-index-one
 formula used by the benchmark. -/
@@ -58,9 +62,11 @@ theorem isUnramifiedAtFinitePlaces_iff_ramificationIdx_eq_one
         isPrime := hP.1
         ne_bot := Ideal.ne_bot_of_mem_primesOver hp hP }
     let _ : P.IsPrime := hP.1
-    let _ : Algebra.IsUnramifiedAt (𝓞 K) P := h v
+    let _ : Algebra.IsUnramifiedAt (𝓞 K) P := h.atPrime v
     exact Ideal.ramificationIdx_eq_one P (𝓞 K)
-  · intro h P
+  · intro h
+    apply (IsUnramifiedAtFinitePlaces.iff_forall_above K L).2
+    intro P
     have hBase : P.asIdeal.under (𝓞 K) ≠ ⊥ := by
       simpa only [finitePlaceBelow_asIdeal] using
         (finitePlaceBelow (K := K) P).ne_bot
@@ -97,59 +103,6 @@ theorem isUnramifiedAtInfinitePlaces_iff_real_lifts
     · exact Or.inr
         (NumberField.InfinitePlace.not_isReal_iff_isComplex.mp hw)
 
-/-- Infinite-place unramifiedness is preserved by an algebra equivalence of
-the top field. -/
-theorem infinitePlaceUnramifiedness_map_algEquiv
-    {K : Type u} {L : Type v} {M : Type w}
-    [Field K] [Field L] [Field M]
-    [Algebra K L] [Algebra K M]
-    (e : L ≃ₐ[K] M)
-    (h : IsUnramifiedAtInfinitePlaces K L) :
-    IsUnramifiedAtInfinitePlaces K M := by
-  rw [isUnramifiedAtInfinitePlaces_iff_real_lifts] at h ⊢
-  intro w hw wM hwM
-  have hComap :
-      (wM.comap (e : L →+* M)).comap (algebraMap K L) = w := by
-    rw [← NumberField.InfinitePlace.comap_comp]
-    calc
-      wM.comap ((e : L →+* M).comp (algebraMap K L)) =
-          wM.comap (algebraMap K M) := by
-        congr 1
-        ext x
-        exact e.commutes x
-      _ = w := hwM
-  have hReal : (wM.comap (e : L →+* M)).IsReal :=
-    h w hw _ hComap
-  exact (NumberField.InfinitePlace.isReal_comap_iff e.toRingEquiv).mp hReal
-
-/-- Everywhere-unramifiedness is preserved when the top number field is
-replaced by an equivalent algebra over the base field. -/
-theorem everywhereUnramified_congrTop
-    {K : Type u} {L : Type v} {M : Type w}
-    [Field K] [NumberField K]
-    [Field L] [NumberField L]
-    [Field M] [NumberField M]
-    [Algebra K L] [Algebra K M]
-    (e : L ≃ₐ[K] M)
-    (h : IsEverywhereUnramified K L) :
-    IsEverywhereUnramified K M :=
-  everywhereUnramified_of_finitePlaces_of_infinitePlaces
-    (finitePlaceUnramifiedness_congrTop e h.finitePlaces)
-    (infinitePlaceUnramifiedness_map_algEquiv e h.infinitePlaces)
-
-/-- Everywhere-unramifiedness is invariant under an algebra equivalence of
-the top number field. -/
-theorem isEverywhereUnramified_congrTop
-    {K : Type u} {L : Type v} {M : Type w}
-    [Field K] [NumberField K]
-    [Field L] [NumberField L]
-    [Field M] [NumberField M]
-    [Algebra K L] [Algebra K M]
-    (e : L ≃ₐ[K] M) :
-    IsEverywhereUnramified K L ↔ IsEverywhereUnramified K M :=
-  ⟨everywhereUnramified_congrTop e,
-    everywhereUnramified_congrTop e.symm⟩
-
 /-- Formal unramifiedness of the rings of integers, together with the
 infinite-place condition, gives everywhere-unramifiedness. -/
 theorem everywhereUnramified_of_formallyUnramified
@@ -161,7 +114,7 @@ theorem everywhereUnramified_of_formallyUnramified
     (hInfinite : IsUnramifiedAtInfinitePlaces K L) :
     IsEverywhereUnramified K L :=
   everywhereUnramified_of_finitePlaces_of_infinitePlaces
-    finitePlaceUnramifiedness_of_formallyUnramified hInfinite
+    inferInstance hInfinite
 
 /-- Étaleness of the rings of integers, together with the infinite-place
 condition, gives everywhere-unramifiedness. -/
@@ -174,7 +127,7 @@ theorem everywhereUnramified_of_etale
     (hInfinite : IsUnramifiedAtInfinitePlaces K L) :
     IsEverywhereUnramified K L :=
   everywhereUnramified_of_finitePlaces_of_infinitePlaces
-    finitePlaceUnramifiedness_of_etale hInfinite
+    inferInstance hInfinite
 
 /-- An odd-degree Galois extension that is unramified at finite places is
 everywhere unramified. -/
@@ -200,7 +153,7 @@ theorem everywhereUnramified_of_formallyUnramified_of_odd_finrank
     (hOdd : Odd (Module.finrank K L)) :
     IsEverywhereUnramified K L :=
   everywhereUnramified_of_finitePlaces_of_odd_finrank
-    finitePlaceUnramifiedness_of_formallyUnramified hOdd
+    inferInstance hOdd
 
 /-- An étale ring-of-integers extension of odd Galois degree is everywhere
 unramified. -/
@@ -213,7 +166,7 @@ theorem everywhereUnramified_of_etale_of_odd_finrank
     (hOdd : Odd (Module.finrank K L)) :
     IsEverywhereUnramified K L :=
   everywhereUnramified_of_finitePlaces_of_odd_finrank
-    finitePlaceUnramifiedness_of_etale hOdd
+    inferInstance hOdd
 
 /-- The library predicate is equivalent to the benchmark's explicit finite-
 and infinite-place clauses. -/
@@ -233,9 +186,9 @@ theorem isEverywhereUnramified_iff_explicit
   · intro h
     exact
       ⟨isUnramifiedAtFinitePlaces_iff_ramificationIdx_eq_one.mp
-          h.finitePlaces,
+          h.1,
         isUnramifiedAtInfinitePlaces_iff_real_lifts.mp
-          h.infinitePlaces⟩
+          h.2⟩
   · rintro ⟨hFinite, hInfinite⟩
     exact everywhereUnramified_of_finitePlaces_of_infinitePlaces
       (isUnramifiedAtFinitePlaces_iff_ramificationIdx_eq_one.mpr hFinite)

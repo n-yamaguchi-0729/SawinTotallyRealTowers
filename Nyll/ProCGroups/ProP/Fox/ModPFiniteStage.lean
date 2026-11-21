@@ -93,7 +93,7 @@ theorem presentationModPFiniteStageQMap_injective
     (hU : FiniteGroupClass.pGroup p (G ⧸ (U : Subgroup G))) :
     Function.Injective (presentationModPFiniteStageQMap P U hU) := by
   let _ : DiscreteTopology
-      (FoxDifferential.CompletedGroupAlgebraQuotientInClass G
+      (CompletedGroupAlgebra.CompletedGroupAlgebraQuotientInClass G
         (FiniteGroupClass.pGroup p)
         (presentationModPFiniteStageIndex P U hU).target.2) :=
     QuotientGroup.discreteTopology

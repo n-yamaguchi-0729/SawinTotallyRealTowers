@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
 public import Mathlib.GroupTheory.PGroup
 
@@ -20,6 +21,8 @@ of the resulting infinite extension belong to later leaves.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open scoped NumberField
 

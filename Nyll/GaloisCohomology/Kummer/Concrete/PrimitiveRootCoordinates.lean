@@ -45,7 +45,7 @@ theorem primitiveRootCoordinate_natCast {n : ℕ} {ζ : Ωˣ}
     (hζ : IsPrimitiveRoot ζ n) (a : ℕ) :
     primitiveRootCoordinate hζ (a : ZMod n) = ζ ^ a :=
   congrArg (fun z : Additive (Subgroup.zpowers ζ) => z.toMul.1)
-    (hζ.zmodEquivZPowers_apply_coe_nat a)
+    (hζ.zmodEquivZPowers_apply_natCast a)
 
 /-- The supplied coordinate retains the signed exponent of an
 integer divisor degree, including negative degrees. -/
@@ -53,7 +53,7 @@ theorem primitiveRootCoordinate_intCast {n : ℕ} {ζ : Ωˣ}
     (hζ : IsPrimitiveRoot ζ n) (a : ℤ) :
     primitiveRootCoordinate hζ (a : ZMod n) = ζ ^ a :=
   congrArg (fun z : Additive (Subgroup.zpowers ζ) => z.toMul.1)
-    (hζ.zmodEquivZPowers_apply_coe_int a)
+    (hζ.zmodEquivZPowers_apply_intCast a)
 
 theorem primitiveRootCoordinate_eq_pow_val {n : ℕ} [NeZero n] {ζ : Ωˣ}
     (hζ : IsPrimitiveRoot ζ n) (a : ZMod n) :

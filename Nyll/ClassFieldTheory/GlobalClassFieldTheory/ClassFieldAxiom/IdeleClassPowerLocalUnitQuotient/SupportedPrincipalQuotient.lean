@@ -256,10 +256,6 @@ def supportedIdeleClassPowerDenominator
 
 section SupportedClassQuotient
 
-local instance supportedClassQuotient_isMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
 /-- The natural map from supported ideles to
 `C_K/C_K(S,T)`. -/
 def supportedIdeleToClassPowerQuotient
@@ -270,8 +266,7 @@ def supportedIdeleToClassPowerQuotient
       IdeleClassPowerLocalUnitQuotient (K := K) n S T :=
   (QuotientGroup.mk'
       (ideleClassPowerLocalUnitSubgroup (K := K) n S T)).comp
-    ((QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)).comp
+    ((IdeleGroup.toStandardClass K).comp
       (IdeleGroup.supportedAt
         (K := K) (S ∪ T : Set (HeightOneSpectrum (𝓞 K)))).subtype)
 
@@ -294,14 +289,12 @@ theorem supportedIdeleToClassPowerQuotient_ker
   change
     QuotientGroup.mk'
         (ideleClassPowerLocalUnitSubgroup (K := K) n S T)
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) (x : IdeleGroup K)) = 1 ↔
+        (IdeleGroup.toStandardClass K (x : IdeleGroup K)) = 1 ↔
       x ∈ H ⊔ P
   constructor
   · intro hx
     have hxClass :
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)
+        IdeleGroup.toStandardClass K
             (x : IdeleGroup K) ∈
           ideleClassPowerLocalUnitSubgroup (K := K) n S T :=
       (QuotientGroup.eq_one_iff _).mp hx
@@ -314,12 +307,8 @@ theorem supportedIdeleToClassPowerQuotient_ker
     have hpDiv :
         (x : IdeleGroup K) / h ∈
           IdeleGroup.principalSubgroup K := by
-      have hpInv :
-          h / (x : IdeleGroup K) ∈
-            IdeleGroup.principalSubgroup K :=
-        (QuotientGroup.eq_iff_div_mem).mp heq
       simpa [div_eq_mul_inv, mul_comm] using
-        (IdeleGroup.principalSubgroup K).inv_mem hpInv
+        (IdeleGroup.toStandardClass_eq_iff K h (x : IdeleGroup K)).mp heq
     let pU : U := x / hU
     have hpU : pU ∈ P := by
       exact hpDiv
@@ -331,27 +320,22 @@ theorem supportedIdeleToClassPowerQuotient_ker
     rcases Subgroup.mem_sup.mp hx with
       ⟨h, hh, p, hp, rfl⟩
     have hhClass :
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)
+        IdeleGroup.toStandardClass K
             (h : IdeleGroup K) ∈
           ideleClassPowerLocalUnitSubgroup (K := K) n S T := by
       exact ⟨(h : IdeleGroup K), hh, rfl⟩
     have hpOne :
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)
+        IdeleGroup.toStandardClass K
             (p : IdeleGroup K) = 1 :=
-      (QuotientGroup.eq_one_iff _).mpr hp
+      (IdeleGroup.toStandardClass_eq_one_iff K _).mpr hp
     have hmul :
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K)
+        IdeleGroup.toStandardClass K
             ((h * p : U) : IdeleGroup K) =
-          QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup K)
+          IdeleGroup.toStandardClass K
               (h : IdeleGroup K) *
-            QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup K)
+            IdeleGroup.toStandardClass K
               (p : IdeleGroup K) :=
-      map_mul (QuotientGroup.mk' (IdeleGroup.principalSubgroup K))
+      map_mul (IdeleGroup.toStandardClass K)
         (h : IdeleGroup K) (p : IdeleGroup K)
     rw [hmul, hpOne]
     exact
@@ -375,8 +359,7 @@ theorem supportedIdeleToClassPowerQuotient_surjective
   intro q
   refine q.inductionOn' ?_
   intro c
-  refine c.inductionOn' ?_
-  intro a
+  obtain ⟨a, rfl⟩ := IdeleGroup.toStandardClass_surjective K c
   have ha :
       a ∈
         IdeleGroup.supportedAt
@@ -391,21 +374,18 @@ theorem supportedIdeleToClassPowerQuotient_surjective
   change
     QuotientGroup.mk'
         (ideleClassPowerLocalUnitSubgroup (K := K) n S T)
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) u) =
+        (IdeleGroup.toStandardClass K u) =
       QuotientGroup.mk'
         (ideleClassPowerLocalUnitSubgroup (K := K) n S T)
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a)
+        (IdeleGroup.toStandardClass K a)
   rw [← hup, map_mul]
   have hpOne :
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) p = 1 :=
-    (QuotientGroup.eq_one_iff _).mpr hp
+      IdeleGroup.toStandardClass K p = 1 :=
+    (IdeleGroup.toStandardClass_eq_one_iff K p).mpr hp
   rw [hpOne]
   apply congrArg (QuotientGroup.mk'
     (ideleClassPowerLocalUnitSubgroup (K := K) n S T))
-  exact (_root_.mul_one (QuotientGroup.mk' (IdeleGroup.principalSubgroup K) u)).symm
+  exact (_root_.mul_one (IdeleGroup.toStandardClass K u)).symm
 
 /-- Supported realization of the idele-class index quotient. -/
 noncomputable def

@@ -40,8 +40,7 @@ theorem maxEverywhereUnramified_h2_finite_and_finrank_le_radicalDual :
     Module.finrank (ZMod p)
       (continuousCohomologyZModPLifted p (MaxEverywhereUnramifiedProPGaloisGroup F p) 2) ≤
         Module.finrank (ZMod p) (Module.Dual (ZMod p) (idealPowerRadicalModP F p)) := by
-  let _ : AddCommGroup (ZMod p) :=
-    (ZMod.instField p).toDivisionRing.toAddCommGroup
+  let _ : AddCommGroup (ZMod p) := ZMod.addCommGroup p
   let _ : Module (ZMod p) (ZMod p) := Semiring.toModule
   let n : ℕ+ := ⟨p, (Fact.out : p.Prime).pos⟩
   have : Fact ((n : ℕ).Prime) := ⟨by change p.Prime; exact Fact.out⟩

@@ -5,11 +5,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 https://github.com/n-yamaguchi-0729
 """
 from pathlib import Path
+import tempfile
 import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from legacy_ci import legacy_workflow
+from public_ci import desired_ci, VERIFICATION_REPOS
 
 
 class LegacyWorkflowTests(unittest.TestCase):
@@ -61,6 +63,35 @@ jobs:
             with self.subTest(selectors=selectors):
                 with self.assertRaises(ValueError):
                     legacy_workflow(self.workflow, selectors)
+
+    def test_existing_legacy_wrappers_receive_canonical_name_fix(self):
+        canonical = Path(__file__).resolve().parents[1] / 'verification'
+        with tempfile.TemporaryDirectory() as directory:
+            repo = Path(directory)
+            verification = repo / '.github/verification'
+            verification.mkdir(parents=True)
+            (verification / 'manifest-config.json').write_text('{}')
+            workflow = repo / '.github/workflows/lean.yml'
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text(self.workflow)
+            for filename in ['Inventory.lean', 'ExportSelected.lean']:
+                (verification / filename).write_text('-- stale legacy wrapper\n')
+            for name in VERIFICATION_REPOS:
+                with self.subTest(repository=name):
+                    record = {'repository': name, 'ordered_libraries': ['ProCGroups'],
+                              'primary_roots': ['Nyll.ProCGroups.All'],
+                              'depths': {'ProCGroups': 1}, 'lean_toolchain': 'lean:test',
+                              'mathlib_revision': 'a' * 40,
+                              'mathlib_repository': 'https://github.com/leanprover-community/mathlib4'}
+                    updates = desired_ci(repo, record)
+                    for filename in ['Inventory.lean', 'ExportSelected.lean']:
+                        self.assertEqual(updates['.github/verification/' + filename],
+                                         (canonical / filename).read_bytes())
+                        self.assertEqual((verification / filename).read_text(),
+                                         '-- stale legacy wrapper\n')
+                    self.assertNotIn('.github/verification/verify.py', updates)
+                    self.assertIn('Name.toStringWithSep',
+                                  updates['.github/verification/Inventory.lean'].decode())
 
     def test_library_cache_keeps_existing_restoration_prefix(self):
         text = (Path(__file__).resolve().parents[1] / 'ci_templates/build-library.yml').read_text()

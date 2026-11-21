@@ -43,7 +43,7 @@ theorem openNormalArithmeticStage_kummerH2_eq_zero
   unramifiedFiniteKummerCoefficientH2Map_eq_zero F StageField n hmu
     (openNormalArithmeticStage F (n : ℕ) hpOdd U).isPGroup
     (openNormalArithmeticStage_chosenFinitePlaceIsUnramified F (n : ℕ) hpOdd U)
-    (fun v ↦ (openNormalArithmeticStage F (n : ℕ) hpOdd U).everywhereUnramified.infinitePlaces.1
+    (fun v ↦ (openNormalArithmeticStage F (n : ℕ) hpOdd U).everywhereUnramified.2.1
       (chosenInfinitePlaceAbove (L := StageField) v)) x
 
 /-- A mod-p two-cocycle at the actual arithmetic stage has an actual
@@ -58,7 +58,7 @@ theorem openNormalArithmeticStage_kummerTwoCocycle_isFieldUnitsCoboundary
   unramifiedFiniteKummerTwoCocycle_isFieldUnitsCoboundary F StageField n hmu
     (openNormalArithmeticStage F (n : ℕ) hpOdd U).isPGroup
     (openNormalArithmeticStage_chosenFinitePlaceIsUnramified F (n : ℕ) hpOdd U)
-    (fun v ↦ (openNormalArithmeticStage F (n : ℕ) hpOdd U).everywhereUnramified.infinitePlaces.1
+    (fun v ↦ (openNormalArithmeticStage F (n : ℕ) hpOdd U).everywhereUnramified.2.1
       (chosenInfinitePlaceAbove (L := StageField) v)) c
 
 end ClassFieldTower.Martinet.Shafarevich

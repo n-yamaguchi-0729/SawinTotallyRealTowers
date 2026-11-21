@@ -52,7 +52,7 @@ def arithmeticStageFinitePlaceDecompositionInclusion
     ArithmeticStageFinitePlaceDecompositionGroup F p hpOdd U v →ₜ*
       ((openNormalArithmeticStage F p hpOdd U).field ≃ₐ[F]
         (openNormalArithmeticStage F p hpOdd U).field) :=
-  ClassFieldTower.Cohomology.subgroupInclusion _
+  ProCGroups.ContinuousMonoidHom.subtype _
 
 /-- The decomposition-group inclusion transported back to the open-normal
 quotient of the maximal everywhere-unramified pro-`p` group. -/

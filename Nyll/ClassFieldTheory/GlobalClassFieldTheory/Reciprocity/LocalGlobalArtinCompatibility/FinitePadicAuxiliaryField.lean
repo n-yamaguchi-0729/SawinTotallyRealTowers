@@ -6,9 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleClassSystem
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.LocalGlobalArtinCompatibility.FinitePadicCyclicData
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.ClassFieldRealization
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicUnramifiedLocalGlobalCompatibility
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalNormResidueEmbeddingIndependence
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.OnePlaceBaseNorm
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.PadicCyclicClosure
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.FixedFieldLattice
@@ -16,7 +20,7 @@ public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.ValuedFieldTheory.LocalField.NormUnits
 public import Nyll.ValuedFieldTheory.LocalField.Padic.ClosedAddSubgroup
 
@@ -57,9 +61,6 @@ variable
 
 local instance (p : Nat.Primes) : Fact p.1.Prime :=
   ⟨p.2⟩
-
-attribute [local instance]
-  rationalSeparableClosureAlgebra
 
 local instance finitePadicAuxiliaryExtensionNormal :
     (extensionSubgroup
@@ -903,7 +904,7 @@ private opaque numberFieldTowerFinitePadicAuxiliaryTopDecompositionGroup_eq_chos
 equality and its coercion normalization in this small declaration prevents
 the auxiliary-field witness construction below from repeatedly elaborating
 the full pair of composite homomorphisms. -/
-private theorem globalNormResidueMonoidHomOfEmbedding_norm_restriction_apply
+private theorem globalNormResidueMonoidHom_norm_restriction_apply
     (K : Type u) (K' : Type w) (L : Type v) (L' : Type x)
     [Field K] [NumberField K]
     [Field K'] [NumberField K']
@@ -915,18 +916,22 @@ private theorem globalNormResidueMonoidHomOfEmbedding_norm_restriction_apply
     [FiniteDimensional K L] [IsAbelianGalois K L]
     [FiniteDimensional K' L'] [IsAbelianGalois K' L']
     [FiniteDimensional K K'] [IsGalois K K']
-    (j : L' →ₐ[ℚ] SeparableClosure ℚ)
     (c : IdeleClassGroup K') :
     ((AlgEquiv.restrictNormalHom L).comp
         (AlgEquiv.restrictScalarsHom K))
-          (globalNormResidueMonoidHomOfEmbedding K' L' j c) =
-      globalNormResidueMonoidHomOfEmbedding K L
-        (j.comp (IsScalarTower.toAlgHom ℚ L L'))
-        (_root_.ideleClassNorm K K' c) := by
-  exact
-    DFunLike.congr_fun
-      (globalNormResidueMonoidHomOfEmbedding_norm_restriction
-        (K := K) (L := L) (K' := K') (L' := L') j) c
+          (globalNormResidueMonoidHom K' L' c) =
+      globalNormResidueMonoidHom K L (_root_.ideleClassNorm K K' c) := by
+  let j := numberFieldSeparableClosureEmbedding L'
+  let jLower := j.comp (IsScalarTower.toAlgHom ℚ L L')
+  have h := DFunLike.congr_fun
+    (globalNormResidueMonoidHomOfEmbedding_norm_restriction
+      (K := K) (L := L) (K' := K') (L' := L') j) c
+  change ((AlgEquiv.restrictNormalHom L).comp (AlgEquiv.restrictScalarsHom K))
+      (globalNormResidueMonoidHomOfEmbedding K' L' j c) =
+    globalNormResidueMonoidHomOfEmbedding K L jLower (_root_.ideleClassNorm K K' c) at h
+  rw [← globalNormResidueMonoidHom_eq_ofEmbedding K' L' j,
+    ← globalNormResidueMonoidHom_eq_ofEmbedding K L jLower] at h
+  exact h
 
 
 
@@ -1029,9 +1034,6 @@ opaque numberFieldTowerFinitePadicAuxiliaryLocalGlobalRepresentative
   letI auxiliaryOriginalBaseGalois : IsGalois K F :=
     numberFieldTowerFinitePadicAuxiliaryBase_isGalois
       (K := K) (L := L) p τ
-  let auxiliaryOriginalTopAlgHom : L →ₐ[ℚ] E :=
-    numberFieldTowerFinitePadicAuxiliaryTopEmbedding
-      (K := K) (L := L) p τ
   let wF :=
     numberFieldTowerFinitePadicAuxiliaryBasePlaceExtension
       (K := K) (L := L) v p τ
@@ -1116,28 +1118,22 @@ opaque numberFieldTowerFinitePadicAuxiliaryLocalGlobalRepresentative
       _ = σK := hrestrict
   let j : E →ₐ[ℚ] SeparableClosure ℚ :=
     E.val.restrictScalars ℚ
-  have hjLower :
-      j.comp auxiliaryOriginalTopAlgHom =
-        AlgebraicNumberTheory.numberFieldSeparableClosureEmbedding L := by
-    apply AlgHom.ext
-    intro a
-    exact
-      numberFieldTowerFinitePadicAuxiliaryTopEmbedding_coe
-        (K := K) (L := L) p τ a
   have hPUnramified :
       P.toFiniteGaloisExtension.IsUnramified
         rationalCyclotomicDegreeData :=
     numberFieldTowerFinitePadicAuxiliaryCompositumSubextension_isUnramified
       (K := K) (L := L) p τ n hn hdegree hprimaryQuotient
-  have hcompat :
-      (globalNormResidueMonoidHomOfEmbedding F E j).comp
-          (IdeleGroup.finitePlaceIdeleClass V) =
-        chosenFinitePlaceArtinMonoidHom (K := F) (L := E) V :=
+  have hEmbedded :=
     globalNormResidueMonoidHomOfEmbedding_comp_finitePlaceIdeleClass_of_abstractFixedFieldUnramified
       H P hPUnramified V
+  have hcompat :
+      (globalNormResidueMonoidHom F E).comp
+          (IdeleGroup.finitePlaceIdeleClass V) =
+        chosenFinitePlaceArtinMonoidHom (K := F) (L := E) V := by
+    rw [globalNormResidueMonoidHom_eq_ofEmbedding F E j]
+    exact hEmbedded
   have hupper :
-      globalNormResidueMonoidHomOfEmbedding F E j
-          (IdeleGroup.finitePlaceIdeleClass V y) =
+      globalNormResidueMonoidHom F E (IdeleGroup.finitePlaceIdeleClass V y) =
         σE :=
     (congrArg
       (fun φ : (V.adicCompletion F)ˣ →* Gal(E / F) => φ y)
@@ -1161,25 +1157,11 @@ opaque numberFieldTowerFinitePadicAuxiliaryLocalGlobalRepresentative
             (_root_.ideleClassNorm K F
               (IdeleGroup.finitePlaceIdeleClass V y)) :=
         congrArg (globalNormResidueMonoidHom K L) hnormClass.symm
-      _ = globalNormResidueMonoidHomOfEmbedding K L
-          (j.comp auxiliaryOriginalTopAlgHom)
-          (_root_.ideleClassNorm K F
-            (IdeleGroup.finitePlaceIdeleClass V y)) := by
-        rw [hjLower,
-          ← globalNormResidueMonoidHom_eq_ofEmbedding_standard]
-      _ = ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K))
-          (globalNormResidueMonoidHomOfEmbedding F E j
-            (IdeleGroup.finitePlaceIdeleClass V y)) := by
-        apply Eq.symm
-        apply
-          globalNormResidueMonoidHomOfEmbedding_norm_restriction_apply
-      _ = ((AlgEquiv.restrictNormalHom L).comp
-          (AlgEquiv.restrictScalarsHom K)) σE :=
-        congrArg
-          ((AlgEquiv.restrictNormalHom L).comp
-            (AlgEquiv.restrictScalarsHom K)) hupper
-      _ = restriction σE := rfl
+      _ = restriction
+          (globalNormResidueMonoidHom F E (IdeleGroup.finitePlaceIdeleClass V y)) :=
+        (globalNormResidueMonoidHom_norm_restriction_apply
+          K F L E (IdeleGroup.finitePlaceIdeleClass V y)).symm
+      _ = restriction σE := congrArg restriction hupper
       _ = σK := hrestrict
   exact ⟨z, hlocal, hglobal⟩
 
@@ -1573,7 +1555,7 @@ theorem
     numberFieldTowerFinitePadicCyclicFixedField
       (K := K) (L := L) p τ
   let C : @IntermediateField ℚ (SeparableClosure ℚ) _ _
-      rationalSeparableClosureAlgebra :=
+      (numberFieldSeparableClosureAlgebra ℚ) :=
     rationalCyclotomicPadicField p
   have hfixing :
       (F ⊔ C).fixingSubgroup ≤

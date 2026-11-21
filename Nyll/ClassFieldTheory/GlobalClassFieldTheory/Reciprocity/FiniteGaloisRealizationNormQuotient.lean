@@ -38,14 +38,6 @@ open AlgebraicNumberTheory
 open LocalClassFieldTheory
 open RamificationTheory
 
-/-- The canonical quotient group structure, fixed before forming another quotient. -/
-@[instance_reducible]
-noncomputable def towerNormIdeleClassCommGroup
-    (F : Type u) [Field F] [NumberField F] :
-    CommGroup (IdeleClassGroup F) :=
-  QuotientGroup.Quotient.commGroup (IdeleGroup.principalSubgroup F)
-
-attribute [local instance] towerNormIdeleClassCommGroup
 
 variable
     (K : Type u) (L : Type v) [Field K] [NumberField K]
@@ -208,35 +200,13 @@ theorem towerNormAbstractTopNumberField :
 
 attribute [local instance] towerNormAbstractTopNumberField
 
-/-- The fixed tower uses one canonical quotient dictionary throughout its
-three comparison boundaries. -/
-@[instance_reducible]
-noncomputable def towerNormAbstractNormQuotientCommGroup :
-    CommGroup
-      (IdeleClassGroup
-          (abstractFixedField ℚ (SeparableClosure ℚ)
-            (numberFieldTowerBaseSubgroup K L)) ⧸
-        (_root_.ideleClassNorm
-          (abstractFixedField ℚ (SeparableClosure ℚ)
-            (numberFieldTowerBaseSubgroup K L))
-          (abstractRelativeFixedField ℚ (SeparableClosure ℚ)
-            (numberFieldTowerTopSubgroup_le_baseSubgroup K L))).range) :=
-  QuotientGroup.Quotient.commGroup
-    (_root_.ideleClassNorm
-      (abstractFixedField ℚ (SeparableClosure ℚ)
-        (numberFieldTowerBaseSubgroup K L))
-      (abstractRelativeFixedField ℚ (SeparableClosure ℚ)
-        (numberFieldTowerTopSubgroup_le_baseSubgroup K L))).range
-
-attribute [local instance] towerNormAbstractNormQuotientCommGroup
-
 /-- The ordinary idele class group of the original base field,
 transported to the fixed part of the rational absolute idele-class
 representation used by abstract reciprocity. -/
 noncomputable def numberFieldTowerIdeleClassEquivAmbientFixed :
     Additive (IdeleClassGroup K) ≃+
       KummerTheory.ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation
+        (ideleClassRepresentation ℚ)
         (numberFieldTowerBaseSubgroup K L) := by
   exact
     (MulEquiv.toAdditive
@@ -272,13 +242,14 @@ noncomputable local instance
       (numberFieldTowerTopSubgroup_le_baseSubgroup K L)
   change AddCommGroup
     (Additive (IdeleClassGroup F ⧸ (_root_.ideleClassNorm F E).range))
-  exact Additive.addCommGroup
+  exact @Additive.addCommGroup _ (IdeleGroup.classQuotientCommGroup F
+    (NumberField.IdeleClassGroup.norm F E).range)
 
 /-- First comparison step: abstract finite norms to the ordinary norm
 quotient of the realized fixed fields. -/
 noncomputable def
     numberFieldTowerFiniteNormQuotientEquivFixedFieldNormQuotient :
-    FiniteNormQuotient rationalIdeleClassRepresentation
+    FiniteNormQuotient (ideleClassRepresentation ℚ)
         (numberFieldTowerBaseSubgroup K L)
         (numberFieldTowerTopSubgroup L)
         (numberFieldTowerTopSubgroup_le_baseSubgroup K L) ≃+
@@ -292,7 +263,7 @@ noncomputable def
   let E :=
     abstractRelativeFixedField ℚ (SeparableClosure ℚ) hJH
   change
-    FiniteNormQuotient rationalIdeleClassRepresentation
+    FiniteNormQuotient (ideleClassRepresentation ℚ)
         H J hJH ≃+
       Additive
         (IdeleClassGroup F ⧸
@@ -345,7 +316,7 @@ fixed-field realization of `L / K` is the ordinary idele-class norm
 quotient of the original extension. -/
 noncomputable def
     numberFieldTowerFiniteNormQuotientEquivIdeleClassNormQuotient :
-    FiniteNormQuotient rationalIdeleClassRepresentation
+    FiniteNormQuotient (ideleClassRepresentation ℚ)
         (numberFieldTowerBaseSubgroup K L)
         (numberFieldTowerTopSubgroup L)
         (numberFieldTowerTopSubgroup_le_baseSubgroup K L) ≃+

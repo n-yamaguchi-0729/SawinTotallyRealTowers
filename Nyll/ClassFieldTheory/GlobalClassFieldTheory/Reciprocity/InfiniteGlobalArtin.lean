@@ -6,9 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.NormalEmbeddingRange
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicZHatBaseChange
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.GlobalArtin
 public import Mathlib.FieldTheory.Galois.Profinite
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.AbsoluteNormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PositiveArchimedeanSection
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
@@ -43,225 +46,43 @@ namespace Reciprocity
 open CategoryTheory Opposite
 open FiniteGaloisIntermediateField ProfiniteGrp
 
-/-- Every infinite place of `ℚ` is the canonical real place. -/
-theorem rationalInfinitePlace_isReal
-    (v : InfinitePlace ℚ) :
-    v.IsReal := by
-  rw [Subsingleton.elim v Rat.infinitePlace]
-  exact Rat.isReal_infinitePlace
-
-/-- The positive real unit at one rational infinite place. -/
-noncomputable def rationalPositiveArchimedeanLocalComponent
-    (v : InfinitePlace ℚ) :
-    ℝ≥0ˣ →* v.Completionˣ :=
-  (Units.mapEquiv
-      (InfinitePlace.Completion.ringEquivRealOfIsReal
-        (rationalInfinitePlace_isReal v)).symm.toMulEquiv).toMonoidHom.comp
-    (Units.map NNReal.toRealHom.toMonoidHom)
-
-/-- The infinite idele whose components are the supplied positive real unit. -/
-noncomputable def rationalPositiveArchimedeanInfinitePart :
-    ℝ≥0ˣ →* InfiniteIdeleGroup ℚ :=
-  ContinuousMulEquiv.piUnits.symm.toMonoidHom.comp
-    (MonoidHom.pi rationalPositiveArchimedeanLocalComponent)
-
-private theorem rationalPositiveArchimedeanInfinitePart_component
-    (r : ℝ≥0ˣ) (v : InfinitePlace ℚ) :
-    ContinuousMulEquiv.piUnits
-        (rationalPositiveArchimedeanInfinitePart r) v =
-      rationalPositiveArchimedeanLocalComponent v r := by
-  change
-    ContinuousMulEquiv.piUnits
-        (ContinuousMulEquiv.piUnits.symm
-          ((MonoidHom.pi rationalPositiveArchimedeanLocalComponent) r)) v =
-      rationalPositiveArchimedeanLocalComponent v r
-  exact congrFun
-    (ContinuousMulEquiv.piUnits.apply_symm_apply
-      ((MonoidHom.pi rationalPositiveArchimedeanLocalComponent) r)) v
-
-/-- The positive archimedean section
-`ℝ₊ˣ → I_ℚ`.  Its finite component is one, and at the unique infinite
-place it is the positive real unit supplied by the input. -/
-noncomputable def rationalPositiveArchimedeanIdele :
-    ℝ≥0ˣ →* IdeleGroup ℚ :=
-  rationalPositiveArchimedeanInfinitePart.prod 1
-
-/-- The positive archimedean section has trivial finite component at
-every finite place of `ℚ`. -/
-@[simp]
-theorem rationalPositiveArchimedeanIdele_finiteComponent
-    (r : ℝ≥0ˣ)
-    (v : HeightOneSpectrum (𝓞 ℚ)) :
-    IdeleGroup.finiteComponent v
-        (rationalPositiveArchimedeanIdele r) =
-      1 :=
-  rfl
-
-/-- At the unique rational infinite place, the positive section becomes
-the original positive real unit under mathlib's canonical completion
-equivalence. -/
-theorem rationalPositiveArchimedeanIdele_infiniteComponent
-    (r : ℝ≥0ˣ) :
-    Units.mapEquiv
-        (InfinitePlace.Completion.ringEquivRealOfIsReal
-          Rat.isReal_infinitePlace).toMulEquiv
-        (IdeleGroup.infiniteComponent Rat.infinitePlace
-          (rationalPositiveArchimedeanIdele r)) =
-      Units.map NNReal.toRealHom.toMonoidHom r := by
-  change
-    Units.mapEquiv
-        (InfinitePlace.Completion.ringEquivRealOfIsReal
-          Rat.isReal_infinitePlace).toMulEquiv
-        (ContinuousMulEquiv.piUnits
-          (rationalPositiveArchimedeanInfinitePart r)
-          Rat.infinitePlace) =
-      Units.map NNReal.toRealHom.toMonoidHom r
-  rw [rationalPositiveArchimedeanInfinitePart_component]
-  let e :=
-    (InfinitePlace.Completion.ringEquivRealOfIsReal
-      Rat.isReal_infinitePlace).toMulEquiv
-  change
-    Units.mapEquiv e
-        (Units.mapEquiv e.symm
-          (Units.map NNReal.toRealHom.toMonoidHom r)) =
-      Units.map NNReal.toRealHom.toMonoidHom r
-  rw [← Units.mapEquiv_symm]
-  exact
-    (Units.mapEquiv e).apply_symm_apply
-      (Units.map NNReal.toRealHom.toMonoidHom r)
-
-/-- The positive archimedean section has absolute idele norm `r⁻¹`.
-This is the normalization dictated by the convention in
-`IdeleGroup.absoluteNorm`. -/
-theorem rationalPositiveArchimedeanIdele_absoluteNorm
-    (r : ℝ≥0ˣ) :
-    IdeleGroup.absoluteNorm
-        (rationalPositiveArchimedeanIdele r) =
-      r⁻¹ := by
-  have hcomponent :=
-    congrArg Units.val
-      (rationalPositiveArchimedeanIdele_infiniteComponent r)
-  have hcomponent' :
-      InfinitePlace.Completion.ringEquivRealOfIsReal
-          Rat.isReal_infinitePlace
-          ((IdeleGroup.infiniteComponent Rat.infinitePlace
-            (rationalPositiveArchimedeanIdele r) :
-              Rat.infinitePlace.Completionˣ) :
-            Rat.infinitePlace.Completion) =
-        ((r : ℝ≥0ˣ) : ℝ) := by
-    simpa using hcomponent
-  have hlocalNorm :
-      ‖((IdeleGroup.infiniteComponent Rat.infinitePlace
-          (rationalPositiveArchimedeanIdele r) :
-            Rat.infinitePlace.Completionˣ) :
-          Rat.infinitePlace.Completion)‖₊ =
-        (r : ℝ≥0) := by
-    apply NNReal.eq
-    simp only [coe_nnnorm]
-    calc
-      ‖((IdeleGroup.infiniteComponent Rat.infinitePlace
-          (rationalPositiveArchimedeanIdele r) :
-            Rat.infinitePlace.Completionˣ) :
-          Rat.infinitePlace.Completion)‖ =
-          ‖InfinitePlace.Completion.ringEquivRealOfIsReal
-            Rat.isReal_infinitePlace
-            ((IdeleGroup.infiniteComponent Rat.infinitePlace
-              (rationalPositiveArchimedeanIdele r) :
-                Rat.infinitePlace.Completionˣ) :
-              Rat.infinitePlace.Completion)‖ :=
-        ((InfinitePlace.Completion.isometryEquivRealOfIsReal
-          Rat.isReal_infinitePlace).isometry.norm_map_of_map_zero
-          (map_zero
-            (InfinitePlace.Completion.ringEquivRealOfIsReal
-              Rat.isReal_infinitePlace))
-          _).symm
-      _ = ‖((r : ℝ≥0ˣ) : ℝ)‖ := by
-        rw [hcomponent']
-      _ = ((r : ℝ≥0ˣ) : ℝ) :=
-        Real.norm_of_nonneg (r : ℝ≥0).coe_nonneg
-  have hinfinite :
-      InfiniteIdeleGroup.archimedeanNorm
-          (rationalPositiveArchimedeanIdele r).1 =
-        r := by
-    rw [InfiniteIdeleGroup.archimedeanNorm_apply,
-      Fintype.prod_unique]
-    rw [show
-      (default : InfinitePlace ℚ) = Rat.infinitePlace by
-        exact Subsingleton.elim _ _,
-      InfinitePlace.mult_isReal
-      ⟨Rat.infinitePlace, Rat.isReal_infinitePlace⟩,
-      pow_one]
-    apply Units.ext
-    exact hlocalNorm
-  rw [IdeleGroup.absoluteNorm_apply]
-  change
-    FiniteIdeleGroup.absoluteNorm (1 : FiniteIdeleGroup ℚ) *
-        (InfiniteIdeleGroup.archimedeanNorm
-          (rationalPositiveArchimedeanIdele r).1)⁻¹ =
-      r⁻¹
-  rw [map_one, hinfinite, one_mul]
-
-/-- Every finite abelian global Artin homomorphism kills the positive
-archimedean section over `ℚ`. -/
-theorem globalArtinMonoidHom_rationalPositiveArchimedeanIdele
+/-- Every positive archimedean section element has trivial finite global Artin symbol. -/
+theorem globalArtinMonoidHom_positiveArchimedeanSection
+    {K : Type u} [Field K] [NumberField K]
     {L : Type v}
-    [Field L] [NumberField L] [Algebra ℚ L]
-    [IsAbelianGalois ℚ L]
+    [Field L] [NumberField L] [Algebra K L]
+    [IsAbelianGalois K L]
     (r : ℝ≥0ˣ) :
     globalArtinMonoidHom
-        (K := ℚ) (L := L)
-        (rationalPositiveArchimedeanIdele r) =
+        (K := K) (L := L)
+        (IdeleGroup.positiveArchimedeanSection K r) =
       1 := by
-  have hcomponent :=
-    congrArg Units.val
-      (rationalPositiveArchimedeanIdele_infiniteComponent r)
-  have hpos :
-      0 <
-        InfinitePlace.Completion.ringEquivRealOfIsReal
-          Rat.isReal_infinitePlace
-          ((IdeleGroup.infiniteComponent Rat.infinitePlace
-            (rationalPositiveArchimedeanIdele r) :
-              Rat.infinitePlace.Completionˣ) :
-            Rat.infinitePlace.Completion) := by
-    have hvalue :
-        InfinitePlace.Completion.ringEquivRealOfIsReal
-            Rat.isReal_infinitePlace
-            ((IdeleGroup.infiniteComponent Rat.infinitePlace
-              (rationalPositiveArchimedeanIdele r) :
-                Rat.infinitePlace.Completionˣ) :
-              Rat.infinitePlace.Completion) =
-          ((r : ℝ≥0ˣ) : ℝ) := by
-      simpa using hcomponent
-    rw [hvalue]
-    exact
-      NNReal.coe_pos.mpr
-        (pos_iff_ne_zero.mpr (Units.ne_zero r))
   rw [globalArtinMonoidHom_apply]
   have hinfinite :
-      (∏ v : InfinitePlace ℚ,
+      (∏ v : InfinitePlace K,
         chosenInfinitePlaceArtinMonoidHom
-          (K := ℚ) (L := L) v
+          (K := K) (L := L) v
           (IdeleGroup.infiniteComponent v
-            (rationalPositiveArchimedeanIdele r))) =
+            (IdeleGroup.positiveArchimedeanSection K r))) =
         1 := by
-    rw [Fintype.prod_unique,
-      show
-        (default : InfinitePlace ℚ) = Rat.infinitePlace by
-          exact Subsingleton.elim _ _]
-    exact
-      chosenInfinitePlaceArtinMonoidHom_eq_one_of_real_pos
-        (K := ℚ) (L := L)
-        Rat.infinitePlace Rat.isReal_infinitePlace _ hpos
+    apply Finset.prod_eq_one
+    intro v _
+    by_cases hv : v.IsReal
+    · apply chosenInfinitePlaceArtinMonoidHom_eq_one_of_real_pos (K := K) (L := L) v hv
+      exact (RayClass.mem_infinitePositiveSubgroup_iff v _).1
+        (IdeleGroup.positiveArchimedeanSection_infiniteComponent_mem_positive r v) hv
+    · exact chosenInfinitePlaceArtinMonoidHom_eq_one_of_isComplex (K := K) (L := L)
+        v (InfinitePlace.not_isReal_iff_isComplex.mp hv) _
   have hfinite :
-      (∏ᶠ v : HeightOneSpectrum (𝓞 ℚ),
+      (∏ᶠ v : HeightOneSpectrum (𝓞 K),
         chosenFinitePlaceArtinMonoidHom
-          (K := ℚ) (L := L) v
+          (K := K) (L := L) v
           (IdeleGroup.finiteComponent v
-            (rationalPositiveArchimedeanIdele r))) =
+            (IdeleGroup.positiveArchimedeanSection K r))) =
         1 := by
     apply finprod_eq_one_of_forall_eq_one
     intro v
-    rw [rationalPositiveArchimedeanIdele_finiteComponent,
+    rw [IdeleGroup.positiveArchimedeanSection_finiteComponent,
       map_one]
   rw [hinfinite, hfinite, mul_one]
 
@@ -391,6 +212,93 @@ noncomputable def infiniteGlobalArtinMonoidHom
       K Ω).symm).comp
     (infiniteGlobalArtinToLimit K Ω)
 
+private theorem continuousMulEquivToLimit_infiniteGlobalArtinMonoidHom_apply'
+    {K : Type u} {Ω : Type v}
+    [Field K] [NumberField K]
+    [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
+    (a : IdeleGroup K) :
+    InfiniteGalois.continuousMulEquivToLimit K Ω
+        (infiniteGlobalArtinMonoidHom K Ω a) =
+      infiniteGlobalArtinToLimit K Ω a := by
+  exact
+    (InfiniteGalois.continuousMulEquivToLimit K Ω).apply_symm_apply _
+
+/-- The infinite global Artin homomorphism kills the positive archimedean
+section over every number field. -/
+@[simp]
+theorem infiniteGlobalArtinMonoidHom_positiveArchimedeanSection
+    (K : Type u) (Ω : Type v)
+    [Field K] [NumberField K]
+    [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
+    (r : ℝ≥0ˣ) :
+    infiniteGlobalArtinMonoidHom K Ω
+        (IdeleGroup.positiveArchimedeanSection K r) =
+      1 := by
+  let
+      (E : FiniteGaloisIntermediateField K Ω) :
+      NumberField E :=
+    NumberField.of_module_finite K E
+  let
+      (E : FiniteGaloisIntermediateField K Ω) :
+      IsAbelianGalois K E :=
+    IsAbelianGalois.of_algHom E.toIntermediateField.val
+  apply
+    (InfiniteGalois.continuousMulEquivToLimit K Ω).injective
+  rw [
+    continuousMulEquivToLimit_infiniteGlobalArtinMonoidHom_apply',
+    map_one]
+  apply Subtype.ext
+  funext E
+  exact
+    globalArtinMonoidHom_positiveArchimedeanSection
+      (K := K) (L := E.unop) r
+
+/-- Every idele has the same infinite global Artin symbol as a norm-one
+idele. -/
+theorem exists_normOneIdele_same_infiniteGlobalArtin
+    (K : Type u) (Ω : Type v)
+    [Field K] [NumberField K]
+    [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
+    (a : IdeleGroup K) :
+    ∃ b : IdeleGroup.normOneSubgroup (K := K),
+      infiniteGlobalArtinMonoidHom K Ω b =
+        infiniteGlobalArtinMonoidHom K Ω a := by
+  refine
+    ⟨IdeleGroup.positiveArchimedeanNormOneCorrection K a, ?_⟩
+  rw [IdeleGroup.positiveArchimedeanNormOneCorrection_coe,
+    map_mul,
+    infiniteGlobalArtinMonoidHom_positiveArchimedeanSection,
+    mul_one]
+
+private theorem finiteGaloisLimit_proj_equiv_apply
+    {K : Type u} {Ω : Type v} [Field K] [Field Ω] [Algebra K Ω] [IsGalois K Ω]
+    (E : FiniteGaloisIntermediateField K Ω) (sigma : Ω ≃ₐ[K] Ω) :
+    InfiniteGalois.proj (k := K) (K := Ω) E
+      (InfiniteGalois.continuousMulEquivToLimit K Ω sigma) =
+      AlgEquiv.restrictNormalHom E sigma :=
+  rfl
+
+private theorem infiniteGlobalArtinToLimit_apply_component
+    {K : Type u} {Ω : Type v} [Field K] [NumberField K]
+    [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
+    (a : IdeleGroup K) (E : (FiniteGaloisIntermediateField K Ω)ᵒᵖ) :
+    let : NumberField E.unop := NumberField.of_module_finite K E.unop
+    (infiniteGlobalArtinToLimit K Ω a).val E =
+      globalArtinMonoidHom (K := K) (L := E.unop) a := by
+  intro numberFieldE
+  rfl
+
+private theorem infiniteGlobalArtinToLimit_proj_eq_finite
+    {K : Type u} {Ω : Type v} [Field K] [NumberField K]
+    [Field Ω] [Algebra K Ω] [IsAbelianGalois K Ω]
+    (a : IdeleGroup K) (E : FiniteGaloisIntermediateField K Ω) (hE : NumberField E) :
+    let : NumberField E := hE
+    InfiniteGalois.proj (k := K) (K := Ω) E (infiniteGlobalArtinToLimit K Ω a) =
+      globalArtinMonoidHom (K := K) (L := E) a := by
+  intro numberFieldE
+  change (infiniteGlobalArtinToLimit K Ω a).val (op E) = _
+  with_reducible exact infiniteGlobalArtinToLimit_apply_component a (op E)
+
 /-- Projection of the infinite global Artin homomorphism to a finite
 Galois intermediate field is exactly that field's finite global Artin
 homomorphism, using a caller-supplied number-field witness. -/
@@ -406,15 +314,12 @@ theorem restrictNormalHom_infiniteGlobalArtinMonoidHom_of_numberField
         (infiniteGlobalArtinMonoidHom K Ω a) =
       globalArtinMonoidHom
         (K := K) (L := E) a := by
-  intro sharedOwner1
-  have hcomponent :=
-    congrArg
-      (InfiniteGalois.proj
-        (k := K) (K := Ω) E)
-      ((InfiniteGalois.continuousMulEquivToLimit
-        K Ω).apply_symm_apply
-          (infiniteGlobalArtinToLimit K Ω a))
-  exact hcomponent
+  intro numberFieldE
+  let proj := InfiniteGalois.proj (k := K) (K := Ω) E
+  let sigma := infiniteGlobalArtinMonoidHom K Ω a
+  have h := continuousMulEquivToLimit_infiniteGlobalArtinMonoidHom_apply' (Ω := Ω) a
+  exact (finiteGaloisLimit_proj_equiv_apply E sigma).symm.trans
+    ((congrArg proj h).trans (infiniteGlobalArtinToLimit_proj_eq_finite a E hE))
 
 /-- Finite projection with both finite-layer structures supplied explicitly.
 This is useful when a concrete tower already has named canonical witnesses
@@ -447,20 +352,20 @@ theorem restrictNormalHom_infiniteGlobalArtinMonoidHom_of_intermediateField
     [FiniteDimensional K E] [IsGalois K E]
     (hE : NumberField E)
     (hAbelian : IsAbelianGalois K E) :
-    letI : NumberField E := hE
-    letI : IsAbelianGalois K E := hAbelian
+    let : NumberField E := hE
+    let : IsAbelianGalois K E := hAbelian
     AlgEquiv.restrictNormalHom E
         (infiniteGlobalArtinMonoidHom K Ω a) =
       globalArtinMonoidHom (K := K) (L := E) a := by
+  intro numberFieldE abelianE
   let G : FiniteGaloisIntermediateField K Ω :=
     { toIntermediateField := E
       finiteDimensional := inferInstance
       isGalois := inferInstance }
-  let : NumberField E := hE
-  let : IsAbelianGalois K E := hAbelian
-  exact
-    restrictNormalHom_infiniteGlobalArtinMonoidHom_of_structures
-      K Ω a G hE hAbelian
+  have h := restrictNormalHom_infiniteGlobalArtinMonoidHom_of_structures
+    K Ω a G hE hAbelian
+  dsimp only [G] at h
+  with_reducible exact h
 
 /-- Finite projection for a plain intermediate field when its structures are
 already installed as ambient instances. -/
@@ -717,10 +622,7 @@ theorem restrictNormalHom_infiniteGlobalArtinMonoidHom_of_scalarTower
       globalArtinMonoidHom (K := K) (L := E) a := by
   let j : E →ₐ[K] Ω := IsScalarTower.toAlgHom K E Ω
   let G : FiniteGaloisIntermediateField K Ω :=
-    { toIntermediateField := j.fieldRange
-      finiteDimensional :=
-        j.equivFieldRange.toLinearEquiv.finiteDimensional
-      isGalois := IsGalois.of_algEquiv j.equivFieldRange }
+    j.finiteGaloisFieldRange
   let _ : FiniteDimensional K G := G.finiteDimensional
   let _ : NumberField G :=
     NumberField.of_module_finite K G
@@ -807,18 +709,6 @@ noncomputable def rationalCyclotomicZHatGlobalArtin :
       (rationalCyclotomicZHatField ≃ₐ[ℚ]
         rationalCyclotomicZHatField) :=
   infiniteGlobalArtinMonoidHom ℚ rationalCyclotomicZHatField
-
-private theorem
-    continuousMulEquivToLimit_rationalCyclotomicZHatGlobalArtin_apply
-    (a : IdeleGroup ℚ) :
-    InfiniteGalois.continuousMulEquivToLimit
-        ℚ rationalCyclotomicZHatField
-        (rationalCyclotomicZHatGlobalArtin a) =
-      infiniteGlobalArtinToLimit
-        ℚ rationalCyclotomicZHatField a := by
-  exact
-    (InfiniteGalois.continuousMulEquivToLimit
-      ℚ rationalCyclotomicZHatField).apply_symm_apply _
 
 /-- Projection of the rational `ZHat` Artin homomorphism is the finite
 global Artin homomorphism. -/
@@ -920,66 +810,6 @@ theorem rationalCyclotomicZHatGlobalArtin_denseRange :
   infiniteGlobalArtinMonoidHom_denseRange
     ℚ rationalCyclotomicZHatField
 
-/-- The infinite global Artin homomorphism, like each of its finite
-coordinates, kills the positive archimedean section. -/
-@[simp]
-theorem
-    rationalCyclotomicZHatGlobalArtin_rationalPositiveArchimedeanIdele
-    (r : ℝ≥0ˣ) :
-    rationalCyclotomicZHatGlobalArtin
-        (rationalPositiveArchimedeanIdele r) =
-      1 := by
-  let
-      (E :
-        FiniteGaloisIntermediateField
-          ℚ rationalCyclotomicZHatField) :
-      NumberField E :=
-    NumberField.of_module_finite ℚ E
-  let
-      (E :
-        FiniteGaloisIntermediateField
-          ℚ rationalCyclotomicZHatField) :
-      IsAbelianGalois ℚ E :=
-    IsAbelianGalois.of_algHom E.toIntermediateField.val
-  apply
-    (InfiniteGalois.continuousMulEquivToLimit
-      ℚ rationalCyclotomicZHatField).injective
-  rw [
-    continuousMulEquivToLimit_rationalCyclotomicZHatGlobalArtin_apply,
-    map_one]
-  apply Subtype.ext
-  funext E
-  exact
-    globalArtinMonoidHom_rationalPositiveArchimedeanIdele
-      (L := E.unop) r
-
-/-- Every rational idele has the same infinite Artin symbol as a
-norm-one idele. -/
-theorem
-    exists_normOneIdele_same_rationalCyclotomicZHatGlobalArtin
-    (a : IdeleGroup ℚ) :
-    ∃ b : IdeleGroup.normOneSubgroup (K := ℚ),
-      rationalCyclotomicZHatGlobalArtin b =
-        rationalCyclotomicZHatGlobalArtin a := by
-  let r := IdeleGroup.absoluteNorm a
-  refine
-    ⟨⟨a * rationalPositiveArchimedeanIdele r, ?_⟩,
-      ?_⟩
-  · change
-      IdeleGroup.absoluteNorm
-          (a * rationalPositiveArchimedeanIdele r) =
-        1
-    rw [map_mul,
-      rationalPositiveArchimedeanIdele_absoluteNorm]
-    exact mul_inv_cancel _
-  · change
-      rationalCyclotomicZHatGlobalArtin
-          (a * rationalPositiveArchimedeanIdele r) =
-        rationalCyclotomicZHatGlobalArtin a
-    rw [map_mul,
-      rationalCyclotomicZHatGlobalArtin_rationalPositiveArchimedeanIdele,
-      mul_one]
-
 /-- The norm-one rational ideles already have dense Artin image. -/
 theorem rationalCyclotomicZHatGlobalArtin_normOne_denseRange :
     DenseRange
@@ -988,7 +818,7 @@ theorem rationalCyclotomicZHatGlobalArtin_normOne_denseRange :
   apply rationalCyclotomicZHatGlobalArtin_denseRange.mono
   rintro σ ⟨a, rfl⟩
   obtain ⟨b, hb⟩ :=
-    exists_normOneIdele_same_rationalCyclotomicZHatGlobalArtin a
+    exists_normOneIdele_same_infiniteGlobalArtin ℚ rationalCyclotomicZHatField a
   exact ⟨b, hb⟩
 
 end Reciprocity

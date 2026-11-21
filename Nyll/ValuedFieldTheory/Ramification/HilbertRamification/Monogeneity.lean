@@ -571,15 +571,12 @@ theorem exists_valuationSubring_generator_data_of_uniqueExtension
     rw [hsumEq] at hsum
     exact hsum
   have hjac :
-      base.maximalIdeal ≤
-        Ideal.jacobson (⊥ : Ideal base.valuationSubring) := by
-    simpa using
-      (IsLocalRing.maximalIdeal_le_jacobson
-        (⊥ : Ideal base.valuationSubring))
+      base.maximalIdeal ≤ Ring.jacobson base.valuationSubring :=
+    (IsLocalRing.ringJacobson_eq_maximalIdeal base.valuationSubring).ge
   have hle :
       (⊤ : Submodule base.valuationSubring target.valuationSubring) ≤
         A.toSubmodule :=
-    Submodule.le_of_le_smul_of_le_jacobson_bot
+    Submodule.le_of_le_smul_of_le_jacobson
       (I := base.maximalIdeal) (N := A.toSubmodule)
       (N' := (⊤ : Submodule base.valuationSubring target.valuationSubring))
       Module.Finite.fg_top hjac htop

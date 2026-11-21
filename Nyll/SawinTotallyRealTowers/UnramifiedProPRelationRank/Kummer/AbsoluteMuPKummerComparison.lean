@@ -38,10 +38,7 @@ namespace ClassFieldTower.Martinet.Shafarevich
 open CategoryTheory KummerTheory TopRep ContRepresentation
 open ClassFieldTower.ProP
 
-local instance absoluteMuPComparisonH1Module
-    {q : ℕ} {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 section GeneralUniverse
 
@@ -232,12 +229,14 @@ theorem absoluteMuPH1EquivContinuousH1ZMod_kummerClass
           (QuotientGroup.mk'
             (powMonoidHom p : Kˣ →* Kˣ).range a)) := by
   change
-    ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted.symm
+    (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted
+      (p := p) (G := Field.absoluteGaloisGroup K)).symm
       (absoluteMuPContinuousCohomologyLinearEquivTrivialLifted K p hmu 1
         (absoluteKummerMuPH1Class K p a)) = _
   rw [absoluteMuPContinuousCohomologyLinearEquivTrivialLifted_apply]
   change
-    ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted.symm
+    (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted
+      (p := p) (G := Field.absoluteGaloisGroup K)).symm
       (ContinuousCohomology.map
         (ContinuousMonoidHom.id (Field.absoluteGaloisGroup K))
         (absoluteMuPTopRepTrivialIsoLifted K p hmu).hom 1
@@ -266,7 +265,8 @@ theorem absoluteMuPH1EquivContinuousH1ZMod_kummerClass
   rw [hπ]
   rw [absoluteMuPCocyclesMap_kummer_eq_lifted]
   exact
-    ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted.symm_apply_apply _
+    (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted
+      (p := p) (G := Field.absoluteGaloisGroup K)).symm_apply_apply _
 
 /-- Linear-map form of the absolute Kummer comparison. -/
 theorem absoluteMuPKummerH1LinearMap_compare
@@ -398,9 +398,11 @@ theorem absoluteMuPH1EquivContinuousH1ZMod_eq_original
         ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology.symm := by
   apply LinearEquiv.ext
   intro x
-  change ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted.symm
+  change (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomologyLifted
+    (p := p) (G := Field.absoluteGaloisGroup K)).symm
       (absoluteMuPContinuousCohomologyLinearEquivTrivialLifted K p hmu 1 x) =
-    ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology.symm
+    (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology
+      (p := p) (G₀ := Field.absoluteGaloisGroup K)).symm
       (absoluteMuPContinuousCohomologyLinearEquivTrivial K p hmu 1 x)
   rw [absoluteMuPContinuousCohomologyLinearEquivTrivial_apply_eq_lifted]
   exact (ClassFieldTower.Cohomology.continuousH1ZModEquivContinuousCohomology_symm_liftedSmall

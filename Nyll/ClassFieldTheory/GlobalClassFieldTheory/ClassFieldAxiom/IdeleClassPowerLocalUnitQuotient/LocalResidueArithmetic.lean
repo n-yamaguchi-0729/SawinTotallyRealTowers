@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.LocallyCompact
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.IdeleClassPowerLocalUnitQuotient.FinitePlaceCompletionInstances
 public import Nyll.ValuedFieldTheory.LocalField.DiscreteValuationField.FieldUnitPowerIndexFormulas

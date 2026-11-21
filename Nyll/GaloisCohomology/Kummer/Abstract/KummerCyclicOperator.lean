@@ -127,7 +127,7 @@ theorem cyclic_single_radical_of_tateHMinusOne_isZero
     induction i with
     | zero =>
         let : Module ℤ B.V := B.hV2
-        rw [pow_zero, map_one, zero_smul, zero_add, Module.End.one_apply]
+        rw [pow_zero, map_one, zero_smul, zero_add, one_apply_eq_self]
     | succ i hi =>
         rw [pow_succ', map_mul]
         change B.ρ g (B.ρ (g ^ i) a) = _

@@ -1131,23 +1131,7 @@ theorem continuous_valuationSubringUnitsEquivRootsTimesPrincipalUnits_symm_mrang
           F).symm u).2) :=
     continuous_valuationSubringUnitsEquivRootsTimesPrincipalUnits_symm_snd_mrangeRestrict
       F
-  rw [continuous_iff_continuousAt]
-  intro u
-  rw [ContinuousAt, nhds_prod_eq]
-  intro s hs
-  rcases Filter.mem_prod_iff.1 hs with ⟨s₁, hs₁, s₂, hs₂, hsubset⟩
-  have hpre₁ :
-      {x : F.valuationSubringˣ |
-        ((valuationSubringUnitsEquivRootsTimesPrincipalUnits
-          F).symm x).1 ∈ s₁} ∈ 𝓝 u :=
-    hfst.tendsto u hs₁
-  have hpre₂ :
-      {x : F.valuationSubringˣ |
-        ((valuationSubringUnitsEquivRootsTimesPrincipalUnits
-          F).symm x).2 ∈ s₂} ∈ 𝓝 u :=
-    hsnd.tendsto u hs₂
-  exact Filter.mem_of_superset (Filter.inter_mem hpre₁ hpre₂) fun x hx =>
-    hsubset ⟨hx.1, hx.2⟩
+  exact hfst.prodMk hsnd
 
 /-- Topological half of the uniformizer–residue–principal-unit decomposition: for the
 range-restricted valuation topology, the product map
@@ -1250,17 +1234,7 @@ theorem continuous_fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_mrangeRest
     simpa [E] using
       continuous_fieldUnitsEquivRootsPrincipalUnitsUniformizer_symm_snd_mrangeRestrict
         F hπ
-  rw [continuous_iff_continuousAt]
-  intro x
-  rw [ContinuousAt, nhds_prod_eq]
-  intro s hs
-  rcases Filter.mem_prod_iff.1 hs with ⟨s₁, hs₁, s₂, hs₂, hsubset⟩
-  have hpre₁ : {y : Kˣ | (E.symm y).1 ∈ s₁} ∈ 𝓝 x :=
-    hfst.tendsto x hs₁
-  have hpre₂ : {y : Kˣ | (E.symm y).2 ∈ s₂} ∈ 𝓝 x :=
-    hsnd.tendsto x hs₂
-  exact Filter.mem_of_superset (Filter.inter_mem hpre₁ hpre₂) fun y hy =>
-    hsubset ⟨hy.1, hy.2⟩
+  exact hfst.prodMk hsnd
 
 /-- The uniformizer–residue–principal-unit decomposition, topological group-isomorphism form for
 the range-restricted valuation topology. -/

@@ -156,10 +156,12 @@ noncomputable def conjugateCompletionRingEquiv
     (w : AbsoluteValue L ℝ) (σ : L ≃ₐ[K] L) :
     (absoluteValueConjugate w σ).Completion ≃+*
       w.Completion :=
-  UniformSpace.Completion.mapRingEquiv
-    (conjugateWithAbsRingEquiv w σ)
-    (conjugateWithAbsRingEquiv_isometry w σ).continuous
-    (conjugateWithAbsRingEquiv_symm_isometry w σ).continuous
+  (AbsoluteValue.Completion.equiv (absoluteValueConjugate w σ)).trans
+    ((UniformSpace.Completion.mapRingEquiv
+      (conjugateWithAbsRingEquiv w σ)
+      (conjugateWithAbsRingEquiv_isometry w σ).continuous
+      (conjugateWithAbsRingEquiv_symm_isometry w σ).continuous).trans
+      (AbsoluteValue.Completion.equiv w).symm)
 
 omit [FiniteDimensional K L] [IsGalois K L] in
 @[simp]
@@ -169,18 +171,11 @@ theorem conjugateCompletionRingEquiv_toCompletion
         (AbsoluteValue.toCompletion
           (absoluteValueConjugate w σ) x) =
       AbsoluteValue.toCompletion w (σ x) := by
-  change
-    UniformSpace.Completion.mapRingEquiv
-        (conjugateWithAbsRingEquiv w σ)
-        (conjugateWithAbsRingEquiv_isometry w σ).continuous
-        (conjugateWithAbsRingEquiv_symm_isometry w σ).continuous
-      (((WithAbs.equiv
-        (absoluteValueConjugate w σ)).symm x :
-          WithAbs (absoluteValueConjugate w σ)) :
-        (absoluteValueConjugate w σ).Completion) = _
-  rw [UniformSpace.Completion.mapRingEquiv_apply,
-    UniformSpace.Completion.map_coe
-      (conjugateWithAbsRingEquiv_isometry w σ).uniformContinuous]
+  simp only [conjugateCompletionRingEquiv, AbsoluteValue.toCompletion_apply,
+    RingEquiv.trans_apply, AbsoluteValue.Completion.equiv_apply,
+    AbsoluteValue.Completion.toCompletion_coe, UniformSpace.Completion.mapRingEquiv_apply,
+    UniformSpace.Completion.map_coe (conjugateWithAbsRingEquiv_isometry w σ).uniformContinuous,
+    AbsoluteValue.Completion.equiv_symm_apply, AbsoluteValue.Completion.ofCompletion_coe]
   rfl
 
 omit [FiniteDimensional K L] [IsGalois K L] in
@@ -194,21 +189,25 @@ theorem conjugateCompletionRingEquiv_completionMap
           (absoluteValueConjugate w.1 σ)
           (absoluteValueConjugate_extends vK w σ) b) =
       AbsoluteValue.completionMap vK w.1 w.2 b := by
-  refine UniformSpace.Completion.ext'
-    (UniformSpace.Completion.continuous_map.comp
-      (AbsoluteValue.completionMap_isometry
-        vK
-        (absoluteValueConjugate w.1 σ)
-        (absoluteValueConjugate_extends vK w σ)).continuous)
-    (AbsoluteValue.completionMap_isometry
-      vK w.1 w.2).continuous ?_ b
+  have hcont := (AbsoluteValue.Completion.continuous_ofCompletion w.1).comp
+    ((show Continuous (UniformSpace.Completion.map (conjugateWithAbsRingEquiv w.1 σ)) from
+      UniformSpace.Completion.continuous_map).comp
+      (AbsoluteValue.Completion.continuous_toCompletion (absoluteValueConjugate w.1 σ)))
+  have hconj : Continuous (conjugateCompletionRingEquiv w.1 σ) := by
+    refine hcont.congr fun x => ?_
+    simp only [Function.comp_apply, conjugateCompletionRingEquiv, RingEquiv.trans_apply,
+      AbsoluteValue.Completion.equiv_apply, AbsoluteValue.Completion.equiv_symm_apply,
+      UniformSpace.Completion.mapRingEquiv_apply]
+  refine AbsoluteValue.Completion.induction_on b
+    (isClosed_eq (hconj.comp (AbsoluteValue.completionMap_isometry vK
+      (absoluteValueConjugate w.1 σ) (absoluteValueConjugate_extends vK w σ)).continuous)
+      (AbsoluteValue.completionMap_isometry vK w.1 w.2).continuous) ?_
   intro x
   have hx : (x : vK.Completion) =
       algebraMap K vK.Completion (WithAbs.equiv vK x) := by
     rw [← AbsoluteValue.toCompletion_eq_algebraMap,
       AbsoluteValue.toCompletion_apply, RingEquiv.symm_apply_apply]
   rw [hx]
-  simp only [Function.comp_apply]
   rw [AbsoluteValue.completionMap_coe,
     AbsoluteValue.completionMap_coe]
   change

@@ -78,7 +78,7 @@ theorem integralPrimitive_exponent_ne_zero
     (K : Type*) [Field K] [NumberField K]
     (θ : 𝓞 K)
     (hθ : IntermediateField.adjoin ℚ ({(θ : K)} : Set K) = ⊤) :
-    RingOfIntegers.exponent θ ≠ 0 := by
+    NumberField.RingOfIntegers.exponent θ ≠ 0 := by
   let N : Submodule ℤ (𝓞 K) := (Algebra.adjoin ℤ ({θ} : Set (𝓞 K))).toSubmodule
   have hRank : Module.finrank ℤ N = Module.finrank ℤ (𝓞 K) :=
     integralPrimitiveOrder_finrank K θ hθ

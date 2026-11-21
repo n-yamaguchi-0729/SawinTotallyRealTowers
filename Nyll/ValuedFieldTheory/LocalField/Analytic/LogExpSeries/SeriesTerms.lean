@@ -794,9 +794,9 @@ theorem tendsto_zero_log_term_ofWithZeroValuation_of_pos
       Units.mk0 (((n + 1 : ℕ) : K)) (hnK n)
   have hlog :
       WithZero.log (v (y : K)) ≤ -(N : ℤ) := by
-    have hNlog : (N : ℤ) ≤ -WithZero.log (v (y : K)) := by
-      simpa [y, ofWithZeroValuation_val] using hn
-    linarith
+    change (N : ℤ) ≤ (ofWithZeroValuation v).val y at hn
+    rw [ofWithZeroValuation_val] at hn
+    simpa only [neg_neg] using neg_le_neg hn
   have hvle : v (y : K) ≤ WithZero.exp (-(N : ℤ)) :=
     WithZero.le_exp_of_log_le hlog
   change v.restrict (y : K) < γ.1
@@ -839,9 +839,9 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_of_pos
       Units.mk0 (((n + 1 : ℕ) : K)) (hnK n)
   have hlog :
       WithZero.log (v (y : K)) ≤ -(N : ℤ) := by
-    have hNlog : (N : ℤ) ≤ -WithZero.log (v (y : K)) := by
-      simpa [y, ofWithZeroValuation_val] using hn
-    linarith
+    change (N : ℤ) ≤ (ofWithZeroValuation v).val y at hn
+    rw [ofWithZeroValuation_val] at hn
+    simpa only [neg_neg] using neg_le_neg hn
   have hvle : v (y : K) ≤ WithZero.exp (-(N : ℤ)) :=
     WithZero.le_exp_of_log_le hlog
   have hsign : v ((-1 : K) ^ n) = 1 := by
@@ -1079,9 +1079,9 @@ theorem tendsto_zero_signed_log_term_ofWithZeroValuation_scaled_of_pos
       Units.mk0 (((n + 1 : ℕ) : K)) (hnK n)
   have hlog :
       WithZero.log (v (y : K)) ≤ -(N : ℤ) := by
-    have hNlog : (N : ℤ) ≤ -WithZero.log (v (y : K)) := by
-      simpa [y, ofWithZeroValuation_val] using hn
-    linarith
+    change (N : ℤ) ≤ (ofWithZeroValuation v).val y at hn
+    rw [ofWithZeroValuation_val] at hn
+    simpa only [neg_neg] using neg_le_neg hn
   have hvle : v (y : K) ≤ WithZero.exp (-(N : ℤ)) :=
     WithZero.le_exp_of_log_le hlog
   have hsign : v ((-1 : K) ^ n) = 1 := by

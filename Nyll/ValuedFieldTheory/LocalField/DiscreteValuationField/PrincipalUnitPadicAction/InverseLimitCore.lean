@@ -98,7 +98,7 @@ def Internal.higherUnitQuotientTransition
     (F : CompleteDVF.{u, v} K) {m n : ℕ} (hmn : m ≤ n) :
     F.valuationSubringˣ ⧸ (higherPrincipalUnitGroup F) (n + 1) →*
       F.valuationSubringˣ ⧸ (higherPrincipalUnitGroup F) (m + 1) :=
-  (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).quotient_principalUnitSubgroup_mapOfLe
+  (higherPrincipalUnitGroup.toPrincipalUnitFiltration F).quotient_level_mapOfLe
     (Nat.succ_le_succ hmn)
 
 open _root_.LocalFieldTheory.DiscreteValuationField.CompleteDVF (

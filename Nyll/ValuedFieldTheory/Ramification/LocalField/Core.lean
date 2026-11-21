@@ -610,6 +610,80 @@ private theorem fixedFieldUpperRamificationGroup_eq_local
       (AlgEquiv.refl : IntermediateField.fixedField H ≃ₐ[K]
         IntermediateField.fixedField H) t
 
+/-- Upper groups descend to the actual fixed field of any normal subgroup. -/
+theorem localUpperRamificationGroup_map_fixedField
+    (K : Type u) (L : Type v) [Field K] [Field L] [Algebra K L]
+    [FiniteDimensional K L] [IsGalois K L]
+    [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+    (H : Subgroup Gal(L/K)) [H.Normal] (t : ℝ) :
+    let : IsGalois K (IntermediateField.fixedField H) := IsGalois.of_fixedField_normal_subgroup H
+    (localUpperRamificationGroup K L t).map
+      (AlgEquiv.restrictNormalHom (IntermediateField.fixedField H)) =
+        localUpperRamificationGroup K (IntermediateField.fixedField H) t := by
+  intro fixedFieldGalois
+  let base := (localCompleteDVF K).toDVF
+  let target := (chosenLocalExtensionCompleteDVF K L).toDVF
+  let huniq :
+      RamificationTheory.DiscreteValuationField.DVF.HasUniqueValuationExtension base target :=
+    chosenLocalExtensionCompleteDVF_hasUniqueDVFValuationExtension K L
+  let : Finite (localCompleteDVF K).residueField := by
+    change Finite 𝓀[K]
+    infer_instance
+  let : Module.Finite base.valuationSubring target.valuationSubring :=
+    chosenLocalExtensionCompleteDVF_valuationSubring_moduleFinite K L
+  let : FiniteDimensional base.residueField target.residueField :=
+    residueField_finiteDimensional_of_moduleFinite_dvf (base := base) (target := target)
+  let e := IsGalois.normalAutEquivQuotient H
+  have hre : e.toMonoidHom.comp (QuotientGroup.mk' H) =
+      AlgEquiv.restrictNormalHom (IntermediateField.fixedField H) := by
+    apply MonoidHom.ext
+    exact IsGalois.normalAutEquivQuotient_apply H
+  rw [← hre, ← Subgroup.map_map]
+  change ((upperRamificationGroupOfUniqueExtension huniq t).map (QuotientGroup.mk' H)).map
+    e.toMonoidHom = _
+  rw [upperRamificationGroup_quotient (base := base) (target := target) huniq H t]
+  let R := fixedFieldUpperRamificationGroup huniq H t
+  change (R.comap e.toMonoidHom).map e.toMonoidHom = _
+  exact (Subgroup.map_comap_eq_self_of_surjective (f := e.toMonoidHom) e.surjective R).trans
+    (fixedFieldUpperRamificationGroup_eq_local K L H t)
+
+/-- Upper groups descend along ordinary restriction in a finite Galois tower. -/
+theorem localUpperRamificationGroup_map_restrictNormalHom
+    (K : Type u) (E : Type v) (L : Type w) [Field K] [Field E] [Field L]
+    [Algebra K E] [Algebra E L] [Algebra K L] [IsScalarTower K E L]
+    [FiniteDimensional K E] [IsGalois K E] [FiniteDimensional K L] [IsGalois K L]
+    [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] (t : ℝ) :
+    (localUpperRamificationGroup K L t).map (AlgEquiv.restrictNormalHom E) =
+      localUpperRamificationGroup K E t := by
+  let j := IsScalarTower.toAlgHom K E L
+  let M := j.fieldRange
+  let e : E ≃ₐ[K] M := j.equivFieldRange
+  let : IsGalois K M := IsGalois.of_algEquiv e
+  let H := M.fixingSubgroup
+  let : H.Normal := inferInstanceAs M.fixingSubgroup.Normal
+  let F := IntermediateField.fixedField H
+  let : IsGalois K F := IsGalois.of_fixedField_normal_subgroup H
+  let c : F ≃ₐ[K] E :=
+    (IntermediateField.equivOfEq (IsGalois.fixedField_fixingSubgroup M)).trans e.symm
+  let res : Gal(L/K) →* Gal(F/K) := AlgEquiv.restrictNormalHom F
+  have hcomp : (AlgEquiv.autCongr c).toMonoidHom.comp res = AlgEquiv.restrictNormalHom E := by
+    apply MonoidHom.ext
+    intro σ
+    apply AlgEquiv.ext
+    intro x
+    apply j.injective
+    have hx (y : F) : j (c y) = (y : L) := by
+      exact congrArg Subtype.val (e.apply_symm_apply
+        (IntermediateField.equivOfEq (IsGalois.fixedField_fixingSubgroup M) y))
+    change j (c (res σ (c.symm x))) = j (AlgEquiv.restrictNormalHom E σ x)
+    calc
+      _ = (res σ (c.symm x) : L) := hx _
+      _ = σ ((c.symm x : F) : L) := AlgEquiv.restrictNormal_commutes σ F (c.symm x)
+      _ = σ (j x) := by rw [← hx (c.symm x), c.apply_symm_apply]
+      _ = _ := (AlgEquiv.restrictNormal_commutes σ E x).symm
+  rw [← hcomp, ← Subgroup.map_map, localUpperRamificationGroup_map_fixedField K L H t]
+  exact localUpperRamificationGroup_map_autCongr K F E c t
+
 /-- Upper ramification groups descend along restriction between finite
 Galois intermediate fields in a common separable closure. -/
 theorem localUpperRamificationGroup_map_restrict

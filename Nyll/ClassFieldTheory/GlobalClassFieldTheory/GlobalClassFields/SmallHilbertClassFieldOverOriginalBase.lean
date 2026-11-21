@@ -116,20 +116,12 @@ original number field is its ordinary class number. -/
 theorem smallHilbertClassField_finrank_over_original_eq_classNumber :
     Module.finrank K (smallHilbertClassField K) =
       NumberField.classNumber K := by
-  calc
-    Module.finrank K (smallHilbertClassField K) =
-        (smallHilbertClassFieldNormSubgroup (K := K)).index :=
-      closedFiniteIndexClassField_finrank_eq_index
-        (smallHilbertClassFieldNormSubgroup (K := K))
-        (smallHilbertClassFieldNormSubgroup_isClosed (K := K))
-    _ = Nat.card
-          (IdeleClassGroup K ⧸
-            smallHilbertClassFieldNormSubgroup (K := K)) :=
-      Subgroup.index_eq_card
-        (smallHilbertClassFieldNormSubgroup (K := K))
-    _ = NumberField.classNumber K :=
-      smallHilbertClassFieldQuotient_card_eq_classNumber
-        (K := K)
+  have hRank : Module.finrank K (smallHilbertClassField K) =
+      Module.finrank (smallHilbertClassFieldBase K) (smallHilbertClassField K) :=
+    Algebra.finrank_eq_of_equiv_equiv (smallHilbertClassFieldBaseEquiv (K := K)).toRingEquiv
+      (RingEquiv.refl (smallHilbertClassField K)) (RingHom.ext fun x =>
+        (smallHilbertClassField_algebraMap_original K x).symm)
+  exact hRank.trans (smallHilbertClassField_finrank_eq_classNumber (K := K))
 
 /-- The selected small Hilbert class field is Galois over the original
 number field, not only over its canonically equivalent fixed-field

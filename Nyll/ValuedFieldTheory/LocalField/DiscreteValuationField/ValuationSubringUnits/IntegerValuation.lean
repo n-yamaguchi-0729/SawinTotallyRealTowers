@@ -41,11 +41,13 @@ uniformizer of value `exp (-1)` has integer value `1`. -/
 noncomputable def ofWithZeroValuation
     (v : _root_.Valuation K (WithZero (Multiplicative ℤ))) :
     MultiplicativeIntegerValuation Kˣ where
-  val x := -WithZero.log (v (x : K))
-  map_one := by
+  toFun x := Multiplicative.ofAdd (-WithZero.log (v (x : K)))
+  map_one' := by
+    apply Multiplicative.ext
     change -WithZero.log (v 1) = 0
     rw [v.map_one, WithZero.log_one, neg_zero]
-  map_mul x y := by
+  map_mul' x y := by
+    apply Multiplicative.ext
     have hx : v (x : K) ≠ 0 :=
       (_root_.Valuation.ne_zero_iff v).2 x.ne_zero
     have hy : v (y : K) ≠ 0 :=

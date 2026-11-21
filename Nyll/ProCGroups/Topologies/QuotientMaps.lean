@@ -9,6 +9,7 @@ module
 public import Mathlib.Topology.Algebra.Group.Quotient
 public import Mathlib.Topology.Algebra.ClopenNhdofOne
 public import Nyll.ProCGroups.Topologies.ContinuousMulEquiv
+public import Nyll.ProCGroups.Topologies.ContinuousQuotientEquiv
 
 /-!
 # Continuous maps between group quotients
@@ -144,6 +145,47 @@ def quotientDiscreteEquiv [SeparatelyContinuousMul G] [DiscreteTopology H]
       e (QuotientGroup.mk' (U : Subgroup G) g) :=
   rfl
 
+/-- A specified continuous surjection to a discrete group induces a unique
+continuous quotient equivalence with the same values on representatives.
+The kernel equality only identifies the supplied subgroup with the actual kernel. -/
+theorem existsUnique_quotientContinuousMulEquiv_of_surjective
+    [SeparatelyContinuousMul G] [DiscreteTopology H]
+    (f : G →ₜ* H) (N : Subgroup G) [N.Normal]
+    (hsurj : Function.Surjective f) (hker : f.ker = N) :
+    ∃! e : (G ⧸ N) ≃ₜ* H,
+      ∀ x : G, e (QuotientGroup.mk' N x) = f x := by
+  have hOpen : IsOpen (N : Set G) := by
+    have hOpenKer : IsOpen (f.ker : Set G) := by
+      change IsOpen (f ⁻¹' {1})
+      exact (isOpen_discrete {1}).preimage f.continuous
+    rwa [← hker]
+  have hDiscrete : DiscreteTopology (G ⧸ N) :=
+    QuotientGroup.discreteTopology hOpen
+  let e₀ : (G ⧸ N) ≃* H :=
+    (QuotientGroup.quotientMulEquivOfEq hker.symm).trans
+      (QuotientGroup.quotientKerEquivOfSurjective f.toMonoidHom hsurj)
+  let e : (G ⧸ N) ≃ₜ* H :=
+    { e₀ with
+      continuous_toFun := @continuous_of_discreteTopology
+        (G ⧸ N) _ hDiscrete H _ e₀
+      continuous_invFun := continuous_of_discreteTopology }
+  have he (x : G) :
+      e (QuotientGroup.mk' N x) = f x := by
+    change e₀ (QuotientGroup.mk' N x) = f x
+    change (QuotientGroup.quotientKerEquivOfSurjective
+      f.toMonoidHom hsurj)
+      ((QuotientGroup.quotientMulEquivOfEq hker.symm)
+        (QuotientGroup.mk x)) = f x
+    rw [QuotientGroup.quotientMulEquivOfEq_mk]
+    rfl
+  refine ⟨e, he, ?_⟩
+  intro e' he'
+  apply ContinuousMulEquiv.ext
+  intro y
+  obtain ⟨x, rfl⟩ :=
+    QuotientGroup.mk'_surjective N y
+  exact (he' x).trans (he x).symm
+
 /-- The lifted continuous quotient map is induced by the quotient universal property. -/
 def liftₜ
     (N : Subgroup G) [N.Normal] (f : G →ₜ* H)
@@ -173,33 +215,6 @@ def mapContinuousMonoidHom
   exact
     { toMonoidHom := φ
       continuous_toFun := hcont }
-
-/-- Continuous version of the quotient-group map. -/
-def mapₜ
-    (N : Subgroup G) (M : Subgroup H) [N.Normal] [M.Normal]
-    (f : G →ₜ* H) (hNM : N ≤ M.comap f.toMonoidHom) :
-    G ⧸ N →ₜ* H ⧸ M :=
-  mapContinuousMonoidHom (G := G) (H := H) f (N := N) (M := M) hNM
-
-/-- Continuous equivalence between quotients induced by a continuous multiplicative equivalence. -/
-noncomputable def congrₜ
-    (N : Subgroup G) (M : Subgroup H) [N.Normal] [M.Normal]
-    (e : G ≃ₜ* H) (h : N.map e.toMulEquiv.toMonoidHom = M) :
-    G ⧸ N ≃ₜ* H ⧸ M := by
-  let eAlg : G ⧸ N ≃* H ⧸ M :=
-    QuotientGroup.congr (G' := N) (H' := M) e.toMulEquiv h
-  refine
-    { toMulEquiv := eAlg
-      continuous_toFun := ?_
-      continuous_invFun := ?_ }
-  · refine (QuotientGroup.isQuotientMap_mk N).continuous_iff.2 ?_
-    change Continuous fun x : G => QuotientGroup.mk' M (e x)
-    exact continuous_quotient_mk'.comp e.continuous_toFun
-  · refine (QuotientGroup.isQuotientMap_mk M).continuous_iff.2 ?_
-    have hsymm : M.map e.symm.toMulEquiv.toMonoidHom = N :=
-      (Subgroup.map_symm_eq_iff_map_eq (K := N) (H := M) (e := e.toMulEquiv)).mpr h
-    change Continuous fun y : H => QuotientGroup.mk' N (e.symm y)
-    exact continuous_quotient_mk'.comp e.symm.continuous_toFun
 
 /--
 Continuous version of the quotient-group multiplicative equivalence induced by a surjective map.
@@ -259,21 +274,12 @@ to representatives.
       QuotientGroup.mk' M (f g) := by
   rfl
 
-/-- The continuous quotient map sends the class of \(g\) to the class of \(f(g)\). -/
-@[simp] theorem mapₜ_apply_mk
-    (N : Subgroup G) (M : Subgroup H) [N.Normal] [M.Normal]
-    (f : G →ₜ* H) (hNM : N ≤ M.comap f.toMonoidHom) (g : G) :
-    mapₜ (G := G) (H := H) N M f hNM (QuotientGroup.mk' N g) =
-      QuotientGroup.mk' M (f g) := by
-  rfl
-
-/-- The monoid homomorphism underlying `mapₜ` is the usual map between quotient groups. -/
-@[simp] theorem mapₜ_toMonoidHom
-    (N : Subgroup G) (M : Subgroup H) [N.Normal] [M.Normal]
-    (f : G →ₜ* H) (hNM : N ≤ M.comap f.toMonoidHom) :
-    (mapₜ (G := G) (H := H) N M f hNM).toMonoidHom =
-      QuotientGroup.map (N := N) (M := M) (f := f.toMonoidHom) hNM := by
-  rfl
+/-- Forgetting continuity gives the usual map between quotient groups. -/
+@[simp] theorem mapContinuousMonoidHom_toMonoidHom
+    (f : G →ₜ* H) {N : Subgroup G} {M : Subgroup H} [N.Normal] [M.Normal]
+    (hNM : N ≤ M.comap f.toMonoidHom) :
+    (mapContinuousMonoidHom f (N := N) (M := M) hNM).toMonoidHom =
+      QuotientGroup.map (N := N) (M := M) (f := f.toMonoidHom) hNM := rfl
 
 /--
 The continuous quotient congruence map evaluates on quotient classes by applying the underlying

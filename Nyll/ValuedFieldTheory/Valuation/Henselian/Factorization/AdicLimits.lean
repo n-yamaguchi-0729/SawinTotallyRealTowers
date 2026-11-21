@@ -90,7 +90,7 @@ theorem henselFactorization_polyOfLimitCoeffs_coeff_of_le
   rw [Finset.sum_eq_single n]
   · exact Polynomial.coeff_monomial_same n (c n)
   · intro b _hb hbn
-    rw [Polynomial.coeff_monomial, ite_eq_right hbn]
+    exact Polynomial.coeff_monomial_of_ne _ hbn.symm
   · intro hnot
     exact False.elim (hnot (Finset.mem_range.mpr (Nat.lt_succ_of_le hn)))
 
@@ -108,7 +108,7 @@ theorem henselFactorization_polyOfLimitCoeffs_coeff_eq_zero_of_lt
     intro hbn
     have hn_le : n ≤ N := Nat.lt_succ_iff.mp (by simpa [hbn] using hb)
     exact (Nat.not_lt_of_ge hn_le) hn
-  rw [Polynomial.coeff_monomial, ite_eq_right hbn]
+  exact Polynomial.coeff_monomial_of_ne _ hbn.symm
 
 /-- the polynomial assembled from finitely many coefficient
 limits has the stated degree bound. -/

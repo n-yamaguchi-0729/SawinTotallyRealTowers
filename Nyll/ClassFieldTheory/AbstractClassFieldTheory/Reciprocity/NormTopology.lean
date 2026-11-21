@@ -9,6 +9,7 @@ module
 public import Mathlib.Algebra.Group.TransferInstance
 public import Mathlib.Topology.Algebra.FilterBasis
 public import Mathlib.Topology.Algebra.Group.ClosedSubgroup
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FiniteGaloisSubextension
 public import Nyll.GaloisCohomology.Cyclic.IntegralRepUniverse
 public import Nyll.ValuedFieldTheory.Valuation.Topology.Models
@@ -38,6 +39,57 @@ variable {G : Type u} [Group G] [TopologicalSpace G]
 namespace FiniteGaloisSubextension
 
 variable {K : ClosedSubgroup G}
+
+/-- The norm group from a compositum is contained in the norm group from
+its first factor. -/
+theorem finiteNormSubgroup_compositum_le_left
+    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
+    let : Finite (K.toSubgroup ⧸
+        extensionSubgroup K (L₁.compositum L₂).field (L₁.compositum L₂).below) :=
+      (L₁.compositum L₂).finite
+    let : Finite (K.toSubgroup ⧸ extensionSubgroup K L₁.field L₁.below) := L₁.finite
+    finiteNormSubgroup A K (L₁.compositum L₂).field
+        (L₁.compositum L₂).below ≤
+      finiteNormSubgroup A K L₁.field L₁.below := by
+  intro compositumFinite leftFinite
+  let P := L₁.compositum L₂
+  let hPL₁ := L₁.compositum_le_left L₂
+  have hPKindex : P.field.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
+    rw [Subgroup.relIndex]
+    exact Subgroup.index_ne_zero_of_finite
+  have hPLindex : P.field.toSubgroup.relIndex L₁.field.toSubgroup ≠ 0 := by
+    intro hzero
+    have hmul := Subgroup.relIndex_mul_relIndex
+      P.field.toSubgroup L₁.field.toSubgroup K.toSubgroup hPL₁ L₁.below
+    rw [hzero, zero_mul] at hmul
+    exact hPKindex hmul.symm
+  let hPLfinite : Finite (L₁.field.toSubgroup ⧸
+      extensionSubgroup L₁.field P.field hPL₁) := by
+    apply Nat.finite_of_card_ne_zero
+    change (extensionSubgroup L₁.field P.field hPL₁).index ≠ 0
+    simpa only [Subgroup.relIndex] using hPLindex
+  let T : DegreeData.FiniteTower G := {
+    top := P.field
+    middle := L₁.field
+    base := K
+    top_le_middle := hPL₁
+    middle_le_base := L₁.below
+    finiteTopQuotient := hPLfinite
+    finiteBaseQuotient := L₁.finite }
+  rintro x ⟨a, rfl⟩
+  refine ⟨relativeNorm A L₁.field P.field hPL₁ a, ?_⟩
+  exact T.norm_trans_apply A a
+
+/-- The symmetric norm-group containment for the second factor. -/
+theorem finiteNormSubgroup_compositum_le_right
+    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
+    letI := (L₁.compositum L₂).finite
+    letI := L₂.finite
+    finiteNormSubgroup A K (L₁.compositum L₂).field
+        (L₁.compositum L₂).below ≤
+      finiteNormSubgroup A K L₂.field L₂.below := by
+  simpa only [compositum_comm L₂ L₁] using
+    finiteNormSubgroup_compositum_le_left A L₂ L₁
 
 /-- The actual norm subgroup belonging to a packaged finite Galois
 extension. -/

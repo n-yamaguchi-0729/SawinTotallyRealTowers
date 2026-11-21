@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.FiniteKummerAbsoluteLift
 public import Nyll.GaloisCohomology.Kummer.FiniteKummerCoefficientH2
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback
@@ -64,7 +65,7 @@ theorem absoluteInflation_eq_zero_of_finiteKummerH2_eq_zero
   obtain ⟨s, hs⟩ := exists_absoluteLift_of_finiteKummerTwoCocycle_boundary
     K p E hmu z b hb
   let : CompactSpace (Field.absoluteGaloisGroup K) :=
-    inferInstanceAs (CompactSpace Gal(AlgebraicClosure K/K))
+    Field.absoluteGaloisGroup.compactSpace K
   exact H2CocycleExtension.restriction_eq_zero_of_lift
     (absoluteFiniteGaloisRestriction K E) z s hs
 

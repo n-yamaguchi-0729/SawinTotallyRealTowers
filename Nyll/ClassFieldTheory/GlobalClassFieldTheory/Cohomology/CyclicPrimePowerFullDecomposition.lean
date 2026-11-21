@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.CyclicPrimeSubextension
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Norm
 public import Nyll.GaloisCohomology.GroupTheory.Finite
@@ -176,12 +178,11 @@ theorem ideleClassNorm_range_eq_top_of_splitsCompletely_outside
       ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S →
         FinitePlaceSplitsCompletely
           (K := K) (L := E) v) :
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range = ⊤ := by
+    (RelativeIdeleGroup.classNorm K E).range = ⊤ := by
   apply top_unique
   intro c _
   obtain ⟨a, rfl⟩ :=
-    QuotientGroup.mk'_surjective
-      (IdeleGroup.principalSubgroup K) c
+    IdeleGroup.toStandardClass_surjective K c
   obtain ⟨x, hfinite, hinfinite⟩ :=
     exists_principal_quotient_locallyNormEverywhere_of_splitsOutside
       (K := K) (L := E) S hsplit a
@@ -218,29 +219,9 @@ theorem ideleClassNorm_range_eq_top_of_splitsCompletely_outside
   refine
     ⟨QuotientGroup.mk'
         (RelativeIdeleGroup.principalSubgroup K E) z, ?_⟩
-  rw [RelativeIdeleGroup.Cohomology.ideleClassNorm_mk, hz]
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) b =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a
-  have hp :
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K)
-          (IdeleGroup.principalIdele K x) = 1 :=
-    (QuotientGroup.eq_one_iff
-      (IdeleGroup.principalIdele K x)).2 ⟨x, rfl⟩
-  change
-    QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K)
-        (a * (IdeleGroup.principalIdele K x)⁻¹) =
-      QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a
-  rw [map_mul, map_inv, hp]
-  exact
-    mul_one
-      (QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup K) a)
+  rw [RelativeIdeleGroup.classNorm_mk, hz]
+  simp only [b, map_mul, map_inv, IdeleGroup.toStandardClass_principalIdele, inv_one]
+  exact mul_one (IdeleGroup.toStandardClass K a)
 
 /-- The preceding surjectivity says that the idele-class norm index is
 one. -/
@@ -253,7 +234,7 @@ theorem ideleClassNorm_index_eq_one_of_splitsCompletely_outside
       ∀ v : HeightOneSpectrum (𝓞 K), v ∉ S →
         FinitePlaceSplitsCompletely
           (K := K) (L := E) v) :
-    (RelativeIdeleGroup.Cohomology.ideleClassNorm K E).range.index = 1 := by
+    (RelativeIdeleGroup.classNorm K E).range.index = 1 := by
   rw [
     ideleClassNorm_range_eq_top_of_splitsCompletely_outside
       (K := K) (E := E) S hsplit,
@@ -270,7 +251,7 @@ theorem
     (hcard : Nat.card (L ≃ₐ[K] L) = p ^ exponent)
     (hLower :
       p ≤
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K
+        (RelativeIdeleGroup.classNorm K
           (cyclicPrimeSubextension
             (K := K) (L := L)
             hp hexponent hcard)).range.index) :
@@ -297,7 +278,7 @@ theorem
     apply hv
     simp [S, htop]
   have hindex :
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K
+      (RelativeIdeleGroup.classNorm K
         (cyclicPrimeSubextension
           (K := K) (L := L)
           hp hexponent hcard)).range.index = 1 :=
@@ -341,7 +322,7 @@ theorem cyclic_prime_power_infinite_fullDecompositionPlaces
     IsCyclic.exists_generator (α := M ≃ₐ[K] M)
   have hLowerM :
       Module.finrank K M ≤
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K M).range.index :=
+        (RelativeIdeleGroup.classNorm K M).range.index :=
     finrank_le_ideleClassNorm_index
       (K := K) (L := M) σ hσ
   have hDegree : Module.finrank K M = p := by
@@ -365,7 +346,7 @@ theorem
     (hcard : Nat.card (L ≃ₐ[K] L) = p ^ exponent)
     (hLower :
       p ≤
-        (RelativeIdeleGroup.Cohomology.ideleClassNorm K
+        (RelativeIdeleGroup.classNorm K
           (cyclicPrimeSubextension
             (K := K) (L := L)
             hp hexponent hcard)).range.index)

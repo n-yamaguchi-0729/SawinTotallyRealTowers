@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.PrincipalFractionalIdeal
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.PClassGroup
 public import Nyll.GaloisCohomology.Kummer.Concrete.RestrictedFinite
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Core
@@ -24,6 +25,7 @@ radical onto the matching torsion subgroup of the ordinary ideal class group.
 @[expose] public section
 
 open scoped NumberField nonZeroDivisors
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -39,8 +41,8 @@ variable (K : Type*) [Field K] [NumberField K]
 def idealNthPowerRadicalKummerSubgroup (n : ℕ+) :
     KummerSubgroup K n :=
   ⟨Subgroup.comap (toPrincipalIdeal (𝓞 K) K)
-      (powMonoidHom (n : ℕ) : FractionalIdealGroup K →*
-        FractionalIdealGroup K).range,
+      (powMonoidHom (n : ℕ) : NumberFieldFractionalIdealGroup K →*
+        NumberFieldFractionalIdealGroup K).range,
     by
       intro a ha
       obtain ⟨b, rfl⟩ := (mem_unitNthPowersSubgroup_iff n).mp ha
@@ -51,7 +53,7 @@ def idealNthPowerRadicalKummerSubgroup (n : ℕ+) :
 theorem mem_idealNthPowerRadicalKummerSubgroup_iff
     (n : ℕ+) (a : Kˣ) :
     a ∈ (idealNthPowerRadicalKummerSubgroup K n).1 ↔
-      ∃ I : FractionalIdealGroup K,
+      ∃ I : NumberFieldFractionalIdealGroup K,
         I ^ (n : ℕ) = toPrincipalIdeal (𝓞 K) K a :=
   Iff.rfl
 
@@ -61,12 +63,12 @@ abbrev IdealNthPowerRadicalQuotient (n : ℕ+) :=
 
 private theorem fractionalIdealGroup_pow_injective (n : ℕ+) :
     Function.Injective
-      (fun I : FractionalIdealGroup K ↦ I ^ (n : ℕ)) := by
+      (fun I : NumberFieldFractionalIdealGroup K ↦ I ^ (n : ℕ)) := by
   intro I J hIJ
-  apply FractionalIdealGroup.ext_count
+  apply NumberFieldFractionalIdealGroup.ext_count
   intro v
   have hcount := congrArg
-    (fun L : FractionalIdealGroup K ↦
+    (fun L : NumberFieldFractionalIdealGroup K ↦
       FractionalIdeal.count K v
         (L : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) hIJ
   have hcount' :
@@ -83,9 +85,9 @@ principal ideal. -/
 noncomputable def idealNthRoot
     (n : ℕ+)
     (a : (idealNthPowerRadicalKummerSubgroup K n).1) :
-    FractionalIdealGroup K :=
+    NumberFieldFractionalIdealGroup K :=
   Classical.choose
-    ((MonoidHom.mem_range (G := FractionalIdealGroup K)).mp a.property)
+    ((MonoidHom.mem_range (G := NumberFieldFractionalIdealGroup K)).mp a.property)
 
 @[simp]
 theorem idealNthRoot_pow
@@ -95,13 +97,13 @@ theorem idealNthRoot_pow
       toPrincipalIdeal (𝓞 K) K a.1 := by
   unfold idealNthRoot
   exact Classical.choose_spec
-    ((MonoidHom.mem_range (G := FractionalIdealGroup K)).mp a.property)
+    ((MonoidHom.mem_range (G := NumberFieldFractionalIdealGroup K)).mp a.property)
 
 /-- The chosen ideal root agrees with any ideal having the required power. -/
 theorem idealNthRoot_eq_of_pow_eq
     (n : ℕ+)
     (a : (idealNthPowerRadicalKummerSubgroup K n).1)
-    (I : FractionalIdealGroup K)
+    (I : NumberFieldFractionalIdealGroup K)
     (hI : I ^ (n : ℕ) = toPrincipalIdeal (𝓞 K) K a.1) :
     idealNthRoot K n a = I := by
   apply fractionalIdealGroup_pow_injective K n
@@ -111,7 +113,7 @@ theorem idealNthRoot_eq_of_pow_eq
 /-- Taking the unique ideal root is multiplicative. -/
 noncomputable def idealNthRootHom (n : ℕ+) :
     (idealNthPowerRadicalKummerSubgroup K n).1 →*
-      FractionalIdealGroup K where
+      NumberFieldFractionalIdealGroup K where
   toFun := idealNthRoot K n
   map_one' := by
     apply idealNthRoot_eq_of_pow_eq K n 1 1
@@ -180,7 +182,7 @@ theorem idealNthRootClassHom_mem_torsion
   rw [MonoidHom.mem_ker]
   change (ClassGroup.mk K (idealNthRoot K n a)) ^ (n : ℕ) = 1
   rw [← map_pow, idealNthRoot_pow K n a]
-  exact (IdeleGroup.classGroup_mk_eq_one_iff _).2 ⟨a.1, rfl⟩
+  exact (ClassGroup.mk_eq_one_iff_mem_principal _).2 ⟨a.1, rfl⟩
 
 /-- The ideal-root class map with codomain restricted to class-group
 `n`-torsion. -/
@@ -204,7 +206,7 @@ private theorem restrictedNthPowers_le_ker_idealNthRootClassTorsionHom
   apply Subtype.ext
   change ClassGroup.mk K (idealNthRoot K n a) = 1
   rw [idealNthRoot_eq_of_pow_eq K n a (toPrincipalIdeal (𝓞 K) K b)]
-  · exact (IdeleGroup.classGroup_mk_eq_one_iff _).2 ⟨b, rfl⟩
+  · exact (ClassGroup.mk_eq_one_iff_mem_principal _).2 ⟨b, rfl⟩
   · rw [← map_pow, hb]
 
 /-- The canonical ideal-root class map from the Shafarevich radical. -/
@@ -249,7 +251,7 @@ theorem idealNthPowerRadicalToClassTorsion_surjective
   have hprincipal : ClassGroup.mk K (I ^ (n : ℕ)) = 1 := by
     rw [map_pow, hIpow]
   obtain ⟨a, ha⟩ :=
-    (IdeleGroup.classGroup_mk_eq_one_iff (I ^ (n : ℕ))).mp hprincipal
+    (ClassGroup.mk_eq_one_iff_mem_principal (I ^ (n : ℕ))).mp hprincipal
   let aRad : (idealNthPowerRadicalKummerSubgroup K n).1 :=
     ⟨a, ⟨I, ha.symm⟩⟩
   refine ⟨restrictedRadicalQuotientMk n

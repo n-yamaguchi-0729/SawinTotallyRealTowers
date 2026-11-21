@@ -10,6 +10,7 @@ public import Nyll.GaloisCohomology.ProP.InvariantKernelH1
 public import Nyll.GaloisCohomology.ProP.PresentationH2Primitive
 public import Mathlib.Algebra.Field.ZMod
 public import Mathlib.Topology.Algebra.ContinuousMonoidHom
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Kernel characters extracted from presentation degree-two classes
@@ -33,8 +34,7 @@ universe u
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance presentationH2KernelCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 variable {d r : ℕ}
@@ -42,10 +42,7 @@ variable {sourceData :
   FreeProC.EpimorphicallyFreeProCGroupOnConvergingSetData.{u, u}
     (FiniteGroupClass.pGroup p)}
 
-local instance presentationContinuousH1Module
-    {H : Type u} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 namespace PresentationH2Aux
 

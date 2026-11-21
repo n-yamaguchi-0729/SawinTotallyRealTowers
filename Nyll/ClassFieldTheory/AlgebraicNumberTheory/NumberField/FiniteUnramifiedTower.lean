@@ -6,7 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.ExtensionIndex
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.FinitePlaceContraction
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Mathlib.NumberTheory.RamificationInertia.Unramified
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.PrimeContractions
 
@@ -31,24 +32,39 @@ attribute [local instance] Ideal.Quotient.field
 
 universe u v w
 
-/-- A number-field extension is unramified at finite places when every
-height-one prime of the top ring of integers is unramified over the
-base ring of integers. -/
-def IsUnramifiedAtFinitePlaces
+namespace ClassFieldTheory.IsUnramifiedAtFinitePlaces
+
+/-- The same integer-ring condition may be checked at all nonzero base primes. -/
+theorem iff_forall_below
     (K : Type u) (L : Type v)
     [Field K] [NumberField K]
-    [Field L] [NumberField L] [Algebra K L] : Prop :=
-  ∀ P : HeightOneSpectrum (𝓞 L),
-    Algebra.IsUnramifiedAt (𝓞 K) P.asIdeal
+    [Field L] [NumberField L] [Algebra K L] :
+    IsUnramifiedAtFinitePlaces K L ↔
+      ∀ v : HeightOneSpectrum (𝓞 K), Algebra.IsUnramifiedIn (𝓞 L) v.asIdeal := by
+  constructor
+  · intro h v P hP hOver
+    exact h.atPrime
+      ⟨P, hP, @Ideal.ne_bot_of_liesOver_of_ne_bot
+        (𝓞 K) (𝓞 L) _ _ _ _ v.asIdeal v.ne_bot P hOver⟩
+  · intro h
+    apply (iff_forall_above K L).mpr
+    intro W
+    exact h (finitePlaceBelow (K := K) W) W.asIdeal W.isPrime ⟨rfl⟩
 
-namespace IsUnramifiedAtFinitePlaces
+/-- Formal unramifiedness supplies the condition over a finite base prime. -/
+theorem atBasePrime
+    {K : Type u} {L : Type v}
+    [Field K] [NumberField K]
+    [Field L] [NumberField L] [Algebra K L]
+    (h : IsUnramifiedAtFinitePlaces K L) (v : HeightOneSpectrum (𝓞 K)) :
+    Algebra.IsUnramifiedIn (𝓞 L) v.asIdeal :=
+  (iff_forall_below K L).mp h v
 
 /-- The identity extension is unramified at every finite place. -/
 theorem refl
     (K : Type u) [Field K] [NumberField K] :
     IsUnramifiedAtFinitePlaces K K := by
-  intro P
-  change Algebra.FormallyUnramified (𝓞 K) (Localization P.asIdeal.primeCompl)
+  change Algebra.FormallyUnramified (𝓞 K) (𝓞 K)
   infer_instance
 
 variable
@@ -65,6 +81,7 @@ theorem trans
     (hkK : IsUnramifiedAtFinitePlaces k K)
     (hKF : IsUnramifiedAtFinitePlaces K F) :
     IsUnramifiedAtFinitePlaces k F := by
+  apply (iff_forall_above k F).mpr
   intro P
   let p : HeightOneSpectrum (𝓞 K) :=
     finitePlaceBelow (K := K) P
@@ -80,10 +97,10 @@ theorem trans
       (K := k) (L := F)
   let hkKp :
       Algebra.IsUnramifiedAt (𝓞 k) p.asIdeal :=
-    hkK p
+    hkK.atPrime p
   let hKFP :
       Algebra.IsUnramifiedAt (𝓞 K) P.asIdeal :=
-    hKF P
+    hKF.atPrime P
   have hLower :
       p.asIdeal.ramificationIdx (𝓞 k) = 1 :=
     Ideal.ramificationIdx_eq_one p.asIdeal (𝓞 k)
@@ -117,19 +134,15 @@ then it is unramified over the intermediate field. -/
 theorem top
     (hkF : IsUnramifiedAtFinitePlaces k F) :
     IsUnramifiedAtFinitePlaces K F := by
-  intro P
-  let :
-      Algebra.IsUnramifiedAt (𝓞 k) P.asIdeal :=
-    hkF P
-  exact
-    Algebra.IsUnramifiedAt.of_restrictScalars
-      (𝓞 k) P.asIdeal
+  let := hkF
+  exact Algebra.FormallyUnramified.of_restrictScalars (𝓞 k) (𝓞 K) (𝓞 F)
 
 /-- If the top of a number-field tower is unramified over the bottom,
 then the intermediate field is unramified over the bottom. -/
 theorem bot
     (hkF : IsUnramifiedAtFinitePlaces k F) :
     IsUnramifiedAtFinitePlaces k K := by
+  apply (iff_forall_above k K).mpr
   intro p
   let : Module.Finite (𝓞 k) (𝓞 K) :=
     HilbertRamification.Dedekind.ringOfIntegers_moduleFinite
@@ -152,7 +165,7 @@ theorem bot
       ne_bot := hPne }
   let :
       Algebra.IsUnramifiedAt (𝓞 k) P :=
-    hkF P'
+    hkF.atPrime P'
   have hTop :
       P.ramificationIdx (𝓞 k) = 1 :=
     Ideal.ramificationIdx_eq_one P (𝓞 k)
@@ -178,4 +191,4 @@ theorem bot
     (Ideal.ramificationIdx_eq_one_iff
       (R := 𝓞 k) (S := 𝓞 K) (q := p.asIdeal)).1 hLower
 
-end IsUnramifiedAtFinitePlaces
+end ClassFieldTheory.IsUnramifiedAtFinitePlaces

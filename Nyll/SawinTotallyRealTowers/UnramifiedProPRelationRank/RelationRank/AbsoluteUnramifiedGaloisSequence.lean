@@ -6,9 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
+public import Nyll.ProCGroups.Topologies.ContinuousMonoidHom
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProPGalois
 public import Mathlib.Algebra.Exact.Basic
 public import Mathlib.FieldTheory.AbsoluteGaloisGroup
+public import Mathlib.FieldTheory.Galois.Infinite
 public import Mathlib.Topology.Algebra.Group.Quotient
 
 /-!
@@ -25,6 +28,7 @@ theoretic step.
 
 @[expose] public section
 
+open ProCGroups.ContinuousMonoidHom (subtype)
 open scoped NumberField
 
 noncomputable section
@@ -38,11 +42,7 @@ open ClassFieldTower.Martinet
 variable (F : Type u) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-/-- The absolute Galois group carries its canonical compact Krull topology. -/
-local instance absoluteGaloisGroup_compactSpace :
-    CompactSpace (Field.absoluteGaloisGroup F) :=
-  inferInstanceAs
-    (CompactSpace (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F))
+attribute [local instance] Field.absoluteGaloisGroup.compactSpace
 
 /-- Restriction of absolute automorphisms to the maximal everywhere-unramified pro-`p`
 extension. -/
@@ -79,24 +79,18 @@ instance absoluteUnramifiedKernel_normal :
   rw [← IntermediateField.restrictNormalHom_ker (maximalEverywhereUnramifiedProP F p)]
   exact MonoidHom.normal_ker _
 
-/-- Continuous inclusion of the absolute unramified kernel. -/
-def absoluteUnramifiedKernelInclusion :
-    absoluteUnramifiedKernel F p →ₜ* Field.absoluteGaloisGroup F where
-  toMonoidHom := (absoluteUnramifiedKernel F p).toSubgroup.subtype
-  continuous_toFun := continuous_subtype_val
-
 /-- Inclusion of the absolute unramified kernel is injective. -/
 theorem absoluteUnramifiedKernelInclusion_injective :
-    Function.Injective (absoluteUnramifiedKernelInclusion F p) :=
+    Function.Injective (subtype (absoluteUnramifiedKernel F p).toSubgroup) :=
   Subtype.val_injective
 
 /-- The kernel inclusion followed by absolute restriction is exact in the multiplicative
 sense. -/
 theorem absoluteUnramifiedGaloisSequence_mulExact :
-    Function.MulExact (absoluteUnramifiedKernelInclusion F p)
+    Function.MulExact (subtype (absoluteUnramifiedKernel F p).toSubgroup)
       (absoluteToMaxEverywhereUnramifiedProP F p) := by
   change Function.MulExact
-    (absoluteUnramifiedKernelInclusion F p).toMonoidHom
+    (subtype (absoluteUnramifiedKernel F p).toSubgroup).toMonoidHom
     (absoluteToMaxEverywhereUnramifiedProP F p).toMonoidHom
   apply MonoidHom.mulExact_iff.mpr
   rw [absoluteToMaxEverywhereUnramifiedProP_ker]

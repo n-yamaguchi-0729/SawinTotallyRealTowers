@@ -92,32 +92,27 @@ end FiniteGaloisSubextension
 
 namespace FiniteCyclicSubextension
 variable {K : FiniteAbstractField G}
-/-- Forget only the chosen cyclic generator.  The resulting finite Galois
-bundle is the canonical input to the finite reciprocity construction. -/
-def toFiniteGaloisSubextension (E : FiniteCyclicSubextension K) :
-    FiniteGaloisSubextension K.field where
-  field := E.field
-  below := E.below
-  normal := E.normal
-  finite := E.finite
-/-- The cyclic generator transported across the finite Galois quotient
-boundary. -/
-def galoisGenerator (E : FiniteCyclicSubextension K) :
+/-- Transport an explicitly supplied cyclic generator across the finite
+Galois quotient boundary. -/
+def galoisGenerator (E : FiniteCyclicSubextension K)
+    (g : K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below) :
     E.toFiniteGaloisSubextension.extensionQuotient :=
-  E.toFiniteGaloisSubextension.extensionQuotientMulEquiv.symm E.generator
-/-- The transported generator still generates the whole finite Galois
-quotient. -/
-theorem galoisGenerator_generates (E : FiniteCyclicSubextension K) :
-    ∀ x, x ∈ Subgroup.zpowers E.galoisGenerator := by
+  E.toFiniteGaloisSubextension.extensionQuotientMulEquiv.symm g
+/-- Transporting an explicitly supplied generator preserves its generation
+of the finite Galois quotient. -/
+theorem galoisGenerator_generates (E : FiniteCyclicSubextension K)
+    (g : K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below)
+    (hg : ∀ x, x ∈ Subgroup.zpowers g) :
+    ∀ x, x ∈ Subgroup.zpowers (E.galoisGenerator g) := by
   intro x
   let e := E.toFiniteGaloisSubextension.extensionQuotientMulEquiv
-  obtain ⟨n, hn⟩ := Subgroup.mem_zpowers_iff.mp (E.generates (e x))
+  obtain ⟨n, hn⟩ := Subgroup.mem_zpowers_iff.mp (hg (e x))
   apply Subgroup.mem_zpowers_iff.mpr
   refine ⟨n, ?_⟩
   apply e.injective
-  change e (e.symm E.generator ^ n) = e x
+  change e (e.symm g ^ n) = e x
   exact (map_zpow e _ n).trans
-    ((congrArg (fun y => y ^ n) (e.apply_symm_apply E.generator)).trans hn)
+    ((congrArg (fun y => y ^ n) (e.apply_symm_apply g)).trans hn)
 
 end FiniteCyclicSubextension
 
@@ -140,6 +135,8 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
     [TotallyDisconnectedSpace G]
     (K : FiniteAbstractField G)
     (E : FiniteCyclicSubextension K)
+    (g : K.field.toSubgroup ⧸ extensionSubgroup K.field E.field E.below)
+    (hg : ∀ x, x ∈ Subgroup.zpowers g)
     (hTot : E.IsTotallyRamified D)
     (k : ℕ)
     (piSigma : ambientFixedAddSubgroup A
@@ -149,7 +146,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
           (K.toFiniteResidueAbstractField D)
           E.toFiniteGaloisSubextension
           hTot
-          E.galoisGenerator)))
+          (E.galoisGenerator g))))
     (piL : ambientFixedAddSubgroup A E.field) :
     let L := E.toFiniteAbstractFieldExtension.field
     let KR := K.toFiniteResidueAbstractField D
@@ -167,7 +164,7 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
         (KR.field.toSubgroup ⧸
           extensionSubgroup KR.field LG.field LG.below) :=
       LG.finite
-    let q := E.galoisGenerator
+    let q := E.galoisGenerator g
     let hLGTot := hTot
     let σ := D.chosenDegreeOneFrobeniusLiftOfFiniteTotallyRamified
       KR LG hLGTot q
@@ -217,8 +214,8 @@ theorem abstractReciprocity_cyclicTotallyRamified_fixedSource
       (K.field.toSubgroup ⧸
         extensionSubgroup K.field LG.field LG.below) at h
     exact h
-  let q := E.galoisGenerator
-  let hq := E.galoisGenerator_generates
+  let q := E.galoisGenerator g
+  let hq := E.galoisGenerator_generates g hg
   let hLGTot := hTot
   let hKRabsolute : Finite ((baseField G).toSubgroup ⧸
       extensionSubgroup (baseField G) KR.field (le_baseField KR.field)) := by

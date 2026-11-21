@@ -19,6 +19,10 @@ open Lean
 
 namespace SubmissionInventory
 
+/-- Unlike display-oriented `Name.toString`, preserve escaping inside macro-scoped names. -/
+private def selectorName (name : Name) : String :=
+  Name.toStringWithSep "." true name
+
 private def fromExcept {α : Type} (label : String) (x : Except String α) : IO α :=
   match x with
   | .ok a => pure a
@@ -156,7 +160,7 @@ private def Finding.hasDirectSorry (r : Finding) : Bool := r.typeHasSorry || r.v
 
 private def Finding.toJson (r : Finding) : Json :=
   Json.mkObj [
-    ("name", Json.str r.name.toString),
+    ("name", Json.str (selectorName r.name)),
     ("nameParts", Json.arr (nameParts r.name).toArray),
     ("nameToStringRoundTrip", Json.bool r.nameRoundTrip),
     ("originModule", Json.str r.origin.toString),
@@ -195,7 +199,7 @@ private structure Stats where
 
 private def Stats.add (s : Stats) (r : Finding) : Stats := Id.run do
   let mut s := { s with
-    names := s.names.push r.name.toString
+    names := s.names.push (selectorName r.name)
     kinds := bump s.kinds r.kind
     privateCount := s.privateCount + if r.privateName then 1 else 0
     directSorryCount := s.directSorryCount + if r.hasDirectSorry then 1 else 0
@@ -204,10 +208,10 @@ private def Stats.add (s : Stats) (r : Finding) : Stats := Id.run do
     safeNonstandardCount := s.safeNonstandardCount +
       if r.isSafe && !r.nonstandardAxioms.isEmpty then 1 else 0 }
   if !r.nameRoundTrip then
-    s := { s with nameRoundTripFailures := s.nameRoundTripFailures.push r.name.toString }
-  if r.isSafe then s := { s with safeNames := s.safeNames.push r.name.toString }
-  if r.unsafeDecl then s := { s with unsafeNames := s.unsafeNames.push r.name.toString }
-  if r.partialDecl then s := { s with partialNames := s.partialNames.push r.name.toString }
+    s := { s with nameRoundTripFailures := s.nameRoundTripFailures.push (selectorName r.name) }
+  if r.isSafe then s := { s with safeNames := s.safeNames.push (selectorName r.name) }
+  if r.unsafeDecl then s := { s with unsafeNames := s.unsafeNames.push (selectorName r.name) }
+  if r.partialDecl then s := { s with partialNames := s.partialNames.push (selectorName r.name) }
   for a in r.axioms do
     s := { s with axiomDependencies := bump s.axiomDependencies a.toString }
   for a in r.nonstandardAxioms do
@@ -269,7 +273,7 @@ private def audit (inputs : Inputs) (outputDir : System.FilePath) : CoreM AuditR
   let mut result : AuditResult := {}
   let mut processed : Nat := 0
   for (name, info, origin) in selected do
-    -- Lean 4.35.0's public API consults imported precomputed axiom dependencies before recursing.
+    -- Lean 4.35's public API consults imported precomputed axiom dependencies before recursing.
     -- Reuse this single result for the primary, owner, and repaired-subset counters.
     let axioms ← Lean.collectAxioms name
     let value := info.value? (allowOpaque := true)
@@ -278,7 +282,7 @@ private def audit (inputs : Inputs) (outputDir : System.FilePath) : CoreM AuditR
     let directSorry := typeHasSorry || valueHasSorry
     let finding : Finding := {
       name, origin
-      nameRoundTrip := Syntax.decodeNameLit ("`" ++ name.toString) == some name
+      nameRoundTrip := Syntax.decodeNameLit ("`" ++ selectorName name) == some name
       owner? := inputs.primary[origin]?
       repaired := inputs.repaired.contains origin
       kind := constantKind info
@@ -373,7 +377,7 @@ private def writeResults (inputs : Inputs) (env : Environment)
     result.allSelected.transitiveSorryCount == 0 && result.allSelected.nonstandardCount == 0
   let summary := Json.mkObj [
     ("schemaVersion", Lean.toJson (1 : Nat)),
-    ("tool", Json.str "Lean 4.35.0 portable public-API declaration inventory"),
+    ("tool", Json.str "Lean 4.36.0 portable public-API declaration inventory"),
     ("auditPassed", Json.bool passed),
     ("kernelRecheckPerformed", Json.bool false),
     ("independentKernelCheckPerformed", Json.bool false),
@@ -399,9 +403,9 @@ private def writeResults (inputs : Inputs) (env : Environment)
     ("exceptionalDeclarations", Json.str "exceptional-declarations.jsonl"),
     ("moduleInventory", Json.str "modules.json"),
     ("selectorDirectory", Json.str "selectors"),
-    ("nameRoundTripMethod", Json.str "Syntax.decodeNameLit (backtick ++ Name.toString) must equal the original Name; raw str/num components are also included per declaration"),
+    ("nameRoundTripMethod", Json.str "Syntax.decodeNameLit (backtick ++ Name.toStringWithSep dot true) must equal the original Name, including macro scopes; raw str/num components are also included per declaration"),
     ("selectorSemantics", Json.str "all includes private/generated/unsafe/partial; safe excludes unsafe and partial; neither selector grants permission to nonstandard axioms"),
-    ("axiomCollectionMethod", Json.str "Lean.collectAxioms once per selected declaration; Lean 4.35.0 imported precomputed dependencies avoid repeated closure walks; private roots may use its fallback traversal"),
+    ("axiomCollectionMethod", Json.str "Lean.collectAxioms once per selected declaration; Lean 4.35 imported precomputed dependencies avoid repeated closure walks; private roots may use its fallback traversal"),
     ("sorryMethod", Json.str "Expr.hasSorry plus synthetic/non-synthetic checks on types and all available definition/theorem/opaque bodies, and transitive sorryAx via collectAxioms"),
     ("safetyNote", Json.str "unsafe and partial are separately inventoried; no axiom beyond the three-item allowlist is silently accepted")]
   IO.FS.writeFile (outDir / "summary.json") summary.pretty

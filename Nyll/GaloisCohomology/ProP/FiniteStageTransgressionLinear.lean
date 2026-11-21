@@ -34,18 +34,7 @@ universe u
 variable {p : ℕ} [Fact p.Prime]
 variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
 
-local instance inflatedLinearStageTargetTopology
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    TopologicalSpace
-      ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) := ⊥
-
-local instance inflatedLinearStageTargetDiscrete
-    (R : ClosedSubgroup F)
-    (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
-    DiscreteTopology
-      ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) :=
-  discreteTopology_bot _
+attribute [local instance] finiteStageTargetTopology finiteStageTargetDiscrete
 
 variable [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F]
 

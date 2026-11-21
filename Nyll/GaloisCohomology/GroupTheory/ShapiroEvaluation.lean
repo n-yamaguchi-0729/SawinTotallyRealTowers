@@ -78,7 +78,7 @@ theorem shapiro_bar_cochains_square :
     Representation.freeLift A.ρ (fun y => (f (S.subtype ∘ y)).1 1)
       (Finsupp.single x (MonoidAlgebra.single (1 : S) (1 : R)))
   rw [Representation.freeLift_single_single, Representation.freeLift_single_single]
-  simp only [map_one, Module.End.one_apply, one_smul]
+  simp only [map_one, one_apply_eq_self, one_smul]
 
 /-- The existing selected native Shapiro map is restriction followed by evaluation at one. -/
 theorem coindIso_hom_eq_map (n : ℕ) :

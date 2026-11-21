@@ -7,155 +7,132 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.ClassFieldAxiom
-public import Mathlib.SetTheory.Cardinal.Finite
-public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitNormQuotient
-public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.CyclicIdeleClassNormIndex
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.Herbrand
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.ClassGroup
-public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
-public import Nyll.GaloisCohomology.Cyclic.TateComparison
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.FieldRepresentation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.ClassFieldAxiom.StandardIdeleClassTate
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitCore
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.IdeleClassDirectLimitStandardNorm
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.TateTransport
 
 /-!
-# The rational idele-class formation
+# The number-field idele-class formation
 
-This module identifies the fixed-field idele-class representation with
-concrete relative idele class groups and transfers the cyclic low-degree Tate
-cohomology calculation to prove the abstract class-field axiom.
+The standard class group of the actual upper fixed field supplies the coefficients of
+each finite cyclic subextension. The quotient action is restriction of absolute Galois
+automorphisms and the arithmetic low-degree calculation uses the same cyclic generator.
 -/
-
-
 
 @[expose] public section
 
-namespace GlobalClassFieldTheory
-
-open scoped NumberField TensorProduct
-open NumberField
-open CyclicCohomology ClassFormation
-open LocalClassFieldTheory
+open scoped NumberField
+open CategoryTheory ClassFormation CyclicCohomology LocalClassFieldTheory
 
 noncomputable section
 
-open CategoryTheory
+namespace GlobalClassFieldTheory.Reciprocity
 
-namespace Reciprocity
+universe u
 
-/-- The rational absolute idele-class representation satisfies the
-abstract class-field axiom. -/
-theorem rationalIdeleClassRepresentation_satisfiesClassFieldAxiom :
-    SatisfiesClassFieldAxiom rationalIdeleClassRepresentation := by
-  rintro ⟨K, hKfinite⟩
-  rintro ⟨L, hLK, hnormal, hfinite, g, hg⟩
-  let := hKfinite
-  let := hnormal
-  let := hfinite
-  let Q := K.toSubgroup ⧸ extensionSubgroup K L hLK
-  let : Fintype Q := Fintype.ofFinite Q
-  let F := abstractFixedField ℚ (SeparableClosure ℚ) K
-  let E := abstractRelativeFixedField ℚ (SeparableClosure ℚ) hLK
-  let : FiniteDimensional ℚ F :=
-    abstractFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K hKfinite
+private def fixedIdeleClassRepIso (K : Type u) [Field K] [NumberField K]
+    (B : FiniteAbstractField Gal(SeparableClosure K/K)) (C : FiniteCyclicSubextension B) :
+    let H := B.field
+    let J := C.field
+    let hJH := C.below
+    have hJfinite := FiniteGaloisSubextension.finite_extension_trans hJH (le_baseField H)
+    let F := abstractFixedField K (SeparableClosure K) H
+    let E := abstractRelativeFixedField K (SeparableClosure K) hJH
+    let : FiniteDimensional K F :=
+      abstractFixedField_finiteDimensional K (SeparableClosure K) H B.finite
+    let : FiniteDimensional K (abstractFixedField K (SeparableClosure K) J) :=
+      abstractFixedField_finiteDimensional K (SeparableClosure K) J hJfinite
+    let : FiniteDimensional F E :=
+      abstractRelativeFixedField_finiteDimensional K (SeparableClosure K) H J hJH B.finite C.finite
+    let : IsScalarTower K F E := IsScalarTower.of_algebraMap_eq' rfl
+    let : NumberField E := abstractRelativeFixedFieldNumberField K hJH
+    let : IsGalois F E :=
+      abstractRelativeFixedField_isGalois K (SeparableClosure K) H J hJH C.normal
+    let Q := H.toSubgroup ⧸ extensionSubgroup H J hJH
+    let eQ : Q ≃* Gal(E/F) :=
+      abstractExtensionQuotientEquivGaloisGroup K (SeparableClosure K) H J hJH C.normal
+    let CE := NumberField.IdeleClassGroup (𝓞 E) E
+    let _ := NumberField.IdeleClassGroup.relativeGaloisAction F E
+    let U : Rep.{u} ℤ Gal(E/F) := Rep.ofMulDistribMulAction Gal(E/F) CE
+    let M : Rep.{u} ℤ Q := C.fixedRepresentation (ideleClassRepresentation K)
+    M ≅ Rep.res eQ.toMonoidHom U := by
+  intro H J hJH hJfinite F E hF hJ hFE hTower hNF hGal Q eQ CE action U M
+  let eAmbient := extensionFixedRepresentationEquiv (ideleClassRepresentation K) H J hJH C.normal
+  let eFixed := abstractRelativeFixedFieldIdeleClassEquivFixed K H J hJH
+  let e : M.V ≃+ Additive CE := eAmbient.trans eFixed.symm
+  have he (x : M.V) : eFixed (e x) = eAmbient x := eFixed.apply_symm_apply _
+  let Y : Rep.{u} ℤ Q := Rep.res eQ.toMonoidHom U
+  let : Module ℤ M := M.hV2
+  let : Module ℤ Y := Y.hV2
+  let eₗ : M ≃ₗ[ℤ] Y := e.toIntLinearEquiv (modM := M.hV2) (modM₂ := Y.hV2)
+  refine Rep.mkIso (Representation.Equiv.mk eₗ ?_)
+  intro q
+  apply LinearMap.ext
+  intro x
+  let c := NumberField.IdeleClassGroup.congr ((eQ q).restrictScalars ℚ) (e x).toMul
+  change e (M.ρ q x) = Additive.ofMul c
+  apply eFixed.injective
+  apply Subtype.ext
+  have hact := extensionFixedRepresentation_action_coe
+    (ideleClassRepresentation K) H J hJH C.normal q x
+  have hconj := abstractRelativeFixedFieldIdeleClassEquivFixed_cosetAction
+    K H J hJH C.normal q (e x).toMul
+  change relativeCosetAction (ideleClassRepresentation K) H J hJH
+    (eFixed (e x)) q = (eFixed (Additive.ofMul c)).val at hconj
+  exact (congrArg Subtype.val (he (M.ρ q x))).trans
+    (hact.trans ((congrArg
+      (fun a => relativeCosetAction (ideleClassRepresentation K) H J hJH a q)
+      (he x).symm).trans hconj))
+
+/-- The actual standard idele-class representation of any number field satisfies
+the abstract class-field axiom. -/
+theorem ideleClassRepresentation_satisfiesClassFieldAxiom
+    (K : Type u) [Field K] [NumberField K] :
+    SatisfiesClassFieldAxiom (ideleClassRepresentation K) := by
+  intro B C
+  let H := B.field
+  let J := C.field
+  let hJH := C.below
+  have hJfinite : Finite ((baseField (SeparableClosure K ≃ₐ[K] SeparableClosure K)).toSubgroup ⧸
+      extensionSubgroup (baseField (SeparableClosure K ≃ₐ[K] SeparableClosure K)) J
+        (le_baseField J)) :=
+    FiniteGaloisSubextension.finite_extension_trans hJH (le_baseField H)
+  let F := abstractFixedField K (SeparableClosure K) H
+  let E := abstractRelativeFixedField K (SeparableClosure K) hJH
+  let : FiniteDimensional K F :=
+    abstractFixedField_finiteDimensional K (SeparableClosure K) H B.finite
+  let : FiniteDimensional K (abstractFixedField K (SeparableClosure K) J) :=
+    abstractFixedField_finiteDimensional K (SeparableClosure K) J hJfinite
   let : FiniteDimensional F E :=
-    abstractRelativeFixedField_finiteDimensional
-      ℚ (SeparableClosure ℚ) K L hLK hKfinite hfinite
-  let : IsScalarTower ℚ F E :=
-    IsScalarTower.of_algebraMap_eq' rfl
-  let : FiniteDimensional ℚ E :=
-    FiniteDimensional.trans ℚ F E
-  let : NumberField F := NumberField.of_module_finite ℚ F
-  let : NumberField E := NumberField.of_module_finite ℚ E
-  let : IsGalois F E :=
-    abstractRelativeFixedField_isGalois
-      ℚ (SeparableClosure ℚ) K L hLK hnormal
-  let eQ : Q ≃* Gal(E / F) :=
-    abstractExtensionQuotientEquivGaloisGroup
-      ℚ (SeparableClosure ℚ) K L hLK hnormal
-  let g' : Gal(E / F) := eQ g
-  have hg' : ∀ σ : Gal(E / F),
-      σ ∈ Subgroup.zpowers g' :=
+    abstractRelativeFixedField_finiteDimensional K (SeparableClosure K) H J hJH B.finite C.finite
+  let : IsScalarTower K F E := IsScalarTower.of_algebraMap_eq' rfl
+  let : NumberField E := abstractRelativeFixedFieldNumberField K hJH
+  let : IsGalois F E := abstractRelativeFixedField_isGalois K (SeparableClosure K) H J hJH C.normal
+  let Q := H.toSubgroup ⧸ extensionSubgroup H J hJH
+  let P := Gal(E/F)
+  let : Fintype P := inferInstanceAs (Fintype Gal(E/F))
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := Q)
+  let eQ : Q ≃* P :=
+    abstractExtensionQuotientEquivGaloisGroup K (SeparableClosure K) H J hJH C.normal
+  have hg' : ∀ σ : P, σ ∈ Subgroup.zpowers (eQ g) :=
     map_cyclicGenerator eQ g hg
-  let :=
-    RelativeIdeleGroup.Cohomology.ideleClassMulDistribMulAction F E
-  have hIdeleClassTateCard :=
-    ClassFieldAxiom.ideleClass_tate_lowDegree_finite_card_eq_finrank_cyclic
-      F E g' hg'
-  let : IsCyclic Q :=
-    CyclicCohomology.isCyclic_of_generator g hg
-  let : CommGroup Q := IsCyclic.commGroup
-  let : IsCyclic (Gal(E / F)) :=
-    CyclicCohomology.isCyclic_of_generator g' hg'
-  let : CommGroup (Gal(E / F)) := IsCyclic.commGroup
-  let M :=
-    extensionFixedRepresentation rationalIdeleClassRepresentation
-      K L hLK hnormal
-  let U :=
-    Rep.ofMulDistribMulAction (E ≃ₐ[F] E)
-      (RelativeIdeleGroup.ClassGroup F E)
-  let eM : M ≅ Rep.res eQ.toMonoidHom U := by
-    let e :=
-      rationalAbstractExtensionIdeleClassEquiv K L hLK hnormal
-    refine Rep.mkIso (Representation.Equiv.mk e.toIntLinearEquiv ?_)
-    intro q
-    apply LinearMap.ext
-    intro x
-    exact
-      rationalAbstractExtensionIdeleClassEquiv_action
-        K L hLK hnormal q x
-  let eH0 :
-      (Rep.FiniteCyclicGroup.normHomCompSub M g).homology ≅
-        (Rep.FiniteCyclicGroup.normHomCompSub U g').homology :=
-    (normHomCompSubHomologyIsoOfRepIso eM g) ≪≫
-      normHomCompSubHomologyResEquivIso eQ U g
-  let eHm1 :
-      (Rep.FiniteCyclicGroup.subCompNormHom M g).homology ≅
-        (Rep.FiniteCyclicGroup.subCompNormHom U g').homology :=
-    (subCompNormHomHomologyIsoOfRepIso eM g) ≪≫
-      subCompNormHomHomologyResEquivIso eQ U g
-  let eTateH0 :
-      tateCohomology M 0 ≅ tateCohomology U 0 :=
-    TateCohomology.isoFiniteCyclicZero M g hg ≪≫ eH0 ≪≫
-      (TateCohomology.isoFiniteCyclicZero U g' hg').symm
-  let eTateHm1 :
-      tateCohomology M (-1) ≅ tateCohomology U (-1) :=
-    TateCohomology.isoFiniteCyclicNegOne M g hg ≪≫ eHm1 ≪≫
-      (TateCohomology.isoFiniteCyclicNegOne U g' hg').symm
-  let : Finite (tateCohomology U 0) := hIdeleClassTateCard.1
-  let : Finite (tateCohomology U (-1)) := hIdeleClassTateCard.2.1
-  let : Finite (tateCohomology M 0) :=
-    Finite.of_equiv
-      (tateCohomology U 0) eTateH0.symm.toLinearEquiv.toEquiv
-  let : Finite (tateCohomology M (-1)) :=
-    Finite.of_equiv
-      (tateCohomology U (-1)) eTateHm1.symm.toLinearEquiv.toEquiv
-  refine ClassFieldAxiomCohomologyData.ofOriginal (by
-    change Finite (tateCohomology M 0)
-    infer_instance) (by
-    change Finite (tateCohomology M (-1))
-    infer_instance) ?_ ?_
-  · change Nat.card (tateCohomology M 0) =
-      ((DegreeData.FiniteAbstractExtension.ofInclusion
-        L K hLK).degree : ℕ)
-    calc
-      Nat.card (tateCohomology M 0) =
-          Nat.card (tateCohomology U 0) :=
-        Nat.card_congr eTateH0.toLinearEquiv.toEquiv
-      _ = Module.finrank F E := hIdeleClassTateCard.2.2.1
-      _ =
-          ((DegreeData.FiniteAbstractExtension.ofInclusion
-            L K hLK).degree : ℕ) :=
-        (finiteAbstractExtension_degree_eq_finrank
-          ℚ (SeparableClosure ℚ) K L hLK hnormal
-            hKfinite hfinite).symm
-  · change Nat.card (tateCohomology M (-1)) = 1
-    calc
-      Nat.card (tateCohomology M (-1)) =
-          Nat.card (tateCohomology U (-1)) :=
-        Nat.card_congr eTateHm1.toLinearEquiv.toEquiv
-      _ = 1 := hIdeleClassTateCard.2.2.2
+  let CE := NumberField.IdeleClassGroup (𝓞 E) E
+  let _ := NumberField.IdeleClassGroup.relativeGaloisAction F E
+  let U : Rep.{u} ℤ P := Rep.ofMulDistribMulAction P CE
+  let M : Rep.{u} ℤ Q := C.fixedRepresentation (ideleClassRepresentation K)
+  let eM : M ≅ Rep.res eQ.toMonoidHom U := fixedIdeleClassRepIso K B C
+  have hTate := ClassFieldAxiom.standardIdeleClass_integral_tate_lowDegree_finite_card_eq_finrank
+    F E (eQ g) hg'
+  have hdegree : Module.finrank F E = Nat.card (E ≃ₐ[F] E) :=
+    (IsGalois.card_aut_eq_finrank F E).symm
+  let T₀ := IntegralGroupCohomology.Universe.tate U 0
+  let T₁ := IntegralGroupCohomology.Universe.tate U (-1)
+  have hfin : Finite T₀ := hTate.1
+  have hcard : Nat.card T₀ = Nat.card P := hTate.2.2.1.trans hdegree
+  have hone : Nat.card T₁ = 1 := hTate.2.2.2
+  exact ClassFieldAxiomCohomologyData.of_repIso (P := P)
+    (ideleClassRepresentation K) B C g hg eQ hg' U eM hfin hcard hone
 
-end Reciprocity
-
-end
-end GlobalClassFieldTheory
+end GlobalClassFieldTheory.Reciprocity

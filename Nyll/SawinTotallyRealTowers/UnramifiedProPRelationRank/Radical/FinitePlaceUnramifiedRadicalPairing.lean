@@ -6,10 +6,12 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.EmptySupportKummerCokernel
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAdicInertiaTransport
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Unramified reciprocity characters on the ideal radical
@@ -32,21 +34,13 @@ variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime]
 variable (v : HeightOneSpectrum (𝓞 F))
 
-local instance finitePlaceUnramifiedRadicalCanonicalZModAddCommGroup :
-    AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finitePlaceUnramifiedRadicalValuativeRel : ValuativeRel (v.adicCompletion F) :=
-  finitePlaceAdicCompletionValuativeRel F v
-local instance finitePlaceUnramifiedRadicalLocalField :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
-local instance finitePlaceUnramifiedRadicalTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance finitePlaceUnramifiedRadicalDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance finitePlaceUnramifiedRadicalH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) := continuousH1ZModModule
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- An ideal-radical class has zero local valuation modulo the prime. -/
 theorem finitePlaceLocalPowerClassValuation_idealRadical_eq_zero

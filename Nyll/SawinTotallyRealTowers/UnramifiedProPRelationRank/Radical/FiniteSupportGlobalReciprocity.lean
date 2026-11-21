@@ -6,11 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleIntegralCharacterRadical
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Topology
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Finite local products of global characters annihilate the radical
@@ -65,16 +67,28 @@ theorem finitePlaceIdele_continuous (v : HeightOneSpectrum (𝓞 F)) :
       exact continuous_id
     · simp_rw [IdeleGroup.finitePlaceIdele_finiteComponent_of_ne v w _ hw]
       exact continuous_const
-  exact continuous_const.prodMk ((RestrictedProduct.continuous_inclusion hS).comp hf)
+  have hi : Continuous (RestrictedProduct.inclusion
+      (fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletion F)ˣ)
+      (fun w => (w.adicCompletionIntegers F).units) hS) :=
+    RestrictedProduct.continuous_inclusion hS
+  have h : Continuous (fun x => IdeleGroup.ofComponents (1 : InfiniteIdeleGroup F)
+      (RestrictedProduct.inclusion
+        (fun w : HeightOneSpectrum (𝓞 F) => (w.adicCompletion F)ˣ)
+        (fun w => (w.adicCompletionIntegers F).units) hS (f x))) :=
+    IdeleGroup.continuous_ofComponents.comp (continuous_const.prodMk (hi.comp hf))
+  refine h.congr ?_
+  intro x
+  apply IdeleGroup.ext_parts
+  · rw [IdeleGroup.infinitePart_ofComponents, IdeleGroup.infinitePart_finitePlaceIdele]
+  · rw [IdeleGroup.finiteCoordinates_ofComponents]
+    apply RestrictedProduct.ext
+    intro w
+    rfl
 
 variable (n : ℕ+) [Fact (n : ℕ).Prime] (hpOdd : Odd (n : ℕ))
 
-local instance finiteRestrictionZModAddCommGroup : AddCommGroup (ZMod (n : ℕ)) :=
-  (ZMod.instField (n : ℕ)).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finiteRestrictionTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance finiteRestrictionDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
 
 variable (S : Finset (HeightOneSpectrum (𝓞 F)))
 variable (psi : IdeleGroup F →ₜ* Multiplicative (ZMod (n : ℕ)))

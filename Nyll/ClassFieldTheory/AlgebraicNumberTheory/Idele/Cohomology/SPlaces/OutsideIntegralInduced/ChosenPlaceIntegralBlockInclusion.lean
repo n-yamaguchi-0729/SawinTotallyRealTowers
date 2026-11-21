@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.OutsideIntegralInduced.ChosenPlaceAction
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 
@@ -79,12 +81,10 @@ theorem chosenFinitePlaceIntegralInducedBlockToLocalPlaceBlock_injective
     Function.Injective
       (chosenFinitePlaceIntegralInducedBlockToLocalPlaceBlock
         (K := K) (L := L) w₀) := by
-  let vK := HeightOneSpectrum.adicAbv K w₀
-  let u := chosenFinitePlaceExtension (L := L) w₀
-  let hvK : vK.IsNontrivial := RayClass.adicAbv_isNontrivial w₀
-  let hvKna : IsNonarchimedean (vK : K → ℝ) :=
-    HeightOneSpectrum.isNonarchimedean_adicAbv K w₀
-  unfold chosenFinitePlaceIntegralInducedBlockToLocalPlaceBlock
-  exact inducedIntegerUnitsToLocalPlaceBlock_injective
-    vK hvK hvKna u
+  intro x y hxy
+  apply Subtype.ext
+  funext g
+  apply LocalFieldTheory.IsNonarchimedeanLocalField.integerUnitsToFieldUnits_injective
+    (ChosenFinitePlaceLocalizedCompletion (K := K) (L := L) w₀)
+  exact congrArg (fun z : ChosenFinitePlaceLocalPlaceBlock (K := K) (L := L) w₀ => z.1 g) hxy
 end ChosenFinitePlace

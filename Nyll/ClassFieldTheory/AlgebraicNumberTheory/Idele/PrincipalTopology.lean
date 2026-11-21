@@ -27,6 +27,7 @@ whose topology is discrete.
 @[expose] public section
 
 open scoped NumberField
+open ClassFieldTheory
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -40,17 +41,17 @@ namespace IdeleGroup
 def infiniteMixedEmbedding (a : IdeleGroup K) :
     NumberField.mixedEmbedding.mixedSpace K :=
   NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace K
-    (a.1 : NumberField.InfiniteAdeleRing K)
+    (infinitePart a : NumberField.InfiniteAdeleRing K)
 
 theorem continuous_infiniteMixedEmbedding :
     Continuous (infiniteMixedEmbedding (K := K)) := by
   rw [show infiniteMixedEmbedding (K := K) = fun a =>
       (fun v : {w : InfinitePlace K // w.IsReal} =>
           NumberField.InfinitePlace.Completion.extensionEmbeddingOfIsReal
-            v.2 ((a.1 : NumberField.InfiniteAdeleRing K) v),
+            v.2 ((infinitePart a : NumberField.InfiniteAdeleRing K) v),
        fun v : {w : InfinitePlace K // w.IsComplex} =>
           NumberField.InfinitePlace.Completion.extensionEmbedding v.1
-            ((a.1 : NumberField.InfiniteAdeleRing K) v)) by
+            ((infinitePart a : NumberField.InfiniteAdeleRing K) v)) by
     funext a
     exact NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace_apply K _]
   apply Continuous.prodMk
@@ -58,7 +59,7 @@ theorem continuous_infiniteMixedEmbedding :
     intro v
     have hcomponent :
         Continuous (fun a : IdeleGroup K =>
-          ((a.1 : NumberField.InfiniteAdeleRing K)
+          ((infinitePart a : NumberField.InfiniteAdeleRing K)
             (v : InfinitePlace K))) := by
       exact
         Units.continuous_val.comp
@@ -71,7 +72,7 @@ theorem continuous_infiniteMixedEmbedding :
     intro v
     have hcomponent :
         Continuous (fun a : IdeleGroup K =>
-          ((a.1 : NumberField.InfiniteAdeleRing K)
+          ((infinitePart a : NumberField.InfiniteAdeleRing K)
             (v : InfinitePlace K))) := by
       exact
         Units.continuous_val.comp
@@ -118,7 +119,7 @@ theorem principal_infiniteMixedEmbedding_mem_integerLattice
         (1 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) := by
     rw [← show
       ((toPrincipalIdeal (𝓞 K) K x :
-          FractionalIdealGroup K) :
+          NumberFieldFractionalIdealGroup K) :
         FractionalIdeal (nonZeroDivisors (𝓞 K)) K) = 1 by
           exact congrArg Units.val hprincipal,
       coe_toPrincipalIdeal]

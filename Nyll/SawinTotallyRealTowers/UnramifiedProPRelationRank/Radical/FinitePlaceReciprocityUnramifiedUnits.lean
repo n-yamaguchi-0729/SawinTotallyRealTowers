@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedUnits
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceValuationDiagonal
 
@@ -33,19 +34,11 @@ variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 variable (v : HeightOneSpectrum (𝓞 F))
 
-local instance finitePlaceReciprocityUnitsValuativeRel :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
-local instance finitePlaceReciprocityUnitsLocalField :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
-local instance finitePlaceReciprocityUnitsTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance finitePlaceReciprocityUnitsDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance finitePlaceReciprocityUnitsH1Module :
-    Module (ZMod (n : ℕ))
-      (ContinuousH1ZMod (p := (n : ℕ))
-        (G := Field.absoluteGaloisGroup (v.adicCompletion F))) :=
-  continuousH1ZModModule
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Valuation zero is exactly membership in the actual adic integer-unit subgroup. -/
 theorem finitePlaceValuationMap_eq_zero_iff_integralUnit (a : (v.adicCompletion F)ˣ) :

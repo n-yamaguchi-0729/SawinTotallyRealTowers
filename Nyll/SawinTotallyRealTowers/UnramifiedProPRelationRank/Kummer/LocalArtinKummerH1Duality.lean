@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.AbsoluteMuPKummerComparison
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalHilbertKummerDual
 
@@ -33,15 +34,8 @@ variable (L : Type) [Field L] [CharZero L]
 variable [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance localArtinKummerH1Topology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
 
-local instance localArtinKummerH1DiscreteTopology : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-
-local instance localArtinKummerH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The maximal-local-Artin Kummer pairing, transported to continuous `H¹`
 in both variables. -/

@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormApproximation.FinitePlaces
 public import Nyll.GaloisCohomology.GroupTheory.Finite
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal

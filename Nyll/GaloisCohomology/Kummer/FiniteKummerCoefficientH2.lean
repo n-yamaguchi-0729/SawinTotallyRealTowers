@@ -87,7 +87,7 @@ theorem finiteKummerCoefficientAddHom_intCast
   change Additive.ofMul
       ((hu.zmodEquivZPowers (i : ZMod (p : ℕ))).toMul : Lˣ) =
     Additive.ofMul (u ^ i)
-  rw [hu.zmodEquivZPowers_apply_coe_int]
+  rw [hu.zmodEquivZPowers_apply_intCast]
   rfl
 
 /-- The chosen-root coefficient homomorphism commutes with field embeddings. -/

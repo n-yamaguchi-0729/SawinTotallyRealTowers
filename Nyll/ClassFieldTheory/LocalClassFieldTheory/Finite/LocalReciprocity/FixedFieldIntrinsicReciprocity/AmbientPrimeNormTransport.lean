@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Mathlib.FieldTheory.Galois.Basic
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FixedFieldIntrinsicReciprocity.EmbeddedFrobeniusTransport
 
@@ -25,6 +26,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃ u₄
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -32,7 +35,7 @@ open scoped ValuativeRel
 /-- A valuation-subring-preserving ring equivalence carries some unit of
 valuation one to a unit of valuation one. -/
 theorem exists_valuationOne_unit_of_ringEquiv
-    (L M : Type)
+    (L : Type u₁) (M : Type u₂)
     [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L]
     [Field M] [ValuativeRel M] [TopologicalSpace M]
@@ -96,7 +99,7 @@ theorem exists_valuationOne_unit_of_ringEquiv
 /-- A chosen valuation-one unit whose image under a valuation-compatible
 ring equivalence also has valuation one. -/
 noncomputable def chosenValuationOneUnitOfRingEquiv
-    (L M : Type)
+    (L : Type u₁) (M : Type u₂)
     [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L]
     [Field M] [ValuativeRel M] [TopologicalSpace M]
@@ -111,7 +114,7 @@ noncomputable def chosenValuationOneUnitOfRingEquiv
 
 /-- The chosen transported unit has valuation one in its source field. -/
 theorem chosenValuationOneUnitOfRingEquiv_source
-    (L M : Type)
+    (L : Type u₁) (M : Type u₂)
     [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L]
     [Field M] [ValuativeRel M] [TopologicalSpace M]
@@ -129,7 +132,7 @@ theorem chosenValuationOneUnitOfRingEquiv_source
 /-- The image of the chosen transported unit has valuation one in the
 target field. -/
 theorem chosenValuationOneUnitOfRingEquiv_target
-    (L M : Type)
+    (L : Type u₁) (M : Type u₂)
     [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L]
     [Field M] [ValuativeRel M] [TopologicalSpace M]
@@ -149,7 +152,7 @@ theorem chosenValuationOneUnitOfRingEquiv_target
 valuation-subring membership when their separable-closure transport preserves
 the local valuation subrings. -/
 theorem valuationSubring_mem_iff_of_separableClosureRingEquiv
-    (F K L M : Type)
+    (F : Type u₁) (K : Type u₂) (L : Type u₃) (M : Type u₄)
     [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F]
     [Field K] [ValuativeRel K] [TopologicalSpace K]
@@ -188,33 +191,9 @@ theorem valuationSubring_mem_iff_of_separableClosureRingEquiv
   rw [hphi x, hpsi]
   rfl
 
-/-- Field norms on units commute with compatible ring equivalences of the
-base and extension fields. -/
-theorem normUnits_mapEquiv
-    (F E F₀ E₀ : Type)
-    [Field F] [Field E] [Field F₀] [Field E₀]
-    [Algebra F E] [Algebra F₀ E₀]
-    (phiF : F ≃+* F₀) (phiE : E ≃+* E₀)
-    (hcomm :
-      RingHom.comp (algebraMap F₀ E₀) phiF.toRingHom =
-        RingHom.comp phiE.toRingHom (algebraMap F E))
-    (y : Eˣ) :
-    normUnits F₀ E₀ (Units.mapEquiv phiE.toMulEquiv y) =
-      Units.mapEquiv phiF.toMulEquiv (normUnits F E y) := by
-  apply Units.ext
-  change
-    Algebra.norm F₀ (phiE (y : E)) =
-      phiF (Algebra.norm F (y : E))
-  have hnorm :=
-    Algebra.norm_eq_of_equiv_equiv
-      phiF phiE hcomm (y : E)
-  apply phiF.symm.injective
-  rw [phiF.symm_apply_apply]
-  exact hnorm.symm
-
 /-- Compatible ring equivalences preserve equality of unit norm classes. -/
 theorem normClass_mapEquiv
-    (F E F₀ E₀ : Type)
+    (F : Type u₁) (E : Type u₂) (F₀ : Type u₃) (E₀ : Type u₄)
     [Field F] [Field E] [Field F₀] [Field E₀]
     [Algebra F E] [Algebra F₀ E₀]
     (phiF : F ≃+* F₀) (phiE : E ≃+* E₀)
@@ -230,15 +209,15 @@ theorem normClass_mapEquiv
   rcases h with ⟨y, hy⟩
   refine ⟨Units.mapEquiv phiE.toMulEquiv y, ?_⟩
   have hnorm :=
-    normUnits_mapEquiv F E F₀ E₀ phiF phiE hcomm y
+    LocalFieldTheory.normUnits_map_ringEquiv phiF phiE hcomm y
   rw [← map_div, hy]
-  exact hnorm.symm
+  exact hnorm
 
 /-- A unit of valuation one in an abstract fixed field determines a prime
 element for the ambient local henselian valuation datum. -/
 theorem
     localHenselianValuation_isPrimeElement_abstractFixedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K)) :
@@ -281,7 +260,7 @@ relative norm from an intrinsic fixed field is the ordinary field norm on
 units. -/
 theorem
     relativeNorm_intrinsicAbstractBase_abstractFixedFieldUnit
-    (F : Type) [Field F]
+    (F : Type u₁) [Field F]
     (S : ClosedSubgroup Gal(SeparableClosure F/F))
     (hSB : S.toSubgroup ≤ (intrinsicAbstractBase F).toSubgroup)
     [Finite
@@ -349,7 +328,7 @@ theorem
 unit equivalences sends its abstract relative norm to its ordinary field norm. -/
 theorem
     relativeNorm_preimage_abstractRelativeFixedFieldUnit
-    (K : Type) [Field K]
+    (K : Type u₁) [Field K]
     (H L : ClosedSubgroup Gal(SeparableClosure K/K))
     (hLH : L.toSubgroup ≤ H.toSubgroup)
     [Finite
@@ -410,7 +389,7 @@ theorem
 prime element as the abelianized restriction of its Frobenius element. -/
 theorem
     abstractFixedFieldNormResidueSymbol_eq_of_primeNorm
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K))
@@ -461,7 +440,7 @@ theorem
           ((abstractExtensionQuotientEquivGaloisGroup
             K (SeparableClosure K) H.field J hJH hJnormal
             ).abelianizationCongr
-            (Abelianization.of
+            (Group.Abelianization.of
               ((localResidueDatum K).frobeniusRestriction
                 (H.toFiniteResidueAbstractField (localResidueDatum K))
                 J hJH sigma))) := by
@@ -540,7 +519,7 @@ theorem
                 H.field S hSH pi)))) =
       Additive.ofMul
         (qH.abelianizationCongr
-          (Abelianization.of qAmbient)) at hsymbol
+          (Group.Abelianization.of qAmbient)) at hsymbol
   rw [hx] at hsymbol
   exact hsymbol
 
@@ -549,7 +528,7 @@ equivalences evaluates the ambient fixed-field norm-residue symbol at the
 associated Frobenius restriction. -/
 theorem
     abstractFixedFieldNormResidueSymbol_eq_of_transportedValuationOneUnit
-    (K F L : Type)
+    (K : Type u₁) (F : Type u₂) (L : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [Field L] [Algebra F L] [FiniteDimensional F L]
@@ -619,7 +598,7 @@ theorem
           ((abstractExtensionQuotientEquivGaloisGroup
             K (SeparableClosure K) H.field J hJH hJnormal
             ).abelianizationCongr
-            (Abelianization.of
+            (Group.Abelianization.of
               ((localResidueDatum K).frobeniusRestriction
                 (H.toFiniteResidueAbstractField (localResidueDatum K))
                 J hJH sigma))) := by
@@ -676,13 +655,7 @@ theorem
           pH =
         xPrime0 := by
     exact
-      normUnits_mapEquiv F L
-        (abstractFixedField K (SeparableClosure K) H.field)
-        (abstractRelativeFixedField K (SeparableClosure K)
-          ((localResidueDatum K).frobeniusFixedField_le
-            (H.toFiniteResidueAbstractField (localResidueDatum K))
-            J hJH sigma))
-        phiF phi hcomm pF
+      (LocalFieldTheory.normUnits_map_ringEquiv phiF phi hcomm pF).symm
   exact
     abstractFixedFieldNormResidueSymbol_eq_of_primeNorm
       K H J hJH sigma pH xPrime0 hprime hphiNorm

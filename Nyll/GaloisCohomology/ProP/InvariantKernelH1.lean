@@ -41,15 +41,11 @@ universe u
 
 variable {p : ℕ} [Fact p.Prime]
 
-local instance invariantKernelCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
-local instance continuousH1ZModModuleInstance
-    {q : ℕ} {H : Type*} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] :
-    Module (ZMod q) (ContinuousH1ZMod (p := q) (G := H)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- Minimality makes every continuous mod-`p` character of the free source vanish on the
 presentation kernel. -/

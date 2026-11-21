@@ -266,7 +266,7 @@ theorem powerSeries_X_notMem_span_X_sq
     refine ⟨a, ?_⟩
     apply mul_left_cancel₀ (PowerSeries.X_ne_zero (R := k))
     simpa [pow_two, mul_assoc] using ha.symm
-  exact PowerSeries.X_prime.not_isUnit hunit
+  exact PowerSeries.prime_X.not_isUnit hunit
 
 /-- The integral primitive polynomial is Eisenstein at `(T)`. -/
 theorem equalCharacteristicLubinTateIntegralPrimitivePolynomial_isEisensteinAt
@@ -278,7 +278,7 @@ theorem equalCharacteristicLubinTateIntegralPrimitivePolynomial_isEisensteinAt
   have hmonic : Q.Monic :=
     equalCharacteristicLubinTateIntegralPrimitivePolynomial_monic F n
   refine hmonic.isEisensteinAt_of_mem_of_notMem
-    PowerSeries.span_X_isPrime.ne_top ?_ ?_
+    (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X).ne_top ?_ ?_
   · intro i hi
     rw [Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]
     have hcoeff :
@@ -300,7 +300,7 @@ theorem equalCharacteristicLubinTateIntegralPrimitivePolynomial_irreducible
     (F : LocalField.{u, v} K) (n : ℕ) :
     Irreducible (equalCharacteristicLubinTateIntegralPrimitivePolynomial F n) := by
   apply (equalCharacteristicLubinTateIntegralPrimitivePolynomial_isEisensteinAt F n).irreducible
-    PowerSeries.span_X_isPrime
+    (Ideal.isPrime_span_singleton_of_prime PowerSeries.prime_X)
     (equalCharacteristicLubinTateIntegralPrimitivePolynomial_monic F n).isPrimitive
   rw [equalCharacteristicLubinTateIntegralPrimitivePolynomial_natDegree]
   exact Nat.mul_pos

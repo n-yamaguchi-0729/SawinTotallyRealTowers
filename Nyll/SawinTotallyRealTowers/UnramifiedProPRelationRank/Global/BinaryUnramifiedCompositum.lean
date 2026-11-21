@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.SawinTotallyRealTowers.RamificationSupport
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.MathlibUnramifiedInterface
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.EverywhereUnramifiedBridge
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.Dedekind.CompositumUnramified
 public import Mathlib.FieldTheory.Galois.GaloisClosure
@@ -21,6 +25,8 @@ condition.
 
 @[expose] public section
 
+open ClassFieldTheory
+
 open scoped NumberField
 
 noncomputable section
@@ -29,14 +35,7 @@ universe u v
 
 namespace ClassFieldTower.Martinet
 
-/-- A finite intermediate extension inherits the original number-field structure. -/
-local instance finiteIntermediateFieldNumberField
-    {K : Type u} {Omega : Type v}
-    [Field K] [NumberField K]
-    [Field Omega] [Algebra K Omega]
-    (E : IntermediateField K Omega) [FiniteDimensional K E] :
-    NumberField E :=
-  NumberField.of_module_finite K E
+attribute [local instance] ClassFieldTower.Sawin.finiteIntermediateFieldNumberField
 
 /-- The two restricted factors generate their compositum. -/
 private theorem restrict_left_sup_restrict_right_eq_top
@@ -91,9 +90,10 @@ theorem finitePlaceUnramifiedness_sup
   let hGaloisB : IsGalois K B := IsGalois.of_algEquiv eB
   let _ := hGaloisB
   have hA : IsUnramifiedAtFinitePlaces K A :=
-    finitePlaceUnramifiedness_congrTop eA h₁
+    (ClassFieldTheory.isUnramifiedAtFinitePlaces_iff_of_algEquiv K E₁ A eA).mp h₁
   have hB : IsUnramifiedAtFinitePlaces K B :=
-    finitePlaceUnramifiedness_congrTop eB h₂
+    (ClassFieldTheory.isUnramifiedAtFinitePlaces_iff_of_algEquiv K E₂ B eB).mp h₂
+  apply (IsUnramifiedAtFinitePlaces.iff_forall_above K S).2
   intro Q
   let hQPrime : Q.asIdeal.IsPrime := Q.isPrime
   let _ := hQPrime
@@ -117,7 +117,7 @@ theorem finitePlaceUnramifiedness_sup
     let _ := hQAMaximal
     apply
       HilbertRamification.Dedekind.inertiaGroup_eq_bot_of_isUnramifiedAt
-    exact hA
+    exact hA.atPrime
       { asIdeal := QA
         isPrime := hQAPrime
         ne_bot := hQA0 }
@@ -131,7 +131,7 @@ theorem finitePlaceUnramifiedness_sup
     let _ := hQBMaximal
     apply
       HilbertRamification.Dedekind.inertiaGroup_eq_bot_of_isUnramifiedAt
-    exact hB
+    exact hB.atPrime
       { asIdeal := QB
         isPrime := hQBPrime
         ne_bot := hQB0 }
@@ -159,7 +159,7 @@ theorem everywhereUnramified_sup_of_odd_finrank
   let _ := hGalois
   exact everywhereUnramified_of_finitePlaces_of_infinitePlaces
     (finitePlaceUnramifiedness_sup E₁ E₂
-      h₁.finitePlaces h₂.finitePlaces)
+      h₁.1 h₂.1)
     (IsUnramifiedAtInfinitePlaces_of_odd_finrank hOdd)
 
 end ClassFieldTower.Martinet

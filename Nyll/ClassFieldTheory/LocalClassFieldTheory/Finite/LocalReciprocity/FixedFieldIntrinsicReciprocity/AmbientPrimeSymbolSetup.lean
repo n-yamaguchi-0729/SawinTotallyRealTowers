@@ -25,6 +25,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -32,7 +34,7 @@ open scoped ValuativeRel
 /-- The ambient fixed-field norm-residue value of the chosen prime
 witness, transported to the original embedded Galois group. -/
 noncomputable def ambientEmbeddedPrimeTransportValue
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -45,8 +47,8 @@ noncomputable def ambientEmbeddedPrimeTransportValue
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
-    Abelianization Gal(E / F) := by
+    (z : Group.Abelianization Gal(E/F)) :
+    Group.Abelianization Gal(E / F) := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
   letI : Algebra F (SeparableClosure K) :=
@@ -110,7 +112,7 @@ noncomputable def ambientEmbeddedPrimeTransportValue
 /-- The fixed-field norm-residue symbol of the chosen prime witness is
 the abelianized restriction of its ambient Frobenius lift. -/
 noncomputable def ambientEmbeddedPrimeSymbolProperty
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -123,7 +125,7 @@ noncomputable def ambientEmbeddedPrimeSymbolProperty
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) : Prop := by
+    (z : Group.Abelianization Gal(E/F)) : Prop := by
   let i :=
     j.comp (IsScalarTower.toAlgHom K F E)
   letI : Algebra F (SeparableClosure K) :=
@@ -201,7 +203,7 @@ noncomputable def ambientEmbeddedPrimeSymbolProperty
     exact hSourceFinite
   let RH :=
     H.toFiniteResidueAbstractField (localResidueDatum K)
-  let zF : Abelianization EI.extensionQuotient :=
+  let zF : Group.Abelianization EI.extensionQuotient :=
     qF.abelianizationCongr.symm z
   let q :=
     Classical.choose (QuotientGroup.mk_surjective zF)
@@ -227,13 +229,13 @@ noncomputable def ambientEmbeddedPrimeSymbolProperty
             (ambientEmbeddedPrimeWitness K F E j e z))) =
       Additive.ofMul
         (q₀.abelianizationCongr
-          (Abelianization.of qAmbient))
+          (Group.Abelianization.of qAmbient))
 
 /-- The explicit fixed-field symbol formula identifies the transported
 prime value with its ambient Frobenius target. -/
 theorem
     ambientEmbeddedPrimeTransportValue_eq_target_of_symbol
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -246,7 +248,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     let i :=
       j.comp (IsScalarTower.toAlgHom K F E)
     let : Algebra F (SeparableClosure F) :=
@@ -326,7 +328,7 @@ theorem
       exact hSourceFinite
     let RH :=
       H.toFiniteResidueAbstractField (localResidueDatum K)
-    let zF : Abelianization EI.extensionQuotient :=
+    let zF : Group.Abelianization EI.extensionQuotient :=
       qF.abelianizationCongr.symm z
     let q :=
       Classical.choose (QuotientGroup.mk_surjective zF)
@@ -352,7 +354,7 @@ theorem
                 (ambientEmbeddedPrimeWitness K F E j e z))) =
           Additive.ofMul
             (q₀.abelianizationCongr
-              (Abelianization.of qAmbient))),
+              (Group.Abelianization.of qAmbient))),
       ambientEmbeddedPrimeTransportValue K F E j e z =
         ambientEmbeddedPrimeTarget K F E j e z := by
   intro i intrinsicClosureAlgebra embeddedClosureAlgebra jF jI EI H₀ J₀ hJH _hSourceNormal

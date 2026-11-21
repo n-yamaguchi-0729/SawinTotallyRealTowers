@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.OpenNormalArithmeticStage
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdealRadicalCyclotomicBase
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.UnramifiedCompositumBaseChange
@@ -27,6 +28,8 @@ the C → C L tower is the canonical intermediate-field tower.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 noncomputable section
 
@@ -120,6 +123,6 @@ theorem cyclotomicArithmeticStage_everywhereUnramified : IsEverywhereUnramified 
   compositumBaseChange_everywhereUnramified F OriginalStage Cyclo TopStage hpOdd
     (cyclotomicArithmeticStage_generatorRanges F p hpOdd U)
     (openNormalArithmeticStage F p hpOdd U).isPGroup
-    (openNormalArithmeticStage F p hpOdd U).everywhereUnramified.finitePlaces
+    (openNormalArithmeticStage F p hpOdd U).everywhereUnramified.1
 
 end ClassFieldTower.Martinet.Shafarevich

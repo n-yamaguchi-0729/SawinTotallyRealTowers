@@ -59,7 +59,7 @@ def presentationModPFiniteStageQMapAtIndex
     (P : FiniteProPPresentation p d r sourceData G)
     (U : OpenNormalSubgroup G)
     (hU : FiniteGroupClass.pGroup p (G ⧸ (U : Subgroup G))) :
-    FoxDifferential.CompletedGroupAlgebraQuotientInClass G (FiniteGroupClass.pGroup p)
+    CompletedGroupAlgebra.CompletedGroupAlgebraQuotientInClass G (FiniteGroupClass.pGroup p)
         (OrderDual.toDual ⟨U, hU⟩) →*
       presentationModPFiniteStageTarget P U hU :=
   presentationModPFiniteStageQMap P U hU
@@ -124,7 +124,7 @@ theorem presentationModPFiniteStageProjection_of
         (completedGroupAlgebraOfInClass
           (FiniteGroupClass.pGroup p) (ZMod p) G g) =
       MonoidAlgebra.of (ZMod p)
-        (FoxDifferential.CompletedGroupAlgebraQuotientInClass G (FiniteGroupClass.pGroup p)
+        (CompletedGroupAlgebra.CompletedGroupAlgebraQuotientInClass G (FiniteGroupClass.pGroup p)
           (OrderDual.toDual ⟨U, hU⟩))
         (QuotientGroup.mk g) := by
   exact completedGroupAlgebraProjectionInClass_of
@@ -147,7 +147,7 @@ theorem presentationModPFiniteStageCoefficientMap_groupLike
     presentationModPFiniteStageQMapAlgebra]
   exact finiteGroupAlgebra_mapDomainRingHom_of
     (ZMod p)
-    (FoxDifferential.CompletedGroupAlgebraQuotientInClass G
+    (CompletedGroupAlgebra.CompletedGroupAlgebraQuotientInClass G
       (FiniteGroupClass.pGroup p) (OrderDual.toDual ⟨U, hU⟩))
     (presentationModPFiniteStageTarget P U hU)
     (presentationModPFiniteStageQMapAtIndex P U hU)

@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.FrobeniusRestriction
+
 public import Mathlib.SetTheory.Cardinal.Finite
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 public import Mathlib.FieldTheory.Finite.Extension
@@ -211,28 +213,6 @@ variable {E : Type v} {F : Type w}
   [Algebra k E] [Algebra k F] [Algebra E F]
   [IsScalarTower k E F] [Normal k E]
 
-/-- Arithmetic Frobenius commutes with restriction in a tower of finite
-extensions of a finite field. -/
-theorem restrictNormalHom_finiteResidueFrobenius :
-    AlgEquiv.restrictNormalHom E
-        (FiniteField.frobeniusAlgEquivOfAlgebraic k F) =
-      FiniteField.frobeniusAlgEquivOfAlgebraic k E := by
-  apply AlgEquiv.ext
-  intro x
-  apply (algebraMap E F).injective
-  calc
-    (algebraMap E F)
-        (((AlgEquiv.restrictNormalHom E)
-          (FiniteField.frobeniusAlgEquivOfAlgebraic k F)) x) =
-        FiniteField.frobeniusAlgEquivOfAlgebraic k F
-          (algebraMap E F x) :=
-      AlgEquiv.restrictNormal_commutes
-        (FiniteField.frobeniusAlgEquivOfAlgebraic k F) E x
-    _ = (algebraMap E F
-        ((FiniteField.frobeniusAlgEquivOfAlgebraic k E) x) : F) := by
-      simp only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic]
-      exact (map_pow (algebraMap E F) x (Fintype.card k)).symm
-
 /-- The finite Frobenius exponent coordinates commute with restriction.  The
 exponent on the smaller field is obtained by the canonical reduction
 `Z/[F:k]Z → Z/[E:k]Z`. -/
@@ -267,7 +247,7 @@ theorem restrictNormalHom_finiteResidueFrobeniusExponentHom
         (m : ZMod (Module.finrank k E)) := by
     exact map_intCast _ m
   rw [hred, finiteResidueFrobeniusExponentHom_intCast]
-  have hfrob := restrictNormalHom_finiteResidueFrobenius
+  have hfrob := FiniteField.restrictNormalHom_frobeniusAlgEquivOfAlgebraic
     (k := k) (E := E) (F := F)
   have hpow := congrArg (fun sigma : E ≃ₐ[k] E => sigma ^ m) hfrob
   rw [map_zpow]

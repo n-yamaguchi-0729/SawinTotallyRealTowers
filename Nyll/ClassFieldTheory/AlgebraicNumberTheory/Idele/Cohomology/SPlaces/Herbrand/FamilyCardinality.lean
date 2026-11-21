@@ -49,35 +49,9 @@ theorem
     let d :=
       relativeUnrestrictedSPlaceDatum
         (K := K) (L := L) S
-    letI : ∀ i, MulDistribMulAction
-        (absoluteValueDecompositionGroup K (d i).extension.1)
-        (LocalizedCompletion
-          (d i).base (d i).extension)ˣ :=
-      fun i =>
-        decompositionGroupLocalUnitsAction
-          (d i).base (d i).base_isNontrivial
-          (d i).extension
-    letI : ∀ i, MulDistribMulAction
-        (L ≃ₐ[K] L)
-        (LocalPlaceBlock
-          (d i).base (d i).base_isNontrivial
-          (d i).extension) :=
-      fun i =>
-        inducedMulDistribMulAction
-          (absoluteValueDecompositionGroup K
-            (d i).extension.1)
-    letI : MulDistribMulAction (L ≃ₐ[K] L)
-        (LocalBlockFamily d) :=
-      piMulDistribMulAction (L ≃ₐ[K] L)
-        (fun i =>
-          LocalPlaceBlock
-            (d i).base (d i).base_isNontrivial
-            (d i).extension)
-    letI : Finite
-        (HerbrandH0 (L ≃ₐ[K] L)
-          (LocalBlockFamily d)) :=
-      relativeUnrestrictedLocalBlockFamilyHerbrandH0Finite
-        S σ hgen
+    letI := localBlockFamilyLocalAction d
+    letI := localBlockFamilyBlockAction d
+    letI := localBlockFamilyAction d
     Nat.card
         (HerbrandH0 (L ≃ₐ[K] L)
           (LocalBlockFamily d)) =
@@ -85,12 +59,9 @@ theorem
         relativeUnrestrictedSPlaceLocalDegree
           (K := K) (L := L) S i := by
   intro d
-  let localAction :=
-    localBlockFamilyLocalAction d
-  let blockAction :=
-    localBlockFamilyBlockAction d
-  let familyAction :=
-    localBlockFamilyAction d
+  let localAction := localBlockFamilyLocalAction d
+  let blockAction := localBlockFamilyBlockAction d
+  let familyAction := localBlockFamilyAction d
   let decompositionFintype :=
     localBlockFamilyDecompositionFintype d
   let localFinite : ∀ i, Finite
@@ -101,11 +72,6 @@ theorem
     fun i =>
       relativeUnrestrictedLocalHerbrandH0Finite
         S i σ hgen
-  let familyFinite : Finite
-      (HerbrandH0 (L ≃ₐ[K] L)
-        (LocalBlockFamily d)) :=
-    relativeUnrestrictedLocalBlockFamilyHerbrandH0Finite
-      S σ hgen
   calc
     Nat.card
         (HerbrandH0 (L ≃ₐ[K] L)
@@ -148,45 +114,16 @@ theorem
     let d :=
       relativeUnrestrictedSPlaceDatum
         (K := K) (L := L) S
-    letI : ∀ i, MulDistribMulAction
-        (absoluteValueDecompositionGroup K (d i).extension.1)
-        (LocalizedCompletion
-          (d i).base (d i).extension)ˣ :=
-      fun i =>
-        decompositionGroupLocalUnitsAction
-          (d i).base (d i).base_isNontrivial
-          (d i).extension
-    letI : ∀ i, MulDistribMulAction
-        (L ≃ₐ[K] L)
-        (LocalPlaceBlock
-          (d i).base (d i).base_isNontrivial
-          (d i).extension) :=
-      fun i =>
-        inducedMulDistribMulAction
-          (absoluteValueDecompositionGroup K
-            (d i).extension.1)
-    letI : MulDistribMulAction (L ≃ₐ[K] L)
-        (LocalBlockFamily d) :=
-      piMulDistribMulAction (L ≃ₐ[K] L)
-        (fun i =>
-          LocalPlaceBlock
-            (d i).base (d i).base_isNontrivial
-            (d i).extension)
-    letI : Finite
-        (HerbrandHMinusOne (L ≃ₐ[K] L)
-          (LocalBlockFamily d) σ) :=
-      relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOneFinite
-        S σ hgen
+    letI := localBlockFamilyLocalAction d
+    letI := localBlockFamilyBlockAction d
+    letI := localBlockFamilyAction d
     Nat.card
         (HerbrandHMinusOne (L ≃ₐ[K] L)
           (LocalBlockFamily d) σ) = 1 := by
   intro d
-  let localAction :=
-    localBlockFamilyLocalAction d
-  let blockAction :=
-    localBlockFamilyBlockAction d
-  let familyAction :=
-    localBlockFamilyAction d
+  let localAction := localBlockFamilyLocalAction d
+  let blockAction := localBlockFamilyBlockAction d
+  let familyAction := localBlockFamilyAction d
   let decompositionFintype :=
     localBlockFamilyDecompositionFintype d
   let localFinite : ∀ i, Finite
@@ -201,11 +138,6 @@ theorem
     fun i =>
       relativeUnrestrictedLocalHerbrandHMinusOneFinite
         S i σ hgen
-  let familyFinite : Finite
-      (HerbrandHMinusOne (L ≃ₐ[K] L)
-        (LocalBlockFamily d) σ) :=
-    relativeUnrestrictedLocalBlockFamilyHerbrandHMinusOneFinite
-      S σ hgen
   calc
     Nat.card
         (HerbrandHMinusOne (L ≃ₐ[K] L)

@@ -1100,10 +1100,7 @@ theorem henselianRing_of_monicResidualCoprimeFactorLifting
     {K : Type u} [Field K] {V : ValuationSubring K}
     (hlift : MonicResidualCoprimeFactorLifting V) :
     HenselianRing V (IsLocalRing.maximalIdeal V) where
-  jac := by
-    rw [Ideal.jacobson, le_sInf_iff]
-    rintro I ⟨-, hI⟩
-    exact (IsLocalRing.eq_maximalIdeal hI).ge
+  jac := (IsLocalRing.ringJacobson_eq_maximalIdeal V).ge
   is_henselian := by
     intro f hf a0 hroot hsimple
     let fbar : Polynomial (IsLocalRing.ResidueField V) :=

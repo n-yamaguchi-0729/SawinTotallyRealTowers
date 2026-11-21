@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.NormComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
@@ -59,11 +61,6 @@ local instance
     (A : Type u) (B : Type v) [Field A] [NumberField A]
     [Field B] [Algebra A B] :
     IsMulCommutative (RelativeIdeleGroup.ClassGroup A B) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-local instance towerBaseChange_ideleClassGroupIsMulCommutative
-    (A : Type u) [Field A] [NumberField A] :
-    IsMulCommutative (IdeleClassGroup A) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
 
 section RingComparison
@@ -308,37 +305,26 @@ private theorem relativeAdeleBaseChangeRingEquiv_tower_infiniteComponent
               [hVv : V.1.LiesOver v'.1]
               [hWV : W.1.LiesOver V.1]
               [hWv : W.1.LiesOver v.1] :
-              NumberField.LiesOver.completionMap
-                    (v := V) (w := W)
-                    (NumberField.LiesOver.completionMap
-                        (v := v') (w := V) (a.1 v') *
+              AbsoluteValue.Completion.map
+                    V.1 W.1
+                    (AbsoluteValue.Completion.map
+                        v'.1 V.1 (a.1 v') *
                       algebraMap M V.Completion m) *
                   algebraMap L W.Completion x =
-                NumberField.LiesOver.completionMap
-                    (v := v) (w := W) (a.1 v) *
+                AbsoluteValue.Completion.map
+                    v.1 W.1 (a.1 v) *
                   algebraMap L W.Completion
                     (algebraMap M L m * x) := by
             subst v'
             have hm :
-                NumberField.LiesOver.completionMap
-                    (v := V) (w := W)
+                AbsoluteValue.Completion.map
+                    V.1 W.1
                     (algebraMap M V.Completion m) =
                   algebraMap L W.Completion
                     (algebraMap M L m) := by
-              have h :
-                  algebraMap M V.Completion m =
-                    ((WithAbs.toAbs V.1 m : WithAbs V.1) :
-                      V.Completion) :=
-                rfl
-              rw [h,
-                NumberField.LiesOver.completionMap_coe
-                  (v := V) (w := W)]
-              apply InfinitePlace.Completion.ext
-              rw [
-                InfinitePlace.Completion.algebraMap_toCompletion,
-                UniformSpace.Completion.algebraMap_def]
-              simp [WithAbs.algebraMap_left_apply,
-                WithAbs.algebraMap_right_apply]
+              simpa only [AbsoluteValue.Completion.algebraMap_def, WithAbs.algebraMap_right_apply,
+                Algebra.algebraMap_self_apply, WithAbs.map_apply, WithAbs.ofAbs_toAbs] using
+                (AbsoluteValue.Completion.map_coe V.1 W.1 (WithAbs.toAbs V.1 m))
             rw [map_mul,
               infinitePlaceCompletionMap_comp_apply
                 (K := K) (M := M) (L := L) W,
@@ -354,8 +340,8 @@ private theorem relativeAdeleBaseChangeRingEquiv_tower_infiniteComponent
             relativeAdeleBaseChangeRingEquiv_infiniteComponent_tmul
               (K := M) (L := L)]
           change
-            NumberField.LiesOver.completionMap
-                (v := V) (w := W)
+            AbsoluteValue.Completion.map
+                V.1 W.1
                 ((relativeAdeleBaseChangeRingEquiv
                   (K := K) (L := M) (a ⊗ₜ[K] m)).1 V) *
               algebraMap L W.Completion x =
@@ -445,7 +431,6 @@ theorem towerRelativeIdeleBaseChangeMulEquiv_eq_viaOrdinary
   rw [towerRelativeIdeleViaOrdinaryMulEquiv_apply,
     (relativeIdeleBaseChangeMulEquiv
       (K := M) (L := L)).apply_symm_apply]
-  apply (IdeleGroup.equivAdeleRingUnits (K := L)).injective
   rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits
       (K := M) (L := L),
     relativeIdeleBaseChangeMulEquiv_eq_ringUnits
@@ -523,17 +508,10 @@ theorem towerRelativeIdeleBaseChangeMulEquiv_includeLeft
   change
     towerActualRelativeAdeleRingEquiv K M L
         ((a : RelativeAdeleRing K M) ⊗ₜ[M] (1 : L)) =
-      ((IdeleGroup.equivAdeleRingUnits (K := M)
-          (relativeIdeleBaseChangeMulEquiv
-            (K := K) (L := M) a) :
-        (NumberField.AdeleRing (𝓞 M) M)ˣ) :
-          NumberField.AdeleRing (𝓞 M) M) ⊗ₜ[M] (1 : L)
+      (relativeIdeleBaseChangeMulEquiv (K := K) (L := M) a :
+        NumberField.AdeleRing (𝓞 M) M) ⊗ₜ[M] (1 : L)
   rw [towerActualRelativeAdeleRingEquiv_tmul]
   congr 1
-  simpa [intermediateRelativeAdeleBaseChangeAlgEquiv] using
-    congrArg Units.val
-      (relativeIdeleBaseChangeMulEquiv_eq_ringUnits
-        (K := K) (L := M) a).symm
 
 omit [NumberField L] [Algebra K L] [IsScalarTower K M L]
     [FiniteDimensional M L] in
@@ -597,18 +575,17 @@ theorem relativeIdeleClassBaseChangeMulEquiv_tower
   refine QuotientGroup.induction_on d ?_
   intro a
   change
-    QuotientGroup.mk' (IdeleGroup.principalSubgroup L)
+    IdeleGroup.toStandardClass L
         (relativeIdeleBaseChangeMulEquiv
           (K := M) (L := L)
           (towerRelativeIdeleBaseChangeMulEquiv K M L a)) =
-      QuotientGroup.mk' (IdeleGroup.principalSubgroup L)
+      IdeleGroup.toStandardClass L
         (relativeIdeleBaseChangeMulEquiv
           (K := K) (L := L)
           (towerRelativeIdeleEquiv K M L a))
   exact
     congrArg
-      (QuotientGroup.mk'
-        (IdeleGroup.principalSubgroup L))
+      (IdeleGroup.toStandardClass L)
       (relativeIdeleBaseChangeMulEquiv_tower K M L a)
 
 omit [NumberField L] [FiniteDimensional M L] in
@@ -852,15 +829,8 @@ theorem towerRelativeIdeleBaseChangeMulEquiv_norm
           (NumberField.AdeleRing (𝓞 M) M)
           (e₂ (a : TowerRelativeAdeleRing K M L)) := by
     simpa using congrArg e₁ hnorm
-  apply
-    (IdeleGroup.equivAdeleRingUnits
-      (K := M)).injective
   rw [relativeIdeleBaseChangeMulEquiv_eq_ringUnits
     (K := K) (L := M)]
-  simp only [RelativeIdeleGroup.norm,
-    MonoidHom.comp_apply]
-  simp only [MulEquiv.coe_toMonoidHom,
-    MulEquiv.apply_symm_apply]
   apply Units.ext
   change
     e₁
@@ -890,8 +860,7 @@ theorem towerRelativeIdeleClassBaseChangeMulEquiv_classNorm
   refine QuotientGroup.induction_on c ?_
   intro a
   exact congrArg
-    (QuotientGroup.mk'
-      (IdeleGroup.principalSubgroup M))
+    (IdeleGroup.toStandardClass M)
     (towerRelativeIdeleBaseChangeMulEquiv_norm K M L a)
 
 omit [NumberField L] [Algebra K L] [IsScalarTower K M L] in
@@ -959,99 +928,39 @@ end ClassNormComparison
 
 section OrdinaryNormTower
 
-/-- Ordinary idele-class norms are pointwise transitive in an arbitrary
-finite tower of number fields.  This is determinant-norm transitivity,
-transported through the actual relative-idele presentations over the
-bottom and intermediate fields. -/
-theorem ordinaryIdeleClassNorm_tower
-    (c : IdeleClassGroup L) :
-    _root_.ideleClassNorm K M
-        (_root_.ideleClassNorm M L c) =
-      _root_.ideleClassNorm K L c := by
-  let d : RelativeIdeleGroup.ClassGroup K L :=
-    (relativeIdeleClassBaseChangeMulEquiv
-      (K := K) (L := L)).symm c
-  let t : TowerRelativeIdeleGroup.ClassGroup K M L :=
-    (TowerRelativeIdeleGroup.classGroupEquiv
-      K M L).symm d
-  have htop :
-      relativeIdeleClassBaseChangeMulEquiv
-          (K := M) (L := L)
-          (towerRelativeIdeleClassBaseChangeMulEquiv
-            K M L t) =
-        c := by
-    calc
-      relativeIdeleClassBaseChangeMulEquiv
-          (K := M) (L := L)
-          (towerRelativeIdeleClassBaseChangeMulEquiv
-            K M L t) =
-          relativeIdeleClassBaseChangeMulEquiv
-            (K := K) (L := L) d := by
-        change
-          relativeIdeleClassBaseChangeMulEquiv
-              (K := M) (L := L)
-              (towerRelativeIdeleClassBaseChangeMulEquiv K M L
-                ((TowerRelativeIdeleGroup.classGroupEquiv
-                  K M L).symm d)) =
-            relativeIdeleClassBaseChangeMulEquiv
-              (K := K) (L := L) d
-        exact relativeIdeleClassBaseChangeMulEquiv_tower K M L d
-      _ = c := by
-        exact
-          (relativeIdeleClassBaseChangeMulEquiv
-            (K := K) (L := L)).apply_symm_apply c
+/-- The ordinary determinant norm is transitive in a finite tower of number fields. -/
+theorem ordinaryIdeleNorm_tower (a : IdeleGroup L) :
+    IdeleGroup.norm K M (IdeleGroup.norm M L a) = IdeleGroup.norm K L a := by
+  let e := relativeIdeleBaseChangeMulEquiv (K := K) (L := L)
+  let f := relativeIdeleBaseChangeMulEquiv (K := M) (L := L)
+  let g := relativeIdeleBaseChangeMulEquiv (K := K) (L := M)
+  let flatten := towerRelativeIdeleEquiv K M L
+  let t := flatten.symm (e.symm a)
+  have hflat : e (flatten t) = a :=
+    (congrArg e (flatten.apply_symm_apply (e.symm a))).trans (e.apply_symm_apply a)
+  have htop : f (towerRelativeIdeleBaseChangeMulEquiv K M L t) = a :=
+    (relativeIdeleBaseChangeMulEquiv_tower K M L t).trans hflat
+  have hnorm : IdeleGroup.norm M L a = g (TowerRelativeIdeleGroup.norm K M L t) :=
+    (congrArg (IdeleGroup.norm M L) htop).symm.trans
+      ((IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv M L _).trans
+        (towerRelativeIdeleBaseChangeMulEquiv_norm K M L t).symm)
   calc
-    _root_.ideleClassNorm K M
-        (_root_.ideleClassNorm M L c) =
-      _root_.ideleClassNorm K M
-        (_root_.ideleClassNorm M L
-          (relativeIdeleClassBaseChangeMulEquiv
-            (K := M) (L := L)
-            (towerRelativeIdeleClassBaseChangeMulEquiv
-              K M L t))) := by
-                rw [htop]
-    _ = _root_.ideleClassNorm K M
-        (RelativeIdeleGroup.classNorm M L
-          (towerRelativeIdeleClassBaseChangeMulEquiv
-            K M L t)) := by
-      exact congrArg
-        (_root_.ideleClassNorm K M)
-        (ordinaryIdeleClassNorm_relativeIdeleClassBaseChange
-          (K := M) (L := L)
-          (towerRelativeIdeleClassBaseChangeMulEquiv
-            K M L t))
-    _ = _root_.ideleClassNorm K M
-        (relativeIdeleClassBaseChangeMulEquiv
-          (K := K) (L := M)
-          (TowerRelativeIdeleGroup.classNorm K M L t)) := by
-              rw [
-                towerRelativeIdeleClassBaseChangeMulEquiv_classNorm]
-    _ = RelativeIdeleGroup.classNorm K M
-        (TowerRelativeIdeleGroup.classNorm K M L t) := by
-      exact
-        ordinaryIdeleClassNorm_relativeIdeleClassBaseChange
-          (K := K) (L := M)
-          (TowerRelativeIdeleGroup.classNorm K M L t)
-    _ = towerCompositeClassNorm K M L t := rfl
-    _ = RelativeIdeleGroup.classNorm K L
-        (TowerRelativeIdeleGroup.classGroupEquiv K M L t) :=
-      towerCompositeClassNorm_eq_ideleClassNorm K M L t
-    _ = RelativeIdeleGroup.classNorm K L d := by
-      exact congrArg
-        (RelativeIdeleGroup.classNorm K L)
-        ((TowerRelativeIdeleGroup.classGroupEquiv
-          K M L).apply_symm_apply d)
-    _ = _root_.ideleClassNorm K L
-        (relativeIdeleClassBaseChangeMulEquiv
-          (K := K) (L := L) d) := by
-      exact
-        (ordinaryIdeleClassNorm_relativeIdeleClassBaseChange
-          (K := K) (L := L) d).symm
-    _ = _root_.ideleClassNorm K L c := by
-      exact congrArg
-        (_root_.ideleClassNorm K L)
-        ((relativeIdeleClassBaseChangeMulEquiv
-          (K := K) (L := L)).apply_symm_apply c)
+    _ = IdeleGroup.norm K M (g (TowerRelativeIdeleGroup.norm K M L t)) :=
+      congrArg (IdeleGroup.norm K M) hnorm
+    _ = RelativeIdeleGroup.norm K M (TowerRelativeIdeleGroup.norm K M L t) :=
+      IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv K M _
+    _ = RelativeIdeleGroup.norm K L (flatten t) :=
+      TowerRelativeIdeleGroup.norm_transitive_flatten K M L t
+    _ = IdeleGroup.norm K L (e (flatten t)) :=
+      (IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv K L _).symm
+    _ = _ := congrArg (IdeleGroup.norm K L) hflat
+
+/-- Transitivity of the ordinary idèle norm descends to the principal quotient. -/
+theorem ordinaryIdeleClassNorm_tower (c : IdeleClassGroup L) :
+    _root_.ideleClassNorm K M (_root_.ideleClassNorm M L c) = _root_.ideleClassNorm K L c := by
+  obtain ⟨a, rfl⟩ := IdeleGroup.toStandardClass_surjective L c
+  rw [_root_.ideleClassNorm_mk, _root_.ideleClassNorm_mk, _root_.ideleClassNorm_mk,
+    ordinaryIdeleNorm_tower K M L a]
 
 /-- In an arbitrary finite tower of number fields, every ordinary
 idele-class norm from the top field is already a norm from the

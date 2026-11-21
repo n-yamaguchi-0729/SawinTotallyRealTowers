@@ -20,7 +20,6 @@ convention `0 ∉ ℕ` is not lost in Lean's natural numbers.
 
 namespace ClassFormation
 
-open CyclicCohomology
 
 
 
@@ -60,15 +59,15 @@ namespace DegreeData
 
 /-- `I_L`, viewed inside `G_K`; this is `G_{\widetilde L}`. -/
 def extensionInertiaWithin (D : DegreeData G) (K L : ClosedSubgroup G)
-    (hLK : L.toSubgroup ≤ K.toSubgroup) : Subgroup K.toSubgroup :=
-  extensionSubgroup K L hLK ⊓ D.fieldInertiaWithin K
+    (_hLK : L.toSubgroup ≤ K.toSubgroup) : Subgroup K.toSubgroup :=
+  (L.toSubgroup.subgroupOf K.toSubgroup) ⊓ D.fieldInertiaWithin K
 
 /--
 The relative inertia subgroup is normal whenever the full extension subgroup is normal.
 -/
 instance extensionInertiaWithin_normal (D : DegreeData G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
-    [hLnormal : (extensionSubgroup K L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal] :
     (D.extensionInertiaWithin K L hLK).Normal := by
   rw [extensionInertiaWithin]
   infer_instance
@@ -88,7 +87,7 @@ theorem extensionInertiaWithin_le_normalizedDegree_ker
 def extensionNormalizedDegree (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal] :
     (K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK) →* ZHatMul :=
   QuotientGroup.lift (D.extensionInertiaWithin K.field L hLK)
     (D.normalizedDegree K).toMonoidHom
@@ -102,7 +101,7 @@ D.normalizedDegree K k`.
 theorem extensionNormalizedDegree_mk (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
     (k : K.field.toSubgroup) :
     D.extensionNormalizedDegree K L hLK (QuotientGroup.mk k) =
       D.normalizedDegree K k :=
@@ -111,11 +110,11 @@ theorem extensionNormalizedDegree_mk (D : DegreeData G)
 /-- Restriction from `G(\widetilde L|K)` to `G(L|K)`. -/
 def extensionRestriction (D : DegreeData G) (K L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.toSubgroup)
-    [hLnormal : (extensionSubgroup K L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal] :
     (K.toSubgroup ⧸ D.extensionInertiaWithin K L hLK) →*
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK) :=
+      (K.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.toSubgroup)) :=
   QuotientGroup.map (D.extensionInertiaWithin K L hLK)
-    (extensionSubgroup K L hLK) (MonoidHom.id K.toSubgroup) inf_le_left
+    (L.toSubgroup.subgroupOf K.toSubgroup) (MonoidHom.id K.toSubgroup) inf_le_left
 
 /--
 Establishes the identity `D.extensionRestriction K L hLK (QuotientGroup.mk k) = QuotientGroup.mk
@@ -124,7 +123,7 @@ k`.
 @[simp]
 theorem extensionRestriction_mk (D : DegreeData G)
     (K L : ClosedSubgroup G) (hLK : L.toSubgroup ≤ K.toSubgroup)
-    [hLnormal : (extensionSubgroup K L hLK).Normal]
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal]
     (k : K.toSubgroup) :
     D.extensionRestriction K L hLK (QuotientGroup.mk k) =
       QuotientGroup.mk k :=
@@ -135,7 +134,7 @@ degree is a strictly positive natural. -/
 def FrobeniusElements (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal] : Type u :=
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal] : Type u :=
   {σ : K.field.toSubgroup ⧸ D.extensionInertiaWithin K.field L hLK //
     ∃ n : ℕ, 0 < n ∧
       D.extensionNormalizedDegree K L hLK σ =
@@ -145,25 +144,25 @@ def FrobeniusElements (D : DegreeData G)
 def frobeniusRestriction (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal] :
     D.FrobeniusElements K L hLK →
-      (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK) :=
+      (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup)) :=
   fun σ => D.extensionRestriction K.field L hLK σ.1
 
 private def normalizedExtensionImageAdd (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
-    (hLK : L.toSubgroup ≤ K.field.toSubgroup) : AddSubgroup ZHat :=
+    (_hLK : L.toSubgroup ≤ K.field.toSubgroup) : AddSubgroup ZHat :=
   Subgroup.toAddSubgroup'
-    ((extensionSubgroup K.field L hLK).map
+    ((L.toSubgroup.subgroupOf K.field.toSubgroup).map
       (D.normalizedDegree K).toMonoidHom)
 
 private theorem normalizedExtensionImageAdd_index_ne_zero
     (D : DegreeData G) (K : FiniteResidueAbstractField D)
     (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)] :
+    [Finite (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))] :
     (D.normalizedExtensionImageAdd K L hLK).index ≠ 0 := by
-  let E := extensionSubgroup K.field L hLK
+  let E := (L.toSubgroup.subgroupOf K.field.toSubgroup)
   let dK := (D.normalizedDegree K).toMonoidHom
   let H := E.map dK
   have hE : E ≤ H.comap dK := Subgroup.le_comap_map dK E
@@ -184,8 +183,8 @@ maps the Frobenius semigroup onto `G(L|K)`. -/
 theorem frobeniusRestriction_surjective (D : DegreeData G)
     (K : FiniteResidueAbstractField D) (L : ClosedSubgroup G)
     (hLK : L.toSubgroup ≤ K.field.toSubgroup)
-    [hLnormal : (extensionSubgroup K.field L hLK).Normal]
-    [hLfinite : Finite (K.field.toSubgroup ⧸ extensionSubgroup K.field L hLK)] :
+    [hLnormal : (L.toSubgroup.subgroupOf K.field.toSubgroup).Normal]
+    [hLfinite : Finite (K.field.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.field.toSubgroup))] :
     Function.Surjective (D.frobeniusRestriction K L hLK) := by
   intro σ
   refine Quotient.inductionOn' σ ?_
@@ -200,7 +199,7 @@ theorem frobeniusRestriction_surjective (D : DegreeData G)
     simpa [sub_eq_add_neg, add_comm] using H.neg_mem hmem
   change Multiplicative.ofAdd
       (n • (1 : ZHat) - (D.normalizedDegree K s).toAdd) ∈
-    (extensionSubgroup K.field L hLK).map
+    (L.toSubgroup.subgroupOf K.field.toSubgroup).map
       (D.normalizedDegree K).toMonoidHom at hneg
   obtain ⟨l, hlE, hdl⟩ := hneg
   let t : K.field.toSubgroup := s * l
@@ -223,9 +222,138 @@ theorem frobeniusRestriction_surjective (D : DegreeData G)
   refine ⟨qF, ?_⟩
   change QuotientGroup.mk (s * l) = QuotientGroup.mk s
   apply QuotientGroup.eq.mpr
-  change (s * l)⁻¹ * s ∈ extensionSubgroup K.field L hLK
+  change (s * l)⁻¹ * s ∈ (L.toSubgroup.subgroupOf K.field.toSubgroup)
   simpa [mul_inv_rev, mul_assoc] using
-    (extensionSubgroup K.field L hLK).inv_mem hlE
+    (L.toSubgroup.subgroupOf K.field.toSubgroup).inv_mem hlE
+
+end DegreeData
+
+/-- The left vertical map in the first diagram of norm--conjugation naturality:
+restriction from `G(L'/K')` to `G(L/K)`. -/
+def finiteReciprocityNaturalityRestriction
+    (K K' L L' : ClosedSubgroup G)
+    (_hLK : L.toSubgroup ≤ K.toSubgroup)
+    (_hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
+    (hK'K : K'.toSubgroup ≤ K.toSubgroup)
+    (hL'L : L'.toSubgroup ≤ L.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal]
+    [hL'normal : (L'.toSubgroup.subgroupOf K'.toSubgroup).Normal] :
+    (K'.toSubgroup ⧸ (L'.toSubgroup.subgroupOf K'.toSubgroup)) →*
+      (K.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.toSubgroup)) := by
+  apply QuotientGroup.map
+    (L'.toSubgroup.subgroupOf K'.toSubgroup)
+    (L.toSubgroup.subgroupOf K.toSubgroup)
+    (Subgroup.inclusion hK'K)
+  intro k' hk'L'
+  change k'.1 ∈ L'.toSubgroup at hk'L'
+  change (Subgroup.inclusion hK'K k').1 ∈ L.toSubgroup
+  exact hL'L hk'L'
+
+/-- Restriction sends a represented finite reciprocity class to the corresponding
+lower-level class. -/
+@[simp]
+theorem finiteReciprocityNaturalityRestriction_mk
+    (K K' L L' : ClosedSubgroup G)
+    (hLK : L.toSubgroup ≤ K.toSubgroup)
+    (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
+    (hK'K : K'.toSubgroup ≤ K.toSubgroup)
+    (hL'L : L'.toSubgroup ≤ L.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal]
+    [hL'normal : (L'.toSubgroup.subgroupOf K'.toSubgroup).Normal]
+    (k' : K'.toSubgroup) :
+    finiteReciprocityNaturalityRestriction K K' L L' hLK hL'K' hK'K hL'L
+        (QuotientGroup.mk k') =
+      QuotientGroup.mk (Subgroup.inclusion hK'K k') :=
+  rfl
+
+namespace DegreeData
+
+/-- Restriction on the infinite Frobenius quotients underlying the first
+diagram of norm--conjugation naturality. -/
+def finiteReciprocityNaturalityFrobeniusTowerMap
+    (D : DegreeData G) [IsTopologicalGroup G]
+    (K K' L L' : ClosedSubgroup G)
+    (hLK : L.toSubgroup ≤ K.toSubgroup)
+    (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
+    (hK'K : K'.toSubgroup ≤ K.toSubgroup)
+    (hL'L : L'.toSubgroup ≤ L.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal]
+    [hL'normal : (L'.toSubgroup.subgroupOf K'.toSubgroup).Normal] :
+    (K'.toSubgroup ⧸ D.extensionInertiaWithin K' L' hL'K') →*
+      (K.toSubgroup ⧸ D.extensionInertiaWithin K L hLK) := by
+  apply QuotientGroup.map
+    (D.extensionInertiaWithin K' L' hL'K')
+    (D.extensionInertiaWithin K L hLK)
+    (Subgroup.inclusion hK'K)
+  rintro k' ⟨hk'L', hk'I⟩
+  constructor
+  · change k'.1 ∈ L'.toSubgroup at hk'L'
+    change (Subgroup.inclusion hK'K k').1 ∈ L.toSubgroup
+    exact hL'L hk'L'
+  · exact hk'I
+
+/-- The Frobenius tower map has the expected value on a quotient representative. -/
+@[simp]
+theorem finiteReciprocityNaturalityFrobeniusTowerMap_mk
+    (D : DegreeData G) [IsTopologicalGroup G]
+    (K K' L L' : ClosedSubgroup G)
+    (hLK : L.toSubgroup ≤ K.toSubgroup)
+    (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
+    (hK'K : K'.toSubgroup ≤ K.toSubgroup)
+    (hL'L : L'.toSubgroup ≤ L.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal]
+    [hL'normal : (L'.toSubgroup.subgroupOf K'.toSubgroup).Normal]
+    (k' : K'.toSubgroup) :
+    D.finiteReciprocityNaturalityFrobeniusTowerMap K K' L L'
+        hLK hL'K' hK'K hL'L (QuotientGroup.mk k') =
+      QuotientGroup.mk (Subgroup.inclusion hK'K k') := rfl
+
+/-- Continuous form of `finiteReciprocityNaturalityFrobeniusTowerMap`, used to transport
+the closed cyclic subgroup generated by a Frobenius lift. -/
+def finiteReciprocityNaturalityFrobeniusTowerMapContinuous
+    (D : DegreeData G) [IsTopologicalGroup G]
+    (K K' L L' : ClosedSubgroup G)
+    (hLK : L.toSubgroup ≤ K.toSubgroup)
+    (hL'K' : L'.toSubgroup ≤ K'.toSubgroup)
+    (hK'K : K'.toSubgroup ≤ K.toSubgroup)
+    (hL'L : L'.toSubgroup ≤ L.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf K.toSubgroup).Normal]
+    [hL'normal : (L'.toSubgroup.subgroupOf K'.toSubgroup).Normal] :
+    (K'.toSubgroup ⧸ D.extensionInertiaWithin K' L' hL'K') →ₜ*
+      (K.toSubgroup ⧸ D.extensionInertiaWithin K L hLK) where
+  toMonoidHom := D.finiteReciprocityNaturalityFrobeniusTowerMap
+    K K' L L' hLK hL'K' hK'K hL'L
+  continuous_toFun := by
+    rw [← QuotientGroup.isOpenQuotientMap_mk.continuous_comp_iff]
+    change Continuous (fun k' : K'.toSubgroup =>
+      QuotientGroup.mk (Subgroup.inclusion hK'K k'))
+    apply QuotientGroup.continuous_mk.comp
+    exact continuous_subtype_val.subtype_mk _
+
+/-- Frobenius residue-degree compatibility's normalized-degree square on the two infinite
+Frobenius quotients. -/
+theorem finiteReciprocityNaturalityFrobeniusTowerMap_degree
+    (D : DegreeData G) [IsTopologicalGroup G]
+    (E : DegreeData.FiniteResidueAbstractExtension D)
+    (L L' : ClosedSubgroup G)
+    (hLK : L.toSubgroup ≤ E.base.toSubgroup)
+    (hL'K' : L'.toSubgroup ≤ E.field.toSubgroup)
+    (hL'L : L'.toSubgroup ≤ L.toSubgroup)
+    [hLnormal : (L.toSubgroup.subgroupOf E.base.field.toSubgroup).Normal]
+    [hL'normal : (L'.toSubgroup.subgroupOf E.field.field.toSubgroup).Normal]
+    (q : E.field.toSubgroup ⧸
+      D.extensionInertiaWithin E.field.field L' hL'K') :
+    (D.extensionNormalizedDegree E.base L hLK
+      (D.finiteReciprocityNaturalityFrobeniusTowerMap
+        E.base.field E.field.field L L'
+        hLK hL'K' E.below hL'L q)).toAdd =
+      (E.residueDegree : ℕ) •
+        (D.extensionNormalizedDegree E.field L' hL'K' q).toAdd := by
+  refine Quotient.inductionOn' q ?_
+  intro k'
+  change (D.normalizedDegree E.base (Subgroup.inclusion E.below k')).toAdd =
+    (E.residueDegree : ℕ) • (D.normalizedDegree E.field k').toAdd
+  exact D.frobeniusRestrictionNaturality_normalizedDegree E k'
 
 end DegreeData
 

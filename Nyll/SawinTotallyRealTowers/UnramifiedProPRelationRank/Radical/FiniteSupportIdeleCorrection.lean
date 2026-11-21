@@ -6,11 +6,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FiniteSupportLocalReciprocityIdeleCharacter
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.IdeleFiniteValuationCharacters
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.IdeleCharacterGlobalLift
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.SinglePlace
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Global correction of a finite local character family
@@ -35,12 +37,8 @@ open ClassFieldTower.ProP GlobalClassFieldTheory.Reciprocity
 
 variable (F : Type) [Field F] [NumberField F] (p : ℕ) [Fact p.Prime]
 
-local instance finiteSupportIdeleCorrectionZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 
-local instance finiteSupportIdeleCorrectionTopology : TopologicalSpace (ZMod p) := ⊥
-local instance finiteSupportIdeleCorrectionDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
 
 variable (S : Finset (HeightOneSpectrum (𝓞 F)))
 variable (chi : ∀ v : ↥S, ContinuousH1ZMod (p := p)

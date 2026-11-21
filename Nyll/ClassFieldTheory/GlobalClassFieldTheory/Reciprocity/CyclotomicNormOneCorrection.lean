@@ -34,7 +34,9 @@ noncomputable section
 namespace GlobalClassFieldTheory
 namespace Reciprocity
 
-variable (K : Type) [Field K] [NumberField K]
+universe u
+
+variable (K : Type u) [Field K] [NumberField K]
 
 /-- Every idele has the same normalized cyclotomic value as an actual
 norm-one idele. -/
@@ -63,7 +65,7 @@ theorem
     relativeIdeleBaseChangeMulEquiv
       (K := ℚ) (L := K)
       (RelativeIdeleGroup.inclusion ℚ K
-        (rationalPositiveArchimedeanIdele s))
+        (IdeleGroup.positiveArchimedeanSection ℚ s))
   have hc_absoluteNorm :
       IdeleGroup.absoluteNorm c = r⁻¹ := by
     change
@@ -71,19 +73,20 @@ theorem
           (relativeIdeleBaseChangeMulEquiv
             (K := ℚ) (L := K)
             (RelativeIdeleGroup.inclusion ℚ K
-              (rationalPositiveArchimedeanIdele s))) =
+              (IdeleGroup.positiveArchimedeanSection ℚ s))) =
         r⁻¹
     rw [
       IdeleGroup.absoluteNorm_relativeIdeleBaseChange_inclusion_of_finite_eq_one
-        (L := K) (rationalPositiveArchimedeanIdele s) rfl,
-      rationalPositiveArchimedeanIdele_absoluteNorm,
+        (L := K) (IdeleGroup.positiveArchimedeanSection ℚ s)
+        (IdeleGroup.finiteCoordinates_infinitePlaceIdele _ _),
+      IdeleGroup.positiveArchimedeanSection_absoluteNorm,
       inv_pow, hs_pow]
   have hs_value :
       rationalCyclotomicZHatIdeleValue
-          (rationalPositiveArchimedeanIdele s) =
+          (IdeleGroup.positiveArchimedeanSection ℚ s) =
         1 := by
     rw [rationalCyclotomicZHatIdeleValue_apply,
-      rationalCyclotomicZHatGlobalArtin_rationalPositiveArchimedeanIdele,
+      rationalCyclotomicZHatGlobalArtin, infiniteGlobalArtinMonoidHom_positiveArchimedeanSection,
       map_one]
   have hc_value :
       normalizedCyclotomicZHatIdeleValue K
@@ -95,7 +98,7 @@ theorem
             (relativeIdeleBaseChangeMulEquiv
               (K := ℚ) (L := K)
               (RelativeIdeleGroup.inclusion ℚ K
-                (rationalPositiveArchimedeanIdele s)))) =
+                (IdeleGroup.positiveArchimedeanSection ℚ s)))) =
         0
     rw [normalizedCyclotomicZHatIdeleValue_baseIdeleInclusion,
       hs_value]

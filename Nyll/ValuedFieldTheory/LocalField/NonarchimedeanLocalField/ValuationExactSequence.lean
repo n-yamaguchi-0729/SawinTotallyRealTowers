@@ -208,6 +208,17 @@ theorem valuation_eq_one_of_valuationMap_eq_zero (K : Type u)
   rw [WithZero.coe_unzero] at hcoe
   simpa using hcoe
 
+/-- A unit of multiplicative valuation one has normalized additive valuation zero. -/
+theorem valuationMap_eq_zero_of_valuation_eq_one (K : Type u)
+    [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
+    {x : Kˣ} (hx : ValuativeRel.valuation K (x : K) = 1) :
+    valuationMap K (Additive.ofMul x) = 0 := by
+  rw [valuationMap_apply, v_apply]
+  change Multiplicative.toAdd _ = Multiplicative.toAdd (1 : Multiplicative ℤ)
+  apply congrArg Multiplicative.toAdd
+  apply WithZero.coe_injective
+  simp only [WithZero.coe_unzero, toMul_ofMul, hx, map_one, WithZero.coe_one]
+
 /-- The valuation of a quotient of field units is the difference of their valuations. -/
 theorem valuationMap_ofMul_div (K : Type u) [Field K] [ValuativeRel K]
     [TopologicalSpace K] [IsNonarchimedeanLocalField K] (x y : Kˣ) :

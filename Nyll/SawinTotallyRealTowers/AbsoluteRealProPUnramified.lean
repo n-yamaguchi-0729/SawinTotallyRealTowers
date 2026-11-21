@@ -72,10 +72,10 @@ theorem absoluteToMaximalRealProPOutside_inertia (p : ℕ)
     apply iSup_le
     intro E
     have : NumberField E.val := NumberField.of_module_finite ℚ E.val
-    rw [IntermediateField.le_iff_le, Subgroup.zpowers_le]
+    rw [IntermediateField.le_fixedField_iff_le_fixingSubgroup, Subgroup.zpowers_le]
     exact finiteInertia_fixes_layer ℚ E.val T E.property.2.1 v hv σ
   have hfix : Subgroup.zpowers s ≤ (maximalRealProPOutside p T).fixingSubgroup :=
-    (IntermediateField.le_iff_le _ _).mp hmax
+    (IntermediateField.le_fixedField_iff_le_fixingSubgroup _ _).mp hmax
   change s ∈ (absoluteToMaximalRealProPOutside p T).toMonoidHom.ker
   rw [absoluteToMaximalRealProPOutside_ker]
   exact hfix (Subgroup.mem_zpowers s)

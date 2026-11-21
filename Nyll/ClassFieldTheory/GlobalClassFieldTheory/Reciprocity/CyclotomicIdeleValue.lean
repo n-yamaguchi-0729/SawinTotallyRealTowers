@@ -7,7 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.Tower
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.ClassGroup.TowerBaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.BaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
@@ -377,10 +377,9 @@ theorem finiteCyclotomicLayer_normArtin_range_eq_fixingSubgroup
       K E
 
 /-- The ordinary norm `N_{K/ℚ}` factors through the determinant norm
-from the actual intersection `K ∩ ℚ̃`.  This is determinant-norm
-transitivity in the fixed-bottom-field tower presentation. -/
+from the actual intersection `K ∩ ℚ̃` by ordinary determinant-norm transitivity. -/
 theorem
-    ideleNorm_mem_cyclotomicZHatIntersection_relativeIdeleNorm_range
+    ideleNorm_mem_cyclotomicZHatIntersection_norm_range
     (a : IdeleGroup K) :
     let hle :
         numberFieldCyclotomicZHatIntersection K ≤
@@ -393,7 +392,7 @@ theorem
     let : NumberField E :=
       NumberField.of_module_finite ℚ E
     IdeleGroup.norm ℚ K a ∈
-      (RelativeIdeleGroup.norm ℚ E).range := by
+      (IdeleGroup.norm ℚ E).range := by
   intro hle E sharedOwner3 sharedOwner4
   let eEK : E →ₐ[ℚ] K :=
     (numberFieldCyclotomicZHatIntersectionEmbedding K).comp
@@ -405,36 +404,7 @@ theorem
       eEK.comp_algebraMap.symm
   let : FiniteDimensional E K :=
     FiniteDimensional.right ℚ E K
-  let b : RelativeIdeleGroup ℚ K :=
-    (relativeIdeleBaseChangeMulEquiv
-      (K := ℚ) (L := K)).symm a
-  let t : TowerRelativeIdeleGroup ℚ E K :=
-    (towerRelativeIdeleEquiv ℚ E K).symm b
-  refine
-    ⟨TowerRelativeIdeleGroup.norm ℚ E K t,
-      ?_⟩
-  calc
-    RelativeIdeleGroup.norm ℚ E
-          (TowerRelativeIdeleGroup.norm
-            ℚ E K t) =
-        RelativeIdeleGroup.norm ℚ K
-          (towerRelativeIdeleEquiv
-            ℚ E K t) :=
-      TowerRelativeIdeleGroup.norm_transitive_flatten ℚ E K t
-    _ = RelativeIdeleGroup.norm ℚ K b := by
-      rw [show
-        towerRelativeIdeleEquiv ℚ E K t = b by
-          exact (towerRelativeIdeleEquiv ℚ E K).apply_symm_apply b]
-    _ = IdeleGroup.norm ℚ K
-          (relativeIdeleBaseChangeMulEquiv
-            (K := ℚ) (L := K) b) :=
-      (IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv
-        ℚ K b).symm
-    _ = IdeleGroup.norm ℚ K a := by
-      rw [show
-        relativeIdeleBaseChangeMulEquiv
-            (K := ℚ) (L := K) b = a by
-          exact (relativeIdeleBaseChangeMulEquiv (K := ℚ) (L := K)).apply_symm_apply a]
+  exact ⟨IdeleGroup.norm E K a, ordinaryIdeleNorm_tower ℚ E K a⟩
 
 /-- The infinite rational Artin symbol of `N_{K/ℚ}(a)` fixes the actual
 intersection `K ∩ ℚ̃`. -/
@@ -474,12 +444,12 @@ theorem
     NumberField.of_module_finite ℚ E
   have hnorm :
       IdeleGroup.norm ℚ K a ∈
-        (RelativeIdeleGroup.norm ℚ E).range := by
+        (IdeleGroup.norm ℚ E).range := by
     change
       IdeleGroup.norm ℚ K a ∈
-        (RelativeIdeleGroup.norm ℚ E₀).range
+        (IdeleGroup.norm ℚ E₀).range
     simpa only [E₀, hle] using
-      ideleNorm_mem_cyclotomicZHatIntersection_relativeIdeleNorm_range
+      ideleNorm_mem_cyclotomicZHatIntersection_norm_range
         K a
   obtain ⟨z, hz⟩ := hnorm
   let : IsAbelianGalois ℚ E :=
@@ -494,7 +464,7 @@ theorem
         1 := by
     rw [← hz]
     exact
-      globalArtinMonoidHom_relativeIdeleNorm_eq_one
+      globalArtinMonoidHom_ideleNorm_eq_one
         (K := ℚ) (L := E) z
   change
     rationalCyclotomicZHatGlobalArtin

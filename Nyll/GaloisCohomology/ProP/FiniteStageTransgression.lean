@@ -32,22 +32,29 @@ noncomputable section
 universe u
 
 variable {p : ℕ} [Fact p.Prime]
-variable {F : Type u} [Group F] [TopologicalSpace F] [IsTopologicalGroup F]
+variable {F : Type u} [Group F] [TopologicalSpace F]
 
-local instance finiteStageTargetTopology
+/-- The discrete topology used on the finite-stage target of transgression. -/
+@[instance_reducible]
+def finiteStageTargetTopology
     (R : ClosedSubgroup F)
     (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
     TopologicalSpace
       ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) := ⊥
 
-local instance finiteStageTargetDiscrete
+attribute [local instance] finiteStageTargetTopology
+
+/-- The chosen finite-stage target topology is discrete. -/
+theorem finiteStageTargetDiscrete
     (R : ClosedSubgroup F)
     (U : OpenNormalSubgroupInClass (FiniteGroupClass.pGroup p) F) :
     DiscreteTopology
       ((F ⧸ (U.1 : Subgroup F)) ⧸ finiteStageImage R U) :=
   discreteTopology_bot _
 
-variable [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F]
+attribute [local instance] finiteStageTargetDiscrete
+
+variable [IsTopologicalGroup F] [CompactSpace F] [T2Space F] [TotallyDisconnectedSpace F]
 
 /-- The finite-stage quotient map from `F/R` to the quotient by the image of `R`. -/
 def finiteStageQuotientMap

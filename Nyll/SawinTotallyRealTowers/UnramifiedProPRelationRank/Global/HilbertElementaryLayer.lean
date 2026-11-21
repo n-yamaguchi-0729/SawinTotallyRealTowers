@@ -60,8 +60,8 @@ instance hilbertElementaryLayer.instIsGalois (p : ℕ) :
 /-- The elementary Hilbert layer is everywhere unramified over its base
 field. -/
 theorem hilbertElementaryLayer_isEverywhereUnramified (p : ℕ) :
-    IsEverywhereUnramified K (hilbertElementaryLayer K p) := by
-  exact IsEverywhereUnramified.bot
+    ClassFieldTheory.IsEverywhereUnramified K (hilbertElementaryLayer K p) := by
+  exact ClassFieldTheory.IsEverywhereUnramified.bot
     (k := K) (K := hilbertElementaryLayer K p)
     (F := smallHilbertClassField K)
     (smallHilbertClassField_isEverywhereUnramified (K := K))
@@ -170,10 +170,10 @@ instance hilbertElementaryLayerInAlgebraicClosure.instIsAbelianGalois
 base field. -/
 theorem hilbertElementaryLayerInAlgebraicClosure_isEverywhereUnramified
     (p : ℕ) :
-    IsEverywhereUnramified K
+    ClassFieldTheory.IsEverywhereUnramified K
       (hilbertElementaryLayerInAlgebraicClosure K p) :=
-  everywhereUnramified_congrTop
-    (hilbertElementaryLayerEquivInAlgebraicClosure K p)
+  (ClassFieldTheory.isEverywhereUnramified_iff_of_algEquiv K _ _
+    (hilbertElementaryLayerEquivInAlgebraicClosure K p)).mp
     (hilbertElementaryLayer_isEverywhereUnramified K p)
 
 /-- Every finite abelian everywhere-unramified exponent-`p` subfield of the
@@ -182,16 +182,16 @@ theorem finiteElementaryUnramified_le_hilbertElementaryLayer
     (p : ℕ)
     (L : IntermediateField K (AlgebraicClosure K))
     [FiniteDimensional K L] [IsAbelianGalois K L] [NumberField L]
-    (hL : IsEverywhereUnramified K L)
+    (hL : ClassFieldTheory.IsEverywhereUnramified K L)
     (hExp : ∀ σ : Gal(L / K), σ ^ p = 1) :
     L ≤ hilbertElementaryLayerInAlgebraicClosure K p := by
-  let : IsUnramifiedAtInfinitePlaces K L := hL.infinitePlaces
+  let : IsUnramifiedAtInfinitePlaces K L := hL.2
   have hRam : ramifiedBaseFinitePlaces (K := K) (L := L) = ∅ := by
     apply Finset.eq_empty_iff_forall_notMem.mpr
     intro v hv
     obtain ⟨P, _hP, hP⟩ :=
       (mem_ramifiedBaseFinitePlaces_iff (K := K) (L := L) v).1 hv
-    exact hP (hL.finitePlaces P)
+    exact hP (hL.1.atPrime P)
   obtain ⟨j⟩ :=
     finiteAbelianExtension_nonempty_algHom_to_smallHilbertClassField_of_everywhereUnramified
       (K := K) (L := L) hRam
@@ -219,7 +219,7 @@ theorem finiteElementaryUnramified_le_hilbertElementaryLayer
         map_pow (AlgEquiv.restrictNormalHom R) σ p
       _ = 1 := hRExp (AlgEquiv.restrictNormalHom R σ)
   have hRle : R ≤ hilbertElementaryLayer K p := by
-    rw [hilbertElementaryLayer, IntermediateField.le_iff_le]
+    rw [hilbertElementaryLayer, IntermediateField.le_fixedField_iff_le_fixingSubgroup]
     exact hPowFix
   let jE : L →ₐ[K] hilbertElementaryLayer K p :=
     j.codRestrict (hilbertElementaryLayer K p).toSubalgebra

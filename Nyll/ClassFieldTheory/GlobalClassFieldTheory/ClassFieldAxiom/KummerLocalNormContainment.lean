@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.CompletionToIdeal
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.IdealToCompletion
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.UnramifiedComparison.LocalNorm
@@ -168,13 +170,13 @@ private theorem
       (localNormSubgroup
         vK.Completion E).map e.toMonoidHom
   refine ⟨(e.symm y) ^ (n : ℕ), ?_, ?_⟩
-  · rw [← LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom_ker]
+  · rw [← LocalClassFieldTheory.abelianLocalArtinMonoidHom_ker]
     change
-      LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
+      LocalClassFieldTheory.abelianLocalArtinMonoidHom
           vK.Completion E ((e.symm y) ^ (n : ℕ)) = 1
     rw [map_pow]
     exact hLocal
-      (LocalClassFieldTheory.Universe.abelianLocalArtinMonoidHom
+      (LocalClassFieldTheory.abelianLocalArtinMonoidHom
         vK.Completion E (e.symm y))
   · change e ((e.symm y) ^ (n : ℕ)) = y ^ (n : ℕ)
     rw [map_pow, e.apply_symm_apply]

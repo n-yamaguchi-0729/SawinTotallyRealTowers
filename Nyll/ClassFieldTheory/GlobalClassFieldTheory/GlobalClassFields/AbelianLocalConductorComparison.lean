@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.GlobalClassFields.AbelianNormConductor
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.Construction
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Basic
@@ -66,7 +69,7 @@ theorem finitePlaceFieldPrincipalUnits_map_eq_localHigherUnitGroup
       _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
     (LocalFieldTheory.fieldPrincipalUnits vK.Completion n).map
         (_root_.finitePlaceCompletionUnitsContinuousMulEquiv v).toMonoidHom =
-      RayClass.localHigherUnitGroup v n := by
+      ClassFieldTheory.rayLocalHigherUnitGroup v n := by
   intro vK hvKna sharedOwner3 sharedOwner4
   let eField : vK.Completion ≃+* v.adicCompletion K :=
     _root_.finitePlaceCompletionRingEquiv v
@@ -91,12 +94,12 @@ theorem finitePlaceFieldPrincipalUnits_map_eq_localHigherUnitGroup
         eField ((u : 𝒪[vK.Completion]) : vK.Completion)
     rfl
   have hePrincipal (u : 𝒪[vK.Completion]ˣ) :
-      RayClass.localHigherUnitMap v n (eIntegralUnits u) = 1 ↔
+      ClassFieldTheory.rayLocalHigherUnitMap v n (eIntegralUnits u) = 1 ↔
         u ∈ LocalFieldTheory.principalUnits vK.Completion n := by
-    rw [RayClass.localHigherUnitMap_eq_one_iff,
+    rw [ClassFieldTheory.rayLocalHigherUnitMap_eq_one_iff,
       LocalFieldTheory.mem_principalUnits_iff]
     have hvalue :
-        RayClass.localIntegralValue v (eIntegralUnits u) =
+        ClassFieldTheory.rayLocalIntegralValue v (eIntegralUnits u) =
           eIntegers (u : 𝒪[vK.Completion]) := by
       change
         ((v.adicCompletionIntegers K).toSubmonoid.unitsEquivUnitsType
@@ -111,11 +114,11 @@ theorem finitePlaceFieldPrincipalUnits_map_eq_localHigherUnitGroup
   ext x
   constructor
   · rintro ⟨z, ⟨u, hu, rfl⟩, rfl⟩
-    apply (RayClass.mem_localHigherUnitGroup_iff v n _).2
+    apply (ClassFieldTheory.mem_rayLocalHigherUnitGroup_iff_reduction_eq_one v n _).2
     exact ⟨eIntegralUnits u, heField u, (hePrincipal u).2 hu⟩
   · intro hx
     obtain ⟨y, hyx, hy⟩ :=
-      (RayClass.mem_localHigherUnitGroup_iff v n x).1 hx
+      (ClassFieldTheory.mem_rayLocalHigherUnitGroup_iff_reduction_eq_one v n x).1 hx
     let u : 𝒪[vK.Completion]ˣ := eIntegralUnits.symm y
     have huy : eIntegralUnits u = y :=
       eIntegralUnits.apply_symm_apply y
@@ -141,7 +144,7 @@ not reopen the transported principal-unit subgroup. -/
 theorem finitePlaceCompletion_valuationMap_eq_zero_of_mem_localHigherUnitGroup
     (v : HeightOneSpectrum (𝓞 K)) (n : ℕ)
     (x : (v.adicCompletion K)ˣ)
-    (hx : x ∈ RayClass.localHigherUnitGroup v n) :
+    (hx : x ∈ ClassFieldTheory.rayLocalHigherUnitGroup v n) :
     let vK := HeightOneSpectrum.adicAbv K v
     let : ValuativeRel vK.Completion :=
       _root_.GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
@@ -214,7 +217,7 @@ theorem
       _root_.finitePlaceCompletionValued vK hvKna
     let : ValuativeRel vK.Completion :=
       _root_.finitePlaceCompletionValuativeRel vK hvKna
-    RayClass.localHigherUnitGroup v n ≤
+    ClassFieldTheory.rayLocalHigherUnitGroup v n ≤
         _root_.chosenFinitePlaceLocalNormSubgroup
           (K := K) (L := L) v ↔
       LocalFieldTheory.fieldPrincipalUnits vK.Completion n ≤
@@ -227,7 +230,7 @@ theorem
   have hprincipal :
       (LocalFieldTheory.fieldPrincipalUnits vK.Completion n).map
           e.toMonoidHom =
-        RayClass.localHigherUnitGroup v n := by
+        ClassFieldTheory.rayLocalHigherUnitGroup v n := by
     simpa [vK, hvKna, e] using
       (finitePlaceFieldPrincipalUnits_map_eq_localHigherUnitGroup
         (K := K) v n)
@@ -379,7 +382,7 @@ theorem ideleClassNormLocalHigherUnitExponent_eq_localConductorExponent
     ideleClassNormLocalHigherUnitExponent (K := K) (L := L) v =
       LocalClassFieldTheory.localConductorExponent vK.Completion E
   have hbridge (n : ℕ) :
-      RayClass.localHigherUnitGroup v n ≤
+      ClassFieldTheory.rayLocalHigherUnitGroup v n ≤
           _root_.chosenFinitePlaceLocalNormSubgroup
             (K := K) (L := L) v ↔
         LocalFieldTheory.fieldPrincipalUnits vK.Completion n ≤

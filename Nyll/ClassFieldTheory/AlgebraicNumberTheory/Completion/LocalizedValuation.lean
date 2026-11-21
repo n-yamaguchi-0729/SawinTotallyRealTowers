@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.LocalField
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralLocalFactor
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionFieldLocalization
 public import Nyll.ValuedFieldTheory.Valuation.Completion.FiniteLocalization

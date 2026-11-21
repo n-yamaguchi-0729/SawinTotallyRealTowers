@@ -35,7 +35,7 @@ open LocalFieldTheory.DiscreteValuationField
 variable {K : Type u} [Field K]
 
 attribute [local instance]
-  equalCharacteristicCompletedFrobeniusFixedBaseAlgebra
+  equalCharacteristicCompletedLevelBaseAlgebra
   equalCharacteristicLubinTateLevelFieldAlgebra
   equalCharacteristicLubinTateLevelFieldSMul
   equalCharacteristicLubinTateLevelFieldModule

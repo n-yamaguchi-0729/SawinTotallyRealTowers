@@ -6,8 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteFiniteQuotientTransitions
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseNaturality
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.AbsoluteFiniteQuotientTransitions
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.NormResidueNaturality
+public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.UniverseArtin
 
 /-!
 # The absolute local Artin map from compatible finite quotients
@@ -42,14 +43,14 @@ noncomputable def absoluteFiniteArtinMap
     Kˣ →ₜ* (localAbsoluteAbelianProfinite K ⧸ N.toSubgroup) :=
   (ContinuousMonoidHom.toContinuousMonoidHom
       (absoluteFiniteQuotientEquiv K N).symm).comp
-    (Universe.abelianLocalArtinMap K (absoluteFiniteQuotientField K N))
+    (abelianLocalArtinMap K (absoluteFiniteQuotientField K N))
 
 /-- Every finite coordinate of the absolute Artin map is onto. -/
 theorem absoluteFiniteArtinMap_surjective
     (N : OpenNormalSubgroup (localAbsoluteAbelianProfinite K)) :
     Function.Surjective (absoluteFiniteArtinMap K N) :=
   (absoluteFiniteQuotientEquiv K N).symm.surjective.comp
-    (Universe.abelianLocalArtinMap_surjective K
+    (abelianLocalArtinMap_surjective K
       (absoluteFiniteQuotientField K N))
 
 /-- The kernel of a finite absolute Artin coordinate is the ordinary norm
@@ -59,11 +60,11 @@ theorem absoluteFiniteArtinMap_ker
     (absoluteFiniteArtinMap K N).toMonoidHom.ker =
       localNormSubgroup K (absoluteFiniteQuotientField K N) := by
   have h := MonoidHom.ker_comp_of_injective
-    (Universe.abelianLocalArtinMap K (absoluteFiniteQuotientField K N)).toMonoidHom
+    (abelianLocalArtinMap K (absoluteFiniteQuotientField K N)).toMonoidHom
     (ContinuousMonoidHom.toContinuousMonoidHom
       (absoluteFiniteQuotientEquiv K N).symm).toMonoidHom
     (absoluteFiniteQuotientEquiv K N).symm.injective
-  exact h.trans (Universe.abelianLocalArtinMap_ker K (absoluteFiniteQuotientField K N))
+  exact h.trans (abelianLocalArtinMap_ker K (absoluteFiniteQuotientField K N))
 
 /-- Finite absolute Artin coordinates commute with quotient transition. -/
 theorem absoluteFiniteArtinMap_transition
@@ -79,37 +80,37 @@ theorem absoluteFiniteArtinMap_transition
     absoluteFiniteQuotientEquiv K M
         (absoluteFiniteQuotientTransition hNM
           ((absoluteFiniteQuotientEquiv K N).symm
-            (Universe.abelianLocalArtinMap K
+            (abelianLocalArtinMap K
               (absoluteFiniteQuotientField K N) a))) =
       absoluteFiniteQuotientEquiv K M
         ((absoluteFiniteQuotientEquiv K M).symm
-          (Universe.abelianLocalArtinMap K
+          (abelianLocalArtinMap K
             (absoluteFiniteQuotientField K M) a))
   calc
-    _ = intermediateFieldRestrictContinuous K
+    _ = RamificationTheory.intermediateFieldRestrictContinuous K
           (absoluteFiniteQuotientField K M)
           (absoluteFiniteQuotientField K N)
           (absoluteFiniteQuotientField_antitone hNM)
           (absoluteFiniteQuotientEquiv K N
             ((absoluteFiniteQuotientEquiv K N).symm
-              (Universe.abelianLocalArtinMap K
+              (abelianLocalArtinMap K
                 (absoluteFiniteQuotientField K N) a))) := by
         exact (DFunLike.congr_fun
           (absoluteFiniteQuotientEquiv_transition (K := K) hNM)
           ((absoluteFiniteQuotientEquiv K N).symm
-            (Universe.abelianLocalArtinMap K
+            (abelianLocalArtinMap K
               (absoluteFiniteQuotientField K N) a))).symm
-    _ = intermediateFieldRestrictContinuous K
+    _ = RamificationTheory.intermediateFieldRestrictContinuous K
           (absoluteFiniteQuotientField K M)
           (absoluteFiniteQuotientField K N)
           (absoluteFiniteQuotientField_antitone hNM)
-          (Universe.abelianLocalArtinMap K
+          (abelianLocalArtinMap K
             (absoluteFiniteQuotientField K N) a) := by
         rw [(absoluteFiniteQuotientEquiv K N).apply_symm_apply]
-    _ = Universe.abelianLocalArtinMap K
+    _ = abelianLocalArtinMap K
           (absoluteFiniteQuotientField K M) a :=
         DFunLike.congr_fun
-          (Universe.abelianLocalArtinMap_restrict K
+          (LocalClassFieldTheory.abelianLocalArtinMap_restrict K
             (absoluteFiniteQuotientField K M)
             (absoluteFiniteQuotientField K N)
             (absoluteFiniteQuotientField_antitone hNM)) a

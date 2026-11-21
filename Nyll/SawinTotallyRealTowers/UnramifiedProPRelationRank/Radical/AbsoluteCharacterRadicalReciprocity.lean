@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.GlobalReciprocityCharacter
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAbsoluteArtinCompatibility
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceAdicInertiaTransport
@@ -37,18 +38,11 @@ open ClassFieldTower.ProP KummerTheory
 variable (F : Type) [Field F] [NumberField F]
 variable (n : ℕ+) [Fact (n : ℕ).Prime]
 
-local instance absoluteRadicalReciprocityTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance absoluteRadicalReciprocityDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance absoluteRadicalReciprocityValuative (v : HeightOneSpectrum (𝓞 F)) :
-    ValuativeRel (v.adicCompletion F) := finitePlaceAdicCompletionValuativeRel F v
-local instance absoluteRadicalReciprocityLocalField (v : HeightOneSpectrum (𝓞 F)) :
-    IsNonarchimedeanLocalField (v.adicCompletion F) :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
-local instance absoluteRadicalReciprocityModule
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) :=
-  continuousH1ZModModule
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 variable (chi : Field.absoluteGaloisGroup F →ₜ* Multiplicative (ZMod (n : ℕ)))
 

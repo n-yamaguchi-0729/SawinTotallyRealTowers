@@ -544,8 +544,7 @@ theorem inclusion_norm_eq_prod_embeddings
       ∏ f : L →ₐ[K] M,
         ideleEmbedding f a := by
   apply Units.ext
-  simp only [inclusion, norm, MonoidHom.comp_apply,
-    Units.coe_map, Units.coe_prod, ideleEmbedding,
+  simp only [inclusion, norm, Units.coe_map, Units.coe_prod, ideleEmbedding,
     adeleEmbedding]
   exact
     adeleInclusion_norm_eq_prod_embeddings

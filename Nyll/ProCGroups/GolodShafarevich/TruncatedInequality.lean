@@ -10,6 +10,7 @@ public import Nyll.ProCGroups.GolodShafarevich.GradedPieces
 public import Nyll.ProCGroups.GolodShafarevich.TruncatedFoxSequence
 public import Mathlib.Algebra.Exact.Sequence
 public import Mathlib.Algebra.Field.ZMod
+public import Nyll.ProCGroups.ProP.ContinuousH1
 
 /-!
 # Truncated Golod--Shafarevich dimension inequality
@@ -58,8 +59,7 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
 -- Keep the self-module on `ZMod p` canonical when nilpotent-group instances are in scope.
-local instance truncatedInequalityCanonicalZModAddCommGroup : AddCommGroup (ZMod p) :=
-  (ZMod.instField p).toDivisionRing.toAddCommGroup
+attribute [local instance] ZMod.addCommGroup
 local instance truncatedInequalityCanonicalZModModule : Module (ZMod p) (ZMod p) :=
   Semiring.toModule
 

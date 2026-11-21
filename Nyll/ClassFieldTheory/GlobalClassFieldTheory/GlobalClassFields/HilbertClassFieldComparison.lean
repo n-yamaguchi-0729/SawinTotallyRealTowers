@@ -36,34 +36,12 @@ open NumberField
 
 variable {K : Type*} [Field K] [NumberField K]
 
-/-- Fix the canonical commutativity needed for Hilbert norm-subgroup
-quotients in this module. -/
-theorem hilbertClassFieldComparison_ideleClassGroupIsMulCommutative :
-    IsMulCommutative (IdeleClassGroup K) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
-attribute [local instance] hilbertClassFieldComparison_ideleClassGroupIsMulCommutative
 
 /-- Keep the real-sign quotient normality instance stable across declarations. -/
 local instance
     hilbertClassFieldComparison_realSignGroupIsMulCommutative :
     IsMulCommutative (RayClass.realSignGroup K) :=
   ⟨⟨fun a b => mul_comm a b⟩⟩
-
-/-- On an idele representative, the big-Hilbert quotient equivalence is
-the canonical representative in the narrow class group. -/
-@[simp]
-theorem bigHilbertClassFieldQuotientEquivNarrowClassGroup_mk
-    (a : IdeleGroup K) :
-    bigHilbertClassFieldQuotientEquivNarrowClassGroup
-        (K := K)
-        (QuotientGroup.mk'
-          (bigHilbertClassFieldNormSubgroup (K := K))
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a)) =
-      QuotientGroup.mk'
-        (RayClass.narrowDenominator (K := K)) a := by
-  rfl
 
 /-- On an idele representative, the small-Hilbert quotient equivalence is
 the ordinary ideal-class map. -/
@@ -74,8 +52,7 @@ theorem smallHilbertClassFieldQuotientEquivClassGroup_mk
         (K := K)
         (QuotientGroup.mk'
           (smallHilbertClassFieldNormSubgroup (K := K))
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a)) =
+          (IdeleGroup.toStandardClass K a)) =
       IdeleGroup.idealClass a := by
   rfl
 
@@ -96,8 +73,7 @@ theorem bigToSmallHilbertQuotient_compatible_with_narrowToClassGroup
     QuotientGroup.mk'_surjective
       (bigHilbertClassFieldNormSubgroup (K := K)) q
   obtain ⟨a, rfl⟩ :=
-    QuotientGroup.mk'_surjective
-      (IdeleGroup.principalSubgroup K) x
+    IdeleGroup.toStandardClass_surjective K x
   rw [bigHilbertClassFieldQuotientToSmallHilbertClassFieldQuotient_mk,
     smallHilbertClassFieldQuotientEquivClassGroup_mk,
     bigHilbertClassFieldQuotientEquivNarrowClassGroup_mk,

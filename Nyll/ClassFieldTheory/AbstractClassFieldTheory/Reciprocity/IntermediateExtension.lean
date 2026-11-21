@@ -29,9 +29,7 @@ assumed.
 
 namespace ClassFormation
 
-open KummerTheory
 
-open CyclicCohomology
 
 
 
@@ -62,7 +60,7 @@ omit [IsTopologicalGroup G] in
 /-- The original `G_L` lies in every inverse-image subgroup. -/
 theorem extensionSubgroup_le_intermediateSubgroup
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    extensionSubgroup K L.field L.below ≤ L.intermediateSubgroup S := by
+    (L.field.toSubgroup.subgroupOf K.toSubgroup) ≤ L.intermediateSubgroup S := by
   intro x hx
   apply (L.mem_intermediateSubgroup_iff S x).2
   have hmk : L.extensionQuotientMk x = 1 :=
@@ -83,7 +81,7 @@ private def representativeIntermediateCoset (L : FiniteGaloisSubextension K)
     (q : L.extensionQuotient) : Set K.toSubgroup :=
   (fun x : K.toSubgroup =>
       x * Quotient.out (L.extensionQuotientMulEquiv q)) ''
-    (extensionSubgroup K L.field L.below : Set K.toSubgroup)
+    ((L.field.toSubgroup.subgroupOf K.toSubgroup) : Set K.toSubgroup)
 
 omit [IsTopologicalGroup G] in
 /-- Membership in the canonical coset is equality with its quotient class. -/
@@ -99,7 +97,7 @@ private theorem mem_representativeIntermediateCoset_iff
     (q : L.extensionQuotient) (x : K.toSubgroup) :
     x ∈ representativeIntermediateCoset L q ↔
       L.extensionQuotientMk x = q := by
-  let : (extensionSubgroup K L.field L.below).Normal := L.normal
+  let : (L.field.toSubgroup.subgroupOf K.toSubgroup).Normal := L.normal
   constructor
   · rintro ⟨h, hh, rfl⟩
     apply L.extensionQuotientMulEquiv.injective
@@ -109,23 +107,23 @@ private theorem mem_representativeIntermediateCoset_iff
     simpa [div_eq_mul_inv, mul_assoc] using hh
   · intro hx
     have hxout :
-        (QuotientGroup.mk' (extensionSubgroup K L.field L.below)) x =
+        (QuotientGroup.mk' (L.field.toSubgroup.subgroupOf K.toSubgroup)) x =
           (QuotientGroup.mk'
-            (extensionSubgroup K L.field L.below))
+            (L.field.toSubgroup.subgroupOf K.toSubgroup))
               (Quotient.out (L.extensionQuotientMulEquiv q)) := by
       calc
         (QuotientGroup.mk'
-            (extensionSubgroup K L.field L.below)) x =
+            (L.field.toSubgroup.subgroupOf K.toSubgroup)) x =
               L.extensionQuotientMulEquiv (L.extensionQuotientMk x) :=
           (L.extensionQuotientMk_apply x).symm
         _ = L.extensionQuotientMulEquiv q :=
           congrArg L.extensionQuotientMulEquiv hx
         _ = (QuotientGroup.mk'
-            (extensionSubgroup K L.field L.below))
+            (L.field.toSubgroup.subgroupOf K.toSubgroup))
               (Quotient.out (L.extensionQuotientMulEquiv q)) :=
           (Quotient.out_eq' (L.extensionQuotientMulEquiv q)).symm
     have hdiv : x / Quotient.out (L.extensionQuotientMulEquiv q) ∈
-        extensionSubgroup K L.field L.below :=
+        (L.field.toSubgroup.subgroupOf K.toSubgroup) :=
       QuotientGroup.eq_iff_div_mem.mp hxout
     refine ⟨x / Quotient.out (L.extensionQuotientMulEquiv q), hdiv, ?_⟩
     exact div_mul_cancel x _
@@ -162,7 +160,7 @@ private theorem representativeIntermediateCoset_isClosed
     IsClosed (representativeIntermediateCoset L q) := by
   exact isClosedMap_mul_right
     (Quotient.out (L.extensionQuotientMulEquiv q)) _
-    (extensionSubgroup_isClosed K L.field L.below)
+    (L.field.isClosed'.preimage continuous_subtype_val)
 
 /-- Every coset in the preceding union is closed: it is the image of the
 closed subgroup `G_L ≤ G_K` under right translation. -/
@@ -203,8 +201,7 @@ theorem intermediateField_le_base (L : FiniteGaloisSubextension K)
 inverse-image subgroup. -/
 theorem extensionSubgroup_intermediateField_eq
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    extensionSubgroup K (L.intermediateField S)
-        (L.intermediateField_le_base S) =
+    ((L.intermediateField S).toSubgroup.subgroupOf K.toSubgroup) =
       L.intermediateSubgroup S := by
   ext x
   change (x : G) ∈ (L.intermediateSubgroup S).map K.toSubgroup.subtype ↔
@@ -223,8 +220,8 @@ theorem field_le_intermediateField (L : FiniteGaloisSubextension K)
     L.field.toSubgroup ≤ (L.intermediateField S).toSubgroup := by
   intro x hx
   let xK : K.toSubgroup := ⟨x, L.below hx⟩
-  have hxH : xK ∈ extensionSubgroup K L.field L.below :=
-    (mem_extensionSubgroup_iff K L.field L.below xK).2 hx
+  have hxH : xK ∈ (L.field.toSubgroup.subgroupOf K.toSubgroup) :=
+    hx
   have hxP : xK ∈ L.intermediateSubgroup S :=
     L.extensionSubgroup_le_intermediateSubgroup S hxH
   exact ⟨xK, hxP, rfl⟩
@@ -233,39 +230,33 @@ theorem field_le_intermediateField (L : FiniteGaloisSubextension K)
 along `G_M → G_K`. -/
 theorem extensionSubgroup_over_intermediate_eq_comap
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    extensionSubgroup (L.intermediateField S) L.field
-        (L.field_le_intermediateField S) =
-      (extensionSubgroup K L.field L.below).comap
+    (L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup) =
+      (L.field.toSubgroup.subgroupOf K.toSubgroup).comap
         (Subgroup.inclusion (L.intermediateField_le_base S)) := by
   ext x
-  rw [mem_extensionSubgroup_iff, Subgroup.mem_comap,
-    mem_extensionSubgroup_iff]
   rfl
 
 /-- `L/M` is normal because it is obtained by restricting the normal
 subgroup `G_L ◁ G_K` to `G_M`. -/
 theorem extensionSubgroup_over_intermediate_normal
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    (extensionSubgroup (L.intermediateField S) L.field
-      (L.field_le_intermediateField S)).Normal := by
+    ((L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup)).Normal := by
   rw [extensionSubgroup_over_intermediate_eq_comap]
   infer_instance
 
 /-- The extension subgroup over an intermediate field is normal in the intermediate subgroup. -/
 instance extensionSubgroup_over_intermediate_normalInstance
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    (extensionSubgroup (L.intermediateField S) L.field
-      (L.field_le_intermediateField S)).Normal :=
+    ((L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup)).Normal :=
   L.extensionSubgroup_over_intermediate_normal S
 
 /-- The lower extension `L/M` is finite. -/
 theorem extension_over_intermediate_finite
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
     Finite ((L.intermediateField S).toSubgroup ⧸
-      extensionSubgroup (L.intermediateField S) L.field
-        (L.field_le_intermediateField S)) := by
+      (L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup)) := by
   let : Finite (K.toSubgroup ⧸
-      extensionSubgroup K L.field L.below) := L.finite
+      (L.field.toSubgroup.subgroupOf K.toSubgroup)) := L.finite
   exact FiniteGaloisSubextension.finite_extension_over_intermediate
     L.below (L.intermediateField_le_base S)
       (L.field_le_intermediateField S)
@@ -274,12 +265,11 @@ theorem extension_over_intermediate_finite
 the finite-index subgroup `G_L`. -/
 theorem intermediateField_finite
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient) :
-    Finite (K.toSubgroup ⧸ extensionSubgroup K (L.intermediateField S)
-      (L.intermediateField_le_base S)) := by
+    Finite (K.toSubgroup ⧸ ((L.intermediateField S).toSubgroup.subgroupOf K.toSubgroup)) := by
   rw [extensionSubgroup_intermediateField_eq]
-  let : (extensionSubgroup K L.field L.below).FiniteIndex :=
+  let : (L.field.toSubgroup.subgroupOf K.toSubgroup).FiniteIndex :=
     @Subgroup.finiteIndex_of_finite_quotient K.toSubgroup _
-      (extensionSubgroup K L.field L.below) L.finite
+      (L.field.toSubgroup.subgroupOf K.toSubgroup) L.finite
   let : (L.intermediateSubgroup S).FiniteIndex :=
     Subgroup.finiteIndex_of_le (L.extensionSubgroup_le_intermediateSubgroup S)
   exact Subgroup.finite_quotient_of_finiteIndex
@@ -308,8 +298,7 @@ theorem intermediateSubgroup_normal
 theorem intermediateField_normal
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient)
     (hS : S.Normal) :
-    (extensionSubgroup K (L.intermediateField S)
-      (L.intermediateField_le_base S)).Normal := by
+    (((L.intermediateField S).toSubgroup.subgroupOf K.toSubgroup)).Normal := by
   rw [extensionSubgroup_intermediateField_eq]
   exact L.intermediateSubgroup_normal S hS
 
@@ -343,11 +332,7 @@ def lowerRestrictionHom (L : FiniteGaloisSubextension K)
       intro m
       apply (L.mem_intermediateSubgroup_iff S _).1
       rw [← extensionSubgroup_intermediateField_eq L S]
-      exact
-        (mem_extensionSubgroup_iff K (L.intermediateField S)
-          (L.intermediateField_le_base S)
-          (Subgroup.inclusion (L.intermediateField_le_base S) m)).2
-          m.property)
+      exact m.property)
 
 /-- The lower restriction homomorphism evaluates by restricting the underlying
 ambient automorphism. -/
@@ -383,10 +368,9 @@ theorem lowerRestrictionHom_surjective (L : FiniteGaloisSubextension K)
 theorem lowerRestrictionHom_ker (L : FiniteGaloisSubextension K)
     (S : Subgroup L.extensionQuotient) :
     MonoidHom.ker (L.lowerRestrictionHom S) =
-      extensionSubgroup (L.intermediateField S) L.field
-        (L.field_le_intermediateField S) := by
+      (L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup) := by
   ext m
-  rw [MonoidHom.mem_ker, mem_extensionSubgroup_iff]
+  rw [MonoidHom.mem_ker]
   constructor
   · intro hm
     let mK : K.toSubgroup :=
@@ -395,15 +379,14 @@ theorem lowerRestrictionHom_ker (L : FiniteGaloisSubextension K)
         ((L.lowerRestrictionHom S m : S) : L.extensionQuotient) = 1 :=
       congrArg Subtype.val hm
     rw [lowerRestrictionHom_apply_coe] at hq
-    have hH : mK ∈ extensionSubgroup K L.field L.below :=
+    have hH : mK ∈ (L.field.toSubgroup.subgroupOf K.toSubgroup) :=
       (L.extensionQuotientMk_eq_one_iff mK).1 hq
-    exact (mem_extensionSubgroup_iff K L.field L.below
-      mK).1 hH
+    exact hH
   · intro hm
     let mK : K.toSubgroup :=
       ⟨m.1, L.intermediateField_le_base S m.property⟩
-    have hH : mK ∈ extensionSubgroup K L.field L.below :=
-      (mem_extensionSubgroup_iff K L.field L.below mK).2 hm
+    have hH : mK ∈ (L.field.toSubgroup.subgroupOf K.toSubgroup) :=
+      hm
     have hq : L.extensionQuotientMk mK = 1 :=
       (L.extensionQuotientMk_eq_one_iff mK).2 hH
     apply Subtype.ext
@@ -415,8 +398,7 @@ theorem lowerRestrictionHom_ker (L : FiniteGaloisSubextension K)
 noncomputable def lowerQuotientEquiv (L : FiniteGaloisSubextension K)
     (S : Subgroup L.extensionQuotient) :
     (L.lowerFiniteGalois S).extensionQuotient ≃* S := by
-  letI : (extensionSubgroup (L.intermediateField S) L.field
-      (L.field_le_intermediateField S)).Normal :=
+  letI : ((L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup)).Normal :=
     L.extensionSubgroup_over_intermediate_normal S
   exact (L.lowerFiniteGalois S).extensionQuotientMulEquiv.trans
     ((QuotientGroup.quotientMulEquivOfEq
@@ -432,8 +414,7 @@ theorem lowerQuotientEquiv_mk (L : FiniteGaloisSubextension K)
     L.lowerQuotientEquiv S
         ((L.lowerFiniteGalois S).extensionQuotientMk m) =
       L.lowerRestrictionHom S m := by
-  let : (extensionSubgroup (L.intermediateField S) L.field
-      (L.field_le_intermediateField S)).Normal :=
+  let : ((L.field.toSubgroup.subgroupOf (L.intermediateField S).toSubgroup)).Normal :=
     L.extensionSubgroup_over_intermediate_normal S
   change
     ((QuotientGroup.quotientMulEquivOfEq
@@ -477,8 +458,7 @@ instance intermediateSubgroup_normalInstance
 instance intermediateField_normalInstance
     (L : FiniteGaloisSubextension K) (S : Subgroup L.extensionQuotient)
     [hS : S.Normal] :
-    (extensionSubgroup K (L.intermediateField S)
-      (L.intermediateField_le_base S)).Normal :=
+    (((L.intermediateField S).toSubgroup.subgroupOf K.toSubgroup)).Normal :=
   L.intermediateField_normal S hS
 
 /-- The third-isomorphism identification used in the normal-subextension
@@ -522,13 +502,12 @@ noncomputable def upperQuotientEquiv (L : FiniteGaloisSubextension K)
     (S : Subgroup L.extensionQuotient) [S.Normal] :
     L.upperQuotient S ≃*
       (L.intermediateFiniteGalois S inferInstance).extensionQuotient := by
-  let H := extensionSubgroup K L.field L.below
+  let H := (L.field.toSubgroup.subgroupOf K.toSubgroup)
   let P := L.intermediateSubgroup S
   let π : K.toSubgroup →* L.extensionQuotient := L.extensionQuotientMk
   have hHP : H ≤ P := L.extensionSubgroup_le_intermediateSubgroup S
   have hmap : P.map π = S := L.intermediateSubgroup_map_quotient_eq S
-  have hupper : extensionSubgroup K (L.intermediateField S)
-      (L.intermediateField_le_base S) = P :=
+  have hupper : ((L.intermediateField S).toSubgroup.subgroupOf K.toSubgroup) = P :=
     L.extensionSubgroup_intermediateField_eq S
   letI : H.Normal := L.normal
   letI : P.Normal := L.intermediateSubgroup_normal S inferInstance
@@ -546,13 +525,12 @@ theorem upperQuotientEquiv_mk_mk (L : FiniteGaloisSubextension K)
     L.upperQuotientEquiv S
         (L.upperQuotientMk S (L.extensionQuotientMk k)) =
       (L.intermediateFiniteGalois S inferInstance).extensionQuotientMk k := by
-  let H := extensionSubgroup K L.field L.below
+  let H := (L.field.toSubgroup.subgroupOf K.toSubgroup)
   let P := L.intermediateSubgroup S
   let π : K.toSubgroup →* L.extensionQuotient := L.extensionQuotientMk
   have hHP : H ≤ P := L.extensionSubgroup_le_intermediateSubgroup S
   have hmap : P.map π = S := L.intermediateSubgroup_map_quotient_eq S
-  have hupper : extensionSubgroup K (L.intermediateField S)
-      (L.intermediateField_le_base S) = P :=
+  have hupper : ((L.intermediateField S).toSubgroup.subgroupOf K.toSubgroup) = P :=
     L.extensionSubgroup_intermediateField_eq S
   let : H.Normal := L.normal
   let : P.Normal := L.intermediateSubgroup_normal S inferInstance

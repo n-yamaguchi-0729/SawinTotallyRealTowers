@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RelativeNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Basic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Mathlib.FieldTheory.Galois.NormalBasis
@@ -35,54 +36,23 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L]
 
-/-- The adele algebra of `L`, written in base-change form
-`𝔸_K ⊗_K L`. -/
-abbrev RelativeAdeleRing :=
-  NumberField.AdeleRing (𝓞 K) K ⊗[K] L
-
 /-- The idele group of the base-changed adele algebra. -/
 abbrev RelativeIdeleGroup :=
   (RelativeAdeleRing K L)ˣ
 
 namespace RelativeIdeleGroup
 
-instance baseAdeleRingNontrivial :
-    Nontrivial (NumberField.AdeleRing (𝓞 K) K) :=
-  Function.Injective.nontrivial
-    (NumberField.AdeleRing.algebraMap_injective
-      (R := 𝓞 K) (K := K))
-
-/-- The base-adele algebra map into its scalar extension. -/
-def adeleInclusion :
-    NumberField.AdeleRing (𝓞 K) K →+*
-      RelativeAdeleRing K L :=
-  (Algebra.TensorProduct.includeLeft
-    (R := K) (S := K)
-    (A := NumberField.AdeleRing (𝓞 K) K) (B := L)).toRingHom
-
-/-- The extension field embedded in the scalar-extended adele algebra. -/
-def fieldInclusion :
-    L →+* RelativeAdeleRing K L :=
-  (Algebra.TensorProduct.includeRight
-    (R := K) (A := NumberField.AdeleRing (𝓞 K) K)
-    (B := L)).toRingHom
-
 /-- The canonical inclusion `I_K → I_L` in the tensor-product model. -/
 def inclusion :
     IdeleGroup K →* RelativeIdeleGroup K L :=
-  (Units.map (adeleInclusion K L)).comp
-    (IdeleGroup.equivAdeleRingUnits (K := K)).toMonoidHom
+  Units.map (adeleInclusion K L)
 
 omit [NumberField L] in
 theorem inclusion_injective :
-    Function.Injective (inclusion K L) := by
-  exact
-    (Units.map_injective
-      (Algebra.TensorProduct.includeLeft_injective
-        (R := K) (S := K)
-        (A := NumberField.AdeleRing (𝓞 K) K) (B := L)
-        (FaithfulSMul.algebraMap_injective K L))).comp
-      (IdeleGroup.equivAdeleRingUnits (K := K)).injective
+    Function.Injective (inclusion K L) :=
+  Units.map_injective (Algebra.TensorProduct.includeLeft_injective
+    (R := K) (S := K) (A := NumberField.AdeleRing (𝓞 K) K) (B := L)
+    (FaithfulSMul.algebraMap_injective K L))
 
 /-- The diagonal copy of `Lˣ` inside the relative idele group. -/
 def principalIdele :
@@ -113,57 +83,27 @@ theorem inclusion_principalIdele
 the base adele ring. -/
 def norm :
     RelativeIdeleGroup K L →* IdeleGroup K :=
-  (IdeleGroup.equivAdeleRingUnits (K := K)).symm.toMonoidHom.comp
-    (Units.map
-      (Algebra.norm
-        (NumberField.AdeleRing (𝓞 K) K)))
+  Units.map (Algebra.norm (NumberField.AdeleRing (𝓞 K) K))
 
 omit [NumberField L] in
 @[simp]
 theorem norm_inclusion (a : IdeleGroup K) :
     norm K L (inclusion K L a) =
       a ^ Module.finrank K L := by
-  apply (IdeleGroup.equivAdeleRingUnits (K := K)).injective
-  simp only [norm, inclusion, MonoidHom.comp_apply]
   apply Units.ext
   change
     Algebra.norm (NumberField.AdeleRing (𝓞 K) K)
         (algebraMap
           (NumberField.AdeleRing (𝓞 K) K)
           (RelativeAdeleRing K L)
-          ((IdeleGroup.equivAdeleRingUnits (K := K) a :
-            (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-            NumberField.AdeleRing (𝓞 K) K)) =
-      (((IdeleGroup.equivAdeleRingUnits (K := K) a) ^
+          (a : NumberField.AdeleRing (𝓞 K) K)) =
+      ((a ^
           Module.finrank K L :
         (NumberField.AdeleRing (𝓞 K) K)ˣ) :
         NumberField.AdeleRing (𝓞 K) K)
   rw [Algebra.norm_algebraMap,
     Module.finrank_baseChange]
   rfl
-
-omit [NumberField L] in
-/-- Norm commutes with scalar extension from `K` to the base adele ring. -/
-theorem norm_fieldInclusion (x : L) :
-    Algebra.norm (NumberField.AdeleRing (𝓞 K) K)
-        (fieldInclusion K L x) =
-      algebraMap K (NumberField.AdeleRing (𝓞 K) K)
-        (Algebra.norm K x) := by
-  classical
-  let b := Module.Free.chooseBasis K L
-  let bA := b.baseChange
-    (NumberField.AdeleRing (𝓞 K) K)
-  rw [Algebra.norm_eq_matrix_det bA,
-    Algebra.norm_eq_matrix_det b,
-    (algebraMap K
-      (NumberField.AdeleRing (𝓞 K) K)).map_det]
-  congr 1
-  ext i j
-  simp only [fieldInclusion, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
-    Algebra.TensorProduct.includeRight_apply, Algebra.leftMulMatrix_eq_repr_mul,
-    Module.Basis.baseChange_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one,
-    Module.Basis.baseChange_repr_tmul, Algebra.smul_def, RingHom.mapMatrix_apply, Matrix.map_apply,
-    bA, b]
 
 omit [NumberField L] in
 /-- The relative idele norm carries a principal idele to the
@@ -173,7 +113,6 @@ theorem norm_principalIdele (x : Lˣ) :
     norm K L (principalIdele K L x) =
       IdeleGroup.principalIdele K
         (Units.map (Algebra.norm K) x) := by
-  apply (IdeleGroup.equivAdeleRingUnits (K := K)).injective
   apply Units.ext
   change
     Algebra.norm (NumberField.AdeleRing (𝓞 K) K)
@@ -298,15 +237,11 @@ theorem smul_inclusion
       (algebraMap
         (NumberField.AdeleRing (𝓞 K) K)
         (RelativeAdeleRing K L)
-        ((IdeleGroup.equivAdeleRingUnits (K := K) a :
-          (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-          NumberField.AdeleRing (𝓞 K) K)) =
+        (a : NumberField.AdeleRing (𝓞 K) K)) =
     algebraMap
       (NumberField.AdeleRing (𝓞 K) K)
       (RelativeAdeleRing K L)
-      ((IdeleGroup.equivAdeleRingUnits (K := K) a :
-        (NumberField.AdeleRing (𝓞 K) K)ˣ) :
-        NumberField.AdeleRing (𝓞 K) K)
+      (a : NumberField.AdeleRing (𝓞 K) K)
   exact (conjugation K L σ).commutes _
 
 omit [NumberField L] [FiniteDimensional K L] in
@@ -481,8 +416,7 @@ theorem inclusion_range_eq_galoisFixedSubgroup
               (FaithfulSMul.algebraMap_injective K L))
           rw [map_mul, hb, ha]
           exact u.inv_val }
-    refine ⟨(IdeleGroup.equivAdeleRingUnits
-      (K := K)).symm q, ?_⟩
+    refine ⟨q, ?_⟩
     apply Units.ext
     change adeleInclusion K L (q :
       NumberField.AdeleRing (𝓞 K) K) =

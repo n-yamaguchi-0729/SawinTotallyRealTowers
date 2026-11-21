@@ -7,12 +7,13 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicIdeleClassValuation
+public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FiniteIdeleClassSystem
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.InfiniteGlobalArtin
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedReciprocity
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.PrincipalCore
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.AbstractFixedFieldUnits
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
@@ -1941,19 +1942,6 @@ private noncomputable def
     Gal(E / ℚ) :=
   (cyclotomicAbstractFixedFieldArtinCoordinateBridgeData H a E).1.2.1
 
-/-- The finite rational Artin coordinate of the idele norm. -/
-private noncomputable def
-    cyclotomicAbstractFixedFieldArtinRationalCoordinate
-    (H : FiniteAbstractField
-      (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
-    (a : IdeleGroup
-      (cyclotomicAbstractFixedFieldArtinCoordinateBase H))
-    (E :
-      FiniteGaloisIntermediateField
-        ℚ rationalCyclotomicZHatField) :
-    Gal(E / ℚ) :=
-  (cyclotomicAbstractFixedFieldArtinCoordinateBridgeData H a E).1.2.1
-
 /-- The rational endpoint after projection to one finite coordinate. -/
 private noncomputable def
     cyclotomicAbstractFixedFieldArtinRationalEndpointCoordinate
@@ -2212,11 +2200,10 @@ theorem
           (infiniteGlobalArtinMonoidHom F U a)) =
       normalizedCyclotomicZHatIdeleClassValueContinuous F
         (Additive.ofMul
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup F) a)) := by
+          (IdeleGroup.toStandardClass F a)) := by
   have hSeparableClosureAlgebra :
       cyclotomicAbstractFixedFieldArtin_separableClosureAlgebra =
-        rationalSeparableClosureAlgebra :=
+        numberFieldSeparableClosureAlgebra ℚ :=
     Subsingleton.elim _ _
   cases hSeparableClosureAlgebra
   let F :=
@@ -2240,8 +2227,7 @@ theorem
     _ =
         normalizedCyclotomicZHatIdeleClassValueContinuous F
           (Additive.ofMul
-            (QuotientGroup.mk'
-              (IdeleGroup.principalSubgroup F) a)) :=
+            (IdeleGroup.toStandardClass F a)) :=
       (normalizedCyclotomicZHatIdeleClassValueContinuous_mk
         (K := F) a).symm
 
@@ -2318,8 +2304,7 @@ noncomputable def abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom
   letI : IsAbelianGalois F U :=
     abstractFixedFieldCyclotomic_isAbelianGalois H
   exact
-    QuotientGroup.lift
-      (IdeleGroup.principalSubgroup F)
+    IdeleGroup.liftToStandardClass F
       (infiniteGlobalArtinMonoidHom F U).toMonoidHom
       (by
         rintro _ ⟨x, rfl⟩
@@ -2353,11 +2338,11 @@ theorem abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom_mk
     letI : IsAbelianGalois F U :=
       abstractFixedFieldCyclotomic_isAbelianGalois H
     abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H
-        (QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup F) a) =
+        (IdeleGroup.toStandardClass F a) =
       infiniteGlobalArtinMonoidHom F U a := by
-  rw [abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom]
-  exact QuotientGroup.lift_mk _ _ _
+  simp only [abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom,
+    IdeleGroup.liftToStandardClass_toStandardClass]
+  rfl
 
 /-- The descended genuine maximal-unramified Artin map is precisely
 the normalized cyclotomic idele-class value in the actual Galois
@@ -2380,11 +2365,12 @@ theorem
       NumberField.of_module_finite ℚ F
     abstractFixedFieldCyclotomicGalEquivZHat H
         (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H c) =
-      normalizedCyclotomicZHatIdeleClassValueContinuousMul F c := by
+      Multiplicative.ofAdd
+        (standardCyclotomicIdeleClassValue F (Additive.ofMul c)) := by
   intro F sharedOwner2 sharedOwner3
   have hSeparableClosureAlgebra :
       cyclotomicAbstractFixedFieldArtin_separableClosureAlgebra =
-        rationalSeparableClosureAlgebra :=
+        numberFieldSeparableClosureAlgebra ℚ :=
     Subsingleton.elim _ _
   cases hSeparableClosureAlgebra
   refine Quotient.inductionOn' c ?_
@@ -2399,16 +2385,14 @@ theorem
   calc
     abstractFixedFieldCyclotomicGalEquivZHat H
         (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup F) a)) =
+          (IdeleGroup.toStandardClass F a)) =
         abstractFixedFieldCyclotomicGalEquivZHat H
           (infiniteGlobalArtinMonoidHom F U a) :=
       congrArg (abstractFixedFieldCyclotomicGalEquivZHat H)
         (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom_mk H a)
     _ =
-        normalizedCyclotomicZHatIdeleClassValueContinuousMul F
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup F) a) := by
+        Multiplicative.ofAdd (standardCyclotomicIdeleClassValue F
+          (Additive.ofMul (IdeleGroup.toStandardClass F a))) := by
       apply Multiplicative.ext
       exact
         abstractFixedFieldCyclotomicGalEquivZHat_infiniteGlobalArtinMonoidHom_mk
@@ -2425,7 +2409,7 @@ theorem
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation H.field) :
+        (ideleClassRepresentation ℚ) H.field) :
     let hI :=
       rationalCyclotomicFieldInertia_le H.field
     let hnormal :
@@ -2516,7 +2500,7 @@ theorem
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (π :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation H.field)
+        (ideleClassRepresentation ℚ) H.field)
     (hπ :
       rationalCyclotomicIdeleClassValuationData.IsPrimeElement H π) :
     let hI :=
@@ -2601,7 +2585,8 @@ theorem
   calc
     abstractFixedFieldCyclotomicGalEquivZHat H
         (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H c) =
-        normalizedCyclotomicZHatIdeleClassValueContinuousMul F c :=
+        Multiplicative.ofAdd
+        (standardCyclotomicIdeleClassValue F (Additive.ofMul c)) :=
       abstractFixedFieldCyclotomicGalEquivZHat_ideleClassArtinMonoidHom
         H c
     _ = Multiplicative.ofAdd (1 : ZHat) := by

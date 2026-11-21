@@ -42,7 +42,6 @@ open ClassFieldTower.Cohomology ClassFieldTower.ProP
 
 namespace ClassFieldTower.Sawin
 
-private local instance initialPrimeTwo : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
 
 attribute [local instance] maximalRealProPOutside_isGalois
 

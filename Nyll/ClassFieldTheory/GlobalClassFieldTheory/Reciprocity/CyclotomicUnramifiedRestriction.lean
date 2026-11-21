@@ -9,7 +9,7 @@ module
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.AbstractFixedFieldGlobalNormResidue
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.CyclotomicAbstractFixedFieldArtin
 public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.MaximalUnramifiedSymbol
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Nyll.GaloisCohomology.Cyclic.NormKernelVanishing
 
 /-!
@@ -67,7 +67,7 @@ theorem
     (L : FiniteAbelianSubextension H.field)
     (q : L.extensionQuotient) :
     abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup H L
-        (Additive.ofMul (Abelianization.of q)) =
+        (Additive.ofMul (Group.Abelianization.of q)) =
       Additive.ofMul
         ((L.extensionQuotientMulEquiv.trans
           (LocalClassFieldTheory.abstractExtensionQuotientEquivGaloisGroup
@@ -81,10 +81,10 @@ theorem
       (LocalClassFieldTheory.abstractExtensionQuotientEquivGaloisGroup
         ℚ (SeparableClosure ℚ)
         H.field L.field L.below L.normal))
-      ((Abelianization.equivOfComm :
+      ((Group.Abelianization.equivOfComm :
           L.extensionQuotient ≃*
-            Abelianization L.extensionQuotient).symm
-        (Abelianization.of q)) =
+            Group.Abelianization L.extensionQuotient).symm
+        (Group.Abelianization.of q)) =
       (L.extensionQuotientMulEquiv.trans
         (LocalClassFieldTheory.abstractExtensionQuotientEquivGaloisGroup
           ℚ (SeparableClosure ℚ)
@@ -94,9 +94,9 @@ theorem
       (LocalClassFieldTheory.abstractExtensionQuotientEquivGaloisGroup
         ℚ (SeparableClosure ℚ)
         H.field L.field L.below L.normal))
-    ((Abelianization.equivOfComm :
+    ((Group.Abelianization.equivOfComm :
       L.extensionQuotient ≃*
-        Abelianization L.extensionQuotient).symm_apply_apply q)
+        Group.Abelianization L.extensionQuotient).symm_apply_apply q)
 
 /-- Genuine restriction from the cyclotomic maximal-unramified
 extension of an abstract fixed field to a finite unramified abelian
@@ -183,7 +183,7 @@ private theorem
       (SeparableClosure ℚ ≃ₐ[ℚ] SeparableClosure ℚ))
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation H.field) :
+        (ideleClassRepresentation ℚ) H.field) :
     (rationalCyclotomicDegreeData.maximalUnramifiedDegreeEquiv
         (H.toFiniteResidueAbstractField
           rationalCyclotomicDegreeData)).symm
@@ -226,7 +226,7 @@ theorem
         rationalCyclotomicDegreeData)
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation H.field) :
+        (ideleClassRepresentation ℚ) H.field) :
     abstractFixedFieldCyclotomicFiniteRestrictionMonoidHom
         H L hUnramified
         (abstractFixedFieldCyclotomicIdeleClassArtinMonoidHom H
@@ -291,7 +291,7 @@ theorem
         rationalCyclotomicDegreeData)
     (a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation H.field) :
+        (ideleClassRepresentation ℚ) H.field) :
     abstractFixedFieldGlobalNormResidueMonoidHom H L
         (Additive.toMul
           ((rationalAbstractFixedFieldIdeleClassEquivFixed H.field
@@ -321,23 +321,24 @@ theorem
       L.toFiniteGaloisExtension hUnramified
       (ClassFormation.ValuationData.maximalUnramifiedNormResidueSymbol
         rationalCyclotomicIdeleClassValuationData H a).toMul
-  rw [abstractFixedFieldGlobalNormResidueMonoidHom_fixed_apply]
+  rw [abstractFixedFieldGlobalNormResidueMonoidHom_fixed_apply,
+    ambientFixedGlobalNormResidueAddMonoidHom_apply]
   change
     Additive.toMul
       (abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup H L
         (rationalCyclotomicDegreeData.normResidueSymbol
-          rationalIdeleClassRepresentation
+          (ideleClassRepresentation ℚ)
           rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
           H L.toFiniteGaloisExtension
-          (finiteNormClass rationalIdeleClassRepresentation
+          (finiteNormClass (ideleClassRepresentation ℚ)
             H.field L.field L.below a))) =
       _
   calc
     _ =
         Additive.toMul
           (abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup H L
-            (Additive.ofMul (Abelianization.of q))) :=
+            (Additive.ofMul (Group.Abelianization.of q))) :=
       congrArg
         (fun z =>
           Additive.toMul
@@ -345,7 +346,7 @@ theorem
               H L z))
         (normResidueSymbol_finiteNormClass_eq_maximalUnramifiedRestriction
           rationalCyclotomicIdeleClassValuationData
-          rationalIdeleClassRepresentation_satisfiesClassFieldAxiom
+          (ideleClassRepresentation_satisfiesClassFieldAxiom ℚ)
           H L.toFiniteGaloisExtension hUnramified a)
     _ = _ := by
       rw [abstractFixedFieldAbelianizedExtensionQuotientEquivGaloisGroup_of]
@@ -375,7 +376,7 @@ theorem
       (hfinite := H.finite)
   let a :
       ambientFixedAddSubgroup
-        rationalIdeleClassRepresentation H.field :=
+        (ideleClassRepresentation ℚ) H.field :=
     e (Additive.ofMul c)
   have hc :
       Additive.toMul (e.symm a) = c := by

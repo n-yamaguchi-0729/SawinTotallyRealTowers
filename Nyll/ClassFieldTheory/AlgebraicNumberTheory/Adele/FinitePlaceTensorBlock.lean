@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.FinitePlaceTensorNorm
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.LocalBlocks.Tensor
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.RestrictedAction
@@ -199,12 +201,7 @@ local instance finitePlaceAllCompletionAlgebra
   AbsoluteValue.completionAlgebra
     (HeightOneSpectrum.adicAbv K v) w'.1 w'.2
 
-local instance finitePlaceScalarTensorUnitsAction :
-    MulDistribMulAction
-      (L ≃ₐ[K] L)
-      (v.adicCompletion K ⊗[K] L)ˣ :=
-  scalarTensorUnitsAction
-    (K := K) (L := L) (A := v.adicCompletion K)
+attribute [local instance] finitePlaceScalarTensorUnitsAction
 
 local instance finitePlaceLocalTensorUnitsAction :
     MulDistribMulAction

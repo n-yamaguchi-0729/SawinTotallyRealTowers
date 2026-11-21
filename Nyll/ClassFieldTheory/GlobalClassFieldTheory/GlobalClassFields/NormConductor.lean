@@ -61,13 +61,6 @@ variable
     [Field L] [NumberField L] [Algebra K L]
     [FiniteDimensional K L] [IsGalois K L]
 
-/-- Fix the canonical commutative idèle-class structure used by the norm
-quotients in this module. -/
-local instance normConductorIdeleClassGroupIsMulCommutative
-    {F : Type w} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  ⟨⟨fun a b => mul_comm a b⟩⟩
-
 omit [NumberField L] in
 /-- Every chosen finite-place norm subgroup contains a local
 higher-unit group.  This is the local source used to construct an
@@ -75,7 +68,7 @@ actual defining modulus. -/
 theorem exists_localHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup
     (v : HeightOneSpectrum (𝓞 K)) :
     ∃ n : ℕ,
-      RayClass.localHigherUnitGroup v n ≤
+      ClassFieldTheory.rayLocalHigherUnitGroup v n ≤
         _root_.chosenFinitePlaceLocalNormSubgroup
           (K := K) (L := L) v := by
   have hnormOne :
@@ -110,7 +103,7 @@ open scoped Classical in
 chosen local norm subgroup. -/
 theorem ideleClassNormLocalHigherUnitExponent_spec
     (v : HeightOneSpectrum (𝓞 K)) :
-    RayClass.localHigherUnitGroup v
+    ClassFieldTheory.rayLocalHigherUnitGroup v
         (ideleClassNormLocalHigherUnitExponent
           (K := K) (L := L) v) ≤
       _root_.chosenFinitePlaceLocalNormSubgroup
@@ -128,7 +121,7 @@ theorem ideleClassNormLocalHigherUnitExponent_min
     (v : HeightOneSpectrum (𝓞 K))
     {n : ℕ}
     (hn :
-      RayClass.localHigherUnitGroup v n ≤
+      ClassFieldTheory.rayLocalHigherUnitGroup v n ≤
         _root_.chosenFinitePlaceLocalNormSubgroup
           (K := K) (L := L) v) :
     ideleClassNormLocalHigherUnitExponent
@@ -151,7 +144,7 @@ theorem ideleClassNormLocalHigherUnitExponent_eq_zero_iff
           (K := K) (L := L) v := by
   constructor
   · intro hzero
-    simpa only [hzero, RayClass.localHigherUnitGroup_zero] using
+    simpa only [hzero, ClassFieldTheory.rayLocalHigherUnitGroup_zero] using
       ideleClassNormLocalHigherUnitExponent_spec
         (K := K) (L := L) v
   · intro hunits
@@ -159,7 +152,7 @@ theorem ideleClassNormLocalHigherUnitExponent_eq_zero_iff
     apply
       ideleClassNormLocalHigherUnitExponent_min
         (K := K) (L := L) v
-    simpa only [RayClass.localHigherUnitGroup_zero] using hunits
+    simpa only [ClassFieldTheory.rayLocalHigherUnitGroup_zero] using hunits
 
 omit [NumberField L] in
 /-- At an unramified chosen completion, the selected local exponent is
@@ -176,7 +169,7 @@ theorem ideleClassNormLocalHigherUnitExponent_eq_zero_of_chosenUnramified
   apply Nat.find_min'
     (exists_localHigherUnitGroup_le_chosenFinitePlaceLocalNormSubgroup
       (K := K) (L := L) v)
-  rw [RayClass.localHigherUnitGroup_zero]
+  rw [ClassFieldTheory.rayLocalHigherUnitGroup_zero]
   exact
     _root_.adicCompletionIntegerUnits_le_chosenFinitePlaceLocalNormSubgroup
       (K := K) (L := L) v hunram
@@ -237,7 +230,7 @@ theorem ideleClassNormDefiningModulus_apply
 modulus lies in the chosen local norm subgroup at every finite place. -/
 theorem ideleClassNormDefiningModulus_local_spec
     (v : HeightOneSpectrum (𝓞 K)) :
-    RayClass.localHigherUnitGroup v
+    ClassFieldTheory.rayLocalHigherUnitGroup v
         (ideleClassNormDefiningModulus (K := K) (L := L) v) ≤
       _root_.chosenFinitePlaceLocalNormSubgroup
         (K := K) (L := L) v := by
@@ -252,7 +245,7 @@ theorem ideleClassNormDefiningModulus_le_of_localHigherUnitGroup_le
     (m : RayClass.FiniteModulus K)
     (hm :
       ∀ v : HeightOneSpectrum (𝓞 K),
-        RayClass.localHigherUnitGroup v (m v) ≤
+        ClassFieldTheory.rayLocalHigherUnitGroup v (m v) ≤
           _root_.chosenFinitePlaceLocalNormSubgroup
             (K := K) (L := L) v) :
     ideleClassNormDefiningModulus (K := K) (L := L) ≤ m := by
@@ -298,14 +291,14 @@ theorem ideleClassNormDefiningModulus_support_subset_ramifiedBaseFinitePlaces :
       (K := K) (L := L) v hvRamified] at hne
   exact hne rfl
 
-/-- The raw idele congruence subgroup of the constructed modulus lies
-in the image of the actual relative-idele norm. -/
+/-- The constructed idèle congruence subgroup lies in the ordinary norm range. -/
 theorem
-    ideleCongruenceSubgroup_normDefiningModulus_le_relativeIdeleNorm_range :
+    ideleCongruenceSubgroup_normDefiningModulus_le_ideleNorm_range :
     (RayClass.Modulus.narrowOfFinite
         (ideleClassNormDefiningModulus
           (K := K) (L := L))).ideleCongruenceSubgroup ≤
-      (RelativeIdeleGroup.norm K L).range := by
+      (IdeleGroup.norm K L).range := by
+  rw [IdeleGroup.norm_range_eq_relativeNorm_range K L]
   intro a ha
   rw [RayClass.Modulus.ideleCongruenceSubgroup_narrowOfFinite] at ha
   refine
@@ -316,7 +309,7 @@ theorem
       _root_.infinitePositiveSubgroup_le_infiniteTensorNormSubgroup
         (K := K) (L := L) w
     have hw :=
-      (RayClass.mem_narrowInfiniteCongruenceSubgroup_iff a.1).1 ha.1 w
+      (RayClass.mem_narrowInfiniteCongruenceSubgroup_iff (IdeleGroup.infinitePart a)).1 ha.1 w
     simpa only [IdeleGroup.infiniteComponent_apply] using hw
   · intro v
     rw [
@@ -326,7 +319,7 @@ theorem
         (K := K) (L := L) v
     have hv :=
       (RayClass.mem_finiteCongruenceSubgroup_iff
-        (ideleClassNormDefiningModulus (K := K) (L := L)) a.2).1
+        (ideleClassNormDefiningModulus (K := K) (L := L)) (IdeleGroup.finiteCoordinates a)).1
           ha.2 v
     simpa only [IdeleGroup.finiteComponent_apply] using hv
 
@@ -342,35 +335,17 @@ theorem ideleClassNormDefiningModulus_isDefiningModulus :
   apply sup_le
   · intro a ha
     change
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a ∈
+      IdeleGroup.toStandardClass K a ∈
         (_root_.ideleClassNorm K L).range
-    obtain ⟨z, hz⟩ :=
-      ideleCongruenceSubgroup_normDefiningModulus_le_relativeIdeleNorm_range
-        (K := K) (L := L) ha
-    refine
-      ⟨QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup L)
-          (_root_.relativeIdeleBaseChangeMulEquiv
-            (K := K) (L := L) z), ?_⟩
-    change
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K)
-          (IdeleGroup.norm K L
-            (_root_.relativeIdeleBaseChangeMulEquiv
-              (K := K) (L := L) z)) =
-        QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a
-    rw [IdeleGroup.norm_relativeIdeleBaseChangeMulEquiv, hz]
+    exact ideleClassNorm_range_mem_mk_of_mem_ideleNorm_range K L a
+      (ideleCongruenceSubgroup_normDefiningModulus_le_ideleNorm_range (K := K) (L := L) ha)
   · intro a ha
     change
-      QuotientGroup.mk'
-          (IdeleGroup.principalSubgroup K) a ∈
+      IdeleGroup.toStandardClass K a ∈
         (_root_.ideleClassNorm K L).range
     have haOne :
-        QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup K) a = 1 :=
-      (QuotientGroup.eq_one_iff a).2 ha
+        IdeleGroup.toStandardClass K a = 1 :=
+      (IdeleGroup.toStandardClass_eq_one_iff K a).2 ha
     rw [haOne]
     exact ((_root_.ideleClassNorm K L).range).one_mem
 
@@ -395,18 +370,23 @@ idele-class topology. -/
 theorem ideleClassNorm_range_isOpen :
     IsOpen
       (((_root_.ideleClassNorm K L).range :
-        Subgroup (IdeleClassGroup K)) :
-        Set (IdeleClassGroup K)) := by
+        Subgroup (NumberField.IdeleClassGroup (𝓞 K) K)) :
+        Set (NumberField.IdeleClassGroup (𝓞 K) K)) := by
   exact
     (ideleClassNormConductorialSubgroup
       (K := K) (L := L)).isOpen
+
+/-- The quotient by the actual idèle-class norm has the discrete topology. -/
+theorem ideleClassNormQuotient_discreteTopology :
+    DiscreteTopology (NumberField.IdeleClassGroup (𝓞 K) K ⧸ (_root_.ideleClassNorm K L).range) :=
+  QuotientGroup.discreteTopology (ideleClassNorm_range_isOpen (K := K) (L := L))
 
 /-- The actual idele-class norm subgroup is closed. -/
 theorem ideleClassNorm_range_isClosed :
     IsClosed
       (((_root_.ideleClassNorm K L).range :
-        Subgroup (IdeleClassGroup K)) :
-        Set (IdeleClassGroup K)) :=
+        Subgroup (NumberField.IdeleClassGroup (𝓞 K) K)) :
+        Set (NumberField.IdeleClassGroup (𝓞 K) K)) :=
   (ideleClassNormConductorialSubgroup
     (K := K) (L := L)).isClosed
 
@@ -433,7 +413,7 @@ noncomputable def
     RayClass.RayClassGroup
         (RayClass.Modulus.narrowOfFinite
           (ideleClassNormNarrowFiniteConductor (K := K) (L := L))) →*
-      IdeleClassGroup K ⧸
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K L).range :=
   QuotientGroup.map
     (RayClass.Modulus.congruenceSubgroup
@@ -449,7 +429,7 @@ noncomputable def
 class modulo the actual norm subgroup. -/
 @[simp]
 theorem narrowFiniteConductorRayClassGroupToIdeleClassNormQuotient_mk
-    (x : IdeleClassGroup K) :
+    (x : NumberField.IdeleClassGroup (𝓞 K) K) :
     narrowFiniteConductorRayClassGroupToIdeleClassNormQuotient
         (K := K) (L := L)
         (QuotientGroup.mk'
@@ -501,12 +481,12 @@ theorem
         (ideleClassNormNarrowFiniteConductor (K := K) (L := L)))
   let M := (_root_.ideleClassNorm K L).range
   change
-    (QuotientGroup.map N M (MonoidHom.id (IdeleClassGroup K)) _).ker =
+    (QuotientGroup.map N M (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K)) _).ker =
       Subgroup.map (QuotientGroup.mk' N) M
   simpa only [Subgroup.comap_id] using
     (QuotientGroup.ker_map (N := N) M
-      (MonoidHom.id (IdeleClassGroup K))
-      (show N ≤ Subgroup.comap (MonoidHom.id (IdeleClassGroup K)) M from
+      (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K))
+      (show N ≤ Subgroup.comap (MonoidHom.id (NumberField.IdeleClassGroup (𝓞 K) K)) M from
         fun _ hx =>
           ideleClassNorm_narrowFiniteConductor_isDefiningModulus
             (K := K) (L := L) hx))
@@ -526,7 +506,7 @@ noncomputable def
                 (ideleClassNormNarrowFiniteConductor
                   (K := K) (L := L)))))
           ((_root_.ideleClassNorm K L).range)) ≃*
-      IdeleClassGroup K ⧸
+      NumberField.IdeleClassGroup (𝓞 K) K ⧸
         (_root_.ideleClassNorm K L).range :=
   (QuotientGroup.quotientMulEquivOfEq
       (narrowFiniteConductorRayClassGroupToIdeleClassNormQuotient_ker
@@ -556,7 +536,7 @@ theorem
                     (K := K) (L := L)))))
             ((_root_.ideleClassNorm K L).range)) *
         Nat.card
-          (IdeleClassGroup K ⧸
+          (NumberField.IdeleClassGroup (𝓞 K) K ⧸
             (_root_.ideleClassNorm K L).range) := by
   let f :=
     narrowFiniteConductorRayClassGroupToIdeleClassNormQuotient
@@ -578,7 +558,7 @@ theorem
       rw [Subgroup.index_ker f]
     _ = Nat.card (MonoidHom.ker f) *
         Nat.card
-          (IdeleClassGroup K ⧸
+          (NumberField.IdeleClassGroup (𝓞 K) K ⧸
             (_root_.ideleClassNorm K L).range) := by
       rw [f.range_eq_top_of_surjective hf, Subgroup.card_top]
     _ = Nat.card
@@ -590,7 +570,7 @@ theorem
                     (K := K) (L := L)))))
             ((_root_.ideleClassNorm K L).range)) *
         Nat.card
-          (IdeleClassGroup K ⧸
+          (NumberField.IdeleClassGroup (𝓞 K) K ⧸
             (_root_.ideleClassNorm K L).range) := by
       rw [
         narrowFiniteConductorRayClassGroupToIdeleClassNormQuotient_ker
@@ -601,7 +581,7 @@ the ray class group at its narrow finite conductor. -/
 theorem
     ideleClassNormQuotient_card_dvd_narrowFiniteConductorRayClassGroup_card :
     Nat.card
-        (IdeleClassGroup K ⧸
+        (NumberField.IdeleClassGroup (𝓞 K) K ⧸
           (_root_.ideleClassNorm K L).range) ∣
       Nat.card
         (RayClass.RayClassGroup

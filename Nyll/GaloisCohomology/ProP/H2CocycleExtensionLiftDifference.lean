@@ -101,7 +101,7 @@ theorem liftDifference_eq_one_iff :
 trivially exactly when the other lift also kills that subgroup. -/
 theorem liftDifference_restrict_eq_one_iff (N : Subgroup H)
     (ht : N ≤ t.toMonoidHom.ker) :
-    (liftDifference z s t hst).comp (subgroupInclusion N) = 1 ↔
+    (liftDifference z s t hst).comp (ProCGroups.ContinuousMonoidHom.subtype N) = 1 ↔
       N ≤ s.toMonoidHom.ker := by
   constructor
   · intro hd h hN

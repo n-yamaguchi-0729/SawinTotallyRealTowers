@@ -46,7 +46,7 @@ variable {K : Type*} [Field K] [NumberField K]
 /-- A modulus defines a ray class field containing the class field
 corresponding to `H` exactly when its congruence subgroup lies in `H`. -/
 def IsDefiningModulus
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (m : RayClass.Modulus K) : Prop :=
   m.congruenceSubgroup ≤ H
 
@@ -55,14 +55,14 @@ exists.  This is precisely the domain on which the narrow finite conductor
 is defined. -/
 abbrev ConductorialSubgroup
     (K : Type*) [Field K] [NumberField K] :=
-  {H : Subgroup (IdeleClassGroup K) //
+  {H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K) //
     ∃ m : RayClass.Modulus K, IsDefiningModulus H m}
 
 /-- At every finite place, some defining full modulus supplies a finite
 defining exponent.  This is the nonemptiness input for the pointwise finite
 conductor minimum. -/
 theorem exists_definingFiniteExponent
-    (H : Subgroup (IdeleClassGroup K))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
     (h : ∃ m, IsDefiningModulus H m)
     (v : HeightOneSpectrum (𝓞 K)) :
     ∃ n : ℕ, ∃ m : RayClass.Modulus K,
@@ -197,14 +197,14 @@ theorem le_narrowFiniteConductor_iff
 subgroup. -/
 theorem isOpen
     (H : ConductorialSubgroup K) :
-    IsOpen ((H.1 : Subgroup (IdeleClassGroup K)) : Set (IdeleClassGroup K)) := by
+    IsOpen (H.1 : Set (NumberField.IdeleClassGroup (𝓞 K) K)) := by
   obtain ⟨m, hm⟩ := H.2
   exact Subgroup.isOpen_mono hm (RayClass.isOpen_congruenceSubgroup m)
 
 /-- A conductorial subgroup is closed. -/
 theorem isClosed
     (H : ConductorialSubgroup K) :
-    IsClosed ((H.1 : Subgroup (IdeleClassGroup K)) : Set (IdeleClassGroup K)) :=
+    IsClosed (H.1 : Set (NumberField.IdeleClassGroup (𝓞 K) K)) :=
   H.1.isClosed_of_isOpen H.isOpen
 
 /-- A conductorial subgroup has finite index. -/
@@ -232,8 +232,8 @@ end ConductorialSubgroup
 /-- A closed finite-index subgroup always has at least one defining
 modulus. -/
 theorem exists_definingModulus_of_isClosed_finiteIndex
-    (H : Subgroup (IdeleClassGroup K))
-    (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
+    (hclosed : IsClosed (H : Set (NumberField.IdeleClassGroup (𝓞 K) K)))
     [H.FiniteIndex] :
     ∃ m, IsDefiningModulus H m :=
   ⟨RayClass.modulusInsideClosedFiniteIndex H hclosed,
@@ -246,8 +246,8 @@ namespace ConductorialSubgroup
 /-- The conductorial subgroup canonically associated to a closed
 finite-index idèle-class subgroup. -/
 noncomputable def ofClosedFiniteIndex
-    (H : Subgroup (IdeleClassGroup K))
-    (hclosed : IsClosed (H : Set (IdeleClassGroup K)))
+    (H : Subgroup (NumberField.IdeleClassGroup (𝓞 K) K))
+    (hclosed : IsClosed (H : Set (NumberField.IdeleClassGroup (𝓞 K) K)))
     [H.FiniteIndex] :
     ConductorialSubgroup K :=
   ⟨H, exists_definingModulus_of_isClosed_finiteIndex H hclosed⟩

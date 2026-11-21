@@ -25,6 +25,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂ u₃
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -34,7 +36,7 @@ open scoped IsMulCommutative
 Artin map and by the ambient embedded norm-residue construction. -/
 theorem
     exists_localArtin_ambientEmbedded_prime
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -47,7 +49,7 @@ theorem
     [FiniteDimensional F E] [IsAbelianGalois F E]
     (j : E →ₐ[K] SeparableClosure K)
     (e : ambientEmbeddedSeparableClosureEquiv K F E j)
-    (z : Abelianization Gal(E/F)) :
+    (z : Group.Abelianization Gal(E/F)) :
     ∃ x : Fˣ,
       localArtinMonoidHom F E x = z ∧
         ambientEmbeddedNormResidueAbelianElement K F E j e x = z := by
@@ -60,7 +62,7 @@ theorem
 class modulo norms from `E`. -/
 theorem
     ambientEmbeddedNormResidueAbelianElement_eq_of_normClass_eq
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -197,7 +199,7 @@ map agrees pointwise with the ambient norm-residue element transported through
 a separable-closure equivalence. -/
 theorem
     abelianLocalArtin_eq_ambientEmbeddedNormResidueSymbol_of_equiv
-    (K F E : Type)
+    (K : Type u₁) (F : Type u₂) (E : Type u₃)
     [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     [Field F] [ValuativeRel F] [TopologicalSpace F]
@@ -255,11 +257,11 @@ theorem
     ambientEmbeddedNormResidueAbelianElement_eq_of_normClass_eq
       K F E j e a x hnormClass
   change
-    (Abelianization.equivOfComm (H := Gal(E / F))).symm
+    (Group.Abelianization.equivOfComm (H := Gal(E / F))).symm
         (localArtinMonoidHom F E a) =
-      (Abelianization.equivOfComm (H := Gal(E / F))).symm
+      (Group.Abelianization.equivOfComm (H := Gal(E / F))).symm
         (ambientEmbeddedNormResidueAbelianElement K F E j e a)
-  apply congrArg (Abelianization.equivOfComm (H := Gal(E / F))).symm
+  apply congrArg (Group.Abelianization.equivOfComm (H := Gal(E / F))).symm
   calc
     localArtinMonoidHom F E a =
         ambientEmbeddedNormResidueAbelianElement K F E j e x :=

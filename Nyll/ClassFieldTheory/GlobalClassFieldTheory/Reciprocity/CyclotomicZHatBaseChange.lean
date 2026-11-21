@@ -10,7 +10,7 @@ public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.Cyclotomi
 public import Nyll.GaloisCohomology.ProfiniteIntegers.ProfiniteInteger
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Galois.InfiniteBaseChange
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.SeparableClosureEmbedding
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteAbstractFixedField
+public import Nyll.ClassFieldTheory.Algebra.FiniteAbstractFixedField
 public import Mathlib.FieldTheory.Galois.Abelian
 public import Mathlib.FieldTheory.IntermediateField.Algebraic
 public import Mathlib.FieldTheory.Normal.Closure
@@ -50,7 +50,7 @@ namespace Reciprocity
 open scoped Topology
 open AlgebraicNumberTheory
 open ClassFormation
-open KummerTheory
+open KummerTheory (rationalCyclotomicTorsionFixedField)
 
 /-- The fixed rational separable closure, with the intermediate-field algebra
 structure used by Mathlib's `IsSepClosure` construction. -/

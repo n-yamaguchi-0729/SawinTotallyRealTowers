@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.GaloisCohomology.Kummer.Concrete.InfiniteCharacterEquiv
 public import Nyll.GaloisCohomology.Kummer.Concrete.FiniteDualSeparation
 public import Nyll.ValuedFieldTheory.LocalField.GroupTheory.PowerIndex
@@ -122,12 +123,6 @@ noncomputable def nthRootsSubgroupEquivMultiplicativeZMod
       ((nthRootsSubgroupEquivRootsOfUnity K (n : ℕ)).trans
         ((MulEquiv.subgroupCongr hζunit.zpowers_eq.symm).trans
           hζunit.zmodEquivZPowers.symm.toMultiplicativeRight))
-
-local instance discreteMultiplicativeZModTopologicalSpace (n : ℕ) :
-    TopologicalSpace (Multiplicative (ZMod n)) := ⊥
-local instance discreteMultiplicativeZModDiscreteTopology (n : ℕ) :
-    DiscreteTopology (Multiplicative (ZMod n)) :=
-  discreteTopology_bot _
 
 /-- Choosing a primitive root in `K` identifies discrete roots of unity in its
 algebraic closure with the discrete multiplicative group underlying `ZMod n`. -/

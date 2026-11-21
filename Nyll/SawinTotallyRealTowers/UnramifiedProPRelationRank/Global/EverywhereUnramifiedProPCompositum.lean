@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.NumberField.MathlibUnramifiedInterface
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.BinaryUnramifiedCompositum
 public import Mathlib.FieldTheory.Galois.GaloisClosure
@@ -20,6 +22,8 @@ binary composita.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open scoped NumberField
 
@@ -72,8 +76,8 @@ def bot : FiniteEverywhereUnramifiedProPExtension F p where
       NumberField.of_module_finite F ↥(⊥ :
         IntermediateField F (AlgebraicClosure F))
     let _ := hNumber
-    exact everywhereUnramified_congrTop
-      (IntermediateField.botEquiv F (AlgebraicClosure F)).symm
+    exact (ClassFieldTheory.isEverywhereUnramified_iff_of_algEquiv F F _
+      (IntermediateField.botEquiv F (AlgebraicClosure F)).symm).mp
       (IsEverywhereUnramified.refl F)
 
 /-- A product of two `p`-groups is a `p`-group. -/

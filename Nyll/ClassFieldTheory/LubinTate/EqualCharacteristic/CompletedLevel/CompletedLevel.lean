@@ -46,7 +46,7 @@ variable {K : Type u} [Field K]
 
 /-- The coefficientwise algebra structure
 `k((T)) → (AlgebraicClosure k)((T))`. -/
-noncomputable local instance equalCharacteristicCompletedLevelBaseAlgebra
+@[reducible] noncomputable local instance equalCharacteristicCompletedLevelBaseAlgebra
     (F : LocalField.{u, v} K) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedUnramifiedField F.residueField) :=
@@ -87,11 +87,7 @@ theorem equalCharacteristicCompletedBaseValuationIsNontrivial
   · rw [hxv, ← WithZero.exp_zero, WithZero.exp_lt_exp]
     omega
 
-noncomputable local instance equalCharacteristicCompletedBaseValuationIsNontrivialInstance
-    (k : Type v) [Field k] :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰).IsNontrivial :=
-  equalCharacteristicCompletedBaseValuationIsNontrivial k
+attribute [local instance] equalCharacteristicCompletedBaseValuationIsNontrivial
 
 /-- The rank-one structure on the discrete Laurent valuation. -/
 @[implicit_reducible]
@@ -103,11 +99,7 @@ noncomputable def equalCharacteristicCompletedBaseValuationRankOne
     (Valued.v : Valuation
       (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰)
 
-noncomputable local instance equalCharacteristicCompletedBaseValuationRankOneInstance
-    (k : Type v) [Field k] :
-    (Valued.v : Valuation
-      (equalCharacteristicCompletedUnramifiedField k) ℤᵐ⁰).RankOne :=
-  equalCharacteristicCompletedBaseValuationRankOne k
+attribute [local instance] equalCharacteristicCompletedBaseValuationRankOne
 
 /-- The norm on the completed-unramified Laurent field induced by its
 rank-one valuation. -/
@@ -118,11 +110,7 @@ rank-one valuation. -/
   Valued.toNontriviallyNormedField
     (L := equalCharacteristicCompletedUnramifiedField k) (Γ₀ := ℤᵐ⁰)
 
-noncomputable local instance equalCharacteristicCompletedBaseNormedFieldInstance
-    (k : Type v) [Field k] :
-    NontriviallyNormedField
-      (equalCharacteristicCompletedUnramifiedField k) :=
-  equalCharacteristicCompletedBaseNormedField k
+attribute [local instance] equalCharacteristicCompletedBaseNormedField
 
 /-- The primitive level-`n+1` polynomial after coefficientwise base change
 to `(AlgebraicClosure k)((T))`. -/
@@ -169,7 +157,7 @@ noncomputable instance equalCharacteristicCompletedLevelField_algebra
     (equalCharacteristicCompletedPrimitivePolynomial F n).SplittingField
   infer_instance
 
-noncomputable local instance equalCharacteristicCompletedLevelLaurentAlgebra
+@[reducible] noncomputable local instance equalCharacteristicCompletedLevelLaurentAlgebra
     (F : LocalField.{u, v} K) (n : ℕ) :
     Algebra F.residueField⸨X⸩
       (equalCharacteristicCompletedLevelField F n) :=
@@ -330,10 +318,7 @@ theorem equalCharacteristicCompletedPrimitiveRoot_isRoot
     (equalCharacteristicCompletedUnramifiedField F.residueField)
     (equalCharacteristicCompletedLevelField F n)
 
-noncomputable local instance equalCharacteristicCompletedLevelNormedFieldInstance
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    NontriviallyNormedField (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelNormedField F n
+attribute [local instance] equalCharacteristicCompletedLevelNormedField
 
 /-- The spectral norm is nonarchimedean. -/
 theorem equalCharacteristicCompletedLevelIsUltrametric
@@ -347,10 +332,7 @@ theorem equalCharacteristicCompletedLevelIsUltrametric
       (L := equalCharacteristicCompletedLevelField F n)
       (x - y) (y - z)⟩
 
-noncomputable local instance equalCharacteristicCompletedLevelIsUltrametricInstance
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUltrametricDist (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelIsUltrametric F n
+attribute [local instance] equalCharacteristicCompletedLevelIsUltrametric
 
 /-- Finite dimensionality makes the spectral level field complete. -/
 theorem equalCharacteristicCompletedLevelCompleteSpace
@@ -360,10 +342,7 @@ theorem equalCharacteristicCompletedLevelCompleteSpace
     (equalCharacteristicCompletedUnramifiedField F.residueField)
     (equalCharacteristicCompletedLevelField F n)
 
-noncomputable local instance equalCharacteristicCompletedLevelCompleteSpaceInstance
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelCompleteSpace F n
+attribute [local instance] equalCharacteristicCompletedLevelCompleteSpace
 
 /-- The valuation attached to the spectral norm. -/
 @[reducible] noncomputable def equalCharacteristicCompletedLevelValued
@@ -371,10 +350,7 @@ noncomputable local instance equalCharacteristicCompletedLevelCompleteSpaceInsta
     Valued (equalCharacteristicCompletedLevelField F n) ℝ≥0 :=
   NormedField.toValued (K := equalCharacteristicCompletedLevelField F n)
 
-noncomputable local instance equalCharacteristicCompletedLevelValuedInstance
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Valued (equalCharacteristicCompletedLevelField F n) ℝ≥0 :=
-  equalCharacteristicCompletedLevelValued F n
+attribute [local instance] equalCharacteristicCompletedLevelValued
 
 /-- The Laurent parameter in the completed maximal-unramified base. -/
 noncomputable def equalCharacteristicCompletedBaseUniformizer

@@ -9,7 +9,7 @@ module
 public import Mathlib.SetTheory.Cardinal.Finite
 public import Mathlib.RingTheory.Finiteness.Small
 public import Nyll.ClassFieldTheory.Algebra.ShrinkFiniteExtension
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkOpenSubgroups
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.UnramifiedNormSubgroup
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.Main
@@ -103,19 +103,19 @@ theorem normQuotientToUnramifiedNormQuotient_surjective :
 
 /-- Cyclicity identifies the unramified Galois group with its abelianization. -/
 noncomputable def galoisGroupEquivAbelianizationOfUnramifiedValuation :
-    Gal(L / K) ≃* Abelianization (Gal(L / K)) := by
+    Gal(L / K) ≃* Group.Abelianization (Gal(L / K)) := by
   letI : IsCyclic (Gal(L / K)) :=
     isCyclic_galoisGroup_of_unramifiedValuation K L
   letI : CommGroup (Gal(L / K)) :=
     IsCyclic.commGroup (α := Gal(L / K))
-  exact Abelianization.equivOfComm (H := Gal(L / K))
+  exact Group.Abelianization.equivOfComm (H := Gal(L / K))
 
 /-- The cyclic Galois-group equivalence is the canonical map to the abelianization. -/
 @[simp]
 theorem galoisGroupEquivAbelianizationOfUnramifiedValuation_apply
     (σ : Gal(L/K)) :
     galoisGroupEquivAbelianizationOfUnramifiedValuation K L σ =
-      Abelianization.of σ :=
+      Group.Abelianization.of σ :=
   rfl
 
 private theorem normQuotient_card_eq_finrank :
@@ -135,17 +135,17 @@ private theorem normQuotient_card_eq_finrank :
     QuotientGroup.congr (localNormSubgroup K L)
       (localNormSubgroup (Shrink.{0} K) (Shrink.{0} L))
       (Units.mapEquiv (Shrink.ringEquiv K).symm.toMulEquiv)
-      (ClassFieldTheory.fieldNormSubgroup_map_ringEquiv
+      (LocalFieldTheory.localNormSubgroup_map_ringEquiv
         (Shrink.ringEquiv K).symm (Shrink.ringEquiv L).symm
         (HasseArf.shrinkAlgebra_commutes K L))
   calc
     Nat.card (NormQuotient K L) =
         Nat.card (NormQuotient (Shrink.{0} K) (Shrink.{0} L)) :=
       Nat.card_congr eQ.toEquiv
-    _ = Nat.card (Abelianization (Gal(Shrink.{0} L / Shrink.{0} K))) :=
+    _ = Nat.card (Group.Abelianization (Gal(Shrink.{0} L / Shrink.{0} K))) :=
       Nat.card_congr
         (abelianizationEquivNormQuotient (Shrink.{0} K) (Shrink.{0} L)).symm.toEquiv
-    _ = Nat.card (Abelianization (Gal(L / K))) :=
+    _ = Nat.card (Group.Abelianization (Gal(L / K))) :=
       Nat.card_congr (HasseArf.shrinkGalMulEquiv K L).abelianizationCongr.toEquiv
     _ = Nat.card (Gal(L / K)) :=
       (Nat.card_congr

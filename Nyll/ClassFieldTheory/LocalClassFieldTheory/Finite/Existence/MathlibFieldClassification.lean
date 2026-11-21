@@ -97,19 +97,12 @@ def finiteAbelianFieldAbstractOrderIso :
     · intro h
       exact E.1.fixingSubgroup_le h
 
-/-- The internal open-subgroup structure and the Mathlib-facing subtype
-encode the same subgroup with the same inclusion order. -/
+/-- The internal and public classifications use the identical subgroup carrier. -/
 def openFiniteIndexSubgroupMathlibOrderIso
     [TopologicalSpace K] :
     OpenFiniteIndexSubgroup K ≃o
-      ClassFieldTheory.OpenFiniteIndexSubgroup K where
-  toEquiv := {
-    toFun := fun H => ⟨H.subgroup, H.isOpen, H.finiteIndex⟩
-    invFun := fun H => ⟨H.1, H.2.1, H.2.2⟩
-    left_inv := by intro H; cases H; rfl
-    right_inv := by intro H; cases H; rfl
-  }
-  map_rel_iff' := by intro H J; rfl
+      ClassFieldTheory.OpenFiniteIndexSubgroup K :=
+  OrderIso.refl _
 
 /-- The abstract norm subgroup is the actual field-norm subgroup after
 identifying an abstract extension with its concrete fixed field. -/
@@ -136,7 +129,7 @@ theorem finiteAbelianFieldNormSubgroupOrderIso_apply
     [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (E : ClassFieldTheory.FiniteAbelianLocalExtension K) :
-    (OrderDual.ofDual (finiteAbelianFieldNormSubgroupOrderIso K E)).1 =
+    (OrderDual.ofDual (finiteAbelianFieldNormSubgroupOrderIso K E)).1.toSubgroup =
       E.normSubgroup := by
   change finiteAbelianNormSubgroup K
       (abstractExtensionOfFiniteAbelianField K E) = E.normSubgroup

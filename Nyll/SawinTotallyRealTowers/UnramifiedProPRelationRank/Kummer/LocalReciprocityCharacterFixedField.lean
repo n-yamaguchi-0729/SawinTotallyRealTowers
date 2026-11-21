@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Infinite.AbsoluteArtinRestriction
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityCharacterPairing
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalKummerInertia
@@ -32,12 +33,7 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 variable (p : ℕ) [Fact p.Prime]
 
-local instance localReciprocityFixedFieldTopology : TopologicalSpace (ZMod p) := ⊥
-local instance localReciprocityFixedFieldDiscreteTopology : DiscreteTopology (ZMod p) :=
-  discreteTopology_bot _
-local instance localReciprocityFixedFieldH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod p) (ContinuousH1ZMod (p := p) (G := G)) := continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The absolute character in the separable-closure abelianization model. -/
 noncomputable def localReciprocitySeparableAbelianCharacter
@@ -45,7 +41,7 @@ noncomputable def localReciprocitySeparableAbelianCharacter
     localAbsoluteAbelianProfinite K →ₜ* Multiplicative (ZMod p) :=
   (localReciprocityAbelianCharacter K p chi).comp
     (ContinuousMonoidHom.toContinuousMonoidHom
-      (separableToStandardAbsoluteAbelianizationEquiv K))
+      (absoluteGaloisGroupAbelianizationEquivSeparable K).symm)
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 @[simp]

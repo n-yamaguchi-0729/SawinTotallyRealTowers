@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Cohomology.SPlaces.LocalBlocks
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.HerbrandLowDegree.BinaryProduct
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Relative.SPlaces
@@ -160,7 +162,7 @@ noncomputable def
     (relativeIdeleSPlaceFactorsEquivUnrestrictedProdOutside
       (K := K) (L := L) S)
 
-omit [IsGalois K L] in
+omit [IsGalois K L] [NumberField L] in
 /-- The supported relative-idele decomposition is equivariant for the
 concrete Galois action on every factor. -/
 theorem

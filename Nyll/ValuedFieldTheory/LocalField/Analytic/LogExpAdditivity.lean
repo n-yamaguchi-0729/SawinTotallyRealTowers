@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.Valuation.DiscreteValuationField.Complete
 public import Mathlib.Algebra.Order.Monoid.Unbundled.Basic
 public import Mathlib.Topology.Algebra.InfiniteSum.Nonarchimedean
 public import Nyll.ValuedFieldTheory.LocalField.Analytic.LogExpSeries.Homomorphisms

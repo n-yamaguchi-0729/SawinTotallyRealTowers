@@ -6,6 +6,10 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.AbsoluteNormCore
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.Extension.IdeleNorm
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.FieldNorm
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormTopology.FiniteNormArithmetic
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Idele.NormCore
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.ClassFormation.ArchimedeanNormQuotient
@@ -24,7 +28,9 @@ preserved by the ordinary norm in a finite number-field extension.
 
 @[expose] public section
 
-open scoped BigOperators NumberField NumberField.LiesOver
+open scoped BigOperators NumberField
+
+attribute [local instance] AbsoluteValue.Completion.algebraOfLiesOver
 open NumberField IsDedekindDomain
 
 noncomputable section
@@ -107,7 +113,7 @@ private theorem nnnormUnitHom_normUnits_infinitePlace
           (InfinitePlace.Completion.liesOver_extensionEmbedding_apply
             W (v := v₀)).symm
       have hNorm :=
-        LocalClassFieldTheory.normUnits_map_ringEquiv
+        LocalFieldTheory.normUnits_map_ringEquiv
           eBase eExtension
           hCompatible x
       rw [InfinitePlace.mult_isReal ⟨v₀, hvReal⟩,
@@ -158,7 +164,7 @@ private theorem nnnormUnitHom_normUnits_infinitePlace
         ext z
         simp [eBase, eExtension]
       have hNorm :=
-        LocalClassFieldTheory.normUnits_map_ringEquiv
+        LocalFieldTheory.normUnits_map_ringEquiv
           eBase eExtension
           hCompatible x
       rw [InfinitePlace.mult_isReal ⟨v₀, hvReal⟩,
@@ -211,7 +217,7 @@ private theorem nnnormUnitHom_normUnits_infinitePlace
               v₀.Completion W.Completion x) =
           nnnormUnitHom W.Completion x := by
       have hNorm :=
-        LocalClassFieldTheory.normUnits_map_ringEquiv
+        LocalFieldTheory.normUnits_map_ringEquiv
           eBase eExtension
           hCompatible x
       calc
@@ -318,9 +324,9 @@ variable
 /-- The archimedean positive norm is preserved by the ordinary idele norm. -/
 theorem archimedeanNorm_norm
     (a : IdeleGroup L) :
-    InfiniteIdeleGroup.archimedeanNorm
-        (norm K L a).1 =
-      InfiniteIdeleGroup.archimedeanNorm a.1 := by
+    NumberField.InfiniteAdeleRing.absoluteNorm
+        (IdeleGroup.infinitePart (norm K L a)) =
+      NumberField.InfiniteAdeleRing.absoluteNorm (IdeleGroup.infinitePart a) := by
   classical
   let : ∀ (v₀ : InfinitePlace K)
       (W : {W : InfinitePlace L //
@@ -333,10 +339,9 @@ theorem archimedeanNorm_norm
         _root_.infinitePlaceBelow (K := K) W = v₀}),
       Algebra v₀.Completion W.1.Completion :=
     fun v₀ W =>
-      (NumberField.LiesOver.completionMap
-        (v := v₀) (w := W.1)).toAlgebra
-  rw [InfiniteIdeleGroup.archimedeanNorm_apply,
-    InfiniteIdeleGroup.archimedeanNorm_apply]
+      AbsoluteValue.Completion.algebraOfLiesOver v₀.1 W.1.1
+  rw [NumberField.InfiniteAdeleRing.absoluteNorm_apply,
+    NumberField.InfiniteAdeleRing.absoluteNorm_apply]
   change
     (∏ v₀ : InfinitePlace K,
         nnnormUnitHom v₀.Completion
@@ -417,5 +422,20 @@ theorem absoluteNorm_norm
 
 
 end IdeleGroup
+
+namespace NumberField.IdeleGroup
+
+universe u v
+
+variable (K : Type u) (L : Type v)
+  [Field K] [NumberField K] [Field L] [NumberField L]
+  [Algebra K L] [FiniteDimensional K L]
+
+/-- The standard field norm preserves the absolute norm of adele units. -/
+theorem absoluteNorm_norm (a : IdeleGroup (𝓞 L) L) :
+    absoluteNorm (norm K L a) = absoluteNorm a :=
+  _root_.IdeleGroup.absoluteNorm_norm K L a
+
+end NumberField.IdeleGroup
 
 end

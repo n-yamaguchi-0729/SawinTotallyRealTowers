@@ -197,53 +197,15 @@ open LocalFieldTheory.DiscreteValuationField
 
 variable {K : Type u} [Field K]
 
-noncomputable local instance equalCharacteristicThetaInverseLevelNormedField
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    NontriviallyNormedField (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelNormedField F n
-
-noncomputable local instance equalCharacteristicThetaInverseLevelIsUltrametric
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUltrametricDist (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelIsUltrametric F n
-
-noncomputable local instance equalCharacteristicThetaInverseLevelCompleteSpace
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace (equalCharacteristicCompletedLevelField F n) :=
-  equalCharacteristicCompletedLevelCompleteSpace F n
-
-noncomputable local instance equalCharacteristicThetaInverseLevelValued
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Valued (equalCharacteristicCompletedLevelField F n) ℝ≥0 :=
-  equalCharacteristicCompletedLevelValued F n
-
-noncomputable local instance equalCharacteristicThetaInverseIntegerLinearTopology
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsLinearTopology
-      (Valued.integer (equalCharacteristicCompletedLevelField F n))
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
+attribute [local instance]
+  equalCharacteristicCompletedLevelNormedField
+  equalCharacteristicCompletedLevelIsUltrametric
+  equalCharacteristicCompletedLevelCompleteSpace
+  equalCharacteristicCompletedLevelValued
   valuedIntegerLinearTopology
-
-noncomputable local instance equalCharacteristicThetaInverseIntegerCompleteSpace
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    CompleteSpace
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   valuedIntegerCompleteSpace
-
-noncomputable local instance equalCharacteristicThetaInverseIntegerUniformAddGroup
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    IsUniformAddGroup
-      (Valued.integer (equalCharacteristicCompletedLevelField F n)) :=
   valuedIntegerIsUniformAddGroup
-
-private noncomputable local instance equalCharacteristicThetaInverseCoefficientUniformSpace
-    (F : LocalField.{u, v} K) :
-    UniformSpace ((AlgebraicClosure F.residueField)⟦X⟧) := ⊥
-
-private theorem equalCharacteristicThetaInverseCoefficientHom_continuous
-    (F : LocalField.{u, v} K) (n : ℕ) :
-    Continuous (equalCharacteristicCompletedLevelCoefficientHom F n) :=
-  continuous_of_discreteTopology
+  equalCharacteristicThetaCoefficientUniformSpace
 
 /-- Norm `< 1` supplies the analytic evaluation hypothesis for a point in
 the completed-level valuation ring. -/
@@ -303,7 +265,7 @@ theorem equalCharacteristicThetaOnCompletedLevelMaximalIdeal_hasSum
     equalCharacteristicCompletedLevelEvaluation,
     PowerSeries.coe_eval₂Hom]
   exact PowerSeries.hasSum_eval₂
-    (equalCharacteristicThetaInverseCoefficientHom_continuous F n)
+    (equalCharacteristicCompletedLevelCoefficientHom_continuous F n)
     (equalCharacteristicCompletedLevel_hasEval_of_norm_lt_one F n x x.property)
     (equalCharacteristicThetaSeries u)
 

@@ -117,7 +117,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_ideleClassNorm_range
         _root_.ChosenFinitePlaceIsUnramified
           (K := K) (L := L) v) :
     ideleClassPowerLocalUnitSubgroup (K := K) n S T ≤
-      (RelativeIdeleGroup.Cohomology.ideleClassNorm K L).range := by
+      (RelativeIdeleGroup.classNorm K L).range := by
   rintro c ⟨a, ha, rfl⟩
   obtain ⟨b, hb⟩ :=
     idelePowerLocalUnitSubgroup_le_relativeIdeleNorm_range
@@ -125,7 +125,7 @@ theorem ideleClassPowerLocalUnitSubgroup_le_ideleClassNorm_range
   refine
     ⟨QuotientGroup.mk'
         (RelativeIdeleGroup.principalSubgroup K L) b, ?_⟩
-  rw [RelativeIdeleGroup.Cohomology.ideleClassNorm_mk, hb]
+  rw [RelativeIdeleGroup.classNorm_mk, hb]
 
 
 end GlobalClassFieldTheory.ClassFieldAxiom

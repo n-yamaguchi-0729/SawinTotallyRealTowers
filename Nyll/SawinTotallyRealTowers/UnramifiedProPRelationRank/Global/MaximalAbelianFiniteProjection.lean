@@ -52,6 +52,7 @@ theorem maximalAbelianGlobalArtin_finitePlace_finiteProjection
       (maximalAbelianGlobalArtin F (IdeleGroup.finitePlaceIdeleClass v a)) =
       chosenFinitePlaceArtinMonoidHom (K := F) (L := E) v a := by
   intro sharedOwner1
+  rw [← IdeleGroup.toStandardClass_finitePlaceIdele]
   exact (maximalAbelianGlobalArtin_finiteProjection F (IdeleGroup.finitePlaceIdele v a) E).trans
     (globalArtinMonoidHom_finitePlaceIdele (K := F) (L := E) v a)
 

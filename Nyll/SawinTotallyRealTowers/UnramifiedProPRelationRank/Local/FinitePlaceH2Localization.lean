@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.GaloisCohomology.ProP.QuotientRestriction
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
 public import Nyll.ValuedFieldTheory.Ramification.HilbertRamification.DecompositionGroup
@@ -58,7 +60,7 @@ abbrev finitePlaceAbsoluteDecompositionGroup
 def finitePlaceAbsoluteDecompositionInclusion
     (v : HeightOneSpectrum (NumberField.RingOfIntegers F)) :
     finitePlaceAbsoluteDecompositionGroup F v →ₜ* Field.absoluteGaloisGroup F :=
-  subgroupInclusion
+  ProCGroups.ContinuousMonoidHom.subtype
     (HilbertRamification.absoluteValueDecompositionGroup F
       (finitePlaceAbsoluteValueExtension F v).1)
 

@@ -6,9 +6,11 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.FiniteLocalFactor
+
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.IdeleSupport
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Localization
-public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.AbsoluteValue
+public import Nyll.ValuedFieldTheory.Valuation.AbsoluteValue.CompletionIntegers
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.Lattice
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.FinitePlaceCompletion
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Adele.IntegralTensorSupport.LocalTensorDecomposition
@@ -185,33 +187,6 @@ noncomputable def
         relativeLocalTensorDecompositionIntegralUnitSubgroupEquivPiUnits
           (K := K) (L := L) w.1))
 
-omit [NumberField L] [IsGalois K L] in
-/-- Membership in the chosen basis lattice is exactly the coefficient
-integrality needed by the restricted local-product model. -/
-theorem relativeBasisIntegralAt_repr_mem
-    (w : HeightOneSpectrum (𝓞 K))
-    (x : w.adicCompletion K ⊗[K] L)
-    (hx : RelativeBasisIntegralAt
-      (K := K) (L := L) w x)
-    (i : RelativeAdeleBasisIndex (K := K) (L := L)) :
-    (Algebra.TensorProduct.basis
-        (w.adicCompletion K)
-        (relativeExtensionBasis
-          (K := K) (L := L))).repr x i ∈
-      w.adicCompletionIntegers K := by
-  classical
-  rcases hx with ⟨c, rfl⟩
-  simp only [map_sum, Algebra.TensorProduct.basis_repr_tmul,
-    Module.Basis.repr_self, Finsupp.mapRange_single, map_one,
-    Finsupp.smul_single, smul_eq_mul, mul_one,
-    Finsupp.coe_finsetSum, Finset.sum_apply]
-  rw [Finset.sum_eq_single i]
-  · simpa only [Finsupp.single_eq_same] using (c i).property
-  · intro j _ hji
-    exact Finsupp.single_eq_of_ne hji.symm
-  · intro h
-    exact (h (Finset.mem_univ i)).elim
-
 /-- Extract all local factors from an integrally supported
 relative idele. -/
 noncomputable def relativeIdeleSupportedComponents
@@ -371,81 +346,15 @@ noncomputable def relativeLocalIdeleDataOfSPlaceFactors
       else
         (x.2.2 ⟨w, hw⟩ :
           (w.adicCompletion K ⊗[K] L)ˣ)
-  refine
-    { infinite := x.1
-      finite := f
-      eventually_integral := ?_
-      eventually_inverse_integral := ?_ }
-  · intro i
-    refine
-      (S ∪ integralTensorComparisonBadPlaces
-        (K := K) (L := L)).eventually_cofinite_notMem.mono ?_
-    intro w hw
-    have hwS : w ∉ S := by
-      intro h
-      exact hw (Finset.mem_union_left _ h)
-    have hwBad :
-        w ∉ integralTensorComparisonBadPlaces
-          (K := K) (L := L) := by
-      intro h
-      exact hw (Finset.mem_union_right _ h)
-    have hProp :
-        RelativeLocalTensorDecompositionIntegralUnitAt
-          (K := K) (L := L) w (f w) := by
-      rw [show f w =
-        (x.2.2 ⟨w, hwS⟩ :
-          (w.adicCompletion K ⊗[K] L)ˣ) by
-        exact dite_eq_right hwS]
-      exact
-        (mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
-          (K := K) (L := L) w _).1
-          (x.2.2 ⟨w, hwS⟩).property
-    have hBasis :
-        RelativeBasisIntegralUnitAt
-          (K := K) (L := L) w (f w) :=
-      localTensorDecompositionIntegralUnit_imp_relativeBasisIntegralUnitAt_of_notMem
-        (K := K) (L := L) w hwBad hProp
-    exact
-      relativeBasisIntegralAt_repr_mem
-        (K := K) (L := L) w (f w : _)
-        hBasis.1 i
-  · intro i
-    refine
-      (S ∪ integralTensorComparisonBadPlaces
-        (K := K) (L := L)).eventually_cofinite_notMem.mono ?_
-    intro w hw
-    have hwS : w ∉ S := by
-      intro h
-      exact hw (Finset.mem_union_left _ h)
-    have hwBad :
-        w ∉ integralTensorComparisonBadPlaces
-          (K := K) (L := L) := by
-      intro h
-      exact hw (Finset.mem_union_right _ h)
-    have hProp :
-        RelativeLocalTensorDecompositionIntegralUnitAt
-          (K := K) (L := L) w (f w) := by
-      rw [show f w =
-        (x.2.2 ⟨w, hwS⟩ :
-          (w.adicCompletion K ⊗[K] L)ˣ) by
-        exact dite_eq_right hwS]
-      exact
-        (mem_relativeLocalTensorDecompositionIntegralUnitSubgroup_iff
-          (K := K) (L := L) w _).1
-          (x.2.2 ⟨w, hwS⟩).property
-    have hBasis :
-        RelativeBasisIntegralUnitAt
-          (K := K) (L := L) w (f w) :=
-      localTensorDecompositionIntegralUnit_imp_relativeBasisIntegralUnitAt_of_notMem
-        (K := K) (L := L) w hwBad hProp
-    exact
-      relativeBasisIntegralAt_repr_mem
-        (K := K) (L := L) w
-        (((f w)⁻¹ : (w.adicCompletion K ⊗[K] L)ˣ) :
-          w.adicCompletion K ⊗[K] L)
-        hBasis.2 i
+  refine ⟨x.1, ⟨f, ?_⟩⟩
+  filter_upwards [S.eventually_cofinite_notMem] with w hw
+  change f w ∈ relativeLocalTensorDecompositionIntegralUnitSubgroup
+    (K := K) (L := L) w
+  rw [show f w = (x.2.2 ⟨w, hw⟩ : (w.adicCompletion K ⊗[K] L)ˣ) from
+    dite_eq_right hw]
+  exact (x.2.2 ⟨w, hw⟩).property
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- The assembled local-idele data has the prescribed infinite component. -/
 @[simp]
 theorem relativeLocalIdeleDataOfSPlaceFactors_infinite
@@ -456,7 +365,7 @@ theorem relativeLocalIdeleDataOfSPlaceFactors_infinite
       (K := K) (L := L) S x).infinite w = x.1 w :=
   rfl
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- At a finite place in `S`, the assembled local-idele data has the
 prescribed unrestricted component. -/
 @[simp]
@@ -468,9 +377,10 @@ theorem relativeLocalIdeleDataOfSPlaceFactors_finite_inside
     (relativeLocalIdeleDataOfSPlaceFactors
       (K := K) (L := L) S x).finite w =
         x.2.1 ⟨w, hw⟩ := by
-  simp [relativeLocalIdeleDataOfSPlaceFactors, hw]
+  unfold relativeLocalIdeleDataOfSPlaceFactors RelativeLocalIdeleData.finite
+  exact dite_eq_left hw
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- At a finite place outside `S`, the assembled local-idele data is the
 coercion of the prescribed integral component. -/
 @[simp]
@@ -483,7 +393,8 @@ theorem relativeLocalIdeleDataOfSPlaceFactors_finite_outside
       (K := K) (L := L) S x).finite w =
         (x.2.2 ⟨w, hw⟩ :
           (w.adicCompletion K ⊗[K] L)ˣ) := by
-  simp [relativeLocalIdeleDataOfSPlaceFactors, hw]
+  unfold relativeLocalIdeleDataOfSPlaceFactors RelativeLocalIdeleData.finite
+  exact dite_eq_right hw
 
 /-- Assemble prescribed local factors into the actual supported
 relative idele. -/
@@ -507,7 +418,7 @@ noncomputable def relativeIdeleOfSPlaceFactors
       (K := K) (L := L) w _).1
       (x.2.2 ⟨w, hw⟩).property
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- The relative idele assembled from displayed `S`-place factors has the
 prescribed infinite component. -/
 @[simp]
@@ -524,7 +435,7 @@ theorem relativeIdeleOfSPlaceFactors_infiniteComponent
     relativeIdeleOfLocalData_infiniteComponent]
   rfl
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- At a finite place in `S`, the assembled relative idele has the
 prescribed unrestricted component. -/
 @[simp]
@@ -543,7 +454,7 @@ theorem relativeIdeleOfSPlaceFactors_finiteComponent_inside
     relativeLocalIdeleDataOfSPlaceFactors_finite_inside
       (K := K) (L := L) S x w hw]
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- At a finite place outside `S`, the assembled relative idele has the
 coercion of the prescribed integral component. -/
 @[simp]
@@ -563,7 +474,7 @@ theorem relativeIdeleOfSPlaceFactors_finiteComponent_outside
     relativeLocalIdeleDataOfSPlaceFactors_finite_outside
       (K := K) (L := L) S x w hw]
 
-omit [IsGalois K L] in
+omit [NumberField L] [IsGalois K L] in
 /-- Every complete family of local factors is realized by a supported
 relative idele. -/
 theorem relativeIdeleSupportedComponents_surjective
@@ -620,7 +531,7 @@ noncomputable def
       (relativeIdeleLocalTensorDecompositionSupportedSubgroup
         (K := K) (L := L) S) := by
   letI :=
-    relativeIdeleRestrictedMulDistribMulAction
+    RelativeIdeleGroup.relativeIdeleMulDistribMulAction
       (K := K) (L := L)
   exact
     { smul := fun σ z =>
@@ -685,7 +596,7 @@ theorem
           (K := K) (L := L) S) :
       RelativeIdeleGroup K L) =
       letI :=
-        relativeIdeleRestrictedMulDistribMulAction
+        RelativeIdeleGroup.relativeIdeleMulDistribMulAction
           (K := K) (L := L)
       σ • (z : RelativeIdeleGroup K L) :=
   rfl
@@ -762,13 +673,10 @@ theorem relativeIdeleSupportedComponents_smul
     let :=
       relativeIdeleLocalTensorDecompositionSupportedSubgroupAction
         (K := K) (L := L) S
-    let :=
-      relativeIdeleSPlaceFactorsAction
-        (K := K) (L := L) S
-    relativeIdeleSupportedComponents
-        (K := K) (L := L) S (σ • z) =
-      σ • relativeIdeleSupportedComponents
-        (K := K) (L := L) S z := by
+    let factorsAction := relativeIdeleSPlaceFactorsAction (K := K) (L := L) S
+    relativeIdeleSupportedComponents (K := K) (L := L) S (σ • z) =
+      @SMul.smul _ _ factorsAction.toSMul σ
+        (relativeIdeleSupportedComponents (K := K) (L := L) S z) := by
   intro sharedOwner1 sharedOwner2
   apply Prod.ext
   · funext w

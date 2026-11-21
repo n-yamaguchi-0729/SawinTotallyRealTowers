@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ValuedFieldTheory.LocalField.NonarchimedeanLocalField.PrincipalUnitNorm
+
 public import Mathlib.SetTheory.Cardinal.Finite
 public import Mathlib.FieldTheory.Galois.Basic
 public import Nyll.GaloisCohomology.Cyclic.Herbrand.PrincipalUnits.QuotientTower
@@ -91,8 +93,8 @@ private def principalUnitsIntegerUnitsInclusion
 `1 → U_L^n → 𝒪_Lˣ → 𝒪_Lˣ/U_L^n → 1`. -/
 private def integerUnitsPrincipalUnitsQuotientMap
     (L : Type u) [Field L] [ValuativeRel L] (n : Nat) :
-    𝒪[L]ˣ →* IntegerUnitsModPrincipalUnitsAtLevel L n :=
-  integerUnitsModPrincipalUnitsAtLevelMk L n
+    𝒪[L]ˣ →* IntegerUnitsPrincipalQuot L n :=
+  integerUnitsPrincipalQuotMk L n
 
 /-- The standard principal-unit sequence is short exact and equivariant for
 the actual integral-closure Galois actions. -/
@@ -117,7 +119,7 @@ private theorem principalUnitsIntegerUnits_shortExact
       Function.Surjective (integerUnitsPrincipalUnitsQuotientMap L n) := by
   intro sharedOwner1 sharedOwner2 sharedOwner3
   refine ⟨?_, ?_, ?_, (principalUnits L n).subtype_injective,
-    integerUnitsModPrincipalUnitsAtLevelMk_surjective L n⟩
+    integerUnitsPrincipalQuotMk_surjective L n⟩
   · intro sigma a
     rfl
   · intro sigma a
@@ -129,15 +131,15 @@ private theorem principalUnitsIntegerUnits_shortExact
     constructor
     · intro ha
       have ha' : a ∈ principalUnits L n := by
-        exact (integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff L n a).1 ha
+        exact (integerUnitsPrincipalQuotMk_eq_one_iff L n a).1 ha
       exact ⟨⟨a, ha'⟩, rfl⟩
     · rintro ⟨v, rfl⟩
-      exact (integerUnitsModPrincipalUnitsAtLevelMk_eq_one_iff L n
+      exact (integerUnitsPrincipalQuotMk_eq_one_iff L n
         (v : 𝒪[L]ˣ)).2 v.2
 
 /-- A Galois-fixed actual integer unit descends to a base integer unit.  This
 is valuation-ring descent, not an assumed comparison of fixed parts. -/
-private theorem exists_integerUnit_map_eq_of_galoisGroup_fixed
+theorem exists_integerUnit_map_eq_of_galoisGroup_fixed
     (K L : Type u) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
     [Algebra K L] [FiniteDimensional K L] [IsGalois K L]
     [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
@@ -276,7 +278,7 @@ private theorem unramified_integerUnits_herbrand_subsingleton
             Units.mapEquiv
               (galoisGroupIntegerRingEquivOfIsIntegralClosure K L sigma).toMulEquiv z) := rfl
       _ = integerUnitsMapOfValuationExtension K L (normIntegerUnits K L z) :=
-        (integerUnitsMap_normIntegerUnits_eq_galoisGroup_prod_of_isIntegralClosure K L z).symm
+        (LocalFieldTheory.integerUnitsMap_normIntegerUnits_eq_prod_gal K L z).symm
       _ = integerUnitsMapOfValuationExtension K L b := by rw [hz]
       _ = a := hb
   let : Subsingleton (HerbrandH0 Gal(L / K) 𝒪[L]ˣ) :=
@@ -309,20 +311,20 @@ private theorem unramified_principalUnits_herbrand_subsingleton
     K L n
   rcases integerUnits_herbrandQuotient_eq_one K L g hg with
     ⟨hU, hUone⟩
-  let : Finite (IntegerUnitsModPrincipalUnitsAtLevel L n) :=
+  let : Finite (IntegerUnitsPrincipalQuot L n) :=
     integerUnitsModPrincipalUnitsAtLevel_finite_of_isNonarchimedeanLocalField L n
   let hQ : HerbrandQuotientDefined Gal(L / K)
-      (IntegerUnitsModPrincipalUnitsAtLevel L n) g :=
+      (IntegerUnitsPrincipalQuot L n) g :=
     ⟨inferInstance, inferInstance⟩
   have hQone : herbrandQuotient (G := Gal(L / K))
-      (A := IntegerUnitsModPrincipalUnitsAtLevel L n) g = 1 :=
+      (A := IntegerUnitsPrincipalQuot L n) g = 1 :=
     integerUnitsModPrincipalUnitsAtLevel_herbrandQuotient_eq_one_of_isNonarchimedeanLocalField
       K L n g hg
   let hseq := principalUnitsIntegerUnits_shortExact K L n
   let hP : HerbrandQuotientDefined Gal(L / K) (principalUnits L n) g :=
     herbrandQuotientDefined_left_of_middle_right
       (G := Gal(L / K)) (A := principalUnits L n) (B := 𝒪[L]ˣ)
-      (C := IntegerUnitsModPrincipalUnitsAtLevel L n)
+      (C := IntegerUnitsPrincipalQuot L n)
       (principalUnitsIntegerUnitsInclusion L n)
       (integerUnitsPrincipalUnitsQuotientMap L n)
       hseq.1 hseq.2.1 hseq.2.2.1 hseq.2.2.2.1 hseq.2.2.2.2
@@ -330,9 +332,9 @@ private theorem unramified_principalUnits_herbrand_subsingleton
   let : Finite (HerbrandH0 Gal(L / K) 𝒪[L]ˣ) := hU.1
   let : Finite (HerbrandHMinusOne Gal(L / K) 𝒪[L]ˣ g) := hU.2
   let : Finite (HerbrandH0 Gal(L / K)
-      (IntegerUnitsModPrincipalUnitsAtLevel L n)) := hQ.1
+      (IntegerUnitsPrincipalQuot L n)) := hQ.1
   let : Finite (HerbrandHMinusOne Gal(L / K)
-      (IntegerUnitsModPrincipalUnitsAtLevel L n) g) := hQ.2
+      (IntegerUnitsPrincipalQuot L n) g) := hQ.2
   let : Finite (HerbrandH0 Gal(L / K) (principalUnits L n)) := hP.1
   let : Finite (HerbrandHMinusOne Gal(L / K)
       (principalUnits L n) g) := hP.2
@@ -340,7 +342,7 @@ private theorem unramified_principalUnits_herbrand_subsingleton
       (A := principalUnits L n) g = 1 := by
     have hmul := herbrandQuotient_multiplicative_of_shortExact
       (G := Gal(L / K)) (A := principalUnits L n) (B := 𝒪[L]ˣ)
-      (C := IntegerUnitsModPrincipalUnitsAtLevel L n)
+      (C := IntegerUnitsPrincipalQuot L n)
       (principalUnitsIntegerUnitsInclusion L n)
       (integerUnitsPrincipalUnitsQuotientMap L n)
       hseq.1 hseq.2.1 hseq.2.2.1 hseq.2.2.2.1 hseq.2.2.2.2 g hg

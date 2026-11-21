@@ -71,13 +71,23 @@ def finiteGaloisAbstractExtension : FiniteGaloisSubextension B :=
   finiteGaloisAbstractExtensionOfEmbedding K L
     (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L)
 
+/-- The finite abstract norm class represented by a base-field unit in an
+explicit separable-closure realization. -/
+def embeddedBaseNormClass
+    (i : L →ₐ[K] SeparableClosure K) (a : Kˣ) :
+    let E := finiteGaloisAbstractExtensionOfEmbedding K L i
+    @FiniteNormQuotient _ _ _ A B E.field E.below E.finite := by
+  intro E
+  exact @finiteNormClass _ _ _ A B E.field E.below E.finite
+    (baseUnitsEquivGaloisAmbientFixed K (SeparableClosure K) (Additive.ofMul a))
+
 /-- The additive reciprocity equivalence transported through an explicit
 realization of `L/K` in the separable closure. -/
 def concreteReciprocityAddEquivOfEmbedding
     (i : L →ₐ[K] SeparableClosure K)
     (D : DegreeData G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A) :
-    Additive (Abelianization Gal(L / K)) ≃+
+    Additive (Group.Abelianization Gal(L / K)) ≃+
       Additive (NormQuotient K L) :=
   (MulEquiv.toAdditive
       ((finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L
@@ -93,17 +103,17 @@ def concreteReciprocityEquivOfEmbedding
     (i : L →ₐ[K] SeparableClosure K)
     (D : DegreeData G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A) :
-    Abelianization Gal(L / K) ≃* NormQuotient K L := by
-  let e : Additive (Abelianization Gal(L / K)) ≃+
+    Group.Abelianization Gal(L / K) ≃* NormQuotient K L := by
+  let e : Additive (Group.Abelianization Gal(L / K)) ≃+
       Additive (NormQuotient K L) :=
     concreteReciprocityAddEquivOfEmbedding K L i D v hcf
-  let em : Multiplicative (Additive (Abelianization Gal(L / K))) ≃*
+  let em : Multiplicative (Additive (Group.Abelianization Gal(L / K))) ≃*
       Multiplicative (Additive (NormQuotient K L)) :=
     @AddEquiv.toMultiplicative
-      (Additive (Abelianization Gal(L / K)))
+      (Additive (Group.Abelianization Gal(L / K)))
       (Additive (NormQuotient K L)) inferInstance inferInstance e
   exact (MulEquiv.multiplicativeAdditive
-      (Abelianization Gal(L / K))).symm.trans
+      (Group.Abelianization Gal(L / K))).symm.trans
     (em.trans
         (MulEquiv.multiplicativeAdditive (NormQuotient K L)))
 
@@ -113,7 +123,7 @@ def concreteNormResidueSymbolOfEmbedding
     (i : L →ₐ[K] SeparableClosure K)
     (D : DegreeData G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A) :
-    Kˣ →* Abelianization Gal(L / K) :=
+    Kˣ →* Group.Abelianization Gal(L / K) :=
   (concreteReciprocityEquivOfEmbedding K L i D v hcf).symm.toMonoidHom.comp
     (normClass K L)
 
@@ -123,7 +133,7 @@ proof, not additional reciprocity hypotheses. -/
 def concreteReciprocityAddEquiv
     (D : DegreeData G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A) :
-    Additive (Abelianization Gal(L / K)) ≃+
+    Additive (Group.Abelianization Gal(L / K)) ≃+
       Additive (NormQuotient K L) :=
   concreteReciprocityAddEquivOfEmbedding K L
     (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L) D v hcf
@@ -133,7 +143,7 @@ isomorphism `G(L/K)ᵃᵇ ≃ Kˣ/N_{L/K}Lˣ`. -/
 def concreteReciprocityEquiv
     (D : DegreeData G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A) :
-    Abelianization Gal(L / K) ≃* NormQuotient K L :=
+    Group.Abelianization Gal(L / K) ≃* NormQuotient K L :=
   concreteReciprocityEquivOfEmbedding K L
     (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L) D v hcf
 
@@ -142,7 +152,7 @@ precomposing with the quotient map on `Kˣ`. -/
 def concreteNormResidueSymbol
     (D : DegreeData G) (v : ValuationData D A)
     (hcf : SatisfiesClassFieldAxiom A) :
-    Kˣ →* Abelianization Gal(L / K) :=
+    Kˣ →* Group.Abelianization Gal(L / K) :=
   concreteNormResidueSymbolOfEmbedding K L
     (AlgebraicNumberTheory.separableEmbeddingIntoSeparableClosure K L) D v hcf
 

@@ -40,7 +40,7 @@ open RamificationTheory.HilbertRamification.ValuationSubring
 
 /-- The selected residue extension is algebraic by its canonical normality. -/
 local instance unramifiedComparisonResidueIsAlgebraic
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] :
     Algebra.IsAlgebraic
       (decompositionResidueField K (localSeparableValuationSubring K))
@@ -71,7 +71,7 @@ end BaseResidueDegree
 
 section BaseFrobeniusLift
 
-variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+variable (K : Type u) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 
 /-- The chosen degree-one lift used in the abstract unramified Frobenius. -/
@@ -159,7 +159,7 @@ end
 
 section
 
-variable (K L : Type)
+variable (K : Type u) (L : Type v)
   [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L]
@@ -394,17 +394,13 @@ theorem finiteGaloisResidueBaseExtension_normal :
 
 attribute [local instance] finiteGaloisResidueBaseExtension_normal
 
-/-- Under the field-facing quotient equivalence, the abstract degree-one
-unramified Frobenius is the actual arithmetic Frobenius of the unramified
-valuation extension. -/
-theorem finiteGaloisAbstractUnramifiedFrobenius_eq_arithmeticFrobenius :
+/-- Any degree-one absolute element restricts to arithmetic Frobenius in an
+unramified extension realized by an actual embedding. -/
+theorem finiteGaloisRestriction_eq_arithmeticFrobenius_of_degree_one
+    (phi : (intrinsicAbstractBase K).toSubgroup)
+    (hphi : localResidueDegree K phi.1 = Multiplicative.ofAdd (1 : ZHat)) :
     finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
-        ((localResidueDatum K).unramifiedFrobenius
-          ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
-          (finiteGaloisAbstractExtensionOfEmbedding K L i).field
-          (finiteGaloisAbstractExtensionOfEmbedding K L i).below) =
-      arithmeticFrobeniusOfUnramifiedValuation K L := by
-  let phi := abstractBaseFrobeniusLift K
+      (QuotientGroup.mk phi) = arithmeticFrobeniusOfUnramifiedValuation K L := by
   let q : Gal(L / K) :=
     finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
       (QuotientGroup.mk phi)
@@ -416,7 +412,7 @@ theorem finiteGaloisAbstractUnramifiedFrobenius_eq_arithmeticFrobenius :
           (selectedResidueField
             (localSeparableValuationSubring K)) :=
     localSeparableResidueAlgAction_eq_frobenius_of_degree_one K phi.1
-      (abstractBaseFrobeniusLift_degree K)
+      hphi
   have hcard :
       Nat.card
           (decompositionResidueField K
@@ -443,6 +439,18 @@ theorem finiteGaloisAbstractUnramifiedFrobenius_eq_arithmeticFrobenius :
     exact hresidue
   change q = arithmeticFrobeniusOfUnramifiedValuation K L
   exact hq
+
+/-- Under the field-facing quotient equivalence, the abstract degree-one
+unramified Frobenius is the arithmetic Frobenius of the unramified extension. -/
+theorem finiteGaloisAbstractUnramifiedFrobenius_eq_arithmeticFrobenius :
+    finiteGaloisAbstractQuotientEquivGaloisGroupOfEmbedding K L i
+        ((localResidueDatum K).unramifiedFrobenius
+          ((intrinsicFiniteAbstractBase K).toFiniteResidueAbstractField (localResidueDatum K))
+          (finiteGaloisAbstractExtensionOfEmbedding K L i).field
+          (finiteGaloisAbstractExtensionOfEmbedding K L i).below) =
+      arithmeticFrobeniusOfUnramifiedValuation K L :=
+  finiteGaloisRestriction_eq_arithmeticFrobenius_of_degree_one K L i
+    (abstractBaseFrobeniusLift K) (abstractBaseFrobeniusLift_degree K)
 
 end AbstractUnramifiedFrobenius
 

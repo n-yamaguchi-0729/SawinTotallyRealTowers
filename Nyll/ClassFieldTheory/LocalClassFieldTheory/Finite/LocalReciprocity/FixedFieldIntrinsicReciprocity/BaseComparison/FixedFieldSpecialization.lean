@@ -26,6 +26,8 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation
 open scoped ValuativeRel
@@ -91,6 +93,10 @@ theorem intrinsicExtensionSubgroup_iff_ambientFixedField
     (AlgEquiv.autCongr e).trans
       (abstractSubgroupEquivGaloisGroup
         K (SeparableClosure K) H.field).symm
+  let : Group (H.field.toSubgroup ⧸ extensionSubgroup H.field J hJH) :=
+    QuotientGroup.Quotient.group (extensionSubgroup H.field J hJH)
+  let : One (H.field.toSubgroup ⧸ extensionSubgroup H.field J hJH) :=
+    ⟨QuotientGroup.mk (1 : H.field.toSubgroup)⟩
   let qH :=
     abstractExtensionQuotientEquivGaloisGroup
       K (SeparableClosure K) H.field J hJH hJnormal
@@ -125,20 +131,15 @@ theorem intrinsicExtensionSubgroup_iff_ambientFixedField
       exact hHimage.trans (map_one qH).symm
     exact (QuotientGroup.eq_one_iff (φ τ.1)).1 hHquotient
   · intro hφτ
-    have hHquotient :
-        (QuotientGroup.mk (φ τ.1) :
-          H.field.toSubgroup ⧸
-            extensionSubgroup H.field J hJH) = 1 := by
-      rw [QuotientGroup.eq_one_iff]
-      exact hφτ
+    have hHquotient := (QuotientGroup.eq_one_iff
+      (N := extensionSubgroup H.field J hJH) (φ τ.1)).2 hφτ
     have hFimage :
         qF (QuotientGroup.mk τ) = 1 := by
       calc
         qF (QuotientGroup.mk τ) =
             qH (QuotientGroup.mk (φ τ.1)) :=
           hcompat.symm
-        _ = qH 1 := congrArg qH hHquotient
-        _ = 1 := map_one qH
+        _ = 1 := (congrArg qH hHquotient).trans (map_one qH)
     have hFquotient :
         (QuotientGroup.mk τ :
           (intrinsicAbstractBase F).toSubgroup ⧸
@@ -151,7 +152,7 @@ theorem intrinsicExtensionSubgroup_iff_ambientFixedField
 /-- Membership in intrinsic extension inertia is equivalent, under the
 fixed-field base equivalence, to membership in the ambient extension inertia. -/
 theorem intrinsicExtensionInertia_iff_ambientFixedField
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K))
@@ -285,7 +286,7 @@ abbrev intrinsicFixedFieldSeparableClosureEquiv
 /-- The intrinsic base subgroup modulo extension inertia for a finite
 fixed-field extension, using the chosen separable-closure equivalence. -/
 abbrev intrinsicFixedFieldFrobeniusQuotient
-    (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
+    (K : Type u₁) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K]
     (H : FiniteAbstractField
       Gal(SeparableClosure K/K))

@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.ClassFieldTheory.GlobalClassFieldTheory.Reciprocity.FinitePlaceArtin.TowerRestriction
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.AdicCompletionComparison
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.RayClass.Ideal
@@ -68,7 +70,7 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
       (K := F) (L := M) v w
     let eF :
         vF.Completion ≃+* v.adicCompletion F :=
-      (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+      (finitePlaceCompletionAlgEquiv v).toRingEquiv
     let eE :
         E ≃+* U.1.adicCompletion M :=
       (AlgebraicNumberTheory.Valuations.localizedCompletionEquivCompletion
@@ -86,7 +88,7 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
           vF hvF w (algebraMap vF.Completion E x)) =
       finitePlaceAdicCompletionMap
         F M v U
-          (relativeFinitePlaceCompletionAlgEquiv v x)
+          (finitePlaceCompletionAlgEquiv v x)
   rw [
     (AlgebraicNumberTheory.Valuations.localizedCompletionEquivCompletion
       vF hvF w).commutes]
@@ -100,10 +102,10 @@ private theorem finitePlaceArtinLocalizedCompletion_algebraMap
       finitePlaceExtensionAdicCompletionRingEquiv
         (K := F) (L := M) v w
         (AbsoluteValue.completionMap vF w.1 w.2
-          ((relativeFinitePlaceCompletionAlgEquiv v).symm
-            (relativeFinitePlaceCompletionAlgEquiv v x)))
+          ((finitePlaceCompletionAlgEquiv v).symm
+            (finitePlaceCompletionAlgEquiv v x)))
   rw [
-    (relativeFinitePlaceCompletionAlgEquiv v).symm_apply_apply,
+    (finitePlaceCompletionAlgEquiv v).symm_apply_apply,
     AbsoluteValue.completionAlgebra_algebraMap]
 
 /-- The continuous ring homomorphism between base completions attached to a finite place lying above
@@ -117,9 +119,9 @@ noncomputable def finitePlaceArtinRelativeCompletionRingHom
     (NumberField.HeightOneSpectrum.adicAbv K v).Completion →+*
       (NumberField.HeightOneSpectrum.adicAbv K' W).Completion :=
   let eC :=
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+    (finitePlaceCompletionAlgEquiv v).toRingEquiv
   let eD :=
-    (relativeFinitePlaceCompletionAlgEquiv W).toRingEquiv
+    (finitePlaceCompletionAlgEquiv W).toRingEquiv
   eD.symm.toRingHom.comp
     ((finitePlaceAdicCompletionMap
       K K' v ⟨W, hW⟩).comp eC.toRingHom)
@@ -135,15 +137,15 @@ theorem finitePlaceArtinRelativeCompletionRingHom_continuous
       (finitePlaceArtinRelativeCompletionRingHom
         (K := K) (K' := K') v W hW) := by
   let eD :=
-    (relativeFinitePlaceCompletionAlgEquiv W).toRingEquiv
+    (finitePlaceCompletionAlgEquiv W).toRingEquiv
   have hDsymm : Isometry eD.symm :=
     AddMonoidHomClass.isometry_of_norm eD.symm
-      (relativeFinitePlaceCompletionAlgEquiv_symm_norm W)
+      (finitePlaceCompletionAlgEquiv_symm_norm W)
   exact
     hDsymm.continuous.comp
       ((finitePlaceAdicCompletionMap_continuous
         K K' v ⟨W, hW⟩).comp
-        (relativeFinitePlaceCompletionRingHom_isometry v).continuous)
+        (finitePlaceCompletionRingHom_isometry v).continuous)
 
 /-- The localized completion at a finite place, with its completion-algebra
 tower hidden behind one named type. -/
@@ -341,10 +343,10 @@ theorem finitePlaceArtinLocalizedCompletion_towerPoint
       _ = v := hW
   let eC :
       C ≃+* v.adicCompletion K :=
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+    (finitePlaceCompletionAlgEquiv v).toRingEquiv
   let eD :
       D ≃+* W.adicCompletion K' :=
-    (relativeFinitePlaceCompletionAlgEquiv W).toRingEquiv
+    (finitePlaceCompletionAlgEquiv W).toRingEquiv
   let eE :
       E ≃+* U.1.adicCompletion L :=
     (AlgebraicNumberTheory.Valuations.localizedCompletionEquivCompletion
@@ -765,16 +767,15 @@ private theorem finitePlaceCrossDecompositionTransport_core
     [IsScalarTower K K' L']
     [Algebra K L] [Algebra L L'] [IsScalarTower K L L']
     [Normal K L]
-    [Algebra C D] [Algebra D E'] [Algebra C E']
-    [IsScalarTower C D E']
-    [Algebra C E] [Algebra E E'] [IsScalarTower C E E']
-    [Normal C E]
+    [Algebra C E] [Algebra D E']
     (phiLower : (E ≃ₐ[C] E) → (L ≃ₐ[K] L))
     (phiUpper : (E' ≃ₐ[D] E') → (L' ≃ₐ[K'] L'))
+    (restrict : (E' ≃ₐ[D] E') → (E ≃ₐ[C] E))
     (lowerEmbedding : L →+* E)
     (upperEmbedding : L' →+* E')
+    (localEmbedding : E →+* E')
     (hEmbedding : ∀ z : L,
-      algebraMap E E' (lowerEmbedding z) =
+      localEmbedding (lowerEmbedding z) =
         upperEmbedding (algebraMap L L' z))
     (hUpperAction : ∀ (tau : E' ≃ₐ[D] E') (z : L'),
       upperEmbedding (phiUpper tau z) =
@@ -782,15 +783,13 @@ private theorem finitePlaceCrossDecompositionTransport_core
     (hLowerAction : ∀ (tau : E ≃ₐ[C] E) (z : L),
       tau (lowerEmbedding z) =
         lowerEmbedding (phiLower tau z))
+    (hRestrict : ∀ (tau : E' ≃ₐ[D] E') (y : E),
+      localEmbedding (restrict tau y) = tau (localEmbedding y))
     (tauUpper : E' ≃ₐ[D] E') :
     AlgEquiv.restrictNormalHom L
         (AlgEquiv.restrictScalarsHom K (phiUpper tauUpper)) =
-      phiLower
-        (AlgEquiv.restrictNormalHom E
-          (AlgEquiv.restrictScalarsHom C tauUpper)) := by
-  let tauLower :=
-    AlgEquiv.restrictNormalHom E
-      (AlgEquiv.restrictScalarsHom C tauUpper)
+      phiLower (restrict tauUpper) := by
+  let tauLower := restrict tauUpper
   apply AlgEquiv.ext
   intro z
   apply (algebraMap L L').injective
@@ -810,18 +809,12 @@ private theorem finitePlaceCrossDecompositionTransport_core
     _ = tauUpper
         (upperEmbedding (algebraMap L L' z)) :=
       hUpperAction tauUpper (algebraMap L L' z)
-    _ = tauUpper
-        (algebraMap E E' (lowerEmbedding z)) := by
-      rw [hEmbedding]
-    _ = algebraMap E E'
-        (tauLower (lowerEmbedding z)) := by
-      exact
-        (AlgEquiv.restrictNormal_commutes
-          (AlgEquiv.restrictScalarsHom C tauUpper)
-          E (lowerEmbedding z)).symm
-    _ = algebraMap E E'
-        (lowerEmbedding (phiLower tauLower z)) := by
-      rw [hLowerAction]
+    _ = tauUpper (localEmbedding (lowerEmbedding z)) :=
+      congrArg tauUpper (hEmbedding z).symm
+    _ = localEmbedding (tauLower (lowerEmbedding z)) :=
+      (hRestrict tauUpper (lowerEmbedding z)).symm
+    _ = localEmbedding (lowerEmbedding (phiLower tauLower z)) :=
+      congrArg localEmbedding (hLowerAction tauLower z)
     _ = upperEmbedding
         (algebraMap L L' (phiLower tauLower z)) := by
       rw [hEmbedding]
@@ -874,62 +867,20 @@ theorem finitePlaceCrossDecompositionTransport
       finitePlaceLocalArtinLocalizedAlgebra (K := K) (L := L) v w
     let : Algebra D E' :=
       finitePlaceLocalArtinLocalizedAlgebra (K := K') (L := L') W w'
-    let : Algebra K E :=
-      LocalClassFieldTheory.localizedCompletionGlobalAlgebra vK w
-    let : Algebra K' E' :=
-      LocalClassFieldTheory.localizedCompletionGlobalAlgebra vK' w'
-    let : Algebra C D :=
-      (finitePlaceArtinRelativeCompletionRingHom
-        (K := K) (K' := K') v W hW).toAlgebra
-    let : Algebra E E' :=
-      (finitePlaceArtinLocalizedCompletionRingHom
-        (K := K) (L := L) (K' := K') (L' := L')
-        v W w w' hcentres).toAlgebra
-    let : Algebra C E' :=
-      ((algebraMap D E').comp (algebraMap C D)).toAlgebra
-    let : IsScalarTower C D E' :=
-      IsScalarTower.of_algebraMap_eq' rfl
-    let : IsScalarTower C E E' :=
-      IsScalarTower.of_algebraMap_eq' <| by
-        apply RingHom.ext
-        intro x
-        exact
-          finitePlaceArtinLocalizedCompletion_towerPoint
-            (K := K) (L := L) (K' := K') (L' := L')
-            v W hW w w' hcentres x
-    let : FiniteDimensional C E :=
-      finitePlaceLocalArtinFiniteDimensional (K := K) (L := L) v w
-    let : IsAbelianGalois C E :=
-      finitePlaceLocalArtinIsAbelianGalois (K := K) (L := L) v w
-        (inferInstance : FiniteDimensional K L)
-    let hGaloisE : IsGalois C E :=
-      (inferInstance : IsAbelianGalois C E).toIsGalois
-    let : Normal C E := hGaloisE.to_normal
-    let eLower :
-        absoluteValueDecompositionGroup K w.1 ≃*
-          (E ≃ₐ[C] E) :=
-      decompositionGroupEquivAlgebraicLocalizationAut
-        vK hvK w
-    let eUpper :
-        absoluteValueDecompositionGroup K' w'.1 ≃*
-          (E' ≃ₐ[D] E') :=
-      decompositionGroupEquivAlgebraicLocalizationAut
-        vK' hvK' w'
+    let dLower := finitePlaceLocalToGlobalMonoidHom (K := K) (L := L) v w
+    let dUpper := finitePlaceLocalToGlobalMonoidHom (K := K') (L := L') W w'
     let lowerEmbedding : L →+* E :=
       AbsoluteValue.toAlgebraicLocalization vK w.1 w.2
     let upperEmbedding : L' →+* E' :=
       AbsoluteValue.toAlgebraicLocalization vK' w'.1 w'.2
-    have hEmbedding (x : L) :
-        algebraMap E E' (lowerEmbedding x) =
-          upperEmbedding (algebraMap L L' x) := by
-      exact
-        finitePlaceArtinLocalizedCompletion_globalEmbedding
-          (K := K) (L := L) (K' := K') (L' := L')
-          v W w w' hcentres x
+    let localEmbedding := finitePlaceArtinLocalizedCompletionRingHom v W w w' hcentres
+    let restrict := finitePlaceCrossLocalRestrictionMonoidHom v W hW w w' hcentres
+    have hEmbedding := finitePlaceArtinLocalizedCompletion_globalEmbedding v W w w' hcentres
+    have hRestrict := finitePlaceCrossLocalRestrictionMonoidHom_commutes v W hW w w' hcentres
     have hUpperAction
         (tau : E' ≃ₐ[D] E') (z : L') :
         upperEmbedding
-            (((eUpper.symm tau).1 : L' ≃ₐ[K'] L') z) =
+            (dUpper tau z) =
           tau (upperEmbedding z) := by
       exact
         finitePlaceDecompositionEquiv_symm_action
@@ -938,24 +889,14 @@ theorem finitePlaceCrossDecompositionTransport
         (tau : E ≃ₐ[C] E) (z : L) :
         tau (lowerEmbedding z) =
           lowerEmbedding
-            (((eLower.symm tau).1 : L ≃ₐ[K] L) z) := by
+            (dLower tau z) := by
       exact
         (finitePlaceDecompositionEquiv_symm_action
           vK hvK w tau z).symm
-    change
-      ((AlgEquiv.restrictNormalHom L)
-        ((AlgEquiv.restrictScalarsHom K)
-          ((eUpper.symm tauUpper).1 : L' ≃ₐ[K'] L'))) =
-        ((eLower.symm
-          (AlgEquiv.restrictNormalHom E
-            ((AlgEquiv.restrictScalarsHom C) tauUpper))).1 :
-          L ≃ₐ[K] L)
     exact
       finitePlaceCrossDecompositionTransport_core
-        (fun tau => ((eLower.symm tau).1 : L ≃ₐ[K] L))
-        (fun tau => ((eUpper.symm tau).1 : L' ≃ₐ[K'] L'))
-        lowerEmbedding upperEmbedding hEmbedding
-        hUpperAction hLowerAction tauUpper
+        dLower dUpper restrict lowerEmbedding upperEmbedding localEmbedding
+        hEmbedding hUpperAction hLowerAction hRestrict tauUpper
 
 end Reciprocity
 end GlobalClassFieldTheory

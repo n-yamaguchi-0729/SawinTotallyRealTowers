@@ -29,7 +29,7 @@ noncomputable def Quiver.coveredArrowEquivTotal
   classical
   refine
     { toFun := fun e =>
-        if hpos : T e.1.left e.1.right (Sum.inl e.1.hom) then
+        if hpos : Sum.inl e.1.hom ∈ T e.1.left e.1.right then
             { left := e.1.left
               right := e.1.right
               hom := ⟨Sum.inl e.1.hom, hpos⟩ }
@@ -44,11 +44,11 @@ noncomputable def Quiver.coveredArrowEquivTotal
         match he : e.hom.1 with
         | Sum.inl f =>
             ⟨⟨e.left, e.right, f⟩, by
-              change T e.left e.right (Sum.inl f) ∨ T e.right e.left (Sum.inr f)
+              change Sum.inl f ∈ T e.left e.right ∨ Sum.inr f ∈ T e.right e.left
               exact Or.inl (he ▸ e.hom.property)⟩
         | Sum.inr f =>
             ⟨⟨e.right, e.left, f⟩, by
-              change T e.right e.left (Sum.inl f) ∨ T e.left e.right (Sum.inr f)
+              change Sum.inl f ∈ T e.right e.left ∨ Sum.inr f ∈ T e.left e.right
               exact Or.inr (he ▸ e.hom.property)⟩
       left_inv := ?_
       right_inv := ?_ }
@@ -56,7 +56,7 @@ noncomputable def Quiver.coveredArrowEquivTotal
     apply Subtype.ext
     rcases e with ⟨⟨a, b, f⟩, hf⟩
     dsimp
-    by_cases hpos : T a b (Sum.inl f)
+    by_cases hpos : Sum.inl f ∈ T a b
     · rw [dite_eq_left hpos]
     · rcases hf with h | h
       · exact False.elim (hpos h)
@@ -76,12 +76,12 @@ noncomputable def Quiver.coveredArrowEquivTotal
         cases e with
         | inl f =>
             dsimp
-            by_cases hpos : T a b (Sum.inl f)
+            by_cases hpos : Sum.inl f ∈ T a b
             · simp only [hpos, ↓reduceDIte]
             · exact False.elim (hpos he)
         | inr f =>
             dsimp
-            have hnot : ¬ T b a (Sum.inl f) := by
+            have hnot : Sum.inl f ∉ T b a := by
               intro hpos
               let e₁ : a ⟶ b := ⟨Sum.inr f, he⟩
               let e₂ : b ⟶ a := ⟨Sum.inl f, hpos⟩

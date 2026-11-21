@@ -73,10 +73,10 @@ def openLocalCosetTarget
       Subgroup (v.1.adicCompletion K)ˣ) :
     ∀ i : RayClass.ApproximationPlace m,
       Set (RayClass.approximationCompletion m i)
-  | Sum.inl v => RayClass.unitRatioSet (a.2 v.1) (U v)
+  | Sum.inl v => RayClass.unitRatioSet ((IdeleGroup.finiteCoordinates a) v.1) (U v)
   | Sum.inr w =>
       RayClass.unitRatioSet
-        (ContinuousMulEquiv.piUnits a.1 w) ⊤
+        (ContinuousMulEquiv.piUnits (IdeleGroup.infinitePart a) w) ⊤
 
 /-- Every coordinate of `openLocalCosetTarget` is open. -/
 theorem isOpen_openLocalCosetTarget
@@ -86,12 +86,12 @@ theorem isOpen_openLocalCosetTarget
     (hU : ∀ v, IsOpen (U v : Set (v.1.adicCompletion K)ˣ)) :
     ∀ i, IsOpen (openLocalCosetTarget m a U i)
   | Sum.inl v => by
-      change IsOpen (RayClass.unitRatioSet (a.2 v.1) (U v))
+      change IsOpen (RayClass.unitRatioSet ((IdeleGroup.finiteCoordinates a) v.1) (U v))
       exact RayClass.isOpen_unitRatioSet _ _ (hU v)
   | Sum.inr w => by
       change IsOpen
         (RayClass.unitRatioSet
-          (ContinuousMulEquiv.piUnits a.1 w) ⊤)
+          (ContinuousMulEquiv.piUnits (IdeleGroup.infinitePart a) w) ⊤)
       exact RayClass.isOpen_unitRatioSet _ _ isOpen_univ
 
 /-- The given idele supplies a point in the product of the prescribed
@@ -100,9 +100,9 @@ def openLocalCosetTargetPoint
     (m : RayClass.Modulus K) (a : IdeleGroup K) :
     (i : RayClass.ApproximationPlace m) →
       RayClass.approximationCompletion m i
-  | Sum.inl v => (a.2 v.1 : v.1.adicCompletion K)
+  | Sum.inl v => ((IdeleGroup.finiteCoordinates a) v.1 : v.1.adicCompletion K)
   | Sum.inr w =>
-      (ContinuousMulEquiv.piUnits a.1 w : w.Completion)
+      (ContinuousMulEquiv.piUnits (IdeleGroup.infinitePart a) w : w.Completion)
 
 /-- The target product used for multiplicative weak approximation is
 nonempty. -/
@@ -131,8 +131,8 @@ theorem exists_principal_quotient_mem_openLocalSubgroups
       Subgroup (v.1.adicCompletion K)ˣ)
     (hU : ∀ v, IsOpen (U v : Set (v.1.adicCompletion K)ˣ)) :
     ∃ x : Kˣ, ∀ v : ↥m.finitePart.support,
-      a.2 v.1 *
-          ((principalIdele K x).2 v.1)⁻¹ ∈ U v := by
+      (IdeleGroup.finiteCoordinates a) v.1 *
+          ((IdeleGroup.finiteCoordinates (principalIdele K x)) v.1)⁻¹ ∈ U v := by
   let W : Set
       ((i : RayClass.ApproximationPlace m) →
         RayClass.approximationCompletion m i) :=
@@ -152,13 +152,12 @@ theorem exists_principal_quotient_mem_openLocalSubgroups
   change
     (x : w₀.Completion) ∈
       RayClass.unitRatioSet
-        (ContinuousMulEquiv.piUnits a.1 w₀) ⊤ at hxw₀
+        (ContinuousMulEquiv.piUnits (IdeleGroup.infinitePart a) w₀) ⊤ at hxw₀
   obtain ⟨y₀, _hy₀, hy₀x⟩ := hxw₀
   have hx0 : x ≠ 0 := by
     intro hxzero
     apply Units.ne_zero y₀
-    rw [hy₀x, hxzero,
-      NumberField.InfinitePlace.Completion.coe_zero]
+    rw [hy₀x, hxzero, WithAbs.toAbs_zero, AbsoluteValue.Completion.coe_zero]
   let xu : Kˣ := Units.mk0 x hx0
   refine ⟨xu, ?_⟩
   intro v
@@ -166,13 +165,13 @@ theorem exists_principal_quotient_mem_openLocalSubgroups
     hx (Sum.inl v) (Set.mem_univ (Sum.inl v))
   change
     FinitePlace.embedding v.1 x ∈
-      RayClass.unitRatioSet (a.2 v.1) (U v) at hvx
+      RayClass.unitRatioSet ((IdeleGroup.finiteCoordinates a) v.1) (U v) at hvx
   obtain ⟨y, hy, hyx⟩ := hvx
   have hprincipal :
-      (principalIdele K xu).2 v.1 = y := by
+      (IdeleGroup.finiteCoordinates (principalIdele K xu)) v.1 = y := by
     apply Units.ext
     calc
-      (((principalIdele K xu).2 v.1 :
+      (((IdeleGroup.finiteCoordinates (principalIdele K xu)) v.1 :
           (v.1.adicCompletion K)ˣ) :
           v.1.adicCompletion K) =
           (xu : K) :=
@@ -188,8 +187,8 @@ theorem exists_principal_quotient_mem_openLocalSubgroups_finset
     (U : ∀ v : ↥S, Subgroup (v.1.adicCompletion K)ˣ)
     (hU : ∀ v, IsOpen (U v : Set (v.1.adicCompletion K)ˣ)) :
     ∃ x : Kˣ, ∀ v : ↥S,
-      a.2 v.1 *
-          ((principalIdele K x).2 v.1)⁻¹ ∈ U v := by
+      (IdeleGroup.finiteCoordinates a) v.1 *
+          ((IdeleGroup.finiteCoordinates (principalIdele K x)) v.1)⁻¹ ∈ U v := by
   let m : RayClass.Modulus K := modulusOfFinset S
   have hm : m.finitePart.support = S := by
     simp [m]
@@ -217,7 +216,7 @@ def openAllLocalCosetTarget
       Subgroup w.Completionˣ) :
     ∀ i : RayClass.ApproximationPlace m,
       Set (RayClass.approximationCompletion m i)
-  | Sum.inl v => RayClass.unitRatioSet (a.2 v.1) (U v)
+  | Sum.inl v => RayClass.unitRatioSet ((IdeleGroup.finiteCoordinates a) v.1) (U v)
   | Sum.inr w =>
       RayClass.unitRatioSet
         (IdeleGroup.infiniteComponent w a) (V w)
@@ -237,7 +236,7 @@ theorem isOpen_openAllLocalCosetTarget
       (openAllLocalCosetTarget m a U V i)
   | Sum.inl v => by
       change IsOpen
-        (RayClass.unitRatioSet (a.2 v.1) (U v))
+        (RayClass.unitRatioSet ((IdeleGroup.finiteCoordinates a) v.1) (U v))
       exact RayClass.isOpen_unitRatioSet _ _ (hU v)
   | Sum.inr w => by
       change IsOpen
@@ -281,8 +280,8 @@ theorem exists_principal_quotient_mem_openAllLocalSubgroups
       (V w : Set w.Completionˣ)) :
     ∃ x : Kˣ,
       (∀ v : ↥m.finitePart.support,
-        a.2 v.1 *
-            ((principalIdele K x).2 v.1)⁻¹ ∈ U v) ∧
+        (IdeleGroup.finiteCoordinates a) v.1 *
+            ((IdeleGroup.finiteCoordinates (principalIdele K x)) v.1)⁻¹ ∈ U v) ∧
       (∀ w : InfinitePlace K,
         IdeleGroup.infiniteComponent w a *
             (IdeleGroup.infiniteComponent w
@@ -313,8 +312,7 @@ theorem exists_principal_quotient_mem_openAllLocalSubgroups
   have hx0 : x ≠ 0 := by
     intro hxzero
     apply Units.ne_zero y₀
-    rw [hy₀x, hxzero,
-      NumberField.InfinitePlace.Completion.coe_zero]
+    rw [hy₀x, hxzero, WithAbs.toAbs_zero, AbsoluteValue.Completion.coe_zero]
   let xu : Kˣ := Units.mk0 x hx0
   refine ⟨xu, ?_, ?_⟩
   · intro v
@@ -322,13 +320,13 @@ theorem exists_principal_quotient_mem_openAllLocalSubgroups
       hx (Sum.inl v) (Set.mem_univ (Sum.inl v))
     change
       FinitePlace.embedding v.1 x ∈
-        RayClass.unitRatioSet (a.2 v.1) (U v) at hvx
+        RayClass.unitRatioSet ((IdeleGroup.finiteCoordinates a) v.1) (U v) at hvx
     obtain ⟨y, hy, hyx⟩ := hvx
     have hprincipal :
-        (principalIdele K xu).2 v.1 = y := by
+        (IdeleGroup.finiteCoordinates (principalIdele K xu)) v.1 = y := by
       apply Units.ext
       calc
-        (((principalIdele K xu).2 v.1 :
+        (((IdeleGroup.finiteCoordinates (principalIdele K xu)) v.1 :
             (v.1.adicCompletion K)ˣ) :
             v.1.adicCompletion K) =
             (xu : K) :=
@@ -376,8 +374,8 @@ theorem exists_principal_quotient_mem_openAllLocalSubgroups_finset
       (V w : Set w.Completionˣ)) :
     ∃ x : Kˣ,
       (∀ v : ↥S,
-        a.2 v.1 *
-            ((principalIdele K x).2 v.1)⁻¹ ∈ U v) ∧
+        (IdeleGroup.finiteCoordinates a) v.1 *
+            ((IdeleGroup.finiteCoordinates (principalIdele K x)) v.1)⁻¹ ∈ U v) ∧
       (∀ w : InfinitePlace K,
         IdeleGroup.infiniteComponent w a *
             (IdeleGroup.infiniteComponent w
@@ -445,15 +443,17 @@ def ideleOfFiniteLocalFamily
     (S : Finset (HeightOneSpectrum (𝓞 K)))
     (a : ∀ v : ↥S, (v.1.adicCompletion K)ˣ) :
     IdeleGroup K :=
-  (1, finiteIdeleOfFinset S a)
+  IdeleGroup.ofComponents 1 (finiteIdeleOfFinset S a)
 
 @[simp]
 theorem ideleOfFiniteLocalFamily_finiteComponent
     (S : Finset (HeightOneSpectrum (𝓞 K)))
     (a : ∀ v : ↥S, (v.1.adicCompletion K)ˣ)
     (v : ↥S) :
-    (ideleOfFiniteLocalFamily S a).2 v.1 = a v :=
-  finiteIdeleOfFinset_apply_mem S a v
+    IdeleGroup.finiteCoordinates (ideleOfFiniteLocalFamily S a) v.1 = a v :=
+  (congrArg (fun b : FiniteIdeleGroup K => b v.1)
+    (IdeleGroup.finiteCoordinates_ofComponents 1 (finiteIdeleOfFinset S a))).trans
+      (finiteIdeleOfFinset_apply_mem S a v)
 
 /-- The diagonal map from `Kˣ` to a finite product of local multiplicative
 quotients. -/
@@ -471,7 +471,7 @@ theorem principalLocalQuotientMap_apply
     (U : ∀ v : ↥S, Subgroup (v.1.adicCompletion K)ˣ)
     (x : Kˣ) (v : ↥S) :
     principalLocalQuotientMap S U x v =
-      QuotientGroup.mk' (U v) ((principalIdele K x).2 v.1) :=
+      QuotientGroup.mk' (U v) ((IdeleGroup.finiteCoordinates (principalIdele K x)) v.1) :=
   rfl
 
 /-- Multiplicative weak approximation is equivalently surjectivity of the

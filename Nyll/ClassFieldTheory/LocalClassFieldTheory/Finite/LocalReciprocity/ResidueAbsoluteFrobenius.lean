@@ -6,6 +6,8 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Algebra.FrobeniusRestriction
+
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.LocalReciprocity.FiniteResidueFrobenius
 
 /-!
@@ -139,29 +141,6 @@ theorem restrictNormalHom_residueAbsoluteFrobenius_one
   let : Finite E := Module.finite_of_finite k
   exact finiteResidueFrobeniusFromZHat_one k E
 
-/-- Arithmetic Frobenius on an algebraic Galois extension restricts to
-arithmetic Frobenius on every finite Galois intermediate field. -/
-theorem restrictNormalHom_frobeniusAlgEquivOfAlgebraic
-    (E : FiniteGaloisIntermediateField k Omega) :
-    AlgEquiv.restrictNormalHom E
-        (FiniteField.frobeniusAlgEquivOfAlgebraic k Omega) =
-      FiniteField.frobeniusAlgEquivOfAlgebraic k E := by
-  apply AlgEquiv.ext
-  intro x
-  apply (algebraMap E Omega).injective
-  calc
-    algebraMap E Omega
-        ((AlgEquiv.restrictNormalHom E
-          (FiniteField.frobeniusAlgEquivOfAlgebraic k Omega)) x) =
-        FiniteField.frobeniusAlgEquivOfAlgebraic k Omega
-          (algebraMap E Omega x) :=
-      AlgEquiv.restrictNormal_commutes
-        (FiniteField.frobeniusAlgEquivOfAlgebraic k Omega) E x
-    _ = algebraMap E Omega
-        (FiniteField.frobeniusAlgEquivOfAlgebraic k E x) := by
-      simp only [FiniteField.coe_frobeniusAlgEquivOfAlgebraic]
-      exact (map_pow (algebraMap E Omega) x (Fintype.card k)).symm
-
 /-- The distinguished element `1 ∈ ℤ̂` acts on the whole algebraic Galois
 extension by the actual arithmetic Frobenius. -/
 @[simp]
@@ -178,7 +157,7 @@ theorem residueAbsoluteFrobenius_one :
     AlgEquiv.restrictNormalHom E.unop
       (FiniteField.frobeniusAlgEquivOfAlgebraic k Omega)
   rw [restrictNormalHom_residueAbsoluteFrobenius_one,
-    restrictNormalHom_frobeniusAlgEquivOfAlgebraic]
+    FiniteField.restrictNormalHom_frobeniusAlgEquivOfAlgebraic]
 
 end
 end LocalClassFieldTheory

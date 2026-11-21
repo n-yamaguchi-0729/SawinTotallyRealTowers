@@ -72,7 +72,7 @@ theorem fieldUnitsEquivPrincipalIdeles_smul
     let :=
       galoisGroupFieldUnitsMulDistribMulAction K L
     let :=
-      relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     let :=
       principalIdeleMulDistribMulAction K L
     fieldUnitsEquivPrincipalIdeles K L (σ • x) =
@@ -93,7 +93,7 @@ noncomputable def fieldUnitsHerbrandH0EquivPrincipalIdeles :
     let :=
       galoisGroupFieldUnitsMulDistribMulAction K L
     let :=
-      relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     let :=
       principalIdeleMulDistribMulAction K L
     HerbrandH0 (L ≃ₐ[K] L) Lˣ ≃*
@@ -112,7 +112,7 @@ noncomputable def fieldUnitsHerbrandHMinusOneEquivPrincipalIdeles
     let :=
       galoisGroupFieldUnitsMulDistribMulAction K L
     let :=
-      relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     let :=
       principalIdeleMulDistribMulAction K L
     HerbrandHMinusOne (L ≃ₐ[K] L) Lˣ σ ≃*
@@ -134,7 +134,7 @@ theorem principalIdelesHerbrandQuotientDefined
       HerbrandQuotientDefined
         (L ≃ₐ[K] L) Lˣ σ) :
     letI :=
-      relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     letI :=
       principalIdeleMulDistribMulAction K L
     HerbrandQuotientDefined
@@ -143,7 +143,7 @@ theorem principalIdelesHerbrandQuotientDefined
   let _ :=
     galoisGroupFieldUnitsMulDistribMulAction K L
   let _ :=
-    relativeIdeleMulDistribMulAction K L
+    RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   let _ :=
     principalIdeleMulDistribMulAction K L
   let _ : Finite
@@ -173,7 +173,7 @@ theorem fieldUnits_herbrandQuotient_eq_principalIdeles
     letI _fieldAction :=
       galoisGroupFieldUnitsMulDistribMulAction K L
     letI _relativeAction :=
-      relativeIdeleMulDistribMulAction K L
+      RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
     letI _principalAction :=
       principalIdeleMulDistribMulAction K L
     let hP :=
@@ -192,7 +192,7 @@ theorem fieldUnits_herbrandQuotient_eq_principalIdeles
   let _ :=
     galoisGroupFieldUnitsMulDistribMulAction K L
   let _ :=
-    relativeIdeleMulDistribMulAction K L
+    RelativeIdeleGroup.relativeIdeleMulDistribMulAction K L
   let _ :=
     principalIdeleMulDistribMulAction K L
   let _ : Finite

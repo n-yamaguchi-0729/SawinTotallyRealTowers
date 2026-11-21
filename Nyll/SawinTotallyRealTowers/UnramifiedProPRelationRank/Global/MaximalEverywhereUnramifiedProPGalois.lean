@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsEverywhereUnramified
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Global.MaximalEverywhereUnramifiedProP
 public import Mathlib.FieldTheory.Galois.Profinite
 
@@ -20,6 +21,8 @@ pro-`p` property is deferred to the finite-support argument.
 -/
 
 @[expose] public section
+
+open ClassFieldTheory
 
 open scoped NumberField
 
@@ -149,9 +152,7 @@ instance MaxEverywhereUnramifiedProPGaloisGroup.instT2Space
     (F : Type u) [Field F] [NumberField F]
     (p : ℕ) [Fact (Nat.Prime p)] :
     T2Space (MaxEverywhereUnramifiedProPGaloisGroup F p) :=
-  inferInstanceAs
-    (T2Space (maximalEverywhereUnramifiedProP F p ≃ₐ[F]
-      maximalEverywhereUnramifiedProP F p))
+  krullTopology_t2 (K := F) (L := maximalEverywhereUnramifiedProP F p)
 
 /-- Total disconnectedness inherited from the Krull topology. -/
 instance MaxEverywhereUnramifiedProPGaloisGroup.instTotallyDisconnectedSpace

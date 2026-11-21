@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 -/
 
+import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 import Nyll.GaloisCohomology.ProP.FiniteStageTransgressionLinear
 import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedH2Quotient
 
@@ -32,10 +33,7 @@ open ProCGroups ProCGroups.ProC
 variable (F : Type u) [Field F] [NumberField F]
 variable (p : ℕ) [Fact p.Prime]
 
-private noncomputable instance absoluteFiniteStageCompactSpace :
-    CompactSpace (Field.absoluteGaloisGroup F) :=
-  inferInstanceAs
-    (CompactSpace (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F))
+attribute [local instance] Field.absoluteGaloisGroup.compactSpace
 
 /-- Finite-stage transgression for the absolute unramified kernel, transported from the quotient
 of the absolute Galois group to the maximal everywhere-unramified pro-`p` Galois group. -/

@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.GaloisCohomology.Topology.AbsoluteGaloisMap
 public import Nyll.GaloisCohomology.Kummer.FiniteUnitBoundaryMuPPrimitive
 public import Nyll.GaloisCohomology.Kummer.FiniteKummerMuPCoefficients
 public import Nyll.GaloisCohomology.ProP.H2CocycleExtensionPullback

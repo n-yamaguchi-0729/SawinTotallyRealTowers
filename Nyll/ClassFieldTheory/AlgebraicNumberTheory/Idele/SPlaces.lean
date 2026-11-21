@@ -115,7 +115,7 @@ namespace IdeleGroup
 components integral away from `S`. -/
 def supportedAt (S : Set (HeightOneSpectrum (𝓞 K))) :
     Subgroup (IdeleGroup K) :=
-  Subgroup.comap (MonoidHom.snd _ _)
+  Subgroup.comap (finiteCoordinates (K := K))
     (FiniteIdeleGroup.supportedAt S)
 
 @[simp]
@@ -124,7 +124,7 @@ theorem mem_supportedAt_iff
     (a : IdeleGroup K) :
     a ∈ supportedAt (K := K) S ↔
       ∀ v, v ∉ S →
-        a.2 v ∈ (v.adicCompletionIntegers K).units :=
+        finiteCoordinates a v ∈ (v.adicCompletionIntegers K).units :=
   Iff.rfl
 
 theorem supportedAt_mono {S T : Set (HeightOneSpectrum (𝓞 K))}
@@ -137,7 +137,7 @@ theorem supportedAt_mono {S T : Set (HeightOneSpectrum (𝓞 K))}
 theorem exists_finset_supportedAt (a : IdeleGroup K) :
     ∃ S : Finset (HeightOneSpectrum (𝓞 K)),
       a ∈ supportedAt (K := K) (S : Set _) :=
-  FiniteIdeleGroup.exists_finset_supportedAt a.2
+  FiniteIdeleGroup.exists_finset_supportedAt (finiteCoordinates a)
 
 theorem iSup_finset_supportedAt :
     ⨆ S : Finset (HeightOneSpectrum (𝓞 K)),
@@ -162,7 +162,7 @@ theorem isOpen_supportedAt
     IsOpen
       ((supportedAt (K := K) (S : Set _) :
         Subgroup (IdeleGroup K)) : Set (IdeleGroup K)) :=
-  (FiniteIdeleGroup.isOpen_supportedAt S).preimage continuous_snd
+  (FiniteIdeleGroup.isOpen_supportedAt S).preimage continuous_finiteCoordinates
 
 end IdeleGroup
 

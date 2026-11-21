@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedEvaluation
 public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.CompletedIterates
 public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.PrimitiveAction
 public import Nyll.ClassFieldTheory.LubinTate.FiniteLevel.LevelValuation
@@ -254,16 +255,6 @@ private theorem hasEval_fin_two
     · exact hy
   · simp [Filter.cofinite_eq_bot]
 
-private theorem
-    standardLubinTateEndomorphismEvalAt_congr_point_forPrimitiveDisplacement
-    (hπ : F.toCompleteDVF.valuation.IsUniformizer (π : K)) (n : ℕ)
-    (x y : (standardLubinTateLevelCompleteDVF hπ n).valuationSubring)
-    (hx : PowerSeries.HasEval x) (hy : PowerSeries.HasEval y)
-    (hxy : x = y) (a : F.valuationSubring) :
-    standardLubinTateEndomorphismEvalAt hπ n x hx a =
-      standardLubinTateEndomorphismEvalAt hπ n y hy a := by
-  subst y
-  rfl
 
 /-- Ordinary subtraction after standard formal-group addition has the same
 additive valuation as the added topologically nilpotent point. -/
@@ -449,7 +440,7 @@ theorem standardLubinTateEndomorphismValue_sub_one_addVal_of_exactDepth
               (IsDiscreteValuationRing.addVal
                 (standardLubinTateLevelCompleteDVF hπ n).valuationSubring)
             exact
-              standardLubinTateEndomorphismEvalAt_congr_point_forPrimitiveDisplacement
+              standardLubinTateEndomorphismEvalAt_congr_point
                 hπ n
                 (standardLubinTateEndomorphismValue hπ n (π ^ k))
                 (standardLubinTatePrimitivePointIterateInteger hπ n k)

@@ -28,10 +28,12 @@ noncomputable section
 
 namespace LocalClassFieldTheory
 
+universe u₁ u₂
+
 open LocalFieldTheory RamificationTheory CyclicCohomology KummerTheory
 open ClassFormation LocalClassFieldTheory
 
-variable (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
+variable (k : Type u₁) (Ω : Type u₂) [Field k] [Field Ω] [Algebra k Ω] [IsGalois k Ω]
 
 /-- Inclusion of the units of the lower concrete fixed field in the units
 of the larger concrete fixed field. -/
@@ -80,7 +82,7 @@ noncomputable def abstractFixedFieldNormResidueSymbol
         extensionSubgroup (baseField (Gal(Ω/k))) K
           (le_baseField K))] :
     Additive (abstractFixedField k Ω K)ˣ →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k Ω hLK /
           abstractFixedField k Ω K)) := by
   let KF : FiniteAbstractField (Gal(Ω / k)) :=
@@ -119,10 +121,10 @@ noncomputable def abstractFixedFieldAbelianizedRestriction
     (hL'L : L'.toSubgroup ≤ L.toSubgroup)
     [hLnormal : (extensionSubgroup K L hLK).Normal]
     [hL'normal : (extensionSubgroup K' L' hL'K').Normal] :
-    Additive (Abelianization
+    Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k Ω hL'K' /
           abstractFixedField k Ω K')) →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k Ω hLK /
           abstractFixedField k Ω K)) :=
   MonoidHom.toAdditive
@@ -153,10 +155,10 @@ theorem abstractFixedFieldAbelianizedRestriction_on_representative
         k Ω K K' L L' hLK hL'K' hK'K hL'L
         (Additive.ofMul
           (q'.abelianizationCongr
-            (Abelianization.of (QuotientGroup.mk σ)))) =
+            (Group.Abelianization.of (QuotientGroup.mk σ)))) =
       Additive.ofMul
         (q.abelianizationCongr
-          (Abelianization.of
+          (Group.Abelianization.of
             (QuotientGroup.mk (Subgroup.inclusion hK'K σ)))) := by
   intro q q'
   change Additive.ofMul
@@ -165,7 +167,7 @@ theorem abstractFixedFieldAbelianizedRestriction_on_representative
           hLK hL'K' hK'K hL'L
           (q'.abelianizationCongr.symm
             (q'.abelianizationCongr
-              (Abelianization.of (QuotientGroup.mk σ)))))) = _
+              (Group.Abelianization.of (QuotientGroup.mk σ)))))) = _
   rw [q'.abelianizationCongr.symm_apply_apply]
   rw [normResidueNaturalityAbelianizedRestriction_of_mk]
 
@@ -298,10 +300,10 @@ noncomputable def abstractFixedFieldAbelianizedTransfer
         (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
       FiniteGaloisSubextension.finite_extension_over_intermediate
         (hLK'.trans hK'K) hK'K hLK'
-    Additive (Abelianization
+    Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k Ω (hLK'.trans hK'K) /
           abstractFixedField k Ω K)) →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k Ω hLK' /
           abstractFixedField k Ω K')) := by
   intro sharedOwner1 sharedOwner2
@@ -312,6 +314,34 @@ noncomputable def abstractFixedFieldAbelianizedTransfer
         (abstractExtensionQuotientEquivGaloisGroup
           k Ω K L (hLK'.trans hK'K)
           hLnormal).abelianizationCongr.symm.toMonoidHom))
+
+/-- Transfer on native multiplicative finite abelianizations. -/
+noncomputable def abstractFixedFieldAbelianizedTransferMonoidHom
+    (K K' L : ClosedSubgroup (Gal(Ω/k)))
+    (hLK' : L.toSubgroup ≤ K'.toSubgroup)
+    (hK'K : K'.toSubgroup ≤ K.toSubgroup)
+    [hLnormal :
+      (extensionSubgroup K L (hLK'.trans hK'K)).Normal]
+    [hLfinite : Finite
+      (K.toSubgroup ⧸
+        extensionSubgroup K L (hLK'.trans hK'K))] :
+    let : (extensionSubgroup K' L hLK').Normal :=
+      transferNormNaturality_intermediateExtension_normal
+        K K' L hLK' hK'K
+    let : Finite
+        (K'.toSubgroup ⧸ extensionSubgroup K' L hLK') :=
+      FiniteGaloisSubextension.finite_extension_over_intermediate
+        (hLK'.trans hK'K) hK'K hLK'
+    Group.Abelianization
+        Gal(abstractRelativeFixedField k Ω
+            (hLK'.trans hK'K) /
+          abstractFixedField k Ω K) →*
+      Group.Abelianization
+        Gal(abstractRelativeFixedField k Ω hLK' /
+          abstractFixedField k Ω K') :=
+  MonoidHom.toAdditive.symm
+    (abstractFixedFieldAbelianizedTransfer
+      k Ω K K' L hLK' hK'K)
 
 /-- Transfer-inclusion naturality for actual fixed fields.
 Transfer of the actual relative Galois abelianizations is compatible with
@@ -432,7 +462,7 @@ inside the separable closure of a local field.
 The two horizontal extensions are finite Galois.  The vertical base extension
 is finite but need not be normal. -/
 structure LocalFixedFieldNormRestrictionSquare
-    (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
+    (k : Type u₁) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] where
   /-- The subgroup fixing the lower base field. -/
   lowerBase : ClosedSubgroup (Gal(SeparableClosure k / k))
@@ -477,7 +507,7 @@ structure LocalFixedFieldNormRestrictionSquare
 
 namespace LocalFixedFieldNormRestrictionSquare
 
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
+variable {k : Type u₁} [Field k] [ValuativeRel k] [TopologicalSpace k]
   [IsNonarchimedeanLocalField k]
 
 /-- The quotient from the absolute subgroup to the upper fixed-field subgroup is finite. -/
@@ -500,7 +530,7 @@ induced by the canonical local class formation. -/
 noncomputable def lowerNormResidueSymbol
     (T : LocalFixedFieldNormRestrictionSquare k) :
     Additive (abstractFixedField k (SeparableClosure k) T.lowerBase)ˣ →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k) T.lowerTop_le_lowerBase /
           abstractFixedField k (SeparableClosure k) T.lowerBase)) := by
   letI := T.lowerNormal
@@ -517,7 +547,7 @@ induced by the canonical local class formation. -/
 noncomputable def upperNormResidueSymbol
     (T : LocalFixedFieldNormRestrictionSquare k) :
     Additive (abstractFixedField k (SeparableClosure k) T.upperBase)ˣ →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k) T.upperTop_le_upperBase /
           abstractFixedField k (SeparableClosure k) T.upperBase)) := by
   letI := T.upperNormal
@@ -538,10 +568,10 @@ noncomputable def normUnits
 /-- Restriction between the abelianized actual relative Galois groups. -/
 noncomputable def abelianizedRestriction
     (T : LocalFixedFieldNormRestrictionSquare k) :
-    Additive (Abelianization
+    Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k) T.upperTop_le_upperBase /
           abstractFixedField k (SeparableClosure k) T.upperBase)) →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k) T.lowerTop_le_lowerBase /
           abstractFixedField k (SeparableClosure k) T.lowerBase)) := by
   letI := T.lowerNormal
@@ -586,7 +616,7 @@ inside the separable closure of a local field.
 The total extension is finite Galois.  Normality and finiteness of the upper
 part of the tower are derived internally. -/
 structure LocalFixedFieldTransferTower
-    (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
+    (k : Type u₁) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] where
   /-- The subgroup fixing the base field of the tower. -/
   base : ClosedSubgroup (Gal(SeparableClosure k / k))
@@ -616,7 +646,7 @@ structure LocalFixedFieldTransferTower
 
 namespace LocalFixedFieldTransferTower
 
-variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
+variable {k : Type u₁} [Field k] [ValuativeRel k] [TopologicalSpace k]
   [IsNonarchimedeanLocalField k]
 
 /-- The top extension subgroup is normal inside the intermediate subgroup. -/
@@ -674,7 +704,7 @@ the canonical local class formation. -/
 noncomputable def baseNormResidueSymbol
     (T : LocalFixedFieldTransferTower k) :
     Additive (abstractFixedField k (SeparableClosure k) T.base)ˣ →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k)
           (T.top_le_intermediate.trans T.intermediate_le_base) /
           abstractFixedField k (SeparableClosure k) T.base)) := by
@@ -693,7 +723,7 @@ intermediate fixed field, induced by the canonical local class formation. -/
 noncomputable def intermediateNormResidueSymbol
     (T : LocalFixedFieldTransferTower k) :
     Additive (abstractFixedField k (SeparableClosure k) T.intermediate)ˣ →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k) T.top_le_intermediate /
           abstractFixedField k (SeparableClosure k) T.intermediate)) := by
   letI := intermediateNormal T
@@ -714,11 +744,11 @@ noncomputable def unitsInclusion
 /-- Transfer between the abelianized actual relative Galois groups. -/
 noncomputable def abelianizedTransfer
     (T : LocalFixedFieldTransferTower k) :
-    Additive (Abelianization
+    Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k)
           (T.top_le_intermediate.trans T.intermediate_le_base) /
           abstractFixedField k (SeparableClosure k) T.base)) →+
-      Additive (Abelianization
+      Additive (Group.Abelianization
         Gal(abstractRelativeFixedField k (SeparableClosure k) T.top_le_intermediate /
           abstractFixedField k (SeparableClosure k) T.intermediate)) := by
   letI := T.totalNormal

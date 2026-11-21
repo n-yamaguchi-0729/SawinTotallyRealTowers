@@ -6,7 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
-public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Reciprocity.Construction.FiniteNormQuotient
+public import Nyll.ClassFieldTheory.AbstractClassFieldTheory.Degree.Fields
 
 /-!
 # Finite Galois extensions above an abstract field
@@ -20,9 +20,6 @@ composita contravariantly as intersections of closed subgroups.
 
 namespace ClassFormation
 
-open KummerTheory
-
-open CyclicCohomology
 
 
 
@@ -41,9 +38,9 @@ structure FiniteGaloisSubextension (K : ClosedSubgroup G) where
   /-- The top-field subgroup is contained in the base-field subgroup. -/
   below : field.toSubgroup ≤ K.toSubgroup
   /-- The top-field subgroup is normal inside the base-field subgroup. -/
-  normal : (extensionSubgroup K field below).Normal
+  normal : (field.toSubgroup.subgroupOf K.toSubgroup).Normal
   /-- The relative Galois quotient is finite. -/
-  finite : Finite (K.toSubgroup ⧸ extensionSubgroup K field below)
+  finite : Finite (K.toSubgroup ⧸ (field.toSubgroup.subgroupOf K.toSubgroup))
 
 namespace FiniteGaloisSubextension
 
@@ -78,7 +75,7 @@ def toFiniteAbstractExtension (L : FiniteGaloisSubextension K) :
 /-- The actual finite quotient `G(L/K)`, kept behind a named object
 boundary. -/
 def extensionQuotient (L : FiniteGaloisSubextension K) : Type u :=
-  K.toSubgroup ⧸ extensionSubgroup K L.field L.below
+  K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)
 
 /-- Structural unramifiedness of the underlying finite extension. -/
 def IsUnramified (L : FiniteGaloisSubextension K) (D : DegreeData G) : Prop :=
@@ -91,7 +88,7 @@ def IsTotallyRamified (L : FiniteGaloisSubextension K)
 
 /-- A finite Galois subextension is represented by a normal subgroup. -/
 instance extensionSubgroup_normalInstance (L : FiniteGaloisSubextension K) :
-    (extensionSubgroup K L.field L.below).Normal :=
+    (L.field.toSubgroup.subgroupOf K.toSubgroup).Normal :=
   L.normal
 
 /-- The group structure transported across the named finite quotient
@@ -99,7 +96,7 @@ boundary. -/
 instance extensionQuotient_groupInstance (L : FiniteGaloisSubextension K) :
     Group L.extensionQuotient := by
   change Group
-    (K.toSubgroup ⧸ extensionSubgroup K L.field L.below)
+    (K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup))
   infer_instance
 
 /-- The quotient represented by a finite Galois subextension is finite. -/
@@ -111,13 +108,13 @@ instance extensionQuotient_finiteInstance (L : FiniteGaloisSubextension K) :
 library. -/
 def extensionQuotientMulEquiv (L : FiniteGaloisSubextension K) :
     L.extensionQuotient ≃*
-      (K.toSubgroup ⧸ extensionSubgroup K L.field L.below) :=
+      (K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)) :=
   MulEquiv.refl _
 
 /-- The canonical quotient projection for a finite Galois subextension. -/
 def extensionQuotientMk (L : FiniteGaloisSubextension K) :
     K.toSubgroup →* L.extensionQuotient :=
-  QuotientGroup.mk' (extensionSubgroup K L.field L.below)
+  QuotientGroup.mk' (L.field.toSubgroup.subgroupOf K.toSubgroup)
 
 /-- The named finite Galois quotient projection agrees with `QuotientGroup.mk`. -/
 @[simp]
@@ -125,7 +122,7 @@ theorem extensionQuotientMk_apply (L : FiniteGaloisSubextension K)
     (k : K.toSubgroup) :
     L.extensionQuotientMulEquiv (L.extensionQuotientMk k) =
       (QuotientGroup.mk k :
-        K.toSubgroup ⧸ extensionSubgroup K L.field L.below) :=
+        K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)) :=
   rfl
 
 /-- A quotient representative is trivial exactly when it lies in the extension subgroup. -/
@@ -133,13 +130,13 @@ theorem extensionQuotientMk_apply (L : FiniteGaloisSubextension K)
 theorem extensionQuotientMk_eq_one_iff (L : FiniteGaloisSubextension K)
     (k : K.toSubgroup) :
     L.extensionQuotientMk k = 1 ↔
-      k ∈ extensionSubgroup K L.field L.below := by
+      k ∈ (L.field.toSubgroup.subgroupOf K.toSubgroup) := by
   constructor
   · intro h
     apply (QuotientGroup.eq_one_iff k).1
     calc
       (QuotientGroup.mk k :
-          K.toSubgroup ⧸ extensionSubgroup K L.field L.below) =
+          K.toSubgroup ⧸ (L.field.toSubgroup.subgroupOf K.toSubgroup)) =
           L.extensionQuotientMulEquiv (L.extensionQuotientMk k) :=
         (L.extensionQuotientMk_apply k).symm
       _ = L.extensionQuotientMulEquiv 1 := congrArg L.extensionQuotientMulEquiv h
@@ -154,7 +151,7 @@ theorem extensionQuotientMk_surjective (L : FiniteGaloisSubextension K) :
     Function.Surjective L.extensionQuotientMk := by
   intro q
   obtain ⟨k, hk⟩ := QuotientGroup.mk'_surjective
-    (extensionSubgroup K L.field L.below) (L.extensionQuotientMulEquiv q)
+    (L.field.toSubgroup.subgroupOf K.toSubgroup) (L.extensionQuotientMulEquiv q)
   refine ⟨k, L.extensionQuotientMulEquiv.injective ?_⟩
   rw [L.extensionQuotientMk_apply]
   exact hk
@@ -174,7 +171,7 @@ protected theorem extensionQuotient_inductionOn
     (mk : ∀ k : K.toSubgroup, motive (L.extensionQuotientMk k)) :
     motive q := by
   exact @Quotient.inductionOn' K.toSubgroup
-    (QuotientGroup.leftRel (extensionSubgroup K L.field L.below))
+    (QuotientGroup.leftRel (L.field.toSubgroup.subgroupOf K.toSubgroup))
     motive q mk
 
 /-- Bundling a finite Galois extension preserves its unramified predicate. -/
@@ -230,46 +227,46 @@ noncomputable def toFiniteAbstractFieldExtension
     FiniteAbstractFieldExtension G := by
   letI : Finite
       (K.field.toSubgroup ⧸
-        extensionSubgroup K.field L.field L.below) :=
+        (L.field.toSubgroup.subgroupOf K.field.toSubgroup)) :=
     L.finite
   exact FiniteAbstractFieldExtension.ofInclusion L.field K L.below
 
 /-- Finiteness is transitive in a tower of abstract fields. -/
 theorem finite_extension_trans
     {P L K : ClosedSubgroup G}
-    (hPL : P.toSubgroup ≤ L.toSubgroup)
-    (hLK : L.toSubgroup ≤ K.toSubgroup)
+    (_hPL : P.toSubgroup ≤ L.toSubgroup)
+    (_hLK : L.toSubgroup ≤ K.toSubgroup)
     [hPLfinite : Finite
-      (L.toSubgroup ⧸ extensionSubgroup L P hPL)]
+      (L.toSubgroup ⧸ (P.toSubgroup.subgroupOf L.toSubgroup))]
     [hLKfinite : Finite
-      (K.toSubgroup ⧸ extensionSubgroup K L hLK)] :
-    Finite (K.toSubgroup ⧸ extensionSubgroup K P (hPL.trans hLK)) := by
+      (K.toSubgroup ⧸ (L.toSubgroup.subgroupOf K.toSubgroup))] :
+    Finite (K.toSubgroup ⧸ (P.toSubgroup.subgroupOf K.toSubgroup)) := by
   have hPL0 : P.toSubgroup.relIndex L.toSubgroup ≠ 0 := by
     rw [Subgroup.relIndex]
     exact @Subgroup.index_ne_zero_of_finite L.toSubgroup _
-      (extensionSubgroup L P hPL) hPLfinite
+      (P.toSubgroup.subgroupOf L.toSubgroup) hPLfinite
   have hLK0 : L.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
     rw [Subgroup.relIndex]
     exact @Subgroup.index_ne_zero_of_finite K.toSubgroup _
-      (extensionSubgroup K L hLK) hLKfinite
+      (L.toSubgroup.subgroupOf K.toSubgroup) hLKfinite
   apply Nat.finite_of_card_ne_zero
-  change (extensionSubgroup K P (hPL.trans hLK)).index ≠ 0
+  change (P.toSubgroup.subgroupOf K.toSubgroup).index ≠ 0
   simpa [Subgroup.relIndex] using
     Subgroup.relIndex_ne_zero_trans hPL0 hLK0
 
 /-- A finite extension remains finite over every intermediate field. -/
 theorem finite_extension_over_intermediate
     {P M K : ClosedSubgroup G}
-    (hPK : P.toSubgroup ≤ K.toSubgroup)
+    (_hPK : P.toSubgroup ≤ K.toSubgroup)
     (hMK : M.toSubgroup ≤ K.toSubgroup)
     (hPM : P.toSubgroup ≤ M.toSubgroup)
     [hPKfinite : Finite
-      (K.toSubgroup ⧸ extensionSubgroup K P hPK)] :
-    Finite (M.toSubgroup ⧸ extensionSubgroup M P hPM) := by
+      (K.toSubgroup ⧸ (P.toSubgroup.subgroupOf K.toSubgroup))] :
+    Finite (M.toSubgroup ⧸ (P.toSubgroup.subgroupOf M.toSubgroup)) := by
   have hPK0 : P.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
     rw [Subgroup.relIndex]
     exact @Subgroup.index_ne_zero_of_finite K.toSubgroup _
-      (extensionSubgroup K P hPK) hPKfinite
+      (P.toSubgroup.subgroupOf K.toSubgroup) hPKfinite
   have hPM0 : P.toSubgroup.relIndex M.toSubgroup ≠ 0 := by
     intro hzero
     have hmul := Subgroup.relIndex_mul_relIndex
@@ -277,7 +274,7 @@ theorem finite_extension_over_intermediate
     rw [hzero, zero_mul] at hmul
     exact hPK0 hmul.symm
   apply Nat.finite_of_card_ne_zero
-  change (extensionSubgroup M P hPM).index ≠ 0
+  change (P.toSubgroup.subgroupOf M.toSubgroup).index ≠ 0
   simpa [Subgroup.relIndex] using hPM0
 
 /-- Every intermediate field of a finite extension is finite over the
@@ -285,16 +282,16 @@ base.  No normality hypothesis is needed: this is the finite-index
 statement for an arbitrary subgroup between the two endpoint subgroups. -/
 theorem finite_intermediate_extension
     {P M K : ClosedSubgroup G}
-    (hPK : P.toSubgroup ≤ K.toSubgroup)
+    (_hPK : P.toSubgroup ≤ K.toSubgroup)
     (hPM : P.toSubgroup ≤ M.toSubgroup)
     (hMK : M.toSubgroup ≤ K.toSubgroup)
     [hPKfinite : Finite
-      (K.toSubgroup ⧸ extensionSubgroup K P hPK)] :
-    Finite (K.toSubgroup ⧸ extensionSubgroup K M hMK) := by
+      (K.toSubgroup ⧸ (P.toSubgroup.subgroupOf K.toSubgroup))] :
+    Finite (K.toSubgroup ⧸ (M.toSubgroup.subgroupOf K.toSubgroup)) := by
   have hPK0 : P.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
     rw [Subgroup.relIndex]
     exact @Subgroup.index_ne_zero_of_finite K.toSubgroup _
-      (extensionSubgroup K P hPK) hPKfinite
+      (P.toSubgroup.subgroupOf K.toSubgroup) hPKfinite
   have hMK0 : M.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
     intro hzero
     have hmul := Subgroup.relIndex_mul_relIndex
@@ -302,7 +299,7 @@ theorem finite_intermediate_extension
     rw [hzero, mul_zero] at hmul
     exact hPK0 hmul.symm
   apply Nat.finite_of_card_ne_zero
-  change (extensionSubgroup K M hMK).index ≠ 0
+  change (M.toSubgroup.subgroupOf K.toSubgroup).index ≠ 0
   simpa [Subgroup.relIndex] using hMK0
 
 /-- Base change of a finite Galois extension `M / K` to an arbitrary
@@ -315,24 +312,19 @@ def baseChange (M : FiniteGaloisSubextension K) (L : ClosedSubgroup G)
   below := inf_le_left
   normal := by
     let f : L.toSubgroup →* K.toSubgroup := Subgroup.inclusion hLK
-    have heq : extensionSubgroup L (L ⊓ M.field) inf_le_left =
-        (extensionSubgroup K M.field M.below).comap f := by
+    have heq : ((L ⊓ M.field).toSubgroup.subgroupOf L.toSubgroup) =
+        (M.field.toSubgroup.subgroupOf K.toSubgroup).comap f := by
       ext x
-      rw [mem_extensionSubgroup_iff, Subgroup.mem_comap,
-        mem_extensionSubgroup_iff]
       change (x : G) ∈ L ⊓ M.field ↔ (x : G) ∈ M.field
       exact ⟨fun hx => hx.2, fun hx => ⟨x.property, hx⟩⟩
     rw [heq]
-    let : (extensionSubgroup K M.field M.below).Normal := M.normal
+    let : (M.field.toSubgroup.subgroupOf K.toSubgroup).Normal := M.normal
     infer_instance
   finite := by
     let f : L.toSubgroup →* K.toSubgroup := Subgroup.inclusion hLK
-    let E := extensionSubgroup K M.field M.below
-    have heq : extensionSubgroup L (L ⊓ M.field) inf_le_left = E.comap f := by
+    let E := (M.field.toSubgroup.subgroupOf K.toSubgroup)
+    have heq : ((L ⊓ M.field).toSubgroup.subgroupOf L.toSubgroup) = E.comap f := by
       ext x
-      rw [mem_extensionSubgroup_iff, Subgroup.mem_comap]
-      dsimp only [E, f, Subgroup.inclusion]
-      rw [mem_extensionSubgroup_iff]
       change (x : G) ∈ L ⊓ M.field ↔ (x : G) ∈ M.field
       exact ⟨fun hx => hx.2, fun hx => ⟨x.property, hx⟩⟩
     let : Finite (K.toSubgroup ⧸ E) := M.finite
@@ -345,7 +337,7 @@ def baseChange (M : FiniteGaloisSubextension K) (L : ClosedSubgroup G)
       rw [hzero, zero_dvd_iff] at hdvd
       exact hE0 hdvd
     apply Nat.finite_of_card_ne_zero
-    change (extensionSubgroup L (L ⊓ M.field) inf_le_left).index ≠ 0
+    change (((L ⊓ M.field).toSubgroup.subgroupOf L.toSubgroup)).index ≠ 0
     rw [heq, E.index_comap f]
     exact hrel0
 
@@ -354,14 +346,14 @@ def refl (K : ClosedSubgroup G) : FiniteGaloisSubextension K where
   field := K
   below := le_rfl
   normal := by
-    have htop : extensionSubgroup K K le_rfl = ⊤ := by
+    have htop : (K.toSubgroup.subgroupOf K.toSubgroup) = ⊤ := by
       rw [eq_top_iff]
       intro x _
       exact x.2
     rw [htop]
     infer_instance
   finite := by
-    have htop : extensionSubgroup K K le_rfl = ⊤ := by
+    have htop : (K.toSubgroup.subgroupOf K.toSubgroup) = ⊤ := by
       rw [eq_top_iff]
       intro x _
       exact x.2
@@ -374,39 +366,35 @@ def compositum (L₁ L₂ : FiniteGaloisSubextension K) :
   field := L₁.field ⊓ L₂.field
   below := fun _ h => L₁.below h.1
   normal := by
-    have heq : extensionSubgroup K (L₁.field ⊓ L₂.field)
-        (fun _ h => L₁.below h.1) =
-        extensionSubgroup K L₁.field L₁.below ⊓
-          extensionSubgroup K L₂.field L₂.below := by
+    have heq : ((L₁.field ⊓ L₂.field).toSubgroup.subgroupOf K.toSubgroup) =
+        (L₁.field.toSubgroup.subgroupOf K.toSubgroup) ⊓
+          (L₂.field.toSubgroup.subgroupOf K.toSubgroup) := by
       ext k
-      simp only [Subgroup.mem_inf, mem_extensionSubgroup_iff]
       constructor
       · intro hk
         exact ⟨hk.1, hk.2⟩
       · rintro ⟨h₁, h₂⟩
         exact ⟨h₁, h₂⟩
     rw [heq]
-    let : (extensionSubgroup K L₁.field L₁.below).Normal := L₁.normal
-    let : (extensionSubgroup K L₂.field L₂.below).Normal := L₂.normal
+    let : (L₁.field.toSubgroup.subgroupOf K.toSubgroup).Normal := L₁.normal
+    let : (L₂.field.toSubgroup.subgroupOf K.toSubgroup).Normal := L₂.normal
     infer_instance
   finite := by
-    have heq : extensionSubgroup K (L₁.field ⊓ L₂.field)
-        (fun _ h => L₁.below h.1) =
-        extensionSubgroup K L₁.field L₁.below ⊓
-          extensionSubgroup K L₂.field L₂.below := by
+    have heq : ((L₁.field ⊓ L₂.field).toSubgroup.subgroupOf K.toSubgroup) =
+        (L₁.field.toSubgroup.subgroupOf K.toSubgroup) ⊓
+          (L₂.field.toSubgroup.subgroupOf K.toSubgroup) := by
       ext k
-      simp only [Subgroup.mem_inf, mem_extensionSubgroup_iff]
       constructor
       · intro hk
         exact ⟨hk.1, hk.2⟩
       · rintro ⟨h₁, h₂⟩
         exact ⟨h₁, h₂⟩
-    let : (extensionSubgroup K L₁.field L₁.below).FiniteIndex :=
+    let : (L₁.field.toSubgroup.subgroupOf K.toSubgroup).FiniteIndex :=
       @Subgroup.finiteIndex_of_finite_quotient K.toSubgroup _
-        (extensionSubgroup K L₁.field L₁.below) L₁.finite
-    let : (extensionSubgroup K L₂.field L₂.below).FiniteIndex :=
+        (L₁.field.toSubgroup.subgroupOf K.toSubgroup) L₁.finite
+    let : (L₂.field.toSubgroup.subgroupOf K.toSubgroup).FiniteIndex :=
       @Subgroup.finiteIndex_of_finite_quotient K.toSubgroup _
-        (extensionSubgroup K L₂.field L₂.below) L₂.finite
+        (L₂.field.toSubgroup.subgroupOf K.toSubgroup) L₂.finite
     rw [heq]
     exact Subgroup.finite_quotient_of_finiteIndex
 
@@ -430,68 +418,6 @@ end FiniteGaloisSubextension
 
 end GroupOnly
 
-section Representation
-
-variable {G : Type u} [Group G] [TopologicalSpace G]
-
-namespace FiniteGaloisSubextension
-
-variable {K : ClosedSubgroup G}
-
-/-- The norm group from a compositum is contained in the norm group from
-its first factor. -/
-theorem finiteNormSubgroup_compositum_le_left
-    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
-    let : Finite (K.toSubgroup ⧸
-        extensionSubgroup K (L₁.compositum L₂).field (L₁.compositum L₂).below) :=
-      (L₁.compositum L₂).finite
-    let : Finite (K.toSubgroup ⧸ extensionSubgroup K L₁.field L₁.below) := L₁.finite
-    finiteNormSubgroup A K (L₁.compositum L₂).field
-        (L₁.compositum L₂).below ≤
-      finiteNormSubgroup A K L₁.field L₁.below := by
-  intro compositumFinite leftFinite
-  let P := L₁.compositum L₂
-  let hPL₁ := L₁.compositum_le_left L₂
-  have hPKindex : P.field.toSubgroup.relIndex K.toSubgroup ≠ 0 := by
-    rw [Subgroup.relIndex]
-    exact Subgroup.index_ne_zero_of_finite
-  have hPLindex : P.field.toSubgroup.relIndex L₁.field.toSubgroup ≠ 0 := by
-    intro hzero
-    have hmul := Subgroup.relIndex_mul_relIndex
-      P.field.toSubgroup L₁.field.toSubgroup K.toSubgroup hPL₁ L₁.below
-    rw [hzero, zero_mul] at hmul
-    exact hPKindex hmul.symm
-  let hPLfinite : Finite (L₁.field.toSubgroup ⧸
-      extensionSubgroup L₁.field P.field hPL₁) := by
-    apply Nat.finite_of_card_ne_zero
-    change (extensionSubgroup L₁.field P.field hPL₁).index ≠ 0
-    simpa only [Subgroup.relIndex] using hPLindex
-  let T : DegreeData.FiniteTower G := {
-    top := P.field
-    middle := L₁.field
-    base := K
-    top_le_middle := hPL₁
-    middle_le_base := L₁.below
-    finiteTopQuotient := hPLfinite
-    finiteBaseQuotient := L₁.finite }
-  rintro x ⟨a, rfl⟩
-  refine ⟨relativeNorm A L₁.field P.field hPL₁ a, ?_⟩
-  exact T.norm_trans_apply A a
-
-/-- The symmetric norm-group containment for the second factor. -/
-theorem finiteNormSubgroup_compositum_le_right
-    (A : Rep.{v} ℤ G) (L₁ L₂ : FiniteGaloisSubextension K) :
-    letI := (L₁.compositum L₂).finite
-    letI := L₂.finite
-    finiteNormSubgroup A K (L₁.compositum L₂).field
-        (L₁.compositum L₂).below ≤
-      finiteNormSubgroup A K L₂.field L₂.below := by
-  simpa only [compositum_comm L₂ L₁] using
-    finiteNormSubgroup_compositum_le_left A L₂ L₁
-
-end FiniteGaloisSubextension
-
-end Representation
 
 end
 end ClassFormation

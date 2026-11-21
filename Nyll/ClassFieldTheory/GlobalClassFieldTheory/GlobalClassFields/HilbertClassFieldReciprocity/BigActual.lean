@@ -36,11 +36,6 @@ open Reciprocity
 
 variable {K : Type u} [Field K] [NumberField K]
 
-local instance
-    bigHilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
-    {F : Type*} [Field F] [NumberField F] :
-    IsMulCommutative (IdeleClassGroup F) :=
-  hilbertClassFieldReciprocityIdeleClassGroupIsMulCommutative
 
 /-- The actual norm range of the selected big Hilbert class field is
 the intrinsic big-Hilbert norm subgroup of its actual base field. -/
@@ -126,9 +121,7 @@ theorem bigHilbertClassFieldGaloisEquivNarrowClassGroup_idele
         (globalNormResidueMonoidHom
           (bigHilbertClassFieldBase K)
           (bigHilbertClassField K)
-          (QuotientGroup.mk'
-            (IdeleGroup.principalSubgroup
-              (bigHilbertClassFieldBase K)) a)) =
+          (IdeleGroup.toStandardClass (bigHilbertClassFieldBase K) a)) =
       bigHilbertNarrowClassGroupCongr
         (bigHilbertClassFieldBaseEquiv (K := K)).symm
         (QuotientGroup.mk'
@@ -142,9 +135,7 @@ theorem bigHilbertClassFieldGaloisEquivNarrowClassGroup_idele
             (QuotientGroup.mk'
               (bigHilbertClassFieldNormSubgroup
                 (K := bigHilbertClassFieldBase K))
-              (QuotientGroup.mk'
-                (IdeleGroup.principalSubgroup
-                  (bigHilbertClassFieldBase K)) a))) :=
+              (IdeleGroup.toStandardClass (bigHilbertClassFieldBase K) a))) :=
       (bigHilbertClassFieldReciprocityData (K := K)).2 _
     _ = _ :=
       congrArg

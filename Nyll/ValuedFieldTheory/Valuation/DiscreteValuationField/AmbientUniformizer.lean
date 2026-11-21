@@ -94,7 +94,7 @@ theorem valuationSubringMapOfIsEquivComap_isLocalHom
     IsLocalHom
       (valuationSubringMapOfIsEquivComap vL vM ι hEquiv) := by
   let f := valuationSubringMapOfIsEquivComap vL vM ι hEquiv
-  apply ((IsLocalRing.local_hom_TFAE f).out 2 1).mp
+  apply ((IsLocalRing.local_hom_tfae f).out 2 1).mp
   rintro _ ⟨a, ha, rfl⟩
   have haVal : vL (a : L) < 1 :=
     (_root_.Valuation.mem_maximalIdeal_iff (v := vL)).1 ha

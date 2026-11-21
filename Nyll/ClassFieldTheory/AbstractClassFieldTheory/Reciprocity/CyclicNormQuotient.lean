@@ -403,8 +403,7 @@ theorem finiteNormQuotientFiniteOfClassFieldAxiom
       below := E.below
       normal := hnormal
       finite := E.finiteQuotient
-      generator := g
-      generates := hg }
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg }
   let : Finite (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0) :=
     (hcf Kcf Ecf).finiteTateHZero
   exact Finite.of_equiv
@@ -437,8 +436,7 @@ theorem finiteNormQuotient_card_of_classFieldAxiom
       below := E.below
       normal := hnormal
       finite := E.finiteQuotient
-      generator := g
-      generates := hg }
+      cyclic := CyclicCohomology.isCyclic_of_generator g hg }
   let : Finite (IntegralGroupCohomology.Universe.tate (Ecf.fixedRepresentation A) 0) :=
     (hcf Kcf Ecf).finiteTateHZero
   let : Finite (IntegralGroupCohomology.Universe.tate M 0) := by

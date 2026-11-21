@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Nyll.ClassFieldTheory.Definitions.FrobeniusAndHilbertClassFields.IsUnramifiedAtFinitePlaces
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.RelationRank.AbsoluteUnramifiedGaloisSequence
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1
 public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Ramification.Splitting.FinitePlaceIdeal
@@ -123,7 +124,7 @@ theorem finitePlaceAbsoluteInertia_mem_absoluteUnramifiedKernel
         IntermediateField.fixedField (Subgroup.zpowers sigmaAbs) := by
     apply maximalEverywhereUnramifiedProP_le_of_forall_le
     intro M _ _ _ _ hM
-    rw [IntermediateField.le_iff_le, Subgroup.zpowers_le]
+    rw [IntermediateField.le_fixedField_iff_le_fixingSubgroup, Subgroup.zpowers_le]
     let wM := restrictAbsoluteValueExtensionToIntermediate
       (HeightOneSpectrum.adicAbv F v)
       (finitePlaceAbsoluteValueExtension F v) M
@@ -138,7 +139,7 @@ theorem finitePlaceAbsoluteInertia_mem_absoluteUnramifiedKernel
         HilbertRamification.Dedekind.inertiaGroup P.asIdeal
             (M ≃ₐ[F] M) = ⊥ :=
       HilbertRamification.Dedekind.inertiaGroup_eq_bot_of_isUnramifiedAt
-        P.asIdeal (hM.finitePlaces P)
+        P.asIdeal (hM.1.atPrime P)
     have hrestrict : sigmaAbs.restrictNormal M = 1 := by
       simpa [hbot] using hmem
     rw [← IntermediateField.restrictNormalHom_ker M, MonoidHom.mem_ker]
@@ -148,7 +149,7 @@ theorem finitePlaceAbsoluteInertia_mem_absoluteUnramifiedKernel
   have hzpow :
       Subgroup.zpowers sigmaAbs ≤
         (maximalEverywhereUnramifiedProP F p).fixingSubgroup := by
-    rw [← IntermediateField.le_iff_le]
+    rw [← IntermediateField.le_fixedField_iff_le_fixingSubgroup]
     exact hmax
   exact hzpow (Subgroup.mem_zpowers sigmaAbs)
 

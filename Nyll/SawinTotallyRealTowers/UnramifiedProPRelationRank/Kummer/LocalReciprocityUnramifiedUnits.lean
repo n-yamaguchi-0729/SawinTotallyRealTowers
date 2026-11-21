@@ -6,6 +6,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Kummer.LocalReciprocityUnramifiedValuation
 
 /-!
@@ -33,13 +34,7 @@ variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
   [IsNonarchimedeanLocalField K]
 variable (n : ℕ+) [Fact ((n : ℕ).Prime)]
 
-local instance localReciprocityUnitsTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance localReciprocityUnitsDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance localReciprocityUnitsH1Module :
-    Module (ZMod (n : ℕ))
-      (ContinuousH1ZMod (p := (n : ℕ)) (G := Field.absoluteGaloisGroup K)) :=
-  continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- An Artin character trivial on integer units is its normalized
 uniformizer coordinate times valuation. -/

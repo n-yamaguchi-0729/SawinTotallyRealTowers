@@ -76,7 +76,7 @@ fixing subgroup is injective. Thus an actual primitive after cyclotomic
 base change detects vanishing of the original absolute class. -/
 theorem cyclotomicAbsoluteH2Restriction_injective :
     Function.Injective (ClassFieldTower.Cohomology.continuousCohomologyZModPMapLifted p
-      (ClassFieldTower.Cohomology.subgroupInclusion
+      (ProCGroups.ContinuousMonoidHom.subtype
         (idealRadicalCyclotomicOpenSubgroup F p).toSubgroup) 2).hom := by
   let : LocallyCompactSpace (Field.absoluteGaloisGroup F) :=
     inferInstanceAs (LocallyCompactSpace (AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F))

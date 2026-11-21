@@ -7,6 +7,7 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 module
 
 public import Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic
+public import Mathlib.RingTheory.IntegralClosure.IsIntegral.Basic
 public import Mathlib.RingTheory.Valuation.Extension
 public import Mathlib.Topology.Algebra.Valued.ValuativeRel
 /-!
@@ -58,7 +59,7 @@ namespace LocalFieldTheory
 
 noncomputable section
 
-universe u v
+universe u v w
 
 open scoped ValuativeRel
 
@@ -79,6 +80,39 @@ instance valuativeExtensionOfIsIntegralClosure
     ValuativeExtension K L where
   integer_isIntegral x :=
     (IsIntegralClosure.isIntegral_iff (A := 𝒪[L]) (R := 𝒪[K]) (B := L)).2 ⟨x, rfl⟩
+
+/-- Integral-closure membership makes the intermediate valuation extend into
+the given upper valuation, without replacing the upper field's topology. -/
+theorem valuation_hasExtension_of_integralClosure_tower
+    (K : Type u) (M : Type v) (L : Type w)
+    [Field K] [Field M] [Field L]
+    [ValuativeRel K] [ValuativeRel M] [ValuativeRel L]
+    [Algebra K M] [Algebra M L] [Algebra K L] [IsScalarTower K M L]
+    [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation M)]
+    [Valuation.HasExtension (ValuativeRel.valuation K) (ValuativeRel.valuation L)]
+    [IsIntegralClosure 𝒪[M] 𝒪[K] M] [IsIntegralClosure 𝒪[L] 𝒪[K] L] :
+    (ValuativeRel.valuation M).HasExtension (ValuativeRel.valuation L) := by
+  apply Valuation.HasExtension.ofComapInteger
+  ext x
+  change algebraMap M L x ∈ 𝒪[L] ↔ x ∈ 𝒪[M]
+  let f : M →ₐ[𝒪[K]] L := IsScalarTower.toAlgHom 𝒪[K] M L
+  constructor
+  · intro hx
+    have hL : IsIntegral 𝒪[K] (f x) :=
+      (IsIntegralClosure.isIntegral_iff (A := 𝒪[L]) (R := 𝒪[K]) (B := L)).2
+        ⟨⟨algebraMap M L x, hx⟩, rfl⟩
+    have hM : IsIntegral 𝒪[K] x := (isIntegral_algHom_iff f f.injective).mp hL
+    obtain ⟨y, hy⟩ :=
+      (IsIntegralClosure.isIntegral_iff (A := 𝒪[M]) (R := 𝒪[K]) (B := M)).1 hM
+    exact hy ▸ y.property
+  · intro hx
+    have hM : IsIntegral 𝒪[K] x :=
+      (IsIntegralClosure.isIntegral_iff (A := 𝒪[M]) (R := 𝒪[K]) (B := M)).2
+        ⟨⟨x, hx⟩, rfl⟩
+    obtain ⟨y, hy⟩ :=
+      (IsIntegralClosure.isIntegral_iff (A := 𝒪[L]) (R := 𝒪[K]) (B := L)).1
+        (IsIntegral.map f hM)
+    exact hy ▸ y.property
 
 end
 end LocalFieldTheory

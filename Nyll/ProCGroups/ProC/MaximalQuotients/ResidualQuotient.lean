@@ -51,9 +51,10 @@ theorem proCResidualCoreQuotient_hasOpenNormalBasisInClass
     rw [proCResidualCore]
     exact sInf_le (Set.mem_range_self N)
   let π : ∀ N : I, G ⧸ R →ₜ* Q N := fun N =>
-    QuotientGroup.mapₜ R N.toSubgroup (ContinuousMonoidHom.id G) (by
-      intro x hx
-      exact hRle N hx)
+    QuotientGroup.mapContinuousMonoidHom (N := R) (M := N.toSubgroup)
+      (ContinuousMonoidHom.id G) (by
+        intro x hx
+        exact hRle N hx)
   let φ : G ⧸ R →* ∀ N : I, Q N :=
     { toFun := fun x N => π N x
       map_one' := by

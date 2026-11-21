@@ -147,6 +147,18 @@ subgroup.
     closedCommutator G = _root_.commutator G := by
   simp only [closedCommutator, topologicalClosure_eq_self_of_discrete]
 
+/-- In a commutative \(T_1\) topological group, the closed commutator subgroup is trivial. -/
+@[simp] theorem closedCommutator_eq_bot_of_commGroup_t1
+    (G : Type u) [TopologicalSpace G] [CommGroup G] [IsTopologicalGroup G] [T1Space G] :
+    closedCommutator G = ⊥ := by
+  have hcomm : _root_.commutator G = ⊥ := by
+    rw [commutator_eq_bot_iff_center_eq_top, CommGroup.center_eq_top]
+  rw [closedCommutator, hcomm]
+  ext x
+  change x ∈ _root_.closure ({(1 : G)} : Set G) ↔ x = 1
+  rw [closure_singleton]
+  simp only [Set.mem_singleton_iff]
+
 /-- Continuous homomorphisms send closed commutator subgroups into closed commutator subgroups. -/
 theorem closedCommutator_map_le
     {G H : Type*} [TopologicalSpace G] [Group G] [IsTopologicalGroup G]

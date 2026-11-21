@@ -6,6 +6,9 @@ Authors: Naganori Yamaguchi (assisted by OpenAI Codex)
 
 module
 
+public import Mathlib.Topology.Instances.ZMod
+public import Nyll.ClassFieldTheory.AlgebraicNumberTheory.Completion.FinitePlaceModel
+
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceH1AdicRestriction
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Local.FinitePlaceUnramifiedH1Transport
 public import Nyll.SawinTotallyRealTowers.UnramifiedProPRelationRank.Radical.FinitePlaceCompletionValuationCompatibility
@@ -40,14 +43,14 @@ local notation "C" => AbsoluteValue.Completion (HeightOneSpectrum.adicAbv F v)
 local notation "C'" => v.adicCompletion F
 local instance finitePlaceAdicInertiaSourceCharZero : CharZero C :=
   charZero_of_injective_algebraMap (algebraMap F C).injective
-local instance finitePlaceAdicInertiaSourceValuativeRel : ValuativeRel C :=
-  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel v
-local instance finitePlaceAdicInertiaSourceLocalField : IsNonarchimedeanLocalField C :=
-  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField v
-local instance finitePlaceAdicInertiaTargetValuativeRel : ValuativeRel C' :=
-  finitePlaceAdicCompletionValuativeRel F v
-local instance finitePlaceAdicInertiaTargetLocalField : IsNonarchimedeanLocalField C' :=
-  finitePlaceAdicCompletionIsNonarchimedeanLocalField F v
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionValuativeRel
+attribute [local instance]
+  GlobalClassFieldTheory.Reciprocity.finitePlaceLocalArtinCompletionIsNonarchimedeanLocalField
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionValuativeRel
+attribute [local instance]
+  ClassFieldTower.Martinet.Shafarevich.finitePlaceAdicCompletionIsNonarchimedeanLocalField
 
 /-- The completion comparison on separable closures, induced by the actual
 algebraic-closure comparison. -/
@@ -60,7 +63,7 @@ def finitePlaceCompletionSeparableClosureRingEquiv :
 /-- The comparison extends the canonical comparison of completed base fields. -/
 theorem finitePlaceCompletionSeparableClosureRingEquiv_algebraMap (x : C) :
     finitePlaceCompletionSeparableClosureRingEquiv F v (algebraMap C (SeparableClosure C) x) =
-      algebraMap C' (SeparableClosure C') (relativeFinitePlaceCompletionAlgEquiv v x) := by
+      algebraMap C' (SeparableClosure C') (finitePlaceCompletionAlgEquiv v x) := by
   change algebraicClosureAlgEquivSeparableClosure C'
     (finitePlaceCompletionAlgebraicClosureRingEquiv F v
       ((algebraicClosureAlgEquivSeparableClosure C).symm
@@ -74,7 +77,7 @@ theorem finitePlaceCompletionSeparableGalois_conjugation
     (sigma : Field.absoluteGaloisGroup C) :
     LocalClassFieldTheory.semilinearGaloisGroupCongr C C'
       (SeparableClosure C) (SeparableClosure C')
-      (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+      (finitePlaceCompletionAlgEquiv v).toRingEquiv
       (finitePlaceCompletionSeparableClosureRingEquiv F v)
       (finitePlaceCompletionSeparableClosureRingEquiv_algebraMap F v)
       (RamificationTheory.Field.absoluteGaloisGroup.separableClosureContinuousMulEquiv C sigma) =
@@ -94,11 +97,11 @@ theorem finitePlaceCompletionResidueDegree_conjugation
         C sigma) := by
   rw [← finitePlaceCompletionSeparableGalois_conjugation]
   exact localResidueDegree_semilinear_conjugation C C'
-    (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+    (finitePlaceCompletionAlgEquiv v).toRingEquiv
     (finitePlaceCompletionSeparableClosureRingEquiv F v)
     (finitePlaceCompletionSeparableClosureRingEquiv_algebraMap F v)
     (localSeparableValuationSubring_comap_semilinear C C'
-      (relativeFinitePlaceCompletionAlgEquiv v).toRingEquiv
+      (finitePlaceCompletionAlgEquiv v).toRingEquiv
       (finitePlaceCompletionSeparableClosureRingEquiv F v)
       (finitePlaceCompletionSeparableClosureRingEquiv_algebraMap F v)
       (finitePlaceCompletion_semilinearValuationCompatible F v)) _
@@ -121,12 +124,7 @@ theorem finitePlaceDecompositionAdic_mem_inertia_iff
   exact finitePlaceDecompositionTransport_mem_inertia_iff F v sigma
 
 variable (n : ℕ+) [Fact (n : ℕ).Prime]
-local instance finitePlaceAdicInertiaCoefficientTopology : TopologicalSpace (ZMod (n : ℕ)) := ⊥
-local instance finitePlaceAdicInertiaCoefficientDiscrete : DiscreteTopology (ZMod (n : ℕ)) :=
-  discreteTopology_bot _
-local instance finitePlaceAdicInertiaH1Module
-    {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] :
-    Module (ZMod (n : ℕ)) (ContinuousH1ZMod (p := (n : ℕ)) (G := G)) := continuousH1ZModModule
+attribute [local instance] ClassFieldTower.ProP.continuousH1ZModModule
 
 /-- The actual adic H¹ transport preserves and reflects unramified characters. -/
 theorem finitePlaceDecompositionH1ToAdic_mem_unramified_iff

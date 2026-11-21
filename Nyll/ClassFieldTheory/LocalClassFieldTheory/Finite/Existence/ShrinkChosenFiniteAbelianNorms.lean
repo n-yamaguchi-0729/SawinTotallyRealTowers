@@ -9,8 +9,8 @@ module
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkChosenFiniteAbelianFields
 public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.ShrinkFiniteAbelianNorms
 public import Nyll.ClassFieldTheory.Algebra.FiniteAbelianIntermediateFieldAlgEquiv
-public import Nyll.ClassFieldTheory.Definitions.LocalClassFieldTheory.FieldNormSubgroup
-public import Nyll.ClassFieldTheory.LocalClassFieldTheory.Finite.Existence.NormSubgroupRingEquiv
+public import Nyll.ValuedFieldTheory.LocalField.NormUnits
+public import Nyll.ValuedFieldTheory.LocalField.NormUnitsBaseChange
 
 /-!
 # Actual norm subgroups in the chosen small-base separable closure
@@ -47,16 +47,16 @@ theorem shrinkChosenFiniteAbelian_normSubgroup_map
     shrinkIntermediateField_finiteDimensional K E
   let : FiniteDimensional (Shrink.{0} K) (M.map c.symm.toAlgHom) :=
     ClassFieldTheory.finiteDimensional_intermediateField_map_algEquiv c.symm M
-  change (ClassFieldTheory.fieldNormSubgroup K E.1).map
+  change (localNormSubgroup K E.1).map
       (Units.mapEquiv (Shrink.ringEquiv K).symm.toMulEquiv).toMonoidHom =
-    ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K)
+    localNormSubgroup (Shrink.{0} K)
       (M.map c.symm.toAlgHom)
   calc
-    _ = ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K) M :=
+    _ = localNormSubgroup (Shrink.{0} K) M :=
       shrinkIntermediateField_normSubgroup_map K E
-    _ = ClassFieldTheory.fieldNormSubgroup (Shrink.{0} K)
+    _ = localNormSubgroup (Shrink.{0} K)
         (M.map c.symm.toAlgHom) := by
-          have h := ClassFieldTheory.fieldNormSubgroup_map_ringEquiv
+          have h := LocalFieldTheory.localNormSubgroup_map_ringEquiv
             (RingEquiv.refl (Shrink.{0} K))
             (IntermediateField.intermediateFieldMap c.symm M).toRingEquiv
             (ClassFieldTheory.intermediateFieldMap_commutes c.symm M)
